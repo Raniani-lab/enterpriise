@@ -49,7 +49,7 @@ msgstr "റദ്ദാക്കുക"
 #: code:addons/spreadsheet_dashboard_documents/static/src/assets/document_selector_dialog/document_selector_dialog.xml:0
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: spreadsheet_dashboard_documents
 #: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard_documents.spreadsheet_document_to_dashboard_view_form
@@ -89,7 +89,7 @@ msgstr ""
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__document_id
 msgid "Document"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__id

@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Leaanika Randmets, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
@@ -290,7 +290,7 @@ msgid ""
 "        <a t-attf-href=\"/my/ticket/{{ object.id }}/{{ object.access_token }}\" t-out=\"object.name or ''\"/>\n"
 "    </t>\n"
 "    has been received and is being reviewed by our <t t-out=\"object.team_id.name or ''\">Table legs are unbalanced</t> team.\n"
-"    The reference of your ticket is <t t-out=\"object.id or ''\">15</t>.<br/>\n"
+"    The reference of your ticket is <t t-out=\"object.ticket_ref or ''\">15</t>.<br/>\n"
 "\n"
 "    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
 "        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">View the ticket</a><br/>\n"
@@ -308,30 +308,6 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
-"<div>\n"
-"    Lugupeetud <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">proua/härra</t>,<br/><br/>\n"
-"    Teie taotlus\n"
-"    <t t-if=\"object.get_portal_url()\">\n"
-"        <a t-attf-href=\"/my/ticket/{{ object.id }}/{{ object.access_token }}\" t-out=\"object.name or ''\"/>\n"
-"    </t>\n"
-"    on laekunud ja seda vaatab hetkel üle meie <t t-out=\"object.team_id.name or ''\">Lauajalad on tasuakaalustamata</t> meeskond.\n"
-"    Viide Teie piletile on <t t-out=\"object.id or ''\">15</t>.<br/>\n"
-"\n"
-"    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
-"        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">Vaata piletit</a><br/>\n"
-"    </div>\n"
-"\n"
-"    Lisakommentaarideks vastake antud kirjale.<br/><br/>\n"
-"\n"
-"    <t t-if=\"object.team_id.show_knowledge_base\">\n"
-"        Külastage ka meie <a t-attf-href=\"{{ object.team_id.get_knowledge_base_url() }}\">Abikeskust</a>. Võite leida sedalt vastuse oma küsimusele.\n"
-"        <br/><br/>\n"
-"    </t>\n"
-"\n"
-"    Täname Teid,<br/><br/>\n"
-"    <t t-out=\"object.team_id.name or 'Helpdesk'\">Kasutajatoe</t> meeskond.\n"
-"</div>\n"
-"        "
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -3157,13 +3133,6 @@ msgstr "Sõnumi kohaletoimetamise veateade"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Sad face"
 msgstr "Kurb nägu"
-
-#. module: helpdesk
-#. odoo-python
-#: code:addons/helpdesk/controllers/portal.py:0
-#, python-format
-msgid "Salesperson"
-msgstr "Müügiesindaja"
 
 #. module: helpdesk
 #. odoo-javascript

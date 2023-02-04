@@ -5,10 +5,10 @@
 # Translators:
 # Martin Aavastik <martin@avalah.ee>, 2022
 # Egon Raamat <egon@avalah.ee>, 2022
+# Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
-# Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Maidu Targama <m.targama@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
@@ -714,7 +714,7 @@ msgstr "Müügitellimuse rida"
 #: model:ir.model,name:sale_amazon.model_crm_team
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__team_id
 msgid "Sales Team"
-msgstr "Müügi meeskond"
+msgstr "Müügimeeskond"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__user_id

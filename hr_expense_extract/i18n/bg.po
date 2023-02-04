@@ -4,6 +4,9 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# aleksandar ivanov, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -184,7 +187,7 @@ msgstr "Съобщение за грешка"
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__sheet_id
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__expense_id
 msgid "Expense"
-msgstr ""
+msgstr "Разход"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
@@ -207,7 +210,7 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_sheet
 msgid "Expense Report"
-msgstr ""
+msgstr "Разходен отчет"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -280,7 +283,7 @@ msgstr "Дневник"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__expense_sample_register__partial_mode__open
 msgid "Keep open"
-msgstr ""
+msgstr "Дръжте отворен"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt____last_update
@@ -329,7 +332,7 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__memo
 msgid "Memo"
-msgstr ""
+msgstr "Напомняне"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -351,22 +354,22 @@ msgstr "Недостатъчен кредит"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__date
 msgid "Payment Date"
-msgstr ""
+msgstr "Дата на плащане"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__partial_mode
 msgid "Payment Difference"
-msgstr ""
+msgstr "Разлика в плащането"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__payment_method_line_id
 msgid "Payment Method"
-msgstr ""
+msgstr "Метод за плащане"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_register_view_form
 msgid "Register Payment"
-msgstr ""
+msgstr "Регистрирай плащания"
 
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_register

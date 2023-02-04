@@ -1737,12 +1737,12 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
 msgid "Related Assets"
-msgstr ""
+msgstr "Seotud varad"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Related Expenses"
-msgstr ""
+msgstr "Seotud kulud"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
@@ -1752,7 +1752,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Related Sales"
-msgstr ""
+msgstr "Seotud müügid"
 
 #. module: account_asset
 #. odoo-python
@@ -1860,7 +1860,7 @@ msgstr "Müük: tulu tuvastamine"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Save as Model"
-msgstr ""
+msgstr "Salvesta mudelina"
 
 #. module: account_asset
 #. odoo-python
@@ -1903,14 +1903,14 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Some fields are missing {}"
-msgstr ""
+msgstr "Mõned väljad puuduvad {}"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Some required values are missing"
-msgstr ""
+msgstr "Mõned nõutavad väärtused puuduvad"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__state

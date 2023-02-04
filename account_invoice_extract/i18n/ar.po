@@ -240,7 +240,7 @@ msgstr "استخلاص كلمة "
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_state
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_state
 msgid "Extract state"
-msgstr "استخلاص حالة "
+msgstr "حالة الاستخلاص "
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_invoice_extract_words
@@ -250,7 +250,7 @@ msgstr "الكلمات المستخرجة من المسح الضوئي للفا�
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Extraction Information"
-msgstr "معلومات الاستخلاص "
+msgstr "استخلاص المعلومات "
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__field

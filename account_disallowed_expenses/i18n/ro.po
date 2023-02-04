@@ -141,10 +141,24 @@ msgid "Display Name"
 msgstr "Nume afișat"
 
 #. module: account_disallowed_expenses
+#. odoo-python
+#: code:addons/account_disallowed_expenses/report/account_disallowed_expenses_report.py:0
+#, python-format
+msgid "General Ledger"
+msgstr "Carte mare"
+
+#. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_category__id
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_rate__id
 msgid "ID"
 msgstr "ID"
+
+#. module: account_disallowed_expenses
+#. odoo-python
+#: code:addons/account_disallowed_expenses/report/account_disallowed_expenses_report.py:0
+#, python-format
+msgid "Journal Items"
+msgstr "Elemente jurnal"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_category____last_update

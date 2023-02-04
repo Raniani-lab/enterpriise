@@ -388,7 +388,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
 #: model:ir.model.fields,field_description:sign.field_sign_template__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_ids
@@ -550,7 +550,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__attachment_id
 msgid "Attachment"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ്"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_attachment_count
@@ -714,7 +714,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 #: model_terms:ir.ui.view,arch_db:sign.sign_terms_conditions_setting_banner
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__color
@@ -795,7 +795,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_duplicate_template_with_pdf_view_form
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: sign
 #. odoo-javascript
@@ -1031,7 +1031,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Document"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -1080,7 +1080,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 msgid "Download"
-msgstr ""
+msgstr "ഡൌൺലോഡ് "
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -1745,7 +1745,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Logo"
-msgstr ""
+msgstr "ലോഗോ"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__sign_log_ids
@@ -2757,6 +2757,8 @@ msgstr ""
 
 #. module: sign
 #. odoo-javascript
+#. odoo-python
+#: code:addons/sign/models/sign_request.py:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #: code:addons/sign/static/src/xml/sign_common.xml:0
@@ -3463,7 +3465,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__tip
 msgid "Tip"
-msgstr ""
+msgstr "ടിപ്പ് "
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__sent
@@ -3513,7 +3515,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item__type_id
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__item_type
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__activity_exception_decoration

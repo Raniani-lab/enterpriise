@@ -268,7 +268,7 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: account_consolidation
 #. odoo-javascript
@@ -430,7 +430,7 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban

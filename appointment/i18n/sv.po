@@ -1546,7 +1546,7 @@ msgstr "Fråga"
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__question_type
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__question_type
 msgid "Question Type"
-msgstr ""
+msgstr "Fråga Typ"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__question_ids

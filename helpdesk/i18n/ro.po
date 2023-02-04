@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2023\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
@@ -275,7 +275,7 @@ msgid ""
 "        <a t-attf-href=\"/my/ticket/{{ object.id }}/{{ object.access_token }}\" t-out=\"object.name or ''\"/>\n"
 "    </t>\n"
 "    has been received and is being reviewed by our <t t-out=\"object.team_id.name or ''\">Table legs are unbalanced</t> team.\n"
-"    The reference of your ticket is <t t-out=\"object.id or ''\">15</t>.<br/>\n"
+"    The reference of your ticket is <t t-out=\"object.ticket_ref or ''\">15</t>.<br/>\n"
 "\n"
 "    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
 "        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">View the ticket</a><br/>\n"
@@ -293,29 +293,6 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
-"<div>\n"
-"    Bună ziua <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">Madam/Sir</t>,<br/><br/>\n"
-"    Solicitarea dumneavoastră\n"
-"    <t t-if=\"object.get_portal_url()\">\n"
-"        <a t-attf-href=\"/my/ticket/{{ object.id }}/{{ object.access_token }}\" t-out=\"object.name or ''\"/>\n"
-"    </t>\n"
-"    a fost primită și este în curs de examinare de către echipa noastră <t t-out=\"object.team_id.name or ''\">Table legs are unbalanced</t>.\n"
-"    Referința tichetului dumneavoastră este <t t-out=\"object.id or ''\">15</t>.<br/>\n"
-"\n"
-"    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
-"        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">Vezi tichetul</a><br/>\n"
-"    </div>\n"
-"\n"
-"    Pentru a adăuga comentarii suplimentare, răspundeți la acest e-mail.<br/><br/>\n"
-"\n"
-"    <t t-if=\"object.team_id.show_knowledge_base\">\n"
-"        Vă rugăm să nu ezitați să vizitați <a t-attf-href=\"{{ object.team_id.get_knowledge_base_url() }}\">Centrul de ajutor</a>. Poate găsiți răspunsul la întrebarea dumneavoastră.\n"
-"        <br/><br/>\n"
-"    </t>\n"
-"\n"
-"    Vă mulțumim,<br/><br/>\n"
-"    Echipa <t t-out=\"object.team_id.name or 'Helpdesk'\">Helpdesk</t>.\n"
-"</div>\n"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -3137,13 +3114,6 @@ msgstr "Eroare livrare SMS"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Sad face"
 msgstr "Față tristă"
-
-#. module: helpdesk
-#. odoo-python
-#: code:addons/helpdesk/controllers/portal.py:0
-#, python-format
-msgid "Salesperson"
-msgstr "Agent de vânzări"
 
 #. module: helpdesk
 #. odoo-javascript

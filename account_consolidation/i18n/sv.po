@@ -415,7 +415,7 @@ msgstr "Avbryt"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__chart_id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__chart_id
 msgid "Chart"
-msgstr ""
+msgstr "Diagram"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step

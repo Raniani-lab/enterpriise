@@ -4,6 +4,10 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Martin Trigaux, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# aleksandar ivanov, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -137,7 +141,7 @@ msgstr "Създадено на"
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__description
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__display_name
@@ -155,7 +159,7 @@ msgstr ""
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Грешка"
 
 #. module: social_twitter
 #. openerp-web
@@ -177,7 +181,7 @@ msgstr "ID"
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__image
 msgid "Image"
-msgstr ""
+msgstr "Изображение"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__is_twitter_post_limit_exceed
@@ -210,7 +214,7 @@ msgstr "Последно актуализирано на"
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Likes"
-msgstr ""
+msgstr "Харесвания"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -254,7 +258,7 @@ msgstr ""
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Post"
-msgstr ""
+msgstr "Публикувайте"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
@@ -343,7 +347,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_media
 msgid "Social Media"
-msgstr ""
+msgstr "Социална медиа"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_post
@@ -358,7 +362,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream
 msgid "Social Stream"
-msgstr ""
+msgstr "Социален поток"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream_post
@@ -401,7 +405,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:social_twitter.selection__social_media__media_type__twitter
 #: model:social.media,name:social_twitter.social_media_twitter
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_author_id
@@ -549,7 +553,7 @@ msgstr ""
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Неразпозната грешка"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_use_own_account

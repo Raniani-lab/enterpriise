@@ -64,7 +64,7 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: event_barcode
 #. openerp-web
@@ -90,7 +90,7 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: event_barcode
 #. openerp-web

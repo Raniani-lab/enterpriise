@@ -4,6 +4,9 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# aleksandar ivanov, 2023
+# Martin Trigaux, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +35,7 @@ msgstr ""
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__code
 msgid "Code"
-msgstr ""
+msgstr "Код"
 
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__create_uid
@@ -83,12 +86,12 @@ msgstr "Име"
 #: model:ir.model,name:product_unspsc.model_product_template
 #: model:ir.model.fields.selection,name:product_unspsc.selection__product_unspsc_code__applies_to__product
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: product_unspsc
 #: model:ir.model,name:product_unspsc.model_uom_uom
 msgid "Product Unit of Measure"
-msgstr ""
+msgstr "Продуктова мерна единица"
 
 #. module: product_unspsc
 #: model:ir.model,name:product_unspsc.model_product_unspsc_code
@@ -123,4 +126,4 @@ msgstr ""
 #. module: product_unspsc
 #: model:ir.model.fields.selection,name:product_unspsc.selection__product_unspsc_code__applies_to__uom
 msgid "UoM"
-msgstr ""
+msgstr "Мерна единица"

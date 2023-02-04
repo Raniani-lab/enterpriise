@@ -111,4 +111,4 @@ msgstr "معدل النفقات غير المسموح به للمركبات "
 #. module: account_disallowed_expenses_fleet
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses_fleet.disallowed_expenses_fleet_search_template_extra_options
 msgid "Vehicle Split"
-msgstr ""
+msgstr "مشاركة المركبة "

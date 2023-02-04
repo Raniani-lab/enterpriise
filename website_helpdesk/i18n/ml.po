@@ -119,7 +119,7 @@ msgstr ""
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #, python-format
 msgid "Attachment"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ്"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_date

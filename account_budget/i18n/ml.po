@@ -228,7 +228,7 @@ msgstr ""
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: account_budget
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__confirm

@@ -31,12 +31,12 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-archive me-3\" title=\"Package\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-archive me-3\" title=\"Package\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-archive me-3\" title=\"Source Package\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-archive me-3\" title=\"Source Package\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -44,26 +44,28 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\" "
 "attrs=\"{'invisible': [('tracking', 'not in', ['serial', 'lot'])]}\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\" "
+"attrs=\"{'invisible': [('tracking', 'not in', ['serial', 'lot'])]}\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Counted Quantity\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Counted Quantity\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Quantity\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Quantity\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-cubes me-3\" title=\"Locations\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-cubes me-3\" title=\"Locations\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -71,6 +73,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Destination "
 "Location\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Destination "
+"Location\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -78,11 +82,13 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Destination "
 "Package\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Destination "
+"Package\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-map-marker me-3\" title=\"Location\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-map-marker me-3\" title=\"Location\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -90,32 +96,34 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-map-marker text-center me-3\" title=\"Source "
 "Location\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-map-marker text-center me-3\" title=\"Source "
+"Location\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-tags me-3\" title=\"Product\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-tags me-3\" title=\"Product\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-user-o me-3\" title=\"Owner\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-user-o me-3\" title=\"Owner\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-user-o text-center me-3\" title=\"Owner\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-user-o text-center me-3\" title=\"Owner\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
 msgid "<i class=\"fa fa-lg fa-archive\" title=\"Package\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-lg fa-archive\" title=\"Package\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
 msgid "<i class=\"fa fa-lg fa-user-o\" title=\"Owner\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-lg fa-user-o\" title=\"Owner\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
@@ -125,12 +133,12 @@ msgstr "<i class=\"fa fa-print\"/> 바코드 명령 인쇄"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
 msgid "<i class=\"fa fa-print\"/> Print barcode demo sheet"
-msgstr ""
+msgstr "<i class=\"fa fa-print\"/> 바코드 데모 시트 인쇄"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-trash-o\"/> Delete"
-msgstr ""
+msgstr "<i class=\"fa fa-trash-o\"/> 삭제"
 
 #. module: stock_barcode
 #. openerp-web

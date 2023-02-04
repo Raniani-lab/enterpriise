@@ -1449,7 +1449,7 @@ msgstr "Supprimer"
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Delete Menu Item"
-msgstr "Supprimer un élément de menu"
+msgstr "Supprimer une rubrique"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1649,7 +1649,7 @@ msgstr "Modifier la vue liste"
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Edit Menu"
-msgstr "Modifier le menu"
+msgstr "Éditer le menu"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1657,7 +1657,7 @@ msgstr "Modifier le menu"
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Edit Menu Item"
-msgstr "Modifier l'élément de menu"
+msgstr "Éditer la rubrique"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4355,6 +4355,13 @@ msgid "User avatar placeholder"
 msgstr "Placeholder d'avatar utilisateur"
 
 #. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
+#, python-format
+msgid "User is not a member of the selected group."
+msgstr "L'utilisateur n'est pas un membre du groupe sélectionné."
+
+#. module: web_studio
 #. odoo-javascript
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
@@ -4561,7 +4568,7 @@ msgid ""
 "You cannot remove all the menu items of an app.\r\n"
 "Try uninstalling the app instead."
 msgstr ""
-"Vous ne pouvez pas supprimer tous les éléments du menu d'une application.\n"
+"Vous ne pouvez pas supprimer toutes les rubriques du menu d'une application.\n"
 "Essayez plutôt de désinstaller l'application."
 
 #. module: web_studio

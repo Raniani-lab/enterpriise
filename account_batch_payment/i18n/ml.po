@@ -192,7 +192,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.batch_error_wizard_form
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_code

@@ -140,7 +140,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_sepa_direct_debit.selection__sdd_mandate__state__active
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__activity_ids
@@ -214,7 +214,7 @@ msgstr "റദ്ദാക്കുക"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields.selection,name:account_sepa_direct_debit.selection__sdd_mandate__state__closed

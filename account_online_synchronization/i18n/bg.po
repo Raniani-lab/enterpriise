@@ -4,6 +4,13 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# aleksandar ivanov, 2023
+# Martin Trigaux, 2023
+# Ivan Goychev <igoychev.projects@gmail.com>, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,17 +29,17 @@ msgstr ""
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
 msgid "<strong>Fantastic! </strong> We've found"
-msgstr ""
+msgstr "<strong>Чудесно! </strong> Открихме"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__access_token
 msgid "Access Token"
-msgstr ""
+msgstr "Токен за достъп"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__account_data
 msgid "Account Data"
-msgstr ""
+msgstr "Данни за сметка"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__name
@@ -43,7 +50,7 @@ msgstr "Име на Сметка"
 #: model:ir.model.fields,help:account_online_synchronization.field_account_link_journal_line__name
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__name
 msgid "Account Name as provided by third party provider"
-msgstr ""
+msgstr "Име на сметка, предоставена от доставчик на трета страна"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__account_number
@@ -55,31 +62,31 @@ msgstr "Номер на Сметка"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__account_online_account_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__account_online_account_ids
 msgid "Account Online Account"
-msgstr ""
+msgstr "Сметка Онлайн Сметка"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__online_link_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__account_online_link_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__account_online_link_id
 msgid "Account Online Link"
-msgstr ""
+msgstr "Онлайн връзка към сметка"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__account_online_wizard_id
 msgid "Account Online Wizard"
-msgstr ""
+msgstr "Онлайн съветник за сметка"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__name
 msgid "Account name"
-msgstr ""
+msgstr "Име на сметка"
 
 #. module: account_online_synchronization
 #: model:ir.actions.server,name:account_online_synchronization.online_sync_cron_ir_actions_server
 #: model:ir.cron,cron_name:account_online_synchronization.online_sync_cron
 #: model:ir.cron,name:account_online_synchronization.online_sync_cron
 msgid "Account: Journal online sync"
-msgstr ""
+msgstr "Сметка: Дневник онлайн синхронизиране"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_needaction
@@ -94,7 +101,7 @@ msgstr "Дейности"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Декорация за изключение на дейност"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_state
@@ -127,7 +134,7 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__auto_sync
 msgid "Automatic synchronization"
-msgstr ""
+msgstr "Автоматично синхронизиране"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__balance
@@ -139,7 +146,7 @@ msgstr "Салдо"
 #: model:ir.model.fields,help:account_online_synchronization.field_account_link_journal_line__balance
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__balance
 msgid "Balance of the account sent by the third party provider"
-msgstr ""
+msgstr "Салдо на сметка, изпратен от доставчика на трета страна"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_online_link
@@ -175,12 +182,12 @@ msgstr "Отказ"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__client_id
 msgid "Client"
-msgstr ""
+msgstr "Клиент"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
 msgid "Client id"
-msgstr ""
+msgstr "Клиент №"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_res_company
@@ -196,12 +203,12 @@ msgstr "Фирма"
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
 msgid "Connect"
-msgstr ""
+msgstr "Свързване"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_online_link__state__connected
 msgid "Connected"
-msgstr ""
+msgstr "Свързан"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
@@ -226,43 +233,43 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Create a Bank Account"
-msgstr ""
+msgstr "Създаване на банкова сметка"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create bi-monthly statements"
-msgstr ""
+msgstr "Създаване на двумесечни отчети"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create daily statements"
-msgstr ""
+msgstr "Създаване на ежедневни отчети"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create monthly statements"
-msgstr ""
+msgstr "Създаване на месечни отчети"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create one statement per synchronization"
-msgstr ""
+msgstr "Създаване на заявление за синхронизация"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create weekly statements"
-msgstr ""
+msgstr "Създаване на седмични отчети"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__create_uid
@@ -303,7 +310,7 @@ msgstr "Име за показване"
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_online_link__state__error
 msgid "Error"
-msgstr ""
+msgstr "Грешка"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__expiring_synchronization_date
@@ -319,17 +326,17 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__account_data
 msgid "Extra information needed by third party provider"
-msgstr ""
+msgstr "Необходима е допълнителна информация от доставчика от трета страна"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
 msgid "Fetch Accounts"
-msgstr ""
+msgstr "Извличане на сметки"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
 msgid "Fetch Transactions"
-msgstr ""
+msgstr "Извличане на транзакции"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
@@ -340,22 +347,22 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Последователи"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Последователи (партньори)"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr ""
+msgstr "Икона, примерно fa-tasks"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__sync_date
 msgid "Get transactions since"
-msgstr ""
+msgstr "Получаване на транзакции от"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__has_message
@@ -373,28 +380,28 @@ msgstr "ID"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "Икона"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Икона за обозначаване на дейност с изключение."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__online_identifier
 msgid "Id used to identify account by third party provider"
-msgstr ""
+msgstr "№ използван за идентифициране на сметка от доставчик на трета страна"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ако е отметнато, новите съобщения ще изискват внимание."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_has_error
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Ако е отметнато, някои съобщения имат грешка при доставката."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_balance_sign
@@ -412,6 +419,8 @@ msgid ""
 "If possible, we will try to automatically fetch new transactions for this "
 "record"
 msgstr ""
+"Ако е възможно, ще се опитаме автоматично да извлечем нови транзакции за "
+"този запис"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__provider_data
@@ -421,19 +430,19 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__name
 msgid "Institution Name"
-msgstr ""
+msgstr "Име на банка"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Internal Error"
-msgstr ""
+msgstr "Вътрешна грешка"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Invalid value for proxy_mode config parameter."
-msgstr ""
+msgstr "Невалидна стойност за конфигурационния параметър proxy_mode."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_balance_sign
@@ -448,7 +457,7 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "е последовател"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_journal
@@ -474,7 +483,7 @@ msgstr "Последна промяна на"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__last_refresh
 msgid "Last Refresh"
-msgstr ""
+msgstr "Последно опресняване"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__write_uid
@@ -495,54 +504,54 @@ msgstr "Последно актуализирано на"
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
 msgid "Last refresh"
-msgstr ""
+msgstr "Последно опресняване"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__last_sync
 msgid "Last synchronization"
-msgstr ""
+msgstr "Последно синхронизиране"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Link Account to Journal"
-msgstr ""
+msgstr "Връзка на сметка към дневник"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
 msgid "Link account to journal"
-msgstr ""
+msgstr "Връзка на сметка към дневник"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_link_journal
 msgid "Link list of bank accounts to journals"
-msgstr ""
+msgstr "Връзка на списък на банкови сметки към дневници"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_link_journal_line
 msgid "Link one bank account to a journal"
-msgstr ""
+msgstr "Връзка на банкова сметка към дневник"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Основен прикачен Файл"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Message"
-msgstr ""
+msgstr "Съобщение"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Грешка при доставката на съобщение"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Съобщения"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__my_activity_date_deadline
@@ -562,85 +571,85 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Краен срок на следващо действие"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Обобщение на следваща дейност"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Вид на следващо действие"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Next sync:"
-msgstr ""
+msgstr "Следваща синхронизация:"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__next_refresh
 msgid "Next synchronization"
-msgstr ""
+msgstr "Следваща синхронизация"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields.selection,name:account_online_synchronization.selection__account_online_link__state__disconnected
 msgid "Not Connected"
-msgstr ""
+msgstr "Не е свързан"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__number_added
 msgid "Number Added"
-msgstr ""
+msgstr "Добавен номер"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Брой действия"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Брой грешки"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Брой съобщения, които изискват внимание"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Брой съобщения с грешка при доставка"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__online_account_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__online_account_id
 msgid "Online Account"
-msgstr ""
+msgstr "Онлайн профил"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
 msgid "Online Accounts"
-msgstr ""
+msgstr "Онлайн сметки"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__online_identifier
 msgid "Online Identifier"
-msgstr ""
+msgstr "Онлайн идентификатор"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__next_link_synchronization
 msgid "Online Link Next synchronization"
-msgstr ""
+msgstr "Онлайн връзка следваща синхронизация"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__online_partner_information
 #: model:ir.model.fields,field_description:account_online_synchronization.field_res_partner__online_partner_information
 #: model:ir.model.fields,field_description:account_online_synchronization.field_res_users__online_partner_information
 msgid "Online Partner Information"
-msgstr ""
+msgstr "Информация за онлайн партньор"
 
 #. module: account_online_synchronization
 #: model:ir.actions.act_window,name:account_online_synchronization.action_account_online_link_form
@@ -648,65 +657,66 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:account_online_synchronization.action_account_online_link_form
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Online Synchronization"
-msgstr ""
+msgstr "Онлайн синхронизиране"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__online_transaction_identifier
 msgid "Online Transaction Identifier"
-msgstr ""
+msgstr "Онлайн идентификатор на транзакции"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_bank_statement.py:0
 #, python-format
 msgid "Opening statement: first synchronization"
-msgstr ""
+msgstr "Отчет за отваряне: първа синхронизация"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Please reconnect your online account."
-msgstr ""
+msgstr "Моля, свържете отново вашата онлайн сметка."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Problem during synchronization"
-msgstr ""
+msgstr "Проблем в хода на синхронизацията"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__provider_data
 msgid "Provider Data"
-msgstr ""
+msgstr "Данни на доставчика"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
 msgid "Reconnect"
-msgstr ""
+msgstr "Свързване отново"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__refresh_token
 msgid "Refresh Token"
-msgstr ""
+msgstr "Рестартиране на токена"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__client_id
 msgid "Represent a link for a given user towards a banking institution"
-msgstr ""
+msgstr "Представлява връзка за даден потребител към банкова институция"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Отговорник"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS грешка при доставка"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_link_journal_line__account_number
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__account_number
 msgid "Set if third party provider has the full account number"
 msgstr ""
+"Задайте дали доставчикът на трета страна да има целият номер на сметка"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__account_online_link_state
@@ -722,22 +732,26 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Статус според дейностите\n"
+"Пресрочени: Крайната дата е в миналото\n"
+"Днес: Дейности с дата на изпълнение днес \n"
+"Планирани: Бъдещи дейности."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Synchronization link disconnected"
-msgstr ""
+msgstr "Връзката за синхронизация е прекъсната"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
 msgid "Synchronize now"
-msgstr ""
+msgstr "Синхронизирайте сега"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__account_ids
 msgid "Synchronized accounts"
-msgstr ""
+msgstr "Синхронизирани сметки"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
@@ -746,6 +760,8 @@ msgid ""
 "The online synchronization service is not available at the moment. Please "
 "try again later."
 msgstr ""
+"Онлайн услугата за синхронизация не е налична в момента. Моля, опитайте "
+"отново по-късно."
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
@@ -754,11 +770,13 @@ msgid ""
 "The reference of your error is %s. Please mention it when contacting Odoo "
 "support."
 msgstr ""
+"Препратката към вашата грешка е %s. Моля, посочете я когато се свържете с "
+"екипа за поддръжка на Odoo."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
 msgid "There is no new bank account to link."
-msgstr ""
+msgstr "Няма нова банкова сметка за свързване."
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
@@ -767,6 +785,8 @@ msgid ""
 "This version of Odoo appears to be outdated and does not support the '%s' "
 "sync mode. Installing the latest update might solve this."
 msgstr ""
+"Тази версия на Odoo изглежда остаряла и не поддържа режима за синхронизиране"
+" '%s'. Инсталирането на най-новата актуализация може да разреши това."
 
 #. module: account_online_synchronization
 #: model_terms:ir.actions.act_window,help:account_online_synchronization.action_account_online_link_form
@@ -778,48 +798,48 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__access_token
 msgid "Token used to access API."
-msgstr ""
+msgstr "Токен, използван за достъп до API."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__refresh_token
 msgid "Token used to sign API request, Never disclose it"
-msgstr ""
+msgstr "Никога го разкривайте токена използван за подписване на заявка за API"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__transactions
 msgid "Transactions"
-msgstr ""
+msgstr "Транзакции"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Вид на изключение на дейност в базата."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form
 msgid "Update Credentials"
-msgstr ""
+msgstr "Актуализирайте акредитивните писма"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "View problem"
-msgstr ""
+msgstr "Прегледайте проблем"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Съобщения в уебсайт"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "История на комуникацията на уебсайт"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/wizard/account_link_journal_wizard.py:0
 #, python-format
 msgid "You can not link two accounts to the same journal."
-msgstr ""
+msgstr "Не можете да свържете две сметки към един и същи дневник."
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_journal.py:0
@@ -827,6 +847,7 @@ msgstr ""
 #, python-format
 msgid "You cannot have two journals associated with the same Online Account."
 msgstr ""
+"Не можете да имате два дневника, свързани с една и съща онлайн сметка."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
@@ -834,13 +855,15 @@ msgid ""
 "bank account(s).<br/>\n"
 "                            Let's associate each one with an accounting journal."
 msgstr ""
+"банкова сметка(и).<br/>\n"
+"                            Нека свържем всяка една със счетоводен дневник."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "day"
-msgstr ""
+msgstr "ден"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_online_account
 msgid "representation of an online bank account"
-msgstr ""
+msgstr "представяне на онлайн банкова сметка"

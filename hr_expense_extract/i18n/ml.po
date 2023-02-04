@@ -70,7 +70,7 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_ir_attachment
 msgid "Attachment"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ്"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__available_payment_method_line_ids

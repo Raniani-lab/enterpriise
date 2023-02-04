@@ -70,7 +70,7 @@ msgstr "Mur Twitter"
 #. module: website_event_twitter_wall
 #: model:ir.model.fields,field_description:website_event_twitter_wall.field_event_type__social_menu
 msgid "Twitter Wall Menu Item"
-msgstr "Élément de menu du Mur Twitter"
+msgstr "Rubrique du Mur Twitter"
 
 #. module: website_event_twitter_wall
 #: model:ir.model,name:website_event_twitter_wall.model_website_event_menu

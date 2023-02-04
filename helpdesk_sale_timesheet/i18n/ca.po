@@ -8,9 +8,10 @@
 # marcescu, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
-# Josep Anton Belchi, 2022
+# jabelchi, 2022
 # Cristian Cruz, 2022
 # Ivan Espinola, 2022
+# Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Ivan Espinola, 2022\n"
+"Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2023\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -148,7 +149,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
 msgid "Project's sale order"
-msgstr "Ordre de venda del projecte"
+msgstr "Comanda de venda del projecte"
 
 #. module: helpdesk_sale_timesheet
 #: model:helpdesk.ticket,legend_done:helpdesk_sale_timesheet.helpdesk_ticket_24
@@ -158,7 +159,7 @@ msgstr "Preparat"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
 msgid "Ref. Sales Order"
-msgstr "Ref. Ordre de vendes"
+msgstr "Ref. Comanda de venda"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__use_helpdesk_sale_timesheet
@@ -243,7 +244,7 @@ msgstr "Elements de la comanda de vendes"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
 msgid "Sales order to which the project is linked."
-msgstr "Ordre de vendes al qual està enllaçat el projecte."
+msgstr "Comanda de venda a la qual està enllaçat el projecte."
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.portal_helpdesk_ticket_timesheet

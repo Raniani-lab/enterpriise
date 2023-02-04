@@ -495,7 +495,7 @@ msgstr ""
 #: code:addons/social_youtube/models/social_post.py:0
 #, python-format
 msgid "Video"
-msgstr ""
+msgstr "വീഡിയോ"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form

@@ -581,7 +581,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "This Week"
-msgstr ""
+msgstr "ഈ ആഴ്ച"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -619,7 +619,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "ഇന്ന്"
 
 #. module: project_timesheet_synchro
 #. openerp-web

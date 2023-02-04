@@ -15,8 +15,8 @@
 # Piia Paurson <piia@avalah.ee>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Martin Aavastik <martin@avalah.ee>, 2022
-# Anna, 2023
 # Jana Jaakson, 2023
+# Anna, 2023
 # 
 msgid ""
 msgstr ""
@@ -24,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Jana Jaakson, 2023\n"
+"Last-Translator: Anna, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -85,7 +85,7 @@ msgstr "<i class=\"fa fa-check-circle\"/> Opened"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "<i class=\"fa fa-check-circle\"/> Replied"
-msgstr "<i class=\"fa fa-check-circle\"/> Replied"
+msgstr "<i class=\"fa fa-check-circle\"/> Vastatud"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -258,7 +258,7 @@ msgstr "Kõik seotud sotsiaalmeedia postitused"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__allowed_parent_ids
 msgid "Allowed parents"
-msgstr ""
+msgstr "Lubatud partnerid"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__is_auto_campaign
@@ -383,7 +383,7 @@ msgstr "Vajutanud"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
 msgid "Clicks"
-msgstr "Klikke"
+msgstr "Klikid"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__color
@@ -621,7 +621,7 @@ msgstr "Loo osalejad"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Graph"
-msgstr "Graafik"
+msgstr "Planeeri"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_trace_action
@@ -636,7 +636,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__hours
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__hours
 msgid "Hours"
-msgstr "Tunnid"
+msgstr "tund(i)"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__id
@@ -935,7 +935,7 @@ msgstr "Mudeli nimetus"
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__months
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__months
 msgid "Months"
-msgstr "Kuud"
+msgstr "kuu(d)"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__name
@@ -1107,6 +1107,16 @@ msgid "Participants of %s (%s)"
 msgstr "Osalejad %s (%s)"
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
+msgid "Pick a Server Action"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
+msgid "Pick a Template"
+msgstr ""
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Pick or create a/an"
 msgstr "Vali või loo a/an"
@@ -1189,7 +1199,7 @@ msgstr "Eemaldatud tähendab, et kirjet enam ei eksisteeri."
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Replied"
-msgstr "Vastas"
+msgstr "Vastatud"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__replied_ratio
@@ -1524,7 +1534,7 @@ msgstr "UTM allikas"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Unicity based on"
-msgstr "Unicity põhineb"
+msgstr "Ainulaadsus põhineb"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__unique_field_id
@@ -1584,7 +1594,7 @@ msgstr "Hoiatus"
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__weeks
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__weeks
 msgid "Weeks"
-msgstr "Nädalad"
+msgstr "Nädal"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_winner_selection
@@ -1640,17 +1650,17 @@ msgstr "another activity"
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__begin
 msgid "beginning of workflow"
-msgstr ""
+msgstr "töövoo alguses"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "e.g. eCommerce Offers"
-msgstr "e.g. eCommerce Offers"
+msgstr "nt. E-poe pakkumised"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "e.g. eCommerce Offers Plan"
-msgstr "nt. E-kaubanduse pakkumiste plaan"
+msgstr "nt. Uus kampaania"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form

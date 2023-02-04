@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
@@ -472,7 +472,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_role__active
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: planning
 #. odoo-javascript
@@ -1957,6 +1957,13 @@ msgid "The duration cannot be negative."
 msgstr ""
 
 #. module: planning
+#. odoo-python
+#: code:addons/planning/models/planning_template.py:0
+#, python-format
+msgid "The duration is too long."
+msgstr ""
+
+#. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_check_start_date_lower_end_date
 msgid "The end date of a shift should be after its start date."
 msgstr ""
@@ -2112,7 +2119,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "This Week"
-msgstr ""
+msgstr "ഈ ആഴ്ച"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -2147,7 +2154,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Today"
-msgstr ""
+msgstr "ഇന്ന്"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
@@ -2168,7 +2175,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__resource_type
 #: model:ir.model.fields,field_description:planning.field_planning_slot__resource_type
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_type__until
@@ -2212,7 +2219,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_unit__week
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_unit__week
 msgid "Weeks"
-msgstr ""
+msgstr "ആഴ്ചകൾ"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__work_address_id
@@ -2250,7 +2257,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_unit__year
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_unit__year
 msgid "Years"
-msgstr ""
+msgstr "വർഷങ്ങൾ"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search

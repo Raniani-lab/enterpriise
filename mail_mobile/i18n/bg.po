@@ -4,6 +4,10 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# aleksandar ivanov, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-11 15:06+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: aleksandar ivanov, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +40,7 @@ msgstr "Настройки"
 #. module: mail_mobile
 #: model:ir.model,name:mail_mobile.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: mail_mobile
 #: model:ir.model.fields,field_description:mail_mobile.field_res_config_settings__disable_redirect_firebase_dynamic_link
@@ -46,12 +50,12 @@ msgstr ""
 #. module: mail_mobile
 #: model:ir.model,name:mail_mobile.model_mail_channel
 msgid "Discussion Channel"
-msgstr ""
+msgstr "Дискусионен канал"
 
 #. module: mail_mobile
 #: model:ir.model,name:mail_mobile.model_mail_thread
 msgid "Email Thread"
-msgstr ""
+msgstr "Имейл поредица"
 
 #. module: mail_mobile
 #: model:ir.model,name:mail_mobile.model_ir_http
@@ -61,7 +65,7 @@ msgstr ""
 #. module: mail_mobile
 #: model:ir.model,name:mail_mobile.model_iap_account
 msgid "IAP Account"
-msgstr ""
+msgstr "IAP Акаунт"
 
 #. module: mail_mobile
 #: model_terms:ir.ui.view,arch_db:mail_mobile.res_config_settings_view_form
@@ -73,7 +77,7 @@ msgstr ""
 #. module: mail_mobile
 #: model_terms:ir.ui.view,arch_db:mail_mobile.res_config_settings_view_form
 msgid "Mobile"
-msgstr ""
+msgstr "Мобилен"
 
 #. module: mail_mobile
 #: model:ir.model.fields,field_description:mail_mobile.field_res_partner__ocn_token

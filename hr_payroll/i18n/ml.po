@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:28+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
@@ -137,9 +137,10 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
 msgid ""
-"<span role=\"status\" class=\"alert alert-warning\" attrs=\"{'invisible': "
-"[('display_warning', '=', False)]}\">You have selected contracts that are "
-"not running, this wizard can only index running contracts.</span>"
+"<span role=\"status\" class=\"alert alert-warning d-block\" "
+"attrs=\"{'invisible': [('display_warning', '=', False)]}\">You have selected"
+" contracts that are not running, this wizard can only index running "
+"contracts.</span>"
 msgstr ""
 
 #. module: hr_payroll
@@ -273,7 +274,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__active
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_attachment_view_search
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__active_amount
@@ -722,7 +723,7 @@ msgstr ""
 #: code:addons/hr_payroll/static/src/components/dashboard/todo_list/todo_list.xml:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -824,7 +825,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -1201,7 +1202,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__attachment
 msgid "Document"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payslip__state__done
@@ -1529,7 +1530,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_rule_form
 msgid "General"
-msgstr ""
+msgstr "ജനറൽ"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees
@@ -3584,7 +3585,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__deduction_type
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_attachment_view_search
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__activity_exception_decoration

@@ -131,7 +131,7 @@ msgstr "റദ്ദാക്കുക"
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_forecast_details_form_view
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_res_company
@@ -172,7 +172,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__day
 msgid "Daily"
-msgstr ""
+msgstr "ഡെയ്‌ലി "
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__date

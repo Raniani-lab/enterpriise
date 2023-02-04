@@ -4,6 +4,17 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# kalatchev, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
+# Александра Николова <alexandra1nikolova@gmail.com>, 2023
+# aleksandar ivanov, 2023
+# Boyan Rabchev <boyan.rabchev@plana.solutions>, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Ivan Goychev <igoychev.projects@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -123,7 +134,7 @@ msgstr "Дейности"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Декорация за изключение на дейност"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_state
@@ -138,7 +149,7 @@ msgstr "Икона за Вид Дейност"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__name
 msgid "Alert"
-msgstr ""
+msgstr "Сигнал"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_alert
@@ -149,7 +160,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:hr_referral.action_hr_referral_alert_configuration
 #: model:ir.ui.menu,name:hr_referral.menu_hr_referral_alert_configuration
 msgid "Alerts"
-msgstr ""
+msgstr "Сигнали"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_recruitment_stage__points
@@ -163,7 +174,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__applicant_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__applicant_id
 msgid "Applicant"
-msgstr ""
+msgstr "Кандидат"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
@@ -200,7 +211,7 @@ msgstr "Брой Прикачени Файлове"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "Avatar"
-msgstr ""
+msgstr "Аватар"
 
 #. module: hr_referral
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
@@ -213,28 +224,28 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_friend__position__back
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.res_config_settings_view__form
 msgid "Background"
-msgstr ""
+msgstr "Background"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.res_config_settings_view__form
 msgid "Background Image"
-msgstr ""
+msgstr "Фоново изображение"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert_mail_wizard__body
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__body_html
 msgid "Body"
-msgstr ""
+msgstr "Текст на имейла"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_job__utm_campaign_id
 msgid "Campaign"
-msgstr ""
+msgstr "Кампании"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_mail_wizard_view_form
@@ -245,7 +256,7 @@ msgstr "Отказ"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_link_to_share__channel
 msgid "Channel"
-msgstr ""
+msgstr "Канал"
 
 #. module: hr_referral
 #. openerp-web
@@ -287,13 +298,13 @@ msgstr "Настройки"
 #. module: hr_referral
 #: model:ir.ui.menu,name:hr_referral.menu_hr_referral_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Конфигурация "
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__cost
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_form
 msgid "Cost"
-msgstr ""
+msgstr "Цена"
 
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.action_hr_referral_alert_configuration
@@ -335,7 +346,7 @@ msgstr "Създадено на"
 #: model:ir.ui.menu,name:hr_referral.menu_hr_applicant_employee_referral_dashboard
 #, python-format
 msgid "Dashboard"
-msgstr ""
+msgstr "Табло за управление"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__image
@@ -350,12 +361,12 @@ msgstr "Дата"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__date_from
 msgid "Date From"
-msgstr ""
+msgstr "Дата от"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__date_to
 msgid "Date To"
-msgstr ""
+msgstr "Дата до"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_friend__position
@@ -369,12 +380,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__department_id
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
 msgid "Department"
-msgstr ""
+msgstr "Отдел"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__description
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_job__direct_clicks
@@ -429,7 +440,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__email_to
 msgid "Email"
-msgstr ""
+msgstr "Имейл"
 
 #. module: hr_referral
 #. openerp-web
@@ -441,7 +452,7 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
 msgid "Employee"
-msgstr ""
+msgstr "Служител"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__employee_referral_hired
@@ -461,7 +472,7 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_form
 msgid "Employees"
-msgstr ""
+msgstr "Служители"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_graph
@@ -486,7 +497,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_link_to_share__channel__facebook
 msgid "Facebook"
-msgstr ""
+msgstr "Facebook"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_job__facebook_clicks
@@ -496,17 +507,17 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Последователи"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Последователи (партньори)"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr ""
+msgstr "Икона, примерно fa-tasks"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__friend_id
@@ -567,7 +578,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Group By"
-msgstr ""
+msgstr "Групиране по"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_view_search
@@ -639,23 +650,23 @@ msgstr "ID"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "Икона"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Икона за обозначаване на дейност с изключение."
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ако е отметнато, новите съобщения ще изискват внимание."
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_has_error
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Ако е отметнато, някои съобщения имат грешка при доставката."
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__image_head
@@ -663,19 +674,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__image
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__image
 msgid "Image"
-msgstr ""
+msgstr "Изображение"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_applicant__referral_state__progress
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_report__referral_state__progress
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_filter
 msgid "In Progress"
-msgstr ""
+msgstr "В процес"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "е последовател"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_link_to_share__job_id
@@ -683,17 +694,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__job_id
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
 msgid "Job"
-msgstr ""
+msgstr "Работна позиция"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_job
 msgid "Job Position"
-msgstr ""
+msgstr "Работна позиция"
 
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.action_hr_job_employee_referral
 msgid "Job Positions"
-msgstr ""
+msgstr "Работни позиции"
 
 #. module: hr_referral
 #. openerp-web
@@ -777,12 +788,12 @@ msgstr ""
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Level"
-msgstr ""
+msgstr "Ниво"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_level__name
 msgid "Level Name"
-msgstr ""
+msgstr "Име на ниво"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_level
@@ -798,13 +809,13 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_link_to_share__channel__direct
 msgid "Link"
-msgstr ""
+msgstr "Линк"
 
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.hr_referral_link_to_share_action
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_link_to_share_view_form
 msgid "Link to Share"
-msgstr ""
+msgstr "Линк за споделяне"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_link_to_share__channel__linkedin
@@ -819,7 +830,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Основен прикачен Файл"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__max_points
@@ -830,17 +841,17 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__medium_id
 msgid "Medium"
-msgstr ""
+msgstr "Преносител"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Грешка при доставката на съобщение"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Съобщения"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__my_activity_date_deadline
@@ -869,7 +880,7 @@ msgstr ""
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Следващ"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_calendar_event_id
@@ -879,17 +890,17 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Краен срок на следващо действие"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Обобщение на следваща дейност"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Вид на следващо действие"
 
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.action_hr_job_employee_referral
@@ -911,22 +922,22 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Брой действия"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Брой грешки"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Брой съобщения, които изискват внимание"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Брой съобщения с грешка при доставка"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__onclick
@@ -944,12 +955,12 @@ msgstr ""
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Ongoing"
-msgstr ""
+msgstr "Протичащ"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
 msgid "Open"
-msgstr ""
+msgstr "Отворен"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
@@ -968,7 +979,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_backend_kanban
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
 msgid "Points"
-msgstr ""
+msgstr "Точки"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__points_not_hired
@@ -1004,7 +1015,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_friend__position
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
 msgid "Position"
-msgstr ""
+msgstr "Позиция"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
@@ -1014,12 +1025,12 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__name
 msgid "Product Name"
-msgstr ""
+msgstr "Име на продукта:"
 
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.action_hr_applicant_employee_referral
@@ -1117,7 +1128,7 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_applicant_view_search_bis_inherit_referral
 msgid "Referred By"
-msgstr ""
+msgstr "Препоръчан от"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__ref_user_id
@@ -1137,17 +1148,17 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.ui.menu,name:hr_referral.menu_report_employee_referral_all
 msgid "Reporting"
-msgstr ""
+msgstr "Отчитане"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_level_form
 msgid "Requirements"
-msgstr ""
+msgstr "Изисквания"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Отговорник"
 
 #. module: hr_referral
 #. openerp-web
@@ -1166,7 +1177,7 @@ msgstr ""
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Reward"
-msgstr ""
+msgstr "Награда"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_reward
@@ -1181,12 +1192,12 @@ msgstr ""
 #: model:ir.ui.menu,name:hr_referral.menu_hr_referral_reward_configuration
 #, python-format
 msgid "Rewards"
-msgstr ""
+msgstr "Награди"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS грешка при доставка"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
@@ -1201,7 +1212,7 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_mail_wizard_view_form
 msgid "Send"
-msgstr ""
+msgstr "Изпрати"
 
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.hr_referral_send_mail_action
@@ -1218,13 +1229,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_send_mail_view_form
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_alert_form
 msgid "Send Mail"
-msgstr ""
+msgstr "Изпратете поща"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__sequence
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Последователност"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__sequence_stage
@@ -1242,7 +1253,7 @@ msgstr "Настройки"
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Share"
-msgstr ""
+msgstr "Споделете"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
@@ -1286,7 +1297,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id
 msgid "Source"
-msgstr ""
+msgstr "Източник"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_alert__onclick__url
@@ -1296,7 +1307,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__stage_id
 msgid "Stage"
-msgstr ""
+msgstr "Стадий"
 
 #. module: hr_referral
 #. openerp-web
@@ -1305,7 +1316,7 @@ msgstr ""
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Start"
-msgstr ""
+msgstr "Стартирайте"
 
 #. module: hr_referral
 #. openerp-web
@@ -1327,12 +1338,16 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Статус според дейностите\n"
+"Пресрочени: Крайната дата е в миналото\n"
+"Днес: Дейности с дата на изпълнение днес \n"
+"Планирани: Бъдещи дейности."
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert_mail_wizard__subject
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__subject
 msgid "Subject"
-msgstr ""
+msgstr "Тема"
 
 #. module: hr_referral
 #. openerp-web
@@ -1344,7 +1359,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__text
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_recruitment_report_view_dashboard_inherit
@@ -1373,6 +1388,8 @@ msgid ""
 "This field holds the image used as image for the product, limited to "
 "1024x1024px."
 msgstr ""
+"Това поле съдържа изображението, използвано като изображение за продуктов "
+"вариант, ограничено до 1024x1024 пиксела."
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_link_to_share_view_form
@@ -1405,12 +1422,12 @@ msgstr ""
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Общ"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_link_to_share__channel__twitter
 msgid "Twitter"
-msgstr ""
+msgstr "Twitter"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_job__twitter_clicks
@@ -1420,12 +1437,12 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Вид на изключение на дейност в базата."
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__url
 msgid "URL"
-msgstr ""
+msgstr "URL адрес"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_utm_campaign
@@ -1440,7 +1457,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_link_to_share__url
 msgid "Url"
-msgstr ""
+msgstr "URL адрес"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_res_users
@@ -1449,7 +1466,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__ref_user_id
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "User"
-msgstr ""
+msgstr "Потребител"
 
 #. module: hr_referral
 #: model:res.groups,name:hr_referral.group_hr_recruitment_referral_user
@@ -1477,17 +1494,17 @@ msgstr ""
 #: code:addons/hr_referral/models/hr_job.py:0
 #, python-format
 msgid "Visit Webpage"
-msgstr ""
+msgstr "Посетете уеб страница"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Съобщения в уебсайт"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "История на комуникацията на уебсайт"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_onboarding
@@ -1580,4 +1597,4 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__url
 msgid "url"
-msgstr ""
+msgstr "URL адрес"

@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* voip_crm
 # 
+# Translators:
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-12-16 09:35+0000\n"
+"Last-Translator: Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,9 +28,9 @@ msgstr ""
 #. module: voip_crm
 #: model:ir.model.fields,field_description:voip_crm.field_crm_lead__has_call_in_queue
 msgid "Is in the Call Queue"
-msgstr ""
+msgstr "Е на опашката за разговори"
 
 #. module: voip_crm
 #: model:ir.model,name:voip_crm.model_crm_lead
 msgid "Lead/Opportunity"
-msgstr ""
+msgstr "Лийд / Възможност"

@@ -712,7 +712,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__short_summary
 msgid "Summary"
-msgstr ""
+msgstr "സംഗ്രഹം"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -799,7 +799,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_title
 msgid "Title"
-msgstr ""
+msgstr "തലക്കെട്ട്"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_stock_picking
@@ -809,7 +809,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__policy_type
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_sync_stock

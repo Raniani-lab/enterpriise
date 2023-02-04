@@ -311,7 +311,7 @@ msgstr "Kontrollpunktid"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__measure_on
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__measure_on
 msgid "Control per"
-msgstr "Kontrollperiood"
+msgstr "Kontroll kehtib"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
@@ -406,7 +406,7 @@ msgstr "Probleemi kirjeldus ..."
 #: model:ir.model.fields,help:quality_control.field_quality_check_wizard__is_lot_tested_fractionally
 #: model:ir.model.fields,help:quality_control.field_quality_point__is_lot_tested_fractionally
 msgid "Determines if only a fraction of the lot should be tested"
-msgstr "Määrab, kas testida tuleks ainult murdosa partiist"
+msgstr "Määrab, kui suur osa mahust läheb kvaliteedikontrolli"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__display_name
@@ -693,7 +693,7 @@ msgstr "Ülevaade"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid "Partial Transfer Test"
-msgstr "Partial Transfer Test"
+msgstr "Osaline kontroll"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -1222,4 +1222,4 @@ msgstr "Peate ikkagi kvaliteedikontrolli tegema!"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "e.g. The QA Masters"
-msgstr "nt. QA meistrid"
+msgstr "nt. Tootmise kvaliteedikontroll"

@@ -4,6 +4,19 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Ivan Goychev <igoychev.projects@gmail.com>, 2023
+# Boris Stefanov <borkata@gmail.com>, 2023
+# kalatchev, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Александра Николова <alexandra1nikolova@gmail.com>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# B Dochev, 2023
+# aleksandar ivanov, 2023
+# Martin Trigaux, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -144,7 +157,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_model__abstract
 msgid "Abstract"
-msgstr ""
+msgstr "Абстрактен"
 
 #. module: web_studio
 #. odoo-javascript
@@ -158,7 +171,7 @@ msgstr ""
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "Access Control Lists"
-msgstr ""
+msgstr "Списъци за контрол на достъп"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_groups
@@ -211,7 +224,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/action_editor_sidebar.xml:0
 #, python-format
 msgid "Action's title"
-msgstr ""
+msgstr "Заглавие на действие"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_mail_activity_type__category
@@ -219,6 +232,9 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Actions могат да инициират специфично поведение като отваряне на данни във "
+"вид на календар или автоматично отбелязване на задача като изпълнена след "
+"качване на документа."
 
 #. module: web_studio
 #. odoo-javascript
@@ -244,12 +260,12 @@ msgstr "Активно"
 #: model:ir.model,name:web_studio.model_mail_activity
 #, python-format
 msgid "Activity"
-msgstr ""
+msgstr "Дейност"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_activity_type
 msgid "Activity Type"
-msgstr ""
+msgstr "Вид дейност"
 
 #. module: web_studio
 #. odoo-javascript
@@ -271,7 +287,7 @@ msgstr "Добави"
 #: code:addons/web_studio/static/src/client_action/view_editors/form/chatter_container.xml:0
 #, python-format
 msgid "Add Chatter Widget"
-msgstr ""
+msgstr "Добавете приспособление за чатър"
 
 #. module: web_studio
 #. odoo-javascript
@@ -285,14 +301,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_editors/new_buttonbox_dialog.js:0
 #, python-format
 msgid "Add a Button"
-msgstr ""
+msgstr "Добавете бутон"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Add a description..."
-msgstr ""
+msgstr "Добавете описание ..."
 
 #. module: web_studio
 #. odoo-javascript
@@ -391,7 +407,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "All Day"
-msgstr ""
+msgstr "Цял ден"
 
 #. module: web_studio
 #. odoo-javascript
@@ -406,7 +422,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Amount total"
-msgstr ""
+msgstr "Общо количество"
 
 #. module: web_studio
 #. odoo-javascript
@@ -420,7 +436,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #, python-format
 msgid "Approval"
-msgstr ""
+msgstr "Одобрения"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
@@ -450,7 +466,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Approvals"
-msgstr ""
+msgstr "Одобрения"
 
 #. module: web_studio
 #. odoo-python
@@ -466,13 +482,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Approve"
-msgstr ""
+msgstr "Одобрете"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__approved
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "Approved"
-msgstr ""
+msgstr "Одобрен"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.notify_approval
@@ -609,28 +625,28 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base_automation
 msgid "Automated Action"
-msgstr ""
+msgstr "Автоматизирано действие"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "Automated Actions"
-msgstr ""
+msgstr "Автоматизирани действия"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Automations"
-msgstr ""
+msgstr "Автоматизации"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Average"
-msgstr ""
+msgstr "Средно аритметично"
 
 #. module: web_studio
 #. odoo-javascript
@@ -652,7 +668,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Bar"
-msgstr ""
+msgstr "Бар"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base
@@ -671,14 +687,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Block"
-msgstr ""
+msgstr "Блокирайте"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Blocked"
-msgstr ""
+msgstr "Блокиран"
 
 #. module: web_studio
 #. odoo-javascript
@@ -686,7 +702,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Bold"
-msgstr ""
+msgstr "Удебелен"
 
 #. module: web_studio
 #. odoo-javascript
@@ -721,28 +737,28 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Calendar"
-msgstr ""
+msgstr "Календар"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Can Create"
-msgstr ""
+msgstr "Можете да създадете"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Can Delete"
-msgstr ""
+msgstr "Можете да изтриете"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Can Edit"
-msgstr ""
+msgstr "Може да редактира"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__can_validate
@@ -779,7 +795,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.xml:0
 #, python-format
 msgid "Change Background"
-msgstr ""
+msgstr "Променете фона"
 
 #. module: web_studio
 #. odoo-javascript
@@ -807,12 +823,12 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Checkbox"
-msgstr ""
+msgstr "Поле за отметка"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model_data__studio
 msgid "Checked if it has been edited with Studio."
-msgstr ""
+msgstr "Проверен дали е редактиран със Studio."
 
 #. module: web_studio
 #. odoo-javascript
@@ -840,7 +856,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Class"
-msgstr ""
+msgstr "Клас"
 
 #. module: web_studio
 #. odoo-javascript
@@ -848,7 +864,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Clear"
-msgstr ""
+msgstr "Изчисти"
 
 #. module: web_studio
 #. odoo-javascript
@@ -888,7 +904,7 @@ msgstr "Затвори"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Cohort"
-msgstr ""
+msgstr "Кохортен"
 
 #. module: web_studio
 #. odoo-javascript
@@ -906,7 +922,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Color"
-msgstr ""
+msgstr "Цвят"
 
 #. module: web_studio
 #. odoo-javascript
@@ -920,14 +936,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Column"
-msgstr ""
+msgstr "Графа"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Column Title"
-msgstr ""
+msgstr "Заглавие на колона"
 
 #. module: web_studio
 #. odoo-javascript
@@ -941,14 +957,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Columns"
-msgstr ""
+msgstr "Графи"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Compact"
-msgstr ""
+msgstr "Компактен"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_company
@@ -969,14 +985,14 @@ msgstr "Фирма"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Components"
-msgstr ""
+msgstr "Компоненти"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Condition"
-msgstr ""
+msgstr "Условие"
 
 #. module: web_studio
 #. odoo-javascript
@@ -998,7 +1014,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_ui_menu.py:0
 #, python-format
 msgid "Configuration"
-msgstr ""
+msgstr "Конфигурация "
 
 #. module: web_studio
 #. odoo-javascript
@@ -1021,21 +1037,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_editors/new_buttonbox_dialog.js:0
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.js:0
 #, python-format
 msgid "Confirmation"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1064,7 +1080,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Context"
-msgstr ""
+msgstr "Контекст"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1086,7 +1102,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/edit_menu.js:0
 #, python-format
 msgid "Create Menu"
-msgstr ""
+msgstr "Създайте меню"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1100,7 +1116,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/edit_menu.js:0
 #, python-format
 msgid "Create a new Menu"
-msgstr ""
+msgstr "Създайте ново меню"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1122,7 +1138,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Create your App"
-msgstr ""
+msgstr "Създайте свое приложение"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1247,7 +1263,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.xml:0
 #, python-format
 msgid "Customizations"
-msgstr ""
+msgstr "Персонализации"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1294,7 +1310,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Ден"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1315,7 +1331,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default"
-msgstr ""
+msgstr "Стандартен"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1346,7 +1362,7 @@ msgstr ""
 #: model:ir.model,name:web_studio.model_ir_default
 #, python-format
 msgid "Default Values"
-msgstr ""
+msgstr "Стандартни стойности"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1383,7 +1399,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Изтриване"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1409,7 +1425,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1424,7 +1440,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Disable"
-msgstr ""
+msgstr "Лишете от способност"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1451,7 +1467,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Display"
-msgstr ""
+msgstr "Покажете"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__display_name
@@ -1502,14 +1518,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__domain
 #, python-format
 msgid "Domain"
-msgstr ""
+msgstr "Домейн"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Done"
-msgstr ""
+msgstr "Извършен"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1524,7 +1540,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Drag a menu to the right to create a sub-menu"
-msgstr ""
+msgstr "Плъзнете меню вдясно, за да създадете подменю"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1548,19 +1564,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Падащо меню"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "Duplicate"
-msgstr ""
+msgstr "Дублирайте"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "Редактирай"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1589,7 +1605,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Edit Menu"
-msgstr ""
+msgstr "Редектирайте меню"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1626,7 +1642,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Editable"
-msgstr ""
+msgstr "Може да се редактира"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1640,31 +1656,31 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Email"
-msgstr ""
+msgstr "Имейл"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Email Alias"
-msgstr ""
+msgstr "Имейл псевдоним"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_template
 msgid "Email Templates"
-msgstr ""
+msgstr "Имейл шаблони"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_thread
 msgid "Email Thread"
-msgstr ""
+msgstr "Имейл поредица"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/action_editor_sidebar.xml:0
 #, python-format
 msgid "Empty List Message"
-msgstr ""
+msgstr "Съобщение с празен списък"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1699,14 +1715,14 @@ msgstr "Крайна Дата"
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__entry_ids
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_form_view
 msgid "Entries"
-msgstr ""
+msgstr "Вписвания/записи"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/common/abstract_editor_manager.js:0
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Грешка"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1735,7 +1751,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.xml:0
 #, python-format
 msgid "Export"
-msgstr ""
+msgstr "Износ"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1756,7 +1772,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Fast"
-msgstr ""
+msgstr "Бърз"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1813,7 +1829,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_fields
 msgid "Fields"
-msgstr ""
+msgstr "Полета"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1821,7 +1837,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "File"
-msgstr ""
+msgstr "Файл"
 
 #. module: web_studio
 #. odoo-python
@@ -1835,7 +1851,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Filter"
-msgstr ""
+msgstr "Филтър"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1844,7 +1860,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Filter Rules"
-msgstr ""
+msgstr "Филтърни правила"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1852,7 +1868,7 @@ msgstr ""
 #: model:ir.model,name:web_studio.model_ir_filters
 #, python-format
 msgid "Filters"
-msgstr ""
+msgstr "Филтри"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1888,7 +1904,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/view_editors/components/field_content_overlay.js:0
 #, python-format
 msgid "Form"
-msgstr ""
+msgstr "Форма"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1902,7 +1918,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Gantt"
-msgstr ""
+msgstr "Диаграма на Гант"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1953,7 +1969,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Graph"
-msgstr ""
+msgstr "Графика"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1976,14 +1992,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/search_renderer.xml:0
 #, python-format
 msgid "Grid View"
-msgstr ""
+msgstr "Изглед на матрица"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__group_id
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__group_id
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 msgid "Group"
-msgstr ""
+msgstr "Група"
 
 #. module: web_studio
 #. odoo-python
@@ -1992,14 +2008,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Group By"
-msgstr ""
+msgstr "Групиране по"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/search_renderer.xml:0
 #, python-format
 msgid "Group by"
-msgstr ""
+msgstr "Групирайте по"
 
 #. module: web_studio
 #. odoo-python
@@ -2075,7 +2091,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Help Tooltip"
-msgstr ""
+msgstr "Помощно изскачащо съобщение "
 
 #. module: web_studio
 #. odoo-javascript
@@ -2120,7 +2136,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Home"
-msgstr ""
+msgstr "Начало"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_res_company__background_image
@@ -2179,7 +2195,7 @@ msgstr "ID"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Icon"
-msgstr ""
+msgstr "Икона"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__domain
@@ -2211,7 +2227,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Image"
-msgstr ""
+msgstr "Изображение"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2219,7 +2235,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Import"
-msgstr ""
+msgstr "Внос"
 
 #. module: web_studio
 #. odoo-python
@@ -2227,7 +2243,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "In Progress"
-msgstr ""
+msgstr "В процес"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2259,21 +2275,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Integer"
-msgstr ""
+msgstr "Цяло число"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/report_kanban_view.js:0
 #, python-format
 msgid "Internal"
-msgstr ""
+msgstr "Вътрешни"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Interval"
-msgstr ""
+msgstr "Интервал"
 
 #. module: web_studio
 #. odoo-python
@@ -2287,7 +2303,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Invisible"
-msgstr ""
+msgstr "Невидим"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__is_studio
@@ -2307,21 +2323,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Italic"
-msgstr ""
+msgstr "Курсив"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Kanban"
-msgstr ""
+msgstr "Канбан"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Kanban State"
-msgstr ""
+msgstr "Състояние Канбан"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2343,7 +2359,7 @@ msgstr "Етикет"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Large"
-msgstr ""
+msgstr "Голям"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry____last_update
@@ -2388,7 +2404,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "Limit visibility to groups"
-msgstr ""
+msgstr "Ограничете видимостта към групи"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2403,7 +2419,7 @@ msgstr "Ред"
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Lines"
-msgstr ""
+msgstr "Линии"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__mail_activity_id
@@ -2416,7 +2432,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/view_editors/components/field_content_overlay.js:0
 #, python-format
 msgid "List"
-msgstr ""
+msgstr "Списък"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2432,7 +2448,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor.xml:0
 #, python-format
 msgid "Loading..."
-msgstr ""
+msgstr "Зареждане..."
 
 #. module: web_studio
 #. odoo-javascript
@@ -2467,14 +2483,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Margins"
-msgstr ""
+msgstr "Маржове"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Measure"
-msgstr ""
+msgstr "Измервайте "
 
 #. module: web_studio
 #. odoo-javascript
@@ -2488,7 +2504,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Measures"
-msgstr ""
+msgstr "Мерки"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2496,12 +2512,12 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Medium"
-msgstr ""
+msgstr "Преносител"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_ui_menu
 msgid "Menu"
-msgstr ""
+msgstr "Меню"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2509,7 +2525,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__message
 #, python-format
 msgid "Message"
-msgstr ""
+msgstr "Съобщение"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__method
@@ -2517,7 +2533,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 msgid "Method"
-msgstr ""
+msgstr "Метод"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2531,7 +2547,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Mode"
-msgstr ""
+msgstr "Вид"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2542,7 +2558,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Model"
-msgstr ""
+msgstr "Модел"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_access
@@ -2552,23 +2568,23 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_data
 msgid "Model Data"
-msgstr ""
+msgstr "Данни за модела"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__model
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__model_name
 msgid "Model Name"
-msgstr ""
+msgstr "Име на модела"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model
 msgid "Models"
-msgstr ""
+msgstr "Модели"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_module_module
 msgid "Module"
-msgstr ""
+msgstr "Модул"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base_module_uninstall
@@ -2578,14 +2594,14 @@ msgstr ""
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 msgid "Module file (.zip)"
-msgstr ""
+msgstr "Модулен файл (.zip)"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Monetary"
-msgstr ""
+msgstr "Паричен"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2599,7 +2615,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "Месец"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2620,7 +2636,7 @@ msgstr "Повече"
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Multiline Text"
-msgstr ""
+msgstr "Многоредов текст"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2641,14 +2657,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/new_buttonbox_dialog.xml:0
 #, python-format
 msgid "My Button"
-msgstr ""
+msgstr "Моят бутон"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "My Menu"
-msgstr ""
+msgstr "Моето меню"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2696,7 +2712,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/field_selector_dialog.xml:0
 #, python-format
 msgid "New Field"
-msgstr ""
+msgstr "Ново Поле"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2724,7 +2740,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/edit_menu.js:0
 #, python-format
 msgid "New Menu"
-msgstr ""
+msgstr "Ново меню"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2758,7 +2774,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Следващ"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2809,7 +2825,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Normal"
-msgstr ""
+msgstr "Нормален"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2838,14 +2854,14 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__entries_count
 msgid "Number of Entries"
-msgstr ""
+msgstr "Брой записи "
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Odoo Studio"
-msgstr ""
+msgstr "Odoo Studio"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2896,28 +2912,28 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Optional"
-msgstr ""
+msgstr "Опция"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Options"
-msgstr ""
+msgstr "Настройки"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Other"
-msgstr ""
+msgstr "Друг"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
@@ -2934,14 +2950,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Paper format"
-msgstr ""
+msgstr "Paper format"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/edit_menu.js:0
 #, python-format
 msgid "Parent Menu"
-msgstr ""
+msgstr "Основно меню"
 
 #. module: web_studio
 #. odoo-python
@@ -2956,14 +2972,14 @@ msgstr "Партньор"
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Phone"
-msgstr ""
+msgstr "Телефон"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Picture"
-msgstr ""
+msgstr "Картина"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2984,21 +3000,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Pivot"
-msgstr ""
+msgstr "Pivot"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Placeholder"
-msgstr ""
+msgstr "Заместител"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Placeholder Text"
-msgstr ""
+msgstr "Текст-заместител"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3036,21 +3052,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_manager.xml:0
 #, python-format
 msgid "Print"
-msgstr ""
+msgstr "Печат"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Printed Report Name"
-msgstr ""
+msgstr "Printed Report Name"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Priority"
-msgstr ""
+msgstr "Приоритет"
 
 #. module: web_studio
 #. odoo-python
@@ -3066,7 +3082,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Properties"
-msgstr ""
+msgstr "Свойства"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3088,7 +3104,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Quick Create"
-msgstr ""
+msgstr "Бързо създаване"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3121,32 +3137,32 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Read only"
-msgstr ""
+msgstr "Само за четене"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Ready"
-msgstr ""
+msgstr "Готово"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_form_view
 msgid "Record"
-msgstr ""
+msgstr "Запис"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__res_id
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__res_id
 msgid "Record ID"
-msgstr ""
+msgstr "ИН на запис"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
 #, python-format
 msgid "Redo"
-msgstr ""
+msgstr "Извършете повторно"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__reference
@@ -3159,12 +3175,12 @@ msgstr "Индетификатор"
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Reject"
-msgstr ""
+msgstr "Отхвърлете"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "Rejected"
-msgstr ""
+msgstr "Отхвърлен"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.notify_approval
@@ -3192,7 +3208,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Related Field"
-msgstr ""
+msgstr "Свързано поле"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3213,7 +3229,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Relation:"
-msgstr ""
+msgstr "Взаимовръзка:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3227,7 +3243,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "Remove from View"
-msgstr ""
+msgstr "Отстранете от изгледа"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3249,7 +3265,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Report"
-msgstr ""
+msgstr "Отчет"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_report
@@ -3270,14 +3286,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Reports"
-msgstr ""
+msgstr "Отчети"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Required"
-msgstr ""
+msgstr "Изискуем"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3302,7 +3318,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__responsible_id
 #, python-format
 msgid "Responsible"
-msgstr ""
+msgstr "Отговорно лице"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3351,7 +3367,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_rule
 msgid "Rule"
-msgstr ""
+msgstr "Правило"
 
 #. module: web_studio
 #. odoo-python
@@ -3383,14 +3399,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Search"
-msgstr ""
+msgstr "Потърсете"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Search..."
-msgstr ""
+msgstr "Потърсете..."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3418,14 +3434,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/new_buttonbox_dialog.xml:0
 #, python-format
 msgid "Select a related field"
-msgstr ""
+msgstr "Изберете съответното поле"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editors/new_buttonbox_dialog.js:0
 #, python-format
 msgid "Select a related field."
-msgstr ""
+msgstr "Изберете съответното поле."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3447,7 +3463,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Selection"
-msgstr ""
+msgstr "Селекция"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3468,7 +3484,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Separator"
-msgstr ""
+msgstr "Разделител"
 
 #. module: web_studio
 #. odoo-python
@@ -3476,19 +3492,19 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Sequence"
-msgstr ""
+msgstr "Последователност"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_server
 msgid "Server Action"
-msgstr ""
+msgstr "Действие на сървър"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Set Cover Image"
-msgstr ""
+msgstr "Настройте изображение за корица"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3518,7 +3534,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Set as Default"
-msgstr ""
+msgstr "Настройте като стандартен"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3546,7 +3562,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Signature"
-msgstr ""
+msgstr "Подпис"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3554,14 +3570,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Size"
-msgstr ""
+msgstr "Размер"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Slow"
-msgstr ""
+msgstr "Бавно"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3569,7 +3585,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Small"
-msgstr ""
+msgstr "Малък"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3583,7 +3599,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Sort by"
-msgstr ""
+msgstr "Сортирайте по"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3597,7 +3613,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Source"
-msgstr ""
+msgstr "Източник"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3619,14 +3635,14 @@ msgstr ""
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Stage"
-msgstr ""
+msgstr "Стадий"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Stage Name"
-msgstr ""
+msgstr "Име на етап"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3676,12 +3692,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_studio.field_ir_model_data__studio
 #, python-format
 msgid "Studio"
-msgstr ""
+msgstr "Studio"
 
 #. module: web_studio
 #: model:ir.actions.client,name:web_studio.action_web_studio_app_creator
 msgid "Studio App Creator"
-msgstr ""
+msgstr "Създател на приложение Studio"
 
 #. module: web_studio
 #: model:ir.actions.act_window,name:web_studio.studio_approval_entry_action
@@ -3724,7 +3740,7 @@ msgstr ""
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_customizations_filter
 msgid "Studio Customizations"
-msgstr ""
+msgstr "Пресонализации на Studio"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_mixin
@@ -3773,14 +3789,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Sum"
-msgstr ""
+msgstr "Сума"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Table"
-msgstr ""
+msgstr "Таблица"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3804,7 +3820,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "Маркери"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3818,7 +3834,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Technical Name"
-msgstr ""
+msgstr "Technical Name"
 
 #. module: web_studio
 #. odoo-python
@@ -3834,7 +3850,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3873,7 +3889,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "The fastest way to create a web application."
-msgstr ""
+msgstr "Най-бързият начин за създаване на уеб приложение."
 
 #. module: web_studio
 #. odoo-python
@@ -3959,7 +3975,7 @@ msgstr ""
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The related field of a button has to be a many2one to %s."
-msgstr ""
+msgstr "Свързаното поле на бутон трябва да е 'много към едно' за %s."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4049,7 +4065,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/common/abstract_editor_manager.js:0
 #, python-format
 msgid "This operation caused an error, probably because a xpath was broken"
-msgstr ""
+msgstr "Тази операция причини грешка, вероятно поради счупването на xpath"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4148,7 +4164,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Общ"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4162,7 +4178,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Type"
-msgstr ""
+msgstr "Вид"
 
 #. module: web_studio
 #. odoo-python
@@ -4176,14 +4192,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Underline"
-msgstr ""
+msgstr "Подчертайте"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
 #, python-format
 msgid "Undo"
-msgstr ""
+msgstr "Отменете"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4195,7 +4211,7 @@ msgstr ""
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "User"
-msgstr ""
+msgstr "Потребител"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4213,13 +4229,20 @@ msgid "User avatar placeholder"
 msgstr ""
 
 #. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
+#, python-format
+msgid "User is not a member of the selected group."
+msgstr ""
+
+#. module: web_studio
 #. odoo-javascript
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Value"
-msgstr ""
+msgstr "Стойност"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4244,7 +4267,7 @@ msgstr "Преглед"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Views"
-msgstr ""
+msgstr "Гледания"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4287,7 +4310,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Седмица"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4301,7 +4324,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Welcome to"
-msgstr ""
+msgstr "Добре дошли!"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4340,7 +4363,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Width"
-msgstr ""
+msgstr "Широчина"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4370,7 +4393,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Година"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4466,7 +4489,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "bottom"
-msgstr ""
+msgstr "дъно"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4474,7 +4497,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "day"
-msgstr ""
+msgstr "ден"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4503,14 +4526,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "month"
-msgstr ""
+msgstr "месец"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/icon_creator/icon_creator.xml:0
 #, python-format
 msgid "or"
-msgstr ""
+msgstr "или"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4554,7 +4577,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "top"
-msgstr ""
+msgstr "горна част"
 
 #. module: web_studio
 #. odoo-javascript

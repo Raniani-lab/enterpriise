@@ -124,7 +124,7 @@ msgstr ""
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "ഇന്ന്"
 
 #. module: web_grid
 #. openerp-web

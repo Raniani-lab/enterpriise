@@ -4,6 +4,9 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# aleksandar ivanov, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Ивайло Малинов <iv.malinov@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,17 +64,18 @@ msgstr ""
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_absences
 msgid "Absences"
-msgstr ""
+msgstr "Отсъствия"
 
 #. module: documents_hr
 #: model_terms:ir.ui.view,arch_db:documents_hr.res_config_settings_view_form
 msgid "Centralize your employees' documents (contracts, payslips, etc.)"
 msgstr ""
+"Централизирайте документите на вашите служители (договори, фишове и др.)"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_Cerification
 msgid "Certifications"
-msgstr ""
+msgstr "Сертификати"
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_company
@@ -86,12 +90,12 @@ msgstr "Настройки"
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_hr_departure_wizard
 msgid "Departure Wizard"
-msgstr ""
+msgstr "Съветник напускане"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_users__document_ids
 msgid "Document"
-msgstr ""
+msgstr "Документ"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_employee__document_count
@@ -106,12 +110,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents_hr.res_users_view_form
 #, python-format
 msgid "Documents"
-msgstr ""
+msgstr "Документи"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_settings
 msgid "Documents Hr Settings"
-msgstr ""
+msgstr "Настройки на документи Човешки ресурси"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_employee__documents_share_id
@@ -121,7 +125,7 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_hr_employee
 msgid "Employee"
-msgstr ""
+msgstr "Служител"
 
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0
@@ -134,12 +138,12 @@ msgstr ""
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees
 msgid "Employees Documents"
-msgstr ""
+msgstr "Документи на служители"
 
 #. module: documents_hr
 #: model:documents.folder,name:documents_hr.documents_hr_folder
 msgid "HR"
-msgstr ""
+msgstr "ЧР"
 
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0
@@ -155,7 +159,7 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_settings
 msgid "Human Resources"
-msgstr ""
+msgstr "Човешки ресурси"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
@@ -187,12 +191,12 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_users
 msgid "User"
-msgstr ""
+msgstr "Потребител"
 
 #. module: documents_hr
 #: model_terms:ir.ui.view,arch_db:documents_hr.res_config_settings_view_form
 msgid "Workspace"
-msgstr ""
+msgstr "Работно пространство"
 
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0
@@ -203,12 +207,12 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_folder
 msgid "hr Workspace"
-msgstr ""
+msgstr "Работно пространство - човешки ресурси"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_folder
 msgid "hr default workspace"
-msgstr ""
+msgstr "Работно пространство по подразбиране - човешки ресурси"
 
 #. module: documents_hr
 #: model:mail.template,subject:documents_hr.mail_template_document_folder_link

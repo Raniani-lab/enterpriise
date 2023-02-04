@@ -4,6 +4,9 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# aleksandar ivanov, 2023
+# Martin Trigaux, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:11+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +57,7 @@ msgstr ""
 #: code:addons/web_map/static/src/map_view/map_renderer.js:0
 #, python-format
 msgid "Address"
-msgstr ""
+msgstr "Адрес"
 
 #. module: web_map
 #: model:ir.model,name:web_map.model_base
@@ -79,7 +82,7 @@ msgstr "Настройки"
 #. module: web_map
 #: model:ir.model,name:web_map.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: web_map
 #: model:ir.model.fields,field_description:web_map.field_res_partner__contact_address_complete
@@ -98,7 +101,7 @@ msgstr ""
 #: code:addons/web_map/static/src/map_view/map_view.js:0
 #, python-format
 msgid "Items"
-msgstr ""
+msgstr "Редове"
 
 #. module: web_map
 #. openerp-web
@@ -150,7 +153,7 @@ msgstr "Не"
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "None"
-msgstr ""
+msgstr "Никакъв"
 
 #. module: web_map
 #. openerp-web
@@ -268,7 +271,7 @@ msgstr ""
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Undefined"
-msgstr ""
+msgstr "Неопределен"
 
 #. module: web_map
 #. openerp-web
@@ -295,7 +298,7 @@ msgstr "Преглед"
 #: model:ir.model.fields,field_description:web_map.field_ir_actions_act_window_view__view_mode
 #: model:ir.model.fields,field_description:web_map.field_ir_ui_view__type
 msgid "View Type"
-msgstr ""
+msgstr "Вид изглед"
 
 #. module: web_map
 #. openerp-web

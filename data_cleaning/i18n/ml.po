@@ -57,7 +57,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__active
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: data_cleaning
 #: code:addons/data_cleaning/models/data_cleaning_rule.py:0
@@ -456,7 +456,7 @@ msgstr ""
 #. module: data_cleaning
 #: model:ir.model.fields.selection,name:data_cleaning.selection__data_cleaning_model__notify_frequency_period__weeks
 msgid "Weeks"
-msgstr ""
+msgstr "ആഴ്ചകൾ"
 
 #. module: data_cleaning
 #: model:ir.model.fields,help:data_cleaning.field_data_cleaning_rule__action_trim

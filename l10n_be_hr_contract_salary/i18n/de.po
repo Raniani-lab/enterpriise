@@ -1,23 +1,22 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* l10n_be_hr_contract_salary
-#
+# 
 # Translators:
-# Martin Trigaux, 2022
-# Friederike Fasterling-Nesselbosch, 2022
-#
+# Martin Trigaux, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-03 09:33+0000\n"
-"PO-Revision-Date: 2023-01-03 09:33+0000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2023-01-03 09:25+0000\n"
+"PO-Revision-Date: 2023-02-03 07:08+0000\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
-"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: l10n_be_hr_contract_salary
@@ -48,7 +47,7 @@ msgstr ""
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_contract__has_bicycle
 msgid "Bicycle to work"
-msgstr ""
+msgstr "Fahrrad zur Arbeit"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_generate_simulation_link__l10n_be_canteen_cost
@@ -461,7 +460,7 @@ msgstr "Verkehrsmittel"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_hr_contract__has_bicycle
 msgid "Use a bicycle as a transport mode to go to work"
-msgstr ""
+msgstr "Verwenden Sie ein Fahrrad als Transportmittel, um zur Arbeit zu gehen"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_marital_widower
@@ -491,7 +490,7 @@ msgstr "Mit niedriger Rente"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_withholding_taxes_exemption
 msgid "Withholding Taxes Exemption"
-msgstr ""
+msgstr "Befreiung von der Quellensteuer"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_without_income

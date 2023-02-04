@@ -288,13 +288,13 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
 msgid "Cancel operation"
-msgstr ""
+msgstr "പ്രവർത്തനം റദ്ദാക്കുക"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Cancel this operation ?"
-msgstr ""
+msgstr "ഈ പ്രവർത്തനം റദ്ദാക്കണോ?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__is_completed
@@ -308,7 +308,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_res_config_settings
@@ -325,7 +325,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_res_partner
@@ -446,7 +446,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "ഡൌൺലോഡ് "
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__dummy_id
@@ -502,7 +502,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 msgid "General"
-msgstr ""
+msgstr "ജനറൽ"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__id

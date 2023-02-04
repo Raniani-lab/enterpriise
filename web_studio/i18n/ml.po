@@ -236,7 +236,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: web_studio
 #. odoo-javascript
@@ -881,7 +881,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1021,7 +1021,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_editors/new_buttonbox_dialog.js:0
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2314,7 +2314,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Kanban"
-msgstr ""
+msgstr "കമ്പൻ"
 
 #. module: web_studio
 #. odoo-python
@@ -2501,7 +2501,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_ui_menu
 msgid "Menu"
-msgstr ""
+msgstr "മെനു"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2599,7 +2599,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "മാസം"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4162,7 +4162,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: web_studio
 #. odoo-python
@@ -4210,6 +4210,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "User avatar placeholder"
+msgstr ""
+
+#. module: web_studio
+#. odoo-python
+#: code:addons/web_studio/models/studio_approval.py:0
+#, python-format
+msgid "User is not a member of the selected group."
 msgstr ""
 
 #. module: web_studio

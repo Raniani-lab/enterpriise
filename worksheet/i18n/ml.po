@@ -38,7 +38,7 @@ msgstr "ആക്ഷൻ"
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: worksheet
 #: code:addons/worksheet/models/worksheet_template.py:0

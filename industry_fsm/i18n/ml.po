@@ -124,7 +124,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_config_activity_type
@@ -229,7 +229,7 @@ msgstr "റദ്ദാക്കുക"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -281,7 +281,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_stop_timer_wizard_form
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: industry_fsm
 #. openerp-web
@@ -746,7 +746,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_ir_ui_menu
 msgid "Menu"
-msgstr ""
+msgstr "മെനു"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_id
@@ -1264,7 +1264,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 #, python-format
 msgid "Time"
-msgstr ""
+msgstr "സമയം"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.timesheet_view_form
@@ -1284,7 +1284,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.timesheet_view_form
 msgid "Timesheet"
-msgstr ""
+msgstr "ടൈംഷീറ് "
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
@@ -1323,7 +1323,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Today"
-msgstr ""
+msgstr "ഇന്ന്"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_type_action_fsm

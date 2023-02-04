@@ -2841,6 +2841,8 @@ msgstr "Hash du signataire :"
 
 #. module: sign
 #. odoo-javascript
+#. odoo-python
+#: code:addons/sign/models/sign_request.py:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #: code:addons/sign/static/src/xml/sign_common.xml:0
@@ -3656,7 +3658,7 @@ msgstr "Type d'activité d'exception enregistrée"
 #: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "UPLOAD A PDF TEMPLATE"
-msgstr "IMPORTER UN MODÈLE PDF"
+msgstr "TELECHARGER UN MODÈLE PDF"
 
 #. module: sign
 #. odoo-javascript

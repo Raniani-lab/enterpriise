@@ -66,7 +66,7 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__attachment_ids
 msgid "Attachment"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ്"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__partner_id

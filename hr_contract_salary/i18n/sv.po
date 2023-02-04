@@ -637,7 +637,7 @@ msgstr "Anställningskontrakt"
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Employee Name"
-msgstr ""
+msgstr "Namn anställd"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_image_1920

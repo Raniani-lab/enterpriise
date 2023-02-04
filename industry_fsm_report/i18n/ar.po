@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Malaz Abuidris <msea@odoo.com>, 2022
 # Niyas Raphy, 2022
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Niyas Raphy, 2022\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +27,8 @@ msgid ""
 "<span class=\"fa fa-pencil me-1\" aria-label=\"Worksheet Template\" "
 "title=\"Worksheet Template\"/>"
 msgstr ""
+"<span class=\"fa fa-pencil me-1\" aria-label=\"Worksheet Template\" "
+"title=\"قالب ورقة العمل \"/>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_worksheet_template_kanban
@@ -41,7 +43,7 @@ msgstr "<strong>القالب — </strong>"
 #. module: industry_fsm_report
 #: model:ir.ui.menu,name:industry_fsm_report.project_task_menu_planning_by_project_fsm
 msgid "By Worksheet Template"
-msgstr ""
+msgstr "حسب قالب ورقة العمل "
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_color
@@ -56,7 +58,7 @@ msgstr "التعليقات"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_project_form_inherit_industry_fsm_report
 msgid "Create reports to be signed off by your customers"
-msgstr ""
+msgstr "أنشئ التقارير ليقوم عملاؤك بالتوقيع عليها "
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,help:industry_fsm_report.field_project_task__worksheet_template_id
@@ -137,7 +139,7 @@ msgstr "لم يتم العثور على قوالب ورقة العمل. فلنق
 #. module: industry_fsm_report
 #: model:ir.actions.act_window,name:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
 msgid "Planning by Worksheet Template"
-msgstr ""
+msgstr "التخطيط حسب قالب ورقة العمل "
 
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_project_project

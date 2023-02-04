@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Malaz Abuidris <msea@odoo.com>, 2022
 # Niyas Raphy, 2022
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Niyas Raphy, 2022\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/working_employee_popup.xml:0
 #, python-format
 msgid "+ New Operator"
-msgstr ""
+msgstr "+ موظف جديد "
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workorder_view_tablet_form_inherit_workorder_hr
@@ -34,6 +34,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Log In "
 "</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">تسجيل الدخول"
+" </span> "
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
@@ -58,7 +60,7 @@ msgstr "إلغاء "
 #: code:addons/mrp_workorder_hr/static/src/components/tablet.js:0
 #, python-format
 msgid "Change Worker"
-msgstr ""
+msgstr "تغيير الموظف "
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -92,7 +94,7 @@ msgstr "الموظف"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Employee Capacity"
-msgstr ""
+msgstr "سعة الموظف "
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_costs_hour
@@ -117,7 +119,7 @@ msgstr "تسجيل الدخول"
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Logged in!"
-msgstr ""
+msgstr "تم تسجيل الدخول! "
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
@@ -146,7 +148,7 @@ msgstr "كلمة المرور؟"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "اقتراح تغيير في الإنتاج "
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_quality_check
@@ -157,7 +159,7 @@ msgstr "فحص الجودة"
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__allow_employee
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__allow_employee
 msgid "Requires Log In"
-msgstr ""
+msgstr "يتطلب تسجيل الدخول "
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -165,7 +167,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Select Employee"
-msgstr ""
+msgstr "قم بتحديد الموظف "
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -180,7 +182,7 @@ msgstr "إيقاف"
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "This employee is not allowed on this workcenter"
-msgstr ""
+msgstr "لا يُسمح لهذا الموظف بأن يكون في مركز العمل هذا "
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter
@@ -205,7 +207,7 @@ msgstr "سجل إنتاجية مركز العمل"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_ids
 msgid "Working Employees"
-msgstr ""
+msgstr "الموظفون العاملون "
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -213,29 +215,30 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Wrong password !"
-msgstr ""
+msgstr "كلمة المرور غير صحيحة! "
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_id
 msgid "employee that record this working time"
-msgstr ""
+msgstr "الموظف الذي قام بتسجيل وقت العمل هذا "
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_cost
 msgid "employee_cost"
-msgstr ""
+msgstr "employee_cost"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "employees with access"
-msgstr ""
+msgstr "الموظفون الذين لديهم صلاحية الوصول "
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "if left empty, all employees can log in to the workcenter"
 msgstr ""
+"إذا تم تركه فارغاً، سيتمكن كافة الموظفين من تسجيل الدخول إلى مركز العمل "
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
 msgid "per employee"
-msgstr ""
+msgstr "لكل موظف "

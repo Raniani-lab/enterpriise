@@ -150,7 +150,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: iot
 #. openerp-web
@@ -644,7 +644,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__type
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connection

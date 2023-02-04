@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Benson <Benson.Dr@Gmail.com>, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -35,7 +35,8 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period."
+"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period. \n"
+"  Negative recurring lines are considered free."
 msgstr ""
 
 #. module: sale_subscription
@@ -1886,6 +1887,15 @@ msgid "Members"
 msgstr "會員"
 
 #. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"Mix of negative recurring lines and non-recurring line. The contract should "
+"be fixed manually"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_id
 msgid "Model"
 msgstr "模型"
@@ -3061,6 +3071,24 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"The following recurring orders have draft invoices. Please Confirm them or "
+"cancel them before creating new invoices. %s."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/account_move.py:0
+#, python-format
+msgid ""
+"The following refund %s has been made on this contract. Please check the "
+"next invoice date if necessary."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
 msgid "The full URL to access the server action through the website."
 msgstr "通過網站存取此伺服器動作的完整網址。"
@@ -3120,6 +3148,13 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "The upsell %s has been canceled."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid "There is already a draft invoice for subscription %s."
 msgstr ""
 
 #. module: sale_subscription
@@ -3465,6 +3500,15 @@ msgstr "年"
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid ""
+"You can not delete a confirmed subscription. You must first close and cancel"
+" it before you can delete it."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
 "You can not upsell a subscription that has not been invoiced yet. Please, "
 "update directly the %s contract or invoice it first."
 msgstr ""
@@ -3549,7 +3593,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
-msgid "Your contrat is recurrent"
+msgid "Your contract is recurrent"
 msgstr ""
 
 #. module: sale_subscription

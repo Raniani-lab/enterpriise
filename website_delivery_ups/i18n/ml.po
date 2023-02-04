@@ -64,7 +64,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: website_delivery_ups
 #: model:ir.model.fields,field_description:website_delivery_ups.field_payment_provider__custom_mode

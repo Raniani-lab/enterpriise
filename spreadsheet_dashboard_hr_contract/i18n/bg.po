@@ -2,12 +2,18 @@
 # This file contains the translation of the following modules:
 # 	* spreadsheet_dashboard_hr_contract
 # 
+# Translators:
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# aleksandar ivanov, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
+"Last-Translator: aleksandar ivanov, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +33,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Contracts"
-msgstr ""
+msgstr "Договори"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. openerp-web
@@ -35,14 +41,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Department"
-msgstr ""
+msgstr "Отдел"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Employee"
-msgstr ""
+msgstr "Служител"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. openerp-web
@@ -51,7 +57,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Employees"
-msgstr ""
+msgstr "Служители"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. openerp-web
@@ -72,7 +78,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Job Position"
-msgstr ""
+msgstr "Работна позиция"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. openerp-web
@@ -86,7 +92,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Period"
-msgstr ""
+msgstr "Период"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. openerp-web

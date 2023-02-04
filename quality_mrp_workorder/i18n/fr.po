@@ -29,17 +29,17 @@ msgstr "<strong>Lot/numéro de série : </strong>"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.worksheet_page
 msgid "<strong>Work Order : </strong>"
-msgstr "<strong>Ordre de Travail : </strong>"
+msgstr "<strong>Ordre de travail : </strong>"
 
 #. module: quality_mrp_workorder
 #: model:ir.model.fields,field_description:quality_mrp_workorder.field_mrp_production__check_ids
 msgid "Checks"
-msgstr "Chèques"
+msgstr "Contrôles"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_form_inherit_mrp_workorder
 msgid "Component Lot/Serial"
-msgstr "Lot/numéro de série Composant"
+msgstr "Lot/numéro de série du composant"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
@@ -65,13 +65,13 @@ msgstr "Échec"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_search_inherit_quality_mrp_workorder
 msgid "Finished Lot/Serial"
-msgstr "Lot/numéro de série Fini"
+msgstr "Lot/numéro de série fini"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_search_inherit_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_point_view_search_inherit_mrp_workorder
 msgid "Manufacturing Steps"
-msgstr "Etapes de Production"
+msgstr "Étapes de production"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_form_tablet_inherit_quality
@@ -140,7 +140,7 @@ msgstr "Point de contrôle qualité"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_point_view_search_inherit_mrp_workorder
 msgid "Quality Points"
-msgstr "Points Qualité"
+msgstr "Points qualité"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp

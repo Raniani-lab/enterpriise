@@ -78,13 +78,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__total_qty
 #, python-format
 msgid "Actual Replenishment"
-msgstr "실 보충"
+msgstr "실제 보충량"
 
 #. module: mrp_mps
 #: code:addons/mrp_mps/models/mrp_mps.py:0
 #, python-format
 msgid "Actual Replenishment %s %s (%s - %s)"
-msgstr "실 보충 %s %s (%s - %s)"
+msgstr "실제 보충량 %s %s (%s - %s)"
 
 #. module: mrp_mps
 #. openerp-web

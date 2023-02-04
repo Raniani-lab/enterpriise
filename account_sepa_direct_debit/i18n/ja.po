@@ -264,7 +264,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model_terms:ir.actions.act_window,help:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
 msgid "Create a new direct debit customer mandate"
-msgstr ""
+msgstr "顧客への新しい口座振替指示を作成しましょう。"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
@@ -344,7 +344,7 @@ msgstr ""
 #: model:ir.ui.menu,name:account_sepa_direct_debit.account_sepa_direct_debit_customer_mandates_menu
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_res_partner_view
 msgid "Direct Debit Mandates"
-msgstr ""
+msgstr "口座振替指示"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_journal_dashboard_kanban_view

@@ -4,6 +4,13 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# aleksandar ivanov, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,6 +54,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -229,7 +238,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_all_timesheets
 msgid "All Timesheets"
-msgstr ""
+msgstr "Всички графици"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
@@ -253,7 +262,7 @@ msgstr "Аналитична Сметка"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "Apple App Store"
-msgstr ""
+msgstr "Хранилище за приложения на Apple"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -263,7 +272,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__can_edit
 msgid "Can Edit"
-msgstr ""
+msgstr "Може да редактира"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
@@ -344,7 +353,7 @@ msgstr "Дата"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Day"
-msgstr ""
+msgstr "Ден"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_gantt_timesheet
@@ -378,13 +387,13 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 msgid "Delete"
-msgstr ""
+msgstr "Изтриване"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Describe your activity"
-msgstr ""
+msgstr "Опишете дейността си"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -407,7 +416,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__name
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__description
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -515,14 +524,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Draft"
-msgstr ""
+msgstr "Чернова "
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__employee_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__employee_id
 msgid "Employee"
-msgstr ""
+msgstr "Служител"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_interval
@@ -555,21 +564,21 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Frequency"
-msgstr ""
+msgstr "Честота"
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "Google Chrome Store"
-msgstr ""
+msgstr "Хранилище Google Chrome"
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "Google Play Store"
-msgstr ""
+msgstr "Хранилище Google Play"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -581,7 +590,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 msgid "Hours Spent"
-msgstr ""
+msgstr "Прекарани часове"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_gantt_timesheet
@@ -618,7 +627,7 @@ msgstr "Последна промяна на"
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_month
 msgid "Last Month"
-msgstr ""
+msgstr "Последен месец"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__write_uid
@@ -640,7 +649,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_week
 msgid "Last Week"
-msgstr ""
+msgstr "Миналата седмица"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -686,7 +695,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 msgid "Merge"
-msgstr ""
+msgstr "Обединяване"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
@@ -710,7 +719,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_ir_module_module
 msgid "Module"
-msgstr ""
+msgstr "Модул"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid
@@ -718,7 +727,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Month"
-msgstr ""
+msgstr "Месец"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
@@ -730,19 +739,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Projects"
-msgstr ""
+msgstr "Моите проекти"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Tasks"
-msgstr ""
+msgstr "Моите задачи"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Team"
-msgstr ""
+msgstr "Моят екип"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_nextdate
@@ -800,7 +809,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Pause"
-msgstr ""
+msgstr "Пауза"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -824,22 +833,23 @@ msgstr ""
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
+#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #: model:ir.model,name:timesheet_grid.model_project_project
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__project_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__project_id
 #, python-format
 msgid "Project"
-msgstr ""
+msgstr "Проект"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee_public
 msgid "Public Employee"
-msgstr ""
+msgstr "Публичен служител"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__unit_amount
 msgid "Quantity"
-msgstr ""
+msgstr "Количество"
 
 #. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_user
@@ -861,7 +871,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Resume"
-msgstr ""
+msgstr "Обобщение"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -893,7 +903,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "See all the records aggregated in this cell"
-msgstr ""
+msgstr "Вижте всички записи, събрани в тази клетка"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -927,7 +937,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__is_timesheet
 msgid "Set if this analytic line represents a line of timesheet."
-msgstr ""
+msgstr "Настройте, ако този аналитичен ред представлява ред от график."
 
 #. module: timesheet_grid
 #: model:mail.template,description:timesheet_grid.mail_template_timesheet_reminder_user
@@ -960,7 +970,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 #, python-format
 msgid "Start"
-msgstr ""
+msgstr "Стартирайте"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -976,7 +986,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 #, python-format
 msgid "Stop"
-msgstr ""
+msgstr "Край"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1001,12 +1011,13 @@ msgstr ""
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
+#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #: model:ir.model,name:timesheet_grid.model_project_task
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__task_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__task_id
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Задача"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_project_task_create_timesheet__task_id
@@ -1096,12 +1107,12 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__time_spent
 msgid "Time"
-msgstr ""
+msgstr "Време"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 msgid "Time Spent"
-msgstr ""
+msgstr "Изразходвано време"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__timer_pause
@@ -1120,7 +1131,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "Timesheet"
-msgstr ""
+msgstr "График "
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.view_employee_tree_inherit_timesheet
@@ -1141,7 +1152,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__is_timesheet
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheets_analysis_report__is_timesheet
 msgid "Timesheet Line"
-msgstr ""
+msgstr "Ред в график"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__unit_amount_validate
@@ -1177,7 +1188,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Timesheets"
-msgstr ""
+msgstr "Графици"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheets_analysis_report
@@ -1214,7 +1225,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate
 msgid "To Validate"
-msgstr ""
+msgstr "За потвърждаване"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1235,7 +1246,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_res_users
 msgid "User"
-msgstr ""
+msgstr "Потребител"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__user_can_validate
@@ -1275,7 +1286,7 @@ msgstr "Валидирай"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Validated"
-msgstr ""
+msgstr "Валидиране"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated_status
@@ -1286,7 +1297,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheets_analysis_report__validated
 msgid "Validated line"
-msgstr ""
+msgstr "Потвърден ред"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_all_timesheets_action_server
@@ -1309,7 +1320,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Week"
-msgstr ""
+msgstr "Седмица"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__user_can_validate
@@ -1396,7 +1407,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "days"
-msgstr ""
+msgstr "дни"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1417,7 +1428,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "min"
-msgstr ""
+msgstr "мин"
 
 #. module: timesheet_grid
 #. odoo-python

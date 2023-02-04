@@ -87,7 +87,7 @@ msgstr "مرفق"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "CV is being Digitized"
-msgstr ""
+msgstr "تتم رقمنة السيرة الذاتية "
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_res_company
@@ -151,12 +151,12 @@ msgstr "ولدت متقدمين"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicants"
-msgstr ""
+msgstr "طلبات التقديم المنشأة "
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__is_first_stage
 msgid "Is First Stage"
-msgstr ""
+msgstr "المرحلة الأولى "
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__no_extract_requested
@@ -172,29 +172,29 @@ msgstr "لا يوجد رصيد كاف"
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_parse
 msgid "Recruitment OCR: Parse CV"
-msgstr ""
+msgstr "تمييز الرموز ضوئياً للتوظيف: تحليل السيرة الذاتية "
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_update_ocr_status
 msgid "Recruitment OCR: Update All Status"
-msgstr ""
+msgstr "تمييز الرموز ضوئياً للتوظيف: تحديث كافة الحالات "
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_validate
 msgid "Recruitment OCR: Validate CV"
-msgstr ""
+msgstr "تمييز الرموز ضوئياً للتوظيف: تصديق السيرة الذاتية "
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_config_settings__recruitment_extract_show_ocr_option_selection
 msgid "Recruitment processing option"
-msgstr ""
+msgstr "خيار معالجة التوظيف "
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
 msgid "Request ID to IAP-OCR"
-msgstr ""
+msgstr "مُعرّف الطلب لـIAP-OCR "
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
@@ -205,7 +205,7 @@ msgstr "الإرسال من أجل الرقمنة "
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
 msgid "Send mode on applicant attachments"
-msgstr ""
+msgstr "وضع الإرسال في مرفقات المتقدم للوظيفة "
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -266,7 +266,7 @@ msgstr "بانتظار الاستخلاص "
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__extract_not_ready
 msgid "Waiting extraction, but not ready"
-msgstr ""
+msgstr "بانتظار الاستخلاص، ولكنها ليست جاهزة "
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_upload
@@ -283,9 +283,9 @@ msgstr "بانتظار التصديق "
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "You cannot send a CV for an applicant who's not in first stage!"
-msgstr ""
+msgstr "لا يمكنك إرسال سيرة ذاتية لمتقدم لوظيفة ليس في المرحلة الأولى! "
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "You don't have enough credit to extract data from your CV."
-msgstr ""
+msgstr "ليس لديك الرصيد الكافي لاستخلاص البيانات من سيرتك الذاتية. "

@@ -71,7 +71,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_ids
@@ -1636,7 +1636,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__name
 msgid "Title"
-msgstr ""
+msgstr "തലക്കെട്ട്"
 
 #. module: social
 #. odoo-javascript
@@ -1648,7 +1648,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__stream_type_id
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__activity_exception_decoration

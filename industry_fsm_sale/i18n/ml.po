@@ -638,7 +638,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__price_unit
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Unit Price"
-msgstr ""
+msgstr "യൂണിറ്റ് പ്രൈസ് "
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__upselling

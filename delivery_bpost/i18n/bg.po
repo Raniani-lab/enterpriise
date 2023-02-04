@@ -2,12 +2,21 @@
 # This file contains the translation of the following modules:
 # 	* delivery_bpost
 # 
+# Translators:
+# Martin Trigaux, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# aleksandar ivanov, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Георги Пехливанов <sonaris@gmail.com>, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-12 07:56+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
+"Last-Translator: Георги Пехливанов <sonaris@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,17 +27,17 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_label_stock_type__a4
 msgid "A4"
-msgstr ""
+msgstr "А4"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_label_stock_type__a6
 msgid "A6"
-msgstr ""
+msgstr "А6"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,help:delivery_bpost.field_delivery_carrier__bpost_saturday
 msgid "Allow deliveries on Saturday (extra charges apply)"
-msgstr ""
+msgstr "Позволени доставки в Събота (Приложи допълнителни такси) "
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:0
@@ -37,6 +46,8 @@ msgid ""
 "Authentication error -- wrong credentials\n"
 "(Detailed error: %s)"
 msgstr ""
+"Грешка при заверяване - грешни идентификационни данни\n"
+"(Подробна грешка: %s)"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_account_number
@@ -46,34 +57,34 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_delivery_nature
 msgid "Bpost Delivery Nature"
-msgstr ""
+msgstr "Bpost Начин на доставка"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_domestic_deliver_type
 msgid "Bpost Domestic Deliver Type"
-msgstr ""
+msgstr "Bpost Местен Тип Доставяне"
 
 #. module: delivery_bpost
 #: model:delivery.carrier,name:delivery_bpost.delivery_carrier_bpost_domestic
 #: model:product.product,name:delivery_bpost.product_product_delivery_bpost_domestic
 #: model:product.template,name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 msgid "Bpost Domestic bpack 24h Pro"
-msgstr ""
+msgstr "Bpost Местен bpack 24h Pro"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_international_deliver_type
 msgid "Bpost International Deliver Type"
-msgstr ""
+msgstr "Bpost Международен Тип Доставка"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_label_format
 msgid "Bpost Label Format"
-msgstr ""
+msgstr "Bpost Етикет Формат"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_label_stock_type
 msgid "Bpost Label Stock Type"
-msgstr ""
+msgstr "Bpost Наличност на Етикета"
 
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
@@ -83,59 +94,59 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_parcel_return_instructions
 msgid "Bpost Parcel Return Instructions"
-msgstr ""
+msgstr "Bpost Инструкции за връщане на пратката"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_shipment_type
 msgid "Bpost Shipment Type"
-msgstr ""
+msgstr "Bpost Тип Доставка"
 
 #. module: delivery_bpost
 #: model:delivery.carrier,name:delivery_bpost.delivery_carrier_bpost_inter
 #: model:product.product,name:delivery_bpost.product_product_delivery_bpost_world
 #: model:product.template,name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "Bpost World Express Pro"
-msgstr ""
+msgstr "Bpost World Express Pro"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_stock_package_type__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "Превозвач"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_shipment_type__documents
 msgid "DOCUMENTS"
-msgstr ""
+msgstr "ДОКУМЕНТИ"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_saturday
 msgid "Delivery on Saturday"
-msgstr ""
+msgstr "Доставки в Събота"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_parcel_return_instructions__abandoned
 msgid "Destroy"
-msgstr ""
+msgstr "Унищожи"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_delivery_nature__domestic
 msgid "Domestic"
-msgstr ""
+msgstr "Вътрешен"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_shipment_type__gift
 msgid "GIFT"
-msgstr ""
+msgstr "ПОДАРЪК"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_shipment_type__goods
 msgid "GOODS"
-msgstr ""
+msgstr "СТОКИ"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_delivery_nature__international
 msgid "International"
-msgstr ""
+msgstr "Международен"
 
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
@@ -150,44 +161,44 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_shipment_type__other
 msgid "OTHER"
-msgstr ""
+msgstr "ДРУГИ"
 
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "Options"
-msgstr ""
+msgstr "Настройки"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_label_format__pdf
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_label_format__png
 msgid "PNG"
-msgstr ""
+msgstr "PNG"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
 msgid "Packages over 30 Kg are not accepted by bpost."
-msgstr ""
+msgstr "Пакети над 30 кг не се приемат от  Bpost."
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_developer_password
 msgid "Passphrase"
-msgstr ""
+msgstr "Пропуск"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "Моля, осигурете поне един артикул за превозване."
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "Доставчик"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
@@ -205,17 +216,17 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_parcel_return_instructions__rta
 msgid "Return to sender by air"
-msgstr ""
+msgstr "Връщане към подателя по въздух"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_parcel_return_instructions__rts
 msgid "Return to sender by road"
-msgstr ""
+msgstr "Връщане към подателя по шосе"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_shipment_type__sample
 msgid "SAMPLE"
-msgstr ""
+msgstr "ПРИМЕР"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
@@ -232,7 +243,7 @@ msgstr ""
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Начини на доставка"
 
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_stock_package_type
@@ -252,6 +263,8 @@ msgid ""
 "The address of your company/warehouse is incomplete or wrong (Missing field(s):  \n"
 " %s)"
 msgstr ""
+"Адресът на вашата фирма / склад е непълен или грешен (Липсващо поле (а):  \n"
+" %s)"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:0
@@ -276,6 +289,8 @@ msgid ""
 "The recipient address is incomplete or wrong (Missing field(s):  \n"
 " %s)"
 msgstr ""
+"Адресът на получателя е непълен или погрешен (Липсващо поле(та): \n"
+" %s)"
 
 #. module: delivery_bpost
 #: model:product.product,uom_name:delivery_bpost.product_product_delivery_bpost_domestic
@@ -283,60 +298,62 @@ msgstr ""
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_domestic_product_template
 #: model:product.template,uom_name:delivery_bpost.product_product_delivery_bpost_world_product_template
 msgid "Units"
-msgstr ""
+msgstr "Единици"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
 #, python-format
 msgid "You cannot compute a passphrase for non-bpost carriers."
-msgstr ""
+msgstr "Не можете да изчислите пропуск за не-Bpost носители."
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
 msgid "Your company/warehouse address must be in Belgium to ship with bpost"
 msgstr ""
+"Адресът на вашата фирма / склад трябва да бъде в Белгия, за да се изпрати с "
+"bpost"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_domestic_deliver_type__bpack_24h_pro
 msgid "bpack 24h Pro"
-msgstr ""
+msgstr "bpack 24h Про"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_domestic_deliver_type__bpack_24h_business
 msgid "bpack 24h business"
-msgstr ""
+msgstr "bpack 24h бизнес"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_domestic_deliver_type__bpack_bus
 msgid "bpack Bus"
-msgstr ""
+msgstr "bpack Автобус"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_international_deliver_type__bpack_europe_business
 msgid "bpack Europe Business"
-msgstr ""
+msgstr "bpack Европа Бизнес"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_international_deliver_type__bpack_world_business
 msgid "bpack World Business"
-msgstr ""
+msgstr "bpack Свят Бизнес"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_international_deliver_type__bpack_world_express_pro
 msgid "bpack World Express Pro"
-msgstr ""
+msgstr "bpack Свят Експрес Про"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__delivery_type__bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__stock_package_type__package_carrier_type__bpost
 msgid "bpost"
-msgstr ""
+msgstr "bpost"
 
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "bpost Configuration"
-msgstr ""
+msgstr "bpost Конфигурация"
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_default_package_type_id
@@ -350,6 +367,8 @@ msgid ""
 "bpost Domestic is used only to ship inside Belgium. Please change the "
 "delivery method into bpost International."
 msgstr ""
+"Bpost Местни се използва само за корабоплаване в Белгия. Моля, променете "
+"начина на доставка в bpost Международни."
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/bpost_request.py:0
@@ -358,6 +377,8 @@ msgid ""
 "bpost International is used only to ship outside Belgium. Please change the "
 "delivery method into bpost Domestic."
 msgstr ""
+"Bpost Международни се използва само за корабоплаване извън Белгия. Моля, "
+"променете начина на доставка в Bpost Местни."
 
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.res_config_settings_view_form_sale
@@ -369,4 +390,4 @@ msgstr ""
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
 msgid "bpost did not return prices for this destination country."
-msgstr ""
+msgstr "Bpost не върна цените за посочената страна."

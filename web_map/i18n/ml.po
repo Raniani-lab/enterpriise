@@ -69,7 +69,7 @@ msgstr ""
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: web_map
 #: model:ir.model,name:web_map.model_res_config_settings

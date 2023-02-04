@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "<b>Congratulations</b>, you are now an expert of Expenses."
-msgstr ""
+msgstr "<b>تهانينا</b>، أصبحت الآن خبيراً في النفقات. "
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -196,7 +196,7 @@ msgstr "نفقة "
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_parse
 msgid "Expense OCR: Parse Expenses"
-msgstr ""
+msgstr "تمييز الرموز ضوئياً للنفقات: تحليل النفقات "
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -208,7 +208,7 @@ msgstr "تمييز الرموز ضوئياً للنفقات: تحديث كافة
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_validate
 msgid "Expense OCR: Validate Expenses"
-msgstr ""
+msgstr "تمييز الرموز ضوئياً للنفقات: تصديق النفقات "
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_sheet
@@ -220,7 +220,7 @@ msgstr "تقرير النفقات "
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Expense is being Digitized"
-msgstr ""
+msgstr "تتم رقمنة النفقات "
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
@@ -242,7 +242,7 @@ msgstr "استخلاص كلمة "
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_state
 msgid "Extract state"
-msgstr "استخلاص حالة "
+msgstr "حالة الاستخلاص "
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_extract_words
@@ -446,7 +446,7 @@ msgstr "رمز الحالة"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__state_processed
 msgid "Status regarding OCR status"
-msgstr ""
+msgstr "الحالة المتعلقة بحالة تمييز الرموز ضوئياً "
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form

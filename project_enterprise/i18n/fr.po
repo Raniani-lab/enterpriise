@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "%s other task(s) for the same employee at the same time."
-msgstr "%sautre(s) tâche(s) pour le même employé en même temps."
+msgstr "%s autre(s) tâche(s) pour le même employé en même temps."
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
@@ -64,13 +64,13 @@ msgid ""
 "title=\"Arrow\"/>"
 msgstr ""
 "<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
-"title=\"Arrow\"/>"
+"title=\"Flèche\"/>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<i class=\"fa fa-long-arrow-right\" title=\"Arrow\"/>"
-msgstr "<i class=\"fa fa-long-arrow-right\" title=\"Arrow\"/>"
+msgstr "<i class=\"fa fa-long-arrow-right\" title=\"Flèche\"/>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
@@ -106,7 +106,7 @@ msgstr "<strong>Projet — </strong>"
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__allocated_hours
 msgid "Allocated Hours"
-msgstr "Heures Allouées"
+msgstr "Heures allouées"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__allocation_type
@@ -197,7 +197,7 @@ msgstr "ID"
 #: code:addons/project_enterprise/static/src/js/task_gantt_utils.js:0
 #, python-format
 msgid "Invalid scale interval"
-msgstr "Intervalle d'échelle non valide"
+msgstr "Intervalle d'échelle invalide"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard____last_update
@@ -256,8 +256,8 @@ msgid ""
 "Operation not supported, you should always compare planning_overlap to 0 "
 "value with = or > operator."
 msgstr ""
-"Opération non supportée, vous pouvez toujours comparer planning_overlap à "
-"une valeur de 0 avec les opérateurs = ou >."
+"Opération non prise en charge, vous pouvez toujours comparer "
+"planning_overlap à une valeur de 0 avec les opérateurs = ou >."
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__overlap_warning
@@ -288,13 +288,13 @@ msgstr "Date planifiée"
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "Planning"
-msgstr "Planification"
+msgstr "Planning"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planning_overlap
 #: model:ir.model.fields,field_description:project_enterprise.field_report_project_task_user__planning_overlap
 msgid "Planning Overlap"
-msgstr "Chevauchement du Planning"
+msgstr "Chevauchement du planning"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
@@ -304,7 +304,7 @@ msgstr "Projet"
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_milestone
 msgid "Project Milestone"
-msgstr "Jalon du Projet"
+msgstr "Jalon du projet"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__project_color
@@ -343,8 +343,8 @@ msgid ""
 "Some tasks weren't planned because the closest available starting date was "
 "too far ahead in the future"
 msgstr ""
-"Certaines tâches n'étaient pas planifiées car la date de début disponible la"
-" plus proche était trop éloignée dans le futur"
+"Certaines tâches n'étaient pas planifiées, car la date de début disponible "
+"la plus proche était trop éloignée dans le futur"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__date_begin
@@ -395,7 +395,7 @@ msgid ""
 "The following tasks have not been scheduled because the corresponding\n"
 "                        employees are unavailable. The next possible dates for these tasks are:"
 msgstr ""
-"Les tâches suivantes n'ont pas été planifiées car les employés correspondants \n"
+"Les tâches suivantes n'ont pas été planifiées, car les employés correspondants \n"
 "ne sont pas disponibles. Les prochaines dates possibles pour ces tâches sont :"
 
 #. module: project_enterprise
@@ -420,7 +420,7 @@ msgstr "Les tâches ont été planifiées avec succès."
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "This Progress Bar is not implemented."
-msgstr "Cette barre de progression n'est pas mise en oeuvre."
+msgstr "Cette barre de progression n'est pas mise en œuvre."
 
 #. module: project_enterprise
 #: code:addons/project_enterprise/models/project_task.py:0
@@ -430,7 +430,7 @@ msgid ""
 "The working hours of the company were used as a reference instead."
 msgstr ""
 "Cet employé n'a pas de contrat en cours pendant la période sélectionnée.\n"
-"Les heures de travail de l'entreprise ont été utilisées comme référence à la place."
+"Les heures de travail de la société ont été utilisées comme référence à la place."
 
 #. module: project_enterprise
 #: code:addons/project_enterprise/models/project_task.py:0
@@ -439,7 +439,7 @@ msgid ""
 "This user isn't expected to have task during this period. Planned hours :"
 msgstr ""
 "Cet utilisateur n'est pas censé avoir de tâches pendant cette période. "
-"Horaires prévus:"
+"Heures planifiées :"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form
@@ -451,7 +451,7 @@ msgstr "Feuilles de temps"
 #: code:addons/project_enterprise/static/src/js/task_gantt_model.js:0
 #, python-format
 msgid "Unassigned Tasks"
-msgstr "Tâches non attribuées"
+msgstr "Tâches non assignées"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form_in_gantt

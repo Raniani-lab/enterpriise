@@ -4,14 +4,20 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Martin Trigaux, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# aleksandar ivanov, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:30+0000\n"
+"POT-Creation-Date: 2023-02-02 10:53+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Albena Mincheva <albena_vicheva@abv.bg>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,17 +89,17 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Ден"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__day
 msgid "Days"
-msgstr ""
+msgstr "Дни"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__description
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__display_name
@@ -104,7 +110,7 @@ msgstr "Име за показване"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration
 msgid "Duration"
-msgstr ""
+msgstr "Продължителност"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
@@ -128,7 +134,7 @@ msgstr "ID"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order__internal_note
 msgid "Internal Note"
-msgstr ""
+msgstr "Вътрешна бележка"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
@@ -177,12 +183,12 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "Месец"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__month
 msgid "Months"
-msgstr ""
+msgstr "Месеци"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__name
@@ -199,13 +205,13 @@ msgstr "Бележки"
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Period"
-msgstr ""
+msgstr "Период"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_form
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_tree
 msgid "Periodicity"
-msgstr ""
+msgstr "Периодичност"
 
 #. module: sale_temporal
 #: model:ir.actions.act_window,name:sale_temporal.sale_temporal_recurrence_action
@@ -215,13 +221,13 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__price
 msgid "Price"
-msgstr ""
+msgstr "Цена"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_pricelist
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__pricelist_id
 msgid "Pricelist"
-msgstr ""
+msgstr "Ценова листа"
 
 #. module: sale_temporal
 #: model:ir.actions.act_window,name:sale_temporal.product_pricing_action
@@ -237,7 +243,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__product_template_id
@@ -247,22 +253,22 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Продуктов вариант"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__product_variant_ids
 msgid "Product Variants"
-msgstr ""
+msgstr "Продуктови варианти"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Products"
-msgstr ""
+msgstr "Продукти"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__recurrence_id
 msgid "Recurrency"
-msgstr ""
+msgstr "Повторяемост"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricelist__product_pricing_ids
@@ -282,12 +288,12 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Ред на поръчка за продажби"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_variant_ids
@@ -299,6 +305,11 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_template_id
 msgid "Select products on which this pricing will be applied."
+msgstr ""
+
+#. module: sale_temporal
+#: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__subscription_unit_display
+msgid "Subscription Unit Display"
 msgstr ""
 
 #. module: sale_temporal
@@ -331,36 +342,36 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
 msgid "Unit"
-msgstr ""
+msgstr "Единица"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Variants"
-msgstr ""
+msgstr "Варианти"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Седмица"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__week
 msgid "Weeks"
-msgstr ""
+msgstr "Седмици"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Година"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__year
 msgid "Years"
-msgstr ""
+msgstr "Години"
 
 #. module: sale_temporal
 #. odoo-python
@@ -386,4 +397,60 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "all variants"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per %s days"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per %s months"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per %s weeks"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per %s years"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per day"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per month"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per week"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per year"
 msgstr ""

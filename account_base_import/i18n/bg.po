@@ -4,6 +4,11 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# aleksandar ivanov, 2023
+# B Dochev, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# Martin Trigaux, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,7 +82,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:account_base_import.action_open_coa_setup
 #, python-format
 msgid "Chart of Accounts"
-msgstr ""
+msgstr "Сметкоплан"
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
@@ -89,7 +94,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/js/account_setup_import.js:0
 #, python-format
 msgid "Customers"
-msgstr ""
+msgstr "Клиенти"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -101,7 +106,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Изтеглете от системата"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -130,7 +135,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 #, python-format
 msgid "Import"
-msgstr ""
+msgstr "Внос"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -206,7 +211,7 @@ msgstr "Счетоводна Операция"
 #: code:addons/account_base_import/static/src/js/account_setup_import.js:0
 #, python-format
 msgid "Journal Items"
-msgstr ""
+msgstr "Счетоводна операция"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -284,7 +289,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "or"
-msgstr ""
+msgstr "или"
 
 #. module: account_base_import
 #. odoo-javascript

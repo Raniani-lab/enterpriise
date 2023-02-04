@@ -4,6 +4,9 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,6 +46,8 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Набор от условия и действия, които ще бъдат достъпни за всички прикачени "
+"файлове, отговарящи на условията"
 
 #. module: documents_account
 #: model:ir.model.constraint,message:documents_account.constraint_documents_account_folder_setting_journal_unique
@@ -224,7 +229,7 @@ msgstr ""
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Journals"
-msgstr ""
+msgstr "Журнали"
 
 #. module: documents_account
 #: model:ir.actions.act_window,name:documents_account.action_folder_settings_installer
@@ -301,7 +306,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__tag_ids
 msgid "Tags"
-msgstr ""
+msgstr "Маркери"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
@@ -316,7 +321,7 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
 msgid "Vendor Credit Note"
-msgstr ""
+msgstr "Кредитно известие на доставчик"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_invoice
@@ -335,7 +340,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__folder_id
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Workspace"
-msgstr ""
+msgstr "Работно пространство"
 
 #. module: documents_account
 #. openerp-web

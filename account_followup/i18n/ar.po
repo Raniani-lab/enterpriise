@@ -699,7 +699,7 @@ msgstr "آخر متابعة"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Letter/Email Content"
-msgstr ""
+msgstr "محتوى الرسالة/البريد الإلكتروني "
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__mail_template_id

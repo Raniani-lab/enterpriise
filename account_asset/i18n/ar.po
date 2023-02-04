@@ -66,7 +66,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s created from invoice: %s"
-msgstr ""
+msgstr "%s تم إنشاؤه من الفاتورة: %s "
 
 #. module: account_asset
 #. odoo-python
@@ -156,21 +156,21 @@ msgstr "المستند المرتبط بـ %s تم حذفه : %s"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to this move has been deleted: %s"
-msgstr ""
+msgstr "تم حذف مستند مرتبط بهذه الحركة: %s "
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A gross increase has been created: %s"
-msgstr ""
+msgstr "تم إنشاء زيادة إجمالية: %s "
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A non deductible tax value of %s was added to %s's initial value of %s"
-msgstr ""
+msgstr "تمت إضافة قيمة ضريبة غير قابلة للخصم %s إلى قيمة %s المبدئية، وهي %s "
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_account
@@ -1954,6 +1954,8 @@ msgid ""
 "The amount you have entered (%s) does not match the Related Purchase's value"
 " (%s). Please make sure this is what you want."
 msgstr ""
+"لا يطابق المبلغ الذي أدخلته (%s) قيمة الشراء ذات الصلة (%s). يرجى التأكد من "
+"أن ذلك هو ما تريده. "
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__asset_id
@@ -2078,7 +2080,7 @@ msgstr "زيادة القيمة لـ : %(asset)s"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Warning for the Original Value of %s"
-msgstr ""
+msgstr "تحذير للقيمة الأصلية %s "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__website_message_ids
@@ -2099,6 +2101,11 @@ msgid ""
 "You can manually close an asset when the depreciation is over.\n"
 "By cancelling an asset, all depreciation entries will be reversed"
 msgstr ""
+"عندما يتم إنشاء أصل، يكون في وضع 'المسودة'.\n"
+"إذا تم تأكيد الأصل، تتغير الحالة إلى 'جاري' ويمكن ترحيل بنود الإهلاك في المحاسبة.\n"
+"يمكن تعيين الحالة 'قيد الانتظار' يدوياً عندما ترغب في إيقاف إهلاك أصل من الأصول بشكل مؤقت لفترة من الزمن.\n"
+"يمكنك إقفال الأصل يدوياً عند انتهاء الإهلاك.\n"
+"عند إلغائك للأصل، سيتم عكس كافة قيود الإهلاك "
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12

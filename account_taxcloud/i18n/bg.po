@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Martin Trigaux, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,7 +72,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_company__tic_category_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__tic_category_id
 msgid "Default TIC Code"
-msgstr ""
+msgstr "ДДС номер по подразбиране"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__display_name
@@ -87,7 +89,7 @@ msgstr ""
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position
 msgid "Fiscal Position"
-msgstr ""
+msgstr "Фискална позиция"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_position_taxcloud_inherit_from_view
@@ -152,17 +154,17 @@ msgstr ""
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_category
 msgid "Product Category"
-msgstr ""
+msgstr "Категория продукт"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
 msgid "Product TIC Categories"
-msgstr ""
+msgstr "Продуктови категории по ДДС номер"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_product_tic_category
@@ -183,40 +185,40 @@ msgstr ""
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_tree
 msgid "TIC Category"
-msgstr ""
+msgstr "Категория по ДДС номер"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__code
 msgid "TIC Category Code"
-msgstr ""
+msgstr "Код по категория ДДС номер"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_category__tic_category_id
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.account_taxcloud_tic_category_search
 msgid "TIC Code"
-msgstr ""
+msgstr "Код по ДДС номер"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category__description
 msgid "TIC Description"
-msgstr ""
+msgstr "ДДС номер - описание"
 
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.product_category_view_form_inherit_account_taxcloud
 msgid "TaxCloud"
-msgstr ""
+msgstr "TaxCloud"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_id
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_id
 msgid "TaxCloud API ID"
-msgstr ""
+msgstr "ИН на TaxCloud Приложен програмен интерфейс - API"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_company__taxcloud_api_key
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_config_settings__taxcloud_api_key
 msgid "TaxCloud API KEY"
-msgstr ""
+msgstr "TaxCloud API KEY"
 
 #. module: account_taxcloud
 #: model:ir.actions.act_window,name:account_taxcloud.account_taxcloud_tic_category_action
@@ -235,7 +237,7 @@ msgstr ""
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position_template
 msgid "Template for Fiscal Position"
-msgstr ""
+msgstr "Шаблон за фискална позиция"
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:0
@@ -276,7 +278,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_move__is_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_account_payment__is_taxcloud
 msgid "Use TaxCloud API"
-msgstr ""
+msgstr "Използвайте TaxCloud Приложен програмен интерфейс - API"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,help:account_taxcloud.field_account_bank_statement_line__is_taxcloud_configured
@@ -301,4 +303,4 @@ msgstr ""
 #: code:addons/account_taxcloud/models/product.py:0
 #, python-format
 msgid "[%s] %s"
-msgstr ""
+msgstr "[%s] %s"

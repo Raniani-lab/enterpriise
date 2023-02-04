@@ -40,7 +40,7 @@ msgstr ""
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_ir_attachment
 msgid "Attachment"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ്"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.edit_project_document_form_inherit
@@ -74,14 +74,14 @@ msgstr ""
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_deprecated
-msgid "Deprectated"
+msgid "Deprecated"
 msgstr ""
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_document
 #: model:ir.model.fields,field_description:documents_project.field_ir_attachment__document_ids
 msgid "Document"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: documents_project
 #: code:addons/documents_project/models/project_project.py:0

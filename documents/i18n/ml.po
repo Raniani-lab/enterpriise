@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
@@ -62,12 +62,12 @@ msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
-msgid "2021"
+msgid "2022"
 msgstr ""
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
-msgid "2022"
+msgid "2023"
 msgstr ""
 
 #. module: documents
@@ -403,7 +403,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_ids
@@ -626,7 +626,7 @@ msgstr ""
 #: model:ir.model,name:documents.model_ir_attachment
 #: model:ir.model.fields,field_description:documents.field_documents_document__attachment_id
 msgid "Attachment"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ്"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_attachment_count
@@ -756,7 +756,7 @@ msgstr ""
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__company_id
@@ -960,7 +960,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_list
 msgid "Document"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__document_count
@@ -1086,7 +1086,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "ഡൌൺലോഡ് "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -2133,7 +2133,7 @@ msgstr ""
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
-msgid "Set As 2022 Contracts"
+msgid "Set As 2023 Contracts"
 msgstr ""
 
 #. module: documents
@@ -2306,7 +2306,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_summary
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_summary
 msgid "Summary"
-msgstr ""
+msgstr "സംഗ്രഹം"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_tag
@@ -2492,7 +2492,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_decoration
@@ -2625,7 +2625,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__activity_date_deadline_range_type__weeks
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__activity_date_deadline_range_type__weeks
 msgid "Weeks"
-msgstr ""
+msgstr "ആഴ്ചകൾ"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form

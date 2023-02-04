@@ -372,7 +372,7 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__time_spent
 msgid "Time"
-msgstr ""
+msgstr "സമയം"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__timesheet_ids

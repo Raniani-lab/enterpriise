@@ -269,7 +269,7 @@ msgstr "Vaikeväärtused"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr "Määrab ära kvaliteedikontrollipunktim tüübi"
+msgstr "Määrab ära kvaliteedikontrollipunkti tüübi."
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -926,7 +926,7 @@ msgstr "Sildid"
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Take a Picture"
-msgstr "Tehke pilt"
+msgstr "Tee pilt"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__team_id

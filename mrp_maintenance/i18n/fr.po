@@ -34,7 +34,7 @@ msgstr "Société"
 #. module: mrp_maintenance
 #: model:ir.model.fields,help:mrp_maintenance.field_maintenance_equipment__estimated_next_failure
 msgid "Computed as Latest Failure Date + MTBF"
-msgstr "Date dernière panne + MTBF"
+msgstr "Date dernière défaillance + MTBF"
 
 #. module: mrp_maintenance
 #: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture1
@@ -115,7 +115,7 @@ msgstr "MTTR"
 #. module: mrp_maintenance
 #: model:ir.ui.menu,name:mrp_maintenance.menu_equipment_dashboard
 msgid "Machines & Tools"
-msgstr "Machines & outils"
+msgstr "Machines & Outils"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_kanban_inherit_maintenance
@@ -158,14 +158,14 @@ msgstr "Temps moyen entre défaillances"
 msgid ""
 "Mean Time Between Failure, computed based on done corrective maintenances."
 msgstr ""
-"Temps moyen entre défaillances, calculé en fonction des réparations "
-"terminées."
+"Temps moyen entre défaillances, calculé en fonction des maintenances "
+"correctives terminées."
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,help:mrp_maintenance.field_maintenance_equipment__mttr
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Mean Time To Repair"
-msgstr " Temps moyen jusqu'à la réparation"
+msgstr "Temps moyen de réparation"
 
 #. module: mrp_maintenance
 #: code:addons/mrp_maintenance/models/mrp_maintenance.py:0
@@ -197,7 +197,7 @@ msgstr "Ordre de fabrication"
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_mrp_production__request_ids
 msgid "Request"
-msgstr "Requête"
+msgstr "Demande"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
@@ -214,7 +214,7 @@ msgstr "Riflard"
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_equipment__workcenter_id
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Work Center"
-msgstr "Poste de Travail"
+msgstr "Poste de travail"
 
 #. module: mrp_maintenance
 #: model:ir.ui.menu,name:mrp_maintenance.menu_workcenter_tree

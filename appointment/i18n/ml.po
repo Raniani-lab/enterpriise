@@ -352,7 +352,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -1841,7 +1841,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__7
 msgid "Sunday"
-msgstr ""
+msgstr "ഞായറാഴ്ച"
 
 #. module: appointment
 #: model:appointment.question,name:appointment.appointment_type_2_question_1
@@ -1959,7 +1959,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__4
 msgid "Thursday"
-msgstr ""
+msgstr "വ്യാഴാഴ്ച"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_tz
@@ -2002,7 +2002,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__2
 msgid "Tuesday"
-msgstr ""
+msgstr "ചൊവ്വാഴ്ച"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -2066,7 +2066,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__3
 msgid "Wednesday"
-msgstr ""
+msgstr "ബുധനാഴ്ച"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__weekday

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -30,17 +30,17 @@ msgstr "# Echanges"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__open_ticket_count
 msgid "# Open Tickets"
-msgstr "Tickets Ouverts"
+msgstr "# Tickets Ouverts"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_count
 msgid "# Ratings"
-msgstr "Évaluations"
+msgstr "# Évaluations"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__sla_policy_count
 msgid "# SLA Policy"
-msgstr "Stratégie SLA"
+msgstr "# Politiques SLA"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__urgent_ticket
@@ -279,7 +279,7 @@ msgid ""
 "        <a t-attf-href=\"/my/ticket/{{ object.id }}/{{ object.access_token }}\" t-out=\"object.name or ''\"/>\n"
 "    </t>\n"
 "    has been received and is being reviewed by our <t t-out=\"object.team_id.name or ''\">Table legs are unbalanced</t> team.\n"
-"    The reference of your ticket is <t t-out=\"object.id or ''\">15</t>.<br/>\n"
+"    The reference of your ticket is <t t-out=\"object.ticket_ref or ''\">15</t>.<br/>\n"
 "\n"
 "    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
 "        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">View the ticket</a><br/>\n"
@@ -298,27 +298,27 @@ msgid ""
 "        "
 msgstr ""
 "<div>\n"
-"    Cher/Chère <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">Madame/Monsieur</t>,<br/><br/>\n"
+"    <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">Madame/Monsieur</t>,<br/><br/>\n"
 "    Votre demande\n"
 "    <t t-if=\"object.get_portal_url()\">\n"
 "        <a t-attf-href=\"/my/ticket/{{ object.id }}/{{ object.access_token }}\" t-out=\"object.name or ''\"/>\n"
 "    </t>\n"
-"    a été reçue et est en cours d'examen par notre équipe <t t-out=\"object.team_id.name or ''\">Table legs are unbalanced</t>.\n"
-"    La référence de votre ticket est <t t-out=\"object.id or ''\">15</t>.<br/>\n"
+"    a été reçue et est en cours d'examen par notre équipe <t t-out=\"object.team_id.name or ''\">Les pieds de la table sont déséquilibrés</t>.\n"
+"    La référence de votre ticket est <t t-out=\"object.ticket_ref or ''\">15</t>.<br/>\n"
 "\n"
 "    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
-"        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">Visualiser le ticket</a><br/>\n"
+"        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">Afficher le ticket</a><br/>\n"
 "    </div>\n"
 "\n"
 "    Pour ajouter des commentaires supplémentaires, répondez à cet email.<br/><br/>\n"
 "\n"
 "    <t t-if=\"object.team_id.show_knowledge_base\">\n"
-"        N'hésitez pas à visiter notre <a t-attf-href=\"{{ object.team_id.get_knowledge_base_url() }}\">Centre d'aide</a>. Vous pourriez y trouver la réponse à votre question.\n"
+"       N'hésitez pas à visiter notre <a t-attf-href=\"{{ object.team_id.get_knowledge_base_url() }}\">Centre d'assistance</a>. Vous pourriez y trouver la réponse à votre question.\n"
 "        <br/><br/>\n"
 "    </t>\n"
 "\n"
 "    Merci,<br/><br/>\n"
-"    L'équipe de l'<t t-out=\"object.team_id.name or 'Helpdesk'\">Assistance</t>.\n"
+"    L'équipe d'<t t-out=\"object.team_id.name or 'Helpdesk'\">Assistance</t>.\n"
 "</div>\n"
 "        "
 
@@ -1156,7 +1156,7 @@ msgstr "Contact"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_coupons
 msgid "Coupons"
-msgstr "Coupons"
+msgstr "Bons de réduction"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -2843,7 +2843,7 @@ msgstr "Dernière évaluation"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_percentage_satisfaction
 msgid "Rating Satisfaction"
-msgstr "évaluation de la satisfaction"
+msgstr "Évaluation de la satisfaction"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_text
@@ -3156,13 +3156,6 @@ msgstr "Erreur d'envoi SMS"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Sad face"
 msgstr "Visage triste"
-
-#. module: helpdesk
-#. odoo-python
-#: code:addons/helpdesk/controllers/portal.py:0
-#, python-format
-msgid "Salesperson"
-msgstr "Vendeur"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -4030,7 +4023,7 @@ msgstr "Utilisez les <b>activités</b> pour organiser votre travail quotidien."
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__use_coupons
 msgid "Use Coupons"
-msgstr "Utiliser Coupons"
+msgstr "Utiliser des bons de réduction"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__use_credit_notes

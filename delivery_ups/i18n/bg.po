@@ -2,12 +2,22 @@
 # This file contains the translation of the following modules:
 # 	* delivery_ups
 # 
+# Translators:
+# Martin Trigaux, 2023
+# aleksandar ivanov, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
+# Георги Пехливанов <sonaris@gmail.com>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-12 07:56+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,7 +87,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_stock_package_type__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "Превозвач"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_cod_funds_code__8
@@ -87,7 +97,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__cm
 msgid "Centimeters"
-msgstr ""
+msgstr "Сантиметри"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_cod_funds_code__0
@@ -102,7 +112,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
@@ -112,7 +122,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__epl
 msgid "EPL"
-msgstr ""
+msgstr "EPL"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/delivery_ups.py:0
@@ -121,6 +131,8 @@ msgid ""
 "Error:\n"
 "%s"
 msgstr ""
+"Грешка:\n"
+"%s"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -142,12 +154,12 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__in
 msgid "Inches"
-msgstr ""
+msgstr "Инча"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__kgs
 msgid "Kilograms"
-msgstr ""
+msgstr "Килограма"
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
@@ -157,12 +169,12 @@ msgstr ""
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Options"
-msgstr ""
+msgstr "Настройки"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__gif
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_dimension_unit
@@ -172,7 +184,7 @@ msgstr ""
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Package Weight Unit"
-msgstr ""
+msgstr "Тегло на опаковката"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -335,7 +347,7 @@ msgstr ""
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "Моля, осигурете поне един артикул за превозване."
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -352,7 +364,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_weight_unit__lbs
 msgid "Pounds"
-msgstr ""
+msgstr "Паунди"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -370,12 +382,12 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "Доставчик"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_duty_payment__recipient
 msgid "Recipient"
-msgstr ""
+msgstr "Получател"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -406,22 +418,22 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__spl
 msgid "SPL"
-msgstr ""
+msgstr "SPL"
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Saturday Delivery"
-msgstr ""
+msgstr "Доставка в Събота"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_duty_payment__sender
 msgid "Sender"
-msgstr ""
+msgstr "Подател"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/delivery_ups.py:0
@@ -464,7 +476,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Начини на доставка"
 
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_package_type
@@ -484,6 +496,8 @@ msgid ""
 "The address of your company is missing or wrong.\n"
 "(Missing field(s) : %s)"
 msgstr ""
+"Адресът на компанията Ви липсва или е грешен.\n"
+"(Липсващо поле(та) : %s)"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -492,6 +506,8 @@ msgid ""
 "The address of your warehouse is missing or wrong.\n"
 "(Missing field(s) : %s)"
 msgstr ""
+"Адресът на склада Ви липсва или е грешен.\n"
+"(Липсващо поле(та) : %s)"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -499,6 +515,8 @@ msgstr ""
 msgid ""
 "The delivery cannot be done because the weight of your product is missing."
 msgstr ""
+"Доставката не може да бъде извършена, тъй като теглото на продукта Ви "
+"липсва."
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -523,6 +541,8 @@ msgid ""
 "The recipient address is missing or wrong.\n"
 "(Missing field(s) : %s)"
 msgstr ""
+"Адресът на получателя липсва или е грешен.\n"
+"(Липсващо поле(та) : %s)"
 
 #. module: delivery_ups
 #: code:addons/delivery_ups/models/ups_request.py:0
@@ -596,7 +616,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__delivery_type__ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__stock_package_type__package_carrier_type__ups
 msgid "UPS"
-msgstr ""
+msgstr "UPS"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_access_number
@@ -614,17 +634,17 @@ msgstr ""
 #: model:product.product,name:delivery_ups.product_product_delivery_ups_be
 #: model:product.template,name:delivery_ups.product_product_delivery_ups_be_product_template
 msgid "UPS BE"
-msgstr ""
+msgstr "UPS BE"
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "UPS Configuration"
-msgstr ""
+msgstr "UPS конфигурация"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_label_file_type
 msgid "UPS Label File Type"
-msgstr ""
+msgstr "UPS вид файл на етикет"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_package_type_id
@@ -634,7 +654,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_passwd
 msgid "UPS Password"
-msgstr ""
+msgstr "UPS парола"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_saturday_delivery
@@ -650,12 +670,12 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_service_type
 msgid "UPS Service Type"
-msgstr ""
+msgstr "UPS вид на услугата"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_shipper_number
 msgid "UPS Shipper Number"
-msgstr ""
+msgstr "UPS номер на изпращача"
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.res_config_settings_view_form_sale
@@ -668,12 +688,12 @@ msgstr ""
 #: model:product.product,name:delivery_ups.product_product_delivery_ups_us
 #: model:product.template,name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "UPS US"
-msgstr ""
+msgstr "UPS САЩ"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_username
 msgid "UPS Username"
-msgstr ""
+msgstr "UPS потребителско име"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__partner_ups_carrier_account
@@ -694,7 +714,7 @@ msgstr ""
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_be_product_template
 #: model:product.template,uom_name:delivery_ups.product_product_delivery_ups_us_product_template
 msgid "Units"
-msgstr ""
+msgstr "Единици"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
@@ -740,4 +760,4 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__zpl
 msgid "ZPL"
-msgstr ""
+msgstr "ZPL"

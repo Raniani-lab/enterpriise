@@ -4,6 +4,13 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Александра Николова <alexandra1nikolova@gmail.com>, 2023
+# aleksandar ivanov, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Martin Trigaux, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Kaloyan Naumov <kaloyan@lumnus.net>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,7 +89,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__scanner
 msgid "Barcode Scanner"
-msgstr ""
+msgstr "Скенер на баркодове"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__bluetooth
@@ -100,7 +107,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__camera
 msgid "Camera"
-msgstr ""
+msgstr "Камера"
 
 #. module: iot
 #. openerp-web
@@ -171,7 +178,7 @@ msgstr "Фирма"
 #: code:addons/iot/static/src/views/box_list_view.xml:0
 #, python-format
 msgid "Connect"
-msgstr ""
+msgstr "Свързване"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
@@ -250,12 +257,12 @@ msgstr ""
 #: model:ir.ui.menu,name:iot.iot_device_menu_action
 #: model_terms:ir.ui.view,arch_db:iot.iot_box_view_form
 msgid "Devices"
-msgstr ""
+msgstr "Устройства"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__display
 msgid "Display"
-msgstr ""
+msgstr "Покажете"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__display_name
@@ -305,7 +312,7 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Group By"
-msgstr ""
+msgstr "Групиране по"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__hdmi
@@ -328,7 +335,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__identifier
 msgid "Identifier"
-msgstr ""
+msgstr "Идентификатор"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__identifier
@@ -437,7 +444,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__layout
 msgid "Layout"
-msgstr ""
+msgstr "Редайтирай изгледа"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manual_measurement
@@ -457,7 +464,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manufacturer
 msgid "Manufacturer"
-msgstr ""
+msgstr "Производител"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__name
@@ -469,7 +476,7 @@ msgstr "Име"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__network
 msgid "Network"
-msgstr ""
+msgstr "Мрежа"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -496,7 +503,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__payment
 msgid "Payment Terminal"
-msgstr ""
+msgstr "Терминал за плащане"
 
 #. module: iot
 #. openerp-web
@@ -525,7 +532,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__printer
 msgid "Printer"
-msgstr ""
+msgstr "Принтер"
 
 #. module: iot
 #. openerp-web
@@ -552,12 +559,12 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.act_report_xml_view_tree_iot
 msgid "Report xml"
-msgstr ""
+msgstr "XML отчет"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__report_ids
 msgid "Reports"
-msgstr ""
+msgstr "Отчети"
 
 #. module: iot
 #. openerp-web
@@ -585,7 +592,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__scale
 msgid "Scale"
-msgstr ""
+msgstr "Везна"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__serial
@@ -595,14 +602,14 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connected
 msgid "Status"
-msgstr ""
+msgstr "Състояние"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Success"
-msgstr ""
+msgstr "Успех"
 
 #. module: iot
 #. openerp-web
@@ -644,7 +651,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__type
 msgid "Type"
-msgstr ""
+msgstr "Вид"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connection
@@ -671,7 +678,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__variant
 msgid "Variant"
-msgstr ""
+msgstr "Вариант"
 
 #. module: iot
 #: code:addons/iot/wizard/add_iot_box.py:0

@@ -4,6 +4,11 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Martin Trigaux, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Igor Sheludko <igor.sheludko@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,7 +42,7 @@ msgstr "Отказ"
 #. module: sale_renting_crm
 #: model_terms:ir.ui.view,arch_db:sale_renting_crm.crm_lead_rental_view_form
 msgid "Confirm"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: sale_renting_crm
 #: model:ir.model,name:sale_renting_crm.model_crm_lead_rental
@@ -47,7 +52,7 @@ msgstr ""
 #. module: sale_renting_crm
 #: model:ir.model.fields.selection,name:sale_renting_crm.selection__crm_lead_rental__action__create
 msgid "Create a new customer"
-msgstr ""
+msgstr "Създайте нов клиент"
 
 #. module: sale_renting_crm
 #: model_terms:ir.ui.view,arch_db:sale_renting_crm.crm_case_form_view_oppor
@@ -67,7 +72,7 @@ msgstr "Създадено на"
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead_rental__partner_id
 msgid "Customer"
-msgstr ""
+msgstr "Клиент"
 
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead_rental__display_name
@@ -77,7 +82,7 @@ msgstr "Име за показване"
 #. module: sale_renting_crm
 #: model:ir.model.fields.selection,name:sale_renting_crm.selection__crm_lead_rental__action__nothing
 msgid "Do not link to a customer"
-msgstr ""
+msgstr "Не се свързвайте с клиент"
 
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead_rental__id
@@ -102,12 +107,12 @@ msgstr "Последно актуализирано на"
 #. module: sale_renting_crm
 #: model:ir.model,name:sale_renting_crm.model_crm_lead
 msgid "Lead/Opportunity"
-msgstr ""
+msgstr "Лийд / Възможност"
 
 #. module: sale_renting_crm
 #: model:ir.model.fields.selection,name:sale_renting_crm.selection__crm_lead_rental__action__exist
 msgid "Link to an existing customer"
-msgstr ""
+msgstr "Линк към съществуващ клиент"
 
 #. module: sale_renting_crm
 #: model:ir.actions.act_window,name:sale_renting_crm.crm_lead_to_rental_action
@@ -129,7 +134,7 @@ msgstr ""
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_sale_order__opportunity_id
 msgid "Opportunity"
-msgstr ""
+msgstr "Възможност"
 
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead_rental__action
@@ -151,7 +156,7 @@ msgstr ""
 #. module: sale_renting_crm
 #: model:ir.model,name:sale_renting_crm.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead__rental_amount_total

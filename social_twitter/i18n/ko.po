@@ -41,12 +41,12 @@ msgstr ""
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-heart me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-heart me-1\" title=\"Likes\"/>"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -54,11 +54,13 @@ msgid ""
 "<i class=\"fa fa-pencil me-1\" title=\"Quote a tweet\"/>\n"
 "                                    <span>Quote Tweet</span>"
 msgstr ""
+"<i class=\"fa fa-pencil me-1\" title=\"Quote a tweet\"/>\n"
+"                                    <span>트윗 인용</span>"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-retweet me-1\" title=\"Retweet a tweet\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-retweet me-1\" title=\"Retweet a tweet\"/>"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban

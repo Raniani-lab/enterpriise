@@ -698,7 +698,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Dividend Option"
-msgstr ""
+msgstr "خيار الأرباح "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -710,7 +710,7 @@ msgstr "إعادة استثمار الأرباح "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Documentary Collection"
-msgstr ""
+msgstr "المجموعة المستندية "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -941,7 +941,7 @@ msgstr "سحب العملة الأجنبية "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Foreign Exchange"
-msgstr ""
+msgstr "تحويل العملة الأجنبية "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1207,7 +1207,7 @@ msgstr "عمليات الخصم المتنوعة "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Miscellaneous Deposit"
-msgstr ""
+msgstr "إيداع متنوعات "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1225,7 +1225,7 @@ msgstr "إيداع مختلط "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Mortgage Loans"
-msgstr ""
+msgstr "قروض التمويل العقاري "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1297,7 +1297,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "OTC"
-msgstr ""
+msgstr "التداول خارج البورصة "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1435,13 +1435,13 @@ msgstr "الدفع الجزئي "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Partial Redemption Without Reduction of Nominal Value"
-msgstr ""
+msgstr "الاسترداد الجزئي دون تخفيض القيمة الاسمية "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Partial Redemption with reduction of nominal value"
-msgstr ""
+msgstr "الاسترداد الجزئي مع تخفيض القيمة الاسمية "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1502,7 +1502,7 @@ msgstr "مدفوعات نقطة البيع (POS) - بطاقة الخصم "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Portfolio Move"
-msgstr ""
+msgstr "حركة المحفظة "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1515,7 +1515,7 @@ msgstr "خطأ في الترحيل "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Pre-Authorised Direct Debit"
-msgstr ""
+msgstr "الخصم المباشر المصرح له مسبقاً "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1680,7 +1680,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Reversal due to a Payment Cancellation Request"
-msgstr ""
+msgstr "العكس نظراً لطلب إلغاء الدفع "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1737,7 +1737,7 @@ msgstr "ضمانات"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Securities Borrowing"
-msgstr ""
+msgstr "اقتراض الأوراق المالية "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1801,7 +1801,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Smart-Card Payment"
-msgstr ""
+msgstr "الدفع عن طريق البطاقة الذكية "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1842,7 +1842,7 @@ msgstr "الاشتراك"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Subscription Asset Allocation"
-msgstr ""
+msgstr "تخصيص أصول الاشتراك "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1872,13 +1872,13 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Sweep"
-msgstr ""
+msgstr "مسح "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Sweeping"
-msgstr ""
+msgstr "المسح "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1890,7 +1890,7 @@ msgstr "تبديل "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Syndicated"
-msgstr ""
+msgstr "قرض مشترك "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1909,7 +1909,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Tax Reclaim"
-msgstr ""
+msgstr "استرداد الضريبة "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2023,7 +2023,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Unpaid Card Transaction"
-msgstr ""
+msgstr "معاملة البطاقة غير المدفوعة "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2061,7 +2061,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Withdrawal/distribution"
-msgstr ""
+msgstr "السحب/التوزيع "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

@@ -3,20 +3,20 @@
 # 	* account_reports
 # 
 # Translators:
-# Fekete Mihai <mihai.fekete@forestandbiomass.ro>, 2022
 # Hongu Cosmin <cosmin513@gmail.com>, 2022
 # Foldi Robert <foldirobert@nexterp.ro>, 2022
 # Martin Trigaux, 2022
 # Cozmin Candea <office@terrabit.ro>, 2023
 # Dorin Hongu <dhongu@gmail.com>, 2023
+# Fekete Mihai <mihai.fekete@forestandbiomass.ro>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:28+0000\n"
+"POT-Creation-Date: 2023-02-02 10:51+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2023\n"
+"Last-Translator: Fekete Mihai <mihai.fekete@forestandbiomass.ro>, 2023\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -225,11 +225,6 @@ msgstr ""
 "            Registre:"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
-msgid "<span class=\"fa fa-calendar\" title=\"Dates\" role=\"img\" aria-label=\"Dates\"/>"
-msgstr "<span class=\"fa fa-calendar\" title=\"Dates\" role=\"img\" aria-label=\"Dates\"/>"
-
-#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
 msgid ""
 "<span class=\"fa fa-circle color-green trust-partner\" role=\"img\" aria-"
@@ -327,6 +322,13 @@ msgstr "<span class=\"fa fa-folder-open\"/> Grupare analitică după"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
 msgid "<span class=\"fa fa-folder-open\"/> Partners"
 msgstr "<span class=\"fa fa-folder-open\"/> Parteneri"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
+msgid ""
+"<span class=\"fa fa-fw fa-calendar\" title=\"Dates\" role=\"img\" aria-"
+"label=\"Dates\"/>"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_tax_unit
@@ -1084,6 +1086,11 @@ msgstr "Excedentul de numerar"
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
 msgid "Change expected payment date"
 msgstr "Modificați data plății preconizate"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid "Check them"
+msgstr "Verificați-le"
 
 #. module: account_reports
 #. odoo-python
@@ -2049,6 +2056,13 @@ msgid "Journal Report Custom Handler"
 msgstr ""
 
 #. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "Journal items with archived tax tags"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Journals:"
 msgstr "Jurnal:"
@@ -2837,6 +2851,11 @@ msgid "Some controls failed."
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid "Some journal items appear to point to obsolete report lines."
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort By Date"
 msgstr "Ordonează după dată"
@@ -3466,6 +3485,11 @@ msgstr ""
 "șterge valorile de raportare care afectează raportul fiscal al unui perioadă"
 " blocată. Pentru a face acest lucru, trebuie mai întâi să modificați vă data"
 " de blocare a raportului fiscal."
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid "and correct their tax tags if necessary."
+msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__year

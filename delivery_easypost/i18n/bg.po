@@ -4,6 +4,11 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# aleksandar ivanov, 2023
+# Martin Trigaux, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:09+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -67,7 +72,7 @@ msgstr "Отказ"
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_stock_package_type__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "Превозвач"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_easypost_service__easypost_carrier
@@ -103,7 +108,7 @@ msgstr "Създадено на"
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Default Package Type"
-msgstr ""
+msgstr "Стандартен тип опаковка"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_default_package_type_id
@@ -118,7 +123,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__delivery_carrier_id
 msgid "Delivery Carrier"
-msgstr ""
+msgstr "Доставчик"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__display_name
@@ -136,7 +141,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__epl2
 msgid "EPL2"
-msgstr ""
+msgstr "EPL2"
 
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__delivery_type__easypost
@@ -215,7 +220,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Go to"
-msgstr ""
+msgstr "Влезте в"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__id
@@ -277,17 +282,17 @@ msgstr ""
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Options"
-msgstr ""
+msgstr "Настройки"
 
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__pdf
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__png
 msgid "PNG"
-msgstr ""
+msgstr "PNG"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -300,7 +305,7 @@ msgstr ""
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "Моля, осигурете поне един артикул за превозване."
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_production_api_key
@@ -310,7 +315,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr ""
+msgstr "Доставчик"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
@@ -327,7 +332,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
 msgid "Select"
-msgstr ""
+msgstr "Изберете"
 
 #. module: delivery_easypost
 #: model:ir.actions.act_window,name:delivery_easypost.act_delivery_easypost_carrier_type
@@ -348,12 +353,12 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Начини на доставка"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Sign up"
-msgstr ""
+msgstr "Регистрирайте се"
 
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_stock_package_type
@@ -404,6 +409,8 @@ msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
 msgstr ""
+"Очакваната цена не може да бъде изчислена, тъй като липсва теглото на "
+"продукта."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -424,7 +431,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Прехвърлете"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
@@ -436,7 +443,7 @@ msgstr ""
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Неразпозната грешка"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -461,7 +468,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__zpl
 msgid "ZPL"
-msgstr ""
+msgstr "ZPL"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost

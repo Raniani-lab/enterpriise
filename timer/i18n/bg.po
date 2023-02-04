@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# aleksandar ivanov, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-21 08:56+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: aleksandar ivanov, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -106,14 +108,14 @@ msgstr ""
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_model
 msgid "Res Model"
-msgstr ""
+msgstr "Проучвателен модел"
 
 #. module: timer
 #. openerp-web
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Start"
-msgstr ""
+msgstr "Стартирайте"
 
 #. module: timer
 #. openerp-web
@@ -121,7 +123,7 @@ msgstr ""
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Stop"
-msgstr ""
+msgstr "Край"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__timer_pause
@@ -148,7 +150,7 @@ msgstr ""
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__user_id
 msgid "User"
-msgstr ""
+msgstr "Потребител"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__user_timer_id

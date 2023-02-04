@@ -37,7 +37,7 @@ msgstr "റദ്ദാക്കുക"
 #. module: sale_renting_crm
 #: model_terms:ir.ui.view,arch_db:sale_renting_crm.crm_lead_rental_view_form
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: sale_renting_crm
 #: model:ir.model,name:sale_renting_crm.model_crm_lead_rental

@@ -4,6 +4,14 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Boris Stefanov <borkata@gmail.com>, 2023
+# aleksandar ivanov, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Ivan Goychev <igoychev.projects@gmail.com>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +32,7 @@ msgstr ""
 #: code:addons/appointment/models/appointment_type.py:0
 #, python-format
 msgid " (copy)"
-msgstr ""
+msgstr "(копие)"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_count
@@ -295,7 +303,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "<span> hours</span>"
-msgstr ""
+msgstr "<span> часове</span>"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -342,7 +350,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__access_token
 msgid "Access Token"
-msgstr ""
+msgstr "Токен за достъп"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_needaction
@@ -385,7 +393,7 @@ msgstr ""
 #. module: appointment
 #: model:res.groups,name:appointment.group_appointment_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Администратор"
 
 #. module: appointment
 #. odoo-python
@@ -406,7 +414,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__allday
 #, python-format
 msgid "All day"
-msgstr ""
+msgstr "Цял ден"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -441,7 +449,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__name
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_view_form
 msgid "Answer"
-msgstr ""
+msgstr "Отговор"
 
 #. module: appointment
 #: model:ir.actions.act_window,name:appointment.appointment_answer_input_action_from_question
@@ -460,7 +468,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Answers"
-msgstr ""
+msgstr "Отговори"
 
 #. module: appointment
 #. odoo-javascript
@@ -703,18 +711,18 @@ msgstr ""
 #: model:ir.ui.menu,name:appointment.calendar_appointment_type_menu_action
 #, python-format
 msgid "Calendar"
-msgstr ""
+msgstr "Календар"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_calendar_attendee
 msgid "Calendar Attendee Information"
-msgstr ""
+msgstr "Календар Информация за участник"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_calendar_event
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__calendar_event_id
 msgid "Calendar Event"
-msgstr ""
+msgstr "Календар Събитие"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
@@ -735,7 +743,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__category
 msgid "Category"
-msgstr ""
+msgstr "Категория"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_question__question_type__checkbox
@@ -758,7 +766,7 @@ msgstr ""
 #: model:onboarding.onboarding.step,button_text:appointment.appointment_onboarding_create_appointment_type_step
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Configure"
-msgstr ""
+msgstr "Конфигурирайте"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -773,12 +781,12 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Confirmed"
-msgstr ""
+msgstr "Потвърдена"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,button_text:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "Connect"
-msgstr ""
+msgstr "Свързване"
 
 #. module: appointment
 #. odoo-python
@@ -795,7 +803,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model,name:appointment.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_partner_ids
@@ -850,13 +858,13 @@ msgstr "Създадено на"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__custom
 msgid "Custom"
-msgstr ""
+msgstr "Персонализиран"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__partner_id
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Customer"
-msgstr ""
+msgstr "Клиент"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -874,7 +882,7 @@ msgstr "Дата"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Declined"
-msgstr ""
+msgstr "Отхвърлен"
 
 #. module: appointment
 #. odoo-python
@@ -937,7 +945,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__duration
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_duration
 msgid "Duration"
-msgstr ""
+msgstr "Продължителност"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -964,7 +972,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model,name:appointment.model_calendar_alarm
 msgid "Event Alarm"
-msgstr ""
+msgstr "Събитие - Аларма"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -984,18 +992,18 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Последователи"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__5
 msgid "Friday"
-msgstr ""
+msgstr "Петък"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__start_datetime
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "From"
-msgstr ""
+msgstr "От"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__avatars_display
@@ -1051,7 +1059,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Групиране по"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__has_message
@@ -1082,13 +1090,13 @@ msgstr "ID"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ако е отметнато, новите съобщения ще изискват внимание."
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_has_error
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Ако е отметнато, някои съобщения имат грешка при доставката."
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_slot__restrict_to_user_ids
@@ -1124,7 +1132,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "е последовател"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__is_published
@@ -1233,7 +1241,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__location_id
 msgid "Location"
-msgstr ""
+msgstr "Локация"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__location
@@ -1258,12 +1266,12 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Основен прикачен Файл"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_invite__staff_users_choice__current_user
 msgid "Me"
-msgstr ""
+msgstr "Аз"
 
 #. module: appointment
 #. odoo-python
@@ -1281,13 +1289,13 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Грешка при доставката на съобщение"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_ids
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Messages"
-msgstr ""
+msgstr "Съобщения"
 
 #. module: appointment
 #. odoo-python
@@ -1299,7 +1307,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__1
 msgid "Monday"
-msgstr ""
+msgstr "Понеделник"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_question__question_type__text
@@ -1378,7 +1386,7 @@ msgstr ""
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "None"
-msgstr ""
+msgstr "Никакъв"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_calendar_event__alarm_ids
@@ -1388,22 +1396,22 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Брой действия"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Брой грешки"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Брой съобщения, които изискват внимание"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Брой съобщения с грешка при доставка"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_onboarding_onboarding
@@ -1424,7 +1432,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
 msgid "Online"
-msgstr ""
+msgstr "Онлайн"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__appointment_type_id
@@ -1471,7 +1479,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Options"
-msgstr ""
+msgstr "Настройки"
 
 #. module: appointment
 #. odoo-javascript
@@ -1490,12 +1498,12 @@ msgstr ""
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Past"
-msgstr ""
+msgstr "Отминал"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__placeholder
 msgid "Placeholder"
-msgstr ""
+msgstr "Заместител"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -1513,7 +1521,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
 msgid "Preview"
-msgstr ""
+msgstr "Преглед"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
@@ -1526,7 +1534,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__name
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Question"
-msgstr ""
+msgstr "Въпрос"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__question_type
@@ -1538,7 +1546,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__question_ids
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Questions"
-msgstr ""
+msgstr "Въпроси"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_question__question_type__radio
@@ -1548,7 +1556,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__assign_method__random
 msgid "Random"
-msgstr ""
+msgstr "Произволен"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__slot_type__recurring
@@ -1564,12 +1572,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__reminder_ids
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__alarm_ids
 msgid "Reminders"
-msgstr ""
+msgstr "Напомняния"
 
 #. module: appointment
 #: model:ir.ui.menu,name:appointment.menu_schedule_report
 msgid "Reporting"
-msgstr ""
+msgstr "Отчитане"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__question_required
@@ -1581,7 +1589,7 @@ msgstr ""
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Responsible"
-msgstr ""
+msgstr "Отговорно лице"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__restrict_to_user_ids
@@ -1596,18 +1604,18 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS грешка при доставка"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__6
 msgid "Saturday"
-msgstr ""
+msgstr "Събота"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Schedule"
-msgstr ""
+msgstr "Разписание"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
@@ -1707,7 +1715,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__sequence
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Последователност"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_create_appointment_type_step
@@ -1719,7 +1727,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_tree
 msgid "Share"
-msgstr ""
+msgstr "Споделете"
 
 #. module: appointment
 #. odoo-javascript
@@ -1735,7 +1743,7 @@ msgstr ""
 #: code:addons/appointment/models/appointment_type.py:0
 #, python-format
 msgid "Share Link"
-msgstr ""
+msgstr "Споделете линк"
 
 #. module: appointment
 #: model:ir.actions.act_window,name:appointment.appointment_invite_action
@@ -1758,7 +1766,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__short_code
 #: model:ir.model.fields,field_description:appointment.field_appointment_onboarding_link__short_code
 msgid "Short Code"
-msgstr ""
+msgstr "Кратък код"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__short_code_format_warning
@@ -1841,7 +1849,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__7
 msgid "Sunday"
-msgstr ""
+msgstr "Неделя"
 
 #. module: appointment
 #: model:appointment.question,name:appointment.appointment_type_2_question_1
@@ -1959,14 +1967,14 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__4
 msgid "Thursday"
-msgstr ""
+msgstr "Четвъртък"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_tz
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "Timezone"
-msgstr ""
+msgstr "Часови пояс"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__appointment_tz
@@ -1982,7 +1990,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__end_datetime
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "To"
-msgstr ""
+msgstr "До"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__access_token
@@ -1997,12 +2005,12 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
 msgid "Total:"
-msgstr ""
+msgstr "Общо:"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__2
 msgid "Tuesday"
-msgstr ""
+msgstr "Вторник"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -2039,7 +2047,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__staff_user_ids
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__staff_user_ids
 msgid "Users"
-msgstr ""
+msgstr "Потребители"
 
 #. module: appointment
 #: model_terms:appointment.type,message_confirmation:appointment.appointment_type_1
@@ -2051,22 +2059,22 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__website
 msgid "Website"
-msgstr ""
+msgstr "Уебсайт"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Съобщения в уебсайт"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "История на комуникацията на уебсайт"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__3
 msgid "Wednesday"
-msgstr ""
+msgstr "Сряда"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__weekday
@@ -2116,7 +2124,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "at"
-msgstr ""
+msgstr "на"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -2126,7 +2134,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "days"
-msgstr ""
+msgstr "дни"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form

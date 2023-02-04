@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
@@ -34,7 +34,8 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period."
+"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period. \n"
+"  Negative recurring lines are considered free."
 msgstr ""
 
 #. module: sale_subscription
@@ -685,7 +686,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
@@ -975,7 +976,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_close_reason_wizard_action
@@ -1054,7 +1055,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1270,7 +1271,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Download"
-msgstr ""
+msgstr "ഡൌൺലോഡ് "
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__category__draft
@@ -1878,6 +1879,15 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__starred_user_ids
 msgid "Members"
+msgstr "മെംബേർസ് "
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"Mix of negative recurring lines and non-recurring line. The contract should "
+"be fixed manually"
 msgstr ""
 
 #. module: sale_subscription
@@ -2978,7 +2988,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_summary
 msgid "Summary"
-msgstr ""
+msgstr "സംഗ്രഹം"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__crud_model_id
@@ -3053,6 +3063,24 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"The following recurring orders have draft invoices. Please Confirm them or "
+"cancel them before creating new invoices. %s."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/account_move.py:0
+#, python-format
+msgid ""
+"The following refund %s has been made on this contract. Please check the "
+"next invoice date if necessary."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
 msgid "The full URL to access the server action through the website."
 msgstr ""
@@ -3112,6 +3140,13 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "The upsell %s has been canceled."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid "There is already a draft invoice for subscription %s."
 msgstr ""
 
 #. module: sale_subscription
@@ -3276,7 +3311,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Unit Price"
-msgstr ""
+msgstr "യൂണിറ്റ് പ്രൈസ് "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_uom
@@ -3447,6 +3482,15 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_type__year
 msgid "Years"
+msgstr "വർഷങ്ങൾ"
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You can not delete a confirmed subscription. You must first close and cancel"
+" it before you can delete it."
 msgstr ""
 
 #. module: sale_subscription
@@ -3536,7 +3580,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
-msgid "Your contrat is recurrent"
+msgid "Your contract is recurrent"
 msgstr ""
 
 #. module: sale_subscription

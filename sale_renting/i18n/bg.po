@@ -4,6 +4,19 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Vladimir Petrov <vladimir.petrov@gmail.com>, 2023
+# Александра Николова <alexandra1nikolova@gmail.com>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# B Dochev, 2023
+# aleksandar ivanov, 2023
+# Ivan Ivanov, 2023
+# Boris Stefanov <borkata@gmail.com>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# kalatchev, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,7 +95,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "<strong>Salesperson:</strong>"
-msgstr ""
+msgstr "<strong>Търговец:</strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
@@ -158,7 +171,7 @@ msgstr "Отказ"
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__cancel
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__cancel
 msgid "Cancelled"
-msgstr ""
+msgstr "Отменен"
 
 #. module: sale_renting
 #. openerp-web
@@ -191,7 +204,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__color
 msgid "Color"
-msgstr ""
+msgstr "Цвят"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_res_company
@@ -215,7 +228,7 @@ msgstr "Настройки"
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_config
 msgid "Configuration"
-msgstr ""
+msgstr "Конфигурация "
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_wizard
@@ -240,13 +253,13 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__pickup
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "Confirmed"
-msgstr ""
+msgstr "Потвърдена"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Confirmed Orders"
-msgstr ""
+msgstr "Потвърдени поръчки"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.action_create_rental_order
@@ -307,7 +320,7 @@ msgstr "Валута"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Customer"
-msgstr ""
+msgstr "Клиент"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__country_id
@@ -323,12 +336,12 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__card_name
 msgid "Customer Name"
-msgstr ""
+msgstr "Потребителско име"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_orders_customers
 msgid "Customers"
-msgstr ""
+msgstr "Клиенти"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__price
@@ -360,12 +373,12 @@ msgstr "Дата"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 msgid "Dates"
-msgstr ""
+msgstr "Дати"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__day
 msgid "Days"
-msgstr ""
+msgstr "Дни"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__extra_product
@@ -376,7 +389,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__description
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__module_sale_renting_sign
@@ -396,12 +409,12 @@ msgstr "Име за показване"
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__draft
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__draft
 msgid "Draft Quotation"
-msgstr ""
+msgstr "Чернова оферта"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__duration
 msgid "Duration"
-msgstr ""
+msgstr "Продължителност"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
@@ -428,7 +441,7 @@ msgstr ""
 #: code:addons/sale_renting/models/sale_order_line.py:0
 #, python-format
 msgid "Expected"
-msgstr ""
+msgstr "Очакван"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
@@ -483,7 +496,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Групиране по"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__has_late_lines
@@ -510,7 +523,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__hour
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_temporal_recurrence__unit__hour
 msgid "Hours"
-msgstr ""
+msgstr "Часове"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__id
@@ -545,7 +558,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__is_late
 msgid "Is overdue"
-msgstr ""
+msgstr "Е просрочена "
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard____last_update
@@ -575,7 +588,7 @@ msgstr "Последно актуализирано на"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "Late"
-msgstr ""
+msgstr "Последен"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
@@ -620,18 +633,18 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__month
 msgid "Months"
-msgstr ""
+msgstr "Месеци"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "My Orders"
-msgstr ""
+msgstr "Моите поръчки"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__next_action_date
 msgid "Next Action"
-msgstr ""
+msgstr "Следваща акция"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.action_rental_report
@@ -649,7 +662,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 msgid "Ok"
-msgstr ""
+msgstr "Добре"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_action
@@ -669,29 +682,29 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__order_id
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 msgid "Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__order_id
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__order_id
 msgid "Order #"
-msgstr ""
+msgstr "Поръчка #"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__order_date
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Order Date"
-msgstr ""
+msgstr "Дата на поръчка"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__order_line_id
 msgid "Order Line"
-msgstr ""
+msgstr "Ред на поръчка"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__name
 msgid "Order Reference"
-msgstr ""
+msgstr "Референция за поръчка"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__order_line_id
@@ -702,7 +715,7 @@ msgstr ""
 #: model:ir.ui.menu,name:sale_renting.rental_order_menu
 #: model:ir.ui.menu,name:sale_renting.rental_orders_all
 msgid "Orders"
-msgstr ""
+msgstr "Поръчки"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
@@ -791,17 +804,17 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pricing_explanation
 msgid "Price Computation"
-msgstr ""
+msgstr "Изчисляване на цена"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pricelist_id
 msgid "Pricelist"
-msgstr ""
+msgstr "Ценова листа"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pricing_id
 msgid "Pricing"
-msgstr ""
+msgstr "Ценообразуване"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_product_template
@@ -815,7 +828,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__categ_id
@@ -823,7 +836,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Product Category"
-msgstr ""
+msgstr "Категория продукт"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_name
@@ -834,12 +847,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__product_tmpl_id
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_tmpl_id
 msgid "Product Template"
-msgstr ""
+msgstr "Шаблон за продукт "
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Продуктов вариант"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -855,7 +868,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_renting.rental_product_template_action
 #: model:ir.ui.menu,name:sale_renting.menu_rental_products
 msgid "Products"
-msgstr ""
+msgstr "Продукти"
 
 #. module: sale_renting
 #: model:product.product,name:sale_renting.rental_product_1
@@ -866,7 +879,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_uom_qty
 msgid "Qty Ordered"
-msgstr ""
+msgstr "Поръчано К-во"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__qty_delivered
@@ -881,7 +894,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__quantity
 msgid "Quantity"
-msgstr ""
+msgstr "Количество"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__qty_in_rent
@@ -893,7 +906,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__draft
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__draft
 msgid "Quotation"
-msgstr ""
+msgstr "Оферта"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__sent
@@ -901,13 +914,13 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__sent
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__sent
 msgid "Quotation Sent"
-msgstr ""
+msgstr "Изпратена оферта"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Quotations"
-msgstr ""
+msgstr "Оферти"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
@@ -1004,12 +1017,12 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_reporting
 msgid "Reporting"
-msgstr ""
+msgstr "Отчитане"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Reservations"
-msgstr ""
+msgstr "Резервации"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__qty_reserved
@@ -1018,7 +1031,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "Reserved"
-msgstr ""
+msgstr "Резервиран"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__return_date
@@ -1027,7 +1040,7 @@ msgstr ""
 #: model:ir.ui.menu,name:sale_renting.rental_orders_return
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "Return"
-msgstr ""
+msgstr "Връщане"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__return_date
@@ -1054,7 +1067,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 #, python-format
 msgid "Returned"
-msgstr ""
+msgstr "Върнат"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_temporal_recurrence
@@ -1065,31 +1078,31 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__done
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__done
 msgid "Sales Done"
-msgstr ""
+msgstr "Извършени продажби"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_order
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__sale
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__sale
 msgid "Sales Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Ред на поръчка за продажби"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__team_id
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Sales Team"
-msgstr ""
+msgstr "Търговски отдел"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__user_id
 msgid "Salesman"
-msgstr ""
+msgstr "Продавач"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__user_id
@@ -1097,7 +1110,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Salesperson"
-msgstr ""
+msgstr "Търговец"
 
 #. module: sale_renting
 #. openerp-web
@@ -1116,7 +1129,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_schedule
 msgid "Schedule"
-msgstr ""
+msgstr "Разписание"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/product_product.py:0
@@ -1162,7 +1175,7 @@ msgstr "Област"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Status"
-msgstr ""
+msgstr "Състояние"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.sale_rental_report_view_tree
@@ -1265,25 +1278,25 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_tree
 msgid "Total Tax Included"
-msgstr ""
+msgstr "Общо с включен данък"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__duration_unit
 #: model:ir.model.fields,field_description:sale_renting.field_sale_temporal_recurrence__unit
 msgid "Unit"
-msgstr ""
+msgstr "Единица"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__unit_price
 msgid "Unit Price"
-msgstr ""
+msgstr "Единична цена"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__uom_id
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__product_uom
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_uom
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Мерна единица"
 
 #. module: sale_renting
 #: model:product.product,uom_name:sale_renting.rental_product_1
@@ -1291,7 +1304,7 @@ msgstr ""
 #: model:product.template,uom_name:sale_renting.rental_product_1_product_template
 #: model:product.template,uom_name:sale_renting.rental_product_2_product_template
 msgid "Units"
-msgstr ""
+msgstr "Единици"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
@@ -1329,12 +1342,12 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__week
 msgid "Weeks"
-msgstr ""
+msgstr "Седмици"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__year
 msgid "Years"
-msgstr ""
+msgstr "Години"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_product_template_action
@@ -1373,10 +1386,10 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "hours"
-msgstr ""
+msgstr "часове"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/sale_order_line.py:0
 #, python-format
 msgid "to"
-msgstr ""
+msgstr "до"

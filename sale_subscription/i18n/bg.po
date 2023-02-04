@@ -4,14 +4,28 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
+# Ivo Matev <ivo.matev@lensin.eu>, 2023
+# Ivan Goychev <igoychev.projects@gmail.com>, 2023
+# Александра Николова <alexandra1nikolova@gmail.com>, 2023
+# B Dochev, 2023
+# Boris Stefanov <borkata@gmail.com>, 2023
+# kalatchev, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Martin Trigaux, 2023
+# aleksandar ivanov, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: aleksandar ivanov, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,13 +48,14 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period."
+"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period. \n"
+"  Negative recurring lines are considered free."
 msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__percentage_satisfaction
 msgid "% Happy"
-msgstr ""
+msgstr "% Доволен"
 
 #. module: sale_subscription
 #. odoo-python
@@ -52,7 +67,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "(Wrong address?)"
-msgstr ""
+msgstr "(Грешен адрес?)"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__mrr_change_period__1month
@@ -215,7 +230,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-comment\"/> Send message"
-msgstr ""
+msgstr "Изпрати съобщение"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -338,7 +353,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<strong>Subtotal</strong>"
-msgstr ""
+msgstr "<strong>Стойност</strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -648,6 +663,11 @@ msgid ""
 "field as True to allow users to run this action. If it is set to False the "
 "action cannot be run through the website."
 msgstr ""
+"Действието на сървъра може да се изпълни от уебсайта посредством специален "
+"контролер. Адресът е <base>/уебсайт/действие/<website_path>. Настройте "
+"полето като 'Правилно', за да позволите на потребителите да изпълняват това "
+"действие. Ако е настроено на 'Грешно', действието не може да се изпълнява "
+"през уебсайта."
 
 #. module: sale_subscription
 #. odoo-python
@@ -665,22 +685,22 @@ msgstr "Действие"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__help
 msgid "Action Description"
-msgstr ""
+msgstr "Action Description"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__name
 msgid "Action Name"
-msgstr ""
+msgstr "Название на действието"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__state
 msgid "Action To Do"
-msgstr ""
+msgstr "Действие, което следва да се извърши"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__type
 msgid "Action Type"
-msgstr ""
+msgstr "Вид действие"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__active
@@ -691,13 +711,13 @@ msgstr "Активно"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Activity"
-msgstr ""
+msgstr "Дейност"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.mail_activity_type_action_config_subscription
 #: model:ir.ui.menu,name:sale_subscription.subscription_menu_config_activity_type
 msgid "Activity Types"
-msgstr ""
+msgstr "Тип дейности"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_type
@@ -707,7 +727,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__partner_ids
 msgid "Add Followers"
-msgstr ""
+msgstr "Добавете последователи"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -719,7 +739,7 @@ msgstr ""
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_alert
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
 msgid "Alerts"
-msgstr ""
+msgstr "Сигнали"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurring_live
@@ -756,7 +776,7 @@ msgstr "Аналитична Сметка"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__filter_domain
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Apply on"
-msgstr ""
+msgstr "Приложете върху"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_template_view_search
@@ -777,7 +797,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user
 msgid "Assign To"
-msgstr ""
+msgstr "Разпределете към"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -789,7 +809,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__automation_id
 msgid "Automated Action"
-msgstr ""
+msgstr "Автоматизирано действие"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__auto_close_limit
@@ -825,7 +845,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_published
 msgid "Available on the Website"
-msgstr ""
+msgstr "Достъпно на уебсайта"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg
@@ -836,7 +856,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__bad
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__health__bad
 msgid "Bad"
-msgstr ""
+msgstr "Лош"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__bad_health_domain
@@ -849,17 +869,17 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__filter_pre_domain
 msgid "Before Update Domain"
-msgstr ""
+msgstr "Преди да актуализирате домейн"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_model_id
 msgid "Binding Model"
-msgstr ""
+msgstr "Binding Model"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_type
 msgid "Binding Type"
-msgstr ""
+msgstr "Binding Type"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_view_types
@@ -904,7 +924,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__category
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__category
 msgid "Category"
-msgstr ""
+msgstr "Категория"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__amount_signed
@@ -920,12 +940,12 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Change plan"
-msgstr ""
+msgstr "Променете план"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__child_ids
 msgid "Child Actions"
-msgstr ""
+msgstr "Child Actions"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__child_ids
@@ -933,6 +953,8 @@ msgid ""
 "Child server actions that will be executed. Note that the last return "
 "returned action value will be used as global return value."
 msgstr ""
+"Child server actions that will be executed. Note that the last return "
+"returned action value will be used as global return value."
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -983,7 +1005,7 @@ msgstr "Затвори"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_close_reason_wizard__close_reason_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__close_reason_id
 msgid "Close Reason"
-msgstr ""
+msgstr "Затворете причина"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_close_reason_action
@@ -991,12 +1013,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_tree
 msgid "Close Reasons"
-msgstr ""
+msgstr "Затворете причини"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Close Subscription"
-msgstr ""
+msgstr "Затворете абонамент"
 
 #. module: sale_subscription
 #. odoo-python
@@ -1009,7 +1031,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #, python-format
 msgid "Closed"
-msgstr ""
+msgstr "Затворено"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -1027,12 +1049,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__color
 msgid "Color"
-msgstr ""
+msgstr "Цвят"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__commercial_partner_id
 msgid "Commercial Entity"
-msgstr ""
+msgstr "Търговски обект"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__company_id
@@ -1044,17 +1066,17 @@ msgstr "Фирма"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__company_currency_id
 msgid "Company Currency"
-msgstr ""
+msgstr "Валута на компания"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_config
 msgid "Configuration"
-msgstr ""
+msgstr "Конфигурация "
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Confirm"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1065,7 +1087,7 @@ msgstr ""
 #: model:ir.model,name:sale_subscription.model_res_partner
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_template__recurring_rule_type
@@ -1087,12 +1109,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__country_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 msgid "Country"
-msgstr ""
+msgstr "Държава"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "Create Invoice"
-msgstr ""
+msgstr "Създайте фактура"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.product_action_subscription
@@ -1161,7 +1183,7 @@ msgstr "Създадено на"
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__create
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__0_creation
 msgid "Creation"
-msgstr ""
+msgstr "Създаване"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__subscription_management
@@ -1192,7 +1214,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Customer"
-msgstr ""
+msgstr "Клиент"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__commercial_partner_id
@@ -1202,7 +1224,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__customer_ids
 msgid "Customers"
-msgstr ""
+msgstr "Клиенти"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__create_date
@@ -1212,7 +1234,7 @@ msgstr "Дата"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__next_invoice_date
 msgid "Date of Next Invoice"
-msgstr ""
+msgstr "Дата на следваща фактура"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -1235,17 +1257,17 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range
 msgid "Delay after trigger date"
-msgstr ""
+msgstr "Забавяне след пусковата дата"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range_type
 msgid "Delay type"
-msgstr ""
+msgstr "Вид забавяне"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Destination"
-msgstr ""
+msgstr "Дестинация"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__display_name
@@ -1270,13 +1292,13 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Download"
-msgstr ""
+msgstr "Изтеглете от системата"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__category__draft
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__stage_category__draft
 msgid "Draft"
-msgstr ""
+msgstr "Чернова "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_date_deadline_range
@@ -1291,12 +1313,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_boundary
 msgid "Duration"
-msgstr ""
+msgstr "Продължителност"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__template_id
 msgid "Email Template"
-msgstr ""
+msgstr "Шаблон за имейл"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_count
@@ -1335,17 +1357,17 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__event_date
 msgid "Event Date"
-msgstr ""
+msgstr "Дата на събитие"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 msgid "Expired"
-msgstr ""
+msgstr "Изтекло"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__xml_id
 msgid "External ID"
-msgstr ""
+msgstr "Външна ИН"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1365,12 +1387,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_boundary__limited
 msgid "Fixed"
-msgstr ""
+msgstr "Фиксиран"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__fold
 msgid "Folded in Kanban"
-msgstr ""
+msgstr "Сгънато в Канбан"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_boundary__unlimited
@@ -1385,7 +1407,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Бъдещи дейности"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
@@ -1417,7 +1439,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__done
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__health__done
 msgid "Good"
-msgstr ""
+msgstr "Добър"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__good_health_domain
@@ -1431,12 +1453,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Групиране по"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__groups_id
 msgid "Groups"
-msgstr ""
+msgstr "Групи"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -1457,12 +1479,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.module.category,description:sale_subscription.module_category_subscription_management
 msgid "Helps you handle subscriptions and recurring invoicing."
-msgstr ""
+msgstr "Помага Ви да управлявате абонаментите и периодичното фактуриране."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "History"
-msgstr ""
+msgstr "История"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__history_count
@@ -1501,6 +1523,7 @@ msgstr ""
 msgid ""
 "If checked, the user will be able to close his account from the frontend"
 msgstr ""
+"Ако е отметнато, потребителят ще може да затвори сметката си от фронтенда"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__payment_token_id
@@ -1513,6 +1536,8 @@ msgid ""
 "If present, this condition must be satisfied before executing the action "
 "rule."
 msgstr ""
+"Ако е налице, това условие трябва да бъде изпълнено преди да се приложи "
+"правилото за действие."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__filter_pre_domain
@@ -1520,6 +1545,8 @@ msgid ""
 "If present, this condition must be satisfied before the update of the "
 "record."
 msgstr ""
+"Ако е налице, това условие трябва да бъде изпълнено преди актуализацията на "
+"записа"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__end_date
@@ -1536,6 +1563,8 @@ msgstr ""
 msgid ""
 "If set, confirming a sale order with this product will create a subscription"
 msgstr ""
+"Ако е наестроено, потвърждаването на поръчка за продажба с този продукт ще "
+"създаде абонамент"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_template__journal_id
@@ -1543,6 +1572,9 @@ msgid ""
 "If set, subscriptions with this template will invoice in this journal; "
 "otherwise the sales journal with the lowest sequence is used."
 msgstr ""
+"Ако са настроени, абонаментите с този шаблон ще фактурират в този журнал; в "
+"противен случай се използва журнала с продажби с най-ниската "
+"последователност."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_template__auto_close_limit
@@ -1561,7 +1593,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "If you wish to reopen it, the"
-msgstr ""
+msgstr "Ако искате да го отворите отново,"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1569,6 +1601,8 @@ msgid ""
 "If you wish to reopen it, you can pay your invoice for the current invoicing"
 " period."
 msgstr ""
+"Ако искате да го отворите отново, можете да платите фактурата си за "
+"настоящия период на фактуриране."
 
 #. module: sale_subscription
 #. odoo-python
@@ -1579,19 +1613,19 @@ msgstr ""
 #: model:sale.order.stage,name:sale_subscription.sale_subscription_stage_in_progress
 #, python-format
 msgid "In Progress"
-msgstr ""
+msgstr "В процес"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__industry_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__industry_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 msgid "Industry"
-msgstr ""
+msgstr "Предмет на дейност"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Initial"
-msgstr ""
+msgstr "Инициал"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -1724,7 +1758,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Последни дейности"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -1739,7 +1773,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Latest Rating: Satisfied"
-msgstr ""
+msgstr "Последно оценяване: Задоволителен"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__least_delay_msg
@@ -1775,7 +1809,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Log a note..."
-msgstr ""
+msgstr "Регистрирайте бележка"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
@@ -1878,17 +1912,26 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__starred_user_ids
 msgid "Members"
+msgstr "Членове"
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"Mix of negative recurring lines and non-recurring line. The contract should "
+"be fixed manually"
 msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_id
 msgid "Model"
-msgstr ""
+msgstr "Модел"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_name
 msgid "Model Name"
-msgstr ""
+msgstr "Име на модела"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__crud_model_id
@@ -1896,11 +1939,13 @@ msgid ""
 "Model for record creation / update. Set this field only to specify a "
 "different model than the base model."
 msgstr ""
+"Model for record creation / update. Set this field only to specify a "
+"different model than the base model."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__model_id
 msgid "Model on which the server action runs."
-msgstr ""
+msgstr "Model on which the server action runs."
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_create_or_write
@@ -1913,17 +1958,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_monthly
 msgid "Monthly Recurring Revenue"
-msgstr ""
+msgstr "Месечно периодичен приход"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_type__month
 msgid "Months"
-msgstr ""
+msgstr "Месеци"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "My Orders"
-msgstr ""
+msgstr "Моите поръчки"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -1954,7 +1999,7 @@ msgstr ""
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "Newest"
-msgstr ""
+msgstr "Най-новите"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_tree
@@ -1975,7 +2020,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "None"
-msgstr ""
+msgstr "Никакъв"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sales_order_filter_subscription
@@ -1990,7 +2035,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_note
 msgid "Note"
-msgstr ""
+msgstr "Забележка"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -2010,7 +2055,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__on_change_field_ids
 msgid "On Change Fields Trigger"
-msgstr ""
+msgstr "Тригер за замяна на полета"
 
 #. module: sale_subscription
 #. odoo-python
@@ -2025,27 +2070,29 @@ msgid ""
 "Optional help text for the users with a description of the target view, such"
 " as its usage and purpose."
 msgstr ""
+"Optional help text for the users with a description of the target view, such"
+" as its usage and purpose."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__date_order
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 msgid "Order Date"
-msgstr ""
+msgstr "Дата на поръчка"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 msgid "Order Number"
-msgstr ""
+msgstr "Номер на поръчка"
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_5
 msgid "Other"
-msgstr ""
+msgstr "Друг"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -2092,12 +2139,12 @@ msgstr ""
 #: model:ir.model,name:sale_subscription.model_payment_token
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__payment_token_id
 msgid "Payment Token"
-msgstr ""
+msgstr "Платежен токен"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_transaction
 msgid "Payment Transaction"
-msgstr ""
+msgstr "Платежна транзакция"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2131,7 +2178,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_template_action
 #: model:ir.ui.menu,name:sale_subscription.menu_template_of_subscription
 msgid "Plans"
-msgstr ""
+msgstr "Планове"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -2144,12 +2191,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__pricelist_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Pricelist"
-msgstr ""
+msgstr "Ценова листа"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__pricing_id
 msgid "Pricing"
-msgstr ""
+msgstr "Ценообразуване"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_product_pricing
@@ -2159,7 +2206,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Print"
-msgstr ""
+msgstr "Печат"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_product_template
@@ -2167,24 +2214,24 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__categ_id
 msgid "Product Category"
-msgstr ""
+msgstr "Категория продукт"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_tmpl_id
 msgid "Product Template"
-msgstr ""
+msgstr "Шаблон за продукт "
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.product_action_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_product
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Products"
-msgstr ""
+msgstr "Продукти"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__link_field_id
@@ -2196,24 +2243,24 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__code
 msgid "Python Code"
-msgstr ""
+msgstr "Код Python"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__quantity
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Quantity"
-msgstr ""
+msgstr "Количество"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_stage__category__draft
 #: model:sale.order.stage,name:sale_subscription.sale_subscription_stage_draft
 msgid "Quotation"
-msgstr ""
+msgstr "Оферта"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_template
 msgid "Quotation Template"
-msgstr ""
+msgstr "Шаблон за оферта"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_template_line
@@ -2238,7 +2285,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_ids
 msgid "Rating"
-msgstr ""
+msgstr "Оценяване"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg_text
@@ -2248,7 +2295,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__rating_template_id
 msgid "Rating Email Template"
-msgstr ""
+msgstr "Шаблон за имейл за оценяване"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_feedback
@@ -2263,7 +2310,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_value
 msgid "Rating Last Value"
-msgstr ""
+msgstr "Оценяване последна стойност"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__rating_operator
@@ -2296,13 +2343,13 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_count
 msgid "Rating count"
-msgstr ""
+msgstr "Брой оценявания"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__name
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 msgid "Reason"
-msgstr ""
+msgstr "Причина"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurrence_id
@@ -2312,7 +2359,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_line_view_tree
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Recurrence"
-msgstr ""
+msgstr "Повтаряне"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_periods
@@ -2349,7 +2396,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Reference:"
-msgstr ""
+msgstr "Референция:"
 
 #. module: sale_subscription
 #. odoo-python
@@ -2368,7 +2415,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__renew
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "Renewal"
-msgstr ""
+msgstr "Подновяване"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_payment_transaction__renewal_allowed
@@ -2393,18 +2440,18 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
 msgid "Reporting"
-msgstr ""
+msgstr "Отчитане"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__description
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
 msgid "Requirements"
-msgstr ""
+msgstr "Изисквания"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_id
 msgid "Responsible"
-msgstr ""
+msgstr "Отговорно лице"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report_cohort
@@ -2419,7 +2466,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 msgid "Running"
-msgstr ""
+msgstr "Работещ"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -2440,7 +2487,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__order_id
 msgid "Sale Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_alert
@@ -2484,22 +2531,22 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.account_analytic_account_view_inherit_sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "Sales"
-msgstr ""
+msgstr "Продажби"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Ред на поръчка за продажби"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 msgid "Sales Orders"
-msgstr ""
+msgstr "Поръчки за продажби"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__team_ids
@@ -2507,7 +2554,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__team_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Sales Team"
-msgstr ""
+msgstr "Търговски отдел"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__activity_user__channel_leader
@@ -2520,7 +2567,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Salesperson"
-msgstr ""
+msgstr "Търговец"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_template_view_search
@@ -2613,12 +2660,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__sequence
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Последователност"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action_server_id
 msgid "Server Actions"
-msgstr ""
+msgstr "Действия на сървър"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2643,6 +2690,8 @@ msgid ""
 "Setting a value makes this action available in the sidebar for the given "
 "model."
 msgstr ""
+"Setting a value makes this action available in the sidebar for the given "
+"model."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__show_rec_invoice_button
@@ -2658,6 +2707,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Показване на всички записи, на които следващата дата на действие е преди "
+"днес"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__health
@@ -2682,7 +2733,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Stage"
-msgstr ""
+msgstr "Стадий"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__stage_category
@@ -2702,7 +2753,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__name
 msgid "Stage Name"
-msgstr ""
+msgstr "Име на етап"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__stage_to_id
@@ -2717,7 +2768,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_stage_action
 msgid "Stages"
-msgstr ""
+msgstr "Стадии"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__start_date
@@ -2736,12 +2787,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 #, python-format
 msgid "Status"
-msgstr ""
+msgstr "Състояние"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 msgid "Submit"
-msgstr ""
+msgstr "Изпращане"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_autofollow
@@ -2761,7 +2812,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_view_cohort
 #, python-format
 msgid "Subscription"
-msgstr ""
+msgstr "Абонамент"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_subscription_report
@@ -2769,7 +2820,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_subcription_report_graph
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_subcription_report_pivot
 msgid "Subscription Analysis"
-msgstr ""
+msgstr "Анализ на абонаменти"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_child_ids
@@ -2800,7 +2851,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_management
 msgid "Subscription Management"
-msgstr ""
+msgstr "Управление на абонаменти"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_primary_form_view
@@ -2814,7 +2865,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template_line__recurring_invoice
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template_option__recurring_invoice
 msgid "Subscription Product"
-msgstr ""
+msgstr "Продукт за абонамент"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_account_move_line__subscription_end_date
@@ -2845,7 +2896,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
 msgid "Subscription Template"
-msgstr ""
+msgstr "Шаблон за абонамент"
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_2
@@ -2940,7 +2991,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #, python-format
 msgid "Subscriptions"
-msgstr ""
+msgstr "Абонаменти"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_pivot_action
@@ -2963,7 +3014,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_pending
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_pending
 msgid "Subscriptions to Renew"
-msgstr ""
+msgstr "Абонаменти за подновяване"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_view_tree
@@ -2978,17 +3029,17 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_summary
 msgid "Summary"
-msgstr ""
+msgstr "Обобщение"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__crud_model_id
 msgid "Target Model"
-msgstr ""
+msgstr "Целеви модел"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__crud_model_name
 msgid "Target Model Name"
-msgstr ""
+msgstr "Име на целеви модел"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2998,13 +3049,13 @@ msgstr "Данъци"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__team_user_id
 msgid "Team Leader"
-msgstr ""
+msgstr "Ръководител екип"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Template"
-msgstr ""
+msgstr "Шаблон"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.mail_template_subscription_alert
@@ -3020,6 +3071,9 @@ msgid ""
 "                can be selected by the salespeople to quickly configure the\n"
 "                terms and conditions of the subscription."
 msgstr ""
+"Шаблоните се използват за предварително създаване на абонамент, който\n"
+"                може да бъде избран от търговците с цел бърза конфигурация на\n"
+"                сроковете и условията на абонамента."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__temporal_type
@@ -3035,7 +3089,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Terms and Conditions"
-msgstr ""
+msgstr "Срокове и условия"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_account_move_line__subscription_mrr
@@ -3053,9 +3107,27 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"The following recurring orders have draft invoices. Please Confirm them or "
+"cancel them before creating new invoices. %s."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/account_move.py:0
+#, python-format
+msgid ""
+"The following refund %s has been made on this contract. Please check the "
+"next invoice date if necessary."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
 msgid "The full URL to access the server action through the website."
-msgstr ""
+msgstr "Пълният URL адрес за достъп до действието на сървъра през уеб сайта."
 
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_check_start_date_lower_next_invoice_date
@@ -3068,6 +3140,8 @@ msgid ""
 "The next invoice will be created on this date then the period will be "
 "extended."
 msgstr ""
+"Следващата фактура ще бъде създадена на тази дата, след което срокът ще бъде"
+" удължен."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3116,6 +3190,13 @@ msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid "There is already a draft invoice for subscription %s."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "This Subscription is already running. There is no need to renew it."
@@ -3142,6 +3223,8 @@ msgid ""
 "This stage is folded in the kanban view when there are no records in that "
 "stage to display."
 msgstr ""
+"This stage is folded in the kanban view when there are no records in that "
+"stage to display."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3183,37 +3266,37 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #, python-format
 msgid "To Renew"
-msgstr ""
+msgstr "За подновяване"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Днешни дейности"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid "Total"
-msgstr ""
+msgstr "Общ"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_view_tree_subscription
 msgid "Total Tax Included"
-msgstr ""
+msgstr "Общо с включен данък"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__3_transfer
 msgid "Transfer"
-msgstr ""
+msgstr "Прехвърлете"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trigger
 msgid "Trigger"
-msgstr ""
+msgstr "Тригер"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_id
 msgid "Trigger Date"
-msgstr ""
+msgstr "Дата на изпълнение"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trigger_field_ids
@@ -3271,17 +3354,17 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Unassigned"
-msgstr ""
+msgstr "Неназначени"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Unit Price"
-msgstr ""
+msgstr "Единична цена"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_uom
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Мерна единица"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -3301,7 +3384,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Upselling"
-msgstr ""
+msgstr "Ъпселинг"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_upsell
@@ -3312,7 +3395,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__usage
 msgid "Usage"
-msgstr ""
+msgstr "Употреба"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__activity_user_type
@@ -3325,12 +3408,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_calendar_id
 msgid "Use Calendar"
-msgstr ""
+msgstr "Използвайте календар"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
 msgid "Use employee work schedule"
-msgstr ""
+msgstr "Използвайте работен график на служител"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_filtered
@@ -3343,7 +3426,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_resource_field_id
 msgid "Use the user's working schedule."
-msgstr ""
+msgstr "Използвайте работния график на служителя"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_field_name
@@ -3358,7 +3441,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__fields_lines
 msgid "Value Mapping"
-msgstr ""
+msgstr "Value Mapping"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -3375,14 +3458,14 @@ msgstr ""
 #: code:addons/sale_subscription/models/product.py:0
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Внимание"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/manage_form.js:0
 #, python-format
 msgid "Warning!"
-msgstr ""
+msgstr "Предупреждение!"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3390,16 +3473,18 @@ msgid ""
 "We always listen to our customer. Could you specify the reason for "
 "cancelling your subscription?"
 msgstr ""
+"Винаги се вслушваме в клиентите си. Можете ли да посочите причината за "
+"отмяна на абонамента си?"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_path
 msgid "Website Path"
-msgstr ""
+msgstr "Път на уебсайт"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_url
 msgid "Website Url"
-msgstr ""
+msgstr "URL адрес на уебсайт"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_calendar_id
@@ -3407,6 +3492,8 @@ msgid ""
 "When calculating a day-based timed condition, it is possible to use a "
 "calendar to compute the date based on working days."
 msgstr ""
+"При изчисляване на времево условие на ежедневна база, е възможно да "
+"използвате календар, за да изчислите датата въз основа на работните дни."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__sequence
@@ -3414,6 +3501,8 @@ msgid ""
 "When dealing with multiple actions, the execution order is based on the "
 "sequence. Low number means high priority."
 msgstr ""
+"When dealing with multiple actions, the execution order is based on the "
+"sequence. Low number means high priority."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_id
@@ -3426,6 +3515,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active
 msgid "When unchecked, the rule is hidden and will not be executed."
 msgstr ""
+"Когато не е отметнато, правилото е скрито и не може да бъде приложено."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__starred
@@ -3447,6 +3537,15 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_type__year
 msgid "Years"
+msgstr "Години"
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You can not delete a confirmed subscription. You must first close and cancel"
+" it before you can delete it."
 msgstr ""
 
 #. module: sale_subscription
@@ -3501,7 +3600,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid "You don't have any subscriptions yet."
-msgstr ""
+msgstr "Все още нямате абонаменти."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3525,18 +3624,18 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Your Details"
-msgstr ""
+msgstr "Вашите данни"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Your Plan"
-msgstr ""
+msgstr "Вашият план"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
-msgid "Your contrat is recurrent"
+msgid "Your contract is recurrent"
 msgstr ""
 
 #. module: sale_subscription
@@ -3554,7 +3653,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Your subscription is closed."
-msgstr ""
+msgstr "Вашият абонамент е затворен"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
@@ -3564,7 +3663,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "days"
-msgstr ""
+msgstr "дни"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -3574,22 +3673,22 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Discuss proposal"
-msgstr ""
+msgstr "напр. обсъдете предложение"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__rating_operator__>
 msgid "greater than"
-msgstr ""
+msgstr "по-голямо от"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__rating_operator__<
 msgid "less than"
-msgstr ""
+msgstr "по-малко от"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "missing payments (from"
-msgstr ""
+msgstr "липсващи плащания (от"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -3599,7 +3698,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "to this day) will be automatically processed."
-msgstr ""
+msgstr "до днес) ще бъдат автоматично обработени."
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_invoice

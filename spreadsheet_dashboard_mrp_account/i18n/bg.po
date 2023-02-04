@@ -2,12 +2,21 @@
 # This file contains the translation of the following modules:
 # 	* spreadsheet_dashboard_mrp_account
 # 
+# Translators:
+# Весел Карастоянов <vesel@abv.bg>, 2023
+# Ivan Ivanov, 2023
+# aleksandar ivanov, 2023
+# Martin Trigaux, 2023
+# Anton Vassilev, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-26 07:35+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,7 +51,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "Настоящ"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -56,7 +65,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders"
-msgstr ""
+msgstr "Производствена поръчка "
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -99,7 +108,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "OEE"
-msgstr ""
+msgstr "Цялостна ефективност на оборудването - OEE"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -107,7 +116,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Operation Type"
-msgstr ""
+msgstr "Тип операция"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -116,14 +125,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Orders"
-msgstr ""
+msgstr "Поръчки"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Period"
-msgstr ""
+msgstr "Период"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -139,7 +148,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -162,7 +171,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Quantity Produced"
-msgstr ""
+msgstr "Произведено количество"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -170,7 +179,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Responsible"
-msgstr ""
+msgstr "Отговорно лице"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web

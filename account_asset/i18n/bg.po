@@ -4,6 +4,17 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Ivan Goychev <igoychev.projects@gmail.com>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Anton Vassilev, 2023
+# Boyan Rabchev <boyan.rabchev@plana.solutions>, 2023
+# aleksandar ivanov, 2023
+# Martin Trigaux, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# Георги Пехливанов <sonaris@gmail.com>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-16 09:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Ивайло Малинов <iv.malinov@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +42,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid " (copy)"
-msgstr ""
+msgstr "(копие)"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciation_entries_count
@@ -189,6 +200,8 @@ msgstr ""
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_id
 msgid "Account used in the depreciation entries, to decrease the asset value."
 msgstr ""
+"Сметка, използвана в амортизационните записи, с цел намаляване стойността на"
+" актива. "
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_expense_id
@@ -196,6 +209,8 @@ msgid ""
 "Account used in the periodical entries, to record a part of the asset as "
 "expense."
 msgstr ""
+"Сметка, използвана в периодичните записи, с цел записване на част от актива "
+"като разход"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -222,6 +237,8 @@ msgstr ""
 msgid ""
 "Account used to record the purchase of the asset at its original price."
 msgstr ""
+"Сметка, използвана да регистрира придобиване на актив на първоначалната му "
+"цена."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__gain_account_id
@@ -262,7 +279,7 @@ msgstr "Счетоводни Отчети"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__acquisition_date
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_kanban
 msgid "Acquisition Date"
-msgstr ""
+msgstr "Дата на придобиване"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__modify_action
@@ -287,7 +304,7 @@ msgstr "Дейности"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Декорация за изключение на дейност"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_state
@@ -382,7 +399,7 @@ msgstr "Актив"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Asset Account"
-msgstr ""
+msgstr "Сметка активи"
 
 #. module: account_asset
 #. odoo-python
@@ -445,7 +462,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__name
 msgid "Asset Name"
-msgstr ""
+msgstr "Име на актив"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -469,7 +486,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_asset_type
 msgid "Asset Type"
-msgstr ""
+msgstr "Вид актив"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_value_change
@@ -488,7 +505,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset created"
-msgstr ""
+msgstr "Създаден актив"
 
 #. module: account_asset
 #. odoo-python
@@ -521,7 +538,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr ""
+msgstr "Признаване на активи/приходи"
 
 #. module: account_asset
 #. odoo-python
@@ -540,17 +557,17 @@ msgstr "Активи"
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_finance_config_assets
 msgid "Assets and Revenues"
-msgstr ""
+msgstr "Активи и приходи"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in closed state"
-msgstr ""
+msgstr "Активи в затворено състояние"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in draft and open states"
-msgstr ""
+msgstr "Активи в състояние 'чернова' и 'отворени'"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_attachment_count
@@ -575,7 +592,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automation"
-msgstr ""
+msgstr "Авотматизация"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__daily_computation
@@ -613,19 +630,19 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__cancelled
 msgid "Cancelled"
-msgstr ""
+msgstr "Отменен"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Characteristics"
-msgstr ""
+msgstr "Характеристики"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__children_ids
 msgid "Children"
-msgstr ""
+msgstr "Второстепенен"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method
@@ -640,7 +657,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__close
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Closed"
-msgstr ""
+msgstr "Затворено"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_res_company
@@ -656,12 +673,12 @@ msgstr "Фирма"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__prorata_computation_type
 msgid "Computation"
-msgstr ""
+msgstr "Изчисление"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Compute Depreciation"
-msgstr ""
+msgstr "Изчислете амортизацията"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -671,12 +688,12 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Compute Revenue"
-msgstr ""
+msgstr "Изчислете приход"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Confirm"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
@@ -747,7 +764,7 @@ msgstr "Създадено на"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_depreciated_value
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_depreciated_value
 msgid "Cumulative Depreciation"
-msgstr ""
+msgstr "Кумулативна амортизация"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -757,7 +774,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Cumulative Revenue"
-msgstr ""
+msgstr "Кумулативен приход"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__currency_id
@@ -768,7 +785,7 @@ msgstr "Валута"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Current"
-msgstr ""
+msgstr "Настоящ"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -778,7 +795,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_ids
 msgid "Customer Invoice"
-msgstr ""
+msgstr "Фактура за продажба"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__date
@@ -901,7 +918,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Deferred Revenue Account"
-msgstr ""
+msgstr "Отчет разсрочен приход"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -933,14 +950,14 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
-msgstr ""
+msgstr "Име на отсрочен приход"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_recognition
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
 msgid "Deferred Revenues"
-msgstr ""
+msgstr "Разсрочени приходи"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
@@ -1002,7 +1019,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #, python-format
 msgid "Depreciation"
-msgstr ""
+msgstr "Амортизация"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_id
@@ -1014,23 +1031,23 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciation Board"
-msgstr ""
+msgstr "Depreciation Board"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciation Date"
-msgstr ""
+msgstr "Дата на амортизация"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__depreciation_move_ids
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciation Lines"
-msgstr ""
+msgstr "Амортизационни редове"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciation Method"
-msgstr ""
+msgstr "Метод на амортизация"
 
 #. module: account_asset
 #: model:account.report,name:account_asset.assets_report
@@ -1088,14 +1105,14 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Move"
-msgstr ""
+msgstr "Двеижение на актив"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Moves"
-msgstr ""
+msgstr "Движение на активи"
 
 #. module: account_asset
 #. odoo-python
@@ -1108,7 +1125,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__draft
 msgid "Draft"
-msgstr ""
+msgstr "Чернова "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__draft_asset_ids
@@ -1123,7 +1140,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_kanban
 msgid "Duration"
-msgstr ""
+msgstr "Продължителност"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_duration_rate
@@ -1137,7 +1154,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
 #, python-format
 msgid "Expense"
-msgstr ""
+msgstr "Разход"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_expense_id
@@ -1147,7 +1164,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 msgid "Expense Account"
-msgstr ""
+msgstr "Разходна сметка"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1162,7 +1179,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Lines"
-msgstr ""
+msgstr "Разходни редове"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
@@ -1188,17 +1205,17 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Последователи"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Последователи (партньори)"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr ""
+msgstr "Икона, примерно fa-tasks"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__form_view_ref
@@ -1208,7 +1225,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Бъдещи дейности"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__gain
@@ -1260,7 +1277,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Group By..."
-msgstr ""
+msgstr "Групиране по..."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__has_message
@@ -1276,23 +1293,23 @@ msgstr "ID"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "Икона"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Икона за обозначаване на дейност с изключение."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ако е отметнато, новите съобщения ще изискват внимание."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Ако е отметнато, някои съобщения имат грешка при доставката."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_account__asset_model
@@ -1317,17 +1334,19 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_line_ids
 msgid "Invoice Line"
-msgstr ""
+msgstr "Фактурен ред"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "е последовател"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__salvage_value
 msgid "It is the amount you plan to have that you cannot depreciate."
 msgstr ""
+"Това е сумата, с която възнамерявате да разполагате и която не подлежи на "
+"амортизация."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__journal_id
@@ -1342,7 +1361,7 @@ msgstr "Дневник"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Journal Entries"
-msgstr ""
+msgstr "Записи в дневника"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move
@@ -1361,7 +1380,7 @@ msgstr "Счетоводна Операция"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__original_move_line_ids
 #, python-format
 msgid "Journal Items"
-msgstr ""
+msgstr "Счетоводна операция"
 
 #. module: account_asset
 #. odoo-python
@@ -1392,14 +1411,14 @@ msgstr "Последно актуализирано на"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Последни дейности"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Linear"
-msgstr ""
+msgstr "Линеен"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__linked_asset_type
@@ -1411,18 +1430,18 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__loss
 msgid "Loss"
-msgstr ""
+msgstr "Loss"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__loss_account_id
 #: model:ir.model.fields,field_description:account_asset.field_res_company__loss_account_id
 msgid "Loss Account"
-msgstr ""
+msgstr "Сметка за ресто"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Основен прикачен Файл"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -1432,30 +1451,30 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Грешка при доставката на съобщение"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Съобщения"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_first_method
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method
 msgid "Method"
-msgstr ""
+msgstr "Метод"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__model_id
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__model
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_kanban
 msgid "Model"
-msgstr ""
+msgstr "Модел"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Modify"
-msgstr ""
+msgstr "Коригирайте"
 
 #. module: account_asset
 #. odoo-python
@@ -1464,12 +1483,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Modify Asset"
-msgstr ""
+msgstr "Коригирайте актив"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Modify Depreciation"
-msgstr ""
+msgstr "Коригирайте амортизация"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1479,13 +1498,13 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Modify Revenue"
-msgstr ""
+msgstr "Коригирайте приход"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__1
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__method_period__1
 msgid "Months"
-msgstr ""
+msgstr "Месеци"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__multiple_assets_per_line
@@ -1522,17 +1541,17 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Краен срок на следващо действие"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Обобщение на следваща дейност"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Вид на следващо действие"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1574,7 +1593,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__name
 msgid "Note"
-msgstr ""
+msgstr "Забележка"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__number_asset_ids
@@ -1586,18 +1605,18 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Брой действия"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
 msgid "Number of Depreciations"
-msgstr ""
+msgstr "Брой амортизации"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method_period
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__method_period
 msgid "Number of Months in a Period"
-msgstr ""
+msgstr "Брой месеци за даден период"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
@@ -1626,17 +1645,17 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Брой грешки"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Брой съобщения, които изискват внимание"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Брой съобщения с грешка при доставка"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__paused
@@ -1659,7 +1678,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__parent_id
 msgid "Parent"
-msgstr ""
+msgstr "Основен"
 
 #. module: account_asset
 #. odoo-python
@@ -1667,7 +1686,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Pause"
-msgstr ""
+msgstr "Пауза"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__paused_prorata_date
@@ -1701,7 +1720,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
-msgstr ""
+msgstr "Покупка: Актив"
 
 #. module: account_asset
 #. odoo-python
@@ -1752,7 +1771,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Отговорник"
 
 #. module: account_asset
 #. odoo-python
@@ -1760,7 +1779,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Resume"
-msgstr ""
+msgstr "Обобщение"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1773,7 +1792,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #, python-format
 msgid "Revenue"
-msgstr ""
+msgstr "Приход"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
@@ -1785,12 +1804,12 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Board"
-msgstr ""
+msgstr "Табло за приходите"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Date"
-msgstr ""
+msgstr "Дата на приходите"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -1801,12 +1820,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
 msgid "Revenue Name"
-msgstr ""
+msgstr "Име на приходите"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Recognition"
-msgstr ""
+msgstr "Признаване на приходи"
 
 #. module: account_asset
 #. odoo-python
@@ -1820,24 +1839,24 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__open
 msgid "Running"
-msgstr ""
+msgstr "Работещ"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS грешка при доставка"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Sale"
-msgstr ""
+msgstr "Продажба"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__sale
 msgid "Sale: Revenue Recognition"
-msgstr ""
+msgstr "Продажба: признаване на приходи"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1862,12 +1881,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Sell"
-msgstr ""
+msgstr "Продавайте"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Set to Draft"
-msgstr ""
+msgstr "Настройте на чернова"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1878,6 +1897,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Показване на всички записи, на които следващата дата на действие е преди "
+"днес"
 
 #. module: account_asset
 #. odoo-python
@@ -1896,7 +1917,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__state
 msgid "Status"
-msgstr ""
+msgstr "Състояние"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_state
@@ -1906,6 +1927,10 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Статус според дейностите\n"
+"Пресрочени: Крайната дата е в миналото\n"
+"Днес: Дейности с дата на изпълнение днес \n"
+"Планирани: Бъдещи дейности."
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__linear
@@ -1954,7 +1979,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method_number
 msgid "The number of depreciations needed to depreciate your asset"
-msgstr ""
+msgstr "Брой амортизации, необходими, за да амортизирате актива си."
 
 #. module: account_asset
 #. odoo-python
@@ -1987,14 +2012,14 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Днешни дейности"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Общ"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciable_value
@@ -2030,7 +2055,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Вид на изключение на дейност в базата."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -2062,12 +2087,12 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Съобщения в уебсайт"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "История на комуникацията на уебсайт"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__state
@@ -2083,7 +2108,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__method_period__12
 msgid "Years"
-msgstr ""
+msgstr "Години"
 
 #. module: account_asset
 #. odoo-python
@@ -2185,7 +2210,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "e.g. Laptop iBook"
-msgstr ""
+msgstr "напр. лаптоп, iBook"
 
 #. module: account_asset
 #. odoo-python

@@ -35,7 +35,7 @@ msgstr "റദ്ദാക്കുക"
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_sepa_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_sepa_view_form
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: hr_payroll_account_sepa
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_view_form

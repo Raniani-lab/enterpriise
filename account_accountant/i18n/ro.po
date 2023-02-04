@@ -5,19 +5,19 @@
 # Translators:
 # Hongu Cosmin <cosmin513@gmail.com>, 2022
 # Fekete Mihai <mihai.fekete@forestandbiomass.ro>, 2022
-# Foldi Robert <foldirobert@nexterp.ro>, 2022
-# Martin Trigaux, 2022
 # Cozmin Candea <office@terrabit.ro>, 2023
 # Claudia Baisan, 2023
+# Foldi Robert <foldirobert@nexterp.ro>, 2023
 # Dorin Hongu <dhongu@gmail.com>, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 09:15+0000\n"
+"POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Dorin Hongu <dhongu@gmail.com>, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Romanian (https://www.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,6 +26,37 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
 #. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    All done!\n"
+"                </p>\n"
+"                <p>\n"
+"                    Create new transactions, or make sure that there is no active filter in the search bar.\n"
+"                </p>\n"
+"            "
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "$ -2,678.00"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "$ 2,678.00"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -36,6 +67,7 @@ msgstr ""
 "reconciliat de tranzacție."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -44,6 +76,13 @@ msgid ""
 msgstr ""
 "%(display_name_html)s cu un sold deschis de %(open_amount)s va fi redus cu "
 "%(amount)s."
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "-1,134.50"
+msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -75,7 +114,7 @@ msgstr ""
 "contabilă</b>"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
@@ -157,7 +196,7 @@ msgid "<span class=\"tip_button_text\">Register your Accounting Firm</span>"
 msgstr "<span class=\"tip_button_text\">Înregistrați firma contabilă</span>"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
@@ -166,14 +205,16 @@ msgstr ""
 "<strong><b>Bună treabă!</b>Ați parcurs toate etapele acestui tur.</strong>"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/reconciliation_widget.py:0
 #, python-format
 msgid "A reconciliation must involve at least 2 move lines."
 msgstr "O reconciliere trebuie să cuprindă cel puțin 2 linii."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_renderer.js:0
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_renderer.js:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
@@ -241,7 +282,7 @@ msgid "All Users Lock Date"
 msgstr "Data blocării tuturor utilizatorilor"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid ""
@@ -263,7 +304,14 @@ msgid "Amls Widget"
 msgstr "Widget Amls"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#, python-format
+msgid "Amongst unmatched bank transactions"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -277,7 +325,7 @@ msgid "Amount Currency"
 msgstr "Sumă Monedă"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
@@ -285,7 +333,7 @@ msgid "Amount in Currency"
 msgstr "Valoare în valută"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_distribution
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution
@@ -294,7 +342,7 @@ msgid "Analytic"
 msgstr "Analitic"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
 #, python-format
 msgid "Analytic Account"
@@ -317,11 +365,18 @@ msgid "Balance"
 msgstr "Sold"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "Balance:"
 msgstr "Balanță:"
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "Bank"
+msgstr "Bancă"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash
@@ -329,7 +384,8 @@ msgid "Bank & Cash Moves"
 msgstr "Mișcări Bancare și Numerar"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#. odoo-python
 #: code:addons/account_accountant/models/account_bank_statement.py:0
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form.js:0
 #, python-format
@@ -343,14 +399,36 @@ msgid "Bank Statement"
 msgstr "Extras bancă"
 
 #. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid "Bank Statement %s.pdf"
+msgstr "Extras de cont %s.pdf"
+
+#. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_bank_statement_line
 msgid "Bank Statement Line"
 msgstr "Linie extras bacă"
 
 #. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid "Bank Statement.pdf"
+msgstr "Extras de cont.pdf"
+
+#. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
 msgstr "Widget de reconciliere bancară pentru o singură linie de declarație"
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "Bills"
+msgstr "Facturi"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -365,7 +443,7 @@ msgid "Change Lock Date"
 msgstr "Modificați data de siguranță"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
@@ -376,21 +454,21 @@ msgstr ""
 "adăugați unul înainte de validare."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Check all"
 msgstr "Verificați toate"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid "Choose a line to preview its attachments."
 msgstr "Alegeți o linie pentru a previzualiza fișierele atașate."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Choose counterpart or Create Write-off"
@@ -411,7 +489,7 @@ msgstr ""
 "serviciile contabile pe Odoo"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Close"
@@ -434,14 +512,14 @@ msgid "Config Settings"
 msgstr "Setări de configurare"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Congrats, you're all done!"
 msgstr "Felicitări, ai terminat!"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_renderer.js:0
 #, python-format
 msgid ""
@@ -452,7 +530,7 @@ msgstr ""
 "în medie %s secunde pe tranzacție."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Connect your bank and get your latest transactions."
@@ -464,6 +542,7 @@ msgid "Counterpart Values"
 msgstr "Valorile contrapartidei"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/reconciliation_widget.py:0
 #, python-format
 msgid "Create Reconciliation Model"
@@ -475,7 +554,7 @@ msgid "Create Statement"
 msgstr "Creare extras de cont"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Create a counterpart"
@@ -487,7 +566,14 @@ msgid "Create a new account group"
 msgstr "Crează un nou grup de cont"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#, python-format
+msgid "Create additional entries"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -495,7 +581,7 @@ msgid "Create model"
 msgstr "Creează model"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
@@ -518,8 +604,9 @@ msgid "Created on"
 msgstr "Creat în"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__credit
 #, python-format
 msgid "Credit"
@@ -531,7 +618,7 @@ msgid "Cron Last Check"
 msgstr "Ultima verificare Cron"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__currency_id
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -540,7 +627,7 @@ msgid "Currency"
 msgstr "Moneda"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__date
@@ -552,8 +639,9 @@ msgid "Date"
 msgstr "Dată"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__debit
 #, python-format
 msgid "Debit"
@@ -573,11 +661,6 @@ msgstr "Depozite"
 #: model:ir.model,name:account_accountant.model_digest_digest
 msgid "Digest"
 msgstr "Rezumat"
-
-#. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_form_bank_rec_widget
-msgid "Discard"
-msgstr "Abandonează"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -603,6 +686,7 @@ msgid "Display Stroked Balance"
 msgstr "Afișați soldul cuvântului"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/digest.py:0
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
@@ -611,7 +695,7 @@ msgstr ""
 "utilizatorului"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Due Date"
@@ -643,13 +727,14 @@ msgstr ""
 "contabile efective în Odoo."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Exchange Difference: %s"
 msgstr "Diferența de schimb: %s"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -657,7 +742,7 @@ msgid "External link"
 msgstr "Link Extern"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Filter on account, label, partner, amount,..."
@@ -816,21 +901,21 @@ msgstr ""
 " Jurnal."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "From now on, you may want to:"
 msgstr "De acum, poate să doriți:"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Get back to the dashboard using your previous path…"
 msgstr "Mergeți înapoi la dashboard folosind calea anterioară"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
@@ -839,14 +924,14 @@ msgid "Go to invoicing"
 msgstr "Mergeți la facturare"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Good Job!"
 msgstr "Bună treabă!"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Great! Let’s continue."
@@ -866,6 +951,22 @@ msgid "ID"
 msgstr "ID"
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "INV/2032/0003"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "INV/2032/0012"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
 msgid ""
 "If this checkbox is ticked, it means that the user was not sure of all the "
@@ -877,6 +978,7 @@ msgstr ""
 "mutarea trebuie verificată din nou."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/res_config_settings.py:0
 #, python-format
 msgid ""
@@ -913,6 +1015,14 @@ msgstr ""
 "Reconciliat: Tranzacția bancară a fost deja procesată. Nu mai este nimic de făcut."
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "Invoices"
+msgstr "Facturi"
+
+#. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__invoicing_switch_threshold
 msgid "Invoicing Switch Threshold"
@@ -924,6 +1034,7 @@ msgid "Is Reconciled"
 msgstr "Este reconciliat"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/reconciliation_widget.py:0
 #, python-format
 msgid ""
@@ -938,7 +1049,8 @@ msgid "Items"
 msgstr "Elemente"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model:ir.model,name:account_accountant.model_account_journal
@@ -972,7 +1084,7 @@ msgid "Journal Item"
 msgstr "Element jurnal"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_action.js:0
 #: model:ir.actions.client,name:account_accountant.action_manual_reconcile
 #, python-format
@@ -985,8 +1097,9 @@ msgid "Kpi Account Bank Cash Value"
 msgstr "KPI Valoare numerar cont bancar"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_renderer.js:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
@@ -994,6 +1107,18 @@ msgstr "KPI Valoare numerar cont bancar"
 #, python-format
 msgid "Label"
 msgstr "Eticheta"
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "Larry Smith"
+msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1009,7 +1134,7 @@ msgid "Last Modified on"
 msgstr "Ultima modificare la"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Last Reconciliation:"
@@ -1028,7 +1153,14 @@ msgid "Last Updated on"
 msgstr "Ultima actualizare pe"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#, python-format
+msgid "Learn how blazing fast bank matching works"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s automate your bills, bank transactions and accounting processes."
@@ -1037,28 +1169,28 @@ msgstr ""
 "contabilitate ale dvs. "
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s go back to the dashboard."
 msgstr "Haideți sa mergem înapoi la dashboard."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s reconcile the fetched bank transactions."
 msgstr "Să reconciliem tranzacțiile bancare preluate."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s see how a bill looks like in form view."
 msgstr "Să vedem cum arată o factură în vizualizarea formularului."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid ""
@@ -1085,7 +1217,7 @@ msgid "Lines Widget"
 msgstr "Widget linii"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Load more... ("
@@ -1112,7 +1244,8 @@ msgid "Management Closing"
 msgstr "Management închidere"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
@@ -1120,20 +1253,30 @@ msgid "Manual Operations"
 msgstr "Operațiuni manuale"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_view_switcher.js:0
 #: code:addons/account_accountant/static/src/components/matching_link_widget/matching_link_widget.xml:0
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 #, python-format
 msgid "Match"
 msgstr "Potrivire"
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
+#, python-format
 msgid "Match Existing Entries"
 msgstr "Potrivire intrări existente"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#, python-format
+msgid "Match payments and invoices"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Match with entries that are not from receivable/payable accounts"
@@ -1145,6 +1288,7 @@ msgid "Matched"
 msgstr "Potrivit"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
@@ -1156,21 +1300,21 @@ msgid "Matching Rules Allow Auto Reconcile"
 msgstr ""
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Miscellaneous Matching"
 msgstr "Potrivirea diversă"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Modify models"
 msgstr "Modificați modelele"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "More"
@@ -1188,7 +1332,7 @@ msgid "Name"
 msgstr "Nume"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -1201,7 +1345,7 @@ msgid "Next Action Todo"
 msgstr "Următoarea Acțiune de făcut"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid "No attachments linked."
@@ -1242,6 +1386,14 @@ msgid "Notes"
 msgstr "Note"
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#, python-format
+msgid "Odoo Bank Reconciliation"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "Only Billing Administrators are allowed to change lock dates!"
@@ -1260,7 +1412,10 @@ msgstr ""
 "unui an fiscal deschis, de exemplu."
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
+#, python-format
 msgid "Open Amount"
 msgstr "Sumă Deschisă"
 
@@ -1270,13 +1425,14 @@ msgid "Open Amount in Currency"
 msgstr "Sumă deschisă în monedă"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Open balance"
 msgstr "Sold deschis"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Open balance: %s"
@@ -1293,8 +1449,10 @@ msgid "Paid"
 msgstr "Plătit"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__partner_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__partner_id
@@ -1304,14 +1462,17 @@ msgid "Partner"
 msgstr "Partener"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Pay your"
 msgstr "Plătește-ți"
 
 #. module: account_accountant
+#. odoo-javascript
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Payable"
 msgstr "Plăți"
@@ -1345,6 +1506,7 @@ msgid "Payments Matching"
 msgstr "Reconciliere plăți"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Payments without a customer can't be matched"
@@ -1356,6 +1518,7 @@ msgid "Pick a date to lock"
 msgstr "Alege o dată pentru blocare"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Please install the 'Accounting Reports' module."
@@ -1367,7 +1530,7 @@ msgid "Predict vendor bill accounts"
 msgstr "Previzionați conturile de factură ale vânzătorului"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Presets config"
@@ -1405,13 +1568,14 @@ msgstr ""
 "postată."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Process this transaction."
 msgstr "Procesați această tranzacție."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Receivable"
@@ -1433,7 +1597,8 @@ msgid "Reco Models Widget"
 msgstr "Reco Model Widget"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#. odoo-python
 #: code:addons/account_accountant/models/account_move.py:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
@@ -1455,8 +1620,11 @@ msgid "Reconciled"
 msgstr "Reconciliat"
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_action.js:0
 #: model:ir.actions.client,name:account_accountant.action_manual_reconciliation
 #: model:ir.ui.menu,name:account_accountant.menu_action_manual_reconciliation
+#, python-format
 msgid "Reconciliation"
 msgstr "Reconciliere"
 
@@ -1467,7 +1635,7 @@ msgstr ""
 "Înregistrați costul mărfurilor vândute în înregistrările dvs. din jurnal"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Ref"
@@ -1479,7 +1647,7 @@ msgid "Reset"
 msgstr "Resetează"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Residual"
@@ -1487,7 +1655,6 @@ msgstr "Rezidual"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_form_bank_rec_widget
 msgid "Save"
 msgstr "Salvează"
 
@@ -1502,18 +1669,32 @@ msgid "Save & New"
 msgstr "Salvează & creează nou(ă)"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Save and New"
 msgstr "Salvează & Nou"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "Search customer"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_renderer.js:0
 #, python-format
 msgid "Select Partner"
 msgstr "Selectează Partenerul"
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#, python-format
+msgid "Select a transaction"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
@@ -1526,21 +1707,21 @@ msgid "Set as Checked"
 msgstr "Setați ca verificat"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Settings"
 msgstr "Setări"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Skip"
 msgstr "Omite"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_renderer.js:0
 #, python-format
 msgid "Some fields are undefined"
@@ -1602,6 +1783,7 @@ msgid "State"
 msgstr "Stare"
 
 #. module: account_accountant
+#: model:ir.actions.server,name:account_accountant.action_bank_statement_attachment
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Statement"
@@ -1628,7 +1810,7 @@ msgid "Tax Base Amount Currency"
 msgstr "Taxă bază suma valută"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Tax Included in Price"
@@ -1655,7 +1837,7 @@ msgid "Tax Tag"
 msgstr "Etichetă taxă"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1664,26 +1846,28 @@ msgid "Taxes"
 msgstr "Taxe"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "That's on average"
 msgstr "Asta e, în medie."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_model.js:0
 #, python-format
 msgid "The amount %s is not a valid partial amount"
 msgstr "Suma%s nu este o sumă parțială validă"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/account_fiscal_year.py:0
 #, python-format
 msgid "The ending date must not be prior to the starting date."
 msgstr "Data de încheiere nu trebuie să fie anterioară datei de început."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -1694,6 +1878,7 @@ msgstr ""
 "plătită în întregime de tranzacție."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -1722,13 +1907,14 @@ msgstr ""
 "furnizorilor, pe baza istoricului facturilor anterioare"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "There is nothing to reconcile."
 msgstr "Aici nu mai este nimic de reconciliat."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/account_bank_statement.py:0
 #, python-format
 msgid ""
@@ -1739,14 +1925,14 @@ msgstr ""
 "reconciliere '%s'."
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "This payment is registered but not reconciled."
 msgstr "Această plată este înregistrată dar nu este reconciliată"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "This was the model that generated the lines suggested"
@@ -1763,7 +1949,7 @@ msgid "Tip: Find an Accountant or register your Accounting Firm"
 msgstr "Sfat: Găsiți un contabil sau înregistrați firma contabilă"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__to_check
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1778,7 +1964,21 @@ msgid "To check"
 msgstr "De verificat"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#, python-format
+msgid "To reconcile invoices & payments, and post new journal entries"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#, python-format
+msgid "To reconcile with open entries"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "To speed up reconciliation, define"
@@ -1800,6 +2000,7 @@ msgid "Transaction Currency"
 msgstr "Moneda tranzacției"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/account_move.py:0
 #, python-format
 msgid "Transfer Accounts"
@@ -1808,15 +2009,24 @@ msgstr "Conturi de transfer"
 #. module: account_accountant
 #: model:ir.actions.server,name:account_accountant.auto_reconcile_bank_statement_line_ir_actions_server
 #: model:ir.cron,cron_name:account_accountant.auto_reconcile_bank_statement_line
-#: model:ir.cron,name:account_accountant.auto_reconcile_bank_statement_line
 msgid "Try to reconcile automatically your statement lines"
 msgstr "Încercați să reconciliați automat liniile declarației"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/res_company.py:0
 #, python-format
 msgid "Unreconciled statements lines"
 msgstr "Liniile extrasului neconciliate"
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#, python-format
+msgid ""
+"Use the <strong>Manual Operations</strong> tab to register the difference, "
+"or create expenses on the fly"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
@@ -1824,26 +2034,32 @@ msgid "Valid"
 msgstr "Valid"
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_widget_wizard
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
+#, python-format
 msgid "Validate"
 msgstr "Validează"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Verify"
 msgstr "Verificați"
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_view_switcher.js:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
+#, python-format
 msgid "View"
 msgstr "Afișare"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "View models"
@@ -1861,19 +2077,21 @@ msgid "Wizard Company Currency"
 msgstr "Moneda companiei asistentului"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/reconciliation_widget.py:0
 #, python-format
 msgid "Write-Off"
 msgstr "Pierdere (write-off)"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Writeoff Date"
 msgstr "Data Remitere"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/account_fiscal_year.py:0
 #, python-format
 msgid ""
@@ -1884,6 +2102,7 @@ msgstr ""
 "datele de început și / sau de încheiere ale exercițiilor dvs. fiscale."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -1894,6 +2113,7 @@ msgstr ""
 "widget-ul de reconciliere bancară"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -1904,6 +2124,7 @@ msgstr ""
 "în widget-ul de reconciliere bancară"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -1914,6 +2135,7 @@ msgstr ""
 "reconciliere bancară"
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/account_move.py:0
 #, python-format
 msgid ""
@@ -1924,12 +2146,14 @@ msgstr ""
 "mulți parteneri."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "You cannot set a lock date in the future."
 msgstr "Nu puteți seta o dată de blocare în viitor."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -1939,6 +2163,7 @@ msgstr ""
 "documentul."
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -1947,12 +2172,14 @@ msgid ""
 msgstr ""
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "You might want to record a %(btn_start)spartial payment%(btn_end)s."
 msgstr ""
 
 #. module: account_accountant
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
@@ -1960,7 +2187,7 @@ msgid ""
 msgstr ""
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "You reconciled"
@@ -1972,7 +2199,7 @@ msgid "aml"
 msgstr ""
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "and follow-up customers"
@@ -2014,21 +2241,35 @@ msgid "new_aml"
 msgstr ""
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "or"
+msgstr "sau"
+
+#. module: account_accountant
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "reconciliation models"
 msgstr "modele reconciliere"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
+#, python-format
+msgid "reference"
+msgstr "referință"
+
+#. module: account_accountant
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "remaining)"
 msgstr "ceea ce a rămas)"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "seconds per transaction."
@@ -2045,28 +2286,28 @@ msgid "to check"
 msgstr "De verificat"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "transactions in"
 msgstr "tranzacții în"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "unpaid invoices"
 msgstr "facturi neplătite "
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "unreconciled entries"
 msgstr "intrările neconciliate"
 
 #. module: account_accountant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "vendor bills"

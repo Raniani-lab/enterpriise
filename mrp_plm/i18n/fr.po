@@ -217,7 +217,7 @@ msgstr "Appliquer le changement d'année de base"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__type
 msgid "Apply on"
-msgstr "Appliqué sur"
+msgstr "Appliquer sur"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__approval_date

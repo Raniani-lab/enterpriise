@@ -227,4 +227,4 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__name
 msgid "Title"
-msgstr ""
+msgstr "തലക്കെട്ട്"

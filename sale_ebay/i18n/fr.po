@@ -493,7 +493,8 @@ msgstr "Lieu"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_account_deletion_endpoint
 msgid "Marketplace account deletion notification endpoint"
-msgstr "Résultat de la notification de suppression de compte Marketplace"
+msgstr ""
+"Point d'extrémité de la notification de suppression de compte Marketplace"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form

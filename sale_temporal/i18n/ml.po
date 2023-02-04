@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:30+0000\n"
+"POT-Creation-Date: 2023-02-02 10:53+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
@@ -37,7 +37,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
@@ -177,7 +177,7 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "മാസം"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__month
@@ -302,6 +302,11 @@ msgid "Select products on which this pricing will be applied."
 msgstr ""
 
 #. module: sale_temporal
+#: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__subscription_unit_display
+msgid "Subscription Unit Display"
+msgstr ""
+
+#. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order_line__temporal_type
 msgid "Temporal Type"
 msgstr ""
@@ -348,7 +353,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__week
 msgid "Weeks"
-msgstr ""
+msgstr "ആഴ്ചകൾ"
 
 #. module: sale_temporal
 #. odoo-python
@@ -360,7 +365,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__year
 msgid "Years"
-msgstr ""
+msgstr "വർഷങ്ങൾ"
 
 #. module: sale_temporal
 #. odoo-python
@@ -386,4 +391,60 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "all variants"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per %s days"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per %s months"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per %s weeks"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per %s years"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per day"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per month"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per week"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "per year"
 msgstr ""

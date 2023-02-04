@@ -67,7 +67,7 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_ir_attachment
 msgid "Attachment"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ്"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form

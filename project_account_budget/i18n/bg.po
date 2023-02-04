@@ -4,6 +4,9 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# aleksandar ivanov, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,40 +44,40 @@ msgstr "Аналитична Сметка"
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_crossovered_budget
 msgid "Budget"
-msgstr ""
+msgstr "Бюджет"
 
 #. module: project_account_budget
 #. odoo-python
 #: code:addons/project_account_budget/models/project.py:0
 #, python-format
 msgid "Budget Items"
-msgstr ""
+msgstr "Бюджетни редове"
 
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_crossovered_budget_lines
 msgid "Budget Line"
-msgstr ""
+msgstr "Ред на бюджет"
 
 #. module: project_account_budget
 #. odoo-javascript
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Budgetary Positions"
-msgstr ""
+msgstr "Бюджетни позиции"
 
 #. module: project_account_budget
 #. odoo-javascript
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Budgets"
-msgstr ""
+msgstr "Бюджети"
 
 #. module: project_account_budget
 #. odoo-javascript
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Difference"
-msgstr ""
+msgstr "Разлика"
 
 #. module: project_account_budget
 #: model_terms:ir.ui.view,arch_db:project_account_budget.crossovered_budget_lines_view_tree_inherit
@@ -86,7 +89,7 @@ msgstr ""
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Forecast"
-msgstr ""
+msgstr "Прогноза"
 
 #. module: project_account_budget
 #. odoo-javascript
@@ -105,14 +108,14 @@ msgstr ""
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_project_project
 msgid "Project"
-msgstr ""
+msgstr "Проект"
 
 #. module: project_account_budget
 #. odoo-javascript
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Общ"
 
 #. module: project_account_budget
 #: model:ir.model.fields,field_description:project_account_budget.field_project_project__total_planned_amount

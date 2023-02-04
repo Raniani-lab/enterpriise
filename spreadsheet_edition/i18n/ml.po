@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:30+0000\n"
+"POT-Creation-Date: 2023-02-02 10:53+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
@@ -22,7 +22,7 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -65,7 +65,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_list_side_panel.xml:0
 #, python-format
 msgid "Back"
-msgstr ""
+msgstr "തിരികെ"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -120,7 +120,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/spreadsheet.xml:0
 #, python-format
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__create_uid
@@ -214,7 +214,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "ഡൌൺലോഡ് "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -414,7 +414,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "മാസം"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -482,6 +482,13 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Period offset applied to this source"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/assets/pivot_view/pivot_view.js:0
+#, python-format
+msgid "Pivot contains duplicate groupbys"
 msgstr ""
 
 #. module: spreadsheet_edition

@@ -4,6 +4,15 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
+# aleksandar ivanov, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# kalatchev, 2023
+# Martin Trigaux, 2023
+# Ivan Ivanov, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,28 +46,28 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "1 month ago"
-msgstr ""
+msgstr "Преди 1 месец"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "12 months ago"
-msgstr ""
+msgstr "Преди 12 месеца"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "3 months ago"
-msgstr ""
+msgstr "Преди 3 месеца"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "30 Days Ago"
-msgstr ""
+msgstr "Преди 30 дни"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -73,13 +82,13 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Active invoices"
-msgstr ""
+msgstr "Активни фактури"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Annual Run-Rate"
-msgstr ""
+msgstr "Годишна оценка на изпълнение"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -101,7 +110,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Categories"
-msgstr ""
+msgstr "Категории"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -109,7 +118,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Churned MRR"
-msgstr ""
+msgstr "Смесен МВП"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -132,14 +141,14 @@ msgstr "Фирма"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "Настоящ"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Current MRR"
-msgstr ""
+msgstr "Текущ МВП"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -152,14 +161,14 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Current Value: "
-msgstr ""
+msgstr "Настояща стойност: "
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Custom"
-msgstr ""
+msgstr "Персонализиран"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -189,7 +198,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Dates"
-msgstr ""
+msgstr "Дати"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -197,19 +206,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Delta"
-msgstr ""
+msgstr "Делта"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Detailed Analysis"
-msgstr ""
+msgstr "Подробен анализ"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_detailed
 msgid "Detailed KPI"
-msgstr ""
+msgstr "Подробен клучов показател за ефестивност"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -217,7 +226,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Document"
-msgstr ""
+msgstr "Документ"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -225,14 +234,14 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Down MRR"
-msgstr ""
+msgstr "Спад на МВП"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "End Date :"
-msgstr ""
+msgstr "Крайна дата :"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -240,7 +249,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Expansion MRR"
-msgstr ""
+msgstr "Нарастване на МВП"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -257,13 +266,13 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Exponential"
-msgstr ""
+msgstr "Експотенциален"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Forecasted Annual MRR Growth"
-msgstr ""
+msgstr "Прогнозен ръст на годишния МВП"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -274,13 +283,14 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_forecast
 msgid "Forecasted KPIs"
-msgstr ""
+msgstr "Прогнозни ключови показатели за ефективност"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.actions.act_window,help:sale_subscription_dashboard.action_move_line_entries_report
 msgid ""
 "From this view, have an analysis of your different invoice line entries."
 msgstr ""
+"От тази гледна точка анализирайте различните си записи на фактурни редове."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -292,7 +302,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Group By"
-msgstr ""
+msgstr "Групиране по"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -300,7 +310,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Growth Type:"
-msgstr ""
+msgstr "Вид прираст:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -308,14 +318,14 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "In"
-msgstr ""
+msgstr "В"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.act_window,name:sale_subscription_dashboard.action_move_line_entries_report
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_pivot
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Invoice Line Entries Analysis"
-msgstr ""
+msgstr "Анализ на записите на фактурни редове"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
@@ -324,6 +334,8 @@ msgid ""
 "It makes no sense to sum MRR of different currencies. Please select "
 "companies with the same currency."
 msgstr ""
+"Безсмислено е да сумирате МВП на различни валути. Моля, изберете компании, "
+"боравещи с еднакви валути."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -331,7 +343,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Last Financial Year"
-msgstr ""
+msgstr "Последна финансова година"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -339,7 +351,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Last Month"
-msgstr ""
+msgstr "Последен месец"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -347,13 +359,13 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Last Quarter"
-msgstr ""
+msgstr "Последно тримесечие"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Lifetime Value"
-msgstr ""
+msgstr "Доживотна стойност"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -361,7 +373,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Linear"
-msgstr ""
+msgstr "Линеен"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -391,14 +403,14 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Loading..."
-msgstr ""
+msgstr "Зареждане..."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "MRR Growth"
-msgstr ""
+msgstr "Ръст на МВП"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -412,7 +424,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Monthly Recurring Revenue"
-msgstr ""
+msgstr "Месечно периодичен приход"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -427,7 +439,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Monthly Recurring Revenue Growth"
-msgstr ""
+msgstr "Месечно периодичен ръст на приходите"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -435,7 +447,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Months"
-msgstr ""
+msgstr "Месеци"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -443,7 +455,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "NRR"
-msgstr ""
+msgstr "Невъзникващ приход"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -456,13 +468,13 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Net New MRR"
-msgstr ""
+msgstr "Нетен нов МВП"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Net Revenue"
-msgstr ""
+msgstr "Нетни приходи"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -470,13 +482,13 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "New MRR"
-msgstr ""
+msgstr "Нов МВП"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
 #, python-format
 msgid "No company selected."
-msgstr ""
+msgstr "Липсва избрана компания."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -490,7 +502,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Non-Recurring Revenue"
-msgstr ""
+msgstr "Непериодични приходи"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -515,7 +527,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "OUT invoices"
-msgstr ""
+msgstr "Изходящи фактури"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -535,7 +547,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "PRINT PREVIEW"
-msgstr ""
+msgstr "ПРЕГЛЕД ПРЕДИ ПЕЧАТ"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -551,21 +563,21 @@ msgstr "Партньор"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Pick a salesman and a period"
-msgstr ""
+msgstr "Изберете продавач и период"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Plan"
-msgstr ""
+msgstr "Планирайте"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Previous MRR"
-msgstr ""
+msgstr "Предишен МВП"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -578,14 +590,14 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Projection Time:"
-msgstr ""
+msgstr "Време за проектиране:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Recurrency"
-msgstr ""
+msgstr "Повторяемост"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -597,27 +609,27 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Revenue Churn"
-msgstr ""
+msgstr "Приходи - смесване"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Revenue Churn:"
-msgstr ""
+msgstr "Приходи - смесване:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Revenue Growth:"
-msgstr ""
+msgstr "Ръст на приходите:"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_main
 #: model:ir.ui.menu,name:sale_subscription_dashboard.menu_action_subscription_dashboard_report_main
 msgid "Revenue KPIs"
-msgstr ""
+msgstr "Ключови показатели за ефективност на приходите"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -628,20 +640,20 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.model,name:sale_subscription_dashboard.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Sales Team"
-msgstr ""
+msgstr "Търговски отдел"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_salesman
 #: model:ir.ui.menu,name:sale_subscription_dashboard.menu_action_subscription_dashboard_report_salesman
 msgid "Salesperson Dashboard"
-msgstr ""
+msgstr "Табло за управление на търговци"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/models/sale_order.py:0
@@ -655,28 +667,28 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Sample data"
-msgstr ""
+msgstr "Примерни данни"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Select at least one company."
-msgstr ""
+msgstr "Изберете поне една компания."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Start Date :"
-msgstr ""
+msgstr "Начална дата :"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Starting MRR:"
-msgstr ""
+msgstr "Начален МВП :"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -691,7 +703,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Subscription"
-msgstr ""
+msgstr "Абонамент"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -727,7 +739,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions"
-msgstr ""
+msgstr "Абонаменти"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -756,7 +768,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Template"
-msgstr ""
+msgstr "Шаблон"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -803,7 +815,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "This Financial Year"
-msgstr ""
+msgstr "Тази финансова година"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -811,7 +823,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "This Month"
-msgstr ""
+msgstr "Този месец"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -819,7 +831,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "This Quarter"
-msgstr ""
+msgstr "Това тримесечие"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -840,7 +852,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Неразпозната грешка"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -848,7 +860,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Update"
-msgstr ""
+msgstr "Актуализирайте"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -856,7 +868,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Внимание"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -869,7 +881,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "churn, your MRR will be"
-msgstr ""
+msgstr "смесване, Вашият МВП ще бъде"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -888,7 +900,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "growth and"
-msgstr ""
+msgstr "ръст и"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -896,7 +908,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "months with"
-msgstr ""
+msgstr "Месец с"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

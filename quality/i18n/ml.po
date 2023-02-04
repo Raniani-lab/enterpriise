@@ -53,7 +53,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
@@ -163,7 +163,7 @@ msgstr ""
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__color
@@ -955,7 +955,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__title
 #: model:ir.model.fields,field_description:quality.field_quality_point__title
 msgid "Title"
-msgstr ""
+msgstr "തലക്കെട്ട്"
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__none
@@ -971,7 +971,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_decoration

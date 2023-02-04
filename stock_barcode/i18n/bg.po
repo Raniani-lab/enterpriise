@@ -4,6 +4,15 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Anton Vassilev, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
+# Весел Карастоянов <vesel@abv.bg>, 2023
+# aleksandar ivanov, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Martin Trigaux, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Igor Sheludko <igor.sheludko@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -175,7 +184,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_barcode
 msgid "Allocation"
-msgstr ""
+msgstr "Разпределяне"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__barcode_validation_full
@@ -213,7 +222,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_backorder_confirmation
 msgid "Backorder Confirmation"
-msgstr ""
+msgstr "Потрърждение на компенсираща поръчка"
 
 #. module: stock_barcode
 #. openerp-web
@@ -225,7 +234,7 @@ msgstr ""
 #: model:ir.ui.menu,name:stock_barcode.stock_barcode_menu
 #, python-format
 msgid "Barcode"
-msgstr ""
+msgstr "Баркод"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
@@ -240,7 +249,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
 msgid "Barcode Nomenclature"
-msgstr ""
+msgstr "Баркодова номенклатура "
 
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_picking_client_action
@@ -250,14 +259,14 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap___barcode_scanned
 msgid "Barcode Scanned"
-msgstr ""
+msgstr "Сканиран баркод "
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "Barcode Scanning"
-msgstr ""
+msgstr "Сканиране на баркодове "
 
 #. module: stock_barcode
 #. openerp-web
@@ -318,19 +327,19 @@ msgstr "Настройки"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
 msgid "Configure Product Barcodes"
-msgstr ""
+msgstr "Конфигурирайте продуктови баркодове"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Confirm"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -367,7 +376,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Delete"
-msgstr ""
+msgstr "Изтриване"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__stock_barcode_demo_active
@@ -381,12 +390,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 #, python-format
 msgid "Destination Location"
-msgstr ""
+msgstr "Локация на местонахождение"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Destination Package"
-msgstr ""
+msgstr "Пакет за местоназначение"
 
 #. module: stock_barcode
 #. openerp-web
@@ -438,7 +447,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.js:0
 #, python-format
 msgid "Don't show this message again"
-msgstr ""
+msgstr "Не показвайте това съобщение отново."
 
 #. module: stock_barcode
 #. openerp-web
@@ -446,13 +455,13 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Изтеглете от системата"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__dummy_id
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_quant__dummy_id
 msgid "Dummy"
-msgstr ""
+msgstr "Фиктивен"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__empty_move_count
@@ -462,7 +471,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 msgid "Final Validation"
-msgstr ""
+msgstr "Последно потвърждаване"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__restrict_scan_dest_location
@@ -502,7 +511,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 msgid "General"
-msgstr ""
+msgstr "Основен"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__id
@@ -527,25 +536,26 @@ msgstr ""
 #: model:ir.model.fields,help:stock_barcode.field_stock_scrap__product_barcode
 msgid "International Article Number used for product identification."
 msgstr ""
+"Международен номер на артикула, използван за идентификация на продукта."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Inventory Adjustment"
-msgstr ""
+msgstr "Ревизия на инвентара"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "Inventory Adjustments"
-msgstr ""
+msgstr "Ревизии на инвентара"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_location
 msgid "Inventory Locations"
-msgstr ""
+msgstr "Локации на инвентар"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__is_completed
@@ -572,7 +582,7 @@ msgstr "Последно актуализирано на"
 #: code:addons/stock_barcode/static/src/main_menu.js:0
 #, python-format
 msgid "Leave it"
-msgstr ""
+msgstr "Оставете го"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_product
@@ -582,7 +592,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Location"
-msgstr ""
+msgstr "Локация"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__location_processed
@@ -593,7 +603,7 @@ msgstr ""
 #: model:ir.model,name:stock_barcode.model_stock_lot
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 msgid "Lot/Serial"
-msgstr ""
+msgstr "Партиден/сериен"
 
 #. module: stock_barcode
 #. openerp-web
@@ -700,12 +710,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Owner"
-msgstr ""
+msgstr "Собственик"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Package"
-msgstr ""
+msgstr "Пакет"
 
 #. module: stock_barcode
 #. openerp-web
@@ -718,12 +728,12 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant_package
 msgid "Packages"
-msgstr ""
+msgstr "Пакети"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_id
 msgid "Packaging"
-msgstr ""
+msgstr "Опаковане"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_uom_qty
@@ -738,7 +748,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
 msgid "Picking"
-msgstr ""
+msgstr "Пикинг"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_barcode
@@ -748,7 +758,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking_type
 msgid "Picking Type"
-msgstr ""
+msgstr "Вид пикинг"
 
 #. module: stock_barcode
 #. openerp-web
@@ -812,13 +822,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.product_action_barcodes
 #: model_terms:ir.ui.view,arch_db:stock_barcode.product_view_list_barcodes
 msgid "Product Barcodes"
-msgstr ""
+msgstr "Продуктови баркодове"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_move_line
@@ -828,7 +838,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_product_packaging
 msgid "Product Packaging"
-msgstr ""
+msgstr "Продуктово опаковане"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_stock_quant_ids
@@ -838,12 +848,12 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_uom_uom
 msgid "Product Unit of Measure"
-msgstr ""
+msgstr "Продуктова мерна единица"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Продуктов вариант"
 
 #. module: stock_barcode
 #. openerp-web
@@ -855,17 +865,17 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 msgid "Put in Pack"
-msgstr ""
+msgstr "Поставяне в опаковка"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Quantity"
-msgstr ""
+msgstr "Количество"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
 msgid "Quantity Done"
-msgstr ""
+msgstr "Извършено количество"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_packaging_uom_qty
@@ -875,14 +885,14 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant
 msgid "Quants"
-msgstr ""
+msgstr "Количества"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/main_menu.js:0
 #, python-format
 msgid "Remove it"
-msgstr ""
+msgstr "Отстранете го"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1221,7 +1231,7 @@ msgstr ""
 #: model:ir.model,name:stock_barcode.model_stock_scrap
 #, python-format
 msgid "Scrap"
-msgstr ""
+msgstr "Скрап"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -1232,7 +1242,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Serial/Lot Number"
-msgstr ""
+msgstr "Сериен/партиден номер "
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__show_barcode_nomenclature
@@ -1252,12 +1262,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #, python-format
 msgid "Source Location"
-msgstr ""
+msgstr "Локация на източник"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Source Package"
-msgstr ""
+msgstr "Пакет на източник"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_package_type
@@ -1269,7 +1279,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "Tap to scan"
-msgstr ""
+msgstr "Докоснете, за да сканирате"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__show_barcode_validation
@@ -1354,7 +1364,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
 msgid "To Process"
-msgstr ""
+msgstr "За обработка"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1367,7 +1377,7 @@ msgstr ""
 #: model:ir.model,name:stock_barcode.model_stock_picking
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__picking_id
 msgid "Transfer"
-msgstr ""
+msgstr "Прехвърлете"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__picking_name
@@ -1383,18 +1393,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Мерна единица"
 
 #. module: stock_barcode
 #: model:product.product,uom_name:stock_barcode.product_cable_management_box_2
 #: model:product.template,uom_name:stock_barcode.product_cable_management_box_2_product_template
 msgid "Units"
-msgstr ""
+msgstr "Единици"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_stock_quant_tree
 msgid "UoM"
-msgstr ""
+msgstr "Мерна единица"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1406,12 +1416,12 @@ msgstr "Валидирай"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_scrap___barcode_scanned
 msgid "Value of the last barcode scanned."
-msgstr ""
+msgstr "Стойност на последния сканиран баркод"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_warehouse
 msgid "Warehouse"
-msgstr ""
+msgstr "Склад"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1492,7 +1502,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "document"
-msgstr ""
+msgstr "документ"
 
 #. module: stock_barcode
 #: model:product.product,uom_name:stock_barcode.product_custom_cabinet_usa
@@ -1505,7 +1515,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "location"
-msgstr ""
+msgstr "локация"
 
 #. module: stock_barcode
 #: model:product.product,uom_name:stock_barcode.product_custom_cabinet_metric
@@ -1558,7 +1568,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "stock barcodes sheet"
-msgstr ""
+msgstr "Списък със складови баркодове"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1566,6 +1576,7 @@ msgstr ""
 #, python-format
 msgid "to check out what this module can do! You can also print the barcode"
 msgstr ""
+"за да проверите какво може да направи този модул! Може и да отпечата баркод"
 
 #. module: stock_barcode
 #. openerp-web

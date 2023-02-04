@@ -19,15 +19,15 @@
 # Patrick-Jordan Kiudorv, 2022
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
-# Leaanika Randmets, 2023
 # Anna, 2023
+# Leaanika Randmets, 2023
 # Jana Jaakson, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Jana Jaakson, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
@@ -54,10 +54,9 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period."
+"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period. \n"
+"  Negative recurring lines are considered free."
 msgstr ""
-"\n"
-"- Peaksite ootama praeguse tellimisperioodi möödumist. Uued arveldatavad kogused valmivad jooksva perioodi lõpus."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__percentage_satisfaction
@@ -2367,6 +2366,15 @@ msgid "Members"
 msgstr "Osalejaid"
 
 #. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"Mix of negative recurring lines and non-recurring line. The contract should "
+"be fixed manually"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_id
 msgid "Model"
 msgstr "Mudel"
@@ -2744,7 +2752,7 @@ msgstr "Keskmine teksti hinnang"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__rating_template_id
 msgid "Rating Email Template"
-msgstr "Hinnangute e-kirja põhi"
+msgstr "Antud etapi e-kiri"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_feedback
@@ -2821,7 +2829,7 @@ msgstr "Korduvad perioodid"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sales_order_filter_subscription
 msgid "Recurring"
-msgstr "Korduv"
+msgstr "Korduv toode"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
@@ -3005,7 +3013,7 @@ msgstr "Müügitellimused"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__team_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Sales Team"
-msgstr "Müügi meeskond"
+msgstr "Müügimeeskond"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__activity_user__channel_leader
@@ -3573,6 +3581,24 @@ msgstr ""
 "värskendatakse. Kui need on tühjad, jälgitakse kõiki välju."
 
 #. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"The following recurring orders have draft invoices. Please Confirm them or "
+"cancel them before creating new invoices. %s."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/account_move.py:0
+#, python-format
+msgid ""
+"The following refund %s has been made on this contract. Please check the "
+"next invoice date if necessary."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
 msgid "The full URL to access the server action through the website."
 msgstr "Täispikk URL serverile veebilehe kaudu ligipääsemiseks."
@@ -3637,6 +3663,13 @@ msgstr "Lisamüük %s on kinnitatud."
 #, python-format
 msgid "The upsell %s has been canceled."
 msgstr "Lisamüük %s on tühistatud."
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid "There is already a draft invoice for subscription %s."
+msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
@@ -4013,6 +4046,15 @@ msgstr "aasta järel"
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid ""
+"You can not delete a confirmed subscription. You must first close and cancel"
+" it before you can delete it."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
 "You can not upsell a subscription that has not been invoiced yet. Please, "
 "update directly the %s contract or invoice it first."
 msgstr ""
@@ -4108,8 +4150,8 @@ msgstr "Sinu tellimus"
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
-msgid "Your contrat is recurrent"
-msgstr "Teie leping on korduv"
+msgid "Your contract is recurrent"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit

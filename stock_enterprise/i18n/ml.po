@@ -281,7 +281,7 @@ msgstr ""
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_type_code
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__incoming

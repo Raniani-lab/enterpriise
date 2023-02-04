@@ -4,6 +4,11 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Весел Карастоянов <vesel@abv.bg>, 2023
+# Martin Trigaux, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Kaloyan Naumov <kaloyan@lumnus.net>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -90,7 +95,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_mps.action_mrp_mps_form_view
 #, python-format
 msgid "Add a Product"
-msgstr ""
+msgstr "Добавете продукт"
 
 #. module: mrp_mps
 #. openerp-web
@@ -116,12 +121,12 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_bom
 msgid "Bill of Material"
-msgstr ""
+msgstr "Фактура за покупка на материали"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__bom_id
 msgid "Bill of Materials"
-msgstr ""
+msgstr "Списък с материали"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_production_schedule_form_view
@@ -153,7 +158,7 @@ msgstr "Настройки"
 #: code:addons/mrp_mps/static/src/models/master_production_schedule_model.js:0
 #, python-format
 msgid "Confirmation"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__create_uid
@@ -172,7 +177,7 @@ msgstr "Създадено на"
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__day
 msgid "Daily"
-msgstr ""
+msgstr "Дневно"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__date
@@ -190,13 +195,15 @@ msgstr ""
 msgid ""
 "Default value for the time ranges in Master Production Schedule report."
 msgstr ""
+"Стойност по подразбиране за времевите интервали в отчета на Главния "
+"производствен график."
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.js:0
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Изтриване"
 
 #. module: mrp_mps
 #. openerp-web
@@ -204,7 +211,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__forecast_qty
 #, python-format
 msgid "Demand Forecast"
-msgstr ""
+msgstr "Прогноза за търсенето"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__mrp_mps_show_actual_demand
@@ -268,14 +275,14 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.js:0
 #, python-format
 msgid "Export"
-msgstr ""
+msgstr "Износ"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.js:0
 #, python-format
 msgid "External ID"
-msgstr ""
+msgstr "Външна ИН"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_mps_forecast_details
@@ -320,7 +327,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__sequence
 msgid "Gives the sequence order when displaying a product list"
-msgstr ""
+msgstr "Заава реда на последователност при показване на продуктов списък"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__id
@@ -365,13 +372,13 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_forecast_details_form_view
 msgid "Manufacturing Orders"
-msgstr ""
+msgstr "Производствена поръчка "
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__manufacturing_period
 #: model:ir.model.fields,field_description:mrp_mps.field_res_config_settings__manufacturing_period
 msgid "Manufacturing Period"
-msgstr ""
+msgstr "Производствен перод"
 
 #. module: mrp_mps
 #. openerp-web
@@ -380,7 +387,7 @@ msgstr ""
 #: model:ir.ui.menu,name:mrp_mps.mrp_mps_report_menu
 #, python-format
 msgid "Master Production Schedule"
-msgstr ""
+msgstr "Главен производствен график"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__max_to_replenish_qty
@@ -395,12 +402,12 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__month
 msgid "Monthly"
-msgstr ""
+msgstr "Месечно"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__move_ids
 msgid "Move"
-msgstr ""
+msgstr "Движение"
 
 #. module: mrp_mps
 #. openerp-web
@@ -435,12 +442,12 @@ msgstr ""
 #: model:ir.model,name:mrp_mps.model_product_template
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_id
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_category_id
 msgid "Product Category"
-msgstr ""
+msgstr "Категория продукт"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_product_forecast
@@ -450,17 +457,17 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_tmpl_id
 msgid "Product Template"
-msgstr ""
+msgstr "Шаблон за продукт "
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_uom_id
 msgid "Product UoM"
-msgstr ""
+msgstr "Мерна единица на продукт"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Продуктов вариант"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__production_schedule_id
@@ -475,12 +482,12 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_purchase_order
 msgid "Purchase Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__purchase_order_line_ids
 msgid "Purchase Order Line"
-msgstr ""
+msgstr "Ред на поръчка за покупка"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__moves_qty
@@ -509,7 +516,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_forecast_details_form_view
 msgid "Receipts"
-msgstr ""
+msgstr "Касови бележки"
 
 #. module: mrp_mps
 #. openerp-web
@@ -536,7 +543,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
 msgid "Rows"
-msgstr ""
+msgstr "Редици"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__forecast_target_qty
@@ -556,7 +563,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_purchase_order__date_planned_mps
 msgid "Scheduled Date"
-msgstr ""
+msgstr "Насрочена дата"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_bom__schedule_count
@@ -571,19 +578,19 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Последователност"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
 msgid "Starting Inventory"
-msgstr ""
+msgstr "Начален инвентар"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Правило зс наличност"
 
 #. module: mrp_mps
 #. openerp-web
@@ -704,11 +711,11 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__week
 msgid "Weekly"
-msgstr ""
+msgstr "Седмично"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "by"
-msgstr ""
+msgstr "от"

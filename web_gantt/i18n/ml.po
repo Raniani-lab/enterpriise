@@ -159,7 +159,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Month"
-msgstr ""
+msgstr "മാസം"
 
 #. module: web_gantt
 #. openerp-web
@@ -230,7 +230,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "ഇന്ന്"
 
 #. module: web_gantt
 #. openerp-web

@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* sale_account_accountant
 # 
+# Translators:
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:11+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,6 +34,8 @@ msgstr ""
 msgid ""
 "Preset to create journal entries during a invoices and payments matching"
 msgstr ""
+"Предварително зададено е да създавате записи в дневника по време на "
+"съвпадение на фактури и плащания"
 
 #. module: sale_account_accountant
 #: code:addons/sale_account_accountant/models/bank_rec_widget.py:0

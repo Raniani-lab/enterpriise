@@ -723,7 +723,7 @@ msgstr "Meddelandetext"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Mail Template"
-msgstr ""
+msgstr "E-postmall"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_bounce
@@ -1084,6 +1084,16 @@ msgstr ""
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Participants of %s (%s)"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
+msgid "Pick a Server Action"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
+msgid "Pick a Template"
 msgstr ""
 
 #. module: marketing_automation

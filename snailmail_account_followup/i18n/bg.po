@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* snailmail_account_followup
 # 
+# Translators:
+# aleksandar ivanov, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,12 +35,12 @@ msgstr ""
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_account_followup_followup_line
 msgid "Follow-up Criteria"
-msgstr ""
+msgstr "Последващи критерии"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_account_followup_report
@@ -50,7 +55,7 @@ msgstr ""
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_followup_line__send_letter
 msgid "Send a Letter"
-msgstr ""
+msgstr "Изпратете писмо"
 
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail

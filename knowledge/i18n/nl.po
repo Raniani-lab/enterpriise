@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -22,6 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -36,7 +37,7 @@ msgstr ""
 "            voordat deze definitief worden verwijderd uit je database"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "\" under:"
@@ -48,6 +49,7 @@ msgid "#Is Favorite"
 msgstr "#Is Favoriet"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -56,6 +58,7 @@ msgid "%s (copy)"
 msgstr "%s (kopie)"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "%s has been sent to Trash"
@@ -783,9 +786,9 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
-msgid "<span style=\"font-size: 14px;\">Each of them can bu used both as:</span>"
+msgid "<span style=\"font-size: 14px;\">Each of them can be used both as:</span>"
 msgstr ""
-"<span style=\"font-size: 14px;\">Elk van hen kan beide worden gebruikt "
+"<span style=\"font-size: 14px;\">Elk van hen kan zowel worden gebruikt "
 "als:</span>"
 
 #. module: knowledge
@@ -886,7 +889,7 @@ msgstr ""
 "color-1\">Twitter</font></span>"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Access Restricted. May not be shared with everyone from"
@@ -923,14 +926,14 @@ msgid "Activity Type Icon"
 msgstr "Icoon activiteitstype"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a table of content."
 msgstr "Voeg een inhoudsopgave toe."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a template section."
@@ -946,7 +949,7 @@ msgstr ""
 "star-o\"></i> naast de artikelnaam te klikken."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/table_of_content_behavior/table_of_content_behavior.xml:0
 #, python-format
 msgid "Add headings in this Article to create a Table of Content"
@@ -972,28 +975,28 @@ msgstr ""
 "toegangsrechten verleent<br>(mag schrijven, mag lezen, ...)."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Admin"
 msgstr "Beheerder"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Administrator"
 msgstr "Beheerder"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Advanced Search"
 msgstr "Geavanceerd zoeken"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Archive Article"
@@ -1005,7 +1008,7 @@ msgid "Archived"
 msgstr "Gearchiveerd"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.js:0
 #, python-format
 msgid ""
@@ -1016,7 +1019,7 @@ msgstr ""
 "elk artikel waarin het wordt gebruikt."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1027,7 +1030,7 @@ msgstr ""
 "worden het artikel en al zijn nakomelingen gearchiveerd."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
@@ -1038,7 +1041,7 @@ msgstr ""
 "er toegang toe."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
@@ -1049,7 +1052,7 @@ msgstr ""
 " gedeeld met alle interne gebruikers."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
@@ -1060,7 +1063,7 @@ msgstr ""
 "gedeeld met dezelfde personen."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1071,14 +1074,14 @@ msgstr ""
 "kun je de toegang ertoe verliezen."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Are you sure you want to remove your own \"Write\" access ?"
 msgstr "Ben je zeker dat je je eigen schrijftoegang wilt verwijderen?"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1090,7 +1093,7 @@ msgstr ""
 "overneemt."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1101,7 +1104,7 @@ msgstr ""
 " niet langer de toegangsinstellingen over van de bovenliggende pagina."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1112,7 +1115,7 @@ msgstr ""
 "dat doet, heb je geen toegang meer tot het artikel."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1123,7 +1126,7 @@ msgstr ""
 "doet, heb je geen toegang meer tot het artikel."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__article_id
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__article_id
@@ -1135,6 +1138,7 @@ msgid "Article"
 msgstr "Artikel"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid ""
@@ -1181,7 +1185,7 @@ msgid "Article not found"
 msgstr "Artikel niet gevonden"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action_form
@@ -1192,6 +1196,7 @@ msgid "Articles"
 msgstr "Artikelen"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -1208,14 +1213,14 @@ msgid "Articles using cover"
 msgstr "Artikelen met omslag"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "As a reader, you can't leave a Workspace article"
 msgstr "Als lezer kun je een werkruimte-artikel niet verlaten"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid ""
@@ -1228,7 +1233,7 @@ msgid "Attachment Count"
 msgstr "Aantal bijlagen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
@@ -1256,12 +1261,14 @@ msgid "Can Write"
 msgstr "Mag schrijven"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid "Can not update the article or partner of a member."
 msgstr "Kan het artikel of relatie van een lid niet bijwerken."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article_favorite.py:0
 #, python-format
 msgid "Can not update the article or user of a favorite."
@@ -1284,7 +1291,7 @@ msgid "Can write"
 msgstr "Mag schrijven"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -1293,6 +1300,7 @@ msgid "Cancel"
 msgstr "Annuleren"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -1303,6 +1311,7 @@ msgstr ""
 "bovenliggend artikel is"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -1314,14 +1323,14 @@ msgstr ""
 "artikel."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #, python-format
 msgid "Categories"
 msgstr "Categorieën"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Change Permission"
@@ -1333,14 +1342,14 @@ msgid "Child Articles and Items"
 msgstr "Onderliggende artikelen en items"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "Choose an Article"
 msgstr "Kies een artikel"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
 #, python-format
 msgid "Close"
@@ -1352,7 +1361,7 @@ msgid "Configuration"
 msgstr "Configuratie"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Confirmation"
@@ -1364,7 +1373,7 @@ msgid "Contact"
 msgstr "Contact"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
@@ -1387,7 +1396,7 @@ msgid "Cover url"
 msgstr "Url omslag"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "Create \""
@@ -1468,7 +1477,7 @@ msgid "Desyncronized with parents"
 msgstr "Gedesynchroniseerd met bovenliggende artikelen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.xml:0
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
@@ -1490,7 +1499,7 @@ msgid "Diving in"
 msgstr "Van start gaan met"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
@@ -1498,21 +1507,21 @@ msgid "Download"
 msgstr "Downloaden"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/views/list_view.js:0
 #, python-format
 msgid "Duplicate"
 msgstr "Dupliceren"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Embed a View"
 msgstr "Een weergave insluiten"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Embed a file."
@@ -1524,7 +1533,7 @@ msgid "Emoji"
 msgstr "Emoji"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
@@ -1533,6 +1542,7 @@ msgid "Error"
 msgstr "Foutmelding"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -1543,7 +1553,7 @@ msgstr ""
 "worden gebruikt om een ingesloten weergave of een weergavelink te maken"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "External Guest"
@@ -1574,7 +1584,7 @@ msgid "Favorites"
 msgstr "Favorieten"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "File"
@@ -1613,7 +1623,7 @@ msgid "Group By"
 msgstr "Groeperen op"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Guest"
@@ -1713,7 +1723,7 @@ msgstr ""
 "bovenliggende artikelen."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Index"
@@ -1731,70 +1741,70 @@ msgid "Inherited Permission Parent Article"
 msgstr "Overgeërfde machtiging bovenliggend artikel"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "Insert"
 msgstr "Invoegen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Insert Link"
 msgstr "Koppeling invoegen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a Kanban View"
 msgstr "Een Kanban-weergave invoegen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a Kanban view of article items"
 msgstr "Een Kanban-weergave van artikelitems invoegen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a List View"
 msgstr "Een lijstweergave invoegen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a List view of article items"
 msgstr "Een lijstweergave van artikelitems invoegen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert link in article"
 msgstr "Link in artikel invoegen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert view in article"
 msgstr "Weergave in artikel invoegen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Internal Members"
 msgstr "Interne leden"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__internal_permission
 #, python-format
@@ -1802,6 +1812,7 @@ msgid "Internal Permission"
 msgstr "Interne machtiging"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Invitation to access %s"
@@ -1844,21 +1855,21 @@ msgid "Is Property Field Empty?"
 msgstr "Is het eigenschapsveld leeg?"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item Kanban"
 msgstr "Kanbanitem"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item List"
 msgstr "Lijstitem"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
@@ -1937,7 +1948,7 @@ msgid "Last Updated on"
 msgstr "Laatst bijgewerkt op"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
@@ -1946,14 +1957,14 @@ msgid "Leave Article"
 msgstr "Artikel verlaten"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Link an Article"
 msgstr "Een artikel koppelen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Link an article."
@@ -1965,13 +1976,14 @@ msgid "Locked"
 msgstr "Beveiligd"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_frontend.xml:0
 #, python-format
 msgid "Log in"
 msgstr "Inloggen"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -1987,7 +1999,7 @@ msgid "Main Attachment"
 msgstr "Hoofdbijlage"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
@@ -2027,34 +2039,35 @@ msgid "Messages"
 msgstr "Berichten"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid "Missing File"
 msgstr "Ontbrekend bestand"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Move \""
 msgstr "Verplaats \""
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Move Article"
 msgstr "Artikel verplaatsen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #, python-format
 msgid "Move an Article"
 msgstr "Een artikel verplaatsen"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2087,7 +2100,7 @@ msgid "Navigation Basics"
 msgstr "Basisnavigatie"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "Nest articles under this one to generate a structure"
@@ -2114,20 +2127,21 @@ msgid "Next Activity Type"
 msgstr "Volgende activiteitstype"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "No Article found."
 msgstr "Geen artikel gevonden."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No Article found. Create \"%s\""
 msgstr "Geen artikel gevonden. Maak \"%s\" aan"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "No Article in Trash"
@@ -2152,7 +2166,7 @@ msgid "No access"
 msgstr "Geen toegang"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No article found."
@@ -2189,7 +2203,7 @@ msgid "Odoo Survival Guide"
 msgstr "Odoo Survival Guide"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
@@ -2202,7 +2216,7 @@ msgid "Onboarding.pdf"
 msgstr "Onboarding.pdf"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid ""
@@ -2213,7 +2227,7 @@ msgstr ""
 "een nieuw vak om het bestand opnieuw te uploaden."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #, python-format
@@ -2221,7 +2235,7 @@ msgid "Open"
 msgstr "Openen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Outline"
@@ -2250,7 +2264,7 @@ msgid "Permission"
 msgstr "Machtiging"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__category__private
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
@@ -2275,21 +2289,21 @@ msgid "Recipients"
 msgstr "Ontvangers"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Refresh"
 msgstr "Vernieuwen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/knowledge_emoji_picker_remove_action_view/knowledge_emoji_picker_remove_action_view.xml:0
 #, python-format
 msgid "Remove Icon"
 msgstr "Pictogram verwijderen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Remove Member"
@@ -2301,7 +2315,7 @@ msgid "Remove from Trash"
 msgstr "Verwijderen uit prullenbak"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
@@ -2315,21 +2329,21 @@ msgid "Responsible User"
 msgstr "Verantwoordelijke gebruiker"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Restore"
 msgstr "Herstellen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restore Access"
 msgstr "Toegang herstellen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restrict Access"
@@ -2361,7 +2375,7 @@ msgid "Search Favorites"
 msgstr "Favorieten zoeken"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/chatter_topbar.xml:0
 #, python-format
 msgid "Search Knowledge Articles"
@@ -2373,7 +2387,7 @@ msgid "Search Members"
 msgstr "Leden zoeken"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Search an Article to use as Parent"
@@ -2386,7 +2400,7 @@ msgid "Search an article..."
 msgstr "Zoek een artikel..."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Search for an article..."
@@ -2398,21 +2412,21 @@ msgid "Section"
 msgstr "Sectie"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.js:0
 #, python-format
 msgid "Select a cover"
 msgstr "Selecteer een omslag"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_insertion/views_renderers_patches.js:0
 #, python-format
 msgid "Select an article"
 msgstr "Selecteer een artikel"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
@@ -2440,27 +2454,28 @@ msgid "Shared with you"
 msgstr "Gedeeld met jou"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Show all nested articles."
 msgstr "Toon alle geneste artikelen."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Show the first level of nested articles."
 msgstr "Toon het eerste niveau van geneste artikelen."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Some articles have been sent to Trash"
 msgstr "Sommige artikelen zijn naar de Prullenbak gestuurd"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "Something went wrong!"
@@ -2480,14 +2495,14 @@ msgstr ""
 "Gepland: Toekomstige activiteiten."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Table Of Content"
 msgstr "Inhoudsopgave"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2496,13 +2511,21 @@ msgid "Template"
 msgstr "Sjabloon"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.js:0
 #, python-format
 msgid "Template copied to clipboard."
 msgstr "Sjabloon gekopieerd naar klembord."
 
 #. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/models/knowledge_article.py:0
+#, python-format
+msgid "The Article you are trying to access has been deleted"
+msgstr "Het artikel dat je probeert te openen, is verwijderd"
+
+#. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "The article '%s' needs at least one member with 'Write' access."
@@ -2518,6 +2541,7 @@ msgstr ""
 "toegang toe."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid ""
@@ -2528,7 +2552,7 @@ msgstr ""
 "artikel %(article_name)s"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
 #, python-format
 msgid ""
@@ -2539,6 +2563,7 @@ msgstr ""
 "Probeer het later opnieuw."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
@@ -2562,7 +2587,7 @@ msgstr ""
 "artikelhiërarchie."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
@@ -2579,14 +2604,14 @@ msgid "This article is archived."
 msgstr "Dit artikel is gearchiveerd."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #, python-format
 msgid "This article was deleted or you don't have the rights to access it."
 msgstr "Dit artikel is verwijderd of je hebt geen toegangsrechten."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_frontend.xml:0
 #, python-format
 msgid "This view is only available for internal users"
@@ -2625,6 +2650,7 @@ msgid "Try Odoo"
 msgstr "Odoo proberen"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Trying to remove wrong member."
@@ -2641,7 +2667,8 @@ msgid "Unarchive"
 msgstr "Dearchiveren"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
@@ -2655,21 +2682,21 @@ msgid "Untitled"
 msgstr "Geen titel"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Update"
 msgstr "Update"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Use as"
 msgstr "Gebruiken als"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
@@ -2677,7 +2704,7 @@ msgid "Use as Attachment"
 msgstr "Gebruiken als bijlage"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Use as Description"
@@ -2705,7 +2732,7 @@ msgid "User Favorite Sequence"
 msgstr "Favoriete reeks van gebruiker"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "User Permission"
@@ -2732,13 +2759,14 @@ msgid "Website communication history"
 msgstr "Geschiedenis van websitecommunicatie"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/res_users.py:0
 #, python-format
 msgid "Welcome %s"
 msgstr "Welkom %s"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "What do you want to manage?"
@@ -2782,7 +2810,7 @@ msgid "Who has access to what?"
 msgstr "Wie heeft toegang tot wat?"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__category__workspace
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
@@ -2802,12 +2830,14 @@ msgid "You are currently visiting as a Guest User"
 msgstr "Je bezoekt momenteel als gastgebruiker"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You are not allowed to make '%(article_name)s' private."
 msgstr "Het is niet toegestaan om '%(article_name)s' privé te maken."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2815,20 +2845,21 @@ msgid ""
 msgstr "Je mag '%(article_name)s' niet verplaatsen onder '%(parent_name)s'."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't leave an article for which you are the last writer"
 msgstr "Je kunt geen artikel achterlaten waarvan je de laatste schrijver bent"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't remove the last writer of the article"
 msgstr "Je kunt de laatste schrijver van het artikel niet verwijderen"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You cannot add or remove this article to your favorites"
@@ -2836,18 +2867,21 @@ msgstr ""
 "Je kunt dit artikel niet toevoegen aan of verwijderen uit je favorieten"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the internal permission of this article."
 msgstr "Je kunt de interne machtiging van dit artikel niet wijzigen."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the permission of this member."
 msgstr "Je kunt de machtiging van dit lid niet wijzigen."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You cannot create an article under articles on which you cannot write"
@@ -2855,6 +2889,7 @@ msgstr ""
 "Je kunt geen artikel maken onder artikelen waarop je niet kunt schrijven"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2864,12 +2899,14 @@ msgstr ""
 "op kunt schrijven"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You have to be editor on %(article_name)s to add members."
 msgstr "Je moet redacteur zijn op %(article_name)s om leden toe te voegen."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2879,6 +2916,7 @@ msgstr ""
 "wijzigen."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2888,6 +2926,7 @@ msgstr ""
 "wijzigen."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2898,6 +2937,7 @@ msgstr ""
 "verwijderen of uit te sluiten."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You have to be editor on %(article_name)s to restore it."
@@ -2909,7 +2949,7 @@ msgid "and the following child article(s) have"
 msgstr "en de volgende onderliggende artikel(en) hebben"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "articles"
@@ -2926,14 +2966,14 @@ msgid "cover"
 msgstr "omslag"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Buildings"
 msgstr "bijv. Gebouwen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Todos"
@@ -2955,7 +2995,7 @@ msgid "invited you to access"
 msgstr "nodigde je uit om toegang te krijgen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/abstract_behavior/abstract_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0

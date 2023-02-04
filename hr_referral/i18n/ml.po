@@ -113,7 +113,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__active
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_ids
@@ -213,7 +213,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_friend__position__back
 msgid "Back"
-msgstr ""
+msgstr "തിരികെ"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.res_config_settings_view__form
@@ -264,7 +264,7 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_link_to_share_view_form
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_res_company

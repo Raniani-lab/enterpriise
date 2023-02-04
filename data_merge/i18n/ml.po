@@ -67,7 +67,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__active
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__removal_mode__archive
@@ -710,7 +710,7 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__notify_frequency_period__weeks
 msgid "Weeks"
-msgstr ""
+msgstr "ആഴ്ചകൾ"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__mix_by_company

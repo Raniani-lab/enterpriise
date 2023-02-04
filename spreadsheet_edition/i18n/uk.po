@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:30+0000\n"
+"POT-Creation-Date: 2023-02-02 10:53+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
@@ -487,6 +487,13 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/assets/pivot_view/pivot_view.js:0
+#, python-format
+msgid "Pivot contains duplicate groupbys"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Pivot name"
@@ -799,7 +806,7 @@ msgstr "нисхідний"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "graph"
-msgstr ""
+msgstr "graph"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

@@ -1045,7 +1045,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "സ്റ്റോക്ക് മൂവ് "
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__move_line_id
@@ -1100,7 +1100,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__title
 msgid "Title"
-msgstr ""
+msgstr "തലക്കെട്ട്"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -1122,7 +1122,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Type"
-msgstr ""
+msgstr "ടൈപ്പ്"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -1144,7 +1144,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__week
 msgid "Weeks"
-msgstr ""
+msgstr "ആഴ്ചകൾ"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_quality_check_wizard

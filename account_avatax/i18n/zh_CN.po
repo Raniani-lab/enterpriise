@@ -3,7 +3,7 @@
 # 	* account_avatax
 # 
 # Translators:
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2022
 # 
 msgid ""
@@ -25,6 +25,13 @@ msgstr ""
 #, python-format
 msgid "%(response)s"
 msgstr "%(response)s"
+
+#. module: account_avatax
+#. odoo-python
+#: code:addons/account_avatax/models/account_avatax.py:0
+#, python-format
+msgid "- %s (ID: %s) on %s"
+msgstr ""
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
@@ -305,13 +312,6 @@ msgid "Customer Code set in Avalara for this partner."
 msgstr "在 Avalara 中为此合作伙伴设置的客户代码。"
 
 #. module: account_avatax
-#: code:addons/account_avatax/models/account_avatax.py:0
-#, python-format
-msgid ""
-"Customers are required to have a zip, state and country when using Avatax."
-msgstr "客户在使用Avaax时必须有一个zip，州和国家。"
-
-#. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__description
 #: model:ir.model.fields,field_description:account_avatax.field_product_avatax_category__description
 msgid "Description"
@@ -553,6 +553,15 @@ msgid ""
 msgstr ""
 "%(name)s需要阿瓦拉纳税法（#%(id)s）\n"
 "查看 https://taxcode.avatax.avalara.com/"
+
+#. module: account_avatax
+#. odoo-python
+#: code:addons/account_avatax/models/account_avatax.py:0
+#, python-format
+msgid ""
+"The following customer(s) need to have a zip, state and country when using "
+"Avatax:"
+msgstr ""
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_res_config_settings__avalara_commit

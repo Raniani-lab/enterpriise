@@ -115,7 +115,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__active
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation
@@ -232,7 +232,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_bachelor
 msgid "Bachelor"
-msgstr ""
+msgstr "ബാച്‌ലർ"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__applies_on__bank_account
@@ -566,7 +566,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__document
 msgid "Document"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_sign_document_wizard__sign_template_ids
@@ -1646,7 +1646,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_type__periodicity__yearly
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume_category__periodicity__yearly
 msgid "Yearly"
-msgstr ""
+msgstr "വർഷം തോറും"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__final_yearly_costs

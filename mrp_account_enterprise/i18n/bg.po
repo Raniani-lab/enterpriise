@@ -4,6 +4,10 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Martin Trigaux, 2023
+# Anton Vassilev, 2023
+# Vladimir Petrov <vladimir.petrov@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +36,7 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid ", from"
-msgstr ""
+msgstr ", от"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -112,12 +116,12 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<strong>Total Cost of Operations</strong>"
-msgstr ""
+msgstr "<strong>Общо разходи за операции</strong>"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<strong>Total Cost of Scraps</strong>"
-msgstr ""
+msgstr "<strong>Обща стойност на скрап</strong>"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -176,7 +180,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.product_product_inherit_form_view_cost_structure
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.product_template_inherit_form_view_cost_structure
 msgid "Cost Analysis"
-msgstr ""
+msgstr "Анализ на разходите"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -191,7 +195,7 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model:ir.actions.report,name:mrp_account_enterprise.action_cost_struct_product_template
 msgid "Cost Structure Analysis"
-msgstr ""
+msgstr "Анализ на структурата на разходите"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -206,7 +210,7 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Cost of Operations"
-msgstr ""
+msgstr "Операциионни разходи"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -216,7 +220,7 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Cost of Scraps"
-msgstr ""
+msgstr "Разходи за скрап"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__unit_cost
@@ -247,7 +251,7 @@ msgstr "Крайна Дата"
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_report_search_view
 msgid "Group by"
-msgstr ""
+msgstr "Групирайте по"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__id
@@ -268,7 +272,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__production_id
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_report_search_view
 msgid "Manufacturing Order"
-msgstr ""
+msgstr "Производствена поръчка "
 
 #. module: mrp_account_enterprise
 #: model:ir.model,name:mrp_account_enterprise.model_mrp_report
@@ -301,7 +305,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__product_id
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_report_search_view
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: mrp_account_enterprise
 #: model:ir.model,name:mrp_account_enterprise.model_report_mrp_account_enterprise_product_template_cost_structure
@@ -311,7 +315,7 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model:ir.model,name:mrp_account_enterprise.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Продуктов вариант"
 
 #. module: mrp_account_enterprise
 #: model:ir.actions.act_window,name:mrp_account_enterprise.mrp_report_dashboard_action
@@ -323,12 +327,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__qty_produced
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_report_pivot_view
 msgid "Quantity Produced"
-msgstr ""
+msgstr "Произведено количество"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Some of the Manufacturing Order(s) selected are not done yet"
-msgstr ""
+msgstr "Някои от избраните производствени поръчки все още не са извършени"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__component_cost
@@ -338,7 +342,7 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__total_cost
 msgid "Total Cost"
-msgstr ""
+msgstr "Общ разход"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -390,9 +394,9 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "hours"
-msgstr ""
+msgstr "часове"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "manufacturing order(s)."
-msgstr ""
+msgstr "производствена поръчка(и)"

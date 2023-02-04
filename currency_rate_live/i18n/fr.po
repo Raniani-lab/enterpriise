@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:10+0000\n"
+"POT-Creation-Date: 2023-02-02 10:51+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -53,7 +53,7 @@ msgstr "mindicador.cl chilien"
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_company
 msgid "Companies"
-msgstr "Entreprises"
+msgstr "Sociétés"
 
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_config_settings
@@ -63,7 +63,6 @@ msgstr "Paramètres de configuration"
 #. module: currency_rate_live
 #: model:ir.actions.server,name:currency_rate_live.ir_cron_currency_update_ir_actions_server
 #: model:ir.cron,cron_name:currency_rate_live.ir_cron_currency_update
-#: model:ir.cron,name:currency_rate_live.ir_cron_currency_update
 msgid "Currency: rate update"
 msgstr "Devise : mise à jour du taux de change"
 
@@ -91,7 +90,7 @@ msgstr "Intervalle"
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_interval_unit
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_interval_unit
 msgid "Interval Unit"
-msgstr "Unité de l'intervalle"
+msgstr "Unité d'intervalle"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__manually
@@ -114,6 +113,11 @@ msgid "National Bank Of Romania"
 msgstr "Banque nationale de Roumanie"
 
 #. module: currency_rate_live
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__nbp
+msgid "National Bank of Poland"
+msgstr "Banque nationale de Pologne"
+
+#. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_next_execution_date
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_next_execution_date
 msgid "Next Execution Date"
@@ -133,7 +137,7 @@ msgstr "Service"
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_provider
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__currency_provider
 msgid "Service Provider"
-msgstr "Fournisseur du service"
+msgstr "Fournisseur de service"
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__tcmb
@@ -146,6 +150,7 @@ msgid "UAE Central Bank"
 msgstr "Banque centrale des Émirats arabes unis"
 
 #. module: currency_rate_live
+#. odoo-python
 #: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
 msgid ""
@@ -153,8 +158,8 @@ msgid ""
 "be temporary down. Please try again in a moment."
 msgstr ""
 "Impossible de se connecter à la plateforme de taux de change en ligne. Le "
-"service web pourrait être temporairement hors service. Veuillez, s'il vous "
-"plaît, ré-essayer dans quelques minutes."
+"service web pourrait être temporairement hors service. Veuillez réessayer "
+"dans quelques minutes."
 
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__weekly
@@ -162,6 +167,7 @@ msgid "Weekly"
 msgstr "Chaque semaine"
 
 #. module: currency_rate_live
+#. odoo-python
 #: code:addons/currency_rate_live/models/res_config_settings.py:0
 #, python-format
 msgid ""

@@ -4,6 +4,17 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Александра Николова <alexandra1nikolova@gmail.com>, 2023
+# preslav <hackerz99999@gmail.com>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
+# Kaloyan Naumov <kaloyan@lumnus.net>, 2023
+# Ivan Goychev <igoychev.projects@gmail.com>, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Martin Trigaux, 2023
+# aleksandar ivanov, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -159,7 +170,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "<br/>(the email access has not been sent)"
-msgstr ""
+msgstr "<br/>(достъпът до имейл не е изпратен)"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_terms_conditions_setting_banner
@@ -277,7 +288,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_type_view_form
 msgid "<span>(1.0 = full page size)</span>"
-msgstr ""
+msgstr "<span>(1.0 = пълен размер на страница)</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_terms_conditions_setting_banner
@@ -292,7 +303,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "<strong>Message and communication history</strong>"
-msgstr ""
+msgstr "<strong>История на съобщенията и комуникацията</strong>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
@@ -383,6 +394,9 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Actions могат да инициират специфично поведение като отваряне на данни във "
+"вид на календар или автоматично отбелязване на задача като изпълнена след "
+"качване на документа."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
@@ -398,7 +412,7 @@ msgstr "Дейности"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Декорация за изключение на дейност"
 
 #. module: sign
 #. odoo-python
@@ -416,7 +430,7 @@ msgstr "Състояние на Дейност"
 #. module: sign
 #: model:ir.model,name:sign.model_mail_activity_type
 msgid "Activity Type"
-msgstr ""
+msgstr "Вид дейност"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_type_icon
@@ -433,14 +447,14 @@ msgstr ""
 #: code:addons/sign/static/src/js/backend/PDFIframe.js:0
 #, python-format
 msgid "Add Initials"
-msgstr ""
+msgstr "Добавете инициали"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/backend/PDFIframe.js:0
 #, python-format
 msgid "Add once"
-msgstr ""
+msgstr "Добавете веднъж"
 
 #. module: sign
 #. odoo-javascript
@@ -452,14 +466,14 @@ msgstr ""
 #. module: sign
 #: model:res.groups,name:sign.group_sign_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Администратор"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Adopt Your Signature"
-msgstr ""
+msgstr "Одобрете подписа си"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__signed
@@ -528,7 +542,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Archive"
-msgstr ""
+msgstr "Архив"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -583,7 +597,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__authorized_ids
 msgid "Authorized Users"
-msgstr ""
+msgstr "Упълномощени потребители"
 
 #. module: sign
 #. odoo-javascript
@@ -600,7 +614,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "Based on"
-msgstr ""
+msgstr "Основан на"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -615,7 +629,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "By"
-msgstr ""
+msgstr "By"
 
 #. module: sign
 #. odoo-javascript
@@ -658,14 +672,14 @@ msgstr "Отказ"
 #: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__canceled
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Canceled"
-msgstr ""
+msgstr "Отменен"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Center"
-msgstr ""
+msgstr "Център"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -687,7 +701,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__checkbox
 #: model:sign.item.type,name:sign.sign_item_type_checkbox
 msgid "Checkbox"
-msgstr ""
+msgstr "Поле за отметка"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_template__is_sharing
@@ -708,7 +722,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Click to start"
-msgstr ""
+msgstr "Натиснете, за да започнете"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -722,12 +736,12 @@ msgstr "Затвори"
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__color
 #: model:ir.model.fields,field_description:sign.field_sign_template__color
 msgid "Color"
-msgstr ""
+msgstr "Цвят"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__color
 msgid "Color Index"
-msgstr ""
+msgstr "Цветен индекс"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_company
@@ -753,12 +767,12 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__completed
 #, python-format
 msgid "Completed"
-msgstr ""
+msgstr "Завършен"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completed_document
 msgid "Completed Document"
-msgstr ""
+msgstr "Завършен документ"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completed_document_attachment_ids
@@ -768,12 +782,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_closed
 msgid "Completed Signatures"
-msgstr ""
+msgstr "Завършени подписи"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completion_date
 msgid "Completion Date"
-msgstr ""
+msgstr "Дата на завършване"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_config_settings
@@ -783,7 +797,7 @@ msgstr "Настройки"
 #. module: sign
 #: model:ir.ui.menu,name:sign.menu_sign_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Конфигурация "
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -795,7 +809,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_duplicate_template_with_pdf_view_form
 msgid "Confirm"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: sign
 #. odoo-javascript
@@ -816,13 +830,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__partner_id
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Contacts"
-msgstr ""
+msgstr "Контакти"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -853,7 +867,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/backend/utils.js:0
 #, python-format
 msgid "Create: \""
-msgstr ""
+msgstr "Създайте:\""
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__create_uid
@@ -892,7 +906,7 @@ msgstr "Създадено на"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__create
 msgid "Creation"
-msgstr ""
+msgstr "Създаване"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -902,17 +916,17 @@ msgstr ""
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_customer
 msgid "Customer"
-msgstr ""
+msgstr "Клиент"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request_item__access_url
 msgid "Customer Portal URL"
-msgstr ""
+msgstr "URL адрес на клиентския портал"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_template_menu
 msgid "Dashboard"
-msgstr ""
+msgstr "Табло за управление"
 
 #. module: sign
 #. odoo-javascript
@@ -931,22 +945,22 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__default
 msgid "Default"
-msgstr ""
+msgstr "Стандартен"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__default_height
 msgid "Default Height"
-msgstr ""
+msgstr "Стандартна височина"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__default_width
 msgid "Default Width"
-msgstr ""
+msgstr "Стандартна широчина "
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Изтриване"
 
 #. module: sign
 #. odoo-javascript
@@ -973,7 +987,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 msgid "Details"
-msgstr ""
+msgstr "Данни"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_signature
@@ -988,7 +1002,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_users_view_form
 msgid "Digital Signatures"
-msgstr ""
+msgstr "Електронни подписи"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_initials
@@ -1003,7 +1017,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Display"
-msgstr ""
+msgstr "Покажете"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__display_name
@@ -1031,7 +1045,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Document"
-msgstr ""
+msgstr "Документ"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -1054,12 +1068,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__page
 msgid "Document Page"
-msgstr ""
+msgstr "Страница на документ"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__template_id
 msgid "Document Template"
-msgstr ""
+msgstr "Шаблон за документ"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1069,18 +1083,18 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Documentation"
-msgstr ""
+msgstr "Документация"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_action
 #: model:ir.ui.menu,name:sign.sign_request_menu
 msgid "Documents"
-msgstr ""
+msgstr "Документи"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 msgid "Download"
-msgstr ""
+msgstr "Изтеглете от системата"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -1095,21 +1109,21 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #, python-format
 msgid "Download Document"
-msgstr ""
+msgstr "Изтеглете документ от системата"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/common/PDFIframe.js:0
 #, python-format
 msgid "Download original document"
-msgstr ""
+msgstr "Изтеглете оригиналния документ"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Drag & Drop a field in the PDF"
-msgstr ""
+msgstr "Плъзнете и пуснете поле в PDF файла"
 
 #. module: sign
 #. odoo-javascript
@@ -1125,21 +1139,21 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Падащо меню"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Duplicate"
-msgstr ""
+msgstr "Дублирайте"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Duplicated Template"
-msgstr ""
+msgstr "Дублиран шаблон"
 
 #. module: sign
 #. odoo-python
@@ -1156,7 +1170,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Edit"
-msgstr ""
+msgstr "Редактирай"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -1169,7 +1183,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Edit template name"
-msgstr ""
+msgstr "Редактирайте име на шаблон"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signer_email
@@ -1177,7 +1191,7 @@ msgstr ""
 #: model:sign.item.type,placeholder:sign.sign_item_type_email
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Email"
-msgstr ""
+msgstr "Имейл"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__subject
@@ -1192,7 +1206,7 @@ msgstr ""
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_employee
 msgid "Employee"
-msgstr ""
+msgstr "Служител"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__group_show_sign_order
@@ -1215,7 +1229,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Грешка"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -1242,7 +1256,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__favorited_ids
 msgid "Favorite of"
-msgstr ""
+msgstr "Любим на"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__favorited_ids
@@ -1253,13 +1267,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item__name
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__name
 msgid "Field Name"
-msgstr ""
+msgstr "Име на поле"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_item_type_menu
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Field Types"
-msgstr ""
+msgstr "Видове полета"
 
 #. module: sign
 #. odoo-javascript
@@ -1267,7 +1281,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 #, python-format
 msgid "Fields"
-msgstr ""
+msgstr "Полета"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item
@@ -1294,7 +1308,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__filename
 msgid "Filename"
-msgstr ""
+msgstr "Име на файл"
 
 #. module: sign
 #. odoo-javascript
@@ -1309,7 +1323,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Final Validation"
-msgstr ""
+msgstr "Последно потвърждаване"
 
 #. module: sign
 #. odoo-javascript
@@ -1321,17 +1335,17 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Последователи"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Последователи (партньори)"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr ""
+msgstr "Икона, примерно fa-tasks"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -1377,12 +1391,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 #, python-format
 msgid "Fully Signed"
-msgstr ""
+msgstr "Напълно подписан"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Бъдещи дейности"
 
 #. module: sign
 #. odoo-javascript
@@ -1394,7 +1408,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Geolocation"
-msgstr ""
+msgstr "Геолокация"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_report_green_savings
@@ -1419,12 +1433,12 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Групиране по"
 
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_1
 msgid "HR"
-msgstr ""
+msgstr "ЧР"
 
 #. module: sign
 #: model:ir.model,name:sign.model_ir_http
@@ -1449,7 +1463,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__height
 msgid "Height"
-msgstr ""
+msgstr "Височина"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
@@ -1467,7 +1481,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Home"
-msgstr ""
+msgstr "Начало"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_report_container
@@ -1514,12 +1528,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "Икона"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Икона за обозначаване на дейност с изключение."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__module_sign_itsme
@@ -1529,7 +1543,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ако е отметнато, новите съобщения ще изискват внимание."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_role__change_authorized
@@ -1544,7 +1558,7 @@ msgstr ""
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Ако е отметнато, някои съобщения имат грешка при доставката."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
@@ -1582,18 +1596,18 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Information"
-msgstr ""
+msgstr "Информация"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__initial
 msgid "Initial"
-msgstr ""
+msgstr "Инициал"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_initial
 #: model:sign.item.type,placeholder:sign.sign_item_type_initial
 msgid "Initials"
-msgstr ""
+msgstr "Инициали"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -1608,7 +1622,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "е последовател"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__is_mail_sent
@@ -1684,20 +1698,20 @@ msgstr "Последно актуализирано на"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Последни дейности"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__latitude
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__latitude
 msgid "Latitude"
-msgstr ""
+msgstr "Географска ширина"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Left"
-msgstr ""
+msgstr "Ляв"
 
 #. module: sign
 #. odoo-javascript
@@ -1716,7 +1730,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url_text
 msgid "Link Label"
-msgstr ""
+msgstr "Етикет на линк"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__activity_id
@@ -1745,19 +1759,19 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Logo"
-msgstr ""
+msgstr "Емблема"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__sign_log_ids
 #: model_terms:ir.ui.view,arch_db:sign.sign_log_view_tree
 msgid "Logs"
-msgstr ""
+msgstr "Логаритми"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__longitude
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__longitude
 msgid "Longitude"
-msgstr ""
+msgstr "Географска дължина"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__mail_sent_order
@@ -1772,7 +1786,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Основен прикачен Файл"
 
 #. module: sign
 #. odoo-python
@@ -1792,17 +1806,17 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Mandatory field"
-msgstr ""
+msgstr "Задължително поле"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message
 msgid "Message"
-msgstr ""
+msgstr "Съобщение"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Грешка при доставката на съобщение"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_send_request__message_cc
@@ -1817,7 +1831,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Съобщения"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.encrypted_ask_password
@@ -1827,7 +1841,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sms_number
 msgid "Mobile"
-msgstr ""
+msgstr "Мобилен"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -1839,12 +1853,12 @@ msgstr ""
 #: model:sign.item.type,name:sign.sign_item_type_multiline_text
 #: model:sign.item.type,placeholder:sign.sign_item_type_multiline_text
 msgid "Multiline Text"
-msgstr ""
+msgstr "Многоредов текст"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_share_view_form
 msgid "Multiple Signature Requests"
-msgstr ""
+msgstr "Няколко заявки за подпис"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__my_activity_date_deadline
@@ -1860,12 +1874,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "My Favorites"
-msgstr ""
+msgstr "Моите фаворити"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "My Requests"
-msgstr ""
+msgstr "Моите заявки"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
@@ -1923,7 +1937,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/PDFIframe.js:0
 #, python-format
 msgid "Need a valid PDF to add signature fields !"
-msgstr ""
+msgstr "Нуждаете се от валиден PDF, за да добавяте на полета за подпис!"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__new_template
@@ -1935,7 +1949,7 @@ msgstr ""
 #: code:addons/sign/controllers/portal.py:0
 #, python-format
 msgid "Newest"
-msgstr ""
+msgstr "Най-новите"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_calendar_event_id
@@ -1945,17 +1959,17 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Краен срок на следващо действие"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Обобщение на следваща дейност"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Вид на следващо действие"
 
 #. module: sign
 #. odoo-javascript
@@ -2008,7 +2022,7 @@ msgstr ""
 #: code:addons/sign/controllers/portal.py:0
 #, python-format
 msgid "None"
-msgstr ""
+msgstr "Никакъв"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -2034,7 +2048,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Брой действия"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -2049,17 +2063,17 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Брой грешки"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Брой съобщения, които изискват внимание"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Брой съобщения с грешка при доставка"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__num_pages
@@ -2110,7 +2124,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__value
 msgid "Option"
-msgstr ""
+msgstr "Опция"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item_option
@@ -2138,7 +2152,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
 msgid "Options"
-msgstr ""
+msgstr "Настройки"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__original_template_id
@@ -2182,14 +2196,14 @@ msgstr ""
 #: model:sign.item.type,placeholder:sign.sign_item_type_phone
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Phone"
-msgstr ""
+msgstr "Телефон"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Phone Number"
-msgstr ""
+msgstr "Телефонен номер"
 
 #. module: sign
 #. odoo-javascript
@@ -2197,7 +2211,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__placeholder
 #, python-format
 msgid "Placeholder"
-msgstr ""
+msgstr "Заместител"
 
 #. module: sign
 #. odoo-python
@@ -2209,29 +2223,29 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__access_url
 msgid "Portal Access URL"
-msgstr ""
+msgstr "URL адрес за достъп до портала"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__posX
 msgid "Position X"
-msgstr ""
+msgstr "Позиция X"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__posY
 msgid "Position Y"
-msgstr ""
+msgstr "Позиция Y"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Preview"
-msgstr ""
+msgstr "Преглед"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/common/PDFIframe.js:0
 #, python-format
 msgid "Print original document"
-msgstr ""
+msgstr "Разпечатайте оригиналния документ"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -2241,14 +2255,14 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__progress
 msgid "Progress"
-msgstr ""
+msgstr "Развитие"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Public User"
-msgstr ""
+msgstr "Публичен потребител"
 
 #. module: sign
 #. odoo-javascript
@@ -2262,7 +2276,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Reason"
-msgstr ""
+msgstr "Причина"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
@@ -2275,7 +2289,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__refuse
 #, python-format
 msgid "Refuse"
-msgstr ""
+msgstr "Откажете"
 
 #. module: sign
 #. odoo-javascript
@@ -2291,7 +2305,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__refused
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 msgid "Refused"
-msgstr ""
+msgstr "Отказан"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__refused
@@ -2307,7 +2321,7 @@ msgstr ""
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_reports
 msgid "Reports"
-msgstr ""
+msgstr "Отчети"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__request_item_infos
@@ -2336,7 +2350,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__required
 msgid "Required"
-msgstr ""
+msgstr "Изискуем"
 
 #. module: sign
 #. odoo-javascript
@@ -2352,14 +2366,14 @@ msgstr ""
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Resend the invitation"
-msgstr ""
+msgstr "Препратете поканата"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Resent !"
-msgstr ""
+msgstr "Препратете!"
 
 #. module: sign
 #. odoo-javascript
@@ -2368,7 +2382,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template__user_id
 #, python-format
 msgid "Responsible"
-msgstr ""
+msgstr "Отговорно лице"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__responsible_count
@@ -2378,26 +2392,26 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Отговорник"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Restore"
-msgstr ""
+msgstr "Възстанови"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Right"
-msgstr ""
+msgstr "Дясно"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__role_id
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__role_id
 msgid "Role"
-msgstr ""
+msgstr "Длъжност"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_role_view_tree
@@ -2419,7 +2433,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS грешка при доставка"
 
 #. module: sign
 #. odoo-javascript
@@ -2436,7 +2450,7 @@ msgstr ""
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_3
 msgid "Sales"
-msgstr ""
+msgstr "Продажби"
 
 #. module: sign
 #. odoo-javascript
@@ -2453,7 +2467,7 @@ msgstr "Запазете"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Saved"
-msgstr ""
+msgstr "Запазен"
 
 #. module: sign
 #. odoo-python
@@ -2466,7 +2480,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__access_token
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__access_token
 msgid "Security Token"
-msgstr ""
+msgstr "Символ за сигурност"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_selection
@@ -2494,14 +2508,14 @@ msgstr ""
 #: code:addons/sign/static/src/js/backend/utils.js:0
 #, python-format
 msgid "Select the responsible"
-msgstr ""
+msgstr "Изберете отговорно лице"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__selection
 #: model:sign.item.type,name:sign.sign_item_type_selection
 #: model:sign.item.type,placeholder:sign.sign_item_type_selection
 msgid "Selection"
-msgstr ""
+msgstr "Селекция"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__option_ids
@@ -2518,14 +2532,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_tree
 #, python-format
 msgid "Send"
-msgstr ""
+msgstr "Изпрати"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Send SMS"
-msgstr ""
+msgstr "Изпращане на SMS"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signer_id
@@ -2543,12 +2557,12 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sign.selection__sign_request__state__sent
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Sent"
-msgstr ""
+msgstr "Изпратен"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_wait
 msgid "Sent Requests"
-msgstr ""
+msgstr "Изпратена заявка"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_settings_action
@@ -2563,7 +2577,7 @@ msgstr "Настройки"
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_tree
 #, python-format
 msgid "Share"
-msgstr ""
+msgstr "Споделете"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_share_view_form
@@ -2580,7 +2594,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__share_link
 msgid "Share Link"
-msgstr ""
+msgstr "Споделете линк"
 
 #. module: sign
 #. odoo-python
@@ -2590,12 +2604,14 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sign.selection__sign_request__state__shared
 #, python-format
 msgid "Shared"
-msgstr ""
+msgstr "Споделен"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Показване на всички записи, на които следващата дата на действие е преди "
+"днес"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -2612,7 +2628,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 #, python-format
 msgid "Sign"
-msgstr ""
+msgstr "Подпишете"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__use_sign_terms
@@ -2634,7 +2650,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Sign Document"
-msgstr ""
+msgstr "Подпишете документ"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_duplicate_template_pdf
@@ -2757,6 +2773,8 @@ msgstr ""
 
 #. module: sign
 #. odoo-javascript
+#. odoo-python
+#: code:addons/sign/models/sign_request.py:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #: code:addons/sign/static/src/xml/sign_common.xml:0
@@ -2770,7 +2788,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 #, python-format
 msgid "Signature"
-msgstr ""
+msgstr "Подпис"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
@@ -2780,12 +2798,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__sign_item_id
 msgid "Signature Item"
-msgstr ""
+msgstr "Signature Item"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_item_role
 msgid "Signature Item Party"
-msgstr ""
+msgstr "Signature Item Party"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_item_role_action
@@ -2796,7 +2814,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sign.sign_item_type_action
 #: model:ir.model,name:sign.model_sign_item_type
 msgid "Signature Item Type"
-msgstr ""
+msgstr "Signature Item Type"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_item_value
@@ -2806,7 +2824,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_item_ids
 msgid "Signature Items"
-msgstr ""
+msgstr "Signature Items"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
@@ -2823,7 +2841,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
 msgid "Signature Request"
-msgstr ""
+msgstr "Заявка за подпис"
 
 #. module: sign
 #. odoo-python
@@ -2857,7 +2875,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_request_ids
 msgid "Signature Requests"
-msgstr ""
+msgstr "Заявки за подписи"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__start_sign
@@ -2913,7 +2931,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Signed"
-msgstr ""
+msgstr "Подписан"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__signed_count
@@ -2940,7 +2958,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "Signed on"
-msgstr ""
+msgstr "Подписан на"
 
 #. module: sign
 #. odoo-javascript
@@ -2958,7 +2976,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__request_item_ids
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signer_ids
 msgid "Signers"
-msgstr ""
+msgstr "Подписващи се"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signers_count
@@ -2991,7 +3009,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Some fields have still to be completed !"
-msgstr ""
+msgstr "Някои полета все още не са завършени!"
 
 #. module: sign
 #. odoo-python
@@ -3015,7 +3033,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Somebody is already filling a document which uses this template"
-msgstr ""
+msgstr "Някой вече попълва документ, който използва този шаблон"
 
 #. module: sign
 #. odoo-javascript
@@ -3039,7 +3057,7 @@ msgstr ""
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_default
 msgid "Standard"
-msgstr ""
+msgstr "Стандартен"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__state
@@ -3060,7 +3078,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 #, python-format
 msgid "Status"
-msgstr ""
+msgstr "Състояние"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__activity_state
@@ -3070,6 +3088,10 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Статус според дейностите\n"
+"Пресрочени: Крайната дата е в миналото\n"
+"Днес: Дейности с дата на изпълнение днес \n"
+"Планирани: Бъдещи дейности."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -3081,24 +3103,24 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject
 msgid "Subject"
-msgstr ""
+msgstr "Тема"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__name
 msgid "Tag Name"
-msgstr ""
+msgstr "Име на маркер"
 
 #. module: sign
 #: model:ir.model.constraint,message:sign.constraint_sign_template_tag_name_uniq
 msgid "Tag name already exists !"
-msgstr ""
+msgstr "Маркер с това име вече съществува!"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__tag_ids
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Tags"
-msgstr ""
+msgstr "Маркери"
 
 #. module: sign
 #. odoo-javascript
@@ -3120,7 +3142,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Template"
-msgstr ""
+msgstr "Шаблон"
 
 #. module: sign
 #. odoo-javascript
@@ -3166,12 +3188,12 @@ msgstr ""
 #: model:ir.actions.act_window,name:sign.sign_template_action
 #, python-format
 msgid "Templates"
-msgstr ""
+msgstr "Шаблони"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid "Terms &amp; Conditions"
-msgstr ""
+msgstr "Срокове &amp; условия"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__res_company__sign_terms_type__html
@@ -3198,7 +3220,7 @@ msgstr ""
 #: model:sign.item.type,name:sign.sign_item_type_text
 #: model:sign.item.type,placeholder:sign.sign_item_type_text
 msgid "Text"
-msgstr ""
+msgstr "Текст"
 
 #. module: sign
 #. odoo-javascript
@@ -3206,7 +3228,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Thank You !"
-msgstr ""
+msgstr "Благодаря !"
 
 #. module: sign
 #. odoo-javascript
@@ -3463,12 +3485,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__tip
 msgid "Tip"
-msgstr ""
+msgstr "Съвет"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__sent
 msgid "To Sign"
-msgstr ""
+msgstr "За подписване"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -3485,7 +3507,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Днешни дейности"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__transaction_id
@@ -3513,12 +3535,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_item__type_id
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__item_type
 msgid "Type"
-msgstr ""
+msgstr "Вид"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Вид на изключение на дейност в базата."
 
 #. module: sign
 #. odoo-javascript
@@ -3555,7 +3577,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__update
 msgid "Update"
-msgstr ""
+msgstr "Актуализирайте"
 
 #. module: sign
 #. odoo-python
@@ -3603,12 +3625,12 @@ msgstr ""
 #: model:ir.model,name:sign.model_res_users
 #: model:ir.model.fields,field_description:sign.field_sign_log__user_id
 msgid "User"
-msgstr ""
+msgstr "Потребител"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__token
 msgid "User token"
-msgstr ""
+msgstr "Потребителски токен"
 
 #. module: sign
 #: model:res.groups,name:sign.group_sign_user
@@ -3627,7 +3649,7 @@ msgstr "Валидирай"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Validate & Send"
-msgstr ""
+msgstr "Потвърдете & изпратете"
 
 #. module: sign
 #. odoo-javascript
@@ -3639,7 +3661,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Validate &amp; Send Completed Document"
-msgstr ""
+msgstr "Потвърдете &amp; изпратете занършен документ"
 
 #. module: sign
 #. odoo-javascript
@@ -3652,7 +3674,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sign_item_value_ids
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__value
 msgid "Value"
-msgstr ""
+msgstr "Стойност"
 
 #. module: sign
 #. odoo-javascript
@@ -3705,7 +3727,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Внимание"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -3738,12 +3760,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Съобщения в уебсайт"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "История на комуникацията на уебсайт"
 
 #. module: sign
 #. odoo-javascript
@@ -3774,12 +3796,12 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__width
 msgid "Width"
-msgstr ""
+msgstr "Широчина"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Write email or search contact..."
-msgstr ""
+msgstr "Напишете имейл или потърсете контакт..."
 
 #. module: sign
 #. odoo-python
@@ -3887,7 +3909,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Your email"
-msgstr ""
+msgstr "Вашият емейл"
 
 #. module: sign
 #. odoo-javascript
@@ -3904,7 +3926,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Your name"
-msgstr ""
+msgstr "Вашето име"
 
 #. module: sign
 #. odoo-javascript
@@ -3912,7 +3934,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Your signature has been saved."
-msgstr ""
+msgstr "Вашият подпис беше запазен"
 
 #. module: sign
 #. odoo-javascript
@@ -3925,7 +3947,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "and"
-msgstr ""
+msgstr "и"
 
 #. module: sign
 #. odoo-javascript

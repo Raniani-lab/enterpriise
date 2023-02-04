@@ -27,7 +27,7 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_view_form
 msgid "Close"
-msgstr ""
+msgstr "അടയ്ക്കുക"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__company_id
@@ -157,7 +157,7 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "സ്റ്റോക്ക് മൂവ് "
 
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_project_task

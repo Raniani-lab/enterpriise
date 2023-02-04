@@ -174,7 +174,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__marketing_activity_ids
@@ -1075,6 +1075,16 @@ msgid "Participants of %s (%s)"
 msgstr ""
 
 #. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
+msgid "Pick a Server Action"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
+msgid "Pick a Template"
+msgstr ""
+
+#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Pick or create a/an"
 msgstr ""
@@ -1386,7 +1396,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Test"
-msgstr ""
+msgstr "ടെസ്റ്റ്"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__is_test
@@ -1544,7 +1554,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__weeks
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__weeks
 msgid "Weeks"
-msgstr ""
+msgstr "ആഴ്ചകൾ"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_winner_selection

@@ -273,7 +273,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_ids
@@ -672,7 +672,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Confirm"
-msgstr ""
+msgstr "സ്ഥിരീകരിക്കുക"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
@@ -2079,7 +2079,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__method_period__12
 msgid "Years"
-msgstr ""
+msgstr "വർഷങ്ങൾ"
 
 #. module: account_asset
 #. odoo-python

@@ -316,7 +316,7 @@ msgstr "സെർച്ച് "
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_sun
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_config_settings__renting_forbidden_sun
 msgid "Sunday"
-msgstr ""
+msgstr "ഞായറാഴ്ച"
 
 #. module: website_sale_renting
 #. odoo-javascript
@@ -343,7 +343,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_thu
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_config_settings__renting_forbidden_thu
 msgid "Thursday"
-msgstr ""
+msgstr "വ്യാഴാഴ്ച"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
@@ -359,7 +359,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_tue
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_config_settings__renting_forbidden_tue
 msgid "Tuesday"
-msgstr ""
+msgstr "ചൊവ്വാഴ്ച"
 
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_website
@@ -370,12 +370,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_wed
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_config_settings__renting_forbidden_wed
 msgid "Wednesday"
-msgstr ""
+msgstr "ബുധനാഴ്ച"
 
 #. module: website_sale_renting
 #: model:ir.model.fields.selection,name:website_sale_renting.selection__res_company__renting_minimal_time_unit__week
 msgid "Weeks"
-msgstr ""
+msgstr "ആഴ്ചകൾ"
 
 #. module: website_sale_renting
 #. odoo-javascript

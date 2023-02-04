@@ -1276,7 +1276,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__unit_price
 msgid "Unit Price"
-msgstr ""
+msgstr "യൂണിറ്റ് പ്രൈസ് "
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__uom_id
@@ -1329,12 +1329,12 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__week
 msgid "Weeks"
-msgstr ""
+msgstr "ആഴ്ചകൾ"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__year
 msgid "Years"
-msgstr ""
+msgstr "വർഷങ്ങൾ"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_product_template_action

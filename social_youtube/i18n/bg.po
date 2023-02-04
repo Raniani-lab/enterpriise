@@ -4,6 +4,11 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Martin Trigaux, 2023
+# aleksandar ivanov, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -103,7 +108,7 @@ msgstr "Отказ"
 #. module: social_youtube
 #: model:social.stream.type,name:social_youtube.stream_type_youtube_channel_videos
 msgid "Channel"
-msgstr ""
+msgstr "Канал"
 
 #. module: social_youtube
 #. openerp-web
@@ -111,7 +116,7 @@ msgstr ""
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
 msgid "Clear"
-msgstr ""
+msgstr "Изчисти"
 
 #. module: social_youtube
 #: code:addons/social_youtube/models/social_stream_post.py:0
@@ -131,7 +136,7 @@ msgstr "Настройки"
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Confirmation"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_live_post__youtube_video_id
@@ -228,7 +233,7 @@ msgstr "Последно актуализирано на"
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
 msgid "Likes"
-msgstr ""
+msgstr "Харесвания"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_media__media_type
@@ -286,13 +291,13 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__public
 msgid "Public"
-msgstr ""
+msgstr "Поверителен"
 
 #. module: social_youtube
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "Reason:"
-msgstr ""
+msgstr "Причина:"
 
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_account__youtube_refresh_token
@@ -335,7 +340,7 @@ msgstr ""
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
 msgid "Select"
-msgstr ""
+msgstr "Изберете"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_accounts_other_count
@@ -367,7 +372,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_media
 msgid "Social Media"
-msgstr ""
+msgstr "Социална медиа"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post
@@ -382,7 +387,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_stream
 msgid "Social Stream"
-msgstr ""
+msgstr "Социален поток"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_stream_post
@@ -444,7 +449,7 @@ msgstr ""
 #: code:addons/social_youtube/wizard/social_account_revoke_youtube.py:0
 #, python-format
 msgid "Unknown"
-msgstr ""
+msgstr "Неизвестен"
 
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__unlisted
@@ -495,7 +500,7 @@ msgstr ""
 #: code:addons/social_youtube/models/social_post.py:0
 #, python-format
 msgid "Video"
-msgstr ""
+msgstr "Видео"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form
@@ -531,7 +536,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
 #, python-format
 msgid "Views"
-msgstr ""
+msgstr "Гледания"
 
 #. module: social_youtube
 #. openerp-web

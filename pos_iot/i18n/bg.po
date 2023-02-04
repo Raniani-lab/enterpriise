@@ -4,6 +4,10 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# aleksandar ivanov, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-11 15:05+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Igor Sheludko <igor.sheludko@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,12 +62,12 @@ msgstr ""
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_print_via_proxy
 msgid "Bypass browser printing and prints via the hardware proxy."
-msgstr ""
+msgstr "Bypass на браузъра и отпечатване чрез хардуерен прокси сървър."
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
 msgid "Cashdrawer"
-msgstr ""
+msgstr "Чекмедеже на каса"
 
 #. module: pos_iot
 #. openerp-web
@@ -125,23 +129,23 @@ msgstr ""
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
 msgid "Customer Display"
-msgstr ""
+msgstr "Потребителски дисплей"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_customer_facing_display_via_proxy
 msgid "Customer Facing Display"
-msgstr ""
+msgstr "Диплей към клиента"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
 msgid "Documentation"
-msgstr ""
+msgstr "Документация"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_electronic_scale
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
 msgid "Electronic Scale"
-msgstr ""
+msgstr "Електронна везна"
 
 #. module: pos_iot
 #. openerp-web
@@ -161,7 +165,7 @@ msgstr ""
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_electronic_scale
 msgid "Enables Electronic Scale integration."
-msgstr ""
+msgstr "Активирай интеграцията с електронна везна"
 
 #. module: pos_iot
 #. openerp-web
@@ -260,12 +264,12 @@ msgstr ""
 #: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
 #, python-format
 msgid "Ok"
-msgstr ""
+msgstr "Добре"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_payment_method__payment_terminal_ids
 msgid "Payment Terminal"
-msgstr ""
+msgstr "Терминал за плащане"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__payment_terminal_device_ids
@@ -314,7 +318,7 @@ msgstr ""
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_config
 msgid "Point of Sale Configuration"
-msgstr ""
+msgstr "Конфигурация на център за продажби"
 
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_payment_method
@@ -324,27 +328,27 @@ msgstr ""
 #. module: pos_iot
 #: model:ir.model,name:pos_iot.model_pos_session
 msgid "Point of Sale Session"
-msgstr ""
+msgstr "Сесия на център за продажби"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_print_via_proxy
 msgid "Print via Proxy"
-msgstr ""
+msgstr "Печат през Прокси"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
 msgid "Receipt Printer"
-msgstr ""
+msgstr "Принтер за касови бележки"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scan_via_proxy
 msgid "Scan via Proxy"
-msgstr ""
+msgstr "Сканирайте през Прокси"
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_customer_facing_display_via_proxy
 msgid "Show checkout to customers with a remotely-connected screen."
-msgstr ""
+msgstr "Показване на плащането на клиентите с отдалечено свързан екран."
 
 #. module: pos_iot
 #. openerp-web

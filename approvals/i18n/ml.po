@@ -42,7 +42,7 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_ids
@@ -413,7 +413,7 @@ msgstr ""
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Document"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__requirer_document

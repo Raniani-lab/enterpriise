@@ -64,7 +64,7 @@ msgstr ""
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_type

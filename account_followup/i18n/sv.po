@@ -294,7 +294,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__can_edit_body
 msgid "Can Edit Body"
-msgstr ""
+msgstr "Kan redigera stycket"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -621,7 +621,7 @@ msgstr "Fakturor"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__is_mail_template_editor
 msgid "Is Editor"
-msgstr ""
+msgstr "Är Redigerare"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_move_line
@@ -670,7 +670,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__mail_template_id
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__template_id
 msgid "Mail Template"
-msgstr ""
+msgstr "E-postmall"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_reminder_type__manual
@@ -725,6 +725,10 @@ msgid ""
 "a placeholder expression that provides the appropriate language, e.g. {{ "
 "object.partner_id.lang }}."
 msgstr ""
+"Valfritt översättningsspråk (ISO-kod) som ska väljas när du skickar ett "
+"e-postmeddelande. Om inget anges används den engelska versionen. Detta bör "
+"vanligtvis vara ett platshållaruttryck som anger lämpligt språk, t.ex. {{ "
+"object.partner_id.lang }}."
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_res_partner__followup_responsible_id
@@ -807,7 +811,7 @@ msgstr "Påminnelser"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__render_model
 msgid "Rendering Model"
-msgstr ""
+msgstr "Renderingsmodell"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view

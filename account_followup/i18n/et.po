@@ -15,8 +15,8 @@
 # Martin Trigaux, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Leaanika Randmets, 2022
-# Jana Jaakson, 2022
 # Anna, 2023
+# Jana Jaakson, 2023
 # 
 msgid ""
 msgstr ""
@@ -24,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Anna, 2023\n"
+"Last-Translator: Jana Jaakson, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,6 +61,11 @@ msgid ""
 "- Private: Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...).\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
+"- Kontakt: antud ettevõttega seotud kontaktid  (nt. Tegevjuht, müügijuht, raamatupidaja, ...).\n"
+"- Arve aadress : Eelistatud aadress kõikidele arvetele. Vaikimisi valitud, kui esitate sellele ettevõttele arve.\n"
+"- Tarneaadress : Eelistatud aadress kõikide tarnete jaoks. Vaikimisi valitud, kui tarnite sellele ettevõttele kuuluva tellimuse.\n"
+"- Isiklik aadress: isikliku kontakti näevad ainult volitatud kasutajad, kuna need sisaldavad delikaatseid isikuandmeid (töötaja kodune aadress, ...).\n"
+"- Muu aadress: teised ettevõttega seotud kontaktid (nt. tütarettevõtted, ...)"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
@@ -503,7 +508,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__type__followup
 msgid "Follow-up Address"
-msgstr ""
+msgstr "Lisa-aadress"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_followup_line
@@ -1003,6 +1008,8 @@ msgid ""
 "You are trying to send an Email, but no follow-up contact has any email "
 "address set"
 msgstr ""
+"Üritate saata e-kirja, kuid ühelegi lisakontaktile pole e-posti aadressi "
+"määratud"
 
 #. module: account_followup
 #. odoo-python

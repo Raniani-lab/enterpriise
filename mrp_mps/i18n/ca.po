@@ -6,13 +6,14 @@
 # Jonatan Gk, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Harcogourmet, 2022
-# Josep Anton Belchi, 2022
+# jabelchi, 2022
 # RGB Consulting <odoo@rgbconsulting.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Arnau Ros, 2022
 # Martin Trigaux, 2022
 # Ivan Espinola, 2022
 # Farouk Jabiri, 2022
+# Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Farouk Jabiri, 2022\n"
+"Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2023\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -619,7 +620,7 @@ msgstr "La combinació de magatzem i producte ha de ser única!"
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "The confirmed demand, based on the confirmed sales orders."
-msgstr "La demanda confirmada, basada en les ordres de venda confirmades."
+msgstr "La demanda confirmada, basada en les comandes de venda confirmades."
 
 #. module: mrp_mps
 #. openerp-web

@@ -4,6 +4,9 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# aleksandar ivanov, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-04-19 14:02+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Maria Boyadjieva <marabo2000@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +26,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard__journal_id
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_sepa_wizard__journal_id
 msgid "Bank Journal"
-msgstr ""
+msgstr "Банков журнал"
 
 #. module: hr_payroll_account_sepa
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_sepa_view_form
@@ -35,7 +38,7 @@ msgstr "Отказ"
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_sepa_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_sepa_view_form
 msgid "Confirm"
-msgstr ""
+msgstr "Потвърждение"
 
 #. module: hr_payroll_account_sepa
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_view_form
@@ -70,7 +73,7 @@ msgstr "Име за показване"
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_employee
 msgid "Employee"
-msgstr ""
+msgstr "Служител"
 
 #. module: hr_payroll_account_sepa
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0
@@ -102,7 +105,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip__sepa_export_filename
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run__sepa_export_filename
 msgid "File Name"
-msgstr ""
+msgstr "Име на файл"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard__file_name
@@ -166,12 +169,12 @@ msgstr ""
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip
 msgid "Pay Slip"
-msgstr ""
+msgstr "Фиш заплата"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip_run
 msgid "Payslip Batches"
-msgstr ""
+msgstr "Партиди на фишове за заплата"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip__sepa_export
@@ -210,3 +213,5 @@ msgid ""
 "The journal '%s' requires a proper IBAN account to pay via SEPA. Please "
 "configure it first."
 msgstr ""
+"Журналът '%s' изисква подходяща сметка по IBAN, за да се плаща през ЕЗПЕ. "
+"Моля, конфигурирайте първо нея."

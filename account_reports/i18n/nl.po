@@ -5,16 +5,16 @@
 # Translators:
 # Eric Geens <ericgeens@yahoo.com>, 2022
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
-# Martin Trigaux, 2022
 # Dylan Kiss, 2023
 # Jolien De Paepe, 2023
+# Martin Trigaux, 2023
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:28+0000\n"
+"POT-Creation-Date: 2023-02-02 10:51+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -225,11 +225,6 @@ msgstr ""
 "            Dagboeken:"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
-msgid "<span class=\"fa fa-calendar\" title=\"Dates\" role=\"img\" aria-label=\"Dates\"/>"
-msgstr "<span class=\"fa fa-calendar\" title=\"Datums\" role=\"img\" aria-label=\"Datums\"/>"
-
-#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
 msgid ""
 "<span class=\"fa fa-circle color-green trust-partner\" role=\"img\" aria-"
@@ -332,6 +327,15 @@ msgstr "<span class=\"fa fa-folder-open\"/> Groeperen op kostenplaats"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
 msgid "<span class=\"fa fa-folder-open\"/> Partners"
 msgstr "<span class=\"fa fa-folder-open\"/> Relaties"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
+msgid ""
+"<span class=\"fa fa-fw fa-calendar\" title=\"Dates\" role=\"img\" aria-"
+"label=\"Dates\"/>"
+msgstr ""
+"<span class=\"fa fa-fw fa-calendar\" title=\"Datums\" role=\"img\" aria-"
+"label=\"Datums\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_tax_unit
@@ -1088,6 +1092,11 @@ msgstr "Kasoverschot"
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
 msgid "Change expected payment date"
 msgstr "Verander verwachte betalingsdatum"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid "Check them"
+msgstr "Controleer ze"
 
 #. module: account_reports
 #. odoo-python
@@ -2055,6 +2064,13 @@ msgid "Journal Report Custom Handler"
 msgstr "Aangepaste handler voor dagboekrapportage"
 
 #. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "Journal items with archived tax tags"
+msgstr "Boekingen met gearchiveerde btw-labels"
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Journals:"
 msgstr "Dagboeken:"
@@ -2838,6 +2854,11 @@ msgid "Some controls failed."
 msgstr "Sommige controles mislukten."
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid "Some journal items appear to point to obsolete report lines."
+msgstr "Sommige boekingen lijken te wijzen op verouderde rapportregels."
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort By Date"
 msgstr "Sorteren op datum"
@@ -3479,6 +3500,11 @@ msgstr ""
 "overdrachtswaarden zou verwijderen die van invloed zijn op de BTW-rapportage"
 " van een geblokeerde periode. Daarvoor moet je eerst de blokkeerdatum van je"
 " BTW-aangifte wijzigen."
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid "and correct their tax tags if necessary."
+msgstr "en corrigeer indien nodig hun belastinglabels."
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__year

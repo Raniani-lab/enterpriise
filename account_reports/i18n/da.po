@@ -10,18 +10,18 @@
 # Jarnhold Nattestad <nattestads@gmail.com>, 2022
 # lhmflexerp <lhm@flexerp.dk>, 2022
 # Mads Søndergaard, 2022
-# Mads Søndergaard, 2022
 # Sanne Kristensen <sanne@vkdata.dk>, 2022
 # Ejner Sønniksen <ejner@vkdata.dk>, 2022
 # Martin Trigaux, 2022
+# Mads Søndergaard, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:28+0000\n"
+"POT-Creation-Date: 2023-02-02 10:51+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Mads Søndergaard, 2023\n"
 "Language-Team: Danish (https://www.transifex.com/odoo/teams/41243/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -222,11 +222,6 @@ msgstr ""
 "            Journaler:"
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
-msgid "<span class=\"fa fa-calendar\" title=\"Dates\" role=\"img\" aria-label=\"Dates\"/>"
-msgstr "<span class=\"fa fa-calendar\" title=\"Datoer\" role=\"img\" aria-label=\"Datoer\"/> "
-
-#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
 msgid ""
 "<span class=\"fa fa-circle color-green trust-partner\" role=\"img\" aria-"
@@ -322,6 +317,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
 msgid "<span class=\"fa fa-folder-open\"/> Partners"
 msgstr "<span class=\"fa fa-folder-open\"/> Partnere"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
+msgid ""
+"<span class=\"fa fa-fw fa-calendar\" title=\"Dates\" role=\"img\" aria-"
+"label=\"Dates\"/>"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_tax_unit
@@ -1066,6 +1068,11 @@ msgstr "Kontanter i overskud"
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
 msgid "Change expected payment date"
 msgstr "Ændre forventet betalingsdato"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid "Check them"
+msgstr "Tjek dem"
 
 #. module: account_reports
 #. odoo-python
@@ -2013,6 +2020,13 @@ msgid "Journal Report Custom Handler"
 msgstr ""
 
 #. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "Journal items with archived tax tags"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Journals:"
 msgstr "Journaler:"
@@ -2791,6 +2805,11 @@ msgid "Some controls failed."
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid "Some journal items appear to point to obsolete report lines."
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort By Date"
 msgstr ""
@@ -3399,6 +3418,11 @@ msgid ""
 "You cannot reset this closing entry to draft, as it would delete carryover "
 "values impacting the tax report of a locked period. To do this, you first "
 "need to modify you tax return lock date."
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.main_template
+msgid "and correct their tax tags if necessary."
 msgstr ""
 
 #. module: account_reports

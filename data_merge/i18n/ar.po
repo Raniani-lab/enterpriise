@@ -675,7 +675,7 @@ msgstr "المشار إليها السجل غير موجود"
 #: code:addons/data_merge/static/src/views/data_merge_list_view.js:0
 #, python-format
 msgid "The selected records have been merged"
-msgstr ""
+msgstr "لقد تم دمج السجلات المحددة "
 
 #. module: data_merge
 #. odoo-python
@@ -689,7 +689,7 @@ msgstr "النموذج الهدف غير موجود. "
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "There is not referenced record"
-msgstr ""
+msgstr "لا يوجد سجل مشار إليه "
 
 #. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_model_uniq_name

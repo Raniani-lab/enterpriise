@@ -50,7 +50,7 @@ msgstr ""
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__active
 msgid "Active"
-msgstr ""
+msgstr "ആക്റ്റീവ്"
 
 #. module: partner_commission
 #: model:res.groups,name:partner_commission.group_commission_manager

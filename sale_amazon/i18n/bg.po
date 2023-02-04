@@ -4,6 +4,14 @@
 # 
 # Translators:
 # Nikola Iliev, 2023
+# Albena Mincheva <albena_vicheva@abv.bg>, 2023
+# aleksandar ivanov, 2023
+# Ivan Ivanov, 2023
+# Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# kalatchev, 2023
+# Martin Trigaux, 2023
+# Maria Boyadjieva <marabo2000@gmail.com>, 2023
+# Ивайло Малинов <iv.malinov@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikola Iliev, 2023\n"
+"Last-Translator: Ивайло Малинов <iv.malinov@gmail.com>, 2023\n"
 "Language-Team: Bulgarian (https://www.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,7 +96,7 @@ msgstr ""
 #: model:ir.model,name:sale_amazon.model_amazon_account
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Amazon Account"
-msgstr ""
+msgstr "Акаунт Amazon"
 
 #. module: sale_amazon
 #: model:ir.actions.act_window,name:sale_amazon.list_amazon_account_action
@@ -356,7 +364,7 @@ msgstr "Настройки"
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Контакт"
 
 #. module: sale_amazon
 #. odoo-python
@@ -403,7 +411,7 @@ msgstr "Създадено на"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Credentials"
-msgstr ""
+msgstr "Акредитиви"
 
 #. module: sale_amazon
 #. odoo-python
@@ -430,7 +438,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields.selection,name:sale_amazon.selection__amazon_marketplace__region__eu-west-1
 msgid "Europe"
-msgstr ""
+msgstr "Европа"
 
 #. module: sale_amazon
 #: model:ir.model.fields.selection,name:sale_amazon.selection__amazon_marketplace__region__us-west-2
@@ -504,12 +512,12 @@ msgstr ""
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_search
 msgid "Inactive"
-msgstr ""
+msgstr "Неактивен"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_stock_location
 msgid "Inventory Locations"
-msgstr ""
+msgstr "Локации на инвентар"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__is_follow_up_displayed
@@ -627,23 +635,23 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 #, python-format
 msgid "Orders"
-msgstr ""
+msgstr "Поръчки"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_product_template
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__product_id
 msgid "Product"
-msgstr ""
+msgstr "Продукт"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__product_template_id
 msgid "Product Template"
-msgstr ""
+msgstr "Шаблон за продукт "
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Продуктов вариант"
 
 #. module: sale_amazon
 #. odoo-python
@@ -658,7 +666,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__region
 msgid "Region"
-msgstr ""
+msgstr "Район"
 
 #. module: sale_amazon
 #: model_terms:ir.actions.act_window,help:sale_amazon.list_amazon_account_action
@@ -688,23 +696,23 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Поръчка"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Ред на поръчка за продажби"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_crm_team
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__team_id
 msgid "Sales Team"
-msgstr ""
+msgstr "Търговски отдел"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__user_id
 msgid "Salesperson"
-msgstr ""
+msgstr "Търговец"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -731,7 +739,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__location_id
 msgid "Stock Location"
-msgstr ""
+msgstr "Локоцаия на склад"
 
 #. module: sale_amazon
 #. odoo-python
@@ -958,7 +966,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "Прехвърлете"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -980,7 +988,7 @@ msgstr ""
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Внимание"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_stock_picking__amazon_sync_pending

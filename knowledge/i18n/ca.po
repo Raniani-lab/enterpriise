@@ -13,7 +13,7 @@
 # Eric Antones <eantones@users.noreply.github.com>, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # marcescu, 2022
-# Josep Anton Belchi, 2022
+# jabelchi, 2022
 # Martin Trigaux, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Farouk Jabiri, 2022
@@ -23,9 +23,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Guspy12, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
@@ -36,6 +36,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -50,7 +51,7 @@ msgstr ""
 "            abans de ser eliminat permanentment per a la base de dades"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "\" under:"
@@ -62,6 +63,7 @@ msgid "#Is Favorite"
 msgstr "#És preferit"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -70,6 +72,7 @@ msgid "%s (copy)"
 msgstr "%s (còpia)"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "%s has been sent to Trash"
@@ -792,10 +795,8 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
-msgid "<span style=\"font-size: 14px;\">Each of them can bu used both as:</span>"
+msgid "<span style=\"font-size: 14px;\">Each of them can be used both as:</span>"
 msgstr ""
-"<span style=\"font-size: 14px;\">Cadascun d'ells pot utilitzar ambdós "
-"com:</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -895,7 +896,7 @@ msgstr ""
 "color-1\">Twitter</font></span>"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Access Restricted. May not be shared with everyone from"
@@ -932,14 +933,14 @@ msgid "Activity Type Icon"
 msgstr "Icona de tipus d'activitat"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a table of content."
 msgstr "Afegeix una taula de contingut."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a template section."
@@ -955,7 +956,7 @@ msgstr ""
 "star-o\"></i> al costat del nom de l'article."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/table_of_content_behavior/table_of_content_behavior.xml:0
 #, python-format
 msgid "Add headings in this Article to create a Table of Content"
@@ -982,28 +983,28 @@ msgstr ""
 "d'accés específics<br>(pot escriure, llegir, ...)."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Admin"
 msgstr "Administrador"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Administrator"
 msgstr "Administrador"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Advanced Search"
 msgstr "Cerca avançada"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Archive Article"
@@ -1015,7 +1016,7 @@ msgid "Archived"
 msgstr "Arxivat"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.js:0
 #, python-format
 msgid ""
@@ -1026,7 +1027,7 @@ msgstr ""
 "en què s'utilitzi."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1037,7 +1038,7 @@ msgstr ""
 "l'article i tots els seus descendents."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
@@ -1047,7 +1048,7 @@ msgstr ""
 "Esteu segur que voleu moure «%s%s» al privat? Només tu podràs accedir-hi."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
@@ -1058,7 +1059,7 @@ msgstr ""
 "tots els usuaris interns."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
@@ -1069,7 +1070,7 @@ msgstr ""
 "persones."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1080,14 +1081,14 @@ msgstr ""
 "l'accés a ell."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Are you sure you want to remove your own \"Write\" access ?"
 msgstr "Esteu segur que voleu eliminar el vostre propi accés \"Escriptura\"?"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1098,7 +1099,7 @@ msgstr ""
 "qualsevol conjunt d'accés als seus articles pare."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1109,7 +1110,7 @@ msgstr ""
 "ja no heretarà els paràmetres d'accés de la pàgina pare."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1120,7 +1121,7 @@ msgstr ""
 " accés a l'article."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid ""
@@ -1131,7 +1132,7 @@ msgstr ""
 "tindràs accés a l'article."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__article_id
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__article_id
@@ -1143,6 +1144,7 @@ msgid "Article"
 msgstr "Article"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid ""
@@ -1189,7 +1191,7 @@ msgid "Article not found"
 msgstr "Article no trobat"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action_form
@@ -1200,6 +1202,7 @@ msgid "Articles"
 msgstr "Articles"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -1216,14 +1219,14 @@ msgid "Articles using cover"
 msgstr "Articles que utilitzen la coberta"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "As a reader, you can't leave a Workspace article"
 msgstr "Com a lector, no podeu deixar un article de l'espai de treball"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid ""
@@ -1238,7 +1241,7 @@ msgid "Attachment Count"
 msgstr "Nombre d'adjunts"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
@@ -1266,12 +1269,14 @@ msgid "Can Write"
 msgstr "Pot escriure"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid "Can not update the article or partner of a member."
 msgstr "No es pot actualitzar l'article o el company d'un membre."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article_favorite.py:0
 #, python-format
 msgid "Can not update the article or user of a favorite."
@@ -1294,7 +1299,7 @@ msgid "Can write"
 msgstr "Pot escriure"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -1303,6 +1308,7 @@ msgid "Cancel"
 msgstr "Cancel·lar"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -1313,6 +1319,7 @@ msgstr ""
 "no privat"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -1323,14 +1330,14 @@ msgstr ""
 "que els drets d'accés no es poden deduir sense un pare."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #, python-format
 msgid "Categories"
 msgstr "Categories"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Change Permission"
@@ -1342,14 +1349,14 @@ msgid "Child Articles and Items"
 msgstr "Articles i elements fills"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "Choose an Article"
 msgstr "Trieu un article"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
 #, python-format
 msgid "Close"
@@ -1361,7 +1368,7 @@ msgid "Configuration"
 msgstr "Configuració"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Confirmation"
@@ -1373,7 +1380,7 @@ msgid "Contact"
 msgstr "Contacte"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
@@ -1396,7 +1403,7 @@ msgid "Cover url"
 msgstr "URL de la coberta"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "Create \""
@@ -1476,7 +1483,7 @@ msgid "Desyncronized with parents"
 msgstr "Dessincronitzat amb els pares"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.xml:0
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
@@ -1498,7 +1505,7 @@ msgid "Diving in"
 msgstr "Buscant"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
@@ -1506,21 +1513,21 @@ msgid "Download"
 msgstr "Descarregar"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/views/list_view.js:0
 #, python-format
 msgid "Duplicate"
 msgstr "Duplicar"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Embed a View"
 msgstr "Incrusta una vista"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Embed a file."
@@ -1532,7 +1539,7 @@ msgid "Emoji"
 msgstr "Emoji"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
@@ -1541,6 +1548,7 @@ msgid "Error"
 msgstr "Error"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -1551,7 +1559,7 @@ msgstr ""
 "utilitzar per a crear una vista incrustada o un enllaç de vista"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "External Guest"
@@ -1582,7 +1590,7 @@ msgid "Favorites"
 msgstr "Favorits"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "File"
@@ -1621,7 +1629,7 @@ msgid "Group By"
 msgstr "Agrupar per"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Guest"
@@ -1722,7 +1730,7 @@ msgstr ""
 "pares."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Index"
@@ -1740,70 +1748,70 @@ msgid "Inherited Permission Parent Article"
 msgstr "Article pare de permisos heretats"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "Insert"
 msgstr "Insereix"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Insert Link"
 msgstr "Insereix un enllaç"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a Kanban View"
 msgstr "Insereix una vista de Kanban"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a Kanban view of article items"
 msgstr "Insereix una vista Kanban dels elements de l'article"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a List View"
 msgstr "Insereix una vista de llista"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a List view of article items"
 msgstr "Insereix una vista de llista dels elements de l'article"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert link in article"
 msgstr "Insereix un enllaç a l'article"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert view in article"
 msgstr "Insereix una vista a l'article"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Internal Members"
 msgstr "Membres interns"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__internal_permission
 #, python-format
@@ -1811,6 +1819,7 @@ msgid "Internal Permission"
 msgstr "Permisos interns"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Invitation to access %s"
@@ -1853,21 +1862,21 @@ msgid "Is Property Field Empty?"
 msgstr "El camp de propietat és buit?"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item Kanban"
 msgstr "Element Kanban"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item List"
 msgstr "Llista d'elements"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
@@ -1946,7 +1955,7 @@ msgid "Last Updated on"
 msgstr "Última actualització el"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
@@ -1955,14 +1964,14 @@ msgid "Leave Article"
 msgstr "Deixa l'article"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Link an Article"
 msgstr "Enllaça un article"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Link an article."
@@ -1974,13 +1983,14 @@ msgid "Locked"
 msgstr "Bloquejat"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_frontend.xml:0
 #, python-format
 msgid "Log in"
 msgstr "Iniciar sessió"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -1997,7 +2007,7 @@ msgid "Main Attachment"
 msgstr "Adjunt principal"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
@@ -2037,34 +2047,35 @@ msgid "Messages"
 msgstr "Missatges"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid "Missing File"
 msgstr "Falta el fitxer"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Move \""
 msgstr "Mou \""
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Move Article"
 msgstr "Mou l'article"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #, python-format
 msgid "Move an Article"
 msgstr "Mou un article"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2097,7 +2108,7 @@ msgid "Navigation Basics"
 msgstr "Bases de navegació"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "Nest articles under this one to generate a structure"
@@ -2124,20 +2135,21 @@ msgid "Next Activity Type"
 msgstr "Tipus de la següent activitat"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_command_palette.xml:0
 #, python-format
 msgid "No Article found."
 msgstr "No s'ha trobat cap article."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No Article found. Create \"%s\""
 msgstr "No s'ha trobat cap article. Crea «%s»"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "No Article in Trash"
@@ -2162,7 +2174,7 @@ msgid "No access"
 msgstr "Sense accés"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No article found."
@@ -2199,7 +2211,7 @@ msgid "Odoo Survival Guide"
 msgstr "Guia de supervivència d'Odoo"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
@@ -2212,7 +2224,7 @@ msgid "Onboarding.pdf"
 msgstr "Onboarding.pdf"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid ""
@@ -2223,7 +2235,7 @@ msgstr ""
 "un de nou per tornar a pujar el fitxer."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #, python-format
@@ -2231,7 +2243,7 @@ msgid "Open"
 msgstr "Oberts"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Outline"
@@ -2260,7 +2272,7 @@ msgid "Permission"
 msgstr "Permís"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__category__private
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
@@ -2285,21 +2297,21 @@ msgid "Recipients"
 msgstr "Destinataris"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Refresh"
 msgstr "Refresca"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/knowledge_emoji_picker_remove_action_view/knowledge_emoji_picker_remove_action_view.xml:0
 #, python-format
 msgid "Remove Icon"
 msgstr "Elimina la icona"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Remove Member"
@@ -2311,7 +2323,7 @@ msgid "Remove from Trash"
 msgstr "Elimina de la paperera"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
@@ -2325,21 +2337,21 @@ msgid "Responsible User"
 msgstr "Usuari responsable"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Restore"
 msgstr "Restaurar"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restore Access"
 msgstr "Restaura l'accés"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restrict Access"
@@ -2371,7 +2383,7 @@ msgid "Search Favorites"
 msgstr "Cerca preferits"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/chatter_topbar.xml:0
 #, python-format
 msgid "Search Knowledge Articles"
@@ -2383,7 +2395,7 @@ msgid "Search Members"
 msgstr "Cerca membres"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Search an Article to use as Parent"
@@ -2396,7 +2408,7 @@ msgid "Search an article..."
 msgstr "Cerca un article..."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Search for an article..."
@@ -2408,21 +2420,21 @@ msgid "Section"
 msgstr "Secció"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.js:0
 #, python-format
 msgid "Select a cover"
 msgstr "Seleccioneu una coberta"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_insertion/views_renderers_patches.js:0
 #, python-format
 msgid "Select an article"
 msgstr "Seleccioneu un article"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
@@ -2450,27 +2462,28 @@ msgid "Shared with you"
 msgstr "Compartit amb tu"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Show all nested articles."
 msgstr "Mostra tots els articles imbricats."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Show the first level of nested articles."
 msgstr "Mostra el primer nivell d'articles niats."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Some articles have been sent to Trash"
 msgstr "S'han enviat alguns articles a la paperera"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "Something went wrong!"
@@ -2490,14 +2503,14 @@ msgstr ""
 "Planificat: Activitats futures."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Table Of Content"
 msgstr "Taula de continguts"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2506,13 +2519,21 @@ msgid "Template"
 msgstr "Plantilla"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.js:0
 #, python-format
 msgid "Template copied to clipboard."
 msgstr "S'ha copiat la plantilla al porta-retalls."
 
 #. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/models/knowledge_article.py:0
+#, python-format
+msgid "The Article you are trying to access has been deleted"
+msgstr ""
+
+#. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "The article '%s' needs at least one member with 'Write' access."
@@ -2527,6 +2548,7 @@ msgstr ""
 "L'article que esteu provant de llegir s'ha eliminat o no hi teniu accés."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid ""
@@ -2537,7 +2559,7 @@ msgstr ""
 "%(article_name)s"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
 #, python-format
 msgid ""
@@ -2548,6 +2570,7 @@ msgstr ""
 "Torneu-ho a provar més tard."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
@@ -2569,7 +2592,7 @@ msgstr ""
 "El subjecte és el títol del pare més alt de la jerarquia de l'article."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
@@ -2586,14 +2609,14 @@ msgid "This article is archived."
 msgstr "Aquest article està arxivat."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #, python-format
 msgid "This article was deleted or you don't have the rights to access it."
 msgstr "Aquest article s'ha suprimit o no teniu permís per accedir-hi."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/xml/knowledge_frontend.xml:0
 #, python-format
 msgid "This view is only available for internal users"
@@ -2632,6 +2655,7 @@ msgid "Try Odoo"
 msgstr "Prova l'Odoo"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Trying to remove wrong member."
@@ -2648,7 +2672,8 @@ msgid "Unarchive"
 msgstr "Desarxivar"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
@@ -2662,21 +2687,21 @@ msgid "Untitled"
 msgstr "Sense títol"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Update"
 msgstr "Actualitza"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Use as"
 msgstr "Utilitza com a"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
@@ -2684,7 +2709,7 @@ msgid "Use as Attachment"
 msgstr "Utilitza com a adjunt"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Use as Description"
@@ -2712,7 +2737,7 @@ msgid "User Favorite Sequence"
 msgstr "Seqüència preferida per l'usuari"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "User Permission"
@@ -2739,13 +2764,14 @@ msgid "Website communication history"
 msgstr "Historial de comunicacions del lloc web"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/res_users.py:0
 #, python-format
 msgid "Welcome %s"
 msgstr "Benvingut %s"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "What do you want to manage?"
@@ -2789,7 +2815,7 @@ msgid "Who has access to what?"
 msgstr "Qui té accés a què?"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__category__workspace
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
@@ -2809,12 +2835,14 @@ msgid "You are currently visiting as a Guest User"
 msgstr "Actualment esteu visitant com a usuari convidat"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You are not allowed to make '%(article_name)s' private."
 msgstr "No teniu permís per fer '%(article_name)s' privat."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2822,38 +2850,42 @@ msgid ""
 msgstr "No teniu permís per moure '%(article_name)s' sota '%(parent_name)s'."
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't leave an article for which you are the last writer"
 msgstr "No pots deixar un article per al qual siguis l'últim escriptor"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "You can't remove the last writer of the article"
 msgstr "No podeu eliminar l'últim escriptor de l'article"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You cannot add or remove this article to your favorites"
 msgstr "No podeu afegir o suprimir aquest article als vostres preferits"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the internal permission of this article."
 msgstr "No podeu canviar el permís intern d'aquest article."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the permission of this member."
 msgstr "No podeu canviar el permís d'aquest membre."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You cannot create an article under articles on which you cannot write"
@@ -2862,6 +2894,7 @@ msgstr ""
 "escriure"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2870,12 +2903,14 @@ msgstr ""
 "No podeu moure un article sota %(parent_name)s perquè no hi podeu escriure"
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You have to be editor on %(article_name)s to add members."
 msgstr "Heu de ser editor a %(article_name)s per afegir membres."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2884,6 +2919,7 @@ msgstr ""
 "Heu de ser editor a %(article_name)s per canviar el seu permís intern."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2893,6 +2929,7 @@ msgstr ""
 "membres."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid ""
@@ -2903,6 +2940,7 @@ msgstr ""
 "%(member_name)s."
 
 #. module: knowledge
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "You have to be editor on %(article_name)s to restore it."
@@ -2914,7 +2952,7 @@ msgid "and the following child article(s) have"
 msgstr "i els següents articles fills tenen"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "articles"
@@ -2931,14 +2969,14 @@ msgid "cover"
 msgstr "coberta"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Buildings"
 msgstr "P. ex. Edificis"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Todos"
@@ -2960,7 +2998,7 @@ msgid "invited you to access"
 msgstr "us ha convidat a accedir"
 
 #. module: knowledge
-#. openerp-web
+#. odoo-javascript
 #: code:addons/knowledge/static/src/components/behaviors/abstract_behavior/abstract_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0

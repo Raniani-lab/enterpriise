@@ -66,7 +66,9 @@ const HtmlFieldPatch = {
             }
         });
         onPatched(() => {
-            this.updateBehaviors();
+            if (this.props.readonly || (this.wysiwyg && this.wysiwyg.odooEditor)) {
+                this.updateBehaviors();
+            }
         });
         onWillDestroy(() => {
             for (const app of Array.from(this.behaviorApps)) {

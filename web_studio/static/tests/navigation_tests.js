@@ -578,6 +578,7 @@ QUnit.module("Studio", (hooks) => {
         await editInput(target, ".o_web_studio_app_creator_menu input", "testMenu");
         await click(target, ".o_web_studio_app_creator_next");
         await click(target, ".o_web_studio_model_configurator_next");
+        await legacyExtraNextTick();
         assert.verifySteps(["error"]);
         assert.containsOnce(target, ".o_web_studio_action_editor");
     });

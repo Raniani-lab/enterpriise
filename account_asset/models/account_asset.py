@@ -6,7 +6,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from math import copysign
 
-from odoo import api, fields, models, _
+from odoo import api, Command, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero, formatLang, end_of
 
@@ -399,6 +399,15 @@ class AccountAsset(models.Model):
             else:
                 self.method_period = '12'
 
+    @api.onchange('original_value', 'salvage_value', 'acquisition_date', 'method', 'method_progress_factor', 'method_period',
+                 'method_number', 'prorata_computation_type', 'already_depreciated_amount_import', 'prorata_date',)
+    def onchange_consistent_board(self):
+        """ When changing the fields that should change the values of the entries, we unlink the entries, so the
+         depreciation board is not inconsistent with the values of the asset"""
+        self.write(
+            {'depreciation_move_ids': [Command.set([])]}
+        )
+
     # -------------------------------------------------------------------------
     # CONSTRAINT METHODS
     # -------------------------------------------------------------------------
@@ -487,6 +496,16 @@ class AccountAsset(models.Model):
             original_asset = self.env['account.asset'].browse(self.env.context.get('original_asset'))
             original_asset.model_id = new_recs
         return new_recs
+
+    def write(self, vals):
+        result = super().write(vals)
+        if 'account_depreciation_id' in vals:
+            self.depreciation_move_ids.line_ids[::2].account_id = vals['account_depreciation_id']
+        if 'account_depreciation_expense_id' in vals:
+            self.depreciation_move_ids.line_ids[1::2].account_id = vals['account_depreciation_expense_id']
+        if 'journal_id' in vals:
+            self.depreciation_move_ids.journal_id = vals['journal_id']
+        return result
 
     def get_formview_id(self, access_uid=None):
         """ Overriding this method to redirect user to correct form view based on asset type """

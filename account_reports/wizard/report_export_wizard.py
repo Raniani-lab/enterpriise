@@ -59,8 +59,12 @@ class ReportExportWizard(models.TransientModel):
         report_options = self.env.context['account_report_generation_options']
         for format in self.export_format_ids:
             # format.fun_to_call is a button function, so it has to be public
-            check_method_name(format.fun_to_call)
-            report_function = getattr(self.report_id, format.fun_to_call)
+            fun_name = format.fun_to_call
+            check_method_name(fun_name)
+            if self.report_id.custom_handler_model_id and hasattr(self.env[self.report_id.custom_handler_model_name], fun_name):
+                report_function = getattr(self.env[self.report_id.custom_handler_model_name], fun_name)
+            else:
+                report_function = getattr(self.report_id, fun_name)
             report_function_params = [format.fun_param] if format.fun_param else []
             report_action = report_function(report_options, *report_function_params)
 

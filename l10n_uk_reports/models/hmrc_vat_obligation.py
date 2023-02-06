@@ -145,11 +145,11 @@ class HmrcVatObligation(models.Model):
                 # Do a get for the no_format as for the totals you have twice the line, without and with amount
                 # We cannot pass a negative netVatDue to the API and the amounts of sales/purchases/goodssupplied/ ... must be rounded
                 if reverse_table[line_id] == 'netVatDue':
-                    values[reverse_table[line_id]] = abs(round(line['columns'][0].get('balance', 0.0), 2))
+                    values[reverse_table[line_id]] = abs(round(line['columns'][0].get('no_format', 0.0), 2))
                 elif reverse_table[line_id] in ('totalValueSalesExVAT', 'totalValuePurchasesExVAT', 'totalValueGoodsSuppliedExVAT', 'totalAcquisitionsExVAT'):
-                    values[reverse_table[line_id]] = round(line['columns'][0].get('balance', 0.0))
+                    values[reverse_table[line_id]] = round(line['columns'][0].get('no_format', 0.0))
                 else:
-                    values[reverse_table[line_id]] = round(line['columns'][0].get('balance', 0.0), 2)
+                    values[reverse_table[line_id]] = round(line['columns'][0].get('no_format', 0.0), 2)
         return values
 
     def action_submit_vat_return(self):

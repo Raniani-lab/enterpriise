@@ -21,6 +21,7 @@ from zeep.transports import Transport
 from json.decoder import JSONDecodeError
 
 _logger = logging.getLogger(__name__)
+EQUIVALENCIADR_PRECISION_DIGITS = 10
 
 
 class AccountEdiFormat(models.Model):
@@ -518,7 +519,7 @@ class AccountEdiFormat(models.Model):
                 # exchange difference line allowing to switch from the "invoice rate" to the "payment rate".
                 invoice_exchange_rate = float_round(
                     invoice_vals['amount_currency'] / (invoice_vals['balance'] + invoice_vals['exchange_balance']),
-                    precision_digits=6,
+                    precision_digits=EQUIVALENCIADR_PRECISION_DIGITS,
                     rounding_method='UP',
                 )
             else:
@@ -545,6 +546,7 @@ class AccountEdiFormat(models.Model):
                 'amount_before_paid': invoice.amount_residual + invoice_vals['amount_currency'],
                 'tax_details_transferred': tax_details_transferred,
                 'tax_details_withholding': tax_details_withholding,
+                'equivalenciadr_precision_digits': EQUIVALENCIADR_PRECISION_DIGITS,
                 **self._l10n_mx_edi_get_serie_and_folio(invoice),
             })
 

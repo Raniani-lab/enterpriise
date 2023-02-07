@@ -370,3 +370,16 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         self._attach_file_to_wizard(self.test_content_imbalanced_none, self.wizard)
         with self.assertRaises(UserError):
             self.wizard._import_files(['account.account', 'account.journal', 'res.partner', 'account.move'])
+
+    def test_positive_montant_devise(self):
+        """
+        Test that it doesn't fail even when the MontantDevise is not signed, i.e. MontantDevise is positive even
+        when the line is credited
+        """
+        test_content = """
+            JournalCode\tJournalLib\tEcritureNum\tEcritureDate\tCompteNum\tCompteLib\tCompAuxNum\tCompAuxLib\tPieceRef\tPieceDate\tEcritureLib\tDebit\tCredit\tEcritureLet\tDateLet\tValidDate\tMontantdevise\tIdevise
+            ACH\tACHATS\tTEST_MONTANT_DEVISE\t20180808\t62270000\tFRAIS D'ACTES ET CONTENTIEUX\t\t\t1\t20180808\tACOMPTE FORMALITES ENTREPRISE\t100,00\t0,00\t\t\t20190725\t100,00\tEUR
+            ACH\tACHATS\tTEST_MONTANT_DEVISE\t20180808\t44566000\tTVA SUR AUTRES BIEN ET SERVICE\t\t\t1\t20180808\tACOMPTE FORMALITES ENTREPRISE\t0,00\t100,00\t\t\t20190725\t100,00\tEUR
+        """
+        self._attach_file_to_wizard(test_content, self.wizard)
+        self.wizard._import_files()

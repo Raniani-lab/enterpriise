@@ -123,7 +123,7 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
         (move_3 + move_4).action_post()
         (move_3 + move_4).line_ids.filtered(lambda line: line.account_id == receivable_4).reconcile()
         (move_3 + move_4).line_ids.filtered(lambda line: line.account_id == receivable_5).reconcile()
-        cls.env['res.currency'].search([('name', '!=', 'USD')]).active = False
+        cls.env['res.currency'].search([('name', '!=', 'USD')]).with_context(force_deactivate=True).active = False
         cls.env.companies = cls.company_data['company'] + cls.company_data_2['company']
         cls.report = cls.env.ref('account_reports.aged_receivable_report')
         cls.prefix_line_id = f'{cls._get_basic_line_dict_id_from_report_line_ref("account_reports.aged_receivable_line")}|'

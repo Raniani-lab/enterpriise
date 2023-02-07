@@ -83,7 +83,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
         cls.move_2017_2.action_post()
 
         # Deactive all currencies to ensure group_multi_currency is disabled.
-        cls.env['res.currency'].search([('name', '!=', 'USD')]).active = False
+        cls.env['res.currency'].search([('name', '!=', 'USD')]).with_context(force_deactivate=True).active = False
 
         cls.report = cls.env.ref('account_reports.partner_ledger_report')
 

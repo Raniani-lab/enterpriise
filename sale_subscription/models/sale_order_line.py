@@ -232,11 +232,7 @@ class SaleOrderLine(models.Model):
         if self.display_type:
             return res
         elif self.temporal_type == 'subscription' or self.order_id.subscription_management == 'upsell':
-            product_desc = self.product_id.get_product_multiline_description_sale() + self._get_sale_order_line_multiline_description_variants()
-            description = _("%(product)s - %(duration)d %(unit)s",
-                            product=product_desc,
-                            duration=round(self.order_id.recurrence_id.duration),
-                            unit=self.order_id.recurrence_id.unit)
+            description = "%s - %s" % (self.name, self.order_id.recurrence_id.duration_display)
             lang_code = self.order_id.partner_id.lang
             if self.order_id.subscription_management == 'upsell':
                 # We start at the beginning of the upsell as it's a part of recurrence

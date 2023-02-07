@@ -22,6 +22,8 @@ import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
 import { companyService } from "@web/webclient/company_service";
 import { viewService } from "@web/views/view_service";
+import { AppMenuEditor } from "@web_studio/client_action/editor/app_menu_editor/app_menu_editor";
+import { NewModelItem } from "@web_studio/client_action/editor/new_model_item/new_model_item";
 
 const serviceRegistry = registry.category("services");
 let target;
@@ -56,6 +58,22 @@ QUnit.module("Studio > Navbar", (hooks) => {
 
     QUnit.test("menu buttons will not be placed under 'more' menu", async (assert) => {
         assert.expect(12);
+
+        const menuButtonsRegistry = registry.category("studio_navbar_menubuttons");
+        // Force Navbar to contain those elements
+        menuButtonsRegistry.add(
+            "app_menu_editor",
+            {
+                Component: AppMenuEditor,
+                props: { env: {} },
+            },
+            { force: true }
+        );
+        menuButtonsRegistry.add("new_model_item", { Component: NewModelItem }, { force: true });
+        registerCleanup(() => {
+            menuButtonsRegistry.remove("app_menu_editor");
+            menuButtonsRegistry.remove("new_model_item");
+        });
 
         class MyStudioNavbar extends StudioNavbar {
             async adapt() {

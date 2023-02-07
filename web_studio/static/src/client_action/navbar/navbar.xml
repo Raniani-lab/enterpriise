@@ -21,9 +21,8 @@
 
   <t t-name="web_studio.menuButtons" owl="1">
     <div class="o-studio--menu ms-auto">
-      <t t-if="studio.mode === studio.MODES.EDITOR" >
-          <EditMenuItem />
-          <NewModelItem />
+      <t t-foreach="menuButtons" t-as="element" t-key="element">
+        <t t-component="element_value.Component" t-props="element_value.props || {}" />
       </t>
     </div>
   </t>

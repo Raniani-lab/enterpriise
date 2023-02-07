@@ -4,12 +4,10 @@ import { _t } from "web.core";
 import utils from "web_studio.utils";
 import { registry } from "@web/core/registry";
 
-registry.category("web_tour.tours").add(
-    "web_studio_home_menu_background_tour",
-    {
-        url: "/web",
-        sequence: 260,
-        steps: [
+registry.category("web_tour.tours").add("web_studio_home_menu_background_tour", {
+    url: "/web",
+    sequence: 260,
+    steps: [
         {
             trigger: ".o_web_studio_navbar_item",
             content: _t("Want to customize the background? Let’s activate <b>Odoo Studio</b>."),
@@ -27,15 +25,13 @@ registry.category("web_tour.tours").add(
             content: _t("Change the <b>background</b>, make it yours."),
             position: "bottom",
         },
-    ]
+    ],
 });
 
-registry.category("web_tour.tours").add(
-    "web_studio_new_app_tour",
-    {
-        url: "/web#action=studio&mode=home_menu",
-        sequence: 270,
-        steps: [
+registry.category("web_tour.tours").add("web_studio_new_app_tour", {
+    url: "/web#action=studio&mode=home_menu",
+    sequence: 270,
+    steps: [
         {
             trigger: ".o_web_studio_new_app",
             auto: true,
@@ -63,7 +59,7 @@ registry.category("web_tour.tours").add(
             position: "top",
         },
         {
-            trigger: ".o_web_studio_app_creator_menu > input",
+            trigger: ".o_web_studio_menu_creator > input",
             content: _t("How do you want to name your first <b>menu</b>? My books, My courses?"),
             position: "right",
             run: "text " + utils.randomString(6),
@@ -213,5 +209,5 @@ registry.category("web_tour.tours").add(
             content: _t("Now you’re on your own. Enjoy your <b>super power</b>."),
             position: "bottom",
         },
-    ]
+    ],
 });

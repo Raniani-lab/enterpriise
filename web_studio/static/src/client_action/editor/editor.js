@@ -1,15 +1,16 @@
 /** @odoo-module **/
+import { Component, EventBus, onWillDestroy, useSubEnv, reactive } from "@odoo/owl";
+
+import { registry } from "@web/core/registry";
+import { useBus, useService } from "@web/core/utils/hooks";
 
 import { StudioActionContainer } from "../studio_action_container";
 import { actionService } from "@web/webclient/actions/action_service";
-import { useBus, useService } from "@web/core/utils/hooks";
-
 import { EditorMenu } from "./editor_menu/editor_menu";
-
 import { mapDoActionOptionAPI } from "@web/legacy/backend_utils";
-
-import { Component, EventBus, useSubEnv, reactive } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { AppMenuEditor } from "./app_menu_editor/app_menu_editor";
+import { NewModelItem } from "./new_model_item/new_model_item";
 
 const actionServiceStudio = {
     dependencies: ["studio"],
@@ -68,7 +69,9 @@ class EditionFlow {
     }
 }
 
+const menuButtonsRegistry = registry.category("studio_navbar_menubuttons");
 export class Editor extends Component {
+    static menuButtonsId = 1;
     setup() {
         const services = Object.create(this.env.services);
 
@@ -106,6 +109,26 @@ export class Editor extends Component {
         this.state = owl.useState({ actionContainerId: 1 });
         useBus(this.studio.bus, "UPDATE", async () => {
             this.state.actionContainerId++;
+        });
+
+        // Push instance-specific components in the navbar. Because we want those elements
+        // immediately, we add them at setup time, not onMounted.
+        // Also, because they are Editor instance-specific, and that Destroyed is mostly called
+        // after the new instance is created, we need to remove the old entries before adding the new ones
+        menuButtonsRegistry.getEntries().forEach(([name]) => {
+            if (name.startsWith("app_menu_editor_") || name.startsWith("new_model_item_")) {
+                menuButtonsRegistry.remove(name);
+            }
+        });
+        const menuButtonsId = this.constructor.menuButtonsId++;
+        menuButtonsRegistry.add(`app_menu_editor_${menuButtonsId}`, {
+            Component: AppMenuEditor,
+            props: { env: this.env },
+        });
+        menuButtonsRegistry.add(`new_model_item_${menuButtonsId}`, { Component: NewModelItem });
+        onWillDestroy(() => {
+            menuButtonsRegistry.remove(`app_menu_editor_${menuButtonsId}`);
+            menuButtonsRegistry.remove(`new_model_item_${menuButtonsId}`);
         });
     }
 

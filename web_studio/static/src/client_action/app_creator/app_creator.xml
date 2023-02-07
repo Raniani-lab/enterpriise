@@ -13,66 +13,19 @@
                     </t>
                     <t t-elif="state.step === 'app'">
                         <h3 class="mb32">Create your App</h3>
-                        <div class="o_web_studio_app_creator_name" t-att-class="{ o_web_studio_app_creator_field_warning: !state.isFieldValid('appName') }">
+                        <div class="o_web_studio_app_creator_name" t-att-class="{ o_web_studio_field_warning: !state.isFieldValid('appName') }">
                             <label for="appName">Choose an app name</label>
                             <input type="text" class="o_input"
                                 name="appName"
                                 placeholder="e.g. Real Estate"
                                 t-model="state.data.appName"
-                                t-on-input="() => state.validateField('appName')"
                                 t-ref="autofocus"
                             />
                         </div>
                     </t>
                     <t t-elif="state.step === 'model'">
-                        <h3 class="mb32">Create your first Menu</h3>
-                        <div class="o_web_studio_app_creator_menu" t-att-class="{ o_web_studio_app_creator_field_warning: !state.isFieldValid('menuName') }">
-                            <label for="menuName">Choose your first object name</label>
-                            <input type="text" class="o_input"
-                                name="menuName"
-                                placeholder="e.g. Properties"
-                                t-model="state.data.menuName"
-                                t-on-input="() => state.validateField('menuName')"
-                                t-ref="autofocus"
-                            />
-                        </div>
-                        <div class="o_web_studio_app_creator_model_choice">
-                            <div t-foreach="state.fieldsInfo.modelChoice.selection" t-as="item" t-key="item[0]" class="form-check d-flex gap-2 align-items-center p-0">
-                                <t t-set="inputId" t-value="'model_choice_' + item[0]" />
-                                <input type="radio"
-                                    class="form-check-input m-0"
-                                    name="model_choice"
-                                    t-att-id="inputId"
-                                    t-model="state.data.modelChoice"
-                                    t-att-value="item[0]"
-                                />
-                                <label class="form-check-label" t-att-for="inputId" t-esc="item[1]" />
-                            </div>
-                        </div>
-                        <div
-                            t-if="state.data.modelChoice === 'existing'" class="o_web_studio_app_creator_model mt8"
-                            t-att-class="{ o_web_studio_app_creator_field_warning: !state.isFieldValid('modelId') }"
-                        >
-                            <label for="name">Model</label>
-                            <t t-set="activeFields" t-value="{ modelId: state.fieldsInfo.modelId }" />
-                            <Record
-                                fields="activeFields"
-                                activeFields="activeFields"
-                                values="{ modelId: state.data.modelId }"
-                                onRecordChanged="(rec) => { state.data.modelId = rec.data.modelId; state.validateField('modelId'); }"
-                                t-slot-scope="data">
-                                <t t-set="record" t-value="data.record" />
-                                <Many2OneField
-                                    record="record"
-                                    name="'modelId'"
-                                    relation="activeFields.modelId.relation"
-                                    value="record.data.modelId"
-                                    update="(value) => record.update({ modelId: value })"
-                                    canQuickCreate="true"
-                                    openTarget="'new'"
-                                />
-                            </Record>
-                        </div>
+                        <h3 class="w-100 mb-5">Create your first menu</h3>
+                        <MenuCreator showValidation="state.showValidation" menuCreatorModel="state.menuCreatorModel" />
                     </t>
                 </div>
                 <div class="o_web_studio_app_creator_buttons">

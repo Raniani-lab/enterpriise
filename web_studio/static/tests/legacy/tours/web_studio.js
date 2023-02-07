@@ -27,7 +27,7 @@ registry.category("web_tour.tours").add('web_studio_tests_tour', {
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',
 }, {
-    trigger: '.o_web_studio_app_creator_menu > input',
+    trigger: '.o_web_studio_menu_creator > input',
     run: 'text ' + (createdMenuString = randomString(6)),
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',
@@ -128,20 +128,21 @@ registry.category("web_tour.tours").add('web_studio_tests_tour', {
 }, {
     trigger: 'footer.modal-footer .js_add_menu',
 }, {
-    trigger: 'input[name="name"]',
+    trigger: 'input[name="menuName"]',
     run: 'text ' + (createdMenuString = randomString(6)),
 }, {
-    trigger: 'div[name="model_choice"] input[data-value="existing"]',
+    trigger: 'div.o_web_studio_menu_creator_model_choice input[value="existing"]',
 }, {
-    trigger: '.o_field_many2one[name="model"] input',
+    trigger: 'div.o_web_studio_menu_creator_model .o_field_many2one_selection input',
     run: 'text a',
 }, {
-    trigger: '.ui-autocomplete > .ui-menu-item:first > a',
-    in_modal: false,
+    trigger: '.o_field_many2one_selection .o-autocomplete--dropdown-menu > li > a:not(:has(.fa-spin))',
 }, {
-    trigger: 'button:contains(Confirm):not(".disabled")',
+    extra_trigger: ".o_field_many2one_selection :not(.o-autocomplete dropdown-menu)",
+    trigger: '.o_web_studio_add_menu_modal button:contains(Confirm):not(".disabled")',
 }, {
-    trigger: 'button:contains(Confirm):not(".disabled")',
+    extra_trigger: ":not(.o_inactive_modal) .o-web-studio-appmenu-editor",
+    trigger: '.o-web-studio-appmenu-editor button:contains(Confirm):not(".disabled")',
 }, {
     // check that the Studio menu is still there
     extra_trigger: '.o_web_studio_menu',
@@ -465,7 +466,7 @@ registry.category("web_tour.tours").add('web_studio_hide_fields_tour', {
     trigger: '.o_web_studio_app_creator_next',
 }, {
     trigger: `
-        .o_web_studio_app_creator_menu
+        .o_web_studio_menu_creator
         > input`,
     run: `text ${randomString(6)}`,
 }, {
@@ -544,7 +545,7 @@ registry.category("web_tour.tours").add('web_studio_model_option_value_tour', {
     trigger: '.o_web_studio_app_creator_next',
 }, {
     trigger: `
-        .o_web_studio_app_creator_menu
+        .o_web_studio_menu_creator
         > input`,
     run: `text ${randomString(6)}`,
 }, {
@@ -1043,7 +1044,7 @@ registry.category("web_tour.tours").add("web_studio_create_app_with_pipeline_and
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',
 }, {
-    trigger: '.o_web_studio_app_creator_menu > input',
+    trigger: '.o_web_studio_menu_creator > input',
     run: 'text ' + (createdMenuString = randomString(6)),
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',
@@ -1085,7 +1086,7 @@ registry.category("web_tour.tours").add('web_studio_alter_field_existing_in_mult
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',
 }, {
-    trigger: '.o_web_studio_app_creator_menu > input',
+    trigger: '.o_web_studio_menu_creator > input',
     run: `text ${createdAppString}`,
 }, {
     trigger: '.o_web_studio_app_creator_next.is_ready',

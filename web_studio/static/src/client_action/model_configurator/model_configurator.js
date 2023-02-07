@@ -1,7 +1,5 @@
 /** @odoo-module **/
-import Dialog from "web.Dialog";
-import { ComponentWrapper, WidgetAdapterMixin } from "web.OwlCompatibility";
-
+import { Dialog } from "@web/core/dialog/dialog";
 import { Component, useState } from "@odoo/owl";
 import { _lt, _t } from "@web/core/l10n/translation";
 import { session } from "@web/session";
@@ -118,89 +116,20 @@ ModelConfigurator.props = {
     onPrevious: Function,
 };
 
-/**
- * Wrapper to make the ModelConfigurator usable as a standalone dialog. Used notably
- * by the 'NewMenuDialog' in Studio. Note that since the ModelConfigurator does not
- * have its own modal, I choose to use the classic Dialog and use it as an adapter
- * instead of using an owlDialog + another adapter on top of it. Don't @ me.
- *
- * I've taken a few liberties with the standard Dialog: removed the footer
- * (there's no need for it, the modelconfigurator has its own footer), it's a single
- * size, etc. Nothing crazy.
- */
-export const ModelConfiguratorDialog = Dialog.extend(WidgetAdapterMixin, {
-    /**
-     * @override
-     */
-    init(parent, options) {
-        const res = this._super.apply(this, arguments);
-        this.renderFooter = false;
-        (this.title = _t("Suggested features for your new model")),
-            (this.confirmLabel = options.confirmLabel);
-        this.onForceClose = () => this.trigger_up("cancel_options");
-        return res;
-    },
+export class ModelConfiguratorDialog extends Component {
+    static components = { Dialog, ModelConfigurator };
+    static template = "web_studio.ModelConfiguratorDialog";
 
-    /**
-     * Owl Wrapper override, as described in web.OwlCompatibility
-     * @override
-     */
-    async start() {
-        const res = await this._super.apply(this, arguments);
-        this.component = new ComponentWrapper(this, ModelConfigurator, {
-            label: this.confirmLabel,
-            embed: true,
-            onPrevious: this.onPrevious.bind(this),
-            onConfirmOptions: (payload) => this.trigger_up("confirm_options", payload),
-        });
-        this.component.mount(this.el);
-        return res;
-    },
+    async onConfirm(data) {
+        await this.props.confirm(data);
+        this.props.close();
+    }
 
-    /**
-     * Proper handler calling since Dialog doesn't seem to do it
-     * @override
-     */
-    close() {
-        this.on_detach_callback();
-        return this._super.apply(this, arguments);
-    },
-
-    /**
-     * Needed because of the WidgetAdapterMixin
-     * @override
-     */
-    destroy() {
-        WidgetAdapterMixin.destroy.call(this);
-        return this._super();
-    },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * @override
-     */
-    on_attach_callback() {
-        WidgetAdapterMixin.on_attach_callback.call(this);
-        return this._super.apply(this, arguments);
-    },
-
-    /**
-     * @override
-     */
-    on_detach_callback() {
-        WidgetAdapterMixin.on_detach_callback.call(this);
-        return this._super.apply(this, arguments);
-    },
-
-    /**
-     * Handle the 'previous' button, which in this case should close the Dialog.
-     * @private
-     */
     onPrevious() {
-        this.trigger_up("cancel_options");
-        this.close();
-    },
-});
+        this.props.close();
+    }
+
+    get title() {
+        return _t("Suggested features for your new model");
+    }
+}

@@ -77,13 +77,8 @@ Note: Only the admin user is allowed to make those customizations.
             ('remove', 'web_studio/static/src/client_action/studio_action_loader.js'),
             ('remove', 'web_studio/static/src/client_action/app_creator/app_creator_shortcut.js'),
             'web_studio/static/src/legacy/action_editor_main.js',
-            'web_studio/static/src/legacy/edit_menu_adapter.js',
-            'web_studio/static/src/legacy/new_model_adapter.js',
 
             'web_studio/static/src/legacy/js/py.js',
-            'web_studio/static/src/legacy/js/edit_menu.js',
-            'web_studio/static/src/legacy/js/new_model.js',
-            'web_studio/static/src/legacy/js/common_menu_dialog.js',
             'web_studio/static/src/legacy/js/common/**/*.js',
             'web_studio/static/src/legacy/js/reports/**/*.js',
             'web_studio/static/src/legacy/js/views/abstract_view.js',
@@ -112,8 +107,6 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/scss/sidebar.scss',
             'web_studio/static/src/legacy/scss/view_editor_manager.scss',
             'web_studio/static/src/legacy/scss/xml_editor.scss',
-
-            'web_studio/static/src/legacy/xml/new_model.xml',
         ],
         'web.assets_tests': [
             'web_studio/static/tests/legacy/tours/**/*',
@@ -133,8 +126,6 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/tests/helpers.js',
             'web_studio/static/tests/*.js',
             'web_studio/static/tests/views/**/*.js',
-            'web_studio/static/tests/legacy/edit_menu_tests.js',
-            'web_studio/static/tests/legacy/new_model_tests.js',
             'web_studio/static/tests/legacy/mock_server.js',
             'web_studio/static/tests/legacy/test_utils.js',
             'web_studio/static/tests/legacy/reports/**/*.js',

@@ -575,7 +575,7 @@ QUnit.module("Studio", (hooks) => {
         await click(target, ".o_web_studio_app_creator_next");
         await editInput(target, ".o_web_studio_app_creator_name input", "testApp");
         await click(target, ".o_web_studio_app_creator_next");
-        await editInput(target, ".o_web_studio_app_creator_menu input", "testMenu");
+        await editInput(target, ".o_web_studio_menu_creator input", "testMenu");
         await click(target, ".o_web_studio_app_creator_next");
         await click(target, ".o_web_studio_model_configurator_next");
         await legacyExtraNextTick();
@@ -876,12 +876,13 @@ QUnit.module("Studio", (hooks) => {
         await click(target, ".o_app[data-menu-xmlid=app_100]");
         await openStudio(target);
         await click(target, ".o_web_edit_menu");
-        await click(target, ".js_edit_menu");
+        await click(target, ".o-web-studio-interactive-list-edit-item");
         await nextTick();
         assert.containsOnce(target, ".o_dialog_container.modal-open");
 
         await click(target, '.o_field_widget[name="misplaced_field_id"] button.o_external_button');
         await nextTick();
+        //await nextTick();
         assert.containsNone(target, ".o_dialog_container.modal-open");
     });
 

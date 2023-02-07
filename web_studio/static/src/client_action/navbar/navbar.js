@@ -1,15 +1,14 @@
 /** @odoo-module **/
+import { onMounted } from "@odoo/owl";
 
-import { useService } from "@web/core/utils/hooks";
+import { registry } from "@web/core/registry";
+import { useService, useBus } from "@web/core/utils/hooks";
 import { EnterpriseNavBar } from "@web_enterprise/webclient/navbar/navbar";
 import { NotEditableActionError } from "../../studio_service";
 import { HomeMenuCustomizer } from "./home_menu_customizer/home_menu_customizer";
-import { EditMenuItem } from "../../legacy/edit_menu_adapter";
-import { NewModelItem } from "@web_studio/legacy/new_model_adapter";
 import { useStudioServiceAsReactive } from "@web_studio/studio_service";
 
-import { onMounted } from "@odoo/owl";
-
+const menuButtonsRegistry = registry.category("studio_navbar_menubuttons");
 export class StudioNavbar extends EnterpriseNavBar {
     setup() {
         super.setup();
@@ -22,6 +21,8 @@ export class StudioNavbar extends EnterpriseNavBar {
             this.env.bus.off("HOME-MENU:TOGGLED", this);
             this._updateMenuAppsIcon();
         });
+
+        useBus(menuButtonsRegistry, "UPDATE", () => this.render());
     }
     onMenuToggle() {
         this.studio.toggleHomeMenu();
@@ -62,8 +63,10 @@ export class StudioNavbar extends EnterpriseNavBar {
         // we don(t care i-here as we open an url anyway)
         this.actionManager.doAction(action);
     }
+
+    get menuButtons() {
+        return Object.fromEntries(menuButtonsRegistry.getEntries());
+    }
 }
 StudioNavbar.template = "web_studio.StudioNavbar";
 StudioNavbar.components.HomeMenuCustomizer = HomeMenuCustomizer;
-StudioNavbar.components.EditMenuItem = EditMenuItem;
-StudioNavbar.components.NewModelItem = NewModelItem;

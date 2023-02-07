@@ -1,43 +1,27 @@
 /** @odoo-module **/
 
-import { Component, useExternalListener, useState } from "@odoo/owl";
+import { Component, reactive, useExternalListener, useState } from "@odoo/owl";
 import { useAutofocus, useService } from "@web/core/utils/hooks";
 import { BG_COLORS, COLORS, ICONS } from "@web_studio/utils";
-import { Record } from "@web/views/record";
 import { ModelConfigurator } from "@web_studio/client_action/model_configurator/model_configurator";
 import { IconCreator } from "../icon_creator/icon_creator";
-import { _lt } from "@web/core/l10n/translation";
-import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
+import { MenuCreator, MenuCreatorModel } from "@web_studio/client_action/components/menu_creator";
 
 class AppCreatorState {
     /**
      * @param {Function} onFinished
      */
     constructor({ onFinished }) {
-        // ================== Fields ==================
-        this.fieldsInfo = {
-            modelId: {
-                relation: "ir.model",
-                domain: [
-                    ["transient", "=", false],
-                    ["abstract", "=", false],
-                ],
-                type: "many2one",
-            },
-            modelChoice: {
-                type: "selection",
-                selection: [
-                    ["new", _lt("New Model")],
-                    ["existing", _lt("Existing Model")],
-                ],
-            },
-        };
+        this._onFinished = onFinished;
+        // ==================== Misc ====================
+        this.step = "welcome";
 
+        // ================== Fields ==================
         this.fieldsValidators = {
             appName: () => !!this.data.appName,
-            menuName: () => !!this.data.menuName,
-            modelId: () => this.data.modelChoice === "new" || !!this.data.modelId,
+            menu: (_this) => _this.menuCreatorModel.isValid,
         };
+        this.menuCreatorModel = reactive(new MenuCreatorModel());
 
         this.data = {
             appName: "",
@@ -47,39 +31,31 @@ class AppCreatorState {
                 iconClass: ICONS[0],
                 type: "custom_icon",
             },
-            menuName: "",
-            modelChoice: "new",
-            modelId: false,
+            menu: this.menuCreatorModel.data,
             modelOptions: [],
         };
 
         // ================== Steps ==================
-        const data = this.data;
         this._steps = {
             welcome: {
-                next: "app",
+                next: () => "app",
             },
             app: {
                 previous: "welcome",
-                next: "model",
+                next: () => "model",
                 fields: ["appName"],
             },
             model: {
                 previous: "app",
-                get next() {
-                    return data.modelChoice === "new" ? "model_configuration" : "";
+                next: (data) => {
+                    return data.menu.modelChoice === "new" ? "model_configuration" : "";
                 },
-                fields: ["menuName", "modelId"],
+                fields: ["menu"],
             },
             model_configuration: {
                 previous: "model",
             },
         };
-
-        // ==================== Misc ====================
-        this._invalidFields = new Set();
-        this._onFinished = onFinished;
-        this.step = "welcome";
     }
 
     //--------------------------------------------------------------------------
@@ -92,11 +68,12 @@ class AppCreatorState {
 
     set step(step) {
         this._step = step;
-        this._invalidFields.clear();
+        this.showValidation = false;
     }
 
     get nextStep() {
-        return this._stepInvalidFields.length ? false : this._currentStep.next;
+        const next = this._next;
+        return this._stepInvalidFields.length ? false : next;
     }
 
     get hasPrevious() {
@@ -108,24 +85,16 @@ class AppCreatorState {
     //--------------------------------------------------------------------------
 
     isFieldValid(fieldName) {
-        return !this._invalidFields.has(fieldName);
-    }
-
-    validateField(fieldName) {
-        if (this.fieldsValidators[fieldName]()) {
-            this._invalidFields.delete(fieldName);
-        } else {
-            this._invalidFields.add(fieldName);
-        }
+        return this.showValidation ? this.fieldsValidators[fieldName](this) : true;
     }
 
     next() {
+        this.showValidation = true;
         const invalidFields = this._stepInvalidFields;
         if (invalidFields.length) {
-            this._invalidFields = new Set(invalidFields);
             return;
         }
-        const next = this._currentStep.next;
+        const next = this._next;
         if (next) {
             this.step = next;
         } else {
@@ -147,16 +116,20 @@ class AppCreatorState {
         return this._steps[this._step];
     }
 
+    get _next() {
+        return this._currentStep.next ? this._currentStep.next(this.data) : "";
+    }
+
     get _stepInvalidFields() {
         return (this._currentStep.fields || []).filter((fName) => {
-            return !this.fieldsValidators[fName]();
+            return !this.fieldsValidators[fName](this);
         });
     }
 }
 
 export class AppCreator extends Component {
     static template = "web_studio.AppCreator";
-    static components = { IconCreator, ModelConfigurator, Record, Many2OneField };
+    static components = { IconCreator, ModelConfigurator, MenuCreator };
     static props = {
         onNewAppCreated: { type: Function },
     };
@@ -194,9 +167,9 @@ export class AppCreator extends Component {
         try {
             const result = await this.rpc("/web_studio/create_new_app", {
                 app_name: data.appName,
-                menu_name: data.menuName,
-                model_choice: data.modelChoice,
-                model_id: data.modelChoice && data.modelId[0],
+                menu_name: data.menu.menuName,
+                model_choice: data.menu.modelChoice,
+                model_id: data.menu.modelChoice && data.menu.modelId[0],
                 model_options: data.modelOptions,
                 icon: iconValue,
                 context: this.user.context,

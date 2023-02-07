@@ -289,14 +289,14 @@ QUnit.module("AppCreator", (hooks) => {
         );
         assert.hasClass(
             appNameInput,
-            "o_web_studio_app_creator_field_warning",
+            "o_web_studio_field_warning",
             "Input should be in warning mode"
         );
 
         await editInput(target, 'input[name="appName"]', "Kikou");
         assert.doesNotHaveClass(
             appNameInput,
-            "o_web_studio_app_creator_field_warning",
+            "o_web_studio_field_warning",
             "Input shouldn't be in warning mode anymore"
         );
 
@@ -316,7 +316,7 @@ QUnit.module("AppCreator", (hooks) => {
 
         assert.hasClass(
             target.querySelector('input[name="menuName"]').parentNode,
-            "o_web_studio_app_creator_field_warning",
+            "o_web_studio_field_warning",
             "Input should be in warning mode"
         );
 
@@ -467,8 +467,8 @@ QUnit.module("AppCreator", (hooks) => {
         await click(target, 'input[name="model_choice"][value="existing"]');
 
         assert.doesNotHaveClass(
-            target.querySelector(".o_web_studio_app_creator_model"),
-            "o_web_studio_app_creator_field_warning"
+            target.querySelector(".o_web_studio_menu_creator_model"),
+            "o_web_studio_field_warning"
         );
         assert.doesNotHaveClass(buttonNext, "is_ready");
         assert.containsOnce(
@@ -480,8 +480,8 @@ QUnit.module("AppCreator", (hooks) => {
         await click(buttonNext);
 
         assert.hasClass(
-            target.querySelector(".o_web_studio_app_creator_model"),
-            "o_web_studio_app_creator_field_warning"
+            target.querySelector(".o_web_studio_menu_creator_model"),
+            "o_web_studio_field_warning"
         );
         assert.doesNotHaveClass(buttonNext, "is_ready");
 
@@ -495,8 +495,8 @@ QUnit.module("AppCreator", (hooks) => {
         );
 
         assert.doesNotHaveClass(
-            target.querySelector(".o_web_studio_app_creator_model"),
-            "o_web_studio_app_creator_field_warning"
+            target.querySelector(".o_web_studio_menu_creator_model"),
+            "o_web_studio_field_warning"
         );
         assert.hasClass(buttonNext, "is_ready");
 
@@ -555,7 +555,7 @@ QUnit.module("AppCreator", (hooks) => {
         await triggerEvent(document, null, "keydown", { key: "Enter" });
         assert.hasClass(
             target.querySelector('input[name="menuName"]').parentNode,
-            "o_web_studio_app_creator_field_warning",
+            "o_web_studio_field_warning",
             "a warning should be displayed on the input"
         );
 

@@ -4,17 +4,22 @@ import { PartnerListScreen } from "@point_of_sale/js/Screens/PartnerListScreen/P
 import { patch } from "@web/core/utils/patch";
 import { SelectionPopup } from "@point_of_sale/js/Popups/SelectionPopup";
 import { useService } from "@web/core/utils/hooks";
+import { usePos } from "@point_of_sale/app/pos_hook";
 
 patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {
     setup() {
         this._super(...arguments);
         this.popup = useService("popup");
+        this.pos = usePos();
     },
     get isBalanceDisplayed() {
         return true;
     },
     get partnerLink() {
         return `/web#model=res.partner&id=${this.state.editModeProps.partner.id}`;
+    },
+    get partnerInfos() {
+        return this.pos.getPartnerCredit(this.props.partner);
     },
     async settleCustomerDue() {
         const updatedDue = await this.env.pos.refreshTotalDueOfPartner(

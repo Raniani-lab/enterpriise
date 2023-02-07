@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="PartnerLine" t-inherit="point_of_sale.PartnerLine" t-inherit-mode="extension" owl="1">
+        <xpath expr="//td[hasclass('partner-line-balance')]" position="inside">
+            <div t-att-class="{'partner-credit-limit-reached': this.partnerInfos.overDue and this._isPartnerSelected}" class="partner-due pos-right-align" t-if="this.partnerInfos.useLimit">
+                <span>Total due: <t t-esc="env.pos.format_currency(this.partnerInfos.totalDue)"/></span>
+                <span t-if="this._isPartnerSelected">(with cart: <t t-esc="env.pos.format_currency(this.partnerInfos.totalWithCart)" />)</span>
+                <span>Credit limit: <t t-esc="env.pos.format_currency(this.partnerInfos.creditLimit)"/></span>
+            </div>
+        </xpath>
+    </t>
+ </templates>

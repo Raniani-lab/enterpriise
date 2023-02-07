@@ -15,6 +15,9 @@ patch(PartnerLine.prototype, "pos_settle_due.PartnerLine", {
     getPartnerLink() {
         return `/web#model=res.partner&id=${this.props.partner.id}`;
     },
+    get partnerInfos() {
+        return this.pos.getPartnerCredit(this.props.partner);
+    },
     async settlePartnerDue(event) {
         if (this.props.selectedPartner == this.props.partner) {
             event.stopPropagation();

@@ -6,6 +6,15 @@ import { float_is_zero } from "web.utils";
 import { ConfirmPopup } from "@point_of_sale/js/Popups/ConfirmPopup";
 
 patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
+    get partnerInfos() {
+        const order = this.currentOrder;
+        return this.pos.getPartnerCredit(order.get_partner());
+    },
+    get highlightPartnerBtn() {
+        const order = this.currentOrder;
+        const partner = order.get_partner();
+        return (!this.partnerInfos.useLimit && partner) || (!this.partnerInfos.overDue && partner);
+    },
     //@override
     async validateOrder(isForceValidate) {
         const _super = this._super;

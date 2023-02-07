@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import re
 import ast
+import pytz
+import re
 
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import SU
-from lxml import etree
 from collections import defaultdict
 
 from odoo import tools, models, fields, api, _
@@ -60,6 +60,53 @@ class AnalyticLine(models.Model):
         for analytic_line in self:
             analytic_line.display_timer = is_uom_hour and analytic_line.encoding_uom_id == uom_hour \
                                           and not analytic_line._should_not_display_timer()
+
+    @api.model
+    def grid_unavailability(self, start_date, end_date, groupby='', res_ids=None):
+        start_datetime = fields.Datetime.from_string(start_date)
+        end_datetime = fields.Datetime.from_string(end_date) + relativedelta(hour=23, minute=59, second=59)
+        unavailability_intervals_per_employee_id = {}
+        # naive datetimes are made explicit in UTC
+        from_datetime, dummy = make_aware(start_datetime)
+        to_datetime, dummy = make_aware(end_datetime)
+        # We need to display in grey the unavailable full days
+        # We start by getting the availability intervals to avoid false positive with range outside the office hours
+
+        def get_unavailable_dates(intervals):
+            # get the dates where some work can be done in the interval. It returns a list of sets.
+            available_dates = [{start.date(), end.date()} for start, end, dummy in intervals]
+            # flatten the list of sets to get a simple list of dates and add it to the pile.
+            availability_date_list = [date for dates in available_dates for date in dates]
+            unavailable_days = []
+            cur_day = from_datetime
+            while cur_day <= to_datetime:
+                if cur_day.date() not in availability_date_list:
+                    unavailable_days.append(cur_day.date())
+                cur_day = cur_day + timedelta(days=1)
+            return list(set(unavailable_days))
+
+        def get_company_unavailable_dates():
+            return get_unavailable_dates(self.env.company.resource_calendar_id._work_intervals_batch(from_datetime, to_datetime)[False])
+
+        if groupby == 'employee_id':
+            employees = self.env['hr.employee'].browse(set(res_ids))
+            availability_intervals_per_resource_id, calendar_work_intervals = employees.resource_id._get_valid_work_intervals(from_datetime, to_datetime)
+            employee_id_per_resource_id = {emp.resource_id.id: emp.id for emp in employees}
+            if not calendar_work_intervals:
+                unavailability_intervals_per_employee_id[False] = get_company_unavailable_dates()
+                return unavailability_intervals_per_employee_id
+            company_unavailable_days = get_unavailable_dates(calendar_work_intervals[self.env.company.resource_calendar_id.id])
+            unavailability_intervals_per_employee_id = {
+                employee_id:
+                    get_unavailable_dates(availability_intervals_per_resource_id[resource_id])
+                    if resource_id in availability_intervals_per_resource_id
+                    else company_unavailable_days
+                for resource_id, employee_id in employee_id_per_resource_id.items()
+            }
+            unavailability_intervals_per_employee_id[False] = company_unavailable_days
+        else:
+            unavailability_intervals_per_employee_id[False] = get_company_unavailable_dates()
+        return unavailability_intervals_per_employee_id
 
     @api.model
     def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None, orderby=None):
@@ -306,7 +353,7 @@ class AnalyticLine(models.Model):
         return result
 
     def _grid_range_of(self, span, step, anchor, field):
-        """
+        """ FIXME: XBO remove me once the grid view is in OWL 2
             Override to calculate the unavabilities of the company
         """
         res = super()._grid_range_of(span, step, anchor, field)
@@ -316,7 +363,7 @@ class AnalyticLine(models.Model):
         return res
 
     def _get_unavailable_dates(self, start_date, end_date):
-        """
+        """ FIXME: XBO remove me once the grid view is in OWL 2
         Returns the list of days when the current company is closed (we, or holidays)
         """
         start_dt = datetime(year=start_date.year, month=start_date.month, day=start_date.day)
@@ -549,6 +596,30 @@ class AnalyticLine(models.Model):
 
         return super()._check_can_write(vals)
 
+    @api.model
+    def grid_update_cell(self, domain, measure_field_name, value):
+        if value == 0:  # nothing to do
+            return
+        timesheets = self.search(domain, limit=2)
+        if len(timesheets) > 1 or (len(timesheets) == 1 and timesheets.validated):
+            timesheets[0].copy({
+                'name': '/',
+                measure_field_name: value,
+            })
+        elif len(timesheets) == 1:
+            timesheets[measure_field_name] += value
+        else:
+            project_id = self._context.get('default_project_id', False)
+            task_id = self._context.get('default_task_id', False)
+            if not project_id and task_id:
+                project_id = self.env['project.task'].browse(task_id).project_id.id
+            self.create({
+                'name': '/',
+                'project_id': project_id,
+                'task_id': task_id,
+                measure_field_name: value,
+            })
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_manager(self):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(
@@ -589,6 +660,7 @@ class AnalyticLine(models.Model):
         return project_id, task_id
 
     def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
+        # FIXME: (XBO) remove me
         if column_field != 'date' or cell_field != 'unit_amount':
             raise ValueError(
                 "{} can only adjust unit_amount (got {}) by date (got {})".format(
@@ -724,6 +796,19 @@ class AnalyticLine(models.Model):
     # Timer Methods
     # ----------------------------------------------------
 
+    @api.model
+    def action_start_new_timesheet_timer(self, vals):
+        project = self.env['project.project'].browse(vals.get('project_id', False))
+        if not project:
+            task = self.env['project.task'].browse(vals.get('task_id', False))
+            project = task.project_id
+        result = project.check_can_start_timer()
+        if result is True:
+            timesheet = self.create(vals)
+            timesheet.action_timer_start()
+            return timesheet._get_timesheet_timer_data()
+        return result
+
     def action_timer_start(self):
         """ Action start the timer of current timesheet
 
@@ -816,6 +901,25 @@ class AnalyticLine(models.Model):
     def _action_interrupt_user_timers(self):
         self.action_timer_stop()
 
+    def _get_timesheet_timer_data(self, timer=None):
+        if not timer:
+            timer = self.user_timer_id
+        running_seconds = (fields.Datetime.now() - timer.timer_start).total_seconds() + self.unit_amount * 3600
+        data = {
+            'id': timer.res_id,
+            'start': running_seconds,
+            'project_id': self.project_id.id,
+            'task_id': self.task_id.id,
+            'description': self.name,
+        }
+        if self.project_id.company_id not in self.env.companies:
+            data.update({
+                'readonly': True,
+                'project_name': self.project_id.name,
+                'task_name': self.task_id.name or '',
+            })
+        return data
+
     @api.model
     def get_running_timer(self):
         timer = self.env['timer.timer'].search([
@@ -828,23 +932,7 @@ class AnalyticLine(models.Model):
             return {}
 
         # sudo as we can have a timesheet related to a company other than the current one.
-        timesheet = self.sudo().browse(timer.res_id)
-
-        running_seconds = (fields.Datetime.now() - timer.timer_start).total_seconds() + timesheet.unit_amount * 3600
-        values = {
-            'id': timer.res_id,
-            'start': running_seconds,
-            'project_id': timesheet.project_id.id,
-            'task_id': timesheet.task_id.id,
-            'description': timesheet.name,
-        }
-        if timesheet.project_id.company_id not in self.env.companies:
-            values.update({
-                'readonly': True,
-                'project_name': timesheet.project_id.name,
-                'task_name': timesheet.task_id.name or '',
-            })
-        return values
+        return self.sudo().browse(timer.res_id)._get_timesheet_timer_data(timer)
 
     @api.model
     def get_timer_data(self):
@@ -860,18 +948,19 @@ class AnalyticLine(models.Model):
         rounded_minutes = self._timer_rounding(timer, minimum_duration, rounding)
         return rounded_minutes / 60
 
-    def action_add_time_to_timesheet(self, project, task, seconds):
+    def action_add_time_to_timesheet(self, project_id, task_id):
+        minutes = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15))
         if self:
-            task = False if not task else task
-            if self.task_id.id == task and self.project_id.id == project:
-                self.unit_amount += seconds / 3600
+            task_id = False if not task_id else task_id
+            if self.task_id.id == task_id and self.project_id.id == project_id:
+                self.unit_amount += minutes / 60
                 return self.id
-        timesheet_id = self.create({
-            'project_id': project,
-            'task_id': task,
-            'unit_amount': seconds / 3600
+        timesheet = self.create({
+            'project_id': project_id,
+            'task_id': task_id,
+            'unit_amount': minutes / 60
         })
-        return timesheet_id.id
+        return timesheet.id
 
     def action_add_time_to_timer(self, time):
         if self.validated:

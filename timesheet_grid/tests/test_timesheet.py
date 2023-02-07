@@ -278,18 +278,20 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         # Invalidate the env cache first, because the above employee creation filled the fields data as superuser.
         # The data of the fields must be emptied so the manager user fetches the data again.
         self.env.invalidate_all()
-        working_hours = self.env['hr.employee'].with_user(
+        # Simulate the manager seeing the timesheet in task form view.
+        employee_with_company_manager = employee.with_context(allowed_company_ids=self.user_manager.company_id.ids)
+        working_hours = employee_with_company_manager.with_user(
             self.user_manager
-        ).get_timesheet_and_working_hours_for_employees(employees_grid_data, '2021-04-01', '2021-04-30')
+        ).get_timesheet_and_working_hours_for_employees('2021-04-01', '2021-04-30')
         self.assertEqual(working_hours[employee.id]['worked_hours'], 1.0)
 
         # Now, same thing but archiving the employee. The manager should still be able to read his timesheet
         # despite the fact the employee has been archived.
         employee.active = False
         self.env.invalidate_all()
-        working_hours = self.env['hr.employee'].with_user(
+        working_hours = employee_with_company_manager.with_user(
             self.user_manager
-        ).get_timesheet_and_working_hours_for_employees(employees_grid_data, '2021-04-01', '2021-04-30')
+        ).get_timesheet_and_working_hours_for_employees('2021-04-01', '2021-04-30')
         self.assertEqual(working_hours[employee.id]['worked_hours'], 1.0)
 
         # Now same thing but with the multi-company employee rule disabled
@@ -298,9 +300,9 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         # and should still work/not crash when the multi-company rule is disabled
         self.env.ref('hr.hr_employee_comp_rule').active = False
         self.env.invalidate_all()
-        working_hours = self.env['hr.employee'].with_user(
+        working_hours = employee_with_company_manager.with_user(
             self.user_manager
-        ).get_timesheet_and_working_hours_for_employees(employees_grid_data, '2021-04-01', '2021-04-30')
+        ).get_timesheet_and_working_hours_for_employees('2021-04-01', '2021-04-30')
         self.assertEqual(working_hours[employee.id]['worked_hours'], 1.0)
 
     def test_timesheet_grid_filter_equal_string(self):

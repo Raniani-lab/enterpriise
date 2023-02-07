@@ -175,7 +175,7 @@
     </t>
 
     <span t-name="timesheet_grid.start_timer" class="d-inline-flex" owl="1" t-on-timer-started-from-line="props.onTimerStartedFromLine">
-        <button type="button" t-on-click="_onClickTimer" class="btn_timer_line position-relative my-1 border border-primary rounded-sm fa-stack small" t-att-class="iconClass"
+        <button type="button" t-on-click="_onClickTimer" class="btn_timer_line position-relative my-1 border border-primary rounded-1 fa-stack small" t-att-class="iconClass"
                 t-att-data-index="props.index">
             <span class="position-absolute start-0 top-0 h-100 w-100 opacity-25 bg-primary-light"/>
             <span class="position-absolute start-0 top-0 h-100 w-100 fs-5 text-primary" t-esc="letter" t-if="!props.hovered || props.addTimeMode"/>

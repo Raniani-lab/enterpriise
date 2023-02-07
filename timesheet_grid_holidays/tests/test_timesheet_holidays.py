@@ -12,16 +12,13 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
 
     def test_overtime_calcution_timesheet_holiday_flow(self):
         """ Employee's leave is not calculated as overtime hours when employee is on time off."""
-
-        HrEmployee = self.env['hr.employee']
-        employees_grid_data = [{'id': self.empl_employee.id}]
         self.empl_employee.write({
             'create_date': date(2021, 1, 1),
             'employee_type': 'freelance',  # Avoid searching the contract if hr_contract module is installed before this module.
         })
         start_date = '2021-10-04'
         end_date = '2021-10-09'
-        result = HrEmployee.get_timesheet_and_working_hours_for_employees(employees_grid_data, start_date, end_date)
+        result = self.empl_employee.get_timesheet_and_working_hours_for_employees(start_date, end_date)
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 40, "Employee weekly working hours should be 40.")
         self.assertEqual(result[self.empl_employee.id]['worked_hours'], 0.0, "Employee's working hours should be None.")
 
@@ -49,7 +46,7 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
             'number_of_days': number_of_days,
         })
         holiday.with_user(SUPERUSER_ID).action_validate()
-        result = HrEmployee.get_timesheet_and_working_hours_for_employees(employees_grid_data, start_date, end_date)
+        result = self.empl_employee.get_timesheet_and_working_hours_for_employees(start_date, end_date)
         self.assertTrue(len(holiday.timesheet_ids) > 0, 'Timesheet entry should be created in Internal project for time off.')
         # working hours for employee after leave creations
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 32, "Employee's weekly units of work after the leave creation should be 32.")
@@ -63,7 +60,7 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
             'unit_amount': 8.0,
         })
         timesheet1.with_user(self.user_manager).action_validate_timesheet()
-        result = HrEmployee.get_timesheet_and_working_hours_for_employees(employees_grid_data, start_date, end_date)
+        result = self.empl_employee.get_timesheet_and_working_hours_for_employees(start_date, end_date)
         # working hours for employee after Timesheet creations
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 32, "Employee's one week units of work after the Timesheet creation should be 32.")
 

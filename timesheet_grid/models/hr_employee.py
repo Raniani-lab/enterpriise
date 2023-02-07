@@ -56,7 +56,7 @@ class Employee(models.Model):
             :returns dict : a dict mapping the employee_id with his timesheeted and working hours for the
                 given period.
         """
-        employees = self.filtered(lambda emp: emp.resource_calendar_id)
+        employees = self.filtered('resource_calendar_id')
         result = {i: dict(timesheet_hours=0.0, working_hours=0.0, date_start=date_start, date_stop=date_stop) for i in self.ids}
         if not employees:
             return result
@@ -71,7 +71,6 @@ class Employee(models.Model):
         for data_row in self.env.cr.dictfetchall():
             result[data_row['employee_id']]['timesheet_hours'] = float_round(data_row['amount_sum'], 2)
 
-
         employees_work_days_data = self._get_employees_working_hours(employees, date_start, date_stop)
         for employee in employees:
             working_hours = sum_intervals(employees_work_days_data[employee.resource_id.id])
@@ -83,7 +82,7 @@ class Employee(models.Model):
         result = {}
         # Change the type of the date from string to Date
         date_start_date = fields.Date.from_string(date_start)
-        date_stop_date = fields.Date.from_string(date_stop)
+        date_stop_date = min(fields.Date.from_string(date_stop), fields.Date.today())
 
         # Compute the difference between the starting and ending date
         delta = date_stop_date - date_start_date
@@ -115,10 +114,8 @@ class Employee(models.Model):
             else:
                 value = current_employee.company_id.resource_calendar_id.hours_per_day or HOURS_PER_DAY
 
-            result[day_count] = {
-                'date': fields.Date.to_string(date),
-                'total_hours': value,
-            }
+            result[fields.Date.to_string(date)] = value
+
         return result
 
     def _get_timesheets_and_working_hours_query(self):
@@ -129,12 +126,13 @@ class Employee(models.Model):
             GROUP BY aal.employee_id
         """
 
-    @api.model
-    def get_timesheet_and_working_hours_for_employees(self, employees_grid_data, date_start, date_stop):
+    def get_timesheet_and_working_hours_for_employees(self, date_start, date_stop):
         """
         Method called by the timesheet avatar widget on the frontend in gridview to get information
         about the hours employees have worked and should work.
 
+        :param date_start: date start of the interval to search
+        :param state_stop: date stop of the interval to search
         :return: Dictionary of dictionary
                  for each employee id =>
                      number of units to work,
@@ -142,16 +140,14 @@ class Employee(models.Model):
                      the number of worked units by the employees
         """
         result = {}
-
         uom = str(self.env.company.timesheet_encode_uom_id.name).lower()
-
-        employee_ids = [employee_data['id'] for employee_data in employees_grid_data if 'id' in employee_data]
-        employees = self.env['hr.employee'].browse(employee_ids)
         hours_per_day_per_employee = {}
+        employees_work_days_data = {}
 
-        employees_work_days_data = self._get_employees_working_hours(employees, date_start, date_stop)
+        if self:
+            employees_work_days_data = self._get_employees_working_hours(self, date_start, date_stop)
 
-        for employee in employees:
+        for employee in self:
             units_to_work = sum_intervals(employees_work_days_data[employee.resource_id.id])
 
             # Adjustments if we work with a different unit of measure
@@ -164,17 +160,13 @@ class Employee(models.Model):
             result[employee.id] = {'units_to_work': units_to_work, 'uom': uom, 'worked_hours': 0.0}
 
         query = self._get_timesheets_and_working_hours_query()
-        self.env.cr.execute(query, (tuple(employee_ids), date_start, date_stop))
-
+        self.env.cr.execute(query, (tuple(self.ids), date_start, date_stop))
         for data_row in self.env.cr.dictfetchall():
-
             worked_hours = data_row['worked_hours']
-
             if uom == 'days':
                 worked_hours /= hours_per_day_per_employee[data_row['employee_id']]
                 rounding = len(str(self.env.company.timesheet_encode_uom_id.rounding).split('.')[1])
                 worked_hours = round(worked_hours, rounding)
-
             result[data_row['employee_id']]['worked_hours'] = worked_hours
 
         return result

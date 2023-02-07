@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+
+    <t t-name="timesheet_grid.GridTimerButtonCell" owl="1">
+        <button type="button"
+                class="btn_timer_line position-relative bg-primary my-1 border fa-stack"
+                t-att-class="{
+                    'border-primary': timerRunning or props.hovered or env.isSmall or props.index &lt; 26,
+                    'border-danger': timerRunning and props.hovered and !env.isSmall,
+                 }"
+                t-on-click.synthetic="() => this.props.onTimerClick(this.props.row)"
+                t-att-data-hotkey="letter"
+        >
+            <span class="o_grid_timer_button position-absolute transition-base start-0 top-0 w-100 h-100 fs-5"
+                  t-att-class="classNames">
+                <span class="d-none d-md-inline text-primary"
+                      t-out="letter"/>
+                <i t-if="timerRunning or props.hovered or env.isSmall and props.index &lt; 26"
+                   t-att-class="iconClass"/>
+            </span>
+        </button>
+    </t>
+
+</templates>

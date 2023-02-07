@@ -10,7 +10,7 @@ class TimesheetGridMixin(models.AbstractModel):
     _description = 'Timesheet Grid mixin'
 
     @api.model
-    def get_planned_and_worked_hours(self, grid_data):
+    def get_planned_and_worked_hours(self, ids):
         """
         Method called by the timesheet widgets on the frontend in gridview to get information
         about the hours allocated and worked for each record.
@@ -23,7 +23,6 @@ class TimesheetGridMixin(models.AbstractModel):
         def convert_hours_to_company_uom(hours):
             return float_round(hours / hours_per_day, precision_digits=rounding) if uom == day_uom else hours
 
-        ids = list({data['id'] for data in grid_data if 'id' in data})
         records = self.search_read(
             self.get_planned_and_worked_hours_domain(ids),
             ['id', self.get_planned_hours_field()] + self.get_worked_hours_fields(),

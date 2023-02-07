@@ -166,6 +166,22 @@ class ConsolidationJournalLine(models.Model):
 
     # GRID OVERRIDES
 
+    @api.model
+    def grid_update_cell(self, domain, measure_field_name, value):
+        account_id = self._context.get("default_account_id", False)
+        journal_id = self._context.get("default_journal_id", False)
+        if not (account_id and journal_id):
+            return  # The grid view is just editable if account is in the row and journal_id is in the column
+        journal = self.env["consolidation.journal"].browse(journal_id)
+        if journal.auto_generated:
+            raise UserError(_("You can't edit an auto-generated journal entry."))
+        self.create([{
+            "account_id": account_id,
+            "journal_id": journal_id,
+            "note": "Trial balance adjustment",
+            measure_field_name: value,
+        }])
+
     def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
         """
         Called by the grid view when editing a cell value. If journal is editable, it creates a new journal line linked

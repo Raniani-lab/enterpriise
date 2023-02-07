@@ -32,6 +32,7 @@
             'account_consolidation/static/src/js/trial_balance_grid/renderer.js',
             'account_consolidation/static/src/js/trial_balance_grid/view.js',
             'account_consolidation/static/src/components/**/*',
+            'account_consolidation/static/src/views/**/*',
         ],
         'web.qunit_suite_tests': [
             'account_consolidation/static/tests/**/*',

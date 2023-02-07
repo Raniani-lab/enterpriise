@@ -3,13 +3,11 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
 
     require("web.dom_ready");
     const { registry } = require("@web/core/registry");
-    const { stepUtils } = require('@web_tour/js/tour_step_utils');
+    const { stepUtils } = require("@web_tour/js/tour_step_utils");
 
-    registry.category("web_tour.tours").add(
-        "spreadsheet_create_empty_sheet",
-        {
-            test: true,
-            steps: [
+    registry.category("web_tour.tours").add("spreadsheet_create_empty_sheet", {
+        test: true,
+        steps: [
             stepUtils.showAppsMenuItem(),
             {
                 trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
@@ -46,13 +44,11 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
                 content: "Reopen the sheet",
                 run: "click",
             },
-        ]
+        ],
     });
-    registry.category("web_tour.tours").add(
-        "spreadsheet_create_list_view",
-        {
-            test: true,
-            steps: [
+    registry.category("web_tour.tours").add("spreadsheet_create_list_view", {
+        test: true,
+        steps: [
             stepUtils.showAppsMenuItem(),
             {
                 trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
@@ -66,7 +62,7 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
             },
             {
                 trigger: ".o_favorite_menu button",
-                extra_trigger: ".o_list_view, .o_legacy_list_view",
+                extra_trigger: ".o_list_view",
                 content: "Open the favorites menu",
                 run: "click",
             },
@@ -95,6 +91,6 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
                 content: "Go back to the list of lists",
                 run: "click",
             },
-        ]
+        ],
     });
 });

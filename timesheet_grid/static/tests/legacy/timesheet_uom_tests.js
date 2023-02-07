@@ -7,7 +7,6 @@ const GridView = require('timesheet_grid.GridView');
 const gridComponentRegistry = require('web_grid.component_registry');
 const GridTimesheetUOM = require('timesheet_grid.timesheet_uom');
 const TimerTimesheetUOM = require('thimesheet_grid.timesheet_uom_timer');
-const TimesheetUOM = require('hr_timesheet.timesheet_uom');
 const { registry } = require("@web/core/registry");
 const { timesheetUomGridService } = GridTimesheetUOM;
 const { timesheetUomTimerService } = TimerTimesheetUOM;
@@ -184,60 +183,6 @@ QUnit.module('Timesheet UOM Widgets', function (hooks) {
                 $renderedTotalData = grid.$('.o_view_grid tbody tr:nth-of-type(1) td:nth-of-type(2) :contains("1.00")');
                 assert.ok($renderedTotalData.length, 'The GridView FloatToggleComponentTimesheet widget is taking the timesheet_uom_factor into account');
                 grid.destroy();
-            });
-        });
-    });
-    QUnit.module('timesheet_uom_timer', function (hooks) {
-        QUnit.module('fieldRegistry', function (hooks) {
-            let FieldTimesheetTimeTimerBackup;
-            let FieldTimesheetToggleBackup;
-            hooks.beforeEach(function (assert) {
-                // Backups the FieldTimesheetTime widget as it will be altered in this testing module
-                // in order to to ease testing.
-                FieldTimesheetTimeTimerBackup = TimerTimesheetUOM.FieldTimesheetTimeTimer;
-                TimerTimesheetUOM.FieldTimesheetTimeTimer.include({
-                    _render: function () {
-                        const $widgetIdentification = $('<div>').addClass('i_am_a_timesheet_timer_widget');
-                        this.$el.append($widgetIdentification);
-                    },
-                });
-                FieldTimesheetToggleBackup = TimesheetUOM.FieldTimesheetToggle;
-                TimesheetUOM.FieldTimesheetToggle.include({
-                    _render: function () {
-                        const $widgetIdentification = $('<div>').addClass('i_am_a_timesheet_toggle_widget');
-                        this.$el.append($widgetIdentification);
-                    },
-                });
-            });
-            hooks.afterEach(async function (hooks) {
-                // Restores the widgets and trigger reload in FieldRegistry.
-                TimerTimesheetUOM.FieldTimesheetTimeTimer = FieldTimesheetTimeTimerBackup;
-                TimesheetUOM.FieldTimesheetToggle = FieldTimesheetToggleBackup;
-                await env.patchSessionAndStartServices({ }, true);
-            });
-            QUnit.test('the timesheet_uom_timer widget added to the fieldRegistry is company related', async function (assert) {
-                assert.expect(2);
-
-                let options = {
-                    arch: `<tree>
-                               <field name="unit_amount" widget="timesheet_uom_timer"/>
-                           </tree>`,
-                };
-                let view = await env.createView(options);
-                assert.ok(view.$('.i_am_a_timesheet_timer_widget').length, 'FieldTimesheetTimeTimer is rendered when company uom is hour and timesheet_uom_timer widget is used');
-                view.destroy();
-
-                options = Object.assign(
-                    { },
-                    options,
-                    {
-                        session: {
-                            user_context: env.singleCompanyDayUOMUser,
-                        },
-                    });
-                view = await env.createView(options);
-                assert.ok(view.$('.i_am_a_timesheet_toggle_widget').length, 'FieldTimesheetTimeTimer is rendered when company uom is hour and timesheet_uom_timer widget is used');
-                view.destroy();
             });
         });
     });

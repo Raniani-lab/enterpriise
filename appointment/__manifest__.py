@@ -61,9 +61,6 @@
             'appointment/static/src/views/**/*',
             'appointment/static/src/components/**/*',
         ],
-        'web_studio.studio_assets': [
-            'appointment/static/src/scss/legacy_appointment_type_views.scss',
-        ],
         'web.qunit_suite_tests': [
             'appointment/static/tests/*',
         ],

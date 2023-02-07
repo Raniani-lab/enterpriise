@@ -2783,50 +2783,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(target.querySelector(".o_kanban_record button").textContent, "Some action");
     });
 
-    QUnit.test('kanban editor with async widget', async function (assert) {
-        assert.expect(7);
-
-        const fieldDef = testUtils.makeTestPromise();
-        const owlFieldRegistry = registry.category("fields");
-        const FieldChar = owlFieldRegistry.get('char');
-        class MyFieldChar extends FieldChar {
-            setup() {
-                owl.onWillStart(() => {
-                    return fieldDef;
-                })
-            }
-        }
-        owlFieldRegistry.add("asyncwidget", MyFieldChar);
-
-        const prom = studioTestUtils.createViewEditorManager({
-            model: 'coucou',
-            arch: "<kanban>" +
-                    "<templates>" +
-                        "<t t-name='kanban-box'>" +
-                            "<div><field name='display_name' widget='asyncwidget'/></div>" +
-                        "</t>" +
-                    "</templates>" +
-                "</kanban>",
-        });
-
-        assert.containsNone(target, '.o_web_studio_kanban_view_editor');
-        fieldDef.resolve();
-
-        const vem = await prom;
-
-        assert.containsOnce(target, '.o_web_studio_kanban_view_editor');
-
-        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable');
-        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook');
-
-        await testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'));
-
-        assert.hasClass(vem.$('.o_web_studio_sidebar .o_web_studio_properties'), 'active');
-        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
-        "the sidebar should now display the field properties");
-        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'), 'o-web-studio-editor--element-clicked');
-    });
-
     QUnit.test('changing tab should reset the selected node', async function(assert) {
         assert.expect(4);
 
@@ -6095,11 +6051,6 @@ QUnit.module('ViewEditorManager', {
             is_dep: { type: "char"},
         }
         registry.category("fields").add("list.withDependencies", CharWithDependencies);
-
-        const LegacyFieldChar = fieldRegistry.get('char');
-        fieldRegistry.add('withDependencies', LegacyFieldChar.extend({
-            description: "Test Widget",
-        }));
 
         const action = serverData.actions["studio.coucou_action"];
         action.res_id = 1;

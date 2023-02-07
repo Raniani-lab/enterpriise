@@ -2,11 +2,8 @@
 
 "use strict";
 
-import FormView from 'web.FormView';
 import framework from 'web.framework';
 import testUtils from 'web.test_utils';
-
-const { createView } = testUtils;
 
 import { getFixture } from "@web/../tests/helpers/utils";
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
@@ -133,40 +130,5 @@ QUnit.module('document_backend_tests', {
         assert.verifySteps(["/sign/get_document/5/abc", "/sign/get_document/5/abc"]);
         testUtils.mock.unpatch(DocumentAction);
         testUtils.mock.unpatch(framework);
-    });
-
-    QUnit.test('search more in many2one pointing to sign.template model', async function (assert) {
-        // Addon sign patches the ListController for some models, like 'sign.template'.
-        assert.expect(1);
-
-        this.data['sign.template'].records = this.data['sign.template'].records.concat([
-            {id: 11, display_name: "Template 11"},
-            {id: 12, display_name: "Template 12"},
-            {id: 13, display_name: "Template 13"},
-            {id: 14, display_name: "Template 14"},
-            {id: 15, display_name: "Template 15"},
-            {id: 16, display_name: "Template 16"},
-            {id: 17, display_name: "Template 17"},
-        ]);
-
-        const form = await createView({
-            View: FormView,
-            model: 'partner',
-            data: this.data,
-            arch: '<form><field name="template_id"/></form>',
-            archs: {
-                'sign.template,false,list': '<tree><field name="display_name"/></tree>',
-                'sign.template,false,search': '<search></search>',
-            },
-        });
-
-        await testUtils.fields.many2one.clickOpenDropdown('template_id');
-        await testUtils.fields.many2one.clickItem('template_id', 'Search');
-
-        await testUtils.dom.click($('.modal .o_data_row:first'));
-
-        assert.strictEqual(form.$('.o_field_widget[name=template_id] input').val(), 'some template');
-
-        form.destroy();
     });
 });

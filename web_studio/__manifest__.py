@@ -55,9 +55,6 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/js/approval_component.js',
             'web_studio/static/src/legacy/scss/approval_component.scss',
             'web_studio/static/src/legacy/js/bus.js',
-            'web_studio/static/src/legacy/js/views/renderers/form_renderer.js',
-            'web_studio/static/src/legacy/js/views/renderers/list_renderer_eager.js',
-            'web_studio/static/src/legacy/js/views/controllers/form_controller.js',
             'web_studio/static/src/legacy/studio_legacy_service.js',
             'web_studio/static/src/home_menu/**/*.js',
             'web_studio/static/src/views/**/*.js',
@@ -95,7 +92,6 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/js/views/view_editor_sidebar.js',
             'web_studio/static/src/legacy/js/views/sidebar_safe_fields.js',
             'web_studio/static/src/legacy/js/views/renderers/search_renderer.js',
-            'web_studio/static/src/legacy/js/views/renderers/list_renderer_lazy.js',
             'web_studio/static/src/legacy/js/views/view_editors/**/*.js',
 
             ('include', 'web._assets_helpers'),

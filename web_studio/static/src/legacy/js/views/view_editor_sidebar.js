@@ -6,7 +6,6 @@ import Dialog from "web.Dialog";
 import DomainSelectorDialog from "web.DomainSelectorDialog";
 import Domain from "web.Domain";
 import field_registry from "web.field_registry";
-import fieldRegistryOwl from "web.field_registry_owl";
 import pyUtils from "web.py_utils";
 import relational_fields from "web.relational_fields";
 import session from "web.session";
@@ -242,7 +241,7 @@ export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
             } else {
                 // fieldRegistryMap contains all widgets and components but we want to filter
                 // these widgets based on field types (and description for non debug mode)
-                const fieldRegistryMap = Object.assign({}, field_registry.map, fieldRegistryOwl.map);
+                const fieldRegistryMap = Object.assign({}, field_registry.map);
                 fieldWidgets = _.chain(fieldRegistryMap)
                     .pairs()
                     .filter(function (arr) {
@@ -552,7 +551,7 @@ export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
     _getWidgetKey: function (Widget) {
         var widgetKey = this.state.attrs.widget;
         if (!widgetKey) {
-            const fieldRegistryMap = Object.assign({}, field_registry.map, fieldRegistryOwl.map);
+            const fieldRegistryMap = Object.assign({}, field_registry.map);
             _.each(fieldRegistryMap, function (val, key) {
                 if (val === Widget) {
                     widgetKey = key;

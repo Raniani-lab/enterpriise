@@ -82,7 +82,6 @@ Let your customers follow the signature process easily.
         'web.assets_backend': [
             'sign/static/src/js/backend/*',
             'sign/static/src/js/tours/sign.js',
-            'sign/static/src/js/activity.js',
             'sign/static/src/scss/sign_backend.scss',
             'sign/static/src/xml/*.xml',
             'sign/static/src/components/**/*',

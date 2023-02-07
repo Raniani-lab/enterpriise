@@ -6,8 +6,6 @@ var config = require('web.config');
 var core = require('web.core');
 var utils = require('web.utils');
 var fieldRegistry = require('web.field_registry');
-var fieldRegistryOwl = require('web.field_registry_owl');
-const FieldWrapper = require('web.FieldWrapper');
 var ModelFieldSelector = require('web.ModelFieldSelector');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 const { WidgetAdapterMixin } = require('web.OwlCompatibility');
@@ -137,21 +135,8 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
             quick_create: false, can_create: false}, options)}, options);
 
         var field = directiveRecord.fields[directiveKey];
-        var FieldClass = fieldRegistryOwl.getAny([options.Widget, field.type]);
-        if (FieldClass) {
-            this.fieldSelector[directiveKey] = new FieldWrapper(this, FieldClass, {
-                fieldName: directiveKey,
-                record: directiveRecord,
-                options,
-            });
-            this.fieldSelector[directiveKey].appendTo = function ($el) {
-                return this.mount($el[0]);
-            };
-        } else {
-            FieldClass = fieldRegistry.getAny([options.Widget, field.type]);
-            this.fieldSelector[directiveKey] = new FieldClass(
-                this, directiveKey, directiveRecord, options);
-        }
+        const FieldClass = fieldRegistry.getAny([options.Widget, field.type]);
+        this.fieldSelector[directiveKey] = new FieldClass(this, directiveKey, directiveRecord, options);
     },
     /**
      * Creates a new field selector (for related fields).
@@ -345,10 +330,6 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
             _.each(self.fieldSelector, function (fieldType, directiveKey) {
                 var directiveTarget = self.fieldSelector[directiveKey];
                 var target = e.target;
-                if (directiveTarget instanceof FieldWrapper) {
-                    directiveTarget = directiveTarget.componentRef.comp;
-                    target = e.data.__originalComponent
-                }
                 if (!e.data.forceChange && target !== directiveTarget) {
                     return;
                 }
@@ -1438,21 +1419,11 @@ var TOptions = AbstractEditComponent.extend( {
         var defs = _.map(this.widget.options, function (option) {
             var $option = $options.find('.o_web_studio_toption_option_' + self.widget.key + '_' + option.key);
             var field = self.fieldSelector[self.widget.key + ':' + option.key];
-            if (field instanceof FieldWrapper) {
-                mountedComponents.push(field);
-                if (option.type === "boolean") {
-                    return field.mount($option.find('label')[0], {position: 'first-child'});
-                } else {
-                    return field.mount($option[0]);
-                }
+            if (option.type === "boolean") {
+                return field.prependTo($option.find('label'));
             } else {
-                if (option.type === "boolean") {
-                    return field.prependTo($option.find('label'));
-                } else {
-                    return field.appendTo($option);
-                }
+                return field.appendTo($option);
             }
-
         });
         return Promise.all(defs).then (function () {
             self.$el.find('.o_studio_report_options_container').append($options);

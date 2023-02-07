@@ -43,10 +43,6 @@ Bridge module for project and enterprise
             ('remove', 'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss'), # already in _assets_common_styles
             ('remove', 'web_enterprise/static/src/webclient/navbar/navbar.scss'), # already in _assets_common_styles
 
-            # Allows events to be added to the ListRenderer before it is extended.
-            # for more info, see: https://github.com/odoo/enterprise/pull/30169#pullrequestreview-1064657223
-            ('prepend', 'web_enterprise/static/src/legacy/js/views/list/list_renderer_mobile.js'),
-
             'web_enterprise/static/src/core/**/*',
             'web_enterprise/static/src/views/kanban/*',
             'web_enterprise/static/src/views/list/*',

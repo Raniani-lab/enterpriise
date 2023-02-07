@@ -166,7 +166,7 @@ Wysiwyg.include({
                 }
             }, {
                 category: _t('Knowledge'),
-                name: _t('Outline'),
+                name: _t('Article Structure'),
                 priority: 60,
                 description: _t('Show all nested articles'),
                 fontawesome: 'fa-list',

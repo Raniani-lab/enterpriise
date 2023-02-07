@@ -74,6 +74,7 @@ msgstr ""
 
 #. module: sale_temporal
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Day"
 msgstr ""
@@ -107,6 +108,7 @@ msgstr ""
 
 #. module: sale_temporal
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Hour"
 msgstr ""
@@ -166,6 +168,7 @@ msgstr ""
 
 #. module: sale_temporal
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Month"
 msgstr ""
@@ -316,6 +319,7 @@ msgstr ""
 
 #. module: sale_temporal
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Week"
 msgstr ""
@@ -327,6 +331,7 @@ msgstr ""
 
 #. module: sale_temporal
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Year"
 msgstr ""

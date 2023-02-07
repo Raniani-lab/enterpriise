@@ -15,10 +15,14 @@ class AccountMoveReversal(models.TransientModel):
                 domain,
                 [('order_line.product_id', '=', ticket.product_id.id)]
             ])
-        if ticket.sale_order_id:
+        return domain
+
+    def _get_default_moves_domain(self, ticket):
+        domain = super()._get_default_moves_domain(ticket)
+        if ticket.product_id:
             domain = expression.AND([
                 domain,
-                [('id', '=', ticket.sale_order_id.id)]
+                [('line_ids.product_id', '=', ticket.product_id.id)]
             ])
         return domain
 

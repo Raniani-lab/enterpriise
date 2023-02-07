@@ -10,7 +10,11 @@ class AccountMoveReversal(models.TransientModel):
 
     @api.model
     def _get_default_so_domain(self, ticket):
-        return [('partner_id', '=', ticket.partner_id.id), ('state', '=', 'sale')]
+        return [('partner_id', '=', ticket.partner_id.id), ('state', '=', 'sale'), ('invoice_ids.state', '=', 'posted'), ('invoice_ids.move_type', '=', 'out_invoice')]
+
+    @api.model
+    def _get_default_moves_domain(self, ticket):
+        return [('state', '=', 'posted'), ('move_type', '=', 'out_invoice'), ('reversal_move_id', '=', False)]
 
     @api.model
     def default_get(self, fields):
@@ -22,10 +26,10 @@ class AccountMoveReversal(models.TransientModel):
             # set default Invoice
             ticket = self.env['helpdesk.ticket'].browse(ticket_id)
             domain = self._get_default_so_domain(ticket)
-            last_so = self.env['sale.order'].search(domain, limit=1)
+            last_so = self.env['sale.order'].search(domain, limit=1, order='date_order desc')
             if last_so:
                 result['helpdesk_sale_order_id'] = last_so.id
-                moves = last_so.invoice_ids.filtered(lambda inv: inv.state == 'posted' and inv.move_type == 'out_invoice' and not inv.reversal_move_id)
+                moves = last_so.invoice_ids.filtered_domain(self._get_default_moves_domain(ticket))
                 if moves:
                     result['move_ids'] = [Command.set(moves.ids)]
         return result

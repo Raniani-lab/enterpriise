@@ -30,41 +30,25 @@
     </template>
 
     <template id="filter_info_template">
-        <div class="row print_only" style='margin-top: 20px; margin-bottom: 10px;'>
-            <div class="col-4">
+        <div class="row">
+            <div>
                 <t t-if="options.get('date') and options['date'].get('string')"><t t-out="options['date']['string']"/></t>
-                <t t-if="not options.get('multi_company')">
-                    <br/><t t-out="report_company_name"/>
-                </t>
-                <t t-if="options.get('multi_company')">
-                    <br/>Companies:
-                    <t t-set="company_value">All</t>
-                    <t t-foreach="options['multi_company']" t-as="c">
-                        <t t-set="company_value" t-value="''"/>
-                        <t t-out="c.get('name')"/>
-                    </t>
-                    <t t-out="company_value"/>
-                </t>
-            </div>
-            <div class="col-4">
                 <div class="col-12" name="filter_info_template_journals">
                     <t t-if="options.get('journals')">
                         Journals:
-                        <t t-set="journal_value">All</t>
-                        <t t-foreach="options['journals']" t-as="j">
-                            <t t-if="j.get('selected') == True">
-                                <t t-set="journal_value" t-value="''"/>
-                                <t t-out="j.get('code')"/>
-                            </t>
+                        <t t-set="journal_value" t-value="[journal.get('title') for journal in options['journals'] if journal.get('selected')]"/>
+                        <t t-if="len(journal_value) == 0">All</t>
+                        <t t-else="">
+                            <t t-out="', '.join(journal_value)"/>
                         </t>
-                        <t t-out="journal_value"/>
                     </t>
                 </div>
                 <div class="col-12">
                     <t t-if="options.get('analytic_accounts') != None">
-                        Analytic Accounts:
+                        Analytic Filter:
                         <t t-set="analytic_account_value">All</t>
                         <t t-foreach="options['selected_analytic_account_names']" t-as="analytic_account_name">
+                            <t t-if="not analytic_account_name_first">, </t>
                             <t t-set="analytic_account_value" t-value="''"/>
                             <t t-out="analytic_account_name"/>
                         </t>
@@ -76,6 +60,7 @@
                         Analytic Accounts:
                         <t t-set="analytic_account_groupby_value">All</t>
                         <t t-foreach="options['selected_analytic_account_groupby_names']" t-as="analytic_account_groupby_name">
+                            <t t-if="not analytic_account_groupby_name_first">, </t>
                             <t t-set="analytic_account_groupby_value" t-value="''"/>
                             <t t-out="analytic_account_groupby_name"/>
                         </t>
@@ -87,6 +72,7 @@
                         Analytic Plans:
                         <t t-set="analytic_plan_groupby_value">All</t>
                         <t t-foreach="options['selected_analytic_plan_groupby_names']" t-as="analytic_plan_groupby_name">
+                            <t t-if="not analytic_plan_groupby_name_first">, </t>
                             <t t-set="analytic_plan_groupby_value" t-value="''"/>
                             <t t-out="analytic_plan_groupby_name"/>
                         </t>
@@ -98,6 +84,7 @@
                         Partners:
                         <t t-set="res_partner_value">All</t>
                         <t t-foreach="options['selected_partner_ids']" t-as="partner_name">
+                            <t t-if="not partner_name_first">, </t>
                             <t t-set="res_partner_value" t-value="''"/>
                             <t t-out="partner_name"/>
                         </t>
@@ -109,6 +96,7 @@
                         Partner Categories:
                         <t t-set="res_partner_category_value">All</t>
                         <t t-foreach="options['selected_partner_categories']" t-as="partner_category_name">
+                            <t t-if="not partner_category_name_first">, </t>
                             <t t-set="res_partner_category_value" t-value="''"/>
                             <t t-out="partner_category_name"/>
                         </t>
@@ -368,8 +356,8 @@
                 </div>
             </div>
             <div class="o_account_reports_page o_account_reports_no_print">
-                <div class="o_account_reports_header">
-                   <div class="print_only">
+                <div class="o_account_reports_header print_only">
+                    <div>
                         <h2>
                             <strong>
                                 <t t-if="report.filter_show_draft and options['all_entries']">[Draft]</t>
@@ -377,7 +365,29 @@
                             </strong>
                         </h2>
                     </div>
-                   <t t-call="account_reports.filter_info_template"/>
+                    <div class="row">
+                        <div class="col-8">
+                            <t t-if="not options.get('multi_company')">
+                                <br/><t t-out="report_company_name"/>
+                            </t>
+                            <t t-else="">
+                                <br/>Companies:
+                                <t t-set="company_value">All</t>
+                                <t t-foreach="options['multi_company']" t-as="c">
+                                    <t t-set="company_value" t-value="''"/>
+                                    <t t-out="c.get('name')"/>
+                                </t>
+                                <t t-out="company_value"/>
+                            </t>
+                            <address class="mb-0" t-field="env.company.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
+                            <t t-if="env.company.vat">
+                                VAT: <t t-out="env.company.vat"/>
+                            </t>
+                        </div>
+                        <div class="col-4">
+                            <t t-call="account_reports.filter_info_template"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="o_account_reports_summary"/>
                 <div class="table-responsive">

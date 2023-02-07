@@ -75,7 +75,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
         cls.company_data_2['default_journal_bank'].active = False
 
         # Deactive all currencies to ensure group_multi_currency is disabled.
-        cls.env['res.currency'].search([('name', '!=', 'USD')]).active = False
+        cls.env['res.currency'].search([('name', '!=', 'USD')]).with_context(force_deactivate=True).active = False
 
         cls.report = cls.env.ref('account_reports.general_ledger_report')
 

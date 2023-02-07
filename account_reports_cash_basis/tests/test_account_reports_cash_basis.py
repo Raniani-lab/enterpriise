@@ -67,7 +67,7 @@ class TestAccountReports(TestAccountReportsCommon):
 
     def test_general_ledger_cash_basis(self):
         # Check the cash basis option.
-        self.env['res.currency'].search([('name', '!=', 'USD')]).active = False
+        self.env['res.currency'].search([('name', '!=', 'USD')]).with_context(force_deactivate=True).active = False
         report = self.env.ref('account_reports.general_ledger_report')
         options = self._generate_options(report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
         options['report_cash_basis'] = True
@@ -160,7 +160,7 @@ class TestAccountReports(TestAccountReportsCommon):
         )
 
     def test_cash_basis_payment_in_the_past(self):
-        self.env['res.currency'].search([('name', '!=', 'USD')]).active = False
+        self.env['res.currency'].search([('name', '!=', 'USD')]).with_context(force_deactivate=True).active = False
 
         payment_date = fields.Date.from_string('2010-01-01')
         invoice_date = fields.Date.from_string('2011-01-01')

@@ -497,6 +497,11 @@ class FecImportWizard(models.TransientModel):
             line_data["debit"] = debit
             balance_data["balance"] = currency.round(balance_data["balance"] + balance)
 
+            # Montantdevise can be positive while the line is credited
+            if currency_name in cache["res.currency"] and balance > 0:
+                line_data["amount_currency"] = - abs(line_data["amount_currency"])
+                line_data["amount_residual_currency"] = - abs(line_data["amount_residual_currency"])
+
             # Append the move_line data to the move
             data["line_ids"].append(fields.Command.create(line_data))
 

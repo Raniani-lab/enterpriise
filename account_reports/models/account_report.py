@@ -935,6 +935,7 @@ class AccountReport(models.Model):
             'totals': [0.0 for column in options['columns']],
             'child_groups': self.env['account.group'],
         })
+        res_model = None
 
         for line in lines:
             markup, res_model, model_id = self._parse_line_id(line['id'])[-1]

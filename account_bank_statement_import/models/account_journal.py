@@ -243,7 +243,7 @@ class AccountJournal(models.Model):
                     filtered_st_lines.append(line_vals)
                 else:
                     ignored_statement_lines_import_ids.append(line_vals['unique_import_id'])
-                    if 'balance_start' in st_vals:
+                    if st_vals.get('balance_start') is not None:
                         st_vals['balance_start'] += float(line_vals['amount'])
 
             if len(filtered_st_lines) > 0:

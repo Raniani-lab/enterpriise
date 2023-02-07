@@ -139,7 +139,7 @@ class DeliverCarrier(models.Model):
                 try:
                     response = requests_session.get(label_url, timeout=30)
                     response.raise_for_status()
-                    labels.append(('LabelEasypost-%s.%s' % (track_number, self.easypost_label_file_type), response.content))
+                    labels.append(('%s-%s.%s' % (self._get_delivery_label_prefix(), track_number, self.easypost_label_file_type), response.content))
                 except Exception:
                     logmessage += Markup('<li><a href="%s">%s</a></li>') % (label_url, label_url)
 
@@ -153,7 +153,7 @@ class DeliverCarrier(models.Model):
                 try:
                     response = requests_session.get(form_url, timeout=30)
                     response.raise_for_status()
-                    forms.append(('%s-%s' % (form_type, form_url.split('/')[-1]), response.content))
+                    forms.append(('%s-%s-%s' % (self._get_delivery_doc_prefix(), form_type, form_url.split('/')[-1]), response.content))
                 except Exception:
                     logmessage += Markup('<li><a href="%s">%s</a></li>') % (form_url, form_url)
 

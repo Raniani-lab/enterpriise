@@ -95,7 +95,7 @@ class ProviderBpost(models.Model):
                 self._tracking_link_element(code, picking.partner_id.zip)
                 for code in shipping['main_label']['tracking_codes'])
             logmessage = _("Shipment created into bpost") + Markup("<br/> <b>") + _("Tracking Links") + Markup("</b> <br/>") + tracking_links
-            bpost_labels = [('Labels-bpost.%s' % self.bpost_label_format, shipping['main_label']['label'])]
+            bpost_labels = [('%s.%s' % (self._get_delivery_label_prefix(), self.bpost_label_format), shipping['main_label']['label'])]
             if picking.sale_id:
                 for pick in picking.sale_id.picking_ids:
                     pick.message_post(body=logmessage, attachments=bpost_labels)

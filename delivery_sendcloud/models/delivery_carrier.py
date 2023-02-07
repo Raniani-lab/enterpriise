@@ -214,8 +214,11 @@ class DeliveryCarrier(models.Model):
             # so we limit the loop to 7 docs
             for doc in parcel['documents'][:7]:
                 doc_content = sendcloud.get_document(doc['link'])
-                doc_type = doc['type'].capitalize()
-                doc_title = f"Sendcloud {doc_type}-{parcel['id']}.pdf"
+                if doc['type'].lower() == 'label':
+                    doc_title = f"{self._get_delivery_label_prefix()}-{parcel['id']}.pdf"
+                else:
+                    doc_type = doc['type'].capitalize()
+                    doc_title = f"{self._get_delivery_doc_prefix()}-{doc_type}-{parcel['id']}.pdf"
                 docs.append({
                     'name': doc_title,
                     'type': 'binary',

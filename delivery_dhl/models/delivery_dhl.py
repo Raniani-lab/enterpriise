@@ -246,8 +246,8 @@ class Providerdhl(models.Model):
             dhl_response = srm._process_shipment(shipment_request)
             traking_number = dhl_response.AirwayBillNumber
             logmessage = Markup(_("Shipment created into DHL <br/> <b>Tracking Number: </b>%s")) % (traking_number)
-            dhl_labels = [('LabelDHL-%s.%s' % (traking_number, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)]
-            dhl_cmi = [('DocumentDHL-%s.%s' % (mlabel.DocName, mlabel.DocFormat), mlabel.DocImageVal) for mlabel in dhl_response.LabelImage[0].MultiLabels.MultiLabel] if dhl_response.LabelImage[0].MultiLabels else None
+            dhl_labels = [('%s-%s.%s' % (self._get_delivery_label_prefix(), traking_number, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)]
+            dhl_cmi = [('%s-%s.%s' % (self._get_delivery_doc_prefix(), mlabel.DocName, mlabel.DocFormat), mlabel.DocImageVal) for mlabel in dhl_response.LabelImage[0].MultiLabels.MultiLabel] if dhl_response.LabelImage[0].MultiLabels else None
             lognote_pickings = picking.sale_id.picking_ids if picking.sale_id else picking
             for pick in lognote_pickings:
                 pick.message_post(body=logmessage, attachments=dhl_labels)
@@ -297,7 +297,7 @@ class Providerdhl(models.Model):
         traking_number = dhl_response.AirwayBillNumber
         logmessage = Markup(_("Shipment created into DHL <br/> <b>Tracking Number: </b>%s")) % (traking_number)
         dhl_labels = [('%s-%s-%s.%s' % (self.get_return_label_prefix(), traking_number, 1, self.dhl_label_image_format), dhl_response.LabelImage[0].OutputImage)]
-        dhl_cmi = [('ReturnDocumentDHL-%s.%s' % (mlabel.DocName, mlabel.DocFormat), mlabel.DocImageVal) for mlabel in dhl_response.LabelImage[0].MultiLabels.MultiLabel] if dhl_response.LabelImage[0].MultiLabels else None
+        dhl_cmi = [('%s-Return-%s.%s' % (self._get_delivery_doc_prefix(), mlabel.DocName, mlabel.DocFormat), mlabel.DocImageVal) for mlabel in dhl_response.LabelImage[0].MultiLabels.MultiLabel] if dhl_response.LabelImage[0].MultiLabels else None
         lognote_pickings = picking.sale_id.picking_ids if picking.sale_id else picking
         for pick in lognote_pickings:
             pick.message_post(body=logmessage, attachments=dhl_labels)

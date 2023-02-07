@@ -202,11 +202,11 @@ class ProviderUPS(models.Model):
                          Markup("<br/><b>") + _("Packages:") + Markup("</b> ") + \
                          ','.join([p.name for p in packages if p.name])
             if self.ups_label_file_type != 'GIF':
-                attachments = [('LabelUPS-%s.%s' % (pl[0], self.ups_label_file_type), pl[1]) for pl in package_labels]
+                attachments = [('%s-%s.%s' % (self._get_delivery_label_prefix(), pl[0], self.ups_label_file_type), pl[1]) for pl in package_labels]
             if self.ups_label_file_type == 'GIF':
-                attachments = [('LabelUPS.pdf', pdf.merge_pdf([pl[1] for pl in package_labels]))]
+                attachments = [('%s.pdf' % (self._get_delivery_label_prefix()), pdf.merge_pdf([pl[1] for pl in package_labels]))]
             if 'invoice_binary_data' in result:
-                attachments.append(('UPSCommercialInvoice.pdf', result['invoice_binary_data']))
+                attachments.append(('%s-CommercialInvoice.pdf' % (self._get_delivery_doc_prefix()), result['invoice_binary_data']))
             if picking.sale_id:
                 for pick in picking.sale_id.picking_ids:
                     pick.message_post(body=logmessage, attachments=attachments)

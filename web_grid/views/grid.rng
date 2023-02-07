@@ -8,13 +8,7 @@
             <ref name="acl"/>
             <attribute name="string"/>
             <optional>
-                <attribute name="adjustment">
-                    <choice>
-                        <value>object</value>
-                        <value>action</value>
-                    </choice>
-                </attribute>
-                <attribute name="adjust_name"/>
+                <attribute name="editable"/>
             </optional>
             <optional>
                 <attribute name="class"/>
@@ -36,6 +30,21 @@
             </optional>
             <optional>
                 <attribute name="barchart_total"/>
+            </optional>
+            <optional>
+                <attribute name="action"/>
+                <attribute name="type">
+                    <choice>
+                        <value>object</value>
+                        <value>action</value>
+                    </choice>
+                </attribute>
+            </optional>
+            <optional>
+                <attribute name="form_view_id"/>
+            </optional>
+            <optional>
+                <attribute name="sample"/>
             </optional>
             <interleave>
                 <oneOrMore><ref name="field"/></oneOrMore>
@@ -74,17 +83,23 @@
                             <value>1</value>
                         </attribute>
                     </optional>
+                    <optional>
+                        <attribute name="widget"></attribute>
+                    </optional>
+                    <optional>
+                        <attribute name="invisible"/>
+                    </optional>
                 </group>
-                <!-- TODO: column anchor, range & prev/next? -->
                 <group>
                     <attribute name="type"><value>col</value></attribute>
+                    <optional><attribute name="operator"/></optional>
                     <zeroOrMore>
                         <element name="range">
                             <attribute name="name"/>
                             <attribute name="string"/>
                             <attribute name="span"/>
                             <attribute name="step"/>
-                            <optional><attribute name="invisible"/></optional>
+                            <optional><attribute name="default"/></optional>
                             <optional><attribute name="hotkey"/></optional>
                         </element>
                     </zeroOrMore>
@@ -100,9 +115,11 @@
                     <optional>
                         <attribute name="string"/>
                     </optional>
+                    <optional><attribute name="operator"/></optional>
                 </group>
                 <group>
                     <attribute name="type"><value>readonly</value></attribute>
+                    <optional><attribute name="operator"/></optional>
                 </group>
             </choice>
             <!-- other garbage -->
@@ -127,6 +144,7 @@
             <optional><attribute name="data-hotkey"/></optional>
             <!-- Python dict literal -->
             <optional><attribute name="context"/></optional>
+            <optional><attribute name="invisible"/></optional>
         </element>
     </define>
     <define name="acl">

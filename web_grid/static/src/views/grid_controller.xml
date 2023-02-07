@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates>
+    <t t-name="web_grid.Buttons" owl="1">
+        <div class="d-flex o_grid_buttons">
+            <div class="me-2" t-if="props.archInfo.activeActions.create and (!props.archInfo.createInline or !model.hasData() and displayNoContent)">
+                <button class="btn btn-primary o_grid_button_add"
+                        type="button"
+                        t-on-click="() => this.createRecord()">
+                    Add a Line
+                </button>
+            </div>
+            <t t-call="web_grid.CustomButtons" t-if="props.archInfo.buttons.length"/>
+            <t t-call="web_grid.NavigationButtons"/>
+            <ViewScaleSelector
+                t-if="rangesArray.length"
+                scales="props.archInfo.ranges"
+                currentScale="state.activeRangeName"
+                setScale.bind="onRangeClick"
+            />
+        </div>
+    </t>
+    <t t-name="web_grid.CustomButtons" owl="1">
+        <div class="o_grid_custom_buttons me-2">
+            <t t-foreach="props.archInfo.buttons" t-as="button" t-key="button.id">
+                <ViewButton
+                    className="button.className"
+                    clickParams="button.clickParams"
+                    defaultRank="button.defaultRank"
+                    icon="button.icon"
+                    string="button.string"
+                    title="button.title"
+                    record="model.record"
+                />
+            </t>
+        </div>
+    </t>
+    <t t-name="web_grid.NavigationButtons" owl="1">
+        <div class="o_grid_navigation_buttons" t-if="model.columnFieldIsDate">
+            <button class="btn btn-outline-primary me-2"
+                    data-hotkey="t"
+                    type="button"
+                    t-on-click="onTodayButtonClick"
+            >
+                Today
+            </button>
+            <button class="btn btn-primary me-2"
+                    type="button"
+                    t-on-click="onPreviousButtonClick"
+                    data-hotkey="p"
+            >
+                <span aria-label="Previous" class="fa fa-arrow-left" role="img" title="Previous"/>
+            </button>
+            <button type="button"
+                    class="btn btn-primary"
+                    t-on-click="onNextButtonClick"
+                    data-hotkey="n"
+            >
+                <span aria-label="Next" class="fa fa-arrow-right" role="img" title="Next"/>
+            </button>
+        </div>
+    </t>
+    <t t-name="web_grid.RangeButtons" owl="1">
+        <div t-if="rangesArray.length > 1" class="o_grid_range_buttons ps-2">
+            <t t-if="isMobile">
+                <Dropdown
+                    togglerClass="'btn btn-link'"
+                >
+                    <t t-set-slot="toggler">
+                        <t t-foreach="rangesArray" t-as="range" t-key="range_index">
+                            <span t-if="range.name === state.activeRangeName" t-out="range.label"></span>
+                        </t>
+                        <i class="fa fa-caret-down"/>
+                    </t>
+                    <t t-foreach="rangesArray" t-as="range" t-key="range_index">
+                        <DropdownItem onSelected="() => this.onRangeClick(range.name)">
+                            <t t-esc="range.label"/>
+                        </DropdownItem>
+                    </t>
+                </Dropdown>
+            </t>
+            <t t-else="">
+                <t t-foreach="rangesArray" t-as="range" t-key="range_index">
+                    <button class="btn btn-light"
+                        type="button"
+                        t-att-class="range.name === state.activeRangeName ? 'active' : ''"
+                        t-att-data-hotkey="range.hotkey"
+                        t-on-click="() => this.onRangeClick(range.name)"
+                    >
+                        <t t-esc="range.label"/>
+                    </button>
+                </t>
+            </t>
+        </div>
+    </t>
+    <t t-name="web_grid.GridView" owl="1">
+        <div t-attf-class="o_grid_view {{ isMobile ? 'o_action_delegate_scroll' : '' }} {{props.className}}" t-ref="root">
+            <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''" display="props.display">
+                <t t-set-slot="layout-buttons">
+                    <t t-call="{{ props.buttonTemplate }}"/>
+                </t>
+                <t t-set-slot="default" t-slot-scope="layout">
+                    <t t-if="displayNoContent">
+                        <t t-call="web.NoContentHelper"/>
+                    </t>
+                    <t t-if="hasDisplayableData">
+                        <t t-component="props.Renderer"
+                           options="options"
+                           model="model"
+                           sections="model.sectionsArray"
+                           columns="model.columnsArray"
+                           rows="model.itemsArray"
+                           sectionField="model.sectionField"
+                           rowFields="model.rowFields"
+                           measureField="props.archInfo.measureField"
+                           isEditable="isEditable"
+                           createInline="props.archInfo.activeActions.create and props.archInfo.createInline and !displayNoContent"
+                           createRecord.bind="createRecord"
+                           widgetPerFieldName="props.archInfo.widgetPerFieldName"
+                           openAction="props.archInfo.openAction"
+                           contentRef="layout.contentRef"
+                        />
+                    </t>
+                </t>
+            </Layout>
+        </div>
+    </t>
+</templates>

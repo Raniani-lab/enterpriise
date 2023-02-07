@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 odoo.define('web_grid.grid_mobile_tests', function (require) {
 "use strict";
 

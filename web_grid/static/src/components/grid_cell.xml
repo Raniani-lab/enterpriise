@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates>
+    <t t-name="web_grid.Cell" owl="1">
+        <div t-att-class="{
+                'o_grid_cell position-relative d-flex justify-content-center align-items-center w-100 h-100': true,
+                o_field_cursor_disabled: !isEditable(),
+            }"
+            t-on-click.synthetic="() => this.onCellClick()"
+        >
+            <button class="o_grid_search_btn btn btn-sm position-absolute start-0 px-1"
+                    t-on-click.synthetic="() => this.magnifierGlassHook.onMagnifierGlassClick()"
+            >
+                <i class="fa fa-search"/>
+            </button>
+            <div class="d-flex w-100 h-100 justify-content-center align-items-center">
+                <input t-if="state.edit"
+                       inputmode="numeric"
+                       type="text"
+                       class="o_input"
+                       t-ref="numpadDecimal"
+                />
+                <span t-else="" t-out="formattedValue"/>
+            </div>
+        </div>
+    </t>
+</templates>

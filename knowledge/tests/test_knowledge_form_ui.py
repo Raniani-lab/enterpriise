@@ -101,6 +101,23 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         """
         self.start_tour('/web', 'knowledge_cover_selector_tour', login='admin')
 
+    def test_knowledge_readonly_favorite(self):
+        """Make sure that a user with read access on an article can add the
+        article to its favorites.
+        """
+        article = self.env['knowledge.article'].create({
+            'name': 'Readonly Article',
+            'internal_permission': 'read',
+            'article_member_ids': [(0, 0, {
+                'partner_id': self.env.ref('base.user_admin').id,
+                'permission': 'write',
+            })]
+        })
+
+        self.start_tour('/knowledge/article/%s' % article.id, 'knowledge_readonly_favorite_tour', login='demo', step_delay=100)
+
+        self.assertTrue(article.with_user(self.env.ref('base.user_demo').id).is_user_favorite)
+
 @tagged('external', 'post_install', '-at_install')
 @skipIf(not os.getenv("UNSPLASH_APP_ID") or not os.getenv("UNSPLASH_ACCESS_KEY"), "no unsplash credentials")
 class TestKnowledgeUIWithUnsplash(TestKnowledgeUICommon):

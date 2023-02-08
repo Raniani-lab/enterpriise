@@ -161,8 +161,13 @@ class HrExpense(models.Model):
 
     def action_submit_expenses(self, **kwargs):
         res = super(HrExpense, self).action_submit_expenses(**kwargs)
-        self.extract_state = 'to_validate'
-        self.env.ref('hr_expense_extract.ir_cron_ocr_validate')._trigger()
+
+        expenses_to_validate = self.filtered(lambda exp: exp.extract_state == 'waiting_validation')
+        expenses_to_validate.extract_state = 'to_validate'
+
+        if expenses_to_validate:
+            self.env.ref('hr_expense_extract.ir_cron_ocr_validate')._trigger()
+
         return res
 
     @api.model

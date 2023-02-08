@@ -432,9 +432,14 @@ class AccountMove(models.Model):
         # OVERRIDE
         # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
         posted = super()._post(soft)
-        self.extract_state = 'to_validate'
-        ocr_trigger_datetime = fields.Datetime.now() + relativedelta(minutes=self.env.context.get('ocr_trigger_delta', 0))
-        self.env.ref('account_invoice_extract.ir_cron_ocr_validate')._trigger(at=ocr_trigger_datetime)
+
+        moves_to_validate = posted.filtered(lambda m: m.extract_state == 'waiting_validation')
+        moves_to_validate.extract_state = 'to_validate'
+
+        if moves_to_validate:
+            ocr_trigger_datetime = fields.Datetime.now() + relativedelta(minutes=self.env.context.get('ocr_trigger_delta', 0))
+            self.env.ref('account_invoice_extract.ir_cron_ocr_validate')._trigger(at=ocr_trigger_datetime)
+
         return posted
 
     def get_boxes(self):

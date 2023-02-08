@@ -159,8 +159,11 @@ class HrApplicant(models.Model):
         if not new_stage.hired_stage:
             return res
 
-        self.extract_state = 'to_validate'
-        self.env.ref('hr_recruitment_extract.ir_cron_ocr_validate')._trigger()
+        applicants_to_validate = self.filtered(lambda app: app.extract_state == 'waiting_validation')
+        applicants_to_validate.extract_state = 'to_validate'
+
+        if applicants_to_validate:
+            self.env.ref('hr_recruitment_extract.ir_cron_ocr_validate')._trigger()
 
         return res
 

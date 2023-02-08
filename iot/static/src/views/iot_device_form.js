@@ -8,6 +8,7 @@ import { DeviceController } from "../device_controller";
 
 class IoTDeviceController extends formView.Controller {
     setup() {
+        super.setup();
         this.iotLongpollingService = useService("iot_longpolling");
         this.dialogService = useService("dialog");
     }

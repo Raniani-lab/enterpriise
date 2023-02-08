@@ -5,7 +5,7 @@ from markupsafe import Markup
 from odoo import SUPERUSER_ID, api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.fields import Command
-from odoo.tools import float_compare, float_round, is_html_empty
+from odoo.tools import float_compare, float_round, is_html_empty, float_is_zero
 
 
 class TestType(models.Model):
@@ -450,6 +450,13 @@ class QualityCheck(models.Model):
 
             # Write the lot and qty to the move line
             if self.move_line_id:
+                # In case of a tracked component, another SML may already exists for
+                # the reservation of self.lot_id, so let's try to find and use it
+                if self.move_line_id.product_id.tracking != 'none':
+                    self.move_line_id = next((sml
+                                              for sml in self.move_line_id.move_id.move_line_ids
+                                              if sml.lot_id == self.lot_id and float_is_zero(sml.qty_done, precision_rounding=sml.product_uom_id.rounding)),
+                                             self.move_line_id)
                 rounding = self.move_line_id.product_uom_id.rounding
                 if float_compare(self.qty_done, self.move_line_id.reserved_uom_qty, precision_rounding=rounding) >= 0:
                     self.move_line_id.write({

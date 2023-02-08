@@ -363,6 +363,10 @@ class HrContractSalary(main.HrContractSalary):
         for field_to_copy in fields_to_copy:
             if field_to_copy in contract:
                 res[field_to_copy] = contract[field_to_copy]
+        field_ids_to_copy = ['time_credit_type_id']
+        for field_id_to_copy in field_ids_to_copy:
+            if field_id_to_copy in contract:
+                res[field_id_to_copy] = contract[field_id_to_copy].id
         res['has_hospital_insurance'] = float(advantages['has_hospital_insurance_radio']) == 1.0 if 'has_hospital_insurance_radio' in advantages else False
         res['l10n_be_has_ambulatory_insurance'] = float(advantages['l10n_be_has_ambulatory_insurance_radio']) == 1.0 if 'l10n_be_has_ambulatory_insurance_radio' in advantages else False
         res['l10n_be_canteen_cost'] = advantages['l10n_be_canteen_cost']

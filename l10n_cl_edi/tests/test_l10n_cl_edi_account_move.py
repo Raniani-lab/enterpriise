@@ -11,7 +11,7 @@ from .common import TestL10nClEdiCommon, _check_with_xsd_patch
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
 @patch('odoo.tools.xml_utils._check_with_xsd', _check_with_xsd_patch)
-class TestL10nClDte(TestL10nClEdiCommon):
+class TestL10nClDteTestL10nClDte(TestL10nClEdiCommon):
     """
     Summary of the document types to test:
         - 33:
@@ -30,7 +30,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
     @freeze_time('2019-10-24T20:00:00', tz_offset=3)
     def test_l10n_cl_dte_33(self):
         self.tax_19 = self.env['account.tax'].search([
-            ('name', '=', 'IVA 19% Venta'),
+            ('name', '=', 'VAT 19% Sale'),
             ('company_id', '=', self.company_data['company'].id)])
         invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create({
             'partner_id': self.partner_sii.id,
@@ -74,7 +74,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
     @freeze_time('2019-10-24T20:00:00', tz_offset=3)
     def test_l10n_cl_dte_33_with_reference_ids(self):
         self.tax_19 = self.env['account.tax'].search([
-            ('name', '=', 'IVA 19% Venta'),
+            ('name', '=', 'VAT 19% Sale'),
             ('company_id', '=', self.company_data['company'].id)])
         invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create({
             'partner_id': self.partner_sii.id,
@@ -133,13 +133,13 @@ class TestL10nClDte(TestL10nClEdiCommon):
     @freeze_time('2019-10-24T20:00:00', tz_offset=3)
     def test_l10n_cl_dte_33_withholding_taxes(self):
         self.tax_19 = self.env['account.tax'].search([
-            ('name', '=', 'IVA 19% Venta'),
+            ('name', '=', 'VAT 19% Sale'),
             ('company_id', '=', self.company_data['company'].id)])
         self.tax_205 = self.env['account.tax'].search([
-            ('name', '=', 'Vinos (Ventas)'),
+            ('name', '=', 'Wines (Sales)'),
             ('company_id', '=', self.company_data['company'].id)])
         self.tax_100 = self.env['account.tax'].search([
-            ('name', '=', 'Beb. Analc. 10% (Ventas)'),
+            ('name', '=', 'Beb. Analc. 10% (Sales)'),
             ('company_id', '=', self.company_data['company'].id)])
 
         invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create({
@@ -219,7 +219,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
     @freeze_time('2019-10-24T20:00:00', tz_offset=3)
     def test_l10n_cl_dte_33_with_discounts(self):
         self.tax_19 = self.env['account.tax'].search([
-            ('name', '=', 'IVA 19% Venta'),
+            ('name', '=', 'VAT 19% Sale'),
             ('company_id', '=', self.company_data['company'].id)])
         invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create({
             'partner_id': self.partner_sii.id,
@@ -318,7 +318,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
     @freeze_time('2019-10-24T20:00:00', tz_offset=3)
     def test_l10n_cl_dte_56(self):
         self.tax_19 = self.env['account.tax'].search([
-            ('name', '=', 'IVA 19% Venta'),
+            ('name', '=', 'VAT 19% Sale'),
             ('company_id', '=', self.company_data['company'].id)])
 
         invoice = self.env['account.move'].with_context(default_move_type='out_invoice').create({

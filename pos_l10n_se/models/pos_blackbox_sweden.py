@@ -10,15 +10,6 @@ from dateutil import parser
 class PosSession(models.Model):
     _inherit = 'pos.session'
 
-    def get_total_discount(self):
-        amount = 0
-        for line in self.env['pos.order.line'].search([('order_id', 'in', self.order_ids.ids), ('discount', '>', 0)]):
-            normal_price = line.qty * line.price_unit
-            normal_price = normal_price + (normal_price / 100 * line.tax_ids.amount)
-            amount += normal_price - line.price_subtotal_incl
-
-        return amount
-
     def _loader_params_product_product(self):
         result = super()._loader_params_product_product()
         result['search_params']['fields'].append('type')
@@ -29,18 +20,6 @@ class PosSession(models.Model):
         result['search_params']['fields'].append('identification_letter')
         return result
 
-
-class PosDailyReport(models.TransientModel):
-    _name = 'pos.daily.reports.wizard'
-    _description = 'Point of Sale Daily Report'
-
-    pos_session_id = fields.Many2one('pos.session')
-
-    def generate_report(self):
-        data = {'date_start': False, 'date_stop': False, 'config_ids': self.pos_session_id.config_id.ids, 'session_ids': self.pos_session_id.ids}
-        return self.env.ref('pos_l10n_se.pos_daily_report').report_action([], data=data)
-
-
 class ReportSaleDetails(models.AbstractModel):
     _inherit = 'report.point_of_sale.report_saledetails'
 
@@ -48,19 +27,15 @@ class ReportSaleDetails(models.AbstractModel):
     def get_sale_details(self, date_start=False, date_stop=False, config_ids=False, session_ids=False):
         data = super(ReportSaleDetails, self).get_sale_details(date_start, date_stop, config_ids, session_ids)
         if session_ids:
-            session = self.env['pos.session'].search([('id', 'in', session_ids)])
-            PF_list = self.env['pos.order_pro_forma'].search([('session_id', "=", session.id)])
+            PF_list = self.env['pos.order_pro_forma'].search([('session_id', "in", session_ids)])
 
             amount_PF = 0
             for order in PF_list:
                 amount_PF += order.amount_total
 
             report_update = {
-                'state': session.state,
                 'PF_number': len(PF_list),
                 'PF_Amount': amount_PF,
-                'Discount_number': len(session.order_ids.filtered(lambda o: o.lines.filtered(lambda l: l.discount > 0))),
-                'Discount_amount': session.get_total_discount()
             }
             data.update(report_update)
         return data

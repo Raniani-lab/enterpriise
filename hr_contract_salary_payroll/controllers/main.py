@@ -14,6 +14,7 @@ class HrContractSalary(main.HrContractSalary):
     def _get_new_contract_values(self, contract, employee, advantages):
         contract_vals = super()._get_new_contract_values(contract, employee, advantages)
         contract_vals['work_entry_source'] = contract.work_entry_source
+        contract_vals['standard_calendar_id'] = contract.standard_calendar_id.id
         if contract.wage_type == 'hourly':
             contract_vals['hourly_wage'] = contract.hourly_wage
         return contract_vals

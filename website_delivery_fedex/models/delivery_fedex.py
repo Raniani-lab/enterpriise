@@ -9,10 +9,8 @@ class ProviderFedex(models.Model):
     _inherit = 'delivery.carrier'
 
     def _radius_unit_domain(self):
-        categ_length_id = (self.env.ref("uom.uom_categ_length")).id
-        miles_id = (self.env.ref("uom.product_uom_mile")).id
-        km_id = (self.env.ref("uom.product_uom_km")).id
-        return ['&', ('category_id.id', '=', categ_length_id), ('id', 'in', [miles_id, km_id])]
+        radius_units = self.env.ref("uom.product_uom_mile") + self.env.ref("uom.product_uom_km")
+        return [('id', 'in', radius_units.ids)]
 
     fedex_use_locations = fields.Boolean(string='Use Fedex Locations', help='Allows the ecommerce user to choose a pick-up point as delivery address.')
     fedex_locations_radius_value = fields.Integer(string='Locations Radius', help='Maximum locations distance radius.', default=15, required=True)
@@ -20,7 +18,7 @@ class ProviderFedex(models.Model):
                                                   string='Locations Distance Unit',
                                                   domain=_radius_unit_domain,
                                                   required=True,
-                                                  default=lambda self: self.env['uom.uom'].search([('name', '=', 'km')])
+                                                  default=lambda self: self.env.ref("uom.product_uom_km")
                                                   )
 
     def _fedex_get_close_locations(self, partner_address):
@@ -33,8 +31,9 @@ class ProviderFedex(models.Model):
         locations = srm.process_locs()
         for location in locations:
             address = location['LocationDetail']['LocationContactAndAddress']['Address']
-            location['address'] = address['StreetLines'][0] + ", " + address['City'] + " (" + address['PostalCode'] + ")"
-            location["pick_up_point_name"] = location['LocationDetail']['LocationContactAndAddress']['Contact']['CompanyName'] if location['LocationDetail']['LocationContactAndAddress']['Contact'] else location['LocationDetail']['LocationTypeForDisplay']
+            location['address'] = f"{address['StreetLines'][0]}, {address['City']} ({address['PostalCode']})"
+            contact = location['LocationDetail']['LocationContactAndAddress']['Contact']
+            location["pick_up_point_name"] = contact['CompanyName'] if contact else location['LocationDetail']['LocationTypeForDisplay']
             location["pick_up_point_address"] = address['StreetLines'][0]
             location["pick_up_point_state"] = address['StateOrProvinceCode']
             location["pick_up_point_postal_code"] = address['PostalCode']

@@ -12,7 +12,7 @@ class SendcloudLocationsRequest(SendCloud):
         if carrier == 'sendcloud':
             carrier = ''
         params = {"country": partner_address.country_code,
-                  "address": partner_address.street + "," + partner_address.zip + " " + partner_address.city,
+                  "address": f'{partner_address.street},{partner_address.zip} {partner_address.city}',
                   "radius": distance,
                   "carrier": carrier}
         request = self._send_request('service-points', params=params, route=LOCATION_URL)
@@ -20,7 +20,7 @@ class SendcloudLocationsRequest(SendCloud):
         return_data = []
 
         for pick_up_location in request:
-            if not pick_up_location["street"] in location:
+            if pick_up_location["street"] not in location:
                 # change distance in km to proprely match the canvas
                 pick_up_location["distance"] = pick_up_location["distance"] / 1000
                 return_data.append(pick_up_location)

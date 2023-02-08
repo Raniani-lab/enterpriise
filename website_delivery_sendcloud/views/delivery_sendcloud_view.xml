@@ -10,7 +10,7 @@
                 <field name="sendcloud_use_locations"/>
                 <label for="sendcloud_locations_radius_value" attrs="{'invisible': [('sendcloud_use_locations', '=', False)]}"/>
                 <span attrs="{'invisible': [('sendcloud_use_locations', '=', False)]}">
-                    <field name="sendcloud_locations_radius_value" style="padding-right: 5px"/>
+                    <field name="sendcloud_locations_radius_value" class="pe-1"/>
                     <field name="sendcloud_locations_radius_unit"/>
                 </span>
             </xpath>

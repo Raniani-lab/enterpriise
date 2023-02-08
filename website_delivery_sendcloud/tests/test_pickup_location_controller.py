@@ -62,19 +62,16 @@ class TestWebsiteDeliverySendcloudLocationsController(TransactionCase):
                                 'zip': 1367,
                                 'phone': '081813700',
                                 })
-        # deco_art will be in europe
-        cls.eu_partner = cls.env.ref('base.res_partner_2')
-        cls.eu_partner.write({
-            'country_id': cls.env.ref('base.nl').id,
+        # partner will be in europe
+        cls.eu_partner = cls.env['res.partner'].create({
+            'name': 'newPartner',
+            'country_id': cls.env.ref('base.be').id,
             'zip': '1367',
             'state_id': False,
             'country_code': 'BE',
             'street': 'Rue des Bourlottes 9',
             'city': 'Ramillies'
         })
-
-        # partner in us (azure)
-        cls.us_partner = cls.env.ref('base.res_partner_12')
 
         cls.product_to_ship1 = cls.env["product.product"].create({
             'name': 'Door with wings',
@@ -87,7 +84,7 @@ class TestWebsiteDeliverySendcloudLocationsController(TransactionCase):
             'type': 'service'
         })
 
-        uom = cls.env['uom.uom'].search([('name', '=', 'm')])
+        uom = cls.env.ref('uom.product_uom_meter')
 
         cls.sendcloud = cls.env['delivery.carrier'].create({
             'delivery_type': 'sendcloud',

@@ -271,12 +271,12 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         # Verify Reconciliation
         domain = [('company_id', '=', self.company.id), ('reconciled', '=', True)]
         move_lines = self.env['account.move.line'].search(domain)
-        self.assertEqual(100, len(move_lines))
+        self.assertEqual(256, len(move_lines))
 
         # Verify Full Reconciliation
         domain = [('company_id', '=', self.company.id), ('full_reconcile_id', '!=', False)]
         move_lines = self.env['account.move.line'].search(domain)
-        self.assertEqual(100, len(move_lines))
+        self.assertEqual(256, len(move_lines))
 
         # Verify Journal types
         domain = [('company_id', '=', self.company.id), ('name', '=', 'FEC-BQ 552')]

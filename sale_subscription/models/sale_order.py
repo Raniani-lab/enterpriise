@@ -1427,16 +1427,7 @@ class SaleOrder(models.Model):
 
     def _handle_unpaid_subscriptions(self):
         unpaid_result = self._get_unpaid_subscriptions()
-        closable_ids = []
-        for res in unpaid_result:
-            sale_order = self.env['sale.order'].browse(res['so_id'])
-            account_move = self.env['account.move'].browse(res['am_id'])
-            sale_order.message_post(body=_("The last invoice (%s) of this subscription is unpaid after the due date.",
-                                            account_move._get_html_link()),
-                                    partner_ids=sale_order.team_user_id.partner_id.ids,
-                                    message_type='email')
-            closable_ids.append(sale_order.id)
-        return closable_ids
+        return {res['so_id']: res['am_id'] for res in unpaid_result}
 
     def cron_subscription_expiration(self):
         # TODO MASTER: private
@@ -1461,13 +1452,22 @@ class SaleOrder(models.Model):
             ('stage_category', 'in', ['progress', 'paused']),
             ('to_renew', '=', True)]
         subscriptions_close = self.search(domain_close)
-        unpaid_ids = self._handle_unpaid_subscriptions()
+        unpaid_results = self._handle_unpaid_subscriptions()
+        unpaid_ids = unpaid_results.keys()
         expired_result = self._get_expired_subscriptions()
         expired_ids = [r['so_id'] for r in expired_result]
         subscriptions_close |= self.env['sale.order'].browse(unpaid_ids) | self.env['sale.order'].browse(expired_ids)
         auto_commit = not bool(config['test_enable'] or config['test_file'])
         for batched_to_close in split_every(30, subscriptions_close.ids, self.env['sale.order'].browse):
             batched_to_close.set_close()
+            for so in batched_to_close:
+                if so.id in unpaid_ids:
+                    account_move = self.env['account.move'].browse(unpaid_results[so.id])
+                    so.message_post(
+                        body=_("The last invoice (%s) of this subscription is unpaid after the due date.",
+                               account_move._get_html_link()),
+                        partner_ids=so.team_user_id.partner_id.ids,
+                        message_type='email')
             if auto_commit:
                 self.env.cr.commit()
         return dict(pending=subscriptions_pending.ids, closed=subscriptions_close.ids)

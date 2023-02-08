@@ -672,7 +672,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         )
         wizard._action_add_new_amls(inv_line)
         wizard.button_validate()
-        liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
+        liquidity_line, suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(st_line, [{'partner_id': partner.id}])
         self.assertRecordValues(liquidity_line + other_line, [
             # pylint: disable=C0326
@@ -707,6 +707,18 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'account_id': account.id,                      'partner_id': False,        'balance': -400.0},
         ])
         self.assertRecordValues(wizard, [{'state': 'reconciled'}])
+
+        # Clear the accounts set on the partner and reset the widget.
+        # The wizard should be invalid since we are not able to set an open balance.
+        partner.property_account_receivable_id = None
+        wizard.button_reset()
+        liquidity_line, suspense_line, other_line = st_line._seek_for_lines()
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'account_id': liquidity_line.account_id.id},
+            {'flag': 'auto_balance',    'account_id': suspense_line.account_id.id},
+        ])
+        self.assertRecordValues(wizard, [{'state': 'invalid'}])
 
     def test_validation_using_custom_account(self):
         st_line = self._create_st_line(1000.0)

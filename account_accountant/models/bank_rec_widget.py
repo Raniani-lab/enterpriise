@@ -997,13 +997,15 @@ class BankRecWidget(models.Model):
                     .round(line.balance * abs(transaction_amount / company_amount))
 
         # Create a new auto-balance line.
+        account = None
         if self.partner_id:
             name = _("Open balance: %s", st_line.payment_ref)
             if st_line.amount > 0:
                 account = st_line.partner_id.with_company(st_line.company_id).property_account_receivable_id
             else:
                 account = st_line.partner_id.with_company(st_line.company_id).property_account_payable_id
-        else:
+
+        if not account:
             name = st_line.payment_ref
             account = st_line.journal_id.suspense_account_id
 

@@ -1,7 +1,7 @@
 /** @odoo-module */
 import core from "web.core";
 import { AbstractAwaitablePopup } from "@point_of_sale/js/Popups/AbstractAwaitablePopup";
-import { PosComponent } from "@point_of_sale/js/PosComponent";
+import { LegacyComponent } from "@web/legacy/legacy_component";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 import { useService } from "@web/core/utils/hooks";
 
@@ -14,7 +14,7 @@ const _t = core._t;
  * Retrieve the status of the last transaction processed by the connected
  * Worldline payment terminal and opens a popup to display the result.
  */
-export class LastTransactionStatusButton extends PosComponent {
+export class LastTransactionStatusButton extends LegacyComponent {
     static template = "LastTransactionStatusButton";
 
     setup() {

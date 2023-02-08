@@ -9,7 +9,7 @@ import { IoTErrorPopup } from "./IoTErrorPopup";
 var _t = core._t;
 
 patch(IoTLongpolling, "pos_iot.IoTLongpolling static", {
-    servicesDependencies: ["popup", ...IoTLongpolling.servicesDependencies],
+    serviceDependencies: ["popup", ...IoTLongpolling.serviceDependencies],
 });
 patch(IoTLongpolling.prototype, "pos_iot.IotLongpolling", {
     setup({ popup }) {

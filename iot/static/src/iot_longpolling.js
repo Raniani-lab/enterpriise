@@ -4,7 +4,7 @@ import { registry } from '@web/core/registry';
 import { IoTConnectionErrorDialog } from './iot_connection_error_dialog';
 
 export class IoTLongpolling {
-    static servicesDependencies = ["dialog"];
+    static serviceDependencies = ["dialog"];
     constructor() {
         this.setup(...arguments);
     }
@@ -248,7 +248,7 @@ export class IoTLongpolling {
 }
 
 export const iotLongpollingService = {
-    dependencies: IoTLongpolling.servicesDependencies,
+    dependencies: IoTLongpolling.serviceDependencies,
     start(_, deps) {
         return new IoTLongpolling(deps);
     },

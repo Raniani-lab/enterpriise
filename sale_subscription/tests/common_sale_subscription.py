@@ -262,7 +262,7 @@ class TestSubscriptionCommon(TestSaleCommon):
     # Necessary to have a valid and done transaction when the cron on subscription passes through
     def _mock_subscription_do_payment(self, payment_method, invoice):
         tx_obj = self.env['payment.transaction']
-        reference = "CONTRACT-%s-%s" % (self.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S%f'))
+        reference = "CONTRACT-%s-%s" % (invoice.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S%f'))
         values = {
             'amount': invoice.amount_total,
             'provider_id': self.provider.id,

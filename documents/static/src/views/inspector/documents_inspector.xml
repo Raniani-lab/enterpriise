@@ -29,7 +29,7 @@
             </div>
         </div>
     </t>
-    
+
     <t t-name="documents.DocumentsInspector.previews" owl="1">
         <t t-foreach="records.slice(0, 4)" t-as="record" t-key="record_index">
             <t t-set="additionalRecordData" t-value="getRecordAdditionalData(record)"/>
@@ -84,7 +84,7 @@
             <i class="o_selection_size"><b><t t-esc="nbPreviews"/></b> documents selected</i>
         </div>
     </t>
-    
+
     <t t-name="documents.DocumentsInspector.globalInfo" owl="1">
         <div class="o_inspector_info_columns">
             <table class="o_inspector_table">
@@ -101,7 +101,7 @@
             </table>
         </div>
     </t>
-    
+
     <t t-name="documents.DocumentsInspector.infoRow" owl="1">
         <tr>
             <td class="o_inspector_label align-middle">
@@ -119,7 +119,14 @@
             <div class="btn-group">
                 <t t-set="locked" t-value="isLocked"/>
                 <t t-set="editDisabled" t-value="isEditDisabled"/>
-                <button class="btn fa fa-download o_inspector_button o_inspector_download" title="Download" t-on-click.stop.prevent="onDownload"/>
+                <t t-if="records[0].data.type == 'url'">
+                    <a t-att-href="records[0].data.url" target="new">
+                        <button class="btn fa fa-link o_inspector_button" title="Link"/>
+                    </a>
+                </t>
+                <t t-else="">
+                    <button class="btn fa fa-download o_inspector_button o_inspector_download" title="Download" t-on-click.stop.prevent="onDownload"/>
+                </t>
                 <t t-if="records[0].data.active">
                     <!-- groups does not work here -->
                     <button t-if="currentFolder.id" class="btn fa fa-share-alt o_inspector_button o_inspector_share" title="Share this selection" groups="documents.group_documents_user"
@@ -233,7 +240,7 @@
                     <div class="o_inspector_rule o_inspector_trigger_hover_target mb-2" t-att-data-id="rule.resId">
                         <button t-att-tile="rule.data.note || ''" class="btn fa fa-play text-white bg-primary o_inspector_trigger_rule"
                             t-on-click.stop.prevent="(ev) => this.triggerRule(rule)"/>
-                        <span class="ms-2" t-att-title="rule.data.note || ''"><t t-esc="rule.data.display_name"/></span> 
+                        <span class="ms-2" t-att-title="rule.data.note || ''"><t t-esc="rule.data.display_name"/></span>
                     </div>
                 </t>
             </div>

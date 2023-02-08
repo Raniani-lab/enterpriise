@@ -18,7 +18,7 @@ class GenerateSimulationLink(models.TransientModel):
         domain="['|', ('employee_id', '=', False), ('employee_id', '=', employee_id)]")
     employee_contract_id = fields.Many2one('hr.contract')
     employee_id = fields.Many2one('hr.employee', related='employee_contract_id.employee_id')
-    final_yearly_costs = fields.Monetary(string="Yearly Cost", required=True)
+    final_yearly_costs = fields.Monetary(string="Yearly Cost", compute='_compute_final_yearly_costs', store=True, readonly=False, required=True)
     currency_id = fields.Many2one(related='contract_id.currency_id')
     applicant_id = fields.Many2one('hr.applicant')
     job_title = fields.Char("Job Title")
@@ -46,6 +46,11 @@ class GenerateSimulationLink(models.TransientModel):
                 applicant.access_token_end_date = self.env['hr.applicant']._get_access_token_end_date()
         return result
 
+    @api.depends('contract_id.final_yearly_costs')
+    def _compute_final_yearly_costs(self):
+        for wizard in self:
+            wizard.final_yearly_costs = wizard.contract_id.final_yearly_costs
+
     @api.depends('employee_id.address_home_id.email', 'applicant_id.email_from')
     def _compute_email_to(self):
         for wizard in self:
@@ -72,10 +77,6 @@ class GenerateSimulationLink(models.TransientModel):
             if params:
                 url = url + url_encode(params)
             wizard.url = url
-
-    @api.onchange('contract_id')
-    def _onchange_contract_id(self):
-        self.final_yearly_costs = self.contract_id.final_yearly_costs
 
     @api.depends('employee_job_id')
     def _compute_warning_message(self):

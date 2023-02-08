@@ -443,6 +443,11 @@ class HrContractSalary(main.HrContractSalary):
                 'input_type_id': request.env.ref('l10n_be_hr_payroll.input_fixed_commission').id,
                 'amount': new_contract.commission_on_target,
             })]
+        if new_contract.l10n_be_bicyle_cost:
+            payslip.input_line_ids = [(0, 0, {
+                'input_type_id': request.env.ref('l10n_be_hr_payroll.cp200_input_cycle_transportation').id,
+                'amount': 4,  # Considers cycling one day per week
+            })]
         return payslip
 
     def _get_payslip_line_values(self, payslip, codes):

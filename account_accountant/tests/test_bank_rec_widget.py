@@ -72,6 +72,24 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         })
         self.assertEqual(st_line._retrieve_partner(), self.env['res.partner'])
 
+    def test_retrieve_partner_from_partner_name(self):
+        """ Ensure the partner having a name fitting exactly the 'partner_name' is retrieved first.
+        This test create two partners that will be ordered in the lexicographic order when performing
+        a search. So:
+        row1: "Turlututu tsoin tsoin"
+        row2: "turlututu"
+
+        Since "turlututu" matches exactly (case insensitive) the partner_name of the statement line,
+        it should be suggested first.
+        """
+        _partner_a, partner_b = self.env['res.partner'].create([
+            {'name': "Turlututu tsoin tsoin"},
+            {'name': "turlututu"},
+        ])
+
+        st_line = self._create_st_line(1000.0, partner_id=None, partner_name="Turlututu")
+        self.assertEqual(st_line._retrieve_partner(), partner_b)
+
     def test_validation_new_aml_same_foreign_currency(self):
         income_exchange_account = self.env.company.income_currency_exchange_account_id
 

@@ -208,6 +208,8 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
 
     def test_project_document_search(self):
         # 1. Linking documents to projects/tasks
+        documents_linked_to_task = self.env['documents.document'].search([('res_model', '=', 'project.task')])
+        documents_linked_to_task_or_project = self.env['documents.document'].search([('res_model', '=', 'project.project')]) | documents_linked_to_task
         projects = self.project_pigs | self.project_goats
         self.assertEqual(projects[0].document_count, 0, "No project should have document linked to it initially")
         self.assertEqual(projects[1].document_count, 0, "No project should have document linked to it initially")
@@ -251,14 +253,14 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
         expected_results = [
             docs[0] + docs[2],
             self.env['documents.document'],
-            docs[1],
+            docs[1] + documents_linked_to_task_or_project,
             docs[0] + docs[2],
+            docs[0] + docs[1] + docs[2] + documents_linked_to_task_or_project,
+            docs[0] + docs[1] + docs[2] + documents_linked_to_task_or_project,
+            (self.env['documents.document'].search([]) - docs[0] - docs[1] - docs[2] - documents_linked_to_task_or_project),
             docs[0] + docs[1] + docs[2],
-            docs[0] + docs[1] + docs[2],
-            (self.env['documents.document'].search([]) - docs[0] - docs[1] - docs[2]),
-            docs[0] + docs[1] + docs[2],
-            docs[1],
-            self.env['documents.document'],
+            docs[1] + documents_linked_to_task_or_project,
+            documents_linked_to_task_or_project,
             docs[0] + docs[1] + docs[2],
         ]
         for domain, result in zip(search_domains, expected_results):
@@ -290,11 +292,11 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
         expected_results = [
             docs[2],
             self.env['documents.document'],
+            docs[0] + documents_linked_to_task,
             docs[0],
-            docs[0],
-            docs[0] + docs[2],
-            (self.env['documents.document'].search([]) - docs[0] - docs[2]),
-            self.env['documents.document'],
+            docs[0] + docs[2] + documents_linked_to_task,
+            (self.env['documents.document'].search([]) - docs[0] - docs[2] - documents_linked_to_task),
+            documents_linked_to_task,
             docs[2],
         ]
         for domain, result in zip(search_domains, expected_results):

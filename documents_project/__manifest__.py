@@ -24,6 +24,9 @@ Add the ability to create invoices from the document module.
         'views/documents_templates_share.xml',
         'views/project_templates.xml',
     ],
+    'demo': [
+        'data/documents_project_demo.xml',
+    ],
     'auto_install': True,
     'license': 'OEEL-1',
     'post_init_hook': '_documents_project_post_init',

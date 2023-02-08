@@ -17,6 +17,7 @@ Create Reports for Field Service
         'views/project_views.xml',
         'views/project_portal_templates.xml',
         'views/project_sharing_views.xml',
+        'report/project_task_burndown_chart_report_views.xml',
         'report/worksheet_custom_report_templates.xml',
         'data/fsm_report_data.xml',
     ],

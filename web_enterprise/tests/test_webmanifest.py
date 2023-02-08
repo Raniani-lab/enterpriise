@@ -36,11 +36,31 @@ class WebManifestRoutesTest(HttpCase):
             self.assertGreater(len(shortcut["icons"]), 0)
             self.assertTrue(shortcut["url"].startswith("/web#menu_id="))
 
+    def test_webmanifest_unauthenticated(self):
+        """
+        This route returns a well formed backend's WebManifest
+        """
+        response = self.url_open("/web/manifest.webmanifest")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["Content-Type"], "application/manifest+json")
+        data = response.json()
+        self.assertEqual(data["name"], "Odoo")
+        self.assertEqual(data["scope"], "/web")
+        self.assertEqual(data["start_url"], "/web")
+        self.assertEqual(data["display"], "standalone")
+        self.assertEqual(data["background_color"], "#714B67")
+        self.assertEqual(data["theme_color"], "#714B67")
+        self.assertEqual(data["prefer_related_applications"], False)
+        self.assertCountEqual(data["icons"], [
+            {'src': '/web_enterprise/static/img/odoo-icon-192x192.png', 'sizes': '192x192', 'type': 'image/png'},
+            {'src': '/web_enterprise/static/img/odoo-icon-512x512.png', 'sizes': '512x512', 'type': 'image/png'}
+        ])
+        self.assertEqual(len(data["shortcuts"]), 0)
+
     def test_serviceworker(self):
         """
         This route returns a JavaScript's ServiceWorker
         """
-        self.authenticate("admin", "admin")
         response = self.url_open("/web/service-worker.js")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["Content-Type"], "text/javascript")

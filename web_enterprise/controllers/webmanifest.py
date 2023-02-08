@@ -5,6 +5,7 @@ import json
 import mimetypes
 
 from odoo import http
+from odoo.exceptions import AccessError
 from odoo.http import request
 from odoo.tools import ustr
 
@@ -13,8 +14,11 @@ class WebManifest(http.Controller):
 
     def _get_shortcuts(self):
         module_names = ['mail', 'crm', 'project', 'note']
-        module_ids = request.env['ir.module.module'].search([('state', '=', 'installed'), ('name', 'in', module_names)])\
-                                                    .sorted(key=lambda r: module_names.index(r["name"]))
+        try:
+            module_ids = request.env['ir.module.module'].search([('state', '=', 'installed'), ('name', 'in', module_names)]) \
+                                                        .sorted(key=lambda r: module_names.index(r["name"]))
+        except AccessError:
+            return []
         menu_roots = request.env['ir.ui.menu'].get_user_roots()
         datas = request.env['ir.model.data'].sudo().search([('model', '=', 'ir.ui.menu'),
                                                          ('res_id', 'in', menu_roots.ids),
@@ -35,7 +39,7 @@ class WebManifest(http.Controller):
                 })
         return shortcuts
 
-    @http.route('/web/manifest.webmanifest', type='http', auth='user', methods=['GET'])
+    @http.route('/web/manifest.webmanifest', type='http', auth='public', methods=['GET'])
     def webmanifest(self):
         """ Returns a WebManifest describing the metadata associated with a web application.
         Using this metadata, user agents can provide developers with means to create user
@@ -64,7 +68,7 @@ class WebManifest(http.Controller):
         ])
         return response
 
-    @http.route('/web/service-worker.js', type='http', auth='user', methods=['GET'])
+    @http.route('/web/service-worker.js', type='http', auth='public', methods=['GET'])
     def service_worker(self):
         """ Returns a ServiceWorker javascript file scoped for the backend (aka. '/web')
         """

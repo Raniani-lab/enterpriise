@@ -15,9 +15,9 @@ class hr_department(models.Model):
     custom_appraisal_templates = fields.Boolean(string="Custom Appraisal Templates", default=False)
 
     def _compute_appraisals_to_process(self):
-        appraisals = self.env['hr.appraisal'].read_group(
-            [('department_id', 'in', self.ids), ('state', 'in', ['new', 'pending'])], ['department_id'], ['department_id'])
-        result = dict((data['department_id'][0], data['department_id_count']) for data in appraisals)
+        appraisals = self.env['hr.appraisal']._read_group(
+            [('department_id', 'in', self.ids), ('state', 'in', ['new', 'pending'])], ['department_id'], ['__count'])
+        result = {department.id: count for department, count in appraisals}
         for department in self:
             department.appraisals_to_process_count = result.get(department.id, 0)
 

@@ -45,10 +45,10 @@ class HelpdeskSLA(models.Model):
     ticket_count = fields.Integer(compute='_compute_ticket_count')
 
     def _compute_ticket_count(self):
-        res = self.env['helpdesk.ticket'].read_group(
+        res = self.env['helpdesk.ticket']._read_group(
             [('sla_ids', 'in', self.ids), ('stage_id.fold', '=', False)],
-            ['sla_ids'], ['sla_ids'])
-        sla_data = {r['sla_ids']: r['sla_ids_count'] for r in res}
+            ['sla_ids'], ['__count'])
+        sla_data = {sla.id: count for sla, count in res}
         for sla in self:
             sla.ticket_count = sla_data.get(sla.id, 0)
 

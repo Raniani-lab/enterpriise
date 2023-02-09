@@ -20,8 +20,8 @@ class Project(models.Model):
         subscriptions_data = self.env['sale.order']._read_group([
             ('analytic_account_id', 'in', self.analytic_account_id.ids),
             ('is_subscription', '=', True),
-        ], ['analytic_account_id'], ['analytic_account_id'])
-        mapped_data = {data['analytic_account_id'][0]: data['analytic_account_id_count'] for data in subscriptions_data}
+        ], ['analytic_account_id'], ['__count'])
+        mapped_data = {analytic_account.id: count for analytic_account, count in subscriptions_data}
         for project in self:
             project.subscriptions_count = mapped_data.get(project.analytic_account_id.id, 0)
 
@@ -87,23 +87,22 @@ class Project(models.Model):
              ('subscription_state', 'not in', ['1_draft', '5_renewed']),
              ('is_subscription', '=', True),
             ],
-            ['subscription_state', 'sale_order_template_id', 'recurring_monthly', 'ids:array_agg(id)'],
             ['sale_order_template_id', 'subscription_state'],
-            lazy=False,
+            ['recurring_monthly:sum', 'id:array_agg'],
         )
         if not subscription_read_group:
             return profitability_items
         all_subscription_ids = []
         subscription_data_per_template_id = {}
         amount_to_invoice = 0.0
-        for res in subscription_read_group:
-            all_subscription_ids.extend(res['ids'])
-            if res['subscription_state'] != '3_progress':  # then the subscriptions are closed and so nothing is to invoice.
+        for sale_order_template, subscription_state, recurring_monthly_sum, ids in subscription_read_group:
+            all_subscription_ids.extend(ids)
+            if subscription_state != '3_progress':  # then the subscriptions are closed and so nothing is to invoice.
                 continue
-            if not res['sale_order_template_id']:  # then we will take the recurring monthly amount that we will invoice in the next invoice(s).
-                amount_to_invoice += res['recurring_monthly']
+            if not sale_order_template:  # then we will take the recurring monthly amount that we will invoice in the next invoice(s).
+                amount_to_invoice += recurring_monthly_sum
                 continue
-            subscription_data_per_template_id[res['sale_order_template_id'][0]] = res['recurring_monthly']
+            subscription_data_per_template_id[sale_order_template.id] = recurring_monthly_sum
 
         subscription_template_dict = {}
         if subscription_data_per_template_id:
@@ -120,10 +119,9 @@ class Project(models.Model):
 
         aal_read_group = self.env['account.analytic.line'].sudo()._read_group(
             [('move_line_id.subscription_id', 'in', all_subscription_ids), ('account_id', 'in', self.analytic_account_id.ids)],
-            ['amount'],
-            [],
+            aggregates=['amount:sum'],
         )
-        amount_invoiced = aal_read_group[0]['amount'] if aal_read_group and aal_read_group[0]['__count'] else 0.0
+        amount_invoiced = aal_read_group[0][0] or 0.0
         revenues = profitability_items['revenues']
         section_id = 'subscriptions'
         subscription_revenue = {

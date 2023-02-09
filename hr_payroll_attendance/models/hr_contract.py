@@ -15,11 +15,11 @@ class HrContract(models.Model):
         default_work_entry_type = self.structure_type_id.default_work_entry_type_id
         if not attendance_contracts or not overtime_work_entry_type or len(default_work_entry_type) != 1:
             return
-        overtime_hours = self.env['hr.attendance.overtime'].read_group(
+        overtime_hours = self.env['hr.attendance.overtime']._read_group(
             [('employee_id', 'in', self.employee_id.ids),
                 ('date', '>=', date_from), ('date', '<=', date_to)],
-            ['duration:sum'], [],
-        )[0]['duration']
+            [], ['duration:sum'],
+        )[0][0]
         if not overtime_hours or overtime_hours < 0:
             return
         work_data[default_work_entry_type.id] -= overtime_hours

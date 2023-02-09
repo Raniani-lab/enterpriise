@@ -221,14 +221,13 @@ class Article(models.Model):
 
     @api.depends('child_ids', 'child_ids.is_article_item')
     def _compute_has_article_children(self):
-        results = self.env['knowledge.article'].read_group(
+        results = self.env['knowledge.article']._read_group(
             [('parent_id', 'in', self.ids)],
-            ['parent_id', 'is_article_item'], ['parent_id', 'is_article_item'], lazy=False)
-        items_count_by_article_id = {result['parent_id'][0]: result['__count'] for result in results if result['is_article_item']}
-        article_count_by_article_id = {result['parent_id'][0]: result['__count'] for result in results if not result['is_article_item']}
+            ['parent_id', 'is_article_item'])
+        count_by_article_id = {(parent.id, is_article_item) for parent, is_article_item in results}
         for article in self:
-            article.has_item_children = bool(items_count_by_article_id.get(article.id, 0))
-            article.has_article_children = bool(article_count_by_article_id.get(article.id, 0))
+            article.has_item_children = (article.id, True) in count_by_article_id
+            article.has_article_children = (article.id, False) in count_by_article_id
 
     @api.depends('parent_id', 'parent_id.root_article_id')
     def _compute_root_article_id(self):
@@ -473,27 +472,24 @@ class Article(models.Model):
         if not remaining_articles:
             return
 
-        results = self.env['knowledge.article.member'].read_group([
+        results = self.env['knowledge.article.member']._read_group([
             ('article_id', 'in', remaining_articles.root_article_id.ids), ('permission', '!=', 'none')
-        ], ['article_id'], ['article_id'])  # each returned member is read on write.
-        access_member_per_root_article = dict.fromkeys(remaining_articles.root_article_id.ids, 0)
-        for result in results:
-            access_member_per_root_article[result['article_id'][0]] += result["article_id_count"]
+        ], ['article_id'], ['__count'])  # each returned member is read on write.
+        access_member_per_root_article = {article.id: count for article, count in results}
 
         for article in remaining_articles:
             # should never crash as non workspace articles always have at least one member with access.
-            if access_member_per_root_article[article.root_article_id.id] > 1:
+            if access_member_per_root_article.get(article.root_article_id.id, 0) > 1:
                 article.category = 'shared'
             else:
                 article.category = 'private'
 
     @api.depends('favorite_ids')
     def _compute_favorite_count(self):
-        favorites = self.env['knowledge.article.favorite'].read_group(
-            [('article_id', 'in', self.ids)], ['article_id'], ['article_id']
+        favorites = self.env['knowledge.article.favorite']._read_group(
+            [('article_id', 'in', self.ids)], ['article_id'], ['__count']
         )
-        favorites_count_by_article = {
-            favorite['article_id'][0]: favorite['article_id_count'] for favorite in favorites}
+        favorites_count_by_article = {article.id: count for article, count in favorites}
         for article in self:
             article.favorite_count = favorites_count_by_article.get(article.id, 0)
 
@@ -547,21 +543,19 @@ class Article(models.Model):
             return
 
         member_only_articles = self - visible_articles
-        results = self.env['knowledge.article.member'].read_group(
+        results = self.env['knowledge.article.member']._read_group(
             domain=[('partner_id', '=', self.env.user.partner_id.id), ('permission', '!=', 'none')],
-            fields=['partner_id', 'article_id'],
             groupby=['partner_id', 'article_id'],
-            lazy=False
         )
 
-        pids_by_article = dict.fromkeys([group['article_id'][0] for group in results], [])
-        current_pid = self.env.user.partner_id.id
-        for group in results:
-            pids_by_article[group['article_id'][0]].append(group['partner_id'][0])
+        pids_by_article = defaultdict(list)
+        for partner, article in results:
+            pids_by_article[article.id].append(partner.id)
 
+        current_pid = self.env.user.partner_id.id
         for article in member_only_articles:
             article.is_article_visible = current_pid in (
-                pids_by_article.get(article.id, []) + pids_by_article.get(article.root_article_id.id, [])
+                pids_by_article[article.id] + pids_by_article[article.root_article_id.id]
             )
 
     def _search_is_article_visible(self, operator, value):
@@ -1245,21 +1239,16 @@ class Article(models.Model):
 
     @api.model
     def _get_max_sequence_inside_parents(self, parent_ids):
-        max_sequence_by_parent = {}
         if parent_ids:
             domain = [('parent_id', 'in', parent_ids)]
         else:
             domain = [('parent_id', '=', False)]
-        rg_results = self.env['knowledge.article'].sudo().read_group(
+        rg_results = self.env['knowledge.article'].sudo()._read_group(
             domain,
-            ['sequence:max'],
-            ['parent_id']
+            ['parent_id'],
+            ['sequence:max']
         )
-        for rg_line in rg_results:
-            # beware name_get like returns either 0, either (id, 'name')
-            index = rg_line['parent_id'][0] if rg_line['parent_id'] else False
-            max_sequence_by_parent[index] = rg_line['sequence']
-        return max_sequence_by_parent
+        return {parent.id: sequence_max for parent, sequence_max in rg_results}
 
     # ------------------------------------------------------------
     # HELPERS

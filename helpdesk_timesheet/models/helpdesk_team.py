@@ -20,41 +20,18 @@ class HelpdeskTeam(models.Model):
             return
         timesheets_read_group = self.env['account.analytic.line']._read_group(
             [('helpdesk_ticket_id', 'in', helpdesk_timesheet_teams.ticket_ids.filtered(lambda x: not x.stage_id.fold).ids)],
-            ['helpdesk_ticket_id', 'unit_amount', 'product_uom_id'],
             ['helpdesk_ticket_id', 'product_uom_id'],
-            lazy=False)
-        timesheet_data_dict = defaultdict(list)
-        ticket_ids = []
-        uom_ids = set(helpdesk_timesheet_teams.timesheet_encode_uom_id.ids)
-        for result in timesheets_read_group:
-            ticket_id = result['helpdesk_ticket_id'][0]
-            ticket_ids.append(ticket_id)
-            uom_id = result['product_uom_id'] and result['product_uom_id'][0]
-            if uom_id:
-                uom_ids.add(uom_id)
-            timesheet_data_dict[ticket_id].append((uom_id, result['unit_amount']))
+            ['unit_amount:sum'])
 
-        ticket_ids_per_team_id = {
-            group['team_id'][0]: group['ids']
-            for group in self.env['helpdesk.ticket'].read_group(
-                [('id', 'in', ticket_ids)],
-                ['team_id', 'ids:array_agg(id)'],
-                ['team_id']
-            )
-        }
+        total_by_team = defaultdict(float)
+        for helpdesk_ticket, product_uom, unit_amount_sum in timesheets_read_group:
+            team = helpdesk_ticket.team_id
+            uom_team = team.timesheet_encode_uom_id
+            product_uom = product_uom if product_uom else uom_team
+            total_by_team[team.id] += (unit_amount_sum * product_uom.factor_inv) * uom_team.factor
 
-        uoms_dict = {uom.id: uom for uom in self.env['uom.uom'].browse(uom_ids)}
-        encode_uom_in_days = self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day')
-        for team in helpdesk_timesheet_teams:
-            ticket_ids = ticket_ids_per_team_id.get(team.id, [])
-            total_time = 0.0
-            for ticket_id in ticket_ids:
-                for product_uom_id, unit_amount in timesheet_data_dict[ticket_id]:
-                    factor = uoms_dict.get(product_uom_id, team.timesheet_encode_uom_id).factor_inv
-                    total_time += unit_amount * (1.0 if encode_uom_in_days else factor)
-            total_time *= team.timesheet_encode_uom_id.factor
-            team.total_timesheet_time = int(round(total_time))
-        (self - helpdesk_timesheet_teams).total_timesheet_time = 0
+        for team in self:
+            team.total_timesheet_time = round(total_by_team[team.id])
 
     def _create_project(self, name, allow_billable, other):
         return self.env['project.project'].create({

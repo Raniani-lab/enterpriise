@@ -32,17 +32,12 @@ class HrPayslip(models.Model):
                     ('check_out', '>=', slip.date_from),
                 ]
             ])
-        read_group = self.env['hr.attendance']._read_group(domain, fields=['id'], groupby=['employee_id', 'check_in:day'], lazy=False)
-        employee_ids = list({attendance['employee_id'][0] for attendance in read_group})
-        employee_tz = {employee.id: pytz.timezone(employee.tz) for employee in self.env['hr.employee'].browse(employee_ids)}
-        for result in read_group:
-            employee_id = result['employee_id'][0]
-            slips = slip_by_employee[employee_id]
-            check_in_date_utc = datetime.strptime(result['__range']['check_in:day']['from'], '%Y-%m-%d %H:%M:%S')
-            check_in_date_employee = check_in_date_utc.astimezone(employee_tz[employee_id]).date()
+        read_group = self.env['hr.attendance']._read_group(domain, groupby=['employee_id', 'check_in:day'], aggregates=['__count'])
+        for employee, check_in_day, count in read_group:
+            slips = slip_by_employee[employee.id]
             for slip in slips:
-                if slip.date_from <= check_in_date_employee and check_in_date_employee <= slip.date_to:
-                    slip.attendance_count += result['__count']
+                if slip.date_from <= check_in_day <= slip.date_to:
+                    slip.attendance_count += count
 
     def action_open_attendances(self):
         self.ensure_one()

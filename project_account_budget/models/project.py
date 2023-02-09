@@ -20,12 +20,12 @@ class Project(models.Model):
                 ('crossovered_budget_id.state', 'not in', ['draft', 'cancel']),
                 ('analytic_account_id', 'in', self.analytic_account_id.ids)
             ],
-            ['planned_amount:sum(planned_amount)'],
             ['analytic_account_id'],
+            ['planned_amount:sum'],
         )
         planned_amount_per_account_id = {
-            group['analytic_account_id'][0]: group['planned_amount']
-            for group in budget_read_group
+            analytic_account.id: planned_amount_sum
+            for analytic_account, planned_amount_sum in budget_read_group
         }
         for project in self:
             project.total_planned_amount = planned_amount_per_account_id.get(project.analytic_account_id.id, 0)
@@ -79,9 +79,8 @@ class Project(models.Model):
                 ('crossovered_budget_id', '!=', False),
                 ('crossovered_budget_id.state', 'not in', ['draft', 'cancel']),
             ],
-            ['general_budget_id', 'crossovered_budget_id', 'planned_amount', 'practical_amount', 'ids:array_agg(id)'],
             ['general_budget_id', 'crossovered_budget_id'],
-            lazy=False
+            ['planned_amount:sum', 'practical_amount:sum', 'id:array_agg'],
         )
         total_allocated = total_spent = 0.0
         can_see_budget_items = with_action and self.user_has_groups('account.group_account_readonly,analytic.group_analytic_accounting')
@@ -96,14 +95,10 @@ class Project(models.Model):
             }
         )
 
-        for budget_line in budget_lines:
-            general_budget = budget_line['general_budget_id']
-            allocated = budget_line['planned_amount']
-            spent = budget_line['practical_amount']
-
+        for general_budget, crossovered_budget, allocated, spent, ids in budget_lines:
             budget_data = budget_data_per_budget[general_budget]
-            budget_data['id'] = general_budget and general_budget[0]
-            budget_data['name'] = general_budget and general_budget[1]
+            budget_data['id'] = general_budget.id
+            budget_data['name'] = general_budget.display_name
             budget_data['allocated'] += allocated
             budget_data['spent'] += spent
             total_allocated += allocated
@@ -111,14 +106,14 @@ class Project(models.Model):
 
             if can_see_budget_items:
                 budget_item = {
-                    'id': budget_line['crossovered_budget_id'][0],
-                    'name': budget_line['crossovered_budget_id'][1],
+                    'id': crossovered_budget.id,
+                    'name': crossovered_budget.display_name,
                     'allocated': allocated,
                     'spent': spent,
                     'progress': allocated and (spent - allocated) / abs(allocated),
                 }
                 budget_data['budgets'].append(budget_item)
-                budget_data['ids'] += budget_line['ids']
+                budget_data['ids'] += ids
 
 
         budget_data_per_budget = list(budget_data_per_budget.values())

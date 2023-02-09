@@ -17,15 +17,12 @@ class SaleOrder(models.Model):
     def _compute_planning_hours(self):
         group_data = self.env['sale.order.line']._read_group([
             ('order_id', 'in', self.ids),
-        ], ['order_id', 'planning_hours_to_plan', 'planning_hours_planned'], ['order_id'])
-        mapped_data = defaultdict(lambda: {'planning_hours_to_plan': 0.0, 'planning_hours_planned': 0.0})
-        mapped_data.update({
-            data['order_id'][0]: {'planning_hours_to_plan': data['planning_hours_to_plan'], 'planning_hours_planned': data['planning_hours_planned']}
-            for data in group_data
-        })
-        for order in self:
-            order.planning_hours_planned = mapped_data[order.id]['planning_hours_planned']
-            order.planning_hours_to_plan = mapped_data[order.id]['planning_hours_to_plan'] - mapped_data[order.id]['planning_hours_planned']
+        ], ['order_id'], ['planning_hours_to_plan:sum', 'planning_hours_planned:sum'])
+        self.planning_hours_planned = 0
+        self.planning_hours_to_plan = 0
+        for order, planning_hours_to_plan_sum, planning_hours_planned_sum in group_data:
+            order.planning_hours_planned = planning_hours_planned_sum
+            order.planning_hours_to_plan = planning_hours_to_plan_sum - planning_hours_planned_sum
 
     @api.depends('order_line.product_id.planning_enabled', 'order_line.planning_hours_to_plan', 'order_line.planning_hours_planned')
     def _compute_planning_first_sale_line_id(self):
@@ -46,8 +43,8 @@ class SaleOrder(models.Model):
     def _compute_planning_initial_date(self):
         group_data = self.env['planning.slot']._read_group([
             ('sale_order_id', 'in', self.ids)
-        ], ['sale_order_id', 'start_datetime:min'], ['sale_order_id'])
-        mapped_data = {data['sale_order_id'][0]: data['start_datetime'] for data in group_data}
+        ], ['sale_order_id'], ['start_datetime:min'])
+        mapped_data = {sale_order.id: start_datetime_min for sale_order, start_datetime_min in group_data}
         for order in self:
             if mapped_data.get(order.id):
                 order.planning_initial_date = mapped_data[order.id].date()

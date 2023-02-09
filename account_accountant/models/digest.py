@@ -21,12 +21,12 @@ class Digest(models.Model):
             ('date', '<', end),
             ('journal_id.type', 'in', ('cash', 'bank')),
             ('company_id', 'in', companies.ids),
-        ], ['company_id', 'amount_total:sum'], ['company_id'])
-        data = {line['company_id'][0]: line['amount_total'] for line in data}
+        ], ['company_id'], ['amount_total:sum'])
+        data = dict(data)
 
         for record in self:
             company = record.company_id or self.env.company
-            record.kpi_account_bank_cash_value = data.get(company.id)
+            record.kpi_account_bank_cash_value = data.get(company)
 
     def _compute_kpis_actions(self, company, user):
         res = super(Digest, self)._compute_kpis_actions(company, user)

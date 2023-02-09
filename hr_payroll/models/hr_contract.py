@@ -52,11 +52,11 @@ class HrContract(models.Model):
                 contract.work_time_rate = hours_per_week / (hours_per_week_ref or hours_per_week)
 
     def _compute_payslips_count(self):
-        count_data = self.env['hr.payslip'].read_group(
+        count_data = self.env['hr.payslip']._read_group(
             [('contract_id', 'in', self.ids)],
             ['contract_id'],
-            ['contract_id'])
-        mapped_counts = {cd['contract_id'][0]: cd['contract_id_count'] for cd in count_data}
+            ['__count'])
+        mapped_counts = {contract.id: count for contract, count in count_data}
         for contract in self:
             contract.payslips_count = mapped_counts.get(contract.id, 0)
 
@@ -271,15 +271,15 @@ class HrContract(models.Model):
 
         date_from = datetime.combine(date_from, datetime.min.time())
         date_to = datetime.combine(date_to, datetime.max.time())
-        work_data = defaultdict(int)
 
         # First, found work entry that didn't exceed interval.
         work_entries = self.env['hr.work.entry']._read_group(
             self._get_work_hours_domain(date_from, date_to, domain=domain, inside=True),
-            ['hours:sum(duration)'],
-            ['work_entry_type_id']
+            ['work_entry_type_id'],
+            ['duration:sum']
         )
-        work_data.update({data['work_entry_type_id'][0] if data['work_entry_type_id'] else False: data['hours'] for data in work_entries})
+        work_data = defaultdict(int)
+        work_data.update({work_entry_type.id: duration_sum for work_entry_type, duration_sum in work_entries})
         self._preprocess_work_hours_data(work_data, date_from, date_to)
 
         # Second, find work entry that exceeds interval and compute right duration.
@@ -319,13 +319,13 @@ class HrContract(models.Model):
         # Check if no new contracts starting after the end of the expiring one
         nearly_expired_contracts_without_new_contracts = self.env['hr.contract']
         new_contracts_grouped_by_employee = {
-            c['employee_id'][0]: c['employee_id_count']
-            for c in self._read_group([
+            employee.id
+            for [employee] in self._read_group([
                 ('company_id', '=', self.env.company.id),
                 ('state', '=', 'draft'),
                 ('date_start', '>=', outdated_days),
                 ('employee_id', 'in', nearly_expired_contracts.employee_id.ids)
-            ], groupby=['employee_id'], fields=['employee_id'])
+            ], groupby=['employee_id'])
         }
 
         for expired_contract in nearly_expired_contracts:

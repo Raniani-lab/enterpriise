@@ -171,11 +171,11 @@ class ResPartner(models.Model):
     @api.depends_context('company', 'allowed_company_ids')
     def _compute_unreconciled_aml_ids(self):
         values = {
-            read['partner_id'][0]: read['line_ids']
-            for read in self.env['account.move.line'].read_group(
+            partner.id: line_ids
+            for partner, line_ids in self.env['account.move.line']._read_group(
                 domain=self._get_unreconciled_aml_domain(),
-                fields=['line_ids:array_agg(id)'],
-                groupby=['partner_id']
+                groupby=['partner_id'],
+                aggregates=['id:array_agg'],
             )
         }
         for partner in self:

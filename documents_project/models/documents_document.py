@@ -28,9 +28,9 @@ class Document(models.Model):
         doc_share_read_group = self.env['documents.share']._read_group(
             search_domain,
             ['document_ids'],
-            ['document_ids'],
+            ['__count'],
         )
-        doc_share_count_per_doc_id = {res['document_ids'][0]: res['document_ids_count'] for res in doc_share_read_group}
+        doc_share_count_per_doc_id = {document.id: count for document, count in doc_share_read_group}
 
         for document in self:
             document.is_shared = doc_share_count_per_doc_id.get(document.id) or document.folder_id.is_shared
@@ -161,8 +161,8 @@ class Document(models.Model):
             if res_model == 'project.project' \
             else self.env['project.task'].browse(res_id).project_id
 
-        document_read_group = self.env['documents.document']._read_group(kwargs.get('search_domain', []), ['folder_ids:array_agg(folder_id)'], [])
-        folder_ids = (document_read_group[0]['folder_ids'] if document_read_group else []) or []
+        document_read_group = self.env['documents.document']._read_group(kwargs.get('search_domain', []), [], ['folder_id:array_agg'])
+        folder_ids = document_read_group[0][0]
         records = self.env['documents.folder'].with_context(hierarchical_naming=False).search_read([
             '|',
                 ('id', 'child_of', project.documents_folder_id.id),

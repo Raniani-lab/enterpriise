@@ -65,25 +65,25 @@ class HrEmployee(models.Model):
         """
         employees_ids = [emp['id'] for emp in employees]
         workorders = self.env['mrp.workorder'].search([('state', '=', 'progress')])
-        time_ids = self.env['mrp.workcenter.productivity']._read_group(['&', ('employee_id', 'in', employees_ids), ('workorder_id', 'in', workorders.ids)],
-                                                                       ['duration:sum', 'date_end:array_agg', 'date_start:array_agg'],
-                                                                       ['employee_id', 'workorder_id'],
-                                                                       lazy=False)
+        time_ids = self.env['mrp.workcenter.productivity']._read_group(
+            ['&', ('employee_id', 'in', employees_ids), ('workorder_id', 'in', workorders.ids)],
+            ['employee_id', 'workorder_id'],
+            ['duration:sum', 'date_end:array_agg', 'date_start:array_agg'],
+        )
 
         for emp in employees:
             emp["workorder"] = []
-        for time_group in time_ids:
-            duration = time_group['duration']
-            if any(date is None for date in time_group['date_end']):
-                duration = duration + int((datetime.now() - (max(time_group['date_start']))).total_seconds()) / 60
+        for employee, workorder, duration, end_dates, start_dates in time_ids:
+            if any(not date for date in end_dates):
+                duration = duration + int((datetime.now() - (max(start_dates))).total_seconds()) / 60
 
-                employee = [emp for emp in employees if emp['id'] == time_group['employee_id'][0]][0]
+                employee = [emp for emp in employees if emp['id'] == employee.id][0]
                 employee["workorder"].append(
                     {
-                        'id': time_group['workorder_id'][0],
-                        'work_order_name': self.env['mrp.workorder'].browse(time_group['workorder_id'][0]).production_id.name,
+                        'id': workorder.id,
+                        'work_order_name': workorder.production_id.name,
                         'duration': duration,
-                        'operation_name': self.env['mrp.workorder'].browse(time_group['workorder_id'][0]).operation_id.name,
+                        'operation_name': workorder.operation_id.name,
                         'ongoing': True
                     })
         return employees

@@ -29,46 +29,44 @@ class ProjectProject(models.Model):
         Task = self.env['project.task']
         task_read_group = Task._read_group(
             [('project_id', 'in', self.ids)],
-            ['project_id', 'ids:array_agg(id)'],
             ['project_id'],
+            ['id:array_agg'],
         )
         task_ids = []
         task_ids_per_project_id = {}
-        for res in task_read_group:
-            task_ids += res['ids']
-            task_ids_per_project_id[res['project_id'][0]] = res['ids']
+        for project, ids in task_read_group:
+            task_ids += ids
+            task_ids_per_project_id[project.id] = ids
         Document = self.env['documents.document']
         project_document_read_group = Document._read_group(
             [('res_model', '=', 'project.project'), ('res_id', 'in', self.ids)],
             ['res_id'],
-            ['res_id'],
+            ['__count'],
         )
-        document_count_per_project_id = {res['res_id']: res['res_id_count'] for res in project_document_read_group}
+        document_count_per_project_id = dict(project_document_read_group)
         document_count_per_task_id = Task.browse(task_ids)._get_task_document_data()
         for project in self:
             task_ids = task_ids_per_project_id.get(project.id, [])
             project.document_count = document_count_per_project_id.get(project.id, 0) \
-                + sum([
-                    document_count
-                    for task_id, document_count in document_count_per_task_id.items()
-                    if task_id in task_ids
-                ])
+                + sum(
+                    document_count_per_task_id.get(task_id, 0)
+                    for task_id in task_ids
+                )
 
     def _compute_shared_document_ids(self):
         tasks_read_group = self.env['project.task']._read_group(
             [('project_id', 'in', self.ids)],
-            ['ids:array_agg(id)'],
             ['project_id'],
+            ['id:array_agg'],
         )
 
         project_id_per_task_id = {}
         task_ids = []
 
-        for res in tasks_read_group:
-            project_id = res['project_id'][0]
-            task_ids += res['ids']
-            for task_id in res['ids']:
-                project_id_per_task_id[task_id] = project_id
+        for project, ids in tasks_read_group:
+            task_ids += ids
+            for task_id in ids:
+                project_id_per_task_id[task_id] = project.id
 
         documents_read_group = self.env['documents.document']._read_group(
             [
@@ -82,18 +80,17 @@ class ProjectProject(models.Model):
                             ('res_model', '=', 'project.task'),
                             ('res_id', 'in', task_ids),
             ],
-            ['ids:array_agg(id)'],
             ['res_model', 'res_id'],
-            lazy=False,
+            ['id:array_agg'],
         )
 
         document_ids_per_project_id = defaultdict(list)
-        for res in documents_read_group:
-            if res['res_model'] == 'project.project':
-                document_ids_per_project_id[res['res_id']] += res['ids']
+        for res_model, res_id, ids in documents_read_group:
+            if res_model == 'project.project':
+                document_ids_per_project_id[res_id] += ids
             else:
-                project_id = project_id_per_task_id[res['res_id']]
-                document_ids_per_project_id[project_id] += res['ids']
+                project_id = project_id_per_task_id[res_id]
+                document_ids_per_project_id[project_id] += ids
 
         for project in self:
             shared_document_ids = self.env['documents.document'] \

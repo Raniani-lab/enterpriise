@@ -51,21 +51,17 @@ class Task(models.Model):
             task.display_timesheet_timer = task.allow_timesheets and task.analytic_account_active
 
     def _gantt_progress_bar_project_id(self, res_ids):
-        project_dict = {
-            project.id: project.allocated_hours
-            for project in self.env['project.project'].search([('id', 'in', res_ids)])
-        }
         timesheet_read_group = self.env['account.analytic.line']._read_group(
             [('project_id', 'in', res_ids)],
-            ['project_id', 'unit_amount'],
             ['project_id'],
+            ['unit_amount:sum'],
         )
         return {
-            res['project_id'][0]: {
-                'value': res['unit_amount'],
-                'max_value': project_dict.get(res['project_id'][0], 0)
+            project.id: {
+                'value': unit_amount_sum,
+                'max_value': project.allocated_hours,
             }
-            for res in timesheet_read_group
+            for project, unit_amount_sum in timesheet_read_group
         }
 
     def _gantt_progress_bar(self, field, res_ids, start, stop):

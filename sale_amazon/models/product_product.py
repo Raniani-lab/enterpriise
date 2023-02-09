@@ -11,13 +11,10 @@ class ProductProduct(models.Model):
     )
 
     def _compute_offer_count(self):
-        offers_data = self.env['amazon.offer'].read_group(
-            [('product_id', 'in', self.ids)], ['product_id'], ['product_id']
+        offers_data = self.env['amazon.offer']._read_group(
+            [('product_id', 'in', self.ids)], ['product_id'], ['__count']
         )
-        products_data = {
-            offer_data['product_id'][0]: offer_data['product_id_count']
-            for offer_data in offers_data
-        }
+        products_data = {product.id: count for product, count in offers_data}
         for product in self:
             product.offer_count = products_data.get(product.id, 0)
 

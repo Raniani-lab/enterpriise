@@ -165,19 +165,13 @@ class AnalyticLine(models.Model):
                 ('project_id', '!=', False),
                 ('employee_id', 'in', employee_ids),
             ],
-            ['employee_id', 'max_date:max(date)'],
             ['employee_id'],
+            ['date:max'],
         )
 
-        employees_per_date = defaultdict(list)
-        for res in timesheet_read_group:
-            employees_per_date[res['max_date']].append(res['employee_id'][0])
-
-        for date, employee_ids in employees_per_date.items():
-            EmployeeSudo.browse(employee_ids).write({'last_validated_timesheet_date': date})
-
-        employees_without_validated_timesheet = set(employee_ids) - set([r['employee_id'][0] for r in timesheet_read_group])
-        EmployeeSudo.browse(employees_without_validated_timesheet).write({'last_validated_timesheet_date': False})
+        EmployeeSudo.browse(employee_ids).last_validated_timesheet_date = False
+        for employee, date_max in timesheet_read_group:
+            employee.sudo().last_validated_timesheet_date = date_max
 
     def action_validate_timesheet(self):
         notification = {

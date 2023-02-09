@@ -68,8 +68,8 @@ class QualityPoint(models.Model):
     reason = fields.Html('Cause')
 
     def _compute_check_count(self):
-        check_data = self.env['quality.check'].read_group([('point_id', 'in', self.ids)], ['point_id'], ['point_id'])
-        result = dict((data['point_id'][0], data['point_id_count']) for data in check_data)
+        check_data = self.env['quality.check']._read_group([('point_id', 'in', self.ids)], ['point_id'], ['__count'])
+        result = {point.id: count for point, count in check_data}
         for point in self:
             point.check_count = result.get(point.id, 0)
 
@@ -164,14 +164,14 @@ class QualityAlertTeam(models.Model):
     color = fields.Integer('Color', default=1)
 
     def _compute_check_count(self):
-        check_data = self.env['quality.check'].read_group([('team_id', 'in', self.ids), ('quality_state', '=', 'none')], ['team_id'], ['team_id'])
-        check_result = dict((data['team_id'][0], data['team_id_count']) for data in check_data)
+        check_data = self.env['quality.check']._read_group([('team_id', 'in', self.ids), ('quality_state', '=', 'none')], ['team_id'], ['__count'])
+        check_result = {team.id: count for team, count in check_data}
         for team in self:
             team.check_count = check_result.get(team.id, 0)
 
     def _compute_alert_count(self):
-        alert_data = self.env['quality.alert'].read_group([('team_id', 'in', self.ids), ('stage_id.done', '=', False)], ['team_id'], ['team_id'])
-        alert_result = dict((data['team_id'][0], data['team_id_count']) for data in alert_data)
+        alert_data = self.env['quality.alert']._read_group([('team_id', 'in', self.ids), ('stage_id.done', '=', False)], ['team_id'], ['__count'])
+        alert_result = {team.id: count for team, count in alert_data}
         for team in self:
             team.alert_count = alert_result.get(team.id, 0)
 
@@ -265,8 +265,8 @@ class QualityCheck(models.Model):
         'Additional Note', help="Additional remarks concerning this check.")
 
     def _compute_alert_count(self):
-        alert_data = self.env['quality.alert'].read_group([('check_id', 'in', self.ids)], ['check_id'], ['check_id'])
-        alert_result = dict((data['check_id'][0], data['check_id_count']) for data in alert_data)
+        alert_data = self.env['quality.alert']._read_group([('check_id', 'in', self.ids)], ['check_id'], ['__count'])
+        alert_result = {check.id: count for check, count in alert_data}
         for check in self:
             check.alert_count = alert_result.get(check.id, 0)
 

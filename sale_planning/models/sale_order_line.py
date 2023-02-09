@@ -34,18 +34,17 @@ class SaleOrderLine(models.Model):
     def _compute_planning_hours_planned(self):
         PlanningSlot = self.env['planning.slot']
         sol_planning = self.filtered_domain([('product_id.planning_enabled', '=', True), ('state', 'not in', ['draft', 'sent'])])
-        if sol_planning:
-            # For every confirmed SO service lines with slot generation, the allocated hours on planned slots are summed
-            group_data = PlanningSlot.with_context(sale_planning_prevent_recompute=True)._read_group([
-                ('sale_line_id', 'in', sol_planning.ids),
-                ('start_datetime', '!=', False),
-                ('resource_type', '!=', 'material'),
-            ], ['sale_line_id', 'allocated_hours:sum'], ['sale_line_id'])
-            mapped_data = {data['sale_line_id'][0]: data['allocated_hours'] for data in group_data}
-            for line in sol_planning:
-                line.planning_hours_planned = mapped_data.get(line.id, 0.0)
-        for line in self - sol_planning:
-            line.planning_hours_planned = 0.0
+
+        # For every confirmed SO service lines with slot generation, the allocated hours on planned slots are summed
+        group_data = PlanningSlot.with_context(sale_planning_prevent_recompute=True)._read_group([
+            ('sale_line_id', 'in', sol_planning.ids),
+            ('start_datetime', '!=', False),
+            ('resource_type', '!=', 'material'),
+        ], ['sale_line_id'], ['allocated_hours:sum'])
+        mapped_data = {sale_line.id: allocated_hours_sum for sale_line, allocated_hours_sum in group_data}
+        for line in self:
+            line.planning_hours_planned = mapped_data.get(line.id, 0.0)
+
         self.env.add_to_compute(PlanningSlot._fields['allocated_hours'], PlanningSlot.search([
             ('start_datetime', '=', False),
             ('sale_line_id', 'in', self.ids),

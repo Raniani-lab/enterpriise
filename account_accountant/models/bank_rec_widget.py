@@ -277,20 +277,18 @@ class BankRecWidget(models.Model):
                 partner_receivable_account = partner.property_account_receivable_id
                 common_domain = [('parent_state', '=', 'posted'), ('partner_id', '=', partner.id)]
                 if partner_receivable_account:
-                    res = self.env['account.move.line'].read_group(
+                    res = self.env['account.move.line']._read_group(
                         domain=expression.AND([common_domain, [('account_id', '=', partner_receivable_account.id)]]),
-                        fields=['amount_residual:sum'],
-                        groupby=['partner_id'],
+                        aggregates=['amount_residual:sum'],
                     )
-                    partner_receivable_amount = res[0]['amount_residual'] if res else 0.0
+                    partner_receivable_amount = res[0][0]
                 partner_payable_account = partner.property_account_payable_id
                 if partner_payable_account:
-                    res = self.env['account.move.line'].read_group(
+                    res = self.env['account.move.line']._read_group(
                         domain=expression.AND([common_domain, [('account_id', '=', partner_payable_account.id)]]),
-                        fields=['amount_residual:sum'],
-                        groupby=['partner_id'],
+                        aggregates=['amount_residual:sum'],
                     )
-                    partner_payable_amount = res[0]['amount_residual'] if res else 0.0
+                    partner_payable_amount = res[0][0]
             wizard.form_partner_currency_id = partner_currency
             wizard.form_partner_receivable_account_id = partner_receivable_account
             wizard.form_partner_payable_account_id = partner_payable_account

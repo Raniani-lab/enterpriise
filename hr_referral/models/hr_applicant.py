@@ -156,17 +156,17 @@ class Applicant(models.Model):
 
         # Decrease stage sequence
         if new_state.sequence < old_state_sequence:
-            stages_to_remove = self.env['hr.referral.points'].read_group(
+            stages_to_remove = self.env['hr.referral.points']._read_group(
                 [
                     ('applicant_id', '=', self.id),
                     ('stage_id.sequence', '<=', old_state_sequence),
                     ('stage_id.sequence', '>', new_state.sequence)
-                ], ['points'], ['stage_id'])
-            for stage in stages_to_remove:
+                ], ['stage_id'], ['points:sum'])
+            for stage, point_sum in stages_to_remove:
                 point_stage.append({
                     'applicant_id': self.id,
-                    'stage_id': stage['stage_id'][0],
-                    'points': - stage['points'],
+                    'stage_id': stage.id,
+                    'points': - point_sum,
                     'ref_user_id': self.ref_user_id.id,
                     'company_id': self.company_id.id
                 })

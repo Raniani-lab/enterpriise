@@ -32,8 +32,13 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
         # Check if there are multiple rates
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         period_domain = [('date_from', '>=', options['date']['date_from']), ('date_from', '<=', options['date']['date_to'])]
-        rg = self.env['account.disallowed.expenses.rate']._read_group(period_domain, ['rate'], 'category_id')
-        options['multi_rate_in_period'] = any(cat['category_id_count'] > 1 for cat in rg)
+        rg = self.env['account.disallowed.expenses.rate']._read_group(
+            period_domain,
+            ['category_id'],
+            having=[('__count', '>', 1)],
+            limit=1,
+        )
+        options['multi_rate_in_period'] = bool(rg)
 
     def _caret_options_initializer(self):
         return {

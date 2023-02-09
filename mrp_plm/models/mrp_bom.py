@@ -20,16 +20,14 @@ class MrpBom(models.Model):
         self.eco_inprogress_count = 0   # not used
         previous_boms_mapping = self._get_previous_boms()
         previous_boms_list = list(previous_boms_mapping.keys())
-        eco_data = self.env['mrp.eco'].read_group([
+        eco_data = self.env['mrp.eco']._read_group([
             ('bom_id', 'in', previous_boms_list),
             ('stage_id.folded', '=', False)],
-            ['bom_id'], ['bom_id'])
-        eco_count = dict((bom.id, 0) for bom in self)
-        for eco in eco_data:
-            previous_bom_id = eco['bom_id'][0]
-            previous_bom_eco_count = eco['bom_id_count']
-            for bom_id in previous_boms_mapping[previous_bom_id]:
-                eco_count[bom_id] += previous_bom_eco_count
+            ['bom_id'], ['__count'])
+        eco_count = {bom.id: 0 for bom in self}
+        for previous_bom, count in eco_data:
+            for bom_id in previous_boms_mapping[previous_bom.id]:
+                eco_count[bom_id] += count
         for bom in self:
             bom.eco_count = eco_count[bom.id]
 

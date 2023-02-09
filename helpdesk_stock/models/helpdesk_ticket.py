@@ -24,29 +24,29 @@ class HelpdeskTicket(models.Model):
             ('product_id', '!=', False),
             ('order_id.state', '=', 'sale'),
             ('order_partner_id', 'in', self.mapped('partner_id').ids)
-        ], ['order_partner_id', 'product_id:array_agg(product_id)'], ['order_partner_id'], lazy=False)
-        order_data = {data['order_partner_id'][0]: data['product_id'] for data in sale_data}
+        ], ['order_partner_id'], ['product_id:array_agg'])
+        order_data = {order_partner.id: product_ids for order_partner, product_ids in sale_data}
 
         picking_data = self.env['stock.picking']._read_group([
             ('state', '=', 'done'),
             ('partner_id', 'in', self.mapped('partner_id').ids),
             ('picking_type_code', '=', 'outgoing'),
-        ], ['ids:array_agg(id)', 'id'], ['partner_id'], lazy=False)
+        ], ['partner_id'], ['id:array_agg'])
 
-        picking_mapped_data = {data['partner_id'][0]: data['ids'] for data in picking_data}
-        picking_ids = [picking for key, picking in picking_mapped_data.items()]
+        # it was not correct, it took only products of stock_move_line from the first partner_id of self
+        picking_ids = [id_ for __, ids in picking_data for id_ in ids]
         outoing_product = {}
-        if picking_ids and picking_ids[0]:
+        if picking_ids:
             move_line_data = self.env['stock.move.line']._read_group([
                 ('state', '=', 'done'),
-                ('picking_id', 'in', picking_ids[0]),
+                ('picking_id', 'in', picking_ids),
                 ('picking_code', '=', 'outgoing'),
-            ], ['product_id:array_agg(product_id)'], ['picking_id'], lazy=False)
-            move_lines = {data['picking_id'][0]: data['product_id'] for data in move_line_data}
+            ], ['picking_id'], ['product_id:array_agg'])
+            move_lines = {picking.id: product_ids for picking, product_ids in move_line_data}
             if move_lines:
-                for partner_id, picks in picking_mapped_data.items():
-                    product_lists = [move_lines[pick] for pick in picks if pick in move_lines]
-                    outoing_product.update({partner_id: list(itertools.chain(*product_lists))})
+                for partner, picking_ids in picking_data:
+                    product_lists = [move_lines[pick] for pick in picking_ids if pick in move_lines]
+                    outoing_product[partner.id] = list(itertools.chain(*product_lists))
 
         for ticket in self:
             product_ids = set(order_data.get(ticket.partner_id.id, []) + outoing_product.get(ticket.partner_id.id, []))

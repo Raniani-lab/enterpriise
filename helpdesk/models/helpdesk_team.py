@@ -170,23 +170,23 @@ class HelpdeskTeam(models.Model):
         self.has_external_mail_server = self.env['ir.config_parameter'].sudo().get_param('base_setup.default_external_email_server')
 
     def _compute_unassigned_tickets(self):
-        ticket_data = self.env['helpdesk.ticket'].read_group([
+        ticket_data = self.env['helpdesk.ticket']._read_group([
             ('user_id', '=', False),
             ('team_id', 'in', self.ids),
             ('stage_id.fold', '=', False),
-        ], ['team_id'], ['team_id'])
-        mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
+        ], ['team_id'], ['__count'])
+        mapped_data = {team.id: count for team, count in ticket_data}
         for team in self:
             team.unassigned_tickets = mapped_data.get(team.id, 0)
 
     def _compute_ticket_closed(self):
         dt = datetime.datetime.combine(datetime.date.today() - relativedelta.relativedelta(days=6), datetime.time.min)
-        ticket_data = self.env['helpdesk.ticket'].read_group([
+        ticket_data = self.env['helpdesk.ticket']._read_group([
             ('team_id', 'in', self.ids),
             ('stage_id.fold', '=', True),
             ('close_date', '>=', dt)],
-            ['team_id'], ['team_id'])
-        mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
+            ['team_id'], ['__count'])
+        mapped_data = {team.id: count for team, count in ticket_data}
         for team in self:
             team.ticket_closed = mapped_data.get(team.id, 0)
 
@@ -216,36 +216,36 @@ class HelpdeskTeam(models.Model):
             team.success_rate = float_round(success_count * 100 / total_count, 2) if total_count else 0.0
 
     def _compute_urgent_ticket(self):
-        ticket_data = self.env['helpdesk.ticket'].read_group([
+        ticket_data = self.env['helpdesk.ticket']._read_group([
             ('team_id', 'in', self.ids),
             ('stage_id.fold', "=", False),
             ('priority', '=', 3)],
-            ['team_id'], ['team_id'])
-        mapped_data = {data['team_id'][0]: data['team_id_count'] for data in ticket_data}
+            ['team_id'], ['__count'])
+        mapped_data = {team.id: count for team, count in ticket_data}
         for team in self:
             team.urgent_ticket = mapped_data.get(team.id, 0)
 
     def _compute_sla_failed(self):
-        ticket_data = self.env['helpdesk.ticket'].read_group([
+        ticket_data = self.env['helpdesk.ticket']._read_group([
             ('team_id', 'in', self.ids),
             ('stage_id.fold', '=', False),
             ('sla_fail', '=', True)],
-            ['team_id'], ['team_id'])
-        mapped_data = {data['team_id'][0]: data['team_id_count'] for data in ticket_data}
+            ['team_id'], ['__count'])
+        mapped_data = {team.id: count for team, count in ticket_data}
         for team in self:
             team.sla_failed = mapped_data.get(team.id, 0)
 
     def _compute_open_ticket_count(self):
-        ticket_data = self.env['helpdesk.ticket'].read_group([
+        ticket_data = self.env['helpdesk.ticket']._read_group([
             ('team_id', 'in', self.ids), ('stage_id.fold', '=', False)
-        ], ['team_id'], ['team_id'])
-        mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in ticket_data)
+        ], ['team_id'], ['__count'])
+        mapped_data = {team.id: count for team, count in ticket_data}
         for team in self:
             team.open_ticket_count = mapped_data.get(team.id, 0)
 
     def _compute_sla_policy_count(self):
-        sla_data = self.env['helpdesk.sla'].read_group([('team_id', 'in', self.ids)], ['team_id'], ['team_id'])
-        mapped_data = dict((data['team_id'][0], data['team_id_count']) for data in sla_data)
+        sla_data = self.env['helpdesk.sla']._read_group([('team_id', 'in', self.ids)], ['team_id'], ['__count'])
+        mapped_data = {team.id: count for team, count in sla_data}
         for team in self:
             team.sla_policy_count = mapped_data.get(team.id, 0)
 
@@ -544,19 +544,7 @@ class HelpdeskTeam(models.Model):
 
     @api.model
     def retrieve_dashboard(self):
-        domain = [('user_id', '=', self.env.uid)]
-        group_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
-        list_fields = ['priority', 'create_date', 'stage_id', 'close_hours']
         user_uses_sla = self._check_sla_feature_enabled(check_user_has_group=True)
-
-        if user_uses_sla:
-            group_fields.insert(1, 'sla_deadline:year')
-            group_fields.insert(2, 'sla_deadline:hour')
-            group_fields.insert(3, 'sla_reached_late')
-            group_fields.insert(4, 'sla_reached')
-            list_fields.insert(1, 'sla_deadline')
-            list_fields.insert(2, 'sla_reached_late')
-            list_fields.insert(3, 'sla_reached')
 
         HelpdeskTicket = self.env['helpdesk.ticket']
         show_demo = not bool(HelpdeskTicket.search([], limit=1))
@@ -598,6 +586,7 @@ class HelpdeskTeam(models.Model):
             if _is_sla_failed(ticket):
                 result[key]['failed'] += 1
 
+        domain = [('user_id', '=', self.env.uid)]
         tickets = HelpdeskTicket.search_read(
             expression.AND([
                 domain,
@@ -612,23 +601,35 @@ class HelpdeskTeam(models.Model):
             if ticket['priority'] == '3':
                 add_to(ticket, 'my_urgent')
 
+        group_fields = []
+        if user_uses_sla:
+            group_fields = ['sla_reached_late', 'sla_reached']
+
         dt = fields.Date.context_today(self)
-        tickets = HelpdeskTicket.read_group(domain + [('stage_id.fold', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
-        for ticket in tickets:
-            result['today']['count'] += ticket['__count']
-            if ticket.get('sla_reached', False) or ticket.get('sla_reached_late', False):
-                result['today']['sla_ticket_count'] += ticket['__count']
-                if not _is_sla_failed(ticket):
-                    result['today']['success'] += ticket['__count']
+        tickets = HelpdeskTicket._read_group(domain + [('stage_id.fold', '=', True), ('close_date', '>=', dt)], group_fields, ['__count'])
+        for row in tickets:
+            if not user_uses_sla:
+                [count] = row
+            else:
+                sla_reached_late, sla_reached, count = row
+                if sla_reached or sla_reached_late:
+                    result['today']['sla_ticket_count'] += count
+                    if not sla_reached_late:
+                        result['today']['success'] += count
+            result['today']['count'] += count
 
         dt = fields.Datetime.to_string((datetime.date.today() - relativedelta.relativedelta(days=6)))
-        tickets = HelpdeskTicket.read_group(domain + [('stage_id.fold', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
-        for ticket in tickets:
-            result['7days']['count'] += ticket['__count']
-            if ticket.get('sla_reached', False) or ticket.get('sla_reached_late', False):
-                result['7days']['sla_ticket_count'] += ticket['__count']
-                if not _is_sla_failed(ticket):
-                    result['7days']['success'] += ticket['__count']
+        tickets = HelpdeskTicket._read_group(domain + [('stage_id.fold', '=', True), ('close_date', '>=', dt)], group_fields, ['__count'])
+        for row in tickets:
+            if not user_uses_sla:
+                [count] = row
+            else:
+                sla_reached_late, sla_reached, count = row
+                if sla_reached or sla_reached_late:
+                    result['7days']['sla_ticket_count'] += count
+                    if not sla_reached_late:
+                        result['7days']['success'] += count
+            result['7days']['count'] += count
 
         result['today']['success'] = fields.Float.round(result['today']['success'] * 100 / (result['today']['sla_ticket_count'] or 1), 2)
         result['7days']['success'] = fields.Float.round(result['7days']['success'] * 100 / (result['7days']['sla_ticket_count'] or 1), 2)
@@ -906,9 +907,9 @@ class HelpdeskTeam(models.Model):
                     index = (previous_index + 1) % len(member_ids)
                 result[team.id] = self.env['res.users'].browse(member_ids[index])
             elif team.assign_method == 'balanced':  # find the member with the least open ticket
-                ticket_count_data = self.env['helpdesk.ticket'].read_group([('stage_id.fold', '=', False), ('user_id', 'in', member_ids), ('team_id', '=', team.id)], ['user_id'], ['user_id'])
+                ticket_count_data = self.env['helpdesk.ticket']._read_group([('stage_id.fold', '=', False), ('user_id', 'in', member_ids), ('team_id', '=', team.id)], ['user_id'], ['__count'])
                 open_ticket_per_user_map = dict.fromkeys(member_ids, 0)  # dict: user_id -> open ticket count
-                open_ticket_per_user_map.update((item['user_id'][0], item['user_id_count']) for item in ticket_count_data)
+                open_ticket_per_user_map.update((user.id, count) for user, count in ticket_count_data)
                 result[team.id] = self.env['res.users'].browse(min(open_ticket_per_user_map, key=open_ticket_per_user_map.get))
         return result
 

@@ -146,21 +146,14 @@ class AmazonAccount(models.Model):
     #=== COMPUTE METHODS ===#
 
     def _compute_order_count(self):
-        # Not optimized for large sets of accounts because of the auto-join on order_line in
-        # sale.order leading to incorrect results when search_count is used to perform the count.
-        # This has trivial impact on performance since the field is rarely computed and the set
-        # of accounts will always be of minimal size.
         for account in self:
-            account.order_count = len(self.env['sale.order.line']._read_group(
-                [('amazon_offer_id.account_id', '=', account.id)], ['order_id'], ['order_id'])
-            )
+            account.order_count = self.env['sale.order.line'].search_count([('amazon_offer_id.account_id', '=', account.id)])
 
     def _compute_offer_count(self):
-        offers_data = self.env['amazon.offer'].read_group(
-            [('account_id', 'in', self.ids)], ['account_id'], ['account_id']
+        offers_data = self.env['amazon.offer']._read_group(
+            [('account_id', 'in', self.ids)], ['account_id'], ['__count']
         )
-        accounts_data = {offer_data['account_id'][0]: offer_data['account_id_count']
-                         for offer_data in offers_data}
+        accounts_data = {account.id: count for account, count in offers_data}
         for account in self:
             account.offer_count = accounts_data.get(account.id, 0)
 
@@ -204,11 +197,11 @@ class AmazonAccount(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        amazon_accounts_rg = self.read_group(
-            [], ['team_id', 'location_id'], ['team_id', 'location_id'], lazy=False
+        amazon_accounts_rg = self._read_group(
+            [], ['team_id', 'location_id'],
         )
-        amazon_teams_ids = [a['team_id'][0] for a in amazon_accounts_rg]
-        amazon_locations_ids = [a['location_id'][0] for a in amazon_accounts_rg]
+        amazon_teams_ids = [team.id for team, __ in amazon_accounts_rg]
+        amazon_locations_ids = [location.id for __, location in amazon_accounts_rg]
         for vals in vals_list:
             # Find or create the location of the Amazon warehouse to be associated with this account
             location = self.env['stock.location'].search([

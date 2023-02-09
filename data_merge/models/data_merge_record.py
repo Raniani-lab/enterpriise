@@ -259,14 +259,12 @@ class DataMergeRecord(models.Model):
                 ref_fields = group_model_fields[model]  # fields for the model
                 domain = OR([[(f, 'in', records.mapped('res_id'))] for f in ref_fields])
                 groupby_field = ref_fields[0]
-                count_grouped = self.env[model].read_group(domain, [groupby_field], [groupby_field])
-                for count in count_grouped:
-                    if not count[groupby_field]:
-                        continue
-                    record_id = records_mapped.get(count[groupby_field][0])
+                count_grouped = self.env[model]._read_group([(groupby_field, '!=', False)] + domain, [groupby_field], ['__count'])
+                for group_value, count in count_grouped:
+                    record_id = records_mapped.get(group_value.id)
                     if not record_id:
                         continue
-                    references[record_id].append((count['%s_count' % groupby_field], model_name[model]))
+                    references[record_id].append((count, model_name[model]))
         return references
 
     @api.depends('res_id')

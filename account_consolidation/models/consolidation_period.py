@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import json
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
@@ -47,18 +48,15 @@ class ConsolidationPeriod(models.Model):
         Compute the dashboard sections
         :return:
         """
-        Section = self.env['consolidation.group']
         for record in self:
             domain = [('period_id', '=', record.id), ('group_id.show_on_dashboard', '=', True)]
-            rfields = ['group_id.id', 'total:sum(amount)']
-            group_by = ['group_id']
-            grouped_res = self.env['consolidation.journal.line']._read_group(domain, rfields, group_by)
+            grouped_res = self.env['consolidation.journal.line']._read_group(domain, ['group_id'], ['amount:sum'])
 
             results = [
-                '{"name": "%s", "value": "%s"}' % (Section.browse(value['group_id'][0]).name, record._format_value(value['total']))
-                for value in grouped_res
+                {"name": group.name, "value": record._format_value(amount_sum)}
+                for group, amount_sum in grouped_res
             ]
-            record.dashboard_sections = '[%s]' % ','.join(results)
+            record.dashboard_sections = json.dumps(results)
 
     @api.depends('journal_ids')
     def _compute_journal_ids_count(self):
@@ -102,14 +100,14 @@ class ConsolidationPeriod(models.Model):
                 ('consolidation_account_chart_filtered_ids', '=', False),
                 ('used', '=', True)
             ]
-            values = Account.with_context(context).read_group(domain, ['amount:count(id)', 'company_id.id'],
-                                                              ['company_id'])
+            values = Account.with_context(context)._read_group(domain, ['company_id'], ['__count'])
 
             results = [
-                '{"company_id": %s,"name": "%s", "value": "%s"}' % (val['company_id'][0], Company.browse(val['company_id'][0]).name, val['amount'])
-                for val in values]
+                {"company_id": company.id, "name": company.name, "value": count}
+                for company, count in values
+            ]
 
-            record.company_unmapped_accounts_counts = '[%s]' % ','.join(results)
+            record.company_unmapped_accounts_counts = json.dumps(results)
 
     @api.onchange('date_analysis_end')
     def generate_guessed_company_periods(self):
@@ -486,8 +484,8 @@ class ConsolidationPeriodComposition(models.Model):
             ('account_id.used_in_ids', '=', consolidation_account.id),
             ('period_id', '=', self.composed_period_id.id)
         ]
-        amounts = self.env['consolidation.journal.line'].sudo()._read_group(domain, ['amount:sum(amount)'], [])
-        amount = amounts[0]['amount'] or 0.0
+        amounts = self.env['consolidation.journal.line'].sudo()._read_group(domain, [], ['amount:sum'])
+        amount = amounts[0][0]
         return (self.rate_consolidation / 100.0) * (amount * self.currency_rate)
 
     # COMPUTEDS
@@ -624,8 +622,8 @@ class ConsolidationCompanyPeriod(models.Model):
         """
         self.ensure_one()
         domain = self._get_move_lines_domain(consolidation_account)
-        res = self.env['account.move.line']._read_group(domain, ['balance:sum', 'id:array_agg'], [])
-        return res[0]['balance'] or 0.0, res[0]['id'] or []
+        res = self.env['account.move.line']._read_group(domain, [], ['balance:sum', 'id:array_agg'])
+        return res[0]
 
     def _apply_rates(self, amount, consolidation_account):
         """

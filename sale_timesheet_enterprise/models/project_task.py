@@ -45,10 +45,10 @@ class ProjectTask(models.Model):
                     ('task_id', 'in', list(all_task_ids)),
                     ('validated', 'in', [True, self.env['ir.config_parameter'].sudo().get_param('sale.invoiced_timesheet', DEFAULT_INVOICED_TIMESHEET) == 'approved'])
                 ],
-                ['task_id', 'unit_amount'],
                 ['task_id'],
+                ['unit_amount:sum'],
             )
-            timesheets_per_task = {res['task_id'][0]: res['unit_amount'] for res in timesheet_read_group}
+            timesheets_per_task = {task.id: unit_amount_sum for task, unit_amount_sum in timesheet_read_group}
         for task in self:
             remaining_hours = effective_hours = total_hours_spent = subtask_effective_hours = progress = 0.0
             if not is_portal_user:
@@ -82,10 +82,10 @@ class ProjectTask(models.Model):
             if param_invoiced_timesheet == 'approved':
                 timesheets_read_group = self.env['account.analytic.line']._read_group(
                     [('task_id', 'in', self.ids), ('validated', '=', True)],
-                    ['ids:array_agg(id)', 'task_id'],
                     ['task_id'],
+                    ['id:array_agg'],
                 )
-                timesheets_dict = {res['task_id'][0]: res['ids'] for res in timesheets_read_group}
+                timesheets_dict = {task.id: ids for task, ids in timesheets_read_group}
                 for record_read in result:
                     record_read['timesheet_ids'] = timesheets_dict.get(record_read['id'], [])
         return result
@@ -96,10 +96,10 @@ class ProjectTask(models.Model):
         uom_hour = self.env.ref('uom.product_uom_hour')
         allocated_hours_per_sol = self.env['project.task']._read_group([
             ('sale_line_id', 'in', res_ids),
-        ], ['sale_line_id', 'allocated_hours'], ['sale_line_id'])
+        ], ['sale_line_id'], ['allocated_hours:sum'])
         allocated_hours_per_sol_mapped = {
-            sol['sale_line_id'][0]: sol['allocated_hours']
-            for sol in allocated_hours_per_sol
+            sale_line.id: allocated_hours_sum
+            for sale_line, allocated_hours_sum in allocated_hours_per_sol
         }
         return {
             sol.id: {

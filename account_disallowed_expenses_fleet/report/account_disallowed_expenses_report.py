@@ -18,8 +18,13 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
 
         # Check if there are multiple rates
         period_domain = [('date_from', '>=', options['date']['date_from']), ('date_from', '<=', options['date']['date_to'])]
-        rg = self.env['fleet.disallowed.expenses.rate']._read_group(period_domain, ['rate'], 'vehicle_id')
-        options['multi_rate_in_period'] = options.get('multi_rate_in_period') or any(cat['vehicle_id_count'] > 1 for cat in rg)
+        rg = self.env['fleet.disallowed.expenses.rate']._read_group(
+            period_domain,
+            ['vehicle_id'],
+            having=[('__count', '>', 1)],
+            limit=1,
+        )
+        options['multi_rate_in_period'] = options.get('multi_rate_in_period') or bool(rg)
 
     def _get_query(self, options, line_dict_id=None):
         # EXTENDS account_disallowed_expenses.

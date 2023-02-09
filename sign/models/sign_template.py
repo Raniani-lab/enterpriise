@@ -78,19 +78,12 @@ class SignTemplate(models.Model):
             template.has_sign_requests = bool(template.with_context(active_test=False).sign_request_ids)
 
     def _compute_signed_in_progress_template(self):
-        sign_requests = self.env['sign.request'].read_group([('state', '!=', 'canceled')], ['state', 'template_id'], ['state', 'template_id'], lazy=False)
-        signed_request_dict = defaultdict(int)
-        in_progress_request_dict = defaultdict(int)
-        for sign_request in sign_requests:
-            if sign_request['state'] == 'sent':
-                template_id = sign_request['template_id'][0]
-                in_progress_request_dict[template_id] = sign_request['__count']
-            elif sign_request['state'] == 'signed':
-                template_id = sign_request['template_id'][0]
-                signed_request_dict[template_id] = sign_request['__count']
+        sign_requests = self.env['sign.request']._read_group([('state', '!=', 'canceled')], ['state', 'template_id'], ['__count'])
+        signed_request_dict = {template.id: count for state, template, count in sign_requests if state == 'signed'}
+        in_progress_request_dict = {template.id: count for state, template, count in sign_requests if state == 'sent'}
         for template in self:
-            template.signed_count = signed_request_dict[template.id]
-            template.in_progress_count = in_progress_request_dict[template.id]
+            template.signed_count = signed_request_dict.get(template.id, 0)
+            template.in_progress_count = in_progress_request_dict.get(template.id, 0)
 
     @api.depends_context('uid')
     def _compute_is_sharing(self):

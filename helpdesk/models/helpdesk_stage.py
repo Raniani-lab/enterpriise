@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, _
+from odoo.tools.misc import unique
 
 class HelpdeskStage(models.Model):
     _name = 'helpdesk.stage'
@@ -38,10 +39,10 @@ class HelpdeskStage(models.Model):
     ticket_count = fields.Integer(compute='_compute_ticket_count')
 
     def _compute_ticket_count(self):
-        res = self.env['helpdesk.ticket'].read_group(
+        res = self.env['helpdesk.ticket']._read_group(
             [('stage_id', 'in', self.ids)],
-            ['stage_id'], ['stage_id'])
-        stage_data = {r['stage_id'][0]: r['stage_id_count'] for r in res}
+            ['stage_id'], ['__count'])
+        stage_data = {stage.id: count for stage, count in res}
         for stage in self:
             stage.ticket_count = stage_data.get(stage.id, 0)
 
@@ -73,11 +74,10 @@ class HelpdeskStage(models.Model):
         self = self.with_context(active_test=False)
         # retrieves all the teams with a least 1 ticket in that stage
         # a ticket can be in a stage even if the team is not assigned to the stage
-        readgroup = self.with_context(active_test=False).env['helpdesk.ticket'].read_group(
+        readgroup = self.with_context(active_test=False).env['helpdesk.ticket']._read_group(
             [('stage_id', 'in', self.ids), ('team_id', '!=', False)],
-            ['team_id'],
             ['team_id'])
-        team_ids = list(set([team['team_id'][0] for team in readgroup] + self.team_ids.ids))
+        team_ids = list(unique([team.id for [team] in readgroup] + self.team_ids.ids))
 
         wizard = self.env['helpdesk.stage.delete.wizard'].create({
             'team_ids': team_ids,

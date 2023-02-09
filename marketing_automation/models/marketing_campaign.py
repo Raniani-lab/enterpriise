@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 import threading
 
 from ast import literal_eval
@@ -93,8 +94,8 @@ class MarketingCampaign(models.Model):
     def _compute_mailing_filter_count(self):
         filter_data = self.env['mailing.filter']._read_group([
             ('mailing_model_id', 'in', self.model_id.ids)
-        ], ['mailing_model_id'], ['mailing_model_id'])
-        mapped_data = {data['mailing_model_id'][0]: data['mailing_model_id_count'] for data in filter_data}
+        ], ['mailing_model_id'], ['__count'])
+        mapped_data = {mailing_model.id: count for mailing_model, count in filter_data}
         for campaign in self:
             campaign.mailing_filter_count = mapped_data.get(campaign.model_id.id, 0)
 
@@ -111,34 +112,34 @@ class MarketingCampaign(models.Model):
 
     @api.depends('marketing_activity_ids.mass_mailing_id')
     def _compute_link_tracker_click_count(self):
-        click_data = self.env['link.tracker.click'].sudo().read_group(
+        click_data = self.env['link.tracker.click'].sudo()._read_group(
             [('mass_mailing_id', 'in', self.mapped('marketing_activity_ids.mass_mailing_id').ids)],
-            ['mass_mailing_id', 'ip'],
-            ['mass_mailing_id']
+            ['mass_mailing_id'],
+            ['__count']
         )
-        mapped_data = {data['mass_mailing_id'][0]: data['mass_mailing_id_count'] for data in click_data}
+        mapped_data = {mass_mailing.id: count for mass_mailing, count in click_data}
         for campaign in self:
             campaign.link_tracker_click_count = sum(mapped_data.get(mailing_id, 0)
                                                     for mailing_id in campaign.mapped('marketing_activity_ids.mass_mailing_id').ids)
 
     @api.depends('participant_ids.state')
     def _compute_participants(self):
-        participants_data = self.env['marketing.participant'].read_group(
+        participants_data = self.env['marketing.participant']._read_group(
             [('campaign_id', 'in', self.ids)],
             ['campaign_id', 'state', 'is_test'],
-            ['campaign_id', 'state', 'is_test'], lazy=False)
-        mapped_data = {campaign.id: {'is_test': 0} for campaign in self}
-        for data in participants_data:
-            if data['is_test']:
-                mapped_data[data['campaign_id'][0]]['is_test'] += data['__count']
+            ['__count'])
+        mapped_data = defaultdict(dict)
+        for campaign, state, is_test, count in participants_data:
+            if is_test:
+                mapped_data[campaign.id]['is_test'] += count
             else:
-                mapped_data[data['campaign_id'][0]][data['state']] = data['__count']
+                mapped_data[campaign.id][state] = count
         for campaign in self:
             campaign_data = mapped_data.get(campaign.id)
             campaign.running_participant_count = campaign_data.get('running', 0)
             campaign.completed_participant_count = campaign_data.get('completed', 0)
             campaign.total_participant_count = campaign.completed_participant_count + campaign.running_participant_count
-            campaign.test_participant_count = campaign_data.get('is_test')
+            campaign.test_participant_count = campaign_data.get('is_test', 0)
 
     def _group_expand_states(self, states, domain, order):
         return [key for key, val in type(self).state.selection]

@@ -17,19 +17,19 @@ class Project(models.Model):
         if not self.user_has_groups('helpdesk.group_helpdesk_user'):
             self.ticket_count = 0
             return
-        result = self.env['helpdesk.ticket'].read_group([
+        result = self.env['helpdesk.ticket']._read_group([
             ('project_id', 'in', self.ids)
-        ], ['project_id'], ['project_id'])
-        data = {data['project_id'][0]: data['project_id_count'] for data in result}
+        ], ['project_id'], ['__count'])
+        data = {project.id: count for project, count in result}
         for project in self:
             project.ticket_count = data.get(project.id, 0)
 
     @api.depends('helpdesk_team.project_id')
     def _compute_has_helpdesk_team(self):
-        result = self.env['helpdesk.team'].read_group([
+        result = self.env['helpdesk.team']._read_group([
             ('project_id', 'in', self.ids)
-        ], ['project_id'], ['project_id'])
-        data = {data['project_id'][0]: data['project_id_count'] > 0 for data in result}
+        ], ['project_id'], ['__count'])
+        data = {project.id: count for project, count in result}
         for project in self:
             project.has_helpdesk_team = data.get(project.id, False)
 

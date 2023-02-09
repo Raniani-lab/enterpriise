@@ -19,10 +19,10 @@ class Project(models.Model):
     def _compute_total_forecast_time(self):
         shifts_read_group = self.env['planning.slot']._read_group(
             [('start_datetime', '!=', False), ('end_datetime', '!=', False), ('project_id', 'in', self.ids)],
-            ['project_id', 'allocated_hours'],
             ['project_id'],
+            ['allocated_hours:sum'],
         )
-        shifts_per_project = {res['project_id'][0]: int(round(res['allocated_hours'])) for res in shifts_read_group}
+        shifts_per_project = {project.id: int(round(allocated_hours_sum)) for project, allocated_hours_sum in shifts_read_group}
         for project in self:
             project.total_forecast_time = shifts_per_project.get(project.id, 0)
 

@@ -319,10 +319,9 @@ class MarketingActivity(models.Model):
         if domain:
             trace_domain += domain
         trace_to_activities = {
-            self.env['marketing.activity'].browse(group['activity_id'][0]):
-            self.env['marketing.trace'].browse(group['ids'])
-            for group in self.env['marketing.trace'].read_group(
-                trace_domain, fields=['ids:array_agg(id)', 'activity_id'], groupby=['activity_id']
+            activity: traces
+            for activity, traces in self.env['marketing.trace']._read_group(
+                trace_domain, groupby=['activity_id'], aggregates=['id:recordset']
             )
         }
 

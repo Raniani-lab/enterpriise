@@ -96,11 +96,10 @@ class DocumentFolder(models.Model):
         doc_share_read_group = self.env['documents.share']._read_group(
             search_domain,
             ['folder_id', 'include_sub_folders'],
-            ['folder_id', 'include_sub_folders'],
-            lazy=False,
+            ['__count'],
         )
 
-        doc_share_count_per_folder_id = {(res['folder_id'][0], res['include_sub_folders']): res['__count'] for res in doc_share_read_group}
+        doc_share_count_per_folder_id = {(folder.id, include_sub_folders): count for folder, include_sub_folders, count in doc_share_read_group}
         for folder in self:
             folder.is_shared = doc_share_count_per_folder_id.get((folder.id, True)) \
                 or doc_share_count_per_folder_id.get((folder.id, False)) \
@@ -125,12 +124,12 @@ class DocumentFolder(models.Model):
             record.has_write_access = folder_has_groups
 
     def _compute_action_count(self):
-        read_group_var = self.env['documents.workflow.rule'].read_group(
+        read_group_var = self.env['documents.workflow.rule']._read_group(
             [('domain_folder_id', 'in', self.ids)],
-            fields=['domain_folder_id'],
-            groupby=['domain_folder_id'])
+            groupby=['domain_folder_id'],
+            aggregates=['__count'])
 
-        action_count_dict = dict((d['domain_folder_id'][0], d['domain_folder_id_count']) for d in read_group_var)
+        action_count_dict = {domain_folder.id: count for domain_folder, count in read_group_var}
         for record in self:
             record.action_count = action_count_dict.get(record.id, 0)
 
@@ -240,12 +239,12 @@ class DocumentFolder(models.Model):
         }
 
     def _compute_document_count(self):
-        read_group_var = self.env['documents.document'].read_group(
+        read_group_var = self.env['documents.document']._read_group(
             [('folder_id', 'in', self.ids)],
-            fields=['folder_id'],
-            groupby=['folder_id'])
+            groupby=['folder_id'],
+            aggregates=['__count'])
 
-        document_count_dict = dict((d['folder_id'][0], d['folder_id_count']) for d in read_group_var)
+        document_count_dict = {folder.id: count for folder, count in read_group_var}
         for record in self:
             record.document_count = document_count_dict.get(record.id, 0)
 

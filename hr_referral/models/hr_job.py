@@ -25,7 +25,7 @@ class Job(models.Model):
             grouped_data = self.env['link.tracker']._read_group([
                 ('source_id', '=', self.env.user.utm_source_id.id),
                 ('campaign_id', 'in', self.mapped('utm_campaign_id').ids)
-                ], ['count', 'campaign_id', 'medium_id'], ['campaign_id', 'medium_id'], lazy=False)
+                ], ['campaign_id', 'medium_id'], ['count:sum'])
         else:
             grouped_data = {}
         medium_direct = self.env.ref('utm.utm_medium_direct', raise_if_not_found=False)
@@ -33,8 +33,8 @@ class Job(models.Model):
         medium_twitter = self.env.ref('utm.utm_medium_twitter', raise_if_not_found=False)
         medium_linkedin = self.env.ref('utm.utm_medium_linkedin', raise_if_not_found=False)
         mapped_data = {job.utm_campaign_id.id: {} for job in self}
-        for elem in grouped_data:
-            mapped_data[elem['campaign_id'][0]][elem['medium_id'][0]] = elem['count']
+        for campaign, medium, count in grouped_data:
+            mapped_data[campaign.id][medium.id] = count
         for job in self:
             data = mapped_data[job.utm_campaign_id.id]
             job.direct_clicks = data.get(medium_direct.id, 0) if medium_direct else 0

@@ -30,22 +30,25 @@ class HrContract(models.Model):
         )
         if not overtimes:
             return
-        # both overtimes and work_data are sorted by date
-        data_iterator = iter(work_data)
-        current_data = next(data_iterator)
+
+        # Comment to remove, issue with previous version:
+        # - next raise StopIteration when iter of work_data become empty (no catch of it)
+        # - sum(overtime.duration) should crash......
+        # Not sure I get it :D, shouldn't just remove it ???
+        work_data_index_by_date = {
+            date_start_day: i
+            for i, [date_start_day, work_entry_type, __] in enumerate(work_data)
+            if work_entry_type.id != default_work_entry_type.id
+        }
+        total_overtime_not_match = 0
         for overtime in overtimes:
-            while current_data and datetime.strptime(current_data['date_start:day'], '%d %b %Y') != overtime.date and\
-                current_data['work_entry_type_id'][0] != default_work_entry_type.id:
-                current_data = next(data_iterator)
-                continue
-            if not current_data:
-                break
-            # Remove the duration of the overtime from the data
-            current_data['hours'] -= overtime.duration
-        work_data.append({
-            'hours': sum(overtime.duration),
-            'work_entry_type_id': [overtime_work_entry_type.id],
-        })
+            if overtime.date in work_data_index_by_date:
+                row_work_data_index = work_data_index_by_date[overtime.date]
+                date_start_day, work_entry_type, hours = work_data[row_work_data_index]
+                work_data[work_data_index_by_date[overtime.date]] = (date_start_day, work_entry_type, hours - overtime.duration)
+            else:
+                total_overtime_not_match += overtime.duration
+        work_data.append((False, overtime_work_entry_type, total_overtime_not_match))
 
     def _get_work_hours_split_half(self, date_from, date_to, domain=None):
         res = super()._get_work_hours_split_half(date_from, date_to, domain=domain)

@@ -20,8 +20,7 @@ class ProjectTask(models.Model):
 
     def _get_task_document_data(self):
         domain = [('res_model', '=', 'project.task'), ('res_id', 'in', self.ids)]
-        documents_data = self.env['documents.document']._read_group(domain, ['res_id'], ['res_id'])
-        return {document_data['res_id']: document_data['res_id_count'] for document_data in documents_data}
+        return dict(self.env['documents.document']._read_group(domain, ['res_id'], ['__count']))
 
     def _compute_attached_document_count(self):
         tasks_data = self._get_task_document_data()
@@ -37,10 +36,10 @@ class ProjectTask(models.Model):
                         ('res_model', '=', 'project.task'),
                         ('res_id', 'in', self.ids),
             ],
-            ['ids:array_agg(id)'],
             ['res_id'],
+            ['id:array_agg', '__count'],
         )
-        document_ids_and_count_per_task_id = {documents['res_id']: (documents['ids'], documents['res_id_count']) for documents in documents_read_group}
+        document_ids_and_count_per_task_id = {res_id: ids_count for res_id, *ids_count in documents_read_group}
         for task in self:
             task.shared_document_ids, task.shared_document_count = document_ids_and_count_per_task_id.get(task.id, (False, 0))
 

@@ -91,13 +91,12 @@ class SocialPost(models.Model):
     def _compute_post_engagement(self):
         results = self.env['social.live.post']._read_group(
             [('post_id', 'in', self.ids)],
-            ['post_id', 'engagement_total:sum(engagement)'],
             ['post_id'],
-            lazy=False
+            ['engagement:sum']
         )
         engagement_per_post = {
-            result['post_id'][0]: result['engagement_total']
-            for result in results
+            post.id: engagement_total
+            for post, engagement_total in results
         }
         for post in self:
             post.engagement = engagement_per_post.get(post.id, 0)

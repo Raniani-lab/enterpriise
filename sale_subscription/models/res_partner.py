@@ -31,22 +31,19 @@ class ResPartner(models.Model):
         return expression.AND([domain, [('is_subscription', '=', False)]])
 
     def _subscription_count(self):
-        # retrieve all children partners and prefetch 'parent_id' on them
-        all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
-        all_partners.read(['parent_id'])
+        all_partners_subquery = self.with_context(active_test=False)._search([('id', 'child_of', self.ids)])
 
         subscription_data = self.env['sale.order']._read_group(
-            domain=[('partner_id', 'in', all_partners.ids), ('is_subscription', '=', 'True'), ('subscription_state', 'in', ['3_progress', '6_churn'])],
-            fields=['partner_id'], groupby=['partner_id']
+            domain=[('partner_id', 'in', all_partners_subquery), ('is_subscription', '=', 'True'), ('subscription_state', 'in', ['3_progress', '6_churn'])],
+            groupby=['partner_id'], aggregates=['__count'],
         )
 
         self.subscription_count = 0
-        for group in subscription_data:
-            partner = self.browse(group['partner_id'][0])
+        for partner, count in subscription_data:
             while partner:
                 if partner in self:
-                    partner.subscription_count += group['partner_id_count']
-                partner = partner.parent_id
+                    partner.subscription_count += count
+                partner = partner.with_context(prefetch_fields=False).parent_id
 
     def open_related_subscription(self):
         self.ensure_one()

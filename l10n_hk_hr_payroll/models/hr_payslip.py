@@ -126,17 +126,16 @@ class Payslip(models.Model):
         date_from = datetime.combine(self.date_from, datetime.min.time())
         date_to = datetime.combine(self.date_to, datetime.max.time())
         remainig_work_entries_domain = expression.AND([domain, [('leave_id.date_from', '<', self.date_from)]])
-        work_entries = defaultdict(tuple)
         work_entries_dict = self.env['hr.work.entry']._read_group(
             self.contract_id._get_work_hours_domain(date_from, date_to, domain=remainig_work_entries_domain, inside=True),
-            ['hours:sum(duration)', 'leave_id', 'work_entry_type_id'],
             ['leave_id', 'work_entry_type_id'],
-            lazy=False
+            ['duration:sum'],
         )
-        work_entries.update({(
-            data['work_entry_type_id'][0] if data['work_entry_type_id'] else False,
-            data['leave_id'][0] if data['leave_id'] else False
-        ): data['hours'] for data in work_entries_dict})
+        work_entries = defaultdict(tuple)
+        work_entries.update({
+            (work_entry_type.id, leave.id): hours
+            for leave, work_entry_type, hours in work_entries_dict
+        })
         for work_entry, hours in work_entries.items():
             work_entry_id, leave_id = work_entry
             work_entry_type = self.env['hr.work.entry.type'].browse(work_entry_id)

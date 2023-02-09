@@ -69,8 +69,8 @@ class Task(models.Model):
             })
 
     def _compute_quotation_count(self):
-        quotation_data = self.sudo().env['sale.order'].read_group([('task_id', 'in', self.ids)], ['task_id'], ['task_id'])
-        mapped_data = dict([(q['task_id'][0], q['task_id_count']) for q in quotation_data])
+        quotation_data = self.sudo().env['sale.order']._read_group([('task_id', 'in', self.ids)], ['task_id'], ['__count'])
+        mapped_data = {task.id: count for task, count in quotation_data}
         for task in self:
             task.quotation_count = mapped_data.get(task.id, 0)
 
@@ -78,8 +78,8 @@ class Task(models.Model):
         domain = [('task_id', 'in', self.ids)]
         if self.user_has_groups('base.group_portal'):
             domain = expression.AND([domain, [('state', '!=', 'draft')]])
-        quotation_data = self.env['sale.order'].read_group(domain, ['task_id'], ['task_id'])
-        mapped_data = {q['task_id'][0]: q['task_id_count'] for q in quotation_data}
+        quotation_data = self.env['sale.order']._read_group(domain, ['task_id'], ['__count'])
+        mapped_data = {task.id: count for task, count in quotation_data}
         for task in self:
             task.portal_quotation_count = mapped_data.get(task.id, 0)
 
@@ -95,15 +95,12 @@ class Task(models.Model):
             is_task_related = sale_line_id.task_id == (task or task._origin)
             return all([is_not_timesheet_line, is_not_empty, is_not_service_from_so, is_task_related])
 
-        employee_mapping_timesheet_product_ids = {}  # keys = project_id, value = list of timesheet_product_id
-        fsm_tasks = self.filtered('is_fsm')
-        if fsm_tasks:
-            employee_mapping_read_group = self.env['project.sale.line.employee.map'].sudo().read_group(
-                [('project_id', 'in', fsm_tasks.project_id.ids)],
-                ['project_id', 'timesheet_product_ids:array_agg(timesheet_product_id)'],
-                ['project_id'],
-            )
-            employee_mapping_timesheet_product_ids = {res['project_id']: res['timesheet_product_ids'] for res in employee_mapping_read_group}
+        employee_mapping_read_group = self.env['project.sale.line.employee.map'].sudo()._read_group(
+            [('project_id', 'in', self.filtered('is_fsm').project_id.ids)],
+            ['project_id'],
+            ['timesheet_product_id:array_agg'],
+        )
+        employee_mapping_timesheet_product_ids = {project.id: timesheet_product_ids for project, timesheet_product_ids in employee_mapping_read_group}
         sols = self.env['sale.order.line'].sudo().search([('order_id', 'in', self.sudo().sale_order_id.ids)])
         sols_by_so = defaultdict(lambda: self.env['sale.order.line'])
         for sol in sols:
@@ -333,8 +330,8 @@ class Task(models.Model):
         res = super().action_fsm_validate(stop_running_timers)
         if res is True:
             billable_tasks = self.filtered(lambda task: task.allow_billable and (task.allow_timesheets or task.allow_material))
-            timesheets_read_group = self.env['account.analytic.line'].sudo().read_group([('task_id', 'in', billable_tasks.ids), ('project_id', '!=', False)], ['task_id', 'id'], ['task_id'])
-            timesheet_count_by_task_dict = {timesheet['task_id'][0]: timesheet['task_id_count'] for timesheet in timesheets_read_group}
+            timesheets_read_group = self.env['account.analytic.line'].sudo()._read_group([('task_id', 'in', billable_tasks.ids), ('project_id', '!=', False)], ['task_id'], ['__count'])
+            timesheet_count_by_task_dict = {task.id: count for task, count in timesheets_read_group}
             for task in billable_tasks:
                 timesheet_count = timesheet_count_by_task_dict.get(task.id)
                 if not task.sale_order_id and not timesheet_count:  # Prevent creating/confirming a SO if there are no products and timesheets

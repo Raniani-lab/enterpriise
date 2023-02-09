@@ -959,17 +959,16 @@ class Planning(models.Model):
         """
         # Get the oldest start date and latest end date from the slots.
         domain = [("id", "in", slot_ids)]
-        fields = ["start_datetime:min", "end_datetime:max", "resource_ids:array_agg(resource_id)"]
-        planning_slot_read_group = self.env["planning.slot"]._read_group(domain, fields, [])
-        if not planning_slot_read_group[0]['__count']:
+        fields = ["start_datetime:min", "end_datetime:max", "resource_id:recordset", "__count"]
+        planning_slot_read_group = self.env["planning.slot"]._read_group(domain, [], fields)
+        start_datetime, end_datetime, resources, count = planning_slot_read_group[0]
+        if not count:
             return [{}]
 
-        start_datetime = planning_slot_read_group[0]["start_datetime"].replace(tzinfo=pytz.utc)
-        end_datetime = planning_slot_read_group[0]["end_datetime"].replace(tzinfo=pytz.utc)
+        start_datetime = start_datetime.replace(tzinfo=pytz.utc)
+        end_datetime = end_datetime.replace(tzinfo=pytz.utc)
 
         # Get slots' resources and current company work intervals.
-        fetched_resource_ids = [res_id for res_id in planning_slot_read_group[0]["resource_ids"] if res_id is not None]
-        resources = self.env["resource.resource"].browse(fetched_resource_ids)
         work_intervals_per_resource, dummy = resources._get_valid_work_intervals(start_datetime, end_datetime)
         company_calendar = self.env.company.resource_calendar_id
         company_calendar_work_intervals = company_calendar._work_intervals_batch(start_datetime, end_datetime)

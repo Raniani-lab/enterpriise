@@ -54,9 +54,9 @@ class TimerMixin(models.AbstractModel):
                 ('res_id', 'in', self.ids),
                 ('res_model', '=', self._name),
             ],
-            fields=['res_id', 'ids:array_agg(id)'],
-            groupby=['res_id'])
-        timer_by_model = {res['res_id']: self.env['timer.timer'].browse(res['ids'][0]) for res in timer_read_group}
+            groupby=['res_id'],
+            aggregates=['id:array_agg'])
+        timer_by_model = dict(timer_read_group)
         for record in self:
             record.user_timer_id = timer_by_model.get(record.id, False)
 

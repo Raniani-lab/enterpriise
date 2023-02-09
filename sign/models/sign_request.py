@@ -478,17 +478,18 @@ class SignRequest(models.Model):
             can = canvas.Canvas(packet)
             itemsByPage = self.template_id._get_sign_items_by_page()
             items_ids = [id for items in itemsByPage.values() for id in items.ids]
-            values_dict = self.env['sign.request.item.value'].read_group(
+            values_dict = self.env['sign.request.item.value']._read_group(
                 [('sign_item_id', 'in', items_ids), ('sign_request_id', '=', self.id)],
-                fields=['value:array_agg', 'frame_value:array_agg', 'frame_has_hash:array_agg'],
-                groupby=['sign_item_id']
+                groupby=['sign_item_id'],
+                aggregates=['value:array_agg', 'frame_value:array_agg', 'frame_has_hash:array_agg']
             )
             values = {
-                val['sign_item_id'][0] : {
-                    'value': val['value'][0],
-                    'frame': val['frame_value'][0],
-                    'frame_has_hash': val['frame_has_hash'][0],
-                } for val in values_dict if 'value' in val
+                sign_item.id : {
+                    'value': values[0],
+                    'frame': frame_values[0],
+                    'frame_has_hash': frame_has_hashes[0],
+                }
+                for sign_item, values, frame_values, frame_has_hashes in values_dict
             }
 
             for p in range(0, old_pdf.getNumPages()):

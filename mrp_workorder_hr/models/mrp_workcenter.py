@@ -61,9 +61,6 @@ class MrpWorkcenterProductivity(models.Model):
             time.total_cost = time.employee_cost * time.duration / 60
 
     def _check_open_time_ids(self):
-        self.env['mrp.productivity.time']._read_group([
-            ('workorder_id', 'in', self.workorder_id.ids),
-            ('date_stop', '=', False),
-            ('employee_id', '!=', False),
-        ], ['employee_id', 'workorder_id'], ['employee_id', 'workorder_id'], lazy=False)
+        # Override to remove the constraints
         # TODO make check on employees
+        pass

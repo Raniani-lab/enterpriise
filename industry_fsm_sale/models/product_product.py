@@ -38,9 +38,9 @@ class ProductProduct(models.Model):
                 SaleOrderLine = SaleOrderLine.sudo()
 
             products_qties = SaleOrderLine._read_group(
-                [('id', 'in', task.sale_order_id.order_line.ids), ('task_id', '=', task.id)],
-                ['product_id', 'product_uom_qty'], ['product_id'])
-            qty_dict = dict([(x['product_id'][0], x['product_uom_qty']) for x in products_qties if x['product_id']])
+                [('id', 'in', task.sale_order_id.order_line.ids), ('task_id', '=', task.id), ('product_id', '!=', False)],
+                ['product_id'], ['product_uom_qty:sum'])
+            qty_dict = {product.id: product_uom_qty_sum for product, product_uom_qty_sum in products_qties}
             for product in self:
                 product.fsm_quantity = qty_dict.get(product.id, 0)
         else:
@@ -54,12 +54,11 @@ class ProductProduct(models.Model):
                 ('order_id', '=', task.sale_order_id.id),
                 ('product_id', 'in', self.ids),
                 ('task_id', '=', task.id)],
-                ['product_id', 'sequence', 'ids:array_agg(id)'],
                 ['product_id', 'sequence'],
-                lazy=False)
+                ['id:array_agg'])
             sale_lines_per_product = defaultdict(lambda: self.env['sale.order.line'])
-            for sol in sale_lines_read_group:
-                sale_lines_per_product[sol['product_id'][0]] |= SaleOrderLine_sudo.browse(sol['ids'])
+            for product, __, ids in sale_lines_read_group:
+                sale_lines_per_product[product.id] |= SaleOrderLine_sudo.browse(ids)
             for product in self:
                 sale_lines = sale_lines_per_product.get(product.id, self.env['sale.order.line'])
                 all_editable_lines = sale_lines.filtered(lambda l: l.qty_delivered == 0 or l.qty_delivered_method == 'manual' or l.state != 'done')

@@ -29,21 +29,21 @@ class HrEmployee(models.Model):
 
     @api.depends('appraisal_ids')
     def _compute_appraisal_count(self):
-        read_group_result = self.env['hr.appraisal'].with_context(active_test=False).read_group([('employee_id', 'in', self.ids)], ['employee_id'], ['employee_id'])
-        result = dict((data['employee_id'][0], data['employee_id_count']) for data in read_group_result)
+        read_group_result = self.env['hr.appraisal'].with_context(active_test=False)._read_group([('employee_id', 'in', self.ids)], ['employee_id'], ['__count'])
+        result = {employee.id: count for employee, count in read_group_result}
         for employee in self:
             employee.appraisal_count = result.get(employee.id, 0)
 
     @api.depends('appraisal_ids.state')
     def _compute_ongoing_appraisal_count(self):
-        read_group_result = self.env['hr.appraisal'].with_context(active_test=False).read_group([('employee_id', 'in', self.ids), ('state', 'in', ['new', 'pending'])], ['employee_id'], ['employee_id'])
-        result = dict((data['employee_id'][0], data['employee_id_count']) for data in read_group_result)
+        read_group_result = self.env['hr.appraisal'].with_context(active_test=False)._read_group([('employee_id', 'in', self.ids), ('state', 'in', ['new', 'pending'])], ['employee_id'], ['__count'])
+        result = {employee.id: count for employee, count in read_group_result}
         for employee in self:
             employee.ongoing_appraisal_count = result.get(employee.id, 0)
 
     def _compute_uncomplete_goals_count(self):
-        read_group_result = self.env['hr.appraisal.goal'].read_group([('employee_id', 'in', self.ids), ('progression', '!=', '100')], ['employee_id'], ['employee_id'])
-        result = dict((data['employee_id'][0], data['employee_id_count']) for data in read_group_result)
+        read_group_result = self.env['hr.appraisal.goal']._read_group([('employee_id', 'in', self.ids), ('progression', '!=', '100')], ['employee_id'], ['__count'])
+        result = {employee.id: count for employee, count in read_group_result}
         for employee in self:
             employee.uncomplete_goals_count = result.get(employee.id, 0)
 

@@ -117,8 +117,8 @@ class HelpdeskTeam(models.Model):
 
         team_count_data = self.env['helpdesk.team']._read_group([
             ('use_website_helpdesk_form', '=', True),
-        ], ['website_id'], ['website_id'])
-        team_count = {t['website_id'][0] if t['website_id'] else False: t['website_id_count'] for t in team_count_data}
+        ], ['website_id'], ['__count'])
+        team_count = {website.id: count for website, count in team_count_data}
 
         for team in with_website:
             if not team.website_menu_id:

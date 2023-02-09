@@ -109,8 +109,8 @@ class AppointmentType(models.Model):
 
     @api.depends('meeting_ids')
     def _compute_appointment_count(self):
-        meeting_data = self.env['calendar.event']._read_group([('appointment_type_id', 'in', self.ids)], ['appointment_type_id'], ['appointment_type_id'])
-        mapped_data = {m['appointment_type_id'][0]: m['appointment_type_id_count'] for m in meeting_data}
+        meeting_data = self.env['calendar.event']._read_group([('appointment_type_id', 'in', self.ids)], ['appointment_type_id'], ['__count'])
+        mapped_data = {appointment_type.id: count for appointment_type, count in meeting_data}
         for appointment_type in self:
             appointment_type.appointment_count = mapped_data.get(appointment_type.id, 0)
 
@@ -120,8 +120,8 @@ class AppointmentType(models.Model):
         until_yersterday = datetime.combine(datetime.today().date(), datetime.max.time())
         meeting_data = self.env['calendar.event']._read_group(
             [('appointment_type_id', 'in', self.ids), ('start', '>=', from_n_days_ago), ('start', '<=', until_yersterday)],
-            ['appointment_type_id'], ['appointment_type_id'])
-        mapped_data = {m['appointment_type_id'][0]: m['appointment_type_id_count'] for m in meeting_data}
+            ['appointment_type_id'], ['__count'])
+        mapped_data = {appointment_type.id: count for appointment_type, count in meeting_data}
 
         for appointment_type in self:
             appointment_type.appointment_count_report = mapped_data.get(appointment_type.id, 0)

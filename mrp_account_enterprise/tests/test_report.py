@@ -197,13 +197,12 @@ class TestReportsCommon(TestMrpAccount):
         # must flush else SQL request in report is not accurate
         self.env.flush_all()
 
-        report = self.env['mrp.report'].read_group(
+        report = self.env['mrp.report']._read_group(
             [('product_id', '=', self.bom_2.product_id.id)],
-            ['unit_cost:avg', 'unit_component_cost:avg', 'unit_operation_cost:avg', 'unit_duration:avg'],
-            ['product_id'],
+            aggregates=['unit_cost:avg', 'unit_component_cost:avg', 'unit_operation_cost:avg', 'unit_duration:avg'],
         )[0]
-
-        self.assertEqual(report['unit_cost'], 190)
-        self.assertEqual(report['unit_component_cost'], 150)
-        self.assertEqual(report['unit_operation_cost'], 40)
-        self.assertEqual(report['unit_duration'], 30)
+        unit_cost, unit_component_cost, unit_operation_cost, unit_duration = report
+        self.assertEqual(unit_cost, 190)
+        self.assertEqual(unit_component_cost, 150)
+        self.assertEqual(unit_operation_cost, 40)
+        self.assertEqual(unit_duration, 30)

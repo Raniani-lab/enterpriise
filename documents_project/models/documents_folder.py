@@ -100,16 +100,15 @@ class DocumentFolder(models.Model):
         recordset if no project is found.
         """
         self.ensure_one()
-        project_read_group = self.env['project.project'].sudo()._read_group(
+        eligible_projects = self.env['project.project'].sudo()._read_group(
             [('documents_folder_id', 'parent_of', self.id)],
-            ['__count'],
             ['documents_folder_id'],
+            having=[('__count', '=', 1)],
         )
-        # dict {folder_id: position}, where position is a value used to sort projects by their folder_id
-        folder_id_order = {int(folder_id): i for i, folder_id in enumerate(reversed(self.parent_path[:-1].split('/')))}
-        eligible_projects = [project for project in project_read_group if project['documents_folder_id_count'] == 1]
         if not eligible_projects:
             return self.env['project.project']
 
-        eligible_projects.sort(key=lambda project: folder_id_order[project['documents_folder_id'][0]])
-        return self.env['project.project'].sudo().search([('documents_folder_id', '=', eligible_projects[0]['documents_folder_id'][0])], limit=1)
+        # dict {folder_id: position}, where position is a value used to sort projects by their folder_id
+        folder_id_order = {int(folder_id): i for i, folder_id in enumerate(reversed(self.parent_path[:-1].split('/')))}
+        eligible_projects.sort(key=lambda project_group: folder_id_order[project_group[0]])
+        return self.env['project.project'].sudo().search([('documents_folder_id', '=', eligible_projects[0][0])], limit=1)

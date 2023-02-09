@@ -311,14 +311,14 @@ class AccountAsset(models.Model):
     @api.depends('depreciation_move_ids.state', 'parent_id')
     def _compute_counts(self):
         depreciation_per_asset = {
-            group['asset_id'][0]: group['move_ids']
-            for group in self.env['account.move'].read_group(
+            group.id: count
+            for group, count in self.env['account.move']._read_group(
                 domain=[
                     ('asset_id', 'in', self.ids),
                     ('state', '=', 'posted'),
                 ],
-                fields=['move_ids:count(id)'],
                 groupby=['asset_id'],
+                aggregates=['__count'],
             )
         }
         for asset in self:

@@ -188,18 +188,14 @@ class L10nInGSTReturnPeriod(models.Model):
         AccountMove = self.env['account.move']
         for record in self:
             domain = [
-                ('company_id', 'in', (record.company_ids + record.company_id).ids),
+                ('company_id', 'in', (record.company_ids or record.company_id).ids),
                 ('move_type', 'in', AccountMove.get_sale_types(True)),
                 ("invoice_date", ">=", record.start_date),
                 ("invoice_date", "<=", record.end_date),
                 ("state", "=", "posted"),
             ]
-            total_by_companies = AccountMove._read_group(domain, ['amount_total_in_currency_signed'], ['company_id'])
-            total = 0.00
-            for total_by_company in total_by_companies:
-                if total_by_company['company_id'][0] in (record.company_ids or record.company_id).ids:
-                    total += total_by_company['amount_total_in_currency_signed']
-            record.invoice_amount = total
+            total_by_companies = AccountMove._read_group(domain, [], ['amount_total_in_currency_signed:sum'])
+            record.invoice_amount = total_by_companies[0][0]
 
     @api.depends("company_ids", "company_id")
     def _compute_expected_amount(self):
@@ -218,7 +214,7 @@ class L10nInGSTReturnPeriod(models.Model):
                 ("move_id.state", "=", "posted"),
                 ("tax_tag_ids", "in", all_gst_tag.ids),
             ]
-            total_by_companies = self.env['account.move.line'].read_group(domain, ['balance'], ['company_id'])
+            total_by_companies = self.env['account.move.line']._read_group(domain, ['company_id'], ['balance:sum'])
             total = 0.00
             for total_by_company in total_by_companies:
                 if total_by_company['company_id'][0] in (record.company_ids or record.company_id).ids:
@@ -236,7 +232,7 @@ class L10nInGSTReturnPeriod(models.Model):
                 ("invoice_date", "<=", record.end_date),
                 ("state", "=", "posted")
             ]
-            total_by_companies = AccountMove._read_group(domain, ['amount_total_in_currency_signed'], ['company_id'])
+            total_by_companies = AccountMove._read_group(domain, ['company_id'], ['amount_total_in_currency_signed:sum'])
             total = 0.00
             for total_by_company in total_by_companies:
                 if total_by_company['company_id'][0] in (record.company_ids or record.company_id).ids:

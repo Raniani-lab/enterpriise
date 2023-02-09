@@ -11,8 +11,8 @@ class HelpdeskTicket(models.Model):
 
     @api.depends('repair_ids')
     def _compute_repairs_count(self):
-        repair_data = self.env['repair.order'].sudo().read_group([('ticket_id', 'in', self.ids)], ['ticket_id'], ['ticket_id'])
-        mapped_data = dict([(r['ticket_id'][0], r['ticket_id_count']) for r in repair_data])
+        repair_data = self.env['repair.order'].sudo()._read_group([('ticket_id', 'in', self.ids)], ['ticket_id'], ['__count'])
+        mapped_data = {ticket.id: count for ticket, count in repair_data}
         for ticket in self:
             ticket.repairs_count = mapped_data.get(ticket.id, 0)
 

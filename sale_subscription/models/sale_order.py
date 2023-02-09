@@ -386,14 +386,14 @@ class SaleOrder(models.Model):
         self.renewal_count = 0
         if not any(self.mapped('subscription_state')):
             return
-        result = self.env['sale.order'].read_group([
+        result = self.env['sale.order']._read_group([
                 ('subscription_state', '=', '2_renewal'),
                 ('subscription_id', 'in', self.ids)
             ],
             ['subscription_id'],
-            ['subscription_id']
+            ['__count'],
         )
-        counters = {data['subscription_id'][0]: data['subscription_id_count'] for data in result}
+        counters = {subscription.id: count for subscription, count in result}
         for so in self:
             so.renewal_count = counters.get(so.id, 0)
 
@@ -402,14 +402,14 @@ class SaleOrder(models.Model):
         self.upsell_count = 0
         if not any(self.mapped('subscription_state')):
             return
-        result = self.env['sale.order'].read_group([
+        result = self.env['sale.order']._read_group([
                 ('subscription_state', '=', '7_upsell'),
                 ('subscription_id', 'in', self.ids)
             ],
             ['subscription_id'],
-            ['subscription_id']
+            ['__count'],
         )
-        counters = {data['subscription_id'][0]: data['subscription_id_count'] for data in result}
+        counters = {subscription.id: count for subscription, count in result}
         for so in self:
             so.upsell_count = counters.get(so.id, 0)
 
@@ -419,14 +419,14 @@ class SaleOrder(models.Model):
             self.history_count = 0
             return
         origin_ids = self.origin_order_id.ids + self.ids
-        result = self.env['sale.order'].read_group([
+        result = self.env['sale.order']._read_group([
                 ('state', 'not in', ['cancel', 'draft']),
                 ('origin_order_id', 'in', origin_ids)
             ],
             ['origin_order_id'],
-            ['origin_order_id']
+            ['__count'],
         )
-        counters = {data['origin_order_id'][0]: data['origin_order_id_count'] + 1 for data in result}
+        counters = {origin_order: count + 1 for origin_order, count in result}
         for so in self:
             so.history_count = counters.get(so.origin_order_id.id or so.id, 0)
 

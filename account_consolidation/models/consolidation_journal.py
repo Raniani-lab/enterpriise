@@ -63,9 +63,9 @@ class ConsolidationJournal(models.Model):
         Compute the total balance of the journal
         """
         JournalLine = self.env['consolidation.journal.line']
-        journal_lines = JournalLine.read_group([('journal_id', 'in', self.ids)], ['amount:sum', 'journal_id'],
-                                               ['journal_id'])
-        amounts = {a['journal_id'][0]: a['amount'] for a in journal_lines}
+        journal_lines = JournalLine._read_group([('journal_id', 'in', self.ids)], ['journal_id'],
+                                                ['amount:sum'])
+        amounts = {journal.id: amount for journal, amount in journal_lines}
         for record in self:
             record.balance = amounts.get(record.id, 0)
 

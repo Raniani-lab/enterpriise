@@ -12,10 +12,10 @@ def _documents_fsm_post_init(env):
         ._read_group(
             [("folder_id", "in", fsm_projects.documents_folder_id.ids)],
             ["folder_id"],
-            ["folder_id"],
+            ["__count"],
         )
     )
-    workspaces_doc_count = {d["folder_id"][0]: d["folder_id_count"] for d in read_group_var}
+    workspaces_doc_count = {folder.id: count for folder, count in read_group_var}
     for project in fsm_projects:
         if project.document_count == 0:
             project.use_documents = False

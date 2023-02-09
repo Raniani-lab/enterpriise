@@ -383,12 +383,12 @@ class ProductProduct(models.Model):
             ('company_id', '=', self.env.company.id),
             ('quality_state', '!=', 'none')
         ]
-        quality_checks_by_state = self.env['quality.check']._read_group(domain, ['product_id'], ['quality_state'])
-        for checks_data in quality_checks_by_state:
-            if checks_data['quality_state'] == 'fail':
-                quality_fail_qty = checks_data['quality_state_count']
-            elif checks_data['quality_state'] == 'pass':
-                quality_pass_qty = checks_data['quality_state_count']
+        quality_checks_by_state = self.env['quality.check']._read_group(domain, ['quality_state'], ['__count'])
+        for quality_state, count in quality_checks_by_state:
+            if quality_state == 'fail':
+                quality_fail_qty = count
+            elif quality_state == 'pass':
+                quality_pass_qty = count
 
         return quality_fail_qty, quality_pass_qty
 

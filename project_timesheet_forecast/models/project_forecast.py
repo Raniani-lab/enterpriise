@@ -85,21 +85,17 @@ class Forecast(models.Model):
                     slot.can_open_timesheets = False
 
     def _gantt_progress_bar_project_id(self, res_ids, start, stop):
-        project_dict = {
-            project.id: project.allocated_hours
-            for project in self.env['project.project'].search([('id', 'in', res_ids)])
-        }
         planning_read_group = self.env['planning.slot']._read_group(
             [('project_id', 'in', res_ids), ('start_datetime', '<=', stop), ('end_datetime', '>=', start)],
-            ['project_id', 'allocated_hours'],
             ['project_id'],
+            ['allocated_hours:sum'],
         )
         return {
-            res['project_id'][0]: {
-                'value': res['allocated_hours'],
-                'max_value': project_dict.get(res['project_id'][0], 0)
+            project.id: {
+                'value': allocated_hours_sum,
+                'max_value': project.allocated_hours
             }
-            for res in planning_read_group
+            for project, allocated_hours_sum in planning_read_group
         }
 
     def _gantt_progress_bar(self, field, res_ids, start, stop):

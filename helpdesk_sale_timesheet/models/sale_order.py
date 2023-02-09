@@ -14,12 +14,12 @@ class SaleOrder(models.Model):
             self.ticket_count = 0
             return
 
-        ticket_data = self.env['helpdesk.ticket'].read_group([
+        ticket_data = self.env['helpdesk.ticket']._read_group([
             '|', ('sale_order_id', 'in', self.ids),
             ('sale_line_id', 'in', self.order_line.ids),
             ('use_helpdesk_sale_timesheet', '=', True)
-        ], ['sale_order_id'], ['sale_order_id'])
-        mapped_data = dict((data['sale_order_id'][0], data['sale_order_id_count']) for data in ticket_data)
+        ], ['sale_order_id'], ['__count'])
+        mapped_data = {sale_order.id: count for sale_order, count in ticket_data}
         for so in self:
             so.ticket_count = mapped_data.get(so.id, 0)
 

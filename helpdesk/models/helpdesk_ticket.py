@@ -174,12 +174,11 @@ class HelpdeskTicket(models.Model):
     def _compute_sla_reached(self):
         sla_status_read_group = self.env['helpdesk.sla.status']._read_group(
             [('exceeded_hours', '<', 0), ('ticket_id', 'in', self.ids)],
-            ['ticket_id', 'ids:array_agg(id)'],
             ['ticket_id'],
         )
-        sla_status_ids_per_ticket = {res['ticket_id'][0]: res['ids'] for res in sla_status_read_group}
+        sla_status_ids_per_ticket = {ticket.id for [ticket] in sla_status_read_group}
         for ticket in self:
-            ticket.sla_reached = bool(sla_status_ids_per_ticket.get(ticket.id))
+            ticket.sla_reached = ticket.id in sla_status_ids_per_ticket
 
     @api.depends('sla_status_ids.deadline', 'sla_status_ids.reached_datetime')
     def _compute_sla_deadline(self):

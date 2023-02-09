@@ -68,8 +68,8 @@ class DataCleaningModel(models.Model):
         count_data = self.env['data_cleaning.record']._read_group(
             [('cleaning_model_id', 'in', self.ids)],
             ['cleaning_model_id'],
-            ['cleaning_model_id'])
-        counts = {cd['cleaning_model_id'][0]: cd['cleaning_model_id_count'] for cd in count_data}
+            ['__count'])
+        counts = {cleaning_model.id: count for cleaning_model, count in count_data}
         for cm_model in self:
             cm_model.records_to_clean_count = counts[cm_model.id] if cm_model.id in counts else 0
 

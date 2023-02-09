@@ -439,13 +439,13 @@ class PlanningSlot(models.Model):
         if priority in cache:
             return cache[priority].pop(0) if cache.get(priority) else None
         if priority == 'previous_slot':
-            search = self.read_group([
+            search = self._read_group([
                 ('sale_line_id', '=', self.sale_line_id.id),
                 ('employee_id', '!=', False),
                 ('start_datetime', '!=', False),
                 ('employee_id', 'not in', employee_ids_to_exclude),
-            ], ['employee_id', 'end_datetime:max'], ['employee_id'], orderby='end_datetime desc')
-            cache[priority] = [res['employee_id'][0] for res in search]
+            ], ['employee_id'], order='end_datetime:max desc, employee_id')
+            cache[priority] = [employee.id for [employee] in search]
         elif priority == 'default_role':
             search = self.env['hr.employee'].sudo().search([
                 ('default_planning_role_id', '=', self.role_id.id),
@@ -508,11 +508,11 @@ class PlanningSlot(models.Model):
             ('start_datetime', '<', end),
             ('end_datetime', '>', start),
             ('employee_id', '!=', False),
-        ], ['sale_line_id', 'employee_ids:array_agg(employee_id)'], ['sale_line_id'])
+        ], ['sale_line_id'], ['employee_id:array_agg'])
 
         return {
-            sol['sale_line_id'][0]: sol['employee_ids']
-            for sol in employee_per_sol
+            sale_line.id: employee_ids
+            for sale_line, employee_ids in employee_per_sol
         }
 
     @api.model

@@ -27,12 +27,11 @@ class ComparisonBuilder(AbstractBuilder):
             ('account_id', '=', account.id),
             ('period_id', 'in', kwargs.get('period_ids', []))
         ]
-        groupby = ('period_id',)
-        total_lines = self.env['consolidation.journal.line']._read_group(domain, ('total:sum(amount)',), groupby)
+        total_lines = self.env['consolidation.journal.line']._read_group(domain, ['period_id'], ['amount:sum'])
         if len(total_lines) == 0:
             return []
         totals = []
-        total_dict = {line['period_id'][0]: line['total'] for line in total_lines}
+        total_dict = {period.id: total for period, total in total_lines}
         # Need to keep the order of periods as nothing in DB can order them
         for period_id in kwargs.get('period_ids', []):
             totals.append(account.sign * total_dict.get(period_id, 0.0))

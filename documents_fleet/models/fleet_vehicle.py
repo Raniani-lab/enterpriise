@@ -14,8 +14,8 @@ class FleetVehicle(models.Model):
     def _compute_document_count(self):
         document_data = self.env['documents.document']._read_group([
             ('res_id', 'in', self.ids), ('res_model', '=', self._name)],
-            fields=['res_id'], groupby=['res_id'])
-        mapped_data = {datum['res_id']: datum['res_id_count'] for datum in document_data}
+            groupby=['res_id'], aggregates=['__count'])
+        mapped_data = dict(document_data)
         for record in self:
             record.document_count = mapped_data.get(record.id, 0)
 

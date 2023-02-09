@@ -18,16 +18,14 @@ class AppointmentType(models.Model):
     @api.depends_context('allowed_company_ids')
     def _compute_lead_ids(self):
         allowed_company_ids = [False, *self.env.context.get('allowed_company_ids', [])]
-        appointment_lead_data = self.env['calendar.event'].sudo().read_group(
+        appointment_lead_data = self.env['calendar.event'].sudo()._read_group(
             [('appointment_type_id', 'in', self.ids), ('opportunity_id.company_id', 'in', allowed_company_ids)],
             ['appointment_type_id', 'opportunity_id'],
-            ['appointment_type_id', 'opportunity_id'],
-            lazy=False)
+        )
         appointment_lead_mapped_data = defaultdict(list)
-        for data in appointment_lead_data:
-            appointment_type_id = data['appointment_type_id'][0]
-            opportunity_id = data['opportunity_id'][0]
-            appointment_lead_mapped_data.setdefault(appointment_type_id, list()).append(opportunity_id)
+        for appointment_type, opportunity in appointment_lead_data:
+            appointment_lead_mapped_data[appointment_type.id].append(opportunity.id)
+
         for appointment in self:
             lead_ids = appointment_lead_mapped_data[appointment.id]
             leads = self.env['crm.lead'].browse(lead_ids)._filter_access_rules('read')

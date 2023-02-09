@@ -77,12 +77,12 @@ class AppointmentShare(models.Model):
 
     @api.depends('appointment_type_ids')
     def _compute_appointment_type_count(self):
-        appointment_data = self.env['appointment.type'].read_group(
+        appointment_data = self.env['appointment.type']._read_group(
             [('appointment_invite_ids', 'in', self.ids)],
             ['appointment_invite_ids'],
-            'appointment_invite_ids',
+            ['__count'],
         )
-        mapped_data = {m['appointment_invite_ids'][0]: m['appointment_invite_ids_count'] for m in appointment_data}
+        mapped_data = {appointment_invite.id: count for appointment_invite, count in appointment_data}
         for invite in self:
             if isinstance(invite.id, models.NewId):
                 invite.appointment_type_count = len(invite.appointment_type_ids)

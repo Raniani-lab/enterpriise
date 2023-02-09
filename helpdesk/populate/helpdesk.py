@@ -49,14 +49,14 @@ class HelpdeskTicket(models.Model):
 
     def _populate_factories(self):
         stages_per_team = {
-            stage_group['team_ids'][0]: stage_group['ids']
-            for stage_group in self.env['helpdesk.stage']._read_group(
+            team.id: ids
+            for team, ids in self.env['helpdesk.stage']._read_group(
                 domain=[
                     ('id', 'in', self.env.registry.populated_models["helpdesk.stage"]),
                     ('team_ids', 'in', self.env.registry.populated_models["helpdesk.team"]),
                 ],
-                fields=['team_ids', 'ids:array_agg(id)'],
                 groupby=['team_ids'],
+                aggregates=['id:array_agg'],
             )
         }
         team_ids = list(stages_per_team)
@@ -82,14 +82,14 @@ class HelpdeskSLA(models.Model):
 
     def _populate_factories(self):
         stages_per_team = {
-            stage_group['team_ids'][0]: stage_group['ids']
-            for stage_group in self.env['helpdesk.stage']._read_group(
+            team.id: ids
+            for team, ids in self.env['helpdesk.stage']._read_group(
                 domain=[
                     ('id', 'in', self.env.registry.populated_models["helpdesk.stage"]),
                     ('team_ids', 'in', self.env.registry.populated_models["helpdesk.team"]),
                 ],
-                fields=['team_ids', 'ids:array_agg(id)'],
                 groupby=['team_ids'],
+                aggregates=['id:array_agg'],
             )
         }
         team_ids = list(stages_per_team)

@@ -19,8 +19,8 @@ class ProjectUpdate(models.Model):
             ('project_id', '=', project.id),
             ('sale_line_id', 'in', sol_ids),
             ('start_datetime', '>=', fields.Date.today())
-        ], ['sale_line_id', 'allocated_hours'], ['sale_line_id'])
-        slots_by_order_line = {res['sale_line_id'][0]: res['allocated_hours'] for res in slots}
+        ], ['sale_line_id'], ['allocated_hours:sum'])
+        slots_by_order_line = {sale_line.id: allocated_hours_sum for sale_line, allocated_hours_sum in slots}
         uom_hour = self.env.ref('uom.product_uom_hour')
         for service in services['data']:
             if service['is_unit']:

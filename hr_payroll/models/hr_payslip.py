@@ -1101,16 +1101,12 @@ class HrPayslip(models.Model):
         batch_limit_date = fields.Date.today() - relativedelta(months=1, day=1)
         batch_group_read = self.env['hr.payslip.run'].with_context(lang='en_US')._read_group(
             [('date_start', '>=', fields.Date.today() - relativedelta(months=1, day=1))],
-            fields=['date_start'],
             groupby=['date_start:month'],
-            orderby='date_start desc')
+            order='date_start:month desc')
         # Keep only the last month
         batch_group_read = batch_group_read[:1]
         if batch_group_read:
-            if batch_group_read[-1]['__range'].get('date_start:month'):
-                min_date = datetime.strptime(batch_group_read[-1]['__range']['date_start:month']['from'], '%Y-%m-%d')
-            else:
-                min_date = batch_limit_date
+            min_date = batch_group_read[-1][0] or batch_limit_date
             last_batches = self.env['hr.payslip.run'].search([('date_start', '>=', min_date)])
         else:
             last_batches = self.env['hr.payslip.run']
@@ -1178,9 +1174,8 @@ class HrPayslip(models.Model):
                 ('state', '=', 'open')]
         employee_contract_groups = self.env['hr.contract']._read_group(
             ambiguous_domain,
-            fields=['state:count_distinct'], groupby=['employee_id'])
-        ambiguous_employee_ids = [
-            group['employee_id'][0] for group in employee_contract_groups if group['state'] == 2]
+            groupby=['employee_id'], having=[('state:count_distinct', '=', 2)])
+        ambiguous_employee_ids = [employee.id for [employee] in employee_contract_groups]
         if ambiguous_employee_ids:
             ambiguous_contracts_str = _('Employees With Both New And Running Contracts')
             ambiguous_contracts = self.env['hr.contract'].search(
@@ -1280,13 +1275,13 @@ class HrPayslip(models.Model):
             ('date_start', '>=', today + relativedelta(months=-3, day=1))])
 
         past_contracts_grouped_by_employee_id = {
-            c['employee_id'][0]: c['employee_id_count']
-            for c in HRContract._read_group([
+            employee.id
+            for [employee] in HRContract._read_group([
                 ('employee_id', 'in', new_contracts.employee_id.ids),
                 ('date_end', '<', today),
                 ('state', 'in', ['open', 'close']),
                 ('id', 'not in', new_contracts.ids)
-            ], groupby=['employee_id'], fields=['employee_id'])
+            ], groupby=['employee_id'])
         }
 
         new_contracts_without_past_contract = HRContract
@@ -1566,17 +1561,13 @@ class HrPayslip(models.Model):
             batch_limit_date = fields.Date.today() - relativedelta(years=1, day=1)
             batch_group_read = self.env['hr.payslip.run'].with_context(lang='en_US')._read_group(
                 [('date_start', '>=', batch_limit_date)],
-                fields=['date_start'],
                 groupby=['date_start:month'],
                 limit=20,
-                orderby='date_start desc')
+                order='date_start:month desc')
             # Keep only the last 3 months
             batch_group_read = batch_group_read[:3]
             if batch_group_read:
-                if batch_group_read[-1]['__range'].get('date_start:month'):
-                    min_date = datetime.strptime(batch_group_read[-1]['__range']['date_start:month']['from'], '%Y-%m-%d')
-                else:
-                    min_date = fields.Date.today() - relativedelta(months=1, day=1)
+                min_date = batch_group_read[-1][0] or fields.Date.today() - relativedelta(months=1, day=1)
                 batches_read_result = self.env['hr.payslip.run'].search_read(
                     [('date_start', '>=', min_date)],
                     fields=self._get_dashboard_batch_fields())

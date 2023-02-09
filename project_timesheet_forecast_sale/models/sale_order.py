@@ -26,18 +26,18 @@ class SaleOrderLine(models.Model):
                 ('validated', '=', True),
                 ('so_line', 'in', planning_forecast_sols.ids),
                 ('project_id', '!=', False),
-            ], ['so_line', 'unit_amount', 'date:max'], ['so_line'])
+            ], ['so_line'], ['unit_amount:sum', 'date:max'])
             mapped_unit_amount = defaultdict(float)
             planning_domain = []
-            for data in group_unit_amount:
+            for so_line, unit_amount_sum, date_max in group_unit_amount:
                 # Build a domain to search for slots, for every SOL, beginning from the most recent validated timesheet
                 tmp_domain = [
-                    ('sale_line_id', '=', data['so_line'][0]),
-                    ('start_datetime', '>', datetime.combine(data['date'], datetime.max.time())),
+                    ('sale_line_id', '=', so_line.id),
+                    ('start_datetime', '>', datetime.combine(date_max, datetime.max.time())),
                 ]
                 planning_domain = expression.OR([planning_domain, tmp_domain])
-                mapped_unit_amount[data['so_line'][0]] = data['unit_amount']
-            sol_without_validated_aal = [item for item in planning_forecast_sols.ids if item not in mapped_unit_amount.keys()]
+                mapped_unit_amount[so_line.id] = unit_amount_sum
+            sol_without_validated_aal = [item for item in planning_forecast_sols.ids if item not in mapped_unit_amount]
             if sol_without_validated_aal:
                 # Fill the domain with SOL which doesn't have validated timesheets (so no start_datetime constraint)
                 if planning_domain:
@@ -47,9 +47,9 @@ class SaleOrderLine(models.Model):
             # Search for the allocated hours on the slots in the domain
             group_allocated_hours = PlanningSlot.with_context(sale_planning_prevent_recompute=True)._read_group(
                 expression.AND([[('start_datetime', '!=', False)], planning_domain]),
-                ['sale_line_id', 'allocated_hours'],
-                ['sale_line_id'])
-            mapped_allocated_hours = {data['sale_line_id'][0]: data['allocated_hours'] for data in group_allocated_hours}
+                ['sale_line_id'],
+                ['allocated_hours:sum'])
+            mapped_allocated_hours = {sale_line.id: allocated_hours for sale_line, allocated_hours in group_allocated_hours}
             uom_hour = self.env.ref('uom.product_uom_hour')
             for sol in planning_forecast_sols:
                 # Convert timesheeted unit amounts to hours

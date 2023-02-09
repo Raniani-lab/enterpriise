@@ -13,8 +13,8 @@ class HelpdeskTicket(models.Model):
 
     @api.depends('fsm_task_ids')
     def _compute_fsm_task_count(self):
-        ticket_groups = self.env['project.task'].read_group([('is_fsm', '=', True), ('helpdesk_ticket_id', '!=', False)], ['id:count_distinct'], ['helpdesk_ticket_id'])
-        ticket_count_mapping = dict(map(lambda group: (group['helpdesk_ticket_id'][0], group['helpdesk_ticket_id_count']), ticket_groups))
+        ticket_groups = self.env['project.task']._read_group([('is_fsm', '=', True), ('helpdesk_ticket_id', '!=', False)], ['helpdesk_ticket_id'], ['__count'])
+        ticket_count_mapping = {helpdesk_ticket.id: count for helpdesk_ticket, count in ticket_groups}
         for ticket in self:
             ticket.fsm_task_count = ticket_count_mapping.get(ticket.id, 0)
 

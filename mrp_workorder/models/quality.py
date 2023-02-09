@@ -29,11 +29,11 @@ class MrpRouting(models.Model):
 
     @api.depends('quality_point_ids')
     def _compute_quality_point_count(self):
-        read_group_res = self.env['quality.point'].sudo().read_group(
+        read_group_res = self.env['quality.point'].sudo()._read_group(
             [('id', 'in', self.quality_point_ids.ids)],
-            ['operation_id'], 'operation_id'
+            ['operation_id'], ['__count']
         )
-        data = dict((res['operation_id'][0], res['operation_id_count']) for res in read_group_res)
+        data = {operation.id: count for operation, count in read_group_res}
         for operation in self:
             operation.quality_point_count = data.get(operation.id, 0)
 

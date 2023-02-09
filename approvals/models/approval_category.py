@@ -72,8 +72,8 @@ class ApprovalCategory(models.Model):
 
     def _compute_request_to_validate_count(self):
         domain = [('request_status', '=', 'pending'), ('approver_ids.user_id', '=', self.env.user.id)]
-        requests_data = self.env['approval.request']._read_group(domain, ['category_id'], ['category_id'])
-        requests_mapped_data = dict((data['category_id'][0], data['category_id_count']) for data in requests_data)
+        requests_data = self.env['approval.request']._read_group(domain, ['category_id'], ['__count'])
+        requests_mapped_data = {category.id: count for category, count in requests_data}
         for category in self:
             category.request_to_validate_count = requests_mapped_data.get(category.id, 0)
 

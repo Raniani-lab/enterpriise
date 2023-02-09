@@ -21,9 +21,8 @@ class ResourceResource(models.Model):
                 ('state', '=', 'open'),
             ],
             ['employee_id'],
-            ['employee_id'],
         )
-        running_contract_count_per_employee_id = {res['employee_id'][0]: res['employee_id_count'] for res in contract_read_group}
+        employee_ids_having_running_contract = {employee.id for [employee] in contract_read_group}
         for resource in self:
-            if running_contract_count_per_employee_id.get(resource.employee_id.id, 0):
+            if resource.employee_id.id in employee_ids_having_running_contract:
                 resource.calendar_id = False

@@ -237,7 +237,7 @@
     </record>
 
     <menuitem id="helpdesk_stage_menu" action="helpdesk_stage_action"
-        sequence="3" parent="helpdesk.helpdesk_menu_config"/>
+        sequence="3" parent="helpdesk.helpdesk_menu_config" groups="base.group_no_one"/>
 
     <!-- HELPDESK.SLA -->
     <record id="helpdesk_sla_view_tree" model="ir.ui.view">

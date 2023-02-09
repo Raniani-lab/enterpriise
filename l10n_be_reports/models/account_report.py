@@ -376,4 +376,10 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
             # in the XML wizard and on the tax closing entry without needing to recompute the whole report; just using the options.
             options['tax_report_control_error'] = True
 
+        if _evaluate_check(lambda expr_totals: not any(
+            [expr_totals[expr_map[grid]]['value'] for grid in ('c44', 'c46L', 'c46T', 'c48s44', 'c48s46L', 'c48s46T')]
+        )):
+            # remind user to submit EC Sales Report if any ec sales related taxes
+            options['be_tax_report_ec_sales_reminder'] = True
+
         return failed_control_lines

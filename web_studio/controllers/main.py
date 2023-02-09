@@ -547,17 +547,21 @@ class WebStudioController(http.Controller):
             # create a new field if it does not exist
             if 'node' in op:
                 if op['node'].get('tag') == 'field' and op['node'].get('field_description'):
-                    if op['node']['field_description'].get('special') == 'lines':
-                        field = request.env['ir.model']._get(model)._setup_one2many_lines()
-                    else:
+                    is_special_lines = op['node']['field_description'].get('special') == 'lines'
+                    if not is_special_lines:
                         model = op['node']['field_description']['model_name']
-                        # Check if field exists before creation
-                        field = IrModelFields.search([
-                            ('name', '=', op['node']['field_description']['name']),
-                            ('model', '=', model),
-                        ], limit=1)
+                    # Check if field exists before creation
+                    field = IrModelFields.search([
+                        ('name', '=', op['node']['field_description']['name']),
+                        ('model', '=', model),
+                    ], limit=1)
+
                     if not field:
-                        field = self.create_new_field(op['node']['field_description'])
+                        if is_special_lines:
+                            field = request.env['ir.model']._get(model)._setup_one2many_lines(
+                                op['node']['field_description']['name'])
+                        else:
+                            field = self.create_new_field(op['node']['field_description'])
                     op['node']['attrs']['name'] = field.name
                 if op['node'].get('tag') == 'filter' and op['target']['tag'] == 'group' and op['node']['attrs'].get('create_group'):
                     op['node']['attrs'].pop('create_group')

@@ -54,4 +54,5 @@ class StockMoveLine(models.Model):
             'dummy_id',
             'product_packaging_id',
             'product_packaging_uom_qty',
+            'move_id',
         ]

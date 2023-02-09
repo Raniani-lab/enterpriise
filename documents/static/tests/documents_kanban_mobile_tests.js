@@ -321,7 +321,7 @@ QUnit.module('documents_kanban_mobile_tests.js', {
             "inspector should stay closed");
 
         // disable selection mode
-        await click(document.querySelector('.o_discard_selection'));
+        await click(document.querySelector('.o_list_unselect_all'));
         assert.containsNone(document.body, '.o_document_list_record.o_data_row_selected',
             "shouldn't have record selected");
 

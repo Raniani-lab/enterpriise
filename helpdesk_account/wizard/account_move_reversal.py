@@ -10,7 +10,7 @@ class AccountMoveReversal(models.TransientModel):
 
     @api.model
     def _get_default_so_domain(self, ticket):
-        return [('partner_id', '=', ticket.partner_id.id), ('state', '=', 'sale')]
+        return [('partner_id', '=', ticket.partner_id.id), ('state', '=', 'sale'), ('invoice_ids.state', '=', 'posted'), ('invoice_ids.move_type', '=', 'out_invoice')]
 
     @api.model
     def default_get(self, fields):

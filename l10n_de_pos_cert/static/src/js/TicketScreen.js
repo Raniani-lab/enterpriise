@@ -28,6 +28,6 @@ patch(TicketScreen.prototype, "l10n_de_pos_cert.TicketScreen", {
                     "Please contact Odoo for more information."
             ),
         };
-        this.trigger("fiskaly-error", { error, message });
+        this.pos.fiskalyError(error, message);
     },
 });

@@ -1,10 +1,14 @@
 /** @odoo-module */
 
-import { PosGlobalState, register_payment_method } from "@point_of_sale/js/models";
+import { PosGlobalState, Product, register_payment_method } from "@point_of_sale/js/models";
 import { PaymentIngenico, PaymentWorldline } from "@pos_iot/js/payment";
 import DeviceProxy from "iot.DeviceProxy";
 import { PrinterProxy } from "@pos_iot/js/printers";
 import { patch } from "@web/core/utils/patch";
+import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import core from "web.core";
+
+var _t = core._t;
 
 register_payment_method("ingenico", PaymentIngenico);
 register_payment_method("worldline", PaymentWorldline);
@@ -52,11 +56,13 @@ patch(PosGlobalState.prototype, "pos_iot.PosGlobalState", {
                     if (!this.env.proxy.iot_device_proxies.scanners) {
                         this.env.proxy.iot_device_proxies.scanners = {};
                     }
-                    this.env.proxy.iot_device_proxies.scanners[device.identifier] =
-                        new DeviceProxy(this, {
+                    this.env.proxy.iot_device_proxies.scanners[device.identifier] = new DeviceProxy(
+                        this,
+                        {
                             iot_ip: device.iot_ip,
                             identifier: device.identifier,
-                        });
+                        }
+                    );
                     break;
                 case "payment":
                     for (const pm of this.payment_methods) {
@@ -81,5 +87,19 @@ patch(PosGlobalState.prototype, "pos_iot.PosGlobalState", {
                 return payment_method.terminal_proxy;
             })
         );
+    },
+});
+
+patch(Product.prototype, "pos_iot.Product", {
+    async _onScaleNotAvailable() {
+        await this.pos.env.services.popup.add(ErrorPopup, {
+            title: _t("No Scale Detected"),
+            body: _t(
+                "It seems that no scale was detected.\nMake sure that the scale is connected and visible in the IoT app."
+            ),
+        });
+    },
+    get isScaleAvailable() {
+        return this._super(...arguments) && Boolean(this.pos.env.proxy.iot_device_proxies.scale);
     },
 });

@@ -32,15 +32,10 @@ Install this if you are using the Point of Sale app in Germany.
     ],
     'assets': {
         'point_of_sale.assets': [
-            'l10n_de_pos_cert/static/src/css/order_receipt.css',
-            'l10n_de_pos_cert/static/src/js/Chrome.js',
-            'l10n_de_pos_cert/static/src/js/errors.js',
-            'l10n_de_pos_cert/static/src/js/PaymentScreen.js',
-            'l10n_de_pos_cert/static/src/js/pos.js',
-            'l10n_de_pos_cert/static/src/js/ProductScreen.js',
-            'l10n_de_pos_cert/static/src/js/TicketScreen.js',
-            'l10n_de_pos_cert/static/src/js/utils.js',
+            'l10n_de_pos_cert/static/src/css/**/*',
+            'l10n_de_pos_cert/static/src/js/**/*',
             'l10n_de_pos_cert/static/src/xml/**/*',
+            'l10n_de_pos_cert/static/src/app/**/*',
         ],
     },
     'license': 'OEEL-1',

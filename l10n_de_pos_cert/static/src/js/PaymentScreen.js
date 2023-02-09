@@ -17,7 +17,7 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
                             "An unknown error has occurred ! Please contact Odoo for more information."
                         ),
                     };
-                    this.trigger("fiskaly-error", { error, message });
+                    this.pos.fiskalyError(error, message);
                 } else {
                     _super_handlePushOrderError(error);
                 }
@@ -49,17 +49,14 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
                     await this.currentOrder.createTransaction();
                 } catch (error) {
                     if (error.status === 0) {
-                        this.trigger(
-                            "fiskaly-no-internet-confirm-popup",
-                            _super.bind(this)
-                        );
+                        this.pos.showFiskalyNoInternetConfirmPopup(this);
                     } else {
                         const message = {
                             unknown: this.env._t(
                                 "An unknown error has occurred ! Please, contact Odoo."
                             ),
                         };
-                        this.trigger("fiskaly-error", { error, message });
+                        this.pos.fiskalyError(error, message);
                     }
                 }
             }
@@ -69,17 +66,14 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
                     await _super(...arguments);
                 } catch (error) {
                     if (error.status === 0) {
-                        this.trigger(
-                            "fiskaly-no-internet-confirm-popup",
-                            _super.bind(this)
-                        );
+                        this.pos.showFiskalyNoInternetConfirmPopup(this);
                     } else {
                         const message = {
                             unknown: this.env._t(
                                 "An unknown error has occurred ! Please, contact Odoo."
                             ),
                         };
-                        this.trigger("fiskaly-error", { error, message });
+                        this.pos.fiskalyError(error, message);
                     }
                 }
             }

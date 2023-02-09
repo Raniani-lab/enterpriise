@@ -293,7 +293,7 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
         }
     },
     //@Override
-    add_product(product, options) {
+    async add_product(product, options) {
         if (this.pos.isCountryGermanyAndFiskaly()) {
             if (
                 product.taxes_id.length === 0 ||
@@ -302,7 +302,15 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
                 throw new TaxError(product);
             }
         }
-        this._super(...arguments);
+        try {
+            this._super(...arguments);
+        } catch (error) {
+            if (this.pos.isCountryGermanyAndFiskaly() && error instanceof TaxError) {
+                await this.pos.env.services.pos._showTaxError();
+            } else {
+                throw error;
+            }
+        }
     },
     _authenticate() {
         const data = {

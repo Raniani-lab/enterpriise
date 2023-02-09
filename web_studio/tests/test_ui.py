@@ -428,3 +428,34 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             '''.format(group=groupXmlId.complete_name)
         })
         self.start_tour("/web?debug=tests", 'test_element_group_in_sidebar', login="admin", timeout=600000)
+
+    def test_create_one2many_lines_then_edit_name(self):
+        self.testView.arch = '''
+        <form>
+            <group>
+                <field name="name" />
+            </group>
+        </form>
+        '''
+
+        custom_fields_before_studio = self.env["ir.model.fields"].search([
+            ("state", "=", "manual"),
+        ])
+
+        self.start_tour("/web?debug=tests", 'web_studio_test_create_one2many_lines_then_edit_name', login="admin", timeout=200)
+
+        custom_fields = self.env["ir.model.fields"].search_read([
+            ("state", "=", "manual"),
+            ("id", "not in", custom_fields_before_studio.ids),
+        ], fields=["name", "ttype", "field_description"])
+
+        self.maxDiff = None
+        self.assertCountEqual(
+            [{key: val for key, val in field.items() if key != 'id'} for field in custom_fields],
+            [
+                {"name": "x_studio_new_name", 'ttype': 'one2many', 'field_description': 'new name'},
+                {"name": "x_name", 'ttype': 'char', 'field_description': 'Description'},
+                {"name": "x_res_partner_id", 'ttype': 'many2one', 'field_description': 'X Res Partner'},
+                {"name": "x_studio_sequence", 'ttype': 'integer', 'field_description': 'Sequence'},
+            ]
+        )

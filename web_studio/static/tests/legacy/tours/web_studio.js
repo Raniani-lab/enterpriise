@@ -1148,4 +1148,38 @@ tour.register('web_studio_alter_field_existing_in_multiple_views_tour', {
     // check if the invisible option is checked
     trigger: "#invisible:checked",
 }]);
+
+tour.register(
+    "web_studio_test_create_one2many_lines_then_edit_name",
+    {
+        test: true,
+        sequence: 260
+    },
+    [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a"
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_new_fields .o_web_studio_field_lines",
+            run: "drag_and_drop (.o_web_studio_hook:eq(0))"
+        },
+        {
+            trigger: ".o_form_label",
+            extra_trigger: ".o_field_x2many_list"
+        },
+        {
+            extra_trigger: ".o_web_studio_sidebar .o_web_studio_properties.active",
+            trigger: "input[name='string']",
+            run: "text new name",
+        },
+        {
+            trigger: ".o_web_studio_leave"
+        },
+    ]
+);
+
 });

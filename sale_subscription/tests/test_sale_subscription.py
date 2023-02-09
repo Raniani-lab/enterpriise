@@ -2281,3 +2281,25 @@ class TestSubscription(TestSubscriptionCommon):
         upsell_so = self.env['sale.order'].browse(action['res_id'])
         with self.assertRaises(ValidationError):
             upsell_so.pricelist_id = pricelist_eur.id
+
+    def test_modify_discount_on_upsell(self):
+        """
+        Makes sure that you can edit the discount on an upsell, save it, and then confirm it,
+        and it doesn't change/reset to default
+        """
+        with freeze_time("2022-10-31"):
+            self.subscription.action_confirm()
+            self.env['sale.order']._cron_recurring_create_invoice()
+            action = self.subscription.prepare_upsell_order()
+            upsell_so = self.env['sale.order'].browse(action['res_id'])
+            upsell_line = upsell_so.order_line.filtered(lambda l: not l.display_type)[0]
+            old_discount = upsell_line.discount
+            new_discount = 42
+            self.assertTrue(old_discount != new_discount,
+                            "These discounts should be different, change the value of new_discount if this test fail.")
+            upsell_line.write({'discount': new_discount})
+            self.assertEqual(upsell_line.discount, new_discount,
+                             "The line should have the new discount written.")
+            upsell_so.action_confirm()
+            self.assertEqual(upsell_line.discount, new_discount,
+                             "The line should have the new discount after confirmation.")

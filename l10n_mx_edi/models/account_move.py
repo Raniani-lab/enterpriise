@@ -411,10 +411,10 @@ class AccountMove(models.Model):
         for move in self:
             if move.l10n_mx_edi_cfdi_uuid:
                 replaced_move = move.search(
-                    [('l10n_mx_edi_origin', 'like', '04|%'),
-                     ('l10n_mx_edi_origin', 'like', '%' + move.l10n_mx_edi_cfdi_uuid + '%'),
+                    [('l10n_mx_edi_origin', '=like', '04|%' + move.l10n_mx_edi_cfdi_uuid + '%'),
                      ('company_id', '=', move.company_id.id)],
                     limit=1,
+                    order="id desc"
                 )
                 move.l10n_mx_edi_cancel_move_id = replaced_move
             else:

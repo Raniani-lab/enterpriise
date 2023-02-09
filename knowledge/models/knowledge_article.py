@@ -420,8 +420,9 @@ class Article(models.Model):
         if self.env.is_system():
             self.user_can_read = True
         else:
-            for article in self:
-                article.user_can_read = article.user_has_access
+            readable = self.filtered_domain(self._get_read_domain())
+            readable.user_can_read = True
+            (self - readable).user_can_read = False
 
     @api.depends_context('uid')
     @api.depends('user_has_write_access')
@@ -773,6 +774,11 @@ class Article(models.Model):
             )
 
         return duplicates
+
+    def _get_read_domain(self):
+        """ Independently from admin bypass, give the domain allowing to read
+        articles. """
+        return [('user_has_access', '=', True)]
 
     # ------------------------------------------------------------
     # LOW-LEVEL MODELS
@@ -2104,9 +2110,14 @@ class Article(models.Model):
             ], limit=1).article_id
         if not article:
             # retrieve workspace articles first, then private/shared ones.
-            article = self.search([
-                ('parent_id', '=', False, ), ('user_has_access', '=', True)
-            ], limit=1, order='sequence, internal_permission desc')
+            article = self.search(
+                expression.AND([
+                    [('parent_id', '=', False, )],
+                    self._get_read_domain(),
+                ]),
+                limit=1,
+                order='sequence, internal_permission desc'
+            )
         return article
 
     def get_valid_parent_options(self, search_term=""):

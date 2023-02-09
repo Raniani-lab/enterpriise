@@ -144,6 +144,17 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
             # This entry contains some tax from an unallowed country. Please check its fiscal position and your tax configuration.
             invoice.button_update_avatax()
 
+    def test_posted_invoice(self):
+        invoice, _ = self._create_invoice_01_and_expected_response()
+
+        with self._capture_request(return_value={'lines': [], 'summary': []}):
+            invoice.action_post()
+
+        with self._capture_request(return_value={'lines': [], 'summary': []}) as capture:
+            invoice.button_update_avatax()
+
+        self.assertIsNone(capture.val, "Should not update taxes of posted invoices.")
+
     def test_check_address_constraint(self):
         invoice, _ = self._create_invoice_01_and_expected_response()
         partner_no_zip = self.env["res.partner"].create({

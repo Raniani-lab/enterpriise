@@ -430,7 +430,7 @@
                                 <t t-esc="responsible_phone"/>
                             </a>
                         </p>
-                        <p>He/She will review your contract.<br/> Feel free to contact him/her if you have further questions.</p>
+                        <p>They will review your contract.<br/> Feel free to contact them if you have any questions.</p>
                     </div>
                 </div>
             </div>

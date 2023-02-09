@@ -458,6 +458,16 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
     def test_read_spreadsheet_data(self):
         document = self.env["documents.document"].create({
             "name": "test.txt",
+            "datas": base64.encodebytes(b"{ sheets: [] }"),
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+            "folder_id": self.folder.id,
+        })
+        self.assertEqual(document.spreadsheet_data, "{ sheets: [] }")
+
+    def test_read_spreadsheet_data_bin_size_ctx(self):
+        document = self.env["documents.document"].with_context(bin_size=True).create({
+            "name": "test.txt",
             "datas": base64.encodebytes(b"{}"),
             "handler": "spreadsheet",
             "mimetype": "application/o-spreadsheet",

@@ -38,7 +38,7 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
         field_name = self._get_spreadsheet_data_field()
         spreadsheets = self._filter_non_spreadsheets()
         (self - spreadsheets).spreadsheet_data = False
-        for spreadsheet in spreadsheets:
+        for spreadsheet in spreadsheets.with_context(bin_size=False):
             spreadsheet.spreadsheet_data = base64.b64decode(spreadsheet[field_name]).decode()
 
     def _inverse_spreadsheet_data(self):

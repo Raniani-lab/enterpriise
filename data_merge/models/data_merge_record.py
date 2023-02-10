@@ -4,7 +4,7 @@
 from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.models import MAGIC_COLUMNS
-from odoo.osv.expression import OR
+from odoo.osv.expression import FALSE_DOMAIN, OR, expression
 from odoo.tools import get_lang
 from odoo.tools.misc import format_datetime, format_date, partition as tools_partition
 from collections.abc import Iterable
@@ -66,77 +66,96 @@ class DataMergeRecord(models.Model):
         """
         if operator not in ALLOWED_COMPANY_OPERATORS:
             raise NotImplementedError()
-        def domain_is_true(operator, value):
-            # Return whether a domain leaf (False, operator, value) evaluates to True.
-            return (operator in ('not like', 'not like') or (operator in ('=', 'ilike', 'like') and not value) or (operator == '!=' and value)
-                    or (isinstance(value, Iterable) and ((operator == 'in' and False in value) or (operator == 'not in' and False not in value))))
 
+        cr = self._cr
+        restrict_model_ids = self.env.context.get('data_merge_model_ids')
+        if restrict_model_ids:
+            cr.execute(
+                """
+                SELECT m.res_model_name,
+                       m.res_model_id
+                  FROM data_merge_model m
+                 WHERE m.id IN %s
+                """,
+                [restrict_model_ids],
+            )
+        else:
+            # SELECT DISTINCT res_model_name FROM data_merge_record
+            # is 7 times slower for 5 millions of data.merge.record
+            cr.execute(
+                """
+                SELECT m.res_model_name,
+                       m.res_model_id
+                  FROM data_merge_model m
+                 WHERE m.id IN (SELECT r.model_id FROM data_merge_record r)
+                """
+            )
+        models_info = cr.fetchall()
         # Initial select id query to apply ir.rules and build Query object.
         query = self.env['data_merge.record'].with_context(active_test=False)._search([])
-        self._cr.execute("""SELECT DISTINCT res_model_name FROM data_merge_record""")
-        res_model_names_w_company_field, res_model_names_wo_company_field = tools_partition(
-            lambda name: self.env[name]._fields.get('company_id'),
-            (name for (name,) in self._cr.fetchall())
-        )
-        if not res_model_names_w_company_field and not res_model_names_wo_company_field:
+        if not models_info:
+            # no models => return all records
             return [('id', 'in', query)]
-        subquery = """({} OR {})"""
-        no_company_field_query_part, company_field_query_part = "", ""
-        no_company_field_query_params, company_field_query_params = [], []
-        if res_model_names_wo_company_field:
-            no_company_field_query_part = """(res_model_name IN %s AND %s)"""
-            # Check if we should return all records for res_model_names without a company_id field.
-            if domain_is_true(operator, value):
-                no_company_field_query_params += [tuple(res_model_names_wo_company_field), True]
-            else:
-                no_company_field_query_params += [tuple(res_model_names_wo_company_field), False]
-        if res_model_names_w_company_field:
-            company_field_query_part = """
-                    data_merge_record.id IN (
-                    SELECT data_merge_record.id
-                    FROM data_merge_record
-                    WHERE {}
-                )
-            """
-            where_conditions = []
-            for res_model_name in res_model_names_w_company_field:
-                res_model_query, res_model_query_params = self.env[res_model_name].with_context(active_test=False)._search(
-                    [('company_id', operator, value)], order='id asc'
-                ).select()
-                # Optimization when _search returns [].
-                if not res_model_query:
-                    continue
-                # Where conditions for res_model_name with company_id fields. Two possibilities.
-                # -> the corresponding record still exists in the database, use _search above on corresponding table.
-                # -> the corresponding record has been deleted. In that case, perform the same check as res_model_name without company_id field.
-                where_conditions.append("""
-                    (
-                        data_merge_record.res_model_name = %s
-                        AND (
-                            data_merge_record.res_id IN ({res_model_query})
-                            OR (
-                                data_merge_record.res_id IN (
-                                    SELECT res_id FROM data_merge_record
-                                    WHERE res_model_name = %s
-                                    AND NOT EXISTS (
-                                        SELECT 1
-                                        FROM {table} res_model
-                                        WHERE res_id = res_model.id
-                                    )
-                                )
-                                AND %s
-                            )
-                        )
-                    )
-                    """.format(res_model_query=res_model_query, table=quote_ident(self.env[res_model_name]._table, self._cr._obj))
-                )
-                company_field_query_params.extend([res_model_name] + res_model_query_params + [res_model_name] + [domain_is_true(operator, value)])
-            company_field_query_part = company_field_query_part.format(" OR ".join(where_conditions))
-        query.add_where(
-            subquery.format(no_company_field_query_part or "FALSE", company_field_query_part or "FALSE"),
-            no_company_field_query_params + company_field_query_params
+
+        models_with_company, models_no_company = tools_partition(
+            lambda r: self.env[r[0]]._fields.get('company_id'),
+            models_info,
         )
-        return [('id', 'in', query)]
+
+        # Whether a domain leaf (False, operator, value) should be considered as True
+        false_company_domain_is_true = (
+            (operator in ('not ilike', 'not like')) or
+            (operator in ('=', 'ilike', 'like') and not value) or
+            (operator == '!=' and value) or
+            (
+                isinstance(value, Iterable) and
+                (
+                    (operator == 'in' and False in value) or
+                    (operator == 'not in' and False not in value)
+                )
+            )
+        )
+
+        subqueries = []
+        if models_no_company and false_company_domain_is_true:
+            subqueries.append(
+                cr.mogrify(
+                    "SELECT id FROM data_merge_record WHERE res_model_id IN %s",
+                    [tuple(r[1] for r in models_no_company)],
+                ).decode(),
+            )
+
+        template_query = """
+        SELECT dmr.id
+          FROM data_merge_record dmr
+     LEFT JOIN {model_table} rec
+            ON dmr.res_model_id = %s
+           AND dmr.res_id = rec.id
+         WHERE {where_clause}
+        """
+        for model_name, model_id in models_with_company:
+            Model = self.env[model_name]
+            # Adapt operator and value for direct SQL query
+            exp = expression([('company_id', operator, value)], Model, alias='rec')
+            _, where_clause, where_params = exp.query.get_sql()
+
+            subqueries.append(
+                cr.mogrify(
+                    template_query.format(
+                        model_table=Model._table,
+                        where_clause=where_clause,
+                    ),
+                    [model_id] + where_params,
+                ).decode(),
+            )
+        if subqueries:
+            query.add_where("data_merge_record.id IN ({})".format("\nUNION\n".join(subqueries)), [])
+            return [('id', 'in', query)]
+        else:
+            # there was a nonempty models_info but no subqueries
+            # it means that nothing satisfies the domain
+            return FALSE_DOMAIN
+
 
     #############
     ### Computes

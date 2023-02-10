@@ -1182,4 +1182,38 @@ registry.category("web_tour.tours").add(
     }
 );
 
+registry.category("web_tour.tours").add("web_studio_test_address_view_id_no_edit", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_address_format",
+            run: function() {
+                if (this.$anchor.find('[name=lang]').length || !this.$anchor.find('[name=street]').length) {
+                    throw new Error("The address view id set on the company country should be displayed");
+                };
+            }
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a"
+        },
+        {
+            extra_trigger: ".o_web_studio_view_renderer",
+            trigger: ".o_address_format",
+            run: function() {
+                if (this.$anchor.find('[name=street]').length || !this.$anchor.find('[name=lang]').length) {
+                    throw new Error("The address view id set on the company country shouldn't be editable");
+                };
+            }
+        },
+        {
+            trigger: ".o_web_studio_leave"
+        },
+    ]
+});
+
 });

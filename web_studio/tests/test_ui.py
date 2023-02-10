@@ -459,3 +459,16 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                 {"name": "x_studio_sequence", 'ttype': 'integer', 'field_description': 'Sequence'},
             ]
         )
+
+    def test_address_view_id_no_edit(self):
+        self.testView.write({
+            "arch": '''
+                <form>
+                    <div class="o_address_format">
+                        <field name="lang"/>
+                    </div>
+                </form>
+            '''
+        })
+        self.env.company.country_id.address_view_id = self.env.ref('base.view_partner_address_form')
+        self.start_tour("/web?debug=tests", 'web_studio_test_address_view_id_no_edit', login="admin", timeout=200)

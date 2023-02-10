@@ -186,7 +186,7 @@
                                                 </button>
                                                 <button class="dropdown-item" type="object" name="action_unarchive_article"
                                                         attrs="{'invisible': ['|',  ('to_delete', '=', False), ('user_can_write', '=', False)]}">
-                                                    <i class="fa fa-fw fa-lg fa-trash-o"/> Remove from Trash
+                                                    <i class="fa fa-fw fa-lg fa-trash-o"/> Restore from Trash
                                                 </button>
                                                 <button class="dropdown-item" type="object" name="action_unarchive_article"
                                                         attrs="{'invisible': ['|', '|', ('user_can_write', '=', False), ('active', '=', True), ('to_delete', '=', True)]}">
@@ -246,7 +246,7 @@
                                 <button type="object" name="action_unarchive_article"
                                         class="oe_link alert-link"
                                         attrs="{'invisible': [('user_can_write', '=', False)]}" >
-                                    Remove from Trash
+                                    Restore
                                 </button>
                             </div>
                             <div class="flex-grow-1 position-relative">

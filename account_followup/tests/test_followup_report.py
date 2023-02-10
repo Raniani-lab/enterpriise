@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from freezegun import freeze_time
+from unittest.mock import patch
 
 from odoo.tests import tagged
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
@@ -139,7 +140,8 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
 
         self.partner_a._compute_unpaid_invoices()
         options['attachment_ids'] = invoice_attachments.ids
-        self.env['account.followup.report']._send_email(options)
+        with patch.object(type(self.env['mail.mail']), 'unlink', lambda self: None):
+            self.env['account.followup.report']._send_email(options)
         sent_attachments = self.env['mail.message'].search([('partner_ids', '=', self.partner_a.id)]).attachment_ids
 
         self.assertEqual(invoice_attachments, sent_attachments)

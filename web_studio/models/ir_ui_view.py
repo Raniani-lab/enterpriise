@@ -25,7 +25,9 @@ class Model(models.AbstractModel):
 
     @api.model
     def _get_view_cache_key(self, *args, **kwargs):
-        key = super()._get_view_cache_key(*args, **kwargs)
+        if self._context.get('studio'):
+            self = self.with_context(no_address_format=True)
+        key = super(Model, self)._get_view_cache_key(*args, **kwargs)
         return key + (self._context.get("studio"),)
 
 

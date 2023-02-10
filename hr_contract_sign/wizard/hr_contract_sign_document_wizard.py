@@ -197,7 +197,7 @@ class HrContractSignDocumentWizard(models.TransientModel):
                     _('%(user_name)s requested a new signature on the following documents:<br/><ul>%(documents)s</ul>%(signatories_text)s')
                 ) % {
                     'user_name': self.env.user.display_name,
-                    'documents': '\n'.join(Markup('<li>%s</li>') % name for name in self.sign_template_ids.mapped('name')),
+                    'documents': Markup('\n').join(Markup('<li>%s</li>') % name for name in self.sign_template_ids.mapped('name')),
                     'signatories_text': signatories_text
                 }
             )

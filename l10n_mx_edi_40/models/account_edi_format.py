@@ -19,9 +19,25 @@ class AccountEdiFormat(models.Model):
             ('res_id', '=', res_id)], limit=1, order='create_date desc')
 
     def _l10n_mx_edi_clean_to_legal_name(self, name):
-        """ We remove the SA de CV / SL de CV / S de RL de CV as they are never in the official name in the XML"""
-        res = re.sub(r"(?i:\s+(s\.?[al]\.?|s\.? de r\.?l\.?)"
-                     r"( de c\.?v\.?|))\s*$", "", name).upper()
+        """
+        We remove the most common 'denominación'/'razón social' as they are never in the official name:
+            Company S. en C.
+            Company S. de R.L.
+            Company S.A.
+            Company S. en C. por A.
+            Company S. C. L.
+            Company S. C. L. (limitada)
+            Company S. C. S.
+            Company S. C. S. (suplementada)
+            Company S.A.S.
+            Company SA de CV
+
+        It will not match:
+            Company de CV
+            Company SAS de cv
+        """
+        BUSINESS_NAME_RE = r"(?i:\s+(s\.?\s?(a\.?)( de c\.?v\.?|)|(s\.?\s?(a\.?s\.?)|s\.? en c\.?( por a\.?)?|s\.?\s?c\.?\s?(l\.?(\s?\(?limitada)?\)?|s\.?(\s?\(?suplementada\)?)?)|s\.? de r\.?l\.?)))\s*$"
+        res = re.sub(BUSINESS_NAME_RE, "", name).upper()
         return res
 
     def _l10n_mx_edi_get_40_values(self, move):

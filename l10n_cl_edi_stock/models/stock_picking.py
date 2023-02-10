@@ -481,7 +481,7 @@ class Picking(models.Model):
         })
         self.with_context(no_new_invoice=True).message_post(
             body=_('Partner DTE has been generated'),
-            attachments_ids=[dte_partner_attachment.id])
+            attachment_ids=[dte_partner_attachment.id])
         return dte_partner_attachment
 
     # DTE sending

@@ -12,7 +12,7 @@ class StockMove(models.Model):
     def _update_reserved_quantity(self, need, location_id, quant_ids=None, lot_id=None, package_id=None, owner_id=None, strict=True):
         if self.product_id.tracking == 'none':
             return super()._update_reserved_quantity(need, location_id, quant_ids=quant_ids, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
-        lot = self.sale_line_id.sudo().fsm_lot_id
+        lot = self.sale_line_id.sudo().fsm_lot_id or lot_id
         if lot:
             return super()._update_reserved_quantity(need, location_id, quant_ids=quant_ids, lot_id=lot, package_id=package_id, owner_id=owner_id, strict=strict)
 

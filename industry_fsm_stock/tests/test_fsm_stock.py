@@ -424,9 +424,6 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.assertEqual(line01.product_uom_qty, 1)
         so.action_confirm()
         so.picking_ids.button_validate()
-        validate_form_data = so.picking_ids.button_validate()
-        validate_form = Form(self.env[validate_form_data['res_model']].with_context(validate_form_data['context'])).save()
-        validate_form.process()
 
         product.set_fsm_quantity(3)
         self.assertEqual(line01.product_uom_qty, 3)

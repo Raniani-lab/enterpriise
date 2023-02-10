@@ -12,6 +12,7 @@ class ProductProduct(models.Model):
 
     serial_missing = fields.Boolean(compute='_compute_serial_missing')
     quantity_decreasable = fields.Boolean(compute='_compute_quantity_decreasable')
+    quantity_decreasable_sum = fields.Integer(compute='_compute_quantity_decreasable')
 
     @api.depends('fsm_quantity')
     @api.depends_context('fsm_task_id')
@@ -31,7 +32,7 @@ class ProductProduct(models.Model):
                 product.serial_missing = False
 
     @api.depends('fsm_quantity')
-    @api.depends_context('fsm_task_id')
+    @api.depends_context('fsm_task_id', 'uid')
     def _compute_quantity_decreasable(self):
         # Compute if a product is already delivered. If a quantity is not yet delivered,
         # we can decrease the quantity
@@ -48,17 +49,36 @@ class ProductProduct(models.Model):
             self.quantity_decreasable = True
             return
 
-        sale_lines = self.env['sale.order.line'].sudo().search([('order_id', '=', task.sale_order_id.id), ('task_id', '=', task.id)])
+        moves_read_group = self.env['stock.move'].sudo().read_group([
+            ('sale_line_id.order_id', '=', task.sale_order_id.id),
+            ('sale_line_id.task_id', '=', task.id),
+            ('product_id', 'in', self.ids),
+            ('warehouse_id', '=', self.env.user._get_default_warehouse_id().id),
+            ('state', 'not in', ['done', 'cancel'])],
+            ['product_uom_qty'],
+            ['product_id'])
+        move_per_product = {move['product_id'][0]: move['product_uom_qty'] for move in moves_read_group}
+
+        # If no move line can be found, look into the SOL in case one line has no move and could be used to decrease the qty
+        sale_lines_read_group = self.env['sale.order.line'].sudo().read_group([
+            ('order_id', '=', task.sale_order_id.id),
+            ('task_id', '=', task.id),
+            ('product_id', 'in', self.ids),
+            ('move_ids', '=', False)],
+            ['product_uom_qty', 'qty_delivered'],
+            ['product_id'])
+        product_uom_qty_per_product = {line['product_id'][0]: line['product_uom_qty'] - line['qty_delivered'] for line in sale_lines_read_group if line['product_uom_qty'] > line['qty_delivered']}
 
         for product in self:
-            sale_product = sale_lines.filtered(lambda sale: sale.product_id == product)
-            delivered_qty = sum(sale_product.mapped('qty_delivered'))
-            asked_qty = sum(sale_product.mapped('product_uom_qty'))
-            product.quantity_decreasable = delivered_qty != asked_qty
+            product.quantity_decreasable_sum = move_per_product.get(product.id, product_uom_qty_per_product.get(product.id, 0))
+            product.quantity_decreasable = product.quantity_decreasable_sum > 0
+
+    def _inverse_fsm_quantity(self):
+        super(ProductProduct, self.with_context(industry_fsm_stock_set_quantity=True))._inverse_fsm_quantity()
 
     def write(self, vals):
         new_fsm_quantity = vals.get('fsm_quantity')
-        if new_fsm_quantity and any(not product.quantity_decreasable and product.fsm_quantity > new_fsm_quantity for product in self):
+        if new_fsm_quantity and any(product.fsm_quantity - new_fsm_quantity > product.quantity_decreasable_sum for product in self):
             raise UserError(_('The ordered quantity cannot be decreased below the amount already delivered. Instead, create a return in your inventory.'))
         return super().write(vals)
 

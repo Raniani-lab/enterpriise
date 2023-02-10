@@ -83,7 +83,7 @@ class SaleOrder(models.Model):
     # Invoicing #
     #############
     payment_token_id = fields.Many2one('payment.token', 'Payment Token', check_company=True, help='If not set, the automatic payment will fail.',
-                                       domain="[('partner_id', 'child_of', commercial_partner_id), ('company_id', '=', company_id)]")
+                                       domain="[('partner_id', 'child_of', commercial_partner_id), ('company_id', '=', company_id)]", copy=False)
     is_batch = fields.Boolean(default=False, copy=False) # technical, batch of invoice processed at the same time
     is_invoice_cron = fields.Boolean(string='Is a Subscription invoiced in cron', default=False, copy=False)
     payment_exception = fields.Boolean("Contract in exception",
@@ -449,7 +449,7 @@ class SaleOrder(models.Model):
             if order.sale_order_template_id and order.sale_order_template_id.recurrence_id:
                 order.recurrence_id = order.sale_order_template_id.recurrence_id
             else:
-                order.recurrence_id = False
+                order.recurrence_id = order.company_id.subscription_default_recurrence_id
 
     def _compute_is_renewing(self):
         self.is_renewing = False

@@ -10,7 +10,8 @@ class SaleOrderTemplate(models.Model):
     _inherit = 'sale.order.template'
 
     is_subscription = fields.Boolean(compute='_compute_is_subscription', search='_search_is_subscription')
-    recurrence_id = fields.Many2one('sale.temporal.recurrence', string='Recurrence')
+    recurrence_id = fields.Many2one('sale.temporal.recurrence', string='Recurrence',
+                                    default=lambda self: self.env.company.subscription_default_recurrence_id)
     recurring_rule_boundary = fields.Selection([
         ('unlimited', 'Forever'),
         ('limited', 'Fixed')

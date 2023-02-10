@@ -33,6 +33,7 @@ Features:
         'security/ir.model.access.csv',
         'wizard/sale_subscription_close_reason_wizard_views.xml',
         'wizard/sale_subscription_change_customer_wizard_views.xml',
+        'wizard/res_config_settings_views.xml',
         'views/sale_order_views.xml',
         'views/sale_order_template.xml',
         'views/product_template_views.xml',

@@ -419,7 +419,7 @@
             </field>
             <field name="sale_order_template_id" position="replace">
                 <field name="sale_order_template_id" string="Subscription Plan"
-                       attrs="{'invisible': ['|', ('state', 'in', ['sale', 'done']), ('subscription_state', '=', '7_upsell')]}"
+                       attrs="{'readonly': [('state', 'in', ['sale', 'done'])], 'invisible': [('subscription_state', '=', '7_upsell')]}"
                        domain="[('is_subscription', '=', True)]"/>
             </field>
         </field>
@@ -589,6 +589,7 @@ if records:
     <menuitem action="product.product_pricelist_action2" id="menu_sale_subscription_pricelist" sequence="50" parent="product_menu_catalog" groups="product.group_product_pricelist"/>
 
     <menuitem id="menu_sale_subscription_config" name="Configuration" sequence="100" parent="menu_sale_subscription_root"/>
+    <menuitem id="menu_sale_subscription_settings" name="Settings" parent="menu_sale_subscription_config" sequence="1" action="sale.action_sale_config_settings" groups="base.group_system"/>
     <menuitem action="sale_subscription_close_reason_action" id="menu_sale_subscription_close_reason_action" parent="menu_sale_subscription_config" sequence="10" groups="sales_team.group_sale_manager"/>
     <menuitem action="sale_subscription_recurrence_action" name="Recurrence periods" id="menu_sale_subscription_periods" parent="menu_sale_subscription_config" sequence="20" groups="sales_team.group_sale_manager"/>
     <menuitem action="sale_subscription_template_action" id="menu_template_of_subscription" parent="menu_sale_subscription_config" sequence="4" groups="sales_team.group_sale_manager"/>

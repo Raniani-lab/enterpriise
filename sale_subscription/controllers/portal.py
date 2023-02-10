@@ -171,7 +171,6 @@ class CustomerPortal(payment_portal.PaymentPortal):
             if kw.get('closing_text'):
                 order_sudo.message_post(body=_('Closing text: %s', kw.get('closing_text')))
             order_sudo.set_close()
-            order_sudo.end_date = datetime.date.today().strftime('%Y-%m-%d')
         return request.redirect(f'/my/subscription/{order_id}/{access_token}')
 
     @http.route(['/my/subscription/<int:order_id>/renew'], type='http', methods=["GET"], auth="public", website=True)

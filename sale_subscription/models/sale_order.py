@@ -935,19 +935,14 @@ class SaleOrder(models.Model):
             order.update({'stage_id': next_closed_stage.id, 'to_renew': False})
 
     def set_close(self):
-        today = fields.Date.context_today(self)
         renew_close_reason = self.env.ref('sale_subscription.close_reason_renew', raise_if_not_found=False)
         self._set_closed_state()
         for sub in self:
-            values = {}
-            if sub.sale_order_template_id and sub.sale_order_template_id.recurring_rule_boundary == 'unlimited' or not sub.end_date or today < sub.end_date:
-                values['end_date'] = today
             renew = sub.subscription_child_ids.filtered(
                 lambda so: so.subscription_management == 'renew' and so.state in ['sale', 'done'] and so.date_order and so.date_order.date() >= sub.end_date)
             if renew and renew_close_reason:
                 # The subscription has been renewed. We set a close_reason to avoid consider it as a simple churn.
-                values['close_reason_id'] = renew_close_reason.id
-            sub.write(values)
+                sub.write({'close_reason_id': renew_close_reason.id})
         return True
 
     def set_to_renew(self):
@@ -959,8 +954,7 @@ class SaleOrder(models.Model):
             stage = search([('category', '=', 'progress'), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
             if not stage:
                 stage = search([('category', '=', 'progress')], limit=1)
-            date = sub.end_date if sub.end_date and sub.sale_order_template_id.recurring_rule_boundary == 'limited' else False
-            sub.write({'stage_id': stage.id, 'to_renew': False, 'end_date': date})
+            sub.write({'stage_id': stage.id, 'to_renew': False})
 
     @api.model
     def _cron_update_kpi(self):

@@ -35,9 +35,9 @@
                     <CdgVendedor t-if="not move.l10n_latam_document_type_id._is_doc_type_voucher() and move.user_id" t-out="format_length(move.user_id.name, 60)"/>
                 </Emisor>
                 <Receptor>
-                    <RUTRecep t-out="'55555555-5' if move.partner_id._l10n_cl_is_foreign() else format_vat(move.commercial_partner_id.vat)"/>
+                    <RUTRecep t-out="'55555555-5' if move.partner_id._l10n_cl_is_foreign() and move.partner_id.l10n_cl_sii_taxpayer_type == '4' else format_vat(move.commercial_partner_id.vat)"/>
                     <RznSocRecep t-out="format_length(move.commercial_partner_id.name, 100)"/>
-                    <Extranjero t-if="move.partner_id._l10n_cl_is_foreign()">
+                    <Extranjero t-if="move.partner_id._l10n_cl_is_foreign() and move.partner_id.l10n_cl_sii_taxpayer_type == '4'">
                         <NumId t-out="move.partner_id.vat"/>
                         <IdAdicRecep t-out="format_length(move.partner_id.country_id.name or move.commercial_partner_id.country_id.name, 20)"/>
                     </Extranjero>
@@ -193,7 +193,7 @@
             <t t-if="move.l10n_latam_document_type_id.code == '43'">
                 <t t-call="l10n_cl_edi.liquidacion_dte"/>
             </t>
-            <t t-elif="move.partner_id._l10n_cl_is_foreign()">
+            <t t-elif="move.partner_id._l10n_cl_is_foreign() and move.partner_id.l10n_cl_sii_taxpayer_type == '4'">
                 <t t-call="l10n_cl_edi.exportaciones_dte"/>
             </t>
             <t t-else="">

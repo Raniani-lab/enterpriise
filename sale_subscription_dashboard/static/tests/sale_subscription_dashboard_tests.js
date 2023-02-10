@@ -194,7 +194,7 @@ const data = {
         value_3_months_ago: 0,
         value_12_months_ago: 0,
     },
-    compute_stat: 10495,
+    compute_stat: [{0:'01/01/20', 1:10495}],
 };
 
 QUnit.module('sale_subscription_dashboard', {

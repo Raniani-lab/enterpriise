@@ -57,7 +57,7 @@ export class SaleSubscriptionDashboardDetailed extends SaleSubscriptionDashboard
                 silent: true,
             }
         );
-        this.detailedDashboardState.value = data;
+        this.detailedDashboardState.value = data[data.length-1][1];
     }
 
     async fetchDetailedChartData() {

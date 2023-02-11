@@ -3,7 +3,7 @@ from odoo.addons.base.models.res_bank import sanitize_account_number
 from odoo.tools import html2plaintext
 
 from dateutil.relativedelta import relativedelta
-
+from itertools import product
 
 class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
@@ -178,15 +178,20 @@ class AccountBankStatementLine(models.Model):
 
         # Retrieve the partner from the partner name.
         if self.partner_name:
-            domain = [
-                ('parent_id', '=', False),
-                ('name', 'ilike', self.partner_name),
-            ]
-            for extra_domain in ([('company_id', '=', self.company_id.id)], []):
-                partner = self.env['res.partner'].search(extra_domain + domain, limit=1)
+            domains = product(
+                [
+                    ('name', '=ilike', self.partner_name),
+                    ('name', 'ilike', self.partner_name),
+                ],
+                [
+                    ('company_id', '=', self.company_id.id),
+                    ('company_id', '=', False),
+                ],
+            )
+            for domain in domains:
+                partner = self.env['res.partner'].search(list(domain) + [('parent_id', '=', False)], limit=1)
                 if partner:
                     return partner
-
         # Retrieve the partner from the 'reconcile models'.
         rec_models = self.env['account.reconcile.model'].search([
             ('rule_type', '!=', 'writeoff_button'),

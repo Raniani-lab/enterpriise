@@ -118,9 +118,11 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
 
     def test_no_merge_check_ocr_status(self):
         # test check_ocr_status without lines merging
+        self.env.company.extract_single_line_per_tax = False
+        self.env.company.quick_edit_mode = "out_and_in_invoices"  # Fiduciary mode is necessary for out_invoice
+
         for move_type in ('in_invoice', 'out_invoice'):
             invoice = self.env['account.move'].create({'move_type': move_type, 'extract_state': 'waiting_extraction'})
-            self.env.company.extract_single_line_per_tax = False
             extract_response = self.get_default_extract_response()
 
             with self._mock_iap_extract(extract_response, {}):

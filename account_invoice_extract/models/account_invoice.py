@@ -924,9 +924,8 @@ class AccountMove(models.Model):
             if self.is_purchase_document() and (not move_form.ref or force_write):
                 move_form.ref = invoice_id_ocr
 
-            if self.is_sale_document():
-                with mute_logger('odoo.tests.common.onchange'):
-                    move_form.name = invoice_id_ocr
+            if self.is_sale_document() and self.quick_edit_mode:
+                move_form.name = invoice_id_ocr
 
             if currency_ocr and (move_form.currency_id == move_form.company_currency_id or force_write):
                 currency = self._get_currency(currency_ocr, move_form.partner_id)

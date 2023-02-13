@@ -307,7 +307,7 @@ class DataMergeRecord(models.Model):
 
     def _original_records(self):
         if not self:
-            return
+            return []
 
         model_name = set(self.mapped('res_model_name')) or {}
 

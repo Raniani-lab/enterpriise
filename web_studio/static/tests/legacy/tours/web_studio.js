@@ -1253,4 +1253,61 @@ tour.register(
     ]
 );
 
+tour.register(
+    "web_studio_test_create_model_with_clickable_stages",
+    {
+        test: true,
+        sequence: 260
+    },
+    [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a"
+        },
+        {
+            trigger: ".o_web_create_new_model"
+        },
+        {
+            extra_trigger: ".modal-dialog",
+            trigger: "input[name='name']",
+            run: "text new model",
+        },
+        {
+            trigger: ".confirm_button",
+        },
+        {
+            trigger: "#use_stages"
+        },
+        {
+            trigger: ".o_web_studio_model_configurator_next"
+        },
+        {
+            trigger: ".o_web_studio_leave"
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: "input#x_name",
+            run: "text new record",
+        },
+        {
+            trigger: ".o_arrow_button:contains(In Progress)"
+        },
+        {
+            trigger: ".o_arrow_button_current:contains(In Progress)"
+        },
+        {
+            trigger: ".o_form_button_save"
+        },
+        {
+            trigger: ".o_back_button"
+        },
+        {
+            trigger: ".o_kanban_group:contains(In Progress) .o_kanban_record_details:contains(new record)"
+        }
+    ]
+);
+
 });

@@ -243,7 +243,7 @@ class View(models.Model):
         sheet_content = list()
         header_content = list()
         if 'x_studio_stage_id' in model._fields:
-            header_content.append(E.field(name='x_studio_stage_id', widget='statusbar', clickable='1'))
+            header_content.append(E.field(name='x_studio_stage_id', widget='statusbar', options="{'clickable': '1'}"))
             sheet_content.append(E.field(name='x_studio_kanban_state', widget='state_selection'))
         if 'x_active' in model._fields:
             sheet_content.append(E.widget(name='web_ribbon', text=_('Archived'), bg_color='bg-danger', attrs="{'invisible': [('x_active', '=', True)]}"))

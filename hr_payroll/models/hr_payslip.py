@@ -433,7 +433,7 @@ class HrPayslip(models.Model):
 
     def action_open_work_entries(self):
         self.ensure_one()
-        return self.employee_id.action_open_work_entries()
+        return self.employee_id.action_open_work_entries(initial_date=self.date_from)
 
     def action_open_salary_attachments(self):
         self.ensure_one()

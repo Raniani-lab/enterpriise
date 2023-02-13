@@ -3228,17 +3228,30 @@ class AccountReport(models.Model):
             })
             view_id = type_to_view_param[journal_type]['view_id']
 
-        model_default_filters = {
-            'account.account': 'search_default_account_id',
-            'res.partner': 'search_default_partner_id',
-            'account.journal': 'search_default_journal_id',
-        }
-        model_filter = model_default_filters.get(record_model)
-        if model_filter:
-            ctx.update({
-                'active_id': record_id,
-                model_filter: [record_id],
-            })
+        action_domain = [('display_type', 'not in', ('line_section', 'line_note'))]
+
+        if record_id is None:
+            # Default filters don't support the 'no set' value. For this case, we use a domain on the action instead
+            model_fields_map = {
+                'account.account': 'account_id',
+                'res.partner': 'partner_id',
+                'account.journal': 'journal_id',
+            }
+            model_field = model_fields_map.get(record_model)
+            if model_field:
+                action_domain += [(model_field, '=', False)]
+        else:
+            model_default_filters = {
+                'account.account': 'search_default_account_id',
+                'res.partner': 'search_default_partner_id',
+                'account.journal': 'search_default_journal_id',
+            }
+            model_filter = model_default_filters.get(record_model)
+            if model_filter:
+                ctx.update({
+                    'active_id': record_id,
+                    model_filter: [record_id],
+                })
 
         if options:
             for account_type in options.get('account_type', []):
@@ -3264,7 +3277,7 @@ class AccountReport(models.Model):
             'res_model': 'account.move.line',
             'views': [(view_id, 'list')],
             'type': 'ir.actions.act_window',
-            'domain': [('display_type', 'not in', ('line_section', 'line_note'))],
+            'domain': action_domain,
             'context': ctx,
         }
 
@@ -3290,7 +3303,7 @@ class AccountReport(models.Model):
             'tag': form.tag,
             'context': {
                 **self._context,
-                'partner_ids': [model_id],
+                'partner_ids': [model_id] if model_id is not None else None,
                 'active_id': model_id,
                 'all_entries': True,
             },

@@ -1051,8 +1051,8 @@ class AccountAsset(models.Model):
             ))
             depreciation_account = asset.account_depreciation_id
             for invoice_line in invoice_line_ids:
-                dict_invoice[invoice_line.account_id] = copysign(invoice_line.price_subtotal, -initial_amount) + dict_invoice.get(invoice_line.account_id, 0)
-                invoice_amount += copysign(invoice_line.price_subtotal, -initial_amount)
+                dict_invoice[invoice_line.account_id] = copysign(invoice_line.balance, -initial_amount) + dict_invoice.get(invoice_line.account_id, 0)
+                invoice_amount += copysign(invoice_line.balance, -initial_amount)
             list_accounts = [(amount, account) for account, amount in dict_invoice.items()]
             difference = -initial_amount - depreciated_amount - invoice_amount
             difference_account = asset.company_id.gain_account_id if difference > 0 else asset.company_id.loss_account_id

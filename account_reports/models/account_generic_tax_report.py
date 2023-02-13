@@ -679,7 +679,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
         # first, for each tax group, gather the tax entries per tax and account
         self.env['account.tax'].flush_model(['name', 'tax_group_id'])
         self.env['account.tax.repartition.line'].flush_model(['use_in_tax_closing'])
-        self.env['account.move.line'].flush_model(['account_id', 'debit', 'credit', 'move_id', 'tax_line_id', 'date', 'company_id', 'display_type'])
+        self.env['account.move.line'].flush_model(['account_id', 'debit', 'credit', 'move_id', 'tax_line_id', 'date', 'company_id', 'display_type', 'parent_state'])
         self.env['account.move'].flush_model(['state'])
 
         # Check whether it is multilingual, in order to get the translation from the JSON value if present

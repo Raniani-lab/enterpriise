@@ -14,9 +14,11 @@ class HelpdeskSLAMany2ManyTags extends Many2ManyTagsField {
 
 HelpdeskSLAMany2ManyTags.components = { ...Many2ManyTagsField.components, TagsList: HelpdeskSLATagsList };
 
-HelpdeskSLAMany2ManyTags.fieldsToFetch = {
-    ...Many2ManyTagsField.fieldsToFetch,
-    status: { type: 'selection', selection: [] },
+HelpdeskSLAMany2ManyTags.fieldsToFetch = (fieldInfo) => {
+    return [
+        ...Many2ManyTagsField.fieldsToFetch(fieldInfo),
+        { name: "status", type: "selection", selection: [] },
+    ];
 };
 
 HelpdeskSLAMany2ManyTags.additionalClasses = [

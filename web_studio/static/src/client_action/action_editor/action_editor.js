@@ -52,7 +52,9 @@ function getActionActiveFields() {
     for (const fName of Object.keys(actionFieldsGet)) {
         activeFields[fName] = {};
     }
-    activeFields.groups_id.fieldsToFetch = { ...Many2ManyTagsField.fieldsToFetch };
+    activeFields.groups_id.fieldsToFetch = Object.fromEntries(
+        Many2ManyTagsField.fieldsToFetch({ options: {} }).map((f) => [f.name, f])
+    );
     return activeFields;
 }
 

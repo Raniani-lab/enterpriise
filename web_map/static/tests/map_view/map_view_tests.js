@@ -10,7 +10,6 @@ import {
     toggleMenuItemOption,
 } from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
-import { dialogService } from "@web/core/dialog/dialog_service";
 import {
     click,
     getFixture,
@@ -277,7 +276,6 @@ QUnit.module("Views", (hooks) => {
         };
         serverData = { models };
         setupControlPanelServiceRegistry();
-        serviceRegistry.add("dialog", dialogService);
         serviceRegistry.add("localization", makeFakeLocalizationService());
         serviceRegistry.add("http", makeFakeHTTPService());
 

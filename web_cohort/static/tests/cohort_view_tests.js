@@ -11,8 +11,6 @@ import {
     patchDate,
 } from "@web/../tests/helpers/utils";
 import { makeView } from "@web/../tests/views/helpers";
-import { dialogService } from "@web/core/dialog/dialog_service";
-import { registry } from "@web/core/registry";
 import {
     toggleFilterMenu,
     toggleMenuItem,
@@ -23,8 +21,6 @@ import {
     setupControlPanelServiceRegistry,
 } from "@web/../tests/search/helpers";
 import { browser } from "@web/core/browser/browser";
-
-const serviceRegistry = registry.category("services");
 
 let serverData;
 let target;
@@ -111,7 +107,6 @@ QUnit.module("Views", (hooks) => {
             },
         };
         setupControlPanelServiceRegistry();
-        serviceRegistry.add("dialog", dialogService);
 
         target = getFixture();
     });

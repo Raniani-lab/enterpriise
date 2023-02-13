@@ -481,6 +481,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
             'partner_id': self.partner_a.id,
             'invoice_date': '2010-01-01',
             'date': '2010-01-01',
+            'invoice_date_due': '2010-01-01',
             'payment_reference': 'I',
             'invoice_line_ids': [Command.create({
                 'name': 'test invoice',
@@ -495,6 +496,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
             'partner_id': self.partner_a.id,
             'invoice_date': '2010-01-01',
             'date': '2010-01-01',
+            'invoice_date_due': '2010-01-01',
             'payment_reference': 'R',
             'invoice_line_ids': [Command.create({
                 'name': 'test refund',

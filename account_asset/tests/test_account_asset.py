@@ -2061,3 +2061,37 @@ class TestAccountAsset(TestAccountReportsCommon):
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
 
         self.assertEqual(lines[1]['columns'][1]['name'], '12/31/2015')
+
+    def test_asset_modify_sell_multicurrency(self):
+        """ Test that the closing invoice's currency is taken into account when selling an asset. """
+        closing_invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'currency_id': self.currency_data['currency'].id,
+            'invoice_line_ids': [Command.create({'price_unit': 5000})]
+        })
+        self.env['asset.modify'].create({
+            'asset_id': self.truck.id,
+            'invoice_line_ids': closing_invoice.invoice_line_ids,
+            'date': fields.Date.today() + relativedelta(months=-6, days=-1),
+            'modify_action': 'sell',
+        }).sell_dispose()
+
+        closing_move = self.truck.depreciation_move_ids.filtered(lambda l: l.state == 'draft')
+
+        self.assertRecordValues(closing_move.line_ids, [{
+            'debit': 0,
+            'credit': 10000,
+            'account_id': self.truck.account_asset_id.id,
+        }, {
+            'debit': 4500,
+            'credit': 0,
+            'account_id': self.truck.account_depreciation_id.id,
+        }, {
+            'debit': 2500,
+            'credit': 0,
+            'account_id': closing_invoice.invoice_line_ids.account_id.id,
+        }, {
+            'debit': 3000,
+            'credit': 0,
+            'account_id': self.env.company.loss_account_id.id,
+        }])

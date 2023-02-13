@@ -512,3 +512,13 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         self.testAction.view_ids.view_mode = "kanban"
         self.start_tour("/web?debug=tests", 'web_studio_test_create_new_model_from_existing_view', login="admin",
                         timeout=200)
+
+    def test_create_model_with_clickable_stages(self):
+        web_read_group = type(self.env["base"]).web_read_group
+        @mute_logger("odoo.models")
+        @api.model
+        def muted_web_read_group(self, *args, **kwargs):
+            return web_read_group(self, *args, **kwargs)
+
+        self.patch(type(self.env["base"]), "web_read_group", muted_web_read_group)
+        self.start_tour("/web?debug=tests", 'web_studio_test_create_model_with_clickable_stages', login="admin", timeout=200)

@@ -86,6 +86,7 @@ class SaleOrder(models.Model):
     payment_exception = fields.Boolean("Contract in exception",
                                        help="Automatic payment with token failed. The payment provider configuration and token should be checked")
     to_renew = fields.Boolean(string='To Renew', default=False, copy=False)
+    payment_term_id = fields.Many2one(tracking=True)
 
     ###################
     # KPI / reporting #

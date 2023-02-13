@@ -31,7 +31,7 @@ msgstr "Spotkanie"
 #: code:addons/website_enterprise/static/src/js/systray_items/new_content.js:0
 #, python-format
 msgid "Appointment Form"
-msgstr ""
+msgstr "Formularz Spotkania"
 
 #. module: website_enterprise
 #: model:website.configurator.feature,name:website_enterprise.feature_module_helpdesk

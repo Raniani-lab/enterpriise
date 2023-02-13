@@ -546,7 +546,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__verified
 msgid "Verified"
-msgstr ""
+msgstr "Potvrđeno"
 
 #. module: payment_sepa_direct_debit
 #. openerp-web
@@ -600,4 +600,4 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model:mail.template,report_name:payment_sepa_direct_debit.mail_template_sepa_notify_validation
 msgid "{{ (object.name or '').replace('/','_') }}"
-msgstr ""
+msgstr "{{ (object.name or '').replace('/','_') }}"

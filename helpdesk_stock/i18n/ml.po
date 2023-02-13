@@ -22,7 +22,7 @@ msgstr ""
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__partner_id
 msgid "Customer"
-msgstr ""
+msgstr "കസ്റ്റമർ"
 
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.view_stock_return_picking_form_inherit_helpdesk_stock
@@ -103,7 +103,7 @@ msgstr ""
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__sale_order_id
 msgid "Sales Order"
-msgstr ""
+msgstr "സെയിൽസ് ഓർഡർ"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__suitable_picking_ids
@@ -123,7 +123,7 @@ msgstr ""
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__ticket_id
 msgid "Ticket"
-msgstr ""
+msgstr "ടിക്കറ്റ് "
 
 #. module: helpdesk_stock
 #: model:ir.model,name:helpdesk_stock.model_helpdesk_ticket_report_analysis
@@ -138,4 +138,4 @@ msgstr ""
 #. module: helpdesk_stock
 #: model:ir.model,name:helpdesk_stock.model_stock_picking
 msgid "Transfer"
-msgstr ""
+msgstr "ട്രാൻസ്ഫെർ"

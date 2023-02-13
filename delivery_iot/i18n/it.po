@@ -92,7 +92,7 @@ msgstr "Tipologia prelievo"
 #: code:addons/delivery_iot/static/src/xml/iot_widgets_templates.xml:0
 #, python-format
 msgid "Read weight"
-msgstr ""
+msgstr "Leggi peso"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__iot_device_id

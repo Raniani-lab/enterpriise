@@ -2113,7 +2113,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_provider
 msgid "Payment Provider"
-msgstr ""
+msgstr "Maksājumu sniedzējs"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_token

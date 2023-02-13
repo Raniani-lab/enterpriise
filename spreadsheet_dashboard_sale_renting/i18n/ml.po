@@ -40,7 +40,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Customer"
-msgstr ""
+msgstr "കസ്റ്റമർ"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -78,7 +78,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Orders"
-msgstr ""
+msgstr "ഓർഡർ "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web

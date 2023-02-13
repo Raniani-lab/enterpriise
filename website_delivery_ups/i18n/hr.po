@@ -117,9 +117,9 @@ msgstr "Vaše plaćanje je odobreno."
 #. module: website_delivery_ups
 #: model_terms:payment.provider,cancel_msg:website_delivery_ups.payment_provider_ups_cod
 msgid "Your payment has been cancelled."
-msgstr ""
+msgstr "Vaše plaćanje je otkazano."
 
 #. module: website_delivery_ups
 #: model_terms:payment.provider,done_msg:website_delivery_ups.payment_provider_ups_cod
 msgid "Your payment has been successfully processed. Thank you!"
-msgstr ""
+msgstr "Vaše plaćanje je uspješno obrađeno. Hvala!"

@@ -100,7 +100,7 @@ msgstr "Töötaja"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Employee Capacity"
-msgstr "Töötajate võimsus"
+msgstr "Töötajate vajadus"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_costs_hour
@@ -130,7 +130,7 @@ msgstr "Sisse logitud!"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Number of employees needed to complete operation."
-msgstr "Töö lõpetamiseks vajalike töötajate arv."
+msgstr "Töö tegemiseks vajalik töötajate arv."
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -165,7 +165,7 @@ msgstr "Kvaliteedikontroll"
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__allow_employee
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__allow_employee
 msgid "Requires Log In"
-msgstr "Nõuab sisselogimist"
+msgstr "Sisselogimine nõutav"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript

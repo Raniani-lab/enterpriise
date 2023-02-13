@@ -416,7 +416,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Alignment"
-msgstr ""
+msgstr "Wyrównanie"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3529,7 +3529,7 @@ msgstr "Akcja serwera"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Set Cover Image"
-msgstr "Dodaj zdjęcie"
+msgstr "Ustaw okładkę"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4159,7 +4159,7 @@ msgstr "Widoki osi czasu"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Title Block"
-msgstr ""
+msgstr "Blok tytułowy"
 
 #. module: web_studio
 #. odoo-javascript

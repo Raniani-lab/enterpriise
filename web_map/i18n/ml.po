@@ -310,7 +310,7 @@ msgstr ""
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "Yes"
-msgstr ""
+msgstr "അതെ"
 
 #. module: web_map
 #: code:addons/web_map/models/models.py:0

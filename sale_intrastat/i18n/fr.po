@@ -33,4 +33,4 @@ msgstr "Bon de commande"
 #. module: sale_intrastat
 #: model:ir.model,name:sale_intrastat.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Ligne de bon de commande"
+msgstr "Ligne de commande"

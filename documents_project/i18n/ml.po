@@ -168,7 +168,7 @@ msgstr ""
 #. module: documents_project
 #: model:documents.facet,name:documents_project.documents_project_status
 msgid "Status"
-msgstr ""
+msgstr "സ്റ്റാറ്റസ്"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_project_task

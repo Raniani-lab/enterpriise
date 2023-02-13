@@ -244,8 +244,8 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
-"Planeerige oma inimressursid ja materiaalsed ressursid rollide, projektide "
-"ja müügitellimuste lõikes."
+"Planeerige oma inim- ja materiaalsed ressursid rollide, projektide ja "
+"müügitellimuste lõikes."
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_analysis_view_tree

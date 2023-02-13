@@ -91,7 +91,7 @@ msgstr ""
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "സോഷ്യൽ പോസ്റ്റ്"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_stream

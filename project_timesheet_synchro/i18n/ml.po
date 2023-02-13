@@ -461,7 +461,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Settings"
-msgstr ""
+msgstr "സെറ്റിങ്ങ്സ് "
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -490,7 +490,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Statistics"
-msgstr ""
+msgstr "സ്റ്റാറ്റിസ്റ്റിക്‌സ്"
 
 #. module: project_timesheet_synchro
 #. openerp-web

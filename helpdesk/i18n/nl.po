@@ -5,8 +5,8 @@
 # Translators:
 # Lukas Van Cauter <cvl@odoo.com>, 2022
 # Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # Jolien De Paepe, 2023
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -295,6 +295,30 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    Beste <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">Meneer/mevrouw</t>,<br/><br/>\n"
+"    Je verzoek\n"
+"    <t t-if=\"object.get_portal_url()\">\n"
+"        <a t-attf-href=\"/my/ticket/{{ object.id }}/{{ object.access_token }}\" t-out=\"object.name or ''\"/>\n"
+"    </t>\n"
+"    is ontvangen en wordt beoordeeld door onze <t t-out=\"object.team_id.name or ''\">Table legs are unbalanced</t> team.\n"
+"    De referentie van je ticket is <t t-out=\"object.ticket_ref or ''\">15</t>.<br/>\n"
+"\n"
+"    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
+"        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">Bekijk ticket</a><br/>\n"
+"    </div>\n"
+"\n"
+"    Als je aanvullende opmerkingen wilt toevoegen, beantwoordt je deze e-mail.<br/><br/>\n"
+"\n"
+"    <t t-if=\"object.team_id.show_knowledge_base\">\n"
+"        Aarzel dan niet om ons <a t-attf-href=\"{{ object.team_id.get_knowledge_base_url() }}\">Help Center</a> te bezoeken. Wellicht vind je daar het antwoord op je vraag.\n"
+"        <br/><br/>\n"
+"    </t>\n"
+"\n"
+"    Dank je,<br/><br/>\n"
+"    <t t-out=\"object.team_id.name or 'Helpdesk'\">Helpdesk</t> Team.\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban

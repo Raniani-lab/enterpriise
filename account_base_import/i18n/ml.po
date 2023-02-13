@@ -89,7 +89,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/js/account_setup_import.js:0
 #, python-format
 msgid "Customers"
-msgstr ""
+msgstr "കസ്റ്റമേഴ്സ് "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -130,7 +130,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 #, python-format
 msgid "Import"
-msgstr ""
+msgstr "ഇമ്പോർട്ട് "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -199,7 +199,7 @@ msgstr ""
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "ജേർണൽ ഐറ്റം"
 
 #. module: account_base_import
 #. odoo-javascript

@@ -65,7 +65,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "<strong>Time Rounding</strong>"
-msgstr "<strong>aja ümardamine</strong>"
+msgstr "<strong>Ajaarvestuse ümardamine</strong>"
 
 #. module: timesheet_grid
 #: model:mail.template,body_html:timesheet_grid.mail_template_timesheet_reminder_user
@@ -732,7 +732,7 @@ msgstr "UoM kodeerimine"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "Enter"
-msgstr "Sisesta"
+msgstr "Alusta"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -844,7 +844,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Launch the <b>timer</b> to start a new activity."
-msgstr "Käivita <b>taimerit</b>, et alustada uue tegevusega"
+msgstr "Käivita <b>taimer</b>, et alustada uue tegevusega"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
@@ -1018,6 +1018,7 @@ msgstr "Vajutage tühistamiseks Esc"
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
+#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #: model:ir.model,name:timesheet_grid.model_project_project
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__project_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__project_id
@@ -1065,12 +1066,12 @@ msgstr "Jätka taimer"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_rounding
 msgid "Round up"
-msgstr "Ümarda ülessepoole"
+msgstr "Ümarda ülespoole"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Rounding applied when tracking your time using the timer"
-msgstr "Taimeri abil aja jälgimisel rakendatakse ümardamist"
+msgstr "Aja jälgimisel taimeriga rakendatakse ümardamist"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -1202,6 +1203,7 @@ msgstr "Kahtlane periood"
 
 #. module: timesheet_grid
 #. odoo-javascript
+#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #: model:ir.model,name:timesheet_grid.model_project_task
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__task_id
@@ -1645,7 +1647,7 @@ msgstr "kustutatud"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "letter shortcut"
-msgstr "tähe otsetee"
+msgstr "kasuta kiirklahvi"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1680,7 +1682,7 @@ msgstr "vajuta"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press Shift + a letter shortcut"
-msgstr "vajutage Shift + tähe otsetee"
+msgstr "vajutage Shift + või otsevalik (a; b)"
 
 #. module: timesheet_grid
 #. odoo-javascript

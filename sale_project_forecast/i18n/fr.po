@@ -33,7 +33,7 @@ msgstr "Article de la commande"
 #. module: sale_project_forecast
 #: model:ir.model,name:sale_project_forecast.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Ligne de bon de commande"
+msgstr "Ligne de commande"
 
 #. module: sale_project_forecast
 #: model:ir.model.fields,help:sale_project_forecast.field_planning_slot__sale_line_id

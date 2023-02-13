@@ -1997,7 +1997,7 @@ msgstr "組"
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Group By"
-msgstr "分組依據"
+msgstr "分組方式"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2437,7 +2437,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor.xml:0
 #, python-format
 msgid "Loading..."
-msgstr "載入中..."
+msgstr "載入中⋯"
 
 #. module: web_studio
 #. odoo-javascript

@@ -39,7 +39,7 @@ msgstr "%s %s"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__active
 msgid "Active"
-msgstr "Active"
+msgstr "Actif"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
@@ -291,7 +291,7 @@ msgstr "Bon de commande"
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Ligne de bons de commande"
+msgstr "Ligne de commande"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_variant_ids
@@ -299,14 +299,14 @@ msgid ""
 "Select Variants of the Product for which this rule applies. Leave empty if "
 "this rule applies for any variant of this template."
 msgstr ""
-"Sélectionnez les Variantes du produit auxquelles cette règle s'applique. "
+"Sélectionnez les variantes du produit auxquelles cette règle s'applique. "
 "Laissez vide si cette règle s'applique à toutes les variantes de ce modèle."
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_template_id
 msgid "Select products on which this pricing will be applied."
 msgstr ""
-"Sélectionnez les produits sur lesquels cette tarification sera appliquée"
+"Sélectionnez les produits sur lesquels cette tarification sera appliquée."
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__subscription_unit_display
@@ -430,7 +430,7 @@ msgstr "par %s semaines"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s years"
-msgstr "par %s ans"
+msgstr "par %s années"
 
 #. module: sale_temporal
 #. odoo-python

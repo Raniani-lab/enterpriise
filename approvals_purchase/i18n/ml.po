@@ -82,7 +82,7 @@ msgstr ""
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_product_line__purchase_order_line_id
 msgid "Purchase Order Line"
-msgstr ""
+msgstr "പർച്ചേസ് ഓർഡർ ലൈൻ"
 
 #. module: approvals_purchase
 #: code:addons/approvals_purchase/models/approval_request.py:0

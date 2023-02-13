@@ -1321,7 +1321,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_search_view_inherit_sale_subscription
 msgid "Can be Recurring"
-msgstr "Võib olla korduv"
+msgstr "Korduv toode"
 
 #. module: sale_subscription
 #. odoo-javascript

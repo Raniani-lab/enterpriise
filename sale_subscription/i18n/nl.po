@@ -42,6 +42,9 @@ msgid ""
 "- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period. \n"
 "  Negative recurring lines are considered free."
 msgstr ""
+"\n"
+"- Je moet wachten tot de huidige abonnementsperiode voorbij is. Aan het einde van de huidige periode zullen nieuwe te factureren hoeveelheden klaar staan.\n"
+"Negatieve herhalende regels worden als gratis beschouwd."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__percentage_satisfaction
@@ -2371,6 +2374,8 @@ msgid ""
 "Mix of negative recurring lines and non-recurring line. The contract should "
 "be fixed manually"
 msgstr ""
+"Mix van negatieve terugkerende regels en een eenmalige regel. Het contract "
+"moet handmatig worden vastgelegd"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_id
@@ -3592,6 +3597,8 @@ msgid ""
 "The following recurring orders have draft invoices. Please Confirm them or "
 "cancel them before creating new invoices. %s."
 msgstr ""
+"De volgende periodieke opdrachten hebben conceptfacturen. Bevestig ze of "
+"annuleer ze voordat je nieuwe facturen maakt. %s."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3601,6 +3608,8 @@ msgid ""
 "The following refund %s has been made on this contract. Please check the "
 "next invoice date if necessary."
 msgstr ""
+"De volgende terugbetaling %s is gedaan op dit contract. Controleer eventueel"
+" de eerstvolgende factuurdatum."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
@@ -3675,7 +3684,7 @@ msgstr "De upsell %s is geannuleerd."
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "There is already a draft invoice for subscription %s."
-msgstr ""
+msgstr "Er is al een conceptfactuur voor abonnement %s."
 
 #. module: sale_subscription
 #. odoo-python
@@ -4063,6 +4072,8 @@ msgid ""
 "You can not delete a confirmed subscription. You must first close and cancel"
 " it before you can delete it."
 msgstr ""
+"Je kunt een bevestigd abonnement niet verwijderen. Je moet het eerst sluiten"
+" en annuleren voordat je het kunt verwijderen."
 
 #. module: sale_subscription
 #. odoo-python
@@ -4168,7 +4179,7 @@ msgstr "Je abonnement"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Your contract is recurrent"
-msgstr ""
+msgstr "Je contract is herhalend"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit

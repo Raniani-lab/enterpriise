@@ -96,12 +96,12 @@ msgstr ""
 #. module: documents_project_sale
 #: model:ir.model,name:documents_project_sale.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "സെയിൽസ് ഓർഡർ"
 
 #. module: documents_project_sale
 #: model:documents.facet,name:documents_project_sale.documents_folder_facet_1
 msgid "Status"
-msgstr ""
+msgstr "സ്റ്റാറ്റസ്"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template

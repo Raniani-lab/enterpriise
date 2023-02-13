@@ -1617,7 +1617,7 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_form
 msgid "e.g. Revenue"
-msgstr ""
+msgstr "piem. Ieņēmumi"
 
 #. module: account_consolidation
 #. odoo-python

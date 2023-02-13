@@ -962,8 +962,8 @@ msgid ""
 "assign those open shifts to the resources that are available."
 msgstr ""
 "Määrake oma ressursside rollid (nt kokk, baarmen, ettekandja, kelner...). "
-"Looge avatud vahetused rollide jaoks, mida vajate missiooni täitmiseks. "
-"Seejärel määrake need avatud vahetused olemasolevatele ressurssidele."
+"Looge rollide jaoks vahetused, mida vajate eesmärgi täitmiseks. Seejärel "
+"määrake need vahetused olemasolevatele ressurssidele."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -973,8 +973,8 @@ msgid ""
 "Then, assign those open shifts to the resources that are available."
 msgstr ""
 "Määrake oma ressursside rollid (nt kokk, baarmen, ettekandja, kelner...). "
-"Looge avatud vahetused rollide jaoks, mida vajate missiooni täitmiseks. "
-"Seejärel määrake need avatud vahetused olemasolevatele ressurssidele."
+"Looge rollide jaoks vahetused, mida vajate eesmärgi täitmiseks. Seejärel "
+"määrake need vahetused olemasolevatele ressurssidele."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
@@ -1952,7 +1952,7 @@ msgstr "Planeeri"
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_resource
 msgid "Schedule by Resource"
-msgstr "Ajakava ressursside järgi"
+msgstr "Töötajate töögraafik"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_role
@@ -1966,8 +1966,8 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
-"Planeerige oma inimressursid ja materiaalsed ressursid rollide, projektide "
-"ja müügitellimuste lõikes."
+"Planeerige oma inim- ja materiaalsed ressursid rollide, projektide ja "
+"müügitellimuste lõikes."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__employee_token

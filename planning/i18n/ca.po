@@ -16,7 +16,6 @@
 # Martin Trigaux, 2022
 # AncesLatino2004, 2022
 # Pete M, 2022
-# Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # CristianCruzParra, 2022
@@ -24,14 +23,15 @@
 # Farouk Jabiri, 2022
 # marcescu, 2022
 # Ivan Espinola, 2023
+# Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Ivan Espinola, 2023\n"
+"Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2023\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -425,7 +425,7 @@ msgstr "<i class=\"fa fa-long-arrow-right\" title=\"Arrow\"/>"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<i class=\"fa small fa-minus\"></i> Role: Bartender"
-msgstr "<i class=\"fa small fa-minus\"></i> Funció: Bartender"
+msgstr "<i class=\"fa small fa-minus\"></i> Rol: Cambrer"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -598,7 +598,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<span>Doris Cole <span class=\"text-muted\">(Bartender)</span></span>"
-msgstr "<span>Doris Cole <span class=\"text-muted\">(Bartender)</span></span>"
+msgstr "<span>Doris Cole <span class=\"text-muted\">(Cambrer)</span></span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -608,7 +608,7 @@ msgstr "<span>Eli Lambert <span class=\"text-muted\">(Cambrera)</span></span>"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<span>Jeffrey Kelly <span class=\"text-muted\">(Bartender)</span></span>"
-msgstr "<span>Jeffrey Kelly <span class=\"text-muted\">(Bartender)</span></span>"
+msgstr "<span>Jeffrey Kelly <span class=\"text-muted\">(Cambrer)</span></span>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
@@ -779,7 +779,7 @@ msgstr "Avatar 128"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Bartender"
-msgstr "Bartender"
+msgstr "Cambrer"
 
 #. module: planning
 #: model:ir.model,name:planning.model_hr_employee_base
@@ -971,7 +971,7 @@ msgid ""
 "assign those open shifts to the resources that are available."
 msgstr ""
 "Defineix les funcions que duen a terme els teus recursos (p. ex. Cuiner, "
-"Bartender, Cambrer...). Crea torns oberts per als rols que necessites per a "
+"Chef, Cambrer...). Crea torns oberts per als rols que necessites per a "
 "completar una missió. Després, assigna aquests torns oberts als recursos "
 "disponibles."
 
@@ -983,8 +983,8 @@ msgid ""
 "Then, assign those open shifts to the resources that are available."
 msgstr ""
 "Defineix les funcions que duen a terme els teus recursos (p. ex. Cuiner, "
-"Bartender, Cambrer...). Crea torns oberts per als rols que necessitaràs per "
-"a completar una missió. Després, assigna aquests torns oberts als recursos "
+"Chef, Cambrer...). Crea torns oberts per als rols que necessitaràs per a "
+"completar una missió. Després, assigna aquests torns oberts als recursos "
 "disponibles."
 
 #. module: planning
@@ -1046,7 +1046,7 @@ msgstr "Doris Cole"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Doris Cole (Bartender)"
-msgstr "Doris Cole (Bartender)"
+msgstr "Doris Cole (Cambrer)"
 
 #. module: planning
 #. odoo-javascript
@@ -1360,7 +1360,7 @@ msgstr "Jeffrey Kelly"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Jeffrey Kelly (Bartender)"
-msgstr "Jeffrey Kelly (Bartender)"
+msgstr "Jeffrey Kelly (Cambrer)"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__job_title
@@ -2179,6 +2179,13 @@ msgid "The duration cannot be negative."
 msgstr "La duració no pot ser negativa."
 
 #. module: planning
+#. odoo-python
+#: code:addons/planning/models/planning_template.py:0
+#, python-format
+msgid "The duration is too long."
+msgstr ""
+
+#. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_check_start_date_lower_end_date
 msgid "The end date of a shift should be after its start date."
 msgstr ""
@@ -2475,9 +2482,9 @@ msgid ""
 "resources that are available.</i>"
 msgstr ""
 "Escriu el<b>rol</b> que els teus empleats duran a terme (<i>p. ex. Chef, "
-"Bartender, Cambrer, etc.</i>). <i>Consell: Crea torns oberts per als rols "
-"que necessitaràs per completar una missió. Després, assigna aquests torns "
-"oberts als recursos que tens disponibles.</i>"
+"Cuiner, Cambrer, etc.</i>). <i>Consell: Crea torns oberts per als rols que "
+"necessitaràs per completar una missió. Després, assigna aquests torns oberts"
+" als recursos que tens disponibles.</i>"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_unit__year
@@ -2558,7 +2565,7 @@ msgstr "lapse de dies)"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_tree
 msgid "e.g. Bartender"
-msgstr "p. ex. Bartender"
+msgstr "p. ex. Cambrer"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.resource_resource_form_view_inherit

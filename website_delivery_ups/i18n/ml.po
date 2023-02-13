@@ -44,7 +44,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Apply"
-msgstr ""
+msgstr "അപ്ലൈ"
 
 #. module: website_delivery_ups
 #: model:payment.provider,name:website_delivery_ups.payment_provider_ups_cod
@@ -79,7 +79,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "സെയിൽസ് ഓർഡർ"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog

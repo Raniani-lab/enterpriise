@@ -63,7 +63,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/working_employee_popup.xml:0
 #, python-format
 msgid "Continue"
-msgstr ""
+msgstr "തുടരുക"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__total_cost
@@ -74,7 +74,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__currency_id
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "കറൻസി"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -127,7 +127,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/pin_popup.xml:0
 #, python-format
 msgid "Ok"
-msgstr ""
+msgstr "ശരി"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit

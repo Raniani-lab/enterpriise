@@ -142,14 +142,14 @@ msgstr ""
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Payment"
-msgstr ""
+msgstr "പേയ്മെന്റ്"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Print"
-msgstr ""
+msgstr "പ്രിന്റ് "
 
 #. module: event_barcode
 #. openerp-web
@@ -220,7 +220,7 @@ msgstr ""
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Ticket"
-msgstr ""
+msgstr "ടിക്കറ്റ് "
 
 #. module: event_barcode
 #. openerp-web
@@ -234,7 +234,7 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "താക്കീത്"
 
 #. module: event_barcode
 #. openerp-web

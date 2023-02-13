@@ -193,7 +193,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "കറൻസി"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_subtotal
@@ -249,7 +249,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Favorites"
-msgstr ""
+msgstr "ഫേവറിറ്റ്സ് "
 
 #. module: industry_fsm_sale
 #: model:product.product,name:industry_fsm_sale.field_service_product
@@ -270,13 +270,13 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Group By"
-msgstr ""
+msgstr "ഗ്രൂപ്പ് ബൈ"
 
 #. module: industry_fsm_sale
 #: model:product.product,uom_name:industry_fsm_sale.field_service_product
 #: model:product.template,uom_name:industry_fsm_sale.field_service_product_product_template
 msgid "Hours"
-msgstr ""
+msgstr "മണിക്കൂറുകൾ"
 
 #. module: industry_fsm_sale
 #: model:project.task.type,legend_normal:industry_fsm_sale.field_service_project_stage_0
@@ -398,12 +398,12 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Price:"
-msgstr ""
+msgstr "പ്രൈസ്:"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__pricelist_id
 msgid "Pricelist"
-msgstr ""
+msgstr "പ്രൈസ്‌ലിസ്റ്"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_product_template
@@ -425,7 +425,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Product Type"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ് ടൈപ്പ് "
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_product_product
@@ -462,7 +462,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Quantity"
-msgstr ""
+msgstr "അളവ്"
 
 #. module: industry_fsm_sale
 #: code:addons/industry_fsm_sale/controllers/portal.py:0
@@ -512,7 +512,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "സെയിൽസ് ഓർഡർ"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__sale_line_id

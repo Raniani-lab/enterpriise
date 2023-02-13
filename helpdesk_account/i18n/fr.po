@@ -50,13 +50,13 @@ msgstr "Nombre de notes de crédit"
 #: model:ir.model,name:helpdesk_account.model_helpdesk_ticket
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__helpdesk_ticket_id
 msgid "Helpdesk Ticket"
-msgstr "Ticket d'Assistance"
+msgstr "Ticket d'assistance"
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
 #, python-format
 msgid "Helpdesk Ticket #%s"
-msgstr "# Tickets d'Assistance %s"
+msgstr "# Tickets d'assistance %s"
 
 #. module: helpdesk_account
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.view_account_move_reversal_inherit_helpdesk_account
@@ -66,7 +66,7 @@ msgstr "Factures à rembourser"
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_account_move
 msgid "Journal Entry"
-msgstr "Pièce comptable"
+msgstr "Écriture comptable"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__move_ids
@@ -77,7 +77,7 @@ msgstr "Mouvement"
 #: model:ir.actions.act_window,name:helpdesk_account.helpdesk_ticket_action_refund
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.helpdesk_ticket_view_form_inherit_helpdesk_invoicing
 msgid "Refund"
-msgstr "Avoir"
+msgstr "Remboursement"
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
@@ -98,4 +98,4 @@ msgstr "Mouvement approprié"
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__suitable_sale_order_ids
 msgid "Suitable Sale Order"
-msgstr "Ordre de vente approprié"
+msgstr "Bon de commande approprié"

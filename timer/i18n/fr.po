@@ -44,7 +44,7 @@ msgstr "Afficher la pause du minuteur"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_resume
 msgid "Display Timer Resume"
-msgstr "Afficher le reprise du minuteur"
+msgstr "Afficher la reprise du minuteur"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_start_primary
@@ -54,7 +54,7 @@ msgstr "Afficher le démarrage du minuteur en primaire"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_stop
 msgid "Display Timer Stop"
-msgstr "Afficher le stop du minuteur"
+msgstr "Afficher l'arrêt du minuteur"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__id
@@ -100,7 +100,7 @@ msgstr "Opération non prise en charge"
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Play"
-msgstr "Démarrer"
+msgstr "Lancer"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_id
@@ -110,7 +110,7 @@ msgstr "Res"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_model
 msgid "Res Model"
-msgstr "Res Model"
+msgstr "Modèle res"
 
 #. module: timer
 #. openerp-web

@@ -67,7 +67,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Campaign"
-msgstr ""
+msgstr "ക്യാമ്പയിൻ"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -121,7 +121,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Country"
-msgstr ""
+msgstr "രാജ്യം"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -311,7 +311,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Sales Team"
-msgstr ""
+msgstr "സെയിൽസ്  ടീം"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -354,7 +354,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "ടാഗുകൾ"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web

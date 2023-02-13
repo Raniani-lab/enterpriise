@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* sale_loyalty_taxcloud
 # 
+# Translators:
+# Niyas Raphy, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,12 +36,12 @@ msgstr ""
 #. module: sale_loyalty_taxcloud
 #: model:ir.model,name:sale_loyalty_taxcloud.model_account_move
 msgid "Journal Entry"
-msgstr ""
+msgstr "ജേണൽ എൻട്രി"
 
 #. module: sale_loyalty_taxcloud
 #: model:ir.model,name:sale_loyalty_taxcloud.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "ജേർണൽ ഐറ്റം"
 
 #. module: sale_loyalty_taxcloud
 #: code:addons/sale_loyalty_taxcloud/models/sale_order_line.py:0
@@ -50,7 +54,7 @@ msgstr ""
 #. module: sale_loyalty_taxcloud
 #: model:ir.model,name:sale_loyalty_taxcloud.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "സെയിൽസ് ഓർഡർ"
 
 #. module: sale_loyalty_taxcloud
 #: model:ir.model,name:sale_loyalty_taxcloud.model_sale_order_line

@@ -41,7 +41,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Customer"
-msgstr ""
+msgstr "കസ്റ്റമർ"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -100,7 +100,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Team"
-msgstr ""
+msgstr "ടീം"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -136,7 +136,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Type"
-msgstr ""
+msgstr "ടിക്കറ്റ് ടൈപ്പ്‌ "
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web

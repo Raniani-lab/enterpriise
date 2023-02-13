@@ -76,7 +76,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Location"
-msgstr ""
+msgstr "ലൊക്കേഷൻ"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -141,7 +141,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Quantity"
-msgstr ""
+msgstr "അളവ്"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -205,7 +205,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Warehouse"
-msgstr ""
+msgstr "വെയർഹൗസ്"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web

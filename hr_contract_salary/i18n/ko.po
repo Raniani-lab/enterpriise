@@ -1713,4 +1713,4 @@ msgstr ""
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer_applicant
 msgid "{{ object.company_id.name }} : Job Offer - {{ object.name }}"
-msgstr ""
+msgstr "{{ object.company_id.name }} : 채용 제안 - {{ object.name }}"

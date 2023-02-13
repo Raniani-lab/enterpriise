@@ -33,7 +33,7 @@ msgstr "Projet"
 #. module: project_sale_subscription
 #: model:ir.model,name:project_sale_subscription.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Ligne de bon de commande"
+msgstr "Ligne de commande"
 
 #. module: project_sale_subscription
 #: code:addons/project_sale_subscription/models/project.py:0

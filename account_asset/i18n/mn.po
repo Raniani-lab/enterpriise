@@ -5,10 +5,8 @@
 # Translators:
 # Munkhbaatar g <muuguu17@gmail.com>, 2022
 # nurbakhit nurka <nurbakhit@bumanit.mn>, 2022
-# Bayarkhuu Bataa, 2022
 # Batmunkh Ganbat <batmunkh.g@bumanit.mn>, 2022
 # Munkhbilguun Altankhuyag <munkhbilguunaltankhuyag@gmail.com>, 2022
-# tserendavaa tsogtoo <tseegii011929@gmail.com>, 2022
 # Батмөнх Ганбат <batmunkh2522@gmail.com>, 2022
 # hish, 2022
 # Батболд <batbold.ts@gmail.com>, 2022
@@ -16,6 +14,7 @@
 # Martin Trigaux, 2022
 # Onii Onii <onii0223@yahoo.com>, 2022
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2023
+# Bayarkhuu Bataa, 2023
 # 
 msgid ""
 msgstr ""
@@ -23,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-16 09:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2023\n"
+"Last-Translator: Bayarkhuu Bataa, 2023\n"
 "Language-Team: Mongolian (https://www.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -804,7 +803,7 @@ msgstr "Валют"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Current"
-msgstr "Одоогийн"
+msgstr "Ашиглаж буй"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1870,7 +1869,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__open
 msgid "Running"
-msgstr "Ажиллаж байгаа"
+msgstr "Ашиглаж буй"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_sms_error
@@ -1922,7 +1921,7 @@ msgstr "Ноорог болгох"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Set to Running"
-msgstr "Ашиглагдаж буй болгох"
+msgstr "Ашиглаж буй болгох"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -2220,7 +2219,7 @@ msgstr ""
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
 msgstr ""
-"Та батлагдсан хөрөнгөтэй холбоотой ажил гүйлгээг ноорог болгох боломжгүй"
+"Та батлагдсан үндсэн хөрөнгөтэй холбоотой ажил гүйлгээг ноороглох боломжгүй"
 
 #. module: account_asset
 #. odoo-python

@@ -2601,7 +2601,7 @@ msgstr "VAT（Value Added Tax）"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
 msgid "Valid Until"
-msgstr "有効期日"
+msgstr "有効期限日"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_validate

@@ -208,7 +208,7 @@ msgstr "Tööajatabelite arveldamine"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Timesheets taken into account when invoicing your time"
-msgstr "Tööajatabeleid võetakse arvete esitamisel arvesse"
+msgstr "Arvete esitamisel võetakse kulunud tööaeg arvesse"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
@@ -227,7 +227,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__approved
 msgid "Validated timesheets only"
-msgstr "Ainult kinnitatud tööajatabelid"
+msgstr "Ainult kinnitatud ajaarvestuslehtede põhjal"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate

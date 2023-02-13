@@ -287,13 +287,13 @@ msgstr "Comentarios"
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_res_company
 msgid "Companies"
-msgstr "Empresas"
+msgstr "Compañías"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__company_id
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_project_project_filter_inherit_industry_fsm
 msgid "Company"
-msgstr "Empresa"
+msgstr "Compañía"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_res_config_settings

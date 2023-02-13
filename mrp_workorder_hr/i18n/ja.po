@@ -194,7 +194,7 @@ msgstr "作業区用途"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workorder
 msgid "Work Order"
-msgstr "作業オーダ"
+msgstr "作業注文"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter_productivity

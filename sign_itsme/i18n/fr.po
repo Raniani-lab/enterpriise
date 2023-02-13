@@ -115,7 +115,7 @@ msgstr ""
 #. module: sign_itsme
 #: model:ir.model.fields.selection,name:sign_itsme.selection__sign_item_role__auth_method__itsme
 msgid "Via itsme®"
-msgstr "Avec itsme®"
+msgstr "Via itsme®"
 
 #. module: sign_itsme
 #. odoo-javascript
@@ -126,7 +126,7 @@ msgid ""
 " You can try again to finalize your signature."
 msgstr ""
 "Vous avez rejeté la demande d'identification ou pris trop de temps pour la "
-"traiter. Vous pouvez réessayer pour finaliser votre signature."
+"traiter. Veuillez réessayer pour finaliser votre signature."
 
 #. module: sign_itsme
 #. odoo-python

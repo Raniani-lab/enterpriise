@@ -1433,7 +1433,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
-msgstr "分組依據"
+msgstr "分組方式"
 
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_1

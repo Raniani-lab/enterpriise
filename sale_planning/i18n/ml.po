@@ -72,7 +72,7 @@ msgstr ""
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__end_datetime
 msgid "End Date"
-msgstr ""
+msgstr "അവസാന തീയതി"
 
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_tester
@@ -85,7 +85,7 @@ msgstr ""
 #: model:product.template,uom_name:sale_planning.developer_product_product_template
 #: model:product.template,uom_name:sale_planning.technical_maintainance_product_product_template
 msgid "Hours"
-msgstr ""
+msgstr "മണിക്കൂറുകൾ"
 
 #. module: sale_planning
 #: model:product.product,name:sale_planning.technical_maintainance_product
@@ -236,7 +236,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_form_inherit_sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
 msgid "Sales Order"
-msgstr ""
+msgstr "സെയിൽസ് ഓർഡർ"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_analysis_report__sale_line_id

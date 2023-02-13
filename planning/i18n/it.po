@@ -1465,7 +1465,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__overlap_slot_count
 msgid "Overlapping Slots"
-msgstr ""
+msgstr "Fasce orarie sovrapposte"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -2326,7 +2326,7 @@ msgstr "Non puoi disassegnare un altro dipendente oltre a te stesso."
 #: code:addons/planning/wizard/slot_planning_select_send.py:0
 #, python-format
 msgid "You cannot send a past unassigned slot"
-msgstr ""
+msgstr "Impossibile inviare una fascia oraria precedente non assegnata"
 
 #. module: planning
 #. odoo-python

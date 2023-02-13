@@ -294,7 +294,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/legacy/js/views/view_dialogs.js:0
 #, python-format
 msgid "Remove"
-msgstr ""
+msgstr "റിമൂവ്"
 
 #. module: web_enterprise
 #. odoo-javascript

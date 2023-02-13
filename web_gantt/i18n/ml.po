@@ -180,7 +180,7 @@ msgstr "അടുത്തത്"
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Open"
-msgstr ""
+msgstr "ഓപ്പൺ"
 
 #. module: web_gantt
 #. openerp-web

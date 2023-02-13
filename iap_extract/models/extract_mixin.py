@@ -3,6 +3,7 @@
 
 import logging
 
+from dateutil.relativedelta import relativedelta
 from psycopg2 import IntegrityError, OperationalError
 
 from odoo import api, fields, models, _lt
@@ -265,8 +266,12 @@ class ExtractMixin(models.AbstractModel):
                 self.env['ir.config_parameter'].sudo().set_param("iap_extract.already_notified", True)
 
     def validate_ocr(self):
-        self.extract_state = 'to_validate'
-        self._get_cron_ocr('validate')._trigger()
+        documents_to_validate = self.filtered(lambda doc: doc.extract_state == 'waiting_validation')
+        documents_to_validate.extract_state = 'to_validate'
+
+        if documents_to_validate:
+            ocr_trigger_datetime = fields.Datetime.now() + relativedelta(minutes=self.env.context.get('ocr_trigger_delta', 0))
+            self._get_cron_ocr('validate')._trigger(at=ocr_trigger_datetime)
 
     def _check_ocr_status(self):
         """ Contact iap to get the actual status of the ocr request. This function returns the OCR results if any. """

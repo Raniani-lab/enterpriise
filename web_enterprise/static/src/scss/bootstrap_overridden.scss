@@ -32,7 +32,6 @@ $input-border-radius-sm: 0 !default;
 $input-border-radius-lg: 0 !default;
 $nav-tabs-border-radius: 0 !default;
 $nav-pills-border-radius: 0 !default;
-$dropdown-border-radius: 0 !default;
 $card-border-radius: 0 !default;
 $accordion-border-radius: 0 !default;
 $tooltip-border-radius: 0 !default;
@@ -77,7 +76,7 @@ $btn-focus-box-shadow: 0 !default;
 //
 // Dropdown menu container and contents.
 
-$dropdown-divider-bg: $o-gray-200 !default;
+$dropdown-border-width: 0 !default;;
 
 // Forms
 //

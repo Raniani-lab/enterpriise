@@ -38,7 +38,8 @@ $o-list-footer-color: $o-gray-900 !default;
 $o-list-footer-bg-color: $o-white !default;
 $o-list-footer-font-weight: 500 !default;
 
-$o-dropdown-box-shadow: 0 12px 14px -10px rgba(black, 0.25) !default;
+// Dropdown
+$o-dropdown-box-shadow: 0 0 50px rgba(black, 0.14) !default;
 
 // o-inputs
 $o-input-padding-y: 1px !default;

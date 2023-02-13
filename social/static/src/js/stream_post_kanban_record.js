@@ -55,18 +55,4 @@ export class StreamPostKanbanRecord extends KanbanRecord {
     get commentCount() {
         return this.props.commentCount || DEFAULT_COMMENT_COUNT;
     }
-
-    /**
-     * FIXME: this is done temporarily, waiting for these implemention details to be removed
-     * from the arch.
-     *
-     * @override
-     */
-    get renderingContext() {
-        return {
-            ...super.renderingContext,
-            _insertThousandSeparator: (value) => this._insertThousandSeparator(value),
-            formatPost: (value) => this.formatPost(value),
-        }
-    }
 }

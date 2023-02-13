@@ -25,18 +25,6 @@ export class PostKanbanRenderer extends KanbanRenderer {
     }
 
     /**
-     * FIXME: this is temporary, waiting for the use of formatPost to be removed from the arch.
-     *
-     * @override
-     */
-    get renderingContext() {
-        return {
-            ...super.renderingContext,
-            formatPost: (message) => this.formatPost(message),
-        };
-    }
-
-    /**
      * Shows a bootstrap carousel starting at the clicked image's index
      *
      * @param {PointerEvent} ev - event of the clicked image

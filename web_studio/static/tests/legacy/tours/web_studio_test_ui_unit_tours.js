@@ -373,3 +373,54 @@ tour.register(
         },
     ]
 );
+
+tour.register(
+    "web_studio_custom_selection_field_edit_values",
+    {
+        test: true,
+        sequence: 260
+    },
+    [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a"
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_new_fields .o_web_studio_field_selection",
+            run: "drag_and_drop (.o_web_studio_hook:eq(0))"
+        },
+        {
+            trigger: ".o_web_studio_selection_new_value input",
+            run: "text some value",
+        },
+        {
+            trigger: ".modal-footer .btn-primary"
+        },
+        {
+            trigger: ".o_web_studio_leave"
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a"
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor .o_field_selection"
+        },
+        {
+            trigger: ".o_web_studio_edit_selection_values"
+        },
+        {
+            trigger: ".o_web_studio_selection_new_value input:last",
+            run: "text another value"
+        },
+        {
+            trigger: ".modal-footer .btn-primary"
+        },
+        {
+            trigger: ".o_web_studio_leave"
+        },
+    ]
+);

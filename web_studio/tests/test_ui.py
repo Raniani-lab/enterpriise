@@ -472,3 +472,24 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         })
         self.env.company.country_id.address_view_id = self.env.ref('base.view_partner_address_form')
         self.start_tour("/web?debug=tests", 'web_studio_test_address_view_id_no_edit', login="admin", timeout=200)
+
+    def test_custom_selection_field_edit_values(self):
+        self.testView.arch = '''
+             <form>
+                 <group>
+                     <field name="name" />
+                 </group>
+             </form>
+        '''
+
+        self.start_tour("/web?debug=tests", 'web_studio_custom_selection_field_edit_values', login="admin", timeout=200)
+        selection_field = self.env["ir.model.fields"].search(
+            [
+                ("state", "=", "manual"),
+                ("model", "=", "res.partner"),
+                ("ttype", "=", "selection")
+            ],
+            limit=1
+        )
+
+        self.assertCountEqual(selection_field.selection_ids.mapped("name"), ["some value", "another value"])

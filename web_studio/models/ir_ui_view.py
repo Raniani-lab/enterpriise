@@ -30,6 +30,13 @@ class Model(models.AbstractModel):
         key = super(Model, self)._get_view_cache_key(*args, **kwargs)
         return key + (self._context.get("studio"),)
 
+    @api.model
+    def _get_view_field_attributes(self):
+        keys = super()._get_view_field_attributes()
+        if self._context.get("studio"):
+            keys.append('manual')
+        return keys
+
 
 class View(models.Model):
     _name = 'ir.ui.view'

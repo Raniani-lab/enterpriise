@@ -56,7 +56,7 @@ class HrContractSalaryAdvantage(models.Model):
         'hr.contract.salary.advantage.type', required=True,
         default=lambda self: self.env.ref('hr_contract_salary.l10n_be_monthly_benefit', raise_if_not_found=False))
     folded = fields.Boolean()
-    fold_label = fields.Char()
+    fold_label = fields.Char(translate=True)
     fold_res_field_id = fields.Many2one(
         'ir.model.fields', domain=_get_field_domain, ondelete='cascade',
         help='Contract field used to fold this advantage.')
@@ -78,7 +78,7 @@ class HrContractSalaryAdvantage(models.Model):
         ('text', 'Text'),
     ])
     impacts_net_salary = fields.Boolean(default=True)
-    description = fields.Html('Description')
+    description = fields.Html('Description', translate=True)
     slider_min = fields.Float()
     slider_max = fields.Float()
     value_ids = fields.One2many('hr.contract.salary.advantage.value', 'advantage_id')

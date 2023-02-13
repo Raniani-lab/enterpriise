@@ -31,8 +31,8 @@ class ResCompany(models.Model):
 
     appraisal_plan = fields.Boolean(string='Automatically Generate Appraisals', default=True)
     assessment_note_ids = fields.One2many('hr.appraisal.note', 'company_id')
-    appraisal_employee_feedback_template = fields.Html(default=_get_default_employee_feedback_template)
-    appraisal_manager_feedback_template = fields.Html(default=_get_default_manager_feedback_template)
+    appraisal_employee_feedback_template = fields.Html(default=_get_default_employee_feedback_template, translate=True)
+    appraisal_manager_feedback_template = fields.Html(default=_get_default_manager_feedback_template, translate=True)
     appraisal_confirm_mail_template = fields.Many2one(
         'mail.template', domain="[('model', '=', 'hr.appraisal')]",
         default=_get_default_appraisal_confirm_mail_template)

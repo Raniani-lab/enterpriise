@@ -24,10 +24,9 @@
                 <div class="oe_button_box" name="button_box">
                     <button class="oe_stat_button" name="action_open_goals" icon="fa-bullseye" type="object">
                         <div class="o_field_widget o_stat_info">
-                            <span class="o_stat_text">
-                                <field name="uncomplete_goals_count"/> Employee's
+                            <span class="o_stat_value">
+                                <field name="uncomplete_goals_count"/> <span class="o_stat_text">Goals</span>
                             </span>
-                            <span class="o_stat_text">Goals</span>
                         </div>
                     </button>
                     <button class="oe_stat_button" name="action_open_employee_appraisals" icon="fa-star-half-o" type="object" attrs="{'invisible': ['|', ('employee_appraisal_count', '&lt;', 2), ('employee_id', '=', False)]}">
@@ -38,7 +37,7 @@
                     </button>
                     <button class="oe_stat_button" name="action_calendar_event" icon="fa-calendar" type="object">
                         <div class="o_field_widget o_stat_info">
-                            <span class="o_stat_value"><field name="meeting_count_display" /></span>
+                            <span class="o_stat_value"><field name="meeting_count_display"/></span>
                             <span class="o_stat_text"><field name="date_final_interview" readonly="1"/></span>
                         </div>
                     </button>

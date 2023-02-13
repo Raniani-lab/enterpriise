@@ -9,9 +9,9 @@ class hr_department(models.Model):
 
     appraisals_to_process_count = fields.Integer(compute='_compute_appraisals_to_process', string='Appraisals to Process')
     employee_feedback_template = fields.Html(
-        compute='_compute_appraisal_feedbacks', store=True, readonly=False)
+        compute='_compute_appraisal_feedbacks', store=True, readonly=False, translate=True)
     manager_feedback_template = fields.Html(
-        compute='_compute_appraisal_feedbacks', store=True, readonly=False)
+        compute='_compute_appraisal_feedbacks', store=True, readonly=False, translate=True)
     custom_appraisal_templates = fields.Boolean(string="Custom Appraisal Templates", default=False)
 
     def _compute_appraisals_to_process(self):

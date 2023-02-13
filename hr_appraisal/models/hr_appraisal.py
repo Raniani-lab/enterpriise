@@ -45,8 +45,8 @@ class HrAppraisal(models.Model):
     last_appraisal_date = fields.Date(related='employee_id.last_appraisal_date')
     employee_appraisal_count = fields.Integer(related='employee_id.appraisal_count')
     uncomplete_goals_count = fields.Integer(related='employee_id.uncomplete_goals_count')
-    employee_feedback_template = fields.Html(compute='_compute_feedback_templates')
-    manager_feedback_template = fields.Html(compute='_compute_feedback_templates')
+    employee_feedback_template = fields.Html(compute='_compute_feedback_templates', translate=True)
+    manager_feedback_template = fields.Html(compute='_compute_feedback_templates', translate=True)
 
     date_close = fields.Date(
         string='Appraisal Date', help='Date of the appraisal, automatically updated when the appraisal is Done or Cancelled.', required=True, index=True,

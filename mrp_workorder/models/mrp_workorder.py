@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from ast import literal_eval
 from bisect import bisect_left
 from collections import defaultdict
 from datetime import datetime
@@ -107,27 +108,30 @@ class MrpProductionWorkcenterLine(models.Model):
         if self._should_be_pending():
             self.button_pending()
         domain = [('state', 'not in', ['done', 'cancel', 'pending'])]
-        if self.env.context.get('from_production_order'):
-            action = self.env["ir.actions.actions"]._for_xml_id("mrp.action_mrp_workorder_production_specific")
-            action['domain'] = domain
-            action['target'] = 'main'
-            action['view_id'] = 'mrp.mrp_production_workorder_tree_editable_view'
-            action['context'] = {
-                'no_breadcrumbs': True,
-            }
-            if self.env.context.get('from_manufacturing_order'):
-                action['context'].update({
-                    'search_default_production_id': self.production_id.id
-                })
-        else:
-            # workorder tablet view action should redirect to the same tablet view with same workcenter when WO mark as done.
+        if self.env.context.get('from_manufacturing_order'):
+            # from workorder on MO
             action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.mrp_workorder_action_tablet")
             action['domain'] = domain
             action['context'] = {
                 'no_breadcrumbs': True,
-                'search_default_workcenter_id': self.workcenter_id.id
+                'search_default_production_id': self.production_id.id,
+                'from_manufacturing_order': True,
             }
-
+        elif self.env.context.get('from_production_order'):
+            # from workorder list view
+            action = self.env["ir.actions.actions"]._for_xml_id("mrp.mrp_workorder_todo")
+            action['target'] = 'main'
+            action['context'] = dict(literal_eval(action['context']), no_breadcrumbs=True)
+        else:
+            # from workcenter kanban view
+            action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.mrp_workorder_action_tablet")
+            action['domain'] = domain
+            action['context'] = {
+                'no_breadcrumbs': True,
+                'search_default_workcenter_id': self.workcenter_id.id,
+                'search_default_ready': True,
+                'search_default_progress': True,
+            }
         return clean_action(action, self.env)
 
     def action_cancel(self):

@@ -200,6 +200,7 @@ class Tablet extends Component {
             resId: this.workorderId,
             display: { controlPanel: false },
             workorderBus: this.workorderBus,
+            context: this.props.action.context,
         };
         if (this.state.selectedStepId) {
             workorder.onRecordChanged = async (rootRecord) => {

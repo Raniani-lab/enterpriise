@@ -6,7 +6,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.project_task_view_tree_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='company_id' and not(@invisible='1')]" position="after">
+            <xpath expr="//field[@name='company_id']" position="after">
                 <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" optional="hide" attrs="{'required': [('planned_date_end', '!=', False)], 'invisible': [('project_id', '=', False)]}"/>
                 <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" optional="hide" attrs="{'required': [('planned_date_begin', '!=', False)], 'invisible': [('project_id', '=', False)]}"/>
             </xpath>
@@ -41,6 +41,14 @@
                         <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
                     </div>
                 </div>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/tree//field[@name='company_id']" position="after">
+                <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" optional="hide" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
+                <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" optional="hide" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='depend_on_ids']/tree//field[@name='company_id']" position="after">
+                <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" optional="hide" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
+                <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" optional="hide" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
             </xpath>
         </field>
     </record>

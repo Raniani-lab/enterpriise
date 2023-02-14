@@ -48,9 +48,16 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
         super()._init_core_custom_options(report, options, previous_options)
         ec_operation_category = options.get('sales_report_taxes', {'goods': tuple(), 'triangular': tuple(), 'services': tuple()})
 
-        ec_operation_category['goods'] = tuple(self.env.ref('l10n_be.tax_report_line_46L_tag')._get_matching_tags().ids)
-        ec_operation_category['triangular'] = tuple(self.env.ref('l10n_be.tax_report_line_46T_tag')._get_matching_tags().ids)
-        ec_operation_category['services'] = tuple(self.env.ref('l10n_be.tax_report_line_44_tag')._get_matching_tags().ids)
+        report_46L_expression = self.env.ref('l10n_be.tax_report_line_46L_tag')
+        report_46T_expression = self.env.ref('l10n_be.tax_report_line_46T_tag')
+        report_44_expression = self.env.ref('l10n_be.tax_report_line_44_tag')
+        report_48s44_expression = self.env.ref('l10n_be.tax_report_line_48s44_tag')
+        report_48s46T_expression = self.env.ref('l10n_be.tax_report_line_48s46T_tag')
+        report_48s46L_expression = self.env.ref('l10n_be.tax_report_line_48s46L_tag')
+
+        ec_operation_category['goods'] = tuple((report_46L_expression + report_48s46L_expression)._get_matching_tags().ids)
+        ec_operation_category['triangular'] = tuple((report_46T_expression + report_48s46T_expression)._get_matching_tags().ids)
+        ec_operation_category['services'] = tuple((report_44_expression + report_48s44_expression)._get_matching_tags().ids)
 
         # Change the names of the taxes to specific ones that are dependant to the tax type
         ec_operation_category['operation_category'] = {

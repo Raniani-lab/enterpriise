@@ -4029,7 +4029,7 @@ class AccountReport(models.Model):
         rslt = []
         folded_lines = set()
         for line in lines:
-            if not line.get('unfolded'):
+            if line.get('unfoldable') and not line.get('unfolded'):
                 folded_lines.add(line['id'])
 
             if 'parent_id' not in line or line['parent_id'] not in folded_lines:

@@ -1234,7 +1234,7 @@ class SaleOrder(models.Model):
 
     def _create_recurring_invoice(self, batch_size=30):
         today = fields.Date.today()
-        auto_commit = config['test_enable'] and modules.module.current_test
+        auto_commit = not bool(config['test_enable'] or config['test_file'])
 
         all_subscriptions = self or self.search(self._recurring_invoice_domain(), limit=batch_size + 1)
         need_cron_trigger = not self and len(all_subscriptions) > batch_size
@@ -1535,6 +1535,9 @@ class SaleOrder(models.Model):
             'currency': self.currency_id.name,
             'date_end': self.end_date,
             'no_new_invoice': True}}
+        auto_commit = not bool(config['test_enable'] or config['test_file'])
+        if auto_commit:
+            self.env.cr.commit()
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
         # ARJ TODO master: take the invoice template in the settings
         if self.sale_order_template_id.invoice_mail_template_id:

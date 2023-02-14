@@ -45,6 +45,6 @@ class AccountMove(models.Model):
             vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
             partner_id = self.find_partner_id_with_vat(vat_number_ocr).id or self.find_partner_id_with_name(supplier_ocr)
 
-            self._find_and_set_purchase_orders(purchase_orders_found, partner_id, total_ocr, prefer_purchase_line=True)
+            self._find_and_set_purchase_orders(purchase_orders_found, partner_id, total_ocr, from_ocr=True)
 
         return super()._save_form(ocr_results, force_write=force_write)

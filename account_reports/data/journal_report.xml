@@ -177,7 +177,7 @@
         </xpath>
         <xpath expr="//div[hasclass('o_filter_menu')]" position="replace">
             <div class="dropdown-menu o_filter_menu" role="menu">
-                <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_show_draft" title="Include unposted entries" data-filter="all_entries" groups="account.group_account_readonly">Include Unposted Entries</a>
+                <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_show_draft" title="Include Draft Entries" data-filter="all_entries" groups="account.group_account_readonly">Include Draft Entries</a>
                 <a role="menuitem" class="dropdown-item js_account_report_bool_filter" title="Show payment lines" data-filter="show_payment_lines">Include Payments</a>
                 <div role="separator" class="dropdown-divider"/>
                 <a role="menuitem" class="dropdown-item js_account_report_bool_filter" title="Sort by date" data-filter="sort_by_date">Sort By Date</a>

@@ -73,7 +73,7 @@
                 default_scale="year">
                 <templates>
                     <div t-name="gantt-popover">
-                        <div><strong>Date — </strong><t t-esc="userTimezoneStartDate.format('l LT')"/></div>
+                        <strong>Date — </strong><t t-esc="deadline.toFormat('f')"/>
                     </div>
                 </templates>
             </gantt>

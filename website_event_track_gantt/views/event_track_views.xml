@@ -30,7 +30,6 @@
         <field eval="2" name="priority"/>
         <field name="arch" type="xml">
             <gantt
-                js_class="event_track_gantt"
                 form_view_id="%(event_track_view_form_in_gantt)d"
                 date_start="date"
                 date_stop="date_end"
@@ -40,8 +39,8 @@
                 dynamic_range="1">
                 <templates>
                     <div t-name="gantt-popover">
-                        <div><strong>Start — </strong> <t t-out="date.format('l LT')"/></div>
-                        <div t-if="partner_name"><strong>Proposed By — </strong> <t t-out="partner_name"/></div>
+                        <div><strong>Start — </strong> <t t-esc="date.toFormat('f')"/></div>
+                        <div t-if="partner_name"><strong>Proposed By — </strong> <t t-esc="partner_name"/></div>
                     </div>
                 </templates>
                 <field name="partner_name"/>

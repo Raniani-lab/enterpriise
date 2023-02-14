@@ -24,7 +24,6 @@ GANTT_VALID_ATTRIBUTES = set([
     'delete',
     'plan',
     'default_group_by',
-    'permanent_group_by',
     'dynamic_range',
     'display_unavailability',
     'disable_drag_drop',

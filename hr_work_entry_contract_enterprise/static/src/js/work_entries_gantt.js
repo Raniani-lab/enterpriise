@@ -24,7 +24,7 @@ odoo.define('hr_work_entry_contract_enterprise.work_entries_gantt', function(req
             return this.model.ganttData.stopDate;
         },
         _displayWarning: function ($warning) {
-            this.$('.o_gantt_view').before($warning);
+            this.$('.o_legacy_gantt_view').before($warning);
         },
     });
 

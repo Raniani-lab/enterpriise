@@ -6,7 +6,6 @@ import GanttModel from 'web_gantt.GanttModel';
 import GanttRenderer from 'web_gantt.GanttRenderer';
 import GanttController from 'web_gantt.GanttController';
 import pyUtils from 'web.py_utils';
-import view_registry from 'web.view_registry';
 
 const _t = core._t;
 const _lt = core._lt;
@@ -148,7 +147,6 @@ const GanttView = AbstractView.extend({
         this.loadParams.progressField = arch.attrs.progress;
         this.loadParams.decorationFields = decorationFields;
         this.loadParams.defaultGroupBy = this.arch.attrs.default_group_by;
-        this.loadParams.permanentGroupBy = this.arch.attrs.permanent_group_by;
         this.loadParams.dynamicRange = this.arch.attrs.dynamic_range;
         this.loadParams.displayUnavailability = displayUnavailability;
         this.loadParams.fields = this.fields;
@@ -183,7 +181,5 @@ const GanttView = AbstractView.extend({
         this.rendererParams.dependencyField = this.modelParams.dependencyField
     },
 });
-
-view_registry.add('gantt', GanttView);
 
 export default GanttView;

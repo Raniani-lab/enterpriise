@@ -683,7 +683,7 @@ var GanttRow = Widget.extend({
      */
     _getResizeSnappingWidth: function (firstCell) {
         if (!this.firstCell) {
-            this.firstCell = firstCell || $('.o_gantt_view .o_gantt_header_scale .o_gantt_header_cell:first')[0];
+            this.firstCell = firstCell || $('.o_legacy_gantt_view .o_gantt_header_scale .o_gantt_header_cell:first')[0];
         }
         // jQuery (< 3.0) rounds the width value but we need the exact value
         // getBoundingClientRect is costly when there are lots of rows

@@ -13,18 +13,28 @@ Odoo Web Gantt chart view.
     'depends': ['web'],
     'assets': {
         'web._assets_primary_variables': [
-            'web_gantt/static/src/scss/web_gantt.variables.scss',
+            'web_gantt/static/src/gantt_view.variables.scss',
         ],
         'web.assets_backend': [
             'web_gantt/static/src/**/*',
-            'web_gantt/static/src/xml/**/*',
+
+            # Don't include dark mode files in light mode
+            ('remove', 'web_gantt/static/src/**/**/*.dark.scss'),
         ],
         'web.qunit_suite_tests': [
             'web_gantt/static/tests/**/*',
-            ('remove', 'web_gantt/static/tests/gantt_mobile_tests.js'),
+            ('remove', 'web_gantt/static/tests/**/*_mobile_tests.js'),
         ],
         'web.qunit_mobile_suite_tests': [
-            'web_gantt/static/tests/gantt_mobile_tests.js',
+            'web_gantt/static/tests/helpers.js',
+            'web_gantt/static/tests/**/*_mobile_tests.js',
+        ],
+        # ========= Dark Mode =========
+        "web.dark_mode_variables": [
+            ('before', 'web_enterprise/static/src/**/**/*.variables.scss', 'web_gantt/static/src/**/**/*.variables.dark.scss'),
+        ],
+        "web.dark_mode_assets_backend": [
+            'web_gantt/static/src/**/**/*.dark.scss',
         ],
     },
     'auto_install': True,

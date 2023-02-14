@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="web_gantt.GanttRenderer" owl="1">
+        <div t-ref="root"
+            class="o_gantt_renderer o_renderer bg-view"
+            t-att-class="{ o_no_groups: !model.metaData.groupedBy.length }"
+            t-attf-style="--Gantt__RowHeader-width:{{
+                state.rowHeaderWidth
+            }}px;--Gantt__Pill-height:{{
+                pillHeight
+            }}px;--Gantt__Row-height:{{
+                rowHeight
+            }}px;--Gantt__Template-rows:{{
+                gridTemplate.rows
+            }};--Gantt__Template-columns:{{
+                gridTemplate.columns
+            }}"
+            t-on-mousemove="throttledOnMouseMove"
+            t-on-mouseleave="onMouseLeave"
+        >
+            <t t-call="{{ constructor.headerTemplate }}"/>
+            <t t-if="model.metaData.groupedBy.length">
+                <div class="o_gantt_row_headers o_gantt_grid_rows">
+                    <t t-foreach="visibleRows" t-as="row" t-key="row.id">
+                        <t t-call="{{ constructor.rowHeaderTemplate }}" />
+                    </t>
+                </div>
+            </t>
+            <div t-ref="cellContainer" class="o_gantt_cells o_gantt_grid_rows o_gantt_grid_columns position-relative">
+                <t t-foreach="visibleRows" t-as="row" t-key="row.id">
+                    <t t-call="{{ constructor.rowContentTemplate }}" />
+                </t>
+                <t t-foreach="extraPills" t-as="pill" t-key="pill.id">
+                    <t t-call="{{ constructor.pillTemplate }}" />
+                </t>
+                <t t-if="shouldRenderConnectors()">
+                    <t t-foreach="visibleConnectors" t-as="connector" t-key="connector.id">
+                        <GanttConnector
+                            reactive="connector"
+                            onRemoveButtonClick="() => this.onRemoveButtonClick(connector.id)"
+                            onLeftButtonClick="() => this.onRescheduleButtonClick('backward', connector.id)"
+                            onRightButtonClick="() => this.onRescheduleButtonClick('forward', connector.id)"
+                        />
+                    </t>
+                </t>
+                <GanttCellButtons t-props="cellButtonsProps" />
+                <GanttResizeBadge reactive="resizeBadgeReactive" />
+            </div>
+            <t t-if="totalRow">
+                <t t-call="{{ constructor.totalRowTemplate }}"/>
+            </t>
+        </div>
+    </t>
+
+    <t t-name="web_gantt.GanttRenderer.Header" owl="1">
+        <t t-if="model.metaData.groupedBy.length">
+            <b
+                class="o_gantt_header o_gantt_row_sidebar position-sticky top-0 bg-view d-flex align-items-center justify-content-center"
+                t-esc="model.metaData.string"
+            />
+        </t>
+        <div class="o_gantt_header o_gantt_header_slots o_gantt_grid_columns position-sticky top-0 bg-view">
+            <b class="o_gantt_header_scale d-flex align-items-center justify-content-center" t-esc="getFormattedFocusDate()" />
+            <t t-set="formats" t-value="{'week': 'cccc, d', 'month': 'dd', 'year': env.isSmall ? 'MMM' : 'MMMM'}"/>
+            <t t-foreach="columns" t-as="column" t-key="column.id">
+                <div class="o_gantt_header_cell d-flex align-items-center justify-content-center p-2"
+                    t-att-class="{ o_gantt_today: column.isToday }"
+                    t-att-style="getGridPosition({ column: column.grid.column })"
+                >
+                    <t t-if="model.metaData.scale.id in formats" t-esc="column.start.toFormat(formats[model.metaData.scale.id])" />
+                    <small t-else="" class="text-center">
+                        <b t-esc="column.start.toFormat('h')" />
+                        <div class="d-xl-inline-block" t-esc="column.start.toFormat('a').toLowerCase()" />
+                    </small>
+                </div>
+            </t>
+        </div>
+    </t>
+
+    <t t-name="web_gantt.GanttRenderer.ConnectorCreator" owl="1">
+        <div
+            class="o_connector_creator_wrapper position-absolute w-100"
+            t-attf-class="o_connector_creator_wrapper_{{ alignment.vertical }} {{ '_color' in pill ? 'o_gantt_color_' + pill._color : '' }}"
+        >
+            <div
+                class="o_connector_creator position-absolute"
+                t-attf-class="o_connector_creator_{{ alignment.vertical }} o_connector_creator_{{ alignment.horizontal }}"
+            >
+                <div class="o_connector_creator_bullet position-absolute rounded-circle" />
+            </div>
+        </div>
+    </t>
+
+    <t t-name="web_gantt.GanttRenderer.RowHeader" owl="1">
+        <div
+            class="o_gantt_row_header o_gantt_row_sidebar text-truncate position-relative align-items-center"
+            t-att-class="{
+                o_sample_data_disabled: isDisabled(row),
+                o_gantt_row_sidebar_empty: !row.name,
+                o_gantt_group: row.isGroup,
+                o_gantt_hoverable: isHoverable(row),
+                o_mobile_progress_bar: row.progressBar and isTouchDevice,
+                o_group_open: !model.isClosed(row.id),
+            }"
+            t-att-style="getGridPosition({ row: row.grid.row })"
+            t-att-data-row-id="row.id"
+            t-on-click.synthetic="() => row.isGroup and this.model.toggleRow(row.id)"
+        >
+            <t t-if="!row.isGroup and row.progressBar">
+                <GanttRowProgressBar t-props="getProgressBarProps(row)" />
+            </t>
+            <div
+                class="o_gantt_row_title position-absolute text-truncate w-100"
+                t-att-style="getRowTitleStyle(row)"
+                t-att-title="row.name or ''"
+            >
+                <i t-if="row.isGroup" t-attf-class="fa small fa-{{ model.isClosed(row.id) ? 'plus' : 'minus' }} me-1" />
+                <span t-if="row.thumbnailUrl and row.resId"
+                    class="o_gantt_row_thumbnail_wrapper"
+                    t-att-class="{ 'me-1' : row.isGroup }"
+                >
+                    <img t-att-src="row.thumbnailUrl" class="o_gantt_row_thumbnail rounded-circle"/>
+                </span>
+                <span t-att-class="{ 'fw-bold': row.isGroup }" t-esc="row.name" />
+            </div>
+        </div>
+    </t>
+
+    <t t-name="web_gantt.GanttRenderer.RowContent" owl="1">
+        <!-- Cells -->
+        <t t-foreach="columns" t-as="column" t-key="column.id">
+            <div
+                class="o_gantt_cell"
+                t-att-class="{
+                    o_sample_data_disabled: isDisabled(row),
+                    o_gantt_today: column.isToday,
+                    o_gantt_group: row.isGroup,
+                    o_gantt_hoverable: isHoverable(row),
+                    o_group_open: !model.isClosed(row.id),
+                }"
+                t-attf-style="{{ getGridPosition({ column: column.grid.column, row: row.grid.row }) }};{{ row.cellColors[column.id] || '' }}"
+                t-att-data-row-id="row.id"
+                t-att-data-column-index="column_index"
+                t-on-click.synthetic="() => row.isGroup and this.model.toggleRow(row.id)"
+            />
+        </t>
+        <!-- Pills -->
+        <t t-if="row.isGroup">
+            <!-- Group pills -->
+            <t t-foreach="row.pills" t-as="pill" t-key="pill.id">
+                <div
+                    class="o_gantt_pill_wrapper o_gantt_group_pill align-items-center"
+                    t-att-class="{
+                        o_sample_data_disabled: isDisabled(row),
+                        o_group_open: !model.isClosed(row.id),
+                    }"
+                    t-att-style="getGridPosition(pill.grid)"
+                >
+                    <div class="o_gantt_pill o_gantt_consolidated_pill position-relative overflow-visible"
+                        t-att-class="pill.className"
+                        t-att-title="pill.displayName"
+                    >
+                        <span
+                            t-if="pill._progress"
+                            class="position-absolute h-100 o_gantt_progress"
+                            t-attf-style="width:{{ pill._progress }}%;"
+                        />
+                    </div>
+                    <span class="o_gantt_pill_title bg-view text-truncate px-1 z-index-1" t-esc="pill.displayName" />
+                </div>
+            </t>
+        </t>
+        <t t-else="">
+            <!-- Standard pills -->
+            <t t-foreach="row.pills" t-as="pill" t-key="pill.id">
+                <t t-call="{{ constructor.pillTemplate }}" />
+            </t>
+        </t>
+    </t>
+
+    <t t-name="web_gantt.GanttRenderer.Pill" owl="1">
+        <t t-set="renderConnectors" t-value="shouldRenderRecordConnectors(pill.record)" />
+        <div class="o_gantt_pill_wrapper"
+            t-att-class="{
+                o_sample_data_disabled: isDisabled(row),
+                o_draggable: !pill.disableDrag,
+                o_undraggable: pill.disableDrag,
+                o_resizable: !pill.disableStartResize or !pill.disableStopResize,
+                'position-relative': renderConnectors
+            }"
+            t-att-style="getGridPosition(pill.grid)"
+            t-att-data-pill-id="pill.id"
+        >
+            <t t-if="renderConnectors" t-call="{{ constructor.connectorCreatorTemplate }}">
+                <t t-set="alignment" t-value="{ horizontal: 'left', vertical: 'top' }" />
+            </t>
+            <div class="o_gantt_pill position-relative h-100 d-flex align-items-center"
+                t-att-class="pill.className"
+                t-on-click.synthetic="(ev) => this.onPillClicked(ev, pill)"
+            >
+                <span
+                    t-if="pill._progress"
+                    class="position-absolute h-100 o_gantt_progress"
+                    t-attf-style="width:{{ pill._progress }}%;"
+                />
+                <span class="o_gantt_pill_title text-truncate mx-1" t-esc="pill.displayName" />
+                <div t-if="pill.disableDrag" class="o_gantt_lock fa fa-lock ms-auto me-2" />
+            </div>
+            <t t-if="renderConnectors" t-call="{{ constructor.connectorCreatorTemplate }}">
+                <t t-set="alignment" t-value="{ horizontal: 'right', vertical: 'bottom' }" />
+            </t>
+        </div>
+    </t>
+
+    <t t-name="web_gantt.GanttRenderer.TotalRow" owl="1">
+        <t t-if="model.metaData.groupedBy.length">
+            <div class="o_gantt_row_sidebar bg-view d-flex align-items-center justify-content-end">
+                <h4
+                    class="o_gantt_row_title pe-3 my-0 fw-bold"
+                    t-att-title="totalRow.name"
+                    t-esc="totalRow.name"
+                />
+            </div>
+        </t>
+        <div class="o_gantt_row_total o_gantt_grid_columns bg-view">
+            <t t-foreach="columns" t-as="column" t-key="column.id">
+                <div
+                    class="o_gantt_cell"
+                    t-att-class="{ o_gantt_today: column.isToday }"
+                    t-att-style="getGridPosition({ column: column.grid.column, row: 1 })"
+                />
+            </t>
+            <t t-foreach="totalRow.pills" t-as="pill" t-key="pill.id">
+                <div
+                    class="o_gantt_pill_wrapper position-relative p-0 h-100 d-flex align-items-end"
+                    t-att-style="getGridPosition(pill.grid)"
+                >
+                    <div class="o_gantt_pill o_gantt_consolidated_pill w-100 d-flex align-items-end justify-content-center"
+                        t-att-title="pill.displayName"
+                        t-attf-style="height: {{ totalRow.factor * pill.aggregateValue }}%;"
+                    >
+                        <span class="o_gantt_consolidated_pill_title bg-view text-truncate px-1 mb-1" t-esc="pill.displayName" />
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

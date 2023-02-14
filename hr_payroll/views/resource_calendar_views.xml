@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='resource_details']" position="inside">
                 <group>
-                    <label for="full_time_required_hours" string="Full Time"/>
+                    <label for="full_time_required_hours"/>
                     <div>
                         <field name="full_time_required_hours" nolabel="1" style="width: 10%"/>
                         <span> hours/week</span>

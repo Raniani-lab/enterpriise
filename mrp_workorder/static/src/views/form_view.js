@@ -28,6 +28,10 @@ export class WorkorderFormController extends FormController {
         const rootRef = useRef("root");
         // before executing button action
         const beforeExecuteAction = async (params) => {
+            params.context = {
+                ...params.context,
+                ...this.props.context,
+            };
             await this.model.root.save({ stayInEdition: true });
             if (params.type && params.type === "workorder_event") {
                 this.workorderBus.trigger("workorder_event", params.name);

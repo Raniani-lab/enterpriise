@@ -374,12 +374,15 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
     def test_positive_montant_devise(self):
         """
         Test that it doesn't fail even when the MontantDevise is not signed, i.e. MontantDevise is positive even
-        when the line is credited
+        when the line is credited, or the opposite case: MontantDevise is negative while the line is
+        debited.
         """
         test_content = """
             JournalCode\tJournalLib\tEcritureNum\tEcritureDate\tCompteNum\tCompteLib\tCompAuxNum\tCompAuxLib\tPieceRef\tPieceDate\tEcritureLib\tDebit\tCredit\tEcritureLet\tDateLet\tValidDate\tMontantdevise\tIdevise
             ACH\tACHATS\tTEST_MONTANT_DEVISE\t20180808\t62270000\tFRAIS D'ACTES ET CONTENTIEUX\t\t\t1\t20180808\tACOMPTE FORMALITES ENTREPRISE\t100,00\t0,00\t\t\t20190725\t100,00\tEUR
             ACH\tACHATS\tTEST_MONTANT_DEVISE\t20180808\t44566000\tTVA SUR AUTRES BIEN ET SERVICE\t\t\t1\t20180808\tACOMPTE FORMALITES ENTREPRISE\t0,00\t100,00\t\t\t20190725\t100,00\tEUR
+            ACH\tACHATS\tTEST_MONTANT_DEVISE2\t20180808\t62270000\tFRAIS D'ACTES ET CONTENTIEUX\t\t\t1\t20180808\tACOMPTE FORMALITES ENTREPRISE\t0,00\t100,00\t\t\t20190725\t-100,00\tEUR
+            ACH\tACHATS\tTEST_MONTANT_DEVISE2\t20180808\t44566000\tTVA SUR AUTRES BIEN ET SERVICE\t\t\t1\t20180808\tACOMPTE FORMALITES ENTREPRISE\t100,00\t0,00\t\t\t20190725\t-100,00\tEUR
         """
         self._attach_file_to_wizard(test_content, self.wizard)
         self.wizard._import_files()

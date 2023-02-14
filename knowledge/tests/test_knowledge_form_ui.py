@@ -147,6 +147,21 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             articles[1].with_user(self.env.ref('base.user_demo').id).user_favorite_sequence,
         )
 
+    def test_knowledge_properties_tour(self):
+        """Test article properties panel"""
+        parent_article = self.env['knowledge.article'].create([{
+            'name': 'ParentArticle',
+            'sequence': 1,
+        }, {
+            'name': 'InheritPropertiesArticle',
+            'sequence': 2,
+        }])[0]
+        self.env['knowledge.article'].create({
+            'name': 'ChildArticle',
+            'parent_id': parent_article.id
+        })
+        self.start_tour('/web', 'knowledge_properties_tour', login='admin')
+
 @tagged('external', 'post_install', '-at_install')
 @skipIf(not os.getenv("UNSPLASH_APP_ID") or not os.getenv("UNSPLASH_ACCESS_KEY"), "no unsplash credentials")
 class TestKnowledgeUIWithUnsplash(TestKnowledgeUICommon):

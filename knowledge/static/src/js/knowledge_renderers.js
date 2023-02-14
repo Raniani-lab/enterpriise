@@ -22,6 +22,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             displaySharePanel: false,
             displayPropertyPanel: false,
             displayPropertyToggle: false,
+            triggerClickOnAddProperty: false,
         });
 
         this.actionService = useService("action");
@@ -56,11 +57,11 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
         onPatched(() => {
             // Handle Add property button
-            if (this.triggerClickOnAddProperty && this.root.el.querySelector('.o_field_property_add > button')) {
-                this.triggerClickOnAddProperty = false;
+            if (this.state.triggerClickOnAddProperty && this.root.el.querySelector('.o_field_property_add > button')) {
+                this.state.triggerClickOnAddProperty = false;
                 this.root.el.querySelector('.o_field_property_add > button').click();
             }
-        })
+        });
 
         useEffect(() => {
             // ADSC: Make tree component with "t-on-" instead of adding these eventListeners
@@ -134,12 +135,16 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             if (body && !body.innerText.trim()) {
                 setTimeout(() => body.focus(), 0);
             }
+        });
+
+        useEffect(() => {
             // If the article has some properties set,
             // we should display the property panel that is hidden by default.
-            if (this.props.record.data.article_properties && !this.props.record.data.article_properties_is_empty) {
-                this.toggleProperties();
-                this.state.displayPropertyToggle = true;
-            }
+            const displayPropertyPanel = this.props.record.data.article_properties && this.props.record.data.article_properties.length > 0;
+            this.state.displayPropertyToggle = displayPropertyPanel;
+            this.state.displayPropertyPanel = displayPropertyPanel;
+        }, () => {
+            return [this.props.record.data.article_properties && this.props.record.data.article_properties.length > 0];
         });
 
         onWillDestroy(async () => {
@@ -213,10 +218,11 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * Open the Properties Panel and start to add the first property field.
      */
     addProperties(event) {
-        this.toggleProperties();
         // See onPatched: triggers a click when properties widget is ready and added
-        // in to DOM. It opens the panel directly.
-        this.triggerClickOnAddProperty = true;
+        // in to DOM. It adds a property directly.
+        this.state.triggerClickOnAddProperty = true;
+        this.state.displayPropertyToggle = true;
+        this.state.displayPropertyPanel = true;
     }
 
     /**

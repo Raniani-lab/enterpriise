@@ -890,7 +890,7 @@ class AccountEdiFormat(models.Model):
         if not latam_invoice_type:
             return _("Missing LATAM document code.").encode()
         edi_values = self._l10n_pe_edi_get_edi_values(invoice)
-        return self.env['ir.qweb']._render('l10n_pe_edi.%s' % latam_invoice_type, edi_values)
+        return self.env['ir.qweb']._render('l10n_pe_edi.%s' % latam_invoice_type, edi_values).encode()
 
     def _get_latam_invoice_type(self, code):
         template_by_latam_type_mapping = {

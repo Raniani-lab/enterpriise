@@ -41,11 +41,6 @@
     }
 
     .o_app {
-        &,
-        .o_app_icon {
-            transition: all 0.3s ease 0s;
-        }
-
         .o_app_icon {
             width: $o-home-menu-app-icon-max-width;
             height: $o-home-menu-app-icon-max-width;
@@ -53,12 +48,20 @@
                 size: cover;
                 repeat: no-repeat;
                 position: center;
+                color: $o-white;
             }
+            box-shadow: 0 1px 0 $border-color;
+            transform-origin: center bottom;
+            transition: all ease-in 0.1s;
 
             .fa {
                 font-size: $o-home-menu-app-icon-max-width * 0.5;
-                text-shadow: 0 2px 0 rgba(0, 0, 0, 0.23);
             }
+        }
+
+        &:active .o_app_icon {
+            transform: scale(.98);
+            transition: none;
         }
 
         .o_caption {
@@ -66,18 +69,9 @@
             text-shadow: $o-home-menu-caption-shadow;
         }
 
-        &:focus,
-        &.o_focused,
-        &:hover {
-            .o_app_icon {
-                box-shadow: 0 8px 15px -10px black;
-                transform: translateY(-1px);
-            }
-        }
-
-        &:focus,
         &.o_focused {
-            background-color: rgba(white, 0.05);
+            background: $component-active-bg;
+            outline: 1px solid $o-action;
             border-radius: $border-radius;
         }
     }

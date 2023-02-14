@@ -44,19 +44,16 @@ class ECSalesReportCustomHandler(models.AbstractModel):
                     partner_values[col_grp_key]['vat_number'] = partner_sum.get('vat_number', 'UNKNOWN')
                     partner_values[col_grp_key]['country_code'] = partner_sum.get('country_code', 'UNKNOWN')
                     partner_values[col_grp_key]['sales_type_code'] = []
-                    partner_values[col_grp_key]['balance'] = 0.0
+                    partner_values[col_grp_key]['balance'] = partner_sum.get(tax_ec_category, 0.0)
+                    totals_by_column_group[col_grp_key]['balance'] += partner_sum.get(tax_ec_category, 0.0)
                     for i, operation_id in enumerate(partner_sum.get('tax_element_id', [])):
                         if operation_id in options['sales_report_taxes'][tax_ec_category]:
                             has_found_a_line = True
-                            partner_values[col_grp_key]['balance'] += partner_sum.get(tax_ec_category, 0.0)
-                            totals_by_column_group[col_grp_key]['balance'] += partner_sum.get(tax_ec_category, 0.0)
                             partner_values[col_grp_key]['sales_type_code'] += [
                                 country_specific_code or
                                 (partner_sum.get('sales_type_code') and partner_sum.get('sales_type_code')[i])
                                 or None]
-                            if has_found_a_line and options['sales_report_taxes'].get('use_taxes_instead_of_tags'):
-                                break # We only want the first line to avoid amount multiplication in the generic report
-                    partner_values[col_grp_key]['sales_type_code'] = ', '.join(partner_values[col_grp_key]['sales_type_code'])
+                    partner_values[col_grp_key]['sales_type_code'] = ', '.join(set(partner_values[col_grp_key]['sales_type_code']))
                 if has_found_a_line:
                     lines.append((0, self._get_report_line_partner(report, options, partner, partner_values)))
 

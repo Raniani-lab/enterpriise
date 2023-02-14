@@ -767,7 +767,14 @@
                             "orderBy": []
                         },
                         "type": "odoo_line",
-                        "verticalAxisPosition": "left"
+                        "verticalAxisPosition": "left",
+                        "fieldMatching": {
+                            "7785b753-917c-4640-a937-4b6226222ca8": {
+                                "chain": "invoice_date",
+                                "type": "date",
+                                "offset": 0
+                            }
+                        }
                     }
                 },
                 {
@@ -841,6 +848,7 @@
                     }
                 }
             ],
+            "filterTables": [],
             "areGridLinesVisible": true,
             "isVisible": true
         },
@@ -859,7 +867,7 @@
                     "size": 239
                 },
                 "1": {
-                    "size": 213.8740234375
+                    "size": 214
                 },
                 "2": {
                     "size": 234
@@ -871,7 +879,7 @@
                     "size": 234
                 },
                 "5": {
-                    "size": 515.3046875
+                    "size": 515
                 },
                 "6": {
                     "size": 101
@@ -3004,6 +3012,7 @@
             },
             "conditionalFormats": [],
             "figures": [],
+            "filterTables": [],
             "areGridLinesVisible": true,
             "isVisible": true
         }
@@ -3082,19 +3091,7 @@
         }
     },
     "revisionId": "START_REVISION",
-    "chartOdooMenusReferences": {
-        "cb548cd5-6798-46c9-ade5-3b497efbfc4a": "account_accountant.menu_accounting",
-        "151b0f60-aa89-457e-9456-9807ab779be6": "account_accountant.menu_accounting",
-        "86aac7b2-f3a5-46e1-a097-916aa4b8f8d0": "account_reports.menu_action_account_report_profit_and_loss",
-        "3586cbc4-6ca3-46af-951f-94d4773f94dc": "account_reports.menu_action_account_report_aged_receivable",
-        "57f18f9a-55b7-4b84-b927-480c4c56c026": "account_reports.menu_action_account_report_profit_and_loss",
-        "8f1fb053-5700-4bb3-b93d-55ceb2083d31": "account_reports.menu_action_account_report_aged_payable"
-    },
-    "odooVersion": 4,
-    "lists": {},
-    "listNextId": 1,
-    "pivots": {},
-    "pivotNextId": 1,
+    "odooVersion": 5,
     "globalFilters": [
         {
             "id": "7785b753-917c-4640-a937-4b6226222ca8",
@@ -3102,16 +3099,19 @@
             "label": "Year",
             "defaultValue": {},
             "rangeType": "year",
-            "defaultsToCurrentPeriod": true,
-            "pivotFields": {},
-            "listFields": {},
-            "graphFields": {
-                "151b0f60-aa89-457e-9456-9807ab779be6": {
-                    "field": "invoice_date",
-                    "type": "date",
-                    "offset": 0
-                }
-            }
+            "defaultsToCurrentPeriod": true
         }
-    ]
+    ],
+    "pivots": {},
+    "pivotNextId": 1,
+    "lists": {},
+    "listNextId": 1,
+    "chartOdooMenusReferences": {
+        "cb548cd5-6798-46c9-ade5-3b497efbfc4a": "account_accountant.menu_accounting",
+        "151b0f60-aa89-457e-9456-9807ab779be6": "account_accountant.menu_accounting",
+        "86aac7b2-f3a5-46e1-a097-916aa4b8f8d0": "account_reports.menu_action_account_report_profit_and_loss",
+        "3586cbc4-6ca3-46af-951f-94d4773f94dc": "account_reports.menu_action_account_report_aged_receivable",
+        "57f18f9a-55b7-4b84-b927-480c4c56c026": "account_reports.menu_action_account_report_profit_and_loss",
+        "8f1fb053-5700-4bb3-b93d-55ceb2083d31": "account_reports.menu_action_account_report_aged_payable"
+    }
 }

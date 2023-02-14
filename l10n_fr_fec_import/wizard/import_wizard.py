@@ -361,7 +361,7 @@ class FecImportWizard(models.TransientModel):
         if credit < 0 or debit < 0:
             debit, credit = -credit, -debit
 
-        balance = currency.round(credit - debit)
+        balance = currency.round(debit - credit)
 
         return credit, debit, balance
 
@@ -452,7 +452,6 @@ class FecImportWizard(models.TransientModel):
                 line_data.update({
                     "currency_id": currency.id,
                     "amount_currency": amount_currency,
-                    "amount_residual_currency": amount_currency,
                 })
             else:
                 currency = self.company_id.currency_id
@@ -463,10 +462,10 @@ class FecImportWizard(models.TransientModel):
             line_data["debit"] = debit
             balance_data["balance"] = currency.round(balance_data["balance"] + balance)
 
-            # Montantdevise can be positive while the line is credited
-            if currency_name in cache["res.currency"] and balance > 0:
-                line_data["amount_currency"] = - abs(line_data["amount_currency"])
-                line_data["amount_residual_currency"] = - abs(line_data["amount_residual_currency"])
+            # Montantdevise can be positive while the line is credited:
+            # => amount_currency and balance (debit - credit) should always have the same sign
+            if currency_name in cache["res.currency"] and line_data['amount_currency'] * balance < 0:
+                line_data["amount_currency"] *= -1
 
             # Append the move_line data to the move
             data["line_ids"].append(fields.Command.create(line_data))

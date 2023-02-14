@@ -146,6 +146,20 @@ class Employee(models.Model):
 class HrEmployeeBase(models.AbstractModel):
     _inherit = "hr.employee.base"
 
+    has_slots = fields.Boolean(compute='_compute_has_slots')
+
+    def _compute_has_slots(self):
+        self.env.cr.execute("""
+        SELECT id, EXISTS(SELECT 1 FROM planning_slot WHERE employee_id = e.id limit 1)
+          FROM hr_employee e
+         WHERE id in %s
+        """, (tuple(self.ids), ))
+
+        result = {eid[0]: eid[1] for eid in self.env.cr.fetchall()}
+
+        for employee in self:
+            employee.has_slots = result.get(employee.id, False)
+
     def action_view_planning(self):
         action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_resource")
         action.update({

@@ -15,12 +15,12 @@
           <t t-set="record" t-value="data.record" />
           <div class="w-100">
             <label for="name" class="mb-1">Action's title</label>
-            <CharField name="'name'" value="record.data.name" update="(value) => record.update({ name: value })" id="'name'"/>
+            <CharField name="'name'" value="record.data.name" record="record" id="'name'"/>
           </div>
           <div class="w-100">
             <label for="help" class="mb-1">Empty List Message</label>
             <div class="o_web_studio_field_code">
-              <TextField name="'help'" value="record.data.help" update="(value) => record.update({ help: value })" id="'help'"/>
+              <TextField name="'help'" value="record.data.help" record="record" id="'help'"/>
             </div>
           </div>
           <div class="w-100">

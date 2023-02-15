@@ -49,11 +49,13 @@ export class FsmProductQuantity extends FloatField {
     }
 
     removeQuantity() {
-        this.props.update(this.props.value > 1 ? this.props.value - 1 : 0);
+        this.props.record.update({
+            [this.props.name]: this.props.value > 1 ? this.props.value - 1 : 0,
+        });
     }
 
     addQuantity() {
-        this.props.update(this.props.value + 1);
+        this.props.record.update({ [this.props.name]: this.props.value + 1 });
     }
 
     onInput(ev) {

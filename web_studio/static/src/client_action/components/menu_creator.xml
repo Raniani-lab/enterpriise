@@ -42,7 +42,6 @@
                     name="'modelId'"
                     relation="activeFields.modelId.relation"
                     value="record.data.modelId"
-                    update="(value) => record.update({ modelId: value })"
                     canQuickCreate="true"
                     openTarget="'new'"
                 />

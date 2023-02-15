@@ -279,7 +279,7 @@ class SaleOrder(models.Model):
     def _compute_last_invoice_date(self):
         for order in self:
             last_date = order.next_invoice_date and order.next_invoice_date - get_timedelta(order.recurrence_id.duration, order.recurrence_id.unit)
-            if order.recurrence_id and order.state in ['sale', 'done'] and last_date >= order.start_date:
+            if order.recurrence_id and order.state in ['sale', 'done'] and order.start_date and last_date >= order.start_date:
                 # we use get_timedelta and not the effective invoice date because
                 # we don't want gaps. Invoicing date could be shifted because of technical issues.
                 order.last_invoice_date = last_date

@@ -1785,9 +1785,10 @@ class BankRecWidget(models.Model):
             move_ctx.action_post()
 
         # Perform the reconciliation.
-        for index, counterpart_aml_id in params['to_reconcile']:
-            counterpart_aml = self.env['account.move.line'].browse(counterpart_aml_id)
-            (move_ctx.line_ids.filtered(lambda x: x.sequence == index) + counterpart_aml).reconcile()
+        self.env['account.move.line']._reconcile_plan([
+            move_ctx.line_ids.filtered(lambda x: x.sequence == index) + self.env['account.move.line'].browse(counterpart_aml_id)
+            for index, counterpart_aml_id in params['to_reconcile']
+        ])
 
         # Fill missing partner.
         st_line.with_context(skip_account_move_synchronization=True).partner_id = params['partner_id']

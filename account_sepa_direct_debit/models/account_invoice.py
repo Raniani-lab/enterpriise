@@ -90,10 +90,9 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    def reconcile(self):
-        # OVERRIDE
-        # Copy the payment's mandate to the newly paid invoices.
-        res = super().reconcile()
+    def _reconcile_post_hook(self, data):
+        # EXTENDS 'account'
+        super()._reconcile_post_hook(data)
 
         for pay in self.payment_id:
             if pay.sdd_mandate_id:
@@ -101,5 +100,3 @@ class AccountMoveLine(models.Model):
 
                 if pay.sdd_mandate_id.one_off:
                     pay.sdd_mandate_id.action_close_mandate()
-
-        return res

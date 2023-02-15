@@ -1,90 +1,12 @@
 /** @odoo-module **/
 
+import { Component, onWillStart, useState } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { useAutofocus, useBus, useService } from "@web/core/utils/hooks";
-import { session } from '@web/session';
-import { RelationalModel } from "@web/views/relational_model";
+import { useAutofocus, useService } from "@web/core/utils/hooks";
+import { Field } from "@web/views/fields/field";
+import { Record } from "@web/views/record";
+import { orderByToString } from "@web/views/utils";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
-import { HtmlField } from "@web_editor/js/backend/html_field";
-
-const { Component, markup, onWillRender, onWillStart, useState, useEffect, useSubEnv } = owl;
-
-const NOTE_FIELDS = {
-    id: {
-        name: "id",
-        string: "ID",
-        readonly: true,
-        required: false,
-        searchable: true,
-        sortable: true,
-        store: true,
-        type: "integer",
-        options: {},
-        modifiers: {},
-    },
-    name: {
-        name: "name",
-        string: "name",
-        readonly: false,
-        required: false,
-        searchable: true,
-        sortable: true,
-        store: true,
-        type: "char",
-        options: {},
-        modifiers: {},
-    },
-    memo: {
-        name: "memo",
-        string: "Note",
-        readonly: false,
-        required: false,
-        searchable: false,
-        sortable: false,
-        store: true,
-        type: "html",
-        options: {},
-        modifiers: {},
-    },
-    color: {
-        name: "color",
-        string: "Color",
-        readonly: true,
-        required: false,
-        searchable: true,
-        sortable: true,
-        store: true,
-        type: "integer",
-        options: {},
-        modifiers: {},
-    },
-    user_id: {
-        name: "user_id",
-        string: "Owner",
-        readonly: true,
-        required: false,
-        searchable: true,
-        sortable: true,
-        store: true,
-        type: "many2one",
-        relation: "res.users",
-        options: {},
-        modifiers: {},
-    },
-    tag_ids: {
-        name: "tag_ids",
-        string: "tags",
-        readonly: true,
-        required: false,
-        searchable: true,
-        sortable: true,
-        store: true,
-        type: "many2many",
-        relation: "note.tag",
-        options: {},
-        modifiers: {},
-    },
-};
 
 /**
  * This component is actually a dumbed down list view for our notes.
@@ -92,102 +14,63 @@ const NOTE_FIELDS = {
 
 export class PayrollDashboardTodo extends Component {
     setup() {
-        this.actionService = useService("action");
+        this.company = useService("company");
         this.user = useService("user");
         this.orm = useService("orm");
         this.dialog = useService("dialog");
         this.state = useState({
             activeNoteId: -1,
-            mode: '',
             isEditingNoteName: false,
+            records: [],
         });
+        this.recordInfo = {
+            model: "note.note",
+            fieldNames: ["id", "name", "color", "user_id", "tag_ids"],
+        };
         this.autofocusInput = useAutofocus();
         useSetupAction({
             beforeLeave: () => this.saveNote(),
             beforeUnload: () => {
-                if (this.record && this.record.isDirty) {
-                    return this.record.urgentSave();
+                if (this.editedNote) {
+                    return this.editedNote.urgentSave();
                 }
-            }
-        });
-        onWillRender(() => {
-            if (this.state.mode === '' && this.model.root.records.length > 0) {
-                this.state.mode = 'readonly';
-                this.record = this.model.root.records[0];
-            }
+            },
         });
 
-        useEffect((el) => {
-            if (el) {
-                if (["INPUT", "TEXTAREA"].includes(el.tagName)) {
-                    el.selectionStart = 0;
-                    el.selectionEnd = el.value.length;
-                }
-            }
-        }, () => [this.autofocusInput.el]);
-
-        const modelParams = {
-            resModel: "note.note",
-            limit: 80,
-            fields: NOTE_FIELDS,
-            activeFields: NOTE_FIELDS,
-            viewMode: "list",
-            rootType: "list",
-        };
-        const modelServices = Object.fromEntries(
-            RelationalModel.services.map((servName) => {
-                return [servName, useService(servName)];
-            })
-        );
-
-        this.model = new RelationalModel(this.env, modelParams, modelServices);
-        useBus(
-            this.model,
-            "update",
-            () => this.render(true)
-        );
-
-        onWillStart(() => this.model.load({
-            domain: this.props.domain,
-            orderBy: this.props.orderBy,
-        }));
-
-        useSubEnv({ model: this.model });
-    }
-
-    get record() {
-        return this.model.root.records.find(rec => rec.resId === this.state.activeNoteId);
-    }
-
-    set record(record) {
-        if (Number.isInteger(record)) {
-            this.state.activeNoteId = record;
-        } else if (record) {
-            this.state.activeNoteId = record.resId;
-        } else {
-            this.state.activeNoteId = -1;
-        }
-    }
-
-    /**
-     * @returns { Number } id of the session user
-     */
-    get userId() {
-        return session.uid;
+        onWillStart(async () => {
+            this.state.records = (
+                await this.orm.webSearchRead(
+                    this.recordInfo.model,
+                    this.props.domain,
+                    this.recordInfo.fieldNames,
+                    {
+                        order: orderByToString(this.props.orderBy),
+                    }
+                )
+            ).records;
+            const record = this.state.records[0];
+            this.state.activeNoteId = record && record.id;
+        });
     }
 
     /**
      * Creates a note.
      */
     async createNoteForm() {
-        const [createdNote] = await this.orm.create('note.note', [{
-            'name': 'Untitled',
-            'tag_ids': [[4, this.props.tagId]],
-            'company_id': owl.Component.env.session.user_context.allowed_company_ids[0],
-        }]);
-        await this.model.load();
-        this.record = createdNote;
-        this.startNameEdition(this.record);
+        const result = await this.orm.create("note.note", [
+            {
+                name: "Untitled",
+                tag_ids: [[4, this.props.tagId]],
+                company_id: this.company.currentCompany.id,
+            },
+        ]);
+        const noteId = result[0];
+        const createdNote = (
+            await this.orm.read(this.recordInfo.model, [noteId], this.recordInfo.fieldNames)
+        )[0];
+        this.state.records.push(createdNote);
+        this.state.activeNoteId = noteId;
+        this.startNameEdition(createdNote);
     }
 
     /**
@@ -196,31 +79,32 @@ export class PayrollDashboardTodo extends Component {
      * @param { Record } record
      */
     async onClickNoteTab(record) {
-        if (record.resId === this.state.activeNoteId) {
+        if (record.id === this.state.activeNoteId) {
             return;
         }
-        if (this.state.mode === 'edit') {
-            await this.saveNote();
-        }
-        this.state.mode = 'readonly';
+        await this.saveNote();
         this.state.isEditingNoteName = false;
-        this.record = record;
+        this.state.activeNoteId = record.id;
+    }
+
+    onRecordChanged(editedRecord) {
+        this.editedNote = editedRecord;
     }
 
     /**
      * On double-click, the note name should become editable
-     * @param { Number } noteId 
+     * @param { Number } noteId
      */
     startNameEdition(record) {
-        if (record.resId === this.state.activeNoteId) {
+        if (record.id === this.state.activeNoteId) {
             this.state.isEditingNoteName = true;
-            this.bufferedText = record.data.name;
+            this.bufferedText = record.name;
         }
     }
 
     /**
      * On input, update buffer
-     * @param { Event } ev 
+     * @param { Event } ev
      */
     onInputNoteNameInput(ev) {
         this.bufferedText = ev.target.value;
@@ -228,22 +112,21 @@ export class PayrollDashboardTodo extends Component {
 
     /**
      * When the input loses focus, save the changes
-     * @param {*} ev
      */
-     handleBlur(ev) {
+    handleBlur() {
         this._applyNoteRename();
     }
 
     /**
      * If enter/escape is pressed either save changes or discard them
-     * @param { Event } ev 
+     * @param { Event } ev
      */
     onKeyDownNoteNameInput(ev) {
         switch (ev.key) {
-            case 'Enter':
+            case "Enter":
                 this._applyNoteRename();
                 break;
-            case 'Escape':
+            case "Escape":
                 this.state.isEditingNoteName = false;
                 break;
         }
@@ -254,9 +137,10 @@ export class PayrollDashboardTodo extends Component {
      */
     async _applyNoteRename() {
         const value = this.bufferedText.trim();
-        if (value !== this.record.data.name) {
-            this.record.update({ ["name"]: value });
-            await this.record.save();
+        const record = this.state.records.find((record) => record.id === this.state.activeNoteId);
+        if (value !== record.name) {
+            record.name = value;
+            this.orm.write(this.recordInfo.model, [record.id], { name: value });
         }
         this.state.isEditingNoteName = false;
     }
@@ -265,72 +149,43 @@ export class PayrollDashboardTodo extends Component {
      * Handler when delete button is clicked
      */
     async onNoteDelete() {
-        const message = this.env._t('Are you sure you want to delete this note?');
+        const message = this.env._t("Are you sure you want to delete this note?");
         this.dialog.add(ConfirmationDialog, {
             body: message,
-            confirm: this._deleteNote.bind(this, this.state.activeNoteId),
+            confirm: () => this._deleteNote(this.state.activeNoteId),
         });
     }
 
     /**
      * Deletes the specified note
-     * @param {*} noteId 
+     * @param {Number} noteId
      */
     async _deleteNote(noteId) {
-        await this.model.root.deleteRecords(this.model.root.records.filter(rec => rec.resId === noteId));
-        this.record = this.model.root.records[0];
+        await this.orm.unlink(this.recordInfo.model, [noteId]);
+        this.state.records = this.state.records.filter((record) => record.id !== noteId);
+        this.state.activeNoteId = this.state.records[0].id;
     }
 
     /**
      * Handles the click on the create note button
      */
     async onClickCreateNote() {
-        if (this.state.mode === 'edit') {
-            await this.saveNote();
-        }
+        await this.saveNote();
         this.createNoteForm();
-    }
-
-    /**
-     * Switches the component to edit mode.
-     */
-    switchToEdit() {
-        if (this.state.isEditingNoteName || this.state.mode === 'edit' || this.state.activeNoteId < 0) {
-            return;
-        }
-        this.state.mode = 'edit';
     }
 
     /**
      * Save the current note, has to be trigger before switching note.
      */
     async saveNote() {
-        if (this.record && this.record.isDirty) {
-            return this.record.save();
+        if (this.editedNote) {
+            this.editedNote.save();
         }
-    }
-
-    getFieldProps(record) {
-        return {
-            id: record.id,
-            name: "memo",
-            fieldName: "memo",
-            readonly: this.state.mode === 'readonly',
-            record,
-            type: "html",
-            update: async (value) => {
-                await record.update({ ["memo"]: value });
-            },
-            decorations: {},
-            value: record.data.memo == "false" && markup("") || record.data.memo,
-            isCollaborative: true,
-            wysiwygOptions: {},
-            setDirty: () => {},
-        };
     }
 }
 
-PayrollDashboardTodo.template = 'hr_payroll.TodoList';
+PayrollDashboardTodo.template = "hr_payroll.TodoList";
 PayrollDashboardTodo.components = {
-    HtmlField,
+    Field,
+    Record,
 };

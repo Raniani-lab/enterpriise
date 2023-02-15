@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import config from "web.config";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { FormRenderer } from '@web/views/form/form_renderer';
 import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
@@ -47,7 +48,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         });
         this._onAddEmoji = this._onAddEmoji.bind(this);
         this._onRemoveEmoji = this._onRemoveEmoji.bind(this);
-        
+
+        this.device = config.device;
         this.sidebarSize = localStorage.getItem('knowledgeArticleSidebarSize');
 
         useChildSubEnv({
@@ -363,7 +365,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             }
         );
         this.tree.el.querySelector('.o_favorite_container').innerHTML = template;
-        this._setTreeFavoriteListener();
+        if (!this.device.isMobile) {
+            this._setTreeFavoriteListener();
+        }
     }
 
     async setIsArticleItem(newArticleItemStatus){
@@ -606,8 +610,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 }
             );
             this.tree.el.innerHTML = htmlTree;
-            this._setTreeListener();
-            this._setTreeFavoriteListener();
+            if (!this.device.isMobile) {
+                this._setTreeListener();
+                this._setTreeFavoriteListener();
+            }
         } catch {
             this.tree.el.innerHTML = "";
         }

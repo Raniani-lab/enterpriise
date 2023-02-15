@@ -102,21 +102,36 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         self.start_tour('/web', 'knowledge_cover_selector_tour', login='admin')
 
     def test_knowledge_readonly_favorite(self):
-        """Make sure that a user with read access on an article can add the
-        article to its favorites.
+        """Make sure that a user can add readonly articles to its favorites and
+        resequence them.
         """
-        article = self.env['knowledge.article'].create({
-            'name': 'Readonly Article',
+        articles = self.env['knowledge.article'].create([{
+            'name': 'Readonly Article 1',
             'internal_permission': 'read',
             'article_member_ids': [(0, 0, {
                 'partner_id': self.env.ref('base.user_admin').id,
                 'permission': 'write',
             })]
-        })
+        }, {
+            'name': 'Readonly Article 2',
+            'internal_permission': False,
+            'article_member_ids': [(0, 0, {
+                'partner_id': self.env.ref('base.user_admin').id,
+                'permission': 'write',
+            }), (0, 0, {
+                'partner_id': self.env.ref('base.user_demo').id,
+                'permission': 'read',
+            })]
+        }])
 
-        self.start_tour('/knowledge/article/%s' % article.id, 'knowledge_readonly_favorite_tour', login='demo', step_delay=100)
+        self.start_tour('/knowledge/article/%s' % articles[0].id, 'knowledge_readonly_favorite_tour', login='demo', step_delay=100)
 
-        self.assertTrue(article.with_user(self.env.ref('base.user_demo').id).is_user_favorite)
+        self.assertTrue(articles[0].with_user(self.env.ref('base.user_demo').id).is_user_favorite)
+        self.assertTrue(articles[1].with_user(self.env.ref('base.user_demo').id).is_user_favorite)
+        self.assertGreater(
+            articles[0].with_user(self.env.ref('base.user_demo').id).user_favorite_sequence,
+            articles[1].with_user(self.env.ref('base.user_demo').id).user_favorite_sequence,
+        )
 
 @tagged('external', 'post_install', '-at_install')
 @skipIf(not os.getenv("UNSPLASH_APP_ID") or not os.getenv("UNSPLASH_ACCESS_KEY"), "no unsplash credentials")

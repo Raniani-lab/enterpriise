@@ -1057,7 +1057,7 @@ class SignRequestItem(models.Model):
 
     @api.depends('partner_id.email')
     def _compute_email(self):
-        for sign_request_item in self.filtered(lambda sri: sri.state == "sent"):
+        for sign_request_item in self.filtered(lambda sri: sri.state == "sent" or not sri.signer_email):
             sign_request_item.signer_email = sign_request_item.partner_id.email_normalized
 
 

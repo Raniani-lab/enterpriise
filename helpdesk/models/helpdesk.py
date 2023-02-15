@@ -587,7 +587,7 @@ class HelpdeskTeam(models.Model):
         tickets = HelpdeskTicket.read_group(domain + [('stage_id.fold', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
         for ticket in tickets:
             result['today']['count'] += ticket['__count']
-            if ticket['sla_reached'] or ticket['sla_reached_late']:
+            if ticket.get('sla_reached', False) or ticket.get('sla_reached_late', False):
                 result['today']['sla_ticket_count'] += ticket['__count']
                 if not _is_sla_failed(ticket):
                     result['today']['success'] += ticket['__count']
@@ -596,7 +596,7 @@ class HelpdeskTeam(models.Model):
         tickets = HelpdeskTicket.read_group(domain + [('stage_id.fold', '=', True), ('close_date', '>=', dt)], list_fields, group_fields, lazy=False)
         for ticket in tickets:
             result['7days']['count'] += ticket['__count']
-            if ticket['sla_reached'] or ticket['sla_reached_late']:
+            if ticket.get('sla_reached', False) or ticket.get('sla_reached_late', False):
                 result['7days']['sla_ticket_count'] += ticket['__count']
                 if not _is_sla_failed(ticket):
                     result['7days']['success'] += ticket['__count']

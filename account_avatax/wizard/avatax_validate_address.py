@@ -22,6 +22,8 @@ class AvataxValidateAddress(models.TransientModel):
     validated_city = fields.Char(compute='_compute_validated_address', string="Validated City")
     validated_state_id = fields.Many2one('res.country.state', compute='_compute_validated_address', string="Validated State")
     validated_country_id = fields.Many2one('res.country', compute='_compute_validated_address', string="Validated Country")
+    validated_latitude = fields.Float(compute='_compute_validated_address', string='Geo Latitude', digits=(10, 7))
+    validated_longitude = fields.Float(compute='_compute_validated_address', string='Geo Longitude', digits=(10, 7))
 
     # field used to determine whether to allow updating the address or not
     is_already_valid = fields.Boolean(string="Is Already Valid", compute='_compute_validated_address')
@@ -66,6 +68,10 @@ class AvataxValidateAddress(models.TransientModel):
                     ('code', '=', validated['region']),
                     ('country_id', '=', wizard.validated_country_id.id),
                 ]).id
+
+                wizard.validated_latitude = validated['latitude']
+                wizard.validated_longitude = validated['longitude']
+
                 wizard.is_already_valid = (
                     wizard.street == wizard.validated_street
                     and wizard.street2 == wizard.validated_street2
@@ -84,5 +90,7 @@ class AvataxValidateAddress(models.TransientModel):
                 'city': wizard.validated_city,
                 'state_id': wizard.validated_state_id.id,
                 'country_id': wizard.validated_country_id.id,
+                'partner_latitude': wizard.validated_latitude,
+                'partner_longitude': wizard.validated_longitude,
             })
         return True

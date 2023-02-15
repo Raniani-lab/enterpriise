@@ -18,6 +18,8 @@
                         <field name="validated_city" string="City"/>
                         <field name="validated_state_id" string="State"/>
                         <field name="validated_country_id" string="Country"/>
+                        <field name="validated_latitude" string="Latitude"/>
+                        <field name="validated_longitude" string="Longitude"/>
                     </group>
                     <group string="Original Address">
                         <field name="street"/>

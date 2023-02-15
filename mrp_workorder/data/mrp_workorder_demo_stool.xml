@@ -53,7 +53,6 @@
             <field name="uom_id" ref="uom.product_uom_unit"/>
             <field name="uom_po_id" ref="uom.product_uom_unit"/>
             <field name="description_sale">Small wooden stool</field>
-            <field name="produce_delay">1</field>
             <field name="sale_delay">1</field>
         </record>
 
@@ -342,6 +341,7 @@
             <field name="product_uom_id" ref="uom.product_uom_unit"/>
             <field name="sequence">3</field>
             <field name="consumption">flexible</field>
+            <field name="produce_delay">1</field>
         </record>
         <record id="mrp_routing_workcenter_stool" model="mrp.routing.workcenter" forcecreate="0">
             <field name="bom_id" ref="mrp_bom_stool"/>

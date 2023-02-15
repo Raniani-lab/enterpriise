@@ -133,7 +133,7 @@ class HrContract(models.Model):
 
     @api.depends('employee_id', 'new_car', 'new_car_model_id', 'transport_mode_private_car')
     def _compute_car_id(self):
-        contracts_to_reset = self.filtered(lambda c: c.new_car or c.new_car_model_id or c.transport_mode_private_car or not c.transport_mode_private_car)
+        contracts_to_reset = self.filtered(lambda c: c.new_car or c.new_car_model_id or c.transport_mode_private_car or not c.transport_mode_car)
         contracts_to_reset.update({'car_id': False})
         remaining_contracts = self - contracts_to_reset
         if not remaining_contracts:

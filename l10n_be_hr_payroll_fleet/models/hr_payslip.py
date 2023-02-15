@@ -33,3 +33,36 @@ class HrPayslip(models.Model):
                 'data/hr_rule_parameter_data.xml',
                 'data/cp200_employee_salary_data.xml',
             ])]
+
+    @api.model
+    def _get_dashboard_warnings(self):
+        res = super()._get_dashboard_warnings()
+
+        try:
+            self.env['fleet.vehicle'].check_access_rights('read')
+            self.env['fleet.vehicle.log.contract'].check_access_rights('read')
+        except AccessError:
+            return res
+
+        self.env.cr.execute("""
+            SELECT p.id
+              FROM hr_payslip AS p
+        INNER JOIN hr_contract AS c ON c.id = p.contract_id
+             WHERE p.vehicle_id != c.car_id
+                OR c.car_id IS NOT NULL AND p.vehicle_id IS NULL
+                OR p.vehicle_id IS NOT NULL AND c.car_id IS NULL
+               AND p.company_id IN %s
+             GROUP BY p.id
+        """, (tuple(self.env.companies.ids), ))
+
+        payslips_with_different_cars_ids = [p[0] for p in self.env.cr.fetchall()]
+
+        if payslips_with_different_cars_ids:
+            message = _('Payslips with car different than on employee\'s contract')
+            res.append({
+                'string': message,
+                'count': len(payslips_with_different_cars_ids),
+                'action': self._dashboard_default_action(message, 'hr.payslip', payslips_with_different_cars_ids),
+            })
+
+        return res

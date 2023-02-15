@@ -36,10 +36,7 @@ class SaleOrder(models.Model):
                 if recurrence:
                     recurrence.write({
                         'repeat_type': 'until',
-                        'repeat_until': end_date + relativedelta(
-                            day=recurrence.repeat_unit == 'month' and recurrence.repeat_on_month == 'date'\
-                                and int(recurrence.repeat_day)
-                        ),
+                        'repeat_until': end_date,
                     })
         self.write({'end_date': end_date})
 

@@ -34,29 +34,13 @@ class SaleOrderLine(models.Model):
         repeat_until = repeat_until and repeat_until + relativedelta(day=int(order.recurrence_id.unit == 'month' and start_date.day))
 
         # if there is no task template, we set a recurrence that mimmics the subscription on the created task
-        Recurrence = self.env['project.task.recurrence']
-        weekdays = [weekday[0] for weekday in Recurrence._fields['repeat_weekday'].args['selection']]
-        months = [month[0] for month in Recurrence._fields['repeat_month'].args['selection']]
-        repeat_weekday = weekdays[start_date.weekday()]
-
-        recurrence = Recurrence.create({
+        recurrence = self.env['project.task.recurrence'].create({
             'task_ids': task.ids,
-            'repeat_day': str(start_date.day),
             'repeat_interval': order.recurrence_id.duration,
-            'repeat_month': months[start_date.month - 1],
-            'repeat_number': 1,
-            'repeat_on_month': 'date',
-            'repeat_on_year': 'date',
             'repeat_type': 'until' if repeat_until else 'forever',
             'repeat_unit': order.recurrence_id.unit,
             'repeat_until': repeat_until,
-            'repeat_weekday': repeat_weekday,
-            repeat_weekday: True,
         })
-        # recurrence.next_recurrence_date = subscription.next_invoice_date + recurrence's interval
-        # => both recurrences start a the same time
-        # => their next occurences are synchrnized
-        recurrence._set_next_recurrence_date(order.next_invoice_date)
         task.write({
             'recurring_task': True,
             'recurrence_id': recurrence.id,

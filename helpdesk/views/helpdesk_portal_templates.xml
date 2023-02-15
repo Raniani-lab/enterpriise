@@ -176,7 +176,7 @@
                         </ul>
                     </t>
                 </t>
-                <div id="ticket_content" class="col-12 col-lg justify-content-end">
+                <div id="ticket_content" class="col-sm-12 col-md-8 col-lg justify-content-end">
                     <div t-if="ticket_closed" class="alert alert-success alert-dismissible d-print-none" role="status">
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         <span>Your ticket has successfully been closed. Thank you for your collaboration.</span>

@@ -23,7 +23,7 @@
                 <field name="show_rec_invoice_button" invisible="1"/>
                 <button name="action_invoice_subscription" string="Create Invoice"
                         id="create_recurring_invoice_primary" type="object" class="btn-primary" data-hotkey="q"
-                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False), ('invoice_status', 'in', ['no', 'invoiced'])]}"
+                        attrs="{'invisible': ['|', '|', ('state', '=', 'done'), ('show_rec_invoice_button', '=', False), ('invoice_status', 'in', ['no', 'invoiced'])]}"
                 />
                 <button string="Upsell" name="prepare_upsell_order" type="object"
                         attrs="{'invisible': [
@@ -43,7 +43,7 @@
                         ]}"/>
                 <button name="action_invoice_subscription" string="Create Invoice"
                         id="create_recurring_invoice" type="object" data-hotkey="q"
-                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False),  ('invoice_status', '=', 'to invoice')]}"
+                        attrs="{'invisible': ['|', '|', ('state', '=', 'done'), ('show_rec_invoice_button', '=', False),  ('invoice_status', '=', 'to invoice')]}"
                 />
             </button>
             <button name="action_cancel" position="attributes">

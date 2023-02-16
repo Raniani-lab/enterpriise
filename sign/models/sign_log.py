@@ -163,6 +163,6 @@ class SignLog(models.Model):
             sign_request_id=sign_request.id,
             request_state=sign_request.state,
             latitude=(request.geoip.location.latitude or 0.0) if request else 0.0,
-            longitude=(request.geoip.location.latitude or 0.0) if request else 0.0,
+            longitude=(request.geoip.location.longitude or 0.0) if request else 0.0,
             partner_id=self.env.user.partner_id.id if not self.env.user._is_public() else None,
         )

@@ -113,7 +113,7 @@
         <field name="inherit_id" ref="project.quick_create_task_form"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <field name="name" position="attributes">
+            <field name="display_name" position="attributes">
                 <attribute name="placeholder">e.g. Boiler replacement</attribute>
             </field>
             <field name="project_id" position="replace"/>

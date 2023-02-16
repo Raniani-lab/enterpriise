@@ -65,7 +65,7 @@ registry.category("web_tour.tours").add('project_enterprise_tour', {
         trigger: '.o-kanban-button-new',
         extra_trigger: '.o_kanban_group:eq(0)'
     }, {
-        trigger: '.o_kanban_quick_create div.o_field_char[name=name] input',
+        trigger: '.o_kanban_quick_create div.o_field_char[name=display_name] input',
         extra_trigger: '.o_kanban_project_tasks',
         run: 'text New task'
     }, {

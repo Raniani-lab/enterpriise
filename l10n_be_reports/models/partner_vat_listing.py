@@ -92,10 +92,11 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
 
         query = f'''
             SELECT
-                {'turnover_sub.grouping_key,refund_vat_sub.grouping_key,refund_base_sub.grouping_key,' if current_groupby else ''}
+                {'COALESCE(turnover_sub.grouping_key,refund_vat_sub.grouping_key,refund_base_sub.grouping_key) AS grouping_key,' if current_groupby else ''}
                 turnover_sub.partner_id, turnover_sub.name, turnover_sub.vat, turnover_sub.turnover,
-                refund_vat_sub.refund_base,
-                refund_base_sub.vat_amount, refund_base_sub.refund_vat_amount
+                COALESCE(refund_vat_sub.refund_base, 0) AS refund_base,
+                COALESCE(refund_base_sub.vat_amount, 0) AS vat_amount,
+                COALESCE(refund_base_sub.refund_vat_amount, 0) as refund_vat_amount
             FROM (
                 -- Turnover --
                 SELECT
@@ -124,7 +125,6 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             ) AS turnover_sub
 
             FULL JOIN (
-                -- Refund vat --
                 SELECT
                     {f'"account_move_line".{current_groupby} AS grouping_key,' if current_groupby else ''}
                     "account_move_line".partner_id,
@@ -153,7 +153,6 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             {'AND turnover_sub.grouping_key = refund_vat_sub.grouping_key' if current_groupby  else ''}
 
             LEFT JOIN (
-                -- Refund base
                 SELECT
                     {f'"account_move_line".{current_groupby} AS grouping_key,' if current_groupby else ''}
                     COALESCE("account_move_line".partner_id, inv.partner_id) AS partner_id,

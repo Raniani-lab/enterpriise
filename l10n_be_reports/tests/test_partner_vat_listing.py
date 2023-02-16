@@ -127,6 +127,23 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
             options,
         )
 
+    def test_zero_tax(self):
+        self.env.companies = self.env.company
+        options = self._generate_options(self.report, fields.Date.from_string('2022-06-01'), fields.Date.from_string('2022-06-30'))
+
+        self.tax_sale_a.amount = 0
+        self.init_invoice('out_invoice', partner=self.partner_a_be, post=True, amounts=[1000], taxes=[self.tax_sale_a], invoice_date='2022-06-29')
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                        VAT number          Turnover            VAT amount
+            [   0,                          1,                  2,                  3],
+            [
+                ('Partner VAT Listing',     '',                 1000.0,            0.0),
+                ('Partner A (BE)',          'BE0246697724',     1000.0,            0.0),
+            ],
+        )
+
     @freeze_time('2019-12-31')
     def test_generate_xml_minimal(self):
         options = self.report._get_options(None)

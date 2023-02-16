@@ -4656,7 +4656,7 @@ QUnit.test("No progress bar when no option set.", async (assert) => {
 });
 
 QUnit.test("Progress bar rpc is triggered when option set.", async (assert) => {
-    assert.expect(7);
+    assert.expect(11);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -4690,6 +4690,63 @@ QUnit.test("Progress bar rpc is triggered when option set.", async (assert) => {
     const [progressBar1, progressBar2] = target.querySelectorAll(SELECTORS.progressBar);
     assert.hasClass(progressBar1, "o_gantt_group_success");
     assert.hasClass(progressBar2, "o_gantt_group_success");
+    const [rowHeader1, rowHeader2] = [progressBar1.parentElement, progressBar2.parentElement];
+    assert.ok(rowHeader1.matches(SELECTORS.rowHeader));
+    assert.ok(rowHeader2.matches(SELECTORS.rowHeader));
+    assert.doesNotHaveClass(rowHeader1, CLASSES.group);
+    assert.doesNotHaveClass(rowHeader2, CLASSES.group);
+    assert.deepEqual(
+        [...target.querySelectorAll(SELECTORS.progressBarBackground)].map((el) => el.style.width),
+        ["50%", "12.5%"]
+    );
+});
+
+QUnit.test("Progress bar when multilevel grouped.", async (assert) => {
+    assert.expect(11);
+    // Here the view is grouped twice on the same field.
+    // This is not a common use case, but it is possible to achieve it
+    // bu saving a default favorite with a groupby then apply it twice
+    // on the same field through the groupby menu.
+    // In this case, the progress bar should be displayed only once,
+    // on the first level of grouping.
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt
+                date_start="start"
+                date_stop="stop"
+                default_scale="week" scales="week"
+                default_group_by="user_id,user_id"
+                progress_bar="user_id"
+            >
+                <field name="user_id"/>
+            </gantt>
+        `,
+        async mockRPC(_, { args, method, model }) {
+            if (method === "gantt_progress_bar") {
+                assert.strictEqual(model, "tasks");
+                assert.deepEqual(args[0], ["user_id"]);
+                assert.deepEqual(args[1], { user_id: [1, 2] });
+                return {
+                    user_id: {
+                        1: { value: 50, max_value: 100 },
+                        2: { value: 25, max_value: 200 },
+                    },
+                };
+            }
+        },
+    });
+    assert.containsN(target, SELECTORS.progressBar, 2);
+    const [progressBar1, progressBar2] = target.querySelectorAll(SELECTORS.progressBar);
+    assert.hasClass(progressBar1, "o_gantt_group_success");
+    assert.hasClass(progressBar2, "o_gantt_group_success");
+    const [rowHeader1, rowHeader2] = [progressBar1.parentElement, progressBar2.parentElement];
+    assert.ok(rowHeader1.matches(SELECTORS.rowHeader));
+    assert.ok(rowHeader2.matches(SELECTORS.rowHeader));
+    assert.hasClass(rowHeader1, CLASSES.group);
+    assert.hasClass(rowHeader2, CLASSES.group);
     assert.deepEqual(
         [...target.querySelectorAll(SELECTORS.progressBarBackground)].map((el) => el.style.width),
         ["50%", "12.5%"]
@@ -5547,8 +5604,6 @@ QUnit.test("date grid and dst summerToWinter (2 cell part)", async (assert) => {
     ]);
 
     await click(target, SELECTORS.nextButton);
-
-    // assert.deepEqual(getIntervals(), []);
 
     assert.deepEqual(getGridInfo(), [
         "2019-10-27T00:00:00.000+02:00",

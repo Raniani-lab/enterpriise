@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="web_gantt.GanttRowProgressBar" owl="1">
-        <span class="o_gantt_progress_bar h-100"
+        <span class="o_gantt_progress_bar position-relative h-100"
             t-att-class="`o_gantt_group_${status || 'none'}`"
         >
             <t t-if="props.progressBar.max_value gt 0">

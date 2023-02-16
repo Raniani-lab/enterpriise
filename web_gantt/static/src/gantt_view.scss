@@ -75,6 +75,10 @@
             grid-row: 1;
         }
 
+        &.o_gantt_group {
+            line-height: initial;
+        }
+
         &.o_mobile_progress_bar {
             grid-template-rows: 1fr var(--Gantt__Pill-height);
 

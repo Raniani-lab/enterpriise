@@ -183,7 +183,7 @@ export class GanttRenderer extends Component {
     static GROUP_ROW_SPAN = 6; // --> 24 pixels
     static ROW_SPAN = 9; // --> 36 pixels
 
-    static getRowHeaderWidth = (width) => 100 / (width > 768 ? 6 : 4);
+    static getRowHeaderWidth = (width) => 100 / (width > 768 ? 6 : 3);
 
     setup() {
         this.model = this.props.model;
@@ -1536,9 +1536,9 @@ export class GanttRenderer extends Component {
                 span = level * baseSpan;
             }
         }
-        if (progressBar && !isGroup && span === baseSpan && this.isTouchDevice) {
+        if (progressBar && span === baseSpan && this.isTouchDevice) {
             // In mobile: rows span over 2 rows to alllow progressbars to properly display
-            span *= 2;
+            span += ROW_SPAN;
         }
 
         for (const rowPill of rowPills) {

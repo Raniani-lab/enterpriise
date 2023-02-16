@@ -4,7 +4,7 @@ import { getFixture, nextTick, patchDate } from "@web/../tests/helpers/utils";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { SELECTORS } from "./helpers";
+import { CLASSES, SELECTORS } from "./helpers";
 
 let serverData;
 /** @type {HTMLElement} */
@@ -72,7 +72,7 @@ QUnit.module("Views > GanttView - Mobile", {
 });
 
 QUnit.test("Progressbar: check the progressbar percentage visibility.", async (assert) => {
-    assert.expect(8);
+    assert.expect(18);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -101,11 +101,84 @@ QUnit.test("Progressbar: check the progressbar percentage visibility.", async (a
     const [progressBar1, progressBar2] = target.querySelectorAll(SELECTORS.progressBar);
     assert.hasClass(progressBar1, "o_gantt_group_success");
     assert.hasClass(progressBar2, "o_gantt_group_success");
+    const [rowHeader1, rowHeader2] = [progressBar1.parentElement, progressBar2.parentElement];
+    assert.ok(rowHeader1.matches(SELECTORS.rowHeader));
+    assert.ok(rowHeader2.matches(SELECTORS.rowHeader));
+    assert.doesNotHaveClass(rowHeader1, CLASSES.group);
+    assert.doesNotHaveClass(rowHeader2, CLASSES.group);
     assert.deepEqual(
         [...target.querySelectorAll(SELECTORS.progressBarBackground)].map((el) => el.style.width),
         ["50%", "12.5%"]
     );
     assert.containsN(target, SELECTORS.progressBarForeground, 2, "foreground is visible in mobile");
+
+    // Check the style of one of the progress bars
+    assert.strictEqual(rowHeader1.children.length, 2);
+    const rowTitle1 = rowHeader1.children[0];
+    assert.ok(rowTitle1.matches(SELECTORS.rowTitle));
+    assert.strictEqual(rowTitle1.nextElementSibling, progressBar1);
+
+    assert.strictEqual(window.getComputedStyle(rowHeader1).gridTemplateRows, "36px 36px");
+    assert.strictEqual(window.getComputedStyle(rowTitle1).height, "36px");
+    assert.strictEqual(window.getComputedStyle(progressBar1).height, "36px");
+});
+
+QUnit.test("Progressbar: grouped row", async (assert) => {
+    assert.expect(18);
+    // Here the view is grouped twice on the same field.
+    // This is not a common use case, but it is possible to achieve it
+    // bu saving a default favorite with a groupby then apply it twice
+    // on the same field through the groupby menu.
+    // In this case, the progress bar should be displayed only once,
+    // on the first level of grouping.
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt date_start="start" date_stop="stop" default_scale="week" scales="week" default_group_by="user_id,user_id" progress_bar="user_id">
+                <field name="user_id"/>
+            </gantt>
+        `,
+        mockRPC(route, { method, model, args }) {
+            if (method === "gantt_progress_bar") {
+                assert.strictEqual(model, "tasks");
+                assert.deepEqual(args[0], ["user_id"]);
+                assert.deepEqual(args[1], { user_id: [1, 2] });
+                return {
+                    user_id: {
+                        1: { value: 50, max_value: 100 },
+                        2: { value: 25, max_value: 200 },
+                    },
+                };
+            }
+        },
+    });
+
+    assert.containsN(target, SELECTORS.progressBar, 2);
+    const [progressBar1, progressBar2] = target.querySelectorAll(SELECTORS.progressBar);
+    assert.hasClass(progressBar1, "o_gantt_group_success");
+    assert.hasClass(progressBar2, "o_gantt_group_success");
+    const [rowHeader1, rowHeader2] = [progressBar1.parentElement, progressBar2.parentElement];
+    assert.ok(rowHeader1.matches(SELECTORS.rowHeader));
+    assert.ok(rowHeader2.matches(SELECTORS.rowHeader));
+    assert.hasClass(rowHeader1, CLASSES.group);
+    assert.hasClass(rowHeader2, CLASSES.group);
+    assert.deepEqual(
+        [...target.querySelectorAll(SELECTORS.progressBarBackground)].map((el) => el.style.width),
+        ["50%", "12.5%"]
+    );
+    assert.containsN(target, SELECTORS.progressBarForeground, 2, "foreground is visible in mobile");
+
+    // Check the style of one of the progress bars
+    assert.strictEqual(rowHeader1.children.length, 2);
+    const rowTitle1 = rowHeader1.children[0];
+    assert.ok(rowTitle1.matches(SELECTORS.rowTitle));
+    assert.strictEqual(rowTitle1.nextElementSibling, progressBar1);
+
+    assert.strictEqual(window.getComputedStyle(rowHeader1).gridTemplateRows, "23px 36px");
+    assert.strictEqual(window.getComputedStyle(rowTitle1).height, "23px");
+    assert.strictEqual(window.getComputedStyle(progressBar1).height, "36px");
 });
 
 QUnit.test(

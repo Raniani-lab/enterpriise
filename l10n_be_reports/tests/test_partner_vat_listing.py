@@ -59,6 +59,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
         })
 
         move.action_post()
+        return move
 
     def test_simple_invoice(self):
         self.env.companies = self.env.company
@@ -73,6 +74,27 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
         # Invoices from Belgian partners should show up ordered by vat number
         self.create_and_post_account_move('out_invoice', self.partner_b_be.id, '2022-06-01', product_quantity=10, product_price_unit=200)
         self.create_and_post_account_move('out_invoice', self.partner_a_be.id, '2022-06-01', product_quantity=10, product_price_unit=100)
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                        VAT number          Turnover            VAT amount
+            [   0,                          1,                  2,                  3],
+            [
+                ('Partner VAT Listing',     '',                 3000.0,             630.0),
+                ('Partner A (BE)',          'BE0246697724',     1000.0,             210.0),
+                ('Partner B (BE)',          'BE0766998497',     2000.0,             420.0),
+            ],
+        )
+
+    def test_misc_operation(self):
+        self.env.companies = self.env.company
+        options = self._generate_options(self.report, fields.Date.from_string('2022-06-01'), fields.Date.from_string('2022-06-30'))
+
+        move_1 = self.create_and_post_account_move('out_invoice', self.partner_b_be.id, '2022-06-01', product_quantity=10, product_price_unit=200)
+        move_2 = self.create_and_post_account_move('out_invoice', self.partner_a_be.id, '2022-06-01', product_quantity=10, product_price_unit=100)
+
+        # Those moves are misc operations that are identical to invoices
+        (move_1 + move_2).write({'move_type': 'entry', 'date': '2022-06-01'})
 
         self.assertLinesValues(
             self.report._get_lines(options),

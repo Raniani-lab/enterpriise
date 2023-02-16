@@ -115,9 +115,10 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
                     AND aml_tag.account_account_tag_id IN %s
                     AND "account_move_line".partner_id IN %s
                     AND (
-                        ("account_move_line".move_id IS NULL AND "account_move_line".credit > 0)
-                        OR (inv.move_type IN ('out_refund', 'out_invoice') AND inv.state = 'posted')
+                        (inv.move_type = 'entry' AND "account_move_line".credit > 0)
+                        OR inv.move_type IN ('out_refund', 'out_invoice')
                     )
+                    AND inv.state = 'posted'
                     AND {where_clause}
                 GROUP BY
                     {f'"account_move_line".{current_groupby},' if current_groupby else ''}
@@ -141,9 +142,10 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
                     AND aml_tag.account_account_tag_id IN %s
                     AND "account_move_line".partner_id IN %s
                     AND (
-                        ("account_move_line".move_id IS NULL AND "account_move_line".credit > 0)
-                        OR (inv.move_type = 'out_refund' AND inv.state = 'posted')
+                        (inv.move_type = 'entry' AND "account_move_line".credit > 0)
+                        OR inv.move_type = 'out_refund'
                     )
+                    AND inv.state = 'posted'
                     AND {where_clause}
                 GROUP BY
                     {f'"account_move_line".{current_groupby},' if current_groupby else ''}
@@ -167,9 +169,10 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
                     aml_tag2.account_account_tag_id IN %s
                     AND COALESCE("account_move_line".partner_id, inv.partner_id) IN %s
                     AND (
-                        ("account_move_line".move_id IS NULL AND "account_move_line".credit > 0)
-                        OR (inv.move_type IN ('out_refund', 'out_invoice') AND inv.state = 'posted')
+                        (inv.move_type = 'entry' AND "account_move_line".credit > 0)
+                        OR inv.move_type IN ('out_refund', 'out_invoice')
                     )
+                    AND inv.state = 'posted'
                     AND {where_clause}
                 GROUP BY
                     {f'"account_move_line".{current_groupby},' if current_groupby else ''}

@@ -211,7 +211,7 @@ class CarvajalRequest():
         legalStatus = response.legalStatus if hasattr(response, 'legalStatus') else None
 
         if processStatus == 'OK' and \
-                processName in ('PDF_CREATION', 'ISSUANCE_CHECK_DELIVERY', 'SEND_TO_RECEIVER', 'SEND_TO_SENDER') and \
+                processName in ('PDF_CREATION', 'ISSUANCE_CHECK_DELIVERY', 'SEND_TO_RECEIVER', 'SEND_TO_SENDER', 'SEND_NOTIFICATION') and \
                 legalStatus == 'ACCEPTED':
             return self._download(invoice)
         elif processStatus == 'PROCESSING' or \

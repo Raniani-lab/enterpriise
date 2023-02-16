@@ -23,17 +23,14 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         super.setup();
         this.rpc = useService('rpc');
         this.actionService = useService('action');
+        this.childrenSelector = 'o_knowledge_articles_structure_children_only';
 
-        if (this.props.content) {
-            this.state = useState({
-                loading: false,
-                refreshing: false,
-            });
-        } else {
-            this.state = useState({
-                loading: true,
-                refreshing: false,
-            });
+        this.state = useState({
+            loading: !this.props.content,
+            refreshing: false,
+            showAllChildren: !this.props.anchor.classList.contains(this.childrenSelector),
+        });
+        if (!this.props.content) {
             onMounted(async () => {
                 this.props.content = await this._renderArticlesStructure();
                 this.state.loading = false;
@@ -81,9 +78,8 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
      * @returns {Array[Object]}
      */
     async _fetchAllArticles (articleId) {
-        const selector = 'o_knowledge_articles_structure_children_only';
         const domain = [
-            ['parent_id', this.props.anchor.classList.contains(selector) ? '=' : 'child_of', articleId],
+            ['parent_id', !this.state.showAllChildren ? '=' : 'child_of', articleId],
             ['is_article_item', '=', false]
         ];
         const { records } = await this.rpc('/web/dataset/search_read', {
@@ -140,6 +136,13 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         this.state.refreshing = true;
         this.props.content = await this._renderArticlesStructure();
         this.state.refreshing = false;
+    }
+
+    async _onSwitchMode (event) {
+        // Switch mode based on class.
+        this.props.anchor.classList.toggle(this.childrenSelector);
+        this.state.showAllChildren = !this.state.showAllChildren;
+        await this._onRefreshBtnClick(event);
     }
 }
 

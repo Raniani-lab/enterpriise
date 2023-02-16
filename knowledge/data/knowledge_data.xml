@@ -145,7 +145,7 @@
                 <hr />
                 <p>We decided to gather all relevant documentation here to make sure all resources were easy to access.</p>
                 <p><br /></p>
-                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure">
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure o_knowledge_articles_structure_children_only">
                     <div class="o_knowledge_articles_structure_content" data-prop-name="content">
                         <ol class="mb-0">
                             <li>

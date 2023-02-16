@@ -184,16 +184,7 @@ Wysiwyg.include({
                 category: _t('Knowledge'),
                 name: _t('Index'),
                 priority: 60,
-                description: _t('Show the first level of nested articles'),
-                fontawesome: 'fa-list',
-                callback: () => {
-                    this._insertArticlesStructure(true);
-                }
-            }, {
-                category: _t('Knowledge'),
-                name: _t('Article Structure'),
-                priority: 60,
-                description: _t('Show all nested articles'),
+                description: _t('Show nested articles'),
                 fontawesome: 'fa-list',
                 callback: () => {
                     this._insertArticlesStructure(false);
@@ -235,10 +226,8 @@ Wysiwyg.include({
      * It will list all the articles that are direct children of this one.
      * @param {boolean} childrenOnly
      */
-    _insertArticlesStructure: function (childrenOnly) {
-        const articlesStructureBlock = $(QWeb.render('knowledge.articles_structure_wrapper', {
-            childrenOnly: childrenOnly
-        }))[0];
+    _insertArticlesStructure: function () {
+        const articlesStructureBlock = $(QWeb.render('knowledge.articles_structure_wrapper'))[0];
         const [container] = this.odooEditor.execCommand('insert', articlesStructureBlock);
         this._notifyNewBehavior(container);
     },

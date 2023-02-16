@@ -5,8 +5,7 @@
            class="btn btn-sm o_knowledge_behavior_anchor o_knowledge_behavior_type_article"/>
     </t>
     <t t-name="knowledge.articles_structure_wrapper">
-        <div t-attf-class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure
-            #{childrenOnly ? 'o_knowledge_articles_structure_children_only' : ''}"/>
+        <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure"/>
     </t>
     <t t-name="knowledge.articles_structure">
         <i t-if="!articles or articles.length === 0">Nest articles under this one to generate a structure</i>

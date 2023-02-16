@@ -311,8 +311,10 @@ class L10nBe28110(models.Model):
             if round(mapped_total['CAR.PRIV'], 2) + round(mapped_total['ATN.CAR'], 2):
                 other_transport_exemption = max_other_transport_exemption * number_of_month / 12.0
 
-            cycle_days_count = sum(all_line_values['CYCLE'][p.id]['quantity'] for p in payslips)
-            cycle_days_amount = sum(all_line_values['CYCLE'][p.id]['total'] for p in payslips)
+            cycle_days_count = 0
+            cycle_days_amount = 0
+            # cycle_days_count = sum(all_line_values['CYCLE'][p.id]['quantity'] for p in payslips)
+            # cycle_days_amount = sum(all_line_values['CYCLE'][p.id]['total'] for p in payslips)
 
             sheet_values = {
                 'employee': employee,

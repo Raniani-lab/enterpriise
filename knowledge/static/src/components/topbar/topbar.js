@@ -86,11 +86,11 @@ class KnowledgeTopbar extends Component {
     /**
      * Copy the current article in private section and open it.
      */
-    async copyArticleAsPrivate() {
+    async cloneArticle() {
         await this.env._saveIfDirty();
         const articleId = await this.orm.call(
             'knowledge.article',
-            'action_make_private_copy',
+            'action_clone',
             [this.props.record.data.id]
         );
         this.env.openArticle(articleId, true);

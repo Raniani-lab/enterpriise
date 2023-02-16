@@ -106,7 +106,7 @@
                                     t-if="!props.record.data.to_delete and !props.record.data.active">
                                 <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-archive"/> Unarchive
                             </button>
-                            <button class="ps-0 dropdown-item" t-on-click="copyArticleAsPrivate">
+                            <button class="ps-0 dropdown-item" t-on-click="this.cloneArticle">
                                 <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-copy"/> Create a Copy
                             </button>
                             <button class="ps-0 dropdown-item"

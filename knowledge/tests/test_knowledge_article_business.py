@@ -809,7 +809,7 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
         self.assertEqual(len(duplicate.child_ids), 2, 'Copy batch should copy children')
         self.assertEqual(
             sorted(duplicate.mapped('child_ids.name')),
-            sorted([f'{name} (copy)' for name in article_workspace.mapped('child_ids.name')])
+            sorted([f'{name}' for name in article_workspace.mapped('child_ids.name')])
         )
 
         # Selecting 2 articles in different hierarchies (under same parent) should duplicate both
@@ -817,7 +817,7 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
         duplicates = workspace_children.copy_batch()
         self.assertEqual(
             sorted(duplicates.mapped('name')),
-            sorted([f'{name} (copy)' for name in workspace_children.mapped('name')])
+            sorted([f'{name}' for name in workspace_children.mapped('name')])
         )
 
         # Duplicating readonly article should raise an error
@@ -842,17 +842,17 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
         shared = self.article_shared.with_env(self.env)
         duplicates = (workspace_children + shared).copy_batch()
         for original, copy in zip(workspace_children + shared, duplicates):
-            self.assertEqual(copy.name, f'{original.name} (copy)')
+            self.assertEqual(copy.name, f'{original.name}{" (copy)" if not original.parent_id else ""}')
             self.assertEqual(len(original.child_ids), len(copy.child_ids))
             self.assertEqual(len(original._get_descendants()), len(copy._get_descendants()))
             self.assertNotEqual(original.child_ids, copy.child_ids)
         self.assertEqual(
             sorted(duplicates.mapped('child_ids.name')),
-            sorted([f'{name} (copy)' for name in (workspace_children + shared).mapped('child_ids.name')])
+            sorted([f'{name}' for name in (workspace_children + shared).mapped('child_ids.name')])
         )
         self.assertEqual(
             sorted(article.name for article in duplicates[-1]._get_descendants()),
-            sorted(f'{article.name} (copy)' for article in shared._get_descendants()),
+            sorted(f'{article.name}' for article in shared._get_descendants()),
             "Check descendants name is also updated (not only direct children)"
         )
 
@@ -903,7 +903,7 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
         self.assertTrue(new_article.child_ids != article_workspace.child_ids)
         self.assertEqual(
             sorted(new_article.child_ids.mapped('name')),
-            sorted([f"{name} (copy)" for name in article_workspace.child_ids.mapped('name')])
+            sorted([f"{name}" for name in article_workspace.child_ids.mapped('name')])
         )
         self.assertFalse(new_article.parent_id)
 

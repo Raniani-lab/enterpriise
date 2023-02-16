@@ -139,7 +139,7 @@ class Article(models.Model):
     deletion_date = fields.Date(string="Deletion Date", compute="_compute_deletion_date")
     # Property fields
     article_properties_definition = fields.PropertiesDefinition('Article Item Properties')
-    article_properties = fields.Properties('Properties', definition="parent_id.article_properties_definition")
+    article_properties = fields.Properties('Properties', definition="parent_id.article_properties_definition", copy=True)
     article_properties_is_empty = fields.Boolean('Is Property Field Empty?',
          compute="_compute_article_properties_is_empty")
 
@@ -740,7 +740,7 @@ class Article(models.Model):
     def copy(self, default=None):
         default = default or {}
         if not default.get('name') and self.name:
-            default['name'] = _('%(article_name)s (copy)', article_name=self.name)
+            default['name'] = self.name if self.parent_id else _('%(article_name)s (copy)', article_name=self.name)
         return super().copy(default)
 
     @api.returns(None, lambda value: value[0])
@@ -752,7 +752,7 @@ class Article(models.Model):
             if default is None:
                 default = {}
             if self.name:
-                default['name'] = _('%(article_name)s (copy)', article_name=self.name)
+                default['name'] = self.name if self.parent_id else _('%(article_name)s (copy)', article_name=self.name)
         return super().copy_data(default=default)
 
     def copy_batch(self, default=None):
@@ -870,6 +870,18 @@ class Article(models.Model):
 
         return self._search(domain, limit=limit, order=order, access_rights_uid=name_get_uid)
 
+    def _get_common_copied_data(self):
+        return {
+            "body": self.body,
+            "cover_image_id": self.cover_image_id.id,
+            "cover_image_position": self.cover_image_position,
+            "full_width": self.full_width,
+            "icon": self.icon,
+            "is_desynchronized": False,
+            "is_locked": False,
+            "name": _("%(article_name)s (copy)", article_name=self.name) if self.name else False,
+        }
+
     # ------------------------------------------------------------
     # ACTIONS
     # ------------------------------------------------------------
@@ -881,24 +893,36 @@ class Article(models.Model):
         but drops other fields such as members, childs, permissions etc.
         """
         self.ensure_one()
-        article_vals = {
+        article_vals = self._get_common_copied_data()
+        article_vals.update({
             "article_member_ids": [(0, 0, {
                 "partner_id": self.env.user.partner_id.id,
                 "permission": 'write'
             })],
-            "body": self.body,
-            "cover_image_id": self.cover_image_id.id,
-            "cover_image_position": self.cover_image_position,
-            "full_width": self.full_width,
-            "icon": self.icon,
             "internal_permission": "none",
-            "is_desynchronized": False,
-            "is_locked": False,
             "parent_id": False,
-        }
-        if self.name:
-            article_vals['name'] = _("%(article_name)s (copy)", article_name=self.name)
+        })
         return self.create(article_vals)
+
+    @api.returns('self', lambda value: value.id)
+    def action_clone(self):
+        """Creates a duplicate of an article in the same context as the original.
+        This means that this methods create a copy with the same parent,
+        permission and properties as the original
+        """
+        self.ensure_one()
+        if not self.user_can_write or not (self.parent_id and self.parent_id.user_can_write):
+            return self.action_make_private_copy()
+        article_vals = self._get_common_copied_data()
+        article_vals.update({
+            "internal_permission": self.internal_permission,
+            "parent_id": self.parent_id.id,
+            "article_properties": self.article_properties,
+            "is_article_item": self.is_article_item,
+            "article_properties_definition": self.article_properties_definition,
+        })
+        return self.create(article_vals)
+
 
     def action_home_page(self):
         """ Redirect to the home page of knowledge, which displays an article.

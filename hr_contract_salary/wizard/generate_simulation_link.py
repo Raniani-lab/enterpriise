@@ -4,6 +4,7 @@
 import uuid
 
 from odoo import api, fields, models
+from odoo.fields import Date
 
 from werkzeug.urls import url_encode
 
@@ -40,7 +41,7 @@ class GenerateSimulationLink(models.TransientModel):
         applicant_id = result.get('applicant_id')
         if applicant_id:
             applicant = self.env['hr.applicant'].sudo().browse(applicant_id)
-            if not applicant.access_token or applicant.access_token_end_date < fields.Date.today():
+            if not applicant.access_token or applicant.access_token_end_date < Date.today():
                 applicant.access_token = uuid.uuid4().hex
                 applicant.access_token_end_date = self.env['hr.applicant']._get_access_token_end_date()
         return result

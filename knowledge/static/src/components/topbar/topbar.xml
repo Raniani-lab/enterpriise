@@ -32,7 +32,7 @@
                             </div>
                             <div t-else=""
                                 t-on-input="ev => this.env._resizeNameInput(ev.target.value)"
-                                t-on-change="ev => this.env._rename(ev.target.value)"
+                                t-on-change="ev => this.env.renameArticle(ev.target.value)"
                                 t-on-click="ev => this._onNameClick(ev)"
                                 class="o_breadcrumb_article_name_container position-relative text-truncate mx-1">
                                 <!-- span forces the input to match the length of its value -->

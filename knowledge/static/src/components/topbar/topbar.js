@@ -193,7 +193,7 @@ class KnowledgeTopbar extends Component {
      */
     async _onNameClick(event) {
         if (!this.props.record.data.name) {
-            await this.env._rename();
+            await this.env.renameArticle();
             window.setTimeout(() => {
                 event.target.select();
             });

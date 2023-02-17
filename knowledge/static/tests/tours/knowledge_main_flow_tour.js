@@ -70,11 +70,8 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     trigger: 'section[data-section="private"] .o_article .o_article_name:contains("Untitled")',
     run: () => {},  // check that the article is correctly created (private section)
 }, {
-    trigger: '.o_breadcrumb_article_name > input',
-    run: 'text My Private Article',  // modify the article name
-}, {
-    trigger: '.note-editable.odoo-editor-editable',
-    run: 'text Content of My Private Article',  // modify the article content
+    trigger: '.note-editable.odoo-editor-editable h1',
+    run: 'text My Private Article',  // modify the article content
 }, {
     trigger: 'section[data-section="workspace"]',
     run: () => {
@@ -85,8 +82,11 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     // create an article in the "Workspace" section
     trigger: 'section[data-section="workspace"] .o_section_create',
 }, {
+    // check that the article is correctly created (workspace section), and that the previous
+    // article has been renamed using its title (first h1 in body).
     trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("Untitled")',
-    run: () => {},  // check that the article is correctly created (workspace section)
+    extra_trigger: 'section[data-section="private"] .o_article .o_article_name:contains("My Private Article")',
+    run: () => {},
 }, {
     trigger: '.o_breadcrumb_article_name > input',
     run: 'text My Workspace Article',  // modify the article name
@@ -179,7 +179,7 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     // go back to main workspace article
     trigger: 'section[data-section="private"] .o_article .o_article_name:contains("My Private Article")',
 }, {
-    trigger: '.o_knowledge_editor:contains("Content of My Private Article")',
+    trigger: '.o_knowledge_editor:contains("My Private Article")',
     run: () => {},  // wait for article to be correctly loaded
 }, {
     // add to favorite
@@ -223,7 +223,7 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     trigger: '.btn-move',
     run: 'click',
 }, {
-    trigger:'.select2-chosen',
+    trigger: '.select2-chosen',
     in_modal: false
 }, {
     trigger: '.select2-results-dept-1 > .select2-result-label:contains("Article 3")',

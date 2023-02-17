@@ -51,10 +51,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this.device = config.device;
         this.sidebarSize = localStorage.getItem('knowledgeArticleSidebarSize');
 
-        useChildSubEnv({
-            renameArticle: this._rename.bind(this),
-        });
-
         onPatched(() => {
             // Handle Add property button
             if (this.state.triggerClickOnAddProperty && this.root.el.querySelector('.o_field_property_add > button')) {
@@ -159,7 +155,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             openArticle: this.openArticle.bind(this),
             config: this.env.config,
             _resizeNameInput: this._resizeNameInput.bind(this),
-            _rename: this._rename.bind(this),
             _renderTree: this._renderTree.bind(this),
             toggleFavorite: this.toggleFavorite.bind(this),
             toggleProperties: this.toggleProperties.bind(this),
@@ -249,72 +244,82 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      *   if true, notably useful when the tree panel needs to be reloaded (defaults to false).
      */
     async openArticle(resId, forceFullReload=false) {
-        // If the focus is on the "name" input, force a _rename before leaving this article
-        if (document.activeElement.id === "name") {
-            await this._rename(document.activeElement.value);
-            document.activeElement.blur();
-        } else if (this.resId) {  // Don't save when NoRecord helper is shown
-            await this.props.record.save();
+
+        if (!resId || resId === this.resId) {
+            return;
         }
 
-        if (resId) {
-            if (forceFullReload) {
+        // Usually in a form view, an input field is added to the list of dirty
+        // fields of a record when the input loses the focus.
+        // In this case, the focus could still be on the name input or in the
+        // body when clicking on an article name. Since the blur event is not
+        // asynchronous, the focused field is not yet added in the record's 
+        // list of dirty fields when saving before opening another article.
+        // askChanges() allows to make sure that these fields are added to the
+        // record's list of dirty fields if they have been modified.
+        if (this.resId && this.props.record.data.user_can_write) {
+            if (document.activeElement.id === "name") {
+                // blur to remove focus on input
+                document.activeElement.blur();
+                await this.props.record.askChanges();
+            } else if (this.root.el.querySelector('div[name="body"]').contains(document.activeElement)) {
+                await this.props.record.askChanges();
+            }
+        }
+
+        if (forceFullReload) {
+            this.actionService.doAction(
+                await this.orm.call('knowledge.article', 'action_home_page', resId ? [resId] : []),
+                {stackPosition: 'replaceCurrentAction'}
+            );
+        } else {
+
+            const scrollView = document.querySelector('.o_scroll_view_lg');
+            if (scrollView) {
+                // hide the flicker
+                scrollView.style.visibility = 'hidden';
+                // Scroll up if we have a desktop screen
+                scrollView.scrollTop = 0;
+            }
+
+            const mobileScrollView = document.querySelector('.o_knowledge_main_view');
+            if (mobileScrollView) {
+                // Scroll up if we have a mobile screen
+                mobileScrollView.scrollTop = 0;
+            }
+            await this._saveIfDirty();
+            // load the new record
+            try {
+                await this.props.record.model.load({
+                    resId: resId,
+                });
+            } catch {
                 this.actionService.doAction(
-                    await this.orm.call('knowledge.article', 'action_home_page', resId ? [resId] : []),
+                    await this.orm.call('knowledge.article', 'action_home_page', [false]),
                     {stackPosition: 'replaceCurrentAction'}
                 );
-            } else {
-                // toggle on/off the classes that highlight the selected article
-                document.querySelectorAll(`[data-article-id="${this.resId}"] > div`).forEach((previousArticle) => {
-                    previousArticle.classList.remove('o_article_active', 'fw-bold', 'text-900');
-                    const emoji = previousArticle.querySelector('.o_article_emoji');
-                    if (emoji) {
-                        emoji.classList.remove('o_article_emoji_active', 'text-900');
-                    }
-                });
+            }
 
-                document.querySelectorAll(`[data-article-id="${resId}"] > div`).forEach((currentArticle) => {
-                    currentArticle.classList.add('o_article_active', 'fw-bold', 'text-900');
-                    const emoji = currentArticle.querySelector('.o_article_emoji');
-                    if (emoji) {
-                        emoji.classList.add('o_article_emoji_active', 'text-900');
-                    }
-                });
-
-                // Force save if changes have been made before loading the new record
-                await this._saveIfDirty();
-
-                const scrollView = document.querySelector('.o_scroll_view_lg');
-                if (scrollView) {
-                    // hide the flicker
-                    scrollView.style.visibility = 'hidden';
-                    // Scroll up if we have a desktop screen
-                    scrollView.scrollTop = 0;
+            // toggle on/off the classes that highlight the selected article
+            document.querySelectorAll(`[data-article-id="${this.resId}"] > div`).forEach((previousArticle) => {
+                previousArticle.classList.remove('o_article_active', 'fw-bold', 'text-900');
+                const emoji = previousArticle.querySelector('.o_article_emoji');
+                if (emoji) {
+                    emoji.classList.remove('o_article_emoji_active', 'text-900');
                 }
+            });
 
-                const mobileScrollView = document.querySelector('.o_knowledge_main_view');
-                if (mobileScrollView) {
-                    // Scroll up if we have a mobile screen
-                    mobileScrollView.scrollTop = 0;
+            document.querySelectorAll(`[data-article-id="${resId}"] > div`).forEach((currentArticle) => {
+                currentArticle.classList.add('o_article_active', 'fw-bold', 'text-900');
+                const emoji = currentArticle.querySelector('.o_article_emoji');
+                if (emoji) {
+                    emoji.classList.add('o_article_emoji_active', 'text-900');
                 }
+            });
 
-                // load the new record
-                try {
-                    await this.props.record.model.load({
-                        resId: resId,
-                    });
-                } catch {
-                    this.actionService.doAction(
-                        await this.orm.call('knowledge.article', 'action_home_page', [false]),
-                        {stackPosition: 'replaceCurrentAction'}
-                    );
-                }
-
-                if (scrollView) {
-                    // Show loaded document
-                    scrollView.style.visibility = 'visible';
-                }
-
+            if (scrollView) {
+                // Show loaded document
+                scrollView.style.visibility = 'visible';
             }
         }
     }
@@ -437,14 +442,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     }
 
     /**
-     * @return {string} - first h1 in the body
-     */
-    _getFallbackTitle() {
-        const h1 = this.root.el.querySelector('.o_knowledge_editor .note-editable h1');
-        return h1 ? h1.textContent.trim() : '';
-    }
-
-    /**
      * @param {Object} data
      * @param {integer} data.article_id
      * @param {String} data.oldCategory
@@ -518,27 +515,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      */
     _onRemoveEmoji(ev) {
         this._renderEmoji(false, ev.detail.article.id);
-    }
-
-    /**
-     * Rename the article with the given title
-     * Note: When no argument is given to the function, the function will use
-     * the first heading (h1) of the article as title.
-     * @param {string} [name] - New title of the article
-     */
-    async _rename(name) {
-        if (typeof name === 'undefined') {
-            name = this._getFallbackTitle();
-        }
-        await this.props.record.update({'name': name});
-        this._resizeNameInput(name);
-        // ADSC: Remove when tree component
-        // Updates the name in the sidebar
-        const title = name || this.env._t("Untitled");
-        const selector = `.o_article[data-article-id="${this.resId}"] > .o_article_handle > div > .o_article_name`;
-        this.tree.el.querySelectorAll(selector).forEach(function(articleName) {
-            articleName.textContent = title;
-        });
     }
 
     /**

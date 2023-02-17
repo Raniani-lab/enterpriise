@@ -294,7 +294,7 @@ class View(models.Model):
         right_group.extend(right_group_content)
         sheet_content.append(E.group(left_group, right_group, name=group_name))
         if 'x_studio_notes' in model._fields:
-            sheet_content.append(E.group(E.field(name='x_studio_notes', placeholder=_('Type down your notes here...'), nolabel='1')))
+            sheet_content.append(E.group(E.field(name='x_studio_notes', placeholder=_('Type down your notes here...'), nolabel='1', colspan="2")))
 
         # if there is a '%_line_ids' field, display it as a list in a notebook
         lines_field = [f for f in model._fields if ("%s_line_ids" % model._name) in f]

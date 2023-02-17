@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from dateutil.relativedelta import relativedelta
+from math import ceil
+
+from odoo import _, api, fields, models
 from odoo.tools import float_compare
-from odoo.osv import expression
 
 RENTAL_STATUS = [
     ('draft', "Quotation"),
@@ -18,62 +20,162 @@ RENTAL_STATUS = [
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    is_rental_order = fields.Boolean("Created In App Rental")
+    _sql_constraints = [(
+        'rental_period_coherence',
+        "CHECK(rental_start_date < rental_return_date)",
+        "The rental start date must be before the rental return date if any.",
+    )]
+
+    #=== FIELDS ===#
+
+    is_rental_order = fields.Boolean(
+        string="Created In App Rental",
+        compute='_compute_is_rental_order',
+        store=True, precompute=True,
+        # By default, all orders created in rental app are Rental Orders
+        default=lambda self: self.env.context.get('in_rental_app'))
+    has_rented_products = fields.Boolean(compute="_compute_has_rented_products")
+    rental_start_date = fields.Datetime(string="Rental Start Date", tracking=True)
+    rental_return_date = fields.Datetime(string="Rental Return Date", tracking=True)
+    duration_days = fields.Integer(
+        string="Duration in days",
+        compute='_compute_duration',
+        help="The duration in days of the rental period.",
+    )
+    remaining_hours = fields.Integer(
+        string="Remaining duration in hours",
+        compute='_compute_duration',
+        help="The leftover hours of the rental period.",
+    )
+    show_update_duration = fields.Boolean(string="Has Duration Changed", store=False)
+
     rental_status = fields.Selection(
         selection=RENTAL_STATUS,
         string="Rental Status",
         compute='_compute_rental_status',
         store=True)
     # rental_status = next action to do basically, but shown string is action done.
-
-    has_pickable_lines = fields.Boolean(compute="_compute_rental_status", store=True)
-    has_returnable_lines = fields.Boolean(compute="_compute_rental_status", store=True)
     next_action_date = fields.Datetime(
         string="Next Action", compute='_compute_rental_status', store=True)
 
-    has_late_lines = fields.Boolean(compute="_compute_has_late_lines")
-    has_rented_products = fields.Boolean(compute="_compute_has_rented_products")
+    has_pickable_lines = fields.Boolean(compute="_compute_has_action_lines")
+    has_returnable_lines = fields.Boolean(compute="_compute_has_action_lines")
 
-    @api.depends('is_rental_order', 'next_action_date', 'rental_status')
-    def _compute_has_late_lines(self):
+    is_late = fields.Boolean(
+        string="Is overdue",
+        help="The products haven't been picked-up or returned in time",
+        compute='_compute_is_late',
+    )
+
+    #=== COMPUTE METHODS ===#
+
+    @api.depends('order_line.is_rental')
+    def _compute_is_rental_order(self):
         for order in self:
-            order.has_late_lines = (
-                order.is_rental_order
-                and order.rental_status in ['pickup', 'return']  # has_pickable_lines or has_returnable_lines
-                and order.next_action_date and order.next_action_date < fields.Datetime.now())
+            # If a rental product is added in the rental app to the order, it becomes a rental order
+            order.is_rental_order = order.is_rental_order or order.has_rented_products
 
-    @api.depends('state', 'order_line', 'order_line.product_uom_qty', 'order_line.qty_delivered', 'order_line.qty_returned')
-    def _compute_rental_status(self):
-        for order in self:
-            if order.state == 'sale' and order.is_rental_order:
-                rental_order_lines = order.order_line.filtered(lambda l: l.is_rental and l.start_date and l.return_date)
-                pickeable_lines = rental_order_lines.filtered(lambda sol: sol.qty_delivered < sol.product_uom_qty)
-                returnable_lines = rental_order_lines.filtered(lambda sol: sol.qty_returned < sol.qty_delivered)
-                min_pickup_date = min(pickeable_lines.mapped('start_date')) if pickeable_lines else 0
-                min_return_date = min(returnable_lines.mapped('return_date')) if returnable_lines else 0
-                if min_pickup_date and pickeable_lines and (not returnable_lines or min_pickup_date <= min_return_date):
-                    order.rental_status = 'pickup'
-                    order.next_action_date = min_pickup_date
-                elif returnable_lines:
-                    order.rental_status = 'return'
-                    order.next_action_date = min_return_date
-                else:
-                    order.rental_status = 'returned'
-                    order.next_action_date = False
-                order.has_pickable_lines = bool(pickeable_lines)
-                order.has_returnable_lines = bool(returnable_lines)
-            else:
-                order.has_pickable_lines = False
-                order.has_returnable_lines = False
-                order.rental_status = order.state if order.is_rental_order else False
-                order.next_action_date = False
-
-    @api.depends('state', 'order_line')
+    @api.depends('order_line.is_rental')
     def _compute_has_rented_products(self):
         for so in self:
-            so.has_rented_products = so.is_rental_order and any(
-                so.order_line.product_template_id.mapped('rent_ok')
+            so.has_rented_products = any(line.is_rental for line in so.order_line)
+
+    @api.depends('rental_start_date', 'rental_return_date')
+    def _compute_duration(self):
+        self.duration_days = 0
+        self.remaining_hours = 0
+        for order in self:
+            if order.rental_start_date and order.rental_return_date:
+                duration = order.rental_return_date - order.rental_start_date
+                order.duration_days = duration.days
+                order.remaining_hours = ceil(duration.seconds / 3600)
+
+    @api.depends(
+        'rental_start_date',
+        'rental_return_date',
+        'state',
+        'order_line.is_rental',
+        'order_line.product_uom_qty',
+        'order_line.qty_delivered',
+        'order_line.qty_returned',
+    )
+    def _compute_rental_status(self):
+        self.next_action_date = False
+        for order in self:
+            if not order.is_rental_order:
+                order.rental_status = False
+            elif order.state != 'sale':
+                order.rental_status = order.state
+            elif order.has_pickable_lines:
+                order.rental_status = 'pickup'
+                order.next_action_date = order.rental_start_date
+            elif order.has_returnable_lines:
+                order.rental_status = 'return'
+                order.next_action_date = order.rental_return_date
+            else:
+                order.rental_status = 'returned'
+
+    @api.depends(
+        'is_rental_order',
+        'state',
+        'order_line.is_rental',
+        'order_line.product_uom_qty',
+        'order_line.qty_delivered',
+        'order_line.qty_returned',
+    )
+    def _compute_has_action_lines(self):
+        self.has_pickable_lines = False
+        self.has_returnable_lines = False
+        for order in self:
+            if order.state == 'sale' and order.is_rental_order:
+                rental_order_lines = order.order_line.filtered('is_rental')
+                order.has_pickable_lines = any(
+                    sol.qty_delivered < sol.product_uom_qty for sol in rental_order_lines
+                )
+                order.has_returnable_lines = any(
+                    sol.qty_returned < sol.qty_delivered for sol in rental_order_lines
+                )
+
+    @api.depends('is_rental_order', 'next_action_date', 'rental_status')
+    def _compute_is_late(self):
+        now = fields.Datetime.now()
+        for order in self:
+            tolerance_delay = relativedelta(hours=order.company_id.min_extra_hour)
+            order.is_late = (
+                order.is_rental_order
+                and order.rental_status in ['pickup', 'return']  # has_pickable_lines or has_returnable_lines
+                and order.next_action_date
+                and order.next_action_date + tolerance_delay < now
             )
+
+    #=== ONCHANGE METHODS ===#
+
+    @api.onchange('rental_start_date', 'rental_return_date')
+    def _onchange_duration_show_update_duration(self):
+        self.show_update_duration = any(line.is_rental for line in self.order_line)
+
+    @api.onchange('is_rental_order')
+    def _onchange_is_rental_order(self):
+        self.ensure_one()
+        if self.is_rental_order:
+            self._rental_set_dates()
+
+    #=== ACTION METHODS ===#
+
+    def action_update_rental_prices(self):
+        self.ensure_one()
+        self._recompute_rental_prices()
+        self.message_post(body=_("Rental prices have been recomputed with the new period."))
+
+    def _recompute_rental_prices(self):
+        self.with_context(rental_recompute_price=True)._recompute_prices()
+
+    def _get_update_prices_lines(self):
+        """ Exclude non-rental lines from price recomputation"""
+        lines = super()._get_update_prices_lines()
+        if not self.env.context.get('rental_recompute_price'):
+            return lines
+        return lines.filtered('is_rental')
 
     # PICKUP / RETURN : rental.processing wizard
 
@@ -113,11 +215,16 @@ class SaleOrder(models.Model):
         else:
             return super()._get_portal_return_action()
 
-    def _get_product_catalog_domain(self):
-        """Override of `_get_product_catalog_domain` to extend the domain.
+    #=== TOOLING ===#
 
-        :returns: A list of tuples that represents a domain.
-        :rtype: list
-        """
-        domain = super()._get_product_catalog_domain()
-        return expression.AND([domain, [('rent_ok', '=', False)]])
+    def _rental_set_dates(self):
+        self.ensure_one()
+        if self.rental_start_date and self.rental_return_date:
+            return
+
+        start_date = fields.Datetime.now().replace(minute=0, second=0) + relativedelta(hours=1)
+        return_date = start_date + relativedelta(days=1)
+        self.update({
+            'rental_start_date': start_date,
+            'rental_return_date': return_date,
+        })

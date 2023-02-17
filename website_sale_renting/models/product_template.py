@@ -175,13 +175,9 @@ class ProductTemplate(models.Model):
             return start_date, end_date
 
         if website and request:
-            sol_rental = website.sale_get_order().order_line.filtered('is_rental')[:1]
-            if sol_rental:
-                end_date = max(
-                    sol_rental.return_date,
-                    self._get_default_end_date(sol_rental.start_date, duration, unit)
-                )
-                return sol_rental.start_date, end_date
+            order = website.sale_get_order()
+            if order.has_rented_products:
+                return order.rental_start_date, order.rental_return_date
 
         default_date = self._get_default_start_date()
         return default_date, self._get_default_end_date(default_date, duration, unit)
@@ -243,10 +239,6 @@ class ProductTemplate(models.Model):
                 prices[template.id]['rental_unit'] = False
 
         return prices
-
-    def _website_show_quick_add(self):
-        self.ensure_one()
-        return not self.rent_ok and super()._website_show_quick_add()
 
     def _search_get_detail(self, website, order, options):
         search_details = super()._search_get_detail(website, order, options)

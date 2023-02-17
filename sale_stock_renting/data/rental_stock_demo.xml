@@ -109,7 +109,8 @@
       <field name="user_id" ref="base.user_admin"/>
       <field name="team_id" ref="sales_team.team_sales_department"/>
       <field name="date_order" eval="DateTime.today() - relativedelta(months=3)"/>
-      <field name="is_rental_order" eval="True"/>
+      <field name="rental_start_date" eval="DateTime.today() + relativedelta(days=1)"/>
+      <field name="rental_return_date" eval="DateTime.today() + relativedelta(days=5)"/>
   </record>
 
   <record id="rental_stock_order_line_1" model="sale.order.line">
@@ -118,10 +119,11 @@
       <field name="product_uom_qty">3</field>
       <field name="product_uom" ref="uom.product_uom_unit"/>
       <field name="name" eval="'[RENT003] Printer'"/>
-      <field name="is_rental" eval="True"/>
-      <field name="start_date" eval="DateTime.today() + relativedelta(days=1)"/>
-      <field name="return_date" eval="DateTime.today() + relativedelta(days=5)"/>
       <field name="price_unit" eval="100.0"/>
+  </record>
+
+  <record id="rental_stock_order_line_1" model="sale.order.line"> <!-- After creation to avoid the compute and force the value -->
+      <field name="is_rental" eval="True"/>
   </record>
 
   <record id="rental_stock_order_line_2" model="sale.order.line">
@@ -130,11 +132,12 @@
       <field name="product_uom_qty">2</field>
       <field name="product_uom" ref="uom.product_uom_unit"/>
       <field name="name" eval="'[RENT003] Printer'"/>
-      <field name="is_rental" eval="True"/>
-      <field name="start_date" eval="DateTime.today() + relativedelta(days=4)"/>
-      <field name="return_date" eval="DateTime.today() + relativedelta(days=10)"/>
       <field name="price_unit" eval="150.0"/>
       <field name="reserved_lot_ids" eval="[(6,0,[ref('rental_stock_lot_1'), ref('rental_stock_lot_2')])]"/>
+  </record>
+
+  <record id="rental_stock_order_line_2" model="sale.order.line"> <!-- After creation to avoid the compute and force the value -->
+      <field name="is_rental" eval="True"/>
   </record>
 
   <!-- CONFIRM Rental Sale Order -->

@@ -19,7 +19,7 @@ class RentalProcessing(models.TransientModel):
             ('return', 'Return'),
         ],
     )
-    has_late_lines = fields.Boolean(compute='_compute_has_late_lines')
+    is_late = fields.Boolean(related='order_id.is_late')
 
     @api.onchange('order_id')
     def _get_wizard_lines(self):
@@ -35,11 +35,6 @@ class RentalProcessing(models.TransientModel):
                 lines_values.append(self.env['rental.order.wizard.line']._default_wizard_line_vals(line, self.status))
 
             self.rental_wizard_line_ids = [(6, 0, [])] + [(0, 0, vals) for vals in lines_values]
-
-    @api.depends('rental_wizard_line_ids')
-    def _compute_has_late_lines(self):
-        for wizard in self:
-            wizard.has_late_lines = wizard.rental_wizard_line_ids and any(line.is_late for line in wizard.rental_wizard_line_ids)
 
     def apply(self):
         """Apply the wizard modifications to the SaleOrderLine(s).
@@ -65,14 +60,12 @@ class RentalProcessingLine(models.TransientModel):
 
     @api.model
     def _default_wizard_line_vals(self, line, status):
-        delay_price = line.product_id._compute_delay_price(fields.Datetime.now() - line.return_date)
         return {
             'order_line_id': line.id,
             'product_id': line.product_id.id,
             'qty_reserved': line.product_uom_qty,
             'qty_delivered': line.qty_delivered if status == 'return' else line.product_uom_qty - line.qty_delivered,
             'qty_returned': line.qty_returned if status == 'pickup' else line.qty_delivered - line.qty_returned,
-            'is_late': line.is_late and delay_price > 0
         }
 
     rental_order_wizard_id = fields.Many2one('rental.order.wizard', 'Rental Order Wizard', required=True, ondelete='cascade')
@@ -83,8 +76,6 @@ class RentalProcessingLine(models.TransientModel):
     qty_reserved = fields.Float("Reserved")
     qty_delivered = fields.Float("Picked-up")
     qty_returned = fields.Float("Returned")
-
-    is_late = fields.Boolean(default=False)  # make related on sol is_late ?
 
     @api.constrains('qty_returned', 'qty_delivered')
     def _only_pickedup_can_be_returned(self):
@@ -99,7 +90,6 @@ class RentalProcessingLine(models.TransientModel):
         :rtype: str
         """
         msg = self._generate_log_message()
-        now = fields.Datetime.now()
         for wizard_line in self:
             order_line = wizard_line.order_line_id
             if wizard_line.status == 'pickup' and wizard_line.qty_delivered > 0:
@@ -107,12 +97,10 @@ class RentalProcessingLine(models.TransientModel):
                 vals = {'qty_delivered': delivered_qty}
                 if delivered_qty > order_line.product_uom_qty:
                     vals['product_uom_qty'] = delivered_qty
-                if order_line.start_date > now:
-                    vals['start_date'] = now
                 order_line.update(vals)
 
             elif wizard_line.status == 'return' and wizard_line.qty_returned > 0:
-                if wizard_line.is_late:
+                if wizard_line.rental_order_wizard_id.is_late:
                     # Delays facturation
                     order_line._generate_delay_line(wizard_line.qty_returned)
 

@@ -49,30 +49,15 @@ registry.category("web_tour.tours").add('rental_product_configurator_tour', {
 }, {
     trigger: 'button:contains(Confirm)',
     id: 'quotation_product_selected',
-},
-// Rental Wizard
-{
-    trigger: 'button[special=save]',
-    extra_trigger: '.o_form_nosheet',
-    position: 'bottom',
-},
-
-// Editing a custom desk => reopen the rental wizard
-{
-    trigger: '[name="product_template_id"] span:contains("Customizable Desk (TEST)")',
 }, {
-    trigger: 'button.fa-calendar',
-    extra_trigger: '[data-tooltip*=Customizable]',
-},{
-    trigger: 'div[name="qty_to_reserve"] input',
-    run: 'text 2',
+    trigger: 'td.o_data_cell:contains("Customizable Desk (TEST)")',
+    run: "click",
 }, {
-    trigger: 'div[name="unit_price"] input',
-    run: 'text 42',
+    trigger: ".o_data_row:eq(0) .o_data_cell[name='product_uom_qty'] input",
+    run: "text 2.0",
 }, {
-    trigger: 'button[special=save]',
-    extra_trigger: '.o_form_nosheet',
-    position: 'bottom',
+    trigger: ".o_data_row:eq(0) .o_data_cell[name='price_unit'] input",
+    run: "text 42.0",
 }, {
     content: 'Wait for the unit price to be rerendered.',
     trigger: '.o_selected_row [name=price_unit] input:propValue(42.00)',
@@ -100,15 +85,12 @@ registry.category("web_tour.tours").add('rental_product_configurator_tour', {
 }, {
     trigger: 'button:contains(Confirm)',
     id: 'quotation_product_selected',
-},
-// Rental Wizard
-{
-    trigger: 'div[name="qty_to_reserve"] input',
-    run: 'text 5',
 }, {
-    trigger: 'button[special=save]',
-    extra_trigger: '.o_form_nosheet',
-    position: 'bottom',
+    trigger: ".o_data_row:eq(3) .o_data_cell[name='product_uom_qty']",
+    run: "click",
+}, {
+    trigger: ".o_data_row:eq(3) .o_data_cell[name='product_uom_qty'] input",
+    run: "text 5.0",
 }, {
     trigger: 'button[name=action_confirm]',
     position: 'bottom',

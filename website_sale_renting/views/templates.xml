@@ -36,21 +36,20 @@
             <div t-if="combination_info['is_rental'] and (not website.prevent_zero_price_sale or combination_info['current_rental_price'])" class="o_not_editable">
                 <div t-nocache="The default start and end dates must be up-to-date."
                      class="mb-3 align-middle input-group-lg o_website_sale_daterange_picker variant_attribute">
+                    <t t-set="wso" t-value="website.sale_get_order()"/>
                     <t t-set="combination_info" t-value="product._get_combination_info(combination, add_qty=add_qty or 1, pricelist=pricelist)"/>
-                    <input type="hidden" name="default_start_date"
-                           t-att-value="combination_info['default_start_date']"/>
-                    <input type="hidden" name="default_end_date" t-att-value="combination_info['default_end_date']"/>
-                    <input type="hidden" name="rental_duration_unit"
-                           t-att-value="combination_info['rental_duration_unit']"/>
+                    <input type="hidden" name="default_start_date" t-att-value="wso.rental_start_date or combination_info['default_start_date']"/>
+                    <input type="hidden" name="default_end_date" t-att-value="wso.rental_return_date or combination_info['default_end_date']"/>
+                    <input type="hidden" name="rental_duration_unit" t-att-value="combination_info['rental_duration_unit']"/>
                     <strong class="attribute_name">Rental Period</strong>
                     <div class="oe_unremovable w-100">
                         <div class="s_website_form_datetime input-group date col-md-8 ps-0"
                              data-target-input="nearest"
-                             id="rentingDates">
-                            <input type="text" name="renting_dates"
-                                   class="form-control daterange-input"/>
+                             id="rentingDates"
+                             title="The period must be the same for all products of your cart.&#10;You must change the period on your cart or create different orders if you want different periods.">
+                            <input type="text" name="renting_dates" class="form-control daterange-input" t-att-disabled="wso.has_rented_products and wso.order_line.filtered('is_rental').product_id != product"/>
                             <div class="input-group-text" data-target="#rentingDates"
-                                 data-toggle="daterange">
+                                 t-att-data-toggle="'daterange' if not wso.has_rented_products else None">
                                 <i class="fa fa-calendar"></i>
                             </div>
                         </div>
@@ -135,11 +134,64 @@
         <small t-esc="unit"/>
     </template>
 
-    <template id="cart_summary_inherit_website_sale_renting"
-              inherit_id="website_sale.cart_summary">
-        <xpath expr="//td[hasclass('td-product_name')]/div/strong" position="after">
-            <div t-if="line.is_rental" class="text-muted d-none d-md-block small"
-                 t-esc="line._get_rental_order_line_description()"/>
+    <template id="cart_lines" inherit_id="website_sale.cart_lines">
+        <div name="cart_line_description_short" position="inside">
+            <div t-if="line.is_rental" t-esc="line._get_rental_pricing_description()" class="text-muted d-md-block small"/>
+        </div>
+    </template>
+
+    <template id="cart_summary" inherit_id="website_sale.cart_summary">
+        <div name="cart_summary_description_short" position="inside">
+            <div t-if="line.is_rental" t-esc="line._get_rental_pricing_description()" class="text-muted d-md-block small"/>
+        </div>
+        <div name="cart_summary_info" position="after">
+            <div t-elif="website_sale_order and website_sale_order.has_rented_products" class="o_website_sale_daterange_picker">
+                <t t-set="wso" t-value="website.sale_get_order()"/>
+                <input type="hidden" name="default_start_date" t-att-value="wso.rental_start_date"/>
+                <input type="hidden" name="default_end_date" t-att-value="wso.rental_return_date"/>
+                <input type="hidden" name="rental_duration_unit" t-attf-value="{{'hour' if wso._is_renting_possible_in_hours() else 'day'}}"/>
+                <strong class="attribute_name">Rental Period</strong>
+                <div class="oe_unremovable w-100">
+                    <div class="s_website_form_datetime input-group date col-md-8 ps-0" data-target-input="nearest">
+                        <input type="text" name="renting_dates" class="form-control daterange-input" t-att-disabled="True"/>
+                    </div>
+                </div>
+                <div class="o_renting_warning d-none my-2">
+                    <span class="text-warning">
+                        <i class="fa fa-warning"/>
+                        <span name="renting_warning_message"/>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="cart" inherit_id="website_sale.cart">
+        <xpath expr="//t[@t-call='website_sale.cart_lines']" position="before">
+            <div t-if="website_sale_order.has_rented_products" class="o_website_sale_daterange_picker" id="cart_rental_period">
+                <strong> Rental period: </strong>
+                <input type="hidden" name="default_start_date" t-att-value="website_sale_order.rental_start_date"/>
+                <input type="hidden" name="default_end_date" t-att-value="website_sale_order.rental_return_date"/>
+                <input type="hidden" name="rental_duration_unit" t-attf-value="{{'hour' if website_sale_order._is_renting_possible_in_hours() else 'day'}}"/>
+                <div class="oe_unremovable w-100">
+                    <div class="s_website_form_datetime input-group date col-md-8 ps-0"
+                            data-target-input="nearest"
+                            id="rentingDates">
+                        <input type="text" name="renting_dates"
+                                class="form-control daterange-input"/>
+                        <div class="input-group-text" data-target="#rentingDates"
+                                data-toggle="daterange">
+                            <i class="fa fa-calendar"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="o_renting_warning d-none my-2">
+                    <span class="text-warning">
+                        <i class="fa fa-warning"/>
+                        <span name="renting_warning_message"/>
+                    </span>
+                </div>
+            </div>
         </xpath>
     </template>
 
@@ -171,11 +223,16 @@
         <div class="o_website_sale_daterange_picker col-auto flex-grow-1 o_not_editable o_website_sale_shop_daterange_picker">
             <input type="hidden" name="rental_duration_unit" value="hour"/>
             <div class="s_website_form_datetime input-group date col-md-8 ps-0"
+                 title="The period must be the same for all products of your cart.&#10;You must change the period on your cart or create different orders if you want different periods."
                  data-target-input="nearest" id="shopRentingDates">
+                <t t-set="wso" t-value="website.sale_get_order()"/>
+                <input type="hidden" name="default_start_date" t-if="wso and wso.has_rented_products" t-att-value="wso.rental_start_date"/>
+                <input type="hidden" name="default_end_date" t-if="wso and wso.has_rented_products" t-att-value="wso.rental_return_date"/>
                 <input type="text" id="s_rental_search_date_input"
+                       t-att-disabled="wso and wso.has_rented_products "
                        class="form-control daterange-input"/>
                 <button class="input-group-text fa fa-calendar alert-info" data-target="#shopRentingDates"
-                        data-toggle="daterange"/>
+                        t-att-data-toggle="'daterange' if not wso or not wso.has_rented_products else None"/>
                 <button t-if="request.params.get('start_date') and request.params.get('end_date')" class="input-group-text fa fa-times alert-danger clear-daterange"/>
             </div>
             <div class="o_renting_warning d-none">

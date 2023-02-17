@@ -6,11 +6,9 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale_renting.rental_order_primary_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='return_date']" position='after'>
-                <field name="reserved_lot_ids" column_invisible="True" widget="many2many_tags"/>
-            </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='is_product_rentable']" position='after'>
                 <field name="tracking" column_invisible="True"/>
+                <field name="reserved_lot_ids" optional="hide" widget="many2many_tags"/>
             </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='qty_delivered']" position="attributes">
                 <attribute name="column_invisible">parent.state != 'sale'</attribute>

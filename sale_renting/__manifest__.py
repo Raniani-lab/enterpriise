@@ -32,7 +32,6 @@
         'report/rental_report_views.xml',
         'report/rental_schedule_views.xml',
 
-        'wizard/rental_configurator_views.xml',
         'wizard/rental_processing_views.xml',
 
         'views/sale_renting_menus.xml',

@@ -65,6 +65,7 @@ class TestLead(crm_common.TestCrmCommon):
             dict(base_order_vals),
             dict(base_order_vals)
         ])
+        orders.order_line.update({'is_rental': True})
         orders[0:2].action_confirm()
         self.env.flush_all()
 

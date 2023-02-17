@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import timedelta, date
 from pytz import timezone, UTC
 
 from odoo import _, api, fields, models
@@ -12,17 +11,14 @@ from odoo.tools import format_datetime, format_time
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    is_rental = fields.Boolean(default=False)
+    # Stored because a product could have been rent_ok when added to the SO but then updated
+    is_rental = fields.Boolean(compute='_compute_is_rental', store=True, precompute=True)
 
     qty_returned = fields.Float("Returned", default=0.0, copy=False)
-    start_date = fields.Datetime(string='Start Date')
-    return_date = fields.Datetime(string="Return")
+    start_date = fields.Datetime(related='order_id.rental_start_date')
+    return_date = fields.Datetime(related='order_id.rental_return_date')
     reservation_begin = fields.Datetime(
         string="Pickup date - padding time", compute='_compute_reservation_begin', store=True)
-
-    is_late = fields.Boolean(
-        string="Is overdue", compute='_compute_is_late',
-        help="The products haven't been returned in time")
 
     is_product_rentable = fields.Boolean(related='product_id.rent_ok', depends=['product_id'])
     temporal_type = fields.Selection(selection_add=[('rental', 'Rental')])
@@ -37,29 +33,12 @@ class SaleOrderLine(models.Model):
             if line.is_rental:
                 line.temporal_type = 'rental'
 
-    @api.depends('return_date')
-    def _compute_is_late(self):
-        now = fields.Datetime.now()
-        for line in self:
-            # By default, an order line is considered late only if it has one hour of delay
-            line.is_late = line.return_date and line.return_date + timedelta(hours=self.company_id.min_extra_hour) < now
-
-    @api.depends('start_date')
+    @api.depends('order_id.rental_start_date')
     def _compute_reservation_begin(self):
-        lines = self.filtered(lambda line: line.is_rental)
+        lines = self.filtered('is_rental')
         for line in lines:
-            line.reservation_begin = line.start_date
+            line.reservation_begin = line.order_id.rental_start_date
         (self - lines).reservation_begin = None
-
-    @api.onchange('product_id')
-    def _onchange_product_id(self):
-        """Clean rental related data if new product cannot be rented."""
-        if (not self.is_product_rentable) and self.is_rental:
-            self.update({
-                'is_rental': False,
-                'start_date': False,
-                'return_date': False,
-            })
 
     @api.onchange('qty_delivered')
     def _onchange_qty_delivered(self):
@@ -67,7 +46,14 @@ class SaleOrderLine(models.Model):
         if self.qty_delivered > self.product_uom_qty:
             self.product_uom_qty = self.qty_delivered
 
-    @api.depends('start_date', 'return_date', 'is_rental')
+    @api.depends('is_rental')
+    def _compute_qty_delivered_method(self):
+        """Allow modification of delivered qty without depending on stock moves."""
+        rental_lines = self.filtered('is_rental')
+        super(SaleOrderLine, self - rental_lines)._compute_qty_delivered_method()
+        rental_lines.qty_delivered_method = 'manual'
+
+    @api.depends('order_id.rental_start_date', 'order_id.rental_return_date', 'is_rental')
     def _compute_name(self):
         """Override to add the compute dependency.
 
@@ -75,41 +61,40 @@ class SaleOrderLine(models.Model):
         """
         super()._compute_name()
 
-    @api.onchange('is_rental')
-    def _onchange_is_rental(self):
-        if self.is_rental and not self.order_id.is_rental_order:
-            self.order_id.is_rental_order = True
+    @api.depends('product_id')
+    def _compute_is_rental(self):
+        for line in self:
+            line.is_rental = line.is_product_rentable and line.env.context.get('in_rental_app')
 
     _sql_constraints = [
         ('rental_stock_coherence',
             "CHECK(NOT is_rental OR qty_returned <= qty_delivered)",
             "You cannot return more than what has been picked up."),
-        ('rental_period_coherence',
-            "CHECK(NOT is_rental OR start_date < return_date)",
-            "Please choose a return date that is after the pickup date."),
     ]
 
     def _get_sale_order_line_multiline_description_sale(self):
         """Add Rental information to the SaleOrderLine name."""
         res = super()._get_sale_order_line_multiline_description_sale()
         if self.is_rental:
+            self.order_id._rental_set_dates()
             res += self._get_rental_order_line_description()
         return res
 
     def _get_rental_order_line_description(self):
         tz = self._get_tz()
-        if self.start_date and self.return_date\
-           and self.start_date.replace(tzinfo=UTC).astimezone(timezone(tz)).date()\
-               == self.return_date.replace(tzinfo=UTC).astimezone(timezone(tz)).date():
+        start_date = self.order_id.rental_start_date
+        return_date = self.order_id.rental_return_date
+        env = self.with_context(use_babel=True).env
+        if start_date and return_date\
+           and start_date.replace(tzinfo=UTC).astimezone(timezone(tz)).date()\
+               == return_date.replace(tzinfo=UTC).astimezone(timezone(tz)).date():
             # If return day is the same as pickup day, don't display return_date Y/M/D in description.
-            return_date_part = format_time(self.with_context(use_babel=True).env, self.return_date, tz=tz, time_format=False)
+            return_date_part = format_time(env, return_date, tz=tz, time_format=False)
         else:
-            return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=tz, dt_format=False)
-
-        return "\n%s %s %s" % (
-            format_datetime(self.with_context(use_babel=True).env, self.start_date, tz=tz, dt_format=False),
-            _("to"),
-            return_date_part,
+            return_date_part = format_datetime(env, return_date, tz=tz, dt_format=False)
+        start_date_part = format_datetime(env, start_date, tz=tz, dt_format=False)
+        return _(
+            "\n%(from_date)s to %(to_date)s", from_date=start_date_part, to_date=return_date_part
         )
 
     def _generate_delay_line(self, qty_returned):
@@ -157,9 +142,9 @@ class SaleOrderLine(models.Model):
     def _prepare_delay_line_vals(self, delay_product, delay_price):
         """Prepare values of delay line.
 
-        :param delay_product: Product used for the delay_line
+        :param product.product delay_product: Product used for the delay_line
         :param float delay_price: Price of the delay line
-        :type delay_product: product.product
+
         :return: sale.order.line creation values
         :rtype dict:
         """
@@ -184,19 +169,6 @@ class SaleOrderLine(models.Model):
             _("Returned: %(date)s", date=now),
         )
 
-    #=== ONCHANGE METHODS ===#
-
-    @api.onchange('product_id')
-    def _onchange_product_id(self):
-        """Clean product related data if new product is not temporal."""
-        if not self.temporal_type:
-            values = self._get_clean_up_values()
-            self.update(values)
-
-    def _get_clean_up_values(self):
-        """Helper to allow reset lines values."""
-        return {'return_date': False}
-
     def _get_tz(self):
         return self.env.context.get('tz') or self.env.user.tz or 'UTC'
 
@@ -207,7 +179,10 @@ class SaleOrderLine(models.Model):
         price_computing_kwargs = super()._get_price_computing_kwargs()
         if self.temporal_type != 'rental':
             return price_computing_kwargs
-        if self.start_date and self.return_date:
-            price_computing_kwargs['start_date'] = self.start_date
-            price_computing_kwargs['end_date'] = self.return_date
+        self.order_id._rental_set_dates()
+        start_date = self.order_id.rental_start_date
+        return_date = self.order_id.rental_return_date
+        if start_date and return_date:
+            price_computing_kwargs['start_date'] = start_date
+            price_computing_kwargs['end_date'] = return_date
         return price_computing_kwargs

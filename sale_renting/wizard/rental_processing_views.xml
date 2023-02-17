@@ -8,7 +8,7 @@
             <form>
                 <sheet>
                     <field name="status" invisible="1"/>
-                    <field name="has_late_lines" invisible="1"/>
+                    <field name="is_late" invisible="1"/>
                     <field name="order_id" invisible="1"/>
                     <field name="rental_wizard_line_ids">
                         <tree create="false" editable="top">
@@ -18,9 +18,8 @@
                             <field name="qty_reserved" readonly="1" column_invisible="parent.status == 'return'"/>
                             <field name="qty_delivered" readonly="parent.status == 'return'" force_save="1"/>
                             <field name="qty_returned" column_invisible="parent.status == 'pickup'"/>
-                            <field name="is_late" column_invisible="True"/>
                             <field name="status" column_invisible="True"/>
-                            <button icon="fa-clock-o" column_invisible="not parent.has_late_lines or parent.status == 'pickup'" invisible="not is_late"
+                            <button icon="fa-clock-o" column_invisible="not parent.is_late or parent.status == 'pickup'"
                                 class="text-danger" title="Some delay cost will be added to the sales order."/>
                         </tree>
                     </field>

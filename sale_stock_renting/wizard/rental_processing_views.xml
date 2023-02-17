@@ -6,11 +6,11 @@
         <field name="model">rental.order.wizard</field>
         <field name="inherit_id" ref="sale_renting.rental_order_wizard_view_form"/>
         <field name="arch" type="xml">
-            <field name="has_late_lines" position="after"> <!-- Rental processing form -->
+            <field name="order_id" position="after"> <!-- Rental processing form -->
                 <field name="has_tracked_lines" invisible="1"/>
                 <field name="has_lines_missing_stock" invisible="1"/>
             </field>
-            <field name="is_late" position="after"> <!-- Rental processing line tree-->
+            <field name="order_line_id" position="after"> <!-- Rental processing line tree-->
                 <field name="tracking" column_invisible="True"/>
                 <field name="is_product_storable" column_invisible="True"/>
                 <field name="pickeable_lot_ids" column_invisible="True"/>

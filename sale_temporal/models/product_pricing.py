@@ -76,13 +76,11 @@ class ProductPricing(models.Model):
 
     def _compute_description(self):
         for pricing in self:
-            description = ""
-            if pricing.currency_id.position == 'before':
-                description += format_amount(self.env, amount=pricing.price, currency=pricing.currency_id)
-            else:
-                description += format_amount(self.env, amount=pricing.price, currency=pricing.currency_id)
-            description += _("/%s", pricing.recurrence_id.unit)
-            pricing.description = description
+            pricing.description = _(
+                "%(amount)s / %(duration)s",
+                amount=format_amount(self.env, amount=pricing.price, currency=pricing.currency_id),
+                duration=pricing.recurrence_id.duration_display
+            )
 
     @api.depends('pricelist_id', 'pricelist_id.currency_id')
     def _compute_currency_id(self):
@@ -109,6 +107,14 @@ class ProductPricing(models.Model):
 
     @api.model
     def _compute_duration_vals(self, start_date, end_date):
+        """Compute the duration for different temporal units.
+
+        Note: all values in the returned dictionary are rounded up.
+
+        :param datetime start_date: beginning of the duration.
+        :param datetime end_date: end of the duration.
+        :return dict: duration length in different units.
+        """
         duration = end_date - start_date
         vals = dict(hour=(duration.days * 24 + duration.seconds / 3600))
         vals['day'] = math.ceil(vals['hour'] / 24)

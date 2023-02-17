@@ -63,7 +63,7 @@ class CrmLead(models.Model):
             "default_origin": self.name,
             "default_source_id": self.source_id.id,
             "default_company_id": self.company_id.id or self.env.company.id,
-            "default_is_rental_order": True,
+            "in_rental_app": True,
         }
         if self.user_id:
             rental_quotation_context['default_user_id'] = self.user_id.id

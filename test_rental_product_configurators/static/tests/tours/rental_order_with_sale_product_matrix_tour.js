@@ -36,10 +36,6 @@ registry.category("web_tour.tours").add('rental_order_with_sale_product_matrix_t
     run: 'text Projector',
 }, {
     trigger: 'ul.ui-autocomplete a:contains("Projector (TEST)")',
-}, {
-    trigger: 'button[special=save]',
-    extra_trigger: '.o_form_nosheet',
-    position: 'bottom',
 },
 // Adding a sale product with a matrix
 {

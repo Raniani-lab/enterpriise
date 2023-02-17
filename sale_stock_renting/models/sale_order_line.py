@@ -23,17 +23,19 @@ class RentalOrderLine(models.Model):
         """
         now = fields.Datetime.now()
         lines_grouping_key = {
-            line.id: line.product_id._unavailability_period(line.start_date, line.return_date) + (line.order_id.warehouse_id.id,)
+            line.id: (line.reservation_begin, line.return_date, line.order_id.warehouse_id.id)
             for line in self
         }
         keyfunc = lambda line_id: (max(lines_grouping_key[line_id][0], now), lines_grouping_key[line_id][1], lines_grouping_key[line_id][2])
         return tools_groupby(self._ids, key=keyfunc)
 
-    @api.depends('start_date', 'return_date', 'product_id', 'order_id.warehouse_id')
+    @api.depends('reservation_begin', 'return_date', 'product_id')
     def _compute_qty_at_date(self):
         non_rental = self.filtered(lambda sol: not sol.is_rental)
         super(RentalOrderLine, non_rental)._compute_qty_at_date()
-        rented_product_lines = (self - non_rental).filtered(lambda l: l.product_id and l.product_id.type == "product" and l.start_date and l.return_date)
+        rented_product_lines = (self - non_rental).filtered(
+            lambda l: l.product_id and l.product_id.type == "product"
+        )
         line_default_values = {
             'virtual_available_at_date': 0.0,
             'scheduled_date': False,
@@ -44,22 +46,21 @@ class RentalOrderLine(models.Model):
         for (from_date, to_date, warehouse_id), line_ids in rented_product_lines._partition_so_lines_by_rental_period():
             lines = self.env['sale.order.line'].browse(line_ids)
             for line in lines:
-                reservation_begin, reservation_end = line.product_id._unavailability_period(line.start_date, line.return_date)
                 rentable_qty = line.product_id.with_context(
                     from_date=from_date,
                     to_date=to_date,
                     warehouse=warehouse_id).qty_available
-                if reservation_begin > fields.Datetime.now():
+                if from_date > fields.Datetime.now():
                     rentable_qty += line.product_id.with_context(warehouse_id=line.order_id.warehouse_id.id).qty_in_rent
                 rented_qty_during_period = line.product_id._get_unavailable_qty(
-                    reservation_begin, reservation_end,
+                    from_date, to_date,
                     ignored_soline_id=line and line.id,
                     warehouse_id=line.order_id.warehouse_id.id,
                 )
                 virtual_available_at_date = max(rentable_qty - rented_qty_during_period, 0)
                 line.update(dict(line_default_values,
                     virtual_available_at_date=virtual_available_at_date,
-                    scheduled_date=reservation_begin,
+                    scheduled_date=from_date,
                     free_qty_today=virtual_available_at_date)
                 )
         ((self - non_rental) - rented_product_lines).update(line_default_values)
@@ -246,15 +247,6 @@ class RentalOrderLine(models.Model):
 
         return qty <= 0.0
 
-    @api.depends('product_id')
-    def _compute_qty_delivered_method(self):
-        """Allow modification of delivered qty without depending on stock moves."""
-        super(RentalOrderLine, self)._compute_qty_delivered_method()
-
-        for line in self:
-            if line.is_rental:
-                line.qty_delivered_method = 'manual'
-
     @api.constrains('product_id')
     def _stock_consistency(self):
         for line in self.filtered('is_rental'):
@@ -278,7 +270,7 @@ class RentalOrderLine(models.Model):
         for line in self:
             line.unavailable_lot_ids = (line.reserved_lot_ids | line.pickedup_lot_ids) - line.returned_lot_ids
 
-    @api.depends('start_date')
+    @api.depends('start_date', 'is_rental')
     def _compute_reservation_begin(self):
         lines = self.filtered(lambda line: line.is_rental)
         for line in lines:

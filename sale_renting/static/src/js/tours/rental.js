@@ -69,18 +69,14 @@ registry.category("web_tour.tours").add('rental_tour', {
     trigger: ".ui-menu-item a:contains('Test')",
     auto: true,
 }, {
-    trigger: "button[special=save]",
-    extra_trigger: ".o_form_nosheet",
-    content: _t("Enter the requested dates and check the price.\n Then, click here to add the product."),
+    trigger: ".o_field_widget[name=product_id] input, .o_field_widget[name=product_template_id] input",
+    content: _t("Select the rental dates and check the price."),
     position: 'bottom',
 }, {
-    trigger: '.o_form_button_save',
-    extra_trigger: '.o_sale_order',
-    content: _t("Save the quotation."),
-    position: 'bottom',
+    trigger: 'td.o_data_cell:contains("Test (Rental)")',
+    isCheck: true,
 }, {
     trigger: 'button[name=action_confirm]',
-    extra_trigger: '.o_form_button_create', // wait for the new order to be saved
     content: _t("Confirm the order when the customer agrees with the terms."),
     position: 'bottom',
 }, {

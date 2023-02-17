@@ -93,18 +93,17 @@ class TestRentalCommon(common.TransactionCase):
             'partner_invoice_id': cls.cust1.id,
             'partner_shipping_id': cls.cust1.id,
             'user_id': cls.user_id.id,
-            # TODO
+            'rental_start_date': fields.Datetime.today(),
+            'rental_return_date': fields.Datetime.today() + timedelta(days=3),
         })
 
         cls.order_line_id1 = cls.env['sale.order.line'].create({
             'order_id': cls.sale_order_id.id,
             'product_id': cls.product_id.id,
             'product_uom_qty': 0.0,
-            'is_rental': True,
-            'start_date': fields.Datetime.today(),
-            'return_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 150,
         })
+        cls.order_line_id1.update({'is_rental': True})
 
         cls.sale_order_id.action_confirm()
 
@@ -119,21 +118,17 @@ class TestRentalCommon(common.TransactionCase):
             'order_id': cls.lots_rental_order.id,
             'product_id': cls.tracked_product_id.id,
             'product_uom_qty': 0.0,
-            'is_rental': True,
-            'start_date': fields.Datetime.today(),
-            'return_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 250,
         })
+        cls.order_line_id2.update({'is_rental': True})
 
         cls.order_line_id3 = cls.env['sale.order.line'].create({
             'order_id': cls.lots_rental_order.id,
             'product_id': cls.tracked_product_id.id,
             'product_uom_qty': 0.0,
-            'is_rental': True,
-            'start_date': fields.Datetime.today(),
-            'return_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 250,
         })
+        cls.order_line_id3.update({'is_rental': True})
 
     def test_rental_product_flow(self):
 
@@ -155,59 +150,59 @@ class TestRentalCommon(common.TransactionCase):
         )
 
         self.assertEqual(
-            self.product_id._get_unavailable_qty_and_lots(
+            self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin - timedelta(days=1),
                 self.order_line_id1.return_date,
-            )[0], 3
+            ), 3
         )
 
         self.assertEqual(
-            self.product_id._get_unavailable_qty_and_lots(
+            self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin,
                 self.order_line_id1.return_date - timedelta(days=1),
-            )[0], 3
+            ), 3
         )
 
         self.assertEqual(
-            self.product_id._get_unavailable_qty_and_lots(
+            self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin - timedelta(days=1),
                 self.order_line_id1.return_date - timedelta(days=1),
-            )[0], 3
+            ), 3
         )
 
         self.assertEqual(
-            self.product_id._get_unavailable_qty_and_lots(
+            self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin + timedelta(days=1),
                 self.order_line_id1.return_date + timedelta(days=1),
-            )[0], 3
+            ), 3
         )
 
         self.assertEqual(
-            self.product_id._get_unavailable_qty_and_lots(
+            self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin,
                 self.order_line_id1.return_date + timedelta(days=1),
-            )[0], 3
+            ), 3
         )
 
         self.assertEqual(
-            self.product_id._get_unavailable_qty_and_lots(
+            self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin + timedelta(days=1),
                 self.order_line_id1.return_date,
-            )[0], 3
+            ), 3
         )
 
         self.assertEqual(
-            self.product_id._get_unavailable_qty_and_lots(
+            self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin - timedelta(days=1),
                 self.order_line_id1.return_date + timedelta(days=1),
-            )[0], 3
+            ), 3
         )
 
         self.assertEqual(
-            self.product_id._get_unavailable_qty_and_lots(
+            self.product_id._get_unavailable_qty(
                 self.order_line_id1.reservation_begin + timedelta(days=1),
                 self.order_line_id1.return_date - timedelta(days=1),
-            )[0], 3
+            ), 3
         )
 
         """

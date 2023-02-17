@@ -47,6 +47,8 @@ class TestPoSRental(TestPointOfSaleHttpCommon):
             'partner_id': self.cust1.id,
             'partner_invoice_id': self.cust1.id,
             'partner_shipping_id': self.cust1.id,
+            'rental_start_date': fields.Datetime.today(),
+            'rental_return_date': fields.Datetime.today() + timedelta(days=3),
         })
 
         self.order_line_id2 = self.env['sale.order.line'].create({
@@ -54,11 +56,9 @@ class TestPoSRental(TestPointOfSaleHttpCommon):
             'product_id': self.tracked_product_id.id,
             'product_uom_qty': 0.0,
             'product_uom': self.tracked_product_id.uom_id.id,
-            'is_rental': True,
-            'start_date': fields.Datetime.today(),
-            'return_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 250,
         })
+        self.order_line_id2.write({'is_rental': True})
         self.pos_user.write({
             'groups_id': [
                 (4, self.env.ref('stock.group_stock_user').id),

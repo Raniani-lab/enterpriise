@@ -3,8 +3,8 @@
 import { WebsiteSale } from '@website_sale/js/website_sale';
 import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 import '@website_sale_renting/js/variant_mixin';
-import { serializeDateTime } from "@web/core/l10n/dates";
-import { momentToLuxon } from "@website_sale_renting/js/date_utils";
+import { deserializeDateTime, serializeDateTime } from "@web/core/l10n/dates";
+import { luxonToMoment, momentToLuxon } from "@website_sale_renting/js/date_utils";
 
 WebsiteSale.include(RentingMixin);
 WebsiteSale.include({
@@ -12,10 +12,24 @@ WebsiteSale.include({
         'renting_constraints_changed': '_onRentingConstraintsChanged',
         'toggle_disable': '_onToggleDisable',
         'change .js_main_product .o_website_sale_daterange_picker input.daterange-input': 'onChangeVariant',
+        'apply.daterangepicker .oe_cart .o_website_sale_daterange_picker input.daterange-input': '_check_new_dates_on_cart',
         'outsideClick.daterangepicker': '_onDatePickerHide',
         'apply.daterangepicker': '_onDatePickerApply',
         'click .clear-daterange': '_onDatePickerClear',
     }),
+
+
+    async _check_new_dates_on_cart(){
+        const { start_date, end_date, values } = await this._rpc({
+            route: '/shop/cart/update_renting',
+            params: this._getSerializedRentingDates(),
+        });
+        $(".js_cart_lines").first().before(values['cart_lines']).end().remove();
+        $(".js_cart_summary").replaceWith(values['short_cart_summary']);
+        const daterangepicker = window.$(document.querySelector(".daterange-input")).data("daterangepicker");
+        daterangepicker.setStartDate(luxonToMoment(deserializeDateTime(start_date)));
+        daterangepicker.setEndDate(luxonToMoment(deserializeDateTime(end_date)));
+    },
 
     /**
      * Assign the renting dates to the rootProduct for rental products.

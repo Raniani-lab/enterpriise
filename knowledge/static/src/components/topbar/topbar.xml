@@ -17,7 +17,7 @@
                         <li t-else="" class="breadcrumb-item d-flex align-items-center active min-w-0 text-nowrap">
                             <div class="o_knowledge_icon pe-1" t-if="props.record.data.icon">
                                 <div class="o_article_emoji_dropdown">
-                                    <a class="o_article_emoji o-no-caret" t-on-click="env._showEmojiPicker" href="#"
+                                    <a class="o_article_emoji o-no-caret" t-on-click="env.showEmojiPicker" href="#"
                                     t-if="!this.props.record.data.is_locked and this.props.record.data.user_can_write and this.props.record.data.active">
                                         <t t-out="props.record.data.icon"/>
                                     </a>

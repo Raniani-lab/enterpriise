@@ -150,12 +150,13 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         });
 
         useChildSubEnv({
-            _showEmojiPicker: this._showEmojiPicker.bind(this),
+            addIcon: this.addIcon.bind(this),
             createArticle: this.createArticle.bind(this),
             openArticle: this.openArticle.bind(this),
             config: this.env.config,
             _resizeNameInput: this._resizeNameInput.bind(this),
             _renderTree: this._renderTree.bind(this),
+            showEmojiPicker: this._showEmojiPicker.bind(this),
             toggleFavorite: this.toggleFavorite.bind(this),
             toggleProperties: this.toggleProperties.bind(this),
             toggleChatter: this.toggleChatter.bind(this),
@@ -186,10 +187,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             props: this.props,
             root: this.root,
             state: this.state,
-            addIcon: (ev) => this.addIcon(ev),
             createArticle: (category, targetParentId) => this.createArticle(category, targetParentId),
             resizeSidebar: (el) => this.resizeSidebar(el),
-            _showEmojiPicker: (ev) => this._showEmojiPicker(ev),
             __comp__: this, // used by the compiler
             this: this, // used by the arch directly
         };
@@ -843,10 +842,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         if (!this.messaging || !this.messaging.knowledge) {
             return;
         }
-        const articleId = Number(ev.target.closest('.o_article_emoji_dropdown').dataset.articleId) || this.resId;
+        const articleId = Number(ev.target.closest('.o_article_emoji_dropdown')?.dataset.articleId) || this.resId;
         this.messaging.knowledge.update({
             currentArticle: { id: articleId },
-            emojiPickerPopoverAnchorRef: { el: ev.target.closest('.o_article_emoji_dropdown .o_article_emoji') },
+            emojiPickerPopoverAnchorRef: { el: ev.target.closest('.o_article_emoji') },
             emojiPickerPopoverView: {},
         });
     }

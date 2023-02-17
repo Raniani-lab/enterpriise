@@ -42,7 +42,7 @@
                     name="'modelId'"
                     value="record.data.modelId"
                     canQuickCreate="true"
-                    openTarget="'new'"
+                    canOpen="false"
                 />
             </Record>
         </div>

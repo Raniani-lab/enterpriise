@@ -1888,48 +1888,6 @@ QUnit.test("open a dialog to plan a task (multi-level)", async (assert) => {
     assert.verifySteps(["tasks"]);
 });
 
-QUnit.test("dialog should close when clicking the link to many2one field", async (assert) => {
-    serverData.views = {
-        "tasks,false,gantt": `<gantt date_start="start" date_stop="stop" default_group_by="project_id"/>`,
-        "tasks,false,search": `<search/>`,
-        // This is used for the form dialog.
-        "tasks,false,form": `<form><field name="project_id"/></form>`,
-        // This is used when clicking on the link to the many2one field.
-        "projects,false,form": `<form><field name="name"/></form>`,
-        "projects,false,search": `<search/>`,
-    };
-    const webClient = await createWebClient({
-        serverData,
-        mockRPC(route, { args, method, model }) {
-            if (model === "projects" && method === "get_formview_action") {
-                return {
-                    res_id: args[0][0],
-                    type: "ir.actions.act_window",
-                    target: "current",
-                    res_model: "projects",
-                    views: [[false, "form"]],
-                };
-            }
-        },
-    });
-
-    await doAction(webClient, {
-        name: "Tasks Gantt",
-        res_model: "tasks",
-        type: "ir.actions.act_window",
-        views: [[false, "gantt"]],
-    });
-
-    // click on the add button
-    await hoverGridCell(2, 18);
-    await click(target, SELECTORS.cellAddButton);
-    assert.containsOnce(target, ".o_dialog_container.modal-open");
-
-    await click(target, '.modal .o_field_widget[name="project_id"] button.o_external_button');
-    await nextTick();
-    assert.containsNone(target, ".o_dialog_container.modal-open");
-});
-
 QUnit.test("expand/collapse rows", async (assert) => {
     await makeView({
         type: "gantt",

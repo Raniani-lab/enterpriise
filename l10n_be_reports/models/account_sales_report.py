@@ -205,13 +205,16 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
             seq += 1
             country = line['columns'][colname_to_idx['country_code']].get('name', '')
             vat = line['columns'][colname_to_idx['vat_number']].get('name', '')
+            amount = line['columns'][colname_to_idx['balance']]['no_format']
             if not vat:
+                if self.env.company.currency_id.is_zero(amount):
+                    continue
                 raise UserError(_('No vat number defined for %s.', line['name']))
             client = {
                 'vatnum': vat,
                 'vat': (country + vat).replace(' ', '').upper(),
                 'country': country,
-                'amount': line['columns'][colname_to_idx['balance']]['no_format'],
+                'amount': amount,
                 'code': line['columns'][colname_to_idx['sales_type_code']]['name'][:1],
                 'seq': seq,
             }

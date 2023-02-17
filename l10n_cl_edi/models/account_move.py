@@ -4,6 +4,7 @@ import base64
 import logging
 import re
 
+from collections import namedtuple
 from datetime import datetime
 from io import BytesIO
 from markupsafe import Markup
@@ -62,11 +63,16 @@ class AccountMove(models.Model):
         ('ack_sent', 'Acknowledge Sent'),
         ('claimed', 'Claimed'),
         ('accepted', 'Accepted'),
+        ('goods', 'Reception 19983'),
+        ('accepted_goods', 'Accepted and RG 19983'),
     ], string='DTE Accept status', copy=False, help="""The status of the DTE Acceptation
     Received: the DTE was received by us for vendor bills, by our customers for customer invoices.
     Acknowledge Sent: the Acknowledge has been sent to the vendor.
     Claimed: the DTE was claimed by us for vendor bills, by our customers for customer invoices.
     Accepted: the DTE was accepted by us for vendor bills, by our customers for customer invoices.
+    Reception 19983: means that the merchandise or services reception has been created and sent.
+    Accepted and RG 19983: means that both the content of the document has been accepted and the merchandise or 
+services reception has been received as well.
     """)
     l10n_cl_claim = fields.Selection([
         ('ACD', 'Accept the Content of the Document'),
@@ -182,36 +188,6 @@ class AccountMove(models.Model):
         return reverse_moves
 
     # SII Customer Invoice Buttons
-
-    def _l10n_cl_send_dte_reception_status(self, status_type):
-        """
-        Send to the supplier the acceptance or claim of the bill received.
-        """
-        response_id = self.env['ir.sequence'].browse(self.env.ref('l10n_cl_edi.response_sequence').id).next_by_id()
-        response = self.env['ir.qweb']._render('l10n_cl_edi.response_dte', {
-            'move': self,
-            'format_vat': self._l10n_cl_format_vat,
-            'time_stamp': self._get_cl_current_strftime(),
-            'response_id': response_id,
-            'dte_status': 2 if status_type == 'claimed' else 0,
-            'dte_glosa_status': 'DTE Rechazado' if status_type == 'claimed' else 'DTE Aceptado OK',
-            'code_rejected': '-1' if status_type == 'claimed' else None,
-            '__keep_empty_lines': True,
-        })
-        digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
-        signed_response = self._sign_full_xml(
-            response, digital_signature, '', 'env_resp', self.l10n_latam_document_type_id._is_doc_type_voucher())
-        dte_attachment = self.env['ir.attachment'].create({
-            'name': 'DTE_{}.xml'.format(self.name),
-            'res_model': self._name,
-            'res_id': self.id,
-            'type': 'binary',
-            'datas': base64.b64encode(bytes(signed_response, 'utf-8')),
-        })
-        self.l10n_cl_dte_file = dte_attachment.id
-        email_template = (self.env.ref('l10n_cl_edi.email_template_claimed_ack') if status_type == 'claimed' else
-                          self.env.ref('l10n_cl_edi.email_template_receipt_commercial_accept'))
-        email_template.send_mail(self.id, force_send=True, email_values={'attachment_ids': [dte_attachment.id]})
 
     def l10n_cl_send_dte_to_sii(self, retry_send=True):
         """
@@ -330,7 +306,68 @@ class AccountMove(models.Model):
             self.l10n_cl_claim = response_code
             self.message_post(body=_('Asking for claim status with response:') + Markup('<br/> %s') % response)
 
-    # SII Vendor Bills Buttons
+    # SII Vendor Bill Buttons
+
+    def _l10n_cl_send_dte_reception_status(self, status_type):
+        """
+        Send to the supplier the acceptance or claim of the bill received.
+        """
+        response_id = self.env['ir.sequence'].browse(self.env.ref('l10n_cl_edi.response_sequence').id).next_by_id()
+        StatusType = namedtuple(
+            'StatusType',
+            ['dte_status', 'dte_glosa_status', 'code_rejected', 'email_template', 'response_type', 'env_type'])
+        status_types = {
+            'accepted': StatusType(0, 'DTE Aceptado OK', None, 'email_template_receipt_commercial_accept',
+                                   'response_dte', 'env_resp'),
+            'goods': StatusType(
+                1, 'El acuse de recibo que se declara en este acto, de acuerdo a lo dispuesto en la letra b) '
+                   'del Art. 4, y la letra c) del Art. 5 de la Ley 19.983, acredita que la entrega de '
+                   'mercaderias o servicio(s) prestado(s) ha(n) sido recibido(s).',
+                    None, 'email_template_receipt_goods', 'receipt_dte', 'recep'),
+            'claimed': StatusType(2, 'DTE Rechazado', -1, 'email_template_claimed_ack', 'response_dte', 'env_resp'),
+        }
+        if not int(self.l10n_latam_document_number):
+            raise UserError(_('Please check the document number'))
+        digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
+        response = self.env['ir.qweb']._render('l10n_cl_edi.%s' % status_types[status_type].response_type, {
+            'move': self,
+            'doc_id': f'F{int(self.l10n_latam_document_number)}T{self.l10n_latam_document_type_id.code}',
+            'format_vat': self._l10n_cl_format_vat,
+            'time_stamp': self._get_cl_current_strftime(),
+            'response_id': response_id,
+            'dte_status': status_types[status_type].dte_status,
+            'dte_glosa_status': status_types[status_type].dte_glosa_status,
+            'code_rejected': status_types[status_type].code_rejected,
+            'signer_rut': digital_signature.subject_serial_number,
+            'rec_address': f'{self.company_id.street}, {self.company_id.street2} {self.company_id.city}',
+            '__keep_empty_lines': True,
+        })
+        signed_response = self._sign_full_xml(
+            response, digital_signature, '', status_types[status_type].env_type,
+            self.l10n_latam_document_type_id._is_doc_type_voucher())
+        if status_type == 'goods':
+            response = self.env['ir.qweb']._render('l10n_cl_edi.envio_receipt_dte', {
+                'move': self,
+                'format_vat': self._l10n_cl_format_vat,
+                'receipt_section': signed_response.replace(Markup('<?xml version="1.0" encoding="ISO-8859-1" ?>'), ''),
+                'time_stamp': self._get_cl_current_strftime(),
+                '__keep_empty_lines': True,
+            })
+            signed_response = self._sign_full_xml(
+                response, digital_signature, '', 'env_recep',
+                self.l10n_latam_document_type_id._is_doc_type_voucher())
+        dte_attachment = self.env['ir.attachment'].create({
+            'name': 'DTE_{}_{}.xml'.format(status_type, self.name),
+            'res_model': self._name,
+            'res_id': self.id,
+            'type': 'binary',
+            'datas': base64.b64encode(bytes(signed_response, 'utf-8')),
+        })
+        self.l10n_cl_dte_file = dte_attachment.id
+        # If we are sending a reception of goods or services we must use an envelope and sign it the same
+        # way we do with the invoice (DTE / EnvioDTE) in this case we use the tags: DocumentoRecibo / EnvioRecibos
+        email_template = self.env.ref('l10n_cl_edi.%s' % status_types[status_type].email_template)
+        email_template.send_mail(self.id, force_send=True, email_values={'attachment_ids': [dte_attachment.id]})
 
     def l10n_cl_reprocess_acknowledge(self):
         if not self.partner_id:
@@ -384,86 +421,78 @@ class AccountMove(models.Model):
             'attachment_ids': attachment})
         self.l10n_cl_dte_acceptation_status = 'ack_sent'
 
-    def l10n_cl_accept_document(self):
+    def _l10n_cl_action_response(self, status_type):
+        """
+        This method is intended to manage the claim/acceptation/receipt of goods for vendor bill
+        """
+        accepted_statuses = {'accepted_goods', 'accepted', 'goods'}
+
+        ActionResponse = namedtuple('ActionResponse', ['code', 'category', 'status', 'description'])
+        action_response = {
+            'accepted': ActionResponse('ACD', _('Claim status'), 'accepted', _('acceptance')),
+            'goods': ActionResponse('ERM', _('Reception law 19983'), 'received',
+                                _('reception of goods or services RG 19.983')),
+            'claimed': ActionResponse('RCD', _('Claim status'), 'claimed', _('claim')),
+        }
+
+        if self.company_id.l10n_cl_dte_service_provider == 'SIIDEMO':
+            self.message_post(body=_(
+                '<strong>WARNING: Simulating %s in Demo Mode</strong>') % action_response[status_type].description)
+            self.l10n_cl_dte_acceptation_status = 'accepted_goods' if \
+                self.l10n_cl_dte_acceptation_status in accepted_statuses and status_type in accepted_statuses \
+                else status_type
+            self._l10n_cl_send_dte_reception_status(status_type)
         if not self.l10n_latam_document_type_id._is_doc_type_acceptance():
-            raise UserError(_('The document type with code %s cannot be accepted') %
-                            self.l10n_latam_document_type_id.code)
-        if self.company_id.l10n_cl_dte_service_provider in ['SIITEST', 'SIIDEMO']:
-            self._l10n_cl_send_dte_reception_status('accepted')
-            self.l10n_cl_dte_acceptation_status = 'accepted'
-            self.message_post(body=_('Claim status was not sending to SII. This feature is not available in '
-                                     'certification/test mode'))
-            return None
+            raise UserError(_('The document type with code %s cannot be %s') %
+                            (self.l10n_latam_document_type_id.code, action_response[status_type].status))
         try:
             response = self._send_sii_claim_response(
                 self.company_id.l10n_cl_dte_service_provider, self.partner_id.vat,
                 self.company_id._get_digital_signature(user_id=self.env.user.id), self.l10n_latam_document_type_id.code,
-                self.l10n_latam_document_number, 'ACD')
+                self.l10n_latam_document_number, action_response[status_type].code)
         except InvalidToken:
             digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
             digital_signature.last_token = None
             return self.l10n_cl_accept_document()
         if not response:
             return None
-
         try:
             cod_response = response['codResp']
+            description_response = response['descResp']
         except Exception as error:
             _logger.error(error)
             self.message_post(body=_('Exception error parsing the response: %s') % response)
             return None
         if cod_response in [0, 1]:
-            self.l10n_cl_dte_acceptation_status = 'accepted'
-            self._l10n_cl_send_dte_reception_status('accepted')
-            msg = _('Document acceptance was accepted with response:') + Markup('<br/> %s') % response
+            # accepted_goods only when both acceptation of the invoice and receipt of goods have been done
+            self.l10n_cl_dte_acceptation_status = 'accepted_goods' if \
+                self.l10n_cl_dte_acceptation_status in accepted_statuses and status_type in accepted_statuses \
+                else status_type
+            self._l10n_cl_send_dte_reception_status(status_type)
+            msg = _('Document %s was accepted with the following response:') % (
+                action_response[status_type].description) + '<br/><strong>%s: %s.</strong>' % (
+                cod_response, description_response)
+            if self.company_id.l10n_cl_dte_service_provider == 'SIIDEMO':
+                msg += _(' -- Response simulated in Demo Mode')
         else:
-            msg = _('Document acceptance failed with response:') + Markup('<br/> %s') % response
+            msg = _('Document %s failed with the following response:') % (action_response[status_type].description) + \
+                  Markup('<br/><strong>%s: %s.</strong>') % (cod_response, description_response)
+            if cod_response == 9 and self.company_id.l10n_cl_dte_service_provider == 'SIITEST':
+                msg += Markup(_('<br/><br/>If you are trying to test %s of documents, you should send this %s as a vendor '
+                         'to %s before doing the test.')) % (
+                    action_response[status_type].description,
+                    self.l10n_latam_document_type_id.name,
+                    self.company_id.name)
         self.message_post(body=msg)
 
+    def l10n_cl_accept_document(self):
+        self._l10n_cl_action_response('accepted')
+
+    def l10n_cl_receipt_service_or_merchandise(self):
+        self._l10n_cl_action_response('goods')
+
     def l10n_cl_claim_document(self):
-        if not self.l10n_latam_document_type_id._is_doc_type_acceptance():
-            raise UserError(_('The document type with code %s cannot be claimed') %
-                            self.l10n_latam_document_type_id.code)
-        if self.company_id.l10n_cl_dte_service_provider in ['SIITEST', 'SIIDEMO']:
-            self._l10n_cl_send_dte_reception_status('claimed')
-            self.write({
-                'l10n_cl_dte_acceptation_status': 'claimed',
-                'state': 'cancel',
-            })
-            self.message_post(body=_('The claim status was not sent to SII as this feature does not work '
-                                     'in certification/test mode'))
-            return
-        try:
-            response = self._send_sii_claim_response(
-                self.company_id.l10n_cl_dte_service_provider,
-                self.partner_id.vat,
-                self.company_id._get_digital_signature(user_id=self.env.user.id),
-                self.l10n_latam_document_type_id.code,
-                self.l10n_latam_document_number,
-                'RCD'
-            )
-        except InvalidToken:
-            digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
-            digital_signature.last_token = None
-            return self.l10n_cl_claim_document()
-        if not response:
-            return None
-        try:
-            cod_response = response['codResp']
-        except Exception as error:
-            _logger.error(error)
-            self.message_post(body='Exception error parsing the response: %s' % response)
-        else:
-            if cod_response in [0, 1]:
-                self.write({
-                    'l10n_cl_dte_acceptation_status': 'claimed',
-                    'state': 'cancel',
-                })
-                self._l10n_cl_send_dte_reception_status('claimed')
-                msg = _('Document was claimed with response:') + Markup('<br/> %s') % response
-            else:
-                msg = _('Document claim failed with response:') + Markup('<br/> %s') % response
-            self.message_post(body=msg)
+        self._l10n_cl_action_response('claimed')
 
     # DTE creation
 
@@ -566,9 +595,10 @@ class AccountMove(models.Model):
                      self.company_id.l10n_cl_dte_email) and
                 not self.l10n_latam_document_type_id._is_doc_type_export() and
                 not self.l10n_latam_document_type_id._is_doc_type_ticket()):
-            raise UserError(_('The %s %s has not a DTE email defined. This is mandatory for electronic invoicing.') %
-                            (_('partner') if not (self.partner_id.l10n_cl_dte_email or
-                                                  self.commercial_partner_id.l10n_cl_dte_email) else _('company'), self.partner_id.name))
+            raise UserError(
+                _('The %s %s has not a DTE email defined. This is mandatory for electronic invoicing.') %
+                (_('partner') if not (self.partner_id.l10n_cl_dte_email or
+                                      self.commercial_partner_id.l10n_cl_dte_email) else _('company'), self.partner_id.name))
         if datetime.strptime(self._get_cl_current_strftime(), '%Y-%m-%dT%H:%M:%S').date() < self.invoice_date:
             raise UserError(
                 _('The stamp date and time cannot be prior to the invoice issue date and time. TIP: check '
@@ -665,16 +695,17 @@ class AccountMove(models.Model):
         }
         # Calculate the fields needed if the invoice has a different currency than company currency
         if self.currency_id != self.company_id.currency_id and self.l10n_latam_document_type_id._is_doc_type_export():
-            rate = (self.currency_id + self.company_id.currency_id)._get_rates(self.company_id, self.date).get(
-                self.currency_id.id) or 1
-            values['second_currency'] = {'rate': rate}
-
-            values['second_currency'].update({
-                'subtotal_amount_taxable': sum(lines_with_taxes.mapped('price_subtotal')) / rate if lines_with_taxes else False,
-                'subtotal_amount_exempt': sum(lines_without_taxes.mapped('price_subtotal')) / rate if lines_without_taxes else False,
+            rate = (self.currency_id + self.company_id.currency_id)._get_rates(
+                self.company_id, self.date).get(self.currency_id.id) or 1
+            values['second_currency'] = {
+                'rate': rate,
+                'subtotal_amount_taxable': sum(
+                    lines_with_taxes.mapped('price_subtotal')) / rate if lines_with_taxes else False,
+                'subtotal_amount_exempt': sum(
+                    lines_without_taxes.mapped('price_subtotal')) / rate if lines_without_taxes else False,
                 'vat_amount': sum(lines_with_taxes.mapped('price_subtotal')) / rate if lines_with_taxes else False,
                 'total_amount': self.amount_total / rate
-            })
+            }
         return values
 
     def _l10n_cl_get_withholdings(self):
@@ -710,10 +741,12 @@ class AccountMove(models.Model):
             'format_length': self._format_length,
             'format_uom': self._format_uom,
             'time_stamp': self._get_cl_current_strftime(),
-            'caf': self.l10n_latam_document_type_id._get_caf_file(self.company_id.id, int(self.l10n_latam_document_number)),
+            'caf': self.l10n_latam_document_type_id._get_caf_file(
+                self.company_id.id, int(self.l10n_latam_document_number)),
             '__keep_empty_lines': True,
         })
-        caf_file = self.l10n_latam_document_type_id._get_caf_file(self.company_id.id, int(self.l10n_latam_document_number))
+        caf_file = self.l10n_latam_document_type_id._get_caf_file(
+            self.company_id.id, int(self.l10n_latam_document_number))
         ted = self.env['ir.qweb']._render('l10n_cl_edi.ted_template', {
             'dd': dd,
             'frmt': self._sign_message(dd.encode('ISO-8859-1', 'replace'), caf_file.findtext('RSASK')),

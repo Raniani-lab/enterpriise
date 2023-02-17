@@ -63,7 +63,6 @@ class TestL10nClDte(TestL10nClEdiCommon):
 
         self.assertEqual(invoice.state, 'posted')
         self.assertEqual(invoice.l10n_cl_dte_status, 'not_sent')
-
         xml_expected_dte = misc.file_open(os.path.join(
             'l10n_cl_edi', 'tests', 'expected_dtes', 'dte_33.xml')).read()
 

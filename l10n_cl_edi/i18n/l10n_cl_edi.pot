@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-18 18:24+0000\n"
-"PO-Revision-Date: 2023-01-18 18:24+0000\n"
+"POT-Creation-Date: 2023-03-08 01:23+0000\n"
+"PO-Revision-Date: 2023-03-08 01:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -66,6 +66,24 @@ msgid ""
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:mail.template,body_html:l10n_cl_edi.email_template_receipt_goods
+msgid ""
+"\n"
+"            \n"
+"                <header>\n"
+"                <strong>Electronic Invoicing - Reception of Services or Goods RG 19.983 - <t t-out=\"object.display_name or ''\"></t></strong>\n"
+"                </header>\n"
+"                <p>In the attached file you will find the reception of goods RG 19.983 for Electronic Tax Document(s).</p>\n"
+"                <p>El acuse de recibo que se declara en este acto, de acuerdo a lo dispuesto en la letra b)\n"
+"                del Art. 4, y la letra c) del Art. 5 de la Ley 19.983, acredita que la entrega de\n"
+"                mercaderias o servicio(s) prestado(s) ha(n) sido recibido(s).</p>\n"
+"                <br /><br /><br /><br />\n"
+"                <p>Sent Using Odoo</p>\n"
+"            \n"
+"            "
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_bank_statement_line__l10n_cl_dte_partner_status
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_move__l10n_cl_dte_partner_status
 #: model:ir.model.fields,help:l10n_cl_edi.field_account_payment__l10n_cl_dte_partner_status
@@ -74,6 +92,13 @@ msgid ""
 "    Status of sending the DTE to the partner:\n"
 "    - Not sent: the DTE has not been sent to the partner but it has sent to SII.\n"
 "    - Sent: The DTE has been sent to the partner."
+msgstr ""
+
+#. module: l10n_cl_edi
+#. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid " -- Response simulated in Demo Mode"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -104,7 +129,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_company__l10n_cl_sii_taxpayer_type
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_sii_taxpayer_type
-#: model:ir.model.fields,help:l10n_cl_edi.field_res_config_test__l10n_cl_sii_taxpayer_type
 msgid ""
 "1 - VAT Affected (1st Category) (Most of the cases)\n"
 "2 - Fees Receipt Issuer (Applies to suppliers who issue fees receipt)\n"
@@ -158,6 +182,15 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_payment_term__l10n_cl_sii_code__3
 msgid "3: Other"
+msgstr ""
+
+#. module: l10n_cl_edi
+#. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid ""
+"<br/><br/>If you are trying to test %s of documents, you should send this %s"
+" as a vendor to %s before doing the test."
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -288,6 +321,13 @@ msgstr ""
 
 #. module: l10n_cl_edi
 #. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid "<strong>WARNING: Simulating %s in Demo Mode</strong>"
+msgstr ""
+
+#. module: l10n_cl_edi
+#. odoo-python
 #: code:addons/l10n_cl_edi/models/fetchmail_server.py:0
 #, python-format
 msgid ""
@@ -355,7 +395,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__l10n_cl_company_activity_ids
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_company_activity_ids
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_test__l10n_cl_company_activity_ids
 msgid "Activities Names"
 msgstr ""
 
@@ -645,10 +684,9 @@ msgstr ""
 #. module: l10n_cl_edi
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
+#: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid ""
-"Claim status was not sending to SII. This feature is not available in "
-"certification/test mode"
+msgid "Claim status"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -820,7 +858,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__l10n_cl_dte_email
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_dte_email
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_test__l10n_cl_dte_email
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_partner__l10n_cl_dte_email
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_users__l10n_cl_dte_email
 msgid "DTE Email"
@@ -842,6 +879,16 @@ msgid "DTE Receipt Commercial Accepted"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model:mail.template,name:l10n_cl_edi.email_template_receipt_goods
+msgid "DTE Reception of Services Or Goods"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model:mail.template,subject:l10n_cl_edi.email_template_receipt_goods
+msgid "DTE Reception of Services Or Goods - {{ object.name }}"
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_account_payment_term__l10n_cl_sii_code
 msgid "DTE SII Code"
 msgstr ""
@@ -849,7 +896,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__l10n_cl_dte_service_provider
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_dte_service_provider
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_test__l10n_cl_dte_service_provider
 msgid "DTE Service Provider"
 msgstr ""
 
@@ -921,6 +967,20 @@ msgid "Display Name"
 msgstr ""
 
 #. module: l10n_cl_edi
+#. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid "Document %s failed with the following response:"
+msgstr ""
+
+#. module: l10n_cl_edi
+#. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid "Document %s was accepted with the following response:"
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_account_invoice_reference__date
 msgid "Document Date"
 msgstr ""
@@ -939,37 +999,9 @@ msgstr ""
 
 #. module: l10n_cl_edi
 #. odoo-python
-#: code:addons/l10n_cl_edi/models/account_move.py:0
-#, python-format
-msgid "Document acceptance failed with response:"
-msgstr ""
-
-#. module: l10n_cl_edi
-#. odoo-python
 #: code:addons/l10n_cl_edi/models/l10n_cl_edi_util.py:0
 #, python-format
 msgid "Document acceptance or claim failed due to:"
-msgstr ""
-
-#. module: l10n_cl_edi
-#. odoo-python
-#: code:addons/l10n_cl_edi/models/account_move.py:0
-#, python-format
-msgid "Document acceptance was accepted with response:"
-msgstr ""
-
-#. module: l10n_cl_edi
-#. odoo-python
-#: code:addons/l10n_cl_edi/models/account_move.py:0
-#, python-format
-msgid "Document claim failed with response:"
-msgstr ""
-
-#. module: l10n_cl_edi
-#. odoo-python
-#: code:addons/l10n_cl_edi/models/account_move.py:0
-#, python-format
-msgid "Document was claimed with response:"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -1038,7 +1070,6 @@ msgstr ""
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_activity_description
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_test__l10n_cl_activity_description
 msgid "Glosa Giro"
 msgstr ""
 
@@ -1164,7 +1195,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_certificate__l10n_cl_is_there_shared_certificate
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__l10n_cl_is_there_shared_certificate
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_is_there_shared_certificate
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_test__l10n_cl_is_there_shared_certificate
 msgid "Is There Shared Certificate?"
 msgstr ""
 
@@ -1449,6 +1479,13 @@ msgid "Please assign a partner before sending the acknowledgement"
 msgstr ""
 
 #. module: l10n_cl_edi
+#. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid "Please check the document number"
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form
 msgid ""
 "Please choose your DTE service provider. If possible, avoid selecting SII "
@@ -1458,7 +1495,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_company__l10n_cl_company_activity_ids
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_company_activity_ids
-#: model:ir.model.fields,help:l10n_cl_edi.field_res_config_test__l10n_cl_company_activity_ids
 msgid ""
 "Please select the SII registered economic activities codes for the company"
 msgstr ""
@@ -1466,7 +1502,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_company__l10n_cl_dte_service_provider
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_dte_service_provider
-#: model:ir.model.fields,help:l10n_cl_edi.field_res_config_test__l10n_cl_dte_service_provider
 msgid "Please select your company service provider for DTE service."
 msgstr ""
 
@@ -1547,8 +1582,25 @@ msgid "Reason"
 msgstr ""
 
 #. module: l10n_cl_edi
+#: model_terms:ir.ui.view,arch_db:l10n_cl_edi.view_invoice_form
+msgid "Receipt RG 19983"
+msgstr ""
+
+#. module: l10n_cl_edi
 #: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_move__l10n_cl_dte_acceptation_status__received
 msgid "Received"
+msgstr ""
+
+#. module: l10n_cl_edi
+#: model:ir.model.fields.selection,name:l10n_cl_edi.selection__account_move__l10n_cl_dte_acceptation_status__goods
+msgid "Reception 19983"
+msgstr ""
+
+#. module: l10n_cl_edi
+#. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid "Reception law 19983"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -1628,14 +1680,12 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__l10n_cl_dte_resolution_date
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_dte_resolution_date
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_test__l10n_cl_dte_resolution_date
 msgid "SII Exempt Resolution Date"
 msgstr ""
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__l10n_cl_dte_resolution_number
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_dte_resolution_number
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_test__l10n_cl_dte_resolution_number
 msgid "SII Exempt Resolution Number"
 msgstr ""
 
@@ -1660,7 +1710,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__l10n_cl_sii_regional_office
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_sii_regional_office
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_test__l10n_cl_sii_regional_office
 msgid "SII Regional Office"
 msgstr ""
 
@@ -1842,7 +1891,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_company__l10n_cl_sii_taxpayer_type
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_settings__l10n_cl_sii_taxpayer_type
-#: model:ir.model.fields,field_description:l10n_cl_edi.field_res_config_test__l10n_cl_sii_taxpayer_type
 msgid "Taxpayer Type"
 msgstr ""
 
@@ -1897,15 +1945,6 @@ msgid "The certificate signature_key_file is invalid: %s."
 msgstr ""
 
 #. module: l10n_cl_edi
-#. odoo-python
-#: code:addons/l10n_cl_edi/models/account_move.py:0
-#, python-format
-msgid ""
-"The claim status was not sent to SII as this feature does not work in "
-"certification/test mode"
-msgstr ""
-
-#. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_l10n_cl_certificate__cert_expiration
 msgid "The date on which the certificate expires"
 msgstr ""
@@ -1914,14 +1953,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
-msgid "The document type with code %s cannot be accepted"
-msgstr ""
-
-#. module: l10n_cl_edi
-#. odoo-python
-#: code:addons/l10n_cl_edi/models/account_move.py:0
-#, python-format
-msgid "The document type with code %s cannot be claimed"
+msgid "The document type with code %s cannot be %s"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -1962,6 +1994,10 @@ msgid ""
 "    Acknowledge Sent: the Acknowledge has been sent to the vendor.\n"
 "    Claimed: the DTE was claimed by us for vendor bills, by our customers for customer invoices.\n"
 "    Accepted: the DTE was accepted by us for vendor bills, by our customers for customer invoices.\n"
+"    Reception 19983: means that the merchandise or services reception has been "
+"created and sent.\n"
+"    Accepted and RG 19983: means that both the content of the document has been accepted and the "
+"merchandise or services reception has been received as well.\n"
 "    "
 msgstr ""
 
@@ -2185,7 +2221,6 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_company__l10n_cl_dte_resolution_number
 #: model:ir.model.fields,help:l10n_cl_edi.field_res_config_settings__l10n_cl_dte_resolution_number
-#: model:ir.model.fields,help:l10n_cl_edi.field_res_config_test__l10n_cl_dte_resolution_number
 msgid ""
 "This value must be provided and must appear in your pdf or printed tribute "
 "document, under the electronic stamp to be legally valid."
@@ -2370,6 +2405,20 @@ msgstr ""
 #. odoo-python
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
+msgid "acceptance"
+msgstr ""
+
+#. module: l10n_cl_edi
+#. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid "claim"
+msgstr ""
+
+#. module: l10n_cl_edi
+#. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
 msgid "company"
 msgstr ""
 
@@ -2390,6 +2439,13 @@ msgstr ""
 #: code:addons/l10n_cl_edi/models/account_move.py:0
 #, python-format
 msgid "partner"
+msgstr ""
+
+#. module: l10n_cl_edi
+#. odoo-python
+#: code:addons/l10n_cl_edi/models/account_move.py:0
+#, python-format
+msgid "reception of goods or services RG 19.983"
 msgstr ""
 
 #. module: l10n_cl_edi

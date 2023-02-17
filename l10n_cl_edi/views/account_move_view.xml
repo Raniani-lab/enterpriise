@@ -10,14 +10,17 @@
                 <field name="l10n_cl_dte_acceptation_status" invisible="1"/>
                 <field name="l10n_cl_dte_status" invisible="1"/>
                 <button name="l10n_cl_accept_document"
-                         string="Accept Document"
-                         type="object"
-                         invisible="move_type in ['out_invoice', 'out_refund'] or state != 'posted' or l10n_cl_dte_acceptation_status in ['claimed', 'accepted'] or not l10n_latam_use_documents or country_code != 'CL'"/>
-
+                        string="Accept Document"
+                        type="object"
+                        invisible="move_type in ['out_invoice', 'out_refund'] or state != 'posted' or l10n_cl_dte_acceptation_status in ['claimed', 'accepted', 'accepted_goods'] or not l10n_latam_use_documents or country_code != 'CL'"/>
+                <button name="l10n_cl_receipt_service_or_merchandise"
+                        string="Receipt RG 19983"
+                        type="object"
+                        invisible="move_type in ['out_invoice', 'out_refund'] or state != 'posted' or l10n_cl_dte_acceptation_status in ['claimed', 'goods', 'accepted_goods'] or not l10n_latam_use_documents or country_code != 'CL'"/>
                 <button name="l10n_cl_claim_document"
                         string="Claim Document"
                         type="object"
-                        invisible="move_type in ['out_invoice', 'out_refund'] or l10n_cl_dte_acceptation_status in ['claimed', 'accepted'] or not l10n_latam_use_documents or country_code != 'CL'"/>
+                        invisible="move_type in ['out_invoice', 'out_refund'] or l10n_cl_dte_acceptation_status in ['claimed', 'accepted', 'goods', 'accepted_goods'] or not l10n_latam_use_documents or country_code != 'CL'"/>
             </xpath>
             
             <notebook>
@@ -64,11 +67,11 @@
                     <button name="l10n_cl_send_dte_to_sii" type="object" invisible="l10n_cl_dte_status != 'not_sent'" string="⇒ Send Now to SII" class="oe_inline oe_link" groups="base.group_user"/>
                     <button name="l10n_cl_verify_dte_status" type="object" invisible="l10n_cl_dte_status != 'ask_for_status'" context="{'send_immediately': True}" string="⇒ Verify on SII" class="oe_inline oe_link" groups="base.group_user"/>
                 </div>
-                <label for="l10n_cl_dte_acceptation_status" invisible="not l10n_cl_dte_acceptation_status or country_code != 'CL'"/>
-                <div invisible="country_code != 'CL'">
+                <label for="l10n_cl_dte_acceptation_status" invisible="country_code != 'CL' or not l10n_cl_dte_acceptation_status"/>
+                <div invisible="country_code != 'CL' or not l10n_cl_dte_acceptation_status">
                     <field name="l10n_cl_dte_acceptation_status" readonly="True" class="oe_online"/>
                     <button name="l10n_cl_reprocess_acknowledge" type="object" invisible="l10n_cl_dte_acceptation_status != 'received' or move_type not in ['in_invoice', 'in_refund']" string="⇒ Reprocess Acknowledge" class="oe_inline oe_link" groups="base.group_user"/>
-                    <button name="l10n_cl_verify_claim_status" type="object" invisible="l10n_cl_dte_acceptation_status not in ['accepted', 'claimed'] or move_type not in ['out_invoice', 'out_refund']" string="⇒ Verify on SII" class="oe_inline oe_link" groups="base.group_user"/>
+                    <button name="l10n_cl_verify_claim_status" type="object" invisible="l10n_cl_dte_acceptation_status not in ['goods', 'accepted', 'claimed'] or move_type not in ['out_invoice', 'out_refund']" string="⇒ Verify on SII" class="oe_inline oe_link" groups="base.group_user"/>
                 </div>
             </xpath>
         </field>

@@ -141,7 +141,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
             column_values.append({
                 'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else value,
                 'no_format': value,
-                'class': 'number' if column['figure_type'] in ('monetary', 'monetary_without_symbol') else 'text'
+                'class': 'number' if column['figure_type'] == 'monetary' else 'text'
             }) # value is not None => allows to avoid the "0.0" or None values but only those
 
         return {
@@ -165,8 +165,8 @@ class ECSalesReportCustomHandler(models.AbstractModel):
             value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
             column_values.append({
                 'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
-                'no_format': value if column['figure_type'] in ('monetary', 'monetary_without_symbol') else '',
-                'class': 'number' if column['figure_type'] in ('monetary', 'monetary_without_symbol') else 'text'
+                'no_format': value if column['figure_type'] == 'monetary' else '',
+                'class': 'number' if column['figure_type'] == 'monetary' else 'text'
             })
 
         return {

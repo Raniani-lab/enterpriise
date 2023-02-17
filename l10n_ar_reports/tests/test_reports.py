@@ -383,5 +383,4 @@ class TestReports(TestAr, TestAccountReportsCommon):
                 ('DI 0001-00000002000', 'BEST PARTNER', '30714295698', -500,   -105,     -605),
                 ('DI 0001-00000003000', 'BEST PARTNER', '30714295698', -800,   -168,     -968),
             ],
-            options,
         )

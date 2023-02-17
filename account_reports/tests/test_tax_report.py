@@ -492,7 +492,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 (f'{self.test_fpos_tax_purchase.id}-refund-60',            -18 ),
                 (f'{self.test_fpos_tax_purchase.id}-refund--5',             1.5),
             ],
-            options,
         )
 
     def test_tax_report_fpos_foreign(self):
@@ -531,7 +530,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 (f'{self.test_fpos_tax_purchase.id}-refund-60',            -180),
                 (f'{self.test_fpos_tax_purchase.id}-refund--5',              15),
             ],
-            options,
         )
 
     def test_tax_report_fpos_everything(self):
@@ -570,7 +568,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 (f'{self.test_fpos_tax_purchase.id}-refund-60',           -198 ),
                 (f'{self.test_fpos_tax_purchase.id}-refund--5',            16.5),
             ],
-            options,
         )
 
     def test_tax_report_single_fpos(self):
@@ -753,7 +750,6 @@ class TestTaxReport(TestAccountReportsCommon):
 
                 ('Tax difference (42%-11%)',                 31   ),
             ],
-            options,
         )
 
         # We refund the invoice
@@ -786,7 +782,6 @@ class TestTaxReport(TestAccountReportsCommon):
 
                 ('Tax difference (42%-11%)',                    ''),
             ],
-            options,
         )
 
     def _create_caba_taxes_for_report_lines(self, report_lines_dict, company):
@@ -970,7 +965,7 @@ class TestTaxReport(TestAccountReportsCommon):
         # We check the taxes on invoice have impacted the report properly
         options = self._generate_options(tax_report, date_from=today, date_to=today)
         inv_report_lines = tax_report._get_lines(options)
-        self.assertLinesValues(inv_report_lines, expected_columns, expected_lines, options)
+        self.assertLinesValues(inv_report_lines, expected_columns, expected_lines)
 
     def _register_full_payment_for_invoice(self, invoice):
         """ Fully pay the invoice, so that the cash basis entries are created
@@ -1141,7 +1136,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ("Regular (42.0%)",          100,               42),
                 ("Total Sales",               '',               42),
             ],
-            options,
         )
 
         # Pay half of the invoice
@@ -1162,7 +1156,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ("Cash Basis (10.0%)",         50,               5),
                 ("Total Sales",                '',              47),
             ],
-            options,
         )
 
         # Pay the rest
@@ -1183,7 +1176,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ("Cash Basis (10.0%)",        100,              10),
                 ("Total Sales",                '',              52),
             ],
-            options,
         )
 
     def test_tax_report_mixed_exigibility_affect_base_generic_invoice(self):
@@ -1409,7 +1401,7 @@ class TestTaxReport(TestAccountReportsCommon):
 
         # Check the report
         report_options = self._generate_options(report, invoice.date, invoice.date)
-        self.assertLinesValues(report._get_lines(report_options), report_columns, vals_not_paid, report_options)
+        self.assertLinesValues(report._get_lines(report_options), report_columns, vals_not_paid)
 
         # Pay 30% of the invoice
         self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
@@ -1419,7 +1411,7 @@ class TestTaxReport(TestAccountReportsCommon):
         })._create_payments()
 
         # Check the report again: 30% of the caba amounts should be there
-        self.assertLinesValues(report._get_lines(report_options), report_columns, vals_30_percent_paid, report_options)
+        self.assertLinesValues(report._get_lines(report_options), report_columns, vals_30_percent_paid)
 
         # Pay the rest: total caba amounts should be there
         self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
@@ -1428,7 +1420,7 @@ class TestTaxReport(TestAccountReportsCommon):
         })._create_payments()
 
         # Check the report
-        self.assertLinesValues(report._get_lines(report_options), report_columns, vals_fully_paid, report_options)
+        self.assertLinesValues(report._get_lines(report_options), report_columns, vals_fully_paid)
 
     def test_caba_always_exigible(self):
         """ Misc operations without payable nor receivable lines must always be exigible,
@@ -1496,7 +1488,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 (f'{caba_tax.id}-refund-base',                ''  ),
                 (f'{caba_tax.id}-refund-100',                 ''  ),
             ],
-            report_options,
         )
 
 
@@ -1513,7 +1504,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 (f"{caba_tax.name} (10.0%)",       242,        24.2),
                 ("Total Sales",                     '',       108.2),
             ],
-            report_options,
         )
 
     def test_tax_report_grid_caba_negative_inv_line(self):
@@ -1690,7 +1680,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ("Cash Basis (42.0%)",       200,               84),
                 ("Total Sales",               '',              168),
             ],
-            options,
         )
 
     def test_tax_unit(self):
@@ -1799,7 +1788,6 @@ class TestTaxReport(TestAccountReportsCommon):
                     (f'{created_taxes[company_3].id}-refund-base',             ''),
                     (f'{created_taxes[company_3].id}-refund-100',              ''),
                 ],
-                options,
             )
 
         # Check closing for the vat unit
@@ -2001,7 +1989,6 @@ class TestTaxReport(TestAccountReportsCommon):
                     (f'{self.test_fpos_tax_purchase.id}-refund-60',         -198),
                     (f'{self.test_fpos_tax_purchase.id}-refund--5',         16.5),
                 ],
-                options,
             )
 
     def test_tax_report_with_entries_with_sale_and_purchase_taxes(self):
@@ -2085,7 +2072,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ('Purchase base',           ''),
                 ('Purchase tax',            ''),
             ],
-            options,
         )
 
     def test_invoice_like_entry_reverse_caba_report(self):
@@ -2172,7 +2158,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ('Refund base',                                 ''),
                 ('Refund tax',                                  ''),
             ],
-            report_options,
         )
 
         # Reconcile the move with a payment
@@ -2187,7 +2172,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ('Refund base',                                 ''),
                 ('Refund tax',                                  ''),
             ],
-            report_options,
         )
 
         # Unreconcile the moves
@@ -2202,7 +2186,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ('Refund base',                                 ''),
                 ('Refund tax',                                  ''),
             ],
-            report_options,
         )
 
     def test_tax_report_get_past_closing_entry(self):

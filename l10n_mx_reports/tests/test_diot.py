@@ -119,7 +119,6 @@ class TestDiot(TestAccountReportsCommon):
 
                 (  "",              "",              "",        "",         "", 30.0,           "", 32.0,          "",      "",    28.0,     "",    -1.26,   9.92),
             ],
-            options,
         )
 
         self.assertEqual(

@@ -12,7 +12,6 @@
             <record id="account_financial_report_profitandloss_lt_column" model="account.report.column">
                 <field name="name">Balance</field>
                 <field name="expression_label">balance</field>
-                <field name="figure_type">monetary_without_symbol</field>
             </record>
         </field>
         <field name="line_ids">
@@ -242,7 +241,6 @@
             <record id="account_financial_report_balancesheet_lt_column" model="account.report.column">
                 <field name="name">Balance</field>
                 <field name="expression_label">balance</field>
-                <field name="figure_type">monetary_without_symbol</field>
             </record>
         </field>
         <field name="line_ids">

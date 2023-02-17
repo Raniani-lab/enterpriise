@@ -134,5 +134,4 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
                 ('Total EQUITY',                                2000.00),
                 ('LIABILITIES + EQUITY',                        2300.00),
             ],
-            options,
         )

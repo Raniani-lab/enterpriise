@@ -245,7 +245,6 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
                 ('999999 Undistributed Profits/Losses',                       '',        1000.0,    '',      '',       '',        1000.0),
                 ('Total',                                                     1000.0,    1000.0,    325.0,   325.0,    1325.0,    1325.0),
             ],
-            options,
         )
 
         # Testing the report with hierarchy
@@ -270,5 +269,4 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
                 ('999999 Undistributed Profits/Losses',                       '',        1000.0,    '',      '',       '',        1000.0),
                 ('Total',                                                     1000.0,    1000.0,    325.0,   325.0,    1325.0,    1325.0),
             ],
-            options,
         )

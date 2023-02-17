@@ -90,16 +90,16 @@ class AssetsReportCustomHandler(models.AbstractModel):
                 col_value = col_group_totals[col_group_key][expr_label]
                 if col_value is None:
                     all_columns.append({})
-                elif column_data['figure_type'] in ('monetary', 'monetary_without_symbol'):
+                elif column_data['figure_type'] == 'monetary':
                     all_columns.append({
-                        'name': report.format_value(col_value, company_currency, figure_type=column_data['figure_type'], blank_if_zero=column_data['blank_if_zero']),
+                        'name': report.format_value(col_value, company_currency, figure_type='monetary', blank_if_zero=column_data['blank_if_zero']),
                         'no_format': col_value,
                     })
                 else:
                     all_columns.append({'name': col_value, 'no_format': col_value})
 
                 # add to the total line
-                if column_data['figure_type'] in ('monetary', 'monetary_without_symbol'):
+                if column_data['figure_type'] == 'monetary':
                     totals_by_column_group[column_data['column_group_key']][column_data['expression_label']] += col_value
 
             name = assets_cache[asset_id].name
@@ -297,7 +297,7 @@ class AssetsReportCustomHandler(models.AbstractModel):
             })['group_lines'].append(line)
 
         # Generate the result
-        idx_monetary_columns = [idx_col for idx_col, col in enumerate(options['columns']) if col['figure_type'] in ('monetary', 'monetary_without_symbol')]
+        idx_monetary_columns = [idx_col for idx_col, col in enumerate(options['columns']) if col['figure_type'] == 'monetary']
         accounts = self.env['account.account'].browse(line_vals_per_account_id.keys())
         rslt_lines = []
         for account in accounts:
@@ -330,9 +330,8 @@ class AssetsReportCustomHandler(models.AbstractModel):
                 if tot_val is None:
                     account_line_vals['columns'].append({})
                 else:
-                    figure_type = options['columns'][column_index].get('figure_type', 'monetary')
                     account_line_vals['columns'].append({
-                        'name': report.format_value(tot_val, self.env.company.currency_id, figure_type=figure_type, blank_if_zero=options['columns'][column_index]['blank_if_zero']),
+                        'name': report.format_value(tot_val, self.env.company.currency_id, figure_type='monetary', blank_if_zero=options['columns'][column_index]['blank_if_zero']),
                         'no_format': tot_val,
                     })
 

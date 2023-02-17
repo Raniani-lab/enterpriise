@@ -85,7 +85,6 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Report Total.
                 ('Total',                       920.0,      920.0,    0.0),
             ],
-            options,
         )
 
         # Mark the '101200 Account Receivable' line to be unfolded.
@@ -113,7 +112,6 @@ class TestAccountReports(TestAccountReportsCommon):
                 # Report Total.
                 ('Total',                               '',              920.00,        920.00,          0.00),
             ],
-            options,
         )
 
     def test_balance_sheet_cash_basis(self):
@@ -159,7 +157,6 @@ class TestAccountReports(TestAccountReportsCommon):
 
                 ('LIABILITIES + EQUITY',                        460.0),
             ],
-            options,
         )
 
     def test_cash_basis_payment_in_the_past(self):

@@ -163,7 +163,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('partner_b',                     '',        50.0,      50.0,        50.0,       300.0,     150.0,       50.0,       650.0),
                 ('Total Aged Receivable',         '',       150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
         # Sort 61 - 90 decreasing.
@@ -192,7 +191,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('partner_b',                     '',        50.0,       50.0,       50.0,      300.0,      150.0,       50.0,       650.0),
                 ('Total Aged Receivable',         '',       150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
         # Sort 61 - 90 increasing.
@@ -221,7 +219,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total partner_a',               '',       100.0,      100.0,      100.0,       600.0,      300.0,      100.0,      1300.0),
                 ('Total Aged Receivable',         '',       150.0,      150.0,      150.0,       900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
     def test_aged_receivable_unfold_all(self):
@@ -294,7 +291,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('partner_b',           '',            '',         '',       50.0,       50.0,       50.0,      500.0,       650.0),
                 ('Unknown',             '',            '',    -1000.0,         '',         '',         '',         '',     -1000.0),
             ],
-            options,
         )
 
     def test_aged_receivable_filter_partners(self):
@@ -312,7 +308,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Aged Receivable',     '',         100.0,      100.0,      100.0,      600.0,      300.0,      100.0,      1300.0),
                 ('partner_a',           '',         100.0,      100.0,      100.0,      600.0,      300.0,      100.0,      1300.0),
             ],
-            options,
         )
 
     def test_aged_receivable_filter_partner_categories(self):
@@ -331,7 +326,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('partner_a',           '',         100.0,      100.0,      100.0,      600.0,      300.0,      100.0,      1300.0),
                 ('partner_b',           '',          50.0,       50.0,       50.0,      300.0,      150.0,       50.0,       650.0),
             ],
-            options,
         )
 
     def test_aged_receivable_reconciliation_date(self):
@@ -349,7 +343,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('partner_a',           '',   -100.00,    1100.00,         '',         '',         '',     100.00,     1100.00),
                 ('partner_b',           '',    -33.35,     366.66,         '',         '',         '',      33.33,      366.64),
             ],
-            options,
         )
 
     # TODO: move these tests into a generic report test class
@@ -397,7 +390,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total partner_b',               '',           '',    50.0,       50.0,       50.0,       300.0,     150.0,       50.0,       650.0),
                 ('Total Aged Receivable',         '',           '',   150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
         # Sort by Expected Date decreasing
@@ -435,7 +427,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total partner_b',               '',         50.0,       50.0,       50.0,       300.0,     150.0,       50.0,       650.0),
                 ('Total Aged Receivable',         '',        150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
     def test_aged_receivablesort_lines_by_numeric_value(self):
@@ -482,7 +473,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total partner_a',               '',        100.0,      100.0,      100.0,       600.0,     300.0,      100.0,      1300.0),
                 ('Total Aged Receivable',         '',        150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
         # Sort by Not Due On decreasing
@@ -520,7 +510,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total partner_b',               '',    50.0,       50.0,       50.0,      300.0,      150.0,       50.0,       650.0),
                 ('Total Aged Receivable',         '',   150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
     def test_aged_receivable_zero_balanced_without_reconciliation(self):
@@ -566,7 +555,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total partner_a',              '',        '',         '',         '',         '',         '',         '',          ''),
                 ('Total Aged Receivable',        '',        '',         '',         '',         '',         '',         '',          ''),
             ],
-            options,
         )
 
         # It should still work if both  invoice and refund are partially reconciled with the same amount
@@ -595,7 +583,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total partner_a',              '',        '',         '',         '',         '',         '',         '',          ''),
                 ('Total Aged Receivable',        '',        '',         '',         '',         '',         '',         '',          ''),
             ],
-            options,
         )
 
         # It should still work if both  invoice and refund are fully reconciled in the future
@@ -624,7 +611,6 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total partner_a',              '',        '',         '',         '',         '',         '',         '',          ''),
                 ('Total Aged Receivable',        '',        '',         '',         '',         '',         '',         '',          ''),
             ],
-            options,
         )
 
     def test_aged_receivable_prefix_groups(self):

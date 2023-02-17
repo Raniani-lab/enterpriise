@@ -80,7 +80,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_10 (10.0%)',                      2400.0,     240.0),
                 ('Total Sales',                         '',         640.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -100,7 +99,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000.2 Product Sales',      '',         320.0),
                 ('Total Sales',                         '',         640.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -121,7 +119,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax_10 (10.0%)',                '',         240.0),
                 ('Total Sales',                         '',         640.0),
             ],
-            options,
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
@@ -200,7 +197,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_group_10_30',                     2000.0,     800.0),
                 ('Total Sales',                         '',         1100.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -216,7 +212,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000 Product Sales',          '',         1100.0),
                 ('Total Sales',                         '',         1100.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -235,7 +230,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax_group_10_30',               '',         800.0),
                 ('Total Sales',                         '',         1100.0),
             ],
-            options,
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
@@ -262,7 +256,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ("tax_30 (30.0%)" ,                     2000.0,     600),
                 ('Total Sales',                         '',         1100.0),
             ],
-            options,
         )
 
         # Same with tax_20 as a sale tax.
@@ -280,7 +273,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_group_10_30',                     2000.0,     800.0),
                 ('Total Sales',                         '',         1100.0),
             ],
-            options,
         )
 
     def test_tax_group_of_taxes_affected_by_other(self):
@@ -339,7 +331,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_group',                           1100.0,     352.0),
                 ('Total Sales',                         '',         452.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -355,7 +346,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000 Product Sales',          '',         452.0),
                 ('Total Sales',                         '',         452.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -374,7 +364,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax_group',                     '',         352.0),
                 ('Total Sales',                         '',         452.0),
             ],
-            options,
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
@@ -438,7 +427,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_20 (20.0%)',                      1000.0,     200.0),
                 ('Total Purchases',                     '',         200.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -458,7 +446,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000 Product Sales',          '',         200.0),
                 ('Total Purchases',                     '',         200.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -479,7 +466,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax_20 (20.0%)',                '',         200.0),
                 ('Total Purchases',                     '',         200.0),
             ],
-            options,
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
@@ -543,7 +529,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_20 (20.0%)',                      1000.0,     200.0),
                 ('Total Purchases',                     '',         200.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -563,7 +548,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000 Product Sales',          '',         200.0),
                 ('Total Purchases',                     '',         200.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -584,7 +568,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax_20 (20.0%)',                '',         200.0),
                 ('Total Purchases',                     '',         200.0),
             ],
-            options,
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
@@ -652,7 +635,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_20 (20.0%)',                      1000.0,     201.0),
                 ('Total Sales',                         '',         301.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -668,7 +650,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000 Product Sales',          '',         301.0),
                 ('Total Sales',                         '',         301.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -687,7 +668,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax_20 (20.0%)',                '',         201.0),
                 ('Total Sales',                         '',         301.0),
             ],
-            options,
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
@@ -751,7 +731,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_30 (30.0%)',                      '',         '',         1000.0,     300.0,      1000.0,     300.0),
                 ('Total Sales',                         '',         100.0,      '',         500.0,      '',         300.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -772,7 +751,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000.2 Product Sales',      '',         '',         '',         500.0,      '',         ''),
                 ('Total Sales',                         '',         100.0,      '',         500.0,      '',         300.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -795,7 +773,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax_30 (30.0%)',                '',         '',         '',         300.0,      '',         300.0),
                 ('Total Sales',                         '',         100.0,      '',         500.0,      '',         300.0),
             ],
-            options,
         )
 
     def test_affect_base_with_repetitions(self):
@@ -864,7 +841,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ("%s (10.0%%)" % affected_tax.name,    242,              24.2),
                 ("Total Sales",                         '',             108.2),
             ],
-            options,
         )
 
     def test_tax_multiple_repartition_lines(self):
@@ -926,7 +902,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax (10.0%)',                         1000.0,     100.0),
                 ('Total Sales',                         '',         100.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -941,7 +916,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000 Product Sales',          '',         100.0),
                 ('Total Sales',                         '',         100.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -957,7 +931,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax (10.0%)',                   '',         100.0),
                 ('Total Sales',                         '',         100.0),
             ],
-            options,
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
@@ -1012,7 +985,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax (10.0%)',                         '',         ''),
                 ('Total Sales',                         '',         ''),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -1027,7 +999,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000 Product Sales',          '',         ''),
                 ('Total Sales',                         '',         ''),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -1043,7 +1014,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax (10.0%)',                   '',         ''),
                 ('Total Sales',                         '',         ''),
             ],
-            options,
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
@@ -1096,7 +1066,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax (10.0%)',                       10.0,          1.0),
                 ('Total Sales',                         '',          1.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
@@ -1111,7 +1080,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total 400000 Product Sales',          '',          1.0),
                 ('Total Sales',                         '',          1.0),
             ],
-            options,
         )
 
         options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
@@ -1127,7 +1095,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('Total tax (10.0%)',                   '',           1.0),
                 ('Total Sales',                         '',           1.0),
             ],
-            options,
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']

@@ -159,7 +159,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('partner_b',                     '',        50.0,      50.0,        50.0,       300.0,     150.0,       50.0,       650.0),
                 ('Total Aged Payable',            '',       150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
         # Sort 61 - 90 decreasing.
@@ -188,7 +187,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('partner_b',                     '',        50.0,       50.0,       50.0,      300.0,      150.0,       50.0,       650.0),
                 ('Total Aged Payable',            '',       150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
         # Sort 61 - 90 increasing.
@@ -217,7 +215,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('Total partner_a',               '',        100.0,      100.0,      100.0,       600.0,      300.0,      100.0,      1300.0),
                 ('Total Aged Payable',            '',        150.0,      150.0,      150.0,       900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
     def test_aged_payable_unfold_all(self):
@@ -289,7 +286,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('partner_b',           '',            '',         '',       50.0,       50.0,       50.0,      500.0,       650.0),
                 ('Unknown',             '',            '',    -1000.0,         '',         '',         '',         '',     -1000.0),
             ],
-            options,
         )
 
     def test_aged_payable_filter_partners(self):
@@ -307,7 +303,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('Aged Payable',        '',               '',         100.0,      100.0,      100.0,      600.0,      300.0,      100.0,      1300.0),
                 ('partner_a',           '',               '',         100.0,      100.0,      100.0,      600.0,      300.0,      100.0,      1300.0),
             ],
-            options,
         )
 
     def test_aged_payable_filter_partner_categories(self):
@@ -326,7 +321,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('partner_a',           '',         100.0,      100.0,      100.0,      600.0,      300.0,      100.0,      1300.0),
                 ('partner_b',           '',          50.0,       50.0,       50.0,      300.0,      150.0,       50.0,       650.0),
             ],
-            options,
         )
 
     def test_aged_payable_reconciliation_date(self):
@@ -344,7 +338,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('partner_a',             '',     -100.00,    1100.00,         '',         '',         '',     100.00,     1100.00),
                 ('partner_b',             '',      -33.35,     366.66,         '',         '',         '',      33.33,      366.64),
             ],
-            options,
         )
 
     def test_aged_payablesort_lines_by_date(self):
@@ -391,7 +384,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('Total partner_b',               '',    50.0,       50.0,       50.0,       300.0,     150.0,       50.0,       650.0),
                 ('Total Aged Payable',            '',   150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
         # Sort by Expected Date increasing
@@ -429,7 +421,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('Total partner_b',               '',         50.0,       50.0,       50.0,       300.0,     150.0,       50.0,       650.0),
                 ('Total Aged Payable',            '',        150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
     def test_aged_payablesort_lines_by_numeric_value(self):
@@ -476,7 +467,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('Total partner_a',               '',         100.0,      100.0,      100.0,       600.0,     300.0,      100.0,      1300.0),
                 ('Total Aged Payable',            '',         150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
         # Sort by Not Due On decreasing
@@ -514,7 +504,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('Total partner_b',                '',       50.0,       50.0,       50.0,      300.0,      150.0,       50.0,       650.0),
                 ('Total Aged Payable',             '',      150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
-            options,
         )
 
     def test_aged_payable_zero_balanced_without_reconciliation(self):
@@ -562,7 +551,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('Total partner_a',              '',        '',         '',         '',         '',         '',         '',          ''),
                 ('Total Aged Payable',           '',        '',         '',         '',         '',         '',         '',          ''),
             ],
-            options,
         )
 
         # It should still work if both  invoice and refund are partially reconciled with the same amount
@@ -591,7 +579,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('Total partner_a',              '',        '',         '',         '',         '',         '',         '',          ''),
                 ('Total Aged Payable',           '',        '',         '',         '',         '',         '',         '',          ''),
             ],
-            options,
         )
 
         # It should still work if both  invoice and refund are fully reconciled in the future
@@ -620,7 +607,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('Total partner_a',              '',        '',         '',         '',         '',         '',         '',          ''),
                 ('Total Aged Payable',           '',        '',         '',         '',         '',         '',         '',          ''),
             ],
-            options,
         )
 
     def test_aged_payable_prefix_groups(self):

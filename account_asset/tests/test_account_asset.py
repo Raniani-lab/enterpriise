@@ -1844,7 +1844,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             ("refund", 0, 0, 500.0, -500.0, 0, 0, 100.0, -100.0, -400.0),
         ]
 
-        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_open_asset, options)
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_open_asset)
 
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
@@ -1873,7 +1873,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             ("refund", 0, 500.0, 500.0, 0, 0, 500.0, 500.0, 0, 0),
         ]
         options = self._generate_options(report, fields.Date.today() + relativedelta(months=-7, day=1), fields.Date.today())
-        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_closed_asset, options)
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_closed_asset)
 
     def test_depreciation_schedule_hierarchy(self):
         # Remove previously existing assets.
@@ -1945,34 +1945,34 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         expected_values = [
             # pylint: disable=C0326
-            {'name': '1 Group 1',                           'level': 1,     'book_value': '6,920.00'},
-              {'name': '11 Group 11',                       'level': 2,     'book_value': '3,600.00'},
-                {'name': '1100 Account A',                  'level': 3,     'book_value': '2,200.00'},
-                  {'name': 'ZenBook',                       'level': 4,     'book_value': '1,000.00'},
-                  {'name': 'ThinkBook',                     'level': 4,     'book_value': '1,200.00'},
-                  {'name': 'Total 1100 Account A',          'level': 4,     'book_value': '2,200.00'},
-                {'name': '1110 Account A1',                 'level': 3,     'book_value': '1,400.00'},
-                  {'name': 'XPS',                           'level': 4,     'book_value': '1,400.00'},
-                  {'name': 'Total 1110 Account A1',         'level': 4,     'book_value': '1,400.00'},
-                {'name': 'Total 11 Group 11',               'level': 3,     'book_value': '3,600.00'},
-              {'name': '12 Group 12',                       'level': 2,     'book_value': '1,600.00'},
-                {'name': '1200 Account B',                  'level': 3,     'book_value': '1,600.00'},
-                  {'name': 'MacBook',                       'level': 4,     'book_value': '1,600.00'},
-                  {'name': 'Total 1200 Account B',          'level': 4,     'book_value': '1,600.00'},
-                {'name': 'Total 12 Group 12',               'level': 3,     'book_value': '1,600.00'},
-              {'name': '1300 Account C',                    'level': 2,     'book_value': '1,280.00'},
-                {'name': 'Aspire',                          'level': 3,     'book_value': '1,280.00'},
-                {'name': 'Total 1300 Account C',            'level': 3,     'book_value': '1,280.00'},
-              {'name': '1400 Account D',                    'level': 2,     'book_value': '440.00'},
-                {'name': 'Playstation',                     'level': 3,     'book_value': '440.00'},
-                {'name': 'Total 1400 Account D',            'level': 3,     'book_value': '440.00'},
-              {'name': 'Total 1 Group 1',                   'level': 2,     'book_value': '6,920.00'},
-            {'name': '(No Group)',                          'level': 1,     'book_value': '400.00'},
-              {'name': '9999 Account E',                    'level': 2,     'book_value': '400.00'},
-                {'name': 'Xbox',                            'level': 3,     'book_value': '400.00'},
-                {'name': 'Total 9999 Account E',            'level': 3,     'book_value': '400.00'},
-              {'name': 'Total (No Group)',                  'level': 2,     'book_value': '400.00'},
-            {'name': 'Total',                               'level': 1,     'book_value': '7,320.00'},
+            {'name': '1 Group 1',                           'level': 1,     'book_value': '$\xa06,920.00'},
+              {'name': '11 Group 11',                       'level': 2,     'book_value': '$\xa03,600.00'},
+                {'name': '1100 Account A',                  'level': 3,     'book_value': '$\xa02,200.00'},
+                  {'name': 'ZenBook',                       'level': 4,     'book_value': '$\xa01,000.00'},
+                  {'name': 'ThinkBook',                     'level': 4,     'book_value': '$\xa01,200.00'},
+                  {'name': 'Total 1100 Account A',          'level': 4,     'book_value': '$\xa02,200.00'},
+                {'name': '1110 Account A1',                 'level': 3,     'book_value': '$\xa01,400.00'},
+                  {'name': 'XPS',                           'level': 4,     'book_value': '$\xa01,400.00'},
+                  {'name': 'Total 1110 Account A1',         'level': 4,     'book_value': '$\xa01,400.00'},
+                {'name': 'Total 11 Group 11',               'level': 3,     'book_value': '$\xa03,600.00'},
+              {'name': '12 Group 12',                       'level': 2,     'book_value': '$\xa01,600.00'},
+                {'name': '1200 Account B',                  'level': 3,     'book_value': '$\xa01,600.00'},
+                  {'name': 'MacBook',                       'level': 4,     'book_value': '$\xa01,600.00'},
+                  {'name': 'Total 1200 Account B',          'level': 4,     'book_value': '$\xa01,600.00'},
+                {'name': 'Total 12 Group 12',               'level': 3,     'book_value': '$\xa01,600.00'},
+              {'name': '1300 Account C',                    'level': 2,     'book_value': '$\xa01,280.00'},
+                {'name': 'Aspire',                          'level': 3,     'book_value': '$\xa01,280.00'},
+                {'name': 'Total 1300 Account C',            'level': 3,     'book_value': '$\xa01,280.00'},
+              {'name': '1400 Account D',                    'level': 2,     'book_value': '$\xa0440.00'},
+                {'name': 'Playstation',                     'level': 3,     'book_value': '$\xa0440.00'},
+                {'name': 'Total 1400 Account D',            'level': 3,     'book_value': '$\xa0440.00'},
+              {'name': 'Total 1 Group 1',                   'level': 2,     'book_value': '$\xa06,920.00'},
+            {'name': '(No Group)',                          'level': 1,     'book_value': '$\xa0400.00'},
+              {'name': '9999 Account E',                    'level': 2,     'book_value': '$\xa0400.00'},
+                {'name': 'Xbox',                            'level': 3,     'book_value': '$\xa0400.00'},
+                {'name': 'Total 9999 Account E',            'level': 3,     'book_value': '$\xa0400.00'},
+              {'name': 'Total (No Group)',                  'level': 2,     'book_value': '$\xa0400.00'},
+            {'name': 'Total',                               'level': 1,     'book_value': '$\xa07,320.00'},
         ]
 
         self.assertEqual(len(lines), len(expected_values))

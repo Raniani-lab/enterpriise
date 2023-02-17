@@ -129,7 +129,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('999999 Undistributed Profits/Losses', 2000.0,         3000.0,         -1000.0),
                 ('Total',                               6300.0,         6300.0,         0.0),
             ],
-            options,
         )
 
     def test_general_ledger_unaffected_earnings_previous_fiscal_year(self):
@@ -179,7 +178,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('999999 Undistributed Profits/Losses', 2000.0,         3000.0,         -1000.0),
                 ('Total',                               6300.0,         6300.0,         0.0),
             ],
-            options,
         )
 
     def test_general_ledger_fold_unfold_multicompany_multicurrency(self):
@@ -202,7 +200,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
                 ('Total',                               21550.0,        21550.0,        0.0),
             ],
-            options,
         )
 
         options['unfold_all'] = True
@@ -239,7 +236,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
                 ('Total',                               21550.0,        21550.0,        0.0),
             ],
-            options,
         )
 
     def test_general_ledger_multiple_years_initial_balance(self):
@@ -274,7 +270,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
                 ('Total',                               21850.0,        21850.0,        0.0),
             ],
-            options,
         )
 
         options['unfold_all'] = True
@@ -311,7 +306,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
                 ('Total',                               21850.0,        21850.0,        0.0),
             ],
-            options,
         )
 
     def test_general_ledger_load_more(self):
@@ -340,7 +334,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('999999 Undistributed Profits/Losses', 200.0,          300.0,          -100.0),
                 ('Total',                               21300.0,        21300.0,        0.0),
             ],
-            options,
         )
 
         load_more_1 = self.report._expand_unfoldable_line('_report_expand_unfoldable_line_general_ledger', report_lines[3]['id'], report_lines[6]['groupby'], options, json.loads(report_lines[6]['progress']), report_lines[6]['offset'])
@@ -354,7 +347,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('INV/2017/00001',                      5000.0,         '',            14000.0),
                 ('Load more...',                        '',             '',             ''),
             ],
-            options,
         )
 
         load_more_2 = self.report._expand_unfoldable_line('_report_expand_unfoldable_line_general_ledger', report_lines[3]['id'], load_more_1[2]['groupby'], options, json.loads(load_more_1[2]['progress']), load_more_1[2]['offset'])
@@ -366,7 +358,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
             [
                 ('INV/2017/00001',                      6000.0,         '',             20000.0),
             ],
-            options,
         )
 
     def test_general_ledger_foreign_currency_account(self):
@@ -458,8 +449,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('Total test foreign_curr_account',     -2300.0,        '',             1100.0,         -1100.0),
                 ('Total',                               '',             22650.0,        22650.0,        0.0),
             ],
-            options,
-            currency_map={4: {'currency': self.currency_data['currency']}},
+            currency_map = {4: {'currency': self.currency_data['currency']}},
         )
 
     def test_general_ledger_filter_search_bar_print(self):
@@ -484,7 +474,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('Total 400000 Product Sales',               '',        200.0,           -200.0),
                 ('Total',                               20000.0,        200.0,          19800.0),
             ],
-            options,
         )
 
         options['filter_search_bar'] = '999'
@@ -498,7 +487,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 ('999999 Undistributed Profits/Losses',          '',           50.0,           -50.0),
                 ('Total',                                     200.0,          350.0,          -150.0),
             ],
-            options,
         )
 
     def test_general_ledger_communication(self):
@@ -546,7 +534,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 (invoice_2.name,                        'test2'),
                 ('Total',                               ''),
             ],
-            options,
         )
 
     def test_general_ledger_income_expense_initial_balance(self):

@@ -48,14 +48,13 @@ class SwedishSalesReportTest(AccountSalesReportCommon):
         self.assertLinesValues(
             # pylint: disable=bad-whitespace
             lines,
-            #   Partner                 VAT Number,            Goods,      Triangular, Services,
-            [   0,                      1,                     2,          3,          4],
+            #   Partner                 VAT Number,         Goods,                              Triangular,                         Services,
+            [   0,                      1,                  2,                                  3,                                  4],
             [
-                (self.partner_a.name,   self.partner_a.vat,    6000.00,    '',         7000.00),
-                (self.partner_b.name,   self.partner_b.vat,    '',         2000.00,    4000.00),
-                ('Total',               '',                    6000.00,    2000.00,    11000.00),
+                (self.partner_a.name,   self.partner_a.vat, f'6,000.00{NON_BREAKING_SPACE}kr',  '',                                 f'7,000.00{NON_BREAKING_SPACE}kr'),
+                (self.partner_b.name,   self.partner_b.vat, '',                                 f'2,000.00{NON_BREAKING_SPACE}kr',  f'4,000.00{NON_BREAKING_SPACE}kr'),
+                ('Total',               '',                 f'6,000.00{NON_BREAKING_SPACE}kr',  f'2,000.00{NON_BREAKING_SPACE}kr',  f'11,000.00{NON_BREAKING_SPACE}kr'),
             ],
-            options,
         )
         correct_report = 'SKV574008\r\n' \
                          'SE123456789701;1912;Because I am accountman!;;accountman@test.com;\r\n' \

@@ -67,7 +67,6 @@ class TestBilanComptable(TestAccountReportsCommon):
             [
                 ('Availability',          100.0),
             ],
-            options,
         )
 
         # Create a second move to bring the bank_journal to a negative value.
@@ -92,5 +91,4 @@ class TestBilanComptable(TestAccountReportsCommon):
             [
                 ('Borrowings and debts with credit institutions',      200.0),
             ],
-            options,
         )

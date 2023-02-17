@@ -55,13 +55,12 @@ class GermanySalesReportTest(AccountSalesReportCommon):
             #   Partner                country code,            VAT Number,             Tax   Amount
             [   0,                     1,                       2,                       3,    4],
             [
-                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  'L',  600.00),
-                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  'D',  500.00),
-                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  'S',  700.00),
-                (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  'D',  500.00),
-                (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  'S',  700.00),
-                ('Total',              '',                      '',                      '',   3000.00),
+                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  'L',  f'600.00{NON_BREAKING_SPACE}€'),
+                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  'D',  f'500.00{NON_BREAKING_SPACE}€'),
+                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  'S',  f'700.00{NON_BREAKING_SPACE}€'),
+                (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  'D',  f'500.00{NON_BREAKING_SPACE}€'),
+                (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  'S',  f'700.00{NON_BREAKING_SPACE}€'),
+                ('Total',              '',                      '',                      '',   f'3,000.00{NON_BREAKING_SPACE}€'),
             ],
-            options,
         )
         self.assertTrue(self.env['account.general.ledger.report.handler'].l10n_de_datev_export_to_zip(options).get('file_content'), 'Error creating CSV')

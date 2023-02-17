@@ -48,5 +48,4 @@ class TestClEightColumnsReport(TestAccountReportsCommon):
                 ('Profit and Loss',                      '',        '',      '',      '',         '', 1000.0,  1000.0,       ''),
                 ('Total',                            1190.0,    1190.0,  1190.0,  1190.0,     1190.0, 1190.0,  1000.0,   1000.0),
             ],
-            options,
         )

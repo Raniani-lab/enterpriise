@@ -138,33 +138,32 @@ class TestReconciliationReport(TestAccountReportsCommon):
                 #   Name                                                            Date            Amount
                 [   0,                                                              1,              3],
                 [
-                    ('Balance of 101405 Bank',                                      '01/02/2016',   '-300.00'),
+                    ('Balance of 101405 Bank',                                      '01/02/2016',   -300.0),
 
-                    ('Including Unreconciled Bank Statement Receipts',              '',             '800.00'),
-                    ('BNKKK/2015/00002',                                            '01/02/2015',   '200.00'),
-                    ('BNKKK/2014/00001',                                            '12/31/2014',   '600.00'),
-                    ('Total Including Unreconciled Bank Statement Receipts',        '',             '800.00'),
+                    ('Including Unreconciled Bank Statement Receipts',              '',             800.0),
+                    ('BNKKK/2015/00002',                                            '01/02/2015',   200.0),
+                    ('BNKKK/2014/00001',                                            '12/31/2014',   600.0),
+                    ('Total Including Unreconciled Bank Statement Receipts',        '',             800.0),
 
-                    ('Including Unreconciled Bank Statement Payments',              '',             '-900.00'),
-                    ('BNKKK/2015/00004',                                            '01/04/2015',   '-400.00'),
-                    ('BNKKK/2014/00002',                                            '12/31/2014',   '-500.00'),
-                    ('Total Including Unreconciled Bank Statement Payments',        '',             '-900.00'),
+                    ('Including Unreconciled Bank Statement Payments',              '',             -900.0),
+                    ('BNKKK/2015/00004',                                            '01/04/2015',   -400.0),
+                    ('BNKKK/2014/00002',                                            '12/31/2014',   -500.0),
+                    ('Total Including Unreconciled Bank Statement Payments',        '',             -900.0),
 
-                    ('Total Balance of 101405 Bank',                                '01/02/2016',   '-300.00'),
+                    ('Total Balance of 101405 Bank',                                '01/02/2016',   -300.0),
 
-                    ('Outstanding Payments/Receipts',                               '',             '100.00'),
+                    ('Outstanding Payments/Receipts',                               '',             100.0),
 
-                    ('(+) Outstanding Receipts',                                    '',             '450.00'),
-                    ('PBNKKK/2015/00004',                                            '01/04/2015',  '450.00'),
-                    ('Total (+) Outstanding Receipts',                              '',             '450.00'),
+                    ('(+) Outstanding Receipts',                                    '',             450.0),
+                    ('PBNKKK/2015/00004',                                            '01/04/2015',  450.0),
+                    ('Total (+) Outstanding Receipts',                              '',             450.0),
 
-                    ('(-) Outstanding Payments',                                    '',             '-350.00'),
-                    ('PBNKKK/2015/00003',                                           '01/03/2015',   '-350.00'),
-                    ('Total (-) Outstanding Payments',                              '',             '-350.00'),
+                    ('(-) Outstanding Payments',                                    '',             -350.0),
+                    ('PBNKKK/2015/00003',                                           '01/03/2015',   -350.0),
+                    ('Total (-) Outstanding Payments',                              '',             -350.0),
 
-                    ('Total Outstanding Payments/Receipts',                         '',             '100.00'),
+                    ('Total Outstanding Payments/Receipts',                         '',             100.0),
                 ],
-                options,
                 currency_map={3: {'currency': bank_journal.currency_id}},
                 ignore_folded=False,
             )
@@ -292,7 +291,6 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
                     ('Total Outstanding Payments/Receipts',                         '',             '',     '',                     5900.0),
                 ],
-                options,
                 currency_map={
                     3: {'currency_code_index': 4},
                     5: {'currency': journal_currency},
@@ -346,15 +344,14 @@ class TestReconciliationReport(TestAccountReportsCommon):
             #   Name                                                            Date            Amount
             [   0,                                                              1,              3],
             [
-                ('Balance of 101401 Bank',                                      '01/01/2019',   '10.00'),
+                ('Balance of 101404 Bank',                                      '01/01/2019',   10.0),
 
-                ('Including Unreconciled Bank Statement Receipts',              '',             '10.00'),
-                ('BNK1/2019/00001',                                             '01/01/2019',   '10.00'),
-                ('Total Including Unreconciled Bank Statement Receipts',        '',             '10.00'),
+                ('Including Unreconciled Bank Statement Receipts',              '',             10.0),
+                ('BNK1/2019/00001',                                             '01/01/2019',   10.0),
+                ('Total Including Unreconciled Bank Statement Receipts',        '',             10.0),
 
-                ('Total Balance of 101401 Bank',                                '01/01/2019',   '10.00'),
+                ('Total Balance of 101404 Bank',                                '01/01/2019',   10.0),
             ],
-            options,
             currency_map={3: {'currency': bank_journal.currency_id}},
             ignore_folded=False,
         )
@@ -367,28 +364,27 @@ class TestReconciliationReport(TestAccountReportsCommon):
             #   Name                                                            Date            Amount
             [   0,                                                              1,              3],
             [
-                ('Balance of 101401 Bank',                                      '01/04/2019',   '20.00'),
+                ('Balance of 101404 Bank',                                      '01/04/2019',   20.0),
 
-                ('Including Unreconciled Bank Statement Receipts',              '',             '60.00'),
-                ('BNK1/2019/00001',                                             '01/01/2019',   '10.00'),
-                ('BNK1/2019/00002',                                             '01/02/2019',   '20.00'),
-                ('BNK1/2019/00003',                                             '01/03/2019',   '30.00'),
-                ('Total Including Unreconciled Bank Statement Receipts',        '',             '60.00'),
+                ('Including Unreconciled Bank Statement Receipts',              '',             60.0),
+                ('BNK1/2019/00001',                                             '01/01/2019',   10.0),
+                ('BNK1/2019/00002',                                             '01/02/2019',   20.0),
+                ('BNK1/2019/00003',                                             '01/03/2019',   30.0),
+                ('Total Including Unreconciled Bank Statement Receipts',        '',             60.0),
 
-                ('Including Unreconciled Bank Statement Payments',              '',             '-40.00'),
-                ('BNK1/2019/00004',                                             '01/04/2019',   '-40.00'),
-                ('Total Including Unreconciled Bank Statement Payments',        '',             '-40.00'),
+                ('Including Unreconciled Bank Statement Payments',              '',             -40.0),
+                ('BNK1/2019/00004',                                             '01/04/2019',   -40.0),
+                ('Total Including Unreconciled Bank Statement Payments',        '',             -40.0),
 
-                ('Total Balance of 101401 Bank',                                '01/04/2019',   '20.00'),
+                ('Total Balance of 101404 Bank',                                '01/04/2019',   20.0),
 
-                ('Outstanding Payments/Receipts',                               '',             '1,000.00'),
-                ('(+) Outstanding Receipts',                                    '',             '1,000.00'),
-                ('PBNK1/2019/00001',                                            '01/03/2019',   '1,000.00'),
-                ('Total (+) Outstanding Receipts',                              '',             '1,000.00'),
-                ('Total Outstanding Payments/Receipts',                         '',             '1,000.00'),
+                ('Outstanding Payments/Receipts',                               '',             1000.0),
+                ('(+) Outstanding Receipts',                                    '',             1000.0),
+                ('PBNK1/2019/00001',                                            '01/03/2019',   1000.0),
+                ('Total (+) Outstanding Receipts',                              '',             1000.0),
+                ('Total Outstanding Payments/Receipts',                         '',             1000.0),
 
             ],
-            options,
             currency_map={3: {'currency': bank_journal.currency_id}},
             ignore_folded=False,
         )
@@ -469,16 +465,15 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
                     ('Total Balance of 101405 Bank',                                '01/02/2016',   ''),
 
-                    ('Outstanding Payments/Receipts',                               '',             '-1,300.00'),
+                    ('Outstanding Payments/Receipts',                               '',             -1,300.00),
 
-                    ('(-) Outstanding Payments',                                    '',             '-1,300.00'),
-                    ('BNKKK/2015/00001',                                            '12/31/2015',   '-500.00'),
-                    ('BNKKK/2014/00001',                                            '12/31/2014',   '-800.00'),
-                    ('Total (-) Outstanding Payments',                              '',             '-1,300.00'),
+                    ('(-) Outstanding Payments',                                    '',             -1,300.00),
+                    ('BNKKK/2015/00001',                                            '12/31/2015',   -500.00),
+                    ('BNKKK/2014/00001',                                            '12/31/2014',   -800.00),
+                    ('Total (-) Outstanding Payments',                              '',             -1,300.00),
 
-                    ('Total Outstanding Payments/Receipts',                         '',             '-1,300.00'),
+                    ('Total Outstanding Payments/Receipts',                         '',             -1,300.00),
                 ],
-                options,
                 currency_map={3: {'currency': bank_journal.currency_id}},
                 ignore_folded=False,
             )

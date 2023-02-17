@@ -820,7 +820,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
                 if index == len(groupby_fields) - 1:
                     columns.append({
                        'no_format': sign * tax_base_amount,
-                       'name': report.format_value(sign * tax_base_amount, figure_type='monetary_without_symbol'),
+                       'name': report.format_value(sign * tax_base_amount, figure_type='monetary'),
                        'style': 'white-space:nowrap;',
                     })
                 else:
@@ -829,7 +829,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
                 # Add the tax amount.
                 columns.append({
                    'no_format': sign * tax_amount,
-                   'name': report.format_value(sign * tax_amount, figure_type='monetary_without_symbol'),
+                   'name': report.format_value(sign * tax_amount, figure_type='monetary'),
                    'style': 'white-space:nowrap;',
                 })
 

@@ -88,7 +88,6 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
                 ('a) Tax authorities',                           170.0),
                 ('TOTAL (CAPITAL, RESERVES AND LIABILITIES)',    1306.0),
             ],
-            options,
         )
 
     def test_profit_and_loss(self):
@@ -106,7 +105,6 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
                 ('16. Profit or loss after taxation',                                    200.0),
                 ('18. Profit or loss for the financial year',                            200.0),
             ],
-            options,
         )
 
     @freeze_time('2019-12-31')

@@ -126,7 +126,6 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
                 ('999999 Undistributed Profits/Losses', '',             1000.0,         '',             '',             '',             1000.0),
                 ('Total',                               4000.0,         4000.0,         300.0,          300.0,          4300.0,         4300.0),
             ],
-            options,
         )
 
     def test_trial_balance_unaffected_earnings_previous_fiscal_year(self):
@@ -177,7 +176,6 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
                 ('999999 Undistributed Profits/Losses', '',             1000.0,         '',             '',             '',             1000.0),
                 ('Total',                               1000.0,         1000.0,         3300.0,         3300.0,         4300.0,         4300.0),
             ],
-            options,
         )
 
     def test_trial_balance_whole_report(self):
@@ -200,7 +198,6 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
                 ('999999 Undistributed Profits/Losses', '',              50.0,             '',             '',             '',             50.0),
                 ('Total',                               150.0,          150.0,          21200.0,        21200.0,        21350.0,        21350.0),
             ],
-            options,
         )
 
     def test_trial_balance_filter_journals(self):
@@ -220,7 +217,6 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
                 ('600000 Expenses',                     '',             '',             '',             21000.0,        '',             21000.0),
                 ('Total',                              0.0,            0.0,             21000.0,        21000.0,        21000.0,        21000.0),
             ],
-            options,
         )
 
     def test_trial_balance_comparisons(self):
@@ -242,7 +238,6 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
                 ('600000 Expenses',                     '',             '',             '',             '',             200.0,          '',             200.0,          ''),
                 ('Total',                              0.0,            0.0,             350.0,          350.0,          21200.0,        21200.0,        21050.0,        21050.0),
             ],
-            options,
         )
 
     def test_trial_balance_account_group_with_hole(self):

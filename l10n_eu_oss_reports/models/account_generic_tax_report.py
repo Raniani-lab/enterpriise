@@ -25,13 +25,13 @@ class OSSTaxReportCustomHandlerOss(models.AbstractModel):
             for country, tax_lines in sorted(tax_lines_by_country.items(), key=lambda elem: elem[0].display_name):
                 col_number = len(tax_lines[0]['columns']) if tax_lines else 0
                 tax_sums = [
-                    (sum(tax_lines[line_index]['columns'][col_index]['no_format'] for line_index, _ in enumerate(tax_lines)), options['columns'][col_index].get('figure_type', 'monetary'))
+                    sum(tax_lines[line_index]['columns'][col_index]['no_format'] for line_index in range(len(tax_lines)))
                     for col_index in range(1, col_number, 2)
                 ]
 
                 country_columns = []
-                for tax_sum, figure_type in tax_sums:
-                    country_columns += [{'name': ''}, {'no_format': tax_sum, 'name': report.format_value(tax_sum, figure_type=figure_type)}]
+                for tax_sum in tax_sums:
+                    country_columns += [{'name': ''}, {'no_format': tax_sum, 'name': report.format_value(tax_sum, figure_type='monetary')}]
 
                 country_line_id = report._get_generic_line_id('res.country', country.id, parent_line_id=parent_line['id'])
                 country_line = {

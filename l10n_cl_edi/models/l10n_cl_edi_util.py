@@ -123,18 +123,17 @@ class L10nClEdiUtilMixin(models.AbstractModel):
 
     def _l10n_cl_append_sig(self, xml_type, sign, message):
         tag_to_replace = {
-            'doc': '</DTE>',
-            'bol': '</EnvioBOLETA>',
-            'env': '</EnvioDTE>',
-            'recep': '</Recibo>',
-            'env_recep': '</EnvioRecibos>',
-            'env_resp': '</RespuestaDTE>',
-            'consu': '</ConsumoFolios>',
-            'token': '</getToken>'
+            'doc': Markup('</DTE>'),
+            'bol': Markup('</EnvioBOLETA>'),
+            'env': Markup('</EnvioDTE>'),
+            'recep': Markup('</Recibo>'),
+            'env_recep': Markup('</EnvioRecibos>'),
+            'env_resp': Markup('</RespuestaDTE>'),
+            'consu': Markup('</ConsumoFolios>'),
+            'token': Markup('</getToken>')
         }
-        tag = tag_to_replace.get(xml_type, '</EnvioBOLETA>')
-        # With %s we make sure we return a string and not a Markup
-        return message.replace(tag, '%s%s' % (sign, tag))
+        tag = tag_to_replace.get(xml_type, Markup('</EnvioBOLETA>'))
+        return message.replace(tag, sign + tag)
 
     def _l10n_cl_format_vat(self, value, with_zero=False):
         if not value or value in ['', 0]:
@@ -227,8 +226,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         Signed the xml following the SII documentation:
         http://www.sii.cl/factura_electronica/factura_mercado/instructivo_emision.pdf
         """
-        digest_value = re.sub(r'\n\s*$', '', message, flags=re.MULTILINE)
-        digest_value_tree = etree.tostring(etree.fromstring(digest_value)[0])
+        digest_value = Markup(re.sub(r'\n\s*$', '', message, flags=re.MULTILINE))
         if xml_type in ['doc', 'recep', 'token']:
             signed_info_template = 'l10n_cl_edi.signed_info_template'
         else:
@@ -236,7 +234,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         signed_info = self.env['ir.qweb']._render(signed_info_template, {
             'uri': '#{}'.format(uri),
             'digest_value': base64.b64encode(
-                self._get_sha1_digest(etree.tostring(etree.fromstring(digest_value_tree), method='c14n'))).decode(),
+                self._get_sha1_digest(etree.tostring(etree.fromstring(digest_value)[0], method='c14n'))).decode(),
         })
         signed_info_c14n = Markup(etree.tostring(etree.fromstring(signed_info), method='c14n', exclusive=False,
                                           with_comments=False, inclusive_ns_prefixes=None).decode())
@@ -253,10 +251,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         full_doc = self._l10n_cl_append_sig(xml_type, signature, digest_value)
         # The validation of the full document
         self._xml_validator(full_doc, xml_type, is_doc_type_voucher)
-        return '{header}{full_doc}'.format(
-            header='<?xml version="1.0" encoding="ISO-8859-1" ?>' if xml_type != 'token' else '<?xml version="1.0" ?>',
-            full_doc=full_doc
-        )
+        return Markup('<?xml version="1.0" encoding="ISO-8859-1" ?>'
+                      if xml_type != 'token' else '<?xml version="1.0" ?>') + full_doc
 
     def _report_connection_err(self, error):
         # raise error
@@ -407,6 +403,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         )
 
     def _get_dte_claim(self, mode, company_vat, digital_signature, document_type_code, document_number):
+        if mode == 'SIIDEMO':
+            return None
         token = self._get_token(mode, digital_signature)
         if token is None:
             self._report_connection_err(_('Token cannot be generated. Please try again'))
@@ -425,6 +423,8 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             claim_type)
 
     def _send_sii_claim_response(self, mode, company_vat, digital_signature, document_type_code, document_number, claim_type):
+        if mode == 'SIIDEMO':
+            return None
         token = self._get_token(mode, digital_signature)
         if token is None:
             self._report_connection_err(_('Token cannot be generated. Please try again'))

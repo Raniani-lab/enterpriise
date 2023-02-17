@@ -6110,7 +6110,10 @@ QUnit.module('ViewEditorManager', {
     QUnit.test("entering x2many with view widget", async (assert) => {
         class MyWidget extends owl.Component {}
         MyWidget.template = owl.xml`<div class="myWidget" />`;
-        registry.category("view_widgets").add("myWidget", MyWidget);
+        const myWidget = {
+            component: MyWidget,
+        }
+        registry.category("view_widgets").add("myWidget", myWidget);
 
         serverData.models.coucou.records[0] = {
             id: 1,

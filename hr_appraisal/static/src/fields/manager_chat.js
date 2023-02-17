@@ -18,4 +18,7 @@ AppraisalManagerChat.props = {
 };
 AppraisalManagerChat.template = 'hr_appraisal.ManagerChat';
 
-registry.category("view_widgets").add("appraisal_manager_chat", AppraisalManagerChat);
+export const appraisalManagerChat = {
+    component: AppraisalManagerChat,
+};
+registry.category("view_widgets").add("appraisal_manager_chat", appraisalManagerChat);

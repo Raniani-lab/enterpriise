@@ -33,4 +33,7 @@ export class IoTBoxDownloadLogs extends Component {
 }
 IoTBoxDownloadLogs.template = `iot.IoTBoxDownloadLogs`;
 
-registry.category('view_widgets').add('iot_download_logs', IoTBoxDownloadLogs);
+export const ioTBoxDownloadLogs = {
+    component: IoTBoxDownloadLogs,
+};
+registry.category("view_widgets").add("iot_download_logs", ioTBoxDownloadLogs);

@@ -17,7 +17,8 @@ export class PlmToasterButton extends Component {
 }
 
 PlmToasterButton.template = "mrp_plm.ToasterButton"
-PlmToasterButton.displayName = "MRP_PLM Toaster Button"
 
-registry.category("view_widgets").add("plm_toaster_button", PlmToasterButton);
-
+export const plmToasterButton = {
+    component: PlmToasterButton,
+};
+registry.category("view_widgets").add("plm_toaster_button", plmToasterButton);

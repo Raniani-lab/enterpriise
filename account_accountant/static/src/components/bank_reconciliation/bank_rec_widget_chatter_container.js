@@ -17,9 +17,12 @@ FormChatterContainer.props = {
     ...standardWidgetProps,
     m2oField: { type: String }
 };
-FormChatterContainer.extractProps = ({ attrs }) => ({
-    m2oField: attrs.m2oField,
-});
 FormChatterContainer.components = { ChatterContainer }
 
-registry.category("view_widgets").add("bank_rec_form_chatter", FormChatterContainer);
+export const formChatterContainer = {
+    component: FormChatterContainer,
+    extractProps: ({ attrs }) => ({
+        m2oField: attrs.m2oField,
+    }),
+};
+registry.category("view_widgets").add("bank_rec_form_chatter", formChatterContainer);

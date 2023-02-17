@@ -63,4 +63,9 @@ AppointmentOnboardingInviteButtons.props = {
 };
 AppointmentOnboardingInviteButtons.template = 'appointment.AppointmentOnboardingInviteButtons';
 
-registry.category("view_widgets").add("appointment_onboarding_invite_buttons", AppointmentOnboardingInviteButtons);
+export const appointmentOnboardingInviteButtons = {
+    component: AppointmentOnboardingInviteButtons,
+};
+registry
+    .category("view_widgets")
+    .add("appointment_onboarding_invite_buttons", appointmentOnboardingInviteButtons);

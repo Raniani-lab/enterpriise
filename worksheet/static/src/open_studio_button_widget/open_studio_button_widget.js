@@ -32,4 +32,7 @@ OpenStudioWidget.props = {
     ...standardWidgetProps,
 };
 
-registry.category("view_widgets").add("open_studio_button", OpenStudioWidget);
+export const openStudioWidget = {
+    component: OpenStudioWidget,
+};
+registry.category("view_widgets").add("open_studio_button", openStudioWidget);

@@ -107,9 +107,13 @@ Digipad.props = {
     ...standardWidgetProps,
     quantityField: { type: String }
 };
-Digipad.extractProps = ({ attrs }) => {
-    return {
-        quantityField: attrs.quantity_field,
-    };
+
+export const digipad = {
+    component: Digipad,
+    extractProps: ({ attrs }) => {
+        return {
+            quantityField: attrs.quantity_field,
+        };
+    },
 };
-registry.category('view_widgets').add('digipad', Digipad);
+registry.category('view_widgets').add('digipad', digipad);

@@ -22,9 +22,12 @@ AddPayslips.props = {
     ...standardWidgetProps,
     string: { type: String },
 };
-AddPayslips.extractProps = ({ attrs }) => {
-    const { string } = attrs;
-    return { string };
-};
 
-registry.category("view_widgets").add("add_payslips", AddPayslips);
+export const addPayslips = {
+    component: AddPayslips,
+    extractProps: ({ attrs }) => {
+        const { string } = attrs;
+        return { string };
+    },
+};
+registry.category("view_widgets").add("add_payslips", addPayslips);

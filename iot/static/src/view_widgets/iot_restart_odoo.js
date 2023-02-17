@@ -151,11 +151,13 @@ IoTRestartOdooOrReboot.props = {
     action: { type: String },
 };
 
-IoTRestartOdooOrReboot.extractProps = ({ field, attrs }) => {
-    return {
-        btn_name: attrs.btn_name,
-        action: attrs.action,
-    };
+export const ioTRestartOdooOrReboot = {
+    component: IoTRestartOdooOrReboot,
+    extractProps: ({ attrs }) => {
+        return {
+            btn_name: attrs.btn_name,
+            action: attrs.action,
+        };
+    },
 };
-
-registry.category("view_widgets").add("iot_restart_odoo_or_reboot", IoTRestartOdooOrReboot);
+registry.category("view_widgets").add("iot_restart_odoo_or_reboot", ioTRestartOdooOrReboot);

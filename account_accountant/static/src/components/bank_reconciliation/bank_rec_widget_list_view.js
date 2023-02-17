@@ -56,10 +56,13 @@ FormEmbeddedListView.props = {
     resModel: { type: String },
     dataField: { type: String },
 }
-FormEmbeddedListView.extractProps = ({ attrs }) => ({
-    resModel: attrs.resModel,
-    dataField: attrs.dataField,
-});
 FormEmbeddedListView.components = { View }
 
-registry.category("view_widgets").add("bank_rec_form_list", FormEmbeddedListView);
+export const formEmbeddedListView = {
+    component: FormEmbeddedListView,
+    extractProps: ({ attrs }) => ({
+        resModel: attrs.resModel,
+        dataField: attrs.dataField,
+    }),
+};
+registry.category("view_widgets").add("bank_rec_form_list", formEmbeddedListView);

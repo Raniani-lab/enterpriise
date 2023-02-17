@@ -20,4 +20,7 @@ export class IoTDeviceValueDisplay extends Component {
 }
 IoTDeviceValueDisplay.template = `iot.IoTDeviceValueDisplay`;
 
-registry.category('view_widgets').add('iot_device_value_display', IoTDeviceValueDisplay);
+export const ioTDeviceValueDisplay = {
+    component: IoTDeviceValueDisplay,
+};
+registry.category('view_widgets').add('iot_device_value_display', ioTDeviceValueDisplay);

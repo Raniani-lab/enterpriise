@@ -160,4 +160,7 @@ class KnowledgeCover extends Component {
 KnowledgeCover.props = standardWidgetProps;
 KnowledgeCover.template = "knowledge.KnowledgeCover";
 
-registry.category("view_widgets").add("knowledge_cover", KnowledgeCover);
+export const knowledgeCover = {
+    component: KnowledgeCover,
+};
+registry.category("view_widgets").add("knowledge_cover", knowledgeCover);

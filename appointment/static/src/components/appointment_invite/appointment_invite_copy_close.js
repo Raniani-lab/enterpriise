@@ -44,4 +44,7 @@ AppointmentInviteCopyClose.props = {
 };
 AppointmentInviteCopyClose.template = 'appointment.AppointmentInviteCopyClose';
 
-registry.category("view_widgets").add("appointment_invite_copy_close", AppointmentInviteCopyClose);
+export const appointmentInviteCopyClose = {
+    component: AppointmentInviteCopyClose,
+};
+registry.category("view_widgets").add("appointment_invite_copy_close", appointmentInviteCopyClose);

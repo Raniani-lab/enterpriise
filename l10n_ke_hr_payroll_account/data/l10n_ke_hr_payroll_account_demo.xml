@@ -103,6 +103,7 @@
         <field name="image_1920" type="base64" file="l10n_ke_hr_payroll/static/img/hr_employee_barack.jpg"/>
         <field name="company_id" ref="l10n_ke.demo_company_ke"/>
         <field name="user_id" ref="l10n_ke_hr_payroll_account.user_barack"/>
+        <field name="l10n_ke_mortgage">21000</field>
     </record>
 
     <record id="hr_contract_cdi_barack_previous" model="hr.contract">
@@ -118,6 +119,12 @@
         <field name="date_end" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-2))"/>
         <field name="resource_calendar_id" ref="l10n_ke_hr_payroll.resource_calendar_std_45h"/>
         <field name="l10n_ke_pension_contribution">17000</field>
+        <field name="l10n_ke_food_allowance">4000</field>
+        <field name="l10n_ke_airtime_allowance">3000</field>
+        <field name="l10n_ke_pension_allowance">6000</field>
+        <field name="l10n_ke_volontary_medical_insurance">3917</field>
+        <field name="l10n_ke_life_insurance">0</field>
+        <field name="l10n_ke_education">0</field>
     </record>
 
     <record id="hr_contract_cdi_barack" model="hr.contract">
@@ -132,6 +139,12 @@
         <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
         <field name="resource_calendar_id" ref="l10n_ke_hr_payroll.resource_calendar_std_45h"/>
         <field name="l10n_ke_pension_contribution">17000</field>
+        <field name="l10n_ke_food_allowance">4000</field>
+        <field name="l10n_ke_airtime_allowance">3000</field>
+        <field name="l10n_ke_pension_allowance">6000</field>
+        <field name="l10n_ke_volontary_medical_insurance">3917</field>
+        <field name="l10n_ke_life_insurance">0</field>
+        <field name="l10n_ke_education">0</field>
     </record>
 
     <record id="hr_employee_barack" model="hr.employee">

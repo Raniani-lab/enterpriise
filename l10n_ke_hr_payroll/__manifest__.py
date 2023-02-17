@@ -5,7 +5,7 @@
     'name': 'Kenya - Payroll',
     'countries': ['ke'],
     'category': 'Human Resources/Payroll',
-    'depends': ['hr_payroll', 'hr_contract_reports', 'hr_work_entry_holidays', 'hr_payroll_holidays'],
+    'depends': ['l10n_ke', 'hr_payroll', 'hr_contract_reports', 'hr_work_entry_holidays', 'hr_payroll_holidays'],
     'version': '1.0',
     'description': """
 Kenyan Payroll Rules.
@@ -28,6 +28,7 @@ Kenyan Payroll Rules.
         'data/hr_rule_parameters_data.xml',
         'data/hr_salary_rule_data.xml',
         'views/hr_contract_views.xml',
+        'views/hr_employee_views.xml',
         'views/report_payslip_templates.xml',
     ],
     'license': 'OEEL-1',

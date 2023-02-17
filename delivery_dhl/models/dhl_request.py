@@ -293,7 +293,10 @@ class DHLProvider():
         move_lines = picking.move_line_ids.filtered(lambda line: line.product_id.type in ['product', 'consu'])
         currency_id = picking.sale_id and picking.sale_id.currency_id or picking.company_id.currency_id
         for sequence, line in enumerate(move_lines, start=1):
-            unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id, rounding_method='HALF-UP')
+            if line.move_id.sale_line_id:
+                unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.move_id.sale_line_id.product_uom)
+            else:
+                unit_quantity = line.product_uom_id._compute_quantity(line.qty_done, line.product_id.uom_id)
             rounded_qty = max(1, float_round(unit_quantity, precision_digits=0, rounding_method='HALF-UP'))
             item = self.factory.ExportLineItem()
             item.LineNumber = sequence
@@ -302,7 +305,7 @@ class DHLProvider():
             if len(line.product_id.name) > 75:
                 raise UserError(_("DHL doesn't support products with name greater than 75 characters."))
             item.Description = line.product_id.name
-            item.Value = float_repr(line.sale_price, currency_id.decimal_places)
+            item.Value = float_repr(line.sale_price / rounded_qty, currency_id.decimal_places)
             item.Weight = item.GrossWeight = {
                 "Weight": carrier._dhl_convert_weight(line.product_id.weight, carrier.dhl_package_weight_unit),
                 "WeightUnit": carrier.dhl_package_weight_unit,

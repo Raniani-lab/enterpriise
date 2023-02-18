@@ -193,7 +193,7 @@
         <field name="name">sale.order.kanban</field>
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="subscription_state" class="o_kanban_mobile o_kanban_order" sample="1">
+            <kanban default_group_by="subscription_state" class="o_kanban_mobile o_kanban_order" sample="1" quick_create="false">
                 <field name="user_id"/>
                 <field name="subscription_state" options="{'group_by_tooltip': {'description': 'Description'}}"/>
                 <field name="starred"/>

@@ -3,6 +3,7 @@
 # 	* l10n_be_hr_contract_salary
 # 
 # Translators:
+# Friederike Fasterling-Nesselbosch, 2023
 # Martin Trigaux, 2023
 # 
 msgid ""
@@ -42,7 +43,7 @@ msgstr "<span>Tage / Jahr</span>"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_ambulatory_insurance
 msgid "Ambulatory Insurance"
-msgstr ""
+msgstr "Ambulante Versicherung"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_contract__has_bicycle
@@ -52,7 +53,7 @@ msgstr "Fahrrad zur Arbeit"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_generate_simulation_link__l10n_be_canteen_cost
 msgid "Canteen Cost"
-msgstr ""
+msgstr "Canteen Cost"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_certificate_civil_engineer
@@ -192,7 +193,7 @@ msgstr "Simulationslink generieren"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_group_insurance
 msgid "Group Insurance"
-msgstr ""
+msgstr "Gruppenversicherung"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_hospital_insurance
@@ -254,12 +255,12 @@ msgstr "Stelle"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.ui.menu,name:l10n_be_hr_contract_salary.menu_hr_job_positions
 msgid "Job Positions"
-msgstr ""
+msgstr "Offene Stellen"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.ui.menu,name:l10n_be_hr_contract_salary.menu_hr_job_configuration
 msgid "Jobs"
-msgstr ""
+msgstr "Jobs"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.job,name:l10n_be_hr_contract_salary.job_developer_belgium
@@ -353,7 +354,7 @@ msgstr "Vergütungsabrechnung"
 #. module: l10n_be_hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_contract_salary.hr_job_view_form
 msgid "Payroll"
-msgstr ""
+msgstr "Personalabrechnung"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_lang

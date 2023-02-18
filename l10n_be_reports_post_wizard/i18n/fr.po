@@ -22,7 +22,7 @@ msgstr ""
 #. module: l10n_be_reports_post_wizard
 #: model:ir.model,name:l10n_be_reports_post_wizard.model_l10n_be_reports_periodic_vat_xml_export
 msgid "Belgian Periodic VAT Report Export Wizard"
-msgstr ""
+msgstr "Assistant d'exportation de rapports périodiques de TVA en Belgique"
 
 #. module: l10n_be_reports_post_wizard
 #: model:ir.model,name:l10n_be_reports_post_wizard.model_account_move
@@ -32,17 +32,18 @@ msgstr "Écriture comptable"
 #. module: l10n_be_reports_post_wizard
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports_post_wizard.view_account_financial_report_export
 msgid "Post Tax Entry"
-msgstr ""
+msgstr "Poster une écriture fiscale"
 
 #. module: l10n_be_reports_post_wizard
 #. odoo-python
 #: code:addons/l10n_be_reports_post_wizard/models/account_move.py:0
 #, python-format
 msgid "Post a tax report entry"
-msgstr ""
+msgstr "Poster une écriture fiscale"
 
 #. module: l10n_be_reports_post_wizard
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports_post_wizard.view_account_financial_report_export
 msgid ""
 "Posting this entry will generate an XML export; please choose option(s)"
 msgstr ""
+"Poster cette écriture générera un export XML ; veuillez choisir une option"

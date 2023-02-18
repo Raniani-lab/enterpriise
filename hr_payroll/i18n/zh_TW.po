@@ -330,7 +330,7 @@ msgstr "添加新的薪資結構"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Add an internal note..."
-msgstr "增加內部備註..."
+msgstr "加入內部備註⋯"
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_hr_payslip_run_generate

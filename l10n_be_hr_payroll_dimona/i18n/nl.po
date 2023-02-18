@@ -3,6 +3,7 @@
 # 	* l10n_be_hr_payroll_dimona
 # 
 # Translators:
+# Jolien De Paepe, 2023
 # Martin Trigaux, 2023
 # 
 msgid ""
@@ -61,7 +62,7 @@ msgstr "Contract"
 #. module: l10n_be_hr_payroll_dimona
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_dimona.field_l10n_be_dimona_wizard__contract_country_code
 msgid "Country Code"
-msgstr ""
+msgstr "Landcode"
 
 #. module: l10n_be_hr_payroll_dimona
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_dimona.field_l10n_be_dimona_wizard__create_uid
@@ -143,12 +144,12 @@ msgstr ""
 #. module: l10n_be_hr_payroll_dimona
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_dimona.field_l10n_be_dimona_wizard__employee_birthday
 msgid "Date of Birth"
-msgstr ""
+msgstr "Geboortedatum"
 
 #. module: l10n_be_hr_payroll_dimona
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_dimona.field_l10n_be_dimona_wizard__declaration_type
 msgid "Declaration Type"
-msgstr ""
+msgstr "Type verklaring"
 
 #. module: l10n_be_hr_payroll_dimona
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll_dimona.selection__hr_contract__l10n_be_dimona_declaration_state__done
@@ -231,7 +232,7 @@ msgstr "Einddatum"
 #. module: l10n_be_hr_payroll_dimona
 #: model:ir.model.fields,help:l10n_be_hr_payroll_dimona.field_l10n_be_dimona_wizard__contract_date_end
 msgid "End date of the contract (if it's a fixed-term contract)."
-msgstr ""
+msgstr "Einddatum van het contract (het is een vaste termijn contract)."
 
 #. module: l10n_be_hr_payroll_dimona
 #. odoo-python
@@ -417,6 +418,8 @@ msgid ""
 "The ISO country code in two chars. \n"
 "You can use this field for quick search."
 msgstr ""
+"De ISO-landcode in twee letters.\n"
+"Je kunt dit veld gebruiken voor snelzoeken."
 
 #. module: l10n_be_hr_payroll_dimona
 #. odoo-python

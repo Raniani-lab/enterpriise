@@ -524,7 +524,7 @@ msgstr "ഇൻകം"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Invoiced"
-msgstr ""
+msgstr "ഇൻവോയ്സ് ചെയ്തു"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web

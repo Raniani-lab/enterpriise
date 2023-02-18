@@ -1165,6 +1165,13 @@ msgid "Article Member"
 msgstr "Artikel Lid"
 
 #. module: knowledge
+#. odoo-javascript
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Article Structure"
+msgstr ""
+
+#. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_url
 msgid "Article URL"
 msgstr "Artikel-URL"
@@ -2233,13 +2240,6 @@ msgstr ""
 #, python-format
 msgid "Open"
 msgstr "Openen"
-
-#. module: knowledge
-#. odoo-javascript
-#: code:addons/knowledge/static/src/js/wysiwyg.js:0
-#, python-format
-msgid "Outline"
-msgstr "Overzicht"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__parent_id

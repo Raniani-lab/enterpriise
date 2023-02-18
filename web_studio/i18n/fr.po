@@ -1174,14 +1174,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Create your App"
-msgstr "Créer votre App"
+msgstr "Créez votre App"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Create your app"
-msgstr "Créer votre app"
+msgstr "Créez votre app"
 
 #. module: web_studio
 #. odoo-javascript

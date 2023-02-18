@@ -2818,7 +2818,7 @@ msgid ""
 "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
 msgstr ""
 "¿Quiere convertirse en una <b>empresa libre de papel</b>? Descubra la "
-"aplicación de Documentos de Odoo."
+"aplicación Documentos de Odoo."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids

@@ -147,12 +147,12 @@ msgstr "International"
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "Label Format"
-msgstr "Format d'étiquette"
+msgstr "Format de libellé"
 
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "Label Type"
-msgstr "Type d'étiquette"
+msgstr "Type de libellé"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_shipment_type__other
@@ -202,8 +202,7 @@ msgstr "Fournisseur"
 msgid ""
 "Return labels created into bpost <br/> <b>Tracking Numbers: </b><br/>%s"
 msgstr ""
-"Étiquettes de retour créées dans Bpost <br/> <b>Numéro de suivi : "
-"</b><br/>%s"
+"Libellés de retour créés dans Bpost <br/> <b>Numéro de suivi : </b><br/>%s"
 
 #. module: delivery_bpost
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0

@@ -110,7 +110,7 @@ msgstr ""
 msgid ""
 "<br>See how to manage your customer invoices in the "
 "<b>Customers/Invoices</b> menu"
-msgstr "<br><b>청구서/공급업체 청구서</b>메뉴에서 어떻게 청구서를 관리하는지 봅니다."
+msgstr "<br><b>청구서/공급업체 청구서</b>메뉴에서 청구서 관리 방법을 확인하십시오."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
@@ -561,7 +561,7 @@ msgid ""
 "Create your first vendor bill.<br/><br/><i>Tip: If you don’t have one on "
 "hand, use our sample bill.</i>"
 msgstr ""
-"첫번째 공급업체 청구서를 만드세요. <br/><br/><i>팁:만약 없다면, 샘플 공급업체 청구서를 사용할수 있습니다.</i>"
+"첫 번째 공급업체 청구서를 생성합니다. <br/><br/><i>팁: 양식이 없는 경우, 공급업체 청구서 샘플을 활용해보십시오.</i>"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid

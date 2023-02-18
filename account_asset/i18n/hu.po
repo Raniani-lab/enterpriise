@@ -831,7 +831,7 @@ msgstr "Értékcsökkenés kezdetének dátuma"
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Dec. then Straight"
-msgstr "Csökk. majd egyenes"
+msgstr "Csökk. majd egyenletes"
 
 #. module: account_asset
 #. odoo-python
@@ -1961,7 +1961,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__linear
 msgid "Straight Line"
-msgstr "Egyenes vonal"
+msgstr "Egyenletes"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__book_value

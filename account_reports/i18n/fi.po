@@ -2549,7 +2549,7 @@ msgstr "ennakot"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__preview_data
 msgid "Preview Data"
-msgstr ""
+msgstr "Esikatsele dataa"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -3214,7 +3214,7 @@ msgstr "avautua"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Unfold All"
-msgstr ""
+msgstr "Avaa kaikki"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template

@@ -1136,7 +1136,7 @@ msgstr "Giới thiệu: %s (%s)"
 #: model_terms:ir.ui.view,arch_db:hr_referral.res_config_settings_view__form
 #, python-format
 msgid "Referrals"
-msgstr "Người giới thiệu"
+msgstr "Giới thiệu"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_applicant_view_search_bis_inherit_referral
@@ -1195,7 +1195,7 @@ msgstr "Thưởng"
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_reward
 msgid "Reward for Referrals"
-msgstr "Phần thưởng cho người giới thiệu"
+msgstr "Phần thưởng Giới thiệu"
 
 #. module: hr_referral
 #. openerp-web

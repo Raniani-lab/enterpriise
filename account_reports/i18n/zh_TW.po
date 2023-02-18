@@ -2721,7 +2721,7 @@ msgstr "撤銷日期"
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Reversal of: %s"
-msgstr "折讓:%s"
+msgstr "撤銷對象： %s"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search

@@ -1455,7 +1455,7 @@ msgstr "Postare Socială"
 #: model:ir.model,name:social.model_social_post_template
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Social Post Template"
-msgstr ""
+msgstr "Șablon Postare Socială"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.social_post_template_action
@@ -1621,7 +1621,7 @@ msgstr "Sincronizează"
 #: code:addons/social/models/social_post_template.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
-msgstr ""
+msgstr "Câmpul 'mesaj' este obligatoriu pentru postarea cu ID %s"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_ids

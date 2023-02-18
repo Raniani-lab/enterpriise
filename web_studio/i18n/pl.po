@@ -2010,7 +2010,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/search_renderer.xml:0
 #, python-format
 msgid "Grid View"
-msgstr "Widok Tabeli"
+msgstr "Widok Siatki"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__group_id
@@ -3837,7 +3837,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Tabs"
-msgstr "Tabulatory"
+msgstr "Zakładki"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4145,7 +4145,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Timeline"
-msgstr ""
+msgstr "Oś czasu"
 
 #. module: web_studio
 #. odoo-javascript

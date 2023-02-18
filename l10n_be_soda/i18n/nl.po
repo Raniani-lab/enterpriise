@@ -29,7 +29,7 @@ msgstr "Dagboek"
 #: code:addons/l10n_be_soda/models/account_journal.py:0
 #, python-format
 msgid "No attachment was provided"
-msgstr ""
+msgstr "Er was geen bijlage aangeleverd"
 
 #. module: l10n_be_soda
 #. odoo-python

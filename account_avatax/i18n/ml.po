@@ -331,7 +331,7 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_account_fiscal_position
 msgid "Fiscal Position"
-msgstr "ഫിസിക്കൽ പൊസിഷൻ"
+msgstr "ഫിസ്കൽ പൊസിഷൻ"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_payment_link_wizard

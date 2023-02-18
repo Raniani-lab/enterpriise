@@ -4,7 +4,7 @@
 # 
 # Translators:
 # M Palau <mpalau@tda.ad>, 2022
-# Josep Anton Belchi, 2022
+# jabelchi, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Martin Trigaux, 2022
 # marcescu, 2022
@@ -226,9 +226,10 @@ msgstr "Espai de treball"
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
-msgid "You must set an address on the employee to use Documents features."
+msgid ""
+"You must set a private address on the Employee in order to use Document's "
+"features."
 msgstr ""
-"Heu d'establir una adreça a l'empleat per utilitzar les funcions Documents."
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_folder

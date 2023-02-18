@@ -5,6 +5,7 @@
 # Translators:
 # Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
 # Martin Trigaux, 2023
+# Thi Huong Nguyen, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Thi Huong Nguyen, 2023\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1861,8 +1862,8 @@ msgid ""
 "The system will try to predict the accounts on vendor bill lines based on "
 "history of previous bills"
 msgstr ""
-"Hệ thống sẽ cố gắng dự đoán các tài khoản công nợ theo nhà cung cấp dựa trên"
-" lịch sử của công nợ trước đó"
+"Hệ thống sẽ cố gắng dự đoán các tài khoản trên hóa đơn nhà cung cấp dựa vào "
+"lịch sử hóa đơn trước đó"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2245,7 +2246,7 @@ msgstr "giao dịch ở"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "unpaid invoices"
-msgstr "công nợ chưa trả"
+msgstr "hóa đơn chưa thanh toán"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2259,4 +2260,4 @@ msgstr "bút toán chưa được đối soát"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "vendor bills"
-msgstr "công nợ nhà cung cấp"
+msgstr "hóa đơn nhà cung cấp"

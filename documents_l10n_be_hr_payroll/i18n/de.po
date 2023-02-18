@@ -137,7 +137,7 @@ msgstr "Belgien: Sozialversicherungsausweis"
 #: model:ir.model.fields,field_description:documents_l10n_be_hr_payroll.field_l10n_be_281_45__documents_enabled
 #: model:ir.model.fields,field_description:documents_l10n_be_hr_payroll.field_l10n_be_individual_account__documents_enabled
 msgid "Documents Enabled"
-msgstr ""
+msgstr "Dokumente aktiviert"
 
 #. module: documents_l10n_be_hr_payroll
 #: model:ir.model,name:documents_l10n_be_hr_payroll.model_l10n_be_individual_account

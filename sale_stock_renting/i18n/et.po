@@ -60,7 +60,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "<span class=\"o_form_label\">Default Padding Time</span>"
-msgstr "<span class=\"o_form_label\">Vaikimisi täiteaeg</span>"
+msgstr "<span class=\"o_form_label\">Vaikimisi varuaeg</span>"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_res_company__padding_time
@@ -157,7 +157,7 @@ msgstr "Partii/seerianumber"
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "Minimum amount of time between two rentals"
-msgstr "Minimaalne aeg kahe renti vahel"
+msgstr "Minimaalne aeg kahe rentimise vahel"
 
 #. module: sale_stock_renting
 #. odoo-python
@@ -179,7 +179,7 @@ msgstr "Muu rentimine on konfliktis."
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_res_config_settings__padding_time
 msgid "Padding"
-msgstr "Täitmine"
+msgstr "Varuaeg"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_res_company__padding_time

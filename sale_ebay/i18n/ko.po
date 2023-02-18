@@ -800,6 +800,8 @@ msgid ""
 "eBay does not handle longer timespans. Instead use synchronize_orders which "
 "split in as many calls as needed."
 msgstr ""
+"eBay 에서는 기간이 길어질 경우 처리가 불가능하므로, 이 함수는 30일 이상의 기간의 범위로 설정할 수 없습니다. 대신, 필요한 만큼"
+" 분할이 가능한 synchronize_orders 명령어를 사용하십시오."
 
 #. module: sale_ebay
 #. odoo-python

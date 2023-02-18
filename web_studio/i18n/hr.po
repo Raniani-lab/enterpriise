@@ -379,7 +379,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Additional Fields"
-msgstr ""
+msgstr "Dodatna polja"
 
 #. module: web_studio
 #. odoo-javascript

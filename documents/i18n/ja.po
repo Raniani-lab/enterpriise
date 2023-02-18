@@ -1424,7 +1424,7 @@ msgstr ""
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
 msgid "Knowledge"
-msgstr "ナレッジ"
+msgstr "知識"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document____last_update

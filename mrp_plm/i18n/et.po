@@ -323,7 +323,7 @@ msgstr "Manused"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__awaiting_my_validation
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Awaiting My Validation"
-msgstr "MInu kinnitust ootavad"
+msgstr "Minu kinnituse ootel"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1090,7 +1090,7 @@ msgid ""
 "              Gather the related documentation and receive the necessary approvals\n"
 "              before applying your changes."
 msgstr ""
-"Hallake ECOdega toodete ja tooteretseptide muudatusi.\n"
+"Hallake ECO toodete ja tooteretseptide muudatusi.\n"
 "              Koguge seotud dokumentatsiooni ning hankige vajalikke kinnitusi\n"
 "              enne muudatuste vastuvõtmist."
 
@@ -1221,7 +1221,7 @@ msgstr "Retsepti ei leitud. Loome ühe!"
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_product_tmpl
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action_report
 msgid "No engineering change order found"
-msgstr "Insenerimuudatuste teateid pole"
+msgstr "Teated tehniliste muudatuste kohta puuduvad"
 
 #. module: mrp_plm
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__priority__0
@@ -1875,7 +1875,7 @@ msgid ""
 "You can define here labels that will be displayed for the state instead\n"
 "                            of the default labels."
 msgstr ""
-"Siin saate määratleda sildid, mida kuvatakse etappildel vaikesiltide asemel."
+"Siin saate määratleda sildid, mida kuvatakse etappidel vaikesiltide asemel."
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:0

@@ -29,7 +29,7 @@ msgstr "Journal"
 #: code:addons/l10n_be_soda/models/account_journal.py:0
 #, python-format
 msgid "No attachment was provided"
-msgstr ""
+msgstr "Aucune pièce jointe n'a été fournie"
 
 #. module: l10n_be_soda
 #. odoo-python

@@ -44,12 +44,12 @@ msgstr "Factura rectificativa (abonament)"
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.helpdesk_ticket_view_form_inherit_helpdesk_invoicing
 #, python-format
 msgid "Credit Notes"
-msgstr "Abonaments"
+msgstr "Factures rectificatives"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_helpdesk_ticket__invoices_count
 msgid "Credit Notes Count"
-msgstr "Comptador de notes de crèdit"
+msgstr "Nombre de factures rectificatives"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_helpdesk_ticket

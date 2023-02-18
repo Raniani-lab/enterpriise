@@ -3636,7 +3636,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__start_date
 msgid "The start date indicate when the subscription periods begin."
-msgstr "Alguskuupäev näitab, millal algavad tellimisperioodid."
+msgstr "Alguskuupäev näitab, millal algab tellimisperiood."
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_renew

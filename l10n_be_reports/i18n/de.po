@@ -3,6 +3,8 @@
 # 	* l10n_be_reports
 # 
 # Translators:
+# Felix Schubert <felix.schubert@go-erp.com>, 2023
+# Friederike Fasterling-Nesselbosch, 2023
 # Martin Trigaux, 2023
 # 
 msgid ""
@@ -904,7 +906,7 @@ msgstr "Atn"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_needaction
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Aktion erforderlich"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__treatment_type__2
@@ -915,7 +917,7 @@ msgstr "Hinzufügen"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_address
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_address
@@ -957,7 +959,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_attachment_count
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Anzahl Anhänge"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -965,7 +967,7 @@ msgstr ""
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "Audit"
-msgstr ""
+msgstr "Prüfung"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_bce_number
@@ -976,7 +978,7 @@ msgstr ""
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_be_balancesheet0_column
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_be_profitandloss0_column
 msgid "Balance"
-msgstr ""
+msgstr "Saldo"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_ec_sales_report_handler
@@ -986,7 +988,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_reports_periodic_vat_xml_export
 msgid "Belgian Periodic VAT Report Export Wizard"
-msgstr ""
+msgstr "Belgischer Assistent für den Export periodischer MwSt.-Berichte"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_tax_report_handler
@@ -1039,7 +1041,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_city
 msgid "City"
-msgstr ""
+msgstr "Stadt"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_city
@@ -1064,7 +1066,7 @@ msgstr "Schließen"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__commissions
@@ -1097,12 +1099,12 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.account_financial_report_be_profitandloss0
 msgid "Compte de résultats"
-msgstr ""
+msgstr "Zusammenfassung der Ergebnisse"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Kontakt"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__control_value
@@ -1114,17 +1116,17 @@ msgstr ""
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
 msgid "Controls failed"
-msgstr ""
+msgstr "Kontrollen fehlgeschlagen"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__country_id
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_ec_sales_country
 msgid "Country Code"
-msgstr ""
+msgstr "Landescode"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__country_id
@@ -1178,7 +1180,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_id
 msgid "Debtor"
-msgstr ""
+msgstr "Debitor"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_address
@@ -1303,12 +1305,12 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_account_reports_export_wizard_format
 msgid "Export format for accounting's reports"
-msgstr ""
+msgstr "Exportformat für Buchungsberichte"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr ""
+msgstr "Export-Assistent für Buchungsberichte"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__exposed_expenses
@@ -1338,19 +1340,19 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__fees
 msgid "Fees"
-msgstr ""
+msgstr "Gebühren"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_follower_ids
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Follower"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_partner_ids
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Follower (Partner)"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
@@ -1421,7 +1423,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__sender_lang_code__3
 msgid "German"
-msgstr ""
+msgstr "Deutsch"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_report_l10n_be_reports_report_281_50_pdf
@@ -1449,7 +1451,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__has_message
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Hat eine Nachricht"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__id
@@ -1468,7 +1470,7 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__message_needaction
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Falls markiert, erfordern neue Nachrichten Ihre Aufmerksamkeit."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__message_has_error
@@ -1477,6 +1479,8 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
+"Das Senden mancher Nachrichten ist fehlgeschlagen wenn dieses Fenster "
+"angekreuzt ist."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__income_debtor_bce_number
@@ -1500,7 +1504,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_is_follower
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Ist ein Follower"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_is_natural_person
@@ -1568,19 +1572,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_main_attachment_id
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Hauptanhang"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_has_error
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Error beim senden der Nachricht"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_ids
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Nachrichten"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1670,31 +1674,31 @@ msgstr ""
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
 msgid "Not allowed negative amounts"
-msgstr ""
+msgstr "Kein negativer Betrag erlaubt"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_needaction_counter
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Anzahl der Aktionen"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_has_error_counter
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "# Fehler"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__message_needaction_counter
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__message_has_error_counter
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Anzahl der Nachrichten mit Zustellungsfehler"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1719,7 +1723,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
 msgid "Open"
-msgstr ""
+msgstr "Offen"
 
 #. module: l10n_be_reports
 #: model:ir.ui.menu,name:l10n_be_reports.menu_action_open_325_tree_view
@@ -1731,7 +1735,7 @@ msgstr ""
 #: code:addons/l10n_be_reports/models/res_partner.py:0
 #, python-format
 msgid "Open list"
-msgstr ""
+msgstr "Offene Liste"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__calling_export_wizard_id
@@ -1770,12 +1774,12 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_name
 msgid "Partner Name"
-msgstr ""
+msgstr "Partner Name"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.l10n_be_partner_vat_listing_line
@@ -1818,7 +1822,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.actions.client,name:l10n_be_reports.action_account_report_bepnl
 msgid "Profit and Loss"
-msgstr ""
+msgstr "Gewinn und Verlust"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1853,7 +1857,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_has_sms_error
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS Zustellungsfehler"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1875,7 +1879,7 @@ msgstr "Gruppierte Korrekturen senden"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_id
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__sender_id
 msgid "Sender"
-msgstr ""
+msgstr "Absender"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_address
@@ -1925,7 +1929,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.view_account_financial_report_export
 msgid "Some controls failed"
-msgstr ""
+msgstr "Einige Kontrollen fehlgeschlagen"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2101,19 +2105,19 @@ msgstr ""
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "View Partner"
-msgstr ""
+msgstr "Ansicht Partner"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__website_message_ids
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Website-Nachrichten"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__website_message_ids
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Website-Kommunikationsverlauf"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2174,7 +2178,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_zip
 msgid "Zip"
-msgstr ""
+msgstr "PLZ"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_zip

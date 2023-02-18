@@ -3358,7 +3358,7 @@ msgstr ""
 #: code:addons/sign/controllers/terms.py:0
 #, python-format
 msgid "The requested page is invalid, or doesn't exist anymore."
-msgstr ""
+msgstr "Pyydetty sivu on virheellinen tai sitä ei ole enää olemassa."
 
 #. module: sign
 #. odoo-python

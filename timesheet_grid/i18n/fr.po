@@ -418,11 +418,6 @@ msgid "Apple App Store"
 msgstr "App Store d'Apple"
 
 #. module: timesheet_grid
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
-msgid "Block encoding of timesheets after a certain date"
-msgstr "Bloquer l'encodage des feuilles de temps après une certaine date"
-
-#. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__can_edit
 msgid "Can Edit"
 msgstr "Peut éditer"
@@ -1013,6 +1008,15 @@ msgstr "Démarrer"
 #, python-format
 msgid "Press Esc to discard"
 msgstr "Appuyez sur Esc pour ignorer"
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid ""
+"Prevent employees from creating, modifying, or deleting timesheets prior to "
+"their most recent validated timesheet"
+msgstr ""
+"Empêcher les employés de créer, modifier ou supprimer des feuilles de temps "
+"antérieures à leur dernière feuille de temps validée."
 
 #. module: timesheet_grid
 #. odoo-javascript

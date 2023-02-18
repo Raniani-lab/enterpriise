@@ -1537,7 +1537,7 @@ msgstr "Ruolo di pianificazione"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_tree
 msgid "Planning Role List"
-msgstr ""
+msgstr "Elenco ruoli di pianificazione"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_slot

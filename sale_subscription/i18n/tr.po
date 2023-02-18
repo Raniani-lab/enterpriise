@@ -2651,7 +2651,7 @@ msgstr "Abonelik bu aşamaya taşındığında müşteriye bir e-posta gönderin
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_method
 msgid "Send as"
-msgstr ""
+msgstr "Olarak gönder"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_method
@@ -3372,6 +3372,15 @@ msgid ""
 "- 'Create Next Activity': create an activity (Discuss)\n"
 "- 'Send SMS Text Message': send SMS, log them on documents (SMS)"
 msgstr ""
+"Sunucu eylemi türü. Aşağıdaki değerler mevcuttur:\n"
+"- 'Python Kodunu Yürüt': yürütülecek bir python kodu bloğu\n"
+"- 'Yeni Kayıt Oluştur': yeni değerlerle yeni bir kayıt oluşturun\n"
+"- 'Bir Kaydı Güncelle': bir kaydın değerlerini güncelleyin\n"
+"- 'Birkaç eylemi yürütün': diğer birkaç sunucu eylemini tetikleyen bir eylem tanımlayın\n"
+"- 'E-posta Gönder': bir mesaj, not gönderin veya bir e-posta gönderin (Tartış)\n"
+"- 'Takipçi Ekle': Bir kayda takipçi ekleyin (Tartış)\n"
+"- 'Sonraki Aktiviteyi Oluştur': bir aktivite oluşturun (Tartış)\n"
+"- 'SMS Metin Mesajı Gönder': SMS gönderin, belgelere kaydedin (SMS)"
 
 #. module: sale_subscription
 #. odoo-python

@@ -252,7 +252,7 @@ msgstr "회계"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_report
 msgid "Accounting Report"
-msgstr ""
+msgstr "회계 보고서"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_acquisition_date

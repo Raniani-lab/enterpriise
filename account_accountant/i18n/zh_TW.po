@@ -1012,7 +1012,7 @@ msgstr "建立銷帳的時候必須要制定項目和日記帳."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
 msgid "Items"
-msgstr "攤銷分錄"
+msgstr "項目"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1559,7 +1559,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_tree
 #, python-format
 msgid "Reconcile"
-msgstr "調節"
+msgstr "對賬"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id

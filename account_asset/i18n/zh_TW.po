@@ -305,7 +305,7 @@ msgstr "活動類型圖示"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Add an internal note"
-msgstr ""
+msgstr "加入內部備註"
 
 #. module: account_asset
 #. odoo-python
@@ -794,7 +794,7 @@ msgstr "日期"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_depreciation_beginning_date
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_depreciation_beginning_date
 msgid "Date of the beginning of the depreciation"
-msgstr ""
+msgstr "開始折舊日期"
 
 #. module: account_asset
 #. odoo-python

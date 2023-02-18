@@ -32,7 +32,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__0
 msgid "0 - Logistics Services"
-msgstr ""
+msgstr "0 - Loģistikas pakalpojumi"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__1

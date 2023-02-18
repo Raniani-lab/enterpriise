@@ -3,6 +3,8 @@
 # 	* l10n_be_hr_contract_salary
 # 
 # Translators:
+# Cécile Collart <cco@odoo.com>, 2023
+# Jolien De Paepe, 2023
 # Martin Trigaux, 2023
 # 
 msgid ""
@@ -42,7 +44,7 @@ msgstr "<span>jours / an</span>"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_ambulatory_insurance
 msgid "Ambulatory Insurance"
-msgstr ""
+msgstr "Assurance ambulatoire"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_contract__has_bicycle
@@ -52,7 +54,7 @@ msgstr "Se rend au travail en vélo"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_generate_simulation_link__l10n_be_canteen_cost
 msgid "Canteen Cost"
-msgstr ""
+msgstr "Coût de la cantine"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_certificate_civil_engineer
@@ -192,7 +194,7 @@ msgstr "Générer le lien de simulation"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_group_insurance
 msgid "Group Insurance"
-msgstr ""
+msgstr "Assurance groupe"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_hospital_insurance
@@ -254,12 +256,12 @@ msgstr "Poste Occupé"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.ui.menu,name:l10n_be_hr_contract_salary.menu_hr_job_positions
 msgid "Job Positions"
-msgstr ""
+msgstr "Postes de travail"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.ui.menu,name:l10n_be_hr_contract_salary.menu_hr_job_configuration
 msgid "Jobs"
-msgstr ""
+msgstr "Postes"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.job,name:l10n_be_hr_contract_salary.job_developer_belgium
@@ -353,7 +355,7 @@ msgstr "Feuille de paie"
 #. module: l10n_be_hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_contract_salary.hr_job_view_form
 msgid "Payroll"
-msgstr ""
+msgstr "Paie"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_lang

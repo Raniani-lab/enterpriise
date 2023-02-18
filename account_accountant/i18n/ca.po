@@ -1408,7 +1408,7 @@ msgstr "Notes"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Odoo Bank Reconciliation"
-msgstr ""
+msgstr "Reconciliació bancaria d'Odoo"
 
 #. module: account_accountant
 #. odoo-python
@@ -1698,7 +1698,7 @@ msgstr "Desar i Nou"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "Cercar client"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1712,7 +1712,7 @@ msgstr "Selecciona empresa"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Select a transaction"
-msgstr ""
+msgstr "Seleccionar una transacció"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
@@ -1985,14 +1985,14 @@ msgstr "Per comprovar"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
-msgstr ""
+msgstr "Reconciliar factures i pagaments i publicar nous apunts comptables"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr ""
+msgstr "A conciliar amb les entrades obertes"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2044,6 +2044,8 @@ msgid ""
 "Use the <strong>Manual Operations</strong> tab to register the difference, "
 "or create expenses on the fly"
 msgstr ""
+"Utilitza la pestanya <strong> Operacions manuals </strong>per enregistrar la"
+" desviació o crear despeses al vol"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid

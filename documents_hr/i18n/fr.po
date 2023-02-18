@@ -223,10 +223,12 @@ msgstr "Espace de travail "
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
-msgid "You must set an address on the employee to use Documents features."
+msgid ""
+"You must set a private address on the Employee in order to use Document's "
+"features."
 msgstr ""
-"Vous devez définir une adresse sur l'employé pour utiliser les "
-"fonctionnalités de documents. "
+"Vous devez définir une adresse privée sur l'employé afin d'utiliser les "
+"fonctionnalités de Documents."
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_folder

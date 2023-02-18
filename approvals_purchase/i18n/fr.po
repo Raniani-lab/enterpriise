@@ -49,7 +49,7 @@ msgstr "Type de validation"
 #: model:ir.model.fields.selection,name:approvals_purchase.selection__approval_category__approval_type__purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.approval_purchase_request_view_form_inherit
 msgid "Create RFQ's"
-msgstr "Créer des demandes de devis"
+msgstr "Créer des demandes de prix"
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled

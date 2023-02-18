@@ -3,7 +3,10 @@
 # 	* l10n_be_hr_payroll
 # 
 # Translators:
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Yenthe Van Ginneken <yenthespam@gmail.com>, 2023
 # Martin Trigaux, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 17:09+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,22 +25,22 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "# Days"
-msgstr ""
+msgstr "# Dagen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "# Hours"
-msgstr ""
+msgstr "# Uren"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "# Hours :"
-msgstr ""
+msgstr "# Uren :"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_contract_view_form
 msgid "# Insured Children < 19"
-msgstr ""
+msgstr "# Verzekerde kinderen < 19"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__insured_relative_children
@@ -47,7 +50,7 @@ msgstr "# Verzekerde kinderen < 19 jaar oud"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_contract_view_form
 msgid "# Insured Children >= 19"
-msgstr ""
+msgstr "# Verzekerde kinderen >= 19"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__insured_relative_adults
@@ -101,7 +104,7 @@ msgstr "%s %s kwartaal %s"
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_hr_payroll_schedule_change_wizard.py:0
 #, python-format
 msgid "%s - %s"
-msgstr ""
+msgstr "%s - %s"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -152,18 +155,20 @@ msgstr "(object._get_report_base_filename())"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "* Amount"
-msgstr ""
+msgstr "* Bedrag"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid ""
 "* Compensation granted to insurance inspectors in reimbursement of costs"
 msgstr ""
+"* Vergoeding toegekend aan verzekeringsinspecteurs als vergoeding van de "
+"kosten"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "* Individual agreement available"
-msgstr ""
+msgstr "* Individuele overeenkomst beschikbaar"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -173,7 +178,7 @@ msgstr "* Km"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "* Mention: MOBILITY ALLOWANCE"
-msgstr ""
+msgstr "* Vermelding: MOBILITEITSVERGOEDING"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -181,21 +186,23 @@ msgid ""
 "* Options granted by a foreign company not having an establishment in "
 "Belgium"
 msgstr ""
+"* Opties toegekend door een buitenlandse vennootschap zonder vestiging in "
+"België"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "* Social Security package"
-msgstr ""
+msgstr "* Sociale zekerheid"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "* Total compensation"
-msgstr ""
+msgstr "* Totale vergoeding"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "* amount"
-msgstr ""
+msgstr "* bedrag"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -210,12 +217,12 @@ msgstr "* aard"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "* number of days out of border area"
-msgstr ""
+msgstr "* aantal dagen buiten het grensgebied"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "* percentage(s)"
-msgstr ""
+msgstr "* percentage(s)"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -224,12 +231,17 @@ msgid ""
 "third quarters of 2021 inclusive and / or for services provided during the "
 "second and fourth quarters of 2020"
 msgstr ""
+"* specifieke vergoedingen betaald in 2021 voor diensten van het eerste tot "
+"en met het derde kwartaal van 2021 en/of voor diensten verricht in het "
+"tweede en vierde kwartaal van 2020"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid ""
 "* total amount of all remuneration paid under a student employment contract"
 msgstr ""
+"* totaalbedrag van alle uit hoofde van een arbeidsovereenkomst voor "
+"studenten betaalde bezoldigingen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_belgium_payslip
@@ -277,12 +289,12 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "- actually provided from 07/01/2021"
-msgstr ""
+msgstr "- daadwerkelijk verstrekt vanaf 07/01/2021"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "- actually provided until 30.06.2021 inclusive"
-msgstr ""
+msgstr "- daadwerkelijk verstrekt tot en met 30.06.2021"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -290,6 +302,8 @@ msgid ""
 "- for overtime worked between 01.01.2021 and 30.09.2021 included with "
 "employers belonging to crucial sectors"
 msgstr ""
+"- voor overwerk verricht tussen 01.01.2021 en 30.09.2021, inbegrepen bij "
+"werkgevers die behoren tot cruciale sectoren"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -297,21 +311,23 @@ msgid ""
 "- for overtime worked between 01.07.2021 and 31.12.2021 as part of the "
 "recovery plan"
 msgstr ""
+"- voor overwerk verricht tussen 01.07.2021 en 31.12.2021 in het kader van "
+"het herstelplan"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "- lump sum reimbursements based on serious standards"
-msgstr ""
+msgstr "- forfaitaire vergoedingen op basis van serieuze normen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "- lump sum reimbursements in the absence of serious standards"
-msgstr ""
+msgstr "- forfaitaire vergoedingen bij gebrek aan serieuze normen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "- mobility allowance"
-msgstr ""
+msgstr "- mobiliteitsvergoeding"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -319,6 +335,8 @@ msgid ""
 "- provided from 01.01.2021 to 30.09.2021 inclusive with employers belonging "
 "to crucial sectors"
 msgstr ""
+"- verstrekt van 01.01.2021 tot en met 30.09.2021 met werkgevers die behoren "
+"tot cruciale sectoren"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -326,11 +344,13 @@ msgid ""
 "- provided from 07/01/2021 to 12/31/2021 included as part of the recovery "
 "plan"
 msgstr ""
+"- verstrekt van 07/01/2021 tot en met 12/31/2021 in het kader van het "
+"herstelplan"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "- reimbursements based on supporting documents"
-msgstr ""
+msgstr "- vergoedingen op basis van bewijsstukken"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n
@@ -364,7 +384,7 @@ msgstr "1 dag is het aantal uren per dag in het werkrooster"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "1) Remuneration"
-msgstr ""
+msgstr "1) Bezoldiging"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_res_company__onss_company_id
@@ -525,32 +545,32 @@ msgstr "1e"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "1° Awarded in 2021"
-msgstr ""
+msgstr "1° toegekend in 2021"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "1° Compensation, not mentioned in 2°, 3°, 4°"
-msgstr ""
+msgstr "1° Vergoeding, niet vermeld in 2°, 3°, 4°"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "1° Ordinary remuneration"
-msgstr ""
+msgstr "1° Gewone bezoldiging"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "1° which count for the limit up to 180 hours"
-msgstr ""
+msgstr "1° die meetellen voor de limiet tot 180 uren"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "2) Overtime"
-msgstr ""
+msgstr "2) Overuren"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "2) overtime worked in 2020 but paid in 2021"
-msgstr ""
+msgstr "2) overuren verricht in 2020 maar betaald in 2021"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
@@ -747,7 +767,7 @@ msgstr "Fiche 281.10"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "281.10 Sheet: Income"
-msgstr ""
+msgstr "Fiche 281.10: Inkomen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_45_action_view_tree
@@ -767,7 +787,7 @@ msgstr "Fiche 281.45"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid "281.45 Sheet - Year"
-msgstr ""
+msgstr "Fiche 281.45  - Jaar"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -802,7 +822,7 @@ msgstr "290"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid "2a. Income recipient"
-msgstr ""
+msgstr "2a. Inkomsten ontvanger"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_dmfa__quarter__2
@@ -817,12 +837,12 @@ msgstr "2° Acties"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "2° Arrears"
-msgstr ""
+msgstr "2° Achterstallige bedrage"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "2° Awarded before 2021"
-msgstr ""
+msgstr "2° Toegekend voor 2021"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_res_company__dmfa_employer_class
@@ -833,7 +853,7 @@ msgstr "3-cijferige code gegeven door ONSS"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid "3. Name and address of income debtor:"
-msgstr ""
+msgstr "3. Naam en adres van de inkomen schuldenaar:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -973,17 +993,17 @@ msgstr "3e"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "3° Bonuses, premiums and stock options"
-msgstr ""
+msgstr "3° Bonussen, premies en aandelenopties"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "3° which are taken into account for the limit up to 360 hours (*)"
-msgstr ""
+msgstr "3° die in aanmerking worden genomen voor de limiet tot 360 uur (*)"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid "4. Gross amount of income"
-msgstr ""
+msgstr "4. Brutobedrag aan inkomsten"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_dmfa__quarter__4
@@ -993,12 +1013,12 @@ msgstr "4e"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "4° Benefits in kind"
-msgstr ""
+msgstr "4° Voordelen alle aard"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid "5. Deducted fees"
-msgstr ""
+msgstr "5. Afgetrokken vergoedingen"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_contract__l10n_be_impulsion_plan__55yo
@@ -1008,7 +1028,7 @@ msgstr "55+ jaar oud"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "57.75 %"
-msgstr ""
+msgstr "57,75 %"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
@@ -1143,12 +1163,12 @@ msgstr "6,8% van de bruto referentiebezoldiging - bedrag extra verlof"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid "6. Amount of retained withholding tax"
-msgstr ""
+msgstr "6. Bedrag van de ingehouden bronbelasting"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "66.81 %"
-msgstr ""
+msgstr "66,81 %"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n
@@ -1167,7 +1187,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_xml_report
 msgid "865"
-msgstr ""
+msgstr "865"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_xml_report
@@ -1193,27 +1213,27 @@ msgstr "< 25 jaar oud"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "<b>Contributions Summary :</b>"
-msgstr ""
+msgstr "<b>Overzicht bijdragen:</b>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "<b>Deductions Summary :</b>"
-msgstr ""
+msgstr "<b>Overzicht inhoudingen:</b>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "<b>Remunerations Summary :</b>"
-msgstr ""
+msgstr "<b>Overzicht bezoldigingen:</b>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "<b>Services Summary :</b>"
-msgstr ""
+msgstr "<b>Overzicht diensten:</b>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "<b>Student Contributions Summary :</b>"
-msgstr ""
+msgstr "<b>Overzicht studentenbijdragen:</b>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.view_hr_payroll_employee_departure_notice
@@ -1256,7 +1276,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_contract_view_form
 msgid "<span class=\"ms-3\">/ month</span>"
-msgstr ""
+msgstr "<span class=\"ms-3\">/ maand</span>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_contract_view_form
@@ -1266,7 +1286,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_contract_view_form
 msgid "<span class=\"ms-3\">/ year</span>"
-msgstr ""
+msgstr "<span class=\"ms-3\">/ jaar</span>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_contract_view_form
@@ -1312,16 +1332,18 @@ msgid ""
 "<span class=\"o_form_label\">SDWorx</span>\n"
 "                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">SDWorx</span>\n"
+"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_group_insurance_wizard_view_form
 msgid "<span class=\"oe_inline\">From</span>"
-msgstr ""
+msgstr "<span class=\"oe_inline\">Van</span>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_group_insurance_wizard_view_form
 msgid "<span class=\"oe_inline\">To</span>"
-msgstr ""
+msgstr "<span class=\"oe_inline\">Tot</span>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -1574,7 +1596,7 @@ msgstr "<span>Dividual Account Report voor jaar</span>"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "<span>No</span>"
-msgstr ""
+msgstr "<span>Nee</span>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n
@@ -1607,7 +1629,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "<span>Yes</span>"
-msgstr ""
+msgstr "<span>Ja</span>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_termination_holidays_n
@@ -1655,7 +1677,7 @@ msgstr "<span>€ / jaar</span>"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_employee_form__l10n_be_view_for
 msgid "<span>€</span>"
-msgstr ""
+msgstr "<span>€</span>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_hr_payroll_schedule_change_wizard_view_form
@@ -1676,6 +1698,10 @@ msgid ""
 "[('company_country_code', '!=', 'BE')]}\" "
 "groups=\"hr_payroll.group_hr_payroll_user\">Previous Employer</strong>"
 msgstr ""
+"<strong class=\"o_horizontal_separator\" colspan=\"2\" "
+"id=\"previous_employer_title\" attrs=\"{'invisible': "
+"[('company_country_code', '!=', 'BE')]}\" "
+"groups=\"hr_payroll.group_hr_payroll_user\">Vorige werkgever</strong>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_employee_form__l10n_be_view_for
@@ -1704,22 +1730,22 @@ msgstr "<strong>1. N° :</strong>"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "<strong>2. Date of entry: </strong>"
-msgstr ""
+msgstr "<strong>2. Begindatum: </strong>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "<strong>3. Income debtor:</strong> <br/>"
-msgstr ""
+msgstr "<strong>3. Inkomen schuldenaar:</strong> <br/>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "<strong>4. Beneficiary:</strong><br/>"
-msgstr ""
+msgstr "<strong>4. Verkrijger:</strong><br/>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "<strong>5. National number:</strong>"
-msgstr ""
+msgstr "<strong>5. Rijksregisternummer:</strong>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_individual_account
@@ -1732,7 +1758,7 @@ msgstr "<strong>Adres</strong>"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "<strong>Amount</strong>"
-msgstr ""
+msgstr "<strong>Bedrag</strong>"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_274_10
@@ -1960,7 +1986,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid "A. Packages"
-msgstr ""
+msgstr "A. Pakketten"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -2078,6 +2104,9 @@ msgid ""
 "(Example: Extra-legal time off, a percentage of the salary invested in a "
 "group insurance, etc...)"
 msgstr ""
+"Aangepast loon, volgens de in het contract bepaalde keuzes (Voorbeeld: "
+"extralegaal verlof, een percentage van het loon geïnvesteerd in een "
+"groepsverzekering, enz.)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_281_10__type_treatment__2
@@ -2093,7 +2122,7 @@ msgstr "Bijkomend bruto"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_contract_view_form
 msgid "Additional Information"
-msgstr ""
+msgstr "Aanvullende informatie"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.work.entry.type,name:l10n_be_hr_payroll.work_entry_type_additional_paid
@@ -2189,7 +2218,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_contract_view_form
 msgid "Ambulatory Insurance"
-msgstr ""
+msgstr "Ambulante verzekering"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_ambulatory_insurance_notes
@@ -2199,32 +2228,32 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_ambulatory_insured_children
 msgid "Ambulatory: # Insured Children < 19"
-msgstr ""
+msgstr "Ambulante: # Verzekerde kinderen < 19"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_ambulatory_insured_adults
 msgid "Ambulatory: # Insured Children >= 19"
-msgstr ""
+msgstr "Ambulante: # Verzekerde kinderen >= 19"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_ambulatory_amount_per_adult
 msgid "Ambulatory: Amount per Adult"
-msgstr ""
+msgstr "Ambulante: Bedrag per volwassene"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_ambulatory_amount_per_child
 msgid "Ambulatory: Amount per Child"
-msgstr ""
+msgstr "Ambulante: Bedrag per kind"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_ambulatory_insurance_amount
 msgid "Ambulatory: Insurance Amount"
-msgstr ""
+msgstr "Ambulante: Bedrag verzekering"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_ambulatory_insured_spouse
 msgid "Ambulatory: Insured Spouse"
-msgstr ""
+msgstr "Ambulante: Verzekerde echtgeno(o)t(e)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_line__amount
@@ -2240,7 +2269,7 @@ msgstr "Bedrag"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "Amount of the employer's intervention"
-msgstr ""
+msgstr "Bedrag van de tussenkomst van de werkgever"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_recovered_n
@@ -2248,12 +2277,16 @@ msgstr ""
 msgid ""
 "Amount of the holiday pay paid by the previous employer already recovered."
 msgstr ""
+"Het bedrag van de door de vorige werkgever betaalde vakantiegeld is reeds "
+"teruggevorderd."
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_to_recover_n
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_to_recover_n1
 msgid "Amount of the holiday pay paid by the previous employer to recover."
 msgstr ""
+"Het bedrag van het door de vorige werkgever betaald vakantiegeld om terug te"
+" vorderen."
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__hospital_insurance_amount_per_adult
@@ -2369,7 +2402,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_45
 msgid "B. Real"
-msgstr ""
+msgstr "B. Werkelijk"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_274_XX_view_form
@@ -2478,7 +2511,7 @@ msgstr "Voordeel in natura (telefoonabonnement)"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payroll_report__l10n_be_atn_deduction
 msgid "Benefit in Kind Deductions (All)"
-msgstr ""
+msgstr "Aftrek voordelen alle aard (alle)"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
@@ -2555,17 +2588,17 @@ msgstr "Per reden voor beëindiging van het contract"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_export_sdworx_leaves_wizard_view_form
 msgid "CANCEL"
-msgstr ""
+msgstr "ANNULEREN"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.contract.type,name:l10n_be_hr_payroll.l10n_be_contract_type_cdd
 msgid "CDD"
-msgstr ""
+msgstr "CDD"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.contract.type,name:l10n_be_hr_payroll.l10n_be_contract_type_cdi
 msgid "CDI"
-msgstr ""
+msgstr "CDI"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.contract.type,name:l10n_be_hr_payroll.l10n_be_contract_type_cip
@@ -2580,7 +2613,7 @@ msgstr "PC 200 Categorie"
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_december_slip_wizard
 msgid "CP200: December Slip Computation"
-msgstr ""
+msgstr "PC 200: Berekening loonstrook december"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_double_pay_recovery_line
@@ -2619,7 +2652,7 @@ msgstr "Kader II. - Begunstigde(n) van de inkomsten"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Calculation Basis"
-msgstr ""
+msgstr "Berekeningsbasis"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_281_10__type_treatment__3
@@ -2639,7 +2672,7 @@ msgstr "Annuleren"
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_canteen_cost
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_config_settings__default_l10n_be_canteen_cost
 msgid "Canteen Cost"
-msgstr ""
+msgstr "Kantinekosten"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
@@ -2754,7 +2787,7 @@ msgstr "Werkschema contract veranderen"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "Checkout"
-msgstr ""
+msgstr "Vertificatie"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_payroll_head_child_alw
@@ -2876,7 +2909,7 @@ msgstr "Aanvullend dubbel vakantiegeld (verlies door arbeidstijdverkorting)"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_payslip_view_form_inherit_double_pay
 msgid "Compute December Holiday Pay"
-msgstr ""
+msgstr "Vakantiegeld december berekenen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_payslip_view_form_inherit_double_pay
@@ -2961,12 +2994,12 @@ msgstr "Contractgeschiedenis"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Contribution :"
-msgstr ""
+msgstr "Contributie:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Contribution Type"
-msgstr ""
+msgstr "Contributietype:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
@@ -3018,7 +3051,7 @@ msgstr "Formulier 281.45 maken"
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_45_form_wizard
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_individual_account_view_form
 msgid "Create PDFs"
-msgstr ""
+msgstr "PDF's maken"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_281_10_form_wizard
@@ -3284,7 +3317,7 @@ msgstr "Dagen waarop geen vertegenwoordigingskosten worden toegekend"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Days Per Week :"
-msgstr ""
+msgstr "Dagen per week:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip_employee_depature_holiday_attests__unpaid_time_off_n
@@ -3306,12 +3339,12 @@ msgstr "December"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_december_slip_wizard_view_form
 msgid "December Pay"
-msgstr ""
+msgstr "Loon december"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_december_slip_wizard_view_form
 msgid "December Slip"
-msgstr ""
+msgstr "Loonstrook december"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_payslip_employee_depature_notice__notice_respect
@@ -3319,6 +3352,7 @@ msgid ""
 "Decides whether the employee will still work during his notice period or "
 "not."
 msgstr ""
+"Bepaalt of de werknemer tijdens zijn opzegperiode nog zal werken of niet."
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_dmfa__file_type__s
@@ -3328,7 +3362,7 @@ msgstr "Aangifte test (S)"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__declaration_type
 msgid "Declaration Type"
-msgstr ""
+msgstr "Type verklaring"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_274_xx__deducted_amount_32
@@ -3405,7 +3439,7 @@ msgstr "Vertrekken"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account__name
 msgid "Description"
-msgstr ""
+msgstr "Omschrijving"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__disabled
@@ -3480,12 +3514,12 @@ msgstr "Weergavenaam"
 #. module: l10n_be_hr_payroll
 #: model:ir.actions.report,name:l10n_be_hr_payroll.action_report_dmfa
 msgid "DmfA"
-msgstr ""
+msgstr "DmfA"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "DmfA Declaration ("
-msgstr ""
+msgstr "DmfA aangifte ("
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__dmfa_go_filename
@@ -3495,7 +3529,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__dmfa_pdf_filename
 msgid "Dmfa Pdf Filename"
-msgstr ""
+msgstr "Dmfa Pdf bestandsnaam"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__dmfa_signature_filename
@@ -3533,28 +3567,28 @@ msgstr "Gereed"
 #: model:hr.salary.rule.category,name:l10n_be_hr_payroll.l10n_be_double_december_category
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__double_december_pay
 msgid "Double December Pay"
-msgstr ""
+msgstr "Dubbel loon december"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_double_december_basic
 msgid "Double December Pay Basic"
-msgstr ""
+msgstr "Dubbel basisloon december"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_double_december_gross
 #: model:hr.salary.rule.category,name:l10n_be_hr_payroll.l10n_be_double_december_category_gross
 msgid "Double December Pay Gross"
-msgstr ""
+msgstr "Bruto dubbel loon december"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_double_december_net
 msgid "Double December Pay Net"
-msgstr ""
+msgstr "Netto dubbel loon december"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_double_december_pp
 msgid "Double December Pay Withholding Tax"
-msgstr ""
+msgstr "Bronbelasting dubbel loon december"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
@@ -3584,22 +3618,22 @@ msgstr "Dubbel vakantiegeld (verlies door arbeidstijdverkorting)"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Double Holiday Pay Global Amount:"
-msgstr ""
+msgstr "Totaalbedrag dubbel vakantiegeld:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Double Holiday Pay Global Contributions:"
-msgstr ""
+msgstr "Globale bijdragen dubbel vakantiegeld:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__double_holiday_n
 msgid "Double Holiday Pay N"
-msgstr ""
+msgstr "Dubbel vakantiegeld N"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__double_holiday_n1
 msgid "Double Holiday Pay N-1"
-msgstr ""
+msgstr "Dubbel vakantiegeld N-1"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_double_holiday_pay_recovery
@@ -3748,7 +3782,7 @@ msgstr "Werknemer"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Employee :"
-msgstr ""
+msgstr "Werknemer:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_hr_contract
@@ -3800,7 +3834,7 @@ msgstr "Werknemers"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Employees Information"
-msgstr ""
+msgstr "Informatie werknemers"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -3831,7 +3865,7 @@ msgstr "Werkgever"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Employer Class :"
-msgstr ""
+msgstr "Werkgeversgroep:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
@@ -3958,22 +3992,22 @@ msgstr "Export voltooid"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_export_sdworx_leaves_wizard_view_form
 msgid "Export Employee Leaves for SD Worx"
-msgstr ""
+msgstr "Exporteer verlof werknemers voor SD Worx"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__export_file
 msgid "Export File"
-msgstr ""
+msgstr "Bestand exporteren"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__export_filename
 msgid "Export Filename"
-msgstr ""
+msgstr "Bestandnaam exporteren"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_export_sdworx_leaves_wizard
 msgid "Export Leaves to SDWorx"
-msgstr ""
+msgstr "Verlof exporteren voor SDWorx"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_273S_view_form
@@ -3984,7 +4018,7 @@ msgstr "PDF-bestand exporteren"
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_config_settings__group_export_sdworx_leaves
 #: model:res.groups,name:l10n_be_hr_payroll.group_export_sdworx_leaves
 msgid "Export Time Off to SDWorx"
-msgstr ""
+msgstr "Verlof exporteren naar SDWorx"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -3993,7 +4027,7 @@ msgstr ""
 #: model:ir.ui.menu,name:l10n_be_hr_payroll.menu_l10n_be_export_sdworx_leaves_wizard
 #, python-format
 msgid "Export Work Entries to SDWorx"
-msgstr ""
+msgstr "Werkinvoeren exporteren naar SDWorx"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_eco_vouchers_wizard_view_form
@@ -4155,7 +4189,7 @@ msgstr "Afgetrokken kosten"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Frequency (Month)"
-msgstr ""
+msgstr "Frequentie (Maand)"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
@@ -4198,7 +4232,7 @@ msgstr "Volledig werkrooster"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "Fund or company"
-msgstr ""
+msgstr "Fonds of bedrijf"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_gross
@@ -4208,12 +4242,12 @@ msgstr "BRUTO"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_export_sdworx_leaves_wizard_view_form
 msgid "Generate Export File"
-msgstr ""
+msgstr "Genereer exportbestand"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_dmfa_view_form
 msgid "Generate PDF report"
-msgstr ""
+msgstr "Genereer PDF-rapport"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_payroll_generate_warrant_payslips_view_form
@@ -4284,7 +4318,7 @@ msgstr "Ontvang 281.45-rapport als PDF."
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_report_l10n_be_hr_payroll_dmfa_pdf_report
 msgid "Get DmfA declaration as PDF"
-msgstr ""
+msgstr "Haal DmfA aangifte als PDF"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_report_l10n_be_hr_payroll_report_social_balance
@@ -4304,7 +4338,7 @@ msgstr "Geschenken in natura"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Global Information"
-msgstr ""
+msgstr "Globale informatie"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__dmfa_go
@@ -4340,7 +4374,7 @@ msgstr "Bruto jaarsalaris per 31 december 2013"
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_double_december_salary
 msgid "Gross Double December Pay Salary"
-msgstr ""
+msgstr "Bruto dubbel decemberloon"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_double_holiday_gross_salary
@@ -4386,34 +4420,34 @@ msgstr "Brutoloon voor RSZ"
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_group_insurance
 #: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_salary_rule_category_group_insurance
 msgid "Group Insurance (Employer)"
-msgstr ""
+msgstr "Groepsverzekering (werkgever)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.actions.act_window,name:l10n_be_hr_payroll.l10n_be_group_insurance_wizard_action
 #: model:ir.ui.menu,name:l10n_be_hr_payroll.menu_l10n_be_group_insurance_wizard
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_group_insurance_wizard_view_form
 msgid "Group Insurance Export"
-msgstr ""
+msgstr "Exporteer groepsverzekering"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Group Insurance Global Contributions:"
-msgstr ""
+msgstr "Globale contributies groepsverzekering:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_group_insurance_rate
 msgid "Group Insurance Sacrifice Rate"
-msgstr ""
+msgstr "Percentage keuze groepsverzekering"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_group_insurance_wizard
 msgid "Group Insurance Wizard"
-msgstr ""
+msgstr "Wizard groepsverzekering"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_group_insurance_line_wizard
 msgid "Group Insurance Wizard Line"
-msgstr ""
+msgstr "Wizard regel groepsverzekering"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_individual_account
@@ -4423,12 +4457,12 @@ msgstr "HR Individueel Accountrapport per werknemer"
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_individual_account_line
 msgid "HR Individual Account Report By Employee Line"
-msgstr ""
+msgstr "HR Individueel Accountrapport per werknemersregel"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_10_line
 msgid "HR Payroll 281.10 Line Wizard"
-msgstr ""
+msgstr "HR Payroll 281.10 Regel Wizard"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_10
@@ -4438,7 +4472,7 @@ msgstr "HR Payroll 281.10 Wizard"
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_45_line
 msgid "HR Payroll 281.45 Line Wizard"
-msgstr ""
+msgstr "HR Payroll 281.45 Regel Wizard"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_281_45
@@ -4458,7 +4492,7 @@ msgstr "TYPE HR-werkinvoer"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_has_ambulatory_insurance
 msgid "Has Ambulatory Insurance"
-msgstr ""
+msgstr "Heeft een ambulante verzekering"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__has_hospital_insurance
@@ -4493,12 +4527,12 @@ msgstr "Voorziening vakantiegeld"
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_holiday_pay_recovery_n
 msgid "Holiday Pay Recovery (Year N)"
-msgstr ""
+msgstr "Invordering vakantiegeld (jaar N)"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_holiday_pay_recovery_n1
 msgid "Holiday Pay Recovery (Year N-1)"
-msgstr ""
+msgstr "Invordering vakantiegeld (Jaar N-1)"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
@@ -4689,7 +4723,7 @@ msgstr "Afzonderlijke accounts"
 #: code:addons/l10n_be_hr_payroll/models/l10n_be_individual_account.py:0
 #, python-format
 msgid "Individual Accounts - Year %s"
-msgstr ""
+msgstr "Individuele accounts - Jaar %s"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.ui.menu,name:l10n_be_hr_payroll.menu_l10n_be_individual_account
@@ -4825,7 +4859,7 @@ msgstr "Functie"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Joint Commission :"
-msgstr ""
+msgstr "Gezamenlijke commissie:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__7
@@ -4861,12 +4895,12 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_ambulatory_insured_adults_total
 msgid "L10N Be Ambulatory Insured Adults Total"
-msgstr ""
+msgstr "L10N Be Ambulante totaal verzekerde volwassenen"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip_run__l10n_be_display_eco_voucher_button
 msgid "L10N Be Display Eco Voucher Button"
-msgstr ""
+msgstr "L10N Be weergave knop ecocheque"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_company__l10n_be_ffe_employer_type
@@ -4876,12 +4910,12 @@ msgstr "L10N Be Ffe Werkgeverstype"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_group_insurance_amount
 msgid "L10N Be Group Insurance Amount"
-msgstr ""
+msgstr "L10N Be Bedrag groepsverzekering"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_group_insurance_cost
 msgid "L10N Be Group Insurance Cost"
-msgstr ""
+msgstr "L10N Be Kosten groepsverzekering"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__l10n_be_is_below_scale_warning
@@ -4892,7 +4926,7 @@ msgstr "L10N Be Ligt onder schaal waarschuwing"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip__l10n_be_is_december
 msgid "L10N Be Is December"
-msgstr ""
+msgstr "L10N Be Is December"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip__l10n_be_is_double_pay
@@ -5051,7 +5085,7 @@ msgstr "Toewijzing verlof"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__leave_ids
 msgid "Leaves"
-msgstr ""
+msgstr "Verlof"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payroll_generate_warrant_payslips__line_ids
@@ -5129,7 +5163,7 @@ msgstr "Maart"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_export_sdworx_leaves_wizard_view_form
 msgid "Mark as reported in payslip"
-msgstr ""
+msgstr "Markeer als gerapporteerd in de loonstrook"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__hr_employee__certificate__civil_engineer
@@ -5173,7 +5207,7 @@ msgstr "Maaltijdvoucher"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payroll_report__l10n_be_meal_voucher_employer
 msgid "Meal Voucher (Employer)"
-msgstr ""
+msgstr "Maaltijdcheque (werkgever)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__meal_voucher_average_monthly_amount
@@ -5218,7 +5252,7 @@ msgstr "Maaltijdcheques (deel werkgever)"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Mean Working Hours :"
-msgstr ""
+msgstr "Gemiddelde werkuren:"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.work.entry.type,name:l10n_be_hr_payroll.work_entry_type_medical_assistance
@@ -5285,7 +5319,7 @@ msgstr "Maand"
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_ambulatory_insurance
 msgid "Monthly ambulatory insurance (employer's share)"
-msgstr ""
+msgstr "Maandelijkse ambulante verzekering (deel werkgever)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_contract__fuel_card
@@ -5330,12 +5364,12 @@ msgstr "Multiple_PRP_Declaration"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_december_slip_wizard_view_form
 msgid "N Year"
-msgstr ""
+msgstr "Jaar N"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_december_slip_wizard_view_form
 msgid "N-1 Year"
-msgstr ""
+msgstr "Jaar N-1"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__xml_validation_state__normal
@@ -5355,7 +5389,7 @@ msgstr "INSZ"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "NISS :"
-msgstr ""
+msgstr "INSZ:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__niss
@@ -5492,7 +5526,7 @@ msgstr ""
 #: code:addons/l10n_be_hr_payroll/models/hr_dmfa.py:0
 #, python-format
 msgid "No start/end notice period defined for %s"
-msgstr ""
+msgstr "Geen begin/einde opzegperiode gedefinieerd voor %s"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
@@ -5515,7 +5549,7 @@ msgstr "Hoger niet universitair onderwijs"
 #: code:addons/l10n_be_hr_payroll/models/l10n_be_281_45.py:0
 #, python-format
 msgid "None"
-msgstr ""
+msgstr "Geen"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__resident_bool
@@ -5529,6 +5563,9 @@ msgid ""
 "Note: The double holiday pay should only be computed if the reduction in "
 "working time took place between 01/01 and 30/06 compared to year N-1."
 msgstr ""
+"Opmerking: Het dubbel vakantiegeld moet enkel berekend worden als de "
+"arbeidstijdvermindering plaatsvond tussen 01/01 en 30/06 ten opzichte van "
+"het jaar N-1."
 
 #. module: l10n_be_hr_payroll
 #: model:hr.work.entry.type,name:l10n_be_hr_payroll.work_entry_type_notice
@@ -5617,17 +5654,17 @@ msgstr "Aantal dagen van onbetaalde vrije tijd genomen tijdens vorig jaar"
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_number_of_days_n
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_number_of_days_n1
 msgid "Number of days on which you should recover the holiday pay."
-msgstr ""
+msgstr "Aantal dagen waarop je het vakantiegeld moet terugvorderen."
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_number_of_days_n
 msgid "Number of days to recover (N)"
-msgstr ""
+msgstr "Aantal terug te vorderen dagen (N)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_number_of_days_n1
 msgid "Number of days to recover (N-1)"
-msgstr ""
+msgstr "Aantal terug te vorderen dagen (N-1)"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_employee_form__l10n_be_view_for
@@ -5643,7 +5680,7 @@ msgstr "Aantal gehandicapte kinderen"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "Number of hours"
-msgstr ""
+msgstr "Aantal uren"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__other_juniors_dependent
@@ -5656,7 +5693,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "Number of overtime hours"
-msgstr ""
+msgstr "Aantal overuren"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__other_senior_dependent
@@ -5740,7 +5777,7 @@ msgstr "ONSS Bedrijfs-ID"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "ONSS Company ID :"
-msgstr ""
+msgstr "RSZ Bedrijfs-ID:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
@@ -5806,7 +5843,7 @@ msgstr "ONSS-registratienummer"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "ONSS Registration Number :"
-msgstr ""
+msgstr "RSZ-registratienummer:"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_onss_restructuring
@@ -5837,7 +5874,7 @@ msgstr "RSZ bijdrage beëindigingsvergoedingen"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "Occasional worker in the Horeca sector"
-msgstr ""
+msgstr "Gelegenheidswerker in de horeca"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_double_pay_recovery_wizard__line_ids
@@ -5853,7 +5890,7 @@ msgstr "Bezettingsgraad"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Occupations #"
-msgstr ""
+msgstr "Bezetting #"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__month__10
@@ -5967,7 +6004,7 @@ msgstr "PDF-bestandsnaam"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__dmfa_pdf
 msgid "PDF file"
-msgstr ""
+msgstr "PDF bestand"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_company__onss_pem_certificate
@@ -5984,7 +6021,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model:hr.contract.type,name:l10n_be_hr_payroll.l10n_be_contract_type_pfi
 msgid "PFI"
-msgstr ""
+msgstr "PFI"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.leave.type,name:l10n_be_hr_payroll.holiday_status_cl
@@ -6025,7 +6062,7 @@ msgstr "Deeltijd"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Part Time :"
-msgstr ""
+msgstr "Deeltijds:"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -6146,7 +6183,7 @@ msgstr "Pdf-bestandsnaam"
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_281_45_line__pdf_to_generate
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_individual_account_line__pdf_to_generate
 msgid "Pdf To Generate"
-msgstr ""
+msgstr "Te genereren pdf"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
@@ -6216,6 +6253,9 @@ msgid ""
 "some technical knowledge (using some concepts like ssh keys, SFTP servers, "
 "and electronical signatures). You may want to take a look at the"
 msgstr ""
+"Merk op dat de aangifte per batch vrij complex is en enige technische kennis"
+" vereist (met behulp van enkele concepten zoals ssh-sleutels, SFTP-servers "
+"en elektronische handtekeningen). Je kan een kijkje nemen in de"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -6265,6 +6305,8 @@ msgid ""
 "Premium from the Impulse Fund for general medicine obtained by a general "
 "practitioner approved to settle in a \"priority\" area"
 msgstr ""
+"Premie van het Impulsfonds voor algemene geneeskunde verkregen door een "
+"huisarts die zich in een \"prioritair\" gebied mag vestigen"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__double_pay_line_ids
@@ -6330,7 +6372,7 @@ msgstr "Terugbetaald bedrag openbaar vervoer"
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_security_certificate
 msgid "Public Transportation"
-msgstr ""
+msgstr "Publiek transport"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_public_transport
@@ -6375,7 +6417,7 @@ msgstr "Kwartaaleinde"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Quarter End :"
-msgstr ""
+msgstr "Kwartaaleinde:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_dmfa__quarter_start
@@ -6385,7 +6427,7 @@ msgstr "Kwartaalstart"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Quarter Start :"
-msgstr ""
+msgstr "Begin van het kwartaal:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
@@ -6395,7 +6437,7 @@ msgstr "ROERENDE INKOMSTEN uit COPYRIGHT en AANVERWANTE RECHTEN"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_dmfa_view_form
 msgid "Re-Generate PDF report"
-msgstr ""
+msgstr "PDF-rapport opnieuw genereren"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_dmfa_view_form
@@ -6416,12 +6458,12 @@ msgstr "Reden code"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_recovered_n
 msgid "Recovered Simple Holiday Pay (N)"
-msgstr ""
+msgstr "Teruggevorderd enkel vakantiegeld (N)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_recovered_n1
 msgid "Recovered Simple Holiday Pay (N-1)"
-msgstr ""
+msgstr "Teruggevorderd enkel vakantiegeld (N-1)"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.work.entry.type,name:l10n_be_hr_payroll.work_entry_type_recovery_additional
@@ -6442,12 +6484,12 @@ msgstr "Verwijzing"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Reference Mean Working Hours"
-msgstr ""
+msgstr "Referentie gemiddelde werkuren"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_export_sdworx_leaves_wizard__reference_month
 msgid "Reference Month"
-msgstr ""
+msgstr "Referentiemaand"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payroll_alloc_paid_leave__year
@@ -6499,7 +6541,7 @@ msgstr "Vergoeden"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__remuneration_n1
 msgid "Remuneration N-1"
-msgstr ""
+msgstr "Bezoldiging N-1"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payslip_employee_depature_holiday_attests__fictitious_remuneration_n
@@ -6523,7 +6565,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Reorganization Measures :"
-msgstr ""
+msgstr "Reorganisatiemaatregelen:"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.contract.type,name:l10n_be_hr_payroll.l10n_be_contract_type_replacement
@@ -6603,7 +6645,7 @@ msgstr "Voorbehouden aan de administratie"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_employee_form__l10n_be_view_for
 msgid "SD Worx"
-msgstr ""
+msgstr "SD Worx"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__sdworx_code
@@ -6611,7 +6653,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_company__sdworx_code
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_config_settings__sdworx_code
 msgid "SDWorx code"
-msgstr ""
+msgstr "SDWorx code"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_individual_account
@@ -6677,7 +6719,7 @@ msgstr "Middelbaar onderwijs"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "Secondment allowance"
-msgstr ""
+msgstr "Detacheringstoelage"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_281_10__type_sending__1
@@ -6752,7 +6794,7 @@ msgstr ""
 #: model:hr.salary.rule.category,name:l10n_be_hr_payroll.l10n_be_simple_december_category
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__simple_december_pay
 msgid "Simple December Pay"
-msgstr ""
+msgstr "Enkel loon december"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_n1_simple_pay_december
@@ -6767,22 +6809,22 @@ msgstr "Enkel vakantiegeld - Variabel loon"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__simple_holiday_n
 msgid "Simple Holiday Pay N"
-msgstr ""
+msgstr "Enkel vakantiegeld N"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_december_slip_wizard__simple_holiday_n1
 msgid "Simple Holiday Pay N-1"
-msgstr ""
+msgstr "Enkel vakantiegeld N-1"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_to_recover_n
 msgid "Simple Holiday Pay to Recover (N)"
-msgstr ""
+msgstr "Terug te vorderen enkel vakantiegeld (N)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__l10n_be_holiday_pay_to_recover_n1
 msgid "Simple Holiday Pay to Recover (N-1)"
-msgstr ""
+msgstr "Terug te vorderen enkel vakantiegeld (N-1)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_l10n_be_hr_payroll_employee_lang_wizard__slip_ids
@@ -6974,7 +7016,7 @@ msgstr "Structurele verminderingen"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payroll_report__struct_id
 msgid "Structure"
-msgstr ""
+msgstr "Structuur"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payroll_alloc_paid_leave__structure_type_id
@@ -6999,7 +7041,7 @@ msgstr "Bruto subtotaal"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "System 5 :"
-msgstr ""
+msgstr "Systeem 5:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -7118,7 +7160,7 @@ msgstr "Beëindigingskosten"
 #: model_terms:res.company,sign_terms:l10n_be_hr_payroll.res_company_be
 #: model_terms:res.company,sign_terms_html:l10n_be_hr_payroll.res_company_be
 msgid "Terms &amp; Conditions"
-msgstr ""
+msgstr "Algemene voorwaarden"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_work_entry_type__dmfa_code
@@ -7140,7 +7182,7 @@ msgstr "Het ip-tarief op het loon moet tussen 0 en 100 liggen."
 #: code:addons/l10n_be_hr_payroll/models/hr_employee.py:0
 #, python-format
 msgid "The SDWorx code should have 7 characters or should be left empty!"
-msgstr ""
+msgstr "De SDWorx-code moet 7 tekens hebben of moet leeg zijn!"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -7167,14 +7209,14 @@ msgstr ""
 #: code:addons/l10n_be_hr_payroll/models/hr_work_entry_type.py:0
 #, python-format
 msgid "The code should have 4 characters!"
-msgstr ""
+msgstr "De code moet 4 tekens bevatten!"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
 #: code:addons/l10n_be_hr_payroll/models/res_company.py:0
 #, python-format
 msgid "The code should have 7 characters!"
-msgstr ""
+msgstr "De code moet 7 tekens bevatten!"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -7360,6 +7402,7 @@ msgid ""
 "The group insurance salary sacrifice rate on wage should be between 0 and "
 "100."
 msgstr ""
+"Het keuzepercentage op de groepsverzekering moet tussen 0 en 100 liggen."
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -7393,6 +7436,8 @@ msgid ""
 "The printed pdf contains all the data to encode into the 'DmfA declaration "
 "web interface' that you can find"
 msgstr ""
+"De afgedrukte PDF bevat alle gegevens die gecodeerd moeten worden in de "
+"'DmfA aangifte webinterface' die je kan vinden"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -7445,7 +7490,7 @@ msgstr ""
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_export_sdworx_leaves_wizard.py:0
 #, python-format
 msgid "There is no SDWorx code defined for the following employees:\n"
-msgstr ""
+msgstr "Er is geen SDWorx code gedefinieerd voor de volgende werknemers:\n"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -7453,6 +7498,7 @@ msgstr ""
 #, python-format
 msgid "There is no SDWorx code defined for the following work entry types:\n"
 msgstr ""
+"Er is geen SDWorx code gedefinieerd voor de volgende werkboekingstypes:\n"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -7462,6 +7508,8 @@ msgid ""
 "There is no SDWorx code defined on the company. Please configure it on the "
 "Payroll Settings"
 msgstr ""
+"Er is geen SDWorx code gedefinieerd op het bedrijf. Gelieve deze te "
+"configureren in de loondienst-instellingen"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -7688,6 +7736,8 @@ msgid ""
 "Total amount paid or awarded (the taxable part must be added to Total "
 "remuneration 2.060)"
 msgstr ""
+"Totaal betaald of toegekend bedrag (het belastbaar gedeelde moet toevoegd "
+"worden aan de totale bezoldiging 2.060)"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.view_hr_payroll_employee_departure_holiday_attests
@@ -7707,7 +7757,7 @@ msgstr "Totaal nettoloon"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Total of all Contributions:"
-msgstr ""
+msgstr "Totaal van alle bijdragen:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.view_hr_payroll_employee_departure_holiday_attests
@@ -7891,12 +7941,12 @@ msgstr "Diverse bonussen"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_dmfa__declaration_type__batch
 msgid "Via Batch"
-msgstr ""
+msgstr "Via batch"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_dmfa__declaration_type__web
 msgid "Via Web"
-msgstr ""
+msgstr "Via web"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_contract__fiscal_voluntarism
@@ -7917,7 +7967,7 @@ msgstr "Soort salaris"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_contract__wage_with_holidays
 msgid "Wage With Sacrifices"
-msgstr ""
+msgstr "Salaris met opofferingen"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_273s__state__waiting
@@ -8093,7 +8143,7 @@ msgstr "Verlof wegens werkongeval"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Work Address :"
-msgstr ""
+msgstr "Werkadres:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_work_entry_daily_benefit_report
@@ -8103,7 +8153,7 @@ msgstr "Verslag van de werkinvoer"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Work Place :"
-msgstr ""
+msgstr "Werkplek:"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model,name:l10n_be_hr_payroll.model_l10n_be_dmfa_location_unit
@@ -8171,7 +8221,7 @@ msgstr "Werknemer"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.dmfa_pdf_report
 msgid "Worker Code :"
-msgstr ""
+msgstr "Werknemer code:"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_payroll_head_onss
@@ -8345,7 +8395,7 @@ msgstr "Je moet eerste een bestand uploaden om te importeren."
 #: model_terms:res.company,sign_terms:l10n_be_hr_payroll.res_company_be
 #: model_terms:res.company,sign_terms_html:l10n_be_hr_payroll.res_company_be
 msgid "Your conditions..."
-msgstr ""
+msgstr "Jouw condities..."
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
@@ -8360,7 +8410,7 @@ msgstr "Jeugd Vrije tijd"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) Advantages"
-msgstr ""
+msgstr "a) Voordelen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -8370,7 +8420,7 @@ msgstr "a) Code 250"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) Early vacation pay (other than referred to under 11b and 12b):"
-msgstr ""
+msgstr "a) Vervroegd vakantiegeld (anders dan bedoeld onder 11b en 12b):"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
@@ -8380,7 +8430,7 @@ msgstr "a) Forfaitair"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) Movements by cycle or by speed-pedelec"
-msgstr ""
+msgstr "a) Verplaatsingen per fiets of per speed-pedelec"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
@@ -8390,7 +8440,7 @@ msgstr "a) Naam en voornaam, of benaming"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) Normal contributions and premiums"
-msgstr ""
+msgstr "a) Normale bijdragen en premies"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -8398,56 +8448,58 @@ msgid ""
 "a) Provided in 2021 as part of the fight against COVID-19 and / or as part "
 "of the recovery plan"
 msgstr ""
+"a) Toegekend in 2021 in het kader van de bestrijding van COVID-19 en / of "
+"als onderdeel van het herstelplan"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) Public transport"
-msgstr ""
+msgstr "a) Openbaar vervoer"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) Remuneration"
-msgstr ""
+msgstr "a) Bezoldigin"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) Remuneration:"
-msgstr ""
+msgstr "a) Bezoldiging:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) Total number of overtime hours actually worked"
-msgstr ""
+msgstr "a) Totaal aantal werkelijk gewerkte overuren"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) based on income received from employer"
-msgstr ""
+msgstr "a) gebaseerd op inkomen ontvangen van werkgever"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) from employers who do not use the cash register system"
-msgstr ""
+msgstr "a) van werknemers die het kassasysteem niet gebruike"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "a) in the construction sector with registration system"
-msgstr ""
+msgstr "a) in de bouwsector met een registratiesysteem"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_dmfa_view_form
 msgid "and at the"
-msgstr ""
+msgstr "en op de"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) Arrears"
-msgstr ""
+msgstr "b) Achterstallige bedragen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) Arrears (other than referred to in 9b, 11c and 12c):"
-msgstr ""
+msgstr "b) Achterstallige bedragen (anders dan bedoeld onder 9b, 11c en 12c):"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -8455,36 +8507,38 @@ msgid ""
 "b) Basis for the calculation of the additional salary relating to overtime "
 "giving right to a reduction of :"
 msgstr ""
+"b) Basis voor de berekening van het extra loon met betrekking tot de "
+"overuren die recht heeft op een vermindering van:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) Benefits in kind :"
-msgstr ""
+msgstr "b) Voordelen alle aard:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) Contributions and bonuses for individual continuation"
-msgstr ""
+msgstr "b) Bijdragen en bonussen voor individuele voortzetting"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) Early vacation pay"
-msgstr ""
+msgstr "b) Vervroegd vakantiegeld"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) Employer-specific expenses"
-msgstr ""
+msgstr "b) Werkgeversspecifieke uitgaven"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) Organized public transport"
-msgstr ""
+msgstr "b) Georganiseerd openbaar vervoer"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) Other codes"
-msgstr ""
+msgstr "b) Overige codes"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
@@ -8500,16 +8554,17 @@ msgstr "b) Werkelijke"
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) based on income received from a related foreign company"
 msgstr ""
+"b) gebaseerd op inkomen ontvangen van een verbonden buitenlandse onderneming"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) from employers who use the cash register system"
-msgstr ""
+msgstr "b) van werknemers die het kassasysteem gebruiken"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "b) in other sectors"
-msgstr ""
+msgstr "b) in andere sectoren"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -8518,11 +8573,14 @@ msgid ""
 "belonging to critical sectors and / or to employers belonging to critical "
 "sectors"
 msgstr ""
+"b) toegekend in 2020 in het kader van de bestrijding van COVID-19 aan "
+"werkgevers die tot de kritieke sectoren behoren en/of aan werkgevers die tot"
+" kritieke sectoren behoren"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "c) Arrears"
-msgstr ""
+msgstr "c) Achterstallige bedragen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -8530,6 +8588,8 @@ msgid ""
 "c) Cancellation indemnities (other than referred to under 11d and 12d) and "
 "redeployment indemnities:"
 msgstr ""
+"c) Annuleringsvergoedingen (anders dan bedoeld onder 11d en 12d) en "
+"herplaatsingsvergoedingen:"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
@@ -8542,31 +8602,32 @@ msgid ""
 "c) Contributions and premiums for free supplementary pensions for salaried "
 "workers"
 msgstr ""
+"c) Bijdragen en premies voor gratis aanvullende pensioenen voor werknemers"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "c) Loyalty stamps"
-msgstr ""
+msgstr "c) Loyaliteitszegels"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "c) Other means of transport"
-msgstr ""
+msgstr "c) Andere vervoermiddelen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "c) Tips"
-msgstr ""
+msgstr "c) Fooien"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "d) Cancellation indemnities"
-msgstr ""
+msgstr "d) Annuleringsvergoedingen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "d) Frontier workers"
-msgstr ""
+msgstr "d) Grensarbeiders"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_273S
@@ -8576,12 +8637,12 @@ msgstr "d) Fiscaal identificatienummer (facultatief)"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "d) Remuneration for the month of December (Public authority) (2):"
-msgstr ""
+msgstr "d) Bezoldiging voor de maand december (openbare dienst) (2):"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "d) Stock options"
-msgstr ""
+msgstr "d) Aandelenopties"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_notice_duration_day
@@ -8592,11 +8653,12 @@ msgstr "dagen"
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "e) Exempt income received in fulfillment of a flexi-job contract"
 msgstr ""
+"e) Behalve inkomen ontvangen ter uitvoering van een flexi-job contract"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "f) Beneficiary premium"
-msgstr ""
+msgstr "f) Premie voor begunstigde"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.273S_xml_report
@@ -8611,7 +8673,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_dmfa_view_form
 msgid "for more informations"
-msgstr ""
+msgstr "voor meer informatie"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.273S_xml_report
@@ -8622,7 +8684,7 @@ msgstr "fr"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "g) Mobility budget: total amount"
-msgstr ""
+msgstr "g) Mobiliteitsbudget: totaalbedrag"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_281_10__state__generate
@@ -8639,12 +8701,12 @@ msgstr "toevoegen"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "h) First employment agreement: compensatory supplement"
-msgstr ""
+msgstr "h) Eerste arbeidsovereenkomst: compenserende toeslag"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_dmfa_view_form
 msgid "here"
-msgstr ""
+msgstr "hier"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -8652,6 +8714,8 @@ msgid ""
 "i) Volunteer firefighter and volunteer Civil Protection officer paid "
 "allowances"
 msgstr ""
+"i) Vergoedingen voor vrijwillige brandweerlieden en vrijwillige ambtenaren "
+"van de civiele bescherming"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_hr_employee__disabled_children_bool
@@ -8681,12 +8745,12 @@ msgstr "als echtgenoot heeft professionnel inkomen of niet"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "j) Student job"
-msgstr ""
+msgstr "j) Vakantiejob"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "k) Consumer checks"
-msgstr ""
+msgstr "k) Consumptiecheques"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_notice_duration_month
@@ -8706,12 +8770,12 @@ msgstr "o) Coronapremie"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_dmfa_view_form
 msgid "process overview"
-msgstr ""
+msgstr "procesoverzicht"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_dmfa_view_form
 msgid "the official documentation"
-msgstr ""
+msgstr "de officiële documentatie"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_274_XX_view_form

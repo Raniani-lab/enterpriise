@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { registry } from "@web/core/registry";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import {
     click,
@@ -21,6 +22,9 @@ import {
     setupControlPanelServiceRegistry,
 } from "@web/../tests/search/helpers";
 import { browser } from "@web/core/browser/browser";
+import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
+
+const serviceRegistry = registry.category("services");
 
 let serverData;
 let target;
@@ -107,6 +111,7 @@ QUnit.module("Views", (hooks) => {
             },
         };
         setupControlPanelServiceRegistry();
+        serviceRegistry.add("localization", makeFakeLocalizationService());
 
         target = getFixture();
     });
@@ -144,7 +149,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         await toggleMenu(target, "Measures");
-        assert.containsOnce(target, ".dropdown-menu", 1, "should have list of measures");
+        assert.containsOnce(target, ".dropdown-menu", "should have list of measures");
 
         await click(target, ".o_view_scale_selector .scale_button_selection");
         assert.containsN(
@@ -872,4 +877,29 @@ QUnit.module("Views", (hooks) => {
             );
         }
     );
+
+    QUnit.test('cohort view with attribute disable_linking="1"', async function (assert) {
+        serviceRegistry.add(
+            "action",
+            {
+                start() {
+                    return {
+                        doAction() {
+                            assert.ok(false, "Should not perform a do_action");
+                        },
+                    };
+                },
+            },
+            { force: true }
+        );
+
+        await makeView({
+            type: "cohort",
+            resModel: "subscription",
+            serverData,
+            arch: `<cohort date_start="start" date_stop="stop" disable_linking="1"/>`,
+        });
+        assert.containsOnce(target, ".table", "should have a table");
+        await click(target.querySelector("td.o_cohort_value")); // should not trigger a do_action
+    });
 });

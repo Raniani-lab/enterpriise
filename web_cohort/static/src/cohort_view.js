@@ -39,6 +39,7 @@ export const cohortView = {
                 resModel: resModel,
                 timeline: archInfo.timeline,
                 title: archInfo.title,
+                disableLinking: Boolean(archInfo.disableLinking),
             };
         }
 

@@ -4,6 +4,7 @@ import { XMLParser } from "@web/core/utils/xml";
 import { _t } from "@web/core/l10n/translation";
 import { INTERVALS, MODES, TIMELINES } from "./cohort_model";
 import { sprintf } from "@web/core/utils/strings";
+import { archParseBoolean } from "@web/views/utils";
 
 export class CohortArchParser extends XMLParser {
     parse(arch, fields) {
@@ -13,6 +14,11 @@ export class CohortArchParser extends XMLParser {
         this.visitXML(arch, (node) => {
             switch (node.tagName) {
                 case "cohort": {
+                    if (node.hasAttribute("disable_linking")) {
+                        archInfo.disableLinking = archParseBoolean(
+                            node.getAttribute("disable_linking")
+                        );
+                    }
                     const title = node.getAttribute("string");
                     if (title) {
                         archInfo.title = title;

@@ -41,7 +41,7 @@ export class CohortController extends Component {
      * @param {Object} row
      */
     onRowClicked(row) {
-        if (row.value === undefined) {
+        if (row.value === undefined || this.model.metaData.disableLinking) {
             return;
         }
 

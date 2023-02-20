@@ -12,6 +12,7 @@
             <attribute name="string"/>
             <attribute name="date_start"/>
             <attribute name="date_stop"/>
+            <optional><attribute name="disable_linking"/></optional>
             <optional><attribute name="mode"/></optional>
             <optional><attribute name="timeline"/></optional>
             <optional><attribute name="interval"/></optional>

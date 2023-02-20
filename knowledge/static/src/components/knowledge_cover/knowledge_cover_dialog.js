@@ -87,7 +87,7 @@ export class KnowledgeCoverSelector extends ImageSelector {
      * attachment's resId, and update the article's cover.
      */
     async onUploaded(attachment) {
-        const coverId = await this.orm.create(this.props.resModel, [{attachment_id: attachment.id}]);
+        const [coverId] = await this.orm.create(this.props.resModel, [{attachment_id: attachment.id}]);
         this.props.save(coverId);
     }
 

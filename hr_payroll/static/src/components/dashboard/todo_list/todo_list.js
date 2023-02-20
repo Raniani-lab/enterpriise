@@ -167,7 +167,7 @@ export class PayrollDashboardTodo extends Component {
      * Creates a note.
      */
     async createNoteForm() {
-        const createdNote = await this.orm.create('note.note', [{
+        const [createdNote] = await this.orm.create('note.note', [{
             'name': 'Untitled',
             'tag_ids': [[4, this.props.tagId]],
             'company_id': owl.Component.env.session.user_context.allowed_company_ids[0],

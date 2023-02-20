@@ -80,7 +80,7 @@ class ReportExportWizardOption(models.TransientModel):
     name = fields.Char(string="Name", required=True)
     fun_to_call = fields.Char(string="Function to Call", required=True)
     fun_param = fields.Char(string="Function Parameter")
-    export_wizard_id = fields.Many2one(string="Parent Wizard", comodel_name='account_reports.export.wizard', required=True)
+    export_wizard_id = fields.Many2one(string="Parent Wizard", comodel_name='account_reports.export.wizard', required=True, ondelete='cascade')
 
     def apply_export(self, report_action):
         self.ensure_one()

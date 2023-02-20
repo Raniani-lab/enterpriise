@@ -20,7 +20,6 @@ from odoo.tools.xml_utils import cleanup_xml_node
 class L10nEcCertificate(models.Model):
     _name = 'l10n_ec_edi.certificate'
     _description = 'Digital Certificate'
-    _order = 'date_end desc, id desc'
 
     name = fields.Char(string="Name", compute='_compute_l10n_ec_metadata')
     file_name = fields.Char("File Name", readonly=True)

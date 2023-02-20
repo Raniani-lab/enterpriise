@@ -299,7 +299,7 @@ class HrAppraisal(models.Model):
             self._appraisal_plan_post()
             body = _("The appraisal's status has been set to Done by %s", self.env.user.name)
             self.env['mail.thread'].message_notify(
-                subject=_("Appraisal reopened"),
+                subject=_("Your Appraisal has been completed"),
                 body=body,
                 partner_ids=appraisal.message_partner_ids.ids)
             appraisal.message_post(body=body)

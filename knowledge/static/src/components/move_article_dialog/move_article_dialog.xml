@@ -2,7 +2,12 @@
 <templates xml:space="preserve">
     <t t-name="knowledge.MoveArticleDialog" owl="1">
         <Dialog size="size" title="title">
-            Move "<span t-out="props.articleName" class="fw-bold"/>" under:
+            <t t-if="props.articleName">
+                Move "<span t-out="props.articleName" class="fw-bold"/>" under:
+            </t>
+            <t t-else="">
+                Move the untitled article under:
+            </t>
             <input t-ref="input" class="form-control" type="hidden" placeholder="Search an Article to use as Parent"/>
             <t t-set-slot="footer" owl="1">
                 <button class="btn btn-primary" t-on-click="_onMoveArticleClick">

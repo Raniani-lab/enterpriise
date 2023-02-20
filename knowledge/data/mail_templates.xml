@@ -8,7 +8,12 @@
         <div style="margin: 0px; padding: 0px; font-size: 13px;">
             <p style="margin: 0px; padding: 0px; font-size: 13px;">
                 <p>Dear <t t-out="recipient.name"/>,</p>
-                <t t-out="user.name  or ''"></t> invited you to access <t t-out="record.name"></t>.<br/><br/>
+                <t t-if="record.name">
+                    <t t-out="user.name or ''"/> invited you to access <t t-out="record.name"/>.<br/><br/>
+                </t>
+                <t t-else="">
+                    <t t-out="user.name or ''"/> invited you to access an article.<br/><br/>
+                </t>
             </p>
         </div>
     </td></tr>

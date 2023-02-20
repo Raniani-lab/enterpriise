@@ -45,7 +45,10 @@
                             <div class="o_knowledge_header d-sm-flex flex-row justify-content-between border-bottom">
                                 <div class="d-flex align-items-center p-3">
                                     <!-- Title -->
-                                    <span t-if="article" t-out="article.name"/>
+                                    <t t-if="article">
+                                        <span t-if="article.name" t-out="article.name"/>
+                                        <span t-else="">Untitled</span>
+                                    </t>
                                     <a t-if="article" href="#" class="o_favorites_toggle_button ps-1"
                                        t-att-data-article-id="article.id">
                                         <i t-if="article.is_user_favorite" class="fa fa-star" />

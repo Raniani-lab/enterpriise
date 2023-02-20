@@ -63,14 +63,13 @@ class KnowledgeCover extends Component {
         event.preventDefault();
         // Disable button to prevent multiple calls
         event.target.classList.add('disabled');
-        if (this.props.record.data.name === this.env._t('Untitled')) {
+        if (!this.props.record.data.name) {
             // Rename the article if there is a title in the body
             await this.env.renameArticle();
         }
-        const articleName = this.props.record.data.name;
         try {
             const res = await this.rpc(`/knowledge/article/${this.props.record.resId}/add_random_cover`, {
-                query: articleName === this.env._t('Untitled') ? '' : articleName,
+                query: this.props.record.data.name,
                 orientation: 'landscape',
             });
             if (res.cover_id) {
@@ -86,7 +85,7 @@ class KnowledgeCover extends Component {
 
 
     changeCover() {
-        if (this.props.record.data.name === this.env._t("Untitled")) {
+        if (!this.props.record.data.name) {
             // Rename the article if there is a title in the body
             this.env.renameArticle();
         }
@@ -94,10 +93,9 @@ class KnowledgeCover extends Component {
     }
 
     openCoverSelector() {
-        const articleName = this.props.record.data.name;
         this.dialog.add(KnowledgeCoverDialog, {
             articleCoverId: this.props.record.data.cover_image_id[0],
-            articleName: articleName === this.env._t('Untitled') ? '' : articleName,
+            articleName: this.props.record.data.name || "",
             save: async (id) => this.props.record.update({cover_image_id: [id]})
         });
     }

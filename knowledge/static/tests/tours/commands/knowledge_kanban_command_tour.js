@@ -112,6 +112,6 @@ registry.category("web_tour.tours").add('knowledge_kanban_command_tour', {
     trigger: '.o_knowledge_behavior_type_embedded_view .o-kanban-button-new',
     run: 'click',
 }, { // verify that the view switched to the article item
-    trigger: '.o_knowledge_header:has(.o_breadcrumb_article_name_container:contains("Untitled")):has(.breadcrumb-item > a:contains("EditorCommandsArticle"))',
+    trigger: '.o_knowledge_header:has(input[id="name"]:placeholder-shown):has(.breadcrumb-item > a:contains("EditorCommandsArticle"))',
     run: () => {},
 }]});

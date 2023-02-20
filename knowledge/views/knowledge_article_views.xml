@@ -88,15 +88,19 @@
                                                         <field name="icon" attrs="{'readonly': True }" class="mb-0"/>
                                                     </span>
                                                 </div>
-                                                <div class="o_breadcrumb_article_name_container position-relative text-truncate mx-1"
+                                                <div t-if="this.props.record.mode === 'readonly' || this.props.record.data.is_locked" class="text-truncate mx-1">
+                                                    <t t-if="this.props.record.data.name" t-esc="this.props.record.data.name" />
+                                                    <t t-else="">Untitled</t>
+                                                </div>
+                                                <div t-else=""
                                                      t-on-input="ev => this._resizeNameInput(ev.target.value)"
                                                      t-on-change="ev => this._rename(ev.target.value)"
-                                                     t-on-click="ev => this._onNameClick(ev)">
+                                                     t-on-click="ev => this._onNameClick(ev)"
+                                                     class="o_breadcrumb_article_name_container position-relative text-truncate mx-1">
                                                     <!-- span forces the input to match the length of its value -->
-                                                    <span t-attf-class="pe-2 #{this.props.record.data.is_locked ? 'o_article_locked' : ''}"
-                                                          t-esc="this.props.record.data.name" t-att-title="this.props.record.data.name" />
+                                                    <span class="pe-2" t-esc="this.props.record.data.name" t-att-title="this.props.record.data.name" />
                                                     <field attrs="{'readonly': ['|', '|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False), ('id', '=', False)]}"
-                                                           class="o_breadcrumb_article_name mb-0" name="name"/>
+                                                           class="o_breadcrumb_article_name mb-0" name="name" placeholder="Untitled"/>
                                                 </div>
                                                 <i class="fa fa-fw fa-lock" title="This article is locked"
                                                    attrs="{'invisible': ['|', '|', ('is_locked', '=', False), ('user_can_write', '=', False), ('active', '=', False)]}" />

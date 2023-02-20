@@ -86,7 +86,7 @@ commandProviderRegistry.add("knowledge", {
             menu => menu.xmlid === 'knowledge.knowledge_menu_root'
         ).id;
         // display the articles
-        let result =  articlesData.map((article) => ({
+        const result = articlesData.map(article => ({
             Component: KnowledgeCommand,
             action() {
                 env.services.action.doAction('knowledge.ir_actions_server_knowledge_home_page', {
@@ -98,7 +98,7 @@ commandProviderRegistry.add("knowledge", {
             },
             category: "knowledge_articles",
             href: `/web#id=${article.id}&model=knowledge.article&view_type=form&menu_id=${knowledgeMainMenuId}`,
-            name: article.name,
+            name: article.name || _lt("Untitled"),
             props: {
                 isFavorite: article.is_user_favorite,
                 subjectName: article.root_article_id[0] != article.id ? article.root_article_id[1] : false,

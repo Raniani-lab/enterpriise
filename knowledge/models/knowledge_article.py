@@ -30,7 +30,7 @@ class Article(models.Model):
     DEFAULT_ARTICLE_TRASH_LIMIT_DAYS = 30
 
     active = fields.Boolean(default=True)
-    name = fields.Char(string="Title", default=lambda self: _('Untitled'), required=True, tracking=20)
+    name = fields.Char(string="Title", tracking=20)
     body = fields.Html(string="Body")
     icon = fields.Char(string='Emoji')
     cover_image_id = fields.Many2one("knowledge.cover", string='Article cover')
@@ -737,11 +737,10 @@ class Article(models.Model):
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
-        defaults = dict(
-            {"name": _("%s (copy)", self.name)},
-            **(default or {})
-        )
-        return super().copy(default=defaults)
+        default = default or {}
+        if not default.get('name') and self.name:
+            default['name'] = _('%(article_name)s (copy)', article_name=self.name)
+        return super().copy(default)
 
     @api.returns(None, lambda value: value[0])
     def copy_data(self, default=None):
@@ -751,7 +750,8 @@ class Article(models.Model):
         if not default or 'name' not in default:
             if default is None:
                 default = {}
-            default['name'] = _("%s (copy)", self.name)
+            if self.name:
+                default['name'] = _('%(article_name)s (copy)', article_name=self.name)
         return super().copy_data(default=default)
 
     def copy_batch(self, default=None):
@@ -802,7 +802,7 @@ class Article(models.Model):
         return self._action_archive_articles()
 
     def name_get(self):
-        return [(rec.id, "%s %s" % (rec.icon or "📄", rec.name)) for rec in self]
+        return [(rec.id, "%s %s" % (rec.icon or "📄", rec.name or _("Untitled"))) for rec in self]
 
     def _get_no_icon_placeholder(self):
         """ Emoji used in templates as a placeholder when icon is False. It's
@@ -834,13 +834,14 @@ class Article(models.Model):
             "cover_image_id": self.cover_image_id.id,
             "cover_image_position": self.cover_image_position,
             "full_width": False,
-            "name": _("%s (copy)", self.name),
             "icon": self.icon,
             "internal_permission": "none",
             "is_desynchronized": False,
             "is_locked": False,
             "parent_id": False,
         }
+        if self.name:
+            article_vals['name'] = _("%(article_name)s (copy)", article_name=self.name)
         return self.create(article_vals)
 
     def action_home_page(self):
@@ -1139,7 +1140,7 @@ class Article(models.Model):
 
         matching_articles = self.search(search_domain)
         sorted_articles = matching_articles.sorted(
-            key=lambda a: (search_query in a.name.casefold(),
+            key=lambda a: (search_query in a.name.casefold() if a.name else False,
                            a.is_user_favorite,
                            -1 * a.user_favorite_sequence,
                            a.favorite_count,
@@ -1904,7 +1905,8 @@ class Article(models.Model):
                 }
             )
 
-        subject = _("Invitation to access %s", self.name)
+        subject = _("Invitation to access %s", self.name) if self.name else \
+            _("Invitation to access an article")
         for partner, body in partner_to_bodies.items():
             self.with_context(lang=partner.lang).message_notify(
                 body=body,
@@ -1952,7 +1954,7 @@ class Article(models.Model):
             self = self.with_context(lang=partner_lang)  # force translation of subject
 
             if len(main_articles) == 1:
-                subject = _("%s has been sent to Trash", main_articles.name)
+                subject = _("%s has been sent to Trash", main_articles.name or _("Untitled"))
             else:
                 subject = _("Some articles have been sent to Trash")
 

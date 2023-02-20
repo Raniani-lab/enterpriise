@@ -402,10 +402,12 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * body of the article and set it as the name of the article.
      * @param {Event} event
      */
-    _onNameClick(event) {
-        const name = event.target.value;
-        if (name === 'Untitled' || name === this.env._t('Untitled')) {
-            this._rename();
+    async _onNameClick(event) {
+        if (!this.props.record.data.name) {
+            await this._rename();
+            window.setTimeout(() => {
+                event.target.select();
+            });
         }
     }
 
@@ -461,14 +463,11 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     }
 
     /**
-     * @return {string} - first h1 in the body, "Untitled" if not found
+     * @return {string} - first h1 in the body
      */
     _getFallbackTitle() {
-        const articleTitle = this.root.el.querySelector('.o_knowledge_editor .note-editable h1');
-        if (articleTitle) {
-            return articleTitle.textContent.trim() || this.env._t('Untitled');
-        }
-        return this.env._t('Untitled');
+        const h1 = this.root.el.querySelector('.o_knowledge_editor .note-editable h1');
+        return h1 ? h1.textContent.trim() : '';
     }
 
     /**
@@ -548,21 +547,23 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     }
 
     /**
-     * Rename the article. To prevent empty names, checks for a valid title in
-     * the article, or renames the article to the default article name.
-     * @param {string} name - Target Name
+     * Rename the article with the given title
+     * Note: When no argument is given to the function, the function will use
+     * the first heading (h1) of the article as title.
+     * @param {string} [name] - New title of the article
      */
     async _rename(name) {
-        if (!name) {
+        if (typeof name === 'undefined') {
             name = this._getFallbackTitle();
         }
         await this.props.record.update({'name': name});
         this._resizeNameInput(name);
         // ADSC: Remove when tree component
         // Updates the name in the sidebar
+        const title = name || this.env._t("Untitled");
         const selector = `.o_article[data-article-id="${this.resId}"] > .o_article_handle > div > .o_article_name`;
         this.tree.el.querySelectorAll(selector).forEach(function(articleName) {
-          articleName.textContent = name;
+            articleName.textContent = title;
         });
     }
 

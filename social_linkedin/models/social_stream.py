@@ -6,6 +6,7 @@ from datetime import datetime
 from urllib.parse import quote
 from werkzeug.urls import url_join
 from urllib.parse import urlparse
+import re
 
 from odoo import models, _
 from odoo.exceptions import UserError
@@ -157,7 +158,7 @@ class SocialStreamLinkedIn(models.Model):
             'linkedin_post_urn': post_data.get('id'),
             'linkedin_author_urn': post_data.get('author'),
             'linkedin_author_image_url': self._enforce_url_scheme(author_image),
-            'message': post_data.get('commentary', ''),
+            'message': self._format_from_linkedin_little_text(post_data.get('commentary', '')),
             'stream_post_image_ids': [(5, 0)] + [(0, 0, image_value) for image_value in self._extract_linkedin_image(post_data)],
             **self._extract_linkedin_article(article),
         }
@@ -196,3 +197,11 @@ class SocialStreamLinkedIn(models.Model):
             return url
 
         return 'https://%s' % url
+
+    def _format_from_linkedin_little_text(self, input_string):
+        """
+        Replaces escaped versions of the characters `(){}<>[]_` with their original characters,
+        """
+        pattern = "\\\\([\\(\\)\\<\\>\\{\\}\\[\\]\\_\\|\\*\\~\\#\\@])"
+        output_string = re.sub(pattern, lambda match: match.group(1), input_string)
+        return output_string

@@ -5,6 +5,7 @@ import logging
 import requests
 from urllib.parse import quote, urlparse
 from werkzeug.urls import url_join
+import re
 
 from odoo import models, fields, tools, _
 from odoo.exceptions import UserError
@@ -74,7 +75,7 @@ class SocialLivePostLinkedin(models.Model):
 
             data = {
                 "author": live_post.account_id.linkedin_account_urn,
-                "commentary": live_post.message,
+                "commentary": self._format_to_linkedin_little_text(live_post.message),
                 "distribution": {"feedDistribution": "MAIN_FEED"},
                 "lifecycleState": "PUBLISHED",
                 "visibility": "PUBLIC",
@@ -179,3 +180,12 @@ class SocialLivePostLinkedin(models.Model):
             raise UserError(_("We could not upload your image, try reducing its size and posting it again."))
 
         return image_urn
+
+    def _format_to_linkedin_little_text(self, input_string):
+        """
+        Replaces the special characters `(){}<>[]_` with escaped versions of themselves, i.e. `\\(\\)\\{\\}\\<\\>\\[\\]`.
+        https://learn.microsoft.com/en-us/linkedin/marketing/integrations/community-management/shares/little-text-format?view=li-lms-2023-03#text
+        """
+        pattern = r"[\(\)\<\>\{\}\[\]\_\|\*\~\#\@]"
+        output_string = re.sub(pattern, lambda match: r"\{}".format(match.group(0)), input_string)
+        return output_string

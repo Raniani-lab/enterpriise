@@ -108,3 +108,25 @@ class SocialLinkedinCase(SocialCase):
     @classmethod
     def _get_social_media(cls):
         return cls.env.ref('social_linkedin.social_media_linkedin')
+
+    def _get_commentary_after_post(self):
+        commentaries = []
+
+        def _patched_post(*args, **kwargs):
+            commentaries.append(kwargs.get('json', {}).get('commentary', None))
+
+        with patch.object(requests, 'post', _patched_post):
+            self.social_post._action_post()
+
+        return commentaries
+
+    def test_post_with_special_char(self):
+        """
+        Check the priority of the ``post type``
+        The last priority is text
+        """
+        self.social_post.message = '(This) <is> {a} [test] string <3'
+        self.social_post.image_ids = False
+        commentaries = self._get_commentary_after_post()
+        expected_output = '\\(This\\) \\<is\\> \\{a\\} \\[test\\] string \\<3'
+        self.assertTrue(all([commentary == expected_output for commentary in commentaries]))

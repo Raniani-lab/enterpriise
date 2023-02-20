@@ -9,9 +9,6 @@
             width: auto;
             padding: 0px;
             overflow: unset;
-            .o_form_sheet {
-                @include make-container-max-widths();
-            }
         }
 
         .o-web-studio-editor--element-clickable {

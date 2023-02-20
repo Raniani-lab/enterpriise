@@ -273,13 +273,11 @@
                                          `boolean_favorite` widget as the model can block the write call issued by the widget.
                                          To let the user add an article to their favorites, we will instead call an
                                          intermediate action that will do a sudo call on the `knowledge.article` model. -->
-                                    <a type="object" name="action_toggle_favorite" class="o_favorite o_field_widget mb-auto mt-1 me-1"
-                                        attrs="{'invisible': [('is_user_favorite', '=', False)]}">
-                                        <i class="fa fa-star" title="Remove from favorites"/>
-                                    </a>
-                                    <a type="object" name="action_toggle_favorite" class="o_favorite o_field_widget mb-auto mt-1 me-1"
-                                        attrs="{'invisible': [('is_user_favorite', '=', True)]}">
-                                        <i class="fa fa-star-o" title="Add to favorites"/>
+                                    <a type="object" name="action_toggle_favorite" class="o_favorite o_field_widget mb-auto mt-1 me-1">
+                                        <i attrs="{'invisible': [('is_user_favorite', '=', False)]}"
+                                           class="fa fa-star" title="Remove from favorites"/>
+                                        <i attrs="{'invisible': [('is_user_favorite', '=', True)]}"
+                                           class="fa fa-star-o" title="Add to favorites"/>
                                     </a>
                                 </div>
                                 <div class="text-muted text-truncate">
@@ -307,14 +305,30 @@
                 <field name="user_has_write_access" invisible="1"/>
                 <field name="article_url" invisible="1"/>
                 <field name="article_properties"/>
+                <field name="cover_image_url"/>
+                <field name="activity_ids"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click">
-                            <div class="o_knowledge_kanban_card d-flex flex-column">
-                                <div class="lead text-truncate">
+                        <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                            <div class="o_kanban_record_title d-flex w-100">
+                                <div t-if="record.cover_image_url.raw_value.length > 0" class="o_kanban_image_fill_left mw-25"
+                                     t-attf-style="background-image: url(#{record.cover_image_url.raw_value});" role="img"/>
+                                <div class="d-flex flex-column justify-content-between pb-4 mb-2">
                                     <field name="display_name"/>
+                                    <field name="article_properties" widget="properties"/>
                                 </div>
-                                <field name="article_properties" widget="properties"/>
+                            </div>
+                            <div class="o_kanban_record_bottom d-flex flex-column align-items-end justify-content-between">
+                                <a type="object" name="action_toggle_favorite" class="o_favorite o_field_widget mb-auto pe-1">
+                                    <i attrs="{'invisible': [('is_user_favorite', '=', False)]}"
+                                       class="fa fa-star" title="Remove from favorites"/>
+                                    <i attrs="{'invisible': [('is_user_favorite', '=', True)]}"
+                                       class="fa fa-star-o" title="Add to favorites"/>
+                                </a>
+                                <div class="oe_kanban_bottom_right">
+                                    <field name="activity_ids" widget="kanban_activity" class="pt-1"/>
+                                    <field name="create_uid" widget="many2one_avatar_user"/>
+                                </div>
                             </div>
                         </div>
                     </t>

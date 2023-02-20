@@ -61,6 +61,7 @@
     .o_knowledge_editor .o_field_html .note-editable,
     .o_knowledge_editor .o_field_html .o_readonly,
     .o_knowledge_editor .o_field_properties {
+        margin-bottom: -0.5rem;
         padding-left: var(--editor-gutter-size) !important;
         padding-right: var(--editor-gutter-size) !important;
     }

@@ -12,10 +12,6 @@ from odoo.tools import topological_sort
 
 from odoo.addons.resource.models.utils import Intervals, sum_intervals, string_to_datetime
 
-PROJECT_TASK_READABLE_FIELDS = {
-    'allocated_hours',
-}
-
 PROJECT_TASK_WRITABLE_FIELDS = {
     'planned_date_begin',
     'planned_date_end',
@@ -40,14 +36,6 @@ class Task(models.Model):
     # User names in popovers
     user_names = fields.Char(compute='_compute_user_names')
 
-    # Allocated hours
-    allocated_hours = fields.Float("Allocated Hours", compute='_compute_allocated_hours', store=True)
-    allocation_type = fields.Selection([
-        ('working_hours', 'Working Hours'),
-        ('duration', 'Duration'),
-    ], default='duration', compute='_compute_allocation_type')
-    duration = fields.Float(compute='_compute_duration')
-
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be before the planned end date."),
     ]
@@ -55,10 +43,6 @@ class Task(models.Model):
     # action_gantt_reschedule utils
     _WEB_GANTT_RESCHEDULE_WORK_INTERVALS_CACHE_KEY = 'work_intervals'
     _WEB_GANTT_RESCHEDULE_RESOURCE_VALIDITY_CACHE_KEY = 'resource_validity'
-
-    @property
-    def SELF_READABLE_FIELDS(self):
-        return super().SELF_READABLE_FIELDS | PROJECT_TASK_READABLE_FIELDS
 
     @property
     def SELF_WRITABLE_FIELDS(self):
@@ -188,55 +172,6 @@ class Task(models.Model):
     def _compute_user_names(self):
         for task in self:
             task.user_names = ', '.join(task.user_ids.mapped('name'))
-
-    @api.depends('planned_date_begin', 'planned_date_end', 'company_id.resource_calendar_id', 'user_ids')
-    def _compute_allocated_hours(self):
-        task_working_hours = self.filtered(lambda s: s.allocation_type == 'working_hours' and (s.user_ids or s.company_id))
-        task_duration = self - task_working_hours
-        for task in task_duration:
-            # for each planning slot, compute the duration
-            task.allocated_hours = task.duration * (len(task.user_ids) or 1)
-        # This part of the code comes in major parts from planning, with adaptations.
-        # Compute the conjunction of the task user's work intervals and the task.
-        if not task_working_hours:
-            return
-        # if there are at least one task having start or end date, call the _get_valid_work_intervals
-        start_utc = utc.localize(min(task_working_hours.mapped('planned_date_begin')))
-        end_utc = utc.localize(max(task_working_hours.mapped('planned_date_end')))
-        # work intervals per user/per calendar are retrieved with a batch
-        user_work_intervals, calendar_work_intervals = task_working_hours.user_ids._get_valid_work_intervals(
-            start_utc, end_utc, calendars=task_working_hours.company_id.resource_calendar_id
-        )
-        for task in task_working_hours:
-            start = max(start_utc, utc.localize(task.planned_date_begin))
-            end = min(end_utc, utc.localize(task.planned_date_end))
-            interval = Intervals([(
-                start, end, self.env['resource.calendar.attendance']
-            )])
-            sum_allocated_hours = 0.0
-            if task.user_ids:
-                # we sum up the allocated hours for each user
-                for user in task.user_ids:
-                    sum_allocated_hours += sum_intervals(user_work_intervals[user.id] & interval)
-            else:
-                sum_allocated_hours += sum_intervals(calendar_work_intervals[task.company_id.resource_calendar_id.id] & interval)
-            task.allocated_hours = sum_allocated_hours
-
-    @api.depends('planned_date_begin', 'planned_date_end')
-    def _compute_allocation_type(self):
-        for task in self:
-            if task.duration < 24:
-                task.allocation_type = 'duration'
-            else:
-                task.allocation_type = 'working_hours'
-
-    @api.depends('planned_date_begin', 'planned_date_end')
-    def _compute_duration(self):
-        for task in self:
-            if not (task.planned_date_begin and task.planned_date_end):
-                task.duration = 0.0
-            else:
-                task.duration = (task.planned_date_end - task.planned_date_begin).total_seconds() / 3600.0
 
     @api.model
     def _calculate_planned_dates(self, date_start, date_stop, user_id=None, calendar=None):
@@ -1048,9 +983,10 @@ class Task(models.Model):
             interval = Intervals([(
                 max_start, min_end, self.env['resource.calendar.attendance']
             )])
-            nb_hours_per_user = (sum_intervals(interval) / (len(task.user_ids) or 1)) if task.allocation_type == 'duration' else 0.0
+            duration = (task.planned_date_end - task.planned_date_begin).total_seconds() / 3600.0 if task.planned_date_begin and task.planned_date_end else 0.0
+            nb_hours_per_user = (sum_intervals(interval) / (len(task.user_ids) or 1)) if duration < 24 else 0.0
             for user in task.user_ids:
-                if task.allocation_type == 'duration':
+                if duration < 24:
                     planned_hours_mapped[user.id] += nb_hours_per_user
                 else:
                     work_intervals = interval & user_work_intervals[user.id]

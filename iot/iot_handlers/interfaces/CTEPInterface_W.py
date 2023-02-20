@@ -8,13 +8,13 @@ import os
 from odoo.addons.hw_drivers.interface import Interface
 from odoo.addons.hw_drivers.tools.helpers import download_from_url, unzip_file
 
-libPath = Path(__file__).parent.parent / 'lib'
+libPath = Path('odoo/addons/hw_drivers/iot_handlers/lib')
 easyCTEPPath = libPath / 'ctep_w/libeasyctep.dll'
-zipPath = libPath / 'ctep_w.zip'
+zipPath = str(libPath / 'ctep_w.zip')
 
 if not easyCTEPPath.exists():
     download_from_url('http://nightly.odoo.com/master/posbox/iotbox/worldline-ctepv23_02_w.zip', zipPath)
-    unzip_file(zipPath, libPath / 'ctep_w')
+    unzip_file(zipPath, str(libPath / 'ctep_w'))
 
 # Add Worldline dll path so that the linker can find the required dll files
 os.environ['PATH'] = str(libPath / 'ctep_w') + os.pathsep + os.environ['PATH']

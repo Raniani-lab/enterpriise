@@ -191,6 +191,7 @@ class HrContractSalary(main.HrContractSalary):
         if int(force_car):
             force_car_id = request.env['fleet.vehicle'].sudo().browse(int(force_car))
             available_cars |= force_car_id
+            contract.car_id = force_car_id
 
         def generate_dropdown_group_data(available, can_be_requested, only_new, allow_new_cars, vehicle_type='Car'):
             # Creates the necessary data for the dropdown group, looks like this

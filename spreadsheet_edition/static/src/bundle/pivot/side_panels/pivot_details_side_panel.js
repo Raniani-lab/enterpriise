@@ -8,7 +8,7 @@ import { _t } from "web.core";
 import { time_to_str } from "web.time";
 import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 
-const { Component, onWillStart, onWillUpdateProps } = owl;
+import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";
 
 export default class PivotDetailsSidePanel extends Component {
     setup() {

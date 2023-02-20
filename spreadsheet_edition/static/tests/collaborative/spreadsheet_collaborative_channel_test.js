@@ -3,7 +3,7 @@
 import SpreadsheetCollaborativeChannel from "@spreadsheet_edition/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_channel";
 import makeTestEnvironment from "web.test_env";
 
-const { EventBus } = owl;
+import { EventBus } from "@odoo/owl";
 
 class MockBusService {
     constructor() {

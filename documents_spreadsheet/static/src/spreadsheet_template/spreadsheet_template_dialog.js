@@ -11,7 +11,7 @@ import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { getDefaultConfig } from "@web/views/view";
 import { _t } from "web.core";
 
-const { Component, useState, useSubEnv, useChildSubEnv, onWillStart } = owl;
+import { Component, useState, useSubEnv, useChildSubEnv, onWillStart } from "@odoo/owl";
 
 export class TemplateDialog extends Component {
     setup() {

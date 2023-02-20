@@ -2,7 +2,7 @@
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 
-const { Component, onMounted, useState, useRef, onWillUpdateProps } = owl;
+import { Component, onMounted, useState, useRef, onWillUpdateProps } from "@odoo/owl";
 
 const WIDTH_MARGIN = 3;
 const PADDING_RIGHT = 5;

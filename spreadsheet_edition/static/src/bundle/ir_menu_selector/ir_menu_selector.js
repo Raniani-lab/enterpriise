@@ -6,7 +6,7 @@ import { useService } from "@web/core/utils/hooks";
 import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
 import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_helpers";
 
-const { Component, useState, useExternalListener, useRef, onMounted } = owl;
+import { Component, useState, useExternalListener, useRef, onMounted } from "@odoo/owl";
 
 export class IrMenuSelector extends Component {
     setup() {

@@ -9,7 +9,7 @@ import { sprintf } from "@web/core/utils/strings";
 
 const { Model } = spreadsheet;
 
-const { useSubEnv } = owl;
+import { useSubEnv } from "@odoo/owl";
 
 patch(SpreadsheetComponent.prototype, "documents_spreadsheet.SpreadsheetComponent", {
     setup() {

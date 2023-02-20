@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-const { Component, useState } = owl;
+import { Component, useState } from "@odoo/owl";
 
 export default class EditableName extends Component {
     setup() {

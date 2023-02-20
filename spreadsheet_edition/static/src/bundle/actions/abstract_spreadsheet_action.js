@@ -18,7 +18,7 @@ import { loadSpreadsheetDependencies } from "@spreadsheet/helpers/helpers";
  * @property {Boolean} isReadonly
  */
 
-const { onMounted, onWillStart, useState } = owl;
+import { onMounted, onWillStart, useState } from "@odoo/owl";
 export class AbstractSpreadsheetAction extends LegacyComponent {
     setup() {
         if (!this.props.action.params) {

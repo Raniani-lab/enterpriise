@@ -2,7 +2,7 @@
 
 import { FilterValue } from "@spreadsheet/global_filters/components/filter_value/filter_value";
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 /**
  * This is the side panel to define/edit a global filter.
  * It can be of 3 different type: text, date and relation.

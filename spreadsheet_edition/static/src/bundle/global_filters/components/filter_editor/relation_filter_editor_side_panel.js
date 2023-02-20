@@ -6,7 +6,7 @@ import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
 import FilterEditorLabel from "./filter_editor_label";
 import FilterEditorFieldMatching from "./filter_editor_field_matching";
 
-const { useState } = owl;
+import { useState } from "@odoo/owl";
 
 /**
  * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field

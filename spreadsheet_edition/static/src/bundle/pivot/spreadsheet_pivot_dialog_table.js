@@ -1,5 +1,5 @@
 /** @odoo-module */
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class PivotDialogTable extends Component {
     _onCellClicked(formula) {

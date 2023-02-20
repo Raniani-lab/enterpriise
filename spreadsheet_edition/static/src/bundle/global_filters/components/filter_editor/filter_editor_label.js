@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-const { Component, onMounted, useRef } = owl;
+import { Component, onMounted, useRef } from "@odoo/owl";
 
 export default class FilterEditorLabel extends Component {
     setup() {

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 import { _t, _lt } from "@web/core/l10n/translation";
 
 const FIELD_OFFSETS = [

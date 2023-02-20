@@ -6,7 +6,7 @@ import { useService } from "@web/core/utils/hooks";
 import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 
 /**

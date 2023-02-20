@@ -6,7 +6,7 @@ import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
 import { Notebook } from "@web/core/notebook/notebook";
 
-const { Component, useState } = owl;
+import { Component, useState } from "@odoo/owl";
 
 const LABELS = {
     PIVOT: _lt("pivot"),

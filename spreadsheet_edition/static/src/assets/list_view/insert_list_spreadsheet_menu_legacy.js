@@ -4,7 +4,7 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import FavoriteMenu from "web.FavoriteMenu";
 import { useModel } from "web.Model";
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 /**
  * Insert list view in spreadsheet menu

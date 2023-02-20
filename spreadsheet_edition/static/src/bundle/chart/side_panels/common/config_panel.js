@@ -2,7 +2,7 @@
 
 import { IrMenuSelector } from "@spreadsheet_edition/bundle/ir_menu_selector/ir_menu_selector";
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class CommonOdooChartConfigPanel extends Component {
     get odooMenuId() {

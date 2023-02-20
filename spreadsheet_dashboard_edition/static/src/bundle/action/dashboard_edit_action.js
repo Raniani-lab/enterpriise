@@ -18,7 +18,7 @@ import { session } from "@web/session";
  * @typedef {import("@spreadsheet_edition/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_service").SpreadsheetCollaborativeService} SpreadsheetCollaborativeService
  */
 
-const { useState, Component, useSubEnv } = owl;
+import { useState, Component, useSubEnv } from "@odoo/owl";
 
 export class DashboardEditAction extends AbstractSpreadsheetAction {
     setup() {

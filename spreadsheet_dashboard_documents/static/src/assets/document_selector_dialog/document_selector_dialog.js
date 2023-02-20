@@ -4,7 +4,7 @@ import { DocumentsSelectorPanel } from "@documents_spreadsheet/spreadsheet_selec
 import { Dialog } from "@web/core/dialog/dialog";
 import { useService } from "@web/core/utils/hooks";
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class DocumentSelectorDialog extends Component {
     setup() {

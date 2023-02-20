@@ -3,7 +3,7 @@
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 
 export class InsertListSpreadsheetMenu extends Component {

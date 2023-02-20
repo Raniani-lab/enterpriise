@@ -2,7 +2,7 @@
 
 import { SpreadsheetModelFieldSelector } from "../model_field_selector/spreadsheet_model_field_selector";
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 /**
  * @typedef {import("@spreadsheet/global_filters/plugins/global_filters_core_plugin").FieldMatching} FieldMatching

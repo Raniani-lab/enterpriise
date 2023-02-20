@@ -12,7 +12,7 @@ import { LegacyComponent } from "@web/legacy/legacy_component";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 
-const { onMounted, onWillUnmount, useExternalListener, useState, useSubEnv, onWillStart } = owl;
+import { onMounted, onWillUnmount, useExternalListener, useState, useSubEnv, onWillStart } from "@odoo/owl";
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Spreadsheet, Model } = spreadsheet;

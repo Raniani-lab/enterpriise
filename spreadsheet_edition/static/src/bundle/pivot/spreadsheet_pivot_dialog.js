@@ -8,7 +8,7 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 import { makePivotFormula } from "@spreadsheet/pivot/pivot_helpers";
 
-const { Component, useState } = owl;
+import { Component, useState } from "@odoo/owl";
 const formatValue = spreadsheet.helpers.formatValue;
 
 /**

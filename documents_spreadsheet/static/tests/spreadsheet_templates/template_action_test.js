@@ -10,7 +10,7 @@ import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 
-const { onMounted } = owl;
+import { onMounted } from "@odoo/owl";
 const { Model } = spreadsheet;
 
 QUnit.module("documents_spreadsheet > template action", {}, () => {

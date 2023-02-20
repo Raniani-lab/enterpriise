@@ -4,7 +4,7 @@ import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { useService } from "@web/core/utils/hooks";
 import { SpreadsheetName } from "./spreadsheet_name";
 
-const { Component, useState } = owl;
+import { Component, useState } from "@odoo/owl";
 
 /**
  * @typedef {import("@spreadsheet_edition/bundle/actions/spreadsheet_component").User} User

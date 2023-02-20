@@ -5,7 +5,7 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { _lt } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 const { topbarMenuRegistry } = spreadsheet.registries;
-const { useSubEnv } = owl;
+import { useSubEnv } from "@odoo/owl";
 
 topbarMenuRegistry.addChild("add_document_to_dashboard", ["file"], {
     name: _lt("Add to dashboard"),

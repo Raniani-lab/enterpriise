@@ -1,7 +1,7 @@
 /** @odoo-module */
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 const { Menu } = spreadsheet;
 
 export class FilterComponent extends Component {

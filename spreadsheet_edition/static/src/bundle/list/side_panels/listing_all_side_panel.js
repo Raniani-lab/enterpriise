@@ -3,7 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { ListingDetailsSidePanel } from "./listing_details_side_panel";
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export default class ListingAllSidePanel extends Component {
     constructor() {

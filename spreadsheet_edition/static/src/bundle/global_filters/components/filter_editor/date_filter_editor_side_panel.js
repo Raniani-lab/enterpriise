@@ -7,7 +7,7 @@ import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
 import FilterEditorFieldMatching from "./filter_editor_field_matching";
 import FilterEditorLabel from "./filter_editor_label";
 
-const { useState } = owl;
+import { useState } from "@odoo/owl";
 
 const RANGE_TYPES = [
     { type: "year", description: _lt("Year") },

@@ -7,7 +7,7 @@ import { useService } from "@web/core/utils/hooks";
 import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 import { omit } from "@web/core/utils/objects";
 
-const { onWillStart } = owl;
+import { onWillStart } from "@odoo/owl";
 
 export const patchGraphSpreadsheet = {
     setup() {

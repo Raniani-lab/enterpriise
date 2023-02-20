@@ -7,7 +7,7 @@ import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
 import { globalFiltersFieldMatchers } from "@spreadsheet/global_filters/plugins/global_filters_core_plugin";
 
-const { onWillStart, Component, useRef, useState, toRaw } = owl;
+import { onWillStart, Component, useRef, useState, toRaw } from "@odoo/owl";
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 /**

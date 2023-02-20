@@ -4,7 +4,7 @@ import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
 import FilterEditorLabel from "./filter_editor_label";
 import FilterEditorFieldMatching from "./filter_editor_field_matching";
 
-const { useState } = owl;
+import { useState } from "@odoo/owl";
 
 /**
  * @typedef {import("@spreadsheet/global_filters/plugins/global_filters_core_plugin").GlobalFilter} GlobalFilter

@@ -13,7 +13,7 @@ import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/a
 import { DocumentsSpreadsheetControlPanel } from "../components/control_panel/spreadsheet_control_panel";
 import { RecordFileStore } from "@spreadsheet_edition/bundle/image/record_file_store";
 
-const { Component, useState } = owl;
+import { Component, useState } from "@odoo/owl";
 
 export class SpreadsheetAction extends AbstractSpreadsheetAction {
     setup() {

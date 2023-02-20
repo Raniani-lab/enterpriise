@@ -7,7 +7,7 @@ import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
 import { Pager } from "@web/core/pager/pager";
 
-const { Component, onWillStart, useState, onWillUnmount } = owl;
+import { Component, onWillStart, useState, onWillUnmount } from "@odoo/owl";
 
 const DEFAULT_LIMIT = 9;
 

@@ -1,6 +1,20 @@
+.o_knowledge_form_view {
+    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_knowledge_behavior_type_embedded_view {
+        margin-left: 0;
+        margin-right: 0;
+        .o_control_panel {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+}
+
 .o_knowledge_behavior_type_embedded_view {
+    margin-left: calc(-1 * var(--editor-gutter-size));
+    margin-right: calc(-1 * var(--editor-gutter-size));
     position: relative;
     background-color: $o-webclient-background-color;
+    border-left: 2px solid transparent; // adjust to resizer
 
     .o_knowledge_toolbar {
         position: absolute;
@@ -25,10 +39,6 @@
     .o_pivot_add_spreadsheet,
     .o_graph_insert_spreadsheet {
         display: none;
-    }
-    .o_control_panel {
-        padding-left: 0;
-        padding-right: 0;
     }
     .o_list_renderer {
         margin-bottom: 0 !important;

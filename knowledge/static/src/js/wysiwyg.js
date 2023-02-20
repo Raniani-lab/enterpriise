@@ -113,7 +113,7 @@ Wysiwyg.include({
                 category: _t('Knowledge'),
                 name: _t('File'),
                 priority: 20,
-                description: _t('Embed a file'),
+                description: _t('Upload a file'),
                 fontawesome: 'fa-file',
                 callback: () => {
                     this.openMediaDialog({

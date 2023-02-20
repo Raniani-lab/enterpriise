@@ -37,6 +37,7 @@ import { registry } from "@web/core/registry";
 export const knowledgeCommandsService = {
     start(env) {
         let commandsRecordInfo = null;
+        let pendingBehaviorBlueprints = {};
 
         /**
          * @param {Object} recordInfo
@@ -60,9 +61,37 @@ export const knowledgeCommandsService = {
             return commandsRecordInfo;
         }
 
+        /**
+         * @param {Object}
+         * @param {HTMLElement} behaviorBlueprint element to be inserted in a
+         *                      html field
+         * @param {string} model model name of the target record
+         * @param {string} field field name of the target record
+         * @param {integer} resId id of the target record
+         */
+        function setPendingBehaviorBlueprint({behaviorBlueprint, model, field, resId}) {
+            if (!(model in pendingBehaviorBlueprints)) {
+                pendingBehaviorBlueprints[model] = {};
+            }
+            if (!(field in pendingBehaviorBlueprints[model])) {
+                pendingBehaviorBlueprints[model][field] = {};
+            }
+            pendingBehaviorBlueprints[model][field][resId] = behaviorBlueprint;
+        }
+
+        function popPendingBehaviorBlueprint({model, field, resId}) {
+            if (model in pendingBehaviorBlueprints && field in pendingBehaviorBlueprints[model]) {
+                const pendingBehaviorBlueprint = pendingBehaviorBlueprints[model][field][resId];
+                delete pendingBehaviorBlueprints[model][field][resId];
+                return pendingBehaviorBlueprint;
+            }
+        }
+
         const knowledgeCommandsService = {
             setCommandsRecordInfo,
             getCommandsRecordInfo,
+            setPendingBehaviorBlueprint,
+            popPendingBehaviorBlueprint,
         };
         return knowledgeCommandsService;
     }

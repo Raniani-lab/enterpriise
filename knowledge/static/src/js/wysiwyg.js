@@ -4,7 +4,10 @@ import { Component } from '@odoo/owl';
 import { qweb as QWeb, _t } from 'web.core';
 import Wysiwyg from 'web_editor.wysiwyg';
 import { PromptEmbeddedViewNameDialog } from '@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog';
-import { preserveCursor } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
+import {
+    preserveCursor,
+    setCursorEnd,
+} from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 import { ArticleLinkBehaviorDialog } from '@knowledge/components/behaviors/article_behavior_dialog/article_behavior_dialog';
 import { Markup } from 'web.utils';
 import {
@@ -54,6 +57,20 @@ Wysiwyg.include({
             return true;
         }
         return false;
+    },
+    /**
+     * @override
+     */
+    _getEditorOptions: function () {
+        const finalOptions = this._super.apply(this, arguments);
+        const onHistoryResetFromSteps = finalOptions.onHistoryResetFromSteps;
+        finalOptions.onHistoryResetFromSteps = () => {
+            onHistoryResetFromSteps();
+            if (this._onHistoryResetFromSteps) {
+                this._onHistoryResetFromSteps();
+            }
+        };
+        return finalOptions;
     },
     /**
      * @override
@@ -249,6 +266,38 @@ Wysiwyg.include({
             args: [[this.options.recordInfo.res_id], actWindowId, viewType, name, context],
         }))[0];
         this._notifyNewBehavior(embeddedViewBlock, restoreSelection);
+    },
+    /**
+     * Insert a behaviorBlueprint programatically. If the wysiwyg is a part of a
+     * collaborative peer to peer connection, ensure that the behaviorBlueprint
+     * is properly appended even when the content is reset by the collaboration.
+     *
+     * @param {HTMLElement} behaviorBlueprint element to append to the editable
+     */
+    appendBehaviorBlueprint(behaviorBlueprint) {
+        const restoreSelection = () => {
+            setCursorEnd(this.odooEditor.editable);
+        }
+        const insert = (anchor) => {
+            const fragment = this.odooEditor.document.createDocumentFragment();
+            // Add a P after the Behavior to be able to continue typing
+            // after it
+            const p = this.odooEditor.document.createElement('p');
+            p.append(this.odooEditor.document.createElement('br'));
+            fragment.append(anchor, p);
+            const [behavior] = this.odooEditor.execCommand('insert', fragment);
+            behavior.scrollIntoView();
+        };
+        // Clone behaviorBlueprint to be sure that the nodes are not modified
+        // during the first insertion attempt and that the correct nodes
+        // are inserted the second time.
+        this._notifyNewBehavior(behaviorBlueprint.cloneNode(true), restoreSelection, (anchor) => {
+            insert(anchor);
+            this._onHistoryResetFromSteps = () => {
+                this._notifyNewBehavior(behaviorBlueprint.cloneNode(true), restoreSelection, insert);
+                this._onHistoryResetFromSteps = undefined;
+            };
+        });
     },
     /**
      * Notify the @see FieldHtmlInjector when a /file block is inserted from a

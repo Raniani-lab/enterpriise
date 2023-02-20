@@ -2191,36 +2191,21 @@ class Article(models.Model):
     # BUSINESS METHODS
     # ------------------------------------------------------------
 
-    def append_embedded_view(self, act_window_id_or_xml_id, view_type, name, context=None):
+    def render_embedded_view_link(self, act_window_id_or_xml_id, view_type, name, context=None):
         """
-        Append a new HTML tag to the body of the article that will be recognized
-        as an embedded view by the editor. This tag will contain all data needed
-        to load the embedded view.
-        :param int | str act_window_id_or_xml_id: id or xml id of the action
-        :param str view_type: type of the view ('kanban', 'list', ...)
-        :param str name: display name of the embedded view
-        :param dict context: context of the view
-        """
-        self.ensure_one()
-        embedded_view = self.render_embedded_view(act_window_id_or_xml_id, view_type, name, context)
-        self.write({
-            'body': self.body + Markup('<p><br></p>') + Markup(embedded_view) + Markup('<p><br></p>')
-        })
-
-    def append_view_link(self, act_window_id_or_xml_id, view_type, name, context=None):
-        """
-        Append a new HTML tag to the body of the article that will be recognized
-        as a view link by the editor. This tag will contain all data needed to
-        open the given view.
+        Returns the HTML tag that will be recognized by the editor as a
+        view link. This tag will contain all data needed to open the given view.
         :param int | str act_window_id_or_xml_id: id or xml id of the action
         :param str view_type: type of the view ('kanban', 'list', ...)
         :param str name: display name
         :param dict context: context of the view
+
+        :return: rendered template for the view link
         """
         self.ensure_one()
         action_data = self._extract_act_window_data(act_window_id_or_xml_id, name)
         action_data.pop('help', None)
-        link = self.env['ir.qweb']._render(
+        return self.env['ir.qweb']._render(
             'knowledge.knowledge_view_link', {
                 'behavior_props': parse.quote(json.dumps({
                     'act_window': action_data,
@@ -2232,9 +2217,6 @@ class Article(models.Model):
             minimal_qcontext=True,
             raise_if_not_found=False
         )
-        self.write({
-            'body': self.body + Markup('<p><br></p>') + Markup(link) + Markup('<p><br></p>')
-        })
 
     def render_embedded_view(self, act_window_id_or_xml_id, view_type, name, context=None):
         """

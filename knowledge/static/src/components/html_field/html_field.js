@@ -5,6 +5,7 @@ import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
 import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 import { Mutex } from "@web/core/utils/concurrency";
+import { useService } from "@web/core/utils/hooks";
 
 // Behaviors:
 
@@ -77,6 +78,7 @@ const HtmlFieldPatch = {
             }),
         };
         this.boundRefreshBehaviors = this._onRefreshBehaviors.bind(this);
+        this.knowledgeCommandsService = useService('knowledgeCommandsService');
         // Update Behaviors and reset the observer when the html_field
         // DOM element changes.
         useEffect(() => {
@@ -204,6 +206,14 @@ const HtmlFieldPatch = {
         this._addRefreshBehaviorsListeners();
         this.startAppAnchorsObserver();
         await this.updateBehaviors();
+        const behaviorBlueprint = this.knowledgeCommandsService.popPendingBehaviorBlueprint({
+            model: this.env.model?.root?.resModel,
+            field: this.props.name,
+            resId: this.env.model?.root?.resId,
+        });
+        if (behaviorBlueprint) {
+            this.wysiwyg.appendBehaviorBlueprint(behaviorBlueprint);
+        }
     },
     /**
      * Mount Behaviors in visible anchors that should contain one.

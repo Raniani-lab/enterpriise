@@ -24,12 +24,13 @@ const EmbeddedViewRendererPatch = {
     setup() {
         this._super(...arguments);
         if (this.env.searchModel) {
-            useBus(this.env.searchModel, 'insert-embedded-view', this._insertEmbeddedView.bind(this));
-            useBus(this.env.searchModel, 'insert-view-link', this._insertViewLink.bind(this));
+            useBus(this.env.searchModel, 'insert-embedded-view', this._insertBackendBehavior.bind(this, 'render_embedded_view'));
+            useBus(this.env.searchModel, 'insert-view-link', this._insertBackendBehavior.bind(this, 'render_embedded_view_link'));
             this.orm = useService('orm');
             this.actionService = useService('action');
             this.addDialog = useOwnedDialogs();
             this.userService = useService('user');
+            this.knowledgeCommandsService = useService('knowledgeCommandsService');
         }
     },
     /**
@@ -55,44 +56,36 @@ const EmbeddedViewRendererPatch = {
         });
         return context;
     },
-    _insertEmbeddedView: function () {
-        const config = this.env.config;
-        if (config.actionType !== 'ir.actions.act_window') {
-            return;
-        }
-        this._openArticleSelector(async id => {
-            const context = this._getViewContext();
-            await this.orm.call('knowledge.article', 'append_embedded_view',
-                [[id],
-                config.actionId,
-                config.viewType,
-                config.getDisplayName(),
-                context]
-            );
-            this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
-                additionalContext: {
-                    res_id: id
-                }
-            });
-        });
-    },
     /**
-     * Inserts a new link in the article redirecting the user to the current view.
+     * Prepare a Behavior rendered in backend to be inserted in an article by
+     * the KnowledgeCommandsService.
+     * Allow to choose an article in a modal, redirect to that article and
+     * append the rendered template "blueprint" needed for the desired Behavior
+     *
+     * @param {string} renderFunctionName name of the python method to render
+     *                 the template "blueprint" related to the desired Behavior
      */
-    _insertViewLink: function () {
+    _insertBackendBehavior: function (renderFunctionName) {
         const config = this.env.config;
         if (config.actionType !== 'ir.actions.act_window') {
             return;
         }
         this._openArticleSelector(async id => {
             const context = this._getViewContext();
-            await this.orm.call('knowledge.article', 'append_view_link',
+            const parser = new DOMParser();
+            const behaviorBlueprint = await this.orm.call('knowledge.article', renderFunctionName,
                 [[id],
                 config.actionId,
                 config.viewType,
                 config.getDisplayName(),
                 context]
             );
+            this.knowledgeCommandsService.setPendingBehaviorBlueprint({
+                behaviorBlueprint: parser.parseFromString(behaviorBlueprint, 'text/html').body.firstElementChild,
+                model: 'knowledge.article',
+                field: 'body',
+                resId: id,
+            });
             this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
                 additionalContext: {
                     res_id: id

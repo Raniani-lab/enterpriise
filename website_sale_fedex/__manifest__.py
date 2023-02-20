@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
@@ -12,7 +11,7 @@
     ],
     'assets': {
         'web.assets_frontend': [
-            'website_delivery_fedex/static/src/xml/fedex_pickup_locations.xml',
+            'website_sale_fedex/static/src/xml/fedex_pickup_locations.xml',
         ],
     },
 

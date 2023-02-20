@@ -83,7 +83,7 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
             - Check the credit note state
             - Create a credit note With Form
         """
-        journal_id = self.env['account.journal'].search([('type', '=', 'sale')], limit=1).id
+        journal_id = self.env['account.journal'].search([('type', '=', 'sale'), ('company_id', '=', self.main_company_id)], limit=1).id
         self.env['sale.order.line'].create({
             'product_id': self.product.id,
             'price_unit': 10,

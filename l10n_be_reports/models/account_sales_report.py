@@ -123,7 +123,7 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
         dnum = company_vat[2:] + seq_declarantnum[-4:]
         ads = None
         addr = company.partner_id.address_get(['invoice'])
-        phone = email = city = post_code = street = country = ''
+        phone = email = city = post_code = street = country = company_country = ''
         report = self.env['account.report'].browse(options['report_id'])
 
         if addr.get('invoice', False):
@@ -145,17 +145,43 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
             if ads.street2:
                 street += ' ' + ads.street2
 
-            country = ads.country_id.code if ads.country_id else company_vat[:2]
+            company_country = ads.country_id.code if ads.country_id else company_vat[:2]
 
-        date_from = fields.Date.from_string(options['date'].get('date_from'))
-        period_type = options['date'].get('period_type')
         options['no_format'] = True
         lines = report._get_lines(options)
+        data_clientinfo = ''
+        seq = 0
+        for line in lines[:-1]:   # Remove total line
+            country = line['columns'][colname_to_idx['country_code']].get('name', '')
+            vat = line['columns'][colname_to_idx['vat_number']].get('name', '')
+            amount = line['columns'][colname_to_idx['balance']]['no_format']
+            if not vat:
+                if self.env.company.currency_id.is_zero(amount):
+                    continue
+                raise UserError(_('No vat number defined for %s.', line['name']))
+            seq += 1
+            client = {
+                'vatnum': vat,
+                'vat': (country + vat).replace(' ', '').upper(),
+                'country': country,
+                'amount': amount,
+                'code': line['columns'][colname_to_idx['sales_type_code']]['name'][:1],
+                'seq': seq,
+            }
+            data_clientinfo += Markup("""
+        <ns2:IntraClient SequenceNumber="%(seq)s">
+            <ns2:CompanyVATNumber issuedBy="%(country)s">%(vatnum)s</ns2:CompanyVATNumber>
+            <ns2:Code>%(code)s</ns2:Code>
+            <ns2:Amount>%(amount).2f</ns2:Amount>
+        </ns2:IntraClient>""") % client
+
         xml_data = {
-            'clientnbr': len([line for line in lines if report._get_model_info_from_id(line['id'])[0] == 'res.partner']),
+            'clientnbr': seq,
             'amountsum': lines[-1]['columns'][colname_to_idx['balance']]['no_format'],
         }
 
+        date_from = fields.Date.from_string(options['date'].get('date_from'))
+        period_type = options['date'].get('period_type')
         month = date_from.month if period_type == 'month' else None
         quarter = date_from.month // 4 + 1 if period_type == 'quarter' else None
 
@@ -167,7 +193,7 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
             'street': street,
             'city': city,
             'post_code': post_code,
-            'country': country,
+            'country': company_country,
             'email': email,
             'phone': _raw_phonenumber(phone),
             'year': date_from.year,
@@ -198,32 +224,6 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
             {"<ns2:Quarter>%(quarter)s</ns2:Quarter>" if quarter else ""}
             <ns2:Year>%(year)s</ns2:Year>
         </ns2:Period>""") % xml_data
-
-        data_clientinfo = ''
-        seq = 0
-        for line in lines[:-1]:   # Remove total line
-            seq += 1
-            country = line['columns'][colname_to_idx['country_code']].get('name', '')
-            vat = line['columns'][colname_to_idx['vat_number']].get('name', '')
-            amount = line['columns'][colname_to_idx['balance']]['no_format']
-            if not vat:
-                if self.env.company.currency_id.is_zero(amount):
-                    continue
-                raise UserError(_('No vat number defined for %s.', line['name']))
-            client = {
-                'vatnum': vat,
-                'vat': (country + vat).replace(' ', '').upper(),
-                'country': country,
-                'amount': amount,
-                'code': line['columns'][colname_to_idx['sales_type_code']]['name'][:1],
-                'seq': seq,
-            }
-            data_clientinfo += Markup("""
-        <ns2:IntraClient SequenceNumber="%(seq)s">
-            <ns2:CompanyVATNumber issuedBy="%(country)s">%(vatnum)s</ns2:CompanyVATNumber>
-            <ns2:Code>%(code)s</ns2:Code>
-            <ns2:Amount>%(amount).2f</ns2:Amount>
-        </ns2:IntraClient>""") % client
 
         data_rslt = data_head + data_clientinfo + Markup("""
         </ns2:IntraListing>

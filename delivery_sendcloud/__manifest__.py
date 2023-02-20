@@ -7,7 +7,7 @@
     'sequence': 316,
     'version': '1.0',
     'application': True,
-    'depends': ['delivery', 'mail'],
+    'depends': ['stock_delivery', 'mail'],
     'data': [
         'security/ir.model.access.csv',
         'data/message_templates.xml',

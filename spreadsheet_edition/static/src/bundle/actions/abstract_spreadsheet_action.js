@@ -1,11 +1,11 @@
 /** @odoo-module **/
+import { onMounted, onWillStart, useState, Component } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
-import { LegacyComponent } from "@web/legacy/legacy_component";
 import { loadSpreadsheetDependencies } from "@spreadsheet/helpers/helpers";
 
 /**
@@ -18,8 +18,7 @@ import { loadSpreadsheetDependencies } from "@spreadsheet/helpers/helpers";
  * @property {Boolean} isReadonly
  */
 
-import { onMounted, onWillStart, useState } from "@odoo/owl";
-export class AbstractSpreadsheetAction extends LegacyComponent {
+export class AbstractSpreadsheetAction extends Component {
     setup() {
         if (!this.props.action.params) {
             // the action is coming from a this.trigger("do-action", ... ) of owl (not wowl and not legacy)

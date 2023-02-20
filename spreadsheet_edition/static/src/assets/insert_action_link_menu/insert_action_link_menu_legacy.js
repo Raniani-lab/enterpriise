@@ -1,15 +1,15 @@
 /** @odoo-module */
 
+import { Component } from "@odoo/owl";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import FavoriteMenu from "web.FavoriteMenu";
 import pyUtils from "web.py_utils";
 import Domain from "web.Domain";
 import { useService } from "@web/core/utils/hooks";
 import { useModel } from "web.Model";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 
-export class InsertViewSpreadsheet extends LegacyComponent {
+export class InsertViewSpreadsheet extends Component {
     setup() {
         this.model = useModel("searchModel");
         this.notification = useService("notification");

@@ -8,11 +8,18 @@ import { useService } from "@web/core/utils/hooks";
 import { DEFAULT_LINES_NUMBER } from "@spreadsheet/helpers/constants";
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 
-import { onMounted, onWillUnmount, useExternalListener, useState, useSubEnv, onWillStart } from "@odoo/owl";
+import {
+    onMounted,
+    onWillUnmount,
+    useExternalListener,
+    useState,
+    useSubEnv,
+    onWillStart,
+    Component,
+} from "@odoo/owl";
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Spreadsheet, Model } = spreadsheet;
@@ -24,7 +31,7 @@ const tags = new Set();
  * @property {string} User.name
  * @property {string} User.id
  */
-export default class SpreadsheetComponent extends LegacyComponent {
+export default class SpreadsheetComponent extends Component {
     setup() {
         this.orm = useService("orm");
         const user = useService("user");

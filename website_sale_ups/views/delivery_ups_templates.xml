@@ -40,7 +40,7 @@
 
     <template id="payment_delivery" name="Delivery Costs" inherit_id="website_sale.payment_delivery">
         <xpath expr="//div[@id='delivery_method']" position="before">
-            <t t-call="website_delivery_ups.ups_bill_my_account_dialog"/>
+            <t t-call="website_sale_ups.ups_bill_my_account_dialog"/>
         </xpath>
     </template>
 

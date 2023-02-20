@@ -3,6 +3,7 @@
 
 import ast
 import json
+import re
 
 from collections import defaultdict
 from datetime import datetime, timedelta
@@ -30,7 +31,8 @@ class Article(models.Model):
     DEFAULT_ARTICLE_TRASH_LIMIT_DAYS = 30
 
     active = fields.Boolean(default=True)
-    name = fields.Char(string="Title", default=lambda self: _('Untitled'), required=True, tracking=20)
+    name = fields.Char(string="Title", default=lambda self: _('Untitled'), required=True, tracking=20,
+                       default_export_compatible=True)
     body = fields.Html(string="Body")
     icon = fields.Char(string='Emoji')
     cover_image_id = fields.Many2one("knowledge.cover", string='Article cover')
@@ -780,7 +782,7 @@ class Article(models.Model):
         return [('user_has_access', '=', True)]
 
     # ------------------------------------------------------------
-    # LOW-LEVEL MODELS
+    # BASE MODEL METHODS
     # ------------------------------------------------------------
 
     @api.autovacuum
@@ -799,8 +801,30 @@ class Article(models.Model):
     def action_archive(self):
         return self._action_archive_articles()
 
+    def name_create(self, name):
+        """" This override is meant to make the 'name_create' symmetrical to the name_get.
+        When creating an article, we attempt to extract a potential icon from the beginning of the
+        name to correctly split the 'name' and 'icon' fields.
+
+        This is especially important since some flows, such as importing records, are based on
+        name_create to create missing records.
+        It also allows pasting an article display_name into a m2o field and using the quick creation
+        if it does not exist.
+
+        Without this override, you would get '📄🚀 Article With Icon' (placeholder added as icon is
+        not detected) instead of '🚀 Article With Icon' as result. """
+
+        article_name, icon = self._extract_icon_from_name(name)
+        if not icon:
+            return super().name_create(name)
+
+        return self.create({
+            'name': article_name,
+            'icon': icon,
+        }).name_get()[0]
+
     def name_get(self):
-        return [(rec.id, "%s %s" % (rec.icon or "📄", rec.name)) for rec in self]
+        return [(rec.id, "%s %s" % (rec.icon or self._get_no_icon_placeholder(), rec.name)) for rec in self]
 
     def _get_no_icon_placeholder(self):
         """ Emoji used in templates as a placeholder when icon is False. It's
@@ -811,6 +835,39 @@ class Article(models.Model):
         emojis to be parsed directly from a template on those devices.
         """
         return "📄"
+
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        """ This override is meant to make the 'name_search' symmetrical to the name_get.
+        As we append the icon (emoji) before the article name, when searching based on that same
+        syntax '[emoji] name' we need to return the appropriate results.
+
+        This is especially important since some flows, such as exporting and re-importing records,
+        are based on name_get / name_search to match records (for example when importing the article
+        parent record, without this override it will never match). """
+
+        if operator not in ('=', 'ilike'):
+            return super()._name_search(name, args, operator, limit, name_get_uid)
+
+        article_name, icon = self._extract_icon_from_name(name)
+        if not icon:
+            return super()._name_search(name, args, operator, limit, name_get_uid)
+
+        domain = args or []
+        if icon == self._get_no_icon_placeholder():
+            # special case using the icon placeholder (no icon stored but the name_get returns one)
+            domain = expression.AND([domain, [
+                ('name', operator, article_name),
+                '|',
+                ('icon', '=', icon),
+                ('icon', '=', False),
+            ]])
+        else:
+            domain = expression.AND([domain, [
+                ('name', operator, article_name),
+                ('icon', '=', icon),
+            ]])
+
+        return self._search(domain, limit=limit, access_rights_uid=name_get_uid)
 
     # ------------------------------------------------------------
     # ACTIONS
@@ -2068,6 +2125,21 @@ class Article(models.Model):
         action_data['display_name'] = name or action_data['display_name']
         action_data['name'] = name or action_data['name']
         return action_data
+
+    @api.model
+    def _extract_icon_from_name(self, name):
+        """ See name_create / _name_search overrides for details. """
+        if not isinstance(name, str) or len(name) < 3:
+            return name, None
+
+        # we consider that a non-alphabetical and non-special character is an emoji
+        emoji_match = re.match(r'([^\w.,;:_%+!\\/@$€#&()*=~-]) (.*)', name)
+        if not emoji_match or len(emoji_match.groups()) != 2:
+            return name, None
+
+        emoji = emoji_match.groups(1)[0]
+        article_name = emoji_match.groups(1)[1]
+        return article_name, emoji
 
     def _get_ancestor_ids(self):
         """ Return the union of sets including the ids for the ancestors of

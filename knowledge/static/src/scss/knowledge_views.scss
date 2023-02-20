@@ -225,6 +225,24 @@
         width: 25%;
         background: var(--knowledge-properties-bg, $o-gray-100);
 
+        .o_properties_helper {
+            height: 60%;
+            min-height: 300px;
+            background: var(--knowledge-properties-bg, $o-gray-100);
+            .o_view_nocontent_smiling_face:before {
+                @extend %o-nocontent-init-image;
+                width: 120px;
+                height: 140px;
+                background: transparent url(/web/static/img/smiling_face.svg) no-repeat center;
+            }
+        }
+
+        .o_properties_helper + .o_field_properties {
+            .o_field_property_add {
+                text-align: center;
+            }
+        }
+
         .o_inner_group {
             width: 100%;
             grid-template-columns: 1fr;

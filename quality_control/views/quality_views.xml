@@ -546,7 +546,7 @@
         <field name="name">quality.alert.team.view.kanban</field>
         <field name="model">quality.alert.team</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_dashboard o_quality_kanban" create="0">
+            <kanban class="o_kanban_dashboard o_quality_kanban" create="0">
                 <field name="name"/>
                 <field name="check_count"/>
                 <field name="alert_count"/>

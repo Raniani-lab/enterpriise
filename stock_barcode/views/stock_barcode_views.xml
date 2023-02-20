@@ -73,7 +73,7 @@
         <field name="mode">primary</field>
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile oe_background_grey o_emphasize_colors" create="0" sample="1" action="get_action_picking_tree_ready_kanban" type="object">
+            <kanban class="o_kanban_mobile o_emphasize_colors" create="0" sample="1" action="get_action_picking_tree_ready_kanban" type="object">
                 <field name="display_name"/>
                 <field name="color"/>
                 <field name="count_picking_ready"/>

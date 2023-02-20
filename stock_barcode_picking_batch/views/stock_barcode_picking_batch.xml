@@ -53,7 +53,7 @@
         <field name="arch" type="xml">
             <kanban import="0" js_class="stock_barcode_list_kanban" sample="1"
                 action="action_client_action" type="object"
-                class="oe_background_grey o_kanban_dashboard o_emphasize_colors o_stock_barcode_kanban">
+                class="o_kanban_dashboard o_emphasize_colors o_stock_barcode_kanban">
                 <field name="move_line_ids"/>
                 <templates>
                     <t t-name="kanban-box">

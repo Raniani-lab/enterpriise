@@ -134,7 +134,7 @@
             <field name="model">consolidation.period</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <kanban class="oe_background_grey o_kanban_dashboard o_account_kanban"
+                <kanban class="o_kanban_dashboard o_account_kanban"
                         banner_route="/account_consolidation/dashboard_onboarding">
                     <field name="color"/>
                     <field name="chart_id"/> <!-- Needed to allow chart color update -->

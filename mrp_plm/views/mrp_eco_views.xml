@@ -129,7 +129,7 @@
         <field name="name">mrp.eco.type.view.kanban</field>
         <field name="model">mrp.eco.type</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_dashboard o_mrp_plm_kanban" create="0">
+            <kanban class="o_kanban_dashboard o_mrp_plm_kanban" create="0">
                 <field name="name"/>
                 <field name="alias_id"/>
                 <field name="alias_name"/>

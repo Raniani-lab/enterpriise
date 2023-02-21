@@ -12,9 +12,7 @@ Many2OneAvatarResourceField.template = "planning.Many2OneAvatarResourceField";
 export const many2OneAvatarResourceField = {
     ...many2OneAvatarField,
     component: Many2OneAvatarResourceField,
-    fieldDependencies: {
-        resource_type: { type: "selection" },
-    },
+    fieldDependencies: [ { name: "resource_type", type: "selection" } ],
     additionalClasses: ["o_field_many2one_avatar"],
 };
 

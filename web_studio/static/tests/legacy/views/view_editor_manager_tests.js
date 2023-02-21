@@ -6062,9 +6062,9 @@ QUnit.module('ViewEditorManager', {
         registry.category("fields").add("list.withDependencies", {
             ...charField,
             component: CharWithDependencies,
-            fieldDependencies: {
-                is_dep: { type: "char"},
-            },
+            fieldDependencies: [
+                { name: "is_dep", type: "char"},
+            ],
         });
 
         const action = serverData.actions["studio.coucou_action"];
@@ -6087,11 +6087,11 @@ QUnit.module('ViewEditorManager', {
         const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
         await doAction(webClient, "studio.coucou_action");
         assert.verifySteps([
-            `widget Dependency: {"type":"char"} : the meters`,
+            `widget Dependency: {"name":"is_dep","type":"char"} : the meters`,
         ])
         await openStudio(target);
         assert.verifySteps([
-            `widget Dependency: {"type":"char"} : the meters`,
+            `widget Dependency: {"name":"is_dep","type":"char"} : the meters`,
         ])
 
         assert.containsOnce(target, ".o_web_studio_form_view_editor");

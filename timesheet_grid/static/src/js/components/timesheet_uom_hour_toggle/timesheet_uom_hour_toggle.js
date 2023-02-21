@@ -51,10 +51,10 @@ FieldTimesheetHourToggle.props = {
 
 export const fieldTimesheetHourToggle = {
     component: FieldTimesheetHourToggle,
-    fieldDependencies: {
-        duration_unit_amount: { type: "float" },
-        is_timer_running: { type: "boolean" },
-    },
+    fieldDependencies: [
+        { name: "duration_unit_amount", type: "float" },
+        { name: "is_timer_running", type: "boolean" },
+    ],
 };
 
 registry.category("fields").add("timesheet_uom_hour_toggle", fieldTimesheetHourToggle);

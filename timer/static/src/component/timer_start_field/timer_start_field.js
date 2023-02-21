@@ -72,9 +72,7 @@ TimerStartField.template = "timer.TimerStartField";
 
 export const timerStartField = {
     component: TimerStartField,
-    fieldDependencies: {
-        timer_pause: { type: "datetime" },
-    },
+    fieldDependencies: [ { name: "timer_pause", type: "datetime" } ],
 };
 
 registry.category("fields").add("timer_start_field", timerStartField);

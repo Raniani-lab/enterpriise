@@ -56,11 +56,11 @@ TimesheetUOMHourTimer.template = "timesheet_grid.TimesheetUOMHourTimer";
 
 export const timesheetUOMHourTimer = {
     component: TimesheetUOMHourTimer,
-    fieldDependencies: {
-        duration_unit_amount: { type: "float" },
-        display_timer: { type: "boolean" },
-        is_timer_running: { type: "boolean" },
-    },
+    fieldDependencies: [
+        { name: "duration_unit_amount", type: "float" },
+        { name: "display_timer", type: "boolean" },
+        { name: "is_timer_running", type: "boolean" },
+    ],
 };
 
 registry.category("fields").add("timesheet_uom_hour_timer", timesheetUOMHourTimer);

@@ -869,8 +869,6 @@
                                              Caisse: 2.103 -->
                                             <f10_2128_vrijaanvullendpensioenwerknemers t-esc="employee_data['f10_2128_vrijaanvullendpensioenwerknemers']"/>
 
-                                            <f10_2129_exemptincomesubjecttoprogressivity t-esc="employee_data['f10_2129_exemptincomesubjecttoprogressivity']"/>
-
                                             <!-- PC Privé : Montant de l’intervention de l’employeur -->
                                             <f10_2130_privatepc t-esc="employee_data['f10_2130_privatepc']"/>
 

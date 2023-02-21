@@ -2,7 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
+import base64
+import io
 import os
+from PIL import Image
 from unittest import skipIf
 from odoo import fields
 from odoo.tests.common import tagged, HttpCase
@@ -99,6 +102,17 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         """Check the behaviour of the cover selector when unsplash credentials
         are not set.
         """
+        with io.BytesIO() as f:
+            Image.new('RGB', (50, 50)).save(f, 'PNG')
+            f.seek(0)
+            image = base64.b64encode(f.read())
+        attachment = self.env['ir.attachment'].create({
+            'name': 'odoo_logo.png',
+            'datas': image,
+            'res_model': 'knowledge.cover',
+            'res_id': 0,
+        })
+        self.env['knowledge.cover'].create({'attachment_id': attachment.id})
         self.start_tour('/web', 'knowledge_cover_selector_tour', login='admin')
 
     def test_knowledge_readonly_favorite(self):

@@ -44,6 +44,7 @@
         .o_app_icon {
             width: $o-home-menu-app-icon-max-width;
             height: $o-home-menu-app-icon-max-width;
+            padding: 10px;
             background: {
                 size: cover;
                 repeat: no-repeat;

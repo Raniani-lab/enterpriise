@@ -4987,16 +4987,27 @@ QUnit.test("A task should always have a title (pill_label='1', scale 'week')", a
         arch: `
             <gantt date_start="start" date_stop="stop" pill_label="True" default_scale="week">
                 <field name="allocated_hours"/>
-            </gantt>        
+            </gantt>
         `,
     });
-    assert.deepEqual(getTexts(".o_gantt_pill"), [
-        "12/8 - 2/18 - Task 4",
-        "Task 1",
-        "9:30 AM - 8:30 PM (6h) - Task 2",
-        "Task 3",
-        "12/18 - 2/18 - Task 5",
-    ]);
+    const titleMapping = [
+        { name: "Task 4", title: "12/8-2/18-Task4" },
+        { name: "Task 1", title: "Task1" },
+        { name: "Task 2", title: "9:30AM-8:30PM(6h)-Task2" },
+        { name: "Task 3", title: "Task3" },
+        { name: "Task 5", title: "12/18-2/18-Task5" },
+    ];
+
+    assert.deepEqual(
+        getTexts(".o_gantt_pill").map((t) => t.replace(/\s*/g, "")),
+        titleMapping.map((e) => e.title)
+    );
+
+    const pills = target.querySelectorAll(".o_gantt_pill");
+    for (let i = 0; i < pills.length; i++) {
+        await click(pills[i]);
+        assert.strictEqual(getText(".o_popover .popover-header"), titleMapping[i].name);
+    }
 });
 
 QUnit.test("A task should always have a title (pill_label='1', scale 'month')", async (assert) => {
@@ -5038,15 +5049,27 @@ QUnit.test("A task should always have a title (pill_label='1', scale 'month')", 
         arch: `
             <gantt date_start="start" date_stop="stop" pill_label="True">
                 <field name="allocated_hours"/>
-            </gantt>        
+            </gantt>
         `,
     });
-    assert.deepEqual(getTexts(".o_gantt_pill"), [
-        "Task 1",
-        "9:30 AM - 8:30 PM (6h)",
-        "Task 3",
-        "12/16 - 2/18 - Task 4",
-    ]);
+
+    const titleMapping = [
+        { name: "Task 1", title: "Task1" },
+        { name: "Task 2", title: "9:30AM-8:30PM(6h)" },
+        { name: "Task 3", title: "Task3" },
+        { name: "Task 4", title: "12/16-2/18-Task4" },
+    ];
+
+    assert.deepEqual(
+        getTexts(".o_gantt_pill").map((t) => t.replace(/\s*/g, "")),
+        titleMapping.map((e) => e.title)
+    );
+
+    const pills = target.querySelectorAll(".o_gantt_pill");
+    for (let i = 0; i < pills.length; i++) {
+        await click(pills[i]);
+        assert.strictEqual(getText(".o_popover .popover-header"), titleMapping[i].name);
+    }
 });
 
 QUnit.test(

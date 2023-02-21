@@ -1238,7 +1238,8 @@ export class GanttRenderer extends Component {
      * @param {Pill} pill
      */
     getPopoverProps(pill) {
-        const { displayName, record } = pill;
+        const { record } = pill;
+        const displayName = record.display_name;
         const { canEdit, dateStartField, dateStopField } = this.model.metaData;
         const context = this.popoverTemplate
             ? { ...record }

@@ -5,7 +5,6 @@ from odoo import Command, _
 
 from . import controllers
 from . import models
-from . import tests
 
 
 def _configure_teams(env):

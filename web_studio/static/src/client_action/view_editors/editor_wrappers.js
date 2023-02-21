@@ -49,8 +49,8 @@ class BasicEditorWrapper extends ComponentWrapper {
 
         for (const [fName, fInfo] of Object.entries(fieldsInfo[this.env.config.type])) {
             fInfo.field = fInfo.__WOWL_FIELD_DESCR__.field;
-            if (activeFields[fName].rawAttrs) {
-                fInfo.studio_groups = activeFields[fName].rawAttrs.studio_groups;
+            if (activeFields[fName].attrs) {
+                fInfo.studio_groups = activeFields[fName].attrs.studio_groups;
             }
         }
 
@@ -134,9 +134,9 @@ class ListEditorWrapper extends BasicEditorWrapper {
         const listFieldsInfo = this.state.fieldsInfo["list"];
         for (const fName of Object.keys(listFieldsInfo)) {
             const fInfo = { ...listFieldsInfo[fName] };
-            const { rawAttrs } = colFieldInfo[fName] || {};
+            const { attrs } = colFieldInfo[fName] || {};
             listFieldsInfo[fName] = {
-                ...(rawAttrs || {}),
+                ...(attrs || {}),
                 ...fInfo,
                 ...colFieldInfo[fName],
             };

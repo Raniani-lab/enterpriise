@@ -36,9 +36,9 @@ IoTMeasureRealTimeValue.props = {
 registry.category("fields").add("iot_measure", {
     ...floatField,
     component: IoTMeasureRealTimeValue,
-    extractProps: (params) => ({
-        ...floatField.extractProps(params),
-        ip_field: params.attrs.options.ip_field,
-        identifier_field: params.attrs.options.identifier,
+    extractProps: (fieldInfo) => ({
+        ...floatField.extractProps(fieldInfo),
+        ip_field: fieldInfo.options.ip_field,
+        identifier_field: fieldInfo.options.identifier,
     }),
 });

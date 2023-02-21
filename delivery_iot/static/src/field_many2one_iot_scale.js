@@ -45,12 +45,12 @@ FieldMany2OneIoTScale.props = {
 export const fieldMany2OneIoTScale = {
     ...many2OneField,
     component: FieldMany2OneIoTScale,
-    extractProps: (params) => ({
-        ...many2OneField.extractProps(params),
-        manual_measurement_field: params.attrs.options.manual_measurement_field,
-        ip_field: params.attrs.options.ip_field,
-        identifier_field: params.attrs.options.identifier,
-        value_field: params.attrs.options.value_field,
+    extractProps: (fieldInfo) => ({
+        ...many2OneField.extractProps(fieldInfo),
+        manual_measurement_field: fieldInfo.options.manual_measurement_field,
+        ip_field: fieldInfo.options.ip_field,
+        identifier_field: fieldInfo.options.identifier,
+        value_field: fieldInfo.options.value_field,
     }),
 };
 

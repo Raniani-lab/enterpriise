@@ -89,9 +89,9 @@ FsmProductQuantity.template = 'industry_fsm_sale.FsmProductQuantity';
 export const fsmProductQuantity = {
     ...floatField,
     component: FsmProductQuantity,
-    extractProps: (params) => ({
-        ...floatField.extractProps(params),
-        hideButtons: archParseBoolean(params.attrs.hide_buttons),
+    extractProps: (fieldInfo) => ({
+        ...floatField.extractProps(fieldInfo),
+        hideButtons: archParseBoolean(fieldInfo.attrs.hide_buttons),
     }),
 };
 

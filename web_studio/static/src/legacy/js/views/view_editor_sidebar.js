@@ -523,16 +523,14 @@ export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         var newAttributes = {};
         var attrs = [];
         var originNodeAttr = this.state.modifiers;
-        var originSubAttrs =  pyUtils.py_eval(this.state.attrs.attrs || '{}', this.editorData);
         _.each(modifiers, function (value, key) {
                 var keyInNodeAndAttrs = _.contains(self.MODIFIERS_IN_NODE_AND_ATTRS, key);
-                var keyFromView = key in originSubAttrs;
                 var trueValue = value === true || _.isEqual(value, []);
                 var isOriginNodeAttr = key in originNodeAttr;
 
                 if (keyInNodeAndAttrs && !isOriginNodeAttr && trueValue) { // modifier always applied, use modifier attribute
                     newAttributes[key] = "1";
-                } else if (keyFromView || !trueValue) { // modifier not applied or under certain condition, remove modifier attribute and use attrs if any
+                } else if (!trueValue) { // modifier not applied or under certain condition, remove modifier attribute and use attrs if any
                     newAttributes[key] = "";
                     if (value !== false) {
                         attrs.push(_.str.sprintf("\"%s\": %s", key, Domain.prototype.arrayToString(value)));

@@ -28,9 +28,9 @@ patch(FieldPostPreview.prototype, 'social_preview_formatter_mixin', SocialPostFo
 export const fieldPostPreview = {
     ...htmlField,
     component: FieldPostPreview,
-    extractProps: (params) => ({
-        ...htmlField.extractProps(params),
-        mediaType: params.attrs.media_type || '',
+    extractProps: (fieldInfo) => ({
+        ...htmlField.extractProps(fieldInfo),
+        mediaType: fieldInfo.attrs.media_type || '',
     }),
 };
 

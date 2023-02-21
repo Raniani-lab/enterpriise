@@ -15,7 +15,6 @@ export const DocumentsModelMixin = (component) => class extends component {
             const fieldInfo = params.activeFields[field];
             fieldInfo.options = fieldInfo.options || {};
             fieldInfo.attrs = fieldInfo.attrs || {};
-            fieldInfo.rawAttrs = fieldInfo.rawAttrs || {};
             // Domains in params.fields is in array format while in string format for activeFields
             fieldInfo.domain = (typeof fieldInfo.domain === "string" && fieldInfo.domain) || "[]";
         });

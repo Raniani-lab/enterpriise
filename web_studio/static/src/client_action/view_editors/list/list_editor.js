@@ -22,12 +22,12 @@ class EditorArchParser extends listView.ArchParser {
 
     parse(arch, models, modelName) {
         const parsed = super.parse(...arguments);
-        const noFetchFields = Object.entries(parsed.fieldNodes).filter(
-            ([fname, field]) => field.rawAttrs && field.rawAttrs.studio_no_fetch
-        ).map(f => f[0]);
+        const noFetchFields = Object.entries(parsed.fieldNodes)
+            .filter(([fname, field]) => field.attrs && field.attrs.studio_no_fetch)
+            .map((f) => f[0]);
         parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetchFields);
         parsed.activeFields = omit(parsed.activeFields, ...noFetchFields);
-        parsed.columns = parsed.columns.filter(field => !noFetchFields.includes(field.name));
+        parsed.columns = parsed.columns.filter((field) => !noFetchFields.includes(field.name));
         return parsed;
     }
 

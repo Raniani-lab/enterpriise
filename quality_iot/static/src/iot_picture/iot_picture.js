@@ -64,10 +64,10 @@ TabletImageIoTField.template = 'quality_iot.TabletImageIoTField';
 export const tabletImageIoTField = {
     ...tabletImageField,
     component: TabletImageIoTField,
-    extractProps: (params) => ({
-        ...tabletImageField.extractProps(params),
-        ip_field: params.attrs.options.ip_field,
-        identifier_field: params.attrs.options.identifier,
+    extractProps: (fieldInfo) => ({
+        ...tabletImageField.extractProps(fieldInfo),
+        ip_field: fieldInfo.options.ip_field,
+        identifier_field: fieldInfo.options.identifier,
     }),
 };
 

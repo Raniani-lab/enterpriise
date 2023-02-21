@@ -242,9 +242,9 @@ const HtmlFieldPatch = {
 patch(HtmlField.prototype, 'knowledge_html_field', HtmlFieldPatch);
 
 patch(htmlField, "knowledge_html_field", {
-    extractProps(params) {
-        const props = this._super(params);
-        props.wysiwygOptions.knowledgeCommands = params.attrs.options.knowledge_commands;
+    extractProps(fieldInfo) {
+        const props = this._super(fieldInfo);
+        props.wysiwygOptions.knowledgeCommands = fieldInfo.options.knowledge_commands;
         props.wysiwygOptions.editorPlugins.push(KnowledgePlugin);
         return props;
     },

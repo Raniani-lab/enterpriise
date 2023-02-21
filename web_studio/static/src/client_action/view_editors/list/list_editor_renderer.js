@@ -167,7 +167,7 @@ export class ListEditorRenderer extends listView.Renderer {
     }
 
     addColsHooks(_cols) {
-        const rawAttrs = { width: "1px" };
+        const attrs = { width: "1px" };
         const options = {};
         const cols = [];
         let hookId = 0;
@@ -178,7 +178,7 @@ export class ListEditorRenderer extends listView.Renderer {
             position,
             xpath,
             id: `studio_hook_${hookId++}_${(firstCol && firstCol.id) || 0}`,
-            rawAttrs,
+            attrs,
             options,
         });
         for (const col of _cols) {
@@ -192,7 +192,7 @@ export class ListEditorRenderer extends listView.Renderer {
                 position,
                 xpath,
                 id: `studio_hook_${hookId++}_${col.id}`,
-                rawAttrs,
+                attrs,
                 options,
             });
         }

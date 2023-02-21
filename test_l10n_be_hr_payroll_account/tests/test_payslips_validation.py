@@ -2635,22 +2635,22 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertEqual(len(payslip.input_line_ids), 0)
         self.assertEqual(len(payslip.line_ids), 28)
 
-        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 3707.37, places=2)
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('WORK100'), 3707.12, places=2)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_days('WORK100'), 22.0, places=2)
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 167.2, places=2)
 
         payslip_results = {
-            'BASIC': 3707.37,
+            'BASIC': 3707.12,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
-            'SALARY': 3716.37,
-            'ONSS': -485.73,
-            'ONSSTOTAL': 485.73,
-            'GROSSIP': 3230.64,
-            'IP.PART': -741.47,
-            'GROSS': 2489.17,
+            'SALARY': 3716.12,
+            'ONSS': -485.7,
+            'ONSSTOTAL': 485.7,
+            'GROSSIP': 3230.42,
+            'IP.PART': -741.42,
+            'GROSS': 2489.0,
             'P.P': -557.38,
             'PPTOTAL': 557.38,
             'ATN.INT.2': -5.0,
@@ -2659,17 +2659,17 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'MEAL_V_EMP': -23.98,
             'CAR.PRIV': 69.5,
             'REP.FEES': 150.0,
-            'IP': 741.47,
+            'IP': 741.42,
             'IP.DED': -55.61,
-            'NET': 2768.88,
-            'REMUNERATION': 2965.9,
-            'ONSSEMPLOYERBASIC': 929.84,
+            'NET': 2768.67,
+            'REMUNERATION': 2965.7,
+            'ONSSEMPLOYERBASIC': 929.77,
             'ONSSEMPLOYERFFE': 4.83,
             'ONSSEMPLOYERMFFE': 3.72,
             'ONSSEMPLOYERCPAE': 8.55,
-            'ONSSEMPLOYERRESTREINT': 62.81,
+            'ONSSEMPLOYERRESTREINT': 62.8,
             'ONSSEMPLOYERUNEMP': 3.72,
-            'ONSSEMPLOYER': 1013.45,
+            'ONSSEMPLOYER': 1013.39,
         }
         self._validate_payslip(payslip, payslip_results)
 

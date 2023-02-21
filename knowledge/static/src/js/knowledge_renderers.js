@@ -382,27 +382,25 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         if (data.newCategory === data.oldCategory) {
             await this._confirmMoveArticle(data.article_id, newPosition, data.onSuccess, data.onReject);
         } else {
-            const article = document.querySelector(`[data-article-id='${data.article_id}']`);
-            const emoji = article.querySelector('.o_article_emoji').textContent || '';
-            const name = article.querySelector('.o_article_name').textContent || '';
+            const articleName = this.props.record.data.display_name;
             let message;
             if (data.newCategory === 'workspace') {
                 message = sprintf(
-                    this.env._t('Are you sure you want to move "%s%s" to the Workspace? It will be shared with all internal users.'),
-                    emoji, name
+                    this.env._t('Are you sure you want to move "%s" to the Workspace? It will be shared with all internal users.'),
+                    articleName
                 );
             } else if (data.newCategory === 'private') {
                 message = sprintf(
-                    this.env._t('Are you sure you want to move "%s%s" to private? Only you will be able to access it.'),
-                    emoji, name
+                    this.env._t('Are you sure you want to move "%s" to private? Only you will be able to access it.'),
+                    articleName
                 );
             } else if (data.newCategory === 'shared' && data.target_parent_id) {
                 const parent = document.querySelector(`[data-article-id='${data.target_parent_id}']`);
                 const parentEmoji = parent.querySelector('.o_article_emoji').textContent || '';
                 const parentName = parent.querySelector('.o_article_name').textContent || '';
                 message = sprintf(
-                    this.env._t('Are you sure you want to move "%s%s" under "%s%s"? It will be shared with the same persons.'),
-                    emoji, name, parentEmoji, parentName
+                    this.env._t('Are you sure you want to move "%s" under "%s%s"? It will be shared with the same persons.'),
+                    articleName, parentEmoji, parentName
                 );
             }
             this.dialog.add(ConfirmationDialog, {

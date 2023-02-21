@@ -3,10 +3,11 @@
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
-import { getFixture, nextTick, click } from "@web/../tests/helpers/utils";
+import { getFixture, nextTick, click, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { getCellContent } from "@spreadsheet/../tests/utils/getters";
+import MockSpreadsheetCollaborativeChannel from "@spreadsheet_edition/../tests/utils/mock_spreadsheet_collaborative_channel";
 
 let target;
 
@@ -233,6 +234,17 @@ QUnit.module(
                 name: "My template spreadsheet",
                 spreadsheet_data: JSON.stringify(data),
             });
+            patchWithCleanup(MockSpreadsheetCollaborativeChannel.prototype, {
+                sendMessage(message) {
+                    if (message.type === "SNAPSHOT") {
+                        assert.step("snapshot");
+                        assert.deepEqual(
+                            message.data.sheets[0].cells.A1.content,
+                            '=ODOO.PIVOT(1,"probability","foo","1")'
+                        );
+                    }
+                },
+            });
             const { model } = await createSpreadsheet({
                 spreadsheetId: 3000,
                 serverData,
@@ -242,6 +254,8 @@ QUnit.module(
                 getCellContent(model, "A1"),
                 '=ODOO.PIVOT(1,"probability","foo","1")'
             );
+            await nextTick();
+            assert.verifySteps(["snapshot"]);
         });
     }
 );

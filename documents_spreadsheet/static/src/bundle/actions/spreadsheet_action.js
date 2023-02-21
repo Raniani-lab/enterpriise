@@ -47,6 +47,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
             return {
                 ...record,
                 data: await convertFromSpreadsheetTemplate(this.orm, record.data),
+                snapshot_requested: true,
             };
         }
         return record;

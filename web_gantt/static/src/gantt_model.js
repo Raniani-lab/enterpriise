@@ -520,18 +520,15 @@ export class GanttModel extends Model {
             if (row.groupedByField === fieldName) {
                 row.progressBar = progressBarInfo[row.resId];
                 if (row.progressBar) {
-                    row.progressBar.value_formatted =
-                        formatFloat(row.progressBar.value, {
-                            digits: [false, 0],
-                        }) + this.env._t("h");
-                    row.progressBar.max_value_formatted =
-                        formatFloat(row.progressBar.max_value, {
-                            digits: [false, 0],
-                        }) + this.env._t("h");
+                    row.progressBar.value_formatted = formatFloat(row.progressBar.value, {
+                        digits: [false, 0],
+                    });
+                    row.progressBar.max_value_formatted = formatFloat(row.progressBar.max_value, {
+                        digits: [false, 0],
+                    });
                     row.progressBar.ratio = row.progressBar.max_value
                         ? (row.progressBar.value / row.progressBar.max_value) * 100
                         : 0;
-                    row.progressBar.warning = progressBarInfo.warning;
                 }
             } else {
                 this._addProgressBarInfo(fieldName, row.rows, progressBarInfo);

@@ -4656,7 +4656,7 @@ QUnit.test("No progress bar when no option set.", async (assert) => {
 });
 
 QUnit.test("Progress bar rpc is triggered when option set.", async (assert) => {
-    assert.expect(11);
+    assert.expect(13);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -4699,10 +4699,14 @@ QUnit.test("Progress bar rpc is triggered when option set.", async (assert) => {
         [...target.querySelectorAll(SELECTORS.progressBarBackground)].map((el) => el.style.width),
         ["50%", "12.5%"]
     );
+    await hoverGridCell(1, 1);
+    assert.deepEqual(target.querySelector(SELECTORS.progressBarForeground).textContent, "50 / 100");
+    await hoverGridCell(2, 1);
+    assert.deepEqual(target.querySelector(SELECTORS.progressBarForeground).textContent, "25 / 200");
 });
 
 QUnit.test("Progress bar when multilevel grouped.", async (assert) => {
-    assert.expect(11);
+    assert.expect(13);
     // Here the view is grouped twice on the same field.
     // This is not a common use case, but it is possible to achieve it
     // bu saving a default favorite with a groupby then apply it twice
@@ -4751,10 +4755,14 @@ QUnit.test("Progress bar when multilevel grouped.", async (assert) => {
         [...target.querySelectorAll(SELECTORS.progressBarBackground)].map((el) => el.style.width),
         ["50%", "12.5%"]
     );
+    await hoverGridCell(1, 1);
+    assert.deepEqual(target.querySelector(SELECTORS.progressBarForeground).textContent, "50 / 100");
+    await hoverGridCell(3, 1);
+    assert.deepEqual(target.querySelector(SELECTORS.progressBarForeground).textContent, "25 / 200");
 });
 
 QUnit.test("Progress bar warning when max_value is zero", async (assert) => {
-    assert.expect(4);
+    assert.expect(5);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -4777,17 +4785,21 @@ QUnit.test("Progress bar warning when max_value is zero", async (assert) => {
                 assert.deepEqual(args[1], { user_id: [1, 2] });
                 return {
                     user_id: {
-                        1: { value: 50, max_value: 0 },
+                        1: { value: 50, max_value: 0, warning: "plop" },
                     },
                 };
             }
         },
     });
     assert.containsOnce(target, SELECTORS.progressBarWarning);
+    assert.strictEqual(
+        target.querySelector(SELECTORS.progressBarWarning).parentElement.title,
+        "plop 50."
+    );
 });
 
 QUnit.test("Progress bar danger when ratio > 100", async (assert) => {
-    assert.expect(6);
+    assert.expect(8);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -4814,6 +4826,15 @@ QUnit.test("Progress bar danger when ratio > 100", async (assert) => {
     assert.containsOnce(target, SELECTORS.progressBar);
     assert.strictEqual(target.querySelector(SELECTORS.progressBarBackground).style.width, "100%");
     assert.hasClass(target.querySelector(SELECTORS.progressBar), "o_gantt_group_danger");
+    await hoverGridCell(1, 1);
+    assert.hasClass(
+        target.querySelector(SELECTORS.progressBarForeground).parentElement,
+        "text-bg-danger"
+    );
+    assert.deepEqual(
+        target.querySelector(SELECTORS.progressBarForeground).textContent,
+        "150 / 100"
+    );
 });
 
 QUnit.test("Falsy search field will return an empty rows", async (assert) => {

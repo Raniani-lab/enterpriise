@@ -72,7 +72,7 @@ QUnit.module("Views > GanttView - Mobile", {
 });
 
 QUnit.test("Progressbar: check the progressbar percentage visibility.", async (assert) => {
-    assert.expect(18);
+    assert.expect(19);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -111,6 +111,10 @@ QUnit.test("Progressbar: check the progressbar percentage visibility.", async (a
         ["50%", "12.5%"]
     );
     assert.containsN(target, SELECTORS.progressBarForeground, 2, "foreground is visible in mobile");
+    assert.deepEqual(
+        [...target.querySelectorAll(SELECTORS.progressBarForeground)].map((el) => el.textContent),
+        ["50 / 100", "25 / 200"]
+    );
 
     // Check the style of one of the progress bars
     assert.strictEqual(rowHeader1.children.length, 2);
@@ -124,7 +128,7 @@ QUnit.test("Progressbar: check the progressbar percentage visibility.", async (a
 });
 
 QUnit.test("Progressbar: grouped row", async (assert) => {
-    assert.expect(18);
+    assert.expect(19);
     // Here the view is grouped twice on the same field.
     // This is not a common use case, but it is possible to achieve it
     // bu saving a default favorite with a groupby then apply it twice
@@ -169,6 +173,10 @@ QUnit.test("Progressbar: grouped row", async (assert) => {
         ["50%", "12.5%"]
     );
     assert.containsN(target, SELECTORS.progressBarForeground, 2, "foreground is visible in mobile");
+    assert.deepEqual(
+        [...target.querySelectorAll(SELECTORS.progressBarForeground)].map((el) => el.textContent),
+        ["50 / 100", "25 / 200"]
+    );
 
     // Check the style of one of the progress bars
     assert.strictEqual(rowHeader1.children.length, 2);

@@ -5,14 +5,6 @@ from unittest.mock import patch
 from odoo.tools import misc
 from odoo.tests import tagged
 from odoo.addons.l10n_cl_edi.tests.common import TestL10nClEdiCommon, _check_with_xsd_patch
-from odoo.addons.l10n_cl_edi.tests.test_l10n_cl_edi_account_move import TestL10nClDte
-
-
-def skip_test(_):
-    return
-
-
-TestL10nClDte.test_l10n_cl_dte_110 = skip_test
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')

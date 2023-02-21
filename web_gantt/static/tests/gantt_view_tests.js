@@ -4941,6 +4941,114 @@ QUnit.test(
     }
 );
 
+QUnit.test("A task should always have a title (pill_label='1', scale 'week')", async (assert) => {
+    serverData.models.tasks.fields.allocated_hours = { type: "float", string: "Allocated Hours" };
+    serverData.models.tasks.records = [
+        {
+            id: 1,
+            name: "Task 1",
+            start: "2018-12-17 08:30:00",
+            stop: "2018-12-17 19:30:00", // span only one day
+            allocated_hours: 0,
+        },
+        {
+            id: 2,
+            name: "Task 2",
+            start: "2018-12-18 08:30:00",
+            stop: "2018-12-18 19:30:00", // span only one day
+            allocated_hours: 6,
+        },
+        {
+            id: 3,
+            name: "Task 3",
+            start: "2018-12-18 08:30:00",
+            stop: "2018-12-19 19:30:00", // span two days
+            allocated_hours: 6,
+        },
+        {
+            id: 4,
+            name: "Task 4",
+            start: "2018-12-08 08:30:00",
+            stop: "2019-02-18 19:30:00", // span two weeks
+            allocated_hours: 6,
+        },
+        {
+            id: 5,
+            name: "Task 5",
+            start: "2018-12-18 08:30:00",
+            stop: "2019-02-18 19:30:00", // span two months
+            allocated_hours: 6,
+        },
+    ];
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt date_start="start" date_stop="stop" pill_label="True" default_scale="week">
+                <field name="allocated_hours"/>
+            </gantt>        
+        `,
+    });
+    assert.deepEqual(getTexts(".o_gantt_pill"), [
+        "12/8 - 2/18 - Task 4",
+        "Task 1",
+        "9:30 AM - 8:30 PM (6h) - Task 2",
+        "Task 3",
+        "12/18 - 2/18 - Task 5",
+    ]);
+});
+
+QUnit.test("A task should always have a title (pill_label='1', scale 'month')", async (assert) => {
+    serverData.models.tasks.fields.allocated_hours = { type: "float", string: "Allocated Hours" };
+    serverData.models.tasks.records = [
+        {
+            id: 1,
+            name: "Task 1",
+            start: "2018-12-15 08:30:00",
+            stop: "2018-12-15 19:30:00", // span only one day
+            allocated_hours: 0,
+        },
+        {
+            id: 2,
+            name: "Task 2",
+            start: "2018-12-16 08:30:00",
+            stop: "2018-12-16 19:30:00", // span only one day
+            allocated_hours: 6,
+        },
+        {
+            id: 3,
+            name: "Task 3",
+            start: "2018-12-16 08:30:00",
+            stop: "2018-12-17 18:30:00", // span two days
+            allocated_hours: 6,
+        },
+        {
+            id: 4,
+            name: "Task 4",
+            start: "2018-12-16 08:30:00",
+            stop: "2019-02-18 19:30:00", // span two months
+            allocated_hours: 6,
+        },
+    ];
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt date_start="start" date_stop="stop" pill_label="True">
+                <field name="allocated_hours"/>
+            </gantt>        
+        `,
+    });
+    assert.deepEqual(getTexts(".o_gantt_pill"), [
+        "Task 1",
+        "9:30 AM - 8:30 PM (6h)",
+        "Task 3",
+        "12/16 - 2/18 - Task 4",
+    ]);
+});
+
 QUnit.test(
     "gantt view grouped by a boolean field: row titles should be 'True' or 'False'",
     async (assert) => {

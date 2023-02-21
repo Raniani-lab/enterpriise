@@ -81,7 +81,7 @@ const { DateTime } = luxon;
  * @param {ScaleId} scale
  * @param {DateTime} date DateTime object, in local timezone
  */
-function computeRange(scale, date) {
+export function computeRange(scale, date) {
     let start = date;
     let end = date;
 

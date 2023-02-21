@@ -101,17 +101,6 @@ export function getColorIndex(value) {
 }
 
 /**
- *
- * @param {DateTime} date1
- * @param {DateTime} date2
- * @param {string} unit
- * @returns {number}
- */
-export function getDiff(date1, date2, unit = "millisecond") {
-    return date1.diff(date2, unit).values[unit];
-}
-
-/**
  * Intervals are supposed to intersect (intersection duration >= 1 milliseconds)
  *
  * @param {[DateTime, DateTime]} interval

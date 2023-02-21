@@ -12,8 +12,5 @@ Accounting Data for Indian Payroll Rules.
     """,
 
     'auto_install': True,
-    'data':[
-        'data/l10n_in_hr_payroll_account_data.xml',
-    ],
     'license': 'OEEL-1',
 }

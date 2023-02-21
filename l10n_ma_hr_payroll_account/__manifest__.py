@@ -12,9 +12,6 @@ Accounting Data for Moroccan Payroll Rules.
     """,
 
     'auto_install': True,
-    'data':[
-        'data/hr_payroll_structure_data.xml',
-    ],
     'demo': [
         'data/l10n_ma_hr_payroll_account_demo.xml',
     ],

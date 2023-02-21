@@ -12,8 +12,5 @@ Accounting Data for French Payroll Rules.
     """,
 
     'auto_install': True,
-    'data':[
-        'data/l10n_fr_hr_payroll_account_data.xml',
-    ],
     'license': 'OEEL-1',
 }

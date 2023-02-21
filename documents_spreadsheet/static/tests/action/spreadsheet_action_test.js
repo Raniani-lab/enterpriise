@@ -1,11 +1,12 @@
 /** @odoo-module */
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { getBasicData } from "@spreadsheet/../tests/utils/data";
+import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { getFixture, nextTick, click } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
+import { getCellContent } from "@spreadsheet/../tests/utils/getters";
 
 let target;
 
@@ -198,6 +199,48 @@ QUnit.module(
             assert.strictEqual(
                 document.activeElement.parentElement.className,
                 "o-grid o-two-columns"
+            );
+        });
+
+        QUnit.test("convert data from template", async function (assert) {
+            const data = {
+                sheets: [
+                    {
+                        id: "sheet1",
+                        cells: {
+                            A1: {
+                                content:
+                                    '=ODOO.PIVOT(1,"probability","foo", ODOO.PIVOT.POSITION(1, "foo", 1))',
+                            },
+                        },
+                    },
+                ],
+                pivots: {
+                    1: {
+                        id: 1,
+                        colGroupBys: ["foo"],
+                        domain: [],
+                        measures: [{ field: "probability" }],
+                        model: "partner",
+                        rowGroupBys: ["bar"],
+                        context: {},
+                    },
+                },
+            };
+            const serverData = getBasicServerData();
+            serverData.models["documents.document"].records.push({
+                id: 3000,
+                name: "My template spreadsheet",
+                spreadsheet_data: JSON.stringify(data),
+            });
+            const { model } = await createSpreadsheet({
+                spreadsheetId: 3000,
+                serverData,
+                convert_from_template: true,
+            });
+            assert.strictEqual(
+                getCellContent(model, "A1"),
+                '=ODOO.PIVOT(1,"probability","foo","1")'
             );
         });
     }

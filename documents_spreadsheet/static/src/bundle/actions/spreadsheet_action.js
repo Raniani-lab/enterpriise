@@ -48,7 +48,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         if (this.params.convert_from_template) {
             return {
                 ...record,
-                raw: await convertFromSpreadsheetTemplate(this.orm, record.raw),
+                data: await convertFromSpreadsheetTemplate(this.orm, record.data),
             };
         }
         return record;

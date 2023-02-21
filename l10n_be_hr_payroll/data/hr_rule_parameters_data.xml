@@ -801,6 +801,11 @@
             <field name="rule_parameter_id" ref="rule_parameter_private_car_reimbursement_scale"/>
             <field name="date_from" eval="datetime(2022, 2, 1).date()"/>
         </record>
+        <record id="rule_parameter_value_private_car_reimbursement_scale_2023" model="hr.rule.parameter.value">
+            <field name="parameter_value">[(0, 0.0), (3, 42.5), (4, 46.00), (5, 50.0), (6, 53.0), (7, 56.0), (8, 60.0), (9, 63.0), (10, 66.0), (11, 69.0), (12, 72.0), (13, 76.0), (14, 79.0), (15, 82.0), (16, 85.0), (17, 88.0), (18, 92.0), (19, 95.0), (20, 98.0), (21, 101.0), (22, 104.0), (23, 108.0), (24, 111.0), (25, 114.0), (26, 117.0), (27, 120.0), (28, 123.0), (29, 127.0), (30, 130.0), (33, 135.0), (36, 143.0), (39, 151.0), (42, 159.0), (45, 166.0), (48, 174.0), (51, 182.0), (54, 188.0), (57, 193.0), (60, 199.0), (65, 206.0), (70, 216.0), (75, 225.0), (80, 234.0), (85, 244.0), (90, 253.0), (95, 262.0), (100, 272.0), (105, 281.0), (110, 290.0), (115, 299.0), (120, 309.0), (125, 318.0), (130, 327.0), (135, 337.0), (140, 346.0), (145, 355.0), (150, 368.0)]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_private_car_reimbursement_scale"/>
+            <field name="date_from" eval="datetime(2023, 2, 1).date()"/>
+        </record>
 
         <record id="rule_parameter_training_time_off_threshold" model="hr.rule.parameter">
             <field name="name">Training Time Off: Reimbursement Threshold</field>

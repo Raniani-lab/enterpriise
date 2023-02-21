@@ -27,9 +27,6 @@ $enable-shadows: true !default;
 $component-active-color: unset !default;
 $component-active-bg: mix($o-enterprise-action-color, $o-white, 10%) !default;
 
-$input-border-radius: 0 !default;
-$input-border-radius-sm: 0 !default;
-$input-border-radius-lg: 0 !default;
 $nav-tabs-border-radius: 0 !default;
 $nav-pills-border-radius: 0 !default;
 $card-border-radius: 0 !default;
@@ -74,17 +71,19 @@ $dropdown-border-width: 0 !default;;
 // Forms
 //
 
-$input-bg: transparent !default;
+$input-bg: $o-gray-200 !default;
+$input-border-color: $o-gray-200 !default;
 $input-box-shadow: 0 !default;
+
+$input-focus-bg: $o-white !default;
+$input-focus-box-shadow: 0 !default;
+$input-focus-border-color: mix($o-enterprise-action-color, $o-gray-200) !default;
+
 $form-check-input-checked-color: $o-white !default;
 $form-check-input-checked-border-color: $o-enterprise-action-color, !default;
 $form-check-input-checked-bg-color: $o-enterprise-action-color, !default;
 
 $form-switch-checked-color: $o-white !default;
-
-// Will affect bootstrap default forms only (eg. popover textarea)
-$input-focus-box-shadow: 0 !default;
-$input-focus-border-color: mix($o-brand-primary, $o-gray-300) !default;
 
 $form-select-focus-box-shadow: 0 !default;
 

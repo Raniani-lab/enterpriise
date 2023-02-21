@@ -3,7 +3,7 @@
     <data noupdate="1">
         <record id="knowledge_article_hr_faq" model="knowledge.article" forcecreate="False">
             <field name="name">HR FAQ</field>
-            <field name="icon" eval="False"/>
+            <field name="icon">❓</field>
             <field name="is_article_visible_by_everyone" eval="True"/>
             <field name="body" type="html">
                 <h1>
@@ -136,7 +136,7 @@
         </record>
         <record id="knowledge_article_sales_and_marketing" model="knowledge.article" forcecreate="False">
             <field name="name">Sales &amp; Marketing</field>
-            <field name="icon" eval="False"/>
+            <field name="icon">🤩</field>
             <field name="is_article_visible_by_everyone" eval="True"/>
             <field name="body" type="html">
                 <h1>
@@ -172,16 +172,16 @@
         </record>
         <record id="knowledge_article_sales_playbook" model="knowledge.article" forcecreate="False">
             <field name="name">Sales Playbook</field>
-            <field name="icon" eval="False"/>
+            <field name="icon">📘</field>
             <field name="is_article_visible_by_everyone" eval="True"/>
             <field name="body" type="html">
                 <h1>Sales Playbook</h1>
                 <hr />
                 <p>
-                    <span style="font-size: 14px;">Compiled below are tips &amp; tricks collected among our veterans to help newcomers get started. We hope it will help you sign deals.</span>
+                    <span style="font-size: 14px;">Compiled below are tips &amp; tricks collected among our veterans to help newcomers get started. We hope it will help you sign deals. 🔔</span>
                 </p>
                 <p><br /></p>
-                <h3>Prospection Templates</h3>
+                <h3>Prospection Templates 👌</h3>
                 <hr />
                 <p><br /></p>
                 <p>
@@ -189,7 +189,7 @@
                         <span style="font-weight: bolder;">
                             <font class="text-o-color-2">PRO TIP</font>
                         </span>
-                        : From a lead, use the book button in the chatter to find this article and autocomplete your email with this template.
+                        : From a lead, use the 📗 button in the chatter to find this article and autocomplete your email with this template.
                     </span>
                 </p>
                 <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template">
@@ -221,7 +221,7 @@
                     <span style="font-size: 14px;">
                         <span style="font-weight: bolder;"><font class="text-o-color-2">PRO TIP</font></span>: From a lead, use the
                     </span>
-                    <span style="font-size: 14px;">book button in the chatter to find this article and autocomplete your description with this qualification template.</span>
+                    <span style="font-size: 14px;">📗 button in the chatter to find this article and autocomplete your description with this qualification template.</span>
                 </p>
                 <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template">
                     <div class="d-flex">
@@ -264,7 +264,7 @@
                     </div>
                 </div>
                 <p><br /></p>
-                <h3>The 5 Commandments</h3>
+                <h3>The 5 Commandments 🙏</h3>
                 <hr />
                 <ol>
                     <li>
@@ -284,7 +284,7 @@
                     </li>
                 </ol>
                 <p><br /></p>
-                <h3>Tips to close more deals</h3>
+                <h3>Tips to close more deals 🤝</h3>
                 <hr />
                 <ul>
                     <li>
@@ -298,7 +298,7 @@
                     </li>
                 </ul>
                 <p><br /></p>
-                <h3>Company Abbreviations</h3>
+                <h3>Company Abbreviations 📚</h3>
                 <hr />
                 <p>
                     <span style="font-size: 14px;">You may have heard those a million times and yet you are not entirely sure of what it means.</span>
@@ -365,7 +365,7 @@
         </record>
         <record id="knowledge_article_brand_assets" model="knowledge.article" forcecreate="False">
             <field name="name">Brand Assets</field>
-            <field name="icon" eval="False"/>
+            <field name="icon">🎨</field>
             <field name="is_article_visible_by_everyone" eval="True"/>
             <field name="body" type="html">
                 <h1>Brand Assets</h1>

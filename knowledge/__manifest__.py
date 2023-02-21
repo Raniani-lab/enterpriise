@@ -35,6 +35,7 @@
     'installable': True,
     'application': True,
     'license': 'OEEL-1',
+    'pre_init_hook': 'pre_init_knowledge',
     'post_init_hook': '_init_private_article_per_user',
     'assets': {
         'web.assets_backend': [

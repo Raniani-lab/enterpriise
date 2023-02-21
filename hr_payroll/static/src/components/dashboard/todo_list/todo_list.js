@@ -173,7 +173,7 @@ export class PayrollDashboardTodo extends Component {
      * @returns { Number } id of the session user
      */
     get userId() {
-        return session.user_id[0];
+        return session.uid;
     }
 
     /**

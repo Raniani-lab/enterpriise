@@ -128,15 +128,15 @@ class AccountMove(models.Model):
                     aml_debit += aml
                 if aml.credit > 0:
                     aml_credit += aml
-            if len(aml_debit) == 1:
-                value = aml_debit[0].account_id
-            elif len(aml_credit) == 1:
-                value = aml_credit[0].account_id
+            if len(aml_debit.account_id) == 1:
+                value = aml_debit.account_id
+            elif len(aml_credit.account_id) == 1:
+                value = aml_credit.account_id
             else:
-                aml_debit_wo_tax = [a for a in aml_debit if not a.tax_line_id]
-                aml_credit_wo_tax = [a for a in aml_credit if not a.tax_line_id]
-                if len(aml_debit_wo_tax) == 1:
-                    value = aml_debit_wo_tax[0].account_id
-                elif len(aml_credit_wo_tax) == 1:
-                    value = aml_credit_wo_tax[0].account_id
+                aml_debit_wo_tax_accounts = [a.account_id for a in aml_debit if not a.tax_line_id]
+                aml_credit_wo_tax_accounts = [a.account_id for a in aml_credit if not a.tax_line_id]
+                if len(aml_debit_wo_tax_accounts) == 1:
+                    value = aml_debit_wo_tax_accounts[0]
+                elif len(aml_credit_wo_tax_accounts) == 1:
+                    value = aml_credit_wo_tax_accounts[0]
             move.l10n_de_datev_main_account_id = value

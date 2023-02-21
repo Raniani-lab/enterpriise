@@ -3197,7 +3197,7 @@ class AccountReport(models.Model):
             return osv.expression.OR(account_codes_domains)
 
         if expression_to_audit.engine == 'tax_tags':
-            tags = self.env['account.account.tag']._get_tax_tags(expression_to_audit.formula, self.env.company.account_fiscal_country_id.id)
+            tags = self.env['account.account.tag']._get_tax_tags(expression_to_audit.formula, expression_to_audit.report_line_id.report_id.country_id.id)
             return [('tax_tag_ids', 'in', tags.ids)]
 
         if expression_to_audit.engine == 'domain':

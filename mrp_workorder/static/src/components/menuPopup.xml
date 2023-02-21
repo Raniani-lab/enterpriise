@@ -4,17 +4,19 @@
         <div role="dialog" class="popup">
             <div class="popup-selection">
                 <header class="title h3" t-esc="title"/>
-                <div class="button_list">
+                <div class="o_workorder_button_list d-flex flex-wrap p-2">
                     <button class="btn btn-danger text-uppercase" t-on-click="block">Block</button>
                     <button class="btn btn-primary" t-on-click="() => this.callAction('button_scrap')">Scrap</button>
                     <button class="btn btn-primary" t-on-click="() => this.callAction('action_add_component')">Add Component</button>
                     <button class="btn btn-primary" t-on-click="() => this.callAction('action_add_byproduct')" name="addByProduct">Add By-product</button>
 
                     <t t-if="props.popupData.has_bom">
-                        <span><h2>Suggest a Worksheet improvement</h2></span>
+                        <h2 class="w-100 text-black text-center mt-4 mb-3">
+                            Suggest a Worksheet improvement
+                        </h2>
                         <t t-if="step">
-                            <button class="btn btn-primary" t-on-click="() => this.proposeChange('update_step', 'Update Instructions', 'Your New Instructions feedback was created')">Update Instructions</button>
-                            <button class="btn btn-primary" t-on-click="() => this.proposeChange('remove_step', 'Remove Step', 'Your feedback to delete this step was created')">Delete this Step</button>
+                            <button class="btn btn-primary" t-on-click="() => this.proposeChange('update_step', env._t('Update Instructions'), env._t('Your New Instructions feedback was created'))">Update Instructions</button>
+                            <button class="btn btn-primary" t-on-click="() => this.proposeChange('remove_step', env._t('Remove Step'), env._t('Your feedback to delete this step was created'))">Delete this Step</button>
                         </t>
                         <button class="btn btn-primary" t-on-click="() => this.callAction('action_add_step')">Add a Step</button>
                         <t t-if="step">
@@ -24,7 +26,7 @@
                 </div>
             </div>
             <footer class="footer">
-                <div class="btn cancel text-uppercase" t-on-click="cancel">Cancel</div>
+                <div class="btn text-uppercase text-black" t-on-click="cancel">Cancel</div>
             </footer>
         </div>
     </t>

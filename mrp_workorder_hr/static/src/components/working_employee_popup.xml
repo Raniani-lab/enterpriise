@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="mrp_workorder_hr.WorkingEmployeePopup" owl="1">
         <div role="dialog">
-            <div class="popup centered">
+            <div class="popup text-center">
                 <t t-foreach="lines" t-as="line" t-key="line.employee_id">
                     <div class="o_popup_employee_selection">
                         <div class="o_popup_employee_name" t-on-click="() => this.setAdmin(line.employee_id)">
@@ -24,7 +24,7 @@
                     </div>
                 </t>
                 <footer class="footer">
-                    <button class="btn btn-link " t-on-click="addEmployee">+ New Operator</button>
+                    <button class="btn btn-link" t-on-click="addEmployee">+ New Operator</button>
                     <button class="btn btn-link" t-on-click="close">Close</button>
                 </footer>
             </div>

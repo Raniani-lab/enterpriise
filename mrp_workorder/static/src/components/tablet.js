@@ -248,10 +248,7 @@ class Tablet extends Component {
         this.render();
     }
 
-    async onCloseRerender(params) {
-        if (params && params.message) {
-            this.notification.add(this.env._t(params.message), {type: 'success'});
-        }
+    async onCloseRerender() {
         await this.getState();
         this.render();
     }

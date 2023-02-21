@@ -9,6 +9,7 @@ class MenuPopup extends Component {
         this.rpc = useService('rpc');
         this.orm = useService('orm');
         this.action = useService('action');
+        this.notification = useService('notification');
     }
 
     get step() {
@@ -49,8 +50,11 @@ class MenuPopup extends Component {
             [[this.props.popupData.workorderId], changeType, title],
         );
         this.props.onClosePopup('menu');
-        this.action.doAction(action, { onClose: () => {
-            this.props.onClose({message});
+        this.action.doAction(action, { onClose: async res => {
+            await this.props.onClose();
+            if (!res?.special) { // Shows the success message only when a change is submitted.
+                this.notification.add(message, { type: "success" });
+            }
         }});
     }
 }

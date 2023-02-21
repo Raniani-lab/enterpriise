@@ -1746,7 +1746,7 @@ export class GanttRenderer extends Component {
      */
     toggleConnectorHighlighting(connectorId, highlighted) {
         const connector = this.connectors[connectorId];
-        if (!connector || connector.highlighted === highlighted) {
+        if (!connector || (!connector.highlighted && !highlighted)) {
             return;
         }
 

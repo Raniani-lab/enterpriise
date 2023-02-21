@@ -7,7 +7,7 @@
             <field name="model">helpdesk.team</field>
             <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form" />
             <field name="arch" type="xml">
-                <xpath expr="//div[@id='field_service']" position="replace">
+                <xpath expr="//field[@name='use_fsm']" position="after">
                     <div attrs="{'invisible': [('use_fsm', '=', False)]}" class="mt-2">
                         <label for="fsm_project_id" string="Project" />
                         <field name="fsm_project_id" attrs="{'required': [('use_fsm', '=', True)]}" context="{'default_is_fsm': True}" />

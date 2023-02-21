@@ -12,7 +12,6 @@ Manage Product returns from helpdesk tickets
     'data': [
         'wizard/stock_picking_return_views.xml',
         'views/helpdesk_ticket_views.xml',
-        'views/helpdesk_team_views.xml',
         'report/helpdesk_ticket_analysis_views.xml',
         'report/helpdesk_sla_report_analysis_views.xml',
     ],

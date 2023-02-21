@@ -195,6 +195,19 @@
         </field>
     </record>
 
+    <!-- helpdesk ticket list view group_by stage_id -->
+    <record id="ticket_list_view_group_stage" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.tree.group.stage</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <tree position="attributes">
+                    <attribute name="default_group_by">stage_id</attribute>
+                </tree>
+            </field>
+        </record>
+
     <record id="quick_create_ticket_form" model="ir.ui.view">
         <field name="name">helpdesk.ticket.form.quick_create</field>
         <field name="model">helpdesk.ticket</field>
@@ -360,7 +373,7 @@
                             <field name="user_id" class="field_user_id" domain="['&amp;', ('id', 'in', domain_user_ids), ('share', '=', False)]" widget="many2one_avatar_user"/>
                             <field name="domain_user_ids" invisible="1"/>
                             <field name="priority" widget="priority"/>
-                            <field name="ticket_type_id"/>
+                            <field name="ticket_type_id" options="{'no_open': True}"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="company_id" groups="base.group_multi_company" context="{'create': False}"/>
                         </group>
@@ -653,7 +666,7 @@
     <record id="helpdesk_ticket_action_team" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">kanban,list,form,activity,pivot,graph,cohort</field>
+        <field name="view_mode">kanban,tree,form,activity,pivot,graph,cohort</field>
         <field name="domain">[('team_id', '=', active_id)]</field>
         <field name="context">{'default_team_id': active_id}</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
@@ -664,6 +677,19 @@
                 Collaborate efficiently by chatting in real-time or via email.
             </p>
         </field>
+    </record>
+
+    <record id="open_view_ticket_group_stage_kanban_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">kanban</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_team"/>
+    </record>
+
+    <record id="open_view_ticket_group_stage_tree_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">tree</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_team"/>
+        <field name="view_id" ref="ticket_list_view_group_stage"/>
     </record>
 
     <record id="helpdesk_ticket_action_unassigned" model="ir.actions.act_window">

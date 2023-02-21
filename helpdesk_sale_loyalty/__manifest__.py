@@ -12,7 +12,6 @@ Generate Coupons from Helpdesks tickets
         'security/ir.model.access.csv',
         'wizard/helpdesk_sale_coupon_generate_views.xml',
         'views/helpdesk_ticket_views.xml',
-        'views/helpdesk_team_views.xml',
         'views/loyalty_card_views.xml',
     ],
     'demo': [

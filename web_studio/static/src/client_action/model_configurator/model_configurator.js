@@ -120,6 +120,12 @@ export class ModelConfiguratorDialog extends Component {
     static components = { Dialog, ModelConfigurator };
     static template = "web_studio.ModelConfiguratorDialog";
 
+    static props = {
+        confirm: { type: Function },
+        close: { type: Function },
+        confirmLabel: { type: String, optional: true },
+    };
+
     async onConfirm(data) {
         await this.props.confirm(data);
         this.props.close();

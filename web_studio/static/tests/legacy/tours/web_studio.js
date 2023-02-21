@@ -1216,4 +1216,38 @@ registry.category("web_tour.tours").add("web_studio_test_address_view_id_no_edit
     ]
 });
 
+registry.category("web_tour.tours").add(
+    "web_studio_test_create_new_model_from_existing_view",
+    {
+        test: true,
+        sequence: 260,
+        steps: [
+            {
+                trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
+            },
+            {
+                extra_trigger: ".o_kanban_view",
+                trigger: ".o_web_studio_navbar_item a"
+            },
+            {
+                trigger: ".o_web_create_new_model"
+            },
+            {
+                extra_trigger: ".modal-dialog",
+                trigger: "input[name='model_name']",
+                run: "text new model",
+            },
+            {
+                trigger: ".confirm_button",
+            },
+            {
+                trigger: ".o_web_studio_model_configurator_next"
+            },
+            {
+                trigger: ".o_form_view",
+            }
+        ]
+    }
+);
+
 });

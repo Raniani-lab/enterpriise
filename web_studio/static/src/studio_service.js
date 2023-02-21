@@ -289,6 +289,9 @@ export const studioService = {
                 state.x2mEditorPath = [];
             }
             if ("action" in params) {
+                if ((state.editedAction && state.editedAction.id) !== params.action.id) {
+                    state.editedControllerState = null;
+                }
                 state.editedAction = params.action || null;
             }
             if ("editorTab" in params) {

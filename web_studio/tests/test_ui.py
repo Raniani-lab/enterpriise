@@ -493,3 +493,22 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         )
 
         self.assertCountEqual(selection_field.selection_ids.mapped("name"), ["some value", "another value"])
+
+    def test_create_new_model_from_existing_view(self):
+        self.testView.write({
+            "model": "res.users",
+            "type": "kanban",
+            "arch": '''<kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_details">
+                            <field name="display_name"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+            '''
+        })
+        self.testAction.view_ids.view_mode = "kanban"
+        self.start_tour("/web?debug=tests", 'web_studio_test_create_new_model_from_existing_view', login="admin",
+                        timeout=200)

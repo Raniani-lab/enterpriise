@@ -131,12 +131,8 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.actionService.doAction(action, { clear_breadcrumbs: true });
     }
 
-    async _onSpreadsheetSaved({ data, thumbnail }) {
-        await this.orm.write("documents.document", [this.resId], {
-            thumbnail,
-            spreadsheet_data: JSON.stringify(data),
-            mimetype: "application/o-spreadsheet",
-        });
+    async _onSpreadsheetSaved({ thumbnail }) {
+        await this.orm.write("documents.document", [this.resId], { thumbnail });
     }
 
     /**

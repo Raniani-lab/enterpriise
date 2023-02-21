@@ -59,6 +59,9 @@
                                 <span t-field="sign_request_item.signing_date"/>
                             </td>
                             <td class="text-end">
+                                <t t-if="sign_request_item.ignored">
+                                    <span class="badge rounded-pill text-bg-light">Ignored</span>
+                                </t>
                                 <span class="badge rounded-pill text-bg-info"
                                       t-field="sign_request_item.sudo().sign_request_id.state"/>
                             </td>
@@ -109,7 +112,9 @@
                                         <div class="_status clearfix" t-att-data-id="sign.id">
                                             <t t-if="sign.state == 'sent'">
                                                 <b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b>
-                                                <t t-if="sign.role_id"><t t-esc="' - ' + sign.role_id.name"/></t> - <em>Waiting Signature</em>
+                                                <t t-if="sign.role_id"><t t-esc="' - ' + sign.role_id.name"/></t> - <em>
+                                                    Waiting Signature<t t-if="(my_sign_item == sign) and sign.ignored"> (Ignored)</t>
+                                                </em>
                                                 <em t-if="not sign.is_mail_sent"><br/>(the email access has not been sent)</em>
                                             </t>
                                             <t t-if="sign.state == 'canceled'">

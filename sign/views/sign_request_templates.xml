@@ -122,7 +122,7 @@
                     <div t-if="sign.access_token != token" class="o_sign_signer_status o_sign_signer_waiting ps-4" t-att-data-id="sign.id">
                         <div class="o_sign_signer_status_info flex-column">
                             <div class="text-start"><b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b></div>
-                            <div class="text-start"><small><i> Waiting Signature </i></small></div>
+                            <div class="text-start"><small><i> Waiting Signature<t t-if="(env.user.partner_id == sign.partner_id) and sign.ignored"> (Ignored)</t> </i></small></div>
                         </div>
                     </div>
                 </t>

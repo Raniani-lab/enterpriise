@@ -39,14 +39,22 @@ ThankYouDialog.include({
     }
   },
 
-  viewDocument: function () {
+  goToNext: async function (id, token) {
+    const action = await this._rpc({
+      model: "sign.request",
+      method: "go_to_signable_document",
+      args: [parseInt(id)],
+    })
+    this.do_action(action, { clear_breadcrumbs: true });
+  },
+
+  downloadDocument: function () {
     this._rpc({
       model: "sign.request",
-      method: "go_to_document",
+      method: "get_completed_document",
       args: [this.parent.requestID],
     }).then((action) => {
       this.do_action(action, { clear_breadcrumbs: true });
-      this.destroy();
     });
   },
 });

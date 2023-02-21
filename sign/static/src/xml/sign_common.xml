@@ -103,10 +103,35 @@
 
     <div t-name="sign.thank_you_dialog">
         <div class="o_thankyou_message" t-out="widget.options.message"/>
-        <t t-if="widget.options.suggestSignUp">
-            <div class="o_thankyou_message alert alert-success py-4">Sign up for Odoo Sign to manage your own documents and signature requests.</div>
+        <div t-if="widget.suggestSignUp" class="o_thankyou_message alert alert-success py-4">
+            Sign up for Odoo Sign to manage your own documents and signature requests.
+        </div>
+        <t t-if="widget.nextDocuments.length > 0">
+            <div class="o_thankyou_message">There are other documents waiting for your signature:</div>
+            <table class="table table-sm">
+                <tbody>
+                    <t t-foreach="widget.nextDocuments" t-as="doc">
+                        <tr
+                            t-att-data-thankyou-doc-id="doc.id"
+                            t-att-data-thankyou-doc-requestId="doc.requestId"
+                            t-att-data-thankyou-doc-token="doc.token"
+                            data-thankyou-doc-enabled="true"
+                        >
+                            <td>
+                                <strong t-out="doc.name"></strong>
+                            </td>
+                            <td>
+                                <span>Sent by <span t-out="doc.user"></span> on <span t-out="doc.date"></span></span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-secondary o_thankyou_next_sign">Sign</button>
+                                <button class="btn btn-sm btn-secondary o_thankyou_next_ignore">Ignore</button>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
         </t>
-        <div class="o_thankyou_message" t-if="widget.has_next_document">Other documents have to be signed.</div>
     </div>
 
     <div t-name="sign.refuse_confirm_dialog">

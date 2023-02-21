@@ -68,7 +68,7 @@ registry.category("web_tour.tours").add('sign_tour', {
     content: _t("Congrats, your signature is ready to be submitted!"),
     position: "top",
 }, {
-    trigger: '.modal-dialog button:contains("' + _t('View Document') + '")',
+    trigger: '.modal-dialog button:contains("' + _t('Close') + '")',
     content: Markup(_t("That's it, all done!<br>The document is signed, and a copy has been sent by email to all participants, along with a traceability report.")),
     position: "bottom",
 },

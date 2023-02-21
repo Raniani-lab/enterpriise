@@ -696,6 +696,7 @@ class SignRequestItem(models.Model):
         ("canceled", "Canceled"),
     ], readonly=True, default="sent", copy=False)
     color = fields.Integer(compute='_compute_color')
+    ignored = fields.Boolean(required=True, default=False, copy=False)
 
     signer_email = fields.Char(string='Email', compute="_compute_email", store=True)
     is_mail_sent = fields.Boolean(readonly=True, copy=False, help="The signature mail has been sent.")
@@ -1006,6 +1007,7 @@ class SignRequestItem(models.Model):
             if not sign_request.communication_company_id:
                 sign_request.communication_company_id = self.env.company
             sign_request.message_post(body=body, attachment_ids=sign_request.attachment_ids.ids)
+        self.write({'ignored': False})
         self._send_signature_access_mail()
 
     def _get_user_signature(self, signature_type='sign_signature'):

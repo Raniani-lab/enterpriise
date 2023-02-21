@@ -196,7 +196,6 @@
         <field name="arch" type="xml">
             <search>
                 <field name="attachment_id" string="Document Name"/>
-                <field name="tag_ids"/>
                 <filter name="my_templates" string="My Templates" domain="[('user_id', '=', uid)]"/>
                 <filter name="favorite" string="My Favorites" domain="[('favorited_ids', 'in', uid)]"/>
                 <searchpanel>

@@ -10,6 +10,7 @@ from PyPDF2 import PdfFileReader
 
 from odoo import http, models, tools, Command, _
 from odoo.http import request, content_disposition
+from odoo.tools import consteq
 from odoo.addons.iap.tools import iap_tools
 
 _logger = logging.getLogger()
@@ -426,3 +427,67 @@ class Sign(http.Controller):
                 })
             }
         return {}
+
+    @http.route(['/sign/sign_request_state/<int:request_id>/<token>'], type='json', auth='public')
+    def get_sign_request_state(self, request_id, token):
+        """
+        Returns the state of a sign request.
+        :param request_id: id of the request
+        :param token: access token of the request
+        :return: state of the request
+        """
+        sign_request = request.env['sign.request'].sudo().browse(request_id).exists()
+        if not sign_request or not consteq(sign_request.access_token, token):
+            return http.request.not_found()
+        return sign_request.state
+
+    @http.route(['/sign/sign_request_items'], type='json', auth='user')
+    def get_sign_request_items(self, request_id, token):
+        """
+        Finds up to 3 most important sign request items for the current user to sign,
+        after the user has just completed one.
+        :param request_id: id of the completed sign request
+        :param token: access token of the request
+        :return: list of dicts describing sign request items for the Thank You dialog
+        """
+        sign_request = request.env['sign.request'].browse(request_id).sudo()
+        if not sign_request or not consteq(sign_request.access_token, token):
+            return http.request.not_found()
+        uid = sign_request.create_uid.id
+        items = request.env['sign.request.item'].sudo().search_read(
+            domain=[
+                ('partner_id', '=', request.env.user.partner_id.id),
+                ('state', '=', 'sent'),
+                ('ignored', '=', False),
+            ],
+            fields=['access_token', 'sign_request_id', 'create_uid', 'create_date'],
+            order='create_date DESC',
+            limit=20,
+        )
+        items.sort(key=lambda item: (0 if uid == item['create_uid'][0] else 1))
+        items = items[:3]
+        return [{
+            'id': item['id'],
+            'token': item['access_token'],
+            'requestId': item['sign_request_id'][0],
+            'name': item['sign_request_id'][1],
+            'userId': item['create_uid'][0],
+            'user': item['create_uid'][1],
+            'date': item['create_date'].date(),
+        } for item in items]
+
+    @http.route(['/sign/ignore_sign_request_item/<int:item_id>/<token>'], type='json', auth='user')
+    def ignore_sign_request_item(self, item_id, token):
+        """
+        Sets the state of a sign request item to "ignored".
+        :param item_id: id of the item
+        :param token: access token of the item
+        :return: bool (whether the item was successfully accessed)
+        """
+        sign_request_item = request.env['sign.request.item'].sudo().browse(item_id).exists()
+        if not consteq(sign_request_item.access_token, token):
+            return http.request.not_found()
+        if not sign_request_item:
+            return False
+        sign_request_item.ignored = True
+        return True

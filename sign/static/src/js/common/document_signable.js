@@ -821,14 +821,15 @@ export const ThankYouDialog = Dialog.extend({
 
   init: function (parent, options) {
     options = options || {};
-    options.title = options.title || _t("Thank You !");
-    options.subtitle = options.subtitle || _t("Your signature has been saved.");
-    options.message = options.message || _t("You will receive a copy of the signed document by mail.");
+    options.title = options.title || _t("Thank you!");
+    options.subtitle = options.subtitle || _t("Your signature has been submitted.");
+    options.message = options.message || _t("You will receive the final signed document by email.");
     options.size = options.size || "medium";
     options.technical = false;
     options.buttons = [];
     this.parent = parent;
     this.suggestSignUp = (session.user_id === false);
+    this.nextDocuments = [];
 
     let url = parent.RedirectURL;
     if (url) {
@@ -847,17 +848,17 @@ export const ThankYouDialog = Dialog.extend({
       /*
         Buttons, in this order (right to left):
         if suggestSignUp
-        - "View Document"
+        - "Download Document" or hidden
         - "Sign Up for free"
         else
-        - "View Document"
+        - "Download Document" or hidden
         - "Close"
         - "Sign Next Document" or hidden
       */
       options.buttons.push({
-        text: _t("View Document"),
-        classes: "btn-secondary",
-        click: this.viewDocument,
+        text: _t("Download Document"),
+        classes: "d-none btn-secondary",
+        click: this.downloadDocument,
       });
       if (this.suggestSignUp) {
         options.message += " You can safely close this window.";
@@ -882,25 +883,14 @@ export const ThankYouDialog = Dialog.extend({
             }
           },
         });
-        if (!session.is_frontend) {
-          options.buttons.push({
-            text: _t("Sign Next Document"),
-            classes: "d-none btn-secondary",
-            click: function () {
-              this._rpc({
-                model: "sign.request",
-                method: "go_to_document",
-                args: [this.next_document.sign_request_id[0]],
-              }).then(action => {
-                this.do_action(action, { clear_breadcrumbs: true });
-              });
-            },
-          });
-        }
+        options.buttons.push({
+          text: _t("Sign Next Document"),
+          classes: "d-none btn-secondary o_thankyou_button_next",
+          click: this.clickButtonNext,
+        });
       }
     }
     this.options = options;
-    this.has_next_document = false;
 
     this._super(parent, options);
 
@@ -915,26 +905,23 @@ export const ThankYouDialog = Dialog.extend({
 
   willStart: async function () {
     const _super = this._super;
-
-    if (!this.suggestSignUp && !session.is_website_user && !session.is_frontend) {
+    const requestState = await this._rpc({
+      route: `/sign/sign_request_state/${this.parent.requestID}/${this.parent.requestToken}`,
+    });
+    if (requestState === "signed") {
+      const downloadBtn = this.options.buttons.find(btn => btn.text === _t("Download Document"));
+      this.replaceClass(downloadBtn, "d-none", "");
+    }
+    if (!this.suggestSignUp && !session.is_website_user) {
       const result = await this._rpc({
-        model: "sign.request.item",
-        method: "search_read",
-        domain: [
-          "&",
-          ["partner_id", "=", session.partner_id],
-          ["state", "=", "sent"],
-        ],
-        fields: ["sign_request_id"],
-        orderBy: [{ name: "create_date", desc: true }],
+        route: "/sign/sign_request_items",
+        params: { request_id: this.parent.requestID, token: this.parent.requestToken },
       });
       if (result && result.length) {
-        this.has_next_document = true;
-        this.next_document = result.reduce((prev, curr) => {
-          return Math.abs(curr.sign_request_id[0] - this.parent.requestID) <=
-            Math.abs(prev.sign_request_id[0] - this.parent.requestID)
-            ? curr
-            : prev;
+        this.nextDocuments = result;
+        this.events = Object.assign(this.events || {}, {
+          "click .o_thankyou_next_sign": "clickNextSign",
+          "click .o_thankyou_next_ignore": "clickNextIgnore",
         });
         const nextBtn = this.options.buttons.filter(btn => btn.text === _t("Sign Next Document"))[0];
         this.replaceClass(nextBtn, "d-none", "");
@@ -950,6 +937,39 @@ export const ThankYouDialog = Dialog.extend({
     return _super.apply(this, arguments);
   },
 
+  goToNext: async function (id, token) {
+    window.location.replace(this.makeURI("/sign/document", id, token, undefined, { portal: 1 }));
+  },
+
+  clickButtonNext: function (e) {
+    // Lands the user directly into signing mode for the first available (i.e., not ignored) document in the list.
+    const rows = $("[data-thankyou-doc-enabled]");
+    this.goToNext(rows.attr("data-thankyou-doc-requestId"), rows.attr("data-thankyou-doc-token"));
+  },
+
+  clickNextSign: function (e) {
+    // Lands the user directly into signing mode for the clicked document.
+    const row = $(e.target).parent().parent();
+    this.goToNext(row.attr("data-thankyou-doc-requestId"), row.attr("data-thankyou-doc-token"));
+  },
+
+  clickNextIgnore: async function (e) {
+    // Attempts to ignore the sign request.
+    // If successful, reflects the change in the dialog UI.
+    const row = $(e.target).parent().parent();
+    const result = await this._rpc({
+      route: `/sign/ignore_sign_request_item/${row.attr("data-thankyou-doc-id")}/${row.attr("data-thankyou-doc-token")}`,
+    });
+    if (result) {
+      $(e.target).parent().children("button").prop("disabled", true);
+      row.addClass("text-muted");
+      row.removeAttr("data-thankyou-doc-enabled");
+      if (!row.parent().children().is("[data-thankyou-doc-enabled]")) {
+        $(".o_thankyou_button_next").attr("disabled", true);
+      };
+    }
+  },
+
   /**
    * @override
    */
@@ -961,8 +981,9 @@ export const ThankYouDialog = Dialog.extend({
     this.$modal.find(".modal-header .o_subtitle").before("<br/>");
   },
 
-  viewDocument: function () {
-    window.location.replace(this.makeURI("/sign/document", this.parent.requestID, this.parent.accessToken));
+  downloadDocument: async function () {
+    // Simply triggers a download of the document which the user just signed.
+    window.location.replace(this.makeURI("/sign/download", this.parent.requestID, this.parent.requestToken, "/completed"));
   },
 
   replaceClass: function (button, oldClass, newClass) {

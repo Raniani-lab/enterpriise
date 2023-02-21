@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import base64
 from markupsafe import Markup
 
 from odoo.tests.common import tagged, HttpCase
@@ -16,7 +17,7 @@ class TestHelpdeskKnowledgeCrossModuleFeatures(HttpCase):
     def setUpClass(cls):
         super(TestHelpdeskKnowledgeCrossModuleFeatures, cls).setUpClass()
         cls.env['knowledge.article'].search([]).unlink()
-        cls.env['knowledge.article'].create({
+        article = cls.env['knowledge.article'].create({
             'name': 'EditorCommandsArticle',
             'body': Markup("""
                 <p><br></p>
@@ -29,17 +30,14 @@ class TestHelpdeskKnowledgeCrossModuleFeatures(HttpCase):
                     </div>
                 </div>
                 <p><br></p>
-                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file">
-                    <div class="o_knowledge_file_image" data-prop-name="fileImage">
-                        <a href="https://www.odoo.com/web/content/31413934?download=true" title="Onboarding.pdf" data-mimetype="application/pdf" class="o_image"></a>
-                    </div>
-                    <div class="o_knowledge_file_description">
-                        <div class="o_knowledge_file_name" data-prop-name="fileName">Onboarding</div>
-                        <div class="o_knowledge_file_extension" data-prop-name="fileExtension">pdf</div>
-                    </div>
-                </div>
-                <p><br></p>
             """)
+        })
+        cls.env['ir.attachment'].create({
+            'datas': base64.b64encode(b'Content'),
+            'name': 'Onboarding',
+            'mimetype': 'text/plain',
+            'res_id': article.id,
+            'res_model': 'knowledge.article',
         })
 
     # Embedded view block:

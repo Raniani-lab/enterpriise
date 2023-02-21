@@ -34,14 +34,16 @@ tour.register('knowledge_cover_selector_tour', {
     // add url button
     trigger: '.o_upload_media_url_button',
     extra_trigger: '.modal-body .unsplash_error',
+    run: () => {},
 }, {
-    // Enter the image url
-    trigger: '.o_we_url_input',
-    run: 'text https://odoocdn.com/openerp_website/static/src/img/assets/png/odoo_logo.png',
+    // Change the search query to find odoo_logo file
+    trigger: '.modal-body input.o_we_search',
+    extra_trigger: '.modal-body .o_nocontent_help',
+    run: 'text odoo_logo',
 }, {
-    // Upload image from url
-    trigger: '.o_upload_media_url_button',
-    extra_trigger: '.o_we_url_success',
+    // Choose the odoo_logo cover
+    trigger: '.o_existing_attachment_cell img[title*="odoo_logo"]',
+    run: 'click',
 }, {
     // Check cover has been added to the article, and make the change cover
     // button visible

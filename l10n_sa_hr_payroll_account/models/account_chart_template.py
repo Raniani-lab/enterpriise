@@ -1,21 +1,16 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.exceptions import ValidationError
+from collections import defaultdict
 
-from odoo import models, _
+from odoo import models
 
 
 class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
 
-    def _load_payroll_accounts(self, template_code, companies):
-        if template_code != 'sa':
-            return super()._load_payroll_accounts(template_code, companies)
-        self._configure_payroll_account_data_saudi(companies)
-
-    def _configure_payroll_account_data_saudi(self, companies):
-        accounts_codes = [
+    def _configure_payroll_account_sa(self, companies):
+        account_codes = [
             '201002',  # Payables
             '201016',  # Accrued Others
             '202001',  # End of Service Provision
@@ -26,66 +21,55 @@ class AccountChartTemplate(models.AbstractModel):
             '400010',  # Life insurance
             '400012',  # Staff Other Allowances
         ]
-        ksa_structures = self.env['hr.payroll.structure'].search([('country_id.code', '=', "SA")])
-        if not companies or not ksa_structures:
-            return
-        for company in companies:
-            self = self.with_company(company)
+        default_account = '201002'
+        rules_mapping = defaultdict(dict)
 
-            accounts = {}
-            for code in accounts_codes:
-                account = self.env['account.account'].search(
-                    [('company_id', '=', company.id), ('code', 'like', '%s%%' % code)], limit=1)
-                if not account:
-                    raise ValidationError(_('No existing account for code %s', code))
-                accounts[code] = account
+        # ================================================ #
+        #          KSA Employee Payroll Structure          #
+        # ================================================ #
 
-            journal = self.env['account.journal'].search([
-                ('code', '=', 'MISC'),
-                ('name', '=', 'Miscellaneous Operations'),
-                ('company_id', '=', company.id)])
+        social_rule = self.env.ref('l10n_sa_hr_payroll.ksa_saudi_social_insurance_contribution')
+        rules_mapping[social_rule]['debit'] = '400010'
+        rules_mapping[social_rule]['credit'] = '201016'
 
-            if not journal:
-                journal = self.env['account.journal'].create({
-                    'name': 'Miscellaneous Operations',
-                    'code': 'MISC',
-                    'type': 'general',
-                    'company_id': company.id,
-                })
+        for employee_type in ['saudi', 'expat']:
+            basic_rule = self.env['hr.salary.rule'].search([
+                ('struct_id', '=', self.env.ref('l10n_sa_hr_payroll.ksa_%s_employee_payroll_structure' % employee_type).id),
+                ('code', '=', 'BASIC')
+            ], limit=1)
+            rules_mapping[basic_rule]['debit'] = '400003'
 
-            self.env['ir.property']._set_multi(
-                "journal_id",
-                "hr.payroll.structure",
-                {structure.id: journal.id for structure in ksa_structures},
-            )
+            house_rule = self.env.ref('l10n_sa_hr_payroll.ksa_%s_housing_allowance_salary_rule' % employee_type)
+            rules_mapping[house_rule]['debit'] = '400004'
 
-            # ================================================ #
-            #          KSA Employee Payroll Structure          #
-            # ================================================ #
-            self.env.ref('l10n_sa_hr_payroll.ksa_saudi_social_insurance_contribution').write(
-                {"account_debit": accounts['400010'].id, 'account_credit': accounts['201016'].id})
-            for employee_type in ['saudi', 'expat']:
-                salary_rule_domain_basic = [
-                    ('struct_id', '=', self.env.ref('l10n_sa_hr_payroll.ksa_%s_employee_payroll_structure' % employee_type).id),
-                    ('code', '=', 'BASIC')
-                ]
-                self.env['hr.salary.rule'].search(salary_rule_domain_basic, limit=1).write({'account_debit': accounts['400003'].id})
-                self.env.ref('l10n_sa_hr_payroll.ksa_%s_housing_allowance_salary_rule' % employee_type).write(
-                    {"account_debit": accounts['400004'].id})
-                self.env.ref('l10n_sa_hr_payroll.ksa_%s_transportation_allowance_salary_rule' % employee_type).write(
-                    {"account_debit": accounts['400005'].id})
-                self.env.ref('l10n_sa_hr_payroll.ksa_%s_other_allowances_salary_rule' % employee_type).write(
-                    {"account_debit": accounts['400012'].id})
-                self.env.ref('l10n_sa_hr_payroll.ksa_%s_end_of_service_salary_rule' % employee_type).write(
-                    {"account_debit": accounts['202001'].id})
-                self.env.ref('l10n_sa_hr_payroll.ksa_%s_end_of_service_provision_salary_rule' % employee_type).write(
-                    {"account_debit": accounts['400008'].id, "account_credit": accounts['202001'].id})
-                self.env.ref('l10n_sa_hr_payroll.ksa_%s_overtime' % employee_type).write(
-                    {"account_debit": accounts['400012'].id})
-                self.env.ref('l10n_sa_hr_payroll.ksa_%s_unpaid_leave' % employee_type).write(
-                    {"account_credit": accounts['400003'].id})
-                salary_rule_domain_net = [
-                    ('struct_id', '=', self.env.ref('l10n_sa_hr_payroll.ksa_%s_employee_payroll_structure' % employee_type).id),
-                    ('code', '=', 'NET')
-                ]
-                self.env['hr.salary.rule'].search(salary_rule_domain_net, limit=1).write({'account_credit': accounts['201002'].id})
+            transport_rule = self.env.ref('l10n_sa_hr_payroll.ksa_%s_transportation_allowance_salary_rule' % employee_type)
+            rules_mapping[transport_rule]['debit'] = '400005'
+
+            other_rule = self.env.ref('l10n_sa_hr_payroll.ksa_%s_other_allowances_salary_rule' % employee_type)
+            rules_mapping[other_rule]['debit'] = '400012'
+
+            end_rule = self.env.ref('l10n_sa_hr_payroll.ksa_%s_end_of_service_salary_rule' % employee_type)
+            rules_mapping[end_rule]['debit'] = '202001'
+
+            provision_rule = self.env.ref('l10n_sa_hr_payroll.ksa_%s_end_of_service_provision_salary_rule' % employee_type)
+            rules_mapping[provision_rule]['debit'] = '400008'
+            rules_mapping[provision_rule]['credit'] = '202001'
+
+            overtime_rule = self.env.ref('l10n_sa_hr_payroll.ksa_%s_overtime' % employee_type)
+            rules_mapping[overtime_rule]['debit'] = '400012'
+
+            unpaid_rule = self.env.ref('l10n_sa_hr_payroll.ksa_%s_unpaid_leave' % employee_type)
+            rules_mapping[unpaid_rule]['credit'] = '400003'
+
+            net_rule = self.env['hr.salary.rule'].search([
+                ('struct_id', '=', self.env.ref('l10n_sa_hr_payroll.ksa_%s_employee_payroll_structure' % employee_type).id),
+                ('code', '=', 'NET')
+            ], limit=1)
+            rules_mapping[net_rule]['credit'] = '201002'
+
+        self._configure_payroll_account(
+            companies,
+            "SA",
+            account_codes=account_codes,
+            rules_mapping=rules_mapping,
+            default_account=default_account)

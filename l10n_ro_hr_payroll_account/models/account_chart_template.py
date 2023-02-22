@@ -1,56 +1,28 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.exceptions import ValidationError
+from collections import defaultdict
 
-from odoo import models, _
+from odoo import models
 
 
 class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
 
-    def _load_payroll_accounts(self, template_code, companies):
-        if template_code != 'ro':
-            return super()._load_payroll_accounts(template_code, companies)
-        return self._configure_payroll_account_romania(companies)
-
-    def _configure_payroll_account_romania(self, companies):
-        accounts_codes = [
+    def _configure_payroll_account_ro(self, companies):
+        account_codes = [
             # YTI TODO: Configure accounts
         ]
-        ro_structures = self.env['hr.payroll.structure'].search([('country_id.code', '=', "RO")])
-        for company in companies:
-            self = self.with_company(company)
+        default_account = False
+        rules_mapping = defaultdict(dict)
+        # ================================================ #
+        #           RO Employee Payroll Structure          #
+        # ================================================ #
 
-            accounts = {}
-            for code in accounts_codes:
-                account = self.env['account.account'].search(
-                    [('company_id', '=', company.id), ('code', 'like', '%s%%' % code)], limit=1)
-                if not account:
-                    raise ValidationError(_('No existing account for code %s', code))
-                accounts[code] = account
-
-            journal = self.env['account.journal'].search([
-                ('code', '=', 'SLR'),
-                ('name', '=', 'Salaries'),
-                ('company_id', '=', company.id)])
-
-            if not journal:
-                journal = self.env['account.journal'].create({
-                    'name': 'Salaries',
-                    'code': 'SLR',
-                    'type': 'general',
-                    'company_id': company.id,
-                })
-
-            self.env['ir.property']._set_multi(
-                "journal_id",
-                "hr.payroll.structure",
-                {structure.id: journal.id for structure in ro_structures},
-            )
-
-            # ================================================ #
-            #           RO Employee Payroll Structure          #
-            # ================================================ #
-
-            # TODO: Setup Accounts
+        # YTI TODO: Setup Accounts
+        self._configure_payroll_account(
+            companies,
+            "RO",
+            account_codes=account_codes,
+            rules_mapping=rules_mapping,
+            default_account=default_account)

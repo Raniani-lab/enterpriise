@@ -1039,7 +1039,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
             },
         });
         assert.strictEqual(getCellContent(model, "A1"), "");
-        assert.strictEqual(getCellContent(model, "A2"), "");
+        assert.strictEqual(getCellContent(model, "A2"), "name");
         assert.strictEqual(getCellContent(model, "A3"), '=ODOO.PIVOT.HEADER(1,"name","false")');
         assert.strictEqual(
             getCellContent(model, "A4"),

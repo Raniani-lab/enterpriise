@@ -239,6 +239,7 @@ QUnit.module(
             model.dispatch("ADD_MERGE", {
                 sheetId,
                 target: [{ top: 0, bottom: 1, left: 0, right: 0 }],
+                force: true,
             });
             selectCell(model, "A2"); // A1 and A2 are merged; select A2
             const { col, row } = toCartesian("A2");

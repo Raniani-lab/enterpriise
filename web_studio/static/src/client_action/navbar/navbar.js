@@ -1,8 +1,8 @@
 /** @odoo-module **/
-import { onMounted } from "@odoo/owl";
+import { onMounted, onWillUnmount } from "@odoo/owl";
 
 import { registry } from "@web/core/registry";
-import { useService, useBus } from "@web/core/utils/hooks";
+import { useService } from "@web/core/utils/hooks";
 import { EnterpriseNavBar } from "@web_enterprise/webclient/navbar/navbar";
 import { NotEditableActionError } from "../../studio_service";
 import { HomeMenuCustomizer } from "./home_menu_customizer/home_menu_customizer";
@@ -22,7 +22,9 @@ export class StudioNavbar extends EnterpriseNavBar {
             this._updateMenuAppsIcon();
         });
 
-        useBus(menuButtonsRegistry, "UPDATE", () => this.render());
+        const onMenuButtonsUpdate = () => this.render();
+        menuButtonsRegistry.addEventListener("UPDATE", onMenuButtonsUpdate);
+        onWillUnmount(() => menuButtonsRegistry.removeEventListener("UPDATE", onMenuButtonsUpdate));
     }
     onMenuToggle() {
         this.studio.toggleHomeMenu();

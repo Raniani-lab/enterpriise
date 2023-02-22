@@ -4762,7 +4762,7 @@ QUnit.test("Progress bar when multilevel grouped.", async (assert) => {
 });
 
 QUnit.test("Progress bar warning when max_value is zero", async (assert) => {
-    assert.expect(5);
+    assert.expect(6);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -4785,12 +4785,15 @@ QUnit.test("Progress bar warning when max_value is zero", async (assert) => {
                 assert.deepEqual(args[1], { user_id: [1, 2] });
                 return {
                     user_id: {
-                        1: { value: 50, max_value: 0, warning: "plop" },
+                        1: { value: 50, max_value: 0 },
+                        warning: "plop",
                     },
                 };
             }
         },
     });
+    assert.containsNone(target, SELECTORS.progressBarWarning);
+    await hoverGridCell(1, 1);
     assert.containsOnce(target, SELECTORS.progressBarWarning);
     assert.strictEqual(
         target.querySelector(SELECTORS.progressBarWarning).parentElement.title,

@@ -529,6 +529,7 @@ export class GanttModel extends Model {
                     row.progressBar.ratio = row.progressBar.max_value
                         ? (row.progressBar.value / row.progressBar.max_value) * 100
                         : 0;
+                    row.progressBar.warning = progressBarInfo.warning;
                 }
             } else {
                 this._addProgressBarInfo(fieldName, row.rows, progressBarInfo);

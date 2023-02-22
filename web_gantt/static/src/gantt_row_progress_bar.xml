@@ -19,7 +19,7 @@
                     />
                 </span>
             </t>
-            <t t-else="">
+            <t t-elif="showWarning">
                 <span
                     class="o_gantt_group_hours position-absolute top-0 end-0 h-100 d-flex align-items-center px-1"
                     t-attf-title="{{ props.progressBar.warning }} {{ props.progressBar.value_formatted }}."

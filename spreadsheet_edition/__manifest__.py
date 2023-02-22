@@ -10,6 +10,7 @@
     'data': [
         'data/spreadsheet_data.xml',
         'security/ir.model.access.csv',
+        'views/spreadsheet_views.xml',
     ],
     'installable': True,
     'auto_install': True,

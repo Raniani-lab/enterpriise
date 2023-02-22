@@ -282,7 +282,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
         # Turnover and Farmer tags are not included
         options['date']['date_from'] = options['date']['date_from'][0:4] + '-01-01'
         options['date']['date_to'] = options['date']['date_to'][0:4] + '-12-31'
-        lines = report._get_lines(options)
+        lines = report.with_context(print_mode=True)._get_lines(options)
 
         data_client_info = ''
         seq = 0

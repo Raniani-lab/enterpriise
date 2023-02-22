@@ -23,9 +23,7 @@ import {
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { registry } from "@web/core/registry";
-import * as LegacyFavoriteMenu from "web.FavoriteMenu";
-import { InsertViewSpreadsheet } from "@spreadsheet_edition/assets/insert_action_link_menu/insert_action_link_menu_owl";
-import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@spreadsheet_edition/assets/insert_action_link_menu/insert_action_link_menu_legacy";
+import { InsertViewSpreadsheet } from "@spreadsheet_edition/assets/insert_action_link_menu/insert_action_link_menu";
 import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 
 import { loadJS } from "@web/core/assets";
@@ -34,18 +32,12 @@ import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/
 const { Component } = owl;
 const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
-const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 const { Grid } = spreadsheet.components;
 
 let serverData;
 async function openView(viewType, options = {}) {
-    legacyFavoriteMenuRegistry.add(
-        "insert-action-link-in-spreadsheet",
-        LegacyInsertViewSpreadsheet,
-        1
-    );
     favoriteMenuRegistry.add(
         "insert-action-link-in-spreadsheet",
         {

@@ -137,7 +137,7 @@
         <field name="name">helpdesk.ticket.report.analysis.cohort</field>
         <field name="model">helpdesk.ticket.report.analysis</field>
         <field name="arch" type="xml">
-            <cohort string="Tickets Analysis" date_start="create_date" date_stop="close_date" interval="day" sample="1" measure="ticket_open_hours"/>
+            <cohort string="Tickets Analysis" date_start="create_date" date_stop="close_date" disable_linking="True" interval="day" sample="1" measure="ticket_open_hours"/>
         </field>
     </record>
 

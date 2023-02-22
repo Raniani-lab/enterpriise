@@ -36,7 +36,7 @@
         <field name="name">helpdesk.sla.report.analysis.cohort</field>
         <field name="model">helpdesk.sla.report.analysis</field>
         <field name="arch" type="xml">
-            <cohort string="SLA Status Analysis" date_start="create_date" date_stop="close_date" interval="day" sample="1" measure="sla_status_failed"/>
+            <cohort string="SLA Status Analysis" date_start="create_date" date_stop="close_date" disable_linking="True" interval="day" sample="1" measure="sla_status_failed"/>
         </field>
     </record>
 

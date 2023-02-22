@@ -534,8 +534,26 @@ class ResCompany(models.Model):
             PD04648PD	TC Euro (S/ por Euro) - Venta
         """
 
+        def normalize_date(date):
+            month_mapping = {
+                'Jan': '01',
+                'Feb': '02',
+                'Mar': '03',
+                'Apr': '04',
+                'May': '05',
+                'Jun': '06',
+                'Jul': '07',
+                'Aug': '08',
+                'Set': '09',  # for some reason, the service uses `Set` instead of the common `Sep`
+                'Oct': '10',
+                'Nov': '11',
+                'Dec': '12',
+            }
+
+            return date[:3] + month_mapping[date[3:6]] + date[6:]
+
         bcrp_date_format_url = '%Y-%m-%d'
-        bcrp_date_format_res = '%d.%b.%y'
+        bcrp_date_format_res = '%d.%m.%y'
         result = {}
         available_currency_names = available_currencies.mapped('name')
         if 'PEN' not in available_currency_names:
@@ -574,9 +592,7 @@ class ResCompany(models.Model):
             rate = 1.0 / fetched_rate if fetched_rate else 0
             if not rate:
                 continue
-            # This replace is done because the service is returning Set for September instead of Sep the value
-            # commonly accepted for September,
-            normalized_date = date_rate_str.replace('Set', 'Sep')
+            normalized_date = normalize_date(date_rate_str)
             date_rate = datetime.datetime.strptime(normalized_date, bcrp_date_format_res).strftime(DEFAULT_SERVER_DATE_FORMAT)
             result[currency_odoo_code] = (rate, date_rate)
         return result

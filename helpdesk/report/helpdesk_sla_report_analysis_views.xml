@@ -64,53 +64,11 @@
     <record id="helpdesk_sla_report_analysis_view_search" model="ir.ui.view">
         <field name="name">helpdesk.sla.report.analysis.search</field>
         <field name="model">helpdesk.sla.report.analysis</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="helpdesk_tickets_view_search_base"/>
+        <field name="priority">20</field>
         <field name="arch" type="xml">
-            <search string="SLA Status Analysis">
-                <field name="ticket_id" string="Ticket"/>
-                <field name="user_id"/>
-                <field name="partner_id"/>
-                <field name="team_id"/>
-                <field name="ticket_type_id"/>
-                <field name="ticket_stage_id"/>
-                <field name="sla_id"/>
-                <field name="company_id" groups="base.group_multi_company"/>
-                <field name="sla_deadline" groups="helpdesk.group_use_sla"/>
-                <filter string="My Tickets" name="my_ticket" domain="[('user_id', '=',uid)]"/>
-                <filter string="Followed" domain="[('ticket_id.message_is_follower', '=', True)]" name="my_follow_ticket"/>
-                <filter string="Unassigned" domain="[('user_id', '=', False)]" name="unassigned"/>
-                <separator/>
-                <filter string="Urgent" domain="[('priority', '=', 3)]" name="urgent_priority"/>
-                <filter string="High Priority" domain="[('priority', '=', 2)]" name="high_priority"/>
-                <filter string="Medium Priority" domain="[('priority', '=', 1)]" name="medium_priority"/>
-                <filter string="Low Priority" domain="[('priority', '=', 0)]" name="low_priority"/>
-                <separator groups="helpdesk.group_use_sla"/>
-                <filter string="SLA Success" domain="[('sla_status', '=', 'reached')]" name="sla_success" groups="helpdesk.group_use_sla"/>
-                <filter string="SLA in Progress" domain="[('sla_status', '=', 'ongoing')]" name="sla_inprogress" groups="helpdesk.group_use_sla"/>
-                <filter string="SLA Failed" domain="[('sla_status', '=', 'failed')]" name="sla_failed" groups="helpdesk.group_use_sla"/>
-                <filter string="Rated Tickets" domain="[('ticket_id.rating_last_value', '!=', 0.0)]" name="rated_ticket"/>
-                <separator/>
-                <filter string="Last 7 Days" name="week" domain="[('sla_deadline','&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
-                <filter string="Last 30 Days" name="month" domain="[('sla_deadline','&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
-                <separator/>
-                <filter string="Creation Date" name="filter_create_date" date="create_date"/>
-                <filter string="SLA Deadline" name="filter_sla_deadline" date="sla_deadline"/>
-                <separator/>
-                <filter string="Archived" domain="[('ticket_id.active', '=', False)]" name="archive"/>
-                <group expand="0" string="Group By">
-                    <filter string="SLA" name="sla_id" context="{'group_by': 'sla_id'}" />
-                    <filter string="SLA Status" name="sla_status" context="{'group_by': 'sla_status'}"/>
-                    <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
-                    <filter string="Assigned to" name="assignee" context="{'group_by':'user_id'}"/>
-                    <filter string="Stage" name="stage" context="{'group_by':'ticket_stage_id'}"/>
-                    <filter string="Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
-                    <filter string="Priority" name="priority" context="{'group_by': 'priority'}"/>
-                    <filter string="Customer" name="partner" context="{'group_by': 'partner_id'}"/>
-                    <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
-                    <filter string="Creation Date" name="created_by" context="{'group_by': 'create_date'}"/>
-                    <filter string="SLA Deadline" name="sla_status_deadline" context="{'group_by':'sla_deadline'}"/>
-                    <filter string="Closing Date" name="ticket_close_date" invisible="1" context="{'group_by':'close_date'}"/>
-                </group>
-            </search>
+            <search position="attributes"/>
         </field>
     </record>
 

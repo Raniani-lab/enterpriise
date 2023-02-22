@@ -33,7 +33,7 @@
     <record id="helpdesk_ticket_view_search_inherit_helpdesk_sale" model="ir.ui.view">
         <field name="name">helpdesk.ticket.search.inherit.sale</field>
         <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search_base"/>
         <field name="arch" type="xml">
             <field name="stage_id" position="after">
                 <field name="sale_order_id" string="Sales Order" groups="helpdesk_sale.group_use_helpdesk_sale_timesheet"/>

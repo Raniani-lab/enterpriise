@@ -4,6 +4,7 @@
 from . import controllers
 from . import models
 from . import wizard
+from . import report
 
 
 def _helpdesk_sale_timesheet_post_init(env):

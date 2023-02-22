@@ -60,9 +60,10 @@
         </field>
     </record>
 
-    <record id="helpdesk_tickets_view_search" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.search</field>
+    <record id="helpdesk_tickets_view_search_base" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search.base</field>
         <field name="model">helpdesk.ticket</field>
+        <field name="priority">999</field>
         <field name="arch" type="xml">
             <search string="Tickets Search">
                 <field name="name" string="Ticket" filter_domain="['|', ('name', 'ilike', self), ('ticket_ref', 'ilike', self)]"/>
@@ -74,7 +75,6 @@
                 <field name="stage_id"/>
                 <field name="sla_ids" groups="helpdesk.group_use_sla"/>
                 <field name="priority" invisible="1"/>
-                <field name="rating_last_text"/>
                 <field name="company_id" groups="base.group_multi_company" invisible="context.get('default_team_id', False)"/>
                 <field name="description"/>
 
@@ -91,8 +91,6 @@
                 <filter string="SLA in Progress" domain="[('sla_status_ids.status', '=', 'ongoing')]" name="sla_inprogress" groups="helpdesk.group_use_sla"/>
                 <filter string="SLA Failed" domain="[('sla_fail', '=', True)]" name="sla_failed" groups="helpdesk.group_use_sla"/>
                 <separator/>
-                <filter string="Unread Messages" domain="[('message_needaction','=',True)]" name="message_needaction" groups="mail.group_mail_notification_type_inbox"/>
-                <separator/>
                 <filter string="Open" domain="[('stage_id.fold', '=', False)]" name="is_open"/>
                 <filter string="Closed" domain="[('stage_id.fold', '=', True)]" name="is_close"/>
                 <filter string="Closed in Last 7 days" name="closed_last_7days" domain="[('close_date','&gt;', (context_today() - datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"/>
@@ -106,14 +104,6 @@
                 <filter string="Creation Date" date="create_date" name="creation_date"/>
                 <separator/>
                 <filter string="Archived" domain="[('active', '=', False)]" name="archive"/>
-                <filter invisible="1" string="Late Activities" name="activities_overdue"
-                    domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
-                    help="Show all records which has next action date is before today"/>
-                <filter invisible="1" string="Today Activities" name="activities_today"
-                    domain="[('my_activity_date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
-                <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
-                        domain="[('my_activity_date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))
-                        ]"/>
                 <group expand="0" string="Group By">
                     <filter string="Assigned to" name="assignee" context="{'group_by':'user_id'}"/>
                     <filter string="Team" name="team" context="{'group_by':'team_id'}" invisible="context.get('default_team_id', False)"/>
@@ -126,6 +116,30 @@
                     <filter string="Create Date" name="created_by" context="{'group_by': 'create_date'}"/>
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="helpdesk_tickets_view_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="helpdesk_tickets_view_search_base"/>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <filter name="archive" position="before">
+                <filter string="Unread Messages" name="message_needaction" domain="[('message_needaction', '=', True)]" groups="mail.group_mail_notification_type_inbox"/>
+                <separator/>
+            </filter>
+            <filter name="archive" position="after">
+                <separator invisible="1"/>
+                <filter invisible="1" string="Late Activities" name="activities_overdue"
+                    domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                    help="Show all records which has next action date is before today"/>
+                <filter invisible="1" string="Today Activities" name="activities_today"
+                    domain="[('my_activity_date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
+                    domain="[('my_activity_date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+            </filter>
         </field>
     </record>
 
@@ -642,39 +656,6 @@
         <field name="act_window_id" ref="helpdesk_ticket_action_close_analysis"/>
     </record>
 
-    <record id="helpdesk_ticket_action_7days_analysis" model="ir.actions.act_window">
-        <field name="name">Closed Tickets Analysis</field>
-        <field name="res_model">helpdesk.ticket.report.analysis</field>
-        <field name="view_mode">pivot,graph</field>
-        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
-        <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
-        <field name="context">{
-            'search_default_my_ticket': True,
-            'search_default_is_close': True,
-            'search_default_last_7days': True,
-            'pivot_measures': ['__count__'],
-        }</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No data yet!
-            </p><p>
-                Create tickets to get statistics.
-            </p>
-        </field>
-    </record>
-    <record id="helpdesk_ticket_action_7days_analysis_pivot" model="ir.actions.act_window.view">
-        <field name="sequence" eval="17"/>
-        <field name="view_mode">pivot</field>
-        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_pivot_7days_analysis_inherit_dashboard"/>
-        <field name="act_window_id" ref="helpdesk_ticket_action_7days_analysis"/>
-    </record>
-    <record id="helpdesk_ticket_action_7days_analysis_graph" model="ir.actions.act_window.view">
-        <field name="sequence" eval="27"/>
-        <field name="view_mode">graph</field>
-        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_7days_analysis_inherit_dashboard"/>
-        <field name="act_window_id" ref="helpdesk_ticket_action_7days_analysis"/>
-    </record>
-
     <!-- action for helpdesk team -->
     <record id="helpdesk_ticket_action_team" model="ir.actions.act_window">
         <field name="name">Tickets</field>
@@ -840,71 +821,6 @@
         <field name="view_mode">pivot</field>
         <field name="view_id" ref="helpdesk_ticket_action_close_analysis_pivot_inherit_dashboard"/>
         <field name="act_window_id" ref="helpdesk_ticket_action_success"/>
-    </record>
-
-    <record id="helpdesk_ticket_action_7dayssuccess" model="ir.actions.act_window">
-        <field name="name">Success Rate Analysis</field>
-        <field name="res_model">helpdesk.ticket.report.analysis</field>
-        <field name="view_mode">pivot,graph</field>
-        <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
-        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
-        <field name="context">{
-            'search_default_is_close': True,
-            'search_default_my_ticket': True,
-            'search_default_sla_success': True,
-            'search_default_last_7days': True,
-            'pivot_measures': ['__count__'],
-        }</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No data yet!
-            </p><p>
-                Create tickets to get statistics.
-            </p>
-        </field>
-    </record>
-    <record id="helpdesk_ticket_action_7dayssuccess_pivot" model="ir.actions.act_window.view">
-        <field name="sequence" eval="19"/>
-        <field name="view_mode">pivot</field>
-        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_pivot_analysis_7dayssuccess_inherit_dashboard"/>
-        <field name="act_window_id" ref="helpdesk_ticket_action_7dayssuccess"/>
-    </record>
-    <record id="helpdesk_ticket_action_7dayssuccess_graph" model="ir.actions.act_window.view">
-        <field name="sequence" eval="29"/>
-        <field name="view_mode">graph</field>
-        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_7days_analysis_inherit_dashboard"/>
-        <field name="act_window_id" ref="helpdesk_ticket_action_7dayssuccess"/>
-    </record>
-
-    <record id="helpdesk_ticket_action_dashboard" model="ir.actions.act_window">
-        <field name="name">Ticket Analysis</field>
-        <field name="res_model">helpdesk.ticket.report.analysis</field>
-        <field name="view_mode">pivot,graph,cohort</field>
-        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
-        <field name="domain">[('ticket_stage_id.fold', '=', False)]</field>
-        <field name="context">{
-            'search_default_my_ticket': True,
-            'search_default_is_open': True,
-        }</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No data yet!
-            </p><p>
-                Create tickets to get statistics.
-            </p>
-        </field>
-    </record>
-    <record id="helpdesk_ticket_action_dashboard_pivot" model="ir.actions.act_window.view">
-        <field name="sequence" eval="16"/>
-        <field name="view_mode">pivot</field>
-        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_pivot_analysis_inherit_dashboard"/>
-        <field name="act_window_id" ref="helpdesk_ticket_action_dashboard"/>
-    </record>
-    <record id="helpdesk_ticket_action_dashboard_graph" model="ir.actions.act_window.view">
-        <field name="sequence" eval="25"/>
-        <field name="view_mode">graph</field>
-        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_analysis_inherit_dashboard"/>
-        <field name="act_window_id" ref="helpdesk_ticket_action_dashboard"/>
     </record>
 
 </odoo>

@@ -50,7 +50,7 @@
             "cells": {
                 "A7": {
                     "style": 1,
-                    "content": "[Tickets by Stage](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[],\"context\":{\"group_by\":[\"ticket_stage_id\",\"team_id\"],\"graph_measure\":\"__count\",\"graph_mode\":\"bar\",\"graph_groupbys\":[\"ticket_stage_id\",\"team_id\"]},\"modelName\":\"helpdesk.ticket.report.analysis\",\"views\":[[false,\"graph\"],[false,\"pivot\"],[false,\"cohort\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Tickets by Stage\"})",
+                    "content": "[Tickets by Stage](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[],\"context\":{\"group_by\":[\"stage_id\",\"team_id\"],\"graph_measure\":\"__count\",\"graph_mode\":\"bar\",\"graph_groupbys\":[\"stage_id\",\"team_id\"]},\"modelName\":\"helpdesk.ticket.report.analysis\",\"views\":[[false,\"graph\"],[false,\"pivot\"],[false,\"cohort\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Tickets by Stage\"})",
                     "border": 1
                 },
                 "A19": {
@@ -606,7 +606,7 @@
                         "legendPosition": "top",
                         "metaData": {
                             "groupBy": [
-                                "ticket_stage_id",
+                                "stage_id",
                                 "team_id"
                             ],
                             "measure": "__count",
@@ -618,7 +618,7 @@
                             "context": {},
                             "domain": [],
                             "groupBy": [
-                                "ticket_stage_id",
+                                "stage_id",
                                 "team_id"
                             ],
                             "orderBy": []

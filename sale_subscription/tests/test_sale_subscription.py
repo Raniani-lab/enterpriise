@@ -6,6 +6,7 @@ from markupsafe import Markup
 from unittest.mock import patch
 
 from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSubscriptionCommon
+from odoo.addons.sale_subscription.models.sale_order import SaleOrder
 from odoo.tests import Form, tagged
 from odoo.tools import mute_logger
 from odoo import fields, Command
@@ -2318,3 +2319,32 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_so.action_confirm()
             self.assertEqual(upsell_line.discount, new_discount,
                              "The line should have the new discount after confirmation.")
+
+    def test_subscription_change_partner(self):
+        # This test check that action_confirm is only called once on SO when the partner is updated.
+        sub = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'recurrence_id': self.recurrence_month.id,
+            'order_line': [
+                (0, 0, {
+                    'name': self.product.name,
+                    'product_id': self.product.id,
+                    'product_uom_qty': 3.0,
+                    'product_uom': self.product.uom_id.id,
+                    'price_unit': 12,
+                })],
+        })
+        self.assertEqual(sub.partner_id, self.partner)
+        sub.action_confirm()
+        self.assertEqual(sub.stage_category, 'progress')
+        action_confirm_orig = SaleOrder.action_confirm
+        self.call_count = 0
+        self1 = self
+        def _action_confirm_mock(*args, **kwargs):
+            self1.call_count += 1
+            return action_confirm_orig(*args, **kwargs)
+
+        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder.action_confirm', _action_confirm_mock):
+            sub.partner_id = self.partner_a_invoice.id
+            self.assertEqual(sub.partner_id, self.partner_a_invoice)
+            self.assertEqual(self.call_count, 0)

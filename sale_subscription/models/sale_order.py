@@ -622,7 +622,8 @@ class SaleOrder(models.Model):
             if diff_partner or diff_in_progress:
                 if subscription.stage_category == "progress" and diff_partner:
                     subscription.message_subscribe(subscription.partner_id.ids)
-                    subscriptions_to_confirm += subscription
+                    if subscription.state in ['draft', 'sent']:
+                        subscriptions_to_confirm += subscription
                 if subscription.stage_category == "closed" and not subscription.state == 'done':
                     subscriptions_to_cancel += subscription
                 if diff_partner or subscription.stage_category != "progress":

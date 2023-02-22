@@ -1554,6 +1554,9 @@ class SaleOrder(models.Model):
             if not invoice.is_move_sent and invoice._is_ready_to_be_sent() and invoice.state == 'posted':
                 subscription = invoice.line_ids.subscription_id
                 subscription.validate_and_send_invoice(auto_commit, invoice)
+                invoice.message_subscribe(subscription.user_id.partner_id.ids)
+            elif invoice.line_ids.subscription_id:
+                invoice.message_subscribe(invoice.line_ids.subscription_id.user_id.partner_id.ids)
 
     def validate_and_send_invoice(self, auto_commit, invoice):
         self.ensure_one()

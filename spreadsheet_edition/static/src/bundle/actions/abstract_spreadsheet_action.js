@@ -100,7 +100,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
     async _onNewSpreadsheet() {
         throw new Error("not implemented by children");
     }
-    async _onSpreadsheetSaved() {
+    async _onSpreadsheetLeft() {
         throw new Error("not implemented by children");
     }
     async _onSpreadSheetNameChanged() {

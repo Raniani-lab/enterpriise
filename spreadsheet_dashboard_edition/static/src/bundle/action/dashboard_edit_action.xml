@@ -24,7 +24,7 @@
             onNewSpreadsheet.bind="() => {}"
             spreadsheetSyncStatus.bind="_onSpreadsheetSyncStatus"
             onUnexpectedRevisionId.bind="_onUnexpectedRevisionId"
-            onSpreadsheetSaved.bind="_onSpreadsheetSaved" />
+            onSpreadsheetLeft.bind="_onSpreadsheetLeft" />
     </div>
 
 </templates>

@@ -48,7 +48,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
      * @param {Object} values.data exported spreadsheet data
      * @param {string} values.thumbnail spreadsheet thumbnail
      */
-    async _onSpreadsheetSaved({ data, thumbnail }) {
+    async _onSpreadsheetLeft({ data, thumbnail }) {
         await this.orm.write("spreadsheet.template", [this.resId], {
             data: jsonToBase64(data),
             thumbnail,

@@ -346,7 +346,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
         this.model.leaveSession();
         this.model.off("update", this);
         if (!this.props.isReadonly) {
-            this.props.onSpreadsheetSaved(this.getSaveData());
+            this.props.onSpreadsheetLeft(this.getSaveData());
         }
     }
 }
@@ -393,7 +393,7 @@ SpreadsheetComponent.props = {
     onMakeCopy: {
         type: Function,
     },
-    onSpreadsheetSaved: {
+    onSpreadsheetLeft: {
         type: Function,
     },
     onNewSpreadsheet: {

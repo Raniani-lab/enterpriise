@@ -15,7 +15,7 @@
         thumbnailSize="750"
         onMakeCopy.bind="_onMakeCopy"
         onNewSpreadsheet.bind="_onNewSpreadsheet"
-        onSpreadsheetSaved.bind="_onSpreadsheetSaved"
+        onSpreadsheetLeft.bind="_onSpreadsheetLeft"
     />
 </div>
 

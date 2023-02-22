@@ -131,7 +131,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.actionService.doAction(action, { clear_breadcrumbs: true });
     }
 
-    async _onSpreadsheetSaved({ thumbnail }) {
+    async _onSpreadsheetLeft({ thumbnail }) {
         await this.orm.write("documents.document", [this.resId], { thumbnail });
     }
 

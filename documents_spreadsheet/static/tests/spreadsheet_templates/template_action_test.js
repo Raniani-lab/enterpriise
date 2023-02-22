@@ -125,7 +125,7 @@ QUnit.module("documents_spreadsheet > template action", {}, () => {
             });
 
             setCellContent(model, "B1", "Name");
-            await spreadSheetComponent.props.onSpreadsheetSaved(spreadSheetComponent.getSaveData());
+            await spreadSheetComponent.props.onSpreadsheetLeft(spreadSheetComponent.getSaveData());
             await doAction(webClient, {
                 type: "ir.actions.client",
                 tag: "action_open_template",

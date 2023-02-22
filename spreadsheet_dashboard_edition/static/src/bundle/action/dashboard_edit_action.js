@@ -105,7 +105,7 @@ export class DashboardEditAction extends AbstractSpreadsheetAction {
         this.actionService.doAction("reload_context");
     }
 
-    async _onSpreadsheetSaved({ thumbnail }) {
+    async _onSpreadsheetLeft({ thumbnail }) {
         await this.orm.write("spreadsheet.dashboard", [this.resId], { thumbnail });
     }
 }

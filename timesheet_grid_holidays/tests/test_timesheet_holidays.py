@@ -117,7 +117,7 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
             'task_id': self.env.company.leave_timesheet_task_id.id,
         }
         Timesheet = self.env['account.analytic.line'].with_user(self.user_manager)
-        timesheet = Timesheet.create({
+        timesheet = Timesheet.sudo().create({
             'name': "my timesheet 1",
             **common_vals,
         })

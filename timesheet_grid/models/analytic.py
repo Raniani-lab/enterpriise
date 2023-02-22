@@ -293,6 +293,8 @@ class AnalyticLine(models.Model):
             raise AccessError(_("You cannot access timesheets that are not yours."))
         self.check_if_allowed()
 
+        return super()._check_can_create()
+
     def _check_can_write(self, vals):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
             if 'validated' in vals:

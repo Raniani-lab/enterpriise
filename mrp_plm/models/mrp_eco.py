@@ -366,20 +366,20 @@ class MrpEco(models.Model):
         # Rebase logic applied..
         vals = {'state': 'progress'}
         if self.bom_rebase_ids:
-            new_bom_lines = dict(((line.product_id), line) for line in self.new_bom_id.bom_line_ids)
+            new_bom_lines = {line.product_id: line for line in self.new_bom_id.bom_line_ids}
             if self._is_conflict(new_bom_lines, self.bom_rebase_ids):
                 return self.write({'state': 'conflict'})
             else:
-                old_bom_lines = dict(((line.product_id), line) for line in self.bom_id.bom_line_ids)
+                old_bom_lines = {line.product_id: line for line in self.bom_id.bom_line_ids}
                 self.rebase(old_bom_lines, new_bom_lines, self.bom_rebase_ids)
                 # Remove all rebase line of current eco.
                 self.bom_rebase_ids.unlink()
         if self.previous_change_ids:
-            new_bom_lines = dict(((line.product_id), line) for line in self.new_bom_id.bom_line_ids)
+            new_bom_lines = {line.product_id: line for line in self.new_bom_id.bom_line_ids}
             if self._is_conflict(new_bom_lines, self.previous_change_ids):
                 return self.write({'state': 'conflict'})
             else:
-                new_activated_bom_lines = dict(((line.product_id), line) for line in self.current_bom_id.bom_line_ids)
+                new_activated_bom_lines = {line.product_id: line for line in self.current_bom_id.bom_line_ids}
                 self.rebase(new_activated_bom_lines, new_bom_lines, self.previous_change_ids)
                 # Remove all rebase line of current eco.
                 self.previous_change_ids.unlink()
@@ -491,7 +491,7 @@ class MrpEco(models.Model):
     @api.depends('stage_id.approval_template_ids')
     def _compute_allow_change_kanban_state(self):
         for rec in self:
-            rec.allow_change_kanban_state = False if rec.stage_id.approval_template_ids else True
+            rec.allow_change_kanban_state = not rec.stage_id.approval_template_ids
 
     @api.depends('stage_id', 'kanban_state')
     def _compute_kanban_state_label(self):

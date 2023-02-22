@@ -556,7 +556,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
         score = 3
         if self.check_ids:
-            passed_checks = len(list(check for check in self.check_ids if check.quality_state == 'pass'))
+            passed_checks = len([check for check in self.check_ids if check.quality_state == 'pass'])
             score = int(3.0 * passed_checks / len(self.check_ids))
 
         return {

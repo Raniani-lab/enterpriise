@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
+
 from odoo import api, fields, models
 from odoo.osv import expression
 
@@ -15,17 +17,15 @@ class MrpBom(models.Model):
     eco_ids = fields.One2many(
         'mrp.eco', 'new_bom_id', 'ECO to be applied')
     eco_count = fields.Integer('# ECOs', compute='_compute_eco_data')
-    eco_inprogress_count = fields.Integer("# ECOs in progress", compute='_compute_eco_data')
 
     def _compute_eco_data(self):
-        self.eco_inprogress_count = 0   # not used
         previous_boms_mapping = self._get_previous_boms()
         previous_boms_list = list(previous_boms_mapping.keys())
         eco_data = self.env['mrp.eco']._read_group([
             ('bom_id', 'in', previous_boms_list),
             ('stage_id.folded', '=', False)],
             ['bom_id'], ['__count'])
-        eco_count = {bom.id: 0 for bom in self}
+        eco_count = defaultdict(lambda: 0)
         for previous_bom, count in eco_data:
             for bom_id in previous_boms_mapping[previous_bom.id]:
                 eco_count[bom_id] += count
@@ -75,14 +75,14 @@ class MrpBom(models.Model):
             [('product_tmpl_id', 'in', self.product_tmpl_id.ids)],
             fields=['id', 'previous_bom_id'], load=False,
             order='id desc, version desc')
-        previous_boms = dict((bom.id, {bom.id}) for bom in self)
+        previous_boms = defaultdict(set, {bom.id: {bom.id} for bom in self})
         for bom_data in boms_data:
             if not bom_data['previous_bom_id']:
                 continue
             bom_id = bom_data['id']
             previous_bom_id = bom_data['previous_bom_id']
-            previous_boms[previous_bom_id] = previous_boms.get(bom_id, set()) | previous_boms.get(previous_bom_id, set())
-        return previous_boms
+            previous_boms[previous_bom_id] |= previous_boms[bom_id]
+        return dict(previous_boms)
 
     def _get_active_version(self):
         self.ensure_one()

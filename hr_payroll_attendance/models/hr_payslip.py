@@ -3,7 +3,7 @@
 
 from collections import defaultdict
 
-from datetime import datetime
+from dateutil import parser
 
 from odoo import api, fields, models
 from odoo.osv import expression
@@ -34,7 +34,7 @@ class HrPayslip(models.Model):
         read_group = self.env['hr.attendance']._read_group(domain, fields=['id'], groupby=['employee_id', 'check_in:day'], lazy=False)
         for result in read_group:
             slips = slip_by_employee[result['employee_id'][0]]
-            date = datetime.strptime(result['check_in:day'], '%d %b %Y').date()
+            date = parser.parse(result['check_in:day']).date()
             for slip in slips:
                 if slip.date_from <= date and date <= slip.date_to:
                     slip.attendance_count += result['__count']

@@ -135,7 +135,7 @@ class AccountOnlineAccount(models.Model):
             data['next_data'] = resp_json.get('next_data') or {}
         return True
 
-    def _retrieve_transactions(self):
+    def _retrieve_transactions(self, date=None, include_pendings=False):
         last_stmt_line = self.env['account.bank.statement.line'].search([
                 ('date', '<=', self.last_sync or fields.Date().today()),
                 ('online_transaction_identifier', '!=', False),
@@ -143,14 +143,17 @@ class AccountOnlineAccount(models.Model):
                 ('online_account_id', '=', self.id)
             ], order="date desc", limit=1)
         transactions = []
-        fetch_date = last_stmt_line.date or self.last_sync
+
+        start_date = date or last_stmt_line.date or self.last_sync
         data = {
-            # If we are in a new sync, we do not give a start date; We will fetch as much as possible. Otherwise, fetch from latest statement or last_sync date.
-            'start_date': fetch_date and format_date(self.env, fetch_date, date_format='yyyy-MM-dd'),
+            # If we are in a new sync, we do not give a start date; We will fetch as much as possible. Otherwise, the last sync is the start date.
+            'start_date': start_date and format_date(self.env, start_date, date_format='yyyy-MM-dd'),
             'account_id': self.online_identifier,
-            'last_transaction_identifier': last_stmt_line.online_transaction_identifier,
+            'last_transaction_identifier': last_stmt_line.online_transaction_identifier if not include_pendings else None,
             'currency_code': self.journal_ids[0].currency_id.name,
+            'include_pendings': include_pendings,
         }
+        pendings = []
         while True:
             # While this is kind of a bad practice to do, it can happen that provider_data/account_data change between
             # 2 calls, the reason is that those field contains the encrypted information needed to access the provider
@@ -159,7 +162,7 @@ class AccountOnlineAccount(models.Model):
             # which result in the information having changed, henceforth why those fields are passed at every loop.
             data.update({
                 'provider_data': self.account_online_link_id.provider_data,
-                'account_data': self.account_data
+                'account_data': self.account_data,
             })
             resp_json = self.account_online_link_id._fetch_odoo_fin('/proxy/v1/transactions', data=data)
             if resp_json.get('balance'):
@@ -168,11 +171,15 @@ class AccountOnlineAccount(models.Model):
             if resp_json.get('account_data'):
                 self.account_data = resp_json['account_data']
             transactions += resp_json.get('transactions', [])
+            pendings += resp_json.get('pendings', [])
             if not resp_json.get('next_data'):
                 break
             data['next_data'] = resp_json.get('next_data') or {}
 
-        return self.env['account.bank.statement.line']._online_sync_bank_statement(transactions, self)
+        return {
+            'transactions': self._format_transactions(transactions),
+            'pendings': self._format_transactions(pendings),
+        }
 
     def get_formatted_balances(self):
         balances = {}
@@ -183,6 +190,57 @@ class AccountOnlineAccount(models.Model):
                 formatted_balance = '%.2f' % account.balance
             balances[account.id] = [formatted_balance, account.balance]
         return balances
+
+    ###########
+    # HELPERS #
+    ###########
+
+    def _get_filtered_transactions(self, new_transactions):
+        """ This function will filter transaction to avoid duplicate transactions.
+            To do that, we're comparing the received online_transaction_identifier with
+            those in the database. If there is a match, the new transaction is ignored.
+        """
+        self.ensure_one()
+
+        journal_id = self.journal_ids[0]
+        existing_bank_statement_lines = self.env['account.bank.statement.line'].search_fetch(
+            [
+                ('journal_id', '=', journal_id.id),
+                ('online_transaction_identifier', 'in', [transaction.get('online_transaction_identifier') for transaction in new_transactions]),
+            ],
+            ['online_transaction_identifier']
+        )
+        existing_online_transaction_identifier = set(existing_bank_statement_lines.mapped('online_transaction_identifier'))
+
+        filtered_transactions = []
+        # Remove transactions already imported in Odoo
+        for transaction in new_transactions:
+            if transaction['online_transaction_identifier'] in existing_online_transaction_identifier:
+                continue
+
+            filtered_transactions.append(transaction)
+        return filtered_transactions
+
+    def _format_transactions(self, new_transactions):
+        """ This function format transactions:
+            It will:
+             - Change inverse the transaction sign if the setting is activated
+             - Parsing the date
+             - Setting the account online account and the account journal
+        """
+        self.ensure_one()
+        transaction_sign = -1 if self.inverse_transaction_sign else 1
+
+        formatted_transactions = []
+        for transaction in new_transactions:
+            formatted_transactions.append({
+                **transaction,
+                'amount': transaction['amount'] * transaction_sign,
+                'date': fields.Date.from_string(transaction['date']),
+                'online_account_id': self.id,
+                'journal_id': self.journal_ids[0].id,
+            })
+        return formatted_transactions
 
 
 class AccountOnlineLink(models.Model):
@@ -264,6 +322,7 @@ class AccountOnlineLink(models.Model):
         return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
             extra_domain=[('id', 'in', stmt_line_ids.ids)],
             name=_('Fetched Transactions'),
+            default_context=self.env.context,
         )
 
     #######################################################
@@ -474,7 +533,8 @@ class AccountOnlineLink(models.Model):
                 if online_account.journal_ids:
                     if refresh:
                         online_account._refresh()
-                    bank_statement_line_ids += online_account._retrieve_transactions()
+                    transactions = online_account._retrieve_transactions().get('transactions', [])
+                    bank_statement_line_ids += self.env['account.bank.statement.line']._online_sync_bank_statement(transactions, online_account)
             return self._show_fetched_transactions_action(bank_statement_line_ids)
         except OdooFinRedirectException as e:
             if e.mode == 'link':

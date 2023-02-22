@@ -129,3 +129,30 @@ class AccountJournal(models.Model):
         template = self.env.ref('account_online_synchronization.email_template_sync_reminder')
         subtype = self.env.ref('account_online_synchronization.bank_sync_consent_renewal')
         self.message_post_with_source(source_ref=template, subtype_id=subtype.id)
+
+    def action_open_missing_transaction_wizard(self):
+        """ This method allows to open the wizard to fetch the missing
+            transactions and the pending ones.
+            Depending on where the function is called, we'll receive
+            one journal or none of them.
+            If we receive more or less than one journal, we do not set
+            it on the wizard, the user should select it by himself.
+
+            :return: An action opening the wizard.
+        """
+        journal_id = None
+        if len(self) == 1:
+            if not self.account_online_account_id or self.account_online_link_state != 'connected':
+                raise UserError(_("You can't find missing transactions for a journal that isn't connected."))
+
+            journal_id = self.id
+
+        wizard = self.env['account.missing.transaction.wizard'].create({'journal_id': journal_id})
+        return {
+            'name': _("Find Missing Transactions"),
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.missing.transaction.wizard',
+            'res_id': wizard.id,
+            'views': [(False, 'form')],
+            'target': 'new',
+        }

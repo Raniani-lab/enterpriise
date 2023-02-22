@@ -30,6 +30,8 @@ a periodic and automatic synchronization of their bank statements.
         'views/account_journal_dashboard_view.xml',
 
         'wizard/account_bank_selection_wizard.xml',
+        'wizard/account_journal_missing_transactions.xml',
+        'wizard/account_bank_statement_line.xml',
     ],
     'license': 'OEEL-1',
     'auto_install': True,

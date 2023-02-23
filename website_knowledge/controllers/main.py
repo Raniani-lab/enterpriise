@@ -60,13 +60,18 @@ class KnowledgeWebsiteController(KnowledgeController):
             unfolded_articles_ids=unfolded_articles_ids,
             unfolded_favorite_articles_ids=unfolded_favorite_articles_ids
         )
+        # With website_published, published shared article are accessible for
+        # everyone. We need to check if the user is member of the article.
+        values.update({
+            'shared_articles': values['shared_articles'].filtered(lambda a: a.user_has_access)
+        })
         if request.env.user.has_group('base.group_user'):
             return values
 
         published_workspace_articles = values['workspace_articles'].filtered(lambda a: a.website_published)
         values.update({
             'shared_articles': values['workspace_articles'] - published_workspace_articles |
-                               values['shared_articles'].filtered(lambda a: a.user_can_read),
+                               values['shared_articles'],
             'public_articles': published_workspace_articles
         })
         return values

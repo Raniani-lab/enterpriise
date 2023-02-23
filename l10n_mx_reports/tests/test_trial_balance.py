@@ -126,10 +126,14 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
             <catalogocuentas:Ctas CodAgrup="208.01" NumCta="208.01" Desc="VAT carried forward collected" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="209" NumCta="209" Desc="Uncollected taxes carried forward" Nivel="1" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="209.01" NumCta="209.01" Desc="VAT carried forward not collected" Nivel="2" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="210" NumCta="210" Desc="Provision for wages and salaries payable" Nivel="1" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="210.01" NumCta="210.01" Desc="Provision for wages and salaries payable" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="216" NumCta="216" Desc="Taxes withheld" Nivel="1" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="216.01" NumCta="216.01" Desc="Taxes withheld from income tax on wages and salaries" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="216.03" NumCta="216.03" Desc="Withholding of income tax for leasing" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="216.04" NumCta="216.04" Desc="Taxes withheld from income tax for professional services" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="216.10" NumCta="216.10" Desc="VAT withholding taxes" Nivel="2" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="216.11" NumCta="216.11" Desc="IMSS withholdings from workers" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="302" NumCta="302" Desc="Heritage" Nivel="1" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="302.01" NumCta="302.01" Desc="Heritage" Nivel="2" Natur="A"/>
             <catalogocuentas:Ctas CodAgrup="304" NumCta="304" Desc="Result of previous years" Nivel="1" Natur="A"/>
@@ -141,6 +145,7 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
             <catalogocuentas:Ctas CodAgrup="501" NumCta="501" Desc="Cost of sale and/or service" Nivel="1" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="501.01" NumCta="501.01" Desc="Cost of sales" Nivel="2" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="601" NumCta="601" Desc="Overheads" Nivel="1" Natur="D"/>
+            <catalogocuentas:Ctas CodAgrup="601.01" NumCta="601.01" Desc="Wages and salaries" Nivel="2" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="601.84" NumCta="601.84" Desc="Other overheads" Nivel="2" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="701" NumCta="701" Desc="Financial expenses" Nivel="1" Natur="D"/>
             <catalogocuentas:Ctas CodAgrup="701.01" NumCta="701.01" Desc="Foreign exchange loss" Nivel="2" Natur="D"/>

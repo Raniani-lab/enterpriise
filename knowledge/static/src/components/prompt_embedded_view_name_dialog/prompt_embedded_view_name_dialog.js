@@ -2,16 +2,17 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
-import { useWowlService } from "@web/legacy/utils";
 import {
     Component,
     onMounted,
-    onRendered,
-    useRef,
-    xml } from "@odoo/owl";
+    useRef } from "@odoo/owl";
 
 export class PromptEmbeddedViewNameDialog extends Component {
+    /**
+     * @override
+     */
     setup () {
+        super.setup();
         this.input = useRef('input');
         onMounted(() => {
             window.setTimeout(() => {
@@ -59,23 +60,6 @@ export class PromptEmbeddedViewNameDialog extends Component {
 PromptEmbeddedViewNameDialog.template = 'knowledge.PromptEmbeddedViewNameDialog';
 PromptEmbeddedViewNameDialog.components = { Dialog };
 PromptEmbeddedViewNameDialog.props = {
-    defaultName: { type: String, optional: true },
-    isNew: { type: Boolean, optional: true },
-    viewType: { type: String },
-    save: { type: Function },
-    close: { type: Function, optional: true }
-};
-
-export class PromptEmbeddedViewNameDialogWrapper extends Component {
-    setup () {
-        this.dialogs = useWowlService('dialog');
-        onRendered(() => {
-            this.dialogs.add(PromptEmbeddedViewNameDialog, this.props);
-        });
-    }
-}
-PromptEmbeddedViewNameDialogWrapper.template = xml``;
-PromptEmbeddedViewNameDialogWrapper.props = {
     defaultName: { type: String, optional: true },
     isNew: { type: Boolean, optional: true },
     viewType: { type: String },

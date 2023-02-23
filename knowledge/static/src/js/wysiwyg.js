@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
-import { ComponentWrapper } from 'web.OwlCompatibility';
+import { Component } from '@odoo/owl';
 import { qweb as QWeb, _t } from 'web.core';
 import Wysiwyg from 'web_editor.wysiwyg';
-import { PromptEmbeddedViewNameDialogWrapper } from '../components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js';
+import { PromptEmbeddedViewNameDialog } from '@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog';
 import { preserveCursor } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
-import { ArticleLinkBehaviorDialogWrapper } from '../components/behaviors/article_behavior_dialog/article_behavior_dialog.js';
+import { ArticleLinkBehaviorDialog } from '@knowledge/components/behaviors/article_behavior_dialog/article_behavior_dialog';
 import { Markup } from 'web.utils';
 import {
     encodeDataBehaviorProps,
@@ -236,7 +236,7 @@ Wysiwyg.include({
      */
     _insertArticleLink: function () {
         const restoreSelection = preserveCursor(this.odooEditor.document);
-        const dialog = new ComponentWrapper(this, ArticleLinkBehaviorDialogWrapper, {save: article => {
+        Component.env.services.dialog.add(ArticleLinkBehaviorDialog, {save: article => {
             const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
                 href: '/knowledge/article/' + article.articleId,
                 data: JSON.stringify({
@@ -250,7 +250,6 @@ Wysiwyg.include({
             const [anchor] = this.odooEditor.execCommand('insert', articleLinkBlock);
             this._notifyNewBehavior(anchor);
         }});
-        dialog.mount(document.body);
     },
     /**
      * Inserts a view in the editor
@@ -307,12 +306,10 @@ Wysiwyg.include({
      * @param {Function} save
      */
     _openEmbeddedViewDialog: function (viewType, save) {
-        // TODO: remove the wrapper when the wysiwyg is converted to owl.
-        const dialog = new ComponentWrapper(this, PromptEmbeddedViewNameDialogWrapper, {
+        Component.env.services.dialog.add(PromptEmbeddedViewNameDialog, {
             isNew: true,
             viewType: viewType,
             save: save
         });
-        dialog.mount(document.body);
     },
 });

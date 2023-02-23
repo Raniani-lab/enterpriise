@@ -1,12 +1,15 @@
 /** @odoo-module */
 
 import { useService } from '@web/core/utils/hooks';
-import { useWowlService } from '@web/legacy/utils';
 import { Dialog } from '@web/core/dialog/dialog';
-import { onRendered, Component, onMounted, useRef, xml } from '@odoo/owl';
+import { Component, onMounted, useRef } from '@odoo/owl';
 
-class ArticleLinkBehaviorDialog extends Component {
+export class ArticleLinkBehaviorDialog extends Component {
+    /**
+     * @override
+     */
     setup() {
+        super.setup();
         this.orm = useService('orm');
         this.input = useRef('input');
         onMounted(() => {
@@ -117,14 +120,3 @@ ArticleLinkBehaviorDialog.props = {
     close: Function,
     save: Function
 };
-
-export class ArticleLinkBehaviorDialogWrapper extends Component {
-    setup(){
-        this.dialogService = useWowlService('dialog');
-        onRendered(() => {
-            this.dialogService.add(ArticleLinkBehaviorDialog, this.props);
-        });
-    }
-}
-ArticleLinkBehaviorDialogWrapper.template = xml``;
-ArticleLinkBehaviorDialogWrapper.props = {save: Function};

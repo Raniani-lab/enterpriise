@@ -87,7 +87,7 @@ export class GanttController extends Component {
     }
 
     get showNoContentHelp() {
-        return !this.model.hasData() || this.model.useSampleModel;
+        return this.model.useSampleModel;
     }
 
     /**

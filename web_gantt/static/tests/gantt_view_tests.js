@@ -276,7 +276,7 @@ QUnit.test("empty ungrouped gantt rendering", async (assert) => {
     assert.strictEqual(range, "December 2018");
     assert.strictEqual(columnHeaders.length, 31);
     assert.deepEqual(rows, [{}]);
-    assert.containsOnce(target, SELECTORS.noContentHelper);
+    assert.containsNone(target, SELECTORS.noContentHelper);
 });
 
 QUnit.test("ungrouped gantt rendering", async (assert) => {
@@ -398,7 +398,7 @@ QUnit.test("empty single-level grouped gantt rendering", async (assert) => {
     assert.strictEqual(range, "December 2018");
     assert.strictEqual(columnHeaders.length, 31);
     assert.deepEqual(rows, [{ title: "" }]);
-    assert.containsOnce(target, SELECTORS.noContentHelper);
+    assert.containsNone(target, SELECTORS.noContentHelper);
 });
 
 QUnit.test("single-level grouped gantt rendering", async (assert) => {
@@ -1147,7 +1147,7 @@ QUnit.test('non empty gantt with sample="1"', async (assert) => {
 
     assert.doesNotHaveClass(target.querySelector(SELECTORS.viewContent), "o_view_sample_data");
     assert.containsNone(target, SELECTORS.pill);
-    assert.containsOnce(target, SELECTORS.noContentHelper);
+    assert.containsNone(target, SELECTORS.noContentHelper);
     assert.containsN(target, SELECTORS.cell, 12);
 });
 
@@ -1174,7 +1174,7 @@ QUnit.test('non empty grouped gantt with sample="1"', async (assert) => {
 
     assert.doesNotHaveClass(target.querySelector(SELECTORS.viewContent), "o_view_sample_data");
     assert.containsNone(target, SELECTORS.pill);
-    assert.containsOnce(target, SELECTORS.noContentHelper);
+    assert.containsNone(target, SELECTORS.noContentHelper);
     assert.containsN(target, SELECTORS.cell, 12);
 });
 

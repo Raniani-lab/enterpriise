@@ -30,7 +30,11 @@ patch(PhoneField.prototype, "voip.PhoneField", {
             return;
         }
         ev.preventDefault();
-        const { value, record } = this.props;
-        this.voip.call({ number: value, resModel: record.resModel, resId: record.resId });
+        const { record, name } = this.props;
+        this.voip.call({
+            number: record.data[name],
+            resModel: record.resModel,
+            resId: record.resId,
+        });
     },
 });

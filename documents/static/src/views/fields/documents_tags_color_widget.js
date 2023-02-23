@@ -27,7 +27,7 @@ const getDocumentTags = (component, superTags) => {
         res[rec.id] = rec;
         return res;
     }, {});
-    const recordByTagId = component.props.value.records.reduce((res, rec) => {
+    const recordByTagId = component.props.record.data[component.props.name].records.reduce((res, rec) => {
         res[rec.id] = rec;
         return res;
     }, {});

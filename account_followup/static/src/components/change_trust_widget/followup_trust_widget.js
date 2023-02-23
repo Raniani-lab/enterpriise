@@ -17,7 +17,7 @@ class FollowupTrustWidget extends Component {
 
     displayTrust() {
         var selections = this.props.record.fields.trust.selection;
-        var trust = this.props.value;
+        var trust = this.props.record.data[this.props.name];
         for (var i=0; i < selections.length; i++) {
             if (selections[i][0] == trust) {
                 return selections[i][1];

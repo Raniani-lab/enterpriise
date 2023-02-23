@@ -3,7 +3,7 @@
 <templates xml:space="preserve">
     <t t-name="account_followup.FollowupTrustWidget" owl="1">
         <t t-set="label" t-value="this.displayTrust()"/>
-        <t t-set="trust_value" t-value="this.props.value"/>
+        <t t-set="trust_value" t-value="this.props.record.data[this.props.name]"/>
         <i t-attf-class="fa fa-circle oe-account_followup-trust-#{trust_value}"
            role="img"
            t-att-aria-label="label"

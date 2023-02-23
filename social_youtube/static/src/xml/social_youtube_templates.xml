@@ -36,17 +36,17 @@
         <t t-if="props.readonly">
             <div class="o_social_youtube_field">
                 <span type="text" class="o_social_youtube_upload_filename"
-                    t-att-class="{'d-none': !this.props.value}"
-                    t-out="this.props.value"/>
+                    t-att-class="{'d-none': !this.props.record.data[this.props.name]}"
+                    t-out="this.props.record.data[this.props.name]"/>
             </div>
         </t>
         <t t-else="">
             <div class="o_field_widget o_field_binary_file o_social_youtube_field o_social_youtube_field" aria-atomic="true">
                 <input type="text" class="o_input o_social_youtube_upload_filename"
-                    t-att-class="{'d-none': !this.props.value}"
+                    t-att-class="{'d-none': !this.props.record.data[this.props.name]}"
                     readonly="readonly"
                     t-att-name="this.props.name"
-                    t-att-value="this.props.value"/>
+                    t-att-value="this.props.record.data[this.props.name]"/>
                 <div class="o_social_youtube_upload_bar w-100 position-relative"
                     t-att-class="{'d-none': !this.state.uploading}">
                     <div class="position-absolute fw-bold w-100 h-100 text-center">
@@ -58,12 +58,12 @@
                 </div>
                 <button type="button"
                     class="btn btn-primary o_select_file_button"
-                    t-att-class="{'d-none': this.state.uploading || this.props.value}"
+                    t-att-class="{'d-none': this.state.uploading || this.props.record.data[this.props.name]}"
                     t-on-click="() => {this.fileInputRef.el.click()}"
                     title="Select">Upload Video</button>
                 <button type="button"
                     class="btn btn-secondary fa fa-trash-o o_clear_file_button"
-                    t-att-class="{'d-none': !this.props.value}"
+                    t-att-class="{'d-none': !this.props.record.data[this.props.name]}"
                     title="Clear"
                     aria-label="Clear"
                     t-on-click="this._onClearClick"/>

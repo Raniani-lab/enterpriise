@@ -21,7 +21,7 @@ export class SetReservedQuantityButton extends Component {
 
     _setQuantity (ev) {
         ev.stopPropagation();
-        this.props.record.update({ [this.props.fieldToSet]: this.props.value });
+        this.props.record.update({ [this.props.fieldToSet]: this.props.record.data[this.props.name] });
     }
 }
 SetReservedQuantityButton.props = {

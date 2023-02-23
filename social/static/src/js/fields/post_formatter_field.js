@@ -10,7 +10,7 @@ const { Component, markup } = owl;
 
 export class PostFormatterField extends Component {
     get formattedPost() {
-        return markup(this._formatPost(this.props.value || ''));
+        return markup(this._formatPost(this.props.record.data[this.props.name] || ''));
     }
 }
 patch(PostFormatterField.prototype, 'social.PostFormatterField', SocialPostFormatterMixin);

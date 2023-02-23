@@ -4,7 +4,7 @@
         <ConfirmCheckBox
             className="'o_field_boolean o_boolean_toggle form-switch'"
             id="props.id"
-            value="props.value or false"
+            value="props.record.data[props.name] or false"
             disabled="isReadonly"
             onChange="(value) => this.onChange(value)"
         />

@@ -42,7 +42,7 @@ export class MarketingActivityGraph extends Component {
     }
 
     getChartConfig() {
-        const chartData = JSON.parse(this.props.value);
+        const chartData = JSON.parse(this.props.record.data[this.props.name]);
 
         const datasets = chartData.map((group) => {
             const borderColor = this.hexToRGBA(group.color, 1);

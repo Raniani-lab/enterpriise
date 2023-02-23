@@ -29,7 +29,7 @@ QUnit.module("timer", (hooks) => {
             },
         });
         const props = {
-            value: testState,
+            name: "timer",
             record: {
                 resModel: "dummy",
                 getFieldContext() {
@@ -43,7 +43,10 @@ QUnit.module("timer", (hooks) => {
                         assert.step("notify");
                     },
                 },
-            }
+                data: {
+                    timer: testState,
+                },
+            },
         };
         await mount(TimerToggleButton, target, { env, props: props });
         await nextTick();

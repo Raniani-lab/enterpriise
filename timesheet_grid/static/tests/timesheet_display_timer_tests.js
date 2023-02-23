@@ -35,7 +35,7 @@ QUnit.module("timesheet_grid", (hooks) => {
         };
         await mount(TimesheetTimerFloatTimerField, target, { env, props });
         await nextTick();
-        const inputText = target.querySelector("input").value;
+        const inputText = target.querySelector("input.o_input").value;
         assert.equal(`12:34${timerRunning ? ":56" : ""}`, inputText, `TimesheetTimerFloatTimerField should ${!timerRunning ? "not " : ""}display seconds when 'timerRunning' is ${timerRunning ? "true" : "false"}.`);
     }
 
@@ -58,13 +58,14 @@ QUnit.module("timesheet_grid", (hooks) => {
             },
         });
         const props = {
-            value: duration,
+            name: "plop",
             record: {
                 resModel: "dummy",
                 isInvalid: () => false,
                 data: {
                     timer_start: timerStart,
                     timer_pause: timerPause,
+                    plop: duration,
                 },
             },
         };

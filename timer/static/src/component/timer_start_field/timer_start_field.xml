@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="timer.TimerStartField" owl="1">
-        <span t-if="props.value" t-out="state.time" />
+        <span t-if="props.record.data[props.name]" t-out="state.time" />
     </t>
 
 </templates>

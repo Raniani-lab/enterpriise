@@ -9,7 +9,7 @@ const { markup } = owl;
 
 export class FieldPostPreview extends HtmlField {
     get markupValue() {
-        const $html = $(this.props.value + '');
+        const $html = $(this.props.record.data[this.props.name] + '');
         $html.find('.o_social_preview_message').each((index, previewMessage) => {
             $(previewMessage).html(this._formatPost($(previewMessage).text().trim()));
         });

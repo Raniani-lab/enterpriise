@@ -15,7 +15,7 @@ export class FsmProductQuantity extends FloatField {
         useAutofocus({ refName });
         this.state = useState({
             readonly: this.props.readonly,
-            addSmallClass: this.props.value.toString().length > 5,
+            addSmallClass: this.props.record.data[this.props.name].toString().length > 5,
         });
 
         const ref = useRef(refName);
@@ -33,9 +33,9 @@ export class FsmProductQuantity extends FloatField {
 
     get formattedValue() {
         if (!this.state.readonly && this.props.inputType === "number") {
-            return this.props.value;
+            return this.props.record.data[this.props.name];
         }
-        return formatFloat(this.props.value, { noTrailingZeros: true });
+        return formatFloat(this.props.record.data[this.props.name], { noTrailingZeros: true });
     }
 
     toggleMode() {
@@ -50,12 +50,12 @@ export class FsmProductQuantity extends FloatField {
 
     removeQuantity() {
         this.props.record.update({
-            [this.props.name]: this.props.value > 1 ? this.props.value - 1 : 0,
+            [this.props.name]: this.props.record.data[this.props.name] > 1 ? this.props.record.data[this.props.name] - 1 : 0,
         });
     }
 
     addQuantity() {
-        this.props.record.update({ [this.props.name]: this.props.value + 1 });
+        this.props.record.update({ [this.props.name]: this.props.record.data[this.props.name] + 1 });
     }
 
     onInput(ev) {

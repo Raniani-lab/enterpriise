@@ -13,22 +13,22 @@ export class TimerToggleButton extends Component {
     }
 
     get buttonClass() {
-        const layout = this.props.value ? 'danger' : 'primary';
+        const layout = this.props.record.data[this.props.name] ? 'danger' : 'primary';
         return `bg-${layout} text-bg-${layout}`;
     }
 
     get iconClass() {
-        const icon = this.props.value ? "stop" : "play";
+        const icon = this.props.record.data[this.props.name] ? "stop" : "play";
         return `fa fa-${icon}-circle`;
     }
 
     get title() {
-        return this.props.value ? _lt("Stop") : _lt("Start");
+        return this.props.record.data[this.props.name] ? _lt("Stop") : _lt("Start");
     }
 
     async onClick(ev) {
         const context = this.props.record.getFieldContext(this.props.name);
-        const action = this.props.value ? "stop" : "start";
+        const action = this.props.record.data[this.props.name] ? "stop" : "start";
         await this.orm.call(
             this.props.record.resModel,
             `action_timer_${action}`,

@@ -12,7 +12,7 @@ class ConsolidationDashboard extends Component {
     }
 
     get datas() {
-        return JSON.parse(this.props.value);
+        return JSON.parse(this.props.record.data[this.props.name]);
     }
 
 

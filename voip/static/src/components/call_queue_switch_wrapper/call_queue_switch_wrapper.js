@@ -50,7 +50,7 @@ export class CallQueueSwitchWrapper extends Component {
         }
         this.callQueueSwitchView = messaging.models["CallQueueSwitchView"].insert({
             id: this.id,
-            isRecordInCallQueue: props.value,
+            isRecordInCallQueue: props.record.data[props.name],
             recordResId: props.record.resId,
             recordResModel: props.record.resModel,
         });

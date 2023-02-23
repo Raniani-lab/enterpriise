@@ -63,7 +63,6 @@ class DocumentViewer extends Component {
                 data: {},
             },
             name: this.props.resField,
-            value: this.props.value,
             readonly: true,
         };
         viewerProps['record']['data'][this.props.resField] = this.props.resField;

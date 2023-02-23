@@ -32,11 +32,21 @@ export class FieldTimesheetHourToggle extends Component {
     }
 
     get TimesheetDisplayTimerProps() {
-        return { ...this.props, value: this.props.record.data.duration_unit_amount };
+        const { record, readonly } = this.props;
+        return {
+            record,
+            readonly,
+            name: "duration_unit_amount",
+        };
     }
 
     get TimerToggleButtonProps() {
-        return { ...this.props, value: this.props.record.data.is_timer_running };
+        const { record, readonly } = this.props;
+        return {
+            record,
+            readonly,
+            name: "is_timer_running",
+        };
     }
 
 }

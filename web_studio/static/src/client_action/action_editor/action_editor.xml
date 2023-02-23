@@ -15,18 +15,18 @@
           <t t-set="record" t-value="data.record" />
           <div class="w-100">
             <label for="name" class="mb-1">Action's title</label>
-            <CharField name="'name'" value="record.data.name" record="record" id="'name'"/>
+            <CharField name="'name'" record="record" id="'name'"/>
           </div>
           <div class="w-100">
             <label for="help" class="mb-1">Empty List Message</label>
             <div class="o_web_studio_field_code">
-              <TextField name="'help'" value="record.data.help" record="record" id="'help'"/>
+              <TextField name="'help'" record="record" id="'help'"/>
             </div>
           </div>
           <div class="w-100">
             <label for="groups_id" class="mb-1">Limit visibility to groups</label>
             <div class="o_field_widget o_field_many2many_tags" name="groups_id">
-              <Many2ManyTagsField value="record.data.groups_id" id="'groups_id'" name="'groups_id'" record="record" string="record.activeFields.groups_id.string"/>
+              <Many2ManyTagsField id="'groups_id'" name="'groups_id'" record="record" string="record.activeFields.groups_id.string"/>
             </div>
           </div>
         </Record>

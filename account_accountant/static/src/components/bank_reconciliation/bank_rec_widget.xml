@@ -356,7 +356,7 @@
 
     <t t-name="account_accountant.BankRecWidgetHTML" owl="1">
         <div t-on-click="handleButtonsClicks">
-            <t t-out="props.value"/>
+            <t t-out="props.record.data[props.name]"/>
         </div>
     </t>
 

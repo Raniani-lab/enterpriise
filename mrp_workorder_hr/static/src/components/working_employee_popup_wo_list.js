@@ -1,14 +1,15 @@
 /** @odoo-module **/
 
-import { MrpTimer } from "@mrp/widgets/timer";
 import { browser } from "@web/core/browser/browser";
 import { useService } from "@web/core/utils/hooks";
+import { formatMinutes } from "@mrp/widgets/timer";
 
 const { Component, useState, onWillStart } = owl;
 
 export class WorkingEmployeePopupWOList extends Component {
     setup() {
         const { origin } = browser.location;
+        this.formatMinutes = formatMinutes;
         this.imageBaseURL = `${origin}/web/image?model=hr.employee&field=avatar_128&id=`;
         this.employeesData = useState({ employees: [] });
         this.orm = useService("orm");
@@ -105,7 +106,6 @@ export class WorkingEmployeePopupWOList extends Component {
     }
 }
 
-WorkingEmployeePopupWOList.components = { MrpTimer };
 WorkingEmployeePopupWOList.props = {
     popupData: Object,
     onAddEmployee: Function,

@@ -20,10 +20,10 @@
         <xpath expr="span" position="before">
             <button
                 t-if="!props.hideButtons"
-                t-att-disabled="props.value === 0"
+                t-att-disabled="props.record.data[props.name] === 0"
                 name="fsm_remove_quantity"
                 t-on-click.prevent.stop="removeQuantity"
-                t-attf-class="m-1 btn d-flex align-items-center justify-content-center o_qty_button {{ props.value === 0 ? 'btn-light text-muted' : 'btn-primary' }}"
+                t-attf-class="m-1 btn d-flex align-items-center justify-content-center o_qty_button {{ props.record.data[props.name] === 0 ? 'btn-light text-muted' : 'btn-primary' }}"
             >
                 <i class="fa fa-minus center"/>
             </button>
@@ -33,7 +33,7 @@
                 t-if="!props.hideButtons"
                 name="fsm_add_quantity"
                 t-on-click.prevent.stop="addQuantity"
-                t-attf-class="m-1 btn d-flex align-items-center justify-content-center o_qty_button {{ props.value === 0 ? 'btn-light text-muted' : 'btn-primary' }}"
+                t-attf-class="m-1 btn d-flex align-items-center justify-content-center o_qty_button {{ props.record.data[props.name] === 0 ? 'btn-light text-muted' : 'btn-primary' }}"
             >
                 <i class="fa fa-plus"/>
             </button>

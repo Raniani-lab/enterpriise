@@ -20,7 +20,7 @@ export class TimerStartField extends Component {
         const serverTime = await this.timerService.getServerTime();
         this.timerService.computeOffset(serverTime);
         this.state.serverOffset = this.timerService.offset;
-        this.startTimer(this.props.value);
+        this.startTimer(this.props.record.data[this.props.name]);
     }
 
     onWillUpdateProps(nextProps) {
@@ -30,7 +30,7 @@ export class TimerStartField extends Component {
         if (this.timerPause && !this.state.timerPause) {
             this.timerService.clearTimer();
         }
-        this.startTimer(nextProps.value);
+        this.startTimer(nextProps.record.data[nextProps.name]);
     }
 
     startTimer(timerStart) {

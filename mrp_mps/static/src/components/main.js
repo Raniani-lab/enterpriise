@@ -81,7 +81,7 @@ class MainComponent extends Component {
             SearchModel: MrpMpsSearchModel,
             resModel: "mrp.production.schedule",
             context: this.props.action.context,
-            orderBy: ["id"],
+            orderBy: [{name: "id", asc: true}],
             searchMenuTypes: ['filter', 'favorite'],
             searchViewArch: views.views.search.arch,
             searchViewId: views.views.search.id,

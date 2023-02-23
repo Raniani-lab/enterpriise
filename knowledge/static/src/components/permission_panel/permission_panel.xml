@@ -7,7 +7,7 @@
             </div>
         </t>
         <t t-else="">
-            <div t-if="!state.is_sync &amp;&amp; state.parent_name" class="d-flex align-items-center px-3 py-1 my-1 bg-light">
+            <div t-if="!state.is_sync &amp;&amp; state.parent_name" class="o_knowledge_permission_panel d-flex align-items-center px-3 py-1 my-1 bg-light">
                 <div class="o_knowledge_share_panel_icon d-flex justify-content-center align-items-center flex-shrink-0">
                     <i class="fa fa-shield fa-2x"/>
                 </div>
@@ -17,6 +17,15 @@
                 </div>
                 <button t-if="props.user_permission === 'write' || state.user_is_admin"
                     class="btn btn-link" t-on-click="event => this._onRestore(event)" type="button">Restore</button>
+            </div>
+            <div t-if="props.user_permission === 'write'" class="o_knowledge_share_panel_invite d-flex align-items-center px-3 py-1">
+                <div class="o_knowledge_share_panel_icon rounded-circle d-flex flex-shrink-0 justify-content-center align-items-center bg-light">
+                    <i class="fa fa-user-plus fs-3" title="Invite People"/>
+                </div>
+                <button t-on-click="_onInviteMembersClick" class="btn input-group o_cursor_pointer d-flex flex-grow-1 min-w-0 p-0 ms-3">
+                    <div class="form-control text-start text-truncate">Add people or email addresses...</div>
+                    <button class="btn btn-primary">Invite</button>
+                </button>
             </div>
             <div class="d-flex align-items-center px-3 py-1">
                 <div class="flex-shrink-0">

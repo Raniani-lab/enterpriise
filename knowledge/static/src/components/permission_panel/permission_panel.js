@@ -12,7 +12,7 @@ const restrictMessage = _lt("Are you sure you want to restrict access to this ar
 + "This means it will no longer inherit access rights from its parents.");
 const loseWriteMessage = _lt('Are you sure you want to remove your own "Write" access ?');
 
-class PermissionPanel extends Component {
+export class PermissionPanel extends Component {
     /**
      * @override
      */
@@ -74,6 +74,12 @@ class PermissionPanel extends Component {
             additionalContext: {
                 res_id: id
             }
+        });
+    }
+
+    _onInviteMembersClick () {
+        this.actionService.doAction('knowledge.knowledge_invite_action_from_article', {
+            additionalContext: {active_id: this.props.article_id}
         });
     }
 
@@ -327,6 +333,7 @@ PermissionPanel.template = 'knowledge.PermissionPanel';
 PermissionPanel.props = [
     'article_id',
     'user_permission',
+    'record',
     'renderTree', // ADSC: remove when tree component
 ];
 

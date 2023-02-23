@@ -302,6 +302,7 @@ export class GanttRenderer extends Component {
             ref: this.rootRef,
             elements: ".o_undraggable",
             ignore: ".o_resize_handle,.o_connector_creator_bullet",
+            edgeScrolling: { enabled: false },
             // Handlers
             onDragStart: () => {
                 this.interaction.mode = "locked";

@@ -29,11 +29,11 @@
     </t>
 
     <t t-name="web_gantt.GanttView.Buttons" owl="1">
-        <div>
-            <button  t-if="model.metaData.canCreate" class="o_gantt_button_add btn btn-primary me-3" data-hotkey="r" t-on-click="onAddClicked">
+        <div class="d-flex flex-wrap o_gantt_buttons_container">
+            <button t-if="model.metaData.canCreate" class="o_gantt_button_add btn btn-primary" data-hotkey="r" t-on-click="onAddClicked">
                 New
             </button>
-            <div class="d-inline-block">
+            <div class="btn-group gap-1">
                 <button
                     class="o_gantt_button_prev btn btn-primary"
                     t-att-class="{ 'btn-sm btn-link p-1': env.isSmall }"
@@ -43,7 +43,7 @@
                     <span class="fa fa-arrow-left" />
                 </button>
                 <button
-                    class="o_gantt_button_today btn btn-primary mx-1"
+                    class="o_gantt_button_today btn btn-primary"
                     t-att-class="{ 'btn-sm btn-link p-1': env.isSmall }"
                     title="Today"
                     data-hotkey="t"
@@ -64,14 +64,12 @@
                     <span class="fa fa-arrow-right" />
                 </button>
             </div>
-            <div class="d-inline-block mx-3">
-                <ViewScaleSelector
-                    scales="model.metaData.scales"
-                    currentScale="model.metaData.scale.id"
-                    setScale="model.setScale.bind(model)"
-                />
-            </div>
-            <div t-if="displayExpandCollapseButtons" class="btn-group me-3">
+            <ViewScaleSelector
+                scales="model.metaData.scales"
+                currentScale="model.metaData.scale.id"
+                setScale="model.setScale.bind(model)"
+            />
+            <div t-if="displayExpandCollapseButtons" class="btn-group">
                 <button class="o_gantt_button_expand_rows btn btn-secondary" title="Expand rows" t-on-click="onExpandClicked">
                     <i class="fa fa-expand"/>
                 </button>

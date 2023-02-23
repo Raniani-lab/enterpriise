@@ -88,6 +88,13 @@
         }
     }
 
+    // =============================== Buttons ================================
+    // ========================================================================
+
+    .o_gantt_buttons_container {
+        gap: 0.25rem 1rem;
+    }
+
     // All rows (Regular, Group Header and Total)
     // ==========================================
     .o_gantt_row_thumbnail_wrapper .o_gantt_row_thumbnail {

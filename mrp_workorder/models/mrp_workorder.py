@@ -97,12 +97,9 @@ class MrpProductionWorkcenterLine(models.Model):
         res = super().write(values)
         if 'qty_producing' in values:
             for wo in self:
-                # If there are at least 2 time_ids and one of them has no end date, then the workorder is paused
-                # Do not update qty_done if workorder is paused because it might have changed in the frontend
-                if len(wo.time_ids) == 1 or all(wo.time_ids.mapped('date_end')):
-                    for check in wo.check_ids:
-                        if check.component_id:
-                            check._update_component_quantity()
+                for check in wo.check_ids:
+                    if check.component_id:
+                        check._update_component_quantity()
         return res
 
     def action_back(self):
@@ -256,6 +253,13 @@ class MrpProductionWorkcenterLine(models.Model):
                 'default_type': 'byproduct',
             }
         }
+
+    def button_start(self):
+        res = super().button_start()
+        for check in self.check_ids:
+            if check.component_id:
+                check._update_component_quantity()
+        return res
 
     def action_propose_change(self, change_type, title):
         return {

@@ -1299,30 +1299,6 @@ class TestWorkOrder(common.TestMrpCommon):
         wo.current_quality_check_id._next()
         self.assertEqual(production.move_byproduct_ids[0].quantity_done, 3)
 
-    def test_workorder_tablet_view(self):
-        """ Test operations on the workorder from the frontend """
-        mrp_order_form = Form(self.env['mrp.production'])
-        mrp_order_form.product_id = self.submarine_pod
-        mrp_order_form.product_qty = 1
-        production = mrp_order_form.save()
-
-        production.action_confirm()
-        production.button_plan()
-        wo = production.workorder_ids.sorted()[0]
-
-        self.assertEqual(wo.product_id, self.submarine_pod, "wrong product")
-
-        wo.open_tablet_view()
-
-        self.assertEqual(wo.qty_done, 2)
-        # Simulate change in qty_done in the tablet view
-        wo.qty_done = 1
-
-        wo.button_pending()
-        wo.button_start()
-
-        self.assertEqual(wo.qty_done, 1, "Changing the qty_done in the frontend is not persisted")
-
     def test_produce_more_than_planned(self):
         self.env['quality.point'].create({
             'product_ids': [(4, self.submarine_pod.id)],

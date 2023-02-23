@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { onPatched } from "@odoo/owl";
+import { onPatched, useEffect, useRef } from "@odoo/owl";
 import {
     click,
     editInput,
@@ -25,6 +25,7 @@ import { Domain } from "@web/core/domain";
 import { deserializeDateTime } from "@web/core/l10n/dates";
 import { registry } from "@web/core/registry";
 import { omit } from "@web/core/utils/objects";
+import { GanttController } from "@web_gantt/gantt_controller";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
 import {
     CLASSES,
@@ -5094,6 +5095,43 @@ QUnit.test("A task should always have a title (pill_label='1', scale 'month')", 
         await click(pills[i]);
         assert.strictEqual(getText(".o_popover .popover-header"), titleMapping[i].name);
     }
+});
+
+QUnit.test("position of no content help in sample mode", async (assert) => {
+    patchWithCleanup(GanttController.prototype, {
+        setup() {
+            this._super.apply(this, arguments);
+            const rootRef = useRef("root");
+            useEffect(() => {
+                rootRef.el.querySelector(".o_content.o_view_sample_data").style.position =
+                    "relative";
+            });
+        },
+    });
+
+    patchWithCleanup(GanttRenderer.prototype, {
+        isDisabled(row) {
+            if (row.resId === 1) {
+                return false;
+            }
+            return true;
+        },
+    });
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `<gantt date_start="start" date_stop="stop" sample="1"/>`,
+        groupBy: ["user_id"],
+        domain: Domain.FALSE.toList(),
+    });
+    assert.containsOnce(target, ".o_view_nocontent");
+    assert.doesNotHaveClass(target.querySelector(".o_gantt_row_header"), "o_sample_data_disabled");
+    const noContentHelp = target.querySelector(".o_view_nocontent");
+    const noContentHelpTop = noContentHelp.getBoundingClientRect().top;
+    const firstRowHeader = target.querySelector(".o_gantt_row_header");
+    const firstRowHeaderBottom = firstRowHeader.getBoundingClientRect().bottom;
+    assert.ok(noContentHelpTop - firstRowHeaderBottom < 3);
 });
 
 QUnit.test(

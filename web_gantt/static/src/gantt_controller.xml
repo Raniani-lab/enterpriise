@@ -8,23 +8,21 @@
                     <t t-call="{{ props.buttonTemplate }}"/>
                 </t>
                 <t t-set-slot="default" t-slot-scope="layout">
-                    <t t-if="model.data">
-                        <t t-if="!model.hasData() or model.useSampleModel">
-                            <t t-if="props.info.noContentHelp" t-call="web.ActionHelper">
-                                <t t-set="noContentHelp" t-value="props.info.noContentHelp"/>
-                            </t>
-                            <t t-else="" t-call="web.NoContentHelper"/>
+                    <t t-if="showNoContentHelp">
+                        <t t-if="props.info.noContentHelp" t-call="web.ActionHelper">
+                            <t t-set="noContentHelp" t-value="props.info.noContentHelp"/>
                         </t>
-                        <t t-component="props.Renderer"
-                            class="model.useSampleModel ? 'o_sample_data_disabled' : ''"
-                            model="model"
-                            arch="props.arch"
-                            create.bind="create"
-                            openDialog.bind="openDialog"
-                            scrollPosition="props.scrollPosition"
-                            contentRef="layout.contentRef"
-                        />
+                        <t t-else="" t-call="web.NoContentHelper"/>
                     </t>
+                    <t t-component="props.Renderer"
+                        class="model.useSampleModel ? 'o_sample_data_disabled' : ''"
+                        model="model"
+                        arch="props.arch"
+                        create.bind="create"
+                        openDialog.bind="openDialog"
+                        scrollPosition="props.scrollPosition"
+                        contentRef="layout.contentRef"
+                    />
                 </t>
             </Layout>
         </div>

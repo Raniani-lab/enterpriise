@@ -349,12 +349,19 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
     /**
      * Add/Remove article from favorites and reload the favorite tree.
+     * One does not use "record.update" since the article could be in readonly.
      * @param {event} Event
      */
     async toggleFavorite(event) {
-        await this.props.record.update({is_user_favorite: !this.props.record.data.is_user_favorite});
+        // Save in case name has been edited, so that this new name is used
+        // when adding the article in the favorite section.
+        await this._saveIfDirty();
+        await this.orm.call(this.props.record.resModel, "action_toggle_favorite", [[this.resId]]);
+        // Load to have the correct value for 'is_user_favorite'.
+        await this.props.record.load();
+        // Rerender the favorite button.
+        await this.props.record.model.notify();
         // ADSC: move when tree component
-        await this.props.record.save({stayInEdition: true});
         let unfoldedFavoriteArticlesIds = localStorage.getItem('knowledge.unfolded.favorite.ids');
         unfoldedFavoriteArticlesIds = unfoldedFavoriteArticlesIds ? unfoldedFavoriteArticlesIds.split(";").map(Number) : [];
         const template = await this.rpc(

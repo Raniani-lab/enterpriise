@@ -50,16 +50,14 @@ class TestWebsiteSaleSubscription(TestWebsiteSaleSubscriptionCommon):
             self.assertEqual(combination_info['subscription_unit'], 'week')
 
     def test_combination_info_variant_products(self):
-        self.sub_with_variants.with_context(website_id=self.current_website.id)
-
         with MockRequest(self.env, website=self.current_website):
-            combination_info = self.sub_with_variants._get_combination_info(product_id=self.sub_with_variants.product_variant_ids[0].id)
+            combination_info = self.sub_with_variants.product_variant_ids[0]._get_combination_info_variant()
             self.assertEqual(combination_info['price'], 10)
             self.assertTrue(combination_info['is_subscription'])
             self.assertEqual(combination_info['subscription_duration'], 1)
             self.assertEqual(combination_info['subscription_unit'], 'week')
 
-            combination_info_variant_2 = self.sub_with_variants._get_combination_info(product_id=self.sub_with_variants.product_variant_ids[-1].id)
+            combination_info_variant_2 = self.sub_with_variants.product_variant_ids[-1]._get_combination_info_variant()
             self.assertEqual(combination_info_variant_2['price'], 25)
             self.assertTrue(combination_info_variant_2['is_subscription'])
             self.assertEqual(combination_info_variant_2['subscription_duration'], 1)
@@ -72,6 +70,7 @@ class TestWebsiteSaleSubscription(TestWebsiteSaleSubscriptionCommon):
             combination_info = product._get_combination_info()
             self.assertEqual(combination_info['price'], 111)
 
+        self.current_website.invalidate_recordset(['pricelist_id'])
         with MockRequest(self.env, website=self.current_website, website_sale_current_pl=self.pricelist_222.id):
             combination_info = product._get_combination_info()
             self.assertEqual(combination_info['price'], 222)

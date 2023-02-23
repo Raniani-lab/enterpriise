@@ -244,13 +244,12 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 );
             }
 
-            // toggle on/off the classes that highlight the selected article
-            document.querySelectorAll(`[data-article-id="${this.resId}"] > div`).forEach((previousArticle) => {
-                previousArticle.classList.remove('o_article_active', 'fw-bold', 'text-900');
-                const emoji = previousArticle.querySelector('.o_article_emoji');
-                if (emoji) {
-                    emoji.classList.remove('o_article_emoji_active', 'text-900');
-                }
+            // Ensures that all *selected* articles are unselected
+            document.querySelectorAll('.o_article_active').forEach((active) => {
+                active.classList.remove('o_article_active', 'fw-bold', 'text-900');
+            });
+            document.querySelectorAll('.o_article_emoji_active').forEach((emoji) => {
+                emoji.classList.remove('o_article_emoji_active', 'text-900');
             });
 
             document.querySelectorAll(`[data-article-id="${resId}"] > div`).forEach((currentArticle) => {

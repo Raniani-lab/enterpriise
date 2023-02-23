@@ -1272,11 +1272,8 @@ QUnit.test(
                     doAction(action, options) {
                         assert.step(`[action] ${action}`);
                         assert.deepEqual(options.additionalContext, {
-                            default_lang: "en",
                             default_start: "2018-11-30 23:00:00",
                             default_stop: "2018-12-31 22:59:59",
-                            default_tz: "taht",
-                            default_uid: 7,
                             lang: "en",
                             start: "2018-11-30 23:00:00",
                             stop: "2018-12-31 22:59:59",

@@ -259,16 +259,15 @@ export class GanttModel extends Model {
      */
     getDialogContext(params) {
         /** @type {Record<string, any>} */
-        const context = {
-            ...this.searchParams.context,
-            ...this.getSchedule(params),
-        };
+        const context = { ...this.getSchedule(params) };
 
         if (params.withDefault) {
             for (const k in context) {
                 context[sprintf("default_%s", k)] = context[k];
             }
         }
+
+        Object.assign(context, this.searchParams.context);
 
         return context;
     }

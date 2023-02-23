@@ -506,7 +506,9 @@ class MrpEco(models.Model):
     @api.onchange('product_tmpl_id')
     def onchange_product_tmpl_id(self):
         if self.product_tmpl_id.bom_ids:
-            self.bom_id = self.product_tmpl_id.bom_ids.ids[0]
+            bom_product_tmpl = self.bom_id.product_tmpl_id or self.bom_id.product_id.product_tmpl_id
+            if bom_product_tmpl != self.product_tmpl_id:
+                self.bom_id = self.product_tmpl_id.bom_ids.ids[0]
 
     @api.onchange('type_id')
     def onchange_type_id(self):

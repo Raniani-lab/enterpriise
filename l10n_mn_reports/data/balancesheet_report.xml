@@ -15,7 +15,7 @@
         </field>
         <field name="line_ids">
             <record id="report_line_balanceta" model="account.report.line">
-                <field name="name">ХӨРӨНГӨ</field>
+                <field name="name">PROPERTY</field>
                 <field name="code">MN_TA</field>
                 <field name="expression_ids">
                     <record id="report_line_balanceta_balance" model="account.report.expression">
@@ -27,7 +27,7 @@
                 </field>
                 <field name="children_ids">
                     <record id="report_line_balanceca" model="account.report.line">
-                        <field name="name">Эргэлтийн хөрөнгө</field>
+                        <field name="name">Current assets</field>
                         <field name="code">MN_CA</field>
                         <field name="expression_ids">
                             <record id="report_line_balanceca_balance" model="account.report.expression">
@@ -39,7 +39,7 @@
                         </field>
                         <field name="children_ids">
                             <record id="report_line_balanceca1" model="account.report.line">
-                                <field name="name">Мөнгө, түүнтэй адилтгах хөрөнгө</field>
+                                <field name="name">Cash and cash equivalents</field>
                                 <field name="code">MN_MONEY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -54,7 +54,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca2" model="account.report.line">
-                                <field name="name">Дансны авлага</field>
+                                <field name="name">Accounts receivable</field>
                                 <field name="code">MN_TREC</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -69,7 +69,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca3" model="account.report.line">
-                                <field name="name">Татвар, НДШ - ийн авлага</field>
+                                <field name="name">Tax and VAT receivables</field>
                                 <field name="code">MN_TAXREC</field>
                                 <field name="expression_ids">
                                     <record id="report_line_balanceca3_balance" model="account.report.expression">
@@ -81,7 +81,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca31" model="account.report.line">
-                                <field name="name">Урьдчилж төлсөн татвар</field>
+                                <field name="name">Tax paid in advance</field>
                                 <field name="code">MN_PRETAX</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -96,7 +96,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca32" model="account.report.line">
-                                <field name="name">Урьдчилж төлсөн даатгал</field>
+                                <field name="name">Prepaid insurance</field>
                                 <field name="code">MN_PREINSU</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -111,7 +111,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca4" model="account.report.line">
-                                <field name="name">Бусад авлага</field>
+                                <field name="name">Other receivables</field>
                                 <field name="code">MN_OREC</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -126,7 +126,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca5" model="account.report.line">
-                                <field name="name">Бусад санхүүгийн хөрөнгө</field>
+                                <field name="name">Other financial assets</field>
                                 <field name="code">MN_FINASST</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -141,7 +141,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca6" model="account.report.line">
-                                <field name="name">Бараа материал</field>
+                                <field name="name">Inventory</field>
                                 <field name="code">MN_PROD</field>
                                 <field name="expression_ids">
                                     <record id="report_line_balanceca6_balance" model="account.report.expression">
@@ -153,7 +153,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca61" model="account.report.line">
-                                <field name="name">Бараа</field>
+                                <field name="name">Goods</field>
                                 <field name="code">MN_FPROD</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -168,7 +168,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca62" model="account.report.line">
-                                <field name="name">Түүхий эд материал</field>
+                                <field name="name">Raw material</field>
                                 <field name="code">MN_RAWM</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -183,7 +183,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca63" model="account.report.line">
-                                <field name="name">Хангамжийн материал</field>
+                                <field name="name">Supply materials</field>
                                 <field name="code">MN_CONSU</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -198,7 +198,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca64" model="account.report.line">
-                                <field name="name">Дуусаагүй үйлдвэрлэл</field>
+                                <field name="name">Work in progress</field>
                                 <field name="code">MN_NGPROD</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -213,7 +213,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca65" model="account.report.line">
-                                <field name="name">Агентад байгаа бараа</field>
+                                <field name="name">Goods available to the agent</field>
                                 <field name="code">MN_AGENCY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -228,7 +228,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca66" model="account.report.line">
-                                <field name="name">Замд яваа бараа</field>
+                                <field name="name">Goods on the way</field>
                                 <field name="code">MN_PRODROAD</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -243,7 +243,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca7" model="account.report.line">
-                                <field name="name">Урьдчилж төлсөн зардал/тооцоо</field>
+                                <field name="name">Prepaid expenses/bills</field>
                                 <field name="code">MN_PRE</field>
                                 <field name="expression_ids">
                                     <record id="report_line_balanceca7_balance" model="account.report.expression">
@@ -255,7 +255,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca71" model="account.report.line">
-                                <field name="name">Урьдчилж төлсөн зардал</field>
+                                <field name="name">Prepaid expenses</field>
                                 <field name="code">MN_PREEX</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -270,7 +270,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca72" model="account.report.line">
-                                <field name="name">Урьдчилж төлсөн тооцоо</field>
+                                <field name="name">Prepaid billing</field>
                                 <field name="code">MN_PREPAY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -285,7 +285,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca8" model="account.report.line">
-                                <field name="name">Бусад эргэлтийн хөрөнгө</field>
+                                <field name="name">Other working capital</field>
                                 <field name="code">MN_OCA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -300,7 +300,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceca9" model="account.report.line">
-                                <field name="name">Борлуулах зорилгоор эзэмшиж буй эргэлтийн бус хөрөнгө (борлуулах бүлэг хөрөнгө)</field>
+                                <field name="name">Non-current assets held for sale (sale group property)</field>
                                 <field name="code">MN_SASST</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -317,7 +317,7 @@
                         </field>
                     </record>
                     <record id="report_line_balancenca" model="account.report.line">
-                        <field name="name">Эргэлтийн бус хөрөнгө</field>
+                        <field name="name">Non-current Assets</field>
                         <field name="code">MN_PNCA</field>
                         <field name="expression_ids">
                             <record id="report_line_balancenca_balance" model="account.report.expression">
@@ -329,7 +329,7 @@
                         </field>
                         <field name="children_ids">
                             <record id="report_line_balancenca1" model="account.report.line">
-                                <field name="name">Үндсэн хөрөнгө</field>
+                                <field name="name">Fixed assets</field>
                                 <field name="code">MN_FA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -344,7 +344,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancenca2" model="account.report.line">
-                                <field name="name">Биет бус хөрөнгө</field>
+                                <field name="name">Intangible assets</field>
                                 <field name="code">MN_IA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -359,7 +359,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancenca3" model="account.report.line">
-                                <field name="name">Биологийн хөрөнгө</field>
+                                <field name="name">Biological capital</field>
                                 <field name="code">MN_BA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -374,7 +374,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancenca4" model="account.report.line">
-                                <field name="name">Урт хугацаат хөрөнгө оруулалт</field>
+                                <field name="name">Long term investment</field>
                                 <field name="code">MN_LTINV</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -389,7 +389,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancenca5" model="account.report.line">
-                                <field name="name">Хайгуул ба үнэлгээний хөрөнгө</field>
+                                <field name="name">Exploration and evaluation assets</field>
                                 <field name="code">MN_EXASST</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -404,7 +404,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancenca6" model="account.report.line">
-                                <field name="name">Хойшлогдсон татварын хөрөнгө</field>
+                                <field name="name">Deferred tax assets</field>
                                 <field name="code">MN_DTAX</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -419,7 +419,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancenca7" model="account.report.line">
-                                <field name="name">Бусад эргэлтийн бус хөрөнгө</field>
+                                <field name="name">Other non-current assets</field>
                                 <field name="code">MN_ONCA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -438,7 +438,7 @@
                 </field>
             </record>
             <record id="report_line_balancele" model="account.report.line">
-                <field name="name">ӨР ТӨЛБӨР БА ЭЗДИЙН ӨМЧ</field>
+                <field name="name">LIABILITIES AND OWNERS' EQUITY</field>
                 <field name="code">MN_LE</field>
                 <field name="expression_ids">
                     <record id="report_line_balancele_balance" model="account.report.expression">
@@ -450,7 +450,7 @@
                 </field>
                 <field name="children_ids">
                     <record id="report_line_balanceliab" model="account.report.line">
-                        <field name="name">Өр төлбөр</field>
+                        <field name="name">Liabilities</field>
                         <field name="code">MN_LIA</field>
                         <field name="expression_ids">
                             <record id="report_line_balanceliab_balance" model="account.report.expression">
@@ -462,7 +462,7 @@
                         </field>
                         <field name="children_ids">
                             <record id="report_line_balancecliab" model="account.report.line">
-                                <field name="name">Богино хугацаат өр төлбөр</field>
+                                <field name="name">Short-term liabilities</field>
                                 <field name="code">MN_CLIA</field>
                                 <field name="expression_ids">
                                     <record id="report_line_balancecliab_balance" model="account.report.expression">
@@ -474,7 +474,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab1" model="account.report.line">
-                                <field name="name">Дансны өглөг</field>
+                                <field name="name">Accounts payable</field>
                                 <field name="code">MN_TPAY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -489,7 +489,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab2" model="account.report.line">
-                                <field name="name">Цалингийн өглөг</field>
+                                <field name="name">Payment of wages</field>
                                 <field name="code">MN_SPAY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -504,7 +504,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab3" model="account.report.line">
-                                <field name="name">Татварын өр</field>
+                                <field name="name">Tax debt</field>
                                 <field name="code">MN_TXPAY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -519,7 +519,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab4" model="account.report.line">
-                                <field name="name">НДШ-ийн өглөг</field>
+                                <field name="name">Payment of Social Security</field>
                                 <field name="code">MN_SIFPAY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -534,7 +534,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab5" model="account.report.line">
-                                <field name="name">Богино хугацаат зээл</field>
+                                <field name="name">Short term loan</field>
                                 <field name="code">MN_STLOAN</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -548,7 +548,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab6" model="account.report.line">
-                                <field name="name">Зээлийн хүүгийн өглөг</field>
+                                <field name="name">Interest payments</field>
                                 <field name="code">MN_LIPAY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -562,7 +562,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab7" model="account.report.line">
-                                <field name="name">Ногдол ашгийн өглөг</field>
+                                <field name="name">Dividend Payable</field>
                                 <field name="code">MN_DIVPAY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -576,7 +576,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab8" model="account.report.line">
-                                <field name="name">Урьдчилж орсон орлого</field>
+                                <field name="name">Prepaid income</field>
                                 <field name="code">MN_PREINC</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -591,7 +591,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab9" model="account.report.line">
-                                <field name="name">Нөөц өр төлбөр</field>
+                                <field name="name">Contingent liabilities</field>
                                 <field name="code">MN_RESLIA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -605,7 +605,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab10" model="account.report.line">
-                                <field name="name">Бусад богино хугацаат өр төлбөр</field>
+                                <field name="name">Other short-term liabilities</field>
                                 <field name="code">MN_OCLIA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -619,7 +619,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancecliab11" model="account.report.line">
-                                <field name="name">Борлуулах зорилгоор эзэмшиж буй эргэлтийн бус хөрөнгө (борлуулах бүлэг хөрөнгө) - нд хамаарах өр төлбөр</field>
+                                <field name="name">Liabilities related to non-current assets held for sale (assets for sale)</field>
                                 <field name="code">MN_DEPLIA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -633,7 +633,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancencliab" model="account.report.line">
-                                <field name="name">Урт хугацаат өр төлбөр</field>
+                                <field name="name">Long-term liabilities</field>
                                 <field name="code">MN_NCLIA</field>
                                 <field name="expression_ids">
                                     <record id="report_line_balancencliab_balance" model="account.report.expression">
@@ -645,7 +645,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancencliab1" model="account.report.line">
-                                <field name="name">Урт хугацаат зээл</field>
+                                <field name="name">Long term loan</field>
                                 <field name="code">MN_LTLOAN</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -659,7 +659,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancencliab2" model="account.report.line">
-                                <field name="name">Нөөц өр төлбөр</field>
+                                <field name="name">Contingent liabilities</field>
                                 <field name="code">MN_NRESLIA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -673,7 +673,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancencliab3" model="account.report.line">
-                                <field name="name">Хойшлогдсон татварын өр</field>
+                                <field name="name">Deferred tax debt</field>
                                 <field name="code">MN_DTAXPAY</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -687,7 +687,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balancencliab4" model="account.report.line">
-                                <field name="name">Бусад урт хугацаат өр төлбөр</field>
+                                <field name="name">Other long-term liabilities</field>
                                 <field name="code">MN_ONCLIA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -703,7 +703,7 @@
                         </field>
                     </record>
                     <record id="report_line_balanceequity" model="account.report.line">
-                        <field name="name">Эздийн өмч</field>
+                        <field name="name">Owner's property</field>
                         <field name="code">MN_EQ</field>
                         <field name="expression_ids">
                             <record id="report_line_balanceequity_balance" model="account.report.expression">
@@ -715,7 +715,7 @@
                         </field>
                         <field name="children_ids">
                             <record id="report_line_balanceequity1" model="account.report.line">
-                                <field name="name">Өмч - Төрийн</field>
+                                <field name="name">Property - State</field>
                                 <field name="code">MN_SEQ</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -729,7 +729,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceequity2" model="account.report.line">
-                                <field name="name">Өмч - Хувийн</field>
+                                <field name="name">Property - Private</field>
                                 <field name="code">MN_PEQ</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -743,7 +743,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceequity3" model="account.report.line">
-                                <field name="name">Өмч - Хувьцаат</field>
+                                <field name="name">Property - Equity</field>
                                 <field name="code">MN_PUEQ</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -757,7 +757,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceequity4" model="account.report.line">
-                                <field name="name">Халаасны хувьцаа</field>
+                                <field name="name">Pocket stock</field>
                                 <field name="code">MN_STOCK</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -771,7 +771,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceequity5" model="account.report.line">
-                                <field name="name">Нэмж төлөгдсөн капитал</field>
+                                <field name="name">Additional paid-in capital</field>
                                 <field name="code">MN_CAPIT</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -785,7 +785,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceequity6" model="account.report.line">
-                                <field name="name">Хөрөнгийн дахин үнэлгээний нэмэгдэл</field>
+                                <field name="name">Capital revaluation surplus</field>
                                 <field name="code">MN_REVAL</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -799,7 +799,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceequity7" model="account.report.line">
-                                <field name="name">Гадаад валютын хөрвүүлэлтийн нөөц</field>
+                                <field name="name">Foreign currency translation reserve</field>
                                 <field name="code">MN_EXHEQ</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -813,7 +813,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceequity8" model="account.report.line">
-                                <field name="name">Эздийн өмчийн бусад хэсэг</field>
+                                <field name="name">Other parts of the owner's property</field>
                                 <field name="code">MN_OEQ</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -827,7 +827,7 @@
                                 </field>
                             </record>
                             <record id="report_line_balanceequity9" model="account.report.line">
-                                <field name="name">Хуримтлагдсан ашиг</field>
+                                <field name="name">Accumulated profit</field>
                                 <field name="code">MN_EQPROF</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>

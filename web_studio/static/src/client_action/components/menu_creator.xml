@@ -40,7 +40,6 @@
                 <Many2OneField
                     record="record"
                     name="'modelId'"
-                    relation="activeFields.modelId.relation"
                     value="record.data.modelId"
                     canQuickCreate="true"
                     openTarget="'new'"

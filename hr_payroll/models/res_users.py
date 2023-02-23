@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models
+from odoo import api, models, _
 
 
 class ResUsers(models.Model):
     _inherit = "res.users"
 
-    def _get_personal_info_partner_ids_to_notify(self):
-        return self.env.ref('hr_payroll.group_hr_payroll_user').users.filtered(lambda u: u.company_id == self.env.company).partner_id.ids
+    def _get_personal_info_partner_ids_to_notify(self, employee):
+        if employee.contract_id.hr_responsible_id:
+            return (
+                _("You are receiving this message because you are the HR Responsible of this employee."),
+                employee.contract_id.hr_responsible_id.partner_id.ids,
+            )
+        return ('', [])
 
     @api.model_create_multi
     def create(self, vals_list):

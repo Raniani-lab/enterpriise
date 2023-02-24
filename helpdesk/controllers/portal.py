@@ -40,6 +40,7 @@ class CustomerPortal(portal.CustomerPortal):
             'ticket': ticket,
             'ticket_link_section': [],
             'ticket_closed': kwargs.get('ticket_closed', False),
+            'preview_object': ticket,
         }
         return self._get_page_view_values(ticket, access_token, values, 'my_tickets_history', False, **kwargs)
 

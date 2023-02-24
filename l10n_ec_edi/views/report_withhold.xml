@@ -29,7 +29,7 @@
                     </div>
 
                     <!-- Withhold lines -->
-                    <table class="table table-sm o_main_table table-borderless" name="withhold_line_table" style="font-size:11px;">
+                    <table class="table table-sm" name="withhold_line_table" style="font-size:11px;">
                         <thead>
                             <tr>
                                 <t t-set="colspan" t-value="6"/>
@@ -64,24 +64,24 @@
                         </thead>
                         <tbody class="withhold_tbody" style="vertical-align=middle;">
                             <t t-foreach="o._l10n_ec_get_withhold_edi_data_lines()" t-as="taxsupport_line">
-                                <tr>
-                                    <td t-att-rowspan="taxsupport_line['withhold_lines_count']">
+                                <tr style="border-top: 0.5px solid gray !important;">
+                                    <td t-att-rowspan="taxsupport_line['withhold_lines_count']" style="vertical-align: middle;">
                                         <span t-esc="taxsupport_line['invoice_document_type']" t-options="{'widget': 'text'}"/>
                                     </td>
-                                    <td t-att-rowspan="taxsupport_line['withhold_lines_count']">
+                                    <td t-att-rowspan="taxsupport_line['withhold_lines_count']" style="vertical-align: middle;">
                                         <span t-esc="taxsupport_line['invoice_document_number']"/>
                                     </td>
-                                    <td t-att-rowspan="taxsupport_line['withhold_lines_count']">
+                                    <td t-att-rowspan="taxsupport_line['withhold_lines_count']" style="vertical-align: middle;">
                                         <span t-esc="taxsupport_line['invoice_document_date']"/>
                                     </td>
-                                    <td t-att-rowspan="taxsupport_line['withhold_lines_count']">
+                                    <td t-att-rowspan="taxsupport_line['withhold_lines_count']" style="vertical-align: middle;">
                                         <span t-esc="time.strftime('%m/%Y', time.strptime(taxsupport_line['invoice_document_date'],'%d/%m/%Y'))"/>
                                     </td>
                                     <t t-set="row_count" t-value="1"/>
                                     <t t-foreach="taxsupport_line['withhold_lines']" t-as="withhold_line">
                                         <t t-if="row_count > 1">
                                             <!-- To merge cells, the unmerged cells must be inside a tr, only for the second iteration onwards  -->
-                                            <tr>
+                                            <tr style="border-top: 0.5px solid gray !important;">
                                                 <t t-call="l10n_ec_edi.withhold_line_values_template"/>
                                             </tr>
                                         </t>
@@ -100,7 +100,7 @@
 
                         <!--Tax totals per group-->
                         <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
-                            <table class="table table-sm o_main_table table-borderless" style="page-break-inside: avoid; font-size:11px;">
+                            <table class="table table-sm" style="page-break-inside: avoid; font-size:11px;">
                                 <t t-set="tax_totals" t-value="o.l10n_ec_withhold_subtotals"/>
                                 <t t-if="tax_totals" t-call="account.document_tax_totals"/>
                             </table>

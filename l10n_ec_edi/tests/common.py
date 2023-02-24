@@ -186,17 +186,17 @@ L10N_EC_EDI_XML_OUT_INV = """
         <identificacionComprador>0453661050152</identificacionComprador>
         <direccionComprador>Av. Libertador Simón Bolívar 1155</direccionComprador>
         <totalSinImpuestos>400.000000</totalSinImpuestos>
-        <totalDescuento>100.000000</totalDescuento>
+        <totalDescuento>100.00</totalDescuento>
         <totalConImpuestos>
             <totalImpuesto>
                 <codigo>2</codigo>
                 <codigoPorcentaje>2</codigoPorcentaje>
                 <baseImponible>400.000000</baseImponible>
                 <tarifa>12.000000</tarifa>
-                <valor>48.000000</valor>
+                <valor>48.00</valor>
             </totalImpuesto>
         </totalConImpuestos>
-        <importeTotal>448.000000</importeTotal>
+        <importeTotal>448.00</importeTotal>
         <pagos>
             <pago>
                 <formaPago>16</formaPago>
@@ -218,7 +218,7 @@ L10N_EC_EDI_XML_OUT_INV = """
                     <codigoPorcentaje>2</codigoPorcentaje>
                     <tarifa>12.000000</tarifa>
                     <baseImponible>400.000000</baseImponible>
-                    <valor>48.000000</valor>
+                    <valor>48.00</valor>
                 </impuesto>
             </impuestos>
         </detalle>
@@ -260,10 +260,10 @@ L10N_EC_EDI_XML_DEBIT_NOTE = """
                 <codigoPorcentaje>2</codigoPorcentaje>
                 <tarifa>12.000000</tarifa>
                 <baseImponible>400.000000</baseImponible>
-                <valor>48.000000</valor>
+                <valor>48.00</valor>
             </impuesto>
         </impuestos>
-        <valorTotal>448.000000</valorTotal>
+        <valorTotal>448.00</valorTotal>
     </infoNotaDebito>
     <motivos>
         <motivo>
@@ -302,13 +302,13 @@ L10N_EC_EDI_XML_CREDIT_NOTE = """
         <numDocModificado>001-001-000000001</numDocModificado>
         <fechaEmisionDocSustento>25/01/2022</fechaEmisionDocSustento>
         <totalSinImpuestos>400.000000</totalSinImpuestos>
-        <valorModificacion>448.000000</valorModificacion>
+        <valorModificacion>448.00</valorModificacion>
         <totalConImpuestos>
             <totalImpuesto>
                 <codigo>2</codigo>
                 <codigoPorcentaje>2</codigoPorcentaje>
                 <baseImponible>400.000000</baseImponible>
-                <valor>48.000000</valor>
+                <valor>48.00</valor>
             </totalImpuesto>
         </totalConImpuestos>
         <motivo>NotCr 001-001-000000001</motivo>
@@ -327,7 +327,7 @@ L10N_EC_EDI_XML_CREDIT_NOTE = """
                     <codigoPorcentaje>2</codigoPorcentaje>
                     <tarifa>12.000000</tarifa>
                     <baseImponible>400.000000</baseImponible>
-                    <valor>48.000000</valor>
+                    <valor>48.00</valor>
                 </impuesto>
             </impuestos>
         </detalle>
@@ -362,16 +362,16 @@ L10N_EC_EDI_XML_PURCHASE_LIQ = """
         <identificacionProveedor>0453661050</identificacionProveedor>
         <direccionProveedor>Av. Libertador Simón Bolívar 1155</direccionProveedor>
         <totalSinImpuestos>400.000000</totalSinImpuestos>
-        <totalDescuento>100.000000</totalDescuento>
+        <totalDescuento>100.00</totalDescuento>
         <totalConImpuestos>
             <totalImpuesto>
                 <codigo>2</codigo>
                 <codigoPorcentaje>2</codigoPorcentaje>
                 <baseImponible>400.000000</baseImponible>
-                <valor>48.000000</valor>
+                <valor>48.00</valor>
             </totalImpuesto>
         </totalConImpuestos>
-        <importeTotal>448.000000</importeTotal>
+        <importeTotal>448.00</importeTotal>
         <pagos>
             <pago>
                 <formaPago>16</formaPago>
@@ -401,7 +401,7 @@ L10N_EC_EDI_XML_PURCHASE_LIQ = """
                     <codigoPorcentaje>2</codigoPorcentaje>
                     <tarifa>12.000000</tarifa>
                     <baseImponible>400.000000</baseImponible>
-                    <valor>48.000000</valor>
+                    <valor>48.00</valor>
                 </impuesto>
             </impuestos>
         </detalle>
@@ -466,7 +466,7 @@ L10N_EC_EDI_XML_IN_WTH = """
             </retenciones>
             <pagos>
                 <pago>
-                    <formaPago>17</formaPago>
+                    <formaPago>01</formaPago>
                     <total>448.00</total>
                 </pago>
             </pagos>

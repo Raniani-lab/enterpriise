@@ -75,7 +75,7 @@
                     <tipoRegi t-if="identification == '02'" t-out="taxsupport['regime_type']"/>
                     <paisEfecPago t-if="identification == '02'" t-out="taxsupport['paying_country']"/>
                     <aplicConvDobTrib t-if="identification == '02'" t-out="taxsupport['double_taxation']"/>
-                    <pagExtSujRetNorLeg t-if="taxsupport['double_taxation'] == 'NO'" t-out="taxsupport['subject_withhold']"/>
+                    <pagExtSujRetNorLeg t-if="identification == '02' and taxsupport['double_taxation'] == 'NO'" t-out="taxsupport['subject_withhold']"/>
                     <pagoRegFis t-if="identification == '02'" t-out="taxsupport['fiscal_payment']"/>
                     <totalSinImpuestos t-out="format_num_2(taxsupport['invoice_amount_untaxed'])"/>
                     <importeTotal t-out="format_num_2(taxsupport['invoice_amount_total'])"/>
@@ -157,9 +157,9 @@
             <fechaEmisionDocSustento t-if="is_cnote or is_dnote" t-out="strftime(modified_doc.invoice_date)"/>
 
             <!-- Tax-free totals (all docs except withholds) -->
-            <totalSinImpuestos t-out="format_num_6(abs(move.amount_untaxed_signed))"/>
-            <valorModificacion t-if="is_cnote" t-out="format_num_6(abs(move.amount_total_signed))"/>
-            <totalDescuento t-if="is_invoice or is_liquidation" t-out="format_num_6(discount_total)"/>
+            <totalSinImpuestos t-if="not is_withhold" t-out="format_num_6(abs(move.amount_untaxed_signed))"/>
+            <valorModificacion t-if="is_cnote" t-out="format_num_2(abs(move.amount_total_signed))"/>
+            <totalDescuento t-if="is_invoice or is_liquidation" t-out="format_num_2(discount_total)"/>
 
             <!-- Tax-included totals (all docs except withholds) -->
             <t t-set="tax_totals" t-value="taxes_data['tax_details']"/>
@@ -177,8 +177,8 @@
                     </t>
                 </impuesto>
             </impuestos>
-            <importeTotal t-if="is_invoice or is_liquidation" t-out="format_num_6(abs(move.amount_total_signed))"/>
-            <valorTotal t-if="is_dnote" t-out="format_num_6(abs(move.amount_total_signed))"/>
+            <importeTotal t-if="is_invoice or is_liquidation" t-out="format_num_2(abs(move.amount_total_signed))"/>
+            <valorTotal t-if="is_dnote" t-out="format_num_2(abs(move.amount_total_signed))"/>
 
             <!-- Miscellaneous -->
             <motivo t-if="is_cnote" t-out="clean_str(move.name or 'NOTA DE CREDITO')"/>
@@ -236,7 +236,7 @@
             <tarifa t-if="tarifa_pre_base" t-out="format_num_6(abs(tax_data['rate']))"/>
             <baseImponible t-out="format_num_6(currency_round(abs(tax_data['base_amount'])))"/>
             <tarifa t-if="tarifa_post_base" t-out="format_num_6(abs(tax_data['rate']))"/>
-            <valor t-out="format_num_6(abs(tax_data['tax_amount']))"/>
+            <valor t-out="format_num_2(abs(tax_data['tax_amount']))"/>
         </template>
 
         <template id="common_payment_terms_template">

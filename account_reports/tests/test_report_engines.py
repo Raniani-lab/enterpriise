@@ -689,6 +689,7 @@ class TestReportEngines(TestAccountReportsCommon):
             self._prepare_test_expression_tax_tags('11', label='tax_tags'),
             self._prepare_test_expression_domain([('account_id.code', '=', '101002')], 'sum', label='domain'),
             self._prepare_test_expression_external('sum', [self._prepare_test_external_values(100.0, '2020-01-01')], label='external'),
+            self._prepare_test_expression_aggregation('test1.tax_tags + test1.domain', column='aggregation'),
             self._prepare_test_expression_aggregation('test1.tax_tags / 0'),
             self._prepare_test_expression_external('sum', [self._prepare_test_external_values(100.47, '2020-01-01')], label='external_decimal'),
             name='test1', code='test1',
@@ -798,11 +799,21 @@ class TestReportEngines(TestAccountReportsCommon):
             self._prepare_test_expression_aggregation('test1.external', subformula='if_other_expr_below(test1.tax_tags, USD(1000.0))'),
             name='test11_4', code='test11_4',
         )
+        # Test with an aggregation in the condition
+        test11_5 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.external', subformula='if_other_expr_above(test1.aggregation, USD(1000.0))'),
+            name='test11_5', code='test11_5',
+        )
+        test11_6 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.external', subformula='if_other_expr_below(test1.aggregation, USD(1000.0))'),
+            name='test11_6', code='test11_6',
+        )
 
         report = self._create_report(
             [
                 test1, test2_1, test2_2, test2_3, test2_4, test3_1, test3_2, test3_3, test4_1, test4_2,
                 test5, test6, test7, test9, test10_1, test10_2, test10_3, test11_1, test11_2, test11_3, test11_4,
+                test11_5, test11_6,
             ],
             country_id=self.fake_country.id,
         )
@@ -844,6 +855,8 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test11_2',            100.0),
                 ('test11_3',            100.0),
                 ('test11_4',               ''),
+                ('test11_5',            100.0),
+                ('test11_6',               ''),
             ],
             options,
         )

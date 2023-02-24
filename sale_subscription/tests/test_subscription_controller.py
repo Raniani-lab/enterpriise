@@ -70,21 +70,6 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         self.subscription_tmpl.flush_recordset()
         self.subscription.flush_recordset()
 
-    def test_renewal_identical(self):
-        """ Test subscription renewal """
-        with freeze_time("2021-11-18"):
-            self.subscription.action_confirm()
-            self.subscription.set_to_renew()
-            self.assertEqual(self.subscription.end_date, date(2023, 11, 17),
-                             'The end date of the subscription should be updated according to the template')
-            url = "/my/subscription/%s/renew?access_token=%s" % (self.subscription.id, self.subscription.access_token)
-            self.env.flush_all()
-            res = self.url_open(url, allow_redirects=False)
-            self.assertEqual(res.status_code, 303, "Response should redirection")
-            self.env.invalidate_all()
-            self.assertEqual(self.subscription.end_date, date(2025, 11, 17),
-                             'The end date of the subscription should be updated according to the template')
-
     def test_close_contract(self):
         """ Test subscription close """
         with freeze_time("2021-11-18"):
@@ -98,7 +83,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
             res = self.url_open(url, allow_redirects=False, data=data)
             self.assertEqual(res.status_code, 303)
             self.env.invalidate_all()
-            self.assertEqual(self.subscription.stage_category, 'closed', 'The subscription should be closed.')
+            self.assertEqual(self.subscription.subscription_state, '6_churn', 'The subscription should be closed.')
             self.assertEqual(self.subscription.end_date, date(2023, 11, 17), 'The end date of the subscription should not be updated.')
 
     def test_prevents_assigning_not_owned_payment_tokens_to_subscriptions(self):
@@ -227,7 +212,6 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         # test transaction flow when paying from the portal
         self.assertEqual(len(subscription.transaction_ids), 1, "Only one transaction should be created")
         first_transaction_id = subscription.transaction_ids
-        subscription.to_renew = True
         url = self._build_url("/my/subscription/transaction/%s" % subscription.id)
         data = {'access_token': subscription.access_token,
                 'reference_prefix': 'test_automatic_invoice_token',

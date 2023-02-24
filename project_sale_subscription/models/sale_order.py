@@ -20,7 +20,7 @@ class SaleOrder(models.Model):
 
     def _can_generate_service(self):
         self.ensure_one()
-        return not self.origin_order_id and self.stage_category != 'closed'
+        return not self.origin_order_id and self.subscription_state not in ['6_churn', '5_renewed']
 
     def _set_subscription_end_date_from_template(self):
         self.ensure_one()

@@ -17,17 +17,21 @@ class SaleOrderLog(models.Model):
     create_date = fields.Datetime(string='Date', readonly=True)
     event_type = fields.Selection(
         string='Type of event',
-        selection=[('0_creation', 'Creation'), ('1_change', 'Change in MRR'), ('2_churn', 'Churn'), ('3_transfer', 'Transfer')],
+        selection=[('0_creation', 'Creation'), ('1_change', 'MRR change'), ('2_churn', 'Churn'), ('3_transfer', 'Transfer')],
         required=True,
         readonly=True
     )
-    recurring_monthly = fields.Monetary(string='MRR after Change', required=True,
+    recurring_monthly = fields.Monetary(string='New MRR', required=True,
                                         help="MRR, after applying the changes of that particular event", readonly=True)
-    category = fields.Selection([
-        ('draft', 'Draft'),
-        ('progress', 'In Progress'),
-        ('paused', 'Paused'),
-        ('closed', 'Closed')], required=True, default='draft', help="Subscription stage category when the change occurred")
+    subscription_state = fields.Selection(selection=[
+        ('1_draft', 'Quotation'),         # Quotation for a new subscription
+        ('3_progress', 'In Progress'),    # Active Subscription or confirmed renewal for active subscription
+        ('6_churn', 'Churned'),           # Closed or ended subscription
+        ('2_renewal', 'Renewal Quotation'), # Renewal Quotation for existing subscription
+        ('5_renewed', 'Renewed'),         # Active or ended subscription that has been renewed
+        ('4_paused', 'Paused'),           # Active subscription with paused invoicing
+        ('7_upsell', 'Upsell'),           # Quotation or SO upselling a subscription
+    ], required=True, default='1_draft', help="Subscription stage category when the change occurred")
     user_id = fields.Many2one('res.users', string='Salesperson')
     team_id = fields.Many2one('crm.team', string='Sales Team', ondelete="set null")
     amount_signed = fields.Monetary(string='Change in MRR', readonly=True)

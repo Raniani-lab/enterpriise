@@ -50,7 +50,13 @@
                 <field name="recurring_monthly" optional="show" sum="Sum of Monthly Recurring Revenue"/>
                 <field name="recurring_total" optional="hide"/>
                 <field name="recurring_yearly" optional="hide" sum="Sum of Yearly Recurring Revenue"/>
-                <field name="stage_id" optional="show"/>
+                <field name="subscription_state" string="Status" widget="badge"
+                   decoration-success="subscription_state == '3_progress'"
+                   decoration-warning="subscription_state == '4_paused'"
+                   decoration-danger="subscription_state == '6_churn'"
+                   decoration-primary="subscription_state == '7_upsell'"
+                   decoration-info="subscription_state in ['1_draft', '2_renewal']"
+                   readonly="1"/>
             </tree>
         </field>
     </record>
@@ -80,9 +86,8 @@
                 <field name="partner_id" operator="child_of"/>
                 <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid)]"/>
                 <separator/>
-                <filter name="open" string="Running" domain="[('stage_category', '=', 'progress')]" help="Running Subscriptions"/>
-                <filter name="pending" string="To Renew" domain="[('to_renew', '=', True)]" help="Pending subscriptions"/>
-                <filter name="Expired" string="Expired" domain="[('stage_category', '=', 'closed')]" help="Closed subscriptions"/>
+                <filter name="open" string="Running" domain="[('subscription_state', '=', '3_progress')]" help="Running Subscriptions"/>
+                <filter name="Expired" string="Expired" domain="[('subscription_state', '=', 'closed')]" help="Closed subscriptions"/>
                 <separator/>
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>
@@ -91,7 +96,7 @@
                 <filter name="filter_date_order" date="date_order"/>
                 <filter name="filter_date_end" date="end_date"/>
                 <group expand="1" string="Group By">
-                    <filter string="Stage" name="stage" domain="[]" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Subscription State" name="subscription_state" domain="[]" context="{'group_by': 'subscription_state'}"/>
                     <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by': 'user_id'}"/>
                     <filter string="Customer" name="customer" domain="[]" context="{'group_by': 'partner_id'}"/>
                     <filter string="Country" name="country" domain="[]" context="{'group_by': 'country_id'}"/>

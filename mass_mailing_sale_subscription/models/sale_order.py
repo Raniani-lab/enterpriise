@@ -10,7 +10,7 @@ class SaleOrder(models.Model):
 
     def _mailing_get_default_domain(self, mailing):
         domain = super()._mailing_get_default_domain(mailing)
-        return expression.AND([domain, [('stage_category', '=', 'progress')]])
+        return expression.AND([domain, [('subscription_state', '=', '3_progress')]])
 
     def _sms_get_number_fields(self):
         """ No phone or mobile field is available on subscription model. Instead

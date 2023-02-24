@@ -21,13 +21,10 @@ def _pre_init_sale_subscription(env):
     env.cr.execute("""
         ALTER TABLE "sale_order"
         ADD COLUMN "is_subscription" bool,
-        ADD COLUMN  "to_renew" bool,
         ADD COLUMN  "payment_exception" bool,
-        ADD COLUMN  "recurring_live" bool,
         
-        ADD COLUMN  "stage_id" int4,
         ADD COLUMN  "close_reason_id" int4,
-        ADD COLUMN  "subscription_management" varchar,
+        ADD COLUMN  "subscription_state" varchar,
         ADD COLUMN  "rating_last_value" double precision,
         ADD COLUMN  "end_date" date,
         ADD COLUMN  "country_id" int4,
@@ -39,7 +36,6 @@ def _pre_init_sale_subscription(env):
         ADD COLUMN  "kpi_3months_mrr_percentage" double precision,
         ADD COLUMN  "percentage_satisfaction" int4,
         ADD COLUMN  "health" varchar,
-        ADD COLUMN  "stage_category" varchar,
         ADD COLUMN  "origin_order_id" int4,
         ADD COLUMN  "subscription_id" int4,
         ADD COLUMN  "recurring_monthly" numeric

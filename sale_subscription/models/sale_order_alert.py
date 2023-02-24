@@ -27,8 +27,6 @@ class SaleOrderAlert(models.Model):
     automation_id = fields.Many2one('base.automation', 'Automated Action', required=True, ondelete='restrict')
     action = fields.Selection([
         ('next_activity', 'Create next activity'),
-        ('set_stage', 'Set a stage on the subscription'),
-        ('set_to_renew', 'Mark as To Renew'),
         ('mail_post', 'Send an email to the customer'),
         ('sms', 'Send an SMS Text Message to the customer'),
         ('set_health_value', 'Set Contract Health value')
@@ -51,10 +49,31 @@ class SaleOrderAlert(models.Model):
                                          default='1month', help="Period over which the KPI is calculated")
     rating_percentage = fields.Integer('Rating Percentage', help="Rating Satisfaction is the ratio of positive rating to total number of rating.")
     rating_operator = fields.Selection([('>', 'greater than'), ('<', 'less than')], string='Rating Operator', default='>')
-    stage_from_id = fields.Many2one('sale.order.stage', help="Trigger on changes of stage. Trigger over all stages if not set")
-    stage_to_id = fields.Many2one('sale.order.stage')
-    stage_category = fields.Selection([('draft', 'Quotation'), ('progress', 'In Progress'), ('paused', 'Invoicing Pause'), ('closed', 'Closed')])
-    stage_id = fields.Many2one('sale.order.stage', string='Stage')
+    subscription_state_from = fields.Selection(
+        string='Stage from',
+        selection=[
+            ('1_draft', 'Quotation'),     # Quotation for a new subscription
+            ('3_progress', 'In Progress'),    # Active Subscription or confirmed renewal for active subscription
+            ('6_churn', 'Churned'),           # Closed or ended subscription
+            ('2_renewal', 'Renewal Quotation'),         # Renewal Quotation for existing subscription
+            ('5_renewed', 'Renewed'),         # Active or ended subscription that has been renewd
+            ('4_paused', 'Paused'),           # Active subcription with paused invoicing
+            ('7_upsell', 'Upsell'),           # Quotation or SO upselling a subscription
+        ]
+    )
+
+    subscription_state = fields.Selection(
+        string='Stage',
+        selection=[
+            ('1_draft', 'Quotation'),     # Quotation for a new subscription
+            ('3_progress', 'In Progress'),    # Active Subscription or confirmed renewal for active subscription
+            ('6_churn', 'Churned'),           # Closed or ended subscription
+            ('2_renewal', 'Renewal Quotation'),         # Renewal Quotation for existing subscription
+            ('5_renewed', 'Renewed'),         # Active or ended subscription that has been renewd
+            ('4_paused', 'Paused'),           # Active subcription with paused invoicing
+            ('7_upsell', 'Upsell'),           # Quotation or SO upselling a subscription
+        ]
+    )
     order_state = fields.Selection(
         selection=[
             ('draft', "Quotation"),
@@ -90,6 +109,13 @@ class SaleOrderAlert(models.Model):
             domain = literal_eval(alert.filter_domain) if alert.filter_domain else []
             alert.subscription_count = self.env['sale.order'].search_count(domain)
 
+    def _configure_filter_pre_domain(self):
+        for alert in self:
+            domain = []
+            if alert.subscription_state_from:
+                domain = [('subscription_state', '=', alert.subscription_state_from)]
+            super(SaleOrderAlert, alert).write({'filter_pre_domain': domain})
+
     def _configure_filter_domain(self, vals_list):
         for alert, vals in zip(self, vals_list):
             if vals.get('filter_domain'):
@@ -117,10 +143,8 @@ class SaleOrderAlert(models.Model):
                     domain += [('kpi_%s_mrr_delta' % alert.mrr_change_period, '>', alert.mrr_change_amount)]
             if alert.rating_percentage:
                 domain += [('percentage_satisfaction', alert.rating_operator, alert.rating_percentage)]
-            if alert.stage_to_id:
-                domain += [('stage_id', '=', alert.stage_to_id.id)]
-            if alert.stage_category:
-                domain += [('stage_category', '=', alert.stage_category)]
+            if alert.subscription_state:
+                domain += [('subscription_state', '=', alert.subscription_state)]
             if alert.order_state:
                 domain += [('state', '=', alert.order_state)]
             super(SaleOrderAlert, alert).write({'filter_domain': domain})
@@ -129,27 +153,17 @@ class SaleOrderAlert(models.Model):
         self.automation_id.active = False
         return super().unlink()
 
-    def _configure_filter_pre_domain(self):
-        for alert in self:
-            domain = []
-            if alert.stage_from_id:
-                domain = [('stage_id', '=', alert.stage_from_id.id)]
-            super(SaleOrderAlert, alert).write({'filter_pre_domain': domain})
-
     def _configure_alert_from_action(self, vals_list):
         # Unlink the children server actions if not needed anymore
         self.filtered(lambda alert: alert.action != 'next_activity' and alert.child_ids).unlink()
-        field_names = ['stage_id', 'to_renew', 'health']
+        field_names = ['subscription_state', 'health']
         tag_fields = self.env['ir.model.fields'].search([('model', 'in', self.mapped('model_name')), ('name', 'in', field_names)])
         for alert, vals in zip(self, vals_list):
             field_name = None
             action_value = None
-            if alert.action == 'set_stage' and alert.stage_id:
-                field_name = 'stage_id'
-                action_value = alert.stage_id.id
-            elif alert.action == 'set_to_renew':
-                field_name = 'to_renew'
-                action_value = True
+            if alert.action == 'subscription_state' and alert.subscription_state:
+                field_name = 'subscription_state'
+                action_value = alert.subscription_state
             elif alert.action == 'set_health_value':
                 field_name = 'health'
                 action_value = alert.health
@@ -186,7 +200,6 @@ class SaleOrderAlert(models.Model):
             vals['trigger'] = vals['trigger_condition']
         res = super().write(vals)
         self._configure_filter_domain([vals])
-        self._configure_filter_pre_domain()
         self._configure_alert_from_action([vals])
         return res
 

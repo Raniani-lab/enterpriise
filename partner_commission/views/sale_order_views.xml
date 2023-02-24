@@ -9,9 +9,9 @@
                 <field name="order_line" position="after">
                     <field name="referrer_id"/>
                 </field>
-                <xpath expr="//group" position="inside">
-                     <filter string="Referrer" name="referrer_id" domain="[]" context="{'group_by':'referrer_id'}"/>
-                </xpath>
+                <filter name="sales_team" position="after">
+                    <filter string="Referrer" name="referrer_id" domain="[]" context="{'group_by':'referrer_id'}"/>
+                </filter>
             </field>
     </record>
 

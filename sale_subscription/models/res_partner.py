@@ -15,7 +15,7 @@ class ResPartner(models.Model):
         if 'active' in vals and not vals.get('active'):
             Subscription = self.env['sale.order']
             order_ids = Subscription.sudo().search([
-                ('stage_category', '=', 'progress'),
+                ('subscription_state', '=', '3_progress'),
                 '|',
                 ('partner_shipping_id', 'in', self.ids),
                 ('partner_invoice_id', 'in', self.ids)
@@ -36,7 +36,7 @@ class ResPartner(models.Model):
         all_partners.read(['parent_id'])
 
         subscription_data = self.env['sale.order']._read_group(
-            domain=[('partner_id', 'in', all_partners.ids), ('is_subscription', '=', 'True')],
+            domain=[('partner_id', 'in', all_partners.ids), ('is_subscription', '=', 'True'), ('subscription_state', 'in', ['3_progress', '6_churn'])],
             fields=['partner_id'], groupby=['partner_id']
         )
 
@@ -47,3 +47,29 @@ class ResPartner(models.Model):
                 if partner in self:
                     partner.subscription_count += group['partner_id_count']
                 partner = partner.parent_id
+
+    def open_related_subscription(self):
+        self.ensure_one()
+        action = {
+            "type": "ir.actions.act_window",
+            "res_model": "sale.order",
+            "name": _("Partner Subscription"),
+            "domain": [('is_subscription', '=', True), ('subscription_state', 'in', ['3_progress', '6_churn'])],
+            "context": {
+                'search_default_partner_id': [self.id],
+                'default_partner_id': self.id,
+            }
+        }
+        all_partners = self.with_context(active_test=False).search([('id', 'child_of', self.ids)])
+
+        subscription_ids = self.env['sale.order'].search_read(
+            domain=[('partner_id', 'in', all_partners.ids), ('is_subscription', '=', 'True'), ('subscription_state', 'in', ['3_progress', '6_churn'])],
+            fields=['id']
+        )
+        if len(subscription_ids) == 1:
+            action['res_id'] = subscription_ids[0]['id']
+            action['views'] = [(self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, 'form')]
+        else:
+            action['views'] = [(self.env.ref('sale_subscription.sale_subscription_view_tree').id, 'tree'), (self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, 'form')]
+            action['search_view_id'] = [self.env.ref('sale_subscription.sale_subscription_view_search').id]
+        return action

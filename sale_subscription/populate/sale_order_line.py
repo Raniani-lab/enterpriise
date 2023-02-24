@@ -20,7 +20,7 @@ class SaleOrderLine(models.Model):
     def filter_confirmable_sale_orders(cls, sale_orders):
         # Remove so with no recurrence_id or a recurring order_line
         sale_orders = super(SaleOrderLine, cls).filter_confirmable_sale_orders(sale_orders)
-        recurring_order = sale_orders.filtered('recurrence_id')
+        recurring_order = sale_orders.filtered(lambda o: o.recurrence_id and o.subscription_state)
         order_with_recurring = sale_orders.order_line.filtered(lambda l: l.product_id.recurring_invoice).order_id
         return sale_orders - (recurring_order - order_with_recurring)
 

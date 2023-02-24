@@ -33,24 +33,26 @@ class SaleSubscriptionReport(models.Model):
     industry_id = fields.Many2one('res.partner.industry', 'Industry', readonly=True)
     analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', readonly=True)
     close_reason_id = fields.Many2one('sale.order.close.reason', 'Close Reason', readonly=True)
-    to_renew = fields.Boolean('To Renew', readonly=True)
-    stage_category = fields.Selection([
-        ('draft', 'Draft'),
-        ('progress', 'In Progress'),
-        ('closed', 'Closed')], readonly=True)
+    subscription_state = fields.Selection([
+        ('1_draft', 'Quotation'),         # Quotation for a new subscription
+        ('3_progress', 'In Progress'),    # Active Subscription or confirmed renewal for active subscription
+        ('6_churn', 'Churned'),           # Closed or ended subscription
+        ('2_renewal', 'Renewal Quotation'),         # Renewal Quotation for existing subscription
+        ('5_renewed', 'Renewed'),         # Active or ended subscription that has been renewed
+        ('4_paused', 'Paused'),           # Active subscription with paused invoicing
+        ('7_upsell', 'Upsell'),           # Quotation or SO upselling a subscription
+    ], readonly=True)
     health = fields.Selection([
         ('normal', 'Neutral'),
         ('done', 'Good'),
         ('bad', 'Bad')], string="Health", readonly=True)
-    stage_id = fields.Many2one('sale.order.stage', string='Stage', readonly=True)
     state = fields.Selection(selection=[
-            ('draft', "Quotation"),
-            ('sent', "Quotation Sent"),
-            ('sale', "Sales Order"),
-            ('done', "Locked"),
-            ('cancel', "Cancelled"),
-        ],
-        string="Status", readonly=True)
+        ('draft', "Quotation"),
+        ('sent', "Quotation Sent"),
+        ('sale', "Sales Order"),
+        ('done', "Locked"),
+        ('cancel', "Cancelled"),
+    ], string="Status", readonly=True)
     next_invoice_date = fields.Date('Next Invoice Date', readonly=True)
     recurrence_id = fields.Many2one('sale.temporal.recurrence', 'Recurrence', readonly=True)
     origin_order_id = fields.Many2one('sale.order', string='First contract', readonly=True)
@@ -96,10 +98,8 @@ class SaleSubscriptionReport(models.Model):
                     sub.user_id as user_id,
                     sub.team_id,
                     sub.company_id as company_id,
-                    sub.to_renew,
-                    sub.stage_category,
+                    sub.subscription_state,
                     sub.health,
-                    sub.stage_id,
                     sub.sale_order_template_id as template_id,
                     t.categ_id as categ_id,
                     sub.pricelist_id as pricelist_id,
@@ -119,7 +119,6 @@ class SaleSubscriptionReport(models.Model):
         from_str = """
                     sale_order_line l
             JOIN    sale_order sub on (l.order_id=sub.id)
-            JOIN    sale_order_stage stage on sub.stage_id = stage.id
             JOIN    res_partner partner on sub.partner_id = partner.id
             LEFT JOIN product_product p on (l.product_id=p.id)
             LEFT JOIN product_template t on (p.product_tmpl_id=t.id)
@@ -169,10 +168,8 @@ class SaleSubscriptionReport(models.Model):
                     sub.user_id,
                     sub.team_id,
                     sub.company_id,
-                    sub.to_renew,
-                    sub.stage_category,
+                    sub.subscription_state,
                     sub.health,
-                    sub.stage_id,
                     sub.name,
                     sub.sale_order_template_id,
                     sub.pricelist_id,

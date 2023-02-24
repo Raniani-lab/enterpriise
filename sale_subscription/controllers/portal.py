@@ -4,13 +4,11 @@ import werkzeug
 from collections import OrderedDict
 from dateutil.relativedelta import relativedelta
 
-from odoo import http
-from odoo.exceptions import AccessError, MissingError, ValidationError
+from odoo import http, fields
+from odoo.exceptions import AccessError, MissingError
 from odoo.fields import Command
 from odoo.http import request
 from odoo.tools.translate import _
-from odoo.tools.misc import format_date
-from odoo.tools.date_utils import get_timedelta
 from odoo.addons.payment.controllers import portal as payment_portal
 from odoo.addons.payment import utils as payment_utils
 from odoo.addons.portal.controllers.portal import pager as portal_pager
@@ -22,7 +20,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
     def _get_subscription_domain(self, partner):
         return [
             ('partner_id', 'in', [partner.id, partner.commercial_partner_id.id]),
-            ('stage_category', 'in', ['progress', 'closed']),
+            ('subscription_state', 'in', ['3_progress', '4_paused', '6_churn']),
             ('is_subscription', '=', True)
         ]
 
@@ -66,18 +64,18 @@ class CustomerPortal(payment_portal.PaymentPortal):
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'create_date desc, id desc'},
             'name': {'label': _('Name'), 'order': 'name asc, id asc'},
-            'stage_id': {'label': _('Status'), 'order': 'stage_id asc, to_renew desc, id desc'}
+            'subscription_state': {'label': _('Status'), 'order': 'subscription_state asc, id desc'}
         }
         searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
-            'open': {'label': _('In Progress'), 'domain': [('stage_category', '=', 'progress')]},
-            'pending': {'label': _('To Renew'), 'domain': [('to_renew', '=', True)]},
-            'close': {'label': _('Closed'), 'domain': [('stage_category', '=', 'closed')]},
+            'open': {'label': _('In Progress'), 'domain': [('subscription_state', 'in', ['3_progress', '4_paused'])]},
+            'to_renew': {'label': _('To Renew'), 'domain': [('subscription_state', '=', '3_progress'), ('next_invoice_date', '<', fields.Date.today())]},
+            'close': {'label': _('Closed'), 'domain': [('subscription_state', '=', '6_churn')]},
         }
 
         # default sort by value
         if not sortby:
-            sortby = 'stage_id'
+            sortby = 'subscription_state'
         order = searchbar_sortings[sortby]['order']
         # default filter by value
         if not filterby:
@@ -117,7 +115,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
         if report_type in ('html', 'pdf', 'text'):
             return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
         active_plan_sudo = order_sudo.sale_order_template_id.sudo()
-        display_close = active_plan_sudo.user_closable and order_sudo.stage_category == 'progress'
+        display_close = active_plan_sudo.user_closable and order_sudo.subscription_state == '3_progress'
         is_follower = request.env.user.partner_id in order_sudo.message_follower_ids.partner_id
         periods = {'day': 'days', 'week': 'weeks', 'month': 'months', 'year': 'years'}
         # Calculate the duration when the customer can reopen his subscription
@@ -140,11 +138,10 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'message': message,
             'message_class': message_class,
             'pricelist': order_sudo.pricelist_id.sudo(),
-            'renew_url': f'/my/subscription/{order_sudo.id}/renew?access_token={order_sudo.access_token}',
         }
         payment_values = {
             **SalePortal._get_payment_values(
-                self, order_sudo, is_validation=not order_sudo.to_renew, is_subscription=True
+                self, order_sudo, is_subscription=True
             ),
             'default_token_id': order_sudo.payment_token_id.id,
             'amount': None,  # Determined by the generated invoice
@@ -172,25 +169,6 @@ class CustomerPortal(payment_portal.PaymentPortal):
                 order_sudo.message_post(body=_('Closing text: %s', kw.get('closing_text')))
             order_sudo.set_close()
         return request.redirect(f'/my/subscription/{order_id}/{access_token}')
-
-    @http.route(['/my/subscription/<int:order_id>/renew'], type='http', methods=["GET"], auth="public", website=True)
-    def renew_subscription(self, order_id, access_token=None, **kw):
-        order_sudo, redirection = self._get_subscription(access_token, order_id)
-        if redirection:
-            return redirection
-        message = ""
-        if not order_sudo.to_renew or not order_sudo.end_date or order_sudo.sale_order_template_id.recurring_rule_boundary == 'unlimited':
-            message = _("This Subscription is already running. There is no need to renew it.")
-        else:
-            unit = order_sudo.sale_order_template_id.recurring_rule_type
-            duration = order_sudo.sale_order_template_id.recurring_rule_count
-            if unit and duration and order_sudo.end_date:
-                new_end_date = order_sudo.end_date + get_timedelta(duration, unit)
-                order_sudo.write({'end_date': new_end_date, 'to_renew': False})
-                new_end_date = format_date(request.env, new_end_date, lang_code=order_sudo.partner_id.lang)
-                message = _("Your subscription has been renewed until %s.", new_end_date)
-        subscription_url = f'/my/subscription/{order_sudo.id}/{order_sudo.access_token}?message={message}&message_class=alert-success'
-        return request.redirect(subscription_url)
 
 
 class PaymentPortal(payment_portal.PaymentPortal):

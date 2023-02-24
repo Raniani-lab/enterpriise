@@ -23,17 +23,17 @@
                             <li class="list-group-item flex-grow-1">
                                 <div><strong>Next Invoice: <span t-field="subscription.next_invoice_date"/></strong></div>
                                 <div><strong>Amount: <span t-field="subscription.amount_untaxed" t-options='{"widget": "monetary","display_currency": subscription.currency_id}'/></strong></div>
-                                <a t-if="subscription.stage_category == 'progress' and not subscription.to_renew and subscription.sale_order_template_id and display_change_plan"
+                                <a t-if="subscription.subscription_state == '3_progress' and subscription.sale_order_template_id and display_change_plan"
                                     role="button" class="mt8 btn btn-primary" t-att-href="subscription.get_portal_url()">
                                         Change plan
                                 </a>
                                 <div t-if="subscription.payment_token_id">Payment method:
                                     <t t-esc="subscription.payment_token_id._build_display_name(max_length=14)"/>
                                 </div>
-                                <t t-if="not subscription.to_renew and subscription.stage_category == 'progress'">
+                                <t t-if="subscription.subscription_state in ['3_progress', '4_paused', '6_churn']">
                                     <!-- User is logged in under the partner set on the subscription -->
                                     <t t-if="user.partner_id == subscription.partner_id">
-                                        <a t-if="providers or tokens" role="button" class="btn btn-secondary btn-block mb-2 w-100" data-bs-toggle="modal" data-bs-target="#payment_managing" href="#">
+                                        <a role="button" class="btn btn-secondary btn-block mb-2 w-100" data-bs-toggle="modal" data-bs-target="#payment_managing" href="#">
                                             <t t-if="subscription.payment_token_id">Manage Payment Method</t>
                                             <t t-else="">Set Payment Method</t>
                                         </a>
@@ -48,7 +48,7 @@
                                         Manage Payment Methods
                                     </button>
                                     <!-- User is logged out -->
-                                    <a t-elif="providers or tokens"
+                                    <a t-else="providers or tokens"
                                        title="You must be logged in to manage your payment methods."
                                        t-attf-href="/web/login?redirect={{subscription.get_portal_url()}}"
                                        role="button"
@@ -56,10 +56,6 @@
                                         Manage Payment Methods
                                     </a>
                                 </t>
-                                <!-- Manage renewals -->
-                                <a t-if="subscription.to_renew and subscription.payment_token_id" role="button" class="btn btn-primary btn-block mb8" t-att-href="renew_url">
-                                    <i class="fa fa-refresh"/> Renew
-                                </a>
                                 <!-- Download -->
                                 <div class="o_download_pdf btn-toolbar flex-sm-nowrap mt-2">
                                     <div class="btn-group flex-grow-1 me-1 mb-1">
@@ -94,13 +90,16 @@
                     <div class="card oe_website_contract">
                         <div class="card-header bg-white pb-2 pt-3">
                             <div class="row">
+                                <div class="alert alert-danger text-center" role="alert" t-if="subscription.subscription_state == '3_progress' and subscription.next_invoice_date &lt; datetime.date.today()">
+                                    Your subscription is expired, will be closed soon. <a t-if="(providers or tokens) and subscription.amount_total> 0" href="#payment_message">Pay now to renew</a> <t t-else="">Pay now to renew</t>
+                                </div>
                                 <div class="col-12 col-lg flex-grow-1 mb-1 mb-lg-0">
                                     <h4 class="mb-0"><small class="text-muted">Subscription -</small> <span t-field="subscription.display_name"/></h4>
                                 </div>
                                 <div class="col-12 col-lg flex-grow-0 text-lg-end mb-1 mb-lg-0">
-                                    <span t-if="subscription.stage_category == 'progress' and not subscription.to_renew" class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> In Progress</span>
-                                    <span t-if="subscription.to_renew and subscription.stage_category == 'progress'" class="badge rounded-pill text-bg-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
-                                    <span t-if="subscription.stage_category == 'closed'" class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-remove"/> Closed</span>
+                                    <span t-if="subscription.subscription_state == '3_progress' and subscription.next_invoice_date &lt; datetime.date.today()" class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-repeat"/> To Renew</span>
+                                    <span t-elif="subscription.subscription_state == '3_progress'" class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> In Progress</span>
+                                    <span t-if="subscription.subscription_state in ['6_churn', '5_renewed']" class="badge rounded-pill text-bg-dark"><i class="fa fa-fw fa-remove"/> Closed</span>
                                 </div>
                             </div>
                         </div>
@@ -137,7 +136,7 @@
                                                 <td class="w-100 pb-0"><span t-field="subscription.start_date"/></td>
                                             </tr>
                                             <tr>
-                                                <th class="text-end pb-0">Next Invoice:</th>
+                                                <th class="text-end pb-0">Next Billing Date:</th>
                                                 <td class="w-100 pb-0"><span t-field="subscription.next_invoice_date"/></td>
                                             </tr>
                                         </tbody>
@@ -280,9 +279,9 @@
                             </div> <!-- / Plan details ====== -->
 
                             <!-- ======  Subscription closed ====== -->
-                            <div t-if="subscription.to_renew or subscription.stage_category == 'closed'" id="payment_message">
+                            <div t-if="subscription.subscription_state in ['3_progress', '4_paused', '5_churn']" id="payment_message">
                                 <div>
-                                    <p id="wc_warning_closed" t-if="not subscription.stage_category == 'closed'">Your subscription is closed.
+                                    <p id="wc_warning_closed" t-if="subscription.subscription_state == '5_churn'">Your subscription is closed.
                                         <t t-if="missing_periods == 1">If you wish to reopen it, you can pay your invoice for the current invoicing period.</t>
                                         <t t-if="missing_periods &gt; 1">If you wish to reopen it, the <t t-esc="missing_periods"/> missing payments (from <span t-field="subscription.next_invoice_date"/> to this day) will be automatically processed.</t>
                                     </p>
@@ -290,7 +289,7 @@
                                         <t t-call="payment.company_mismatch_warning"/>
                                     </div>
                                     <div class="clearfix" t-elif="(providers or tokens) and subscription.amount_total> 0">
-                                        <h5 class="mb-1">Pay Recurrently With</h5>
+                                        <h5 class="mb-1">Pay now to renew</h5>
                                         <hr class="my-0"/>
                                         <t t-call="payment.checkout">
                                             <t t-set="landing_route"
@@ -301,7 +300,7 @@
                             </div>
 
                             <!-- ======  Change Payment Method ====== -->
-                            <div t-if="subscription.stage_category == 'progress' and not subscription.to_renew" role="dialog" class="modal fade" id="payment_managing">
+                            <div t-if="subscription.subscription_state in ['3_progress', '4_paused']" role="dialog" class="modal fade" id="payment_managing">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <header class="modal-header">
@@ -459,9 +458,11 @@
             <t t-if="subscriptions" t-call="portal.portal_table">
                 <thead>
                     <tr class="active">
-                        <th class="w-75">Subscription</th>
-                        <th class="text-center">Status</th>
+                        <th class="">Subscription</th>
+                        <th class="text-center">Next Billing Date</th>
+                        <th class="text-center">Recurrence</th>
                         <th class="text-end">Total</th>
+                        <th class="text-center">Status</th>
                     </tr>
                 </thead>
                 <t t-foreach="subscriptions" t-as="subscription">
@@ -469,18 +470,24 @@
                         <td>
                             <a t-att-href="subscription.get_portal_url()"><t t-esc="subscription.display_name"/></a>
                         </td>
+                        <td class="text-center">
+                            <t t-esc="subscription.next_invoice_date" t-if="subscription.subscription_state == '3_progress' and subscription.next_invoice_date &lt;= datetime.date.today()"
+                               class="text-danger"/>
+                            <t t-esc="subscription.next_invoice_date" t-else=""/>
+                        </td>
+                        <td class="text-center"><t t-esc="subscription.recurrence_id.name"/></td>
+                        <td class="text-end"><span t-esc="subscription.amount_total" t-options="{'widget': 'monetary', 'display_currency': subscription.currency_id}"/></td>
                         <td class="text-center" id="subscription_state">
-                            <t t-if="subscription.stage_category == 'progress' and not subscription.to_renew">
+                            <t t-if="subscription.subscription_state in ['3_progress', '4_paused'] and subscription.next_invoice_date &lt;= datetime.date.today()">
+                                <span class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-repeat"/> To Renew</span>
+                            </t>
+                            <t t-elif="subscription.subscription_state in ['3_progress', '4_paused']">
                                 <span class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> In Progress</span>
                             </t>
-                            <t t-if="subscription.to_renew">
-                                <span class="badge rounded-pill text-bg-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
-                            </t>
-                            <t t-if="subscription.stage_category == 'closed'">
-                                <span class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-remove"/> Closed</span>
+                            <t t-elif="subscription.subscription_state == '6_churn'">
+                                <span class="badge rounded-pill text-bg-dark"><i class="fa fa-fw fa-remove"/> Closed</span>
                             </t>
                         </td>
-                        <td class="text-end"><span t-esc="subscription.amount_total" t-options="{'widget': 'monetary', 'display_currency': subscription.currency_id}"/></td>
                     </tr>
                 </t>
             </t>

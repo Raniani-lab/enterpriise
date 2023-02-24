@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_template_view_search" model="ir.ui.view">
+        <field name="name">sale.order.template.search</field>
+        <field name="model">sale.order.template</field>
+        <field name="arch" type="xml">
+            <search string="Search Template">
+                <field name="name"/>
+                <filter string="Subscription" name="is_subscription" domain="[('is_subscription','=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active','=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="sale_subscription_template_action" model="ir.actions.act_window">
+        <field name="name">Plans</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{
+            'default_is_subscription': 1,
+            'search_default_is_subscription': 1,
+        }</field>
+        <field name="search_view_id" eval='sale_order_template_view_search'/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new template of subscription
+            </p><p>
+                Templates are used to prefigure subscription that
+                can be selected by the salespeople to quickly configure the
+                terms and conditions of the subscription.
+            </p>
+        </field>
+    </record>
+
+    <record id="sale_order_template_view_tree" model="ir.ui.view">
+        <field name="name">sale.order.template.tree</field>
+        <field name="model">sale.order.template</field>
+        <field name="inherit_id" ref="sale_management.sale_order_template_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="recurrence_id" options="{'no_create': True}"/>
+            </field>
+        </field>
+    </record>
+
+     <record id="sale_subscription_template_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="sale_order_template_view_tree"/>
+        <field name="act_window_id" ref="sale_subscription_template_action"/>
+    </record>
+
+
+    <record id="sale_subscription_template_view_form" model="ir.ui.view">
+        <field name="name">sale.order.template.form</field>
+        <field name="model">sale.order.template</field>
+        <field name="inherit_id" ref="sale_management.sale_order_template_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//label[@id='sale_order_template_title']" position="replace">
+                <label for="name" attrs="{'invisible': [('recurrence_id', '!=', False)]}"/>
+                <label for="name" string="Subscription Plan" attrs="{'invisible': [('recurrence_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="is_subscription" invisible="1"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position="after">
+                <field name="recurring_invoice" invisible="1"/>
+                <field name="recurrence_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='product_uom_id']" position="after">
+                 <button name="open_product_pricing" string="prices" type="object" class="btn btn-primary"
+                        attrs="{'invisible': ['|', ('recurring_invoice', '=', False), ('recurrence_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position="after">
+                <field name="recurring_invoice" invisible="1"/>
+            </xpath>
+            <group name="sale_info" position="inside">
+                <field name="invoice_mail_template_id" string="Invoice Email" groups="base.group_no_one"/>
+            </group>
+            <group name="sale_info" position="after">
+                <group name="sale_info2">
+                    <field name="recurrence_id" placeholder="None"
+                           domain="[('unit', 'not in', ['hour', 'day'])]"
+                           options="{'no_create': True}"/>
+                    <field name="recurring_rule_boundary" widget="radio" options="{'horizontal': true}"
+                           attrs="{'invisible': [('recurrence_id','=', False)]}"/>
+                    <label for="recurring_rule_count"
+                           attrs="{'invisible': ['|', ('recurrence_id','=', False), ('recurring_rule_boundary','=','unlimited')]}"/>
+                    <div attrs="{'invisible': ['|', ('recurrence_id','=', False), ('recurring_rule_boundary','=','unlimited')]}">
+                        <field name="recurring_rule_count" style="width: 3rem;"/>
+                        <field name="recurring_rule_type" class="oe_inline"/>
+                    </div>
+                    <field name="user_closable" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
+                    <label for="auto_close_limit" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
+                    <!--  ARJ TODO master ir config parameter or a company setting -->
+                    <div class="o_row" attrs="{'invisible': [('recurrence_id','=', False),]}">
+                        <field name="auto_close_limit" class="oe_inline"/>
+                        <div>days</div>
+                    </div>
+                    <field name="journal_id" options="{'no_create': True}"
+                           attrs="{'invisible': [('recurrence_id','=', False)]}"
+                           groups="account.group_account_manager"/>
+                    <!-- company_id invisible to be available in domains -->
+                    <field name="company_id" invisible="1"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <record id="sale_subscription_template_form" model="ir.actions.act_window.view" >
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="sale_subscription_template_view_form"/>
+        <field name="act_window_id" ref="sale_subscription_template_action"/>
+    </record>
+</odoo>

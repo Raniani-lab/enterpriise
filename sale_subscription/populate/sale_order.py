@@ -21,7 +21,7 @@ class SaleOrder(models.Model):
         to_upsell._create_invoices()
         vals = []
         for so in to_upsell:
-            vals += [so._prepare_upsell_renew_order_values('upsell')]
+            vals += [so._prepare_upsell_renew_order_values('7_upsell')]
         self.create(vals)
 
     def _renew(self, sample_size):
@@ -30,7 +30,7 @@ class SaleOrder(models.Model):
         vals = []
         _logger.info("Renewing %d sale orders", len(to_renew))
         for so in to_renew:
-            vals += [so._prepare_upsell_renew_order_values('renew')]
+            vals += [so._prepare_upsell_renew_order_values('2_renewal')]
         renewal = self.create(vals)
         renewal_to_confirm = self.env['sale.order'].browse(random.sample(renewal.ids, int(len(renewal.ids) * 0.8)))
         renewal_to_confirm.action_confirm()

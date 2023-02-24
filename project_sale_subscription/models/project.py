@@ -84,11 +84,11 @@ class Project(models.Model):
             return profitability_items
         subscription_read_group = self.env['sale.order'].sudo()._read_group(
             [('analytic_account_id', 'in', self.analytic_account_id.ids),
-             ('stage_category', '!=', 'draft'),
+             ('subscription_state', 'not in', ['1_draft', '5_renewed']),
              ('is_subscription', '=', True),
             ],
-            ['stage_category', 'sale_order_template_id', 'recurring_monthly', 'ids:array_agg(id)'],
-            ['sale_order_template_id', 'stage_category'],
+            ['subscription_state', 'sale_order_template_id', 'recurring_monthly', 'ids:array_agg(id)'],
+            ['sale_order_template_id', 'subscription_state'],
             lazy=False,
         )
         if not subscription_read_group:
@@ -98,7 +98,7 @@ class Project(models.Model):
         amount_to_invoice = 0.0
         for res in subscription_read_group:
             all_subscription_ids.extend(res['ids'])
-            if res['stage_category'] != 'progress':  # then the subscriptions are closed and so nothing is to invoice.
+            if res['subscription_state'] != '3_progress':  # then the subscriptions are closed and so nothing is to invoice.
                 continue
             if not res['sale_order_template_id']:  # then we will take the recurring monthly amount that we will invoice in the next invoice(s).
                 amount_to_invoice += res['recurring_monthly']

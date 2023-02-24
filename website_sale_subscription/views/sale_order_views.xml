@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale_subscription.sale_subscription_view_tree" />
         <field name='arch' type='xml'>
             <field name="recurrence_id" position="after">
-                <field name="website_id" optional="show"/>
+                <field name="website_id" optional="hide"/>
             </field>
         </field>
     </record>

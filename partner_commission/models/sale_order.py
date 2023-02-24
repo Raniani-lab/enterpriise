@@ -70,9 +70,9 @@ class SaleOrder(models.Model):
             })
         return invoice_vals
 
-    def _prepare_upsell_renew_order_values(self, subscription_management):
+    def _prepare_upsell_renew_order_values(self, subscription_state):
         self.ensure_one()
-        values = super()._prepare_upsell_renew_order_values(subscription_management)
+        values = super()._prepare_upsell_renew_order_values(subscription_state)
         if self.referrer_id:
             values.update({
                 'referrer_id': self.referrer_id.id,

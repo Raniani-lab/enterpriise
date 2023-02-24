@@ -62,12 +62,12 @@ class SaleOrderLine(models.Model):
             if to_invoice_check and line.order_id.start_date and line.order_id.start_date > today or (currency_id.is_zero(line.price_subtotal)):
                 line.invoice_status = 'no'
 
-    @api.depends('order_id.subscription_management', 'order_id.start_date')
+    @api.depends('order_id.subscription_state', 'order_id.start_date')
     def _compute_discount(self):
         today = fields.Date.today()
         other_lines = self.env['sale.order.line']
         for line in self:
-            if not line.order_id.next_invoice_date or line.order_id.subscription_management != 'upsell':
+            if not line.order_id.next_invoice_date or line.order_id.subscription_state != '7_upsell':
                 other_lines |= line
                 continue
             period_end = line.order_id.next_invoice_date
@@ -83,7 +83,7 @@ class SaleOrderLine(models.Model):
             # In that case, the upsell will also impact the renewed contract for a prorata temporis of the previous period
             if ratio < 0:
                 ratio = 1.00  # Something went wrong in the dates
-            if line.order_id.subscription_management == 'upsell' and line.product_id.recurring_invoice and line.order_id.next_invoice_date:
+            if line.order_id.subscription_state == '7_upsell' and line.product_id.recurring_invoice and line.order_id.next_invoice_date:
                 line.discount = (1 - ratio) * 100
                 if line.parent_line_id:
                     # If the parent line had a discount, we reapply it to keep the same conditions. E.G. base price is 200€
@@ -231,10 +231,10 @@ class SaleOrderLine(models.Model):
         res = super()._prepare_invoice_line(**optional_values)
         if self.display_type:
             return res
-        elif self.temporal_type == 'subscription' or self.order_id.subscription_management == 'upsell':
+        elif self.temporal_type == 'subscription' or self.order_id.subscription_state == '7_upsell':
             description = "%s - %s" % (self.name, self.order_id.recurrence_id.duration_display)
             lang_code = self.order_id.partner_id.lang
-            if self.order_id.subscription_management == 'upsell':
+            if self.order_id.subscription_state == '7_upsell':
                 # We start at the beginning of the upsell as it's a part of recurrence
                 new_period_start = self.order_id.start_date or fields.Datetime.today()
             else:
@@ -244,7 +244,7 @@ class SaleOrderLine(models.Model):
                 new_period_start = self.order_id.next_invoice_date
             format_start = format_date(self.env, new_period_start, lang_code=lang_code)
             parent_order_id = self.order_id.id
-            if self.order_id.subscription_management == 'upsell':
+            if self.order_id.subscription_state == '7_upsell':
                 # remove 1 day as normal people thinks in terms of inclusive ranges.
                 next_invoice_date = self.order_id.next_invoice_date - relativedelta(days=1)
                 parent_order_id = self.order_id.subscription_id.id
@@ -295,7 +295,7 @@ class SaleOrderLine(models.Model):
     # Business Methods #
     ####################
 
-    def _get_renew_upsell_values(self, subscription_management, period_end=None):
+    def _get_renew_upsell_values(self, subscription_state, period_end=None):
         order_lines = []
         description_needed = False
         for line in self:
@@ -307,13 +307,14 @@ class SaleOrderLine(models.Model):
             order_lines.append((0, 0, {
                 'parent_line_id': line.id,
                 'temporal_type': 'subscription',
+                'name': line.name,
                 'product_id': product.id,
                 'product_uom': line.product_uom.id,
-                'product_uom_qty': 0 if subscription_management == 'upsell' else line.product_uom_qty,
+                'product_uom_qty': 0 if subscription_state == '7_upsell' else line.product_uom_qty,
                 'price_unit': line.price_unit,
             }))
             description_needed = True
-        if subscription_management == 'upsell' and description_needed and period_end:
+        if subscription_state == '7_upsell' and description_needed and period_end:
             format_start = format_date(self.env, fields.Date.today())
             end_period = period_end - relativedelta(days=1)  # the period ends the day before the next invoice
             format_next_invoice = format_date(self.env, end_period)

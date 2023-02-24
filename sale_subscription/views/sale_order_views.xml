@@ -7,13 +7,16 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <field name="is_subscription" invisible="1"/>
-                <field name="subscription_management" invisible="1"/>
-                <field name="is_upselling" invisible="1"/>
-                <field name="stage_category" invisible="1"/>
+                <field name="subscription_state" invisible="1"/>
                 <field name="end_date" invisible="1"/>
                 <field name="archived_product_count" invisible="1"/>
                 <field name="has_recurring_line" invisible="1"/>
             </xpath>
+            <button id="create_invoice" position="before">
+                <button string="Resume" name="resume_subscription" type="object" data-hotkey="r"
+                        class="btn-primary"
+                        attrs="{'invisible': [('subscription_state', '!=', '4_paused')]}"/>
+            </button>
             <button id="create_invoice" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', '&amp;', ('is_subscription', '=', True), ('state', '!=', 'sale'), ('invoice_status', '!=', 'to invoice')]}</attribute>
             </button>
@@ -25,107 +28,107 @@
             <button id="create_invoice_percentage" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), '|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}</attribute>
             </button>
-            <button name="action_draft" position="after">
-                <button string="Upsell" name="prepare_upsell_order" type="object"
-                        attrs="{'invisible': [
-                        '|',
-                        '|',
-                        ('is_subscription', '=', False),
-                        ('stage_category', '!=', 'progress'),
-                        ('state', '!=', 'sale'),
-                        ]}" data-hotkey="z"/>
-                <button string="Renew" name="prepare_renewal_order" type="object" data-hotkey="w"
-                        attrs="{'invisible': [
-                        '|',
-                        '|',
-                        ('is_subscription', '=', False),
-                        ('stage_category', '!=', 'progress'),
-                        ('state', '!=', 'sale'),
-                        ]}"/>
-            </button>
             <button name="action_cancel" position="attributes">
                 <attribute name="attrs">
-                    {'invisible': [ '|',
-                                    ('id', '=', False),
-                                    '|',
-                                    '&amp;', ('is_subscription','=',False), ('state', 'not in', ['draft', 'sent', 'sale']),
+                    {'invisible': [ '|', ('id', '=', False),
+                                    '|', '&amp;', ('is_subscription','=',False), ('state', 'not in', ['draft', 'sent', 'sale']),
                                     '&amp;', ('is_subscription','=',True), 
-                                        '|',
-                                        '&amp;', ('stage_category', 'not in', ['closed']), ('state', 'not in', ['draft', 'sent']),
-                                        ('state', 'in', ['cancel'])]                            
+                                            '|', ('state', 'not in', ['draft', 'sent']), ('state', 'in', ['cancel'])]
                     }
                 </attribute>
             </button>
             <button name="action_cancel" position="before">
                 <button string="Create Alternative" name="create_alternative" type="object"
-                    attrs="{'invisible': [
-                    '|',
-                    ('subscription_management', 'not in', ['upsell', 'renew']),
+                    attrs="{'invisible': [ '|',
+                    ('subscription_state', '!=', '2_renewal'),
                     ('state', 'not in', ['draft', 'sent']),
                     ]}"
                 />
             </button>
-            <!--  Change the label of cancel button for subscription -->
             <button name="action_cancel" position="after">
+                <button string="Upsell" name="prepare_upsell_order" type="object"
+                        attrs="{'invisible': [
+                        '|', ('is_subscription', '=', False),
+                        '|', ('subscription_state', '!=', '3_progress'),
+                        ('state', '!=', 'sale'),
+                        ]}" data-hotkey="z"/>
+                <button string="Renew" name="prepare_renewal_order" type="object" data-hotkey="w"
+                        attrs="{'invisible': [
+                        '|', ('is_subscription', '=', False),
+                        '|', ('subscription_state', 'not in', ['3_progress', '6_churn']),
+                        ('state', '!=', 'sale'),
+                        ]}"/>
+                <button string="Reopen" name="reopen_order" type="object" data-hotkey="o"
+                        attrs="{'invisible': [
+                        '|', ('is_subscription', '=', False),
+                        '|', ('subscription_state', '!=', '6_churn'),
+                        ('state', '!=', 'sale'),
+                        ]}"/>
+                <!--  Change the label of cancel button for subscription -->
                 <button name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action"
-                        string="Close" attrs="{'invisible': ['|', ('stage_category', 'not in', ['progress', 'paused']), ('id', '=', False)]}"
+                        string="Close" attrs="{'invisible': ['|', ('subscription_state', 'not in', ['3_progress', '4_paused']), ('id', '=', False)]}"
                         data-hotkey="z"/>
             </button>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button attrs="{'invisible': [('is_renewing', '=', False)]}"
+                    name="open_subscription_renewal"
+                    class="oe_stat_button"
+                    icon="fa-repeat"
+                    type="object">
+                    <field name="renewal_count" widget="statinfo" string="Renewal Quote"/>
+                </button>
+                <button attrs="{'invisible': [('is_upselling', '=', False)]}"
+                    name="open_subscription_upsell"
+                    class="oe_stat_button"
+                    icon="fa-arrow-circle-o-up"
+                    type="object">
+                    <field name="upsell_count" widget="statinfo" string="Upsell Quote"/>
+                </button>
                 <button attrs="{'invisible': [('history_count', '&lt;', 2)]}"
                     name="open_subscription_history"
                     class="oe_stat_button"
                     icon="fa-dollar"
                     type="object">
-                    <field name="history_count" widget="statinfo" string="Sales"/>
+                    <field name="history_count" widget="statinfo" string="Sales History"/>
                 </button>
-                <button attrs="{'invisible': [('is_subscription', '=', False)]}"
+                <button attrs="{'invisible': ['|', ('is_subscription', '=', False), ('subscription_state', 'in', ['1_draft', '2_renewal'])]}"
                     name="action_sale_order_log"
                     class="oe_stat_button"
-                    icon="fa-money"
+                    icon="fa-line-chart"
                     type="object">
                     <field name="recurring_monthly" widget="statinfo" string="MRR"/>
                  </button>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="after">
                 <field name="payment_exception" invisible="1"/>
-                <div class="px-2 rounded-pill text-bg-warning float-end" attrs="{'invisible': ['|', ('is_subscription', '=', False), ('to_renew', '=', False)]}">To Renew</div>
                 <div class="px-2 rounded-pill text-bg-danger float-end" attrs="{'invisible': [('payment_exception', '=', False)]}">Payment Failure</div>
-                <div class="badge rounded-pill bg-default float-end border border-default fs-6" attrs="{'invisible': [('stage_category', '!=', 'closed')]}">Closed</div>
+                <div class="badge rounded-pill bg-default float-end border border-default fs-6" attrs="{'invisible': [('subscription_state', 'not in', ['closed'])]}">Closed</div>
                 <field name="is_subscription" invisible="1"/>
-                <field name="to_renew"  invisible="1"/>
                 <field name="is_upselling"  invisible="1"/>
-                <field name="renew_state"  invisible="1"/>
-                <field name="subscription_management" invisible="1"/>
+                <field name="is_renewing"  invisible="1"/>
                 <field name="origin_order_id" invisible="1"/>
-
-                <div name="subscription_pill" class="badge rounded-pill bg-info text-white float-end fs-6"
-                     attrs="{'invisible': [
-                         '|', '|',  '|', '|', '&amp;',
-                         ('is_subscription', '=', False),
-                         ('has_recurring_line', '=', False),
-                         ('to_renew', '=', True),
-                         ('is_upselling', '=', True),
-                         ('renew_state', '!=', False),
-                         ('subscription_management', '!=', 'create')
-                     ]}"
-                >Recurring
-                </div>
-                <div name="upsell_pill" class="badge rounded-pill bg-primary float-end fs-6"
-                     attrs="{'invisible': [('is_upselling', '=', False)]}">Upselling
-                </div>
-                <div name="renewed_pill" class="badge rounded-pill bg-success text-white float-end fs-6"
-                     attrs="{'invisible': ['|', ('renew_state', '=', 'renewing'), ('renew_state', '=', False)]}"><field name="renew_state" class="d-inline"/>
-                </div>
-                <div name="renewing_pill" class="badge rounded-pill bg-warning float-end fs-6"
-                     attrs="{'invisible': ['|', ('renew_state', '=', 'renewed'), ('renew_state', '=', False)]}"><field name="renew_state" class="d-inline"/>
-                </div>
-                <div name="renew_pill" class="badge rounded-pill float-end border border-primary fs-6"
-                     attrs="{'invisible': [('subscription_management', '!=', 'renew')]}">Renewal
-                </div>
-                <div name="renew_pill" class="badge rounded-pill float-end border border-primary fs-6"
-                     attrs="{'invisible': [('subscription_management', '!=', 'upsell')]}">Upsell
-                </div>
+                <field name="subscription_state" invisible="1"/>
+                <button class="float-end fs-6 btn"
+                        type="object"
+                        name="subscription_open_related"
+                        attrs="{'invisible': [('subscription_state', 'not in', ['2_renewal', '5_renewed', '7_upsell'])]}">
+                    <field name="subscription_state"
+                           widget="badge"
+                           decoration-info="subscription_state in ['2_renewal']"
+                           decoration-primary="subscription_state in ['7_upsell']"
+                           decoration-secondary="subscription_state in ['5_renewed']"
+                    />
+                </button>
+                <field name="subscription_state" class="float-end fs-6"
+                       attrs="{'invisible': [('subscription_state', 'not in', ['3_progress', '4_paused', '6_churn'])]}"
+                       widget="badge"
+                       decoration-info="subscription_state in ['1_draft']"
+                       decoration-success="subscription_state in ['3_progress']"
+                       decoration-warning="subscription_state in ['4_paused']"
+                       decoration-danger="subscription_state in ['6_churn']"
+                    />
+                <div name="subscription_state" class="float-end fs-6 badge rounded-pill text-bg-info"
+                     attrs="{'invisible': [('subscription_state', 'not in', ['1_draft'])]}">Subscription Quotation</div>
             </xpath>
             <xpath expr="//header" position="after">
                 <div role="alert" class="alert alert-warning mb-0 p-3 text-center" attrs="{'invisible': [('archived_product_count', '=', 0)]}">
@@ -137,33 +140,33 @@
                 </div>
             </xpath>
             <field name="show_update_pricelist" position='before'>
-                <label name="recurrence_label" for="recurrence_id" attrs="{'invisible':[('recurrence_id', '=', False), ('has_recurring_line', '=', False)]}"/>
-                <div name="recurrence_block" class="o_row"  attrs="{'invisible':[('recurrence_id', '=', False), ('has_recurring_line', '=', False)]}">
+                <label name="recurrence_label" for="recurrence_id"/>
+                <div name="recurrence_block" class="o_row">
                     <field name="recurrence_id" groups="!sales_team.group_sale_manager"
-                           attrs="{'readonly': [('stage_category', 'in', ['progress', 'paused', 'closed'])]}"
+                           attrs="{'readonly': [('subscription_state', 'in', ['3_progress', '4_paused', 'closed', '5_renewed'])]}"
                            domain="[('unit', 'not in', ['hour', 'day'])]"
                            options="{'no_create': True}"/>
                     <field name="recurrence_id" groups="sales_team.group_sale_manager"
-                           attrs="{'readonly': [('subscription_management', '=', 'upsell')]}"
+                           attrs="{'readonly': [('subscription_state', '=', '7_upsell')]}"
                            domain="[('unit', 'not in', ['hour', 'day'])]"
                            options="{'no_create': True}"/>
-                    <span attrs="{'invisible': ['|', ('recurrence_id', '=', False), ('subscription_management', '=', 'upsell')]}">until</span>
-                    <field name="end_date" attrs="{'invisible': ['|', ('recurrence_id', '=', False), ('subscription_management', '=', 'upsell')]}"/>
+                    <span attrs="{'invisible': ['|', ('recurrence_id', '=', False), ('subscription_state', '=', '7_upsell')]}">until</span>
+                    <field name="end_date" attrs="{'invisible': ['|', ('recurrence_id', '=', False), ('subscription_state', '=', '7_upsell')]}"/>
                 </div>
                 <field name="next_invoice_date" groups="!sales_team.group_sale_manager"
                        attrs="{
-                        'invisible': ['|', ('stage_category', 'not in', ['progress', 'paused']) , ('recurrence_id', '=', False)],
+                        'invisible': ['|', ('subscription_state', 'not in', ['3_progress', '4_paused']) , ('recurrence_id', '=', False)],
                         'required': [('recurrence_id', '!=', False), ('state', 'in', ['sale', 'done'])],
                         'readonly': 1,
                         }"/>
                 <field name="next_invoice_date" groups="sales_team.group_sale_manager"
                        attrs="{
-                        'invisible': ['|', ('stage_category', 'not in', ['progress', 'paused']) , ('recurrence_id', '=', False)],
+                        'invisible': ['|', ('subscription_state', 'not in', ['3_progress', '4_paused']) , ('recurrence_id', '=', False)],
                         'required': [('recurrence_id', '!=', False), ('state', 'in', ['sale', 'done'])],
                         }"/>
             </field>
             <field name="sale_order_template_id" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['sale', 'done']), ('subscription_management', '=', 'upsell')]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['sale', 'done']), ('subscription_state', '=', '7_upsell')]}</attribute>
             </field>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position='after'>
                 <field name="temporal_type" invisible="1"/>
@@ -179,12 +182,11 @@
             </xpath>
             <group name="sales_person" position='inside'>
                 <field name="start_date" groups="!sales_team.group_sale_manager"
-                       attrs="{'readonly': ['|', ('subscription_management', 'in', ['upsell', 'renew']),
-                                                 ('stage_category', 'in', ['progress', 'paused'])]}"/>
+                       attrs="{'readonly': ['|', ('subscription_state', 'in', ['7_upsell', 'renew']),
+                                                 ('subscription_state', 'in', ['3_progress', '4_paused'])]}"/>
                 <field name="start_date" groups="sales_team.group_sale_manager"
-                       attrs="{'readonly': [('subscription_management', 'in', ['upsell', 'renew'])]}"/>
+                       attrs="{'readonly': [('subscription_state', 'in', ['7_upsell', 'renew'])]}"/>
                 <field name="first_contract_date" attrs="{'invisible': [('origin_order_id', '=', False)]}"/>
-                <field name="to_renew" attrs="{'invisible': [('is_subscription', '=', False)]}"/>
             </group>
             <group name="sale_info" position='inside'>
                 <field name="commercial_partner_id" invisible="1"/>
@@ -194,6 +196,51 @@
             <group name="sale_total" position="inside">
                 <field name="recurring_details" nolabel="1" colspan="2"/>
             </group>
+        </field>
+    </record>
+
+    <record id="view_order_tree" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <!-- TODO make work -->
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-info">subscription_state in ['1_draft', '2_quotation']</attribute>
+                <attribute name="decoration-warning">subscription_state == '4_paused'</attribute>
+            </xpath>
+            <field name="state" position="after">
+                <field name="subscription_state" string="Subscription Status" widget="badge"
+                   decoration-success="subscription_state == '3_progress'"
+                   decoration-warning="subscription_state == '4_paused'"
+                   decoration-danger="subscription_state == '6_churn'"
+                   decoration-primary="subscription_state == '7_upsell'"
+                   decoration-info="subscription_state in ['1_draft', '2_renewal']"
+                   readonly="1" optional="hide"/>
+                <field name="recurring_total" optional="hide"/>
+                <field name="recurrence_id" optional="hide"/>
+                <field name="recurring_monthly" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_quotation_tree_subscription" model="ir.ui.view">
+        <field name="name">sale.order.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="subscription_state" string="Subscription Status" widget="badge"
+                   decoration-success="subscription_state == '3_progress'"
+                   decoration-warning="subscription_state == '4_paused'"
+                   decoration-danger="subscription_state == '6_churn'"
+                   decoration-primary="subscription_state == '7_upsell'"
+                   decoration-info="subscription_state in ['1_draft', '2_renewal']"
+                   readonly="1" optional="hide"/>
+                <field name="recurring_total" optional="hide"/>
+                <field name="recurrence_id" optional="hide"/>
+                <field name="recurring_monthly" optional="hide"/>
+            </field>
         </field>
     </record>
 

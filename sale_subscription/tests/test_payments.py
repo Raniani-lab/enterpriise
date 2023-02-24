@@ -35,7 +35,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             self.mock_send_success_count = 0
             self.env['sale.order']._cron_recurring_create_invoice()
             self.assertEqual(self.mock_send_success_count, 1, 'a mail to the invoice recipient should have been sent')
-            self.assertEqual(self.subscription.stage_category, 'progress', 'subscription with online payment and a payment method set should stay opened when transaction succeeds')
+            self.assertEqual(self.subscription.subscription_state, '3_progress', 'subscription with online payment and a payment method set should stay opened when transaction succeeds')
             invoice = self.subscription.invoice_ids.sorted('date')[-1]
             recurring_total_with_taxes = self.subscription.amount_total
             self.assertEqual(invoice.amount_total, recurring_total_with_taxes,
@@ -54,16 +54,14 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             self.subscription.payment_token_id = False
             failing_subs = self.env['sale.order']
             subscription_mail_fail = self.subscription.copy({
-                'to_renew': True,
                 'date_order': start_date,
                 'start_date': start_date,
                 'next_invoice_date': recurring_next_date,
-                'stage_id': self.subscription.stage_id.id,
                 'payment_token_id': None})
 
             failing_subs |= subscription_mail_fail
             for dummy in range(5):
-                failing_subs |= subscription_mail_fail.copy({'to_renew': True, 'stage_id': self.subscription.stage_id.id, 'is_batch': True})
+                failing_subs |= subscription_mail_fail.copy({'is_batch': True})
             failing_subs.action_confirm()
             # issue: two problems:
             # 1) payment failed, we want to avoid trigger it twice: (double cost) --> payment_exception
@@ -166,9 +164,9 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
                 self.assertEqual(invoice.date, datetime.date(2021, 4, 3), 'We invoiced today')
 
             with freeze_time("2022-05-03"):
-                self.subscription.invalidate_recordset(fnames=['stage_id', 'stage_category'])
+                self.subscription.invalidate_recordset(fnames=['subscription_state'])
                 self.env['sale.order']._cron_recurring_create_invoice()
-                self.assertEqual(self.subscription.stage_category, 'closed', 'the end_date is passed, the subscription is automatically closed')
+                self.assertEqual(self.subscription.subscription_state, '6_churn', 'the end_date is passed, the subscription is automatically closed')
                 invoice = self.subscription.invoice_ids.sorted('date')[-1]
                 self.assertEqual(invoice.date, datetime.date(2021, 4, 3), 'We should not create a new invoices')
 
@@ -407,23 +405,23 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
 
         with freeze_time("2022-02-01"):
             self.env['sale.order'].sudo()._cron_subscription_expiration()
-            self.assertEqual(all_subs.mapped('stage_category'), ['progress', 'progress', 'progress', 'closed'], "First and last invoices are never paid")
+            self.assertEqual(all_subs.mapped('subscription_state'), ['3_progress', '3_progress', '3_progress', '6_churn'], "First and last invoices are never paid")
 
         with freeze_time("2022-03-08"):
             self.env['sale.order'].sudo()._cron_subscription_expiration()
-            self.assertEqual(all_subs.mapped('stage_category'), ['progress', 'progress', 'closed', 'closed'],
+            self.assertEqual(all_subs.mapped('subscription_state'), ['3_progress', '3_progress', '6_churn', '6_churn'],
                              "Unpaid payment expire on 2022-03-02 +  5days = 2022-03-07")
 
         with freeze_time("2022-05-02"):
             self.env['sale.order'].sudo()._cron_subscription_expiration()
             self.assertEqual(account_moves.mapped('payment_state'), ['partial', 'not_paid', 'not_paid', 'not_paid'])
-            self.assertEqual(all_subs.mapped('stage_category'), ['progress', 'closed', 'closed', 'closed'])
-            self.assertEqual(sub0.stage_category, 'progress')
+            self.assertEqual(all_subs.mapped('subscription_state'), ['3_progress', '6_churn', '6_churn', '6_churn'])
+            self.assertEqual(sub0.subscription_state, '3_progress')
 
         with freeze_time("2023-01-07"):
             # No new invoice, we don't increment the next_invoice_date
             self.env['sale.order'].sudo()._cron_subscription_expiration()
-            self.assertEqual(sub0.stage_category, 'closed')
+            self.assertEqual(sub0.subscription_state, '6_churn')
 
     def test_close_unpaid_contracts_bis(self):
         # We don't close the contract if the last invoice is paid but the invoice before was not paid
@@ -455,11 +453,11 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         # If the last invoice is paid, we don't close the contract
         with freeze_time("2025-01-02"):
             self.env['sale.order'].sudo()._cron_subscription_expiration()
-            self.assertEqual(sub.stage_category, 'progress')
+            self.assertEqual(sub.subscription_state, '3_progress')
         # The contract is expired, the next invoice date is passed since 5 days, we close it
         with freeze_time("2025-01-07"):
             self.env['sale.order'].sudo()._cron_subscription_expiration()
-            self.assertEqual(sub.stage_category, 'closed')
+            self.assertEqual(sub.subscription_state, '6_churn')
 
     def test_partial_payment(self):
         subscription = self.subscription

@@ -28,7 +28,7 @@ class TestProjectProfitability(TestSubscriptionCommon, TestProjectProfitabilityC
             'No data should be found since the subscription is still in draft.'
         )
         subscription.action_confirm()
-        self.assertEqual(subscription.stage_id.category, 'progress')
+        self.assertEqual(subscription.subscription_state, '3_progress')
         self.assertEqual(len(subscription.order_line), 2)
         sequence_per_invoice_type = self.project._get_profitability_sequence_per_invoice_type()
         self.assertIn('subscriptions', sequence_per_invoice_type)
@@ -60,7 +60,7 @@ class TestProjectProfitability(TestSubscriptionCommon, TestProjectProfitabilityC
             'No data should be found since the subscription is still in draft.',
         )
         subscription.action_confirm()
-        self.assertEqual(subscription.stage_id.category, 'progress')
+        self.assertEqual(subscription.subscription_state, '3_progress')
         self.assertEqual(len(subscription.order_line), 2)
         self.assertFalse(subscription.sale_order_template_id, 'No template should be set in this subscription.')
 

@@ -199,7 +199,7 @@
             <field name="name">Update health value according to MRR</field>
             <field name="mrr_min">0</field>
             <field name="mrr_max">20</field>
-            <field name="stage_category">progress</field>
+            <field name="subscription_state">3_progress</field>
             <field name="trigger_condition">on_create_or_write</field>
             <field name="action">set_health_value</field>
             <field name="health">bad</field>

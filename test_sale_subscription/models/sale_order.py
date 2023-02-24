@@ -189,4 +189,3 @@ class SaleOrder(models.Model):
             self._test_demo_flush_tracking()
 
         subs_to_invoice.filtered(lambda so: so.state == 'sale')._test_demo_create_invoices(automatic=False)
-        subs_to_invoice.to_renew = False

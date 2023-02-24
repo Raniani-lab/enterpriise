@@ -12,14 +12,14 @@
 
     <template id="sale_order_digest">
         <div>
-            <t t-if="origin== 'renew'">This subscription is the renewal of subscription <t t-out="record_url"/>.</t>
+            <t t-if="origin== 'renewal'">This subscription is the renewal of subscription <t t-out="record_url"/>.</t>
             <t t-if="origin == 'upsell'">This upsell order has been created from the subscription <t t-out="record_url"/>.</t>
             <ul>
                 <li>Start Date: <t t-out="start_date"/></li>
                 <li>Next Invoice: <t t-out="next_invoice_date"/></li>
-                 <li>MRR: <t t-out="recurring_monthly"/></li>
-                 <li>Untaxed Total: <t t-out="untaxed_amount"/></li>
-                 <li t-if="quotation_template">Quotation Template: <t t-out="quotation_template"/></li>
+                <li>MRR: <t t-out="recurring_monthly"/></li>
+                <li>Untaxed Total: <t t-out="untaxed_amount"/></li>
+                <li t-if="quotation_template">Quotation Template: <t t-out="quotation_template"/></li>
             </ul>
         </div>
     </template>

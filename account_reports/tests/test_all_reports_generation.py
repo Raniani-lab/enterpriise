@@ -5,10 +5,6 @@ from unittest.mock import patch
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests.common import tagged
 
-COUNTRIES_WITHOUT_CLOSING_ACCOUNT = {
-    'AR', 'AE', 'AT', 'AU', 'BG', 'BR', 'CH', 'CL', 'DK', 'ES', 'GB', 'HU', 'IN', 'MN', 'NL', 'NO', 'PT', 'SA', 'SE', 'SG', 'SI',
-}
-
 @tagged('post_install_l10n', 'post_install', '-at_install')
 class TestAllReportsGeneration(AccountTestInvoicingCommon):
 
@@ -88,11 +84,6 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
             options = report._get_options({'report_id': report.id, '_running_export_test': True})
 
             for option_button in options['buttons']:
-                if option_button['action'] == 'action_periodic_vat_entries' and self.env.company.account_fiscal_country_id.code in COUNTRIES_WITHOUT_CLOSING_ACCOUNT:
-                    # Some countries don't have any default account set for tax closing. They raise a RedirectWarning; we don't want it
-                    # to make the test fail.
-                    continue
-
                 with self.subTest(f"Button '{option_button['name']}' from report {report.name} ({report.country_id.name or 'No Country'}) raised an error"):
                     with patch.object(type(self.env['ir.actions.report']), '_run_wkhtmltopdf', lambda *args, **kwargs: b"This is a pdf"):
                         action_dict = report.dispatch_report_action(options, option_button['action'], action_param=option_button.get('action_param'))

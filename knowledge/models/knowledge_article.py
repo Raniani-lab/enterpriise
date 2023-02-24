@@ -857,13 +857,8 @@ class Article(models.Model):
         if not article:
             article = self._get_first_accessible_article()
 
-        mode = 'edit' if article.user_has_write_access else 'readonly'
         action = self.env['ir.actions.act_window']._for_xml_id('knowledge.knowledge_article_action_form')
         action['res_id'] = article.id
-        action['context'] = dict(
-            ast.literal_eval(action.get('context')),
-            form_view_initial_mode=mode,
-        )
         return action
 
     def action_set_lock(self):

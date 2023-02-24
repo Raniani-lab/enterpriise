@@ -194,8 +194,8 @@
                 <group string="ONSS Reduction" name="onss_retructuring" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
                     <field name="l10n_be_onss_restructuring"/>
                 </group>
-                <group name="fiscal_voluntarism" string="Fiscal Voluntarism">
-                    <field name="fiscal_voluntarism" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
+                <group name="fiscal_voluntarism" string="Fiscal Voluntarism" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
+                    <field name="fiscal_voluntarism" attrs="{'invisible': ['|', ('country_code', '!=', 'BE'),('wage_type', '=', 'hourly')]}"/>
                     <label for="fiscal_voluntary_rate"
                            attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('fiscal_voluntarism', '=', False)]}"/>
                     <div class="o_row" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('fiscal_voluntarism', '=', False)]}">

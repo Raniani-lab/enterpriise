@@ -242,7 +242,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
         # Precheck
         company = self.env.company
         company_vat = company.partner_id.vat
-        report = self.env['account.report'].browse(options['report_id'])
+        report = self.env['account.report'].with_context(print_mode=True).browse(options['report_id'])
 
         if not company_vat:
             raise UserError(_('No VAT number associated with your company.'))

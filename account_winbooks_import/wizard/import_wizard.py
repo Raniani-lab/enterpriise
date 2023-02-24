@@ -320,6 +320,10 @@ class WinbooksImportWizard(models.TransientModel):
                     'code': rec.get('DBKID'),
                     'type': journal_type,
                 }
+                if data['type'] == 'sale':
+                    data['default_account_id'] = self.env['ir.property']._get('property_account_income_categ_id', 'product.category').id
+                if data['type'] == 'purchase':
+                    data['default_account_id'] = self.env['ir.property']._get('property_account_expense_categ_id', 'product.category').id
                 journal = AccountJournal.create(data)
             journal_data[rec.get('DBKID')] = journal.id
         return journal_data
@@ -491,6 +495,20 @@ class WinbooksImportWizard(models.TransientModel):
                     'date_maturity': rec.get('DUEDATE', False),
                     'name': _('Counterpart (generated at import from Winbooks)'),
                     'balance': -move_amount_total,
+                }
+                move_line_data_list.append((0, 0, line_data))
+
+            if (
+                move_data_dict['move_type'] != 'entry'
+                and len(move_line_data_list) == 1
+                and move_line_data_list[0][2]['display_type'] == 'payment_term'
+                and move_line_data_list[0][2]['balance'] == 0
+            ):
+                # add a line so that the payment terms are not deleted during sync
+                line_data = {
+                    'account_id': journal_id.default_account_id.id,
+                    'name': _('Counterpart (generated at import from Winbooks)'),
+                    'balance': 0,
                 }
                 move_line_data_list.append((0, 0, line_data))
 

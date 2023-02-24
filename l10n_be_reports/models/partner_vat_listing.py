@@ -7,6 +7,8 @@ from markupsafe import Markup
 from itertools import groupby
 from .account_report import _raw_phonenumber, _get_xml_export_representative_node
 
+from stdnum.eu.vat import compact
+
 
 class PartnerVATListingCustomHandler(models.AbstractModel):
     _name = 'l10n_be.partner.vat.handler'
@@ -55,7 +57,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
         def build_result_dict(query_res_lines):
             if current_groupby:
                 rslt = {
-                    'vat_number': query_res_lines[0]['vat'],
+                    'vat_number': compact(query_res_lines[0]['vat']),
                     'turnover': query_res_lines[0]['turnover'],
                     'vat_amount': query_res_lines[0]['vat_amount'],
                     'has_sublines': False,

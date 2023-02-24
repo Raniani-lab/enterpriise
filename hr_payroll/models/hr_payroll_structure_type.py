@@ -26,6 +26,11 @@ class HrPayrollStructureType(models.Model):
                                                  default=lambda self: self.env.ref('hr_work_entry.work_entry_type_attendance', raise_if_not_found=False))
     wage_type = fields.Selection([('monthly', 'Monthly Fixed Wage'), ('hourly', 'Hourly Wage')], default='monthly', required=True)
     struct_type_count = fields.Integer(compute='_compute_struct_type_count', string='Structure Type Count')
+    default_resource_calendar_id = fields.Many2one(domain="['|', ('company_country_id', '=?', country_id), ('company_id', '=', False)]")
+
+    @api.onchange('country_id')
+    def onchange_country_id(self):
+        self.default_resource_calendar_id = self.env['resource.calendar'].search([('company_country_id', '=', self.country_id.id)], limit=1)
 
     def _compute_struct_type_count(self):
         for structure_type in self:

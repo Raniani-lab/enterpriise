@@ -80,7 +80,7 @@ class HelpdeskTeam(models.Model):
     access_instruction_message = fields.Char('Access Instruction Message', compute='_compute_access_instruction_message')
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
-    use_alias = fields.Boolean('Email Alias', default=True)
+    use_alias = fields.Boolean('Email Alias', compute='_compute_use_alias', default=True, store=True, readonly=False)
     has_external_mail_server = fields.Boolean(compute='_compute_has_external_mail_server')
     allow_portal_ticket_closing = fields.Boolean('Closure by Customers')
     use_website_helpdesk_form = fields.Boolean('Website Form', compute='_compute_use_website_helpdesk_form', readonly=False, store=True)
@@ -148,6 +148,10 @@ class HelpdeskTeam(models.Model):
                 (val, stage_id) for stage_id, val in stages_dict.items() if stage_id in team.stage_ids.ids
             ])
             team.to_stage_id = stage_ids[0][1] if stage_ids else team.stage_ids and team.stage_ids.ids[-1]
+
+    @api.depends('alias_name')
+    def _compute_use_alias(self):
+        self.filtered(lambda team: not team.alias_name and team.use_alias).use_alias = False
 
     @api.depends('alias_name', 'alias_domain')
     def _compute_display_alias_name(self):
@@ -254,6 +258,8 @@ class HelpdeskTeam(models.Model):
     def _onchange_use_alias(self):
         if not self.use_alias:
             self.alias_name = False
+        if self._origin.id and self.use_alias:
+            self.alias_name = self._alias_get_creation_values()['alias_name'].lower()
 
     @api.depends('use_website_helpdesk_knowledge', 'use_website_helpdesk_slides', 'use_website_helpdesk_forum')
     def _compute_use_website_helpdesk_form(self):
@@ -506,7 +512,7 @@ class HelpdeskTeam(models.Model):
     def _alias_get_creation_values(self):
         values = super(HelpdeskTeam, self)._alias_get_creation_values()
         values['alias_model_id'] = self.env['ir.model']._get('helpdesk.ticket').id
-        if self.id:
+        if self._origin.id:
             values['alias_defaults'] = defaults = ast.literal_eval(self.alias_defaults or "{}")
             defaults['team_id'] = self.id
             if not self.alias_name:

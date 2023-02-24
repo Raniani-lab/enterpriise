@@ -3,7 +3,7 @@
 
     <record id="helpdesk_team1" model="helpdesk.team">
         <field name="name">Customer Care</field>
-        <field name="alias_name">support</field>
+        <field name="alias_name">customer-care</field>
         <field name="stage_ids" eval="False"/> <!-- eval=False to don't get the default stage. New stages are setted below-->
         <field name="use_sla" eval="True"/>
         <field name="member_ids" eval="[Command.link(ref('base.user_admin'))]"/>

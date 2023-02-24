@@ -2,7 +2,6 @@
 import core from "web.core";
 import { PaymentInterface } from "@point_of_sale/js/payment";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
-import { escape } from "@web/core/utils/strings";
 
 var _t = core._t;
 
@@ -138,8 +137,7 @@ export const PaymentIngenico = PaymentInterface.extend({
         ) {
             this._waitingResponse(resolve, data, line);
             if (data.Ticket) {
-                let ticket = escape(data.Ticket);
-                line.set_receipt_info(ticket.replace(/\n/g, "<br />"));
+                line.set_receipt_info(data.Ticket);
             }
             if (data.Card) {
                 line.card_type = data.Card;

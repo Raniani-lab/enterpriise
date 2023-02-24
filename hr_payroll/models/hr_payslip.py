@@ -242,13 +242,13 @@ class HrPayslip(models.Model):
                 )
 
                 # Only take deduction types present in structure
-                deduction_types = list(set(valid_attachments.mapped('deduction_type')))
+                deduction_types = list(set(valid_attachments.deduction_type_id.mapped('code')))
                 struct_deduction_lines = list(set(slip.struct_id.rule_ids.mapped('code')))
                 included_deduction_types = [f for f in deduction_types if attachment_types[f].code in struct_deduction_lines]
                 for deduction_type in included_deduction_types:
                     if not slip.struct_id.rule_ids.filtered(lambda r: r.active and r.code == attachment_types[deduction_type].code):
                         continue
-                    attachments = valid_attachments.filtered(lambda a: a.deduction_type == deduction_type)
+                    attachments = valid_attachments.filtered(lambda a: a.deduction_type_id.code == deduction_type)
                     amount = sum(attachments.mapped('active_amount'))
                     name = ', '.join(attachments.mapped('description'))
                     input_type_id = attachment_types[deduction_type].id
@@ -272,7 +272,7 @@ class HrPayslip(models.Model):
                 attachments = slip.employee_id.salary_attachment_ids.filtered(
                     lambda a: (
                         a.state == 'open'
-                        and a.deduction_type in deduction_types
+                        and a.deduction_type_id.code in deduction_types
                         and a.date_start <= slip.date_to
                     )
                 )
@@ -406,7 +406,7 @@ class HrPayslip(models.Model):
             attachment_types = self._get_attachment_types()
             for slip in self.filtered(lambda r: r.salary_attachment_ids):
                 for deduction_type, input_type_id in attachment_types.items():
-                    attachments = slip.salary_attachment_ids.filtered(lambda r: r.deduction_type == deduction_type)
+                    attachments = slip.salary_attachment_ids.filtered(lambda r: r.deduction_type_id.code == deduction_type)
                     input_lines = slip.input_line_ids.filtered(lambda r: r.input_type_id.id == input_type_id.id)
                     # Use the amount from the computed value in the payslip lines not the input
                     salary_lines = slip.line_ids.filtered(lambda r: r.code in input_lines.mapped('code'))
@@ -589,11 +589,18 @@ class HrPayslip(models.Model):
 
     @api.model
     def _get_attachment_types(self):
-        return {
-            'attachment': self.env.ref('hr_payroll.input_attachment_salary'),
-            'assignment': self.env.ref('hr_payroll.input_assignment_salary'),
-            'child_support': self.env.ref('hr_payroll.input_child_support'),
-        }
+        attachment_types = self.env['hr.salary.attachment.type'].search([])
+        input_types = self.env['hr.payslip.input.type'].search([('code', 'in', attachment_types.mapped('code'))])
+        missing_input_types = list(set(attachment_types.mapped('code')) - set(input_types.mapped('code')))
+        if missing_input_types:
+            raise UserError(_("No Other Input Type was found for the following Salary Attachment Types codes:\n%s", '\n'.join(missing_input_types)))
+        result = {}
+        for attachment_type in attachment_types:
+            for input_type in input_types:
+                if input_type.code == attachment_type.code:
+                    result[attachment_type.code] = input_type
+                    break
+        return result
 
     def _get_worked_day_lines_hours_per_day(self):
         self.ensure_one()

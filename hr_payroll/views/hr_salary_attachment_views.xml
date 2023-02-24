@@ -7,7 +7,7 @@
             <tree string="Salary Attachments">
                 <field name="employee_id" widget="many2one_avatar_user"/>
                 <field name="description"/>
-                <field name="deduction_type"/>
+                <field name="deduction_type_id" options="{'no_open': True, 'no_create_edit': True, 'no_create': True}"/>
                 <field name="monthly_amount" sum="Monthly Amount" widget="monetary"/>
                 <field name="total_amount" optional="hide" widget="monetary"/>
                 <field name="paid_amount" optional="hide" widget="monetary"/>
@@ -51,7 +51,7 @@
                         <group>
                             <field name="employee_id" widget="many2one_avatar_user"/>
                             <field name="description"/>
-                            <field name="deduction_type"/>
+                            <field name="deduction_type_id" options="{'no_open': True, 'no_create_edit': True, 'no_create': True}"/>
                             <field name="date_start"/>
                             <field name="date_estimated_end" attrs="{'invisible': [('date_estimated_end', '=', False)]}"/>
                             <field name="date_end" attrs="{'invisible': ['|', ('date_end', '=', False), ('state', '=', 'open')]}"/>
@@ -79,7 +79,7 @@
             <search string="Search Salary Attachment">
                 <field name="employee_id"/>
                 <field name="description"/>
-                <field name="deduction_type"/>
+                <field name="deduction_type_id"/>
                 <field name="state"/>
                 <filter string="Active" name="active_this_year"
                     domain="[
@@ -87,7 +87,7 @@
                                  ('date_start', '&lt;=', (context_today().strftime('%Y-%m-%d')))
                     ]"/>
                 <filter string="Employee" name="employee_id_group" context="{'group_by': 'employee_id'}"/>
-                <filter string="Type" name="deduction_type" context="{'group_by': 'deduction_type'}"/>
+                <filter string="Type" name="deduction_type_id" context="{'group_by': 'deduction_type_id'}"/>
                 <filter string="Status" name="state" context="{'group_by': 'state'}"/>
             </search>
         </field>

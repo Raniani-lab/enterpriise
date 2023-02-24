@@ -9,6 +9,7 @@ from odoo.tools.misc import formatLang
 from dateutil.relativedelta import relativedelta
 from math import ceil
 
+
 class HrSalaryAttachment(models.Model):
     _name = 'hr.salary.attachment'
     _description = 'Salary Attachment'
@@ -22,7 +23,7 @@ class HrSalaryAttachment(models.Model):
         ),
         (
             'check_total_amount',
-            'CHECK ((total_amount > 0 AND total_amount >= monthly_amount) OR deduction_type = \'child_support\')',
+            'CHECK ((total_amount > 0 AND total_amount >= monthly_amount) OR no_end_date = \'t\')',
             'Total amount must be strictly positive and greater than or equal to the monthly amount.'
         ),
         ('check_remaining_amount', 'CHECK (remaining_amount >= 0)', 'Remaining amount must be positive.'),
@@ -35,17 +36,13 @@ class HrSalaryAttachment(models.Model):
         default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
     description = fields.Char(required=True)
-    deduction_type = fields.Selection(
-        selection=[
-            ('attachment', 'Attachment of Salary'),
-            ('assignment', 'Assignment of Salary'),
-            ('child_support', 'Child Support'),
-        ],
+    deduction_type_id = fields.Many2one(
+        'hr.salary.attachment.type',
         string='Type',
         required=True,
-        default='attachment',
         tracking=True,
     )
+    no_end_date = fields.Boolean(related='deduction_type_id.no_end_date', store=True)
     monthly_amount = fields.Monetary('Monthly Amount', required=True, tracking=True, help='Amount to pay each month.')
     active_amount = fields.Monetary(
         'Active Amount', compute='_compute_active_amount',
@@ -103,10 +100,10 @@ class HrSalaryAttachment(models.Model):
             else:
                 record.total_amount = record.paid_amount
 
-    @api.depends('deduction_type', 'date_end')
+    @api.depends('deduction_type_id', 'date_end')
     def _compute_has_total_amount(self):
         for record in self:
-            if record.deduction_type == 'child_support' and not record.date_end:
+            if record.no_end_date and not record.date_end:
                 record.has_total_amount = False
             else:
                 record.has_total_amount = True
@@ -154,7 +151,7 @@ class HrSalaryAttachment(models.Model):
                     ('employee_id', '=', record.employee_id.id),
                     ('monthly_amount', '=', record.monthly_amount),
                     ('date_start', '<=', record.date_start),
-                    ('deduction_type', '=', record.deduction_type),
+                    ('deduction_type_id', '=', record.deduction_type_id.id),
                 ])
             record.has_similar_attachment = similar if record.state == 'open' else False
             record.has_similar_attachment_warning = similar and _('Warning, a similar attachment has been found.')

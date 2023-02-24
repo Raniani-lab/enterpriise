@@ -23,4 +23,5 @@ from . import hr_rule_parameter
 from . import hr_work_entry_type
 from . import hr_work_entry
 from . import hr_salary_attachment
+from . import hr_salary_attachment_type
 from . import note

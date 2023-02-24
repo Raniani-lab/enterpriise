@@ -90,6 +90,12 @@
         <field name="domain_force">['|', ('country_id', '=', False), ('country_id', 'in', user.env.companies.mapped('country_id').ids)]</field>
     </record>
 
+    <record id="ir_rule_hr_salary_attachment_type_multi_company" model="ir.rule">
+        <field name="name">HR Salary Attachment Type: Multi Company</field>
+        <field name="model_id" ref="model_hr_salary_attachment_type"/>
+        <field name="domain_force">['|', ('country_id', '=', False), ('country_id', 'in', user.env.companies.mapped('country_id').ids)]</field>
+    </record>
+
     <record id="ir_rule_hr_payslip_multi_company" model="ir.rule">
         <field name="name">HR Payslip: Multi Company</field>
         <field name="model_id" ref="model_hr_payslip"/>

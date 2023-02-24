@@ -7,7 +7,7 @@
     'version': '1.0',
     'category': 'Marketing/Online Appointment',
     'sequence': 215,
-    'website': 'https://www.odoo.com/page/appointments',
+    'website': 'https://www.odoo.com/app/appointments',
     'description': """
 Allow clients to Schedule Appointments through your Website
 -------------------------------------------------------------

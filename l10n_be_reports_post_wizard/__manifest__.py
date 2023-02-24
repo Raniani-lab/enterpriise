@@ -16,6 +16,6 @@
     ],
     'installable': True,
     'auto_install': True,
-    'website': 'https://www.odoo.com/page/accounting',
+    'website': 'https://www.odoo.com/app/accounting',
     'license': 'OEEL-1',
 }

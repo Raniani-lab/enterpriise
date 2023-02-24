@@ -173,8 +173,11 @@ class QualityCheck(models.Model):
     def _compute_lot_line_id(self):
         for qc in self:
             qc.lot_line_id = qc.move_line_id.lot_id
-            if qc.lot_line_id:
+            if qc.lot_line_id and qc._update_lot_from_lot_line():
                 qc.lot_id = qc.lot_line_id
+
+    def _update_lot_from_lot_line(self):
+        return True
 
     @api.depends('measure')
     def _compute_measure_success(self):

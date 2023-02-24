@@ -566,3 +566,8 @@ class QualityCheck(models.Model):
             check['worksheet_url'] = self.env['quality.check'].browse(check['id']).point_id.worksheet_url
             check['source_document'] = self.env['quality.check'].browse(check['id']).point_id.source_document
         return values
+
+    def _update_lots(self):
+        for check in self:
+            if check.component_tracking and check.move_id.picking_type_id.prefill_lot_tablet:
+                check.lot_id = check.move_line_id.lot_id

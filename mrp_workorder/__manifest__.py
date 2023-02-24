@@ -22,6 +22,7 @@
         'views/mrp_operation_views.xml',
         'views/mrp_production_views.xml',
         'views/mrp_workcenter_views.xml',
+        'views/stock_picking_type_views.xml',
         'views/res_config_settings_view.xml',
         'wizard/additional_product_views.xml',
         'wizard/propose_change_views.xml'

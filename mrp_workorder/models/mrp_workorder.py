@@ -460,9 +460,10 @@ class MrpProductionWorkcenterLine(models.Model):
         if move_line_id:
             vals.update({
                 'move_line_id': move_line_id.id,
-                'lot_id': move_line_id.lot_id.id,
                 'qty_done': move_line_id.reserved_uom_qty or 1.0
             })
+            if move.picking_type_id.prefill_lot_tablet:
+                vals['lot_id'] = move_line_id.lot_id.id
         return vals
 
     # --------------------------

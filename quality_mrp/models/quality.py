@@ -41,6 +41,10 @@ class QualityCheck(models.Model):
             op_level_comp_qc |= qc
         return super(QualityCheck, op_level_comp_qc)._compute_lot_line_id()
 
+    def _update_lot_from_lot_line(self):
+        self.ensure_one()
+        return self.move_id.picking_type_id.prefill_lot_tablet
+
 
 class QualityAlert(models.Model):
     _inherit = "quality.alert"

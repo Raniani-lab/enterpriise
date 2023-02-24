@@ -11,7 +11,6 @@ Create Sales order with timesheets and products from tasks
     'depends': ['industry_fsm', 'sale_timesheet_enterprise'],
     'data': [
         'data/industry_fsm_data.xml',
-        'security/industry_fsm_sale_security.xml',
         'views/project_task_views.xml',
         'views/product_product_views.xml',
         'views/project_project_views.xml',

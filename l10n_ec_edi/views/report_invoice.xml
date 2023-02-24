@@ -151,6 +151,7 @@
                             <td class="text-center border-top-0 p-1">
                                 <h4 style="letter-spacing: 2px;">
                                     <t t-if="o.l10n_latam_document_type_id" t-esc="o.l10n_latam_document_type_id.report_name or o.l10n_latam_document_type_id.name"/>
+                                    <t t-elif="o._l10n_ec_is_withholding()">Withhold Receipt</t>
                                     <br/>
                                     <span t-esc="o.l10n_latam_document_number or o.name"/>
                                 </h4>

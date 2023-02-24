@@ -493,9 +493,9 @@ class AccountMove(models.Model):
         self.ensure_one()
         foreign_data = {
             'identification': '01',
-            'paying_country': '',
-            'double_taxation': '',
-            'subject_withhold': '',
+            'paying_country': 'NA',
+            'double_taxation': 'NO',
+            'subject_withhold': 'NO',
             'fiscal_payment': '',
             'regime_type': '',
         }
@@ -506,10 +506,9 @@ class AccountMove(models.Model):
             # Compute header values from first tax (the wizard has restrictions to forbid mixing uncompatible tax types)
             if taxes:
                 tax_id = taxes[0]
-                foreign_data['paying_country'] = self.commercial_partner_id.country_id.l10n_ec_code_tax_haven
+                foreign_data['paying_country'] = self.commercial_partner_id.country_id.l10n_ec_code_tax_haven or 'NA'
                 if tax_id.l10n_ec_code_base in L10N_EC_WTH_FOREIGN_GENERAL_REGIME_CODES:
-                    foreign_data['paying_country'] = self.commercial_partner_id.country_id.l10n_ec_code_ats
-                foreign_data['double_taxation'] = 'NO'
+                    foreign_data['paying_country'] = self.commercial_partner_id.country_id.l10n_ec_code_ats or 'NA'
                 if tax_id.l10n_ec_code_base in L10N_EC_WTH_FOREIGN_DOUBLE_TAXATION_CODES:
                     foreign_data['double_taxation'] = 'SI'
                 foreign_data['subject_withhold'] = 'SI'

@@ -38,10 +38,10 @@ class TestEcEdiXmls(TestEcEdiCommon):
                 <baseImponible>357.140000</baseImponible>
             </xpath>
             <xpath expr="//totalImpuesto/valor" position="replace">
-                <valor>42.860000</valor>
+                <valor>42.86</valor>
             </xpath>
             <xpath expr="//importeTotal" position="replace">
-                <importeTotal>400.000000</importeTotal>
+                <importeTotal>400.00</importeTotal>
             </xpath>
             <xpath expr="//pago/total" position="replace">
                 <total>400.00</total>
@@ -60,7 +60,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                         <codigoPorcentaje>2</codigoPorcentaje>
                         <tarifa>12.000000</tarifa>
                         <baseImponible>357.140000</baseImponible>
-                        <valor>42.860000</valor>
+                        <valor>42.86</valor>
                         </impuesto>
                     </impuestos>
                 </detalle>
@@ -92,16 +92,16 @@ class TestEcEdiXmls(TestEcEdiCommon):
                 <totalSinImpuestos>426.290000</totalSinImpuestos>
             </xpath>
             <xpath expr="//totalDescuento" position="replace">
-                <totalDescuento>103.020000</totalDescuento>
+                <totalDescuento>103.02</totalDescuento>
             </xpath>
             <xpath expr="//totalImpuesto/baseImponible" position="replace">
                 <baseImponible>426.290000</baseImponible>
             </xpath>
             <xpath expr="//totalImpuesto/valor" position="replace">
-                <valor>51.340000</valor>
+                <valor>51.34</valor>
             </xpath>
             <xpath expr="//importeTotal" position="replace">
-                <importeTotal>477.630000</importeTotal>
+                <importeTotal>477.63</importeTotal>
             </xpath>
             <xpath expr="//pagos/pago" position="replace">
                 <pago>
@@ -123,7 +123,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     <codigoPorcentaje>2</codigoPorcentaje>
                     <tarifa>12.000000</tarifa>
                     <baseImponible>14.910000</baseImponible>
-                    <valor>1.790000</valor>
+                    <valor>1.79</valor>
                     </impuesto>
                 </impuestos>
                 </detalle>
@@ -140,7 +140,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     <codigoPorcentaje>2</codigoPorcentaje>
                     <tarifa>12.000000</tarifa>
                     <baseImponible>11.380000</baseImponible>
-                    <valor>1.550000</valor>
+                    <valor>1.55</valor>
                     </impuesto>
                 </impuestos>
                 </detalle>
@@ -167,16 +167,16 @@ class TestEcEdiXmls(TestEcEdiCommon):
                 <totalSinImpuestos>852.580000</totalSinImpuestos>
             </xpath>
             <xpath expr="//totalDescuento" position="replace">
-                <totalDescuento>206.050000</totalDescuento>
+                <totalDescuento>206.05</totalDescuento>
             </xpath>
             <xpath expr="//totalImpuesto/baseImponible" position="replace">
                 <baseImponible>852.580000</baseImponible>
             </xpath>
             <xpath expr="//totalImpuesto/valor" position="replace">
-                <valor>102.680000</valor>
+                <valor>102.68</valor>
             </xpath>
             <xpath expr="//importeTotal" position="replace">
-                <importeTotal>955.260000</importeTotal>
+                <importeTotal>955.26</importeTotal>
             </xpath>
             <xpath expr="//pagos/pago" position="replace">
                 <pago>
@@ -198,7 +198,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                         <codigoPorcentaje>2</codigoPorcentaje>
                         <tarifa>12.000000</tarifa>
                         <baseImponible>800.000000</baseImponible>
-                        <valor>96.000000</valor>
+                        <valor>96.00</valor>
                         </impuesto>
                     </impuestos>
                     </detalle>
@@ -215,7 +215,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     <codigoPorcentaje>2</codigoPorcentaje>
                     <tarifa>12.000000</tarifa>
                     <baseImponible>29.820000</baseImponible>
-                    <valor>3.580000</valor>
+                    <valor>3.58</valor>
                     </impuesto>
                 </impuestos>
                 </detalle>
@@ -232,7 +232,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     <codigoPorcentaje>2</codigoPorcentaje>
                     <tarifa>12.000000</tarifa>
                     <baseImponible>22.760000</baseImponible>
-                    <valor>3.100000</valor>
+                    <valor>3.10</valor>
                     </impuesto>
                 </impuestos>
                 </detalle>
@@ -327,21 +327,23 @@ class TestEcEdiXmls(TestEcEdiCommon):
             self.env['l10n_ec.wizard.account.withhold.line'].create({
                 'invoice_id': invoice.id,
                 'wizard_id': wizard.id,
-                'tax_id': self._get_tax_by_xml_id('tax_withhold_profit_312').ids[0],
+                'tax_id': self._get_tax_by_xml_id('tax_withhold_profit_502_422').ids[0],
                 'taxsupport_code': '01',
-                'amount': 7,  # VAT, 1.75% of 400
+                'amount': 88,  # VAT, 22.00% of 400
             })
-        self.get_and_test_xml_tree_in_withhold(
-            line_creation_method=create_wth_lines,
-            xpath="""
+            wizard.foreign_regime = '01'
+        xpath = """
             <xpath expr="//pagoLocExt" position="replace">
                 <pagoLocExt>02</pagoLocExt>
-                <paisEfecPago>042</paisEfecPago>
+                <tipoRegi>01</tipoRegi>
+                <paisEfecPago>136</paisEfecPago>
                 <aplicConvDobTrib>NO</aplicConvDobTrib>
                 <pagExtSujRetNorLeg>SI</pagExtSujRetNorLeg>
                 <pagoRegFis>SI</pagoRegFis>
             </xpath>
-        """)
+        """
+        xpath += self.get_withhold_xpath_for_taxes(tax_percent='22.00', withhold_amount='88.00', tax_code=502)
+        self.get_and_test_xml_tree_in_withhold(line_creation_method=create_wth_lines, xpath=xpath)
 
     def test_xml_tree_in_withhold_suggested_tax_credit_card(self):
         """Checks the XML of a purchase withhold whose invoice's payment method is a credit card.
@@ -437,7 +439,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     </retenciones>
                     <pagos>
                         <pago>
-                        <formaPago>17</formaPago>
+                        <formaPago>01</formaPago>
                         <total>896.00</total>
                         </pago>
                     </pagos>
@@ -470,7 +472,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     </retenciones>
                     <pagos>
                         <pago>
-                        <formaPago>17</formaPago>
+                        <formaPago>01</formaPago>
                         <total>448.00</total>
                         </pago>
                     </pagos>
@@ -548,7 +550,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
         withhold = wizard.action_create_and_post_withhold()
         return withhold
 
-    def get_withhold_xpath_for_taxes(self, tax_percent, tax_code, withhold_amount, payment_code=17):
+    def get_withhold_xpath_for_taxes(self, tax_percent, tax_code, withhold_amount, payment_code='01'):
         """Provides an xpath modifying a withhold XML in accordance with the provided taxes."""
         return f"""
             <xpath expr="//retencion" position="replace">
@@ -574,7 +576,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
         invoice_vals = {
             'move_type': 'in_invoice',
             'partner_id': self.partner_b.id,
-            'l10n_ec_sri_payment_id': self.env['l10n_ec.sri.payment'].search([('code', '=', 17)], limit=1).id
+            'l10n_ec_sri_payment_id': self.env['l10n_ec.sri.payment'].search([('code', '=', '01')], limit=1).id
         }
         if invoice_args:
             invoice_vals.update(invoice_args)

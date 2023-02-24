@@ -271,8 +271,8 @@ msgstr "<span>Documento</span>"
 
 #. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_withhold_document
-msgid "<span>Emmision Date</span>"
-msgstr "Fecha Emisión"
+msgid "<span>Emission Date</span>"
+msgstr "<span>Fecha Emisión</span>"
 
 #. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_withhold_document
@@ -328,6 +328,16 @@ msgstr "<strong>Nombre: </strong>"
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_invoice_document
 msgid "<strong>Original Issue Date:</strong>"
 msgstr "<strong>Fecha de emisión original:</strong>"
+
+#. module: l10n_ec_edi
+#: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_invoice_document
+msgid "<strong>Partner:</strong>"
+msgstr "<strong>Razón Social/Nombres y Apellidos:</strong>"
+
+#. module: l10n_ec_edi
+#: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_withhold_document
+msgid "<strong>Partner: </strong>"
+msgstr "<strong>Razón Social/Nombres y Apellidos: </strong>"
 
 #. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_invoice_document
@@ -1591,6 +1601,11 @@ msgstr "Fecha Retención"
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.wizard_account_withhold_form
 msgid "Withhold Lines"
 msgstr "Líneas de la retención"
+
+#. module: l10n_ec_edi
+#: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_invoice_header
+msgid "Withhold Receipt"
+msgstr "Comprobante de Retención"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_res_company__l10n_ec_withhold_services_tax_id

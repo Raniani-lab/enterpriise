@@ -98,7 +98,7 @@ class AccountEdiFormat(models.Model):
             if not move.commercial_partner_id.vat:
                 errors.append(_("You must set a VAT number for partner %s", move.commercial_partner_id.display_name))
 
-            if not move.l10n_ec_sri_payment_id and move.journal_id.l10n_ec_withhold_type != 'in_withhold':
+            if not move.l10n_ec_sri_payment_id and move.move_type in ['out_invoice', 'in_invoice']: #needed for sale invoice and purchase liquidation
                 errors.append(_("You must set the Payment Method SRI on document %s", move.display_name))
 
             if not move.l10n_latam_document_number:

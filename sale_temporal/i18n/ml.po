@@ -83,7 +83,7 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "ദിവസം"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__day

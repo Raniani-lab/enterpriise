@@ -13,6 +13,7 @@
 # marcescu, 2022
 # Farouk Jabiri, 2022
 # Ivan Espinola, 2023
+# Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Ivan Espinola, 2023\n"
+"Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2023\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -406,8 +407,8 @@ msgid ""
 "The 'invoice_ocr' IAP account token is invalid. Please delete it to let Odoo"
 " generate a new one or fill it with a valid token."
 msgstr ""
-"El testimoni del compte IAP «invoiceocr» no és vàlid. Suprimiu-lo per "
-"permetre que l'Odoo en generi un de nou o l'ompli amb un token vàlid."
+"El token del compte IAP 'invoice_cor' no és vàlid. Si us plau, elimineu-lo "
+"per a permetre que l'Odoo generi un nou o escrigui un token vàlid."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr

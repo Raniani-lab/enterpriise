@@ -1985,7 +1985,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Timezone:"
-msgstr ""
+msgstr "Időzóna:"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__end_datetime

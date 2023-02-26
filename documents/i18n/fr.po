@@ -2686,7 +2686,7 @@ msgstr "Infobulle"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__is_editable_attachment
 msgid "True if we can edit the link attachment."
-msgstr "True si nous pouvons modifier la pièce jointe du lien."
+msgstr "Vrai si nous pouvons modifier la pièce jointe du lien."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type

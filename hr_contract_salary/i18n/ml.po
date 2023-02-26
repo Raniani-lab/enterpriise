@@ -418,7 +418,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__country
 msgid "Countries"
-msgstr ""
+msgstr "രാജ്യങ്ങൾ"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_country

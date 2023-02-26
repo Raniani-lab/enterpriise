@@ -81,7 +81,7 @@ msgstr "流水賬記項"
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_move_line
 msgid "Journal Item"
-msgstr "流水賬項目"
+msgstr "日記賬項目"
 
 #. module: account_3way_match
 #: model:ir.model.fields.selection,name:account_3way_match.selection__account_move__release_to_pay__no

@@ -2054,7 +2054,7 @@ msgstr "Propietari"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Owner: #{document.owner_id.name}"
-msgstr "Propietari: #{document.ownerid.name}"
+msgstr "Propietari: #{document.owner_id.name}"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -3038,7 +3038,7 @@ msgstr "fa fa fa-folder text-odoo"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "folder_id"
-msgstr "ID de carpeta"
+msgstr "folder_id"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model
@@ -3057,14 +3057,14 @@ msgstr "nom"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "owner_id"
-msgstr "idpropietari"
+msgstr "owner_id"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "partner_id"
-msgstr "partnerid"
+msgstr "partner_id"
 
 #. module: documents
 #. odoo-javascript

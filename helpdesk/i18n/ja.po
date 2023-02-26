@@ -2625,7 +2625,7 @@ msgstr "評価 (/5)"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg_text
 msgid "Rating Avg Text"
-msgstr ""
+msgstr "評価平均テキスト"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_feedback
@@ -2651,7 +2651,7 @@ msgstr "評価満足度"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_text
 msgid "Rating Text"
-msgstr ""
+msgstr "評価テキスト"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_count

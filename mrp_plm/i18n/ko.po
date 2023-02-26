@@ -76,7 +76,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_file_kanban_mrp_plm
 msgid "<span class=\"bg-danger\">Archived</span>"
-msgstr ""
+msgstr "<span class=\"bg-danger\">보관 처리됨</span>"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_file_kanban_mrp_plm

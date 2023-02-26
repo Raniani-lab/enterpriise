@@ -529,12 +529,12 @@ msgstr "Journal"
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__payment_journal_id
@@ -1072,7 +1072,7 @@ msgid ""
 "will automatically go from 'active' to 'closed' after its first use in "
 "payment if this option is set.\n"
 msgstr ""
-"Définissez la valeur sur True si, et seulement si, vous souhaitez que le "
+"Définissez la valeur sur vrai si, et seulement si, vous souhaitez que le "
 "mandat ne soit utilisable pour une seule transaction. Il passera "
 "automatiquement de 'actif' à 'clôture' après le premier paiement lorsque "
 "cette option est activée.\n"

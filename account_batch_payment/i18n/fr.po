@@ -775,7 +775,7 @@ msgid ""
 "True if and only if the options to remove the payments causing the errors or"
 " warnings from the batch should be shown"
 msgstr ""
-"True si et seulement si les options permettant de supprimer du lot les "
+"Vrai si et seulement si les options permettant de supprimer du lot les "
 "paiements à l'origine des erreurs ou des avertissements doivent être "
 "affichées."
 

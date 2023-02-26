@@ -364,7 +364,7 @@ msgstr "ചൊവ്വാഴ്ച"
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_website
 msgid "Website"
-msgstr "വെബ്സൈറ്റ്"
+msgstr "വെബ്‌സൈറ്റ് "
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_wed

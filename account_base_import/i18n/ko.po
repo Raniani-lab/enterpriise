@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Sarah Park, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Sarah Park, 2023\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,17 +23,17 @@ msgstr ""
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"o_form_label\">Initial Setup</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">초기 설정</span>"
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"text-muted\">(end of year balances)</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">(기말 잔액)</span>"
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"text-muted\">(for full history)</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">(전체 내역)</span>"
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_account
@@ -49,7 +50,7 @@ msgstr ""
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "Accounting Import"
-msgstr ""
+msgstr "회계 가져오기"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -57,14 +58,14 @@ msgstr ""
 #: model:ir.actions.client,name:account_base_import.action_open_import_guide
 #, python-format
 msgid "Accounting Import Guide"
-msgstr ""
+msgstr "회계 가져오기 가이드"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Accounting Import Options"
-msgstr ""
+msgstr "회계 가져오기 옵션"
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_base_import_import
@@ -82,7 +83,7 @@ msgstr "계정 차트"
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "Choose how you want to setup your CoA"
-msgstr ""
+msgstr "계정과목표 설정 방법을 선택하세요"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -230,7 +231,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 #, python-format
 msgid "Review Manually"
-msgstr ""
+msgstr "직접 확인하기"
 
 #. module: account_base_import
 #. odoo-python
@@ -261,7 +262,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Use templates to import CSV or Excel for your accounting setup."
-msgstr ""
+msgstr "회계 설정에서 서식을 사용하여 CSV나 엑셀 파일을 가져옵니다. "
 
 #. module: account_base_import
 #. odoo-javascript

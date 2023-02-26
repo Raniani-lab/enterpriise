@@ -2961,7 +2961,7 @@ msgstr "稅項單位"
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__mail_activity_type__category__tax_report
 msgid "Tax report"
-msgstr "Tax report"
+msgstr "稅務報表"
 
 #. module: account_reports
 #. odoo-python

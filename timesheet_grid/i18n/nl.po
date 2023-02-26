@@ -1013,6 +1013,8 @@ msgid ""
 "Prevent employees from creating, modifying, or deleting timesheets prior to "
 "their most recent validated timesheet"
 msgstr ""
+"Voorkomen dat werknemers urenstaten aanmaken, wijzigen of verwijderen die "
+"voorafgaan aan hun meest recente gevalideerde urenstaat"
 
 #. module: timesheet_grid
 #. odoo-javascript

@@ -7,6 +7,7 @@
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
+# Emily Jia <eji@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2022\n"
+"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -487,6 +488,15 @@ msgid ""
 "Best Regards,\n"
 "\n"
 msgstr ""
+"尊敬的%s：\n"
+"\n"
+"\n"
+"除非我们有错误，否则似乎以下金额仍未支付。请采取适当措施，在8天内完成付款。\n"
+"\n"
+"如果您在此邮件发送后完成付款，请忽略此邮件。如有疑问，请联系我们的会计部门。\n"
+"\n"
+"谨上！\n"
+"\n"
 
 #. module: account_followup
 #. odoo-python

@@ -252,7 +252,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__gain_account_id
 msgid "Account used to write the journal item in case of gain"
-msgstr "Compte utilisé pour l'imputation comptable en cas de bénéfice"
+msgstr "Compte utilisé pour l'écriture comptable en cas de bénéfice"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_res_company__gain_account_id
@@ -1338,7 +1338,7 @@ msgid ""
 "Journal Items on this account are posted."
 msgstr ""
 "Si cette option est sélectionnée, une dépense/recette sera créée "
-"automatiquement lorsque les imputations comptables de ce compte seront "
+"automatiquement lorsque les écritures comptables de ce compte seront "
 "comptabilisées."
 
 #. module: account_asset
@@ -1386,18 +1386,18 @@ msgstr "Journal"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Journal Entries"
-msgstr "Écritures comptables"
+msgstr "Pièces comptables"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_asset
 #. odoo-python
@@ -1405,7 +1405,7 @@ msgstr "Imputation comptable"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__original_move_line_ids
 #, python-format
 msgid "Journal Items"
-msgstr "Imputations comptables"
+msgstr "Écritures comptables"
 
 #. module: account_asset
 #. odoo-python
@@ -1414,7 +1414,7 @@ msgstr "Imputations comptables"
 msgid ""
 "Journal Items of {account} should have a label in order to generate an asset"
 msgstr ""
-"Les imputations comptables de {account} doivent avoir une étiquette afin de "
+"Les écritures comptables de {account} doivent avoir une étiquette afin de "
 "générer un actif"
 
 #. module: account_asset
@@ -2011,8 +2011,8 @@ msgid ""
 "The disposal invoice is needed in order to generate the closing journal "
 "entry."
 msgstr ""
-"La facture d'élimination est nécessaire pour générer l'écriture comptable de"
-" clôture."
+"La facture d'élimination est nécessaire pour générer la pièce comptable de "
+"clôture."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method_number

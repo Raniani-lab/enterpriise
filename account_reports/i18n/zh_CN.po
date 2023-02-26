@@ -6,8 +6,8 @@
 # keecome <7017511@qq.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
-# Emily Jia <eji@odoo.com>, 2023
 # Martin Trigaux, 2023
+# Emily Jia <eji@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:51+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -321,6 +321,8 @@ msgid ""
 "<span class=\"fa fa-fw fa-calendar\" title=\"Dates\" role=\"img\" aria-"
 "label=\"Dates\"/>"
 msgstr ""
+"<span class=\"fa fa-fw fa-calendar\" title=\"Dates\" role=\"img\" aria-"
+"label=\"Dates\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_tax_unit
@@ -622,7 +624,7 @@ msgstr "到期的应付"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_payable_report_handler
 msgid "Aged Payable Custom Handler"
-msgstr ""
+msgstr "到期的应付款自定义处理程序"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -640,7 +642,7 @@ msgstr "到期的应收"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_receivable_report_handler
 msgid "Aged Receivable Custom Handler"
-msgstr ""
+msgstr "到期的应收款自定义处理程序"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -2019,7 +2021,7 @@ msgstr "日记报告自定义处理程序"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Journal items with archived tax tags"
-msgstr ""
+msgstr "具有存档税项标签的日记帐项目"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2803,7 +2805,7 @@ msgstr "某些控件失败。"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "Some journal items appear to point to obsolete report lines."
-msgstr ""
+msgstr "部分日记账项目似乎指向过时的报告行。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -3410,12 +3412,12 @@ msgid ""
 "You cannot reset this closing entry to draft, as it would delete carryover "
 "values impacting the tax report of a locked period. To do this, you first "
 "need to modify you tax return lock date."
-msgstr ""
+msgstr "您不能将此条目重置为草稿，因为将会删除影响锁定期间纳税报告的结转值。应首先修改报税锁定日期。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "and correct their tax tags if necessary."
-msgstr ""
+msgstr "如有需要，应更改其税项标签。"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__year

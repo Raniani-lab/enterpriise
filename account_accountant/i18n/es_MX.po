@@ -108,7 +108,7 @@ msgstr "1 Transacción bancaria"
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
 msgid "<b class=\"tip_title\">Tip: Bulk update journal items</b>"
 msgstr ""
-"<b class=\"tip_title\">Consejo: actualice los apuntes de diario de forma "
+"<b class=\"tip_title\">Consejo: actualice los apuntes contables de forma "
 "masiva</b>"
 
 #. module: account_accountant
@@ -139,12 +139,12 @@ msgstr "<i class=\"fa fa-check\"/> Emparejado"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "<i>Lock all journal entries</i>"
-msgstr "<i>Bloquear todos los asientos de diario</i>"
+msgstr "<i>Bloquear todos los asientos contables</i>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "<i>Lock specific journal entries</i>"
-msgstr "<i>Bloquear asientos de diario específicos</i>"
+msgstr "<i>Bloquear asientos contables específicos</i>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1073,7 +1073,7 @@ msgstr "Divisa del diario"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 msgid "Journal Entries Lock Date"
-msgstr "Fecha de bloqueo de asientos de diario"
+msgstr "Fecha de bloqueo de asientos contables"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_move
@@ -1081,13 +1081,13 @@ msgstr "Fecha de bloqueo de asientos de diario"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Journal Entry"
-msgstr "Asiento de diario"
+msgstr "Asiento contable"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_move_line
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 msgid "Journal Item"
-msgstr "Apunte de diario"
+msgstr "Apunte contable"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1095,7 +1095,7 @@ msgstr "Apunte de diario"
 #: model:ir.actions.client,name:account_accountant.action_manual_reconcile
 #, python-format
 msgid "Journal Items to Reconcile"
-msgstr "Apuntes de diario por conciliar"
+msgstr "Apuntes contables por conciliar"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
@@ -1367,7 +1367,7 @@ msgid ""
 "No users can edit journal entries related to a tax prior and inclusive of "
 "this date."
 msgstr ""
-"Ningún usuario puede editar asientos de diario relacionados con un impuesto "
+"Ningún usuario puede editar asientos contables relacionados con un impuesto "
 "antes e en esta fecha."
 
 #. module: account_accountant
@@ -1548,9 +1548,9 @@ msgid ""
 "Prevents Journal Entry creation or modification prior to the defined date "
 "for all users. As a closed period, all accounting operations are prohibited."
 msgstr ""
-"Impide la creación o modificación de asientos antes de la fecha definida "
-"para todos los usuarios. Al ser un periodo cerrado, se prohíben todas las "
-"operaciones contables."
+"Impide la creación o modificación de asientos contables antes de la fecha "
+"definida para todos los usuarios. Al ser un periodo cerrado, se prohíben "
+"todas las operaciones contables."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
@@ -1558,7 +1558,7 @@ msgid ""
 "Prevents Journal entries creation prior to the defined date. Except for "
 "Accountants users."
 msgstr ""
-"Impide la creación de asientos de diario antes de la fecha definida. Excepto"
+"Impide la creación de asientos contables antes de la fecha definida. Excepto"
 " para los usuarios contadores."
 
 #. module: account_accountant
@@ -1637,7 +1637,7 @@ msgstr "Conciliación"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Record cost of goods sold in your journal entries"
-msgstr "Registrar el costo de los bienes vendidos en sus asientos de diario"
+msgstr "Registrar el costo de los bienes vendidos en sus asientos contables"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1946,7 +1946,7 @@ msgstr "Este fue el modelo que generó las líneas sugeridas"
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_0
 msgid "Tip: Bulk update journal items"
-msgstr "Consejo: actualice los apuntes de diario de forma masiva"
+msgstr "Consejo: actualice los apuntes contables de forma masiva"
 
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_1
@@ -1973,7 +1973,7 @@ msgstr "Por revisar"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
-msgstr "Para conciliar facturas y pagos, y publicar nuevos asientos de diario"
+msgstr "Para conciliar facturas y pagos y registrar nuevos asientos contables"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2127,8 +2127,8 @@ msgid ""
 "You can't have multiple liquidity journal item at the same time in the bank "
 "reconciliation widget"
 msgstr ""
-"No puede tener múltiples apuntes de diario de liquidez al mismo tiempo que "
-"en el widget de conciliación bancaria"
+"No puede tener múltiples apuntes contables de liquidez al mismo tiempo en el"
+" widget de conciliación bancaria"
 
 #. module: account_accountant
 #. odoo-python
@@ -2138,7 +2138,7 @@ msgid ""
 "You can't have multiple times the same journal item in the bank "
 "reconciliation widget"
 msgstr ""
-"No puede tener el mismo apunte de diario varias veces en el widget de "
+"No puede tener el mismo apunte contable varias veces en el widget de "
 "conciliación bancaria"
 
 #. module: account_accountant

@@ -238,7 +238,7 @@ msgstr "Journal"
 #. module: account_auto_transfer
 #: model:ir.model,name:account_auto_transfer.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model____last_update

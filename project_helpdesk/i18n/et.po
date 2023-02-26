@@ -36,7 +36,7 @@ msgstr "Tühista"
 #: model_terms:ir.ui.view,arch_db:project_helpdesk.helpdesk_ticket_convert_to_task_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:project_helpdesk.project_task_convert_to_ticket_wizard_view_form
 msgid "Convert"
-msgstr "Muuda"
+msgstr "Teisenda"
 
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_helpdesk_ticket_convert_wizard

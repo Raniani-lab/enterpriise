@@ -41,12 +41,12 @@ msgstr "Récompense de remise"
 #. module: sale_loyalty_taxcloud
 #: model:ir.model,name:sale_loyalty_taxcloud.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: sale_loyalty_taxcloud
 #: model:ir.model,name:sale_loyalty_taxcloud.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: sale_loyalty_taxcloud
 #: code:addons/sale_loyalty_taxcloud/models/sale_order_line.py:0

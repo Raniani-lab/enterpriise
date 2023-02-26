@@ -715,7 +715,7 @@ msgstr "소유자"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Package"
-msgstr "포장품"
+msgstr "패키지"
 
 #. module: stock_barcode
 #. openerp-web
@@ -728,7 +728,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant_package
 msgid "Packages"
-msgstr "포장품목"
+msgstr "패키지"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_id

@@ -23,12 +23,12 @@ msgstr ""
 #. module: sale_loyalty_taxcloud_delivery
 #: model:ir.model,name:sale_loyalty_taxcloud_delivery.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: sale_loyalty_taxcloud_delivery
 #: model:ir.model,name:sale_loyalty_taxcloud_delivery.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: sale_loyalty_taxcloud_delivery
 #: model:ir.model,name:sale_loyalty_taxcloud_delivery.model_sale_order

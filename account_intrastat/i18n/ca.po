@@ -8,10 +8,11 @@
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # marcescu, 2022
 # Quim - eccit <quim@eccit.com>, 2022
-# Josep Anton Belchi, 2022
+# jabelchi, 2022
 # Jonatan Gk, 2022
 # Ivan Espinola, 2022
 # Farouk Jabiri, 2022
+# Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Farouk Jabiri, 2022\n"
+"Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2023\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -169,7 +170,7 @@ msgstr "Codi de transacció de factura per defecte"
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_default_refund_transaction_code_id
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__intrastat_default_refund_transaction_code_id
 msgid "Default refund transaction code"
-msgstr "Codi predeterminat de la transacció d'abonament"
+msgstr "Codi de transacció d'abonament predeterminat"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_transport_mode_id
@@ -427,7 +428,7 @@ msgstr "Codi de transport"
 #. module: account_intrastat
 #: model:ir.model.constraint,message:account_intrastat.constraint_account_intrastat_code_intrastat_region_code_unique
 msgid "Triplet code/type/country_id must be unique."
-msgstr "El triplet codi/tipus/identificador de país ha de ser únic."
+msgstr "El triplet code/type/country_id ha de ser únic."
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0

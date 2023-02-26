@@ -4,10 +4,10 @@
 # 
 # Translators:
 # keecome <7017511@qq.com>, 2022
-# Emily Jia <eji@odoo.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2023
+# Emily Jia <eji@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,13 +37,21 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    全部完成！\n"
+"                </p>\n"
+"                <p>\n"
+"                    创建新交易，或确保搜索栏中没有活动的筛选器。\n"
+"                </p>\n"
+"            "
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ -2,678.00"
-msgstr ""
+msgstr "$ -2,678.00"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -51,7 +59,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ 2,678.00"
-msgstr ""
+msgstr "$ 2,678.00"
 
 #. module: account_accountant
 #. odoo-python
@@ -76,7 +84,7 @@ msgstr "%(display_name_html)s 打开的 %(open_amount)s 量将减少 %(amount)s.
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "-1,134.50"
-msgstr ""
+msgstr "-1,134.50"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -167,6 +175,8 @@ msgid ""
 "<span class=\"o_form_label\" attrs=\"{'invisible': "
 "[('form_force_negative_sign', '=', False)]}\">-</span>"
 msgstr ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': "
+"[('form_force_negative_sign', '=', False)]}\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -292,7 +302,7 @@ msgstr "Amls小部件"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Amongst unmatched bank transactions"
-msgstr ""
+msgstr "在未匹配的银行交易中"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -548,7 +558,7 @@ msgstr "创建新的科目组"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Create additional entries"
-msgstr ""
+msgstr "创建新的分录"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -702,7 +712,7 @@ msgstr ""
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Exchange Difference: %s"
-msgstr ""
+msgstr "汇兑差额：%s"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -923,7 +933,7 @@ msgstr "ID"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0003"
-msgstr ""
+msgstr "INV/2032/0003"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -931,7 +941,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0012"
-msgstr ""
+msgstr "INV/2032/0012"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
@@ -1080,7 +1090,7 @@ msgstr "标签"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Larry Smith"
-msgstr ""
+msgstr "Larry Smith"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1119,7 +1129,7 @@ msgstr "最后更新时间"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Learn how blazing fast bank matching works"
-msgstr ""
+msgstr "了解如何快速匹配银行"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1230,7 +1240,7 @@ msgstr "匹配现有条目"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Match payments and invoices"
-msgstr ""
+msgstr "匹配付款和发票"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1343,7 +1353,7 @@ msgstr "备注"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Odoo Bank Reconciliation"
-msgstr ""
+msgstr "Odoo银行对账"
 
 #. module: account_accountant
 #. odoo-python
@@ -1619,7 +1629,7 @@ msgstr "保存并新建"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "搜索客户"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1633,7 +1643,7 @@ msgstr "选择业务伙伴"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Select a transaction"
-msgstr ""
+msgstr "选择交易"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
@@ -1897,14 +1907,14 @@ msgstr "要检查"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
-msgstr ""
+msgstr "核对发票和付款，并发布新的日记账条目"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr ""
+msgstr "核对未关闭条目"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1955,7 +1965,7 @@ msgstr "未对帐语句行"
 msgid ""
 "Use the <strong>Manual Operations</strong> tab to register the difference, "
 "or create expenses on the fly"
-msgstr ""
+msgstr "使用<strong>手动操作</strong>选项卡登记差额，或随时创建费用"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
@@ -2140,7 +2150,7 @@ msgstr "early_payment"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__exchange_diff
 msgid "exchange_diff"
-msgstr ""
+msgstr "exchange_diff"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity

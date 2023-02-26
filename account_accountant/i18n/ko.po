@@ -155,6 +155,9 @@ msgid ""
 "('form_force_negative_sign', '=', False), ('form_index', '=', "
 "False)]}\">-</span>"
 msgstr ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', "
+"('form_force_negative_sign', '=', False), ('form_index', '=', "
+"False)]}\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -261,7 +264,7 @@ msgstr "새 태그 추가"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 msgid "All Users Lock Date"
-msgstr ""
+msgstr "전체 사용자 잠금 날짜"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -696,7 +699,7 @@ msgstr ""
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Exchange Difference: %s"
-msgstr ""
+msgstr "외환 차이: %s"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -711,7 +714,7 @@ msgstr "외부 링크"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Filter on account, label, partner, amount,..."
-msgstr "계정, 꼬리표, 협력사, 금액 등을 기준으로 필터링"
+msgstr "계정, 라벨, 협력사, 금액 등을 기준으로 필터링"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_fiscal_year
@@ -872,7 +875,7 @@ msgstr "이제부터는 다음을 수행할 수 있습니다. :"
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Get back to the dashboard using your previous path…"
-msgstr "이전 경로를 사용하여 현황판으로 돌아 가기…"
+msgstr "이전 경로를 사용하여 현황판으로 돌아갑니다"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -881,7 +884,7 @@ msgstr "이전 경로를 사용하여 현황판으로 돌아 가기…"
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Go to invoicing"
-msgstr "청구서로 가기"
+msgstr "청구서로 이동"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -895,7 +898,7 @@ msgstr "잘하셨습니다!"
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Great! Let’s continue."
-msgstr "잘하셨습니다!계속 진행합니다."
+msgstr "좋습니다! 진행을 계속합니다."
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__group_tax_id
@@ -1114,7 +1117,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s automate your bills, bank transactions and accounting processes."
-msgstr "공급업체 청구서, 은행거래내역과 회계 프로세스를 자동화 합시다. "
+msgstr "공급업체 청구서, 은행거래내역 맟 회계 프로세스를 자동화합니다."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1145,6 +1148,7 @@ msgid ""
 "Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done "
 "yet, wait a few more seconds and try again.</i>"
 msgstr ""
+"AI 를 활용하여 양식을 채워넣습니다<br/><br/><i>팁: OCR이 아직 완료되지 않은 경우에는 잠시 후 다시 시도하십시오.</i>"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__line_ids
@@ -1500,7 +1504,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Process this transaction."
-msgstr ""
+msgstr "거래를 처리합니다."
 
 #. module: account_accountant
 #. odoo-python

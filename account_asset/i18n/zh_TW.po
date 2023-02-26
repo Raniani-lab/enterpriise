@@ -1325,7 +1325,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_line_ids
 msgid "Invoice Line"
-msgstr "應收憑單明細"
+msgstr "發票資料行"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_is_follower
@@ -1343,7 +1343,7 @@ msgstr "您計劃的量, 不可以折舊。"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Journal"
-msgstr "日記帳"
+msgstr "日記賬"
 
 #. module: account_asset
 #. odoo-python

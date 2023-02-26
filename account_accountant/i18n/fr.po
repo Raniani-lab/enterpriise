@@ -112,7 +112,7 @@ msgstr "1 Transaction bancaire "
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
 msgid "<b class=\"tip_title\">Tip: Bulk update journal items</b>"
 msgstr ""
-"<b class=\"tip_title\">Astuce : Mettez à jour vos imputations comptables en "
+"<b class=\"tip_title\">Astuce : Mettez à jour vos écritures comptables en "
 "masse</b>"
 
 #. module: account_accountant
@@ -141,12 +141,12 @@ msgstr "<i class=\"fa fa-check\"/> Lettré(s)"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "<i>Lock all journal entries</i>"
-msgstr "<i>Protégez toutes les écritures comptables</i>"
+msgstr "<i>Protégez toutes les pièces comptables</i>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "<i>Lock specific journal entries</i>"
-msgstr "<i>Protégez certaines écritures comptables spécifiques</i>"
+msgstr "<i>Protégez certaines pièces comptables spécifiques</i>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -910,8 +910,8 @@ msgstr ""
 "Dans n'importe quelle vue liste, sélectionnez plusieurs enregistrements et "
 "la liste devient modifiable. Si vous mettez à jour une cellule, les "
 "enregistrements sélectionnés sont mis à jour en une seule fois. Utilisez "
-"cette fonctionnalité pour mettre à jour plusieurs écritures comptables à "
-"partir du grand livre ou n'importe quelle vue journal."
+"cette fonctionnalité pour mettre à jour plusieurs pièces comptables à partir"
+" du grand livre ou n'importe quelle vue journal."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1082,7 +1082,7 @@ msgstr "Devise du journal"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 msgid "Journal Entries Lock Date"
-msgstr "Date de clôture des écritures comptables"
+msgstr "Date de clôture des pièces comptables"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_move
@@ -1090,13 +1090,13 @@ msgstr "Date de clôture des écritures comptables"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_move_line
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1104,7 +1104,7 @@ msgstr "Imputation comptable"
 #: model:ir.actions.client,name:account_accountant.action_manual_reconcile
 #, python-format
 msgid "Journal Items to Reconcile"
-msgstr "Imputations comptables à lettrer"
+msgstr "Écritures comptables à lettrer"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
@@ -1377,7 +1377,7 @@ msgid ""
 "No users can edit journal entries related to a tax prior and inclusive of "
 "this date."
 msgstr ""
-"Aucun utilisateur ne peut modifier des écritures comptables relatives à une "
+"Aucun utilisateur ne peut modifier des pièces comptables relatives à une "
 "taxe avant et au jour de cette date."
 
 #. module: account_accountant
@@ -1559,9 +1559,9 @@ msgid ""
 "Prevents Journal Entry creation or modification prior to the defined date "
 "for all users. As a closed period, all accounting operations are prohibited."
 msgstr ""
-"Empêche la création d'écritures comptables ou leur modification avant la "
-"date définie, et ce pour tous les utilisateurs. La période étant clôturée, "
-"aucune opération comptable n'y est plus autorisée."
+"Empêche la création de pièces comptables ou leur modification avant la date "
+"définie, et ce pour tous les utilisateurs. La période étant clôturée, aucune"
+" opération comptable n'y est plus autorisée."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
@@ -1569,7 +1569,7 @@ msgid ""
 "Prevents Journal entries creation prior to the defined date. Except for "
 "Accountants users."
 msgstr ""
-"Empêche la création d'écritures comptables avant la date définie.\n"
+"Empêche la création de pièces comptables avant la date définie.\n"
 "Sauf pour les utilisateurs ayant le rôle de Comptable."
 
 #. module: account_accountant
@@ -1579,10 +1579,10 @@ msgid ""
 " involving taxes). The Tax Return Lock Date is automatically set when the "
 "corresponding Journal Entry is posted."
 msgstr ""
-"Empêche les modifications du rapport de taxes avant la date définie "
-"(écritures comptables impliquant des taxes). La date de verrouillage de la "
-"TVA est définie automatiquement quand l'écriture comptable correspondante "
-"est comptabilisée."
+"Empêche les modifications du rapport de taxes avant la date définie (pièces "
+"comptables impliquant des taxes). La date de verrouillage de la TVA est "
+"définie automatiquement quand la pièce comptable correspondante est "
+"comptabilisée."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1649,7 +1649,7 @@ msgstr "Lettrage"
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Record cost of goods sold in your journal entries"
 msgstr ""
-"Enregistrez le coût des marchandises vendues (COGS) dans les écritures "
+"Enregistrez le coût des marchandises vendues (COGS) dans les pièces "
 "comptables"
 
 #. module: account_accountant
@@ -1959,7 +1959,7 @@ msgstr "Ce modèle a généré les lignes suggérées"
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_0
 msgid "Tip: Bulk update journal items"
-msgstr "Astuce : Mettez à jour en masse les imputations comptables."
+msgstr "Astuce : Mettez à jour en masse les écritures comptables."
 
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_1
@@ -1987,7 +1987,7 @@ msgstr "À vérifier"
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
 msgstr ""
-"Réconcilier des factures et des paiements et poster de nouvelles écritures "
+"Réconcilier des factures et des paiements et poster de nouvelles pièces "
 "comptables"
 
 #. module: account_accountant

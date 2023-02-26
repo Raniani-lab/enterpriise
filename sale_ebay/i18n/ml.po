@@ -187,7 +187,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.actions.act_window,name:sale_ebay.action_country_all_form
 msgid "Countries"
-msgstr ""
+msgstr "രാജ്യങ്ങൾ"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form

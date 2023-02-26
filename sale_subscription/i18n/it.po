@@ -4,16 +4,17 @@
 # 
 # Translators:
 # Friederike Fasterling-Nesselbosch, 2022
-# Sergio Zanchetta <primes2h@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Sergio Zanchetta <primes2h@gmail.com>, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +37,8 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period."
+"- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period. \n"
+"  Negative recurring lines are considered free."
 msgstr ""
 
 #. module: sale_subscription
@@ -923,12 +925,12 @@ msgstr "Categoria"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__amount_signed
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__1_change
 msgid "Change in MRR"
-msgstr ""
+msgstr "Variazione RMR"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__amount_company_currency
 msgid "Change in MRR (company currency)"
-msgstr ""
+msgstr "Variazione RMR (valuta aziendale)"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1324,7 +1326,7 @@ msgstr "Modello e-mail"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_count
 msgid "End After"
-msgstr ""
+msgstr "Termina dopo"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__end_date
@@ -1844,37 +1846,37 @@ msgstr "MRR tra"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mrr_change_amount
 msgid "MRR Change Amount"
-msgstr ""
+msgstr "Importo di variazione RMR"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "MRR Change More"
-msgstr ""
+msgstr "Variazione RMR più del"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mrr_change_period
 msgid "MRR Change Period"
-msgstr ""
+msgstr "Periodo di variazione MRR"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mrr_change_unit
 msgid "MRR Change Unit"
-msgstr ""
+msgstr "Unità di variazione RMR"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mrr_max
 msgid "MRR Range Max"
-msgstr ""
+msgstr "Massimo di intervallo RMR"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mrr_min
 msgid "MRR Range Min"
-msgstr ""
+msgstr "Minimo di intervallo RMR"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__recurring_monthly
 msgid "MRR after Change"
-msgstr ""
+msgstr "RMR dopo variazione"
 
 #. module: sale_subscription
 #. odoo-python
@@ -1886,7 +1888,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_log__recurring_monthly
 msgid "MRR, after applying the changes of that particular event"
-msgstr ""
+msgstr "RMR dopo l'applicazione delle variazioni dello specifico evento"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -1927,6 +1929,15 @@ msgstr "Segna come da rinnovare"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__starred_user_ids
 msgid "Members"
 msgstr "Soci"
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"Mix of negative recurring lines and non-recurring line. The contract should "
+"be fixed manually"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_id
@@ -2105,7 +2116,7 @@ msgstr "Altro"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Over"
-msgstr ""
+msgstr "Oltre"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_id
@@ -2452,7 +2463,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
 msgid "Reporting"
-msgstr "Rendicontazione"
+msgstr "Rendiconto"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__description
@@ -2473,7 +2484,7 @@ msgstr "Retention"
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_cohort_action
 msgid "Retention Analysis"
-msgstr ""
+msgstr "Analisi mantenimento cliente"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -3111,12 +3122,33 @@ msgid ""
 "This allows comparison of invoice lines created by subscriptions with different temporalities.\n"
 "The computation assumes that 1 month is comprised of exactly 30 days, regardless  of the actual length of the month."
 msgstr ""
+"Il RMR è calcolato dividendo l'importo con segno (in valuta aziendale) per la quantità di tempo tra le date di inizio e di fine convertita in mesi.\n"
+"Ciò consente un confronto tra le righe fattura create degli abbonamenti con differenti temporalità.\n"
+"Il calcolo presuppone che 1 mese sia costituito da 30 giorni esatti, a prescindere dalla durata effettiva del mese."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trigger_field_ids
 msgid ""
 "The action will be triggered if and only if one of these fields is updated. "
 "If empty, all fields are watched."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"The following recurring orders have draft invoices. Please Confirm them or "
+"cancel them before creating new invoices. %s."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/account_move.py:0
+#, python-format
+msgid ""
+"The following refund %s has been made on this contract. Please check the "
+"next invoice date if necessary."
 msgstr ""
 
 #. module: sale_subscription
@@ -3182,6 +3214,13 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "The upsell %s has been canceled."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid "There is already a draft invoice for subscription %s."
 msgstr ""
 
 #. module: sale_subscription
@@ -3551,6 +3590,15 @@ msgstr "Anni"
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid ""
+"You can not delete a confirmed subscription. You must first close and cancel"
+" it before you can delete it."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
 "You can not upsell a subscription that has not been invoiced yet. Please, "
 "update directly the %s contract or invoice it first."
 msgstr ""
@@ -3637,7 +3685,7 @@ msgstr "Il tuo piano di abbonamento"
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
-msgid "Your contrat is recurrent"
+msgid "Your contract is recurrent"
 msgstr ""
 
 #. module: sale_subscription

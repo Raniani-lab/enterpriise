@@ -1037,7 +1037,7 @@ msgstr "是關注人"
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_form
 msgid "Journal"
-msgstr "日記帳"
+msgstr "日記賬"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_account_move_line
@@ -1062,7 +1062,7 @@ msgstr "Journal lines"
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "Journals"
-msgstr "日記帳"
+msgstr "日記賬"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_create_period_state__just_done

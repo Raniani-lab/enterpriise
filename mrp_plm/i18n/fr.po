@@ -932,7 +932,7 @@ msgid ""
 "If the active field is set to False, it will allow you to hide the "
 "engineering change order without removing it."
 msgstr ""
-"Si le champ actif est défini sur False, vous pourrez masquer l'ordre de "
+"Si le champ actif n'est pas coché, vous pourrez masquer l'ordre de "
 "modification technique sans le supprimer."
 
 #. module: mrp_plm

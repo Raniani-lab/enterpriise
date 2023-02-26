@@ -101,7 +101,7 @@ msgstr ""
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_wizard__ship_country_ids
 msgid "Countries"
-msgstr ""
+msgstr "രാജ്യങ്ങൾ"
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_product__create_uid

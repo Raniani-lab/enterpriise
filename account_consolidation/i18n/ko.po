@@ -1608,7 +1608,7 @@ msgstr "마감된 기간에는 분개장을 추가할 수 없습니다!"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form
 msgid "e.g. Profit and Loss"
-msgstr ""
+msgstr "예: 손익계산서"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_form

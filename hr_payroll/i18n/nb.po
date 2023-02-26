@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:28+0000\n"
+"POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Lars Aam <lars.aam@vikenfiber.no>, 2022\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
@@ -143,9 +143,10 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
 msgid ""
-"<span role=\"status\" class=\"alert alert-warning\" attrs=\"{'invisible': "
-"[('display_warning', '=', False)]}\">You have selected contracts that are "
-"not running, this wizard can only index running contracts.</span>"
+"<span role=\"status\" class=\"alert alert-warning d-block\" "
+"attrs=\"{'invisible': [('display_warning', '=', False)]}\">You have selected"
+" contracts that are not running, this wizard can only index running "
+"contracts.</span>"
 msgstr ""
 
 #. module: hr_payroll

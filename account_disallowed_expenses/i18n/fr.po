@@ -159,7 +159,7 @@ msgstr "ID"
 #: code:addons/account_disallowed_expenses/report/account_disallowed_expenses_report.py:0
 #, python-format
 msgid "Journal Items"
-msgstr "Imputations comptables"
+msgstr "Écritures comptables"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_category____last_update
@@ -216,7 +216,7 @@ msgstr "Definir les taux"
 #: model:ir.model.fields,help:account_disallowed_expenses.field_account_disallowed_expenses_category__active
 msgid "Set active to false to hide the category without removing it."
 msgstr ""
-"Mettre le champs actif à false pour masquer la catégorie sans la supprimer"
+"Mettre le champs actif à faux pour masquer la catégorie sans la supprimer"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_rate__date_from

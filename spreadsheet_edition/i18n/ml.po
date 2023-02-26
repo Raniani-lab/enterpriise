@@ -165,7 +165,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/helpers.js:0
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "ദിവസം"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

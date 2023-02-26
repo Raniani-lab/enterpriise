@@ -221,7 +221,7 @@ msgstr "ID"
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
 msgid "Journal"
-msgstr "日記帳"
+msgstr "日記賬"
 
 #. module: account_auto_transfer
 #: model:ir.model,name:account_auto_transfer.model_account_move

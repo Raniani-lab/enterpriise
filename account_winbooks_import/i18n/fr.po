@@ -123,7 +123,7 @@ msgstr "Importer uniquement les années ouvertes"
 #. module: account_winbooks_import
 #: model:ir.model,name:account_winbooks_import.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields.selection,name:account_winbooks_import.selection__res_company__account_onboarding_winbooks_state__just_done

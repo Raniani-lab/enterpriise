@@ -74,7 +74,7 @@ msgstr ""
 #: code:addons/website_studio/static/src/js/editor_menu.js:0
 #, python-format
 msgid "Website"
-msgstr "വെബ്സൈറ്റ്"
+msgstr "വെബ്‌സൈറ്റ് "
 
 #. module: website_studio
 #: model:ir.actions.client,name:website_studio.action_web_studio_form

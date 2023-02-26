@@ -340,7 +340,7 @@ msgstr "Aquesta factura s'ha iniciat per una transacció bancària."
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
 msgid "Vendor Credit Note"
-msgstr "Nota d'abonament de proveïdor"
+msgstr "Factura rectificativa de proveïdor"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_invoice

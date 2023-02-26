@@ -23,7 +23,7 @@ msgstr ""
 #. module: sale_intrastat
 #: model:ir.model,name:sale_intrastat.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: sale_intrastat
 #: model:ir.model,name:sale_intrastat.model_sale_order

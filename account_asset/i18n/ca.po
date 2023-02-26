@@ -2232,7 +2232,7 @@ msgstr "No podeu continuar en una data igual o anterior a la data de pausa"
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance
 msgid "book_value"
-msgstr "valordelclic"
+msgstr "book_value"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_date_from

@@ -410,7 +410,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_journal
 msgid "Journal"
-msgstr "日記帳"
+msgstr "日記賬"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard____last_update

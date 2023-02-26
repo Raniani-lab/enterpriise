@@ -6,7 +6,6 @@
 # Arnau Ros, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # jabelchi, 2022
-# RGB Consulting <odoo@rgbconsulting.com>, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # marcescu, 2022
 # Ivan Espinola, 2022
@@ -35,7 +34,7 @@ msgstr "Revocació de moviment en compte"
 #: code:addons/helpdesk_account/controllers/portal.py:0
 #, python-format
 msgid "Credit Note"
-msgstr "Factura rectificativa (abonament)"
+msgstr "Factura rectificativa"
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/controllers/portal.py:0
@@ -82,7 +81,7 @@ msgstr "Assent."
 #: model:ir.actions.act_window,name:helpdesk_account.helpdesk_ticket_action_refund
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.helpdesk_ticket_view_form_inherit_helpdesk_invoicing
 msgid "Refund"
-msgstr "Factura rectificativa (abonament)"
+msgstr "Abonament"
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0

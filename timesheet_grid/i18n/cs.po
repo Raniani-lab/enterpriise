@@ -6,9 +6,10 @@
 # Jan Horzinka <jan.horzinka@centrum.cz>, 2022
 # Michal Veselý <michal@veselyberanek.net>, 2022
 # Martin Trigaux, 2022
-# trendspotter <jirka.p@volny.cz>, 2022
+# Jiří Podhorecký, 2022
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
+# Aleš Fiala <f.ales1@seznam.cz>, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Rastislav Brencic <rastislav.brencic@azet.sk>, 2022\n"
+"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2023\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,7 +45,7 @@ msgstr "<i class=\"fa fa-play text-success\" title=\"Timer is Running\"/>"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "<span class=\"col-auto ms-2\">minutes</span>"
-msgstr ""
+msgstr "<span class=\"col-auto ms-2\">minut</span>"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -263,11 +264,6 @@ msgid "Apple App Store"
 msgstr "Apple App Store"
 
 #. module: timesheet_grid
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
-msgid "Block encoding of timesheets after a certain date"
-msgstr ""
-
-#. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__can_edit
 msgid "Can Edit"
 msgstr "Lze upravit"
@@ -300,6 +296,8 @@ msgid ""
 "Configure reminders in timesheet settings to remind managers to validate "
 "timesheets"
 msgstr ""
+"Nakonfigurujte připomenutí v nastavení pracovního výkazu, abyste připomněli "
+"manažerům, aby ověřili pracovní výkazy"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -383,6 +381,8 @@ msgstr "Zkrácení času"
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
 msgstr ""
+"Definujte „hodinové náklady“ na zaměstnance, abyste mohli sledovat náklady "
+"na jeho čas."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -790,6 +790,9 @@ msgid ""
 "email reminder will be sent to timesheet managers that still have timesheets"
 " to validate."
 msgstr ""
+"Počet dní po skončení týdne/měsíce, po kterých bude správcům pracovních "
+"výkazů, kteří mají pracovní výkazy k ověření, zasláno automatické e-mailové "
+"připomenutí."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_delay
@@ -798,6 +801,9 @@ msgid ""
 "email reminder will be sent to timesheet users that still have timesheets to"
 " encode (according to their working hours)."
 msgstr ""
+"Počty dnů po skončení týdne/měsíce, po kterých bude uživatelům pracovních "
+"výkazů, kteří mají pracovní výkazy ještě kódovat (podle jejich pracovní "
+"doby), zasláno automatické e-mailové připomenutí."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -835,7 +841,17 @@ msgid "Press Esc to discard"
 msgstr "Stisknutím klávesy Esc akci zrušíte"
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid ""
+"Prevent employees from creating, modifying, or deleting timesheets prior to "
+"their most recent validated timesheet"
+msgstr ""
+"Zabraňte zaměstnancům ve vytváření, úpravě nebo odstraňování pracovních "
+"výkazů před jejich nejnovějším ověřeným pracovním výkazem"
+
+#. module: timesheet_grid
 #. odoo-javascript
+#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #: model:ir.model,name:timesheet_grid.model_project_project
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__project_id
@@ -936,6 +952,8 @@ msgid ""
 "Select the user responsible for approving \"Timesheet\" of this employee.\n"
 "If empty, the approval is done by a Timesheets > Administrator or a Timesheets > User: all timesheets (as determined in the users settings)."
 msgstr ""
+"Vyberte uživatele odpovědného za schválení \"Pracovní výkaz\" tohoto zaměstnance.\n"
+"Pokud je prázdné, schválení provádí Pracovní výkazy > Administrátor nebo Pracovní výkazy > Uživatel: všechny pracovní výkazy (jak je určeno v nastavení uživatele)."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__is_timesheet
@@ -949,6 +967,8 @@ msgid ""
 "Set reminders in settings to notify employees who didn't record their "
 "timesheet"
 msgstr ""
+"Nastavte připomenutí v nastavení, abyste upozornili zaměstnance, kteří si "
+"nezaznamenali svůj pracovní výkaz"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1018,6 +1038,7 @@ msgstr ""
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
+#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #: model:ir.model,name:timesheet_grid.model_project_task
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__task_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__task_id
@@ -1047,6 +1068,12 @@ msgid ""
 "00:30 (assuming you have a round up of 15 min). We recommend having the same"
 " value for the minimal duration and for the round up."
 msgstr ""
+"Doba trvání časového rozvrhu zakódovaného pomocí časovače bude automaticky "
+"zaokrouhlena nahoru na toto číslo. Pokud například zastavíte časovač v "
+"00:16:56, doba trvání záznamu v pracovním výkazu se automaticky zaokrouhlí "
+"nahoru na 00:30 (za předpokladu, že máte zaokrouhleno 15 minut nahoru). "
+"Doporučujeme mít stejnou hodnotu pro minimální dobu trvání a pro "
+"zaokrouhlení nahoru."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1086,7 +1113,7 @@ msgstr ""
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
 #, python-format
 msgid "The timesheets must have the same encoding unit"
-msgstr ""
+msgstr "Pracovní výkazy musí mít stejnou jednotku kódování"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1222,6 +1249,12 @@ msgid ""
 "of 15 min). We recommend having the same value for the minimal duration and "
 "for the round up."
 msgstr ""
+"Pracovní výkazy zakódované pomocí časovače, které nesplňují minimální dobu "
+"trvání, budou automaticky zaokrouhleny nahoru na definovanou hodnotu. Pokud "
+"například zastavíte časovač v 00:04:36, doba trvání záznamu v pracovním "
+"výkazu se automaticky zaokrouhlí nahoru na 00:15 (za předpokladu, že máte "
+"minimální dobu trvání 15 minut). Doporučujeme mít stejnou hodnotu pro "
+"minimální dobu trvání a pro zaokrouhlení nahoru."
 
 #. module: timesheet_grid
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month

@@ -138,7 +138,7 @@ msgstr "Est un produit stockable"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_stock_lot

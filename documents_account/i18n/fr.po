@@ -225,7 +225,7 @@ msgstr "Journal"
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_documents_account_folder_setting

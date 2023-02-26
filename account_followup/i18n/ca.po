@@ -17,7 +17,7 @@
 # jabelchi, 2022
 # marcescu, 2022
 # Guspy12, 2022
-# Ivan Espinola, 2023
+# Ivan Espinola, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
@@ -51,7 +51,7 @@ msgstr "Recordatori de pagament %s - %s"
 #. module: account_followup
 #: model:ir.actions.report,print_report_name:account_followup.action_report_followup
 msgid "'Follow-up ' + object.display_name"
-msgstr "'Follow-up ' + object.displayname"
+msgstr "'Seguiment ' + object.display_name"
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_res_partner__type
@@ -129,32 +129,33 @@ msgid ""
 msgstr ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        <t t-if=\"object.id != object.commercialpartnerid.id\">Apreciat <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercialpartnerid.name or ''\"/>),</t>\n"
+"                        <t t-if=\"object.id != object.commercial_partner_id.id\">Apreciat <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
 "                        <t t-else=\"\">Apreciat <t t-out=\"object.name or ''\"/>,</t>\n"
 "                        <br/>\n"
 "                    </p>\n"
 "                    <p>\n"
-"                        Exceptuant una equivocació, sembla que <t t-out=\"formatamount(object.totaloverdue, object.currencyid) or ''\"/>\n"
-"                        una quantitat roman impagada. Si us plau, prenguin les mesures adequades per a realitzar aquest pagament en els pròxims 8 dies.\n"
+"                        Exceptuant un eror per la nostra part, sembla que una quantitat <t t-out=\"format_amount(object.total_overdue, object.currency_id) or ''\"/>\n"
+"                        roman impagada. Si us plau, prenguin les mesures adequades per a realitzar aquest pagament en els pròxims 8 dies.\n"
 "                    </p>\n"
 "                    <p>\n"
 "                        Si el pagament s'hagués realitzat després d'enviar aquest correu, ignoreu aquest missatge.\n"
-"                        No dubteu a posar-vos en contacte amb el nostre departament de comptabilitat.\n"
+"No dubtin a contactar amb el nostre departament comptable.\n"
 "                    </p>\n"
 "                    <p>\n"
-"                         Cordialment,\n"
-"                        <t t-if=\"not ishtmlempty(object.getfollowupresponsible().signature)\">\n"
+"                        Cordialment,\n"
+"                        <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
 "                            <br/>\n"
-"                            <t t-out=\"object.getfollowupresponsible().signature\"/>\n"
+"                            <t t-out=\"object._get_followup_responsible().signature\"/>\n"
 "                        </t>\n"
 "                        <t t-else=\"\">\n"
 "                            <br/>\n"
 "                            --\n"
 "                            <br/>\n"
-"                            <t t-out=\"object.getfollowupresponsible().name\"/>\n"
+"                            <t t-out=\"object._get_followup_responsible().name\"/>\n"
 "                        </t>\n"
 "                    </p>\n"
-"                </div>"
+"                </div>\n"
+"            "
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.demo_followup_email_template_4
@@ -504,11 +505,11 @@ msgstr ""
 "Benvolgut %s,\n"
 "\n"
 "\n"
-"Excepció feta si hi ha hagut un error nostre, sembla que la quantitat següent roman sense pagar. Si us plau, prenguin les mesures adequades per a dur a terme aquest pagament en els pròxims 8 dies.\n"
+"Amb la salvetat de ser un error nostre, sembla que la quantitat següent roman sense pagar. Si us plau, prenguin les mesures adequades per a dur a terme aquest pagament en els pròxims 8 dies.\n"
 "\n"
 "Si el pagament s'hagués realitzat després d'enviar aquest correu, ignoreu aquest missatge. No dubteu a posar-vos en contacte amb el nostre departament de comptabilitat.\n"
 "\n"
-"Els millors respectes,\n"
+"Cordialment,\n"
 "\n"
 
 #. module: account_followup
@@ -1162,5 +1163,5 @@ msgid ""
 "{{ (object.company_id or object._get_followup_responsible().company_id).name"
 " }} Payment Reminder - {{ object.commercial_company_name }}"
 msgstr ""
-"{{ (object.companyid o object.getfollowupresponsible().companyid).nom }} "
-"Recordatori de pagament - {{ object.commercialcompanyname }}"
+"{{ (object.company_id or object._get_followup_responsible().company_id).name"
+" }} Recordatori de pagament - {{ object.commercial_company_name }}"

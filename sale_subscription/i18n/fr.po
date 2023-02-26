@@ -1067,9 +1067,9 @@ msgid ""
 msgstr ""
 "Une action de code serveur peut être exécutée depuis le site web en "
 "utilisant un contrôleur dédié. L'adresse est   "
-"<base>/website/action/<website_path>. Définissez ce champ sur True pour "
+"<base>/website/action/<website_path>. Définissez ce champ sur vrai pour "
 "permettre aux utilisateurs d'exécuter cette action. S'il est défini sur "
-"True, l'action ne pourra pas être exécutée sur le site web."
+"faux, l'action ne pourra pas être exécutée sur le site web."
 
 #. module: sale_subscription
 #. odoo-python
@@ -2141,12 +2141,12 @@ msgstr "Est un abonnement facturé en cron"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__kpi_1month_mrr_delta

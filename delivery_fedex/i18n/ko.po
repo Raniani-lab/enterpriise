@@ -133,7 +133,7 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_file_type
 msgid "FEDEX Label File Type"
-msgstr "FEDEX 파일 유형 꼬리표"
+msgstr "FEDEX 라벨 파일 유형"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_2_day
@@ -309,7 +309,7 @@ msgstr "LB"
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Label Format"
-msgstr ""
+msgstr "라벨 양식"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type

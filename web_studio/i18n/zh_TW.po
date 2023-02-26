@@ -339,7 +339,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Add in the print menu"
-msgstr ""
+msgstr "加入列印選單"
 
 #. module: web_studio
 #. odoo-javascript
@@ -418,7 +418,7 @@ msgstr "總額合計"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Amount untaxed"
-msgstr ""
+msgstr "未連稅金額"
 
 #. module: web_studio
 #. odoo-javascript
@@ -691,7 +691,7 @@ msgstr "已封鎖"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Bold"
-msgstr "加粗"
+msgstr "粗體"
 
 #. module: web_studio
 #. odoo-javascript
@@ -705,7 +705,7 @@ msgstr "有邊框的"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Borderless"
-msgstr ""
+msgstr "無邊框"
 
 #. module: web_studio
 #. odoo-javascript
@@ -719,7 +719,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/reports/report_editor_sidebar.js:0
 #, python-format
 msgid "By default: "
-msgstr ""
+msgstr "預設"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1213,7 +1213,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Custom color"
-msgstr ""
+msgstr "自訂顏色"
 
 #. module: web_studio
 #. odoo-python
@@ -1878,7 +1878,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Font style"
-msgstr ""
+msgstr "字體樣式"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1951,7 +1951,7 @@ msgstr ""
 #: model:mail.activity.type,name:web_studio.mail_activity_data_approve
 #, python-format
 msgid "Grant Approval"
-msgstr ""
+msgstr "批出准許"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2038,42 +2038,42 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading1"
-msgstr ""
+msgstr "Heading1"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading2"
-msgstr ""
+msgstr "Heading2"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading3"
-msgstr ""
+msgstr "Heading3"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading4"
-msgstr ""
+msgstr "Heading4"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading5"
-msgstr ""
+msgstr "Heading5"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading6"
-msgstr ""
+msgstr "Heading6"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2864,7 +2864,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Offset"
-msgstr ""
+msgstr "位移"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3225,7 +3225,7 @@ msgstr "關係："
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Reload from attachment"
-msgstr ""
+msgstr "從附件重新載入"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3473,7 +3473,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Separator"
-msgstr ""
+msgstr "分隔線"
 
 #. module: web_studio
 #. odoo-python
@@ -3792,7 +3792,7 @@ msgstr "桌子"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Table style"
-msgstr ""
+msgstr "表格樣式"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3816,7 +3816,7 @@ msgstr "標籤"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Taxes amount by groups"
-msgstr ""
+msgstr "分組稅額"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4478,7 +4478,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "bottom"
-msgstr ""
+msgstr "底"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4507,7 +4507,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "left"
-msgstr ""
+msgstr "左"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4538,14 +4538,14 @@ msgstr "px"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "reset color"
-msgstr ""
+msgstr "重設顏色"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "right"
-msgstr ""
+msgstr "右"
 
 #. module: web_studio
 #. odoo-python
@@ -4566,7 +4566,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "top"
-msgstr ""
+msgstr "頂"
 
 #. module: web_studio
 #. odoo-javascript

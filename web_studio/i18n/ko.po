@@ -2160,14 +2160,14 @@ msgstr "시간"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "How do you want to <b>name</b> your app? Library, Academy, …?"
-msgstr "앱의 <b>이름</b>을 어떻게 지정하고 싶습니까? 도서관, 아카데미, ...?"
+msgstr "앱 <b>이름</b>을 어떻게 지정하고 싶으신가요? 도서관이나 아카데미는 어떨까요."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "How do you want to name your first <b>menu</b>? My books, My courses?"
-msgstr "첫 번째 메뉴의 <b>이름</b>을 어떻게 지정하고 싶습니까? 책, 수업?"
+msgstr "첫 번째 메뉴의 <b>이름</b>을 어떻게 지정하고 싶으신가요? 내 책이나 내 강좌는 어떨까요?"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2182,7 +2182,7 @@ msgstr "Html"
 #, python-format
 msgid ""
 "I bet you can <b>build an app</b> in 5 minutes. Ready for the challenge?"
-msgstr "5분 안에 <b>앱을 만들</b> 수 있을 거예요. 도전할 준비가 되었습니까?"
+msgstr "5분 안에 <b>앱 생성</b>이 완료됩니다. 도전할 준비가 완료되셨나요?"
 
 #. module: web_studio
 #. odoo-javascript

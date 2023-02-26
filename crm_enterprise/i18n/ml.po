@@ -124,7 +124,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Medium"
-msgstr ""
+msgstr "മീഡിയം"
 
 #. module: crm_enterprise
 #: model_terms:ir.actions.act_window,help:crm_enterprise.crm_lead_action_dashboard

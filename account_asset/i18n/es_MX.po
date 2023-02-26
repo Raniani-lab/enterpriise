@@ -246,7 +246,7 @@ msgstr ""
 #: model:ir.model.fields,help:account_asset.field_asset_modify__gain_account_id
 msgid "Account used to write the journal item in case of gain"
 msgstr ""
-"Cuenta que se utiliza para escribir el apunte de diario en caso de tener "
+"Cuenta que se utiliza para escribir el apunte contable en caso de tener "
 "alguna ganancia."
 
 #. module: account_asset
@@ -255,14 +255,14 @@ msgid ""
 "Account used to write the journal item in case of gain while selling an "
 "asset"
 msgstr ""
-"Cuenta que se utiliza para escribir el apunte de diario en caso de tener "
+"Cuenta que se utiliza para escribir el apunte contable en caso de tener "
 "alguna ganancia al vender un activo"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__loss_account_id
 msgid "Account used to write the journal item in case of loss"
 msgstr ""
-"Cuenta que se utiliza para escribir el apunte de diario en caso de tener "
+"Cuenta que se utiliza para escribir el apunte contable en caso de tener "
 "alguna pérdida "
 
 #. module: account_asset
@@ -271,7 +271,7 @@ msgid ""
 "Account used to write the journal item in case of loss while selling an "
 "asset"
 msgstr ""
-"Cuenta que se utiliza para escribir el apunte de diario en caso de tener "
+"Cuenta que se utiliza para escribir el apunte contable en caso de tener "
 "alguna perdida al vender un activo"
 
 #. module: account_asset
@@ -1337,7 +1337,7 @@ msgid ""
 "Journal Items on this account are posted."
 msgstr ""
 "Si se selecciona esta opción, se creará un gasto/ingreso de forma automática"
-" cuando se publiquen los apuntes de diario en esta cuenta."
+" cuando se registren los apuntes contables en esta cuenta."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__already_depreciated_amount_import
@@ -1384,18 +1384,18 @@ msgstr "Diario"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Journal Entries"
-msgstr "Asientos de diario"
+msgstr "Asientos contables"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Journal Entry"
-msgstr "Asiento de diario"
+msgstr "Asiento contable"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move_line
 msgid "Journal Item"
-msgstr "Apunte de diario"
+msgstr "Apunte contable"
 
 #. module: account_asset
 #. odoo-python
@@ -1403,7 +1403,7 @@ msgstr "Apunte de diario"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__original_move_line_ids
 #, python-format
 msgid "Journal Items"
-msgstr "Apuntes de diario "
+msgstr "Apuntes contables"
 
 #. module: account_asset
 #. odoo-python
@@ -1412,8 +1412,8 @@ msgstr "Apuntes de diario "
 msgid ""
 "Journal Items of {account} should have a label in order to generate an asset"
 msgstr ""
-"Los apuntes de diario de {account}  deben tener una etiqueta para generar un"
-" activo"
+"Los apuntes contables de {account} deben tener una etiqueta para generar un "
+"activo"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset____last_update
@@ -2179,8 +2179,8 @@ msgid ""
 "You cannot automate the journal entry for an asset that has a running gross "
 "increase. Please use 'Dispose' on the increase(s)."
 msgstr ""
-"No puede automatizar el asiento de diario para un activo que tiene un "
-"aumento bruto en ejecución. Utilice \"eliminar\" en los aumentos."
+"No puede automatizar el asiento contable para un activo que tiene un aumento"
+" bruto en ejecución. Utilice \"eliminar\" en los aumentos."
 
 #. module: account_asset
 #. odoo-python
@@ -2208,8 +2208,8 @@ msgid ""
 "You cannot delete an asset linked to posted entries.\n"
 "You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
 msgstr ""
-"No puede eliminar un activo vinculado a asientos publicados.\n"
-"Debe confirmar el activo y luego venderlo o deshacerse de él, o cancelar los asientos de diario vinculados."
+"No puede eliminar un activo vinculado a asientos registrados.\n"
+"Debe confirmar el activo y luego venderlo o deshacerse de él, o cancelar los asientos contables vinculados."
 
 #. module: account_asset
 #. odoo-python

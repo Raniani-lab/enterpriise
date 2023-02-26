@@ -164,7 +164,7 @@ msgstr "Importer des contacts"
 #: model:ir.actions.client,name:account_base_import.action_account_move_line_import
 #, python-format
 msgid "Import Journal Items"
-msgstr "Import des imputations comptables"
+msgstr "Import des écritures comptables"
 
 #. module: account_base_import
 #: model:ir.actions.client,name:account_base_import.action_partner_import
@@ -204,14 +204,14 @@ msgstr "Installer un module"
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/js/account_setup_import.js:0
 #, python-format
 msgid "Journal Items"
-msgstr "Imputations comptables"
+msgstr "Écritures comptables"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -258,7 +258,7 @@ msgid ""
 "Payable and Receivable Accounts."
 msgstr ""
 "Astuce : nous vous recommandons d'importer vos soldes d'ouverture en utilisant le plan comptable importé\n"
-"Utilisez seulement l'import des imputations comptables pour les écritures non réconciliées pour les comptes débiteurs et les comptes créditeurs ouverts."
+"Utilisez seulement l'import des écritures comptables pour les écritures non réconciliées pour les comptes débiteurs et les comptes créditeurs ouverts."
 
 #. module: account_base_import
 #. odoo-javascript
@@ -319,7 +319,7 @@ msgid ""
 "to import a Winbooks full back-up (Maintenance > Backup) to get the chart of accounts, contacts, taxes, history of journal entries, and documents.\n"
 "                            Support versions: Winbooks Desktop 5.50, 6, 7, 8."
 msgstr ""
-"pour importer une sauvegarde complète de Winbooks (Maintenance > Sauvegarde) pour obtenir le plan comptable, les contacts, les taxes, l'historique des écritures comptables et les documents.\n"
+"pour importer une sauvegarde complète de Winbooks (Maintenance > Sauvegarde) pour obtenir le plan comptable, les contacts, les taxes, l'historique des pièces comptables et les documents.\n"
 "Versions prises en charge : Winbooks Desktop 5.50, 6, 7, 8."
 
 #. module: account_base_import
@@ -331,4 +331,4 @@ msgid ""
 "history of journal entries."
 msgstr ""
 "pour importer le fichier FEC. Nous mettrons en place vos plans comptables et"
-" l'historique des écritures comptables."
+" l'historique des pièces comptables."

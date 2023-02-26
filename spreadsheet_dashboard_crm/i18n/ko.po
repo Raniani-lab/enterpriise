@@ -202,7 +202,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -530,7 +530,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "이전 기간"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web

@@ -386,7 +386,7 @@ msgstr "Est Avatax"
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption____last_update

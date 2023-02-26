@@ -80,7 +80,7 @@ msgstr ""
 #: code:addons/web_cohort/static/src/cohort_model.js:0
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "ദിവസം"
 
 #. module: web_cohort
 #. openerp-web

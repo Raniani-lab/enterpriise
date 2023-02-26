@@ -381,7 +381,7 @@ msgstr "在此加入功能⋯"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a specific appointment."
-msgstr ""
+msgstr "加入某項預約的資料。"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -499,7 +499,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 #, python-format
 msgid "Appointment"
-msgstr "會面"
+msgstr "預約"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_answer_input
@@ -1118,7 +1118,7 @@ msgstr ""
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert Appointment Link"
-msgstr ""
+msgstr "插入預約連結"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
@@ -1346,7 +1346,7 @@ msgstr "名稱"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Navigation"
-msgstr ""
+msgstr "資訊存取"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_alarm__default_for_new_appointment_type
@@ -1635,7 +1635,7 @@ msgstr "預約會面"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Schedule an appointment."
-msgstr ""
+msgstr "將某項預約排期。"
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.calendar_event_action_report

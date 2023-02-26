@@ -114,7 +114,7 @@ msgstr "업무 유형 아이콘"
 #: code:addons/account_online_synchronization/static/src/xml/online_sync_template.xml:0
 #, python-format
 msgid "Add A Bank Account"
-msgstr ""
+msgstr "은행 계좌 추가"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_attachment_count
@@ -781,6 +781,8 @@ msgid ""
 "To create a synchronization with your banking institution,<br>\n"
 "                please click on <b>Add a Bank Account</b>."
 msgstr ""
+"거래 은행과의 동기화 항목을 생성하려면,<br>\n"
+"                <b>은행 계좌 추가</b>를 클릭하십시오."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__access_token

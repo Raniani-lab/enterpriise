@@ -1557,7 +1557,7 @@ msgstr "鎖定者"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Log a note..."
-msgstr "記錄備註..."
+msgstr "記錄備註⋯"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -2786,7 +2786,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "e.g. Discuss proposal"
-msgstr "例如.討論提案"
+msgstr "例：討論提案"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form

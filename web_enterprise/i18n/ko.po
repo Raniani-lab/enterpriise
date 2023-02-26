@@ -133,7 +133,7 @@ msgstr "제어판 툴바"
 #: code:addons/web_enterprise/static/src/webclient/color_scheme/color_scheme_menu_items.js:0
 #, python-format
 msgid "Dark Mode"
-msgstr ""
+msgstr "다크 모드"
 
 #. module: web_enterprise
 #. odoo-javascript

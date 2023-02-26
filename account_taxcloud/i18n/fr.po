@@ -118,12 +118,12 @@ msgstr "Est-ce que TaxCloud est configuré"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category____last_update

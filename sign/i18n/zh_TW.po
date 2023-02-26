@@ -2340,7 +2340,7 @@ msgstr "Request Item Infos"
 #: model:mail.activity.type,name:sign.mail_activity_data_signature_request
 #, python-format
 msgid "Request Signature"
-msgstr "Request Signature"
+msgstr "要求簽名"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_total

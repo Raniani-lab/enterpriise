@@ -22,7 +22,7 @@ msgstr ""
 #. module: account_reports_tax_reminder
 #: model:ir.model,name:account_reports_tax_reminder.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_reports_tax_reminder
 #: model:mail.activity.type,name:account_reports_tax_reminder.mail_activity_type_tax_report_to_be_sent

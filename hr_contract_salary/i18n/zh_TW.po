@@ -136,7 +136,7 @@ msgstr "活動類型"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "Add a line"
-msgstr "增加明細"
+msgstr "加入資料行"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form

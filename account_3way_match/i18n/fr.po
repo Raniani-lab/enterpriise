@@ -78,12 +78,12 @@ msgstr "Journal"
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_3way_match
 #: model:ir.model.fields.selection,name:account_3way_match.selection__account_move__release_to_pay__no

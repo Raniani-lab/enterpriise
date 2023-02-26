@@ -591,6 +591,8 @@ msgid ""
 "The following customer(s) need to have a zip, state and country when using "
 "Avatax:"
 msgstr ""
+"Els següents clients han d'indicar un codi postal, una província i un país "
+"quan utilitzen Avatax:"
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_res_config_settings__avalara_commit

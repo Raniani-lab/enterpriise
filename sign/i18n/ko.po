@@ -176,6 +176,8 @@ msgid ""
 "<i class=\"fa fa-arrow-right\"/>\n"
 "                                                Preview"
 msgstr ""
+"<i class=\"fa fa-arrow-right\"/>\n"
+"                                                미리보기"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
@@ -1189,7 +1191,7 @@ msgstr "이메일"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__subject
 msgid "Email Subject"
-msgstr ""
+msgstr "이메일 제목"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -1464,7 +1466,7 @@ msgstr "높이"
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid "Hello"
-msgstr "안녕"
+msgstr "안녕하세요"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__tip
@@ -2689,7 +2691,7 @@ msgstr "서명 요청 보내기"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Sign Settings"
-msgstr ""
+msgstr "서명 설정"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_template_tag
@@ -3539,7 +3541,7 @@ msgstr "레코드에 있는 예외 활동의 유형입니다."
 #: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "UPLOAD A PDF TEMPLATE"
-msgstr "PDF 서식 올리기"
+msgstr "PDF 서식 업로드"
 
 #. module: sign
 #. odoo-javascript
@@ -3576,7 +3578,7 @@ msgstr "갱신"
 #: code:addons/sign/models/sign_template.py:0
 #, python-format
 msgid "Upload a PDF"
-msgstr "PDF 올리기"
+msgstr "PDF 업로드"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action

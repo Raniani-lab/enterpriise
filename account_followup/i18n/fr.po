@@ -737,7 +737,7 @@ msgstr "Est éditeur"
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form

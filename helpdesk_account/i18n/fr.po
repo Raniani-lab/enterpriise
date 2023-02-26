@@ -66,7 +66,7 @@ msgstr "Factures à rembourser"
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__move_ids

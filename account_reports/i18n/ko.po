@@ -197,6 +197,8 @@ msgid ""
 "<span class=\"fa fa-book\"/>\n"
 "            Fiscal Position:"
 msgstr ""
+"<span class=\"fa fa-book\"/>\n"
+"            재정 상태:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_journals
@@ -491,7 +493,7 @@ msgstr "회계 보고서"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_line
 msgid "Accounting Report Line"
-msgstr ""
+msgstr "회계 보고서 내역"
 
 #. module: account_reports
 #: model:ir.actions.act_window,name:account_reports.action_account_report_tree
@@ -643,7 +645,7 @@ msgstr "전체"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All Journals"
-msgstr ""
+msgstr "전체 분개장"
 
 #. module: account_reports
 #. odoo-python
@@ -714,7 +716,7 @@ msgstr ""
 msgid ""
 "Analytic filters will include analytic items without accounting "
 "correspondence"
-msgstr ""
+msgstr "분석 필터는 회계 항목 대응 없이도 분석 항목을 포함합니다."
 
 #. module: account_reports
 #. odoo-javascript
@@ -1057,7 +1059,7 @@ msgstr "확인"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Closing Entry"
-msgstr ""
+msgstr "마감 분개"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_closing_bank_balance0
@@ -1110,7 +1112,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Company Settings"
-msgstr ""
+msgstr "회사 설정"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_config_settings
@@ -1702,7 +1704,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Goods"
-msgstr ""
+msgstr "제품"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
@@ -1823,7 +1825,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Include Analytic Simulations"
-msgstr ""
+msgstr "분석 시뮬레이션 포함"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -2782,7 +2784,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "Some journal items appear to point to obsolete report lines."
-msgstr ""
+msgstr "분개 항목 일부에서 사용 중이 아닌 보고서 내용을 표시하고 있습니다."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -2942,7 +2944,7 @@ msgstr "세금 보고서"
 #: code:addons/account_reports/models/res_company.py:0
 #, python-format
 msgid "Tax return for %s%s"
-msgstr ""
+msgstr "세금 보고 %s%s"
 
 #. module: account_reports
 #. odoo-python
@@ -3390,12 +3392,12 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "and correct their tax tags if necessary."
-msgstr ""
+msgstr "또는 필요시 세금 태그를 수정합니다."
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__year
 msgid "annually"
-msgstr ""
+msgstr "매년"
 
 #. module: account_reports
 #. odoo-python
@@ -3414,12 +3416,12 @@ msgstr "일 이후 "
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__2_months
 msgid "every 2 months"
-msgstr ""
+msgstr "매 2개월마다"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__4_months
 msgid "every 4 months"
-msgstr ""
+msgstr "매 4개월마다"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
@@ -3463,12 +3465,12 @@ msgstr "이전 또는 이 기간에 포함"
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__trimester
 msgid "quarterly"
-msgstr ""
+msgstr "분기별"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__semester
 msgid "semi-annually"
-msgstr ""
+msgstr "반기별"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template

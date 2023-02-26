@@ -3,8 +3,8 @@
 # 	* account_base_import
 # 
 # Translators:
-# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Braulio D. López Vázquez <bdl@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2023\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -162,7 +162,7 @@ msgstr "Importar contactos"
 #: model:ir.actions.client,name:account_base_import.action_account_move_line_import
 #, python-format
 msgid "Import Journal Items"
-msgstr "Importar apuntes de diario"
+msgstr "Importar apuntes contables"
 
 #. module: account_base_import
 #: model:ir.actions.client,name:account_base_import.action_partner_import
@@ -200,14 +200,14 @@ msgstr "Instalar un módulo"
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_move_line
 msgid "Journal Item"
-msgstr "Apunte de diario"
+msgstr "Apunte contable"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/js/account_setup_import.js:0
 #, python-format
 msgid "Journal Items"
-msgstr "Apuntes de diario "
+msgstr "Apuntes contables"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -254,8 +254,8 @@ msgid ""
 "Payable and Receivable Accounts."
 msgstr ""
 "Consejo: recomendamos importar sus balances iniciales mediante la "
-"importación de plan de cuentas. Solo utilice la importación de apuntes de "
-"diario con asientos sin conciliar en sus cuentas por pagar y por cobrar."
+"importación de plan de cuentas. Solo utilice la importación de apuntes "
+"contables con asientos sin conciliar en sus cuentas por pagar y por cobrar."
 
 #. module: account_base_import
 #. odoo-javascript
@@ -316,7 +316,7 @@ msgid ""
 "to import a Winbooks full back-up (Maintenance > Backup) to get the chart of accounts, contacts, taxes, history of journal entries, and documents.\n"
 "                            Support versions: Winbooks Desktop 5.50, 6, 7, 8."
 msgstr ""
-"para importar un respaldo completo de Winbooks (Mantenimiento > Respaldo) con el fin de obtener el plan de cuentas, contactos, impuestos, historial de asientos de diario y documentos.\n"
+"para importar un respaldo completo de Winbooks (Mantenimiento > Respaldo) con el fin de obtener el plan de cuentas, contactos, impuestos, historial de asientos contables y documentos.\n"
 "                            Versiones compatibles: Winbooks Desktop 5.50, 6, 7, 8."
 
 #. module: account_base_import
@@ -328,4 +328,4 @@ msgid ""
 "history of journal entries."
 msgstr ""
 "para importar el archivo FEC. Configuraremos su plan de cuentas y el "
-"historial de asientos de diario."
+"historial de asientos contables."

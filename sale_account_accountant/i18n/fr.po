@@ -36,8 +36,8 @@ msgstr "Bon de commande réconcilié"
 msgid ""
 "Preset to create journal entries during a invoices and payments matching"
 msgstr ""
-"Préconfigurer pour créer des écritures comptables pendant la réconciliation "
-"des factures et des paiements"
+"Préconfigurer pour créer des pièces comptables pendant la réconciliation des"
+" factures et des paiements"
 
 #. module: sale_account_accountant
 #: code:addons/sale_account_accountant/models/bank_rec_widget.py:0

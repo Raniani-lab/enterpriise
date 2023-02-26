@@ -179,7 +179,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-upload\"/>  Upload"
-msgstr "<i class=\"fa fa-upload\"/> 올리기"
+msgstr "<i class=\"fa fa-upload\"/> 업로드"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -350,7 +350,7 @@ msgstr ""
 "                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                                    <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                                        <div>\n"
-"                                            안녕하세요 <t t-out=\"object.owner_id.name or ''\">OdooBot</t>,\n"
+"                                            안녕하세요 <t t-out=\"object.owner_id.name or ''\">OdooBot</t>님,\n"
 "                                            <br/><br/>\n"
 "                                            <t t-out=\"object.create_uid.name or ''\">OdooBot</t> (<t t-out=\"object.create_uid.email or ''\">odoobot@example.com</t>)이 다음과 같은 문서를 요청하고 있습니다:\n"
 "                                            <br/><br/>\n"
@@ -413,7 +413,7 @@ msgstr ""
 "                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
 "                          <tr><td style=\"text-align: center; font-size: 13px;\">\n"
 "                            <t t-if=\"object.date_deadline\">\n"
-"                                본 링크의 만료 일자는 다음과 같습니다. <b t-out=\"object.date_deadline or ''\">2021-05-17</b>.<br/>\n"
+"                                본 링크는 다음의 날짜까지 유효합니다. <b t-out=\"object.date_deadline or ''\">2021-05-17</b>.<br/>\n"
 "                            </t>\n"
 "                            Powered by <a target=\"_blank\" href=\"https://www.odoo.com/app/documents\" style=\"color: #875A7B;\">Odoo Documents</a>\n"
 "                          </td></tr>\n"
@@ -1004,7 +1004,7 @@ msgstr "기본값"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Default values for uploaded documents"
-msgstr "올리기한 문서의 기본값"
+msgstr "업로드한 문서의 기본값"
 
 #. module: documents
 #. odoo-javascript
@@ -1206,7 +1206,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__action__downloadupload
 msgid "Download and Upload"
-msgstr "내려받기 및 올리기"
+msgstr "다운로드 및 업로드"
 
 #. module: documents
 #. odoo-javascript
@@ -2662,7 +2662,7 @@ msgstr "이름 없음"
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
-msgstr "올리기"
+msgstr "업로드"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action
@@ -2676,7 +2676,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Upload Document"
-msgstr "문서 올리기"
+msgstr "문서 업로드"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop

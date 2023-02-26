@@ -49,4 +49,4 @@ msgstr "Afficher la possibilité de passer en mode comptabilité de trésorerie.
 #. module: account_reports_cash_basis
 #: model:ir.model,name:account_reports_cash_basis.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"

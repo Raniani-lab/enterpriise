@@ -3,11 +3,11 @@
 # 	* account_3way_match
 # 
 # Translators:
-# Hamed Mohammadi <hamed@dehongi.com>, 2023
 # Arash Sardari <arashss77@gmail.com>, 2023
 # Hanna Kheradroosta, 2023
-# Martin Trigaux, 2023
 # Farid Hariri <fhari1234@gmail.com>, 2023
+# Martin Trigaux, 2023
+# Yousef Shadmanesh, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-12 07:57+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Farid Hariri <fhari1234@gmail.com>, 2023\n"
+"Last-Translator: Yousef Shadmanesh, 2023\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,20 +33,20 @@ msgid ""
 "  * Exception, there is a difference between received and billed quantities\n"
 "This status is defined automatically, but you can force it by ticking the 'Force Status' checkbox."
 msgstr ""
-"* بله: شما باید قبض را پرداخت کنید، محصولات را دریافت کرده اید\n"
-"* نه، شما نباید قبض را پرداخت کنید، محصولات را دریافت نکرده اید\n"
+"* بله: شما باید صورتحساب را پرداخت کنید، محصولات را دریافت کرده اید\n"
+"* نه، شما نباید صورتحساب را پرداخت کنید، محصولات را دریافت نکرده اید\n"
 "* استثنا، بین مقادیر دریافتی و صورت‌حساب تفاوت وجود دارد\n"
-"این وضعیت به طور خودکار تعریف می شود، اما می‌توانید با علامت زدن در کادر \"وضعیت اجباری\" آن را مجبور کنید."
+"این وضعیت به طور خودکار تعریف می شود، اما می‌توانید با علامت زدن در کادر \"وضعیت الزامی\" آن را مجبور کنید."
 
 #. module: account_3way_match
 #: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills in Exception"
-msgstr "استثناء"
+msgstr "صورتحساب های استثناء"
 
 #. module: account_3way_match
 #: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
 msgid "Bills to Pay"
-msgstr "پرداخت صورتحساب"
+msgstr "صورتحساب ها برای پرداخت"
 
 #. module: account_3way_match
 #: model:ir.model.fields.selection,name:account_3way_match.selection__account_move__release_to_pay__exception
@@ -60,7 +60,7 @@ msgstr "استثناء"
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move__force_release_to_pay
 #: model:ir.model.fields,field_description:account_3way_match.field_account_payment__force_release_to_pay
 msgid "Force Status"
-msgstr "وضعیت اجباری"
+msgstr "وضعیت الزامی"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_bank_statement_line__force_release_to_pay
@@ -81,12 +81,12 @@ msgstr "روزنامه"
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_move
 msgid "Journal Entry"
-msgstr "داده روزنامه"
+msgstr "سند دفترروزنامه‌"
 
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_move_line
 msgid "Journal Item"
-msgstr "آیتم روزنامه"
+msgstr "آیتم دفترروزنامه"
 
 #. module: account_3way_match
 #: model:ir.model.fields.selection,name:account_3way_match.selection__account_move__release_to_pay__no
@@ -100,7 +100,7 @@ msgstr "خیر"
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move__release_to_pay
 #: model:ir.model.fields,field_description:account_3way_match.field_account_payment__release_to_pay
 msgid "Release To Pay"
-msgstr "برای پرداخت آزاد کنید"
+msgstr "آماده پرداخت"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move_line__can_be_paid
@@ -126,10 +126,10 @@ msgid ""
 "This status is defined automatically, but you can force it by ticking the 'Force Status' checkbox."
 msgstr ""
 "این فیلد می‌تواند مقادیر زیر داشته باشد :\n"
-"  * بله، شما باید صورت محصولات را پرداخت کنید، شما محصولات را دریافت کرده‌اید\n"
-"  * نه، شما نباید صورت محصولات را پرداخت کنید، شما محصولات را دریافت نکرده‌اید\n"
-"  * استثنا، اختلافی بین تعدادمحصولات صورت شده و دریافت شده وجود دارد \n"
-"این وضعیت به صورت خودکار تعریف شده، اما شما می‌توانید با تیک زدن «وضعیت اجباری» اجبارا آن را تغییر دهید."
+"  * بله، شما باید صورتحساب محصولات را پرداخت کنید، شما محصولات را دریافت کرده‌اید\n"
+"  * نه، شما نباید صورتحساب محصولات را پرداخت کنید، شما محصولات را دریافت نکرده‌اید\n"
+"  * استثنا، مغایرتی بین تعدادمحصولات صورت شده و دریافت شده وجود دارد \n"
+"این وضعیت به صورت خودکار تعریف شده، اما شما می‌توانید با تیک زدن «وضعیت الزامی» اجبارا آن را تغییر دهید."
 
 #. module: account_3way_match
 #: model:ir.model.fields.selection,name:account_3way_match.selection__account_move__release_to_pay__yes

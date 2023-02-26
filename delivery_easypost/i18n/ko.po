@@ -176,7 +176,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_label_file_type
 msgid "Easypost Label File Type"
-msgstr "Easypost 꼬리표 파일 유형"
+msgstr "Easypost 라벨 파일 유형"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_stock_picking__ep_order_ref
@@ -258,7 +258,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Label Format"
-msgstr ""
+msgstr "라벨 양식"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost____last_update

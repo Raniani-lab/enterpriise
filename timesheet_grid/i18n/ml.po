@@ -339,7 +339,7 @@ msgstr "തീയതി"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Day"
-msgstr ""
+msgstr "ദിവസം"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_gantt_timesheet

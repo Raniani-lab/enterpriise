@@ -1414,7 +1414,7 @@ msgstr "Riapri"
 #. module: hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_report
 msgid "Reporting"
-msgstr "Rendicontazione"
+msgstr "Rendiconto"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_public_view_form

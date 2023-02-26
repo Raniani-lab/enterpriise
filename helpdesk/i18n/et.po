@@ -17,9 +17,9 @@
 # Piia Paurson <piia@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
-# Jana Jaakson, 2022
 # Anna, 2023
 # Leaanika Randmets, 2023
+# Jana Jaakson, 2023
 # 
 msgid ""
 msgstr ""
@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Leaanika Randmets, 2023\n"
+"Last-Translator: Jana Jaakson, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2127,7 +2127,7 @@ msgstr "Laske oma klientidel üksteise küsimustele foorumis vastata"
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Let's create your first <b>ticket</b>."
-msgstr "Loome teie esimese <b>pileti</b>."
+msgstr "Loome Teie esimese <b>pileti</b>."
 
 #. module: helpdesk
 #. odoo-javascript

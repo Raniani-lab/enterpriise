@@ -533,7 +533,7 @@ msgstr "청구서 발행 완료"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1029,7 +1029,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "이전 기간"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web

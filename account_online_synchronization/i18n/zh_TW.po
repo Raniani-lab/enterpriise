@@ -458,7 +458,7 @@ msgstr "是關注人"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__journal_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__journal_ids
 msgid "Journal"
-msgstr "日記帳"
+msgstr "日記賬"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/wizard/account_link_journal_wizard.py:0

@@ -83,12 +83,12 @@ msgstr "Message de transaction intersociétés"
 #. module: account_inter_company_rules
 #: model:ir.model,name:account_inter_company_rules.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_inter_company_rules
 #: model:ir.model,name:account_inter_company_rules.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_inter_company_rules
 #: model:ir.model.fields,help:account_inter_company_rules.field_res_company__intercompany_user_id

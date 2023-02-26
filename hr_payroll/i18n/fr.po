@@ -1787,8 +1787,8 @@ msgid ""
 "If the active field is set to false, it will allow you to hide the salary "
 "rule without removing it."
 msgstr ""
-"Si le champ actif est défini sur false, la règle salariale sera masquée sans"
-" être supprimée."
+"Si le champ actif n'est pas coché, la règle salariale sera masquée sans être"
+" supprimée."
 
 #. module: hr_payroll
 #. odoo-javascript

@@ -281,12 +281,12 @@ msgstr "Saisies de code Intrastat de transaction invalides."
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
@@ -445,7 +445,7 @@ msgstr "Valeur"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "View Journal Entry"
-msgstr "Voir l'écriture comptable"
+msgstr "Voir la pièce comptable"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_weight

@@ -196,12 +196,12 @@ msgstr "Factures ayant généré des commissions incluses dans cette commande"
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_account_move
 msgid "Journal Entry"
-msgstr "Écriture comptable"
+msgstr "Pièce comptable"
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_account_move_line
 msgid "Journal Item"
-msgstr "Imputation comptable"
+msgstr "Écriture comptable"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan____last_update

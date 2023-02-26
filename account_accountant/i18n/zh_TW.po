@@ -1023,7 +1023,7 @@ msgstr "項目"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "Journal"
-msgstr "日記帳"
+msgstr "日記賬"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__journal_currency_id

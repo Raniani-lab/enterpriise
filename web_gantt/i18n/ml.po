@@ -74,7 +74,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "ദിവസം"
 
 #. module: web_gantt
 #. openerp-web

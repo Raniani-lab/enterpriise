@@ -27,7 +27,7 @@
             <div class="px-3 my-2 o_field_CopyClipboardChar" t-if="this.props.record.data.website_published">
                 <CopyClipboardCharField name="'article_url'" record="props.record" readonly="true" value="props.record.data.article_url"/>
             </div>
-            <div class="dropdown-divider" t-if="this.props.record.data.user_can_write or this.props.record.data.website_published"></div>
+            <div class="dropdown-divider"></div>
         </xpath>
     </t>
 </templates>

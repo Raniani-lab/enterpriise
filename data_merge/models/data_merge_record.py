@@ -128,22 +128,25 @@ class DataMergeRecord(models.Model):
         template_query = """
         SELECT dmr.id
           FROM data_merge_record dmr
-     LEFT JOIN {model_table} rec
+     LEFT JOIN "{model_table}"
             ON dmr.res_model_id = %s
-           AND dmr.res_id = rec.id
+            {extra_joins}
+           AND dmr.res_id = "{model_table}".id
          WHERE {where_clause}
         """
         for model_name, model_id in models_with_company:
             Model = self.env[model_name]
             # Adapt operator and value for direct SQL query
-            exp = expression([('company_id', operator, value)], Model, alias='rec')
-            _, where_clause, where_params = exp.query.get_sql()
+            exp = expression([('company_id', operator, value)], Model)
+            from_clause, where_clause, where_params = exp.query.get_sql()
+            assert from_clause.startswith(f'"{Model._table}"')
 
             subqueries.append(
                 cr.mogrify(
                     template_query.format(
                         model_table=Model._table,
                         where_clause=where_clause,
+                        extra_joins=from_clause[len(f'"{Model._table}"'):]
                     ),
                     [model_id] + where_params,
                 ).decode(),

@@ -385,7 +385,7 @@ class HrContract(models.Model):
             'res_model': 'hr.salary.attachment',
             'view_mode': 'form',
             'target': 'new',
-            'context': {'default_employee_id': self.employee_id.id}
+            'context': {'default_employee_ids': self.employee_id.ids}
         }
 
     def action_open_salary_attachments(self):

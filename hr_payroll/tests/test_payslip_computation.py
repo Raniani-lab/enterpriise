@@ -289,14 +289,14 @@ class TestPayslipComputation(TestPayslipContractBase):
         #Create multiple salary attachments, some running, some closed
         self.env['hr.salary.attachment'].create([
             {
-                'employee_id': self.richard_emp.id,
+                'employee_ids': [(4, self.richard_emp.id)],
                 'monthly_amount': 150,
                 'deduction_type_id': self.env.ref('hr_payroll.hr_salary_attachment_type_child_support').id,
                 'date_start': date(2016, 1, 1),
                 'description': 'Child Support',
             },
             {
-                'employee_id': self.richard_emp.id,
+                'employee_ids': [(4, self.richard_emp.id)],
                 'monthly_amount': 400,
                 'total_amount': 1000,
                 'paid_amount': 1000,
@@ -309,7 +309,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         ])
 
         car_accident = self.env['hr.salary.attachment'].create({
-                'employee_id': self.richard_emp.id,
+                'employee_ids': [(4, self.richard_emp.id)],
                 'monthly_amount': 250,
                 'paid_amount': 1450,
                 'total_amount': 1500,

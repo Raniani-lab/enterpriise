@@ -30,7 +30,8 @@ class HrSalaryAttachment(models.Model):
         ('check_dates', 'CHECK (date_start <= date_end)', 'End date may not be before the starting date.'),
     ]
 
-    employee_id = fields.Many2one('hr.employee', 'Employee', required=True)
+    employee_ids = fields.Many2many('hr.employee', string='Employees', required=True)
+    employee_count = fields.Integer(compute='_compute_employee_count')
     company_id = fields.Many2one(
         'res.company', string='Company', required=True,
         default=lambda self: self.env.company)
@@ -89,6 +90,11 @@ class HrSalaryAttachment(models.Model):
     has_similar_attachment = fields.Boolean(compute='_compute_has_similar_attachment')
     has_similar_attachment_warning = fields.Char(compute='_compute_has_similar_attachment')
 
+    @api.depends('employee_ids')
+    def _compute_employee_count(self):
+        for attachment in self:
+            attachment.employee_count = len(attachment.employee_ids)
+
     @api.depends('monthly_amount', 'date_start', 'date_end')
     def _compute_total_amount(self):
         for record in self:
@@ -134,41 +140,70 @@ class HrSalaryAttachment(models.Model):
         for record in self:
             record.active_amount = min(record.monthly_amount, record.remaining_amount)
 
-    @api.depends('employee_id', 'description', 'monthly_amount', 'date_start')
+    @api.depends('employee_ids', 'description', 'monthly_amount', 'date_start')
     def _compute_has_similar_attachment(self):
         date_min = min(self.mapped('date_start'))
         possible_matches = self.search([
             ('state', '=', 'open'),
-            ('employee_id', 'in', self.mapped('employee_id').ids),
+            ('employee_ids', 'in', self.employee_ids.ids),
             ('monthly_amount', 'in', self.mapped('monthly_amount')),
             ('date_start', '<=', date_min),
         ])
         for record in self:
             similar = []
-            if record.employee_id and record.date_start and record.state == 'open':
+            if record.employee_count == 1 and record.date_start and record.state == 'open':
                 similar = possible_matches.filtered_domain([
                     ('id', '!=', record.id),
-                    ('employee_id', '=', record.employee_id.id),
+                    ('employee_ids', 'in', record.employee_ids.id),
                     ('monthly_amount', '=', record.monthly_amount),
                     ('date_start', '<=', record.date_start),
                     ('deduction_type_id', '=', record.deduction_type_id.id),
                 ])
+                similar = similar.filtered(lambda s: s.employee_count == 1)
             record.has_similar_attachment = similar if record.state == 'open' else False
             record.has_similar_attachment_warning = similar and _('Warning, a similar attachment has been found.')
 
     def action_done(self):
+        self.ensure_one()
+        if self.employee_count > 1:
+            description = self.description
+            self.env['hr.salary.attachment'].create([{
+                'employee_ids': [(4, employee.id)],
+                'company_id': self.company_id.id,
+                'description': self.description,
+                'deduction_type_id': self.deduction_type_id.id,
+                'monthly_amount': self.monthly_amount,
+                'total_amount': self.total_amount,
+                'paid_amount': self.paid_amount,
+                'date_start': self.date_start,
+                'date_end': self.date_end,
+                'state': 'open',
+                'attachment': self.attachment,
+                'attachment_name': self.attachment_name,
+            } for employee in self.employee_ids])
+            self.write({'state': 'close'})
+            self.unlink()
+            return {
+                'type': 'ir.actions.act_window',
+                'name': _('Salary Attachments'),
+                'res_model': 'hr.salary.attachment',
+                'view_mode': 'tree,form',
+                'context': {'search_default_description': description},
+            }
         self.write({
             'state': 'close',
             'date_end': fields.Date.today(),
         })
 
     def action_open(self):
+        self.ensure_one()
         self.write({
             'state': 'open',
             'date_end': False,
         })
 
     def action_cancel(self):
+        self.ensure_one()
         self.write({
             'state': 'cancel',
             'date_end': fields.Date.today(),
@@ -204,6 +239,9 @@ class HrSalaryAttachment(models.Model):
             attachment.paid_amount += amount
             if attachment.remaining_amount == 0:
                 self.action_done()
+
+        if any(len(a.employee_ids) > 1 for a in self):
+            raise UserError(_('You cannot record a payment on multi employees attachments.'))
 
         remaining = total_amount
         monthly_attachments = self.filtered(lambda a: not a.has_total_amount)

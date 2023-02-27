@@ -1348,14 +1348,14 @@ msgid "Dutch"
 msgstr "Nederlands"
 
 #. module: l10n_be_reports
-#: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
-msgid "EC sales Report"
-msgstr "Intracommunautaire opgave"
-
-#. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_passif_title0
 msgid "EQUITY AND LIABILITIES"
 msgstr "PASSIVA"
+
+#. module: l10n_be_reports
+#: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
+msgid "EU Sales List"
+msgstr "Btw-opgave van de intracommunautaire handelingen"
 
 #. module: l10n_be_reports
 #. odoo-python

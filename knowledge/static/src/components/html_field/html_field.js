@@ -193,6 +193,8 @@ const HtmlFieldPatch = {
         if (this.wysiwyg.odooEditor) {
             this.wysiwyg.odooEditor.addEventListener('historyUndo', this.bindedDelayedRefreshBehaviors);
             this.wysiwyg.odooEditor.addEventListener('historyRedo', this.bindedDelayedRefreshBehaviors);
+            this.wysiwyg.odooEditor.addEventListener('historyResetFromSteps', this.bindedDelayedRefreshBehaviors);
+            this.wysiwyg.odooEditor.addEventListener('onExternalHistorySteps', this.bindedDelayedRefreshBehaviors);
         }
         if (this.wysiwyg.$editable.length) {
             this.wysiwyg.$editable[0].addEventListener('paste', this.bindedDelayedRefreshBehaviors);
@@ -207,6 +209,8 @@ const HtmlFieldPatch = {
         if (this.wysiwyg.odooEditor) {
             this.wysiwyg.odooEditor.removeEventListener('historyUndo', this.bindedDelayedRefreshBehaviors);
             this.wysiwyg.odooEditor.removeEventListener('historyRedo', this.bindedDelayedRefreshBehaviors);
+            this.wysiwyg.odooEditor.removeEventListener('historyResetFromSteps', this.bindedDelayedRefreshBehaviors);
+            this.wysiwyg.odooEditor.removeEventListener('onExternalHistorySteps', this.bindedDelayedRefreshBehaviors);
         }
         if (this.wysiwyg.$editable.length) {
             this.wysiwyg.$editable[0].removeEventListener('paste', this.bindedDelayedRefreshBehaviors);

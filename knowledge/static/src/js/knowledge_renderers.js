@@ -164,6 +164,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             _saveIfDirty: this._saveIfDirty.bind(this),
             messagingService: this.messagingService,
             addProperties: this.addProperties.bind(this),
+            _moveArticle: this._moveArticle.bind(this),
         });
     }
 

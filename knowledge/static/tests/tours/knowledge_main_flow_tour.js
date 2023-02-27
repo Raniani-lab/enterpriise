@@ -208,6 +208,37 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     trigger: ':contains("Content of My Workspace Article")',
     run() {},
 }, {
+    // click on the main "New" action
+    trigger: '.o_knowledge_header .btn:contains("New")',
+}, {
+    trigger: 'section[data-section="private"] .o_article .o_article_name:contains("Untitled")',
+    run: () => {}, // check that the article is correctly created (private section)
+}, {
+    trigger: '.o_breadcrumb_article_name > input',
+    run: 'text Article to be moved',  // modify the article name
+}, {
+    trigger: 'a#dropdown_tools_panel',
+    run: 'click'
+}, {
+    trigger: '.btn-move',
+    run: 'click',
+}, {
+    trigger:'.select2-chosen',
+    in_modal: false
+}, {
+    trigger: '.select2-results-dept-1 > .select2-result-label:contains("Article 3")',
+    run: 'click',
+    in_modal: false
+}, {
+    trigger: '.select2-chosen:contains("Article 3")',
+    run: () => {},
+}, {
+    trigger: '.modal-content .btn-primary:contains("Move Article")',
+    run: 'click',
+}, {
+    trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("Article to be moved")',
+    run: 'click'
+}, {
     // open the trash
     trigger: '.o_knowledge_management_tools button',
 }, {

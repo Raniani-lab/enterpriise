@@ -17,6 +17,7 @@ class KnowledgeTopbar extends Component {
     setup(){
         this.actionService = useService('action');
         this.buttonSharePanel = useRef('sharePanel_button');
+        this.dialog = useService('dialog');
 
         this.formatDateTime = formatDateTime;
         this.orm = useService('orm');
@@ -114,10 +115,10 @@ class KnowledgeTopbar extends Component {
             MoveArticleDialog,
             {
                 articleName: this.props.record.data.name,
-                articleId: this.resId,
+                articleId: this.props.record.data.id,
                 category: this.props.record.data.category,
-                moveArticle: this._moveArticle.bind(this),
-                reloadTree: this._renderTree.bind(this),
+                moveArticle: this.env._moveArticle.bind(this),
+                reloadTree: this.env._renderTree.bind(this),
             }
         );
     }

@@ -43,7 +43,11 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             'active': False,
             'to_delete': True,
         })
-
+        self.env['knowledge.article'].create({
+            'name': 'Article 3',
+            'internal_permission': 'write',
+            'parent_id': False,
+        })
         self.start_tour('/web', 'knowledge_main_flow_tour', login='admin', step_delay=100)
 
         # check our articles were correctly created

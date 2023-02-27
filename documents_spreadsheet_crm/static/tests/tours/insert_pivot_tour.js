@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import "web.dom_ready";
 import { registry } from "@web/core/registry";
 
 registry.category("web_tour.tours").add(

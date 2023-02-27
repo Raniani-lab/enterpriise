@@ -3,6 +3,7 @@
 import { _t } from "web.core";
 import utils from "web_studio.utils";
 import { registry } from "@web/core/registry";
+import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add("web_studio_home_menu_background_tour", {
     url: "/web",
@@ -10,7 +11,7 @@ registry.category("web_tour.tours").add("web_studio_home_menu_background_tour", 
     steps: [
         {
             trigger: ".o_web_studio_navbar_item",
-            content: _t("Want to customize the background? Let’s activate <b>Odoo Studio</b>."),
+            content: markup(_t("Want to customize the background? Let’s activate <b>Odoo Studio</b>.")),
             position: "bottom",
             extra_trigger: ".o_home_menu_background",
         },
@@ -22,7 +23,7 @@ registry.category("web_tour.tours").add("web_studio_home_menu_background_tour", 
         {
             trigger:
                 ".o_web_studio_home_studio_menu .dropdown-menu .dropdown-item.o_web_studio_change_background",
-            content: _t("Change the <b>background</b>, make it yours."),
+            content: markup(_t("Change the <b>background</b>, make it yours.")),
             position: "bottom",
         },
     ],
@@ -39,12 +40,12 @@ registry.category("web_tour.tours").add("web_studio_new_app_tour", {
         },
         {
             trigger: ".o_web_studio_app_creator_next",
-            content: _t("I bet you can <b>build an app</b> in 5 minutes. Ready for the challenge?"),
+            content: markup(_t("I bet you can <b>build an app</b> in 5 minutes. Ready for the challenge?")),
             position: "top",
         },
         {
             trigger: ".o_web_studio_app_creator_name > input",
-            content: _t("How do you want to <b>name</b> your app? Library, Academy, …?"),
+            content: markup(_t("How do you want to <b>name</b> your app? Library, Academy, …?")),
             position: "right",
             run: "text " + utils.randomString(6),
         },
@@ -60,7 +61,7 @@ registry.category("web_tour.tours").add("web_studio_new_app_tour", {
         },
         {
             trigger: ".o_web_studio_menu_creator > input",
-            content: _t("How do you want to name your first <b>menu</b>? My books, My courses?"),
+            content: markup(_t("How do you want to name your first <b>menu</b>? My books, My courses?")),
             position: "right",
             run: "text " + utils.randomString(6),
         },
@@ -73,31 +74,31 @@ registry.category("web_tour.tours").add("web_studio_new_app_tour", {
         },
         {
             trigger: ".o_web_studio_model_configurator_next",
-            content: _t(
+            content: markup(_t(
                 "All set? You are just one click away from <b>generating your first app</b>."
-            ),
+            )),
             position: "bottom",
         },
         {
             trigger:
                 ".o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_char",
-            content: _t(
+            content: markup(_t(
                 "Nicely done! Let’s build your screen now; <b>drag</b> a <i>text field</i> and <b>drop</b> it in your view, on the right."
-            ),
+            )),
             position: "bottom",
             run: "drag_and_drop .o_web_studio_form_view_editor .o_inner_group",
             timeout: 60000 /* previous step reloads registry, etc. - could take a long time */,
         },
         {
             trigger: ".o_web_studio_form_view_editor .o_wrap_label label",
-            content: _t("To <b>customize a field</b>, click on its <i>label</i>."),
+            content: markup(_t("To <b>customize a field</b>, click on its <i>label</i>.")),
             position: "bottom",
         },
         {
             trigger: '.o_web_studio_sidebar_content.o_display_field input[name="string"]',
-            content: _t(
+            content: markup(_t(
                 "Here, you can <b>name</b> your field (e.g. Book reference, ISBN, Internal Note, etc.)."
-            ),
+            )),
             position: "bottom",
             run: "text My Field",
         },
@@ -105,7 +106,7 @@ registry.category("web_tour.tours").add("web_studio_new_app_tour", {
             // wait for the field to be renamed
             extra_trigger: ".o_web_studio_form_view_editor .o_wrap_label label:contains(My Field)",
             trigger: ".o_web_studio_sidebar .o_web_studio_new",
-            content: _t("Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>."),
+            content: markup(_t("Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>.")),
             position: "bottom",
             // the rename operation (/web_studio/rename_field + /web_studio/edit_view)
             // takes a while and sometimes reaches the default 10s timeout
@@ -128,17 +129,17 @@ registry.category("web_tour.tours").add("web_studio_new_app_tour", {
         {
             trigger:
                 ".o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_selection",
-            content: _t(
+            content: markup(_t(
                 "Drag & drop <b>another field</b>. Let’s try with a <i>selection field</i>."
-            ),
+            )),
             position: "bottom",
             run: "drag_and_drop .o_web_studio_form_view_editor .o_inner_group",
         },
         {
             trigger: ".o_web_studio_field_dialog_form > .o_web_studio_add_selection input",
-            content: _t(
+            content: markup(_t(
                 "Create your <b>selection values</b> (e.g.: Romance, Polar, Fantasy, etc.)"
-            ),
+            )),
             position: "top",
             run: "text " + utils.randomString(6),
         },
@@ -163,16 +164,16 @@ registry.category("web_tour.tours").add("web_studio_new_app_tour", {
         },
         {
             trigger: '.o_web_studio_sidebar .o_display_chatter input[name="email_alias"]',
-            content: _t(
+            content: markup(_t(
                 "Set an <b>email alias</b>. Then, try to send an email to this address; it will create a document automatically for you. Pretty cool, huh?"
-            ),
+            )),
             position: "bottom",
         },
         {
             trigger: ".o_web_studio_leave",
-            content: _t(
+            content: markup(_t(
                 "Let’s check the result. Close Odoo Studio to get an <b>overview of your app</b>."
-            ),
+            )),
             position: "left",
         },
         {
@@ -188,25 +189,25 @@ registry.category("web_tour.tours").add("web_studio_new_app_tour", {
         {
             trigger: ".o_web_studio_navbar_item",
             extra_trigger: ".o_form_view .o_form_saved",
-            content: _t(
+            content: markup(_t(
                 "Wow, nice! And I’m sure you can make it even better! Use this icon to open <b>Odoo Studio</b> and customize any screen."
-            ),
+            )),
             position: "bottom",
         },
         {
             trigger: ".o_web_studio_menu .o_menu_sections li:contains(Views)",
-            content: _t("Want more fun? Let’s create more <b>views</b>."),
+            content: markup(_t("Want more fun? Let’s create more <b>views</b>.")),
             position: "bottom",
         },
         {
             trigger:
                 '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="kanban"] .o_web_studio_thumbnail',
-            content: _t("What about a <b>Kanban view</b>?"),
+            content: markup(_t("What about a <b>Kanban view</b>?")),
             position: "bottom",
         },
         {
             trigger: ".o_web_studio_sidebar .o_web_studio_new",
-            content: _t("Now you’re on your own. Enjoy your <b>super power</b>."),
+            content: markup(_t("Now you’re on your own. Enjoy your <b>super power</b>.")),
             position: "bottom",
         },
     ],

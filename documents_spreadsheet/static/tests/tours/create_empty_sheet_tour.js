@@ -1,9 +1,8 @@
 odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) {
     "use strict";
 
-    require("web.dom_ready");
     const { registry } = require("@web/core/registry");
-    const { stepUtils } = require("@web_tour/js/tour_step_utils");
+    const { stepUtils } = require("@web_tour/tour_service/tour_utils");
 
     registry.category("web_tour.tours").add("spreadsheet_create_empty_sheet", {
         test: true,

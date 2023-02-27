@@ -65,7 +65,6 @@ Let your customers follow the signature process easily.
             'web/static/src/legacy/scss/utils.scss',
             'web/static/src/scss/primary_variables.scss',
             'web_enterprise/static/src/scss/primary_variables.scss',
-            'web_tour/static/src/scss/tip.scss',
             'sign/static/src/css/iframe.css',
             'web/static/src/scss/secondary_variables.scss',
             'sign/static/src/scss/iframe.scss',

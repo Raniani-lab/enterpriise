@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/js/tour_step_utils";
+import { stepUtils } from "@web_tour/tour_service/tour_utils";
 import { moveArticle } from './knowledge_main_flow_tour';
 
 registry.category("web_tour.tours").add('knowledge_properties_tour', {

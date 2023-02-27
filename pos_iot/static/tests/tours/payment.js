@@ -2,7 +2,7 @@
 /* global posmodel */
 
 import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/js/tour_step_utils";
+import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 import DeviceProxy from "iot.DeviceProxy";
 
@@ -107,6 +107,10 @@ registry.category("web_tour.tours").add('payment_terminals_tour', {
     }, {
         content: "Remove payment line",
         trigger: '.delete-button',
+    }, {
+        content: "There should be no payment line",
+        trigger: '.paymentlines-empty',
+        run: () => {},
     }, {
         content: "Pay with payment terminal",
         trigger: '.paymentmethod:contains("Terminal")',

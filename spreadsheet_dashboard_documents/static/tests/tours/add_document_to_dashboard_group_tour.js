@@ -2,17 +2,14 @@
 
 import "web.dom_ready";
 import { registry } from "@web/core/registry";
+import { TourError } from "@web_tour/tour_service/tour_utils";
 
 let startingNumberOfSheetsInGroup = 0;
 
 function assertNSheetsInGroup(number) {
-    const tour = registry.get("tourManager");
     const actualNumber = document.querySelectorAll(".o_list_table tr.o_data_row").length;
     if (actualNumber !== number) {
-        tour._consume_tour(
-            tour.running_tour,
-            `Expected ${number} sheets in the dashbord group, got ${actualNumber}`
-        );
+        throw new TourError(`Expected ${number} sheets in the dashbord group, got ${actualNumber}`);
     }
 }
 

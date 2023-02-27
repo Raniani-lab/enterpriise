@@ -1,13 +1,13 @@
 /** @odoo-module */
 
 import { moveArticle } from './knowledge_main_flow_tour.js';
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
 // Checks that one can add an readonly article to its favorites
 
-tour.register('knowledge_readonly_favorite_tour', {
+registry.category("web_tour.tours").add('knowledge_readonly_favorite_tour', {
     test: true,
-}, [{
+    steps: [{
     // Make sure we are on the readonly article 1, that is not favorited, and
     // click on the toggle favorite button.
     trigger: 'a.o_toggle_favorite:has(.fa-star-o)',
@@ -38,4 +38,4 @@ tour.register('knowledge_readonly_favorite_tour', {
     trigger: 'section.o_favorite_container li:last:contains("Readonly Article 1")',
     extra_trigger: 'section.o_favorite_container li:first:contains("Readonly Article 2")',
     run: () => {},
-}]);
+}]});

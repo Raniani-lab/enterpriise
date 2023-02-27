@@ -3,7 +3,7 @@ odoo.define('sign_widgets_tour', function (require) {
 
     var core = require('web.core');
     const { registry } = require("@web/core/registry");
-    const { stepUtils } = require('@web_tour/js/tour_step_utils');
+    const { stepUtils } = require('@web_tour/tour_service/tour_utils');
 
     var _t = core._t;
 

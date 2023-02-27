@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/js/tour_step_utils";
+import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 registry.category("web_tour.tours").add("test_sign_flow_tour",{
     test: true,
@@ -41,6 +41,10 @@ registry.category("web_tour.tours").add("test_sign_flow_tour",{
     trigger: 'iframe .o_sign_sign_item_navigator:contains("Click to start")',
     position: "bottom",
 }, {
+    trigger: 'iframe input.o_sign_sign_item:focus',
+    auto: true,
+    run() {},
+}, {
     content: 'Fill the sign item',
     trigger: 'iframe input.o_sign_sign_item',
     run: 'text Mitchell Admin',
@@ -50,8 +54,12 @@ registry.category("web_tour.tours").add("test_sign_flow_tour",{
     run: "click",
 }, {
     content: "Click sign it",
-    trigger: 'iframe .o_sign_sign_item_navigator:contains("next")',
+    trigger: 'iframe .o_sign_sign_item_navigator:contains("sign it")',
     run: "click",
+}, {
+    trigger: 'iframe button.o_sign_sign_item:has(> img)',
+    extra_trigger: 'iframe :not(:has(.o_sign_sign_item_navigator))',
+    auto: true,
 }, {
     content: "Click on auto button",
     trigger: '.o_web_sign_auto_button',

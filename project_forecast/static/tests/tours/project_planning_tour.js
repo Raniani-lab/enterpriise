@@ -38,6 +38,7 @@ planningTestTour.steps.splice(projectPlanningEndStepIndex + 1, 0, {
     // added afterwards, so we can check by asserting the nature of the last
     // child
     trigger: ".o_dialog_container > :last-child:not([role=dialog])",
+    allowInvisible: true,
     auto: true,
     run() {},
 });

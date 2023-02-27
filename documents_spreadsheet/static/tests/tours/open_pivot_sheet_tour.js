@@ -1,8 +1,8 @@
 odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
     "use strict";
 
-    require("web.dom_ready");
     const { registry } = require("@web/core/registry");
+    const { TourError } = require("@web_tour/tour_service/tour_utils");
 
     function assert(current, expected, info) {
         if (current !== expected) {
@@ -11,8 +11,7 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
     }
 
     function fail(errorMessage) {
-        const tour = registry.get("tourManager");
-        tour._consume_tour(tour.running_tour, errorMessage);
+        throw new TourError(errorMessage);
     }
 
     const SHEETNAME = "Partner Spreadsheet Test";

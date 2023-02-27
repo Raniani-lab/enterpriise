@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/js/tour_step_utils";
+import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 registry.category("web_tour.tours").add('rental_product_configurator_tour', {
     url: '/web',
@@ -34,12 +34,16 @@ registry.category("web_tour.tours").add('rental_product_configurator_tour', {
     trigger: 'input[data-value_name="Black"]'
 }, {
     trigger: '.btn-primary.disabled',
-    extra_trigger: '.show .modal-footer'
+    extra_trigger: '.show .modal-footer',
+    isCheck: true,
 }, {
     trigger: 'input[data-value_name="White"]'
 }, {
-    trigger: '.btn-primary:not(.disabled)',
-    extra_trigger: '.show .modal-footer'
+    trigger: '.o_sale_product_configurator_edit:not(.disabled)',
+    run() {},
+}, {
+    trigger: '.js_product:has(strong:contains(Conference Chair)) .js_add',
+    extra_trigger: '.show .modal-footer',
 }, {
     trigger: '.js_product:has(strong:contains(Chair floor protection)) .js_add',
     extra_trigger: '.oe_advanced_configurator_modal',
@@ -71,6 +75,10 @@ registry.category("web_tour.tours").add('rental_product_configurator_tour', {
     trigger: 'button[special=save]',
     extra_trigger: '.o_form_nosheet',
     position: 'bottom',
+}, {
+    content: 'Wait for the unit price to be rerendered.',
+    trigger: '.o_selected_row [name=price_unit] input:propValue(42.00)',
+    run() {},
 },
 
 // Adding a line with a more expensive custom desk
@@ -109,6 +117,6 @@ registry.category("web_tour.tours").add('rental_product_configurator_tour', {
 }, {
     content: "verify that the rental has been confirmed",
     trigger: '.o_statusbar_status button.o_arrow_button_current:contains("Sales Order")',
-    run() {},
+    isCheck: true,
 }, ...stepUtils.discardForm(),
 ]});

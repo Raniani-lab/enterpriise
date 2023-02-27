@@ -2,23 +2,23 @@ odoo.define('helpdesk.tour', function(require) {
 "use strict";
 
 var core = require('web.core');
-const {Markup} = require('web.utils');
 const { registry } = require("@web/core/registry");
+const { markup } = require('@odoo/owl');
 
 var _t = core._t;
 
 registry.category("web_tour.tours").add('helpdesk_tour', {
     url: "/web",
-    rainbowManMessage: Markup(_t('<center><strong><b>Good job!</b> You walked through all steps of this tour.</strong></center>')),
+    rainbowManMessage: markup(_t('<center><strong><b>Good job!</b> You walked through all steps of this tour.</strong></center>')),
     sequence: 220,
     steps: [{
     trigger: '.o_app[data-menu-xmlid="helpdesk.menu_helpdesk_root"]',
-    content: Markup(_t('Want to <b>boost your customer satisfaction</b>?<br/><i>Click Helpdesk to start.</i>')),
+    content: markup(_t('Want to <b>boost your customer satisfaction</b>?<br/><i>Click Helpdesk to start.</i>')),
     position: 'bottom',
 }, {
     trigger: '.oe_kanban_action_button',
     extra_trigger: '.o_kanban_primary_left',
-    content: _t('Let\'s view your <b>team\'s tickets</b>.'),
+    content: markup(_t('Let\'s view your <b>team\'s tickets</b>.')),
     position: 'bottom',
     width: 200,
 }, {
@@ -30,59 +30,59 @@ registry.category("web_tour.tours").add('helpdesk_tour', {
 }, {
     trigger: '.field_name input',
     extra_trigger: '.o_form_editable',
-    content: Markup(_t('Enter the <b>subject</b> of your ticket <br/><i>(e.g. Problem with my installation, Wrong order, etc.).</i>')),
+    content: markup(_t('Enter the <b>subject</b> of your ticket <br/><i>(e.g. Problem with my installation, Wrong order, etc.).</i>')),
     position: 'right',
 }, {
     trigger: '.o_field_widget.field_partner_id',
     extra_trigger: '.o_form_editable',
-    content: _t('Select the <b>customer</b> of your ticket.'),
+    content: markup(_t('Select the <b>customer</b> of your ticket.')),
     position: 'top',
 }, {
     trigger: '.o_field_widget.field_user_id',
     extra_trigger: '.o_form_editable',
-    content: _t('Assign the ticket to a <b>member of your team</b>.'),
+    content: markup(_t('Assign the ticket to a <b>member of your team</b>.')),
     position: 'right',
 }, {
     trigger: ".o_ChatterTopbar_buttonSendMessage",
     extra_trigger: '.o_form_view',
-    content: _t("Use the chatter to <b>send emails</b> and communicate efficiently with your customers. \
-    Add new people to the followers' list to make them aware of the progress of this ticket."),
+    content: markup(_t("Use the chatter to <b>send emails</b> and communicate efficiently with your customers. \
+    Add new people to the followers' list to make them aware of the progress of this ticket.")),
     width: 350,
     position: "bottom",
 }, {
     trigger: ".o_ChatterTopbar_buttonLogNote",
     extra_trigger: '.o_form_view',
-    content: _t("<b>Log notes</b> for internal communications (you will only notify the persons you specifically tag). \
+    content: markup(_t("<b>Log notes</b> for internal communications (you will only notify the persons you specifically tag). \
     Use <b>@ mentions</b> to ping a colleague \
-    or <b># mentions</b> to contact a group of people."),
+    or <b># mentions</b> to contact a group of people.")),
     width: 350,
     position: "bottom"
 }, {
     trigger: ".o_ChatterTopbar_buttonScheduleActivity",
     extra_trigger: '.o_form_view',
-    content: _t("Use <b>activities</b> to organize your daily work."),
+    content: markup(_t("Use <b>activities</b> to organize your daily work.")),
 }, {
     trigger: ".modal-dialog .btn-primary",
-    content: _t("Schedule your <b>activity</b>."),
+    content: markup(_t("Schedule your <b>activity</b>.")),
     position: "right",
     run: "click",
 }, {
     trigger: '.o_back_button',
     extra_trigger: '.o_form_view',
-    content: _t("Let's go back to the <b>kanban view</b> to get an overview of your next tickets."),
+    content: markup(_t("Let's go back to the <b>kanban view</b> to get an overview of your next tickets.")),
     position: 'bottom',
 }, {
     trigger: 'body:not(:has(div.o_view_sample_data)) .o_helpdesk_ticket_kanban_view .o_kanban_record',
-    content: Markup(_t('<b>Drag &amp; drop</b> the card to change the stage of your ticket.')),
+    content: markup(_t('<b>Drag &amp; drop</b> the card to change the stage of your ticket.')),
     position: 'right',
     run: "drag_and_drop .o_kanban_group:eq(2) ",
 }, {
     trigger: ".o_column_quick_create .o_quick_create_folded",
-    content: Markup(_t('Adapt your <b>pipeline</b> to your workflow by adding <b>stages</b> <i>(e.g. Awaiting Customer Feedback, etc.).</i>')),
+    content: markup(_t('Adapt your <b>pipeline</b> to your workflow by adding <b>stages</b> <i>(e.g. Awaiting Customer Feedback, etc.).</i>')),
     position: 'right',
 }, {
     trigger: ".o_column_quick_create .o_kanban_add",
-    content: Markup(_t("Add your stage and place it at the right step of your workflow by dragging & dropping it.")),
+    content: _t("Add your stage and place it at the right step of your workflow by dragging & dropping it."),
     position: 'right',
 }
 ]});

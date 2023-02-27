@@ -4,7 +4,7 @@ odoo.define('account_accountant.tour', function (require) {
     const core = require('web.core');
     const {Markup} = require('web.utils');
     const { registry } = require("@web/core/registry");
-    const { stepUtils } = require('@web_tour/js/tour_step_utils');
+    const { stepUtils } = require('@web_tour/tour_service/tour_utils');
 
     const _t = core._t;
     const { markup } = owl;
@@ -24,9 +24,9 @@ odoo.define('account_accountant.tour', function (require) {
     )
 
     registry.category("web_tour.tours").add('account_accountant_tour', {
-            rainbowManMessage: function(tourManager) {
+            rainbowManMessage: function({ isTourConsumed }) {
                 var message = _t('<strong><b>Good job!</b> You went through all steps of this tour.</strong>');
-                if (!tourManager._isTourConsumed('account_tour')) {
+                if (!isTourConsumed('account_tour')) {
                     message += _t('<br>See how to manage your customer invoices in the <b>Customers/Invoices</b> menu');
                 }
                 return markup(message);

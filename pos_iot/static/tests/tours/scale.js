@@ -3,7 +3,7 @@
 
 import { registry } from "@web/core/registry";
 import DeviceProxy from "iot.DeviceProxy";
-import { stepUtils } from "@web_tour/js/tour_step_utils";
+import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 var PosScaleDummy = DeviceProxy.extend({
     action: function () { },

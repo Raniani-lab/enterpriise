@@ -91,7 +91,7 @@ odoo.define('approvals_tour', function(require) {
         {
             trigger: 'button[aria-label="Current state"][data-value="refused"]',
             content: 'wait the request status compute',
-            run: function(){},
+            isCheck: true,
         },
         {
             trigger: 'button[name="action_cancel"]',
@@ -116,7 +116,7 @@ odoo.define('approvals_tour', function(require) {
         {
             trigger: 'button[name="action_withdraw"]',
             content: 'wait the the request to be approved',
-            run: function(){},
+            isCheck: true,
         }
     ]});
 

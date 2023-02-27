@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { openCommandBar } from '../knowledge_tour_utils.js';
-import { stepUtils } from "@web_tour/js/tour_step_utils";
+import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 registry.category("web_tour.tours").add('knowledge_template_paste_elements_tour', {
     url: '/web',
@@ -27,7 +27,7 @@ registry.category("web_tour.tours").add('knowledge_template_paste_elements_tour'
 }, {
     trigger: '.o_command_hotkey'
 }, {
-    trigger: '.odoo-editor-editable > :last-child',
+    trigger: '.odoo-editor-editable[contenteditable="true"] > :last-child',
     run: function () {
         openCommandBar(this.$anchor[0]);
     },

@@ -11,11 +11,11 @@
  * - Check that the active article was correctly added to the favorite tree
  */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
-tour.register('knowledge_portal_search_tour', {
+registry.category("web_tour.tours").add('knowledge_portal_search_tour', {
     test: true,
-}, [{ // Check that section tree contains all articles
+    steps: [{ // Check that section tree contains all articles
     content: "Check that search tree contains 'My Article'",
     trigger: '.o_article_name:contains("My Article")',
     run() {},
@@ -65,4 +65,4 @@ tour.register('knowledge_portal_search_tour', {
     content: "Check that 'My Article' was correctly added to the favorite tree",
     trigger: '.o_favorite_container .o_article .o_article_name:contains("My Article")',
     run() {},
-}]);
+}]});

@@ -290,10 +290,13 @@ registry.category("web_tour.tours").add('test_barcode_batch_receipt_1', {test: t
         trigger: ".ui-menu-item > a:contains('picking_receipt_2')",
     },
     {
+        trigger: ".o-autocomplete.dropdown:not(:has(.o-autocomplete--dropdown-menu))",
+        run() {}
+    },
+    {
         trigger: '.o_save',
     },
     { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
-    { trigger: '.o_sublines .o_barcode_line:nth-child(2)' },
     {
         trigger: '.o_sublines .o_barcode_line:nth-child(2).o_selected',
         run: function() {

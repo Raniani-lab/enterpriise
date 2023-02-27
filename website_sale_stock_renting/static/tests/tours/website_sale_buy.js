@@ -21,6 +21,11 @@ registry.category("web_tour.tours").add('shop_buy_rental_stock_product', {
             trigger: '.oe_product_cart:first a:contains("Computer")',
         },
         {
+            content: "Check if the default data is in the date picker input",
+            trigger: 'input[name=renting_dates][data-has-default-dates=true]',
+            run: function () {}, // it's a check
+        },
+        {
             content: "Open daterangepicker",
             trigger: '#rentingDates [data-toggle="daterange"]',
         },

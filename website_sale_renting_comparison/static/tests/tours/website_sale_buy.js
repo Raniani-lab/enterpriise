@@ -35,6 +35,11 @@ registry.category("web_tour.tours").add('shop_buy_rental_product_comparison', {
             trigger: '.o_comparelist_button a',
         },
         {
+            content: "Check if the default data is in the date picker input",
+            trigger: 'input[name=renting_dates][data-has-default-dates=true]',
+            run: function () {}, // it's a check
+        },
+        {
             content: "Open daterangepicker",
             extra_trigger: '.o_product_comparison_table',
             trigger: '#rentingDates [data-toggle="daterange"]',

@@ -326,6 +326,7 @@ registry.category("web_tour.tours").add(
         {
             extra_trigger: ".o_web_studio_form_view_editor .o_web_studio_hook:not(.o_web_studio_nearest_hook)",
             trigger: ".o_web_studio_form_view_editor .o_field_widget[name='website']",
+            allowInvisible: true,
             run() {
                 const countFields = document.querySelectorAll(".o_web_studio_form_view_editor .o_field_widget[name]").length;
                 if (!countFields === 2) {
@@ -399,7 +400,7 @@ registry.category("web_tour.tours").add(
                 trigger: ".o_web_studio_navbar_item a"
             },
             {
-                trigger: ".o_web_studio_form_view_editor .o_field_selection"
+                trigger: ".o_web_studio_form_view_editor .o_wrap_input:has(.o_field_selection)",
             },
             {
                 trigger: ".o_web_studio_edit_selection_values"

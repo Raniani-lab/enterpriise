@@ -1,8 +1,8 @@
 /** @odoo-module **/
-import tour from 'web_tour.tour';
-tour.register('l10n_mx_edi_pos.tour_invoice_previous_order', {
+import { registry } from "@web/core/registry";
+registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_previous_order', {
     test: true,
-}, [
+    steps: [
     {
         content: "Click the POS icon",
         trigger: ".o_app[data-menu-xmlid='point_of_sale.menu_point_root']",
@@ -76,5 +76,6 @@ tour.register('l10n_mx_edi_pos.tour_invoice_previous_order', {
     {
         content: "Confirm and close the popup",
         trigger: ".button.confirm",
+        isCheck: true,
     },
-]);
+]});

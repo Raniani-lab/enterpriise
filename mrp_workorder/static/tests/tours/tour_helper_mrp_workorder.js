@@ -1,11 +1,10 @@
 odoo.define('mrp_workorder.tourHelper', function (require) {
 'use strict';
 
-const { registry } = require("@web/core/registry");
+const { TourError } = require("@web_tour/tour_service/tour_utils");
 
 function fail(errorMessage) {
-    const tour = registry.get("tourManager");
-    tour._consume_tour(tour.running_tour, errorMessage);
+    throw new TourError(errorMessage);
 }
 
 function assertIn(item, itemList, info) {

@@ -15,7 +15,8 @@ class HrContract(models.Model):
     l10n_lu_wage_with_sacrifices = fields.Monetary('Wage With Sacrifices (LU)', compute='_compute_lu_wage')
 
     def _get_contract_wage_field(self):
-        if (self and len(self) == 1 and self.structure_type_id.country_id.code == 'LU') or (not self and self.env.company.country_id.code == 'LU'):
+        self.ensure_one()
+        if self.structure_type_id.country_id.code == 'LU':
             return 'l10n_lu_wage_with_sacrifices'
         return super()._get_contract_wage_field()
 

@@ -1276,7 +1276,7 @@ msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
-msgid "EC sales Report"
+msgid "EU Sales List"
 msgstr ""
 
 #. module: l10n_be_reports

@@ -86,6 +86,6 @@ class TestL10nBeReportsPostWizard(TestAccountReportsCommon):
         attachment_ids = self.env['ir.attachment'].search([
             ('res_model', '=', 'account.move'),
             ('res_id', '=', self.tax_return_move.id),
-            ('name', '=', 'vat_report.xml'),
+            ('name', '=', 'vat_return.xml'),
         ])
         self.assertEqual(len(attachment_ids), 1)

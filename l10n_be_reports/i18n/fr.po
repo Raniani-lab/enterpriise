@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* l10n_be_reports
-# 
+#
 # Translators:
 # Martin Trigaux, 2023
 # Cécile Collart <cco@odoo.com>, 2023
 # Jolien De Paepe, 2023
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
@@ -1305,7 +1305,7 @@ msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
-msgid "EC sales Report"
+msgid "EU Sales List"
 msgstr "Relevé à la TVA des opérations intracommunautaires"
 
 #. module: l10n_be_reports

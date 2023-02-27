@@ -30,6 +30,13 @@ Wysiwyg.include({
         this._super.apply(this, arguments);
     },
     /**
+     * @override
+     */
+    resetEditor: async function () {
+        await this._super(...arguments);
+        this.$editable[0].dispatchEvent(new Event('refresh_behaviors'));
+    },
+    /**
      * Prevent usage of commands from the group "Knowledge" inside the tables.
      * @param {Array[Object]} commands commands available in this wysiwyg
      * @returns {Array[Object]} commands which can be used after the filter was applied

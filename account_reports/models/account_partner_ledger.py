@@ -390,7 +390,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         treated_results_count = 0
         next_progress = progress
         for result in aml_results:
-            if report.load_more_limit and treated_results_count == report.load_more_limit:
+            if not self._context.get('print_mode') and report.load_more_limit and treated_results_count == report.load_more_limit:
                 # We loaded one more than the limit on purpose: this way we know we need a "load more" line
                 has_more = True
                 break

@@ -11,7 +11,7 @@
                     <button class="btn-secondary btn-link o_unblock" type="workorder_event" attrs="{'invisible': [('allow_employee', '=', False)]}" name="popupEmployeeManagement">
                         <span attrs="{'invisible': [('employee_name', '!=', False)]}">Log In </span>
                         <field name="employee_name" attrs="{'invisible': [('employee_name', '=', False)]}" readonly="1" class="me-2"/>
-                        <field name="employee_ids" widget="kanban.many2many_avatar_employee" readonly="1" options="{'no_create': True}"/>
+                        <field name="employee_ids" widget="kanban.many2many_avatar_employee" readonly="1" attrs="{'invisible': [('employee_name', '=', False)]}" options="{'no_create': True}"/>
                     </button>
                 </span>
             </xpath>
@@ -75,7 +75,7 @@
             <xpath expr="//field[@name='name']" position="after">
                     <field name="allowed_employees" invisible="1"/>
                     <field name="all_employees_allowed" invisible="1"/>
-                    <field name="employee_assigned_ids" widget="many2many_avatar_employee" domain="not all_employees_allowed and [('id','in',allowed_employees)] or []"/>
+                    <field name="employee_assigned_ids" widget="many2many_avatar_employee" domain="not all_employees_allowed and [('id','in',allowed_employees)] or []" optional="hidden"/>
             </xpath>
             <xpath expr="//button[@name='open_tablet_view']" position="after">
                 <field name="employee_ids" widget="many2many_avatar_employee" readonly="1" nolabel="1"/>

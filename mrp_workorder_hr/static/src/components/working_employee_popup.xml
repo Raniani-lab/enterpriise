@@ -5,7 +5,7 @@
             <div class="popup centered">
                 <t t-foreach="lines" t-as="line" t-key="line.employee_id">
                     <div class="o_popup_employee_selection">
-                        <div class="o_popup_employee_name" t-on-click="() => this.lockEmployee(line.employee_id)">
+                        <div class="o_popup_employee_name" t-on-click="() => this.setAdmin(line.employee_id)">
                             <button class="btn_employee">
                             <img t-attf-src="/web/image/hr.employee/{{line.employee_id}}/avatar_128" alt="Employee" style="height:35px;" class="ml8 rounded-circle"/>
                             <span class="ml8">
@@ -14,7 +14,6 @@
                             </button>
                         </div>
                         <div class="text-end">
-                            <!-- <span t-esc="formatMinutes(line.duration)"/> -->
                             <MrpTimer ongoing="line.ongoing" value="line.duration" readonly="true" record="line"/>
                         </div>
                         <div class="text-end">

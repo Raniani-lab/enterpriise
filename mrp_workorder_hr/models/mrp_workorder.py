@@ -22,13 +22,13 @@ class MrpWorkorder(models.Model):
     employee_assigned_ids = fields.Many2many('hr.employee', 'mrp_workorder_employee_assigned',
                                              'workorder_id', 'employee_id', string='Assigned', copy=False)
     # employees connected
-    connected_employee_ids = fields.Many2many('hr.employee', compute='_get_employees_connected', search='search_is_assigned_to_connected')
+    connected_employee_ids = fields.Many2many('hr.employee', search='search_is_assigned_to_connected', store=False)
 
-    # boolean to know if the workcenter need authentication
+    # True if the workcenter need authentication
     allow_employee = fields.Boolean(related='workcenter_id.allow_employee')
-    # list of all employees allowed to work on the workcenter
+    # list of employees allowed to work on the workcenter
     allowed_employees = fields.Many2many(related='workcenter_id.employee_ids')
-    # boolean that checks if all employees are allowed or not
+    # True if all employees are allowed on that workcenter
     all_employees_allowed = fields.Boolean(compute='_all_employees_allowed')
 
     def _compute_duration(self):
@@ -49,53 +49,23 @@ class MrpWorkorder(models.Model):
 
     @api.depends('employee_ids')
     def _compute_employee_id(self):
-        main_employee_connected = None
-        if request and 'session_owner' in request.session.keys() and request.session['session_owner']:
-            main_employee_connected = request.session['session_owner']
+        main_employee_connected = self.env['hr.employee'].get_session_owner()
         self.employee_id = main_employee_connected
         self.employee_name = self.env['hr.employee'].browse(main_employee_connected).name
 
-    @api.depends('connected_employee_ids')
-    def _get_employees_connected(self):
-        property_name = 'employee_connected_list'
-        if property_name in request.session.data.keys() and len(request.session['employee_connected_list']) > 0:
-            employees = request.session.data[property_name]
-            if employees:
-                for wo in self:
-                    wo.connected_employee_ids = self.env['hr.employee'].browse(employees)
-        else:
-            for wo in self:
-                wo.connected_employee_ids = self.env['hr.employee'].browse()
-
     def search_is_assigned_to_connected(self, operator, value):
         # retrieving employees connected in the session
-        main_employee_connected = None
-        if 'employees_connected' in request.session.data.keys() and len(request.session['employees_connected']) > 0:
-            main_employee_connected = request.session.data['employees_connected'][0]
+        main_employee_connected = self.env['hr.employee'].get_session_owner()
         # if no one is connected, all records are valid
         if not main_employee_connected:
             return []
-        # create the array containing the ids of the WO to display
-        wo_to_display = []
-        wokorders = self.env['mrp.workorder'].search([])
-        for wo in wokorders:
-            assigned = False
-            for assign_id in wo.employee_assigned_ids:
-                if assigned:
-                    break
-                if assign_id.id == main_employee_connected:
-                    wo_to_display.append(wo.id)
-                    assigned = True
-                    break
-        return [('id', operator, wo_to_display)]
+        search_query = self.env['mrp.workorder']._search([('employee_assigned_ids', '=', main_employee_connected)])
+        return [('id', operator, search_query)]
 
     @api.depends('all_employees_allowed')
     def _all_employees_allowed(self):
         for wo in self:
-            if wo.allow_employee and len(wo.allowed_employees) == 0 or not wo.allow_employee:
-                wo.all_employees_allowed = True
-            else:
-                wo.all_employees_allowed = False
+            wo.all_employees_allowed = wo.allow_employee and len(wo.allowed_employees) == 0 or not wo.allow_employee
 
     def start_employee(self, employee_id):
         self.ensure_one()
@@ -108,13 +78,10 @@ class MrpWorkorder(models.Model):
         self.state = "progress"
 
     def stop_employee(self, employee_ids):
-        self.ensure_one()
-        if employee_ids not in self.employee_ids.ids:
-            return
-        self.employee_ids = [Command.unlink(employee_ids)]
+        self.employee_ids = [Command.unlink(emp) for emp in employee_ids]
         self.env['mrp.workcenter.productivity'].search([
-            ('employee_id', '=', employee_ids),
-            ('workorder_id', '=', self.id),
+            ('employee_id', 'in', employee_ids),
+            ('workorder_id', 'in', self.ids),
             ('date_end', '=', False)
         ])._close()
 
@@ -130,7 +97,9 @@ class MrpWorkorder(models.Model):
         if self.workcenter_id.employee_ids:
             employee_domain = [('id', 'in', self.workcenter_id.employee_ids.ids)]
         fields_to_read = self.env['hr.employee']._get_employee_fields_for_tablet()
+        working_state = self.working_state
         data.update({
+            "working_state": working_state,
             "employee_id": self.employee_id.id,
             "employee_ids": self.employee_ids.ids,
             "employee_list": self.env['hr.employee'].search_read(employee_domain, fields_to_read, load=False),
@@ -144,30 +113,7 @@ class MrpWorkorder(models.Model):
         return action
 
     def action_back(self):
-        self.ensure_one()
-        if self.is_user_working and self.working_state != 'blocked' and len(self.employee_ids.ids) == 0:
-            self.button_pending()
-        domain = [('state', 'not in', ['done', 'cancel', 'pending'])]
-        if self.env.context.get('from_production_order'):
-            action = self.env["ir.actions.actions"]._for_xml_id("mrp.action_mrp_workorder_production_specific")
-            action['domain'] = domain
-            action['target'] = 'main'
-            action['view_id'] = 'mrp.mrp_production_workorder_tree_editable_view'
-            action['context'] = {
-                'no_breadcrumbs': True,
-            }
-            if self.env.context.get('from_manufacturing_order'):
-                action['context'].update({
-                    'search_default_production_id': self.production_id.id
-                })
-        else:
-            # workorder tablet view action should redirect to the same tablet view with same workcenter when WO mark as done.
-            action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.mrp_workorder_action_tablet")
-            action['domain'] = domain
-            action['context'] = {
-                'no_breadcrumbs': True,
-                'search_default_workcenter_id': self.workcenter_id.id
-            }
+        action = super().action_back()
         if self.employee_id:
             action['context']['employee_id'] = self.employee_id.id
             action['context']['employee_name'] = self.employee_id.name
@@ -211,62 +157,30 @@ class MrpWorkorder(models.Model):
         return super()._cal_cost() + sum(self.time_ids.mapped('total_cost'))
 
     def button_start(self):
-        # this override checks if the connected people is allowed to work on this wo
-        for wo in self:
-            if not wo.workcenter_id.allow_employee or not request:
-                return super().button_start()
-            if 'employees_connected' not in request.session.keys() or len(request.session['employees_connected']) == 0:
-                raise UserError(_("You need to log in to process this work order."))
-            if 'session_owner' not in request.session.keys() or not request.session['session_owner']:
-                raise UserError(_("There is no session chief. Please log in."))
-            if request.session['session_owner'] not in [emp.id for emp in wo.allowed_employees] and not self.all_employees_allowed:
-                raise UserError(_("You are not allowed to work on the workorder"))
-            if len(wo.allowed_employees) == 0 or request.session['session_owner'] in [emp.id for emp in wo.allowed_employees]:
-                self.start_employee(self.env['hr.employee'].browse(request.session['session_owner']).id)
-                wo.employee_ids |= self.env['hr.employee'].browse(request.session['session_owner'])
-                if self.product_tracking == 'serial':
-                    self.qty_producing = 1.0
-                elif self.qty_producing == 0:
-                    self.qty_producing = self.qty_remaining
+        # this override checks if the connected people are allowed to work on the wo
+        if not self.workcenter_id.allow_employee or not request:
+            return super().button_start()
+        connected_employees = self.env['hr.employee'].get_employees_connected()
+        if len(connected_employees) == 0:
+            raise UserError(_("You need to log in to process this work order."))
+        main_employee = self.env['hr.employee'].get_session_owner()
+        if not main_employee:
+            raise UserError(_("There is no session chief. Please log in."))
+        if main_employee not in [emp.id for emp in self.allowed_employees] and not self.all_employees_allowed:
+            raise UserError(_("You are not allowed to work on the workorder"))
+        super().button_start()
+        if len(self.allowed_employees) == 0 or main_employee in [emp.id for emp in self.allowed_employees]:
+            self.start_employee(self.env['hr.employee'].browse(main_employee).id)
+            self.employee_ids |= self.env['hr.employee'].browse(main_employee)
 
-    # there is no points keep the employees in working state if they are not working
     def button_pending(self):
         for emp in self.employee_ids:
-            self.stop_employee(emp.id)
+            self.stop_employee([emp.id])
         super().button_pending()
 
-    def open_tablet_view(self):
-        #we need to check if the person is allow to work on the workorder
-        self.ensure_one()
-        if (not self.is_user_working or self.allow_employee) and self.working_state != 'blocked' and self.state in ('ready', 'waiting', 'progress', 'pending'):
-            if self.allow_employee:
-                main_employee_connected = None
-                if 'session_owner' in request.session.data.keys():
-                    main_employee_connected = request.session.data['session_owner']
-                if main_employee_connected:
-                    self.button_start()
-            else:
-                self.button_start()
-        action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.tablet_client_action")
-        action['target'] = 'fullscreen'
-        action['res_id'] = self.id
-        action['context'] = {
-            'active_id': self.id,
-            'from_production_order': self.env.context.get('from_production_order'),
-            'from_manufacturing_order': self.env.context.get('from_manufacturing_order')
-        }
-        return action
-
-    # TODO : productivity_loss duplicata?
     def action_mark_as_done(self):
-        # checking first the main user even if we don't need it.
-        # taking here a small amount of time will save us a lot of time when marking many WO as done
-        main_employee_connected = None
-        if 'session_owner' in request.session.data.keys():
-            main_employee_connected = request.session.data['session_owner']
+        main_employee_connected = self.env['hr.employee'].get_session_owner()
 
-        # we should first check if we can go on before even modifying the workorders
-        # start modifying ONLY if all checks are successfull
         for wo in self:
             if wo.allow_employee and not main_employee_connected:
                 raise UserError(_('You must be logged in to process some of these work orders.'))
@@ -276,31 +190,43 @@ class MrpWorkorder(models.Model):
                 raise UserError(_('Some workorders require another workorder to be completed first'))
         self.button_finish()
 
-        loss_id = self.env['mrp.workcenter.productivity.loss'].search([('loss_type', '=', 'performance')], limit=1)
+        loss_id = self.env['mrp.workcenter.productivity.loss'].search([('loss_type', '=', 'productive')], limit=1)
         if len(loss_id) < 1:
-            raise UserError(_("You need to define at least one productivity loss in the category 'Performance'. Create one from the Manufacturing app, menu: Configuration / Productivity Losses."))
+            raise UserError(_("You need to define at least one productivity loss in the category 'Productive'. Create one from the Manufacturing app, menu: Configuration / Productivity Losses."))
+
+        wo.state = 'done'
+        productivity = []
         for wo in self:
-            wo.state = 'done'
             if wo.allow_employee:
                 if not wo.time_ids:
-                    # si pas de timesheet on en crée une avec la valeur théorique
-                    # sinon on ne fait rien
                     now = datetime.now()
                     date_start = datetime.fromtimestamp(now.timestamp() - ((wo.duration_expected * 60) // 1))
                     date_end = now
-                    val = {
+                    productivity.append({
                         'workorder_id': wo.id,
                         'workcenter_id': wo.workcenter_id.id,
                         'description': _('Time Tracking: %(user)s', user=self.env.user.name),
                         'date_start': date_start,
                         'date_end': date_end,
                         'loss_id': loss_id[0].id,
-                        'user_id': self.env.user.id,  # FIXME sle: can be inconsistent with company_id
+                        'user_id': self.env.user.id,
                         'company_id': wo.company_id.id,
                         'employee_id': main_employee_connected
-                    }
-                    self.env['mrp.workcenter.productivity'].create(val)
+                    })
                 continue
             if wo.duration == 0.0:
                 wo.duration = wo.duration_expected
                 wo.duration_percent = 100
+        self.env['mrp.workcenter.productivity'].create(productivity)
+
+    def _should_be_pending(self):
+        return super()._should_be_pending() and len(self.employee_ids.ids) == 0
+
+    def _should_start(self):
+        if (not self.is_user_working or self.allow_employee) and self.working_state != 'blocked' and self.state in ('ready', 'waiting', 'progress', 'pending'):
+            if self.allow_employee:
+                if self.env['hr.employee'].get_session_owner():
+                    return True
+            else:
+                return True
+        return False

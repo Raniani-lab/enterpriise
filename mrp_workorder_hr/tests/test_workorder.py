@@ -57,7 +57,7 @@ class TestWorkorderDurationHr(common.TransactionCase):
             wo.start_employee(self.employee_1.id)
             self.env.flush_all()   # need flush to trigger compute
         with freeze_time('2027-10-01 11:00:00'):
-            wo.stop_employee(self.employee_1.id)
+            wo.stop_employee([self.employee_1.id])
             self.env.flush_all()   # need flush to trigger compute
         self.assertEqual(wo.duration, 60)
 

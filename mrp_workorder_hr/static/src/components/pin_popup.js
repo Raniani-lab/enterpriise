@@ -29,15 +29,15 @@ export class PinPopup extends Component {
         }
     }
 
-    cancel() {
-        this.props.onClosePopup('PinPopup');
+    async cancel() {
+        await this.props.onClosePopup('PinPopup');
     }
 
     async confirm() {
         const valid = await this.props.onPinValidate(this.employee.id, this.state.buffer);
         this.state.buffer = '';
         if (valid) {
-            this.props.onClosePopup('PinPopup');
+            await this.props.onClosePopup('PinPopup');
         }
     }
 

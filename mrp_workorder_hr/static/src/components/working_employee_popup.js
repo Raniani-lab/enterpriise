@@ -20,10 +20,9 @@ export class WorkingEmployeePopup extends Component {
         this.close();
     }
 
-    lockEmployee(employeeId) {
-        this.startEmployee(employeeId);
-        this.props.onLockEmployee(employeeId);
-        this.close();
+    async setAdmin(employeeId) {
+        await this.props.onSetAdmin(employeeId);
+        await this.close();
     }
 
     async stopEmployee(employeeId) {
@@ -49,8 +48,8 @@ export class WorkingEmployeePopup extends Component {
         this.render();
     }
 
-    close() {
-        this.props.onClosePopup('WorkingEmployeePopup', true);
+    async close() {
+        await this.props.onClosePopup('WorkingEmployeePopup');
     }
 
     async _getState() {
@@ -85,7 +84,7 @@ WorkingEmployeePopup.components = { MrpTimer };
 WorkingEmployeePopup.props = {
     popupData: Object,
     onAddEmployee: Function,
-    onLockEmployee: Function,
+    onSetAdmin: Function,
     onStartEmployee: Function,
     onStopEmployee: Function,
     onClosePopup: Function,

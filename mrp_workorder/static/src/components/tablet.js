@@ -237,9 +237,10 @@ class Tablet extends Component {
         this.popup[popupId].data = props;
     }
 
-    closePopup(popupId) {
-        this.getState();
+    async closePopup(popupId) {
+        await this.getState();
         this.popup[popupId].isShown = false;
+        this.render();
     }
 
     async onCloseRerender(params) {

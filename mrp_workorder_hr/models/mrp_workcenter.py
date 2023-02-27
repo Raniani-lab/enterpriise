@@ -1,7 +1,6 @@
 from ast import literal_eval
 
 from odoo import api, models, fields
-from datetime import timedelta
 from odoo.http import request
 
 
@@ -29,20 +28,18 @@ class MrpWorkcenter(models.Model):
 
     @api.depends('time_ids', 'time_ids.date_end', 'time_ids.loss_type')
     def _compute_working_state(self):
-        for workcenter in self:
-            time_log = self.env['mrp.workcenter.productivity'].search([
-                ('workcenter_id', '=', workcenter.id),
-                ('date_end', '=', False),
-            ], limit=1)
-            if not time_log:
-                # the workcenter is not being used
-                workcenter.working_state = 'normal'
-            elif time_log.loss_type in ('productive', 'performance'):
+        self.working_state = 'normal'
+        time_log = self.env['mrp.workcenter.productivity'].search([
+            ('workcenter_id', 'in', self.ids),
+            ('date_end', '=', False),
+        ])
+        for time in time_log:
+            if time.loss_type in ('productive', 'performance'):
                 # the productivity line has a `loss_type` that means the workcenter is being used
-                workcenter.working_state = 'done'
+                time.workcenter_id.working_state = 'done'
             else:
                 # the workcenter is blocked
-                workcenter.working_state = 'blocked'
+                time.workcenter_id.working_state = 'blocked'
 
 
 class MrpWorkcenterProductivity(models.Model):
@@ -51,7 +48,7 @@ class MrpWorkcenterProductivity(models.Model):
     employee_id = fields.Many2one(
         'hr.employee', string="Employee",
         help='employee that record this working time',
-        default=lambda self: self._get_current_session_admin())
+        default=lambda self: self.env['hr.employee'].get_session_owner())
     employee_cost = fields.Monetary('employee_cost', compute='_compute_cost', default=0, store=True)
     total_cost = fields.Float('Cost', compute='_compute_cost', compute_sudo=True)
     currency_id = fields.Many2one(related='company_id.currency_id')
@@ -70,31 +67,3 @@ class MrpWorkcenterProductivity(models.Model):
             ('employee_id', '!=', False),
         ], ['employee_id', 'workorder_id'], ['employee_id', 'workorder_id'], lazy=False)
         # TODO make check on employees
-
-    def _get_current_session_admin(self):
-        main_employee_connected = None
-        if request and 'session_owner' in request.session.data.keys():
-            main_employee_connected = request.session.data['session_owner']
-        return main_employee_connected
-
-    @api.onchange('duration')
-    def _duration_changed(self):
-        self.date_end = self.date_start + timedelta(minutes=self.duration)
-        self._loss_type_change()
-
-    @api.onchange('date_start')
-    def _date_start_changed(self):
-        self.date_end = self.date_start + timedelta(minutes=self.duration)
-        self._loss_type_change()
-
-    @api.onchange('date_end')
-    def _date_end_changed(self):
-        self.date_start = self.date_end - timedelta(minutes=self.duration)
-        self._loss_type_change()
-
-    def _loss_type_change(self):
-        self.ensure_one()
-        if self.workorder_id.duration > self.workorder_id.duration_expected:
-            self.loss_id = self.env.ref("mrp.block_reason4").id
-        else:
-            self.loss_id = self.env.ref("mrp.block_reason7").id

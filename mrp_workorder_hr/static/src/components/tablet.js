@@ -26,15 +26,18 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
             data: {},
         };
         this.state.tabletEmployeeIds = [];
-        this.employees_connected = useState({logged:[]});
-        this.actionRedirect = false;
+        this.employees_connected = useState({ logged: [] });
+        this.orm = useService("orm");
         useBus(this.workorderBus, "popupEmployeeManagement", this.popupEmployeeManagement);
         onMounted(() => this.checkEmployeeLogged());
     },
 
     checkEmployeeLogged() {
-        if (this.data.employee_list.length && !this.data.employee && this.employees_connected.logged.length==0) {
+        if (this.data.employee_list.length && !this.data.employee_id) {
             this.popupAddEmployee();
+        }
+        else {
+            this.state.tabletEmployeeIds.push(this.data.employee_id);
         }
     },
     // Popup Menu Actions
@@ -43,8 +46,9 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
         this.showPopup({ workorderId: this.workorderId }, 'WorkingEmployeePopup');
     },
 
-    popupAddEmployee() {
-        const list = this.data.employee_list.filter(e => ! this.data.employee_ids.includes(e.id)).map((employee) => {
+    async popupAddEmployee() {
+        await this.closePopup("WorkingEmployeePopup");
+        const list = this.data.employee_list.filter(e => !this.data.employee_ids.includes(e.id)).map((employee) => {
             return {
                 id: employee.id,
                 item: employee,
@@ -63,22 +67,7 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
 
     // Buisness method
 
-    async lockEmployee(employeeId, pin) {
-        const pinValid = await this._checkPin(employeeId, pin);
-        if (! pinValid) {
-            this.actionRedirect = this.lockEmployee;
-            return;
-        }
-        this.render();
-    },
-
-    async startEmployee(employeeId, pin) {
-        const pinValid = await this._checkPin(employeeId, pin);
-        if (! pinValid) {
-            this.popup["WorkingEmployeePopup"].isShown = false;
-            this.actionRedirect = this.startEmployee;
-            return false;
-        }
+    async startEmployee(employeeId) {
         this.state.tabletEmployeeIds.push(employeeId);
         await this.orm.call(
             'mrp.workorder',
@@ -87,71 +76,97 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
         );
         await this.getState();
         this.render();
-        this.popup["SelectionPopup"].isShown = false;
+        this.popup.SelectionPopup.isShown = false;
         return true;
     },
 
-    async stopEmployee(employeeId, pin) {
+    async stopEmployee(employeeId) {
         const index = this.state.tabletEmployeeIds.indexOf(employeeId);
-        this.state.tabletEmployeeIds.slice(index, 1);
+        this.state.tabletEmployeeIds.splice(index, 1);
         await this.orm.call(
             'mrp.workorder',
             'stop_employee',
-            [this.workorderId, employeeId],
+            [this.workorderId, [employeeId]],
         );
         await this.getState();
+        this.popup.SelectionPopup.isShown = false;
         this.render();
-        this.popup["SelectionPopup"].isShown = false;
         return true;
     },
 
-    redirectToAction(employeeId, pin) {
-        let returnValue = this.actionRedirect(employeeId, pin);
-        this.actionRedirect = false;
-        return returnValue;
+    async connectEmployee(employeeId, pin) {
+        if (this.data.employee_id == employeeId) {
+            if (!this.data.employee_ids.includes(employeeId)) {
+                this.startEmployee(employeeId);
+            }
+            this.render();
+            return true;
+        }
+        const pinValid = await this._pinValidation(employeeId, pin);
+        if (!pinValid) {
+            if (pin) {
+                this.notification.add(this.env._t('Wrong password !'), { type: 'danger' });
+            }
+            if (!this.popup.PinPopup.isShown) {
+                await this.closePopup("WorkingEmployeePopup");
+                this.popupEmployeePin(employeeId);
+            }
+            return pinValid
+        }
+        this._setSessionOwner(employeeId, pin);
+        if (!this.data.employee_ids.includes(employeeId)) {
+            this.startEmployee(employeeId);
+        }
+        this.render();
+        return pinValid;
     },
 
     get isBlocked() {
         let isBlocked = this._super();
-        if (this.employees_connected.length !== 0) {
-            isBlocked = false;
+        if (this.data.employee_list.length && (this.data.employee_ids.length == 0 || !this.data.employee_id)) {
+            isBlocked = true;
         }
         return isBlocked;
     },
 
     // Private
 
-    async _checkPin(employeeId, pin, logout=false, sessionSave = true) {
-        let method = logout ? 'logout' : 'login';
-        const pinValid = await this.orm.call('hr.employee', method, [employeeId, pin, sessionSave]);
-        if (!pinValid) {
-            this.popupEmployeePin(employeeId);
-            return;
-        }
-        return true;
+    async _pinValidation(employeeId, pin = "") {
+        return await this.orm.call(
+            'hr.employee',
+            'pin_validation',
+            [employeeId, pin]
+        );
     },
 
     async _onBarcodeScanned(barcode) {
-        const employee = await this.orm.call("mrp.workcenter", "get_employee_barcode", [this.workcenterId, barcode])
+        const employee = await this.orm.call("mrp.workcenter", "get_employee_barcode", [this.workcenterId, barcode]);
         if (employee) {
-            this.startEmployee(employee);
+            this.connectEmployee(employee);
         } else {
             return this._super(barcode);
         }
     },
 
-    async _onWillStart() {
-        const superMethod = this._super;
-        this.employees_connected.logged = await this.orm.call("hr.employee", "get_employees_connected",[null])
-        if (this.employees_connected.logged) {
-            await this.employees_connected.logged.forEach(async (emp)=>{
-                if(emp && emp.id) await this.startEmployee(emp.id);
-            })
-        }
-        await superMethod();
-        if (this.employees_connected.logged) {
+    async _setSessionOwner(employeeId, pin) {
+        if (this.data.employee_id != employeeId) {
+            await this.orm.call(
+                "hr.employee",
+                "login",
+                [employeeId, pin],
+            );
             await this.getState();
         }
+    },
+
+    async _onWillStart() {
+        const superMethod = this._super;
+        this.employees_connected.logged = await this.orm.call("hr.employee", "get_employees_connected", [null]);
+        await this.employees_connected.logged.forEach(async (emp) => {
+            if (emp && emp.id) await this.startEmployee(emp.id);
+        })
+        await superMethod();
+        await this.getState();
     },
 });
 

@@ -104,7 +104,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def action_back(self):
         self.ensure_one()
-        if self.is_user_working and self.working_state != 'blocked':
+        if self._should_be_pending():
             self.button_pending()
         domain = [('state', 'not in', ['done', 'cancel', 'pending'])]
         if self.env.context.get('from_production_order'):
@@ -467,7 +467,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def open_tablet_view(self):
         self.ensure_one()
-        if not self.is_user_working and self.working_state != 'blocked' and self.state in ('ready', 'waiting', 'progress', 'pending'):
+        if self._should_start():
             self.button_start()
         action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.tablet_client_action")
         action['target'] = 'fullscreen'
@@ -631,3 +631,9 @@ class MrpProductionWorkcenterLine(models.Model):
             'current_quality_check_id',
             'operation_note',
         ]
+
+    def _should_be_pending(self):
+        return self.is_user_working and self.working_state != 'blocked'
+
+    def _should_start(self):
+        return not self.is_user_working and self.working_state != 'blocked' and self.state in ('ready', 'waiting', 'progress', 'pending')

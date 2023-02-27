@@ -12,8 +12,8 @@ export class SelectionPopup extends Component {
         return this.props.popupData.list;
     }
 
-    cancel() {
-        this.props.onClosePopup('SelectionPopup', true);
+    async cancel() {
+        await this.props.onClosePopup('SelectionPopup', true);
     }
 
     async selectItem(id) {

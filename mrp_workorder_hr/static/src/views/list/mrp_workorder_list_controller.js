@@ -17,14 +17,13 @@ MrpWorkorderListController.components.PinPopup = PinPopup;
 patch(MrpWorkorderListController.prototype, "mrp_workorder_hr", {
     setup() {
         this._super();
-        this.notification = useService("notification");
         this.orm = useService("orm");
         this.useEmployee = useConnectedEmployee(
             this.model,
             "list",
             this.context,
             undefined
-            )
+        );
         this.barcode = useService("barcode");
         useBus(this.barcode.bus, 'barcode_scanned', (event) => this.useEmployee.onBarcodeScanned(event.detail.barcode));
         onWillStart(async () => {
@@ -32,10 +31,9 @@ patch(MrpWorkorderListController.prototype, "mrp_workorder_hr", {
         });
     },
 
-    // Weird behavior
     async openRecord(record, mode) {
-        const superOpenRecord = this._super
-        await this.useEmployee.openRecord(record,mode)
-        superOpenRecord(...arguments);
+        const _super = this._super.bind(this);
+        await this.useEmployee.openRecord(record, mode);
+        _super(...arguments);
     },
 });

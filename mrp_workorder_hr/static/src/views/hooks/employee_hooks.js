@@ -55,7 +55,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
         await orm.call(
             'mrp.workorder',
             'stop_employee',
-            [workorderId, employeeId],
+            [workorderId, [employeeId]],
         );
         await reload();
     }
@@ -76,7 +76,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
 
     async function selectEmployee(employeeId, pin) {
         const employee = employees.all.find(e => e.id === employeeId);
-        const employee_connected = employees.connected.find(e => e.name && e.id === employee.id)
+        const employee_connected = employees.connected.find(e => e.name && e.id === employee.id);
         const employee_function = employee_connected ? "logout" : "login";
         const pinValid = await orm.call(
             "hr.employee", employee_function, [employeeId, pin],
@@ -95,10 +95,10 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
                 await openRecord(...context.openRecord);
             }
         } else {
-            await stopAllWorkorderFromEmployee(employeeId)
+            await stopAllWorkorderFromEmployee(employeeId);
             notification.add(env._t('Logged out!'), { type: 'success' });
         }
-        closePopup('SelectionPopup')
+        closePopup('SelectionPopup');
         await getConnectedEmployees();
         await reload();
     }
@@ -115,14 +115,14 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
             const emp = employees.all.find(e => e.id === id);
             if (emp) connectedEmployees.push({ name: emp.name, id: emp.id });
         })
-        employees.connected = connectedEmployees
+        employees.connected = connectedEmployees;
 
-        const admin = employees.all.find(e => e.id === adminId)
+        const admin = employees.all.find(e => e.id === adminId);
         if (admin) {
             employees.admin = {
                 name: admin.name,
                 id: admin.id,
-                path: imageBaseURL + `${admin.id}`
+                path: imageBaseURL + `${admin.id}`,
             }
         } else {
             employees.admin = {};
@@ -137,8 +137,6 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
         );
         if (success) {
             notification.add(env._t('Logged out!'), { type: 'success' });
-            // This can be done simultaneously as it does not matter if he is still working when fetching employees
-            // because he will not be in the list
             await Promise.all([stopAllWorkorderFromEmployee(employeeId), getConnectedEmployees()]);
             await reload();
         } else {
@@ -155,7 +153,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
 
     async function setSessionOwner(employee_id, pin) {
         if (employees.admin.id == employee_id && employee_id == employees.connected[0].id) {
-            return
+            return;
         }
         let pinValid = await orm.call(
             "hr.employee", "login", [employee_id, pin],
@@ -170,7 +168,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
             }
             askPin({ id: employee_id });
         }
-        await getConnectedEmployees()
+        await getConnectedEmployees();
     }
 
     async function stopAllWorkorderFromEmployee(employeeId) {
@@ -185,7 +183,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
             item: employee,
             label: employee.name,
             isSelected: employees.connected.find(e => e.id === employee.id) != undefined ? true : false
-        }))
+        }));
         popup.SelectionPopup = {
             data: { title: env._t("Select Employee"), list: list },
             isShown: true,
@@ -200,8 +198,8 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
 
     async function checkPin(employeeId, pin) {
         if (employees.connected.find(e => e.id === employeeId) && employees.admin?.id != employeeId) {
-            setSessionOwner(employeeId, pin)
-        } else{
+            setSessionOwner(employeeId, pin);
+        } else {
             selectEmployee(employeeId, pin);
         }
         const pinValid = await this.useEmployee.pinValidation(employeeId, pin);
@@ -213,7 +211,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     }
 
     async function onBarcodeScanned(barcode) {
-        const employee = await orm.call("mrp.workcenter", "get_employee_barcode", [workcenterId, barcode])
+        const employee = await orm.call("mrp.workcenter", "get_employee_barcode", [workcenterId, barcode]);
         if (employee) {
             selectEmployee(employee);
         } else {

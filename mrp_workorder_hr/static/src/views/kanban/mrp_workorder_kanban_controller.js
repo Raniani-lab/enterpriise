@@ -18,19 +18,8 @@ MrpWorkorderKanbanController.components = {
 }
 
 patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
-    /**
-     * There is Two types of flow
-     * 1) The one where we already selected a workcenter
-     * 2) The one where we have all the workorders
-     *
-     * In case 1), infos should be updated and reduced to what we have already
-     * In case 2), this need to be as generic as possible, like in the list controller.
-     * **/
-
     setup() {
         this._super();
-
-        this.notification = useService('notification');
         this.orm = useService("orm");
         this.domain = useState({ workcenterEmployeeDomain: [] });
         this.useEmployee = useConnectedEmployee(
@@ -39,7 +28,7 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
             this.context,
             this.props.context.default_workcenter_id,
             this.domain,
-        )
+        );
         this.barcode = useService("barcode");
         useBus(this.barcode.bus, 'barcode_scanned', (event) => this.useEmployee.onBarcodeScanned(event.detail.barcode));
         this.workcenterId = this.props.context.default_workcenter_id;
@@ -62,12 +51,12 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
             }
         }
 
-        await this.useEmployee.getConnectedEmployees()
+        await this.useEmployee.getConnectedEmployees();
     },
 
     async openRecord(record, mode) {
-        const superOpenRecord = this._super
-        await this.useEmployee.openRecord(record,mode)
-        superOpenRecord(...arguments);
+        const _super = this._super.bind(this);
+        await this.useEmployee.openRecord(record, mode);
+        _super(...arguments);
     },
 });

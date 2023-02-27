@@ -47,8 +47,7 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
             mo.workorder_ids.start_employee(self.employee2.id)
             self.env.flush_all()   # need flush to trigger compute
         with freeze_time('2027-10-01 11:00:00'):
-            mo.workorder_ids.stop_employee(self.employee1.id)
-            mo.workorder_ids.stop_employee(self.employee2.id)
+            mo.workorder_ids.stop_employee([self.employee1.id, self.employee2.id])
             self.env.flush_all()   # need flush to trigger compute
 
         employee1_aa_line = mo.workorder_ids.employee_analytic_account_line_ids.filtered(lambda l: l.employee_id == self.employee1)

@@ -4,18 +4,17 @@ import { MrpTimer } from "@mrp/widgets/timer";
 import { browser } from "@web/core/browser/browser";
 import { useService } from "@web/core/utils/hooks";
 
-const { Component, useState, onWillStart} = owl;
+const { Component, useState, onWillStart } = owl;
 
 export class WorkingEmployeePopupWOList extends Component {
     setup() {
         const { origin } = browser.location;
         this.imageBaseURL = `${origin}/web/image?model=hr.employee&field=avatar_128&id=`;
-        this.employeesData = useState({employees : []});
+        this.employeesData = useState({ employees: [] });
         this.orm = useService("orm");
-        this.firstTime = true;
 
         onWillStart(() => {
-            this.onWillStart();
+            this._onWillStart();
         });
     }
 
@@ -29,13 +28,13 @@ export class WorkingEmployeePopupWOList extends Component {
     }
 
     lockEmployee(employeeId, pin) {
-        this.props.disconnectEmployee(employeeId,pin);
+        this.props.disconnectEmployee(employeeId, pin);
         this.close();
     }
 
-    onWillStart() {
+    _onWillStart() {
         this.data = [];
-        if (!this.props.popupData.employees){
+        if (!this.props.popupData.employees) {
             return this.employeesData.employees = this.data;
         }
 
@@ -43,22 +42,21 @@ export class WorkingEmployeePopupWOList extends Component {
             this.workorders = [];
             emp.workorder.forEach(wo => {
                 this.workorders.push({
-                    id : wo.id,
-                    name : wo.operation_name + ' - ' + wo.work_order_name,
-                    duration : wo.duration,
-                    ongoing : wo.ongoing
+                    id: wo.id,
+                    name: wo.operation_name + ' - ' + wo.work_order_name,
+                    duration: wo.duration,
+                    ongoing: wo.ongoing
                 })
             });
             this.data.push({
                 id: emp.id,
                 name: emp.name,
-                // Compute the image src bc t-attf has a latency to load images ?
+                // Compute the image src bc t-attf has a latency to load images
                 src: this.imageBaseURL + `${emp.id}`,
-                workorder : this.workorders
+                workorder: this.workorders
             });
         });
         this.employeesData.employees = this.data;
-        this.firstTime = false;
     }
 
     get employeesList() {
@@ -69,12 +67,10 @@ export class WorkingEmployeePopupWOList extends Component {
     }
 
     async startEmployee(empId, woId) {
-        // reupdate the time from the ORM
-        // useful because of timer onsleep change
-        // if not done, bug for now
-        // this should be done in the timer??
+        // The method will refresh the page and will cause the timer to reuse it's props values (wich are not updated by the timer) so the timer will jump back
+        // The way it's fixed here is by re-fetching the propers times on each workorder
         const time = await this.orm.call(
-            "hr.employee", "get_wo_time_by_employees_ids", [empId,woId]
+            "hr.employee", "get_wo_time_by_employees_ids", [empId, woId]
         );
         this.data.some(emp => {
             emp.workorder.forEach(wo => {
@@ -91,7 +87,7 @@ export class WorkingEmployeePopupWOList extends Component {
 
     stopEmployee(empId, woId) {
         this.data.forEach(emp => {
-            if(emp.id == empId) {
+            if (emp.id == empId) {
                 emp.workorder.forEach(wo => {
                     if (wo.id == woId) {
                         wo.ongoing = false;

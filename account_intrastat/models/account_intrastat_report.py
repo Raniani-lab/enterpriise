@@ -130,6 +130,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                         col['expression_label'] = 'country_code'
                     elif col['expression_label'] == 'intrastat_product_origin_country_name':
                         col['expression_label'] = 'intrastat_product_origin_country_code'
+        options['columns'] = new_columns
 
         # Only pick Sale/Purchase journals (+ divider)
         report._init_options_journals(options, previous_options=previous_options, additional_journals_domain=[('type', 'in', ('sale', 'purchase'))])

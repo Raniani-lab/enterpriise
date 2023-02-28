@@ -811,7 +811,7 @@ class SpanishMod303TaxReportCustomHandler(models.AbstractModel):
         rslt = self._l10n_es_boe_format_string('<T303DID00>')
 
         # Wizard with manually-entered data
-        boe_wizard = self._retrieve_boe_manual_wizard(options)
+        boe_wizard = self._retrieve_boe_manual_wizard(options, 303)
 
         partner_bank = boe_wizard.partner_bank_id
 

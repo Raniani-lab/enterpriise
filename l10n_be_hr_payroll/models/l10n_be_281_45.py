@@ -151,8 +151,9 @@ class L10nBe28145(models.Model):
         if invalid_employees:
             raise UserError(_("The following employees don't have a valid private address (with a street, a zip, a city and a country):\n%s", '\n'.join(invalid_employees.mapped('name'))))
 
-        if not all(emp.contract_ids and emp.contract_id for emp in employees):
-            raise UserError(_('Some employee has no contract.'))
+        invalid_employees = employees.filtered(lambda emp: not emp.contract_ids or not emp.contract_id)
+        if invalid_employees:
+            raise UserError(_('Some employee has no contract:\n%s', '\n'.join(invalid_employees.mapped('name'))))
 
         invalid_employees = employees.filtered(lambda e: not e._is_niss_valid())
         if invalid_employees:
@@ -290,11 +291,16 @@ class L10nBe28145(models.Model):
                 'f2114_voornamen': first_name,
                 'f45_2030_aardpersoon': 1,
                 'f45_2031_verantwoordingsstukken': 0,
+                'f45_2032_nilpaidgrossincomea': 1,
+                'f45_2033_nilpaidgrossincomeb': 1,
                 # Note: 2060 > 2063
-                'f45_2060_brutoinkomsten': _to_eurocent(round(mapped_total['IP'], 2)),
-                'f45_2061_forfaitairekosten': _to_eurocent(round(mapped_total['IP'] / 2.0, 2)),
-                'f45_2062_werkelijkekosten': 0,
+                'f45_2060_grossincomeb': _to_eurocent(round(mapped_total['IP'], 2)),
+                # 'f45_2061_forfaitairekosten': _to_eurocent(round(mapped_total['IP'] / 2.0, 2)),
+                # 'f45_2062_werkelijkekosten': 0,
                 'f45_2063_roerendevoorheffing': _to_eurocent(round(-mapped_total['IP.DED'], 2)),
+                'f45_2064_grossincomea': 0,
+                'f45_2065_actuallypaidgrossincomea': 0,
+                'f45_2066_actuallypaidgrossincomeb': 0,
                 'f45_2099_comment': '',
                 'f45_2109_fiscaalidentificat': '', # Use NISS instead
                 'f45_2110_kbonbr': 0, # N° BCE d’une personne physique (facultatif)
@@ -311,9 +317,9 @@ class L10nBe28145(models.Model):
 
             # Somme de 2060 à 2088, f10_2062_totaal et f10_2077_totaal inclus
             sheet_values['f45_2059_totaalcontrole'] = sum(sheet_values[code] for code in [
-                'f45_2060_brutoinkomsten',
-                'f45_2061_forfaitairekosten',
-                'f45_2062_werkelijkekosten',
+                'f45_2060_grossincomeb',
+                # 'f45_2061_forfaitairekosten'
+                # 'f45_2062_werkelijkekosten',
                 'f45_2063_roerendevoorheffing'])
 
         sheets_count = len(employees_data)

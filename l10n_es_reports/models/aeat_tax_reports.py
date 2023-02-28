@@ -273,10 +273,6 @@ class SpanishTaxReportCustomHandler(models.AbstractModel):
                 casilla = matcher.group('casilla')
                 casilla_value = line['columns'][0]['no_format'] # Element [0] is the current period, in case we are comparing
 
-                if casilla == '65':
-                    # Casilla 65 is a percentage; the report stores it as float, where 1.0 = 100%
-                    casilla_value *= 100
-
                 rslt[casilla] = casilla_value
 
         return rslt

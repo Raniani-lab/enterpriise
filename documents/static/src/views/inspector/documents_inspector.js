@@ -314,14 +314,11 @@ export class DocumentsInspector extends Component {
     async onShare() {
         const resIds = this.resIds;
         if (!this.generatedUrls[resIds]) {
+            const vals = await this.createShareVals();
             this.generatedUrls[resIds] = await this.orm.call(
                 "documents.share",
                 "action_get_share_url",
-                [{
-                    document_ids: [x2ManyCommands.replaceWith(this.resIds)],
-                    folder_id: this.env.searchModel.getSelectedFolderId(),
-                    type: "ids",
-                }],
+                [vals]
             );
         }
         browser.navigator.clipboard.writeText(this.generatedUrls[resIds]);
@@ -331,6 +328,14 @@ export class DocumentsInspector extends Component {
                 type: "success",
             },
         );
+    }
+
+    async createShareVals() {
+        return {
+            document_ids: [x2ManyCommands.replaceWith(this.resIds)],
+            folder_id: this.env.searchModel.getSelectedFolderId(),
+            type: "ids",
+        };
     }
 
     async onReplace(ev) {

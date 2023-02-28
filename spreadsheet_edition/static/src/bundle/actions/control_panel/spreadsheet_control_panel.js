@@ -3,6 +3,7 @@
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { useService } from "@web/core/utils/hooks";
 import { SpreadsheetName } from "./spreadsheet_name";
+import { SpreadsheetShareButton } from "@spreadsheet/components/share_button/share_button";
 import { session } from "@web/session";
 
 import { Component, onWillUnmount, useState } from "@odoo/owl";
@@ -75,6 +76,7 @@ SpreadsheetControlPanel.template = "spreadsheet_edition.SpreadsheetControlPanel"
 SpreadsheetControlPanel.components = {
     ControlPanel,
     SpreadsheetName,
+    SpreadsheetShareButton,
 };
 SpreadsheetControlPanel.props = {
     spreadsheetName: String,

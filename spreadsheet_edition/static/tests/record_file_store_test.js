@@ -34,7 +34,21 @@ QUnit.module(
                     };
                 },
             };
+            const fakeORMService = {
+                start() {
+                    return {
+                        call: (model, method, args) => {
+                            assert.step("access token generated");
+                            assert.strictEqual(model, "ir.attachment");
+                            assert.strictEqual(method, "generate_access_token");
+                            assert.deepEqual(args, [10]);
+                            return ["the-image-access-token"];
+                        },
+                    };
+                },
+            };
             registry.category("services").add("http", fakeHTTPService);
+            registry.category("services").add("orm", fakeORMService, { force: true });
             const env = await makeTestEnv();
             const fileStore = new RecordFileStore(
                 "res.partner",
@@ -45,8 +59,8 @@ QUnit.module(
             const path = await fileStore.upload(
                 new File(["image"], "image_name.png", { type: "image/*" })
             );
-            assert.strictEqual(path, "/web/image/10");
-            assert.verifySteps(["image uploaded"]);
+            assert.strictEqual(path, "/web/image/10?access_token=the-image-access-token");
+            assert.verifySteps(["image uploaded", "access token generated"]);
         });
 
         QUnit.test("delete image", async (assert) => {

@@ -8,10 +8,7 @@ export class DocumentsListController extends ListController {
     setup() {
         preSuperSetup();
         super.setup(...arguments);
-        const properties = useDocumentView({
-            getSelectedDocumentsElements: () =>
-                this.root.el.querySelectorAll(".o_data_row.o_data_row_selected .o_list_record_selector"),
-        });
+        const properties = useDocumentView(this.documentsViewHelpers());
         Object.assign(this, properties);
     }
 
@@ -24,6 +21,18 @@ export class DocumentsListController extends ListController {
     onWillSaveMultiRecords() {}
 
     onSavedMultiRecords() {}
+
+    /**
+     * Override this to add view options.
+     */
+    documentsViewHelpers() {
+        return {
+            getSelectedDocumentsElements: () =>
+                this.root.el.querySelectorAll(
+                    ".o_data_row.o_data_row_selected .o_list_record_selector"
+                ),
+        };
+    }
 }
 
 DocumentsListController.template = "documents.DocumentsListController";

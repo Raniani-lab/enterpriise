@@ -8,11 +8,18 @@ export class DocumentsActivityController extends ActivityController {
     setup() {
         preSuperSetup();
         super.setup(...arguments);
-        const properties = useDocumentView({
+        const properties = useDocumentView(this.documentsViewHelpers());
+        Object.assign(this, properties);
+    }
+
+    /**
+     * Override this to add view options.
+     */
+    documentsViewHelpers() {
+        return {
             getSelectedDocumentsElements: () => [],
             isRecordPreviewable: this.isRecordPreviewable.bind(this),
-        });
-        Object.assign(this, properties);
+        };
     }
 
     /**

@@ -10,9 +10,10 @@ from lxml import etree
 
 from odoo import _, fields, models, api
 from odoo.addons.spreadsheet.utils import empty_spreadsheet_data_base64
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
 from odoo.tools import image_process
+
 
 SUPPORTED_PATHS = (
     "[Content_Types].xml",
@@ -58,9 +59,15 @@ class Document(models.Model):
             vals = self._resize_thumbnail_value(vals)
         return super().write(vals)
 
-    def join_spreadsheet_session(self):
-        data = super().join_spreadsheet_session()
-        return dict(data, is_favorited=self.is_favorited)
+    def join_spreadsheet_session(self, share_id=None, access_token=None):
+        data = super().join_spreadsheet_session(share_id, access_token)
+        return dict(data, is_favorited=self.sudo().is_favorited, folder_id=self.sudo().folder_id.id)
+
+    def _check_spreadsheet_share(self, operation, share_id, access_token):
+        share = self.env['documents.share'].browse(share_id).sudo()
+        available_document = share._get_documents_and_check_access(access_token, operation=operation)
+        if available_document != self:
+            raise AccessError(_("You don't have access to this document"))
 
     def _compute_file_extension(self):
         """ Spreadsheet documents do not have file extension. """

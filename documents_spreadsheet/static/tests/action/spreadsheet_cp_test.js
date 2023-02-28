@@ -1,11 +1,20 @@
 /** @odoo-module */
 
 import { doAction } from "@web/../tests/webclient/helpers";
-import { getFixture, nextTick } from "@web/../tests/helpers/utils";
+import {
+    click,
+    getFixture,
+    nextTick,
+    patchWithCleanup,
+    makeDeferred,
+} from "@web/../tests/helpers/utils";
+import { x2ManyCommands } from "@web/core/orm_service";
+import { browser } from "@web/core/browser/browser";
 import { fields, dom } from "web.test_utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";
+import { Model } from "@odoo/o-spreadsheet";
 
 let target;
 
@@ -112,6 +121,72 @@ QUnit.module(
             await dom.triggerEvent(input, "change");
             assert.equal(input.value, "", "It should be empty");
             assert.ok(width < input.offsetWidth, "It should have the placeholder size");
+        });
+
+        QUnit.test("share spreadsheet from control panel", async function (assert) {
+            const spreadsheetId = 789;
+            const model = new Model();
+            const serverData = getBasicServerData();
+            serverData.models["documents.document"].records = [
+                {
+                    name: "My spreadsheet",
+                    id: spreadsheetId,
+                    spreadsheet_data: JSON.stringify(model.exportData()),
+                    folder_id: 465,
+                },
+            ];
+            patchWithCleanup(browser, {
+                navigator: {
+                    clipboard: {
+                        writeText: (url) => {
+                            assert.step("share url copied");
+                            assert.strictEqual(url, "localhost:8069/share/url/132465");
+                        },
+                    },
+                },
+            });
+            const def = makeDeferred();
+            await createSpreadsheet({
+                serverData,
+                spreadsheetId,
+                mockRPC: async function (route, args) {
+                    if (args.method === "action_get_share_url") {
+                        await def;
+                        assert.step("spreadsheet_shared");
+                        const [shareVals] = args.args;
+                        assert.strictEqual(args.model, "documents.share");
+                        const excel = JSON.parse(JSON.stringify(model.exportXLSX().files));
+                        assert.deepEqual(shareVals, {
+                            document_ids: [x2ManyCommands.replaceWith([spreadsheetId])],
+                            folder_id: 465,
+                            type: "ids",
+                            spreadsheet_shares: [
+                                {
+                                    spreadsheet_data: JSON.stringify(model.exportData()),
+                                    document_id: spreadsheetId,
+                                    excel_files: excel,
+                                },
+                            ],
+                        });
+                        return "localhost:8069/share/url/132465";
+                    }
+                },
+            });
+            assert.strictEqual(target.querySelector(".spreadsheet_share_dropdown"), null);
+            await click(target, "i.fa-share-alt");
+            assert.equal(
+                target.querySelector(".spreadsheet_share_dropdown")?.innerText,
+                "Generating sharing link"
+            );
+            def.resolve();
+            await nextTick();
+            assert.verifySteps(["spreadsheet_shared", "share url copied"]);
+            assert.strictEqual(
+                target.querySelector(".o_field_CopyClipboardChar").innerText,
+                "localhost:8069/share/url/132465"
+            );
+            await click(target, ".fa-clipboard");
+            assert.verifySteps(["share url copied"]);
         });
 
         QUnit.test("toggle favorite", async function (assert) {

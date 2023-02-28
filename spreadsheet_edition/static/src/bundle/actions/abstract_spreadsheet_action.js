@@ -41,6 +41,8 @@ export class AbstractSpreadsheetAction extends Component {
             this.params.spreadsheet_id ||
             this.params.active_id || // backward compatibility. spreadsheet_id used to be active_id
             (this.props.state && this.props.state.resId); // used when going back to a spreadsheet via breadcrumb
+        this.shareId = this.params.share_id || this.props.state?.shareId;
+        this.accessToken = this.params.access_token || this.props.state?.accessToken;
         this.router = useService("router");
         this.actionService = useService("action");
         this.notifications = useService("notification");
@@ -54,6 +56,8 @@ export class AbstractSpreadsheetAction extends Component {
             getLocalState: () => {
                 return {
                     resId: this.resId,
+                    shareId: this.shareId,
+                    accessToken: this.accessToken,
                 };
             },
         });
@@ -73,7 +77,11 @@ export class AbstractSpreadsheetAction extends Component {
             await this.execInitCallbacks();
         });
         onMounted(() => {
-            this.router.pushState({ spreadsheet_id: this.resId });
+            this.router.pushState({
+                spreadsheet_id: this.resId,
+                access_token: this.accessToken,
+                share_id: this.shareId,
+            });
             this.env.config.setDisplayName(this.state.spreadsheetName);
             this.model.on("unexpected-revision-id", this, this.onUnexpectedRevisionId.bind(this));
         });

@@ -39,7 +39,10 @@ export class RecordFileStore {
             id: this.resId,
         };
         const fileData = JSON.parse(await this.http.post(route, params, "text"))[0];
-        return "/web/image/" + fileData.id;
+        const [accessToken] = await this.orm.call("ir.attachment", "generate_access_token", [
+            fileData.id,
+        ]);
+        return `/web/image/${fileData.id}?access_token=${accessToken}`;
     }
 
     /**

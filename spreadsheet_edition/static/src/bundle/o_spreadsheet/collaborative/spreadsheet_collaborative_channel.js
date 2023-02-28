@@ -17,11 +17,15 @@ export default class SpreadsheetCollaborativeChannel {
      * @param {Env} env
      * @param {string} resModel model linked to the spreadsheet
      * @param {number} resId Id of the spreadsheet
+     * @param {number} [shareId]
+     * @param {string} [accessToken] sharing token
      */
-    constructor(env, resModel, resId) {
+    constructor(env, resModel, resId, shareId, accessToken) {
         this.env = env;
         this.resId = resId;
         this.resModel = resModel;
+        this.shareId = shareId;
+        this.accessToken = accessToken;
         /**
          * A callback function called to handle messages when they are received.
          */
@@ -31,12 +35,9 @@ export default class SpreadsheetCollaborativeChannel {
          * once it registers.
          */
         this._queue = [];
-        // Listening this channel tells the server the spreadsheet is active
-        // but the server will actually push to channel [{dbname},  {resModel}, {resId}]
-        // The user can listen to this channel only if he has the required read access.
-        this._channel = `spreadsheet_collaborative_session:${this.resModel}:${this.resId}`;
+        this._channel = this._getChannel();
         this.env.services.bus_service.addChannel(this._channel);
-        this.env.services.bus_service.addEventListener('notification', ({ detail: notifs }) =>
+        this.env.services.bus_service.addEventListener("notification", ({ detail: notifs }) =>
             this._handleNotifications(this._filterSpreadsheetNotifs(notifs))
         );
     }
@@ -50,7 +51,7 @@ export default class SpreadsheetCollaborativeChannel {
      */
     onNewMessage(id, callback) {
         this._listener = callback;
-        for (let message of this._queue) {
+        for (const message of this._queue) {
             callback(message);
         }
         this._queue = [];
@@ -62,11 +63,14 @@ export default class SpreadsheetCollaborativeChannel {
      * @param {Object} message
      */
     sendMessage(message) {
-        return this.env.services.rpc({
-            model: this.resModel,
-            method: "dispatch_spreadsheet_message",
-            args: [this.resId, message],
-        }, { shadow: true });
+        return this.env.services.rpc(
+            {
+                model: this.resModel,
+                method: "dispatch_spreadsheet_message",
+                args: [this.resId, message, this.shareId, this.accessToken],
+            },
+            { shadow: true }
+        );
     }
 
     /**
@@ -88,7 +92,7 @@ export default class SpreadsheetCollaborativeChannel {
     _filterSpreadsheetNotifs(notifs) {
         return notifs.filter((notification) => {
             const { payload, type } = notification;
-            return type === 'spreadsheet' && payload.id === this.resId;
+            return type === "spreadsheet" && payload.id === this.resId;
         });
     }
 
@@ -107,5 +111,20 @@ export default class SpreadsheetCollaborativeChannel {
                 this._listener(payload);
             }
         }
+    }
+
+    /**
+     * @private
+     * @returns {string}
+     */
+    _getChannel() {
+        // Listening this channel tells the server the spreadsheet is active
+        // but the server will actually push to channel [{dbname},  {resModel}, {resId}]
+        // The user can listen to this channel only if he has the required read access.
+        const channel = `spreadsheet_collaborative_session:${this.resModel}:${this.resId}`;
+        if (this.shareId && this.accessToken) {
+            return `${channel}:${this.shareId}:${this.accessToken}`;
+        }
+        return channel;
     }
 }

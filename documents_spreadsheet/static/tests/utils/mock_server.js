@@ -13,10 +13,14 @@ registry
                 id: spreadsheet.id,
             }));
     })
-    .add(
-        "documents.document/join_spreadsheet_session",
-        mockJoinSpreadsheetSession("documents.document")
-    )
+    .add("documents.document/join_spreadsheet_session", function (route, args) {
+        const result = mockJoinSpreadsheetSession("documents.document").call(this, route, args);
+        const [id] = args.args;
+        const record = this.models["documents.document"].records.find((record) => record.id === id);
+        result.is_favorited = record.is_favorited;
+        result.folder_id = record.folder_id;
+        return result;
+    })
     .add("documents.document/dispatch_spreadsheet_message", () => false)
     .add("documents.document/action_open_new_spreadsheet", function (route, args) {
         const spreadsheetId = this.mockCreate("documents.document", {
@@ -43,7 +47,10 @@ registry
             throw new Error(`Spreadsheet Template ${id} does not exist`);
         }
         return {
-            data: typeof record.spreadsheet_data === "string" ? JSON.parse(record.spreadsheet_data) : record.spreadsheet_data,
+            data:
+                typeof record.spreadsheet_data === "string"
+                    ? JSON.parse(record.spreadsheet_data)
+                    : record.spreadsheet_data,
             name: record.name,
             isReadonly: false,
         };

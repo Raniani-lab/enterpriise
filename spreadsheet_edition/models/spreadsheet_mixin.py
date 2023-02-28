@@ -1,16 +1,18 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import io
 import json
 import logging
 import base64
 import psycopg2
+import zipfile
 
 
 from datetime import timedelta
 from typing import Dict, Any, List
 
-from odoo import fields, models
-from odoo.exceptions import AccessError
+from odoo import _, fields, models
+from odoo.exceptions import AccessError, MissingError
 from odoo.tools import mute_logger
 _logger = logging.getLogger(__name__)
 
@@ -28,7 +30,7 @@ class SpreadsheetMixin(models.AbstractModel):
         groups="base.group_system",
     )
 
-    def join_spreadsheet_session(self):
+    def join_spreadsheet_session(self, share_id=None, access_token=None):
         """Join a spreadsheet session.
         Returns the following data::
         - the last snapshot
@@ -38,20 +40,21 @@ class SpreadsheetMixin(models.AbstractModel):
         - whether the user can edit the content of the spreadsheet or not
         """
         self.ensure_one()
-        self._check_collaborative_spreadsheet_access("read")
+        self._check_collaborative_spreadsheet_access("read", share_id, access_token)
         can_write = self._check_collaborative_spreadsheet_access(
-            "write", raise_exception=False
+            "write", share_id, access_token, raise_exception=False
         )
+        spreadsheet_sudo = self.sudo()
         return {
-            "id": self.id,
-            "name": self.display_name,
-            "data": self._get_spreadsheet_snapshot(),
-            "revisions": self.sudo()._build_spreadsheet_messages(),
-            "snapshot_requested": can_write and self._should_be_snapshotted(),
+            "id": spreadsheet_sudo.id,
+            "name": spreadsheet_sudo.display_name,
+            "data": spreadsheet_sudo._get_spreadsheet_snapshot(),
+            "revisions": spreadsheet_sudo._build_spreadsheet_messages(),
+            "snapshot_requested": can_write and spreadsheet_sudo._should_be_snapshotted(),
             "isReadonly": not can_write,
         }
 
-    def dispatch_spreadsheet_message(self, message: CollaborationMessage):
+    def dispatch_spreadsheet_message(self, message: CollaborationMessage, share_id=None, access_token=None):
         """This is the entry point of collaborative editing.
         Collaboration messages arrive here. For each received messages,
         the server decides if it's accepted or not. If the message is
@@ -86,8 +89,8 @@ class SpreadsheetMixin(models.AbstractModel):
         self.ensure_one()
 
         if message["type"] in ["REMOTE_REVISION", "REVISION_UNDONE", "REVISION_REDONE"]:
-            self._check_collaborative_spreadsheet_access("write")
-            is_accepted = self._save_concurrent_revision(
+            self._check_collaborative_spreadsheet_access("write", share_id, access_token)
+            is_accepted = self.sudo()._save_concurrent_revision(
                 message["nextRevisionId"],
                 message["serverRevisionId"],
                 self._build_spreadsheet_revision_data(message),
@@ -96,11 +99,12 @@ class SpreadsheetMixin(models.AbstractModel):
                 self._broadcast_spreadsheet_message(message)
             return is_accepted
         elif message["type"] == "SNAPSHOT":
-            return self._snapshot_spreadsheet(
+            self._check_collaborative_spreadsheet_access("write", share_id, access_token)
+            return self.sudo()._snapshot_spreadsheet(
                 message["serverRevisionId"], message["nextRevisionId"], message["data"]
             )
         elif message["type"] in ["CLIENT_JOINED", "CLIENT_LEFT", "CLIENT_MOVED"]:
-            self._check_collaborative_spreadsheet_access("read")
+            self._check_collaborative_spreadsheet_access("read", share_id, access_token)
             self._broadcast_spreadsheet_message(message)
             return True
         return False
@@ -139,7 +143,7 @@ class SpreadsheetMixin(models.AbstractModel):
 
     def _get_spreadsheet_snapshot(self):
         if not self.spreadsheet_snapshot:
-            self.sudo().spreadsheet_snapshot = base64.b64encode(self.spreadsheet_data.encode())
+            self.spreadsheet_snapshot = base64.b64encode(self.spreadsheet_data.encode())
         return json.loads(base64.decodebytes(self.spreadsheet_snapshot))
 
     def _should_be_snapshotted(self):
@@ -157,10 +161,9 @@ class SpreadsheetMixin(models.AbstractModel):
         :return: True if the revision was saved, False otherwise
         """
         self.ensure_one()
-        self._check_collaborative_spreadsheet_access("write")
         try:
             with mute_logger("odoo.sql_db"):
-                self.env["spreadsheet.revision"].sudo().create(
+                self.env["spreadsheet.revision"].create(
                     {
                         "res_model": self._name,
                         "res_id": self.id,
@@ -204,20 +207,29 @@ class SpreadsheetMixin(models.AbstractModel):
         ]
 
     def _check_collaborative_spreadsheet_access(
-        self, operation: str, *, raise_exception=True
+        self, operation: str, share_id=None, access_token=None, *, raise_exception=True
     ):
         """Check that the user has the right to read/write on the document.
         It's used to ensure that a user can read/write the spreadsheet revisions
         of this document.
         """
         try:
-            self.check_access_rights(operation)
-            self.check_access_rule(operation)
+            if share_id and access_token:
+                self._check_spreadsheet_share(operation, share_id, access_token)
+            else:
+                self.check_access_rights(operation)
+                self.check_access_rule(operation)
         except AccessError as e:
             if raise_exception:
                 raise e
             return False
         return True
+
+    def _check_spreadsheet_share(self, operation, share_id, access_token):
+        """Delegates the sharing check to the underlying model which might
+        implement sharing in different ways.
+        """
+        raise AccessError(_("You are not allowed to access this spreadsheet."))
 
     def _broadcast_spreadsheet_message(self, message: CollaborationMessage):
         """Send the message to the spreadsheet channel"""
@@ -227,10 +239,9 @@ class SpreadsheetMixin(models.AbstractModel):
     def _delete_spreadsheet_revisions(self):
         """Delete spreadsheet revisions"""
         self.ensure_one()
-        self._check_collaborative_spreadsheet_access("write")
         # For debug purposes, we archive revisions instead of unlinking them
         # self.spreadsheet_revision_ids.unlink()
-        self.sudo().spreadsheet_revision_ids.active = False
+        self.spreadsheet_revision_ids.active = False
 
     def _delete_collaborative_data(self):
         self.spreadsheet_snapshot = False
@@ -243,3 +254,29 @@ class SpreadsheetMixin(models.AbstractModel):
             return True
         self.sudo().with_context(active_test=False).spreadsheet_revision_ids.unlink()
         return super().unlink()
+
+    def _zip_xslx_files(self, files):
+        stream = io.BytesIO()
+        with zipfile.ZipFile(stream, 'w', compression=zipfile.ZIP_DEFLATED) as doc_zip:
+            for f in files:
+                # to reduce networking load, only the image path is sent.
+                # It's replaced by the image content here.
+                if 'imagePath' in f:
+                    try:
+                        content = self._get_file_content(f['imagePath'])
+                        doc_zip.writestr(f['path'], content)
+                    except MissingError:
+                        pass
+                else:
+                    doc_zip.writestr(f['path'], f['content'])
+
+        return stream.getvalue()
+
+    def _get_file_content(self, file_path):
+        _, args = self.env['ir.http']._match(file_path)
+        file_record = self.env['ir.binary']._find_record(
+            xmlid=args.get('xmlid'),
+            res_model=args.get('model', 'ir.attachment'),
+            res_id=args.get('id'),
+        )
+        return self.env['ir.binary']._get_stream_from(file_record).read()

@@ -15,6 +15,7 @@
         'views/documents_document_views.xml',
         'views/spreadsheet_template_views.xml',
         'views/documents_templates_share.xml',
+        'views/sharing_templates.xml',
         'views/res_config_settings_views.xml',
         'wizard/save_spreadsheet_template.xml',
     ],

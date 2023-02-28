@@ -1,6 +1,7 @@
 /** @odoo-module **/
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { x2ManyCommands } from "@web/core/orm_service";
 
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 import { SpreadsheetName } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_name";
@@ -14,7 +15,7 @@ import { RecordFileStore } from "@spreadsheet_edition/bundle/image/record_file_s
 import { sprintf } from "@web/core/utils/strings";
 import { _t } from "@web/core/l10n/translation";
 
-import { Component, useSubEnv, useState } from "@odoo/owl";
+import { Component, useState, useSubEnv } from "@odoo/owl";
 
 export class SpreadsheetAction extends AbstractSpreadsheetAction {
     setup() {
@@ -32,7 +33,9 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.transportService = this.spreadsheetCollaborative.getCollaborativeChannel(
             Component.env,
             "documents.document",
-            this.resId
+            this.resId,
+            this.shareId,
+            this.accessToken
         );
         useSubEnv({
             saveAsTemplate: this.saveAsTemplate.bind(this),
@@ -42,6 +45,8 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     async _fetchData() {
         const record = await this.orm.call("documents.document", "join_spreadsheet_session", [
             this.resId,
+            this.shareId,
+            this.accessToken,
         ]);
         if (this.params.convert_from_template) {
             return {
@@ -63,6 +68,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.snapshotRequested = record.snapshot_requested;
         this.state.spreadsheetName = record.name;
         this.isReadonly = record.isReadonly;
+        this.record = record;
     }
 
     /**
@@ -100,6 +106,9 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     }
 
     async onSpreadsheetLeft({ data, thumbnail }) {
+        if (this.accessToken) {
+            return;
+        }
         await this.orm.write("documents.document", [this.resId], {
             is_multipage: data.sheets?.length > 1 || false,
             thumbnail,
@@ -146,6 +155,23 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
                 default_thumbnail: this.getThumbnail(),
             },
         });
+    }
+
+    async shareSpreadsheet(data, excelExport) {
+        const vals = {
+            document_ids: [x2ManyCommands.replaceWith([this.resId])],
+            folder_id: this.record.folder_id,
+            type: "ids",
+            spreadsheet_shares: [
+                {
+                    document_id: this.resId,
+                    spreadsheet_data: JSON.stringify(data),
+                    excel_files: excelExport.files,
+                },
+            ],
+        };
+        const url = await this.orm.call("documents.share", "action_get_share_url", [vals]);
+        return url;
     }
 }
 

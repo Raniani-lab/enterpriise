@@ -21,4 +21,8 @@ DocumentsSpreadsheetControlPanel.props = {
         type: Function,
         optional: true,
     },
+    onSpreadsheetShared: {
+        type: Function,
+        optional: true,
+    },
 };

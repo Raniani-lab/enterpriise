@@ -142,18 +142,18 @@ export function useDocumentView(helpers) {
             });
         },
         onClickShareDomain: async () => {
-            const act = await orm.call("documents.share", "open_share_popup", [
-                {
-                    domain: env.searchModel.domain,
-                    folder_id: env.searchModel.getSelectedFolderId(),
-                    tag_ids: [x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds())],
-                    type: env.model.root.selection.length ? "ids" : "domain",
-                    document_ids: env.model.root.selection.length
-                        ? [[6, 0, await env.model.root.getResIds(true)]]
-                        : false,
-                },
-            ]);
-            let shareResId = act.res_id;
+            const defaultVals = {
+                domain: env.searchModel.domain,
+                folder_id: env.searchModel.getSelectedFolderId(),
+                tag_ids: [x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds())],
+                type: env.model.root.selection.length ? "ids" : "domain",
+                document_ids: env.model.root.selection.length
+                    ? [x2ManyCommands.replaceWith(await env.model.root.getResIds(true))]
+                    : false,
+            };
+            const vals = helpers?.sharePopupAction ? await helpers.sharePopupAction(defaultVals) : defaultVals;
+            const act = await orm.call("documents.share", "open_share_popup", [vals]);
+            const shareResId = act.res_id;
             let saved = false;
             const close = dialogService.add(
                 ShareFormViewDialog,

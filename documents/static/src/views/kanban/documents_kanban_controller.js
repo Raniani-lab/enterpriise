@@ -8,9 +8,7 @@ export class DocumentsKanbanController extends KanbanController {
     setup() {
         preSuperSetup();
         super.setup(...arguments);
-        const properties = useDocumentView({
-            getSelectedDocumentsElements: () => this.root.el.querySelectorAll(".o_kanban_record.o_record_selected"),
-        });
+        const properties = useDocumentView(this.documentsViewHelpers());
         Object.assign(this, properties);
     }
 
@@ -18,6 +16,15 @@ export class DocumentsKanbanController extends KanbanController {
         const modelParams = super.modelParams;
         modelParams.multiEdit = true;
         return modelParams;
+    }
+
+    /**
+     * Override this to add view options.
+     */
+    documentsViewHelpers() {
+        return {
+            getSelectedDocumentsElements: () => this.root.el.querySelectorAll(".o_kanban_record.o_record_selected"),
+        };
     }
 }
 DocumentsKanbanController.template = "documents.DocumentsKanbanView";

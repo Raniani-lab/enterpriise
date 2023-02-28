@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import { patch } from "@web/core/utils/patch";
+import { getBundle, loadBundle } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
 import {
     inspectorFields,
@@ -95,5 +96,37 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
         } else {
             this._super(...arguments);
         }
+    },
+
+    /**
+     * @override
+     */
+    async createShareVals() {
+        const selection = this.props.selection;
+        const vals = await this._super();
+        if (selection.every((doc) => doc.data.handler !== "spreadsheet")) {
+            return vals;
+        }
+        await getBundle("spreadsheet.o_spreadsheet").then(loadBundle);
+        const spreadsheetShares = [];
+        for (const document of selection) {
+            if (document.data.handler === "spreadsheet") {
+                const resId = document.resId;
+                const { fetchSpreadsheetModel, freezeOdooData } = await odoo.runtimeImport(
+                    "@spreadsheet/helpers/model"
+                );
+                const model = await fetchSpreadsheetModel(this.orm, "documents.document", resId);
+                const data = await freezeOdooData(model);
+                spreadsheetShares.push({
+                    spreadsheet_data: JSON.stringify(data),
+                    excel_files: model.exportXLSX().files,
+                    document_id: resId,
+                });
+            }
+        }
+        return {
+            ...vals,
+            spreadsheet_shares: spreadsheetShares,
+        };
     },
 });

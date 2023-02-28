@@ -60,3 +60,20 @@ class SpreadsheetTestCommon(TransactionCase):
             "serverRevisionId": server_revision_id,
             "data": data,
         })
+
+    def share_spreadsheet(self, document):
+        share = self.env["documents.share"].create(
+            {
+                "folder_id": document.folder_id.id,
+                "document_ids": [(6, 0, [document.id])],
+                "type": "ids",
+            }
+        )
+        self.env["documents.shared.spreadsheet"].create(
+            {
+                "share_id": share.id,
+                "document_id": document.id,
+                "spreadsheet_data": document.spreadsheet_data,
+            }
+        )
+        return share

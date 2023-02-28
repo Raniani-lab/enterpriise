@@ -631,6 +631,10 @@ class Payslip(models.Model):
                 'data/cp200/employee_thirteen_month_data.xml',
                 'data/cp200/employee_warrant_salary_data.xml',
                 'data/student/student_regular_pay_data.xml',
+                'views/281_10_xml_export_template.xml',
+                'views/281_45_xml_export_template.xml',
+                'report/hr_281_10_templates.xml',
+                'report/hr_281_45_templates.xml',
             ])]
 
     @api.model

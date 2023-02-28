@@ -52,7 +52,7 @@
                             <field name="l10n_pe_edi_observation"/>
                         </group>
                         <group string="SUNAT" name="pe_edi_group_sunat">
-                            <field name="l10n_latam_document_number" readonly="1"/>
+                            <field name="l10n_latam_document_number" attrs="{'readonly': [('country_code', '=', 'PE')]}"/>
                             <field name="l10n_pe_edi_ticket_number"/>
                         </group>
                     </group>

@@ -63,13 +63,16 @@ registry.category("web_tour.tours").add('planning_test_tour', {
     trigger: "button[special='save']",
     content: "Save this shift once it is ready.",
 }, {
-    trigger: ".o_gantt_pill :contains('11:59 AM')",
+    trigger: ".o_gantt_pill :contains('11:59')",
     content: "<b>Drag & drop</b> your shift to reschedule it. <i>Tip: hit CTRL (or Cmd) to duplicate it instead.</i> <b>Adjust the size</b> of the shift to modify its period.",
     auto: true,
     run: function () {
         if (this.$anchor.length) {
             const expected = "8:00 AM - 11:59 AM (4h)";
-            const actual = this.$anchor[0].textContent;
+            // Without the replace below, this step could break since luxon
+            // (via Intl) uses sometimes U+202f instead of a simple space.
+            // Note: U+202f is a narrow non-break space.
+            const actual = this.$anchor[0].textContent.replace(/\u202f/g, " ");
             if (!actual.startsWith(expected)) {
                 console.error("Test in gantt view doesn't start as expected. Expected : '" + expected + "', actual : '" + actual + "'");
             }
@@ -84,13 +87,13 @@ registry.category("web_tour.tours").add('planning_test_tour', {
     trigger: "button[name='action_check_emails']",
     content: "<b>Publish & send</b> your planning to make it available to your employees.",
 }, {
-    trigger: ".o_gantt_progressbar",
+    trigger: ".o_gantt_progress_bar",
     content: "See employee progress bar",
     auto: true,
     run: function () {
-        const $progressbar = $(".o_gantt_progressbar:eq(0)");
+        const $progressbar = $(".o_gantt_progress_bar:eq(0)");
         if ($progressbar.length) {
-            if ($progressbar[0].style.width === '') {
+            if ($progressbar[0].querySelector("span").style.width === '') {
                 console.error("Progress bar should be displayed");
             }
             if (!$progressbar[0].classList.contains("o_gantt_group_success")) {
@@ -106,7 +109,7 @@ registry.category("web_tour.tours").add('planning_test_tour', {
     run: 'click',
 }, {
     id: "planning_check_format_step",
-    trigger: ".o_gantt_pill p:contains(Developer)",
+    trigger: ".o_gantt_pill span:contains(Developer)",
     content: "Check naming format of resource and role when grouped",
     auto: true,
     run: function () {}
@@ -121,20 +124,32 @@ registry.category("web_tour.tours").add('planning_shift_switching_backend', {
 }, {
     trigger: '.o_gantt_pill :contains("bert")',
     content: "Click on one of your shifts in the gantt view",
-}, {
+},
+{
+    trigger: ".popover-footer button",
+    content: "Click on the 'Edit' button in the popover",
+    run: 'click',
+},
+{
     trigger: 'button[name="action_switch_shift"]',
     content: "Click on the 'Switch Shift' button on the Gantt Form view modal",
 }, {
-    trigger: '.scale_button_selection',
+    trigger: 'div.o_view_scale_selector > .scale_button_selection',
     content: 'Toggle the view scale selector',
 }, {
-    trigger: 'div.o_gantt_scale > button.scale_button_selection',
+    trigger: 'div.o_view_scale_selector > .dropdown-menu',
     content: 'Click on the dropdown button to change the scale of the gantt view',
-    extra_trigger: 'div.o_gantt_scale .o_gantt_button_scale[data-name="day"]',
+    extra_trigger: 'div.o_view_scale_selector .o_scale_button_day',
 }, {
     trigger: '.o_gantt_pill :contains("bert")',
     content: "Click on the unwanted shift in the gantt view again",
-}, {
+},
+{
+    trigger: ".popover-footer button",
+    content: "Click again on the 'Edit' button in the popover",
+    run: 'click',
+},
+{
     trigger: '.alert-warning:contains("The employee assigned would like to switch shifts with someone else.")',
     content: "Check that the warning has been shown",
 }, {
@@ -151,7 +166,13 @@ registry.category("web_tour.tours").add('planning_assigning_unwanted_shift_backe
 }, {
     trigger: '.o_gantt_pill :contains("bert")',
     content: "Click on the unwanted shift of the employee",
-}, {
+},
+{
+    trigger: ".popover-footer button",
+    content: "Click on the 'Edit' button in the popover",
+    run: 'click',
+},
+{
     trigger: ".o_field_widget[name='resource_id'] input",
     content: "Assign this shift to another employee.",
     run: 'text joseph',

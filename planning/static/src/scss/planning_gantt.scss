@@ -5,14 +5,12 @@
             content: none !important; 
         }
         &.o_gantt_color_0.decoration-info {
-            @include gantt-gradient-decorations(nth($o-colors-complete, 1));
+            @include o-gantt-gradient-decorations(nth($o-colors-complete, 1));
         }
     }
 }
 
-.o_gantt_row_title, .o_m2o_avatar {
-    >.o_material_resource {
-        width: 19px;
-        height: 19px;
-    }
+.o_gantt_row_title .o_material_resource {
+    width: 19px;
+    height: 19px;
 }

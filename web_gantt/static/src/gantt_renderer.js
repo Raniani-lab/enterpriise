@@ -32,7 +32,6 @@ import {
     dateAddFixedOffset,
     getCellColor,
     getColorIndex,
-    getDiff,
     removeDomainLeaf,
     useGanttConnectorDraggable,
     useGanttDraggable,
@@ -43,6 +42,7 @@ import {
 import { GanttPopover } from "./gantt_popover";
 import { GanttResizeBadge } from "./gantt_resize_badge";
 import { GanttRowProgressBar } from "./gantt_row_progress_bar";
+import { computeRange } from "./gantt_model";
 
 const { DateTime, Duration } = luxon;
 
@@ -183,7 +183,7 @@ export class GanttRenderer extends Component {
     static GROUP_ROW_SPAN = 6; // --> 24 pixels
     static ROW_SPAN = 9; // --> 36 pixels
 
-    static getRowHeaderWidth = (width) => 100 / (width > 768 ? 6 : 4);
+    static getRowHeaderWidth = (width) => 100 / (width > 768 ? 6 : 3);
 
     setup() {
         this.model = this.props.model;
@@ -302,6 +302,7 @@ export class GanttRenderer extends Component {
             ref: this.rootRef,
             elements: ".o_undraggable",
             ignore: ".o_resize_handle,.o_connector_creator_bullet",
+            edgeScrolling: { enabled: false },
             // Handlers
             onDragStart: () => {
                 this.interaction.mode = "locked";
@@ -775,13 +776,9 @@ export class GanttRenderer extends Component {
      * @returns {Pill}
      */
     enrichPill(pill) {
-        const { colorField, computePillDisplayName, fields, pillDecorations, progressField } =
-            this.model.metaData;
+        const { colorField, fields, pillDecorations, progressField } = this.model.metaData;
 
-        pill.displayName = pill.record.display_name;
-        if (computePillDisplayName) {
-            pill.displayName = this.getDisplayName(pill);
-        }
+        pill.displayName = this.getDisplayName(pill);
 
         const classes = [];
 
@@ -919,21 +916,23 @@ export class GanttRenderer extends Component {
      * @param {Pill} pill
      */
     getDisplayName(pill) {
-        const { dateStartField, dateStopField, scale } = this.model.metaData;
+        const { computePillDisplayName, dateStartField, dateStopField, scale } =
+            this.model.metaData;
         const { id: scaleId } = scale;
         const { record } = pill;
+
+        if (!computePillDisplayName) {
+            return record.display_name;
+        }
+
         const startDate = record[dateStartField];
         const stopDate = record[dateStopField];
         const yearlessDateFormat = omit(DateTime.DATE_SHORT, "year");
 
-        const spanAccrossDays =
-            getDiff(stopDate.startOf("day"), startDate.startOf("day"), "days") > 1;
-
+        const spanAccrossDays = stopDate.startOf("day") > startDate.startOf("day");
         const spanAccrossWeeks =
-            getDiff(stopDate.startOf("week"), startDate.startOf("week"), "weeks") > 1;
-
-        const spanAccrossMonths =
-            getDiff(stopDate.startOf("month"), startDate.startOf("month"), "months") > 1;
+            computeRange("week", stopDate).start > computeRange("week", startDate).start;
+        const spanAccrossMonths = stopDate.startOf("month") > startDate.startOf("month");
 
         /** @type {string[]} */
         const labelElements = [];
@@ -963,8 +962,8 @@ export class GanttRenderer extends Component {
         }
 
         // Original Display Name
-        if (scaleId !== "month" || spanAccrossDays) {
-            labelElements.push(pill.displayName);
+        if (scaleId !== "month" || !record.allocated_hours || spanAccrossDays) {
+            labelElements.push(record.display_name);
         }
 
         return labelElements.filter((el) => !!el).join(" - ");
@@ -1240,7 +1239,8 @@ export class GanttRenderer extends Component {
      * @param {Pill} pill
      */
     getPopoverProps(pill) {
-        const { displayName, record } = pill;
+        const { record } = pill;
+        const displayName = record.display_name;
         const { canEdit, dateStartField, dateStopField } = this.model.metaData;
         const context = this.popoverTemplate
             ? { ...record }
@@ -1536,9 +1536,9 @@ export class GanttRenderer extends Component {
                 span = level * baseSpan;
             }
         }
-        if (progressBar && !isGroup && span === baseSpan && this.isTouchDevice) {
+        if (progressBar && span === baseSpan && this.isTouchDevice) {
             // In mobile: rows span over 2 rows to alllow progressbars to properly display
-            span *= 2;
+            span += ROW_SPAN;
         }
 
         for (const rowPill of rowPills) {
@@ -1747,7 +1747,7 @@ export class GanttRenderer extends Component {
      */
     toggleConnectorHighlighting(connectorId, highlighted) {
         const connector = this.connectors[connectorId];
-        if (!connector || connector.highlighted === highlighted) {
+        if (!connector || (!connector.highlighted && !highlighted)) {
             return;
         }
 

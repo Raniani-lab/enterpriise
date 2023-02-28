@@ -8,34 +8,32 @@
                     <t t-call="{{ props.buttonTemplate }}"/>
                 </t>
                 <t t-set-slot="default" t-slot-scope="layout">
-                    <t t-if="model.data">
-                        <t t-if="!model.hasData() or model.useSampleModel">
-                            <t t-if="props.info.noContentHelp" t-call="web.ActionHelper">
-                                <t t-set="noContentHelp" t-value="props.info.noContentHelp"/>
-                            </t>
-                            <t t-else="" t-call="web.NoContentHelper"/>
+                    <t t-if="showNoContentHelp">
+                        <t t-if="props.info.noContentHelp" t-call="web.ActionHelper">
+                            <t t-set="noContentHelp" t-value="props.info.noContentHelp"/>
                         </t>
-                        <t t-component="props.Renderer"
-                            class="model.useSampleModel ? 'o_sample_data_disabled' : ''"
-                            model="model"
-                            arch="props.arch"
-                            create.bind="create"
-                            openDialog.bind="openDialog"
-                            scrollPosition="props.scrollPosition"
-                            contentRef="layout.contentRef"
-                        />
+                        <t t-else="" t-call="web.NoContentHelper"/>
                     </t>
+                    <t t-component="props.Renderer"
+                        class="model.useSampleModel ? 'o_sample_data_disabled' : ''"
+                        model="model"
+                        arch="props.arch"
+                        create.bind="create"
+                        openDialog.bind="openDialog"
+                        scrollPosition="props.scrollPosition"
+                        contentRef="layout.contentRef"
+                    />
                 </t>
             </Layout>
         </div>
     </t>
 
     <t t-name="web_gantt.GanttView.Buttons" owl="1">
-        <div>
-            <button  t-if="model.metaData.canCreate" class="o_gantt_button_add btn btn-primary me-3" data-hotkey="r" t-on-click="onAddClicked">
+        <div class="d-flex flex-wrap o_gantt_buttons_container">
+            <button t-if="model.metaData.canCreate" class="o_gantt_button_add btn btn-primary" data-hotkey="r" t-on-click="onAddClicked">
                 New
             </button>
-            <div class="d-inline-block">
+            <div class="btn-group gap-1">
                 <button
                     class="o_gantt_button_prev btn btn-primary"
                     t-att-class="{ 'btn-sm btn-link p-1': env.isSmall }"
@@ -45,7 +43,7 @@
                     <span class="fa fa-arrow-left" />
                 </button>
                 <button
-                    class="o_gantt_button_today btn btn-primary mx-1"
+                    class="o_gantt_button_today btn btn-primary"
                     t-att-class="{ 'btn-sm btn-link p-1': env.isSmall }"
                     title="Today"
                     data-hotkey="t"
@@ -66,14 +64,12 @@
                     <span class="fa fa-arrow-right" />
                 </button>
             </div>
-            <div class="d-inline-block mx-3">
-                <ViewScaleSelector
-                    scales="model.metaData.scales"
-                    currentScale="model.metaData.scale.id"
-                    setScale="model.setScale.bind(model)"
-                />
-            </div>
-            <div t-if="displayExpandCollapseButtons" class="btn-group me-3">
+            <ViewScaleSelector
+                scales="model.metaData.scales"
+                currentScale="model.metaData.scale.id"
+                setScale="model.setScale.bind(model)"
+            />
+            <div t-if="displayExpandCollapseButtons" class="btn-group">
                 <button class="o_gantt_button_expand_rows btn btn-secondary" title="Expand rows" t-on-click="onExpandClicked">
                     <i class="fa fa-expand"/>
                 </button>

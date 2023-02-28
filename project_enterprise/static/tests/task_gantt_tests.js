@@ -1,173 +1,163 @@
 /** @odoo-module */
 
-import { createView } from "web.test_utils";
-import { Domain } from "@web/core/domain";
-import { registerCleanup } from "@web/../tests/helpers/cleanup";
-import TaskGanttView from "@project_enterprise/js/task_gantt_view";
+import { getFixture, patchDate } from "@web/../tests/helpers/utils";
+import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+import { registry } from "@web/core/registry";
+import { hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
 
-const actualDate = new Date(2021, 5, 22, 8, 0, 0);
-const initialDate = new Date(actualDate.getTime() - actualDate.getTimezoneOffset() * 60 * 1000);
+const serviceRegistry = registry.category("services");
+
 const ganttViewParams = {
-    arch: `<gantt date_start="start" date_stop="stop"/>`,
-    domain: Domain.FALSE,
+    arch: '<gantt js_class="task_gantt" date_start="start" date_stop="stop"/>',
+    resModel: "task",
+    type: "gantt",
     groupBy: [],
-    model: "task",
-    View: TaskGanttView,
-    viewOptions: { initialDate },
-    mockRPC: function (route, args) {
-        if (args.method === 'search_milestone_from_task') {
-            return Promise.resolve([]);
+    async mockRPC(_, args) {
+        if (args.method === "search_milestone_from_task") {
+            return [];
         }
-        return this._super(...arguments);
     },
 };
 
-QUnit.module("Views > GanttView > TaskGantt", {
+let target;
+QUnit.module("Views > TaskGanttView", {
     beforeEach() {
-        // Avoid animation to not have to wait until the tooltip is removed
-        this.initialPopoverDefaultAnimation = Popover.Default.animation;
-        Popover.Default.animation = false;
+        patchDate(2021, 5, 22, 8, 0, 0);
 
-        ganttViewParams.data = {
-            task: {
-                fields: {
-                    id: { string: "ID", type: "integer" },
-                    name: { string: "Name", type: "char" },
-                    start: { string: "Start Date", type: "datetime" },
-                    stop: { string: "Start Date", type: "datetime" },
-                    time: { string: "Time", type: "float" },
-                    user_ids: {
-                        string: "Assigned to",
-                        type: "many2one",
-                        relation: "res.users",
+        setupViewRegistries();
+
+        target = getFixture();
+
+        serviceRegistry.add("messaging", { start() {} });
+
+        ganttViewParams.serverData = {
+            models: {
+                task: {
+                    fields: {
+                        id: { string: "ID", type: "integer" },
+                        name: { string: "Name", type: "char" },
+                        start: { string: "Start Date", type: "datetime" },
+                        stop: { string: "Start Date", type: "datetime" },
+                        time: { string: "Time", type: "float" },
+                        user_ids: {
+                            string: "Assigned to",
+                            type: "many2one",
+                            relation: "res.users",
+                        },
+                        stuff_id: {
+                            string: "Stuff",
+                            type: "many2one",
+                            relation: "stuff",
+                        },
+                        active: { string: "active", type: "boolean", default: true },
+                        project_id: {
+                            string: "Project",
+                            type: "many2one",
+                            relation: "project",
+                        },
                     },
-                    stuff_id: {
-                        string: "Stuff",
-                        type: "many2one",
-                        relation: "stuff",
-                    },
-                    active: { string: "active", type: "boolean", default: true },
-                    project_id: {
-                        string: "Project",
-                        type: "many2one",
-                        relation: "project",
-                    },
+                    records: [
+                        {
+                            id: 1,
+                            name: "Blop",
+                            start: "2021-06-14 08:00:00",
+                            stop: "2021-06-24 08:00:00",
+                            user_ids: 100,
+                            project_id: 1,
+                        },
+                        {
+                            id: 2,
+                            name: "Yop",
+                            start: "2021-06-02 08:00:00",
+                            stop: "2021-06-12 08:00:00",
+                            user_ids: 101,
+                            stuff_id: 1,
+                            project_id: 1,
+                        },
+                    ],
                 },
-                records: [
-                    {
-                        id: 1,
-                        name: "Blop",
-                        start: "2021-06-14 08:00:00",
-                        stop: "2021-06-24 08:00:00",
-                        user_ids: 100,
-                        project_id: 1,
+                "res.users": {
+                    fields: {
+                        id: { string: "ID", type: "integer" },
+                        name: { string: "Name", type: "char" },
                     },
-                    {
-                        id: 2,
-                        name: "Yop",
-                        start: "2021-06-02 08:00:00",
-                        stop: "2021-06-12 08:00:00",
-                        user_ids: 101,
-                        stuff_id: 1,
-                        project_id: 1,
+                    records: [
+                        { id: 100, name: "Jane Doe" },
+                        { id: 101, name: "John Doe" },
+                    ],
+                },
+                stuff: {
+                    fields: {
+                        id: { string: "ID", type: "integer" },
+                        name: { string: "Name", type: "char" },
                     },
-                ],
-            },
-            "res.users": {
-                fields: {
-                    id: { string: "ID", type: "integer" },
-                    name: { string: "Name", type: "char" },
+                    records: [{ id: 1, name: "Bruce Willis" }],
                 },
-                records: [
-                    { id: 100, name: "Jane Doe" },
-                    { id: 101, name: "John Doe" },
-                ],
-            },
-            stuff: {
-                fields: {
-                    id: { string: "ID", type: "integer" },
-                    name: { string: "Name", type: "char" },
+                project: {
+                    fields: {
+                        id: { string: "ID", type: "integer" },
+                        name: { string: "Name", type: "char" },
+                    },
+                    records: [{ id: 1, name: "My Project" }],
                 },
-                records: [{ id: 1, name: "Bruce Willis" }],
-            },
-            project: {
-                fields: {
-                    id: { string: "ID", type: "integer" },
-                    name: { string: "Name", type: "char" },
-                },
-                records: [{ id: 1, name: "My Project" }],
             },
         };
     },
-    afterEach: async function() {
-        Popover.Default.animation = this.initialPopoverDefaultAnimation;
-    },
 });
 
-QUnit.test("not user_ids grouped: empty groups are displayed first and user avatar is not displayed", async (assert) => {
-    assert.expect(2);
-    const gantt = await createView({ ...ganttViewParams, groupBy: ["stuff_id"] });
-    registerCleanup(gantt.destroy);
-
-    assert.deepEqual(
-        [...gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row_sidebar")].map(
-            (el) => el.innerText
-        ),
-        ["Undefined Stuff", "Bruce Willis"],
-        "'Undefined Stuff' should be the first group"
-    );
-    assert.containsNone(gantt, '.o_standalone_avatar_user','should not have user avatars');
-    gantt.destroy();
-});
+QUnit.test(
+    "not user_ids grouped: empty groups are displayed first and user avatar is not displayed",
+    async (assert) => {
+        await makeView({ ...ganttViewParams, groupBy: ["stuff_id"] });
+        assert.deepEqual(
+            [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map(
+                (el) => el.innerText
+            ),
+            ["Undefined Stuff", "Bruce Willis"],
+            "'Undefined Stuff' should be the first group"
+        );
+        assert.containsNone(target, ".o_gantt_row_headers .o_mail_avatar");
+    }
+);
 
 QUnit.test("not user_ids grouped: no empty group if no records", async (assert) => {
-    assert.expect(1);
     // delete the record having no stuff_id
-    ganttViewParams.data.task.records.splice(0, 1);
-    const gantt = await createView({ ...ganttViewParams, groupBy: ["stuff_id"] });
-    registerCleanup(gantt.destroy);
+    ganttViewParams.serverData.models.task.records.splice(0, 1);
+    await makeView({ ...ganttViewParams, groupBy: ["stuff_id"] });
 
     assert.deepEqual(
-        [...gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row_sidebar")].map(
+        [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map(
             (el) => el.innerText
         ),
         ["Bruce Willis"],
         "should not have an 'Undefined Stuff' group"
     );
-    gantt.destroy();
 });
 
 QUnit.test("user_ids grouped: specific empty group added, even if no records", async (assert) => {
-    assert.expect(2);
-    const gantt = await createView({ ...ganttViewParams, groupBy: ["user_ids"] });
-    registerCleanup(gantt.destroy);
-
+    await makeView({ ...ganttViewParams, groupBy: ["user_ids"] });
     assert.deepEqual(
-        [...gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row_sidebar")].map(
+        [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map(
             (el) => el.innerText
         ),
-        ["Unassigned Tasks", " Jane Doe", " John Doe"],
+        ["Unassigned Tasks", "Jane Doe", "John Doe"],
         "'Unassigned Tasks' should be the first group, even if no record exist without user_ids"
     );
-    assert.containsN(gantt, '.o_standalone_avatar_user', 2, 'should have 2 user avatars');
-    gantt.destroy();
+    assert.containsN(target, ".o_gantt_row_headers .o_mail_avatar", 2);
 });
 
 QUnit.test("[user_ids, ...] grouped", async (assert) => {
-    assert.expect(1);
     // add an unassigned task (no user_ids) that has a linked stuff
-    ganttViewParams.data.task.records.push({
+    ganttViewParams.serverData.models.task.records.push({
         id: 3,
         name: "Gnop",
         start: "2021-06-02 08:00:00",
         stop: "2021-06-12 08:00:00",
         stuff_id: 1,
     });
-    const gantt = await createView({ ...ganttViewParams, groupBy: ["user_ids", "stuff_id"] });
-    registerCleanup(gantt.destroy);
-
+    await makeView({ ...ganttViewParams, groupBy: ["user_ids", "stuff_id"] });
     assert.deepEqual(
-        [...gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row_sidebar")].map((el) =>
+        [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map((el) =>
             el.innerText.trim()
         ),
         [
@@ -180,16 +170,12 @@ QUnit.test("[user_ids, ...] grouped", async (assert) => {
             "Bruce Willis",
         ]
     );
-    gantt.destroy();
 });
 
 QUnit.test("[..., user_ids(, ...)] grouped", async (assert) => {
-    assert.expect(1);
-    const gantt = await createView({ ...ganttViewParams, groupBy: ["stuff_id", "user_ids"] });
-    registerCleanup(gantt.destroy);
-
+    await makeView({ ...ganttViewParams, groupBy: ["stuff_id", "user_ids"] });
     assert.deepEqual(
-        [...gantt.el.querySelectorAll(".o_gantt_row_container .o_gantt_row_sidebar")].map((el) =>
+        [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map((el) =>
             el.innerText.trim()
         ),
         [
@@ -201,29 +187,55 @@ QUnit.test("[..., user_ids(, ...)] grouped", async (assert) => {
             "John Doe",
         ]
     );
-    gantt.destroy();
 });
 
 QUnit.test('Empty groupby "Assigned To" and "Project" can be rendered', async function (assert) {
-    ganttViewParams.data = {
-        task: {
-            fields: {
-                id: {string: 'ID', type: 'integer'},
-                name: {string: 'Name', type: 'char'},
-                start: {string: 'Start Date', type: 'datetime'},
-                stop: {string: 'Stop Date', type: 'datetime'},
-                project_id: {string: 'Project', type: 'many2one', relation: 'projects'},
-                user_ids: {string: 'Assignees', type: 'many2one', relation: 'users'},
-            },
-            records: [],
-        },
-    };
-
-    assert.expect(1);
-    var gantt = await createView({
+    ganttViewParams.serverData.models.task.records = [];
+    await makeView({
         ...ganttViewParams,
-        groupBy: ['user_ids', 'project_id'],
+        groupBy: ["user_ids", "project_id"],
     });
-    assert.containsN(gantt, ".o_gantt_row", 2);
-    gantt.destroy();
+    assert.deepEqual(
+        [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map((el) =>
+            el.innerText.trim()
+        ),
+        ["Unassigned Tasks", "Undefined Project"]
+    );
+});
+
+QUnit.test("progress bar has the correct unit", async (assert) => {
+    assert.expect(9);
+    await makeView({
+        arch: '<gantt js_class="task_gantt" date_start="start" date_stop="stop" progress_bar="user_ids"/>',
+        resModel: "task",
+        type: "gantt",
+        groupBy: ["user_ids"],
+        serverData: ganttViewParams.serverData,
+        async mockRPC(_, { args, method, model }) {
+            if (method === "search_milestone_from_task") {
+                return [];
+            }
+            if (method === "gantt_progress_bar") {
+                assert.strictEqual(model, "task");
+                assert.deepEqual(args[0], ["user_ids"]);
+                assert.deepEqual(args[1], { user_ids: [100, 101] });
+                return {
+                    user_ids: {
+                        100: { value: 100, max_value: 100 },
+                    },
+                };
+            }
+        },
+    });
+    assert.containsOnce(target, SELECTORS.progressBar);
+    assert.containsOnce(target, SELECTORS.progressBarBackground);
+    assert.strictEqual(target.querySelector(SELECTORS.progressBarBackground).style.width, "100%");
+
+    assert.containsNone(target, SELECTORS.progressBarForeground);
+    await hoverGridCell(2, 1);
+    assert.containsOnce(target, SELECTORS.progressBarForeground);
+    assert.deepEqual(
+        target.querySelector(SELECTORS.progressBarForeground).textContent,
+        "100 h / 100 h"
+    );
 });

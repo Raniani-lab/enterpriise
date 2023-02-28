@@ -1,12 +1,10 @@
 /** @odoo-module **/
 
+import { useEnv } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { serializeDateTime } from "@web/core/l10n/dates";
 
-const { useComponent, useEnv } = owl;
-
-export function useSalePlanningViewHook({ getDomain, getViewContext, getScale, getFocusDate }) {
-    const component = useComponent();
+export function useSalePlanningActions({ getDomain, getResModel, getViewContext, getScale, getFocusDate, reload }) {
     const env = useEnv();
     const actionService = useService("action");
     const orm = useService("orm");
@@ -14,7 +12,7 @@ export function useSalePlanningViewHook({ getDomain, getViewContext, getScale, g
     return {
         onClickPlanOrders: async () => {
             const result = await orm.call(
-                component.model.resModel,
+                getResModel(),
                 "action_plan_sale_order",
                 [getDomain()],
                 {
@@ -46,6 +44,7 @@ export function useSalePlanningViewHook({ getDomain, getViewContext, getScale, g
                                         default_scale: scale,
                                         default_mode: scale,
                                         initial_date: serializeDateTime(getFocusDate()),
+                                        initialDate: serializeDateTime(getFocusDate()),
                                     },
                                 });
                             },
@@ -53,7 +52,7 @@ export function useSalePlanningViewHook({ getDomain, getViewContext, getScale, g
                     },
                 );
             }
-            component.model.load();
+            reload();
         },
     }
 }

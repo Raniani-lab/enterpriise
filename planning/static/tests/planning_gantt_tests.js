@@ -1,43 +1,45 @@
-odoo.define("planning.planning_gantt_tests.js", function (require) {
-    "use strict";
+/** @odoo-module */
 
-    const Domain = require("web.Domain");
-    const PlanningGanttView = require("planning.PlanningGanttView");
-    const testUtils = require("web.test_utils");
-    const { prepareWowlFormViewDialogs } = require("@web/../tests/views/helpers");
-    const { patchTimeZone } = require("@web/../tests/helpers/utils");
+import { Domain } from "@web/core/domain";
+import {
+    click,
+    clickSave,
+    editInput,
+    getFixture,
+    patchDate,
+    patchTimeZone,
+} from "@web/../tests/helpers/utils";
+import { editPill, getGridContent, hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
+import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
+import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+import { registry } from "@web/core/registry";
 
-    const actualDate = new Date(2018, 11, 20, 8, 0, 0);
-    const initialDate = new Date(
-        actualDate.getTime() - actualDate.getTimezoneOffset() * 60 * 1000
-    );
-    const { createView } = testUtils;
-
-    function ganttResourceWorkIntervalRPC(route, {model, method}) {
-        if (method === "gantt_resource_work_interval") {
-            return Promise.resolve(
-                [
-                    { 1: [
-                            ["2022-10-10 06:00:00", "2022-10-10 10:00:00"], //Monday    4h
-                            ["2022-10-11 06:00:00", "2022-10-11 10:00:00"], //Tuesday   5h
-                            ["2022-10-11 11:00:00", "2022-10-11 12:00:00"],
-                            ["2022-10-12 06:00:00", "2022-10-12 10:00:00"], //Wednesday 6h
-                            ["2022-10-12 11:00:00", "2022-10-12 13:00:00"],
-                            ["2022-10-13 06:00:00", "2022-10-13 10:00:00"], //Thursday  7h
-                            ["2022-10-13 11:00:00", "2022-10-13 14:00:00"],
-                            ["2022-10-14 06:00:00", "2022-10-14 10:00:00"], //Friday    8h
-                            ["2022-10-14 11:00:00", "2022-10-14 15:00:00"],
-                        ],
-                    },
-                ]
-            );
-        }
-        return this._super.apply(this, arguments);
+async function ganttResourceWorkIntervalRPC(_, args) {
+    if (args.method === "gantt_resource_work_interval") {
+        return [
+            {
+                1: [
+                    ["2022-10-10 06:00:00", "2022-10-10 10:00:00"], //Monday    4h
+                    ["2022-10-11 06:00:00", "2022-10-11 10:00:00"], //Tuesday   5h
+                    ["2022-10-11 11:00:00", "2022-10-11 12:00:00"],
+                    ["2022-10-12 06:00:00", "2022-10-12 10:00:00"], //Wednesday 6h
+                    ["2022-10-12 11:00:00", "2022-10-12 13:00:00"],
+                    ["2022-10-13 06:00:00", "2022-10-13 10:00:00"], //Thursday  7h
+                    ["2022-10-13 11:00:00", "2022-10-13 14:00:00"],
+                    ["2022-10-14 06:00:00", "2022-10-14 10:00:00"], //Friday    8h
+                    ["2022-10-14 11:00:00", "2022-10-14 15:00:00"],
+                ],
+            },
+        ];
     }
+}
 
-    QUnit.module("Planning", {
-        beforeEach() {
-            this.data = {
+let serverData;
+let target;
+QUnit.module("Views", (hooks) => {
+    hooks.beforeEach(async () => {
+        serverData = {
+            models: {
                 task: {
                     fields: {
                         id: { string: "ID", type: "integer" },
@@ -64,7 +66,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                     },
                     records: [],
                 },
-                'resource.resource': {
+                "resource.resource": {
                     fields: {
                         id: { string: "ID", type: "integer" },
                         name: { string: "Name", type: "char" },
@@ -85,307 +87,380 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                     },
                     records: [],
                 },
-            };
-        },
-    }, function () {
+            },
+            views: {
+                "foo,false,gantt": `<gantt/>`,
+                "foo,false,search": `<search/>`,
+            },
+        };
+        setupViewRegistries();
+        target = getFixture();
+    });
 
-        QUnit.module("Gantt");
+    QUnit.module("PlanningGanttView");
 
-        QUnit.test("empty gantt view with sample data: send schedule", async function (assert) {
-            assert.expect(3);
+    QUnit.test("empty gantt view: send schedule", async function (assert) {
+        assert.expect(2);
 
-            this.data.task.records = [];
+        patchDate(2018, 11, 20, 8, 0, 0);
 
-            const gantt = await createView({
-                arch: `
-                    <gantt date_start="start_datetime" date_stop="end_datetime" sample="1"/>`,
-                data: this.data,
-                domain: Domain.FALSE_DOMAIN,
-                groupBy: ["resource_id"],
-                model: "task",
-                View: PlanningGanttView,
-                viewOptions: { initialDate },
-            });
+        serverData.models.task.records = [];
 
-            testUtils.mock.intercept(gantt, 'call_service', (ev) => {
-                if (ev.data.service === 'notification') {
-                    const notification = ev.data.args[0];
-                    assert.deepEqual(notification, {
-                        type: 'danger',
-                        message: "The shifts have already been published, or there are no shifts to publish.",
-                    }, 'A danger notification should be displayed since there are no slots to send.');
-                }
-            }, true);
+        registry.category("services").add(
+            "notification",
+            makeFakeNotificationService((message, options) => {
+                assert.strictEqual(
+                    message,
+                    "The shifts have already been published, or there are no shifts to publish."
+                );
+                assert.strictEqual(options.type, "danger");
+            }),
+            { force: true }
+        );
 
-            assert.hasClass(gantt, "o_legacy_view_sample_data");
-            assert.ok(gantt.$(".o_gantt_row").length > 2,
-                'should contain at least two rows (the generic one, and at least one for sample data)');
-
-            await testUtils.dom.click(gantt.el.querySelector(".btn.o_gantt_button_send_all"));
-
-            gantt.destroy();
+        await makeView({
+            type: "gantt",
+            resModel: "task",
+            serverData,
+            arch: `<gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime"/>`,
+            domain: Domain.FALSE.toList(),
+            groupBy: ["resource_id"],
         });
 
-        QUnit.test('add record in empty gantt with sample="1"', async function (assert) {
+        await click(target.querySelector(".o_gantt_button_send_all"));
+    });
+
+    QUnit.test("empty gantt view with sample data: send schedule", async function (assert) {
+        assert.expect(4);
+
+        patchDate(2018, 11, 20, 8, 0, 0);
+
+        serverData.models.task.records = [];
+
+        registry.category("services").add(
+            "notification",
+            makeFakeNotificationService((message, options) => {
+                assert.strictEqual(
+                    message,
+                    "The shifts have already been published, or there are no shifts to publish."
+                );
+                assert.strictEqual(options.type, "danger");
+            }),
+            { force: true }
+        );
+
+        await makeView({
+            type: "gantt",
+            resModel: "task",
+            serverData,
+            arch: `<gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime" sample="1"/>`,
+            domain: Domain.FALSE.toList(),
+            groupBy: ["resource_id"],
+        });
+
+        assert.hasClass(target.querySelector(".o_gantt_view .o_content"), "o_view_sample_data");
+        assert.ok(target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_header").length >= 2);
+
+        await click(target.querySelector(".o_gantt_button_send_all"));
+    });
+
+    QUnit.test('add record in empty gantt with sample="1"', async function (assert) {
+        assert.expect(6);
+
+        serverData.models.task.records = [];
+        serverData.views = {
+            "task,false,form": `
+                <form>
+                    <field name="name"/>
+                    <field name="start_datetime"/>
+                    <field name="end_datetime"/>
+                    <field name="resource_id"/>
+                </form>`,
+        };
+
+        await makeView({
+            type: "gantt",
+            resModel: "task",
+            serverData,
+            arch: '<gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime" sample="1"/>',
+            groupBy: ["resource_id"],
+            mockRPC: ganttResourceWorkIntervalRPC,
+        });
+
+        assert.hasClass(target.querySelector(".o_gantt_view .o_content"), "o_view_sample_data");
+        assert.ok(target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_header").length >= 2);
+        const firstRow = target.querySelector(".o_gantt_row_headers .o_gantt_row_header");
+        assert.strictEqual(firstRow.innerText, "Open Shifts");
+        assert.doesNotHaveClass(firstRow, "o_sample_data_disabled");
+
+        await hoverGridCell(1, 1);
+        await click(target, SELECTORS.cellAddButton);
+
+        await editInput(target, ".modal .o_form_view .o_field_widget[name=name] input", "new task");
+        await clickSave(target.querySelector(".modal"));
+
+        assert.doesNotHaveClass(
+            target.querySelector(".o_gantt_view .o_content"),
+            "o_view_sample_data"
+        );
+        assert.containsOnce(target, ".o_gantt_pill_wrapper");
+    });
+
+    QUnit.test("open a dialog to add a new task", async function (assert) {
+        assert.expect(4);
+
+        patchTimeZone(0);
+
+        serverData.views = {
+            "task,false,form": `
+                <form>
+                    <field name="name"/>
+                    <field name="start_datetime"/>
+                    <field name="end_datetime"/>
+                '</form>
+            `,
+        };
+
+        const now = luxon.DateTime.now();
+
+        await makeView({
+            type: "gantt",
+            resModel: "task",
+            serverData,
+            arch: '<gantt js_class="planning_gantt" default_scale="day" date_start="start_datetime" date_stop="end_datetime"/>',
+            mockRPC(_, args) {
+                if (args.method === "onchange") {
+                    assert.strictEqual(
+                        args.kwargs.context.default_end_datetime,
+                        now.startOf("day").toFormat("yyyy-MM-dd 23:59:59")
+                    );
+                }
+            },
+        });
+
+        await click(target, ".o_gantt_button_add");
+        // check that the dialog is opened with prefilled fields
+        assert.containsOnce(target, ".modal");
+        assert.strictEqual(
+            target.querySelector(".o_field_widget[name=start_datetime] .o_input").value,
+            now.toFormat("MM/dd/yyyy 00:00:00")
+        );
+        assert.strictEqual(
+            target.querySelector(".o_field_widget[name=end_datetime] .o_input").value,
+            now.toFormat("MM/dd/yyyy 23:59:59")
+        );
+    });
+
+    QUnit.test(
+        "gantt view collapse and expand empty rows in multi groupby",
+        async function (assert) {
             assert.expect(7);
 
-            this.data.task.records = [];
-
-            const gantt = await createView({
-                View: PlanningGanttView,
-                model: 'task',
-                data: this.data,
-                arch: '<gantt date_start="start_datetime" date_stop="end_datetime" sample="1"/>',
-                viewOptions: {
-                    initialDate: new Date(),
-                },
-                groupBy: ['resource_id'],
-                mockRPC: ganttResourceWorkIntervalRPC,
+            await makeView({
+                type: "gantt",
+                resModel: "task",
+                serverData,
+                arch: '<gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime"/>',
+                groupBy: ["department_id", "role_id", "resource_id"],
             });
 
-            const views = {
-                'task,false,form': `
-                    <form>
-                        <field name="name"/>
-                        <field name="start_datetime"/>
-                        <field name="end_datetime"/>
-                        <field name="resource_id"/>
-                    </form>`,
-            };
-            await prepareWowlFormViewDialogs({ models: this.data, views });
-
-            assert.hasClass(gantt, 'o_legacy_view_sample_data');
-            assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
-            const firstRow = gantt.$(".o_gantt_row:first")[0];
-            assert.strictEqual(firstRow.innerText, "Open Shifts");
-            assert.doesNotHaveClass(
-                firstRow,
-                "o_sample_data_disabled",
-                "First row should not be disabled"
+            const { rows } = getGridContent();
+            assert.deepEqual(
+                rows.map((r) => r.title),
+                ["Open Shifts", "Undefined Role", "Open Shifts"]
             );
 
-            await testUtils.dom.triggerMouseEvent(gantt.$(`.o_gantt_row:first .o_gantt_cell:first .o_gantt_cell_add`), "click");
-            await testUtils.fields.editInput($('.modal .modal-body .o_field_widget[name=name] input'), 'new task');
-            await testUtils.modal.clickButton('Save & Close');
-
-            assert.doesNotHaveClass(gantt, 'o_legacy_view_sample_data');
-            assert.containsOnce(gantt, '.o_gantt_row');
-            assert.containsOnce(gantt, '.o_gantt_pill_wrapper');
-
-            gantt.destroy();
-        });
-
-        QUnit.test('open a dialog to add a new task', async function (assert) {
-            assert.expect(4);
-
-            patchTimeZone(0);
-
-            const gantt = await createView({
-                View: PlanningGanttView,
-                model: 'task',
-                data: this.data,
-                arch: '<gantt default_scale="day" date_start="start_datetime" date_stop="end_datetime"/>',
-                archs: {
-                    'task,false,form': '<form>' +
-                            '<field name="name"/>' +
-                            '<field name="start_datetime"/>' +
-                            '<field name="end_datetime"/>' +
-                        '</form>',
-                },
-            });
-
-            const views = {
-                'task,false,form': `
-                    <form>
-                        <field name="name"/>
-                        <field name="start_datetime"/>
-                        <field name="end_datetime"/>
-                    </form>`,
-            };
-            const mockRPC = (route, args) => {
-                if (args.method === 'onchange') {
-                    const today = moment().startOf('date');
-                    const todayStr = today.format("YYYY-MM-DD 23:59:59");
-                    assert.strictEqual(args.kwargs.context.default_end_datetime, todayStr, "default stop date should have 24 hours difference");
-                }
-            }
-            await prepareWowlFormViewDialogs({ models: this.data, views }, mockRPC);
-
-            await testUtils.dom.click(gantt.$el.find('.o_gantt_button_add'));
-            // check that the dialog is opened with prefilled fields
-            assert.containsOnce($('.o_dialog_container'), '.modal', 'There should be one modal opened');
-            const today = moment().startOf('date');
-            let todayStr = today.format("MM/DD/YYYY 00:00:00");
-            assert.strictEqual($('.o_field_widget[name=start_datetime] .o_input').val(), todayStr,
-                'the start date should be the start of the focus month');
-            todayStr = today.format("MM/DD/YYYY 23:59:59");
-            assert.strictEqual($('.o_field_widget[name=end_datetime] .o_input').val(), todayStr,
-                'the end date should be the end of the focus month');
-
-            gantt.destroy();
-        });
-
-        QUnit.test("gantt view collapse and expand empty rows in multi groupby", async function (assert) {
-            assert.expect(9);
-
-            const gantt = await createView({
-                View: PlanningGanttView,
-                model: 'task',
-                data: this.data,
-                arch: '<gantt date_start="start" date_stop="stop"/>',
-                archs: {
-                    'task,false,form': `
-                        <form>
-                            <field name="name"/>
-                            <field name="start"/>
-                            <field name="stop"/>
-                            <field name="resource_id"/>
-                            <field name="role_id"/>
-                            <field name="department_id"/>
-                        </form>`,
-                },
-                viewOptions: {
-                    initialDate: new Date(),
-                },
-                groupBy: ['department_id', 'role_id', 'resource_id'],
-            });
-
             function getRow(index) {
-                return gantt.el.querySelectorAll('.o_gantt_row_container > .row')[index];
+                return target.querySelectorAll(".o_gantt_row_headers > .o_gantt_row_header")[index];
             }
-            assert.strictEqual(getRow(0).innerText.replace(/\s/, ''), 'Open Shifts',
-                'should contain "Open Shifts" as a first group header for grouped by "Department"');
-            assert.strictEqual(getRow(1).innerText.replace(/\s/, ''), 'Undefined Role',
-                'should contain "Undefined Role" as a first group header for grouped by "Role"');
-            assert.strictEqual(getRow(2).innerText, 'Open Shifts',
-                'should contain "Open Shifts" as a first group header for grouped by "Employee"');
 
-            await testUtils.dom.click(getRow(0));
-            assert.doesNotHaveClass(getRow(0), 'open',
-                "'Open Shift' Group Collapsed");
-            await testUtils.dom.click(getRow(0));
-            assert.hasClass(getRow(0), 'open',
-                "'Open Shift' Group Expanded");
-            assert.strictEqual(getRow(2).innerText, 'Open Shifts',
-                'should contain "Open Shifts" as a first group header for grouped by "Employee"');
-            await testUtils.dom.click(getRow(1));
-            assert.doesNotHaveClass(getRow(1), 'open',
-                "'Undefined Role' Sub Group Collapsed");
-            await testUtils.dom.click(getRow(1));
-            assert.hasClass(getRow(1), 'open',
-                "'Undefined Role' Sub Group Expanded");
-            assert.strictEqual(getRow(2).innerText, 'Open Shifts',
-                'should contain "Open Shifts" as a first group header for grouped by "Employee"');
-
-            gantt.destroy();
-        });
-
-        function _getCreateViewArgsForGanttViewTotalsTests() {
-            this.data["resource.resource"].records.push({ id: 1, name: "Resource 1" });
-            this.data.task.fields.allocated_percentage = { string: "Allocated Percentage", type: "float" };
-            this.data.task.records.push({
-                id: 1,
-                name: "test",
-                start_datetime: "2022-10-09 00:00:00",
-                end_datetime: "2022-10-16 22:00:00",
-                resource_id: 1,
-                allocated_percentage: 50,
-            });
-            return {
-                arch: `
-                    <gantt date_start="start_datetime" date_stop="end_datetime" total_row="1" default_scale="week"
-                           precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full', 'year': 'day:full'}">
-                        <field name="allocated_percentage"/>
-                        <field name="resource_id"/>
-                        <field name="name"/>                    
-                    </gantt>`,
-                data: this.data,
-                model: "task",
-                View: PlanningGanttView,
-                viewOptions: { initialDate: new Date(2022, 9, 13) },
-                mockRPC: ganttResourceWorkIntervalRPC,
-            };
+            await click(getRow(0));
+            assert.doesNotHaveClass(getRow(0), "o_group_open");
+            await click(getRow(0));
+            assert.hasClass(getRow(0), "o_group_open");
+            assert.strictEqual(getRow(2).innerText, "Open Shifts");
+            await click(getRow(1));
+            assert.doesNotHaveClass(getRow(1), "o_group_open");
+            await click(getRow(1));
+            assert.hasClass(getRow(1), "o_group_open");
+            assert.strictEqual(getRow(2).innerText, "Open Shifts");
         }
+    );
 
-        QUnit.test("gantt view totals height is taking unavailability into account instead of pills count", async function (assert) {
-            const gantt = await createView(_getCreateViewArgsForGanttViewTotalsTests.bind(this)());
+    function _getCreateViewArgsForGanttViewTotalsTests() {
+        patchDate(2022, 9, 13, 0, 0, 0);
+        serverData.models["resource.resource"].records.push({ id: 1, name: "Resource 1" });
+        serverData.models.task.fields.allocated_percentage = {
+            string: "Allocated Percentage",
+            type: "float",
+        };
+        serverData.models.task.records.push({
+            id: 1,
+            name: "test",
+            start_datetime: "2022-10-09 00:00:00",
+            end_datetime: "2022-10-16 22:00:00",
+            resource_id: 1,
+            allocated_percentage: 50,
+        });
+        return {
+            type: "gantt",
+            resModel: "task",
+            serverData,
+            arch: `
+                <gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime" total_row="1" default_scale="week"
+                        precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full', 'year': 'day:full'}">
+                    <field name="allocated_percentage"/>
+                    <field name="resource_id"/>
+                    <field name="name"/>
+                </gantt>
+            `,
+            mockRPC: ganttResourceWorkIntervalRPC,
+        };
+    }
 
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-09 00:00:00"]:not(:has(.o_gantt_pill))', "2022-10-09 is a day off");
+    QUnit.test(
+        "gantt view totals height is taking unavailability into account instead of pills count",
+        async function (assert) {
+            await makeView(_getCreateViewArgsForGanttViewTotalsTests());
+
+            // 2022-10-09 and 2022-10-15 are days off => no pill has to be found in first and last columns
+            assert.deepEqual(
+                [...target.querySelectorAll(".o_gantt_row_total .o_gantt_pill_wrapper")].map(
+                    (el) => el.style.gridColumn.split(" / ")[0]
+                ),
+                ["2", "3", "4", "5", "6"]
+            );
+
             // Max of allocated hours = 4:00 (50% * 8:00)
-            // => 2:00 = 50% of 4:00 => 0.5 * 90% = 45%
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-10 00:00:00"] .o_gantt_pill[style="height:45%;"]', "2022-10-10 pill height is (allocated hours over period) / (max of allocated hours) * 90%");
-            // => 2:30 = 62.5% of 4:00 => 0.625 * 90% = 56.25%
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-11 00:00:00"] .o_gantt_pill[style="height:56.25%;"]', "2022-10-11 pill height is (allocated hours over period) / (max of allocated hours) * 90%");
-            // => 3:00 = 75% of 4:00 => 0.75 * 90% = 67.5%
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-12 00:00:00"] .o_gantt_pill[style="height:67.5%;"]', "2022-10-12 pill height is (allocated hours over period) / (max of allocated hours) * 90%");
-            // => 3:30 = 87.5% of 4:00 => 0.85 * 90% = 78.75%
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-13 00:00:00"] .o_gantt_pill[style="height:78.75%;"]', "2022-10-13 pill height is (allocated hours over period) / (max of allocated hours) * 90%");
-            // => 4:00 = 100% of 4:00 => 1 * 90% = 90%
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-14 00:00:00"] .o_gantt_pill[style="height:90%;"]', "2022-10-14 pill height is (allocated hours over period) / (max of allocated hours) * 90%");
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-15 00:00:00"]:not(:has(.o_gantt_pill))', "2022-10-15 is a day off");
-            gantt.destroy();
-        });
+            assert.deepEqual(
+                [...target.querySelectorAll(".o_gantt_row_total .o_gantt_pill")].map(
+                    (el) => el.style.height
+                ),
+                [
+                    "45%", // => 2:00 = 50% of 4:00 => 0.5 * 90% = 45%
+                    "56.25%", // => 2:30 = 62.5% of 4:00 => 0.625 * 90% = 56.25%
+                    "67.5%", // => 3:00 = 75% of 4:00 => 0.75 * 90% = 67.5%
+                    "78.75%", // => 3:30 = 87.5% of 4:00 => 0.85 * 90% = 78.75%
+                    "90%", // => 4:00 = 100% of 4:00 => 1 * 90% = 90%
+                ]
+            );
+        }
+    );
 
-        QUnit.test("gantt view totals are taking unavailability into account for the total display", async function (assert) {
-            const gantt = await createView(_getCreateViewArgsForGanttViewTotalsTests.bind(this)());
+    QUnit.test(
+        "gantt view totals are taking unavailability into account for the total display",
+        async function (assert) {
+            await makeView(_getCreateViewArgsForGanttViewTotalsTests());
+            assert.deepEqual(
+                [...target.querySelectorAll(".o_gantt_row_total .o_gantt_pill")].map(
+                    (el) => el.innerText
+                ),
+                ["02:00", "02:30", "03:00", "03:30", "04:00"]
+            );
+        }
+    );
 
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-10 00:00:00"] .o_gantt_consolidated_pill_title:contains("02:00")', "2022-10-10 pill's display is taking unavailability into account");
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-11 00:00:00"] .o_gantt_consolidated_pill_title:contains("02:30")', "2022-10-11 pill's display is taking unavailability into account");
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-12 00:00:00"] .o_gantt_consolidated_pill_title:contains("03:00")', "2022-10-12 pill's display is taking unavailability into account");
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-13 00:00:00"] .o_gantt_consolidated_pill_title:contains("03:30")', "2022-10-13 pill's display is taking unavailability into account");
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-14 00:00:00"] .o_gantt_consolidated_pill_title:contains("04:00")', "2022-10-14 pill's display is taking unavailability into account");
-            gantt.destroy();
-        });
+    QUnit.test(
+        "gantt view totals are taking unavailability into account according to scale",
+        async function (assert) {
+            const createViewArgs = _getCreateViewArgsForGanttViewTotalsTests();
+            createViewArgs.arch = createViewArgs.arch.replace(
+                'default_scale="week"',
+                'default_scale="year"'
+            );
 
-        QUnit.test("gantt view totals are taking unavailability into account according to scale", async function (assert) {
-            const createViewArgs = _getCreateViewArgsForGanttViewTotalsTests.bind(this)();
-            createViewArgs.arch = createViewArgs.arch.replace('default_scale="week"', 'default_scale="year"');
-            const gantt = await createView(createViewArgs);
+            await makeView(createViewArgs);
 
-            assert.containsOnce(gantt, '.o_gantt_total .o_gantt_cell[data-date="2022-10-01 00:00:00"] .o_gantt_consolidated_pill_title:contains("15:00")', "2022-10-01 00:00:00 pill's display is taking unavailability into account");
-            gantt.destroy();
-        });
+            assert.containsOnce(target, ".o_gantt_cells .o_gantt_pill");
+            assert.containsOnce(target, ".o_gantt_row_total .o_gantt_pill");
+            assert.strictEqual(
+                target.querySelector(".o_gantt_row_total .o_gantt_pill").innerText,
+                "15:00"
+            );
+        }
+    );
 
-        QUnit.test("gantt view totals are not based on company's resource calendar", async function (assert) {
-            assert.expect(1);
-            const createViewArgs = _getCreateViewArgsForGanttViewTotalsTests.bind(this)();
-            createViewArgs.data.task.records[0] = {
-                id: 1,
-                name: "test",
-                start_datetime: "2022-10-10 10:00:00",
-                end_datetime: "2022-10-10 20:00:00",
-                resource_id: false,
-                allocated_percentage: 100,
+    QUnit.test(
+        "reload data after having unlink a record in planning_form",
+        async function (assert) {
+            serverData.views = {
+                "task,false,form": `
+                <form js_class="planning_form">
+                    <field name="name"/>
+                    <field name="start_datetime"/>
+                    <field name="end_datetime"/>
+                    <field name="resource_id"/>
+                    <footer class="d-flex flex-wrap">
+                        <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary" close="1"/>
+                    </footer>
+                </form>`,
             };
-            createViewArgs.mockRPC = async function (route, args) {
-                if (args.method === "gantt_company_hours_per_day") {
-                    // let's say the company hours_per_day is 8h/day
-                    return 8;
-                }
-                if (args.method === "gantt_resource_work_interval") {
-                    return [{
-                        false: [  // false key is when the resource_id is false
-                            ["2022-10-10 06:00:00", "2022-10-10 10:00:00"], //Monday    4h
-                            ["2022-10-11 06:00:00", "2022-10-11 10:00:00"], //Tuesday   5h
-                            ["2022-10-11 11:00:00", "2022-10-11 12:00:00"],
-                            ["2022-10-12 06:00:00", "2022-10-12 10:00:00"], //Wednesday 6h
-                            ["2022-10-12 11:00:00", "2022-10-12 13:00:00"],
-                            ["2022-10-13 06:00:00", "2022-10-13 10:00:00"], //Thursday  7h
-                            ["2022-10-13 11:00:00", "2022-10-13 14:00:00"],
-                            ["2022-10-14 06:00:00", "2022-10-14 10:00:00"], //Friday    8h
-                            ["2022-10-14 11:00:00", "2022-10-14 15:00:00"],
-                        ],
-                    }];
-                }
-                return this._super.apply(this, arguments);
-            }
-            const gantt = await createView(createViewArgs);
-            await testUtils.nextTick();
-            assert.containsOnce(gantt,
-                '.o_gantt_total .o_gantt_cell[data-date="2022-10-10 00:00:00"] .o_gantt_consolidated_pill[title="08:00"]',
-                "2022-10-10 pill's display 8h/day");
-            gantt.destroy();
+            await makeView(_getCreateViewArgsForGanttViewTotalsTests());
+
+            assert.containsOnce(target, ".o_gantt_cells .o_gantt_pill");
+
+            await editPill("test");
+            await click(target, ".modal footer button[name=unlink]"); // click on trash icon
+            await click(target, ".o_dialog:nth-child(2) .modal footer button:nth-child(1)"); // click on "Ok" in confirmation dialog
+
+            assert.containsNone(target, ".o_gantt_cells .o_gantt_pill");
+        }
+    );
+
+    QUnit.test("no button 'Create' in plan dialog", async function (assert) {
+        serverData.views = {
+            "task,false,list": `<list/>`,
+        };
+        await makeView({
+            type: "gantt",
+            resModel: "task",
+            serverData,
+            arch: `<gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime"/>`,
         });
 
+        assert.containsNone(target, ".modal");
+
+        await hoverGridCell(1, 1);
+        await click(target, SELECTORS.cellPlanButton);
+
+        assert.containsOnce(target, ".modal");
+        assert.containsNone(target, ".modal button.o_create_button");
+    });
+
+    QUnit.test("progress bar has the correct unit", async (assert) => {
+        const makeViewArgs = _getCreateViewArgsForGanttViewTotalsTests();
+        assert.expect(9);
+        await makeView({
+            ...makeViewArgs,
+            arch: `<gantt js_class="planning_gantt" date_start="start_datetime" date_stop="end_datetime" progress_bar="resource_id"/>`,
+            groupBy: ["resource_id"],
+            async mockRPC(_, { args, method, model }) {
+                if (method === "gantt_progress_bar") {
+                    assert.strictEqual(model, "task");
+                    assert.deepEqual(args[0], ["resource_id"]);
+                    assert.deepEqual(args[1], { resource_id: [1] });
+                    return {
+                        resource_id: {
+                            1: { value: 100, max_value: 100 },
+                        },
+                    };
+                }
+                return makeViewArgs.mockRPC(...arguments);
+            },
+        });
+        assert.containsOnce(target, SELECTORS.progressBar);
+        assert.containsOnce(target, SELECTORS.progressBarBackground);
+        assert.strictEqual(
+            target.querySelector(SELECTORS.progressBarBackground).style.width,
+            "100%"
+        );
+
+        assert.containsNone(target, SELECTORS.progressBarForeground);
+        await hoverGridCell(2, 1);
+        assert.containsOnce(target, SELECTORS.progressBarForeground);
+        assert.deepEqual(
+            target.querySelector(SELECTORS.progressBarForeground).textContent,
+            "100 h / 100 h"
+        );
     });
 });

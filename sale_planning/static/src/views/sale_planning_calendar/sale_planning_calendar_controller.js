@@ -2,13 +2,14 @@
 
 import { PlanningCalendarController } from "@planning/views/planning_calendar/planning_calendar_controller";
 import { patch } from "@web/core/utils/patch";
-import { useSalePlanningViewHook } from "@sale_planning/views/hooks";
+import { useSalePlanningActions } from "@sale_planning/views/hooks";
 import { serializeDateTime } from "@web/core/l10n/dates";
 
 patch(PlanningCalendarController.prototype, "sale_planning_calendar_controller", {
     setup() {
         this._super(...arguments);
-        const functions = useSalePlanningViewHook({
+        const { onClickPlanOrders } = useSalePlanningActions({
+            getResModel: () => this.model.resModel,
             getDomain: () => this.model.computeDomain(this.model.data),
             getViewContext: () => (Object.assign({}, this.props.context, {
                 scale: this.model.scale,
@@ -18,7 +19,8 @@ patch(PlanningCalendarController.prototype, "sale_planning_calendar_controller",
             })),
             getScale: () => this.model.scale,
             getFocusDate: () => this.model.meta.date,
+            reload: () => this.model.load(),
         });
-        Object.assign(this, functions);
+        this.onClickPlanOrders = onClickPlanOrders;
     },
 });

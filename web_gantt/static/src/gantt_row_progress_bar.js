@@ -26,7 +26,7 @@ export class GanttRowProgressBar extends Component {
     };
     static template = "web_gantt.GanttRowProgressBar";
 
-    get showProgressValue() {
+    get show() {
         const { reactive, rowId } = this.props;
         return reactive.el?.dataset.rowId === rowId || isMobileOS() || hasTouch();
     }

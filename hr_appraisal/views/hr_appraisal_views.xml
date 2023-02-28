@@ -326,7 +326,7 @@
                 default_group_by='department_id'>
                 <templates>
                     <div t-name="gantt-popover">
-                        <div><strong>Date — </strong><t t-esc="userTimezoneStartDate.format('l LT')"/></div>
+                        <div><strong>Date — </strong><t t-esc="date_close.toFormat('f')"/></div>
                     </div>
                 </templates>
             </gantt>

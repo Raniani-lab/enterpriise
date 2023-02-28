@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, onWillUnmount, useRef } from "@odoo/owl";
+import { Component, onWillUnmount, useEffect, useRef } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
@@ -46,6 +46,31 @@ export class GanttController extends Component {
         });
 
         onWillUnmount(() => this.closeDialog?.());
+
+        const rootRef = useRef("root");
+        useEffect(
+            (showNoContentHelp) => {
+                if (showNoContentHelp) {
+                    const realRows = [
+                        ...rootRef.el.querySelectorAll(
+                            ".o_gantt_row_header:not(.o_sample_data_disabled)"
+                        ),
+                    ];
+                    // interactive rows created in extensions (fromServer undefined)
+                    const headerContainerWidth =
+                        rootRef.el.querySelector(".o_gantt_header").clientHeight;
+
+                    const offset = realRows.reduce(
+                        (current, el) => current + el.clientHeight,
+                        headerContainerWidth
+                    );
+
+                    const noContentHelperEl = rootRef.el.querySelector(".o_view_nocontent");
+                    noContentHelperEl.style.top = `${offset}px`;
+                }
+            },
+            () => [this.showNoContentHelp]
+        );
     }
 
     get className() {
@@ -59,6 +84,10 @@ export class GanttController extends Component {
 
     get displayExpandCollapseButtons() {
         return this.model.data.rows[0]?.isGroup; // all rows on same level have same type
+    }
+
+    get showNoContentHelp() {
+        return this.model.useSampleModel;
     }
 
     /**

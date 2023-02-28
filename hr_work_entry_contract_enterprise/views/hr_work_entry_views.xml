@@ -31,10 +31,12 @@
                    sample="1">
                 <templates>
                     <div t-name="gantt-popover">
-                        <div><t t-esc="userTimezoneStartDate.format('l LT ')"/><i class="fa fa-long-arrow-right" title="Arrow"/><t t-esc="userTimezoneStopDate.format(' l LT')"/></div>
+                        <t t-out="date_start.toFormat('f ')"/>
+                        <i class="fa fa-long-arrow-right" title="Arrow"/>
+                        <t t-out="date_stop.toFormat(' f')"/>
                     </div>
                 </templates>
-                <field name="color" invisible="1"/>
+                <field name="color"/>
                 <field name="state"/>
                 <field name="employee_id"/>
                 <field name="name"/>

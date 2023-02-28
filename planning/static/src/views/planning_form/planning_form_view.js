@@ -1,14 +1,13 @@
 /** @odoo-module **/
 
+import { markup, onMounted } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { formView } from "@web/views/form/form_view";
-import { FormController } from "@web/views/form/form_controller";
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { escape } from "@web/core/utils/strings";
-
-const { markup, onMounted } = owl;
+import { FormController } from "@web/views/form/form_controller";
+import { formView } from "@web/views/form/form_view";
+import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 
 export class PlanningFormController extends FormController {
     setup() {

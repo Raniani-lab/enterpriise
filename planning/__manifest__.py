@@ -10,7 +10,7 @@
     'category': 'Human Resources/Planning',
     'sequence': 130,
     'version': '1.0',
-    'depends': ['hr', 'hr_hourly_cost', 'web_gantt', 'digest', 'hr_gantt'],
+    'depends': ['hr', 'hr_hourly_cost', 'web_gantt', 'digest'],
     'data': [
         'security/planning_security.xml',
         'security/ir.model.access.csv',
@@ -36,20 +36,9 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'planning/static/src/js/planning_mixins.js',
-            'planning/static/src/js/planning_gantt_controller.js',
-            'planning/static/src/js/planning_gantt_row.js',
-            'planning/static/src/js/planning_gantt_utils.js',
-            'planning/static/src/js/planning_gantt_renderer.js',
-            'planning/static/src/js/planning_gantt_model.js',
-            'planning/static/src/js/planning_gantt_view.js',
-            'planning/static/src/js/widgets/*',
-            'planning/static/src/views/**',
+            'planning/static/src/views/**/*',
             'planning/static/src/scss/planning_gantt.scss',
             'planning/static/src/js/tours/planning.js',
-            'planning/static/src/xml/**/*',
-            'planning/static/src/views/**/*.js',
-            'planning/static/src/views/**/*.xml',
         ],
         'web.assets_frontend': [
             'planning/static/src/scss/planning_calendar_report.scss',

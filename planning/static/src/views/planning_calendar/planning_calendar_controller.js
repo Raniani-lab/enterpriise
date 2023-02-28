@@ -1,11 +1,10 @@
 /** @odoo-module **/
 
-import { CalendarController } from "@web/views/calendar/calendar_controller";
-import { useService } from "@web/core/utils/hooks";
-import { usePlanningViewHook } from "@planning/views/hooks";
+import { onWillStart } from "@odoo/owl";
 import { serializeDateTime } from "@web/core/l10n/dates";
-
-const { onWillStart } = owl;
+import { useService } from "@web/core/utils/hooks";
+import { CalendarController } from "@web/views/calendar/calendar_controller";
+import { usePlanningActions } from "../planning_hooks";
 
 export class PlanningCalendarController extends CalendarController {
     setup() {
@@ -15,10 +14,11 @@ export class PlanningCalendarController extends CalendarController {
         onWillStart(this.onWillStart);
 
         const getDomain = () => this.model.computeDomain(this.model.data);
-        const functions = usePlanningViewHook({
+        const { copyPrevious, publish } = usePlanningActions({
             getDomain,
             getStartDate: () => this.model.rangeStart,
             getRecords: () => Object.values(this.model.records),
+            getResModel: () => this.model.resModel,
             getAdditionalContext: () => ({
                 default_start_datetime: serializeDateTime(this.model.rangeStart),
                 default_end_datetime: serializeDateTime(this.model.rangeEnd),
@@ -26,8 +26,10 @@ export class PlanningCalendarController extends CalendarController {
                 scale: this.model.scale,
                 active_domain: getDomain(),
             }),
+            reload: () => this.model.load(),
         });
-        Object.assign(this, functions);
+        this.onClickCopyPrevious = copyPrevious;
+        this.onClickPublish = publish;
     }
 
     async onWillStart() {

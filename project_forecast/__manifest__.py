@@ -27,7 +27,7 @@
     'uninstall_hook': '_uninstall_hook',
     'assets': {
         'web.assets_backend': [
-            'project_forecast/static/src/js/forecast_gantt.js',
+            'project_forecast/static/src/views/**/*',
         ],
         'web.assets_frontend': [
             'project_forecast/static/src/js/forecast_calendar_front.js',

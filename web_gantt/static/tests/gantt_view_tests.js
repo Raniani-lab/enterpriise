@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { onPatched } from "@odoo/owl";
+import { onPatched, useEffect, useRef } from "@odoo/owl";
 import {
     click,
     editInput,
@@ -25,6 +25,7 @@ import { Domain } from "@web/core/domain";
 import { deserializeDateTime } from "@web/core/l10n/dates";
 import { registry } from "@web/core/registry";
 import { omit } from "@web/core/utils/objects";
+import { GanttController } from "@web_gantt/gantt_controller";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
 import {
     CLASSES,
@@ -275,7 +276,7 @@ QUnit.test("empty ungrouped gantt rendering", async (assert) => {
     assert.strictEqual(range, "December 2018");
     assert.strictEqual(columnHeaders.length, 31);
     assert.deepEqual(rows, [{}]);
-    assert.containsOnce(target, SELECTORS.noContentHelper);
+    assert.containsNone(target, SELECTORS.noContentHelper);
 });
 
 QUnit.test("ungrouped gantt rendering", async (assert) => {
@@ -397,7 +398,7 @@ QUnit.test("empty single-level grouped gantt rendering", async (assert) => {
     assert.strictEqual(range, "December 2018");
     assert.strictEqual(columnHeaders.length, 31);
     assert.deepEqual(rows, [{ title: "" }]);
-    assert.containsOnce(target, SELECTORS.noContentHelper);
+    assert.containsNone(target, SELECTORS.noContentHelper);
 });
 
 QUnit.test("single-level grouped gantt rendering", async (assert) => {
@@ -1146,7 +1147,7 @@ QUnit.test('non empty gantt with sample="1"', async (assert) => {
 
     assert.doesNotHaveClass(target.querySelector(SELECTORS.viewContent), "o_view_sample_data");
     assert.containsNone(target, SELECTORS.pill);
-    assert.containsOnce(target, SELECTORS.noContentHelper);
+    assert.containsNone(target, SELECTORS.noContentHelper);
     assert.containsN(target, SELECTORS.cell, 12);
 });
 
@@ -1173,7 +1174,7 @@ QUnit.test('non empty grouped gantt with sample="1"', async (assert) => {
 
     assert.doesNotHaveClass(target.querySelector(SELECTORS.viewContent), "o_view_sample_data");
     assert.containsNone(target, SELECTORS.pill);
-    assert.containsOnce(target, SELECTORS.noContentHelper);
+    assert.containsNone(target, SELECTORS.noContentHelper);
     assert.containsN(target, SELECTORS.cell, 12);
 });
 
@@ -1271,11 +1272,8 @@ QUnit.test(
                     doAction(action, options) {
                         assert.step(`[action] ${action}`);
                         assert.deepEqual(options.additionalContext, {
-                            default_lang: "en",
                             default_start: "2018-11-30 23:00:00",
                             default_stop: "2018-12-31 22:59:59",
-                            default_tz: "taht",
-                            default_uid: 7,
                             lang: "en",
                             start: "2018-11-30 23:00:00",
                             stop: "2018-12-31 22:59:59",
@@ -4656,7 +4654,7 @@ QUnit.test("No progress bar when no option set.", async (assert) => {
 });
 
 QUnit.test("Progress bar rpc is triggered when option set.", async (assert) => {
-    assert.expect(7);
+    assert.expect(13);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -4690,14 +4688,79 @@ QUnit.test("Progress bar rpc is triggered when option set.", async (assert) => {
     const [progressBar1, progressBar2] = target.querySelectorAll(SELECTORS.progressBar);
     assert.hasClass(progressBar1, "o_gantt_group_success");
     assert.hasClass(progressBar2, "o_gantt_group_success");
+    const [rowHeader1, rowHeader2] = [progressBar1.parentElement, progressBar2.parentElement];
+    assert.ok(rowHeader1.matches(SELECTORS.rowHeader));
+    assert.ok(rowHeader2.matches(SELECTORS.rowHeader));
+    assert.doesNotHaveClass(rowHeader1, CLASSES.group);
+    assert.doesNotHaveClass(rowHeader2, CLASSES.group);
     assert.deepEqual(
         [...target.querySelectorAll(SELECTORS.progressBarBackground)].map((el) => el.style.width),
         ["50%", "12.5%"]
     );
+    await hoverGridCell(1, 1);
+    assert.deepEqual(target.querySelector(SELECTORS.progressBarForeground).textContent, "50 / 100");
+    await hoverGridCell(2, 1);
+    assert.deepEqual(target.querySelector(SELECTORS.progressBarForeground).textContent, "25 / 200");
+});
+
+QUnit.test("Progress bar when multilevel grouped.", async (assert) => {
+    assert.expect(13);
+    // Here the view is grouped twice on the same field.
+    // This is not a common use case, but it is possible to achieve it
+    // bu saving a default favorite with a groupby then apply it twice
+    // on the same field through the groupby menu.
+    // In this case, the progress bar should be displayed only once,
+    // on the first level of grouping.
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt
+                date_start="start"
+                date_stop="stop"
+                default_scale="week" scales="week"
+                default_group_by="user_id,user_id"
+                progress_bar="user_id"
+            >
+                <field name="user_id"/>
+            </gantt>
+        `,
+        async mockRPC(_, { args, method, model }) {
+            if (method === "gantt_progress_bar") {
+                assert.strictEqual(model, "tasks");
+                assert.deepEqual(args[0], ["user_id"]);
+                assert.deepEqual(args[1], { user_id: [1, 2] });
+                return {
+                    user_id: {
+                        1: { value: 50, max_value: 100 },
+                        2: { value: 25, max_value: 200 },
+                    },
+                };
+            }
+        },
+    });
+    assert.containsN(target, SELECTORS.progressBar, 2);
+    const [progressBar1, progressBar2] = target.querySelectorAll(SELECTORS.progressBar);
+    assert.hasClass(progressBar1, "o_gantt_group_success");
+    assert.hasClass(progressBar2, "o_gantt_group_success");
+    const [rowHeader1, rowHeader2] = [progressBar1.parentElement, progressBar2.parentElement];
+    assert.ok(rowHeader1.matches(SELECTORS.rowHeader));
+    assert.ok(rowHeader2.matches(SELECTORS.rowHeader));
+    assert.hasClass(rowHeader1, CLASSES.group);
+    assert.hasClass(rowHeader2, CLASSES.group);
+    assert.deepEqual(
+        [...target.querySelectorAll(SELECTORS.progressBarBackground)].map((el) => el.style.width),
+        ["50%", "12.5%"]
+    );
+    await hoverGridCell(1, 1);
+    assert.deepEqual(target.querySelector(SELECTORS.progressBarForeground).textContent, "50 / 100");
+    await hoverGridCell(3, 1);
+    assert.deepEqual(target.querySelector(SELECTORS.progressBarForeground).textContent, "25 / 200");
 });
 
 QUnit.test("Progress bar warning when max_value is zero", async (assert) => {
-    assert.expect(4);
+    assert.expect(6);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -4721,16 +4784,23 @@ QUnit.test("Progress bar warning when max_value is zero", async (assert) => {
                 return {
                     user_id: {
                         1: { value: 50, max_value: 0 },
+                        warning: "plop",
                     },
                 };
             }
         },
     });
+    assert.containsNone(target, SELECTORS.progressBarWarning);
+    await hoverGridCell(1, 1);
     assert.containsOnce(target, SELECTORS.progressBarWarning);
+    assert.strictEqual(
+        target.querySelector(SELECTORS.progressBarWarning).parentElement.title,
+        "plop 50."
+    );
 });
 
 QUnit.test("Progress bar danger when ratio > 100", async (assert) => {
-    assert.expect(6);
+    assert.expect(8);
     await makeView({
         type: "gantt",
         resModel: "tasks",
@@ -4757,6 +4827,15 @@ QUnit.test("Progress bar danger when ratio > 100", async (assert) => {
     assert.containsOnce(target, SELECTORS.progressBar);
     assert.strictEqual(target.querySelector(SELECTORS.progressBarBackground).style.width, "100%");
     assert.hasClass(target.querySelector(SELECTORS.progressBar), "o_gantt_group_danger");
+    await hoverGridCell(1, 1);
+    assert.hasClass(
+        target.querySelector(SELECTORS.progressBarForeground).parentElement,
+        "text-bg-danger"
+    );
+    assert.deepEqual(
+        target.querySelector(SELECTORS.progressBarForeground).textContent,
+        "150 / 100"
+    );
 });
 
 QUnit.test("Falsy search field will return an empty rows", async (assert) => {
@@ -4883,6 +4962,174 @@ QUnit.test(
         ]);
     }
 );
+
+QUnit.test("A task should always have a title (pill_label='1', scale 'week')", async (assert) => {
+    serverData.models.tasks.fields.allocated_hours = { type: "float", string: "Allocated Hours" };
+    serverData.models.tasks.records = [
+        {
+            id: 1,
+            name: "Task 1",
+            start: "2018-12-17 08:30:00",
+            stop: "2018-12-17 19:30:00", // span only one day
+            allocated_hours: 0,
+        },
+        {
+            id: 2,
+            name: "Task 2",
+            start: "2018-12-18 08:30:00",
+            stop: "2018-12-18 19:30:00", // span only one day
+            allocated_hours: 6,
+        },
+        {
+            id: 3,
+            name: "Task 3",
+            start: "2018-12-18 08:30:00",
+            stop: "2018-12-19 19:30:00", // span two days
+            allocated_hours: 6,
+        },
+        {
+            id: 4,
+            name: "Task 4",
+            start: "2018-12-08 08:30:00",
+            stop: "2019-02-18 19:30:00", // span two weeks
+            allocated_hours: 6,
+        },
+        {
+            id: 5,
+            name: "Task 5",
+            start: "2018-12-18 08:30:00",
+            stop: "2019-02-18 19:30:00", // span two months
+            allocated_hours: 6,
+        },
+    ];
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt date_start="start" date_stop="stop" pill_label="True" default_scale="week">
+                <field name="allocated_hours"/>
+            </gantt>
+        `,
+    });
+    const titleMapping = [
+        { name: "Task 4", title: "12/8-2/18-Task4" },
+        { name: "Task 1", title: "Task1" },
+        { name: "Task 2", title: "9:30AM-8:30PM(6h)-Task2" },
+        { name: "Task 3", title: "Task3" },
+        { name: "Task 5", title: "12/18-2/18-Task5" },
+    ];
+
+    assert.deepEqual(
+        getTexts(".o_gantt_pill").map((t) => t.replace(/\s*/g, "")),
+        titleMapping.map((e) => e.title)
+    );
+
+    const pills = target.querySelectorAll(".o_gantt_pill");
+    for (let i = 0; i < pills.length; i++) {
+        await click(pills[i]);
+        assert.strictEqual(getText(".o_popover .popover-header"), titleMapping[i].name);
+    }
+});
+
+QUnit.test("A task should always have a title (pill_label='1', scale 'month')", async (assert) => {
+    serverData.models.tasks.fields.allocated_hours = { type: "float", string: "Allocated Hours" };
+    serverData.models.tasks.records = [
+        {
+            id: 1,
+            name: "Task 1",
+            start: "2018-12-15 08:30:00",
+            stop: "2018-12-15 19:30:00", // span only one day
+            allocated_hours: 0,
+        },
+        {
+            id: 2,
+            name: "Task 2",
+            start: "2018-12-16 08:30:00",
+            stop: "2018-12-16 19:30:00", // span only one day
+            allocated_hours: 6,
+        },
+        {
+            id: 3,
+            name: "Task 3",
+            start: "2018-12-16 08:30:00",
+            stop: "2018-12-17 18:30:00", // span two days
+            allocated_hours: 6,
+        },
+        {
+            id: 4,
+            name: "Task 4",
+            start: "2018-12-16 08:30:00",
+            stop: "2019-02-18 19:30:00", // span two months
+            allocated_hours: 6,
+        },
+    ];
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt date_start="start" date_stop="stop" pill_label="True">
+                <field name="allocated_hours"/>
+            </gantt>
+        `,
+    });
+
+    const titleMapping = [
+        { name: "Task 1", title: "Task1" },
+        { name: "Task 2", title: "9:30AM-8:30PM(6h)" },
+        { name: "Task 3", title: "Task3" },
+        { name: "Task 4", title: "12/16-2/18-Task4" },
+    ];
+
+    assert.deepEqual(
+        getTexts(".o_gantt_pill").map((t) => t.replace(/\s*/g, "")),
+        titleMapping.map((e) => e.title)
+    );
+
+    const pills = target.querySelectorAll(".o_gantt_pill");
+    for (let i = 0; i < pills.length; i++) {
+        await click(pills[i]);
+        assert.strictEqual(getText(".o_popover .popover-header"), titleMapping[i].name);
+    }
+});
+
+QUnit.test("position of no content help in sample mode", async (assert) => {
+    patchWithCleanup(GanttController.prototype, {
+        setup() {
+            this._super.apply(this, arguments);
+            const rootRef = useRef("root");
+            useEffect(() => {
+                rootRef.el.querySelector(".o_content.o_view_sample_data").style.position =
+                    "relative";
+            });
+        },
+    });
+
+    patchWithCleanup(GanttRenderer.prototype, {
+        isDisabled(row) {
+            if (row.resId === 1) {
+                return false;
+            }
+            return true;
+        },
+    });
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `<gantt date_start="start" date_stop="stop" sample="1"/>`,
+        groupBy: ["user_id"],
+        domain: Domain.FALSE.toList(),
+    });
+    assert.containsOnce(target, ".o_view_nocontent");
+    assert.doesNotHaveClass(target.querySelector(".o_gantt_row_header"), "o_sample_data_disabled");
+    const noContentHelp = target.querySelector(".o_view_nocontent");
+    const noContentHelpTop = noContentHelp.getBoundingClientRect().top;
+    const firstRowHeader = target.querySelector(".o_gantt_row_header");
+    const firstRowHeaderBottom = firstRowHeader.getBoundingClientRect().bottom;
+    assert.ok(noContentHelpTop - firstRowHeaderBottom < 3);
+});
 
 QUnit.test(
     "gantt view grouped by a boolean field: row titles should be 'True' or 'False'",
@@ -5547,8 +5794,6 @@ QUnit.test("date grid and dst summerToWinter (2 cell part)", async (assert) => {
     ]);
 
     await click(target, SELECTORS.nextButton);
-
-    // assert.deepEqual(getIntervals(), []);
 
     assert.deepEqual(getGridInfo(), [
         "2019-10-27T00:00:00.000+02:00",

@@ -35,6 +35,7 @@ registry.category("web_tour.tours").add('planning_tour', {
         trigger: ".o_gantt_pill:not(.o_gantt_consolidated_pill)",
         content: _t("<b>Drag & drop</b> your shift to reschedule it. <i>Tip: hit CTRL (or Cmd) to duplicate it instead.</i> <b>Adjust the size</b> of the shift to modify its period."),
         position: "bottom",
+        run: "drag_and_drop_native .o_gantt_cell:nth-child(6)",
     }, {
         trigger: ".o_gantt_button_send_all",
         content: _t("If you are happy with your planning, you can now <b>send</b> it to your employees."),

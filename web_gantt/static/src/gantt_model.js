@@ -81,7 +81,7 @@ const { DateTime } = luxon;
  * @param {ScaleId} scale
  * @param {DateTime} date DateTime object, in local timezone
  */
-function computeRange(scale, date) {
+export function computeRange(scale, date) {
     let start = date;
     let end = date;
 
@@ -259,16 +259,15 @@ export class GanttModel extends Model {
      */
     getDialogContext(params) {
         /** @type {Record<string, any>} */
-        const context = {
-            ...this.searchParams.context,
-            ...this.getSchedule(params),
-        };
+        const context = { ...this.getSchedule(params) };
 
         if (params.withDefault) {
             for (const k in context) {
                 context[sprintf("default_%s", k)] = context[k];
             }
         }
+
+        Object.assign(context, this.searchParams.context);
 
         return context;
     }
@@ -520,14 +519,12 @@ export class GanttModel extends Model {
             if (row.groupedByField === fieldName) {
                 row.progressBar = progressBarInfo[row.resId];
                 if (row.progressBar) {
-                    row.progressBar.value_formatted =
-                        formatFloat(row.progressBar.value, {
-                            digits: [false, 0],
-                        }) + this.env._t("h");
-                    row.progressBar.max_value_formatted =
-                        formatFloat(row.progressBar.max_value, {
-                            digits: [false, 0],
-                        }) + this.env._t("h");
+                    row.progressBar.value_formatted = formatFloat(row.progressBar.value, {
+                        digits: [false, 0],
+                    });
+                    row.progressBar.max_value_formatted = formatFloat(row.progressBar.max_value, {
+                        digits: [false, 0],
+                    });
                     row.progressBar.ratio = row.progressBar.max_value
                         ? (row.progressBar.value / row.progressBar.max_value) * 100
                         : 0;

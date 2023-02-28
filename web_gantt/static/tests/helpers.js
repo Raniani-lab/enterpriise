@@ -89,6 +89,7 @@ export const SELECTORS = {
     resizeHandle: ".o_resize_handle",
     resizeStartHandle: ".o_handle_start",
     rowHeader: ".o_gantt_row_header",
+    rowTitle: ".o_gantt_row_title",
     rowTotal: ".o_gantt_row_total",
     thumbnail: ".o_gantt_row_thumbnail",
     todayButton: ".o_gantt_button_today",

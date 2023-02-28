@@ -94,7 +94,7 @@
 
     <t t-name="web_gantt.GanttRenderer.RowHeader" owl="1">
         <div
-            class="o_gantt_row_header o_gantt_row_sidebar text-truncate position-relative align-items-center"
+            class="o_gantt_row_header o_gantt_row_sidebar position-relative align-items-center"
             t-att-class="{
                 o_sample_data_disabled: isDisabled(row),
                 o_gantt_row_sidebar_empty: !row.name,
@@ -107,23 +107,26 @@
             t-att-data-row-id="row.id"
             t-on-click.synthetic="() => row.isGroup and this.model.toggleRow(row.id)"
         >
-            <t t-if="!row.isGroup and row.progressBar">
-                <GanttRowProgressBar t-props="getProgressBarProps(row)" />
-            </t>
             <div
-                class="o_gantt_row_title position-absolute text-truncate w-100"
+                class="o_gantt_row_title d-flex align-items-center h-100 w-100 pe-1"
+                t-att-class="{ 'fw-bold': row.isGroup }"
                 t-att-style="getRowTitleStyle(row)"
                 t-att-title="row.name or ''"
             >
-                <i t-if="row.isGroup" t-attf-class="fa small fa-{{ model.isClosed(row.id) ? 'plus' : 'minus' }} me-1" />
+                <i t-if="row.isGroup" t-attf-class="fa small fa-{{ model.isClosed(row.id) ? 'plus' : 'minus' }} pt-1 me-2" />
                 <span t-if="row.thumbnailUrl and row.resId"
                     class="o_gantt_row_thumbnail_wrapper"
                     t-att-class="{ 'me-1' : row.isGroup }"
                 >
                     <img t-att-src="row.thumbnailUrl" class="o_gantt_row_thumbnail rounded-circle"/>
                 </span>
-                <span t-att-class="{ 'fw-bold': row.isGroup }" t-esc="row.name" />
+                <span class="text-truncate w-0 flex-grow-1">
+                    <t t-esc="row.name" />
+                </span>
             </div>
+            <t t-if="row.progressBar">
+                <GanttRowProgressBar t-props="getProgressBarProps(row)" />
+            </t>
         </div>
     </t>
 

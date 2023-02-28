@@ -574,6 +574,41 @@ QUnit.module("Views > GanttView", (hooks) => {
         );
     });
 
+    QUnit.test(
+        "Buttons are displayed when hovering a connector after a pill has been hovered.",
+        async (assert) => {
+            await makeView(ganttViewParams);
+
+            assert.containsNone(
+                getConnector(1),
+                SELECTORS.connectorStrokeButton,
+                "Connectors that are not hovered don't display buttons."
+            );
+
+            const task1Pill = getPill("Task 1");
+
+            await triggerEvent(task1Pill, null, "mousemove");
+
+            const firstConnector = getConnector(1); // (start at task1Pill)
+            assert.containsNone(
+                firstConnector,
+                SELECTORS.connectorStrokeButton,
+                "Connectors that are not hovered don't display buttons."
+            );
+            assert.hasClass(firstConnector, CLASSES.highlightedConnector);
+
+            await triggerEvent(firstConnector, null, "mousemove");
+
+            assert.hasClass(firstConnector, CLASSES.highlightedConnector);
+            assert.containsN(
+                getConnector(1),
+                SELECTORS.connectorStrokeButton,
+                3,
+                "Connectors that are hovered display buttons."
+            );
+        }
+    );
+
     QUnit.test("Connector buttons: remove a dependency", async (assert) => {
         await makeView({
             ...ganttViewParams,

@@ -796,7 +796,7 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
         yearly_net_taxable_revenue = yearly_gross_revenue - payslip.rule_parameter('expense_deduction')
 
     # BAREME III: Non resident
-    if employee.resident_bool:
+    if employee.is_non_resident:
         basic_bareme = compute_basic_bareme(yearly_net_taxable_revenue)
         withholding_tax_amount = convert_to_month(basic_bareme)
     else:
@@ -865,7 +865,7 @@ def compute_special_social_cotisations(payslip, categories, worked_days, inputs)
 
     employee = payslip.contract_id.employee_id
     wage = categories.BASIC
-    if not wage or employee.resident_bool:
+    if not wage or employee.is_non_resident:
         return 0.0
 
     RuleParameters = payslip.dict.env['hr.rule.parameter']

@@ -6,9 +6,6 @@
         <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
         <field name="priority">30</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='country_of_birth']" position="after">
-                <field name="resident_bool" eval="False" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
-            </xpath>
             <xpath expr="//field[@name='marital']" position="after">
                 <field name="spouse_fiscal_status" attrs="{'invisible': ['|', ('marital', 'not in', ['married', 'cohabitant']), ('company_country_code', '!=', 'BE')], 'required': [('marital', 'in', ['married', 'cohabitant'])]}" help="if spouse has professionnel income or not"/>
                 <p colspan="2" class="p-0 m-0 " attrs="{'invisible': ['|', ('marital', 'not in', ['married', 'cohabitant']), ('company_country_code', '!=', 'BE')]}">

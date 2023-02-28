@@ -5,7 +5,6 @@ from odoo import models, fields
 
 
 L10N_LT_PAYROLL_WRITABLE_FIELDS = [
-    'l10n_lt_is_non_resident',
     'l10n_lt_working_capacity',
 ]
 
@@ -13,7 +12,6 @@ L10N_LT_PAYROLL_WRITABLE_FIELDS = [
 class User(models.Model):
     _inherit = ['res.users']
 
-    l10n_lt_is_non_resident = fields.Boolean(related='employee_ids.l10n_lt_is_non_resident', readonly=False)
     l10n_lt_working_capacity = fields.Selection(related='employee_ids.l10n_lt_working_capacity', readonly=False)
 
     @property

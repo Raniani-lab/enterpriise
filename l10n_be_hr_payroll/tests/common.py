@@ -137,7 +137,7 @@ class TestPayrollCommon(TransactionCase):
             'spouse_fiscal_status': "without_income",
             'disabled': False,
             'disabled_spouse_bool': False,
-            'resident_bool': False,
+            'is_non_resident': False,
             'disabled_children_number': 0,
             'other_dependent_people': False,
             'other_senior_dependent': 0,

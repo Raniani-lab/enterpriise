@@ -7,7 +7,6 @@ from odoo import fields, models
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
-    l10n_lt_is_non_resident = fields.Boolean(string='Non-resident', groups="hr.group_hr_user")
     l10n_lt_working_capacity = fields.Selection([
         ('0_25', 'Between 0-25%'),
         ('30_55', 'Between 30-55%'),

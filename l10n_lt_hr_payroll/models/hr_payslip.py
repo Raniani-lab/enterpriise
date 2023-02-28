@@ -27,7 +27,7 @@ class HrEmployee(models.Model):
 
 def get_l10n_lt_taxable_amount(payslip, categories, worked_days, inputs, sick=False):
     taxable_amount = categories.GROSS
-    if not payslip.dict.employee_id.l10n_lt_is_non_resident:
+    if not payslip.dict.employee_id.is_non_resident:
         low = payslip.rule_parameter('l10n_lt_tax_exempt_low')
         high = payslip.rule_parameter('l10n_lt_tax_exempt_high')
         basic = payslip.rule_parameter('l10n_lt_tax_exempt_basic')

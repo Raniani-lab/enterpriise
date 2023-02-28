@@ -21,6 +21,9 @@
                     <field name="registration_number"/>
                 </group>
             </group>
+            <xpath expr="//field[@name='country_of_birth']" position="after">
+                <field name="is_non_resident" eval="False" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
+            </xpath>
         </field>
     </record>
 

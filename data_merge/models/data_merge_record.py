@@ -130,8 +130,8 @@ class DataMergeRecord(models.Model):
           FROM data_merge_record dmr
      LEFT JOIN "{model_table}"
             ON dmr.res_model_id = %s
-            {extra_joins}
            AND dmr.res_id = "{model_table}".id
+            {extra_joins}
          WHERE {where_clause}
         """
         for model_name, model_id in models_with_company:

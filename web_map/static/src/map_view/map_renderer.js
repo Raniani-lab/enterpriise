@@ -148,7 +148,7 @@ export class MapRenderer extends Component {
                     (record) => {
                         return record.id === markerInfo.record.id;
                     }
-                );
+                ) + 1;
             }
 
             // Icon creation

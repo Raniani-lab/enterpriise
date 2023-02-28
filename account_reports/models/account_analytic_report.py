@@ -13,9 +13,10 @@ class AccountReport(models.AbstractModel):
     )
 
     def _get_options_initializers_forced_sequence_map(self):
-        """ Force the sequence for the init_options so columns groups are already generated """
+        """ Force the sequence for the init_options so columns headers are already generated but not the columns
+            So, between _init_options_column_headers and _init_options_columns"""
         sequence_map = super(AccountReport, self)._get_options_initializers_forced_sequence_map()
-        sequence_map[self._init_options_analytic_groupby] = 1050
+        sequence_map[self._init_options_analytic_groupby] = 995
         return sequence_map
 
     def _init_options_analytic_groupby(self, options, previous_options=None):
@@ -78,13 +79,11 @@ class AccountReport(models.AbstractModel):
             })
         if analytic_headers:
             analytic_headers.append({'name': ''})
-            default_group_vals = {'horizontal_groupby_element': {}, 'forced_options': {}}
+            # We add the analytic layer to the column_headers before creating the columns
             options['column_headers'] = [
                 *options['column_headers'],
                 analytic_headers,
             ]
-            initial_column_group_vals = self._generate_columns_group_vals_recursively(options['column_headers'], default_group_vals)
-            options['columns'], options['column_groups'] = self._build_columns_from_column_group_vals(options, initial_column_group_vals)
 
     @api.model
     def _prepare_lines_for_analytic_groupby(self):

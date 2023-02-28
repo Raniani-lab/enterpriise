@@ -1160,10 +1160,43 @@ class AccountReport(models.Model):
                 options['filter_search_bar'] = previous_options.get('filter_search_bar')
 
     ####################################################
+    # OPTIONS: COLUMN HEADERS
+    ####################################################
+
+    def _init_options_column_headers(self, options, previous_options=None):
+        # Prepare column headers
+        all_comparison_date_vals = [options['date']] + options.get('comparison', {}).get('periods', [])
+        column_headers = [
+            [
+                {
+                    'name': comparison_date_vals['string'],
+                    'forced_options': {'date': comparison_date_vals},
+                }
+                for comparison_date_vals in all_comparison_date_vals
+            ], # First level always consists of date comparison. Horizontal groupby are done on following levels.
+        ]
+
+        # Handle horizontal groups
+        selected_horizontal_group_id = options.get('selected_horizontal_group_id')
+        if selected_horizontal_group_id:
+            horizontal_group = self.env['account.report.horizontal.group'].browse(selected_horizontal_group_id)
+
+            for field_name, records in horizontal_group._get_header_levels_data():
+                header_level = [
+                    {
+                        'name': record.display_name,
+                        'horizontal_groupby_element': {field_name: record.id},
+                    }
+                    for record in records
+                ]
+                column_headers.append(header_level)
+
+        options['column_headers'] = column_headers
+
+    ####################################################
     # OPTIONS: COLUMNS
     ####################################################
     def _init_options_columns(self, options, previous_options=None):
-        self._set_column_headers(options)
         default_group_vals = {'horizontal_groupby_element': {}, 'forced_options': {}}
         all_column_group_vals_in_order = self._generate_columns_group_vals_recursively(options['column_headers'], default_group_vals)
 
@@ -1220,36 +1253,6 @@ class AccountReport(models.Model):
                 })
 
         return columns, column_groups
-
-    def _set_column_headers(self, options):
-        # Prepare column headers
-        all_comparison_date_vals = [options['date']] + options.get('comparison', {}).get('periods', [])
-        column_headers = [
-            [
-                {
-                    'name': comparison_date_vals['string'],
-                    'forced_options': {'date': comparison_date_vals},
-                }
-                for comparison_date_vals in all_comparison_date_vals
-            ], # First level always consists of date comparison. Horizontal groupby are done on following levels.
-        ]
-
-        # Handle horizontal groups
-        selected_horizontal_group_id = options.get('selected_horizontal_group_id')
-        if selected_horizontal_group_id:
-            horizontal_group = self.env['account.report.horizontal.group'].browse(selected_horizontal_group_id)
-
-            for field_name, records in horizontal_group._get_header_levels_data():
-                header_level = [
-                    {
-                        'name': record.display_name,
-                        'horizontal_groupby_element': {field_name: record.id},
-                    }
-                    for record in records
-                ]
-                column_headers.append(header_level)
-
-        options['column_headers'] = column_headers
 
     def _get_dict_hashable_key_tuple(self, dict_to_convert):
         rslt = []
@@ -1418,6 +1421,7 @@ class AccountReport(models.Model):
 
             'default': 200,
 
+            self._init_options_column_headers: 990,
             self._init_options_columns: 1000,
             self._init_options_growth_comparison: 1010,
             self._init_options_order_column: 1020,

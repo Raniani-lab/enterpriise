@@ -118,11 +118,11 @@ class BankRecWidget(models.Model):
     form_notes = fields.Html()
     form_account_id = fields.Many2one(
         comodel_name='account.account',
-        domain="[('account_type', '!=', 'asset_cash'), '|', ('company_id', '=', company_id), ('deprecated', '=', False)]",
+        domain="[('account_type', '!=', 'asset_cash'), ('company_id', '=', company_id), ('deprecated', '=', False)]",
     )
     form_partner_id = fields.Many2one(
         comodel_name='res.partner',
-        domain="['|', ('parent_id','=', False), ('is_company','=', True)]",
+        domain="[('company_id', 'in', (company_id, False)), '|', ('parent_id','=', False), ('is_company','=', True)]",
     )
     form_currency_id = fields.Many2one(
         comodel_name='res.currency',

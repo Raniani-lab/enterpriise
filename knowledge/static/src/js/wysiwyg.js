@@ -37,6 +37,24 @@ Wysiwyg.include({
         this.$editable[0].dispatchEvent(new Event('refresh_behaviors'));
     },
     /**
+     * @override
+     */
+    setValue: function () {
+        // Temporary hack that will be removed in 16.2 with the full
+        // implementation of oeProtected in the editor.
+        // purpose: ignore locks from Behavior components rendering
+        // when the content of the editor is reset (those components will also
+        // have to be reset anyway)
+        if (this.odooEditor._observerUnactiveLabels.size) {
+            [...this.odooEditor._observerUnactiveLabels].forEach(lock => {
+                if (lock.startsWith('knowledge_behavior_id_')) {
+                    this.odooEditor.observerActive(lock);
+                }
+            });
+        }
+        this._super(...arguments);
+    },
+    /**
      * Prevent usage of commands from the group "Knowledge" inside the tables.
      * @param {Array[Object]} commands commands available in this wysiwyg
      * @returns {Array[Object]} commands which can be used after the filter was applied

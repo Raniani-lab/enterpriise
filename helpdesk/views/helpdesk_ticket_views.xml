@@ -172,7 +172,7 @@
                 <field name="team_id" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="team_id" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="user_id" optional="show" widget="many2one_avatar_user" options="{'no_quick_create': True}"/>
-                <field name="partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" optional="show"/>
+                <field name="partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" optional="show" options="{'no_open': True}"/>
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
@@ -364,16 +364,8 @@
                             <field name="company_id" groups="base.group_multi_company" context="{'create': False}"/>
                         </group>
                         <group>
-                            <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" context="{'default_name': partner_name, 'default_email': partner_email, 'default_phone': partner_phone}"/>
-                            <field name="partner_name" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
-                            <field name="is_partner_email_update" invisible="1"/>
+                            <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" context="{'default_phone': partner_phone}"/>
                             <field name="is_partner_phone_update" invisible="1"/>
-                            <label for="partner_email" string="Email"/>
-                            <div class="o_row o_row_readonly">
-                                <field name="partner_email" widget="email" string="email"/>
-                                <span class="fa fa-exclamation-triangle text-warning oe_edit_only"
-                                title="By saving this change, the customer email will also be updated." attrs="{'invisible': [('is_partner_email_update', '=', False)]}"/>
-                            </div>
                             <label for="partner_phone" string="Phone"/>
                             <div class="o_row o_row_readonly">
                                 <field name="partner_phone" widget="phone" string="Phone"/>

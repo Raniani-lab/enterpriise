@@ -1109,7 +1109,6 @@ class SaleOrder(models.Model):
         self.message_post(body=msg_body)
         if invoice.state != 'posted':
             invoice.with_context(ocr_trigger_delta=15)._post()
-        invoice.is_move_sent = True
         self.send_success_mail(transaction, invoice)
 
     def _get_subscription_mail_payment_context(self, mail_ctx=None):
@@ -1610,6 +1609,7 @@ class SaleOrder(models.Model):
         # attachment, so to render it successfully sudo() is not enough.
         if self.env.su:
             template = template.with_user(SUPERUSER_ID)
+        invoice.is_move_sent = True
         return template.with_context(email_context).send_mail(invoice.id)
 
     @api.model

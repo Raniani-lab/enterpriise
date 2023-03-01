@@ -389,8 +389,8 @@
                             <field name="email_cc" groups="base.group_no_one"/>
                         </group>
                     </group>
-                    <div colspan="8" attrs="{'invisible': [('team_id', '=', False)]}">
-                        <field name="properties" nolabel="1" columns="2" hideKanbanOption="1"/>
+                    <div class="d-flex">
+                        <field name="properties" nolabel="1" columns="2" hideKanbanOption="1" hideAddButton="1"/>
                     </div>
                     <notebook>
                         <page string="Description" name="description">

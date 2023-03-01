@@ -358,6 +358,9 @@ class MrpProductionSchedule(models.Model):
             # demand.
             rounding = production_schedule.product_id.uom_id.rounding
             lead_time = production_schedule._get_lead_times()
+            # Ignore "Days to Supply Components" when set demand for components since it's normally taken care by the
+            # components themselves
+            lead_time_ignore_components = lead_time - production_schedule.product_id.product_tmpl_id.days_to_prepare_mo
             production_schedule_state = production_schedule_states_by_id[production_schedule['id']]
             if production_schedule in self:
                 procurement_date = add(fields.Date.today(), days=lead_time)
@@ -412,7 +415,7 @@ class MrpProductionSchedule(models.Model):
                     continue
                 # Set the indirect demand qty for children schedules.
                 for (product, ratio) in indirect_ratio_mps[(production_schedule.warehouse_id, production_schedule.product_id)].items():
-                    related_date = max(subtract(date_start, days=lead_time), fields.Date.today())
+                    related_date = max(subtract(date_start, days=lead_time_ignore_components), fields.Date.today())
                     index = next(i for i, (dstart, dstop) in enumerate(date_range) if related_date <= dstart or (related_date >= dstart and related_date <= dstop))
                     related_key = (date_range[index], product, production_schedule.warehouse_id)
                     indirect_demand_qty[related_key] += ratio * forecast_values['replenish_qty']

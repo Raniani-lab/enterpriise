@@ -13,13 +13,12 @@ patch(ImportAction.prototype, "account_base_import_patch", {
 
     get importOptions() {
         const options = this._super();
-        if (this.resModel == "account.move.line") {
-            options.name_create_enabled_fields = {
-                ...options.name_create_enabled_fields,
+        if (this.resModel === "account.move.line") {
+            Object.assign(options.name_create_enabled_fields, {
                 journal_id: true,
                 account_id: true,
                 partner_id: true,
-            }
+            });
         }
         return options;
     },

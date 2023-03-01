@@ -10,9 +10,13 @@ patch(PlanningGanttRenderer.prototype, "sale_planning_gantt_renderer", {
     setup() {
         this._super(...arguments);
         this.notification = useService("notification");
+        this.roleIds = [];
     },
     getPlanDialogDomain() {
-        const domain = this._super(...arguments);
+        let domain = this._super(...arguments);
+        if (this.roleIds.length) {
+            domain = Domain.and([domain, [['role_id', 'in', this.roleIds]]]);
+        }
         return Domain.and([domain, [["sale_line_id", "!=", false]]]).toList({});
     },
     getSelectCreateDialogProps() {
@@ -36,5 +40,13 @@ patch(PlanningGanttRenderer.prototype, "sale_planning_gantt_renderer", {
                 { type: "danger" }
             );
         }
+    },
+    /**
+     * @override
+     */
+    onPlan({ rowId }) {
+        const currentRow = this.rows.find((row) => row.id === rowId);
+        this.roleIds = (currentRow.progressBar && currentRow.progressBar.role_ids) || [];
+        this._super(...arguments);
     },
 });

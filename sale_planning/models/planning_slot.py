@@ -654,3 +654,11 @@ class PlanningSlot(models.Model):
             **super()._prepare_shift_vals(),
             'sale_line_id': self.sale_line_id.id,
         }
+
+    def _gantt_progress_bar_resource_id(self, res_ids, start, stop):
+        results = super()._gantt_progress_bar_resource_id(res_ids, start, stop)
+        resource_per_id = {r.id: r for r in self.env['resource.resource'].browse(list(results.keys()))}
+        for key, val in results.items():
+            resource = resource_per_id[key]
+            val['role_ids'] = resource.role_ids.ids
+        return results

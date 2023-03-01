@@ -33,7 +33,7 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
         return {
             'ec_sales': [
                 {'name': _("View Partner"), 'action': 'caret_option_open_record_form'},
-                {'name': _("Audit"), 'action': 'partner_vat_listing_open_invoices', 'action_param': 'id'},
+                {'name': _("Audit"), 'action': 'ec_sales_list_open_invoices', 'action_param': 'id'},
             ],
         }
 
@@ -234,3 +234,6 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
             'file_content': data_rslt.encode('ISO-8859-1', 'ignore'),
             'file_type': 'xml',
         }
+
+    def ec_sales_list_open_invoices(self, options, params=None):
+        return self.env['l10n_be.partner.vat.handler'].partner_vat_listing_open_invoices(options, params)

@@ -13,8 +13,8 @@
     z-index: -9999;
 }
 
-.o_content {
-    .o_documents_kanban_view {
+.o_documents_kanban_view  .o_content {
+    .o_kanban_renderer {
         --KanbanRecord-padding-v: 0;
         --KanbanRecord-padding-h: 0;
 

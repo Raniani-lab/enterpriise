@@ -25,7 +25,7 @@
         <field name="name">social.stream.post.view.kanban</field>
         <field name="model">social.stream.post</field>
         <field name="arch" type="xml">
-            <kanban class="o_social_stream_post_kanban"
+            <kanban
                 create="0"
                 quick_create="false"
                 edit="0"

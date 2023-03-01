@@ -219,7 +219,7 @@ QUnit.module('documents_kanban_tests.js', {
             "should have a 'documents selector' column");
         assert.containsOnce(target, '.o_content > .o_kanban_renderer',
             "should have a 'classical kanban view' column");
-        assert.hasClass(target.querySelector('.o_kanban_renderer'), 'o_documents_kanban_view',
+        assert.hasClass(target.querySelector('.o_kanban_view'), 'o_documents_kanban_view',
             "should have classname 'o_documents_kanban_view'");
         assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 5,
             "should have 5 records in the renderer");
@@ -615,7 +615,7 @@ QUnit.module('documents_kanban_tests.js', {
         await createDocumentsView({
             type: "kanban",
             resModel: 'documents.document',
-            arch: `<kanban js_class="documents_kanban" class="o_documents_kanban_test"><templates><t t-name="kanban-box">
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <div>
                         <field name="name"/>
                     </div>
@@ -624,8 +624,8 @@ QUnit.module('documents_kanban_tests.js', {
         await click(target.querySelector('.o_search_panel_category_value:nth-of-type(1) header'));
         // Force specific sizes for the test.
         // We will have rows of 2 cards each
-        const kanbanEl = target.querySelector('.o_documents_kanban_test');
-        kanbanEl.style.width = "500px";
+        const kanbanEl = target.querySelector('.o_kanban_renderer');
+        kanbanEl.style.maxWidth = "500px";
         const cards = kanbanEl.querySelectorAll(".o_kanban_record");
         for (const card of cards) {
             card.style.width = "200px";

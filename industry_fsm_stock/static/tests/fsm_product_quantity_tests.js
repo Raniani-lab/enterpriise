@@ -10,7 +10,7 @@ for (const product of data.models['product.product'].records) {
 
 fsmProductMakeViewParams.arch = `
     <kanban
-        class="o_kanban_mobile o_fsm_material_kanban"
+        class="o_kanban_mobile"
         action="fsm_add_quantity" type="object"
         js_class="fsm_product_kanban"
     >

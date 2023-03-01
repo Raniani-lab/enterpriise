@@ -4,7 +4,7 @@
         <field name="name">hr.job.employee.referral.kanban</field>
         <field name="model">hr.job</field>
         <field name="arch" type="xml">
-            <kanban create="false" class="o_kanban_dashboard o_kanban_referral o_kanban_referral_job" js_class="referral_kanban">
+            <kanban create="false" class="o_kanban_dashboard o_kanban_referral_job" js_class="referral_kanban">
                 <field name="name"/>
                 <field name="department_id"/>
                 <field name="website_url"/>

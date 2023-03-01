@@ -23,7 +23,7 @@ registry.category("web_tour.tours").add('helpdesk_tour', {
     width: 200,
 }, {
     trigger: '.o-kanban-button-new',
-    extra_trigger: '.o_kanban_helpdesk_ticket',
+    extra_trigger: '.o_helpdesk_ticket_kanban_view',
     content: _t('Let\'s create your first <b>ticket</b>.'),
     position: 'bottom',
     width: 200,
@@ -74,7 +74,7 @@ registry.category("web_tour.tours").add('helpdesk_tour', {
     content: _t("Let's go back to the <b>kanban view</b> to get an overview of your next tickets."),
     position: 'bottom',
 }, {
-    trigger: 'body:not(:has(div.o_view_sample_data)) .o_kanban_helpdesk_ticket .o_kanban_record',
+    trigger: 'body:not(:has(div.o_view_sample_data)) .o_helpdesk_ticket_kanban_view .o_kanban_record',
     content: Markup(_t('<b>Drag &amp; drop</b> the card to change the stage of your ticket.')),
     position: 'right',
     run: "drag_and_drop .o_kanban_group:eq(2) ",

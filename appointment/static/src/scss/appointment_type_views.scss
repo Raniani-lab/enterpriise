@@ -21,7 +21,7 @@
 
 /*                      Kanban view
  **********************************************************/
-.o_kanban_renderer.o_kanban_dashboard.o_appointment_kanban {
+.o_kanban_dashboard.o_appointment_kanban .o_kanban_renderer {
     @include o_appointment_type_backend_helper;
     &.o_kanban_grouped {
         .o_appointment_kanban_card_ungrouped {

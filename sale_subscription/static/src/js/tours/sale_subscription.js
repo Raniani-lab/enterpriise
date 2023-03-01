@@ -29,7 +29,7 @@ registry.category("web_tour.tours").add('sale_subscription_tour', {
 },
 {
     trigger: '.o-kanban-button-new',
-    extra_trigger: '.o_kanban_product_template',
+    extra_trigger: '.o_kanban_renderer',
     content: _t('Go ahead and create a new product'),
     position: 'right',
 },
@@ -59,7 +59,7 @@ registry.category("web_tour.tours").add('sale_subscription_tour', {
 },
 {
     trigger: '.o-kanban-button-new',
-    extra_trigger: '.o_kanban_order',
+    extra_trigger: '.o_kanban_renderer',
     content: _t('Go ahead and create a new subscription'),
     position: 'right',
 },

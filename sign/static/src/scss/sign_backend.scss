@@ -286,19 +286,17 @@
     }
 }
 
-.o_sign_template_kanban {
+.o_sign_template_kanban .o_kanban_renderer {
     .o_kanban_record {
-        .o_kanban_record_top {
-            .o_dropdown_kanban {
-                .dropdown-menu {
-                    // the content of items in the dropdown menu of sign template is very long
-                    // the width of the dropdown menu is extended to 12.9rem
-                    // which leaves the same space on the left and right of the colorpicker
-                    min-width: 12.9rem;
-                    .oe_kanban_colorpicker {
-                        // the colorpicker is allowed to display more than 3 colors per line
-                        max-width: 12.9rem;
-                    }
+        .o_dropdown_kanban {
+            .dropdown-menu {
+                // the content of items in the dropdown menu of sign template is very long
+                // the width of the dropdown menu is extended to 12.9rem
+                // which leaves the same space on the left and right of the colorpicker
+                min-width: 12.9rem;
+                .oe_kanban_colorpicker {
+                    // the colorpicker is allowed to display more than 3 colors per line
+                    max-width: 12.9rem;
                 }
             }
         }

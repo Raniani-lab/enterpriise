@@ -8,7 +8,7 @@
     <field name="arch" type="xml">
         <kanban
             edit="0"
-            class="o_kanban_mobile o_fsm_material_kanban"
+            class="o_kanban_mobile"
             action="fsm_add_quantity" type="object"
             js_class="fsm_product_kanban"
         >

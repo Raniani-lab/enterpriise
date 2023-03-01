@@ -28,13 +28,13 @@ registry.category("web_tour.tours").get("industry_fsm_tour").steps.splice(fsmSta
     position: "bottom",
 }, {
     trigger: "button[name='fsm_add_quantity']",
-    alt_trigger: ".o_fsm_material_kanban .o_kanban_record",
-    extra_trigger: '.o_fsm_material_kanban',
+    alt_trigger: ".o_fsm_product_kanban_view .o_kanban_record",
+    extra_trigger: '.o_fsm_product_kanban_view',
     content: _t('Click on your product to add it to your <b>list of materials</b>. <i>Tip: for large quantities, click on the number to edit it directly.</i>'),
     position: 'right',
 }, {
     trigger: ".breadcrumb-item.o_back_button",
-    extra_trigger: '.o_fsm_material_kanban',
+    extra_trigger: '.o_fsm_product_kanban_view',
     content: Markup(_t("Use the breadcrumbs to return to your <b>task</b>.")),
     position: "bottom"
 });

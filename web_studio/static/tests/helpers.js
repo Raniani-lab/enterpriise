@@ -40,7 +40,7 @@ export async function openStudio(target, params = {}) {
         await click(studioTabReport);
         await legacyExtraNextTick();
         let controlElm = target.querySelector(
-            ".o_action_manager .o_web_studio_editor .o_web_studio_report_kanban"
+            ".o_action_manager .o_web_studio_editor .o_studio_report_kanban_view"
         );
         if (!controlElm) {
             throw new Error("We should be in the Tab 'Report' but we are not");
@@ -75,7 +75,7 @@ export function getReportServerData() {
 
     const views = {
         "ir.actions.report,false,kanban": `
-            <kanban class="o_web_studio_report_kanban" js_class="studio_report_kanban">
+            <kanban js_class="studio_report_kanban">
                 <field name="report_name"/>
                 <field name="report_type"/>
                 <field name="id"/>

@@ -36,7 +36,7 @@ export const fsmProductMakeViewParams = {
     },
     arch: `
         <kanban
-            class="o_kanban_mobile o_fsm_material_kanban"
+            class="o_kanban_mobile"
             action="fsm_add_quantity" type="object"
             js_class="fsm_product_kanban"
         >
@@ -66,7 +66,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
 
         await makeView(this.makeViewParams);
 
-        assert.hasClass(target.getElementsByClassName('o_kanban_renderer'), 'o_fsm_material_kanban');
+        assert.hasClass(target.getElementsByClassName('o_kanban_view'), 'o_fsm_product_kanban_view');
         assert.containsN(target, '.o_kanban_record:not(.o_kanban_ghost)', 3, "The number of kanban record should be equal to 3 records.");
         assert.containsN(target, '.o_kanban_record div[name="fsm_quantity"] button[name="fsm_remove_quantity"]', 3, "The number of remove button should be equal to the number of kanban records (expected 3 records).");
         assert.containsN(target, '.o_kanban_record div[name="fsm_quantity"] button[name="fsm_add_quantity"]', 3, "The number of add button should be equal to the number of kanban records (expected 3 records).");

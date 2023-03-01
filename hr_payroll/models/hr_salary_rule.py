@@ -149,7 +149,7 @@ result = rules.NET > categories.NET * 0.10''',
         self.ensure_one()
         return 'x_l10n_%s_%s' % (
             self.struct_id.country_id.code.lower() if self.struct_id.country_id.code else 'xx',
-            self.code.lower().replace('.', '_'),
+            self.code.lower().replace('.', '_').replace('-', '_'),
         )
 
     def _generate_payroll_report_fields(self):

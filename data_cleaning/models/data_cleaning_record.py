@@ -60,7 +60,7 @@ class DataCleaningRecord(models.Model):
         self.ensure_one()
 
         def _render(record, value, methods):
-            if methods:
+            if methods and methods[0] is not None:
                 return _render(record, methods[0](record, value), methods[1:])
             return (record, value)
 

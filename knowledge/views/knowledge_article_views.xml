@@ -216,6 +216,7 @@
         <field name="arch" type="xml">
             <kanban create="0" class="o_knowledge_article_kanban_view">
                 <field name="is_user_favorite"/>
+                <field name="parent_id"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
@@ -267,6 +268,7 @@
                 <field name="cover_image_url"/>
                 <field name="activity_ids"/>
                 <field name="stage_id"/>
+                <field name="parent_id"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click o_kanban_record_has_image_fill">

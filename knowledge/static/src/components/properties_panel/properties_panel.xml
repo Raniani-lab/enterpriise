@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
     <div t-name="knowledge.KnowledgeArticleProperties" t-ref="root">
         <div class="o_knowledge_properties_field" t-if="this.state.displayPropertyPanel and this.props.record.data.parent_id">
-            <div class="m-2 pt-5 o_scroll_view_lg">
+            <div class="pt-5 o_scroll_view_lg">
                 <div t-if="this.showNoContentHelper" class="o_properties_helper text-center p-4 d-flex flex-column align-items-center justify-content-end">
                     <p class="o_view_nocontent_smiling_face"/>
                     <h3>Add Property Fields</h3>

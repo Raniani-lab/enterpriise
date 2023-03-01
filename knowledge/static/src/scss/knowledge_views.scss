@@ -247,7 +247,7 @@
 
         .o_inner_group {
             width: 100%;
-            grid-template-columns: 1fr;
+            display: block;
         }
         .o_input,
         .o_field_property_tag,
@@ -268,7 +268,9 @@
         }
         .o_property_field {
             display: block !important;
-            margin-bottom: 0 !important;
+            &.o_property_folded {
+                display: none !important;
+            }
         }
         .o_field_property_add {
             margin-left: 0 !important;

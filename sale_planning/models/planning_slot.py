@@ -117,7 +117,6 @@ class PlanningSlot(models.Model):
             if sale_line_id.product_id.planning_enabled and res.get('start_datetime') and res.get('end_datetime'):
                 remaining_hours_to_plan = sale_line_id.planning_hours_to_plan - sale_line_id.planning_hours_planned
                 if float_utils.float_compare(remaining_hours_to_plan, 0, precision_digits=2) < 1:
-                    res['end_datetime'] = res['start_datetime']
                     return res
                 allocated_hours = (res['end_datetime'] - res['start_datetime']).total_seconds() / 3600.0
                 if float_utils.float_compare(remaining_hours_to_plan, allocated_hours, precision_digits=2) < 1:

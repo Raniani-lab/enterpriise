@@ -54,18 +54,24 @@ export class ArticleLinkBehaviorDialog extends Component {
                 data: term => {
                     return { term };
                 },
+                quietMillis: 500,
                 /**
                  * @param {Object} params - parameters
                  */
                 transport: async params => {
                     const { term } = params.data;
+                    let domain = [['user_has_access', "=", true]];
+                    if (term) {
+                        domain.push(['name', '=ilike', `%${term}%`]);
+                    }
                     const results = await this.orm.call(
                         'knowledge.article',
                         'search_read',
                         [],
                         {
                             fields: ['id', 'display_name', 'root_article_id'],
-                            domain: [['name', '=ilike', `%${term}%`], ['user_has_access', "=", true]],
+                            domain: domain,
+                            limit: 50,
                         },
                     );
                     params.success({ results });

@@ -16,7 +16,6 @@
         'security/ir.model.access.csv',
         'data/digest_data.xml',
         'wizard/planning_send_views.xml',
-        'wizard/slot_planning_select_send_views.xml',
         'views/hr_views.xml',
         'views/planning_template_views.xml',
         'views/resource_views.xml',

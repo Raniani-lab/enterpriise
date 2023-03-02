@@ -90,7 +90,7 @@ class TestPlanningResource(TestCommonPlanning):
         self.assertFalse(slot_a.publication_warning)
         self.assertEqual(slot_a.state, 'draft')
 
-        slot_a.action_publish()
+        slot_a.action_send()
         self.assertFalse(slot_a.publication_warning, 'Shift should not have publication warning when user publish the shift')
         self.assertEqual(slot_a.state, 'published')
 

@@ -26,7 +26,6 @@
                 </group>
                 <footer>
                     <button name="action_check_emails" type="object" string="Publish &amp; Send" class='btn-primary' data-hotkey="q"/>
-                    <button name="action_publish" type="object" string="Publish" class='btn-primary' data-hotkey="w"/>
                     <button name="discard" string="Discard" class='btn-secondary' special="cancel" data-hotkey="z"/>
                 </footer>
             </form>

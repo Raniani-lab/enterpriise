@@ -263,7 +263,7 @@ class TestPlanning(TestCommonPlanning, MockEmail):
         """ The purpose of this test case is to check the planning state """
         self.slot.resource_id = self.employee_bert.resource_id
         self.assertEqual(self.slot.state, 'draft', 'Planning is draft mode.')
-        self.slot.action_publish()
+        self.slot.action_send()
         self.assertEqual(self.slot.state, 'published', 'Planning is published.')
 
     def test_create_working_calendar_period(self):

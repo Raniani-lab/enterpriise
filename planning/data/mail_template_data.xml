@@ -93,8 +93,8 @@
                             style="padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px">View Your Planning</a>
                     </div>
 
-                    <div t-if="ctx.get('slot_unassigned_count')">
-                        <p>There are new open shifts available. Please, assign yourself if you are available.</p>
+                    <div t-if="ctx.get('slot_unassigned')">
+                        <p>If an open shift is available and at your convenience, please assign yourself to it</p>
                     </div>
                     <br/>
 

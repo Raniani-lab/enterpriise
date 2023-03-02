@@ -35,9 +35,6 @@
                 <header>
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary"
                         close="1" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
-                    <button string="Publish" type="object" name="action_publish" class="btn btn-primary"
-                        close="1" groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" data-hotkey="w" invisible="context.get('search_default_my_shifts')"/>
-                                        
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I Take It" groups="!planning.group_planning_manager"
                         attrs="{'invisible': &quot;['|', '|', '|', '|', '|', ('is_users_role', '=', False), ('is_past', '=', True), ('start_datetime', '=', False), ('end_datetime', '=', False), '&amp;', ('resource_id', '!=', False), ('request_to_switch', '=', False), '&amp;', ('user_id', '=', uid), '|', ('allow_self_unassign', '=', True), ('request_to_switch', '=', True)]&quot;}" close="1" invisible="context.get('search_default_my_shifts')"/>
                     <button name="action_self_assign" class="btn btn-secondary" type="object" string="I Take It" groups="!planning.group_planning_manager"
@@ -256,8 +253,6 @@
                     <button string="Save" special="save" data-hotkey="v" class="btn btn-primary ms-1" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1"
                         attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
-                    <button string="Publish" type="object" name="action_publish" class="btn btn-primary" close="1"
-                        groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" data-hotkey="w" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
                         attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="s" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish" class="btn btn-secondary" close="1"
@@ -839,15 +834,6 @@
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">action = records.action_planning_publish_and_send()</field>
-    </record>
-
-    <record id="model_planning_slot_action_publish" model="ir.actions.server">
-        <field name="name">Publish</field>
-        <field name="model_id" ref="planning.model_planning_slot"/>
-        <field name="binding_model_id" ref="planning.model_planning_slot"/>
-        <field name="binding_view_types">list</field>
-        <field name="state">code</field>
-        <field name="code">action = records.action_planning_publish()</field>
     </record>
 
     <record id="model_planning_slot_action_reset_to_draft" model="ir.actions.server">

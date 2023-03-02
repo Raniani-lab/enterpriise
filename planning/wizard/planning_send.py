@@ -97,7 +97,6 @@ class PlanningSend(models.TransientModel):
             'start_datetime': self.start_datetime,
             'end_datetime': self.end_datetime,
             'include_unassigned': self.include_unassigned,
-            'slot_ids': [(6, 0, slot_to_send.ids)],
         })
         slot_employees = slot_to_send.mapped('employee_id')
         open_slots = slot_to_send.filtered(lambda s: not s.employee_id and not s.is_past)
@@ -109,7 +108,7 @@ class PlanningSend(models.TransientModel):
                 for slot in open_slots:
                     if not employee.planning_role_ids or not slot.role_id or slot.role_id in employee.planning_role_ids:
                         employees_to_send |= employee
-        res = planning._send_planning(message=self.note, employees=employees_to_send)
+        res = planning._send_planning(slots=slot_to_send, message=self.note, employees=employees_to_send)
         if res:
             return {
                 'type': 'ir.actions.client',
@@ -120,23 +119,3 @@ class PlanningSend(models.TransientModel):
                     'next': {'type': 'ir.actions.act_window_close'},
                 }
             }
-
-    def action_publish(self):
-        domain = [('employee_id', 'in', self.employee_ids.ids)]
-        if self.include_unassigned:
-            domain = expression.OR([[('resource_id', '=', False)], domain])
-        slot_to_publish = self.slot_ids.filtered_domain(domain)
-        if not slot_to_publish:
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'type': 'danger',
-                    'message': _("The shifts have already been published, or there are no shifts to publish."),
-                }
-            }
-        slot_to_publish.write({
-            'state': 'published',
-            'publication_warning': False
-        })
-        return True

@@ -1124,17 +1124,6 @@ class Planning(models.Model):
             }
         }
 
-    def action_planning_publish(self):
-        notif_type = "success"
-        unpublished_shifts = self.filtered(lambda shift: shift.state == 'draft')
-        if not unpublished_shifts:
-            notif_type = "warning"
-            message = _('There are no shifts to publish.')
-        else:
-            message = _('The shifts have successfully been published.')
-            unpublished_shifts.action_publish()
-        return self._get_notification_action(notif_type, message)
-
     def action_planning_publish_and_send(self):
         notif_type = "success"
         start, end = min(self.mapped('start_datetime')), max(self.mapped('end_datetime'))
@@ -1145,9 +1134,8 @@ class Planning(models.Model):
             planning = self.env['planning.planning'].create({
                 'start_datetime': start,
                 'end_datetime': end,
-                'slot_ids': [(6, 0, self.ids)],
             })
-            planning._send_planning()
+            planning._send_planning(slots=self, employees=self.employee_id)
             message = _('The shifts have successfully been published and sent.')
         return self._get_notification_action(notif_type, message)
 
@@ -1159,13 +1147,6 @@ class Planning(models.Model):
         self._send_slot(employee_ids, self.start_datetime, self.end_datetime)
         message = _("The shift has successfully been sent.")
         return self._get_notification_action('success', message)
-
-    def action_publish(self):
-        self.write({
-            'state': 'published',
-            'publication_warning': False,
-        })
-        return True
 
     def action_unpublish(self):
         if not self.env.user.has_group('planning.group_planning_manager'):
@@ -1559,21 +1540,17 @@ class Planning(models.Model):
             self = self.filtered(lambda s: s.resource_id)
         if not self:
             return False
+        self.ensure_one()
 
         employee_with_backend = employee_ids.filtered(lambda e: e.user_id and e.user_id.has_group('planning.group_planning_user'))
         employee_without_backend = employee_ids - employee_with_backend
         planning = False
-        if len(self) > 1 or employee_without_backend:
+        if employee_without_backend:
             planning = self.env['planning.planning'].create({
                 'start_datetime': start_datetime,
                 'end_datetime': end_datetime,
                 'include_unassigned': include_unassigned,
-                'slot_ids': [(6, 0, self.ids)],
             })
-        if len(self) > 1:
-            return planning._send_planning(message=message, employees=employee_ids)
-
-        self.ensure_one()
 
         template = self.env.ref('planning.email_template_slot_single')
         employee_url_map = {**employee_without_backend.sudo()._planning_get_url(planning), **employee_with_backend._slot_get_url(self)}
@@ -1898,7 +1875,6 @@ class PlanningPlanning(models.Model):
     end_datetime = fields.Datetime("Stop Date", required=True)
     include_unassigned = fields.Boolean("Includes Open Shifts", default=True)
     access_token = fields.Char("Security Token", default=_default_access_token, required=True, copy=False, readonly=True)
-    slot_ids = fields.Many2many('planning.slot')
     company_id = fields.Many2one('res.company', string="Company", required=True, default=lambda self: self.env.company,
         help="Company linked to the material resource. Leave empty for the resource to be available in every company.")
     date_start = fields.Date('Date Start', compute='_compute_dates')
@@ -1923,38 +1899,37 @@ class PlanningPlanning(models.Model):
     # Business Methods
     # ----------------------------------------------------
 
-    def _send_planning(self, message=None, employees=False):
+    def _is_slot_in_planning(self, slot_sudo):
+        return (
+            self
+            and slot_sudo.start_datetime > self.start_datetime
+            and slot_sudo.end_datetime < self.end_datetime
+            and slot_sudo.state == "published"
+        )
+
+    def _send_planning(self, slots, message=None, employees=False):
         email_from = self.env.user.email or self.env.user.company_id.email or ''
-        sent_slots = self.env['planning.slot']
-        for planning in self:
-            # prepare planning urls, recipient employees, ...
-            slots = planning.slot_ids
-            slots_open = slots.filtered(lambda slot: not slot.resource_id) if planning.include_unassigned else 0
+        # extract planning URLs
+        employee_url_map = employees.sudo()._planning_get_url(self)
 
-            # extract planning URLs
-            employees = employees or slots.mapped('employee_id')
-            employee_url_map = employees.sudo()._planning_get_url(planning)
-
-            # send planning email template with custom domain per employee
-            template = self.env.ref('planning.email_template_planning_planning', raise_if_not_found=False)
-            template_context = {
-                'slot_unassigned_count': slots_open and len(slots_open),
-                'slot_total_count': slots and len(slots),
-                'message': message,
-            }
-            if template:
-                # /!\ For security reason, we only given the public employee to render mail template
-                for employee in self.env['hr.employee.public'].browse(employees.ids):
-                    if employee.work_email:
-                        template_context['employee'] = employee
-                        template_context['start_datetime'] = planning.date_start
-                        template_context['end_datetime'] = planning.date_end
-                        template_context['planning_url'] = employee_url_map[employee.id]
-                        template_context['assigned_new_shift'] = bool(slots.filtered(lambda slot: slot.employee_id.id == employee.id))
-                        template.with_context(**template_context).send_mail(planning.id, email_values={'email_to': employee.work_email, 'email_from': email_from}, email_layout_xmlid='mail.mail_notification_light')
-            sent_slots |= slots
+        # send planning email template with custom domain per employee
+        template = self.env.ref('planning.email_template_planning_planning', raise_if_not_found=False)
+        template_context = {
+            'slot_unassigned': self.include_unassigned,
+            'message': message,
+        }
+        if template:
+            # /!\ For security reason, we only given the public employee to render mail template
+            for employee in self.env['hr.employee.public'].browse(employees.ids):
+                if employee.work_email:
+                    template_context['employee'] = employee
+                    template_context['start_datetime'] = self.date_start
+                    template_context['end_datetime'] = self.date_end
+                    template_context['planning_url'] = employee_url_map[employee.id]
+                    template_context['assigned_new_shift'] = bool(slots.filtered(lambda slot: slot.employee_id.id == employee.id))
+                    template.with_context(**template_context).send_mail(self.id, email_values={'email_to': employee.work_email, 'email_from': email_from}, email_layout_xmlid='mail.mail_notification_light')
         # mark as sent
-        sent_slots.write({
+        slots.write({
             'state': 'published',
             'publication_warning': False
         })

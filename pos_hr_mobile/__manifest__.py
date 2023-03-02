@@ -15,6 +15,8 @@
         'point_of_sale.assets': [
             'pos_hr_mobile/static/src/js/LoginScreenMobile.js',
             'pos_hr_mobile/static/src/scss/barcode_mobile.scss',
+            # We need the barcode scanner style. FIXME POSREF: use the barcode scanner component
+            'barcodes/static/src/components/barcode_scanner.scss',
             'pos_hr_mobile/static/src/xml/**/*',
         ],
     }

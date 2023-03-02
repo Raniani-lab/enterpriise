@@ -15,6 +15,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
         'click .o_article_caret': '_onFold',
         'click .o_favorites_toggle_button': '_toggleFavorite',
         'click .o_knowledge_toc_link': '_onTocLinkClick',
+        'click .o_knowledge_article_load_more': '_loadMoreArticles',
     },
 
     /**
@@ -24,6 +25,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
     start: function () {
         return this._super.apply(this, arguments).then(() => {
             this.$id = this.$el.data('article-id');
+            this.resId = this.$id;  // necessary for the 'KnowledgeTreePanelMixin' extension
             this._renderTree(this.$id, '/knowledge/tree_panel/portal');
             this._setResizeListener();
             // Debounce the search articles method to reduce the number of rpcs

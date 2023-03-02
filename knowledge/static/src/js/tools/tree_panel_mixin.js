@@ -159,6 +159,44 @@ export default {
              unfoldedArticlesIds.splice(unfoldedArticlesIds.indexOf(articleId), 1);
              localStorage.setItem(storageKey, unfoldedArticlesIds.join(";"));
          }
-     }
+     },
+
+    async _loadMoreArticles(ev) {
+        ev.preventDefault();
+
+        let addedArticles;
+        const rpcParams = {
+            active_article_id: this.resId || false,
+            parent_id: ev.target.dataset['parentId'] || false,
+            category: ev.target.dataset['category'] || false,
+            limit: ev.target.dataset['limit'],
+            offset: ev.target.dataset['offset'] || 0,
+        };
+
+        // backend / publicWidget compatibility
+        if (this.rpc) {
+            addedArticles = await this.rpc(
+                '/knowledge/tree_panel/load_more',
+                rpcParams
+            );
+        } else {
+            addedArticles = await this._rpc({
+                route: '/knowledge/tree_panel/load_more',
+                params: rpcParams,
+            });
+        }
+
+        const listRoot = ev.target.closest('ul');
+        // remove existing "Load more" link
+        ev.target.remove();
+        // remove the 'forced' displayed active article
+        const forcedDisplayedActiveArticle = listRoot.querySelector(
+            '.o_knowledge_article_force_show_active_article');
+        if (forcedDisplayedActiveArticle) {
+            forcedDisplayedActiveArticle.remove();
+        }
+        // insert the returned template
+        listRoot.insertAdjacentHTML('beforeend', addedArticles);
+    }
 };
 

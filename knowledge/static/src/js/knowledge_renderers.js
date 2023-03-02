@@ -46,6 +46,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                     this.openArticle(parseInt(target.closest('.o_article').dataset.articleId));
                 } else if (target.classList.contains('o_article_emoji')) {
                     this._showEmojiPicker(ev);
+                } else if (target.classList.contains('o_knowledge_article_load_more')) {
+                    this._loadMoreArticles(ev);
                 } else {
                     const button = target.closest('button');
                     if (!button) {
@@ -456,6 +458,18 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 }
             );
             this.tree.el.innerHTML = htmlTree;
+
+            if (this.resId) {
+                const scrollToArticle = document.querySelector(
+                    `section[data-section="workspace"] [data-article-id="${this.resId}"] > div,
+                     section[data-section="private"] [data-article-id="${this.resId}"] > div`
+                );
+
+                if (scrollToArticle) {
+                    scrollToArticle.scrollIntoView();
+                }
+            }
+
             if (!this.device.isMobile) {
                 this._setTreeListener();
                 this._setTreeFavoriteListener();

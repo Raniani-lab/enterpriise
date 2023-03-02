@@ -328,7 +328,7 @@ class AccountAsset(models.Model):
             return super().onchange(values, False, {
                 fname: spec
                 for fname, spec in field_onchange.items()
-                if fname.startswith('depreciation_move_ids')
+                if fname.startswith('depreciation_move_ids') or fname.startswith('original_move_line_ids')
             })
         return super().onchange(values, field_name, field_onchange)
 

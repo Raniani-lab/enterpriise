@@ -15,6 +15,7 @@ from zeep.wsdl.utils import etree_to_string
 
 from odoo import _, _lt
 from odoo.tools.float_utils import float_repr
+from odoo.exceptions import UserError
 
 
 _logger = logging.getLogger(__name__)
@@ -335,7 +336,9 @@ class UPSRequest():
             address_sold_to.StateProvinceCode = ship_to.state_id.code or ''
 
         sold_to = self.factory_ns4.SoldToType()
-        sold_to.Name = ship_to.commercial_company_name
+        if len(ship_to.commercial_partner_id.name) > 35:
+            raise UserError(_('The name of the customer should be no more than 35 characters.'))
+        sold_to.Name = ship_to.commercial_partner_id.name
         sold_to.AttentionName = ship_to.name
         sold_to.Address = address_sold_to
 

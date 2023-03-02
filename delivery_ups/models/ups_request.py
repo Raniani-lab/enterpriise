@@ -318,7 +318,9 @@ class UPSRequest():
             unit_type.UnitOfMeasurement = uom_type
 
             product = self.factory_ns4.ProductType()
-            product.Description = commodity.product_id.name
+            # split the name of the product to maximum 3 substrings of length 35
+            name = commodity.product_id.name
+            product.Description = [line for line in [name[35 * i:35 * (i + 1)] for i in range(3)] if line]
             product.Unit = unit_type
             product.OriginCountryCode = commodity.country_of_origin
 

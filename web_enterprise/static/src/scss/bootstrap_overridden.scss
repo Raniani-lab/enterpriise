@@ -9,6 +9,8 @@
 
 $light: $o-white !default;
 $dark: $o-gray-900 !default;
+$warning: #e99d00 !default;
+$danger: #d44c59 !default;
 
 
 // Options
@@ -25,18 +27,12 @@ $enable-shadows: true !default;
 $component-active-color: unset !default;
 $component-active-bg: mix($o-enterprise-action-color, $o-white, 10%) !default;
 
-$btn-border-radius: 0 !default;
-$btn-border-radius-sm: 0 !default;
-$btn-border-radius-lg: 0 !default;
 $input-border-radius: 0 !default;
 $input-border-radius-sm: 0 !default;
 $input-border-radius-lg: 0 !default;
 $nav-tabs-border-radius: 0 !default;
 $nav-pills-border-radius: 0 !default;
 $dropdown-border-radius: 0 !default;
-$pagination-border-radius: 0 !default;
-$pagination-border-radius-sm: 0 !default;
-$pagination-border-radius-lg: 0 !default;
 $card-border-radius: 0 !default;
 $accordion-border-radius: 0 !default;
 $tooltip-border-radius: 0 !default;

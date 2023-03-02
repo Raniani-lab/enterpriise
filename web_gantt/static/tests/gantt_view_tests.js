@@ -1655,7 +1655,7 @@ QUnit.test(
         const button = target.querySelector(
             ".o_dialog:not(.o_inactive_modal) footer .btn-secondary"
         );
-        assert.strictEqual(getText(button), "CANCEL");
+        assert.strictEqual(getText(button), "Cancel");
         await click(button);
         assert.containsOnce(target, ".o_dialog");
         assert.verifySteps([]);
@@ -1688,7 +1688,7 @@ QUnit.test(
         assert.containsN(target, ".o_dialog", 2);
 
         const button = target.querySelector(".o_dialog:not(.o_inactive_modal) footer .btn-primary");
-        assert.strictEqual(getText(button), "OK");
+        assert.strictEqual(getText(button), "Ok");
         await click(button);
         assert.containsNone(target, ".o_dialog");
         assert.verifySteps(["unlink"]);

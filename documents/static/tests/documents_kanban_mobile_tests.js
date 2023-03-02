@@ -241,7 +241,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "1 DOCUMENT SELECTED"
+                        "1 document selected"
                     );
 
                     assert.isVisible(
@@ -271,7 +271,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "2 DOCUMENTS SELECTED"
+                        "2 documents selected"
                     );
 
                     // click on the record
@@ -287,7 +287,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "1 DOCUMENT SELECTED"
+                        "1 document selected"
                     );
                     assert.isVisible(
                         document.querySelector(".o_documents_mobile_inspector"),
@@ -476,7 +476,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "1 DOCUMENT SELECTED"
+                        "1 document selected"
                     );
                     assert.containsOnce(
                         document.body,
@@ -497,7 +497,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "2 DOCUMENTS SELECTED"
+                        "2 documents selected"
                     );
                     assert.isNotVisible(
                         document.querySelector(
@@ -526,7 +526,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "1 DOCUMENT SELECTED"
+                        "1 document selected"
                     );
                     assert.isVisible(
                         document.querySelector(

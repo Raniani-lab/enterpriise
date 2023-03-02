@@ -30,7 +30,7 @@
                 <div class="px-3 my-2" attrs="{'invisible': [('website_published', '=', False)]}">
                     <field name="article_url" widget="CopyClipboardChar" readonly="1"/>
                 </div>
-                <div class="dropdown-divider" attrs="{'invisible': [('user_can_write', '=', False), ('website_published', '=', False)]}"></div>
+                <div class="dropdown-divider"></div>
             </xpath>
         </field>
     </record>

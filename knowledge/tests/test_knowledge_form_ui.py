@@ -21,6 +21,30 @@ class TestKnowledgeUICommon(HttpCase):
 
 @tagged('post_install', '-at_install', 'knowledge', 'knowledge_tour')
 class TestKnowledgeUI(TestKnowledgeUICommon):
+
+    def test_knowledge_load_more(self):
+        """ The goal of this tour is to test the behavior of the 'load more' feature.
+        Sub-trees of the articles are loaded max 50 by 50.
+
+        The parent articles are hand-picked with specific index because it allows testing
+        that we force the display of the parents of the active article. """
+
+        root_articles = self.env['knowledge.article'].create([{
+            'name': 'Root Article %i' % index
+        } for index in range(153)])
+
+        children_articles = self.env['knowledge.article'].create([{
+            'name': 'Child Article %i' % index,
+            'parent_id': root_articles[103].id,
+        } for index in range(254)])
+
+        self.env['knowledge.article'].create([{
+            'name': 'Grand-Child Article %i' % index,
+            'parent_id': children_articles[203].id,
+        } for index in range(344)])
+
+        self.start_tour('/web', 'knowledge_load_more_tour', login='admin', step_delay=100)
+
     def test_knowledge_main_flow(self):
 
         # Patching 'now' to allow checking the order of trashed articles, as

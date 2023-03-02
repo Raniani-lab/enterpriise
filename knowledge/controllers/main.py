@@ -11,6 +11,8 @@ from odoo.osv import expression
 
 class KnowledgeController(http.Controller):
 
+    _KNOWLEDGE_TREE_ARTICLES_LIMIT = 50
+
     # ------------------------
     # Article Access Routes
     # ------------------------
@@ -108,13 +110,15 @@ class KnowledgeController(http.Controller):
         unfolded_articles_ids = unfolded_articles_ids & existing_ids
         unfolded_favorite_articles_ids = unfolded_favorite_articles_ids & existing_ids
 
+        active_article_ancestor_ids = []
         if active_article_id:
             # determine the hierarchy to unfold based on parent_path and as sudo
             # this helps avoiding to actually fetch ancestors
             # this will not leak anything as it's just a set of IDS
             # displayed articles ACLs are correctly checked here below
             active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
-            unfolded_articles_ids |= active_article._get_ancestor_ids()
+            active_article_ancestor_ids = active_article._get_ancestor_ids()
+            unfolded_articles_ids |= active_article_ancestor_ids
 
         # fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
         # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)
@@ -154,6 +158,9 @@ class KnowledgeController(http.Controller):
 
         values = {
             "active_article_id": active_article_id,
+            "active_article_ancestor_ids": active_article_ancestor_ids,
+            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
+            "articles_displayed_offset": 0,
             "all_visible_articles": all_visible_articles,
             "user_write_access_by_article": user_write_access_by_article,
             "workspace_articles": root_articles.filtered(lambda article: article.category == 'workspace'),
@@ -204,6 +211,7 @@ class KnowledgeController(http.Controller):
         all_visible_articles = request.env['knowledge.article'].search(
             expression.AND([[('is_article_item', '=', False)], [('name', 'ilike', search_term)]]),
             order='name',
+            limit=self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
         )
 
         values = {
@@ -226,12 +234,14 @@ class KnowledgeController(http.Controller):
         ).sorted("sequence") if parent.has_article_children else request.env['knowledge.article']
         return request.env['ir.qweb']._render('knowledge.articles_template', {
             'articles': articles,
+            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
+            "articles_displayed_offset": 0,
             'portal_readonly_mode': not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
             "user_write_access_by_article": {
                 article.id: article.user_can_write
                 for article in articles
             },
-            "is_child": True
+            "has_parent": True
         })
 
     @http.route('/knowledge/tree_panel/favorites', type='json', auth='user')
@@ -256,11 +266,97 @@ class KnowledgeController(http.Controller):
             "favorites_sudo": favorites_sudo,
             "active_article_id": active_article_id,
             "all_visible_articles": all_visible_articles,
+            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             "unfolded_favorite_articles_ids": unfolded_favorite_articles_ids,
             "portal_readonly_mode": not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
             "user_write_access_by_article": {
                 article.id: article.user_can_write
                 for article in all_visible_articles
+            },
+        })
+
+    @http.route('/knowledge/tree_panel/load_more', type='json', auth='user')
+    def tree_panel_load_more(self, category, limit, offset, active_article_id=False, parent_id=False):
+        """" Route called when loading more articles in a particular sub-tree.
+
+        Fetching is done based either on a parent, either a category when no parent is given
+        (in which case we retrieve the root articles of that category).
+        "limit" and "offset" allow controlling the returned result size.
+
+        In addition, if we receive an 'active_article_id', it is forcefully displayed even if not
+        in the first 50 articles of its own subtree.
+        (Subsequently, all his parents are also forcefully displayed).
+        That allows the end-user to always see where he is situated within the articles hierarchy.
+
+        See 'articles_template' template docstring for details. """
+
+        if parent_id:
+            parent_id = int(parent_id)
+            articles_domain = [('parent_id', '=', parent_id)]
+        elif category:
+            # need to know in which category we are and filter accordingly
+            articles_domain = [
+                ('parent_id', '=', False),
+                ('category', '=', category),
+            ]
+        else:
+            raise werkzeug.exceptions.BadRequest()
+
+        offset = int(offset)
+        limit = int(limit)
+        articles = request.env['knowledge.article'].search(
+            articles_domain,
+            limit=limit + 1,
+            offset=offset,
+            order='sequence, id',
+        )
+
+        if len(articles) < limit:
+            articles_left_count = len(articles)
+        else:
+            articles_left_count = request.env['knowledge.article'].search_count(articles_domain) - offset
+
+        active_article_ancestor_ids = []
+        unfolded_articles_ids = []
+        force_show_active_article = False
+        if articles and active_article_id and active_article_id not in articles.ids:
+            active_article_with_ancestors = request.env['knowledge.article'].search(
+                [('id', 'parent_of', active_article_id)]
+            )
+            active_article = active_article_with_ancestors.filtered(
+                lambda article: article.id == active_article_id)
+            active_article_ancestors = active_article_with_ancestors - active_article
+            unfolded_articles_ids = active_article_ancestors.ids
+
+            # we only care about articles our current hierarchy (base domain)
+            # and that are "next" (based on sequence of last article retrieved)
+            force_show_domain = expression.AND([
+                articles_domain,
+                [('sequence', '>', articles[-1].sequence)]
+            ])
+            force_show_active_article = active_article.filtered_domain(force_show_domain)
+            active_article_ancestors = active_article_ancestors.filtered_domain(force_show_domain)
+            active_article_ancestor_ids = active_article_ancestors.ids
+
+            if active_article_ancestors and not any(
+                    ancestor_id in articles.ids for ancestor_id in active_article_ancestors.ids):
+                articles |= active_article_ancestors
+
+        return request.env['ir.qweb']._render('knowledge.articles_template', {
+            "active_article_id": active_article_id,
+            "active_article_ancestor_ids": active_article_ancestor_ids,
+            "articles": articles,
+            "articles_category": category,
+            "articles_count": articles_left_count,
+            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
+            "articles_displayed_offset": offset,
+            "has_parent": bool(parent_id),
+            "force_show_active_article": force_show_active_article,
+            "portal_readonly_mode": not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
+            "unfolded_articles_ids": unfolded_articles_ids,
+            "user_write_access_by_article": {
+                article.id: article.user_can_write
+                for article in articles
             },
         })
 

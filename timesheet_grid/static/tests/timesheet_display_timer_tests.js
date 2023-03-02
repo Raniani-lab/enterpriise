@@ -8,6 +8,7 @@ import { getFixture, mount, nextTick } from "@web/../tests/helpers/utils";
 
 import { TimesheetDisplayTimer, TimesheetTimerFloatTimerField } from "../src/js/components/timesheet_display_timer/timesheet_display_timer";
 import { timerService } from "@timer/services/timer_service";
+import { EventBus } from "@odoo/owl";
 
 const { DateTime } = luxon;
 
@@ -31,6 +32,7 @@ QUnit.module("timesheet_grid", (hooks) => {
             timerRunning,
             record: {
                 isInvalid: () => false,
+                model: new EventBus(),
             },
         };
         await mount(TimesheetTimerFloatTimerField, target, { env, props });
@@ -62,6 +64,7 @@ QUnit.module("timesheet_grid", (hooks) => {
             record: {
                 resModel: "dummy",
                 isInvalid: () => false,
+                model: new EventBus(),
                 data: {
                     timer_start: timerStart,
                     timer_pause: timerPause,

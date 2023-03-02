@@ -80,8 +80,8 @@ Let your customers follow the signature process easily.
             'sign/static/src/js/tours/sign.js',
             'sign/static/src/scss/sign_backend.scss',
             'sign/static/src/xml/*.xml',
-            'sign/static/src/components/**/*',
             'sign/static/src/activity/**',
+            'sign/static/src/backend_components/**/*',
             'sign/static/src/views/**/*',
         ],
         'web.assets_frontend': [

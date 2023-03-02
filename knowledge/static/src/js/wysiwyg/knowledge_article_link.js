@@ -73,17 +73,23 @@ const KnowledgeArticleLinkModal = Dialog.extend({
                 data: term => {
                     return { term };
                 },
+                quietMillis: 500,
                 /**
                  * @param {Object} params - parameters
                  */
                 transport: async params => {
                     const { term } = params.data;
+                    let domain = [['user_has_access', "=", true]];
+                    if (term) {
+                        domain.push(['name', '=ilike', `%${term}%`]);
+                    }
                     const results = await this._rpc({
                         model: 'knowledge.article',
                         method: 'search_read',
                         kwargs: {
                             fields: ['id', 'display_name', 'root_article_id'],
-                            domain: [['name', '=ilike', `%${term}%`], ['user_has_access', "=", true]],
+                            domain: domain,
+                            limit: 50,
                         },
                     });
                     params.success({ results });

@@ -14,7 +14,7 @@ class SDDMandate(models.Model):
     using SEPA Direct Debit.
     """
     _name = 'sdd.mandate'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread.main.attachment', 'mail.activity.mixin']
     _description = 'SDD Mandate'
 
     _sql_constraints = [('name_unique', 'unique(name)', "Mandate identifier must be unique ! Please choose another one.")]

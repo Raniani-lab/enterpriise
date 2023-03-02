@@ -24,7 +24,7 @@ _logger = logging.getLogger(__name__)
 class HrPayslip(models.Model):
     _name = 'hr.payslip'
     _description = 'Pay Slip'
-    _inherit = ['mail.thread.cc', 'mail.activity.mixin']
+    _inherit = ['mail.thread.cc', 'mail.thread.main.attachment', 'mail.activity.mixin']
     _order = 'date_to desc'
 
     struct_id = fields.Many2one(

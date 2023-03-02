@@ -34,6 +34,11 @@ in order to test the whole mail codebase. """,
     'data': [
         'security/ir.model.access.csv',
     ],
+    'assets': {
+        'web.qunit_suite_tests': [
+            'test_mail_enterprise/static/tests/**/*.js',
+        ],
+    },
     'installable': True,
     'license': 'OEEL-1',
 }

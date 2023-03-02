@@ -7,6 +7,7 @@ import io
 
 from PyPDF2 import PdfFileReader
 from collections import defaultdict
+from random import randint
 
 from odoo import api, fields, models, Command, _
 from odoo.exceptions import UserError, AccessError, ValidationError
@@ -155,7 +156,7 @@ class SignTemplate(models.Model):
             'name': "Template \"%(name)s\"" % {'name': self.attachment_id.name},
             'type': 'ir.actions.client',
             'tag': 'sign.Template',
-            'context': {
+            'params': {
                 'id': self.id,
                 'sign_directly_without_mail': sign_directly_without_mail,
             },
@@ -314,7 +315,7 @@ class SignTemplate(models.Model):
             'type': 'ir.actions.client',
             'tag': 'sign.Template',
             'name': template.name,
-            'context': {
+            'params': {
                 'sign_edit_call': 'sign_send_request',
                 'id': template.id,
                 'sign_directly_without_mail': False
@@ -328,8 +329,11 @@ class SignTemplateTag(models.Model):
     _description = "Sign Template Tag"
     _order = "name"
 
+    def _get_default_color(self):
+        return randint(1, 11)
+
     name = fields.Char('Tag Name', required=True, translate=True)
-    color = fields.Integer('Color Index')
+    color = fields.Integer('Color Index', default=_get_default_color)
 
     _sql_constraints = [
         ('name_uniq', 'unique (name)', "Tag name already exists!"),
@@ -339,18 +343,19 @@ class SignTemplateTag(models.Model):
 class SignItemSelectionOption(models.Model):
     _name = "sign.item.option"
     _description = "Option of a selection Field"
+    _rec_name = "value"
 
     value = fields.Text(string="Option")
 
-    @api.model
-    def get_or_create(self, value):
-        option = self.search([('value', '=', value)], limit=1)
-        return option.id if option else self.create({'value': value}).id
+    _sql_constraints = [
+        ('value_uniq', 'unique (value)', "Value already exists!"),
+    ]
 
 
 class SignItem(models.Model):
     _name = "sign.item"
     _description = "Fields to be sign on Document"
+    _order = "page asc, posY asc, posX asc"
     _rec_name = 'template_id'
 
     template_id = fields.Many2one('sign.template', string="Document Template", required=True, ondelete='cascade')
@@ -415,6 +420,7 @@ class SignItemType(models.Model):
 class SignItemParty(models.Model):
     _name = "sign.item.role"
     _description = "Signature Item Party"
+    _rec_name = "name"
 
     name = fields.Char(required=True, translate=True)
     color = fields.Integer()
@@ -426,8 +432,6 @@ class SignItemParty(models.Model):
 
     change_authorized = fields.Boolean('Change Authorized', help="If checked, recipient of a document with this role can be changed after having sent the request. Useful to replace a signatory who is out of office, etc.")
 
-    @api.model
-    def get_or_create(self, name):
-        party = self.search([('name', '=', name)], limit=1)
-        party = party if party else self.create({'name': name})
-        return {'id': party.id, 'name': party.name, 'color': party.color}
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', "Name already exists!"),
+    ]

@@ -82,6 +82,7 @@ Let your customers follow the signature process easily.
             'sign/static/src/xml/*.xml',
             'sign/static/src/activity/**',
             'sign/static/src/backend_components/**/*',
+            'sign/static/src/dialogs/**/*',
             'sign/static/src/views/**/*',
         ],
         'web.assets_frontend': [

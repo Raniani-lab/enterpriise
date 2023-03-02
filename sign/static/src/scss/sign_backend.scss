@@ -170,7 +170,14 @@
             padding: 0;
             margin-bottom: 2px;
         }
+
+        .o_sign_template_header_wrapper {
+            .o_sign_template_tags_and_save .o_field_many2many_selection {
+                width: auto !important; //makes many2many field one line
+            }
+        }
     }
+
 
     .o_sign_create_partner {
         .fa-exclamation-circle {
@@ -181,6 +188,10 @@
             padding-left: 10px;
             color: map-get($theme-colors, 'success');
         }
+    }
+
+    #o_sign_select_options_input .o_field_tags {
+        width: 100%;
     }
 
     .o_sign_add_partner {
@@ -208,44 +219,6 @@
         top: 29px !important;
         left: -4px !important #{"/*rtl:ignore*/"};
         left: 4px !important #{"/*rtl:remove*/"};
-    }
-
-    .o_sign_item_custom_popover{
-
-        label {
-            display: inline-block;
-            max-width: 100%;
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 1em;
-        }
-
-        .o_input {
-            padding: 5px;
-        }
-
-        .o_sign_responsible_select {
-            display: block;
-            position: relative;
-        }
-    }
-
-    .popover {
-        .o_sign_delete_field_button {
-            float: right;
-            margin-top: 8px;
-            margin-bottom: 8px;
-        }
-
-        .o_sign_delete_field_button.fa-trash {
-            cursor: pointer;
-            opacity: 0.5;
-            transition: opacity ease 250ms;
-            margin-top: 8px;
-        }
-        :hover > .o_sign_delete_field_button.fa-trash {
-            opacity: 1.0;
-        }
     }
 
     .o_sign_close_button {

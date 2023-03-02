@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="sign.InitialsAllPagesDialog" owl="1">
+        <Dialog size="'md'">
+            <t t-set-slot="header" t-slot-scope="scope">
+                <t t-call="web.Dialog.header">
+                    <t t-set="close" t-value="scope.close"/>
+                </t>
+            </t>
+            <div class="m-2">
+                <label for="responsible_select_initials_input" class="col-md-2">Responsible</label>
+                <select id="responsible_select_initials_input" class="form-select w-75" t-ref="role_select">
+                    <t t-foreach="props.roles" t-as="role_id" t-key="role_id">
+                        <t t-set="role" t-value="props.roles[role_id]"/>
+                        <option t-att-value="role_id" t-att-selected="role_id === props.responsible">
+                                <t t-esc="role.name"/>
+                        </option>
+                    </t>
+                </select>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onAddOnceClick">Add Once</button>
+                <button class="btn btn-secondary" t-on-click="onAddToAllPagesClick">Add to all pages</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

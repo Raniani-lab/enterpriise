@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="sign.SignTemplateControlPanel" owl="1">
+        <ControlPanel display="controlPanelDisplay">
+            <t t-set-slot="control-panel-bottom-left" class="align-items-baseline">
+                <div class="o_cp_buttons">
+                    <t t-if="props.actionType === '' || props.actionType === 'sign_send_request'">
+                        <button type="button" class="btn btn-primary me-2 o_sign_template_send" t-on-click="onSendClick">Send</button>
+                        <button type="button" class="btn btn-primary me-2 o_sign_template_sign_now" t-on-click="onSignNowClick">Sign Now</button>
+                        <t t-if="showShareButton">
+                            <button type="button" class="btn btn-secondary me-2 o_sign_template_share" t-on-click="onShareClick">Share</button>
+                        </t>
+                    </t>
+                    <t t-elif="props.actionType === 'sign_template_edit'">
+                        <button type="button" class="btn btn-primary me-2 o_sign_template_save" t-on-click="props.goBackToKanban">Save</button>
+                        <button t-if="nextTemplate" type="button" class="btn btn-primary me-2 o_sign_template_next" t-on-click="onNextDocumentClick">
+                            Next Document
+                        </button>
+                    </t>
+                    <t t-if="showDuplicateButton">
+                        <div class="alert o_duplicate d-inline">
+                            <span class="fa fa-exclamation-triangle"/>
+                                <button type="button" class="o_sign_template_duplicate btn btn-link mb-1 p-0" t-on-click="duplicateTemplate">
+                                    Duplicate
+                                </button>
+                                this template to modify it.
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </ControlPanel>
+    </t>
+</templates>

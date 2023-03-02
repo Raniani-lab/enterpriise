@@ -1,6 +1,6 @@
 #viewerContainer { /* PDFJS Viewer */
     visibility: hidden;
-    opacity: 0.01;
+    opacity: 1;
 }
 
 #viewer { /* PDFJS Viewer */
@@ -116,6 +116,7 @@ textarea.o_sign_sign_item {
     width: 25px;
     border: 1px dashed black;
     text-align: center;
+    cursor: url(/web/static/img/openhand.cur), grab;
 }
 
 .o_sign_config_handle .fa-arrows {
@@ -169,8 +170,38 @@ textarea.o_sign_sign_item {
 .ui-selected, .ui-selecting { /* jQuery UI */
     box-shadow: 0px 0px 5px 1px orange;
 }
-.ui-resizable {
+.o_resize_handler {
     text-align: center;
+    display: block;
+    float: right;
+    position: absolute;
+    z-index: 90;
+}
+
+.resize_both {
+    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+    right: 0px;
+    bottom: 0px;
+    cursor: se-resize;
+    height: 10px;
+    width: 10px;
+    background-color: black;
+}
+
+.resize_height {
+    width: calc(100% - 25px);
+    height: 7px;
+    cursor: s-resize;
+    right: 0;
+    bottom: -5px;
+}
+
+.resize_width {
+    height: 100%;
+    width: 7px;
+    cursor: e-resize;
+    right: -5px;
+    top: 0;
 }
 
 .ui-draggable .ui-draggable-handle, .o_sign_field_type_button.ui-draggable { /* jQuery UI */
@@ -261,6 +292,7 @@ textarea.o_sign_sign_item {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    cursor: pointer;
 
     border: none;
 
@@ -367,6 +399,7 @@ textarea.o_sign_sign_item {
 .o_sign_drag_helper {
     position: fixed;
     z-index: 103;
+    pointer-events: none;
 }
 
 .o_sign_drag_side_helper {

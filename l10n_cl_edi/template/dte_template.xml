@@ -101,7 +101,10 @@
                     <VlrCodigo t-out="line.product_id.default_code"/>
                 </CdgItem>
                 <IndExe t-if="not line.tax_ids and not move.l10n_latam_document_type_id._is_doc_type_voucher() and line.price_total != 0 and line.price_subtotal != 0" t-out="'1'"/>
-                <IndExe t-if="line.price_total == 0 or line.price_subtotal == 0" t-out="'4'"/>
+                <t t-if="line.price_total == 0 or line.price_subtotal == 0">
+                    <IndExe t-if="not move.l10n_latam_document_type_id._is_doc_type_voucher()" t-out="'4'"/>
+                    <IndExe t-if="move.l10n_latam_document_type_id._is_doc_type_ticket()" t-out="'2'"/>
+                </t>
                 <NmbItem t-out="format_length(line.product_id.name, 80) or format_length(line.name, 80)"/>
                 <DscItem t-out="format_length(line.name, 1000)"/>
             <t t-if="line.price_unit > 0.0 or line.price_total > 0.0">

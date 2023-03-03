@@ -69,6 +69,7 @@ class Picking(models.Model):
     _inherit = 'stock.picking'
 
     l10n_pe_edi_transport_type = fields.Selection(
+        string='Transport type',
         selection=[
             ('01', 'Public transport'),
             ('02', 'Private transport'),

@@ -20,6 +20,18 @@ export class PlanningFormController extends FormController {
         });
     }
 
+    async saveButtonClicked(params = {}) {
+        // In case this is the nth occurence,
+        // and we update the number of occurences of the recurrency to < n,
+        // ths occurence will be deleted. In that case, we need to go back to previous view.
+        try {
+            return await super.saveButtonClicked({...params, throwOnError: true});
+        } catch {
+            this.env.config.historyBack()
+        }
+        return false;
+    }
+
     async onRecordSaved(record) {
         const dirtyFields = record.dirtyFields.map((f) => f.name);
         if (dirtyFields.includes("repeat") && record.data["repeat"]) {

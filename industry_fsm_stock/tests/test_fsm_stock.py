@@ -103,7 +103,10 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         move = self.task.sale_order_id.order_line.move_ids
         while move.move_orig_ids:
             move = move.move_orig_ids
-        self.assertNotEqual(move.move_line_ids.lot_id, self.lot_id2, "Lot automatically added on move lines is not the same as asked. (By default, it's the first lot available)")
+        self.assertEqual(move.move_line_ids[0].lot_id, self.lot_id2)
+        self.assertEqual(move.move_line_ids[0].reserved_qty, 2)
+        self.assertNotEqual(move.move_line_ids[1].lot_id, self.lot_id2, "Lot automatically added on move lines is not the same as asked. (By default, it's the first lot available)")
+        self.assertEqual(move.move_line_ids[1].reserved_qty, 1)
         self.task.with_user(self.project_user).action_fsm_validate()
         self.assertEqual(move.move_line_ids.lot_id, self.lot_id2, "Asked lots are added on move lines.")
         self.assertEqual(move.move_line_ids.qty_done, 3, "We deliver 3 (even they are only 2 in stock)")
@@ -904,7 +907,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
 
         so = self.task.sale_order_id
         so.action_confirm()
-        picking, delivery = so.picking_ids
+        delivery, picking = so.picking_ids
 
         self.assertRecordValues(picking.move_ids.move_line_ids, [
             {'product_id': product_01_sn.id, 'lot_id': p01sn01.id, 'reserved_uom_qty': 1.0},

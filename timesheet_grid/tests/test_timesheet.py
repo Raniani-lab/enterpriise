@@ -303,46 +303,6 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         ).get_timesheet_and_working_hours_for_employees('2021-04-01', '2021-04-30')
         self.assertEqual(working_hours[employee.id]['worked_hours'], 1.0)
 
-    def test_timesheet_grid_filter_equal_string(self):
-        """Make sure that if you use a filter with (not) equal to,
-           there won't be any error with grid view"""
-        row_fields = ['project_id', 'task_id']
-        col_field = 'date'
-        cell_field = 'unit_amount'
-        domain = [['employee_id', '=', self.user_employee.employee_id.id],
-                  ['project_id', '!=', False]]
-        grid_range = {'name': 'week', 'string': 'Week', 'span': 'week', 'step': 'day'}
-        orderby = 'project_id,task_id'
-
-        # Filter on project equal a different name, expect 0 row
-        new_domain = expression.AND([domain, [('project_id', '=', self.project_customer.name[:-1])]])
-        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
-        self.assertFalse(result['rows'])
-
-        # Filter on project not equal to exact name, expect 0 row
-        new_domain = expression.AND([domain, [('project_id', '!=', self.project_customer.name)]])
-        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
-        self.assertFalse(result['rows'])
-
-        # Filter on project_id to make sure there are timesheets
-        new_domain = expression.AND([domain, [('project_id', '=', self.project_customer.name)]])
-        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
-        self.assertEqual(len(result['rows']), 2)
-
-        # Filter on task equal to task1, expect timesheet1 (task 1)
-        new_domain = expression.AND([domain, [('task_id', '=', self.timesheet1.task_id.name)]])
-        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
-        self.assertEqual(len(result['rows']), 1)
-        self.assertEqual(result['rows'][0]['values']['project_id'][0], self.timesheet1.project_id.id)
-        self.assertEqual(result['rows'][0]['values']['task_id'][0], self.timesheet1.task_id.id)
-
-        # Filter on task not equal to task1, expect timesheet2 (task 2)
-        new_domain = expression.AND([domain, [('task_id', '!=', self.timesheet1.task_id.name)]])
-        result = self.env['account.analytic.line'].read_grid(row_fields, col_field, cell_field, domain=new_domain, range=grid_range, orderby=orderby)
-        self.assertEqual(len(result['rows']), 1)
-        self.assertEqual(result['rows'][0]['values']['project_id'][0], self.timesheet2.project_id.id)
-        self.assertEqual(result['rows'][0]['values']['task_id'][0], self.timesheet2.task_id.id)
-
     def test_timesheet_reminder(self):
         """ Reminder mail will be sent to both manager Administrator and User Officer to validate the timesheet """
         date = datetime(2022, 3, 3, 8, 8, 15)
@@ -396,25 +356,7 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         wizard = self.env[act_window_action['res_model']].with_context(act_window_action['context']).new()
         self.assertEqual(wizard.time_spent, 0.5)
 
-    def test_timesheet_grid_filter_task_without_project(self):
-        """Make sure that a task without project can not be pulled in the domain"""
-        row_fields = ['project_id', 'task_id']
-        col_field = 'date'
-        cell_field = 'unit_amount'
-        domain = [['employee_id', '=', self.user_employee.employee_id.id],
-                  ['project_id', '!=', False]]
-        orderby = 'project_id,task_id'
-        # add a task without project
-        self.env['project.task'].with_context({'mail_create_nolog': True}).create({
-            'name': 'Test task without project'
-        })
-        # look for this task
-        new_domain = expression.AND([domain, [('task_id', '=', 'Test task without project')]])
-        result = self.env['account.analytic.line'].with_context(group_expand="group_expand").read_grid(row_fields, col_field, cell_field, domain=new_domain, orderby=orderby)
-        # there is no error and nothing is in the result because a task witout project can not have timesheets
-        self.assertEqual(len(result['rows']), 0)
-
-    def test_adjust_grid(self):
+    def test_grid_update_cell(self):
         today_date = fields.Date.today()
         company = self.env['res.company'].create({'name': 'My_Company'})
         self.user_manager.company_ids = self.env.companies
@@ -432,8 +374,7 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         })
         timesheet.with_user(self.user_manager).action_validate_timesheet()
 
-        column_date = f'{today_date - timedelta(days=1)}/{today_date}'
-        Timesheet.adjust_grid([('id', '=', timesheet.id)], 'date', column_date, 'unit_amount', 3.0)
+        Timesheet.grid_update_cell([('id', '=', timesheet.id)], 'unit_amount', 3.0)
 
         self.assertEqual(Timesheet.search_count([('employee_id', '=', employee.id)]), 2, "Should create new timesheet instead of updating validated timesheet in cell")
 

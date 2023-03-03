@@ -41,10 +41,6 @@
             'timesheet_grid/static/tests/tours/timesheet_record_time.js',
         ],
         'web.qunit_suite_tests': [
-            ('after', 'web_grid/static/tests/legacy/mock_server.js', 'timesheet_grid/static/tests/legacy/timesheet_uom_tests.js'),
-            ('after', 'web_grid/static/tests/legacy/mock_server.js', 'timesheet_grid/static/tests/legacy/timesheet_grid_tests.js'),
-            ('after', 'web_grid/static/tests/legacy/mock_server.js', 'timesheet_grid/static/tests/legacy/timesheet_timer_grid_tests.js'),
-            ('after', 'web_grid/static/tests/legacy/mock_server.js', 'timesheet_grid/static/tests/task_progress_gantt_test.js'),
             "timesheet_grid/static/tests/*",
         ],
     }

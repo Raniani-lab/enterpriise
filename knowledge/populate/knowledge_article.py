@@ -112,8 +112,11 @@ class KnowledgeArticle(models.Model):
         if admin_partner_id not in internals and random.choices([True, False], weights=[0.5, 0.5], k=1)[0]:
             internals.append(admin_partner_id)
 
-        favorite_partner_ids = []
-        for partner_id in internals + externals:
+        # If there are article members, check their permissions, otherwise, all are favorites
+        all_partners = internals + externals
+        favorite_partner_ids, partners_to_check_access = ([], all_partners) if article_member_ids else (all_partners, [])
+
+        for partner_id in partners_to_check_access:
             member_access = next(
                 (
                     member[2]['permission']
@@ -123,7 +126,7 @@ class KnowledgeArticle(models.Model):
                 False
             )
 
-            if member_access and member_access == 'none':
+            if member_access == 'none':
                 continue  # specified no access for this partner -> pass
 
             if internal_permission == 'none' and not member_access:

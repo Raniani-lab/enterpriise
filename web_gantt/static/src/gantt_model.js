@@ -6,7 +6,7 @@ import { deserializeDate, deserializeDateTime, serializeDateTime } from "@web/co
 import { localization } from "@web/core/l10n/localization";
 import { x2ManyCommands } from "@web/core/orm_service";
 import { registry } from "@web/core/registry";
-import { groupBy } from "@web/core/utils/arrays";
+import { groupBy, unique } from "@web/core/utils/arrays";
 import { KeepLast, Mutex } from "@web/core/utils/concurrency";
 import { pick } from "@web/core/utils/objects";
 import { sprintf } from "@web/core/utils/strings";
@@ -70,6 +70,7 @@ const { DateTime } = luxon;
  * @property {number} groupLevel
  * @property {boolean} isGroup
  * @property {string} name
+ * @property {number[]} recordIds
  * @property {ProgressBar} [progressBar]
  * @property {number | false} resId
  * @property {Row[]} [rows]
@@ -174,7 +175,10 @@ export class GanttModel extends Model {
 
         const metaData = this._buildMetaData();
 
-        const params = { groupedBy: this._getGroupedBy(metaData, searchParams) };
+        const params = {
+            groupedBy: this._getGroupedBy(metaData, searchParams),
+            pagerOffset: 0,
+        };
 
         if (!metaData.scale) {
             Object.assign(
@@ -506,6 +510,10 @@ export class GanttModel extends Model {
         this.notify();
     }
 
+    async updatePagerParams({ limit, offset }) {
+        await this.fetchData({ pagerLimit: limit, pagerOffset: offset });
+    }
+
     //-------------------------------------------------------------------------
     // Protected
     //-------------------------------------------------------------------------
@@ -541,8 +549,8 @@ export class GanttModel extends Model {
     }
 
     /**
-     * Return a copy of this.data or of the last copy, extended with optional
-     * params. This is useful for async methods that need to modify this.data,
+     * Return a copy of this.metaData or of the last copy, extended with optional
+     * params. This is useful for async methods that need to modify this.metaData,
      * but it can't be done in place directly for the model to be concurrency
      * proof (so they work on a copy and commit it at the end).
      *
@@ -568,6 +576,13 @@ export class GanttModel extends Model {
         if (params.focusDate) {
             this._nextMetaData.focusDate = params.focusDate;
             recomputeRange = true;
+        }
+
+        if ("pagerLimit" in params) {
+            this._nextMetaData.pagerLimit = params.pagerLimit;
+        }
+        if ("pagerOffset" in params) {
+            this._nextMetaData.pagerOffset = params.pagerOffset;
         }
 
         if (recomputeRange) {
@@ -610,7 +625,7 @@ export class GanttModel extends Model {
      * @param {MetaData} metaData
      */
     async _fetchData(metaData) {
-        const { groupedBy, resModel } = metaData;
+        const { groupedBy, pagerLimit, pagerOffset, resModel } = metaData;
         const context = {
             ...this.searchParams.context,
             group_by: groupedBy,
@@ -625,26 +640,22 @@ export class GanttModel extends Model {
             }
         }
 
-        const proms = [this.orm.webSearchRead(resModel, domain, { context, specification })];
-        if (groupedBy.length) {
-            proms.push(
-                this.orm.webReadGroup(resModel, domain, fields, groupedBy, {
-                    lazy: groupedBy.length === 1,
-                    context,
-                })
-            );
-        }
-
-        const [webSearchReadResult, webReadGroupResult] = await this.keepLast.add(
-            Promise.all(proms)
+        const { length, groups, records } = await this.keepLast.add(
+            this.orm.call(resModel, "get_gantt_data", [], {
+                domain,
+                groupby: groupedBy,
+                read_specification: specification,
+                context,
+                limit: pagerLimit,
+                offset: pagerOffset,
+            })
         );
-        const groups = webReadGroupResult ? webReadGroupResult.groups : [];
+
         groups.forEach((g) => (g.fromServer = true));
 
-        const data = {};
+        const data = { count: length };
 
-        data.records = this._parseServerData(metaData, webSearchReadResult.records);
-
+        data.records = this._parseServerData(metaData, records);
         data.rows = this._generateRows(metaData, {
             groupedBy,
             groups,
@@ -774,12 +785,17 @@ export class GanttModel extends Model {
         const parentGroup = params.parentGroup;
 
         if (!groupedBy.length || !groups.length) {
+            const recordIds = [];
+            for (const g of groups) {
+                recordIds.push(...(g.__record_ids || []));
+            }
             return [
                 {
                     groupLevel,
                     id: JSON.stringify([...parentGroup, {}]),
                     isGroup: false,
                     name: "",
+                    recordIds: unique(recordIds),
                 },
             ];
         }
@@ -813,6 +829,10 @@ export class GanttModel extends Model {
             const id = JSON.stringify(fakeGroup);
             const resId = Array.isArray(value) ? value[0] : value; // not really a resId
             const fromServer = subGroups.some((g) => g.fromServer);
+            const recordIds = [];
+            for (const g of subGroups) {
+                recordIds.push(...(g.__record_ids || []));
+            }
             const row = {
                 consolidate,
                 fromServer,
@@ -823,6 +843,7 @@ export class GanttModel extends Model {
                 isGroup,
                 name: this._getRowName(metaData, groupedByField, value),
                 resId, // not really a resId
+                recordIds: unique(recordIds),
             };
             // if isGroup Generate sub rows
             if (isGroup) {

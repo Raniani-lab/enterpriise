@@ -208,6 +208,7 @@ function getInfoFromRootNode(rootNode) {
         dynamicRange: archParseBoolean(attrs.dynamic_range),
         formViewId: attrs.form_view_id ? parseInt(attrs.form_view_id, 10) : false,
         offset: attrs.offset,
+        pagerLimit: attrs.groups_limit ? parseInt(attrs.groups_limit, 10) : null,
         pillDecorations,
         progressBarFields: attrs.progress_bar ? attrs.progress_bar.split(",") : null,
         progressField: attrs.progress || null,

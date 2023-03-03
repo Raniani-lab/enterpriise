@@ -581,10 +581,11 @@ export class GanttRenderer extends Component {
                 start,
                 stop,
             };
-            const isToday = ["week", "month"].includes(scale.id) && date.hasSame(now, "day")
-                  || scale.id === "year" && date.hasSame(now, "month")
-                  || scale.id === "day" && date.hasSame(now, "hour");
-                  
+            const isToday =
+                (["week", "month"].includes(scale.id) && date.hasSame(now, "day")) ||
+                (scale.id === "year" && date.hasSame(now, "month")) ||
+                (scale.id === "day" && date.hasSame(now, "hour"));
+
             if (isToday) {
                 column.isToday = true;
             }
@@ -1324,6 +1325,7 @@ export class GanttRenderer extends Component {
             isGroup: true,
             rows: [],
             name: _t("Total"),
+            recordIds: pills.map(({ record }) => record.id),
         };
 
         this.topOffset = 0;
@@ -1453,6 +1455,7 @@ export class GanttRenderer extends Component {
             resId,
             rows,
             unavailabilities,
+            recordIds,
         } = row;
 
         // compute the subset pills at row level
@@ -1462,22 +1465,13 @@ export class GanttRenderer extends Component {
         const isMany2many = groupedByField && fields[groupedByField].type === "many2many";
         for (const pill of pills) {
             const { record } = pill;
-            let pushPill;
+            const pushPill = recordIds.includes(record.id);
             let keepPill = false;
-            if (groupedByField) {
+            if (pushPill && isMany2many) {
                 const value = record[groupedByField];
-                if (isMany2many) {
-                    if ((value.length === 0 && resId === false) || value.includes(resId)) {
-                        pushPill = true;
-                        if (value.length > 1) {
-                            keepPill = true;
-                        }
-                    }
-                } else if ((Array.isArray(value) ? value[0] : value) === resId) {
-                    pushPill = true;
+                if (Array.isArray(value) && value.length > 1) {
+                    keepPill = true;
                 }
-            } else {
-                pushPill = true;
             }
             if (pushPill) {
                 const rowPill = { ...pill };

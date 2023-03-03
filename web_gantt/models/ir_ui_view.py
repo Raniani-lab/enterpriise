@@ -44,6 +44,7 @@ GANTT_VALID_ATTRIBUTES = set([
     'dependency_field',
     'dependency_inverted_field',
     'pill_label',
+    'groups_limit'
 ])
 
 class View(models.Model):

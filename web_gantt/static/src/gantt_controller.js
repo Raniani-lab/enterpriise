@@ -9,6 +9,7 @@ import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { Layout } from "@web/search/layout";
 import { standardViewProps } from "@web/views/standard_view_props";
 import { useModelWithSampleData } from "@web/model/model";
+import { usePager } from "@web/search/pager_hook";
 import { useService } from "@web/core/utils/hooks";
 import { SearchBar } from "@web/search/search_bar/search_bar";
 import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
@@ -48,6 +49,21 @@ export class GanttController extends Component {
         });
 
         onWillUnmount(() => this.closeDialog?.());
+
+        usePager(() => {
+            const { groupedBy, pagerLimit, pagerOffset } = this.model.metaData;
+            const { count } = this.model.data;
+            if (pagerLimit !== null && groupedBy.length) {
+                return {
+                    offset: pagerOffset,
+                    limit: pagerLimit,
+                    total: count,
+                    onUpdate: async ({ offset, limit }) => {
+                        await this.model.updatePagerParams({ offset, limit });
+                    },
+                };
+            }
+        });
 
         const rootRef = useRef("root");
         useEffect(

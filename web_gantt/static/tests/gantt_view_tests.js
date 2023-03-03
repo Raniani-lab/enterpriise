@@ -43,6 +43,7 @@ import {
     SELECTORS,
     setScale,
 } from "./helpers";
+import { MockServer } from "@web/../tests/helpers/mock_server";
 
 function randomName(length) {
     const CHARS = "abcdefghijklmnopqrstuvwxyzàùéèâîûêôäïüëö";
@@ -293,10 +294,8 @@ QUnit.test("ungrouped gantt rendering", async (assert) => {
     const webClient = await createWebClient({
         serverData,
         mockRPC(_, { method, model }) {
-            if (method === "web_search_read") {
+            if (method === "get_gantt_data") {
                 assert.step(model);
-            } else if (method === "web_read_group") {
-                throw Error("Should not call read_group when no groupby!");
             }
         },
     });
@@ -461,12 +460,18 @@ QUnit.test("single-level grouped gantt rendering", async (assert) => {
 
 QUnit.test("single-level grouped gantt rendering with group_expand", async (assert) => {
     const groups = [
-        { project_id: [20, "Unused Project 1"], project_id_count: 0 },
-        { project_id: [50, "Unused Project 2"], project_id_count: 0 },
-        { project_id: [2, "Project 2"], project_id_count: 2 },
-        { project_id: [30, "Unused Project 3"], project_id_count: 0 },
-        { project_id: [1, "Project 1"], project_id_count: 4 },
+        { project_id: [20, "Unused Project 1"], __record_ids: [] },
+        { project_id: [50, "Unused Project 2"], __record_ids: [] },
+        { project_id: [2, "Project 2"], __record_ids: [5, 7] },
+        { project_id: [30, "Unused Project 3"], __record_ids: [] },
+        { project_id: [1, "Project 1"], __record_ids: [1, 2, 3, 4] },
     ];
+
+    patchWithCleanup(MockServer.prototype, {
+        mockWebReadGroup() {
+            return { groups, length: groups.length };
+        },
+    });
 
     await makeView({
         type: "gantt",
@@ -474,11 +479,6 @@ QUnit.test("single-level grouped gantt rendering with group_expand", async (asse
         serverData,
         arch: `<gantt string="Tasks" date_start="start" date_stop="stop"/>`,
         groupBy: ["project_id"],
-        mockRPC(_, args) {
-            if (args.method === "web_read_group") {
-                return Promise.resolve({ groups, length: groups.length });
-            }
-        },
     });
     assert.strictEqual(getActiveScale(), "Month");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
@@ -807,53 +807,37 @@ QUnit.test("gantt rendering, thumbnails", async (assert) => {
         type: "gantt",
         resModel: "tasks",
         serverData,
-        arch: `<gantt string="Tasks" date_start="start" date_stop="stop" thumbnails="{'user_id': 'image'}"/>`,
+        arch: `<gantt date_start="start" date_stop="stop" thumbnails="{'user_id': 'image'}"/>`,
         groupBy: ["user_id"],
         mockRPC: function (_, args) {
-            if (args.method === "web_search_read") {
-                return Promise.resolve({
+            if (args.method === "get_gantt_data") {
+                return {
+                    groups: [
+                        {
+                            user_id: [1, "User 1"],
+                            __record_ids: [1],
+                        },
+                        {
+                            user_id: false,
+                            __record_ids: [2],
+                        },
+                    ],
+                    length: 2,
                     records: [
                         {
                             display_name: "Task 1",
                             id: 1,
                             start: "2018-11-30 18:30:00",
                             stop: "2018-12-31 18:29:59",
-                            user_id: { id: 1, display_name: "User 2" },
                         },
                         {
-                            display_name: "FALSE",
-                            id: 1,
+                            display_name: "Task 2",
+                            id: 2,
                             start: "2018-12-01 18:30:00",
                             stop: "2018-12-02 18:29:59",
-                            user_id: false,
                         },
                     ],
-                });
-            }
-            if (args.method === "web_read_group") {
-                return Promise.resolve({
-                    groups: [
-                        {
-                            user_id: [1, "User 1"],
-                            user_id_count: 3,
-                            __domain: [
-                                ["user_id", "=", 1],
-                                ["start", "<=", "2018-12-31 23:59:59"],
-                                ["stop", ">=", "2018-12-01 00:00:00"],
-                            ],
-                        },
-                        {
-                            user_id: false,
-                            user_id_count: 3,
-                            __domain: [
-                                ["user_id", "=", false],
-                                ["start", "<=", "2018-12-31 23:59:59"],
-                                ["stop", ">=", "2018-12-01 00:00:00"],
-                            ],
-                        },
-                    ],
-                    length: 2,
-                });
+                };
             }
         },
     });
@@ -1242,7 +1226,7 @@ QUnit.test("date navigation with timezone (1h)", async (assert) => {
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" />',
         mockRPC(_, { method, kwargs }) {
-            if (method === "web_search_read") {
+            if (method === "get_gantt_data") {
                 assert.step(kwargs.domain.toString());
             }
         },
@@ -1332,15 +1316,15 @@ QUnit.test(
             serverData,
             arch: '<gantt date_start="start" date_stop="stop" on_create="this_is_create_action" />',
             mockRPC: function (_, { method }) {
-                if (method === "web_search_read") {
-                    assert.step("web_search_read");
+                if (method === "get_gantt_data") {
+                    assert.step("get_gantt_data");
                 }
             },
         });
 
-        assert.verifySteps(["web_search_read"]);
+        assert.verifySteps(["get_gantt_data"]);
         await click($(SELECTORS.addButton + ":visible").get(0));
-        assert.verifySteps(["[action] this_is_create_action", "web_search_read"]);
+        assert.verifySteps(["[action] this_is_create_action", "get_gantt_data"]);
     }
 );
 
@@ -2222,7 +2206,7 @@ QUnit.test("pill is updated after failed resized", async (assert) => {
         domain: [["id", "=", 7]],
         async mockRPC(_route, { method }) {
             switch (method) {
-                case "web_search_read": {
+                case "get_gantt_data": {
                     assert.step(method);
                     break;
                 }
@@ -2241,7 +2225,7 @@ QUnit.test("pill is updated after failed resized", async (assert) => {
 
     assert.strictEqual(initialPillWidth, getPillWrapper("Task 7").getBoundingClientRect().width);
 
-    assert.verifySteps(["web_search_read", "write", "web_search_read"]);
+    assert.verifySteps(["get_gantt_data", "write", "get_gantt_data"]);
 });
 
 QUnit.test("move a pill in the same row", async (assert) => {
@@ -2678,7 +2662,7 @@ QUnit.test("gantt_unavailability reloads when the view's scale changes", async (
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
         async mockRPC(_route, { args, method }) {
-            if (method === "web_search_read") {
+            if (method === "get_gantt_data") {
                 reloadCount++;
             } else if (method === "gantt_unavailability") {
                 unavailabilityCallCount++;
@@ -2741,7 +2725,7 @@ QUnit.test("gantt_unavailability reload when period changes", async (assert) => 
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" display_unavailability="1" />',
         async mockRPC(_route, { args, method }) {
-            if (method === "web_search_read") {
+            if (method === "get_gantt_data") {
                 reloadCount++;
             } else if (method === "gantt_unavailability") {
                 unavailabilityCallCount++;
@@ -2782,7 +2766,7 @@ QUnit.test(
             serverData,
             arch: '<gantt date_start="start" date_stop="stop" />',
             async mockRPC(_route, { args, method }) {
-                if (method === "web_search_read") {
+                if (method === "get_gantt_data") {
                     reloadCount++;
                 } else if (method === "gantt_unavailability") {
                     unavailabilityCallCount++;
@@ -4057,7 +4041,7 @@ QUnit.test("concurrent scale switches return in inverse order", async (assert) =
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" />',
         async mockRPC(_, { method }) {
-            if (method === "web_search_read") {
+            if (method === "get_gantt_data") {
                 await reloadProm;
             }
         },
@@ -4195,7 +4179,7 @@ QUnit.test("concurrent focusDate selections", async (assert) => {
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" />',
         async mockRPC(_, { method }) {
-            if (method === "web_search_read") {
+            if (method === "get_gantt_data") {
                 await reloadProm;
             }
         },
@@ -4241,10 +4225,7 @@ QUnit.test("concurrent pill resize and groupBy change", async (assert) => {
         },
     });
 
-    assert.verifySteps([
-        JSON.stringify(["get_views", []]),
-        JSON.stringify(["web_search_read", []]),
-    ]);
+    assert.verifySteps([JSON.stringify(["get_views", []]), JSON.stringify(["get_gantt_data", []])]);
 
     assert.deepEqual(getGridContent().rows, [
         {
@@ -4272,10 +4253,7 @@ QUnit.test("concurrent pill resize and groupBy change", async (assert) => {
     await toggleSearchBarMenu(target);
     await toggleMenuItem(target, "Project");
 
-    assert.verifySteps([
-        JSON.stringify(["web_search_read", []]),
-        JSON.stringify(["web_read_group", []]),
-    ]);
+    assert.verifySteps([JSON.stringify(["get_gantt_data", []])]);
 
     assert.deepEqual(getGridContent().rows, [
         {
@@ -4303,10 +4281,7 @@ QUnit.test("concurrent pill resize and groupBy change", async (assert) => {
     writeDef.resolve();
     await nextTick();
 
-    assert.verifySteps([
-        JSON.stringify(["web_search_read", []]),
-        JSON.stringify(["web_read_group", []]),
-    ]);
+    assert.verifySteps([JSON.stringify(["get_gantt_data", []])]);
 
     assert.deepEqual(getGridContent().rows, [
         {
@@ -4364,11 +4339,11 @@ QUnit.test("concurrent pill resizes return in inverse order", async (assert) => 
 
     assert.verifySteps([
         JSON.stringify(["get_views", []]),
-        JSON.stringify(["web_search_read", []]),
+        JSON.stringify(["get_gantt_data", []]),
         JSON.stringify(["write", [[2], { stop: "2018-12-21 06:29:59" }]]),
-        JSON.stringify(["web_search_read", []]),
+        JSON.stringify(["get_gantt_data", []]),
         JSON.stringify(["write", [[2], { stop: "2018-12-24 06:29:59" }]]),
-        JSON.stringify(["web_search_read", []]),
+        JSON.stringify(["get_gantt_data", []]),
     ]);
 });
 
@@ -4654,7 +4629,7 @@ QUnit.test("plan dialog initial domain has the action domain as its only base", 
     const webClient = await createWebClient({
         serverData,
         mockRPC: function (route, args) {
-            if (args.method === "web_search_read") {
+            if (["get_gantt_data", "web_search_read"].includes(args.method)) {
                 assert.step(args.kwargs.domain.toString());
             }
         },
@@ -6001,6 +5976,399 @@ QUnit.test("date grid and dst summerToWinter (2 cell part)", async (assert) => {
         "2019-10-31T12:00:00.000+01:00",
         "2019-11-01T00:00:00.000+01:00",
     ]);
+});
+
+QUnit.test("groups_limit attribute (no groupBy)", async (assert) => {
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt
+                date_start="start"
+                date_stop="stop"
+                groups_limit="2"
+            />
+        `,
+        mockRPC(_, { method, kwargs }) {
+            assert.step(method);
+            if (kwargs.limit) {
+                assert.step(`with limit ${kwargs.limit}`);
+            }
+        },
+    });
+
+    assert.containsNone(target, ".o_gantt_view .o_control_panel .o_pager"); // only one group here!
+    assert.verifySteps(["get_views", "get_gantt_data", "with limit 2"]);
+    const { rows } = getGridContent();
+    assert.deepEqual(rows, [
+        {
+            pills: [
+                {
+                    colSpan: "01 -> 31",
+                    level: 0,
+                    title: "Task 1",
+                },
+                {
+                    colSpan: "01 -> 04 (1/2)",
+                    level: 1,
+                    title: "Task 5",
+                },
+                {
+                    colSpan: "17 (1/2) -> 22 (1/2)",
+                    level: 1,
+                    title: "Task 2",
+                },
+                {
+                    colSpan: "20 -> 20 (1/2)",
+                    level: 2,
+                    title: "Task 4",
+                },
+                {
+                    colSpan: "20 (1/2) -> 20",
+                    level: 2,
+                    title: "Task 7",
+                },
+                {
+                    colSpan: "27 -> 31",
+                    level: 1,
+                    title: "Task 3",
+                },
+            ],
+        },
+    ]);
+});
+
+QUnit.test("groups_limit attribute (one groupBy)", async (assert) => {
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt
+                date_start="start"
+                date_stop="stop"
+                groups_limit="2"
+            />
+        `,
+        groupBy: ["stage_id"],
+        mockRPC(_, { method, kwargs }) {
+            assert.step(method);
+            if (kwargs.limit) {
+                assert.step(`with limit ${kwargs.limit}`);
+                assert.step(`with offset ${kwargs.offset}`);
+            }
+        },
+    });
+
+    assert.containsOnce(target, ".o_gantt_view .o_control_panel .o_pager");
+    assert.strictEqual(target.querySelector(".o_pager_value").innerText, "1-2");
+    assert.strictEqual(target.querySelector(".o_pager_limit").innerText, "4");
+    let rows = getGridContent().rows;
+    assert.deepEqual(rows, [
+        {
+            pills: [
+                {
+                    colSpan: "01 -> 04 (1/2)",
+                    level: 0,
+                    title: "Task 5",
+                },
+            ],
+            title: "todo",
+        },
+        {
+            pills: [
+                {
+                    colSpan: "01 -> 31",
+                    level: 0,
+                    title: "Task 1",
+                },
+                {
+                    colSpan: "20 (1/2) -> 20",
+                    level: 1,
+                    title: "Task 7",
+                },
+            ],
+            title: "in_progress",
+        },
+    ]);
+    assert.verifySteps(["get_views", "get_gantt_data", "with limit 2", "with offset 0"]);
+
+    await click(target, ".o_pager_next");
+    assert.strictEqual(target.querySelector(".o_pager_value").innerText, "3-4");
+    assert.strictEqual(target.querySelector(".o_pager_limit").innerText, "4");
+    rows = getGridContent().rows;
+    assert.deepEqual(rows, [
+        {
+            pills: [
+                {
+                    colSpan: "17 (1/2) -> 22 (1/2)",
+                    level: 0,
+                    title: "Task 2",
+                },
+            ],
+            title: "done",
+        },
+        {
+            pills: [
+                {
+                    colSpan: "20 -> 20 (1/2)",
+                    level: 0,
+                    title: "Task 4",
+                },
+                {
+                    colSpan: "27 -> 31",
+                    level: 0,
+                    title: "Task 3",
+                },
+            ],
+            title: "cancel",
+        },
+    ]);
+    assert.verifySteps(["get_gantt_data", "with limit 2", "with offset 2"]);
+});
+
+QUnit.test("groups_limit attribute (two groupBys)", async (assert) => {
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt
+                date_start="start"
+                date_stop="stop"
+                groups_limit="2"
+            />
+        `,
+        groupBy: ["stage_id", "project_id"],
+        mockRPC(_, { method, kwargs }) {
+            assert.step(method);
+            if (kwargs.limit) {
+                assert.step(`with limit ${kwargs.limit}`);
+                assert.step(`with offset ${kwargs.offset}`);
+            }
+        },
+    });
+
+    assert.containsOnce(target, ".o_gantt_view .o_control_panel .o_pager");
+    assert.strictEqual(target.querySelector(".o_pager_value").innerText, "1-2");
+    assert.strictEqual(target.querySelector(".o_pager_limit").innerText, "5");
+    let rows = getGridContent().rows;
+    assert.deepEqual(rows, [
+        {
+            isGroup: true,
+            pills: [
+                {
+                    colSpan: "01 -> 04 (1/2)",
+                    title: "1",
+                },
+            ],
+            title: "todo",
+        },
+        {
+            pills: [
+                {
+                    colSpan: "01 -> 04 (1/2)",
+                    level: 0,
+                    title: "Task 5",
+                },
+            ],
+            title: "Project 2",
+        },
+        {
+            isGroup: true,
+            pills: [
+                {
+                    colSpan: "01 -> 31",
+                    title: "1",
+                },
+            ],
+            title: "in_progress",
+        },
+        {
+            pills: [
+                {
+                    colSpan: "01 -> 31",
+                    level: 0,
+                    title: "Task 1",
+                },
+            ],
+            title: "Project 1",
+        },
+    ]);
+    assert.verifySteps(["get_views", "get_gantt_data", "with limit 2", "with offset 0"]);
+
+    await click(target, ".o_pager_next");
+    assert.strictEqual(target.querySelector(".o_pager_value").innerText, "3-4");
+    assert.strictEqual(target.querySelector(".o_pager_limit").innerText, "5");
+    rows = getGridContent().rows;
+    assert.deepEqual(rows, [
+        {
+            isGroup: true,
+            pills: [
+                {
+                    colSpan: "20 (1/2) -> 20",
+                    title: "1",
+                },
+            ],
+            title: "in_progress",
+        },
+        {
+            pills: [
+                {
+                    colSpan: "20 (1/2) -> 20",
+                    level: 0,
+                    title: "Task 7",
+                },
+            ],
+            title: "Project 2",
+        },
+        {
+            isGroup: true,
+            pills: [
+                {
+                    colSpan: "17 (1/2) -> 22 (1/2)",
+                    title: "1",
+                },
+            ],
+            title: "done",
+        },
+        {
+            pills: [
+                {
+                    colSpan: "17 (1/2) -> 22 (1/2)",
+                    level: 0,
+                    title: "Task 2",
+                },
+            ],
+            title: "Project 1",
+        },
+    ]);
+    assert.verifySteps(["get_gantt_data", "with limit 2", "with offset 2"]);
+
+    await click(target, ".o_pager_next");
+    assert.strictEqual(target.querySelector(".o_pager_value").innerText, "5-5");
+    assert.strictEqual(target.querySelector(".o_pager_limit").innerText, "5");
+    rows = getGridContent().rows;
+    assert.deepEqual(rows, [
+        {
+            isGroup: true,
+            pills: [
+                {
+                    colSpan: "20 -> 20 (1/2)",
+                    title: "1",
+                },
+                {
+                    colSpan: "27 -> 31",
+                    title: "1",
+                },
+            ],
+            title: "cancel",
+        },
+        {
+            pills: [
+                {
+                    colSpan: "20 -> 20 (1/2)",
+                    level: 0,
+                    title: "Task 4",
+                },
+                {
+                    colSpan: "27 -> 31",
+                    level: 0,
+                    title: "Task 3",
+                },
+            ],
+            title: "Project 1",
+        },
+    ]);
+    assert.verifySteps(["get_gantt_data", "with limit 2", "with offset 4"]);
+});
+
+QUnit.test("groups_limit attribute in sample mode (no groupBy)", async (assert) => {
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt
+                date_start="start"
+                date_stop="stop"
+                groups_limit="2"
+                sample="1"
+            />
+        `,
+        domain: Domain.FALSE.toList(),
+        mockRPC(_, { method, kwargs }) {
+            assert.step(method);
+            if (kwargs.limit) {
+                assert.step(`with limit ${kwargs.limit}`);
+            }
+        },
+    });
+
+    assert.containsNone(target, ".o_gantt_view .o_control_panel .o_pager"); // only one group here!
+    assert.verifySteps(["get_views", "get_gantt_data", "with limit 2"]);
+});
+
+QUnit.test("groups_limit attribute in sample mode (one groupBy)", async (assert) => {
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt
+                date_start="start"
+                date_stop="stop"
+                groups_limit="2"
+                sample="1"
+            />
+        `,
+        domain: Domain.FALSE.toList(),
+        groupBy: ["stage_id"],
+        mockRPC(_, { method, kwargs }) {
+            assert.step(method);
+            if (kwargs.limit) {
+                assert.step(`with limit ${kwargs.limit}`);
+                assert.step(`with offset ${kwargs.offset}`);
+            }
+        },
+    });
+
+    assert.containsOnce(target, ".o_gantt_view .o_control_panel .o_pager");
+    assert.strictEqual(target.querySelector(".o_pager_value").innerText, "1-2");
+    assert.strictEqual(target.querySelector(".o_pager_limit").innerText, "2");
+    assert.containsN(target, ".o_gantt_row_title", 2);
+    assert.verifySteps(["get_views", "get_gantt_data", "with limit 2", "with offset 0"]);
+});
+
+QUnit.test("groups_limit attribute in sample mode (two groupBys)", async (assert) => {
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: `
+            <gantt
+                date_start="start"
+                date_stop="stop"
+                groups_limit="2"
+                sample="1"
+            />
+        `,
+        domain: Domain.FALSE.toList(),
+        groupBy: ["stage_id", "project_id"],
+        mockRPC(_, { method, kwargs }) {
+            assert.step(method);
+            if (kwargs.limit) {
+                assert.step(`with limit ${kwargs.limit}`);
+                assert.step(`with offset ${kwargs.offset}`);
+            }
+        },
+    });
+
+    assert.containsOnce(target, ".o_gantt_view .o_control_panel .o_pager");
+    assert.strictEqual(target.querySelector(".o_pager_value").innerText, "1-2");
+    assert.strictEqual(target.querySelector(".o_pager_limit").innerText, "2");
+    assert.verifySteps(["get_views", "get_gantt_data", "with limit 2", "with offset 0"]);
 });
 
 // MANUAL TESTING

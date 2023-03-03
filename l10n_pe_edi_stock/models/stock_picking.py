@@ -85,11 +85,12 @@ class Picking(models.Model):
         related='company_id.country_id.code',
         depends=['company_id.country_id'])
     l10n_pe_edi_error = fields.Html(
+        string="EDI error details",
         copy=False)
     l10n_pe_edi_ticket_number = fields.Char(
         string="Ticket Number",
         readonly=True, tracking=True, copy=False,
-        help="Saves the folio asigned to when post the EDI document",
+        help="Number issued by SUNAT when sending the delivery guide, used to retrieve the CDR.",
     )
     l10n_pe_edi_reason_for_transfer = fields.Selection(
         selection=PE_TRANSFER_REASONS,
@@ -99,27 +100,32 @@ class Picking(models.Model):
         store=True,
         readonly=False)
     l10n_pe_edi_departure_start_date = fields.Date(
-        'Transfer Start Date',
-        help='By default this is when the transfer is validated, but to make it possible to '
-        'still send the delivery guide when the transport is some days later, the user can still adapt this date.')
+        string='Transfer Start Date',
+        help='The date when the transfer is expected to start.'
+    )
     l10n_pe_edi_vehicle_id = fields.Many2one(
+        string='Vehicle',
         comodel_name='l10n_pe_edi.vehicle',
         copy=False,
         check_company=True)
     l10n_pe_edi_operator_id = fields.Many2one(
+        string='Operator',
         comodel_name='res.partner',
         compute='_compute_l10n_pe_edi_operator',
         store=True,
         readonly=False,
         check_company=True,
-        help='If the transport is public, please define the transport provider, else, the internal operator.')
+        help='The transport provider in case of public transport, else the internal operator.',
+    )
     l10n_latam_document_number = fields.Char(
         string='Delivery Guide Number',
-        copy=False)
+        copy=False,
+        help="The number of the related document.")
     l10n_pe_edi_observation = fields.Text(
-        'Observation',
+        string='Observation',
         help='Additional information to be displayed in the Delivery Slip in order to clarify or '
-        'complement information about the transferred products. It has a maximum length of 250 characters.')
+             'complement information about the transferred products. Maximum length: 250 characters.'
+    )
     l10n_pe_edi_document_number = fields.Char(
         string="Related Document Number",
         copy=False,
@@ -128,8 +134,10 @@ class Picking(models.Model):
         selection=PE_RELATED_DOCUMENT,
         string="Related Document Type",
         copy=False,
+        help="The type of the related document."
     )
     l10n_pe_edi_content = fields.Binary(
+        string="Delivery guide content",
         compute='_l10n_pe_edi_compute_edi_content',
         compute_sudo=True)
 
@@ -168,7 +176,7 @@ class Picking(models.Model):
             errors = record._l10n_pe_edi_generate_missing_data_error_list()
             if not errors:
                 continue
-            raise UserError(_("Invalid picking configuration:\n\n%s") % '\n'.join(errors))
+            raise UserError('%s\n\n%s' % (_("Invalid picking configuration:"), '\n'.join(errors)))
 
     def _l10n_pe_edi_generate_missing_data_error_list(self):
         """ Check that all the required data is present before generating the delivery guide.
@@ -244,18 +252,17 @@ class Picking(models.Model):
         }
 
     def action_send_delivery_guide(self):
-        """Make the validations required to generate the EDI document, generates the XML, and sent to sign in the
-        SUNAT"""
+        """Check required fields, generate the XML delivery guide, and send it to SUNAT"""
         self._check_company()
         self._l10n_pe_edi_check_required_data()
         for record in self:
             # == Generate a document number ==
             if not record.l10n_latam_document_number:
-                sunat_sequence = record.env['ir.sequence'].search([
+                sunat_sequence = self.env['ir.sequence'].search([
                     ('code', '=', 'l10n_pe_edi_stock.stock_picking_sunat_sequence'),
                     ('company_id', '=', record.company_id.id)], limit=1)
                 if not sunat_sequence:
-                    sunat_sequence = record.env['ir.sequence'].sudo().create({
+                    sunat_sequence = self.env['ir.sequence'].sudo().create({
                         'name': 'Stock Picking Sunat Sequence %s' % record.company_id.name,
                         'code': 'l10n_pe_edi_stock.stock_picking_sunat_sequence',
                         'padding': 8,
@@ -276,7 +283,7 @@ class Picking(models.Model):
 
             # == Create the attachments ==
             if res.get('cdr'):
-                attachments = record.env['ir.attachment'].create([
+                attachments = self.env['ir.attachment'].create([
                     {
                         'name': '%s-09-%s.xml' % (record.company_id.vat, record.l10n_latam_document_number),
                         'res_model': record._name,

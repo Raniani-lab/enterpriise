@@ -23,5 +23,5 @@ class ProductTemplate(models.Model):
             ('2302200000', 'Not applicable'),
         ],
         string="Tariff Fraction (PE)",
-        help="It is used to express the key of the tariff fraction corresponding to the description of the product."
+        help="The tariff fraction number corresponding to the product."
     )

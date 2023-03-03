@@ -25,26 +25,36 @@ class L10nPeEdiVehicle(models.Model):
 
     name = fields.Char(
         string='Vehicle Name',
-        required=True)
+        required=True,
+    )
     license_plate = fields.Char(
         string='License Plate',
-        required=True)
+        required=True,
+    )
     operator_id = fields.Many2one(
         comodel_name='res.partner',
-        string='Operator',
+        string='Default Operator',
         check_company=True,
-        help='This value will be used by default in the picking. Define this value when the operator is '
-        'always the same for the vehicle.')
+        help='If set, this person will be auto-filled as the vehicle operator when selecting this vehicle in a transfer.',
+    )
     company_id = fields.Many2one(
         comodel_name='res.company',
-        default=lambda self: self.env.company)
-    is_m1l = fields.Boolean(
-        string="Is M1 or L?",
-        help="Motor vehicles with less than four wheels and motor vehicles for transporting "
-        "passengers with no more than 8 seats."
+        default=lambda self: self.env.company,
     )
-    authorization_issuing_entity = fields.Selection(selection=ISSUING_ENTITY)
-    authorization_issuing_entity_number = fields.Char(string="Authorization Issuing Entity Number")
+    is_m1l = fields.Boolean(
+        string='Is M1 or L?',
+        help='Whether the vehicle belongs to either of the M1 and L classes, '
+        'i.e. motor vehicles with less than four wheels and motor vehicles for transporting passengers with no more than 8 seats.',
+    )
+    authorization_issuing_entity = fields.Selection(
+        string='Special Authorization Issuing Entity',
+        selection=ISSUING_ENTITY,
+        help="The issuing entity of the vehicle's special authorization",
+    )
+    authorization_issuing_entity_number = fields.Char(
+        string='Authorization Number',
+        help="The number of the vehicle's special authorization",
+    )
 
     def name_get(self):
         # OVERRIDE

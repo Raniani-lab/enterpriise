@@ -13,7 +13,7 @@
         <field name="name">vehicle.form</field>
         <field name="model">l10n_pe_edi.vehicle</field>
         <field name="arch" type="xml">
-            <form string="vehicle Form">
+            <form string="Vehicle (PE)">
                 <sheet>
                     <group>
                         <field name="company_id" invisible="1"/>
@@ -50,7 +50,7 @@
         <field name="name">vehicle.tree</field>
         <field name="model">l10n_pe_edi.vehicle</field>
         <field name="arch" type="xml">
-            <tree string="vehicle Tree">
+            <tree string="Vehicles (PE)">
                 <field name="name"/>
                 <field name="license_plate"/>
                 <field name="operator_id"/>
@@ -68,8 +68,8 @@
           <p class="o_view_nocontent_smiling_face">
             Add a new vehicle for PE delivery guide
           </p><p>
-            For delivery guides that use private transport, you need to supply information
-            about the vehicle licence and allow to define the default operator for each delivery.
+            For delivery guides that use private transport, you must indicate the vehicle licence.
+            In addition, you can define a default operator of the vehicle.
           </p>
         </field>
     </record>

@@ -25,4 +25,8 @@ class ResCompany(models.Model):
         help="Password assigned for the SUNAT delivery guide API."
     )
     # Technical field to store the temporary token
-    l10n_pe_edi_stock_token = fields.Char(groups="base.group_system")
+    l10n_pe_edi_stock_token = fields.Char(
+        string="SUNAT API temporary authentication token",
+        groups="base.group_system",
+        help="Temporary authentication token used for accessing the SUNAT API endpoints."
+    )

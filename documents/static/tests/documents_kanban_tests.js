@@ -3900,7 +3900,7 @@ QUnit.module("documents", {}, function () {
 
                 assert.strictEqual(
                     target.querySelector(
-                        ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1) > span"
+                        ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1)"
                     ).style.backgroundColor,
                     "rgb(108, 193, 237)",
                     "should have the right color"
@@ -3946,14 +3946,14 @@ QUnit.module("documents", {}, function () {
                     target.querySelector(
                         ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags"
                     ),
-                    ".o_tag_color_0",
+                    ".text-bg-0",
                     3,
                     "should have 3 spans for color ball with grey color by default"
                 );
 
                 assert.strictEqual(
                     target.querySelector(
-                        ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1) > span"
+                        ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1)"
                     ).style.backgroundColor,
                     "rgb(74, 79, 89)",
                     "should have the right color"

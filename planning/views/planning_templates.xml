@@ -168,7 +168,7 @@
         </xpath>
         <!-- New conditional for showing the container -->
         <xpath expr="//div[@name='available_shift_list_container']" position="attributes">
-            <attribute name="t-if">unwanted_slots_ids and not employee_slots_fullcalendar_data[0]['allow_self_unassign']</attribute>
+            <attribute name="t-if">unwanted_slots_ids and not planning_planning_id['allow_self_unassign']</attribute>
         </xpath>
         <!-- New Section's Title -->
         <xpath expr="//div/div[hasclass('container')]/h1" position="replace">

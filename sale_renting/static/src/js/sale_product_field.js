@@ -1,18 +1,29 @@
 /** @odoo-module **/
 
 import { patch } from "@web/core/utils/patch";
-import { SaleOrderLineProductField } from '@sale/js/sale_product_field';
+import { saleOrderLineProductField, SaleOrderLineProductField } from "@sale/js/sale_product_field";
 import { serializeDateTime } from "@web/core/l10n/dates";
 
+const { extractProps } = saleOrderLineProductField;
+patch(saleOrderLineProductField, "sale_renting_field", {
+    extractProps: (fieldInfo) => ({
+        ...extractProps(fieldInfo),
+        rent: fieldInfo.options.rent,
+    }),
+});
+
+patch(SaleOrderLineProductField, "sale_renting_props", {
+    props: {
+        ...SaleOrderLineProductField.props,
+        rent: { type: Boolean, optional: true },
+    },
+});
 
 patch(SaleOrderLineProductField.prototype, 'sale_renting', {
 
     async _onProductUpdate() {
         this._super(...arguments);
-        if (
-            this.props.record.data.is_product_rentable &&
-            this.props.record.activeFields[this.props.name].options.rent
-        ) {
+        if (this.props.record.data.is_product_rentable && this.props.rent) {
             // The rental configurator is only expected to open in Rental App
             //      (rent specified true in the xml field options)
             // Allows selling a product in the sale app while also renting it in the Rental app

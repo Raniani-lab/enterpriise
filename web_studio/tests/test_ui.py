@@ -284,7 +284,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         })
 
         self.testView.arch = '''<form>
-            <field name="user_ids"/>
+            <field name="user_ids" context="{'tree_view_ref': '%s'}"/>
             <sheet>
                 <notebook>
                     <page>
@@ -292,7 +292,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                     </page>
                 </notebook> 
             </sheet>
-        </form>''' % user_view_xml_id.complete_name
+        </form>''' % (user_view_xml_id.complete_name, user_view_xml_id.complete_name)
         studio_view = _get_studio_view(self.testView)
         self.assertFalse(studio_view.exists())
 

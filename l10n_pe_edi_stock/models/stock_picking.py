@@ -4,7 +4,6 @@ import base64
 import logging
 import re
 import hashlib
-import json
 import requests
 import urllib.parse
 from lxml import etree
@@ -227,7 +226,6 @@ class Picking(models.Model):
         def format_float(val, digits=2):
             return '%.*f' % (digits, val)
 
-        self.l10n_pe_edi_status = 'to_send'
         date_pe = self.env['l10n_pe_edi.certificate']._get_pe_current_datetime().date()
         return {
             'date_issue': date_pe.strftime(DEFAULT_PE_DATE_FORMAT),
@@ -250,12 +248,13 @@ class Picking(models.Model):
         self._check_company()
         self._l10n_pe_edi_check_required_data()
         for record in self:
+            # == Generate a document number ==
             if not record.l10n_latam_document_number:
-                sunat_sequence = self.env['ir.sequence'].search([
+                sunat_sequence = record.env['ir.sequence'].search([
                     ('code', '=', 'l10n_pe_edi_stock.stock_picking_sunat_sequence'),
                     ('company_id', '=', record.company_id.id)], limit=1)
                 if not sunat_sequence:
-                    sunat_sequence = self.env['ir.sequence'].sudo().create({
+                    sunat_sequence = record.env['ir.sequence'].sudo().create({
                         'name': 'Stock Picking Sunat Sequence %s' % record.company_id.name,
                         'code': 'l10n_pe_edi_stock.stock_picking_sunat_sequence',
                         'padding': 8,
@@ -264,48 +263,41 @@ class Picking(models.Model):
                         'number_next': 1,
                     })
                 record.l10n_latam_document_number = sunat_sequence.next_by_id()
-            edi_filename = '%s-09-%s' % (
-                record.company_id.vat,
-                (record.l10n_latam_document_number or '').replace(' ', ''),
-            )
-            edi_str = self._l10n_pe_edi_create_delivery_guide()
-            res = record._l10n_pe_edi_sign(edi_filename, edi_str)
+
+            # == Send the delivery guide ==
+            record.l10n_pe_edi_status = 'to_send'
+            edi_str = record._l10n_pe_edi_create_delivery_guide()
+            res = record._l10n_pe_edi_sign(edi_str)
 
             if 'error' in res:
                 record.l10n_pe_edi_error = res['error']
                 continue
 
             # == Create the attachments ==
-            if res.get('xml_document'):
-                record._l10n_pe_edi_decode_cdr(edi_filename, res['xml_document'])
             if res.get('cdr'):
-                res_attachment = self.env['ir.attachment'].create({
-                    'res_model': record._name,
-                    'res_id': record.id,
-                    'type': 'binary',
-                    'name': 'cdr-%s.xml' % edi_filename,
-                    'raw': res['cdr'],
-                    'mimetype': 'application/xml',
-                })
-            else:
-                continue
-            message = _("The EDI document was successfully created and signed by the government.")
-            record._message_log(body=message, attachment_ids=res_attachment.ids)
-            record.write({'l10n_pe_edi_error': False, 'l10n_pe_edi_status': 'sent'})
-
-    def _l10n_pe_edi_decode_cdr(self, edi_filename, xml_document):
-        self.ensure_one()
-        res_attachment = self.env['ir.attachment'].create({
-            'name': edi_filename + '.xml',
-            'res_id': self.id,
-            'res_model': self._name,
-            'type': 'binary',
-            'raw': xml_document,
-            'mimetype': 'application/xml',
-            'description': _('Decode Delivery Guide sunat generated for the %s document.', self.name),
-        })
-        message = _("The Sunat document Delivery Guide decode")
-        self._message_log(body=message, attachment_ids=res_attachment.ids)
+                attachments = record.env['ir.attachment'].create([
+                    {
+                        'name': '%s-09-%s.xml' % (record.company_id.vat, record.l10n_latam_document_number),
+                        'res_model': record._name,
+                        'res_id': record.id,
+                        'type': 'binary',
+                        'raw': edi_str,
+                        'mimetype': 'application/xml',
+                        'description': _('Delivery Guide for transfer %s', record.name),
+                    },
+                    {
+                        'name': 'cdr-%s-09-%s.xml' % (record.company_id.vat, record.l10n_latam_document_number),
+                        'res_model': record._name,
+                        'res_id': record.id,
+                        'type': 'binary',
+                        'raw': res['cdr'],
+                        'mimetype': 'application/xml',
+                        'description': _('Delivery guide receipt (CDR) for transfer %s', record.name)
+                    }
+                ])
+                message = _("The Delivery Guide was successfully signed by SUNAT.")
+                record._message_log(body=message, attachment_ids=attachments.ids)
+                record.write({'l10n_pe_edi_error': False, 'l10n_pe_edi_status': 'sent'})
 
     def _l10n_pe_edi_get_serie_folio(self):
         number_match = [rn for rn in re.finditer(r'\d+', (self.l10n_latam_document_number or '').replace(' ', ''))]
@@ -313,39 +305,38 @@ class Picking(models.Model):
         folio = number_match[-1].group() or None
         return {'serie': serie, 'folio': folio}
 
-    def _l10n_pe_edi_sign(self, edi_filename, edi_str):
+    def _l10n_pe_edi_sign(self, edi_str):
         """ Send a delivery guide to SUNAT, and retrieve the CDR.
+            This method implements the retry mechanism for an invalid token.
 
             The method uses the cached authentication token returned by
             _l10n_pe_edi_get_token. If either the sending or the retrieving fails due
             to an expired token, a new token is requested and we retry.
 
-            :param edi_filename: the name of the XML file containing the delivery guide
             :param edi_str: the content of the XML file containing the delivery guide """
         res_get_token = self._l10n_pe_edi_get_token()
         if "error" in res_get_token:
             return res_get_token
         token = res_get_token.get("token")
-        result = self._l10n_pe_edi_sign_steps(edi_filename, edi_str, token)
+        result = self._l10n_pe_edi_sign_steps(edi_str, token)
 
-        # If the token has expired, the error returned is 401 Client Error, clear the token and retry again.
+        # If the token has expired, the error returned is 401 Client Error: clear the token and retry again.
         if result.get("error_reason") == "unauthorized":
             res_get_token = self._l10n_pe_edi_get_token(force_request=True)
             if "error" in res_get_token:
                 return res_get_token
             token = res_get_token.get("token")
-            return self._l10n_pe_edi_sign_steps(edi_filename, edi_str, token)
+            return self._l10n_pe_edi_sign_steps(edi_str, token)
         return result
 
-    def _l10n_pe_edi_sign_steps(self, edi_filename, edi_str, token):
+    def _l10n_pe_edi_sign_steps(self, edi_str, token):
         """ Send the delivery guide to SUNAT, then retrieve the CDR.
 
-            :param edi_filename: the name of the XML file containing the delivery guide
             :param edi_str: the content of the XML file containing the delivery guide
             :param token: the SUNAT authentication token """
         # Step 1: send the delivery guide, unless we already sent it and are still waiting for a response.
         if not self.l10n_pe_edi_ticket_number:
-            res_send_delivery_guide = self._l10n_pe_edi_send_delivery_guide(edi_filename, edi_str, token)
+            res_send_delivery_guide = self._l10n_pe_edi_send_delivery_guide(edi_str, token)
             if "error" in res_send_delivery_guide:
                 return res_send_delivery_guide
             else:
@@ -361,7 +352,7 @@ class Picking(models.Model):
                 self.l10n_latam_document_number = False
             return res_get_cdr
 
-        return {"xml_document": edi_str, "cdr": res_get_cdr["cdr"]}
+        return {"cdr": res_get_cdr["cdr"]}
 
     def _l10n_pe_edi_get_sunat_guia_credentials(self):
         """ Returns the credentials to be used with the SUNAT authentication service. """
@@ -393,7 +384,7 @@ class Picking(models.Model):
             "password": credentials["password"],
         }
         try:
-            response = requests.post(credentials["login_url"] % urllib.parse.quote(credentials["access_id"], safe=''), data=data, headers=headers, timeout=20)
+            response = requests.post(credentials["login_url"] % urllib.parse.quote_plus(credentials["access_id"]), data=data, headers=headers, timeout=20)
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
             return {"error": str(Markup("%s<br/>%s") % (ERROR_MESSAGES["request"], e))}
@@ -433,14 +424,13 @@ class Picking(models.Model):
         self.sudo().company_id.l10n_pe_edi_stock_token = token
         return res_request_token
 
-    def _l10n_pe_edi_send_delivery_guide(self, edi_filename, edi_str, token):
+    def _l10n_pe_edi_send_delivery_guide(self, edi_str, token):
         """ Send a delivery guide to SUNAT via the REST API.
 
             SUNAT provides a ticket number in its response, which can be used to
             retrieve the CDR once the SUNAT service has finished processing the
             delivery guide.
 
-            :param edi_filename: the name of the XML file containing the delivery guide
             :param edi_str: the content of the XML file containing the delivery guide
             :param token: the SUNAT authentication token """
         self.ensure_one()
@@ -448,23 +438,21 @@ class Picking(models.Model):
             'Authorization': "Bearer " + token,
             'Content-Type': "Application/json",
         }
-        ruc = self.company_id.vat
-        serie_folio = self._l10n_pe_edi_get_serie_folio()
-        serie = serie_folio["serie"]
-        folio = serie_folio["folio"]
-        url = "https://api-cpe.sunat.gob.pe/v1/contribuyente/gem/comprobantes/%s-09-%s-%s" % (
-            urllib.parse.quote(ruc, safe=''), urllib.parse.quote(serie, safe=''), urllib.parse.quote(folio, safe=''))
-        zip_file = self._l10n_pe_edi_zip(edi_str, edi_filename)
+        edi_filename = "%s-09-%s" % (self.company_id.vat, self.l10n_latam_document_number)
+        url = "https://api-cpe.sunat.gob.pe/v1/contribuyente/gem/comprobantes/%s" % urllib.parse.quote_plus(edi_filename)
+
+        # SUNAT expects the XML to be encoded using ISO-8859-1.
+        edi_str = etree.tostring(etree.fromstring(edi_str), xml_declaration=True, encoding='ISO-8859-1')
+        zip_file = self.env.ref('l10n_pe_edi.edi_pe_ubl_2_1')._l10n_pe_edi_zip_edi_document([('%s.xml' % edi_filename, edi_str)])
         data = {
             "archivo": {
-                "nomArchivo": "%s-09-%s-%s.zip" % (ruc, serie, folio),
+                "nomArchivo": "%s.zip" % edi_filename,
                 "arcGreZip": base64.b64encode(zip_file).decode(),
                 "hashZip": hashlib.sha256(zip_file).hexdigest(),
             }
         }
-        payload = json.dumps(data)
         try:
-            response = requests.post(url, data=payload, headers=headers, verify=True, timeout=20)
+            response = requests.post(url, json=data, headers=headers, verify=True, timeout=20)
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
             to_return = {"error": str(Markup("%s<br/>%s") % (ERROR_MESSAGES["request"], e))}
@@ -485,16 +473,6 @@ class Picking(models.Model):
 
         return {"ticket_number": response_json["numTicket"]}
 
-    def _l10n_pe_edi_zip(self, edi_str, edi_filename):
-        """ Transform the delivery guide XML into a ZIP file to be transmitted over the network.
-            SUNAT expects the unzipped XML to be encoded using ISO-8859-1. """
-        edi_tree = etree.fromstring(edi_str)
-        edi_str = etree.tostring(edi_tree, xml_declaration=True, encoding='ISO-8859-1')
-
-        pe_edi_format = self.env.ref('l10n_pe_edi.edi_pe_ubl_2_1')
-        zip_edi_str = pe_edi_format._l10n_pe_edi_zip_edi_document([('%s.xml' % edi_filename, edi_str)])
-        return zip_edi_str
-
     def _l10n_pe_edi_get_cdr(self, ticket_number, token):
         """ Retrieve the CDR (confirmation of receipt) for a delivery guide that was sent.
 
@@ -504,7 +482,7 @@ class Picking(models.Model):
             'Authorization': "Bearer " + token,
             'Content-Type': "Application/json",
         }
-        url = 'https://api-cpe.sunat.gob.pe/v1/contribuyente/gem/comprobantes/envios/%s' % urllib.parse.quote(ticket_number, safe='')
+        url = 'https://api-cpe.sunat.gob.pe/v1/contribuyente/gem/comprobantes/envios/%s' % urllib.parse.quote_plus(ticket_number)
         try:
             response = requests.get(url, params={'numTicket': ticket_number}, headers=headers, timeout=10)
             response.raise_for_status()

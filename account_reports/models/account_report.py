@@ -4520,6 +4520,7 @@ class AccountReport(models.Model):
         non_existing_codes = defaultdict(lambda: self.env["account.report.line"])  # {non_existing_account_code: {lines_with_that_code,}}
         candidate_duplicate_codes = defaultdict(lambda: self.env["account.report.line"])  # {candidate_duplicate_account_code: {lines_with_that_code,}}
         duplicate_codes = defaultdict(lambda: self.env["account.report.line"])  # {verified duplicate_account_code: {lines_with_that_code,}}
+        duplicate_codes_same_line = defaultdict(lambda: self.env["account.report.line"])  # {duplicate_account_code: {line_with_that_code_multiple_times,}}
         common_account_domain = [('company_id', '=', self.env.company.id), ('deprecated', '=', False)]
 
         expressions = self.line_ids.expression_ids._expand_aggregations()
@@ -4541,7 +4542,7 @@ class AccountReport(models.Model):
                         if operand[0] == 'code' and not self.env["account.account"].search([operand]):
                             non_existing_codes[operand[2]] |= expr.report_line_id
                     accounts_domain.append(operand)
-                reported_accounts = self.env['account.account'].search(accounts_domain)
+                reported_accounts += self.env['account.account'].search(accounts_domain)
             elif expr.engine == "account_codes":
                 account_codes = []
                 for token in ACCOUNT_CODES_ENGINE_SPLIT_REGEX.split(expr.formula.replace(' ', '')):
@@ -4560,7 +4561,7 @@ class AccountReport(models.Model):
                 for account_code in account_codes:
                     reported_account_codes.append(account_code)
                     excl_tuples = [("code", "=like", excl_code + "%") for excl_code in account_code['exclude']]
-                    reported_accounts |= self.env["account.account"].search([
+                    reported_accounts += self.env["account.account"].search([
                         *common_account_domain,
                         ("code", "=like", account_code['prefix'] + "%"),
                         *[excl_domain for excl_tuple in excl_tuples for excl_domain in ("!", excl_tuple)],
@@ -4579,6 +4580,15 @@ class AccountReport(models.Model):
                             non_existing_codes[account_code_exclude] |= account_code['line']
             all_reported_accounts |= reported_accounts
             accounts_by_expressions[expr.id] = reported_accounts
+
+            # Check if an account is reported multiple times in the same line of the report
+            if len(reported_accounts) != len(set(reported_accounts)):
+                seen = set()
+                for reported_account in reported_accounts:
+                    if reported_account not in seen:
+                        seen.add(reported_account)
+                    else:
+                        duplicate_codes_same_line[reported_account.code] |= expr.report_line_id
 
             # Check if the account is reported in multiple lines of the report
             for expr2 in expressions[:i + 1]:
@@ -4618,11 +4628,11 @@ class AccountReport(models.Model):
 
         # Create the lines that will be displayed in the xlsx
         all_reported_codes = sorted(set(all_reported_accounts.mapped("code")) | non_reported_codes | non_existing_codes.keys())
-        errors_trie = self._get_accounts_coverage_report_errors_trie(all_reported_codes, non_reported_codes, duplicate_codes, non_existing_codes)
+        errors_trie = self._get_accounts_coverage_report_errors_trie(all_reported_codes, non_reported_codes, duplicate_codes, non_existing_codes, duplicate_codes_same_line)
         errors_trie = self._regroup_accounts_coverage_report_errors_trie(errors_trie)
         return self._get_accounts_coverage_report_coverage_lines("", errors_trie)
 
-    def _get_accounts_coverage_report_errors_trie(self, all_reported_codes, non_reported_codes, duplicate_codes, non_existing_codes):
+    def _get_accounts_coverage_report_errors_trie(self, all_reported_codes, non_reported_codes, duplicate_codes, non_existing_codes, duplicate_codes_same_line=None):
         """
         Create the trie that will be used to regroup the same errors on the same subcodes.
         This trie will be in the form of:
@@ -4649,6 +4659,8 @@ class AccountReport(models.Model):
             },
         }
         """
+        if duplicate_codes_same_line is None:
+            duplicate_codes_same_line = ()
         errors_trie = {"children": {}, "lines": {}, "errors": {None}}
         for reported_code in all_reported_codes:
             current_trie = errors_trie
@@ -4656,6 +4668,9 @@ class AccountReport(models.Model):
             errors = set()
             if reported_code in non_reported_codes:
                 errors.add("NON_REPORTED")
+            elif reported_code in duplicate_codes_same_line:
+                lines |= duplicate_codes_same_line[reported_code]
+                errors.add("DUPLICATE_SAME_LINE")
             elif reported_code in duplicate_codes:
                 lines |= duplicate_codes[reported_code]
                 errors.add("DUPLICATE")
@@ -4709,6 +4724,10 @@ class AccountReport(models.Model):
             "DUPLICATE": {
                 "msg": _("This account is reported in multiple lines of the report"),
                 "color": "#FF8916"
+            },
+            "DUPLICATE_SAME_LINE": {
+                "msg": _("This account is reported multiple times on the same line of the report"),
+                "color": "#E6A91D"
             },
             "NON_EXISTING": {
                 "msg": _("This account is reported in a line of the report but does not exist in the Chart of Accounts"),

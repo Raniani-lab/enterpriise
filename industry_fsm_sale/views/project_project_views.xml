@@ -28,7 +28,7 @@
             </xpath>
             <xpath expr="//group[@name='group_sales_invoicing']/div" position="inside">
                 <field name="is_fsm" invisible="1"/>
-                <setting help="Track the material used to complete tasks">
+                <setting class="col-lg-12" help="Track the material used to complete tasks">
                     <field name="allow_material"/>
                 </setting>
             </xpath>

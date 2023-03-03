@@ -12,27 +12,18 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     def _get_default_employee_feedback_template(self):
-        return """
-    <p><b>Does my company recognize my value ?</b></p><p><br><br></p>
-    <p><b>What are the elements that would have the best impact on my work performance?</b></p><p><br><br></p>
-    <p><b>What are my best achievement(s) since my last appraisal?</b></p><p><br><br></p>
-    <p><b>What do I like / dislike about my job, the company or the management?</b></p><p><br><br></p>
-    <p><b>How can I improve (skills, attitude, etc)?</b></p><p><br><br></p>"""
+        return self.env['ir.qweb']._render('hr_appraisal.hr_appraisal_employee_feedback')
 
     def _get_default_manager_feedback_template(self):
-        return """
-    <p><b>What are the responsibilities that the employee performs effectively?</b></p><p><br><br></p>
-    <p><b>How could the employee improve?</b></p><p><br><br></p>
-    <p><b>Short term (6-months) actions / decisions / objectives</b></p><p><br><br></p>
-    <p><b>Long term (>6months) career discussion, where does the employee want to go, how to help him reach this path?</b></p><p><br><br></p>"""
+        return self.env['ir.qweb']._render('hr_appraisal.hr_appraisal_manager_feedback')
 
     def _get_default_appraisal_confirm_mail_template(self):
         return self.env.ref('hr_appraisal.mail_template_appraisal_confirm', raise_if_not_found=False)
 
     appraisal_plan = fields.Boolean(string='Automatically Generate Appraisals', default=True)
     assessment_note_ids = fields.One2many('hr.appraisal.note', 'company_id')
-    appraisal_employee_feedback_template = fields.Html(default=_get_default_employee_feedback_template, translate=True)
-    appraisal_manager_feedback_template = fields.Html(default=_get_default_manager_feedback_template, translate=True)
+    appraisal_employee_feedback_template = fields.Html(translate=True)
+    appraisal_manager_feedback_template = fields.Html(translate=True)
     appraisal_confirm_mail_template = fields.Many2one(
         'mail.template', domain="[('model', '=', 'hr.appraisal')]",
         default=_get_default_appraisal_confirm_mail_template)
@@ -59,7 +50,11 @@ class ResCompany(models.Model):
     def create(self, vals_list):
         res = super().create(vals_list)
         default_notes = self._get_default_assessment_note_ids()
-        res.sudo().write({'assessment_note_ids': default_notes})
+        res.sudo().write({
+            'assessment_note_ids': default_notes,
+            'appraisal_employee_feedback_template': self._get_default_employee_feedback_template(),
+            'appraisal_manager_feedback_template': self._get_default_manager_feedback_template(),
+        })
         return res
 
     def _create_new_appraisal(self, employees):

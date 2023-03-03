@@ -82,7 +82,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
             "hr.employee", employee_function, [employeeId, pin],
         );
         if (!pinValid && popup.PinPopup.isShown) {
-            return notification.add(env._t('Wrong password !'), { type: 'danger' });
+            return notification.add(env._t('Wrong password!'), { type: 'danger' });
         }
         if (!pinValid) {
             return askPin(employee);
@@ -161,7 +161,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
 
         if (!pinValid) {
             if (pin) {
-                notification.add(env._t("Wrong password !"), { type: "danger" });
+                notification.add(env._t("Wrong password!"), { type: "danger" });
             }
             if (popup.PinPopup.isShown) {
                 return;

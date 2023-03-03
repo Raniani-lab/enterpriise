@@ -73,7 +73,7 @@ class L10nBe28110(models.Model):
     reference_year = fields.Selection(
         selection='_get_years', string='Reference Year', required=True,
         default=lambda x: str(fields.Date.today().year - 1))
-    is_test = fields.Boolean(string="Is It a test ?", default=False)
+    is_test = fields.Boolean(string="Is it a test?", default=False)
     type_sending = fields.Selection([
         ('0', 'Original send'),
         ('1', 'Send grouped corrections'),

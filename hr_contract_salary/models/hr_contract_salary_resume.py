@@ -32,12 +32,12 @@ class HrContractSalaryResume(models.Model):
         ('contract', 'Contract Value'),
         ('sum', 'Sum of Advantages Values'),
         ('monthly_total', 'Monthly Total')], required=True, default='fixed',
-        help='Pick how the value of the information is computed :\n'
-             'Fixed value : Set a determined value static for all links\n'
-             'Contract value : Get the value from a field on the contract record\n'
-             'Payslip value : Get the value from a field on the payslip record\n'
-             'Sum of Advantages value : You can pick in all advantages and compute a sum of them\n'
-             'Monthly Total : The information will be a total of all the informations in the category Monthly Advantages')
+        help='Pick how the value of the information is computed:\n'
+             'Fixed value: Set a determined value static for all links\n'
+             'Contract value: Get the value from a field on the contract record\n'
+             'Payslip value: Get the value from a field on the payslip record\n'
+             'Sum of Advantages value: You can pick in all advantages and compute a sum of them\n'
+             'Monthly Total: The information will be a total of all the informations in the category Monthly Advantages')
     advantage_ids = fields.Many2many('hr.contract.salary.advantage')
     code = fields.Selection(_get_available_fields)
     fixed_value = fields.Float()

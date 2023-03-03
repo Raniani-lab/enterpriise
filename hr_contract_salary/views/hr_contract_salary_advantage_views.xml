@@ -77,7 +77,7 @@
                                     There are currently no requested fields.
                                 </span>
                                 <span attrs="{'invisible': [('requested_documents_fields_string', '=', False)]}">
-                                    The current requested documents are the followings : <field name="requested_documents_fields_string" nolabel="1"/>
+                                    The current requested documents are the followings: <field name="requested_documents_fields_string" nolabel="1"/>
                                 </span>
                             </div>
                             <field name="requested_documents" invisible="1"/>

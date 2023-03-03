@@ -569,7 +569,7 @@ const DialingPanel = Widget.extend({
             });
 
             const $checkbox = dom.renderCheckbox({
-                text: _t("Remember ?"),
+                text: _t("Remember?"),
             }).addClass('mb-0');
 
             $content.append($checkbox);

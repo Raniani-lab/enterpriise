@@ -1374,7 +1374,7 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(wo.lot_id, self.elon2, "Lot should be set in the step")
 
     def test_step_by_product_variant(self):
-        who_attr = self.env['product.attribute'].create({'name': 'Who ?'})
+        who_attr = self.env['product.attribute'].create({'name': 'Who?'})
         a1 = self.env['product.attribute.value'].create({'name': 'V0hFCg==', 'attribute_id': who_attr.id})
         a2 = self.env['product.attribute.value'].create({'name': 'QVJN', 'attribute_id': who_attr.id})
         a3 = self.env['product.attribute.value'].create({'name': 'UllW', 'attribute_id': who_attr.id})

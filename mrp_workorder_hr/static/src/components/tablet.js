@@ -105,7 +105,7 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
         const pinValid = await this._pinValidation(employeeId, pin);
         if (!pinValid) {
             if (pin) {
-                this.notification.add(this.env._t('Wrong password !'), { type: 'danger' });
+                this.notification.add(this.env._t('Wrong password!'), { type: 'danger' });
             }
             if (!this.popup.PinPopup.isShown) {
                 await this.closePopup("WorkingEmployeePopup");

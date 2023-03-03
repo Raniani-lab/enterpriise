@@ -891,7 +891,7 @@
             <div>
                 <input id="rainbow_img_url" name="rainbow_img_url" type="hidden" t-att-value="rainbow.img_url"/>
                 <div class="mb8 ml64 mr64">
-                    <img t-att-src="rainbow.img_url or '/web/static/img/smile.svg'" class="img img-fluid" alt="Great !"/>
+                    <img t-att-src="rainbow.img_url or '/web/static/img/smile.svg'" class="img img-fluid" alt="Great!"/>
                 </div>
             </div>
             <div class="text-center">

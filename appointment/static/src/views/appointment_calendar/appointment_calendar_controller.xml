@@ -6,7 +6,7 @@
                 <div t-if="env.calendarState.mode === 'slots-creation' || appointmentState.lastAppointmentUrl" class="o_appointment_scheduling_message_box">
                     <div class="pt-2">
                         <p t-if="appointmentState.lastAppointmentUrl" class="mx-2 user-select-none">
-                            Link Copied in your clipboard !
+                            Link Copied in your clipboard!
                         </p>
                         <p t-else="" class="mx-2 user-select-none">
                             Click in your calendar to pick meeting time proposals.

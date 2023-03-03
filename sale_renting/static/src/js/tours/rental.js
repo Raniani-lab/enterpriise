@@ -106,7 +106,7 @@ registry.category("web_tour.tours").add('rental_tour', {
     position: 'bottom',
 }, {
     trigger: '.text-bg-default:contains("Returned")',
-    content: _t("You're done with your fist rental. Congratulations !"),
+    content: _t("You're done with your fist rental. Congratulations!"),
     run() {},
 }]});
 

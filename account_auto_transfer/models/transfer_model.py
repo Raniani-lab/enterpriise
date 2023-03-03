@@ -58,7 +58,7 @@ class TransferModel(models.Model):
         """ Check that the total percent is not bigger than 100.0 """
         for record in self:
             if not (0 < record.total_percent <= 100.0):
-                raise ValidationError(_('The total percentage (%s) should be less or equal to 100 !', record.total_percent))
+                raise ValidationError(_('The total percentage (%s) should be less or equal to 100!', record.total_percent))
 
     @api.constrains('line_ids')
     def _check_line_ids_filters(self):

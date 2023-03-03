@@ -103,7 +103,7 @@ class AccountJournal(models.Model):
                         -o 'ref': string
         """
         raise RedirectWarning(
-            message=_("Could not make sense of the given file.\nDid you install the module to support this type of file ?"),
+            message=_("Could not make sense of the given file.\nDid you install the module to support this type of file?"),
             action=self.env.ref('base.open_module_tree').id,
             button_text=_("Go to Apps"),
             additional_context={

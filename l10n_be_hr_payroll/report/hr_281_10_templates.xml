@@ -64,7 +64,7 @@
                                         <div class="col-4 text-end"><span t-esc="data['f10_2060_gewonebezoldiginge']"/></div>
                                     </div>
                                     <div class="row border-top">
-                                        <div class="col-11 fw-bold offset-1">b) Benefits in kind :</div>
+                                        <div class="col-11 fw-bold offset-1">b) Benefits in kind:</div>
                                     </div>
                                     <div class="row border-top">
                                         <div class="col-6 fw-bold offset-2">* amount</div>
@@ -181,7 +181,7 @@
                                 <div class="col-12">
                                     <div class="row border-top">
                                         <div class="col-12">
-                                            <span class="text-start text-uppercase fw-bold">10. Taxable at the rate of 33% :</span>
+                                            <span class="text-start text-uppercase fw-bold">10. Taxable at the rate of 33%:</span>
                                         </div>
                                     </div>
                                     <div class="row border-top">
@@ -203,7 +203,7 @@
                                 <div class="col-12">
                                     <div class="row border-top">
                                         <div class="col-12">
-                                            <span class="text-start text-uppercase fw-bold">11. Remuneration obtained by athletes within the framework of their sporting activity :</span>
+                                            <span class="text-start text-uppercase fw-bold">11. Remuneration obtained by athletes within the framework of their sporting activity:</span>
                                         </div>
                                     </div>
                                     <div class="row border-top">
@@ -232,7 +232,7 @@
                                 <div class="col-12">
                                     <div class="row border-top">
                                         <div class="col-12">
-                                            <span class="text-start text-uppercase fw-bold">12. Remuneration obtained by sports competition referees for their refereeing services, or by trainers, coaches and accompanying persons for their activity for the benefit of sportsmen :</span>
+                                            <span class="text-start text-uppercase fw-bold">12. Remuneration obtained by sports competition referees for their refereeing services, or by trainers, coaches and accompanying persons for their activity for the benefit of sportsmen:</span>
                                         </div>
                                     </div>
                                     <div class="row border-top">
@@ -275,7 +275,7 @@
                                 <div class="col-12">
                                     <div class="row border-top">
                                         <div class="col-12">
-                                            <span class="text-start text-uppercase fw-bold">14. Contribution to travel costs :</span>
+                                            <span class="text-start text-uppercase fw-bold">14. Contribution to travel costs:</span>
                                         </div>
                                     </div>
                                     <div class="row border-top">
@@ -434,7 +434,7 @@
                                         <div class="col-2 text-end"><span t-esc="data['f10_2110_aantaloveruren360']"/></div>
                                     </div>
                                     <div class="row border-top">
-                                        <div class="col-8 fw-bold offset-1">b) Basis for the calculation of the additional salary relating to overtime giving right to a reduction of :</div>
+                                        <div class="col-8 fw-bold offset-1">b) Basis for the calculation of the additional salary relating to overtime giving right to a reduction of:</div>
                                     </div>
                                     <div class="row border-top">
                                         <div class="col-7 fw-bold offset-2">66.81 %</div>

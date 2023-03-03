@@ -53,7 +53,7 @@ class MrpProductionSchedule(models.Model):
         help="Technical field to support filtering by replenish state")
 
     _sql_constraints = [
-        ('warehouse_product_ref_uniq', 'unique (warehouse_id, product_id)', 'The combination of warehouse and product must be unique !'),
+        ('warehouse_product_ref_uniq', 'unique (warehouse_id, product_id)', 'The combination of warehouse and product must be unique!'),
     ]
 
     def _search_replenish_state(self, operator, value):

@@ -17,7 +17,7 @@ class SDDMandate(models.Model):
     _inherit = ['mail.thread.main.attachment', 'mail.activity.mixin']
     _description = 'SDD Mandate'
 
-    _sql_constraints = [('name_unique', 'unique(name)', "Mandate identifier must be unique ! Please choose another one.")]
+    _sql_constraints = [('name_unique', 'unique(name)', "Mandate identifier must be unique! Please choose another one.")]
 
     state = fields.Selection([('draft', 'Draft'),('active','Active'), ('revoked','Revoked'), ('closed','Closed')],
                             string="State",

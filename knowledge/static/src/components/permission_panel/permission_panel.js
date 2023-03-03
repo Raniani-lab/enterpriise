@@ -8,9 +8,9 @@ import { useService } from '@web/core/utils/hooks';
 import { Component, onWillStart, useState } from "@odoo/owl";
 
 const permissionLevel = {'none': 0, 'read': 1, 'write': 2}
-const restrictMessage = _lt("Are you sure you want to restrict access to this article ? "
+const restrictMessage = _lt("Are you sure you want to restrict access to this article? "
 + "This means it will no longer inherit access rights from its parents.");
-const loseWriteMessage = _lt('Are you sure you want to remove your own "Write" access ?');
+const loseWriteMessage = _lt('Are you sure you want to remove your own "Write" access?');
 
 export class PermissionPanel extends Component {
     /**

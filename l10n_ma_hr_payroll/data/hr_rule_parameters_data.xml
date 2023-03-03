@@ -120,7 +120,7 @@
         </record>
 
         <record id="l10n_ma_rule_parameter_family_allocation_employer" model="hr.rule.parameter">
-            <field name="name">Family Allocation : Employer Cost (%)</field>
+            <field name="name">Family Allocation: Employer Cost (%)</field>
             <field name="code">l10n_ma_family_allocation_employer</field>
             <field name="country_id" ref="base.ma"/>
         </record>
@@ -131,7 +131,7 @@
         </record>
 
         <record id="l10n_ma_rule_parameter_social_benefit_employer" model="hr.rule.parameter">
-            <field name="name">Social Benefit : Employer Cost (%)</field>
+            <field name="name">Social Benefit: Employer Cost (%)</field>
             <field name="code">l10n_ma_social_benefit_employer</field>
             <field name="country_id" ref="base.ma"/>
         </record>
@@ -142,7 +142,7 @@
         </record>
 
         <record id="l10n_ma_rule_parameter_social_benefit_employer_max" model="hr.rule.parameter">
-            <field name="name">Social Benefit Maximum : Employer Cost</field>
+            <field name="name">Social Benefit Maximum: Employer Cost</field>
             <field name="code">l10n_ma_social_benefit_employer_max</field>
             <field name="country_id" ref="base.ma"/>
         </record>
@@ -153,7 +153,7 @@
         </record>
 
         <record id="l10n_ma_rule_parameter_professional_training_employer" model="hr.rule.parameter">
-            <field name="name">Professional Training : Employer Cost (%)</field>
+            <field name="name">Professional Training: Employer Cost (%)</field>
             <field name="code">l10n_ma_professional_training_employer</field>
             <field name="country_id" ref="base.ma"/>
         </record>
@@ -164,7 +164,7 @@
         </record>
 
         <record id="l10n_ma_rule_parameter_amo_employer" model="hr.rule.parameter">
-            <field name="name">AMO Participation : Employer Cost (%)</field>
+            <field name="name">AMO Participation: Employer Cost (%)</field>
             <field name="code">l10n_ma_amo_employer</field>
             <field name="country_id" ref="base.ma"/>
         </record>
@@ -175,7 +175,7 @@
         </record>
 
         <record id="l10n_ma_rule_parameter_mutuality_employer" model="hr.rule.parameter">
-            <field name="name">Mutuality : Employer Cost (%)</field>
+            <field name="name">Mutuality: Employer Cost (%)</field>
             <field name="code">l10n_ma_mutuality_employer</field>
             <field name="country_id" ref="base.ma"/>
         </record>
@@ -186,7 +186,7 @@
         </record>
 
         <record id="l10n_ma_rule_parameter_cimr_employer" model="hr.rule.parameter">
-            <field name="name">CIMR : Employer Cost (%)</field>
+            <field name="name">CIMR: Employer Cost (%)</field>
             <field name="code">l10n_ma_cimr_employer</field>
             <field name="country_id" ref="base.ma"/>
         </record>
@@ -226,7 +226,7 @@
         </record>
 
         <record id="l10n_ma_rule_parameter_min_net_for_soc_contr" model="hr.rule.parameter">
-            <field name="name">Social Contribution : Minimum Net Salary</field>
+            <field name="name">Social Contribution: Minimum Net Salary</field>
             <field name="code">l10n_ma_min_net_for_soc_contr</field>
             <field name="country_id" ref="base.ma"/>
         </record>

@@ -1016,7 +1016,7 @@ const NextDirectSignDialog = Dialog.extend({
     this.state = parent.state;
 
     options = options || {};
-    options.title = options.title || _t("Thank You !");
+    options.title = options.title || _t("Thank You!");
     options.subtitle =
       options.subtitle ||
       _t("Your signature has been saved.") +
@@ -1658,7 +1658,7 @@ export const SignableDocument = Document.extend({
     [this.signInfo.signatureValues, this.signInfo.frameValues, this.signInfo.newSignItems] = this.getSignatureValuesFromConfiguration();
     if (!this.signInfo.signatureValues) {
       this.iframeWidget.checkSignItemsCompletion();
-      Dialog.alert(this, _t("Some fields have still to be completed !"), {
+      Dialog.alert(this, _t("Some fields have still to be completed!"), {
         title: _t("Warning"),
       });
       this.$validateButton.text(this.validateButtonText).removeAttr("disabled", true);

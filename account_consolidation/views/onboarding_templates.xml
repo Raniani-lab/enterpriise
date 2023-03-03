@@ -6,7 +6,7 @@
             <t t-set="title">The Scope of Consolidation</t>
             <t t-set="description">Define the companies that should be consolidated &amp; the target currency</t>
             <t t-set="btn_text">Define</t>
-            <t t-set="done_text">Scope of Consolidation defined !</t>
+            <t t-set="done_text">Scope of Consolidation defined!</t>
             <t t-set="method" t-value="'setting_consolidation_action'"/>
             <t t-set="model" t-value="'consolidation.chart'"/>
             <t t-set="state" t-value="state.get('consolidation_setup_consolidation_state')"/>
@@ -19,7 +19,7 @@
                 Then map them with the companies accounts.
             </t>
             <t t-set="btn_text">Setup</t>
-            <t t-set="done_text">Chart of account set !</t>
+            <t t-set="done_text">Chart of account set!</t>
             <t t-set="method" t-value="'setting_consolidated_chart_of_accounts_action'"/>
             <t t-set="model" t-value="'consolidation.chart'"/>
             <t t-set="state" t-value="state.get('consolidation_setup_ccoa_state')"/>
@@ -30,7 +30,7 @@
             <t t-set="title">Analysis period</t>
             <t t-set="description">Create your first analysis period &amp; set the currency rates.</t>
             <t t-set="btn_text">Create</t>
-            <t t-set="done_text">Analysis period created !</t>
+            <t t-set="done_text">Analysis period created!</t>
             <t t-set="method" t-value="'setting_create_period_action'"/>
             <t t-set="model" t-value="'consolidation.chart'"/>
             <t t-set="state" t-value="state.get('consolidation_create_period_state')"/>

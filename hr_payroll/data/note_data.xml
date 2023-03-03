@@ -6,7 +6,7 @@
     </record>
 
     <template id="hr_payroll_note_demo_content">
-        <p>Board meeting summary :</p>
+        <p>Board meeting summary:</p>
         <p>We have to improve our Payroll flow with the new Odoo process</p>
         <p><br/></p>
         <p>On the <t t-esc="date_today"/></p>
@@ -17,9 +17,9 @@
         <ul class="o_checklist">
             <li id="checkId-130162183830">Give assurance card to new registered employees</li>
         </ul>
-        <p>Links :</p>
+        <p>Links:</p>
         <p>
-            Payroll tips &amp; tricks :  <a href="https://www.odoo.com/fr_FR/slides/slide/manage-payroll-1002" target="_blank">
+            Payroll tips &amp; tricks:  <a href="https://www.odoo.com/fr_FR/slides/slide/manage-payroll-1002" target="_blank">
                 https://www.odoo.com/fr_FR/slides/slide/manage-payroll-1002
             </a>
         </p>

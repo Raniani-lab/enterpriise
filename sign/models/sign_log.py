@@ -61,11 +61,11 @@ class SignLog(models.Model):
     # Not related on purpose :P
 
     def write(self, vals):
-        raise ValidationError(_("Log history of sign requests cannot be modified !"))
+        raise ValidationError(_("Log history of sign requests cannot be modified!"))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_never(self):
-        raise ValidationError(_("Log history of sign requests cannot be deleted !"))
+        raise ValidationError(_("Log history of sign requests cannot be deleted!"))
 
     @api.model_create_multi
     def create(self, vals_list):

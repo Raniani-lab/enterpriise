@@ -93,7 +93,7 @@
         <field name="stage_id" ref="helpdesk.stage_in_progress"/>
     </record>
     <record id="helpdesk_ticket_2" model="helpdesk.ticket">
-        <field name="name">Where can I download a catalog ?</field>
+        <field name="name">Where can I download a catalog?</field>
         <field name="team_id" ref="helpdesk.helpdesk_team1"/>
         <field name="priority">0</field>
         <field name="partner_id" ref="base.res_partner_4"/>

@@ -13,7 +13,7 @@ class StockPicking(models.Model):
         self.ensure_one()
         view = self.env.ref('stock_barcode.stock_barcode_cancel_operation_view')
         return {
-            'name': _('Cancel this operation ?'),
+            'name': _('Cancel this operation?'),
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
             'res_model': 'stock_barcode.cancel.operation',

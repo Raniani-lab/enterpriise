@@ -22,7 +22,7 @@ class AssetReportCustomHandler(models.AbstractModel):
         all_asset_ids = set()
         all_lines_data = {}
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
-            # the lines returned are already sorted by account_id !
+            # the lines returned are already sorted by account_id!
             lines_query_results = self._query_lines(column_group_options)
             for account_id, asset_id, cols_by_expr_label in lines_query_results:
                 line_id = (account_id, asset_id)

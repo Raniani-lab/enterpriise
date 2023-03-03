@@ -27,7 +27,7 @@ export class StockBarcodeKanbanRenderer extends KanbanRenderer {
             }
         } else {
             this.env.services.notification.add(
-                this.env._t("Please, Scan again !"),
+                this.env._t("Please, Scan again!"),
                 {type: 'warning'}
             );
         }

@@ -278,7 +278,7 @@
                                 <form string="Questions" name="question_form">
                                     <group>
                                         <group name="question_form_left">
-                                            <field name="name" placeholder='e.g. "What are your symptoms ?"'/>
+                                            <field name="name" placeholder='e.g. "What are your symptoms?"'/>
                                             <field name="question_type" widget="radio"/>
                                         </group>
                                         <group name="question_form_right">
@@ -366,7 +366,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No custom appointment type has been created !
+                No custom appointment type has been created!
             </p>
         </field>
     </record>

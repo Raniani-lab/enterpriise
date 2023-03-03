@@ -97,24 +97,24 @@ class HrContractSalaryAdvantage(models.Model):
     activity_creation = fields.Selection([
         ('running', 'Employee signs his contract'),
         ('countersigned', 'Contract is countersigned')], default='running',
-        help='Choose when the activity is created :\n'
-             '- Employee signs his contract : Activity is created as soon as the employee signed the contract\n'
-             '- Contract is countersigned : HR responsible have signed the contract and conclude the process.')
+        help='Choose when the activity is created:\n'
+             '- Employee signs his contract: Activity is created as soon as the employee signed the contract\n'
+             '- Contract is countersigned: HR responsible have signed the contract and conclude the process.')
     activity_creation_type = fields.Selection([
         ('always', 'When the advantage is set'),
         ('onchange', 'When the advantage is modified')], default='always',
-        help='Define when the system creates a new activity :\n'
-             '- When the advantage is set : Unique creation the first time the employee will take the advantage\n'
-             '- When the advantage is modified : Activity will be created for each change regarding the advantage.')
+        help='Define when the system creates a new activity:\n'
+             '- When the advantage is set: Unique creation the first time the employee will take the advantage\n'
+             '- When the advantage is modified: Activity will be created for each change regarding the advantage.')
     activity_responsible_id = fields.Many2one('res.users', 'Assigned to')
-    sign_template_id = fields.Many2one('sign.template', string="Template to Sign", help="Documents selected here will be requested to the employee for additional signatures related to the advantage. eg : A company car policy to approve if you choose a company car.")
+    sign_template_id = fields.Many2one('sign.template', string="Template to Sign", help="Documents selected here will be requested to the employee for additional signatures related to the advantage. eg: A company car policy to approve if you choose a company car.")
     sign_copy_partner_id = fields.Many2one('res.partner', string="Send a copy to", help="Email address to which to transfer the signature.")
     sign_frenquency = fields.Selection([
         ('onchange', 'When the advantage is set'),
         ('always', 'When the advantage is modified')], string="Sign Creation Type", default="onchange",
-        help='Define when the system creates a new sign request :\n'
-             '- When the advantage is set : Unique signature request the first time the employee will take the advantage\n'
-             '- When the advantage is modified : Signature request will be created for each change regarding the advantage.')
+        help='Define when the system creates a new sign request:\n'
+             '- When the advantage is set: Unique signature request the first time the employee will take the advantage\n'
+             '- When the advantage is modified: Signature request will be created for each change regarding the advantage.')
 
     _sql_constraints = [
         (

@@ -1704,27 +1704,27 @@
                         <div class="col-12 border p-2">
                             <table class="o_dmfa_info">
                                 <tr>
-                                    <td>Employer Class :</td>
+                                    <td>Employer Class:</td>
                                     <td style="text-align: right;"><t t-esc="data['employer_class']"/></td>
                                 </tr>
                                 <tr>
-                                    <td>ONSS Company ID :</td>
+                                    <td>ONSS Company ID:</td>
                                     <td style="text-align: right;"><t t-esc="data['onss_company_id']"/></td>
                                 </tr>
                                 <tr>
-                                    <td>ONSS Registration Number :</td>
+                                    <td>ONSS Registration Number:</td>
                                     <td style="text-align: right;"><t t-esc="data['onss_registration_number']"/></td>
                                 </tr>
                                 <tr>
-                                    <td>Quarter Start :</td>
+                                    <td>Quarter Start:</td>
                                     <td style="text-align: right;"><t t-esc="data['quarter_start']"/></td>
                                 </tr>
                                 <tr>
-                                    <td>Quarter End :</td>
+                                    <td>Quarter End:</td>
                                     <td style="text-align: right;"><t t-esc="data['quarter_end']"/></td>
                                 </tr>
                                 <tr>
-                                    <td>System 5 :</td>
+                                    <td>System 5:</td>
                                     <td style="text-align: right;">No</td>
                                 </tr>
                                 <tr>
@@ -1755,10 +1755,10 @@
                         <p style="page-break-before:always;"> </p>
                         <div class="row">
                             <div class="col-12 border p-2">
-                                <div class="mb-2"><h3>Employee : <t t-esc="natural_person.employee.name"/></h3></div>
-                                <div class="mb-2">NISS : <t t-esc="natural_person.identification_id"/></div>
+                                <div class="mb-2"><h3>Employee: <t t-esc="natural_person.employee.name"/></h3></div>
+                                <div class="mb-2">NISS: <t t-esc="natural_person.identification_id"/></div>
                                 <t t-foreach="natural_person.worker_records" t-as="worker_record">
-                                    <div class="mb-2">Worker Code : <t t-esc="worker_record.worker_code"/></div>
+                                    <div class="mb-2">Worker Code: <t t-esc="worker_record.worker_code"/></div>
                                     <t t-if="worker_record.occupations">
                                         <t t-foreach="worker_record.occupations" t-as="occupation">
                                             <div class="mb-2">
@@ -1773,33 +1773,33 @@
                                                 </tr>
                                                 <t t-if="occupation.reorganisation_measure != -1">
                                                     <tr>
-                                                        <td>Reorganization Measures :</td>
+                                                        <td>Reorganization Measures:</td>
                                                         <td style="text-align: right;"><t t-esc="occupation.reorganisation_measure"/></td>
                                                     </tr>
                                                 </t>
                                                 <tr>
-                                                    <td>Days Per Week :</td>
+                                                    <td>Days Per Week:</td>
                                                     <td style="text-align: right;"><t t-esc="pretty_format(occupation.days_per_week)"/></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Mean Working Hours :</td>
+                                                    <td>Mean Working Hours:</td>
                                                     <td style="text-align: right;"><t t-esc="pretty_format(occupation.mean_working_hours)"/></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Part Time :</td>
+                                                    <td>Part Time:</td>
                                                     <td style="text-align: right;"><t t-esc="occupation.is_parttime"/></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Joint Commission :</td>
+                                                    <td>Joint Commission:</td>
                                                     <td style="text-align: right;"><t t-esc="occupation.commission"/></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Work Place :</td>
+                                                    <td>Work Place:</td>
                                                     <td style="text-align: right;"><t t-esc="occupation.work_place"/></td>
                                                 </tr>
                                             </table>
                                             <t t-if="occupation.services">
-                                                <div class="mb-2 mt-2"><b>Services Summary :</b></div>
+                                                <div class="mb-2 mt-2"><b>Services Summary:</b></div>
                                                 <table class="o_dmfa_table">
                                                     <tr>
                                                         <th>Code</th>
@@ -1816,7 +1816,7 @@
                                                 </table>
                                             </t>
                                             <t t-if="occupation.remunerations">
-                                                <div class="mb-2 mt-2"><b>Remunerations Summary :</b></div>
+                                                <div class="mb-2 mt-2"><b>Remunerations Summary:</b></div>
                                                 <table class="o_dmfa_table">
                                                     <tr>
                                                         <th>Code</th>
@@ -1839,7 +1839,7 @@
                                         </t>
                                     </t>
                                     <t t-if="worker_record.deductions">
-                                        <div class="mb-2 mt-2"><b>Deductions Summary :</b></div>
+                                        <div class="mb-2 mt-2"><b>Deductions Summary:</b></div>
                                         <table class="o_dmfa_table">
                                             <tr>
                                                 <th>Code</th>
@@ -1854,7 +1854,7 @@
                                         </table>
                                     </t>
                                     <t t-if="worker_record.contributions">
-                                        <div class="mb-2 mt-2"><b>Contributions Summary :</b></div>
+                                        <div class="mb-2 mt-2"><b>Contributions Summary:</b></div>
                                         <table class="o_dmfa_table">
                                             <tr>
                                                 <th>Code</th>
@@ -1873,11 +1873,11 @@
                                         </table>
                                     </t>
                                     <t t-if="worker_record.student_contributions">
-                                        <div class="mb-2 mt-2"><b>Student Contributions Summary :</b></div>
+                                        <div class="mb-2 mt-2"><b>Student Contributions Summary:</b></div>
                                         <t t-foreach="worker_record.student_contributions" t-as="contribution">
-                                            <div class="mb-2">Work Address : <t t-esc="contribution.local_unit_id"/></div>
-                                            <div class="mb-2">Contribution : <t t-esc="pretty_format(contribution.student_contribution_amount)"/> €</div>
-                                            <div class="mb-2"># Hours : <t t-esc="pretty_format(contribution.student_hours_nbr)"/></div>
+                                            <div class="mb-2">Work Address: <t t-esc="contribution.local_unit_id"/></div>
+                                            <div class="mb-2">Contribution: <t t-esc="pretty_format(contribution.student_contribution_amount)"/> €</div>
+                                            <div class="mb-2"># Hours: <t t-esc="pretty_format(contribution.student_hours_nbr)"/></div>
                                         </t>
                                     </t>
                                 </t>

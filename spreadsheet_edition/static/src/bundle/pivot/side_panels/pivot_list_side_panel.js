@@ -15,7 +15,7 @@ export default class PivotSidePanel extends Component {
     }
 
     delete(pivotId) {
-        this.env.askConfirmation(_t("Are you sure you want to delete this pivot ?"), () => {
+        this.env.askConfirmation(_t("Are you sure you want to delete this pivot?"), () => {
             this.env.model.dispatch("REMOVE_PIVOT", { pivotId });
             this.props.onCloseSidePanel();
         });

@@ -166,7 +166,7 @@ class MainComponent extends Component {
                 window.navigator.vibrate(100);
             }
         } else {
-            const message = this.env._t("Please, Scan again !");
+            const message = this.env._t("Please, Scan again!");
             this.env.services.notification.add(message, { type: 'warning' });
         }
     }

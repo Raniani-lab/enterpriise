@@ -75,7 +75,7 @@ class TestSalePlanning(TestCommonSalePlanning):
             try:
                 slot[field]
             except Exception as e:
-                raise AssertionError("Error raised unexpectedly while computing a field of the slot ! Exception : " + e.args[0])
+                raise AssertionError("Error raised unexpectedly while computing a field of the slot! Exception: " + e.args[0])
 
     def test_planning_plan_order_no_employee(self):
         so_form = Form(self.env['sale.order'])

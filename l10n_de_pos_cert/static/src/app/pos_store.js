@@ -37,7 +37,7 @@ patch(PosStore.prototype, "l10n_de_pos_cert.PosStore", {
             title: _t("Problem with internet"),
             body: _t(
                 "You can either wait for the connection issue to be resolved or continue with a non-compliant receipt (the order will still be sent to Fiskaly once the connection issue is resolved).\n" +
-                    "Do you want to continue with a non-compliant receipt ?"
+                    "Do you want to continue with a non-compliant receipt?"
             ),
         });
         if (confirmed) {

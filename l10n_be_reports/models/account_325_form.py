@@ -369,7 +369,7 @@ class Form325(models.Model):
                 - All account.move.line must be between the first day and the last day
                 of the reference year.
                 - All account.move.line must be in a posted account.move.
-            These information are group by partner !
+            These information are group by partner!
             :param tag_ids: used to compute the balance (normally account with 281.50 - XXXXX tag).
             :return: {partner_id: float}
         """

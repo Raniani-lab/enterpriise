@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="Cancel operation">
                 <field name="picking_id" invisible="1"/>
-                <p>Are you sure you want to cancel this operation ?</p>
+                <p>Are you sure you want to cancel this operation?</p>
                 <footer>
                     <button name="action_cancel_operation" type="object" class="oe_highlight" data-hotkey="q">
                         <span>

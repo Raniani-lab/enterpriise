@@ -20,7 +20,7 @@ export default class ListingAllSidePanel extends Component {
     }
 
     delete(listId) {
-        this.env.askConfirmation(_t("Are you sure you want to delete this list ?"), () => {
+        this.env.askConfirmation(_t("Are you sure you want to delete this list?"), () => {
             this.env.model.dispatch("REMOVE_ODOO_LIST", { listId });
             this.props.onCloseSidePanel();
         });

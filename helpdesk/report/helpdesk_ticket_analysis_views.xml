@@ -222,7 +222,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
-                No data yet !
+                No data yet!
             </p><p>
                 Get statistics on your tickets and how long it takes to assign and resolve them.
             </p>

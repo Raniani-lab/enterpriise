@@ -77,7 +77,7 @@ patch(AttendeeCalendarController.prototype, "appointment_calendar_controller", {
             return;
         }
         const closeTooltip = this.popover.add(this.copyLinkRef.el, Tooltip, {
-            tooltip: this.env._t("Copied !"),
+            tooltip: this.env._t("Copied!"),
         }, {
             position: "left",
         });

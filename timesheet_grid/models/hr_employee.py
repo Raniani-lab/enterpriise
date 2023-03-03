@@ -51,9 +51,9 @@ class Employee(models.Model):
     def get_timesheet_and_working_hours(self, date_start, date_stop):
         """ Get the difference between the supposed working hour (based on resource calendar) and
             the timesheeted hours, for the given period `date_start` - `date_stop` (inclusives).
-            :param date_start : start date of the period to check (date string)
-            :param date_stop : end date of the period to check (date string)
-            :returns dict : a dict mapping the employee_id with his timesheeted and working hours for the
+            :param date_start: start date of the period to check (date string)
+            :param date_stop: end date of the period to check (date string)
+            :returns dict: a dict mapping the employee_id with his timesheeted and working hours for the
                 given period.
         """
         employees = self.filtered('resource_calendar_id')

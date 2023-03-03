@@ -599,7 +599,7 @@ class View(models.Model):
 
         Returns the normalized studio arch
         """
-        # Beware ! By its reasoning, this function assumes that the view you
+        # Beware! By its reasoning, this function assumes that the view you
         # want to normalize is the last one to be applied on its root view.
         # This could be improved by deactivating all views that would be applied
         # after this one when calling the get_combined_arch to get the old_view
@@ -716,7 +716,7 @@ class View(models.Model):
                         old_node = next(old_view_iterator)
                         node = next(new_view_iterator)
                         # If we are in moving boundary mode, then this node
-                        # definitely moved, since the boundary moved around it !
+                        # definitely moved, since the boundary moved around it!
                         if moving_boundary and node.tag == 'field':
                             # Only fields are currently supported.
                             removed_fields[node.get('name')] = old_node

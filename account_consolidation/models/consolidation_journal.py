@@ -39,7 +39,7 @@ class ConsolidationJournal(models.Model):
         """
         for record in self:
             if record.company_period_id and record.composition_id:
-                raise ValidationError(_('A journal entry should only be linked to a company period OR to a analysis period of another consolidation !'))
+                raise ValidationError(_('A journal entry should only be linked to a company period OR to a analysis period of another consolidation!'))
 
     @api.constrains('period_id')
     def _check_not_locked_period(self):
@@ -48,7 +48,7 @@ class ConsolidationJournal(models.Model):
         """
         for record in self:
             if record.period_id and record.period_id.state == 'closed':
-                raise ValidationError(_('You cannot add journals to a closed period !'))
+                raise ValidationError(_('You cannot add journals to a closed period!'))
 
     @api.constrains('period_id', 'chart_id')
     def _check_chart_id(self):
@@ -148,7 +148,7 @@ class ConsolidationJournalLine(models.Model):
                 if record.id:
                     domain.append(('id', '!=', record.id))
                 if existings.get((record.journal_id, record.account_id), False) or record.search(domain):
-                    raise ValidationError(_('Only one entry by account should be created for a generated journal entry !'))
+                    raise ValidationError(_('Only one entry by account should be created for a generated journal entry!'))
                 existings[(record.journal_id, record.account_id)] = True
 
     # ORM OVERRIDES

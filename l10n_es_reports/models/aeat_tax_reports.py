@@ -1232,7 +1232,7 @@ class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
             invoice_line_data = self._get_partner_subline(line_options, invoice_report_line_xml_id, line_partner.id)
             previous_report_amount = invoice_line_data['columns'][0]['no_format']
 
-            # Now, we can report the record !
+            # Now, we can report the record!
             rslt += self._l10n_es_boe_format_string('2349')
             rslt += self._l10n_es_boe_format_string(report_year, length=4)
             rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)

@@ -20,7 +20,7 @@ const EditableDocumentAction = DocumentAction.extend({
         args: [parseInt($envelope.parent(".o_sign_signer_status").data("id"))],
         context: session.user_context,
       });
-      $envelope.empty().append(_t("Resent !"));
+      $envelope.empty().append(_t("Resent!"));
     },
   },
 

@@ -12,9 +12,9 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
             this._handlePushOrderError = async (error) => {
                 if (error.code === "fiskaly") {
                     const message = {
-                        noInternet: this.env._t("Cannot sync the orders with Fiskaly !"),
+                        noInternet: this.env._t("Cannot sync the orders with Fiskaly!"),
                         unknown: this.env._t(
-                            "An unknown error has occurred ! Please contact Odoo for more information."
+                            "An unknown error has occurred! Please contact Odoo for more information."
                         ),
                     };
                     this.pos.fiskalyError(error, message);
@@ -53,7 +53,7 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
                     } else {
                         const message = {
                             unknown: this.env._t(
-                                "An unknown error has occurred ! Please, contact Odoo."
+                                "An unknown error has occurred! Please, contact Odoo."
                             ),
                         };
                         this.pos.fiskalyError(error, message);
@@ -70,7 +70,7 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
                     } else {
                         const message = {
                             unknown: this.env._t(
-                                "An unknown error has occurred ! Please, contact Odoo."
+                                "An unknown error has occurred! Please, contact Odoo."
                             ),
                         };
                         this.pos.fiskalyError(error, message);

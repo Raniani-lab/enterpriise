@@ -34,7 +34,7 @@ class product_template(models.Model):
             self.type = False
             return {'warning': {
                 'title': _("Warning"),
-                'message': _("A 'Subscription Product' cannot be a 'Storable Product' !")
+                'message': _("A 'Subscription Product' cannot be a 'Storable Product'!")
             }}
 
     @api.onchange('recurring_invoice')
@@ -49,5 +49,5 @@ class product_template(models.Model):
             self.recurring_invoice = False
             return {'warning': {
                 'title': _("Warning"),
-                'message': _("A 'Storable Product' cannot be a 'Subscription Product' !")
+                'message': _("A 'Storable Product' cannot be a 'Subscription Product'!")
             }}

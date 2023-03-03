@@ -92,7 +92,7 @@ class HrPayslip(models.Model):
         compute='_compute_input_line_ids', store=True,
         readonly=False, states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
     paid = fields.Boolean(
-        string='Made Payment Order ? ', readonly=True, copy=False,
+        string='Made Payment Order? ', readonly=True, copy=False,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     note = fields.Text(string='Internal Note', readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
     contract_domain_ids = fields.Many2many('hr.contract', compute='_compute_contract_domain_ids')

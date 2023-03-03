@@ -129,7 +129,7 @@
                                                                t-on-click="() => this.createArticle('private')">
                                                                 Create an article
                                                             </a>
-                                                            to unleash the power of Knowledge !
+                                                            to unleash the power of Knowledge!
                                                         </p>
                                                     </div>
                                                 </div>

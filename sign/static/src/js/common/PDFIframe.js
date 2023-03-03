@@ -212,7 +212,7 @@ export const PDFIframe = Widget.extend(
         this.fullyLoaded.resolve();
         return Dialog.alert(
           this,
-          _t("Need a valid PDF to add signature fields !")
+          _t("Need a valid PDF to add signature fields!")
         );
       }
 

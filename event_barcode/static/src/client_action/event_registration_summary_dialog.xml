@@ -15,7 +15,7 @@
                     <div t-else="" class="alert alert-warning text-center" role="alert">
                         <t t-if="registration.status === 'need_manual_confirmation'">
                             <span>This ticket is for another event<br/>
-                            Confirm attendance for <t t-out="registration.name"/> ?</span>
+                            Confirm attendance for <t t-out="registration.name"/>?</span>
                         </t>
                         <t t-elif="registration.status === 'not_ongoing_event'">
                             <span>This ticket is not for an ongoing event</span>

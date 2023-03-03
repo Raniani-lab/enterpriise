@@ -41,7 +41,7 @@ export class MainMenu extends Component {
                 window.navigator.vibrate(100);
             }
         } else {
-            this.notificationService.add(this.env._t("Please, Scan again !"), { type: 'warning' });
+            this.notificationService.add(this.env._t("Please, Scan again!"), { type: 'warning' });
         }
     }
 
@@ -49,7 +49,7 @@ export class MainMenu extends Component {
         this.state.displayDemoMessage = false;
         const params = {
             title: this.env._t("Don't show this message again"),
-            body: this.env._t("Do you want to permanently remove this message ?\
+            body: this.env._t("Do you want to permanently remove this message?\
                     It won't appear anymore, so make sure you don't need the barcodes sheet or you have a copy."),
             confirm: () => {
                 this.rpc('/stock_barcode/rid_of_message_demo_barcodes');

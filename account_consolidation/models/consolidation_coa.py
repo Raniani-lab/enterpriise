@@ -323,7 +323,7 @@ class ConsolidationGroup(models.Model):
         """
         for record in self:
             if record.child_ids and len(record.child_ids) > 0 and record.account_ids and len(record.account_ids) > 0:
-                raise ValidationError(_("An account group can only have accounts or other groups children but not both !"))
+                raise ValidationError(_("An account group can only have accounts or other groups children but not both!"))
 
     def name_get(self):
         ret_list = []

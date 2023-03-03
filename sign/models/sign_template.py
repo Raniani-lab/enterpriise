@@ -324,7 +324,7 @@ class SignTemplateTag(models.Model):
     color = fields.Integer('Color Index')
 
     _sql_constraints = [
-        ('name_uniq', 'unique (name)', "Tag name already exists !"),
+        ('name_uniq', 'unique (name)', "Tag name already exists!"),
     ]
 
 

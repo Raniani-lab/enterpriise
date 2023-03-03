@@ -297,7 +297,7 @@ QUnit.test("ungrouped gantt rendering", async (assert) => {
             if (method === "web_search_read") {
                 assert.step(model);
             } else if (method === "web_read_group") {
-                throw Error("Should not call read_group when no groupby !");
+                throw Error("Should not call read_group when no groupby!");
             }
         },
     });
@@ -3185,7 +3185,7 @@ QUnit.test("consolidation feature", async (assert) => {
     assert.strictEqual(rows[9].title, "User 2");
 
     // Consolidation
-    // 0 over the size of Task 5 (Task 5 is 100 but is excluded !) then 0 over the rest of Task 1, cut by Task 4 which has progress 0
+    // 0 over the size of Task 5 (Task 5 is 100 but is excluded!) then 0 over the rest of Task 1, cut by Task 4 which has progress 0
     assert.deepEqual(rows[0].pills, [
         { colSpan: "01 -> 04 (1/2)", title: "0" },
         { colSpan: "04 (1/2) -> 19", title: "0" },

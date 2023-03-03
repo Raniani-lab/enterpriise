@@ -387,7 +387,7 @@ class MrpEco(models.Model):
         if self.current_bom_id:
             self.new_bom_id.write({'version': self.current_bom_id.version + 1, 'previous_bom_id': self.current_bom_id.id})
             vals.update({'bom_id': self.current_bom_id.id, 'current_bom_id': False})
-        self.message_post(body=_('Successfully Rebased !'))
+        self.message_post(body=_('Successfully Rebased!'))
         return self.write(vals)
 
     @api.depends('bom_id.bom_line_ids', 'new_bom_id.bom_line_ids', 'new_bom_id.bom_line_ids.product_qty', 'new_bom_id.bom_line_ids.product_uom_id', 'new_bom_id.bom_line_ids.operation_id')
@@ -830,5 +830,5 @@ class MrpEcoTag(models.Model):
     color = fields.Integer('Color Index', default=_get_default_color)
 
     _sql_constraints = [
-        ('name_uniq', 'unique (name)', "Tag name already exists !"),
+        ('name_uniq', 'unique (name)', "Tag name already exists!"),
     ]

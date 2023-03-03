@@ -16,7 +16,7 @@ class sale_order(models.Model):
         for order in self:
             if not order.company_id: # if company_id not found, return to normal behavior
                 continue
-            # if company allow to create a Purchase Order from Sales Order, then do it !
+            # if company allow to create a Purchase Order from Sales Order, then do it!
             company = self.env['res.company']._find_company_from_partner(order.partner_id.id)
             if company and company.rule_type in ('sale', 'sale_purchase') and (not order.auto_generated):
                 order.with_user(company.intercompany_user_id).with_context(default_company_id=company.id).with_company(company).inter_company_create_purchase_order(company)

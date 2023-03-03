@@ -36,7 +36,7 @@ patch(LoginScreen.prototype, "pos_hr_mobile.LoginScreen", {
         } else {
             this.env.services.notification.notify({
                 type: "warning",
-                message: "Please, Scan again !",
+                message: "Please, Scan again!",
             });
         }
     },

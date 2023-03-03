@@ -69,7 +69,7 @@ class AppraisalAskFeedback(models.TransientModel):
             emailless_employees_all = self.env['hr.employee'].search(['|', ('work_email', '=', False), ('user_id.partner_id', '=', False)])
             warning = {
                 'title': _('Missing email'),
-                'message': _('This employee doesn\'t have any mail address registered and will not receive any email. \nThe following employees do not have any email : \n%s',
+                'message': _('This employee doesn\'t have any mail address registered and will not receive any email. \nThe following employees do not have any email: \n%s',
                         ', '.join(emailless_employees_all.mapped('name'))),
                 'type': 'notification',
             }

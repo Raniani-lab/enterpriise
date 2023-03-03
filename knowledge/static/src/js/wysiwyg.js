@@ -32,8 +32,8 @@ Wysiwyg.include({
     /**
      * @override
      */
-    resetEditor: function () {
-        this._super(...arguments);
+    resetEditor: async function () {
+        await this._super(...arguments);
         this.$editable[0].dispatchEvent(new Event('refresh_behaviors'));
     },
     /**

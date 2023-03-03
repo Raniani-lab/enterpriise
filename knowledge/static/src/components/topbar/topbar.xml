@@ -52,126 +52,148 @@
                 </ol>
             </div>
             <!-- Buttons -->
-            <div class="d-flex align-items-center pe-2">
-                <a role="button" t-on-click="() => this.env.createArticle('private')" class="btn btn-light btn-create text-nowrap me-1" data-hotkey="n">
-                    <i class="fa fa-plus-circle me-1"/>New
-                </a>
-                <div class="o-dropdown dropdown o-dropdown--no-caret">
-                    <a t-ref="sharePanel_button" role="button" class="btn btn-light btn-share dropdown-toggle me-1" id="dropdown_share_panel" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hotkey="s"
-                    t-if="props.record.data.id and props.record.data.active">
-                        <i class="fa fa-share-alt me-1"/>Share
+            <div class="d-lg-flex align-items-center pe-2">
+                <!-- Icon and Cover buttons -->
+                <div class="o_knowledge_add_buttons" t-if="props.record.data.active">
+                    <button class="btn btn-light o_knowledge_add_icon" t-if="!props.record.data.icon"
+                        t-on-mousedown.prevent="env.addIcon">
+                        <i class="fa fa-fw fa-lg fa-smile-o" title="Add icon"/> Add icon
+                    </button>
+                    <button class="btn btn-light o_knowledge_add_cover" t-if="!props.record.data.cover_image_id"
+                        t-on-mousedown.prevent="addCover">
+                        <i class="fa fa-fw fa-lg fa-picture-o" title="Add cover"/> Add cover
+                    </button>
+                    <span t-if="!props.record.data.parent_id"
+                       class="btn btn-light o_knowledge_add_properties text-muted"
+                       title="Properties are fields that can only be added on articles that have a parent.">
+                        <i class="fa fa-fw fa-lg fa-cog"/> Add Properties
+                    </span>
+                    <button t-elif="!props.record.data.article_properties.length" t-on-click="addProperties"
+                        class="btn btn-light o_knowledge_add_properties">
+                        <i class="fa fa-fw fa-lg fa-cog" title="Add Properties"/> Add Properties
+                    </button>
+                </div>
+                <div class="d-flex">
+                    <a role="button" t-on-click="() => this.env.createArticle('private')" class="btn btn-light btn-create text-nowrap me-1" data-hotkey="n">
+                        <i class="fa fa-plus-circle me-1"/>New
                     </a>
-                    <div role="menu" t-on-click.stop="" aria-labelledby="dropdown_share_panel" t-attf-class="o_knowledge_share_panel dropdown-menu user-select-none">
-                        <div t-if="state.displaySharePanel and props.record.data.id and props.record.data.active">
-                            <PermissionPanel record="props.record" article_id="props.record.data.id" user_permission="props.record.data.user_permission" renderTree="this.env._renderTree" />
+                    <div class="o-dropdown dropdown o-dropdown--no-caret">
+                        <a t-ref="sharePanel_button" role="button" class="btn btn-light btn-share dropdown-toggle me-1" id="dropdown_share_panel" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hotkey="s"
+                        t-if="props.record.data.id and props.record.data.active">
+                            <i class="fa fa-share-alt me-1"/>Share
+                        </a>
+                        <div role="menu" t-on-click.stop="" aria-labelledby="dropdown_share_panel" t-attf-class="o_knowledge_share_panel dropdown-menu user-select-none">
+                            <div t-if="state.displaySharePanel and props.record.data.id and props.record.data.active">
+                                <PermissionPanel record="props.record" article_id="props.record.data.id" user_permission="props.record.data.user_permission" renderTree="this.env._renderTree" />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <a role="button" class="btn btn-light o_toggle_favorite me-1" t-on-click="env.toggleFavorite" t-if="props.record.data.id" data-hotkey="t">
-                    <i class="fa fa-lg fa-star" title="Remove from favorites" t-if="props.record.data.is_user_favorite"/>
-                    <i class="fa fa-lg fa-star-o" title="Add to favorites" t-if="!props.record.data.is_user_favorite"/>
-                </a>
-                <a t-ref="btn_chatter" role="button" t-attf-class="btn btn-light btn-chatter #{state.displayChatter ? 'active' : ''} me-1" data-hotkey="d" t-if="props.record.data.id" t-on-click="toggleChatter">
-                    <i class="rounded-circle text-center fa fa-fw fa-comments" title="Open chatter"/>
-                </a>
-                <a t-ref="btn_properties" t-if="state.displayPropertyToggle" role="button" t-attf-class="btn btn-light btn-properties me-1 #{state.displayPropertyPanel ? 'active' : ''}" data-hotkey="d" t-on-click="toggleProperties">
-                    <i class="rounded-circle text-center fa fa-cog" title="Show Properties"/>
-                </a>
-                <div class="o-dropdown dropdown o-dropdown--no-caret" t-if="props.record.data.id">
-                    <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" id="dropdown_tools_panel" aria-haspopup="true" aria-expanded="false" data-hotkey="p">
-                        <i class="fa fa-fw fa-ellipsis-v" title="Open kebab menu"/>
+                    <a role="button" class="btn btn-light o_toggle_favorite me-1" t-on-click="env.toggleFavorite" t-if="props.record.data.id" data-hotkey="t">
+                        <i class="fa fa-lg fa-star" title="Remove from favorites" t-if="props.record.data.is_user_favorite"/>
+                        <i class="fa fa-lg fa-star-o" title="Add to favorites" t-if="!props.record.data.is_user_favorite"/>
                     </a>
-                    <div class="o_knowledge_more_options_panel dropdown-menu" role="menu" aria-labelledby="dropdown_tools_panel">
-                        <div>
-                            <button class="ps-0 dropdown-item btn-move" t-on-click="onMoveArticleClick" t-if="props.record.data.user_can_write and props.record.data.active and !props.record.data.is_article_item">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-angle-double-right"/> Move To
-                            </button>
-                            <button class="ps-0 dropdown-item btn-lock" t-on-click="() => this.setLockStatus(true)"
-                                    t-if="props.record.data.user_can_write and !props.record.data.is_locked and props.record.data.active">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-lock"/> Lock
-                            </button>
-                            <button class="ps-0 dropdown-item btn-lock" t-on-click="() => this.setLockStatus(false)"
-                                t-if="props.record.data.user_can_write and props.record.data.is_locked and props.record.data.active">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-unlock"/> Unlock
-                            </button>
-                            <button class="ps-0 dropdown-item" t-on-click="deleteArticle"
-                            t-if="props.record.data.user_can_write and props.record.data.active">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-trash"/> Delete
-                            </button>
-                            <button class="ps-0 dropdown-item" t-on-click="unarchiveArticle"
-                                    t-if="props.record.data.to_delete and props.record.data.user_can_write">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-trash-o"/> Restore from Trash
-                            </button>
-                            <button class="ps-0 dropdown-item" t-on-click="unarchiveArticle"
-                                    t-if="!props.record.data.to_delete and !props.record.data.active">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-archive"/> Unarchive
-                            </button>
-                            <button class="ps-0 dropdown-item" t-on-click="this.cloneArticle">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-copy"/> Create a Copy
-                            </button>
-                            <button class="ps-0 dropdown-item"
-                                title="Article items are not showed in the left-side menu&#10;but are shown in inserted kanban/list views"
-                                t-if="props.record.data.user_can_write and !props.record.data.is_article_item and props.record.data.parent_id and props.record.data.active"
-                                t-on-click="() => this.setIsArticleItem(true)">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-tasks"/> Convert to Article Item
-                            </button>
-                            <button class="ps-0 dropdown-item"
-                                t-if="props.record.data.user_can_write and props.record.data.is_article_item and !props.record.data.has_item_parent"
-                                t-on-click="() => this.setIsArticleItem(false)">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-sitemap"/> Convert to Article
-                            </button>
-                            <div class="dropdown-divider" t-if="props.record.data.user_can_write and props.record.data.active"/>
-                            <div class="ps-0 dropdown-item user-select-none d-inline-flex align-items-start" t-if="props.record.data.user_can_write and props.record.data.active"
-                                t-on-click.stop="() => this.props.record.update({full_width: !props.record.data.full_width})">
-                                <div class="pe-3">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-arrows-h"/> Full Width
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" id="full_width_input" type="checkbox" role="switch" t-att-checked="props.record.data.full_width"/>
-                                </div>
-                            </div>
-                            <div class="dropdown-divider" t-if="props.record.data.last_edition_uid or props.record.data.last_edition_date"/>
-                        </div>
-                        <div class="dropdown-item-text ps-1 ms-1" t-if="props.record.data.last_edition_uid">
-                            <div class="d-flex align-items-center px-1 py-1">
-                                <span class="o_m2o_avatar">
-                                    <img class="o_knowledge_more_options_panel_image rounded-circle" t-if="props.record.data.last_edition_uid"
-                                        t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id={{ props.record.data.last_edition_uid[0] }}"
-                                        t-on-click="event => this._onMemberAvatarClick(event, props.record.data.last_edition_uid[0])"
-                                        t-att-title="this.props.record.data.last_edition_uid[1]"/>
-                                </span>
-                                <div class="d-flex flex-column ps-1">
-                                    <div class="d-inline-flex lh-sm">
-                                        <span class="ps-1 pe-1">
-                                            Last Edited
-                                        </span>
-                                        <span class="text-muted opacity-75 pe-1">·</span>
-                                        <span class="text-muted opacity-75" t-out="this.state.editionDate" t-att-title="this.formatDateTime(this.props.record.data.last_edition_date)"/>
+                    <a t-ref="btn_chatter" role="button" t-attf-class="btn btn-light btn-chatter #{state.displayChatter ? 'active' : ''} me-1" data-hotkey="d" t-if="props.record.data.id" t-on-click="toggleChatter">
+                        <i class="rounded-circle text-center fa fa-fw fa-comments" title="Open chatter"/>
+                    </a>
+                    <a t-ref="btn_properties" t-if="props.record.data.article_properties.length" role="button" t-attf-class="btn btn-light btn-properties me-1 #{state.displayPropertyPanel ? 'active' : ''}" data-hotkey="d" t-on-click="toggleProperties">
+                        <i class="rounded-circle text-center fa fa-cog" title="Show Properties"/>
+                    </a>
+                    <div class="o-dropdown dropdown o-dropdown--no-caret" t-if="props.record.data.id">
+                        <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" id="dropdown_tools_panel" aria-haspopup="true" aria-expanded="false" data-hotkey="p" t-ref="optionsBtn">
+                            <i class="fa fa-fw fa-ellipsis-v" title="Open kebab menu"/>
+                        </a>
+                        <div class="o_knowledge_more_options_panel dropdown-menu" role="menu" aria-labelledby="dropdown_tools_panel">
+                            <div>
+                                <button class="ps-0 dropdown-item btn-move" t-on-click="onMoveArticleClick" t-if="props.record.data.user_can_write and props.record.data.active and !props.record.data.is_article_item">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-angle-double-right"/> Move To
+                                </button>
+                                <button class="ps-0 dropdown-item btn-lock" t-on-click="() => this.setLockStatus(true)"
+                                        t-if="props.record.data.user_can_write and !props.record.data.is_locked and props.record.data.active">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-lock"/> Lock
+                                </button>
+                                <button class="ps-0 dropdown-item btn-lock" t-on-click="() => this.setLockStatus(false)"
+                                    t-if="props.record.data.user_can_write and props.record.data.is_locked and props.record.data.active">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-unlock"/> Unlock
+                                </button>
+                                <button class="ps-0 dropdown-item" t-on-click="deleteArticle"
+                                t-if="props.record.data.user_can_write and props.record.data.active">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-trash"/> Delete
+                                </button>
+                                <button class="ps-0 dropdown-item" t-on-click="unarchiveArticle"
+                                        t-if="props.record.data.to_delete and props.record.data.user_can_write">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-trash-o"/> Restore from Trash
+                                </button>
+                                <button class="ps-0 dropdown-item" t-on-click="unarchiveArticle"
+                                        t-if="!props.record.data.to_delete and !props.record.data.active">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-archive"/> Unarchive
+                                </button>
+                                <button class="ps-0 dropdown-item" t-on-click="this.cloneArticle">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-copy"/> Create a Copy
+                                </button>
+                                <button class="ps-0 dropdown-item"
+                                    title="Article items are not showed in the left-side menu&#10;but are shown in inserted kanban/list views"
+                                    t-if="props.record.data.user_can_write and !props.record.data.is_article_item and props.record.data.parent_id and props.record.data.active"
+                                    t-on-click="() => this.setIsArticleItem(true)">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-tasks"/> Convert into Article Item
+                                </button>
+                                <button class="ps-0 dropdown-item"
+                                    t-if="props.record.data.user_can_write and props.record.data.is_article_item and !props.record.data.has_item_parent"
+                                    t-on-click="() => this.setIsArticleItem(false)">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-sitemap"/> Convert into Article
+                                </button>
+                                <div class="dropdown-divider" t-if="props.record.data.user_can_write and props.record.data.active"/>
+                                <div class="ps-0 dropdown-item user-select-none d-inline-flex align-items-start" t-if="props.record.data.user_can_write and props.record.data.active"
+                                    t-on-click.stop="() => this.props.record.update({full_width: !props.record.data.full_width})">
+                                    <div class="pe-3">
+                                        <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-arrows-h"/> Full Width
                                     </div>
-                                    <span class="ps-1 pe-1">
-                                        <t t-out="this.props.record.data.last_edition_uid[1]"/>
-                                    </span>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" id="full_width_input" type="checkbox" role="switch" t-att-checked="props.record.data.full_width"/>
+                                    </div>
                                 </div>
+                                <div class="dropdown-divider" t-if="props.record.data.last_edition_uid or props.record.data.last_edition_date"/>
                             </div>
-                            <div class="d-flex align-items-center px-1 py-1">
-                                <span class="o_m2o_avatar">
-                                    <img class="o_knowledge_more_options_panel_image rounded-circle" t-if="props.record.data.create_uid"
-                                        t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id={{ props.record.data.create_uid[0] }}"
-                                        t-on-click="event => this._onMemberAvatarClick(event, props.record.data.create_uid[0])"
-                                        t-att-title="this.props.record.data.create_uid[1]"/>
-                                </span>
-                                <div class="d-flex flex-column ps-1">
-                                    <div class="d-inline-flex lh-sm">
+                            <div class="dropdown-item-text ps-1 ms-1" t-if="props.record.data.last_edition_uid">
+                                <div class="d-flex align-items-center px-1 py-1">
+                                    <span class="o_m2o_avatar">
+                                        <img class="o_knowledge_more_options_panel_image rounded-circle" t-if="props.record.data.last_edition_uid"
+                                            t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id={{ props.record.data.last_edition_uid[0] }}"
+                                            t-on-click="event => this._onMemberAvatarClick(event, props.record.data.last_edition_uid[0])"
+                                            t-att-title="this.props.record.data.last_edition_uid[1]"/>
+                                    </span>
+                                    <div class="d-flex flex-column ps-1">
+                                        <div class="d-inline-flex lh-sm">
+                                            <span class="ps-1 pe-1">
+                                                Last Edited
+                                            </span>
+                                            <span class="text-muted opacity-75 pe-1">·</span>
+                                            <span class="text-muted opacity-75" t-out="this.state.editionDate" t-att-title="this.formatDateTime(this.props.record.data.last_edition_date)"/>
+                                        </div>
                                         <span class="ps-1 pe-1">
-                                            Created
+                                            <t t-out="this.props.record.data.last_edition_uid[1]"/>
                                         </span>
-                                        <span class="text-muted opacity-75 pe-1">·</span>
-                                        <span class="text-muted opacity-75" t-out="this.state.createDate" t-att-title="this.formatDateTime(this.props.record.data.create_date)"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center px-1 py-1">
+                                    <span class="o_m2o_avatar">
+                                        <img class="o_knowledge_more_options_panel_image rounded-circle" t-if="props.record.data.create_uid"
+                                            t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id={{ props.record.data.create_uid[0] }}"
+                                            t-on-click="event => this._onMemberAvatarClick(event, props.record.data.create_uid[0])"
+                                            t-att-title="this.props.record.data.create_uid[1]"/>
+                                    </span>
+                                    <div class="d-flex flex-column ps-1">
+                                        <div class="d-inline-flex lh-sm">
+                                            <span class="ps-1 pe-1">
+                                                Created
+                                            </span>
+                                            <span class="text-muted opacity-75 pe-1">·</span>
+                                            <span class="text-muted opacity-75" t-out="this.state.createDate" t-att-title="this.formatDateTime(this.props.record.data.create_date)"/>
 
+                                        </div>
+                                        <span class="ps-1 pe-1">
+                                            <t t-out="this.props.record.data.create_uid[1]"/>
+                                        </span>
                                     </div>
-                                    <span class="ps-1 pe-1">
-                                        <t t-out="this.props.record.data.create_uid[1]"/>
-                                    </span>
                                 </div>
                             </div>
                         </div>

@@ -16,7 +16,7 @@ registry.category("web_tour.tours").add('knowledge_pick_emoji_tour', {
     trigger: 'section[data-section="private"] .o_article .o_article_name:contains("Untitled")',
     run: () => {}, // check that the article is correctly created (private section)
 }, {
-    trigger: '.o_knowledge_icon_cover_buttons',
+    trigger: '.o_knowledge_add_buttons',
     run: () => {
         // force the cover buttons to be visible (it's only visible on hover)
         $('.o_knowledge_add_icon, .o_knowledge_add_cover').css({

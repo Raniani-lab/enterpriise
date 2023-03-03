@@ -2,7 +2,7 @@
 <templates>
     <t t-name="knowledge.KnowledgeIcon" owl="1">
         <div t-if="props.record.data[props.name]" 
-             t-attf-class="o_knowledge_icon o_large #{props.record.data.cover_image_id ? 'o_overlap_cover' : ''}">
+             t-attf-class="o_knowledge_icon o_large #{props.record.data.cover_image_id ? 'o_overlap_cover' : 'mb-n4'}">
             <p t-if="props.readonly" class="o_article_emoji m-0 o-no-caret" t-out="props.record.data[props.name]"/>
             <a t-else="" role="button" class="o_article_emoji o-no-caret" t-out="props.record.data[props.name]"
                t-on-click="this.env.showEmojiPicker"/>

@@ -944,10 +944,6 @@ class Planning(models.Model):
         return [work_interval_per_resource]
 
     @api.model
-    def gantt_company_hours_per_day(self):
-        return self.env.company.resource_calendar_id.hours_per_day
-
-    @api.model
     def gantt_unavailability(self, start_date, end_date, scale, group_bys=None, rows=None):
         start_datetime = fields.Datetime.from_string(start_date)
         end_datetime = fields.Datetime.from_string(end_date)

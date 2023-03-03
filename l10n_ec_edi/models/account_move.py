@@ -477,13 +477,15 @@ class AccountMove(models.Model):
     def _l10n_ec_wth_map_tax_code(self, withhold_line):
         # Maps purchase withhold taxes to codes for assembling the EDI document
         code = False
+        report_code = False
         l10n_ec_type = withhold_line.tax_ids.tax_group_id.l10n_ec_type
         if l10n_ec_type == 'withhold_income_purchase':
-            code = withhold_line.tax_ids.l10n_ec_code_ats
+            code = report_code = withhold_line.tax_ids.l10n_ec_code_ats
         elif l10n_ec_type == 'withhold_vat_purchase':
             percentage = abs(withhold_line.tax_ids.amount)
             code = L10N_EC_WITHHOLD_VAT_CODES.get(percentage)
-        return code
+            report_code = withhold_line.tax_ids.l10n_ec_code_applied
+        return code, report_code
 
     def _l10n_ec_wth_get_foreign_data(self):
         """To include in the XML"""
@@ -546,10 +548,12 @@ class AccountMove(models.Model):
                                           'payment_amount': taxsupport_amount_total}],
                 }
                 taxsupport_lines[taxsupport].update(foreign_data)
+            code, report_code = self._l10n_ec_wth_map_tax_code(line)
             taxsupport_lines[taxsupport]['withhold_lines'].append({
                 'tax_type': line.tax_ids.tax_group_id.l10n_ec_type,
                 'tax_type_code': L10N_EC_WITHHOLD_CODES.get(line.tax_ids.tax_group_id.l10n_ec_type),
-                'tax_code': self._l10n_ec_wth_map_tax_code(line),
+                'tax_code': code,
+                'tax_report_code': report_code,
                 'tax_base_amount': abs(line.balance),
                 'tax_rate': abs(line.tax_ids.amount),  # even if the tax is negative
                 'tax_amount': abs(line.l10n_ec_withhold_tax_amount),

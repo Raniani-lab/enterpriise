@@ -119,7 +119,7 @@
         <!-- Withhold line values -->
         <template id="withhold_line_values_template">
             <td>
-                <span t-esc="withhold_line['tax_code']"/>
+                <span t-esc="withhold_line['tax_report_code']"/>
             </td>
             <td>
                 <span t-esc="'IVA' if withhold_line['tax_type'] in ['withhold_vat_sale','withhold_vat_purchase'] else 'Renta'"/>

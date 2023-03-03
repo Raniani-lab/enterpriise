@@ -36,13 +36,12 @@ class KnowledgeCover extends Component {
         this.addCover = this.addCover.bind(this);
         // The "add cover" button is outside of the component, so we attach a
         // listener to it when it is in the dom.
-        useEffect(() => {
-            const addCoverBtn = document.querySelector(".o_knowledge_add_cover");
+        useEffect((addCoverBtn) => {
             if (addCoverBtn) {
                 addCoverBtn.addEventListener("mousedown", this.addCover);
                 return () => addCoverBtn.removeEventListener("mousedown", this.addCover);
             }
-        }, () => [this.root.el, this.isEditable]);
+        }, () => [document.querySelector(".o_knowledge_add_cover")]);
     }
 
     /**

@@ -10,18 +10,13 @@
         'web.assets_backend': [
             'web_grid/static/src/components/grid_cell.xml',
             'web_grid/static/src/**/*',
-            'web_grid/static/src/xml/**/*',
         ],
         'web.qunit_suite_tests': [
             'web_grid/static/tests/grid_view_tests.js',
             'web_grid/static/tests/mock_server.js',
-            'web_grid/static/tests/legacy/mock_server.js',
-            'web_grid/static/tests/legacy/grid_tests.js',
         ],
         'web.qunit_mobile_suite_tests': [
             'web_grid/static/tests/grid_view_mobile_tests.js',
-            'web_grid/static/tests/legacy/grid_mobile_tests.js',
-            'web_grid/static/tests/legacy/mock_server.js',
         ],
     },
     'auto_install': True,

@@ -26,9 +26,12 @@
     'data': [
         'security/ir.model.access.csv',
         'security/delivery_security.xml',
-        'views/stock_picking_views.xml',
         'data/edi_delivery_guide.xml',
+        'views/product_template_view.xml',
         'views/report_deliveryslip.xml',
+        "views/res_config_settings_views.xml",
+        "views/res_partner_view.xml",
+        'views/stock_picking_views.xml',
         'views/vehicle_views.xml',
     ],
     'installable': True,

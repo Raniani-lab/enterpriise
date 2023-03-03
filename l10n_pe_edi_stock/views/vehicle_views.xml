@@ -19,7 +19,14 @@
                         <field name="company_id" invisible="1"/>
                         <field name="name"/>
                         <field name="license_plate"/>
-                        <field name="operator_id"/>
+                        <field name="is_m1l"/>
+                        <field name="authorization_issuing_entity"
+                            attrs="{'invisible': [('is_m1l', '=', True)]}"
+                        />
+                        <field name="authorization_issuing_entity_number"
+                            attrs="{'invisible': ['|', ('is_m1l', '=', True), ('authorization_issuing_entity', '=', False)]}"
+                        />
+                        <field name="operator_id" attrs="{'invisible': [('is_m1l', '=', True)]}"/>
                         <field name="company_id" groups="base.group_multi_company"/>
                     </group>
                 </sheet>

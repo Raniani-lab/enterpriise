@@ -16,7 +16,7 @@ export class LastTransactionStatusButton extends Component {
     static template = "LastTransactionStatusButton";
 
     setup() {
-        this._super(...arguments);
+        super.setup();
         this.popup = useService("popup");
         this.state = useState({ pending: false });
     }

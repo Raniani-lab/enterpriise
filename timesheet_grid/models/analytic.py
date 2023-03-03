@@ -423,7 +423,10 @@ class AnalyticLine(models.Model):
         domain_search = expression.AND([
             [('project_id.allow_timesheets', '=', True),
              ('date', '>=', last_week),
-             ('date', '<=', grid_anchor)
+             ('date', '<=', grid_anchor),
+             '|',
+                ('task_id.active', '=', True),
+                ('task_id', '=', False),
             ], filter_domain_leaf(domain, lambda field: field != 'date')
         ])
 

@@ -26,11 +26,7 @@
     'application': True,
     'assets': {
         'web.assets_backend': [
-            'account_consolidation/static/src/scss/consolidation_grid_view.scss',
             'account_consolidation/static/src/scss/consolidation_kanban.scss',
-            'account_consolidation/static/src/js/trial_balance_grid/controller.js',
-            'account_consolidation/static/src/js/trial_balance_grid/renderer.js',
-            'account_consolidation/static/src/js/trial_balance_grid/view.js',
             'account_consolidation/static/src/components/**/*',
             'account_consolidation/static/src/views/**/*',
         ],

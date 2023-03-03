@@ -20,9 +20,9 @@ HelpdeskSLAMany2ManyTags.components = { ...Many2ManyTagsField.components, TagsLi
 export const helpdeskSLAMany2ManyTags = {
     ...many2ManyTagsField,
     component: HelpdeskSLAMany2ManyTags,
-    fieldsToFetch: (fieldInfo) => {
+    relatedFields: (fieldInfo) => {
         return [
-            ...many2ManyTagsField.fieldsToFetch(fieldInfo),
+            ...many2ManyTagsField.relatedFields(fieldInfo),
             { name: "status", type: "selection", selection: [] },
         ];
     },

@@ -19,7 +19,7 @@ export const DocumentsModelMixin = (component) => class extends component {
             fieldInfo.domain = (typeof fieldInfo.domain === "string" && fieldInfo.domain) || "[]";
         });
         params.activeFields.available_rule_ids = Object.assign({}, params.activeFields.available_rule_ids, {
-            fieldsToFetch: {
+            relatedFields: {
                 id: {
                     type: "integer",
                     options: {

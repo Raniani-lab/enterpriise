@@ -722,7 +722,10 @@ class AnalyticLine(models.Model):
         domain_search = expression.AND([
             [('project_id', '!=', False),
              ('date', '>=', last_week),
-             ('date', '<=', grid_anchor)
+             ('date', '<=', grid_anchor),
+             '|',
+                ('task_id.active', '=', True),
+                ('task_id', '=', False),
             ], domain_search])
 
         group_order = self.env['hr.employee']._order

@@ -156,6 +156,7 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
     def test_sepa_character_conversion(self):
         # change the partner's name and street to contain non-latin characters
         self.partner_a.name = "ÀÎÑϐН"
+        self.partner_a.bank_ids.acc_holder_name = "ÀÎÑϐН"
         self.partner_a.street = "íċēķθН"
         self.partner_a.city = "City"
         self.partner_a.country_id = self.env.ref('base.be')

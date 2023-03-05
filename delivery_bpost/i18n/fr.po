@@ -80,7 +80,7 @@ msgstr "Format d’étiquette Bpost"
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__bpost_label_stock_type
 msgid "Bpost Label Stock Type"
-msgstr "Type de film à étiquette Bpost"
+msgstr "Étiquette Bpost de type stock"
 
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost

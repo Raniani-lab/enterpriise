@@ -1330,7 +1330,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__week
 msgid "Weeks"
-msgstr "周"
+msgstr "星期"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__year

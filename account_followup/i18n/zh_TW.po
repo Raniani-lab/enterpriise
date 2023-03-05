@@ -886,7 +886,7 @@ msgstr "簡訊範本"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__subject
 msgid "Subject"
-msgstr "來源"
+msgstr "主題"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__activity_summary
@@ -978,7 +978,7 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Write your message here..."
-msgstr ""
+msgstr "寫下訊息⋯"
 
 #. module: account_followup
 #. odoo-python

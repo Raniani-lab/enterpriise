@@ -1747,7 +1747,7 @@ msgstr "Typ av undantagsaktivitet i posten."
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__type_ids
 msgid "Types"
-msgstr ""
+msgstr "Typer"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_file_kanban_mrp_plm

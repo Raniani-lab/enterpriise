@@ -351,7 +351,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/insert_action_link_menu/insert_action_link_menu.xml:0
 #, python-format
 msgid "Link menu in spreadsheet"
-msgstr ""
+msgstr "스프레드시트 링크 메뉴"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -808,7 +808,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "graph"
-msgstr ""
+msgstr "그래프"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

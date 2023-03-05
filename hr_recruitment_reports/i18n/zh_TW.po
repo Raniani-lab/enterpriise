@@ -359,4 +359,4 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid "weeks"
-msgstr "周"
+msgstr "星期"

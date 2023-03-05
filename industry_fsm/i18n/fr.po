@@ -509,7 +509,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Dissatisfied"
-msgstr "Mécontent"
+msgstr "Insatisfait"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project_task.py:0

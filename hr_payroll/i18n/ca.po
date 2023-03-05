@@ -20,7 +20,7 @@
 # marcescu, 2022
 # Guspy12, 2022
 # gerard navarro, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Ivan Espinola, 2023
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
@@ -168,9 +168,9 @@ msgid ""
 " selected employee(s) based on the dates and credit note specified on "
 "Payslips Run.</span>"
 msgstr ""
-"<span nolabel=\"1\" colspan=\"2\">Aquest assistent generarà lliscaments de "
-"pagament per a tots els empleats seleccionats basant-se en les dates i la "
-"nota de crèdit especificades a Payslips Run.</span>"
+"<span nolabel=\"1\" colspan=\"2\">Aquest assistent genera les fitxes de "
+"pagament de tots els empleats seleccionats sobre la base de les dates i de "
+"les notes de crèdit que figuren en les nòmines.</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view

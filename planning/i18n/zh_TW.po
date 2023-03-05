@@ -617,7 +617,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 msgid "Archived"
-msgstr "已歸檔"
+msgstr "已封存"
 
 #. module: planning
 #. odoo-javascript
@@ -2268,7 +2268,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_unit__week
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_unit__week
 msgid "Weeks"
-msgstr "周"
+msgstr "星期"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__work_address_id

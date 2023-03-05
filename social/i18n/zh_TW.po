@@ -147,7 +147,7 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_search
 msgid "Archived"
-msgstr "已歸檔"
+msgstr "已封存"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__has_active_accounts

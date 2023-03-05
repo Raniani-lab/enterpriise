@@ -63,7 +63,7 @@ msgstr "Account Online Account"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__account_online_link_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__account_online_link_id
 msgid "Account Online Link"
-msgstr "Account Online Link"
+msgstr "賬戶網上連結"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__account_online_wizard_id
@@ -656,7 +656,7 @@ msgstr "線上同步"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__online_transaction_identifier
 msgid "Online Transaction Identifier"
-msgstr "Online Transaction Identifier"
+msgstr "網上交易識別代號"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_bank_statement.py:0

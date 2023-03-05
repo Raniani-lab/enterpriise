@@ -1010,7 +1010,8 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_reports_periodic_vat_xml_export
 msgid "Belgian Periodic VAT Report Export Wizard"
-msgstr "Assistant d'exportation de rapports périodiques de TVA en Belgique"
+msgstr ""
+"Assistant d'exportation de déclarations périodiques à la TVA en Belgique"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_tax_report_handler
@@ -1298,7 +1299,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
 msgid "EC sales Report"
-msgstr ""
+msgstr "Relevé à la TVA des opérations intracommunautaires"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1812,7 +1813,7 @@ msgstr "Nom du partenaire"
 #: model:ir.actions.client,name:l10n_be_reports.action_account_report_partner_vat_listing
 #: model:ir.ui.menu,name:l10n_be_reports.menu_action_account_report_l10n_be_partner_vat_listing
 msgid "Partner VAT Listing"
-msgstr "Liste de la TVA par partenaire"
+msgstr "Liste annuelle des clients assujettis à la TVA"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_partner_vat_handler

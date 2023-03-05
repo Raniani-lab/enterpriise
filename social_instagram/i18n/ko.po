@@ -189,7 +189,7 @@ msgstr ""
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_stream_post__instagram_likes_count
 msgid "Instagram Likes"
-msgstr ""
+msgstr "인스타그램 좋아요"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_live_post__instagram_post_id

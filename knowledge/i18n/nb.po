@@ -1823,7 +1823,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr "Neste aktivitets hendelse"
+msgstr "Neste kalender aktivitet"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_date_deadline

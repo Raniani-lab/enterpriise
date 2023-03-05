@@ -616,7 +616,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__order_count
 msgid "Order Count"
-msgstr "注文数"
+msgstr "オーダ数"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -629,23 +629,23 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 #, python-format
 msgid "Orders"
-msgstr "注文"
+msgstr "オーダ"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_product_template
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__product_id
 msgid "Product"
-msgstr "商品"
+msgstr "プロダクト"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__product_template_id
 msgid "Product Template"
-msgstr "商品テンプレート"
+msgstr "プロダクトテンプレート"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_product_product
 msgid "Product Variant"
-msgstr "商品バリアント"
+msgstr "プロダクトバリアント"
 
 #. module: sale_amazon
 #. odoo-python
@@ -690,12 +690,12 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_sale_order
 msgid "Sales Order"
-msgstr "販売注文"
+msgstr "販売オーダ"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "販売注文明細"
+msgstr "販売オーダ明細"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_crm_team

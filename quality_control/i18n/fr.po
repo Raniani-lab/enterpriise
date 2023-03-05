@@ -126,7 +126,7 @@ msgstr "<span>à </span>"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
 msgid "<strong>Lot/Serial Number : </strong>"
-msgstr "<strong>Numéro de lot/série : </strong>"
+msgstr "<strong>Lot/numéro de série : </strong>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
@@ -524,7 +524,7 @@ msgstr "Lot/série"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__lot_name
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__lot_name
 msgid "Lot/Serial Number Name"
-msgstr "Nom du numéro de lot/série"
+msgstr "Nom du lot/numéro de série"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.quality_control_menu_traceability

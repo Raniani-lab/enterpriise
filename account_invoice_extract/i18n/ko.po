@@ -86,7 +86,7 @@ msgstr "계정 청구서 추출 알림"
 msgid ""
 "All fields will be automated by Artificial Intelligence, it might take 5 "
 "seconds."
-msgstr ""
+msgstr "모든 필드는 인공 지능을 통해 자동화되며, 약 5초 정도 소요됩니다."
 
 #. module: account_invoice_extract
 #. odoo-python
@@ -113,7 +113,7 @@ msgstr "디지털 작업된 청구서입니다"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_can_show_banners
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_can_show_banners
 msgid "Can show the ocr banners"
-msgstr ""
+msgstr "OCR 배너 표시 가능"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_can_show_resend_button
@@ -176,24 +176,24 @@ msgstr "고객 청구서"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_out_invoice_digitalization_mode
 msgid "Digitization mode on customer invoices"
-msgstr ""
+msgstr "고객 청구서 대상 디지털 변환 모드"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_in_invoice_digitalization_mode
 msgid "Digitization mode on vendor bills"
-msgstr ""
+msgstr "공급업체 청구서 대상 디지털 변환 모드"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__auto_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "자동으로 디지털 변환"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__manual_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "지정할 경우에만 디지털 변환"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__display_name
@@ -204,7 +204,7 @@ msgstr "표시명"
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__no_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "디지털 변환을 선택하지 않음"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
@@ -223,7 +223,7 @@ msgstr "오류 메시지"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_attachment_id
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_attachment_id
 msgid "Extract Attachment"
-msgstr ""
+msgstr "첨부 파일에서 추출"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_word_ids
@@ -289,7 +289,7 @@ msgstr "청구서"
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_parse
 msgid "Invoice OCR: Parse Invoices"
-msgstr ""
+msgstr "청구서 OCR: 청구서 분석"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -301,7 +301,7 @@ msgstr "청구서 OCR : 전체 상태 업데이트"
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_validate
 msgid "Invoice OCR: Validate Invoices"
-msgstr ""
+msgstr "청구서 OCR: 청구서 확인"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_move
@@ -343,7 +343,7 @@ msgstr "불충분한 신용 한도"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__ocr_selected
 msgid "Ocr Selected"
-msgstr ""
+msgstr "OCR 선택"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -353,12 +353,12 @@ msgstr "AI 데이터 새로고침"
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.model_account_send_for_digitalization
 msgid "Send Bills for digitization"
-msgstr ""
+msgstr "디지털 변환을 위해 공급업체 청구서 전송"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Send For Digitization"
-msgstr ""
+msgstr "디지털 변환을 위해 내보내기"
 
 #. module: account_invoice_extract
 #. odoo-python
@@ -378,7 +378,7 @@ msgstr "서버를 사용할 수 없습니다. 나중에 다시 시도하십시�
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_single_line_per_tax
 msgid "Single Invoice Line Per Tax"
-msgstr ""
+msgstr "세금별 단일 청구서 내역"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_status_code
@@ -401,7 +401,7 @@ msgstr ""
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
-msgstr ""
+msgstr "데이터 추출이 아직 완료되지 않았습니다. 추출에는 보통 5 - 10초 정도가 소요됩니다. "
 
 #. module: account_invoice_extract
 #. odoo-python

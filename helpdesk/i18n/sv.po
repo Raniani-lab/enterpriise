@@ -3763,7 +3763,7 @@ msgstr "Typ av undantagsaktivitet i posten."
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__ticket_type_ids
 #: model:ir.ui.menu,name:helpdesk.helpdesk_ticket_type_menu
 msgid "Types"
-msgstr ""
+msgstr "Typer"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_type_action

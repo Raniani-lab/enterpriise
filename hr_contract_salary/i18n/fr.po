@@ -1203,7 +1203,7 @@ msgstr "Informations personnelles"
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Personal Information"
-msgstr "Information personnelle"
+msgstr "Informations personnelles"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_phone

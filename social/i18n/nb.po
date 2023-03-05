@@ -9,7 +9,7 @@
 # Marius Stedjan <marius@stedjan.com>, 2022
 # Martin Trigaux, 2022
 # Lars Aam <lars.aam@vikenfiber.no>, 2022
-# Henning Fyllingsnes, 2022
+# Henning Fyllingsnes, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Henning Fyllingsnes, 2022\n"
+"Last-Translator: Henning Fyllingsnes, 2023\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -220,7 +220,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_post__calendar_date
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 msgid "Calendar Date"
-msgstr ""
+msgstr "Kalender dato"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
@@ -986,7 +986,7 @@ msgstr "Neste"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr "Neste aktivitets hendelse"
+msgstr "Neste kalender aktivitet"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_date_deadline

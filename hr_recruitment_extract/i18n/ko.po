@@ -59,7 +59,7 @@ msgstr ""
 msgid ""
 "All fields will be automated by Artificial Intelligence, it might take 5 "
 "seconds."
-msgstr ""
+msgstr "모든 필드는 인공 지능을 통해 자동화되며, 약 5초 정도 소요됩니다."
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -104,17 +104,17 @@ msgstr "설정 구성"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "자동으로 디지털 변환"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "지정할 경우에만 디지털 변환"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "디지털 변환을 선택하지 않음"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_error_message
@@ -197,7 +197,7 @@ msgstr ""
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "디지털 변환을 위해 내보내기"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
@@ -233,7 +233,7 @@ msgstr "상태 코드"
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
-msgstr ""
+msgstr "데이터 추출이 아직 완료되지 않았습니다. 추출에는 보통 5 - 10초 정도가 소요됩니다. "
 
 #. module: hr_recruitment_extract
 #. odoo-python

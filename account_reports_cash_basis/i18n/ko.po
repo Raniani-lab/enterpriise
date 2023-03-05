@@ -46,7 +46,7 @@ msgstr "현금주의법"
 #. module: account_reports_cash_basis
 #: model:ir.model.fields,help:account_reports_cash_basis.field_account_report__filter_cash_basis
 msgid "Display the option to switch to cash basis mode."
-msgstr ""
+msgstr "현금주의 모드로 전환하는 선택 항목 표시"
 
 #. module: account_reports_cash_basis
 #: model:ir.model,name:account_reports_cash_basis.model_account_move_line

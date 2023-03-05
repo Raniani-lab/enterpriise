@@ -6,11 +6,11 @@
 # Alexandra Brencicova <alexandra.brencicova@gmail.com>, 2022
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # Jan Prokop, 2022
-# Damian Brencic <brencicdamian12313@gmail.com>, 2022
 # Jaroslav Bosansky <jaro.bosansky@ekoenergo.sk>, 2022
 # SAKodoo <sak@odoo.com>, 2022
 # Martin Trigaux, 2022
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
+# Damian Brencic <brencicdamian12313@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Rastislav Brencic <rastislav.brencic@azet.sk>, 2022\n"
+"Last-Translator: Damian Brencic <brencicdamian12313@gmail.com>, 2023\n"
 "Language-Team: Slovak (https://www.transifex.com/odoo/teams/41243/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -185,7 +185,7 @@ msgstr "Dátum pridelenia"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_avg
 msgid "Average Rating"
-msgstr ""
+msgstr "Priemerné hodnotenie"
 
 #. module: industry_fsm
 #: model:project.task,legend_blocked:industry_fsm.planning_task_0
@@ -474,7 +474,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Dissatisfied"
-msgstr ""
+msgstr "Nespokojný"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project_task.py:0
@@ -835,7 +835,7 @@ msgstr "Potrebujete funkčnú alebo technickú pomoc"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "No Rating"
-msgstr ""
+msgstr "Žiadne hodnotenie"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
@@ -1080,6 +1080,8 @@ msgid ""
 "Set this template on a project's stage to automate email when tasks reach "
 "stages"
 msgstr ""
+"Nastavte túto šablónu vo fáze projektu na automatizáciu e-mailu, keď úlohy "
+"dosiahnu fázy"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm

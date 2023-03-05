@@ -64,7 +64,7 @@ msgstr "Afficher le nom"
 #: code:addons/industry_fsm_stock/wizard/fsm_stock_tracking.py:0
 #, python-format
 msgid "Each line needs a Lot/Serial Number"
-msgstr "Chaque ligne nécessite un numéro de lot/série"
+msgstr "Chaque ligne nécessite un Lot/numéro de série"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,help:industry_fsm_stock.field_fsm_stock_tracking__tracking
@@ -118,7 +118,7 @@ msgstr "Lot/numéro de série"
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
 msgid "On hand:"
-msgstr "En stock :"
+msgstr "Disponible :"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__product_id
@@ -214,7 +214,7 @@ msgstr "Valider"
 #: code:addons/industry_fsm_stock/models/product.py:0
 #, python-format
 msgid "Validate Lot/Serial Number"
-msgstr "Valider numéro de série/lot"
+msgstr "Valider lot/numéro de série"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__wizard_tracking_line_valided

@@ -1229,7 +1229,7 @@ msgstr "오류"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid "Error 404"
-msgstr ""
+msgstr "Error 404"
 
 #. module: sign
 #. odoo-python

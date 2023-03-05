@@ -26,19 +26,19 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid " and %s others"
-msgstr ""
+msgstr "및  %s 다른"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid " and one other"
-msgstr ""
+msgstr "및 다른 "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "\" account balance is affected by"
-msgstr ""
+msgstr "\" 계정 잔액은 다음 항목으로 인해 변동됩니다 "
 
 #. module: account_reports
 #. odoo-python
@@ -49,6 +49,7 @@ msgid ""
 "that are not yet reconciled in Odoo (Waiting the final reconciliation "
 "allowing finding the right account)"
 msgstr ""
+"%s 항목은 Odoo 상에서 아직 조정이 완료되지 않은 온라인 은행 계좌 (오늘 날짜 기준)에서 가져온 거래(+)에 대한 내용입니다"
 
 #. module: account_reports
 #. odoo-python
@@ -59,6 +60,8 @@ msgid ""
 "that are not yet reconciled in Odoo (Waiting the final reconciliation "
 "allowing finding the right account)"
 msgstr ""
+"%s 항목은 Odoo 상에서 아직 조정이 완료되지 않은 온라인 은행 계좌 (오늘 날짜 기준)에서 가져온 거래(-)에 대한 내용입니다 "
+"(정확한 계좌 검색을 위해 최종 조정을 기다리는 중임)"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
@@ -77,7 +80,7 @@ msgstr "&amp;nbsp;"
 msgid ""
 "'Open General Ledger' caret option is only available form report lines "
 "targetting accounts."
-msgstr ""
+msgstr "'총계정원장 보기' 삽입 기능은 회계 계정을 대상으로 하는 양식 보고서 항목에서만 사용이 가능합니다."
 
 #. module: account_reports
 #. odoo-python
@@ -86,28 +89,28 @@ msgstr ""
 msgid ""
 "'View Bank Statement' caret option is only available for report lines "
 "targeting bank statements."
-msgstr ""
+msgstr "'은행거래명세서 보기' 삽입 기능은 은행거래명세서를 대상으로 하는 보고서 항목에서만 사용이 가능합니다."
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "'external' engine does not support groupby, limit nor offset."
-msgstr ""
+msgstr "'외부' 엔진의 경우 그룹 기준, 제한이나 차감 기능을 제공하지 않습니다."
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(+) Outstanding Receipts"
-msgstr ""
+msgstr "(+) 미수금"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
-msgstr ""
+msgstr "(-) 미지급금"
 
 #. module: account_reports
 #. odoo-python
@@ -119,22 +122,22 @@ msgstr "(그룹 없음)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Grouped by month"
-msgstr ""
+msgstr ", 월별 그룹"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Sorted by date"
-msgstr ""
+msgstr ", 날짜순 정렬"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Sorted by number"
-msgstr ""
+msgstr ", 번호순 정렬"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Check your tax report"
-msgstr ""
+msgstr "-> 세금신고서를 확인하세요"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
@@ -145,25 +148,25 @@ msgstr "-> 새로 고침"
 #: model:account.report.column,name:account_reports.aged_payable_report_period1
 #: model:account.report.column,name:account_reports.aged_receivable_report_period1
 msgid "1-30"
-msgstr ""
+msgstr "1-30"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period2
 #: model:account.report.column,name:account_reports.aged_receivable_report_period2
 msgid "31-60"
-msgstr ""
+msgstr "31-60"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period3
 #: model:account.report.column,name:account_reports.aged_receivable_report_period3
 msgid "61-90"
-msgstr ""
+msgstr "61-90"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period4
 #: model:account.report.column,name:account_reports.aged_receivable_report_period4
 msgid "91-120"
-msgstr ""
+msgstr "91-120"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -190,6 +193,8 @@ msgid ""
 "<span class=\"fa fa-book\"/>\n"
 "                Report:"
 msgstr ""
+"<span class=\"fa fa-book\"/>\n"
+"                보고서:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_fiscal_position_choser
@@ -269,6 +274,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "                    Codes:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"                    코드:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_groupby_fields
@@ -276,6 +283,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "            Group By:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"            그룹 기준:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_horizontal_groups
@@ -283,6 +292,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "            Horizontal Group:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"            수평 그룹:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -292,12 +303,12 @@ msgstr "<span class=\"fa fa-filter\"/> 선택사항 :"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic Filter"
-msgstr ""
+msgstr "<span class=\"fa fa-folder-open\"/> 분석 필터"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic Group By"
-msgstr ""
+msgstr "<span class=\"fa fa-folder-open\"/> 분석 그룹 기준"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
@@ -310,6 +321,8 @@ msgid ""
 "<span class=\"fa fa-fw fa-calendar\" title=\"Dates\" role=\"img\" aria-"
 "label=\"Dates\"/>"
 msgstr ""
+"<span class=\"fa fa-fw fa-calendar\" title=\"Dates\" role=\"img\" aria-"
+"label=\"Dates\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_tax_unit
@@ -317,6 +330,8 @@ msgid ""
 "<span class=\"fa fa-home\"/>\n"
 "            Tax Unit:"
 msgstr ""
+"<span class=\"fa fa-home\"/>\n"
+"            과세 단위:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -330,7 +345,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_search_template
 msgid "<span class=\"fa fa-line-chart\"/> Exchange Rates"
-msgstr ""
+msgstr "<span class=\"fa fa-line-chart\"/> 환율"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_account_type
@@ -374,6 +389,8 @@ msgid ""
 "<span>Intrastat taxes are applied on unexpected journal entries "
 "(international or between non intrastat countries).</span>"
 msgstr ""
+"<span>Intrastat 세금은 예상하지 못하게 발생하는 분개 항목 (국제적 또는 intrastat 비사용 국가간)에 "
+"적용됩니다.</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_tax_report
@@ -385,7 +402,7 @@ msgstr "<span>보고서는 반올림의 차이가 발생할 수 있습니다.</s
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "<span>Some partners are missing a VAT number.</span>"
-msgstr ""
+msgstr "<span>일부 협력사 정보에 VAT 번호가 없습니다. </span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_tax_report
@@ -394,26 +411,28 @@ msgid ""
 "whole unit; to change that, tick the \"aggregate\" option of \"tax unit\" "
 "menu.</span>"
 msgstr ""
+"<span>해당 회사는 세무 관련 일부 단위 항목입니다. 현재 화면에서는 전체 단위는 나타나지 않습니다; 변경하시려면 \"세금 단위\" "
+"메뉴의 \"집계\" 옵션을 선택하십시오.</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
 msgid "<span>This report only displays the data of the active company.</span>"
-msgstr ""
+msgstr "<span>이 보고서에서는 활성화된 회사의 정보만을 표시합니다.</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "=&gt; Audit"
-msgstr ""
+msgstr "=&gt; 감사"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "=&gt; Journal Items"
-msgstr ""
+msgstr "=&gt; 분개 항목"
 
 #. module: account_reports
 #: model:ir.model.constraint,message:account_reports.constraint_account_report_horizontal_group_name_uniq
 msgid "A horizontal group with the same name already exists."
-msgstr ""
+msgstr "동일한 이름을 가진 수평 그룹이 이미 존재합니다."
 
 #. module: account_reports
 #. odoo-python
@@ -422,7 +441,7 @@ msgstr ""
 msgid ""
 "A tax unit can only be created between companies sharing the same main "
 "currency."
-msgstr ""
+msgstr "동일한 주요 통화를 공유하는 회사 간에만 세금 단위를 생성할 수 있습니다."
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_total_assets0
@@ -452,17 +471,17 @@ msgstr "계정과목 일람표 서식"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Account Code"
-msgstr ""
+msgstr "계정 코드"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_display_representative_field
 msgid "Account Display Representative Field"
-msgstr ""
+msgstr "계정 표시 항목 필드"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_custom_handler
 msgid "Account Report Custom Handler"
-msgstr ""
+msgstr "회계 보고서 사용자 지정 처리"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_footnote
@@ -473,17 +492,17 @@ msgstr "계정 보고서 각주"
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__account_represented_company_ids
 #: model:ir.model.fields,field_description:account_reports.field_res_users__account_represented_company_ids
 msgid "Account Represented Company"
-msgstr ""
+msgstr "계정 대표 회사"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_journal_id
 msgid "Account Revaluation Journal"
-msgstr ""
+msgstr "계정 재평가 분개장"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_representative_id
 msgid "Accounting Firm"
-msgstr ""
+msgstr "회계법인"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report
@@ -513,19 +532,19 @@ msgstr "계정"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
 msgid "Accounts Coverage Report"
-msgstr ""
+msgstr "계정 관리 보고서"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.multicurrency_revaluation_to_adjust
 msgid "Accounts To Adjust"
-msgstr ""
+msgstr "조정할 계정"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Accounts coverage"
-msgstr ""
+msgstr "계정 관리"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_mail_activity_type__category
@@ -596,7 +615,7 @@ msgstr "고급"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_partner_balance_report_handler
 msgid "Aged Partner Balance Custom Handler"
-msgstr ""
+msgstr "장기 협력사 관련 잔액 사용자 지정 처리"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.aged_payable_report
@@ -609,7 +628,7 @@ msgstr "미지급금"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_payable_report_handler
 msgid "Aged Payable Custom Handler"
-msgstr ""
+msgstr "장기 미지급금 사용자 지정 처리"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -627,7 +646,7 @@ msgstr "미수금"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_receivable_report_handler
 msgid "Aged Receivable Custom Handler"
-msgstr ""
+msgstr "장기 미수금 사용자 지정 처리"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -652,21 +671,21 @@ msgstr "전체 분개장"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All Payable"
-msgstr ""
+msgstr "전체 미지급금"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All Receivable"
-msgstr ""
+msgstr "전체 미수금"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All receivable/payable"
-msgstr ""
+msgstr "전체 미수금/ 미지급금"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.account_financial_report_ec_sales_amount
@@ -687,14 +706,14 @@ msgstr "화폐 액수"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Amount In Currency"
-msgstr ""
+msgstr "통화 환산 금액"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Amount in currency: %s"
-msgstr ""
+msgstr "통화 환산 금액: %s"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -774,7 +793,7 @@ msgstr "평균 채무자 기간(일)"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "B: %s"
-msgstr ""
+msgstr "B: %s"
 
 #. module: account_reports
 #. odoo-python
@@ -800,29 +819,29 @@ msgstr "대차대조표"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_current
 msgid "Balance at Current Rate"
-msgstr ""
+msgstr "현재환율"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_operation
 msgid "Balance at Operation Rate"
-msgstr ""
+msgstr "거래환율"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_currency
 msgid "Balance in Foreign Currency"
-msgstr ""
+msgstr "외화잔액"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Balance in GL"
-msgstr ""
+msgstr "총계정원장 잔액"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "Balance of %s"
-msgstr ""
+msgstr "%s 잔액"
 
 #. module: account_reports
 #. odoo-python
@@ -936,7 +955,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover from %s to %s"
-msgstr ""
+msgstr "%s에서 %s로 이월"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_cash0
@@ -1400,7 +1419,7 @@ msgstr "자기 자본"
 msgid ""
 "Editing a manual report line is not allowed in multivat setup when "
 "displaying data from all fiscal positions."
-msgstr ""
+msgstr "전체 재정 상태에 데이터가 표시되는 경우, 다중값 설정에서 수기로 보고서 내용을 수정하는 것은 허용되지 않습니다."
 
 #. module: account_reports
 #. odoo-python
@@ -1409,14 +1428,14 @@ msgstr ""
 msgid ""
 "Editing a manual report line is not allowed when multiple companies are "
 "selected."
-msgstr ""
+msgstr "여러 회사를 선택한 경우에 수기 보고서 항목을 수정하는 것은 허용되지 않습니다."
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_trial_balance_report.py:0
 #, python-format
 msgid "End Balance"
-msgstr ""
+msgstr "기말 잔액"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1515,6 +1534,7 @@ msgid ""
 " you had the customer on the phone and want to remember the date he promised"
 " he would pay)"
 msgstr ""
+"고객 명세서를 통해 직접 설정한 예상 지급일 (예: 전화로 고객과 통화하는 중에 고객이 지급을 약속한 날짜를 기억하고자 할 경우)"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__expense_provision_account_id
@@ -1621,7 +1641,7 @@ msgstr "각주"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__footnotes_template
 msgid "Footnotes Template"
-msgstr ""
+msgstr "각주 서식"
 
 #. module: account_reports
 #. odoo-python
@@ -1649,7 +1669,7 @@ msgstr "시작 :"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__fun_param
 msgid "Function Parameter"
-msgstr ""
+msgstr "기능 매개 변수"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__fun_to_call
@@ -1682,7 +1702,7 @@ msgstr "생성된 문서"
 #. module: account_reports
 #: model:account.report,name:account_reports.generic_ec_sales_report
 msgid "Generic EC Sales List"
-msgstr ""
+msgstr "일반 EC 판매 목록"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler
@@ -1734,7 +1754,7 @@ msgstr "그룹별"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group By Months"
-msgstr ""
+msgstr "월 기준 그룹"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_horizontal_group_form
@@ -1744,7 +1764,7 @@ msgstr "그룹명"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group by months"
-msgstr ""
+msgstr "월 기준 그룹"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1754,7 +1774,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Grouped by month"
-msgstr ""
+msgstr "월 기준 그룹"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1776,7 +1796,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_report__horizontal_group_ids
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_horizontal_groups
 msgid "Horizontal Groups"
-msgstr ""
+msgstr "수평 그룹"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group
@@ -2160,14 +2180,14 @@ msgstr "관리자"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Manual value"
-msgstr ""
+msgstr "수기 값"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Manual values"
-msgstr ""
+msgstr "수기 값"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.partner_ledger_report_matching_number
@@ -2199,7 +2219,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_multicurrency_revaluation_wizard
 msgid "Multicurrency Revaluation Wizard"
-msgstr ""
+msgstr "다중 통화 재평가 마법사"
 
 #. module: account_reports
 #. odoo-python
@@ -2269,21 +2289,21 @@ msgstr "비교 안 함"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "No VAT number associated with your company. Please define one."
-msgstr ""
+msgstr "회사와 연결되어 있는 VAT 번호가 없습니다. 해당 항목을 설정하십시오."
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "No adjustment needed"
-msgstr ""
+msgstr "조정할 내용이 없습니다"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "No provision needed was found."
-msgstr ""
+msgstr "필요한 조항이 없습니다."
 
 #. module: account_reports
 #. odoo-python
@@ -2556,7 +2576,7 @@ msgstr "선급금"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__preview_data
 msgid "Preview Data"
-msgstr ""
+msgstr "데이터 미리보기"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -2702,7 +2722,7 @@ msgstr "환입 : %s"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Root Report"
-msgstr ""
+msgstr "기초 자료"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group__rule_ids
@@ -2799,12 +2819,12 @@ msgstr "날짜 순 정렬"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sorted by date"
-msgstr ""
+msgstr "날짜순 정렬"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sorted by number"
-msgstr ""
+msgstr "번호순 정렬"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_representative_id
@@ -3040,7 +3060,7 @@ msgstr "There are"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "There are some"
-msgstr ""
+msgstr "다음은"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -3118,7 +3138,7 @@ msgstr "합계"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Total %s"
-msgstr ""
+msgstr "총계 %s"
 
 #. module: account_reports
 #. odoo-python
@@ -3143,7 +3163,7 @@ msgstr "Odoo에 거래내역이 입력되었지만, 조정되지 않았습니다
 msgid ""
 "Transactions(+) that were entered into Odoo, but not yet reconciled "
 "(Payments triggered by invoices/refunds or manually)"
-msgstr ""
+msgstr "거래 내역(+)이 Odoo로 입력되었으나, 아직 조정되지 않음 (청구서/환불 또는 직접 진행한 결제)"
 
 #. module: account_reports
 #. odoo-python
@@ -3152,7 +3172,7 @@ msgstr ""
 msgid ""
 "Transactions(-) that were entered into Odoo, but not yet reconciled "
 "(Payments triggered by bills/credit notes or manually)"
-msgstr ""
+msgstr "거래 내역(+)이 Odoo로 입력되었으나, 아직 조정되지 않음 (공급업체 청구서/대변전표 또는 직접 진행한 결제)"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.trial_balance_report
@@ -3264,7 +3284,7 @@ msgstr ""
 #: model:ir.actions.client,name:account_reports.action_account_report_multicurrency_revaluation
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_multicurrency_revaluation
 msgid "Unrealized Currency Gains/Losses"
-msgstr ""
+msgstr "외화환산이익/손실"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -3300,7 +3320,7 @@ msgstr "예금거래 명세서 보기"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "View Carryover Lines"
-msgstr ""
+msgstr "이월 내역 보기"
 
 #. module: account_reports
 #. odoo-python
@@ -3377,7 +3397,7 @@ msgstr "XLSX"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
 msgid "You are using custom exchange rates."
-msgstr ""
+msgstr "사용자 맞춤 환율을 사용 중입니다."
 
 #. module: account_reports
 #. odoo-python
@@ -3388,6 +3408,8 @@ msgid ""
 "values impacting the tax report of a locked period. To do this, you first "
 "need to modify you tax return lock date."
 msgstr ""
+"잠긴 기간에 대한 세금 보고와 관련한 이월 항목이 삭제 처리되기 때문에, 이 마감 분개 항목을 초안으로 재설정할 수 없습니다. "
+"진행하시려면 먼저 세무 신고 잠금 날짜를 조정해야 합니다."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -3426,7 +3448,7 @@ msgstr "매 4개월마다"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "having a starting balance different than the previous ending balance"
-msgstr ""
+msgstr "기초 잔액이 전기의 기말 잔액과 차이가 있음"
 
 #. module: account_reports
 #. odoo-javascript
@@ -3438,7 +3460,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "journal items"
-msgstr ""
+msgstr "분개 항목"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__monthly
@@ -3492,38 +3514,38 @@ msgstr "전기하지 않은 분개장 기입 항목"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "were carried over to this line from previous period."
-msgstr ""
+msgstr "이 항목으로 이전 기간에서 이월되었습니다."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "which doesn't result from a bank statement nor payments."
-msgstr ""
+msgstr "이는 은행거래명세서나 결제로 인한 것이 아닙니다."
 
 #. module: account_reports
 #. odoo-javascript
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "will be carried over to"
-msgstr ""
+msgstr "다음 항목으로 이월됩니다"
 
 #. module: account_reports
 #. odoo-javascript
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "will be carried over to this line in the next period."
-msgstr ""
+msgstr "다음 기간에 이 항목으로 이월됩니다."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
 msgid "⇒ General Ledger"
-msgstr ""
+msgstr "⇒ 총계정원장"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
 msgid "⇒ Journal Items"
-msgstr ""
+msgstr "⇒ 분개 항목"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

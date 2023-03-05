@@ -35,13 +35,21 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    잘 하셨습니다!\n"
+"                </p>\n"
+"                <p>\n"
+"                    새로운 거래 내역을 생성하거나 검색창에 활성화되어 있는 필터가 없는지 확인하십시오.\n"
+"                </p>\n"
+"            "
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ -2,678.00"
-msgstr ""
+msgstr "$ -2,678.00"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -49,7 +57,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ 2,678.00"
-msgstr ""
+msgstr "$ 2,678.00"
 
 #. module: account_accountant
 #. odoo-python
@@ -74,7 +82,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "-1,134.50"
-msgstr ""
+msgstr "-1,134.50"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -84,7 +92,7 @@ msgstr "-> 조정"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "/&gt;"
-msgstr ""
+msgstr "/&gt;"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
@@ -101,7 +109,7 @@ msgstr "<b class=\"tip_title\">팁:분개항목 대량업데이트</b>"
 msgid ""
 "<b class=\"tip_title\">Tip: Find an Accountant or register your Accounting "
 "Firm</b>"
-msgstr ""
+msgstr "<b class=\"tip_title\">팁: 회계사를 검색해보거나 거래 중인 회계법인을 등록하십시오</b>"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -141,7 +149,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "<span class=\"ml4 mr4\">-</span>"
-msgstr ""
+msgstr "<span class=\"ml4 mr4\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -165,6 +173,8 @@ msgid ""
 "<span class=\"o_form_label\" attrs=\"{'invisible': "
 "[('form_force_negative_sign', '=', False)]}\">-</span>"
 msgstr ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': "
+"[('form_force_negative_sign', '=', False)]}\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -174,12 +184,12 @@ msgstr "<span class=\"o_form_label\">회계 연도</span>"
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
 msgid "<span class=\"tip_button_text\">Find an Accountant</span>"
-msgstr ""
+msgstr "<span class=\"tip_button_text\">회계사 찾기</span>"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
 msgid "<span class=\"tip_button_text\">Register your Accounting Firm</span>"
-msgstr ""
+msgstr "<span class=\"tip_button_text\">회계법인 등록하기</span>"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -243,12 +253,12 @@ msgstr "회계"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Accounting Period Closing"
-msgstr ""
+msgstr "회계 기간 마감"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Accounting closing dates"
-msgstr ""
+msgstr "회계 마감일"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_line_form_bank_rec_widget
@@ -464,7 +474,7 @@ msgstr "새 회계연도를 작성하려면 여기를 클릭하십시오."
 msgid ""
 "Click here to find an accountant or if you want to list out your accounting "
 "services on Odoo"
-msgstr ""
+msgstr "회계사 찾기를 하거나 Odoo 회계 서비스 목록을 확인하려면 여기를 클릭하십시오"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -936,6 +946,8 @@ msgid ""
 "related information at the time of the creation of the move and that the "
 "move needs to be checked again."
 msgstr ""
+"이 체크박스를 선택할 경우, 항목 이동 시 사용자에게 해당 내용과 관련한 전체 정보가 충분히 제공되지 않은 관계로 항목 이동 내용이 다시"
+" 확인되도록 표시합니다. "
 
 #. module: account_accountant
 #. odoo-python
@@ -981,7 +993,7 @@ msgstr "청구서"
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__invoicing_switch_threshold
 msgid "Invoicing Switch Threshold"
-msgstr ""
+msgstr "청구서 변경 마감일"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_is_reconciled
@@ -1635,7 +1647,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Set as Checked"
-msgstr ""
+msgstr "확인 완료"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1760,7 +1772,7 @@ msgstr "세금 분할 명세"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
 msgid "Tax Return Lock Date"
-msgstr ""
+msgstr "세무 신고 잠금일"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
@@ -1857,7 +1869,7 @@ msgstr "이 지불금은 등록되었지만 조정은 거치지 않았습니다.
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "This was the model that generated the lines suggested"
-msgstr ""
+msgstr "이것은 제안 항목이 생성된 모델입니다"
 
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_0
@@ -1867,7 +1879,7 @@ msgstr "팁:전표 분개 대량 업데이트"
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_1
 msgid "Tip: Find an Accountant or register your Accounting Firm"
-msgstr ""
+msgstr "팁: 회계사를 검색해보거나 거래 중인 회계법인을 등록하십시오"
 
 #. module: account_accountant
 #. odoo-javascript

@@ -512,7 +512,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Archived"
-msgstr "已歸檔"
+msgstr "已封存"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4299,7 +4299,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Week"
-msgstr "周"
+msgstr "星期"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4588,7 +4588,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "week"
-msgstr "周"
+msgstr "星期"
 
 #. module: web_studio
 #. odoo-javascript

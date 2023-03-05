@@ -432,7 +432,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payroll_structure_filter
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
 msgid "Archived"
-msgstr "已歸檔"
+msgstr "已封存"
 
 #. module: hr_payroll
 #. odoo-javascript

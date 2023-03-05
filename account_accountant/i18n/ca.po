@@ -13,7 +13,7 @@
 # AncesLatino2004, 2022
 # Carles Antoli <carlesantoli@hotmail.com>, 2022
 # marcescu, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Ivan Espinola, 2023
 # jabelchi, 2023
 # Harcogourmet, 2023
@@ -82,8 +82,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be fully "
 "reconciled by the transaction."
 msgstr ""
-"%(display_name_html)s amb una quantitat oberta de %(open_amount)s es "
-"reconciliarà completament amb la transacció."
+"%(display_name_html)s amb un import obert de %(open_amount)s serà totalment "
+"reconciliat per la transacció."
 
 #. module: account_accountant
 #. odoo-python
@@ -93,8 +93,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be reduced"
 " by %(amount)s."
 msgstr ""
-"%(display_name_html)s amb una quantitat oberta de %(open_amount)s es reduirà"
-" en %(amount)s."
+"%(display_name_html)s amb una import obert de %(open_amount)s es reduirà en "
+"%(amount)s."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -111,7 +111,7 @@ msgstr "-> Conciliar"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "/&gt;"
-msgstr "/gt;"
+msgstr "/&gt;"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
@@ -148,7 +148,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "<i class=\"fa fa-check\"/> Matched"
-msgstr "<i class=\"fa fa-check\"/> coincident"
+msgstr "<i class=\"fa fa-check\"/> Conciliat"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date

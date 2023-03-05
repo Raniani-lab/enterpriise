@@ -6,6 +6,7 @@
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Emily Jia <eji@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:53+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -306,7 +307,7 @@ msgstr "选择适用该定价的产品"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__subscription_unit_display
 msgid "Subscription Unit Display"
-msgstr ""
+msgstr "订阅单元显示"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order_line__temporal_type
@@ -328,12 +329,12 @@ msgstr "产品(%s)有不兼容的值：%s"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Time based pricing"
-msgstr ""
+msgstr "基于时间的订价"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Time based rules"
-msgstr ""
+msgstr "基于时间的规则"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
@@ -376,7 +377,7 @@ msgstr "年"
 msgid ""
 "You can not have a time-based rule for products that are not recurring or "
 "rentable."
-msgstr ""
+msgstr "非经常性或不可出租产品不能有基于时间的规则。"
 
 #. module: sale_temporal
 #. odoo-python
@@ -400,53 +401,53 @@ msgstr "所有变体"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s days"
-msgstr ""
+msgstr "每%s天"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s months"
-msgstr ""
+msgstr "每%s月"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s weeks"
-msgstr ""
+msgstr "每%s周"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s years"
-msgstr ""
+msgstr "每%s年"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per day"
-msgstr ""
+msgstr "每天"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per month"
-msgstr ""
+msgstr "每月"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per week"
-msgstr ""
+msgstr "每周"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per year"
-msgstr ""
+msgstr "每年"

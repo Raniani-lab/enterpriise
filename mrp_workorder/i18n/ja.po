@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2023
-# Andy Yiu, 2023
+# Ryoko Tsuda <ryoko@quartile.co>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:51+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Andy Yiu, 2023\n"
+"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -439,7 +439,7 @@ msgstr "説明"
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder__move_line_ids
 msgid ""
 "Inventory moves for which you must scan a lot number at this work order"
-msgstr "この作業注文でロット番号をスキャンする必要のある在庫移動"
+msgstr "この作業オーダでロット番号をスキャンする必要のある在庫移動"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_tracking
@@ -503,12 +503,12 @@ msgstr "ロット/シリアル"
 #. module: mrp_workorder
 #: model:res.groups,name:mrp_workorder.group_mrp_wo_tablet_timer
 msgid "Manage Work Order timer on Tablet View"
-msgstr "タブレットビューにて作業注文タイマーを管理"
+msgstr "タブレットビューにて作業オーダタイマーを管理"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Manufacturing Orders"
-msgstr "製造注文"
+msgstr "製造オーダ"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -601,7 +601,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
 msgid "No work orders to do!"
-msgstr "作業予定の作業注文はありません！"
+msgstr "作業予定の作業オーダはありません！"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_workorder_tree_editable_view_inherit_workorder
@@ -700,7 +700,7 @@ msgstr "ラベル印刷"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__product_id
 msgid "Product"
-msgstr "商品"
+msgstr "プロダクト"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_stock_move_line
@@ -722,7 +722,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__production_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__production_id
 msgid "Production Order"
-msgstr "製造注文"
+msgstr "製造オーダ"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -732,7 +732,7 @@ msgstr "生産 作業区"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__product_ids
 msgid "Products"
-msgstr "商品"
+msgstr "プロダクト"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
@@ -904,7 +904,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
 msgid "Show the timer on the work order screen"
-msgstr "作業注文画面にタイマーを表示"
+msgstr "作業オーダ画面にタイマーを表示"
 
 #. module: mrp_workorder
 #: model:product.template,description_sale:mrp_workorder.product_template_stool
@@ -1132,7 +1132,7 @@ msgstr "作業区用途"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_workorder
 msgid "Work Order"
-msgstr "作業注文"
+msgstr "作業オーダ"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
@@ -1144,12 +1144,12 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_workorder.mrp_workorder_action_tablet
 #: model:ir.ui.menu,name:mrp_workorder.mrp_workorder_menu_planning
 msgid "Work Orders"
-msgstr "作業注文"
+msgstr "作業オーダ"
 
 #. module: mrp_workorder
 #: model:ir.actions.server,name:mrp_workorder.action_mrp_workorder_dependencies_workcenter
 msgid "Work Orders Planning"
-msgstr "作業注文計画"
+msgstr "作業オーダ計画"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
@@ -1161,7 +1161,7 @@ msgstr ""
 msgid ""
 "Work orders are operations to do as part of a manufacturing order.\n"
 "            Operations are defined in the bill of materials or added in the manufacturing order directly."
-msgstr "作業注文は、製造注文の一部として行う工程です。工程は部品表で定義されるか、または、製造注文に直接追加されます。"
+msgstr "作業オーダは、製造オーダの一部として行う工程です。工程は部品表で定義されるか、または、製造オーダに直接追加されます。"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__working_state

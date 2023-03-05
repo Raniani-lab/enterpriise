@@ -61,7 +61,7 @@ msgstr ""
 #. module: partner_commission
 #: model_terms:ir.ui.view,arch_db:partner_commission.commission_plan_search_view
 msgid "Archived"
-msgstr "已歸檔"
+msgstr "已封存"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__is_capped

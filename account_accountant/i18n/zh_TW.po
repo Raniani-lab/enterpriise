@@ -35,6 +35,14 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    全部完成！\n"
+"                </p>\n"
+"                <p>\n"
+"                    你可建立新交易。若要檢視舊有記錄，請確保搜尋欄沒有設定篩選準則。\n"
+"                </p>\n"
+"            "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -286,7 +294,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Amongst unmatched bank transactions"
-msgstr ""
+msgstr "選擇需要對賬的未配對銀行交易。"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -347,7 +355,7 @@ msgstr "餘額"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "Balance:"
-msgstr "餘額:"
+msgstr "未完成結餘："
 
 #. module: account_accountant
 #. odoo-javascript
@@ -548,7 +556,7 @@ msgstr "建立新的項目組"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Create additional entries"
-msgstr ""
+msgstr "建立附加記項"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -633,7 +641,7 @@ msgstr "Define fiscal years of more or less than one year"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Deposits"
-msgstr ""
+msgstr "存款（收款）"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
@@ -972,7 +980,7 @@ msgstr "無效的"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Invalid statements"
-msgstr ""
+msgstr "銀行結單無效"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__state
@@ -1041,13 +1049,13 @@ msgstr "Journal Entries Lock Date"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Journal Entry"
-msgstr "日記帳分錄"
+msgstr "日記賬記項"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_move_line
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 msgid "Journal Item"
-msgstr "日記帳項目"
+msgstr "日記賬項目"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1123,7 +1131,7 @@ msgstr "最後更新於"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Learn how blazing fast bank matching works"
-msgstr ""
+msgstr "了解如何神速完成銀行對賬"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1222,7 +1230,7 @@ msgstr "手動操作"
 #: code:addons/account_accountant/static/src/components/matching_link_widget/matching_link_widget.xml:0
 #, python-format
 msgid "Match"
-msgstr "匹配"
+msgstr "配對"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1230,14 +1238,14 @@ msgstr "匹配"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Match Existing Entries"
-msgstr ""
+msgstr "配對現有賬項"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Match payments and invoices"
-msgstr ""
+msgstr "將付款配對至發票"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1249,7 +1257,7 @@ msgstr "匹配非應收/應付帳戶的條目"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Matched"
-msgstr ""
+msgstr "已配對"
 
 #. module: account_accountant
 #. odoo-python
@@ -1318,7 +1326,7 @@ msgstr "No attachments linked."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "No statement"
-msgstr ""
+msgstr "沒有銀行結單"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
@@ -1337,7 +1345,7 @@ msgstr "沒有包含主辦會計的使用者可以編輯之前到今天的帳戶
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Not Matched"
-msgstr ""
+msgstr "未配對"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1350,7 +1358,7 @@ msgstr "備註"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Odoo Bank Reconciliation"
-msgstr ""
+msgstr "Odoo 銀行對賬"
 
 #. module: account_accountant
 #. odoo-python
@@ -1373,7 +1381,7 @@ msgstr "只有帶有 '主辦會計' 角色的使用者可以編輯從以前到�
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 #, python-format
 msgid "Open Amount"
-msgstr ""
+msgstr "未對賬金額"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
@@ -1402,7 +1410,7 @@ msgstr "製程"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 msgid "Paid"
-msgstr "已支付"
+msgstr "已付款"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1454,7 +1462,7 @@ msgstr "Payment State Before Switch"
 #: model:ir.model,name:account_accountant.model_account_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Payments"
-msgstr "收付款"
+msgstr "付款"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1541,7 +1549,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 msgid "Received"
-msgstr "已接收"
+msgstr "已收款"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
@@ -1595,7 +1603,7 @@ msgstr "參考編號"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Reset"
-msgstr "重置"
+msgstr "重設"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1631,7 +1639,7 @@ msgstr "儲存並新增"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "搜尋 客戶"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1645,7 +1653,7 @@ msgstr "選擇業務夥伴"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Select a transaction"
-msgstr ""
+msgstr "選取交易"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
@@ -1655,7 +1663,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Set as Checked"
-msgstr "設定為勾選"
+msgstr "設為已檢查"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1738,12 +1746,12 @@ msgstr "縣市"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Statement"
-msgstr "對帳單"
+msgstr "銀行結單"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Statement Line"
-msgstr "對帳單明細"
+msgstr "銀行結單資料行"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
@@ -1906,21 +1914,21 @@ msgstr "待檢查"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "To check"
-msgstr "待檢查"
+msgstr "設為待檢查"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
-msgstr ""
+msgstr "確認發票與付款相符，將新記項錄入日記賬，完成對賬。"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr ""
+msgstr "以完成配對未對賬記項。"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1971,7 +1979,7 @@ msgstr ""
 msgid ""
 "Use the <strong>Manual Operations</strong> tab to register the difference, "
 "or create expenses on the fly"
-msgstr ""
+msgstr "使用「<strong>手動操作</strong>」分頁，登記對賬差額，或記錄額外支出。"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
@@ -1986,7 +1994,7 @@ msgstr "有效"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Validate"
-msgstr "驗證"
+msgstr "核實"
 
 #. module: account_accountant
 #. odoo-javascript

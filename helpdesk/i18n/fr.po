@@ -894,7 +894,7 @@ msgstr "Évaluation moyenne (%)"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Dissatisfied"
-msgstr "Évaluation moyenne : Mécontent"
+msgstr "Évaluation moyenne : Insatisfait"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -906,7 +906,7 @@ msgstr "Évaluation moyenne : Okay"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Satisfied"
-msgstr "Évaluation moyenne : Content"
+msgstr "Évaluation moyenne : Satisfait"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -1417,7 +1417,7 @@ msgstr "Afficher le nom"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
 msgid "Dissatisfied"
-msgstr "Mécontent"
+msgstr "Insatisfait"
 
 #. module: helpdesk
 #. odoo-python
@@ -3167,7 +3167,7 @@ msgstr "Échantillon"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
 msgid "Satisfied"
-msgstr "Content"
+msgstr "Satisfait"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form

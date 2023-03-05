@@ -3,12 +3,12 @@
 # 	* sale_subscription
 # 
 # Translators:
-# Emily Jia <eji@odoo.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # digitalliuzg8888, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # Martin Trigaux, 2022
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
+# Emily Jia <eji@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2022\n"
+"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,6 +44,9 @@ msgid ""
 "- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period. \n"
 "  Negative recurring lines are considered free."
 msgstr ""
+"\n"
+"- 您应等到当前订阅期到期。要开票的新数量将在当前订阅期结束时就绪。\n"
+" 负值重复行视作免费。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__percentage_satisfaction
@@ -79,7 +82,7 @@ msgstr "3 个月"
 msgid ""
 "<b>Congratulations</b>, your first subscription quotation is ready to be "
 "sent!"
-msgstr ""
+msgstr "<b>恭喜</b>，准备向您发送首个订阅报价！"
 
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_alert
@@ -1193,7 +1196,7 @@ msgstr "指派给"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Assign a new partner to the contract"
-msgstr ""
+msgstr "向合约分配新的合作伙伴"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__automation_id
@@ -1230,7 +1233,7 @@ msgstr "使用令牌自动支付失败。应检查支付提供商的配置和令
 msgid ""
 "Automatic renewal succeeded. Free subscription. Next Invoice: %(inv)s. No "
 "email sent."
-msgstr ""
+msgstr "自动续订成功。免费订阅。下一发票：%(inv)s。未发送电子邮件。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_published
@@ -1295,7 +1298,7 @@ msgstr "计算最佳（'高分' ）评分数与评分总数之间的比率"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_search_view_inherit_sale_subscription
 msgid "Can be Recurring"
-msgstr ""
+msgstr "可能是经常性的"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -1832,14 +1835,14 @@ msgstr "继续创造一个新产品"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Go ahead and create a new subscription"
-msgstr ""
+msgstr "继续创建新订阅"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Go back to the subscription view"
-msgstr ""
+msgstr "返回订阅视图"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__done
@@ -2184,14 +2187,14 @@ msgstr "最小延迟消息"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's add a pricing with a recurrence"
-msgstr ""
+msgstr "添加定期定价"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's configure the product price"
-msgstr ""
+msgstr "配置产品价格"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -2320,7 +2323,7 @@ msgstr "成员"
 msgid ""
 "Mix of negative recurring lines and non-recurring line. The contract should "
 "be fixed manually"
-msgstr ""
+msgstr "负重复秆与非重复行混合。应手动固定合同"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_id
@@ -2583,7 +2586,7 @@ msgstr "计划"
 #: code:addons/sale_subscription/static/src/js/manage_form.js:0
 #, python-format
 msgid "Please provide another payment method for these subscriptions."
-msgstr ""
+msgstr "请为订阅提供其他付款方式。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__pricelist_id
@@ -2775,7 +2778,7 @@ msgstr "定期"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
 msgid "Recurring Amount"
-msgstr ""
+msgstr "经常性金额"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_type
@@ -2977,14 +2980,14 @@ msgstr "搜索模板"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Select a recurrence"
-msgstr ""
+msgstr "选择重复周期"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Select a recurring product"
-msgstr ""
+msgstr "选择经常性产品"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__user_closable
@@ -3514,7 +3517,7 @@ msgstr "当且仅当这些字段之一被更新时，该动作将被触发。如
 msgid ""
 "The following recurring orders have draft invoices. Please Confirm them or "
 "cancel them before creating new invoices. %s."
-msgstr ""
+msgstr "以下经常性订单具有草稿发票。请在创建新发票前确认或取消草稿%s。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3523,7 +3526,7 @@ msgstr ""
 msgid ""
 "The following refund %s has been made on this contract. Please check the "
 "next invoice date if necessary."
-msgstr ""
+msgstr "本合同已完成以下退款%s。如需要，请检查下一发票日期。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
@@ -3614,7 +3617,7 @@ msgstr "这个工具条允许你基于安排的事件来过滤商机。"
 msgid ""
 "This payment method cannot be removed as it is currently linked to the "
 "following active subscriptions:"
-msgstr ""
+msgstr "无法删除此付款方式，因为其当前链接至以下活跃订阅："
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_stage__fold
@@ -3950,7 +3953,7 @@ msgstr "年"
 msgid ""
 "You can not delete a confirmed subscription. You must first close and cancel"
 " it before you can delete it."
-msgstr ""
+msgstr "不能删除已确认的订阅。须先关闭并取消订阅，然后才能删除。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -4042,12 +4045,12 @@ msgstr "你的计划"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Your contract is recurrent"
-msgstr ""
+msgstr "您的合同属于经常性合同"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit
 msgid "Your payment details will be saved for automatic renewals."
-msgstr ""
+msgstr "您的付款详细信息将被保存，用于自动续订。"
 
 #. module: sale_subscription
 #. odoo-python
@@ -4118,6 +4121,8 @@ msgid ""
 "your subscription failed. As your payment should have been made on {{ "
 "object.next_invoice_date }}, your subscription has been terminated."
 msgstr ""
+"{{ object.company_id.name }}：我们最后一次尝试处理您的订阅付款失败。由于您的付款应通过{{ "
+"object.next_invoice_date }}完成，因此，您的订阅已终止。"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
@@ -4139,6 +4144,8 @@ msgid ""
 " suspended on {{ object.next_invoice_date }} unless the payment succeeds in "
 "the meantime."
 msgstr ""
+"{{ object.company_id.name }}：我们无法处理您的订阅付款。您的订阅{{ object.name }}目前仍有效，但将于{{ "
+"object.next_invoice_date }}暂停，除非在此期间成功付款。"
 
 #. module: sale_subscription
 #: model:sms.template,body:sale_subscription.sms_template_data_default_alert

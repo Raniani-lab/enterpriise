@@ -579,7 +579,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Archive"
-msgstr "歸檔"
+msgstr "封存"
 
 #. module: documents
 #. odoo-javascript
@@ -592,7 +592,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Archived"
-msgstr "已歸檔"
+msgstr "已封存"
 
 #. module: documents
 #. odoo-javascript
@@ -2639,7 +2639,7 @@ msgstr "網站溝通記錄"
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__activity_date_deadline_range_type__weeks
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__activity_date_deadline_range_type__weeks
 msgid "Weeks"
-msgstr "周"
+msgstr "星期"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
@@ -2665,7 +2665,7 @@ msgstr "工作流規則"
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Workspace"
-msgstr ""
+msgstr "工作空間"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.folder_action

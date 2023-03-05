@@ -4,7 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2023
+# Emily Jia <eji@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2022\n"
+"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,7 +109,7 @@ msgstr "在不同的设备之间输入活动的报工单然后同步到Odoo中"
 #, python-format
 msgid ""
 "Could not find server. Please check that the url you entered is correct."
-msgstr ""
+msgstr "找不到服务器。请检查您输入的URL是否正确。"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -118,7 +119,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Could not login. Please check that the information you entered is correct."
-msgstr ""
+msgstr "无法登录。请检查您输入的信息是否正确。"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -128,7 +129,7 @@ msgid ""
 "Could not reach the server. Please check that you have an internet "
 "connection, that the server address and database name you entered is valid, "
 "and that the server is online."
-msgstr ""
+msgstr "无法访问服务器。请检查您是否连接互联网、输入的服务器地址和数据库名称是否有效、服务器是否在线。"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -140,7 +141,7 @@ msgid ""
 "Could not reach the server. Please check that you have an internet "
 "connection, that the server address you entered is valid, and that the "
 "server is online."
-msgstr ""
+msgstr "无法访问服务器。请检查您是否连接互联网、输入的服务器地址是否有效、服务器是否在线。"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -315,7 +316,7 @@ msgstr "下周不可用"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No default project"
-msgstr ""
+msgstr "无默认项目"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -329,7 +330,7 @@ msgstr "没有任务"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No task selected"
-msgstr ""
+msgstr "没有选择任务"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -344,7 +345,7 @@ msgstr "记下这将在Odoo环境下新建一个项目和任务"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Odoo login failed"
-msgstr ""
+msgstr "Odoo 登录失败"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -545,7 +546,7 @@ msgid ""
 "The code on your Odoo server is not up to date and an important update has "
 "been released. You or your system administrator should consider retrieving "
 "it as soon as possible."
-msgstr ""
+msgstr "Odoo服务器上的代码并非最新，已发布重要更新。您或系统管理员应尽快检索更新。"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -554,7 +555,7 @@ msgstr ""
 msgid ""
 "The server does not support timesheet synchronization. It requires Odoo "
 "Enterprise Edition version 9 or newer."
-msgstr ""
+msgstr "服务器不支持工时单同步。需要Odoo企业版第9或更高版本。"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -564,7 +565,7 @@ msgid ""
 "The server does not support timesheet synchronization. You should contact "
 "your administrator in order to install the module \"Synchronization with the"
 " external timesheet application\""
-msgstr ""
+msgstr "服务器不支持工时单同步。请与管理员联系，以安装“与外部工时单应用程序同步”模块"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -612,7 +613,7 @@ msgstr "时间单元"
 msgid ""
 "Timesheet Synchronization is available in Odoo Enterprise Edition. You "
 "should consider upgrading your Odoo version if you would like to use it."
-msgstr ""
+msgstr "Odoo企业版支持工时单同步。如果要使用Odoo，请先升级。"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -679,7 +680,7 @@ msgstr "工作摘要"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Working time per week"
-msgstr ""
+msgstr "每周工作时长"
 
 #. module: project_timesheet_synchro
 #. openerp-web

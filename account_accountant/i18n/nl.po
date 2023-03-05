@@ -68,8 +68,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be fully "
 "reconciled by the transaction."
 msgstr ""
-"%(display_name_html)s met een open bedrag van %(open_amount)s wordt volledig"
-" in overeenstemming gebracht met de transactie."
+"%(display_name_html)s met een openstaand bedrag van %(open_amount)s wordt "
+"volledig in overeenstemming gebracht met de transactie."
 
 #. module: account_accountant
 #. odoo-python
@@ -79,7 +79,7 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be reduced"
 " by %(amount)s."
 msgstr ""
-"%(display_name_html)s met een open bedrag van %(open_amount)s wordt "
+"%(display_name_html)s met een openstaand bedrag van %(open_amount)s wordt "
 "verminderd met %(amount)s."
 
 #. module: account_accountant
@@ -1421,12 +1421,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 #, python-format
 msgid "Open Amount"
-msgstr "Open hoeveelheid"
+msgstr "Openstaand bedrag"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Open Amount in Currency"
-msgstr "Open bedrag in valuta"
+msgstr "Openstaanbd bedrag in valuta"
 
 #. module: account_accountant
 #. odoo-javascript

@@ -912,7 +912,7 @@ msgstr "Alguskuupäev"
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_unit__day
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_unit__day
 msgid "Days"
-msgstr "päev(a)"
+msgstr "Päeva"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__self_unassign_days_before

@@ -8,6 +8,7 @@
 # digitalliuzg8888, 2022
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2023
+# Emily Jia <eji@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -284,6 +285,30 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    尊敬的<t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">女士/先生</t>：<br/><br/>\n"
+"    您的申请\n"
+"    <t t-if=\"object.get_portal_url()\">\n"
+"        <a t-attf-href=\"/my/ticket/{{ object.id }}/{{ object.access_token }}\" t-out=\"object.name or ''\"/>\n"
+"    </t>\n"
+"    已收到并正在由我们的<t t-out=\"object.team_id.name or ''\">桌腿是不平的</t>团队进行审查。\n"
+"    您的申请参考号为<t t-out=\"object.ticket_ref or ''\">15</t>。<br/>\n"
+"\n"
+"    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
+"        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">查看申请</a><br/>\n"
+"    </div>\n"
+"\n"
+"    要添加其他评论，请回复此电子邮件。<br/><br/>\n"
+"\n"
+"    <t t-if=\"object.team_id.show_knowledge_base\">\n"
+"        欢迎您访问我们的<a t-attf-href=\"{{ object.team_id.get_knowledge_base_url() }}\">服务台</a>。您可能会找到问题的答案。\n"
+"        <br/><br/>\n"
+"    </t>\n"
+"\n"
+"    谢谢！<br/><br/>\n"
+"    <t t-out=\"object.team_id.name or 'Helpdesk'\">服务台</t>团队。\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -3084,7 +3109,7 @@ msgstr "保存此工单以及对此工单所做的修改。"
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Schedule your <b>activity</b>."
-msgstr ""
+msgstr "安排您的<b>活动</b>。"
 
 #. module: helpdesk
 #. odoo-python
@@ -4082,7 +4107,7 @@ msgstr "已从工单中创建。"
 #. module: helpdesk
 #: model:ir.actions.server,name:helpdesk.helpdesk_ratings_server_action
 msgid "helpdesk view rating"
-msgstr ""
+msgstr "帮助台视图分级"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form

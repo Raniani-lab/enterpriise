@@ -353,7 +353,7 @@ msgstr "Lot/série fini"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Finished Lot/Serial Number"
-msgstr "Numéro de lot/série fini"
+msgstr "Lot/numéro de série fini"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__finished_product_check_ids
@@ -1228,14 +1228,14 @@ msgstr ""
 #: code:addons/mrp_workorder/models/quality.py:0
 #, python-format
 msgid "You did not set a lot/serial number for the final product"
-msgstr "Vous n'avez pas indiqué de numéro de lot/série pour le produit fini"
+msgstr "Vous n'avez pas indiqué de lot/numéro de série pour le produit fini"
 
 #. module: mrp_workorder
 #. odoo-python
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
 msgid "You should provide a lot/serial number for the final product"
-msgstr "Vous devez indiquer un numéro de lot/série pour le produit fini"
+msgstr "Vous devez indiquer un lot/numéro de série pour le produit fini"
 
 #. module: mrp_workorder
 #. odoo-python

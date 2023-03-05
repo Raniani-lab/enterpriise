@@ -5,9 +5,9 @@
 # Translators:
 # Noma Yuki, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2022
-# Andy Yiu, 2022
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2023
 # Martin Trigaux, 2023
+# Andy Yiu, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Andy Yiu, 2023\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1468,7 +1468,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Predict vendor bill accounts"
-msgstr "仕入先請求書のアカウントを予測"
+msgstr "仕入先請求書勘定科目を予測"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1635,7 +1635,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Set as Checked"
-msgstr ""
+msgstr "チェック済として設定"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1827,7 +1827,7 @@ msgstr "この日付までの請求書が会計エントリとして考慮され
 msgid ""
 "The system will try to predict the accounts on vendor bill lines based on "
 "history of previous bills"
-msgstr "システムは過去の仕入先請求書の履歴から仕入先請求書の明細アカウントを予測しようとします"
+msgstr "過去の仕入先請求書履歴から、システムが仕入先請求書の勘定科目を予測します"
 
 #. module: account_accountant
 #. odoo-javascript

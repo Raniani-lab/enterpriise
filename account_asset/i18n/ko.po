@@ -577,7 +577,7 @@ msgstr "자동화"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__daily_computation
 msgid "Based on days per period"
-msgstr ""
+msgstr "기간별 일수 기준"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -617,7 +617,7 @@ msgstr "취소 됨"
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Characteristics"
-msgstr ""
+msgstr "내용"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__children_ids
@@ -678,7 +678,7 @@ msgstr "승인"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
 msgid "Constant Periods"
-msgstr ""
+msgstr "고정 기간"
 
 #. module: account_asset
 #: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
@@ -700,32 +700,32 @@ msgstr "초안으로 작성"
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_form
 msgid "Create new asset"
-msgstr ""
+msgstr "새로운 자산 항목을 생성합니다"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_model_form
 msgid "Create new asset model"
-msgstr ""
+msgstr "새로운 자산 항목 모델을 생성합니다"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_form
 msgid "Create new deferred expense"
-msgstr ""
+msgstr "새로운 이연 비용 항목을 생성합니다"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_model_form
 msgid "Create new deferred expense model"
-msgstr ""
+msgstr "새로운 이연 비용 항목 모델을 생성합니다"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_form
 msgid "Create new deferred revenue"
-msgstr ""
+msgstr "새로운 이연 수익 항목을 생성합니다"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_model_form
 msgid "Create new deferred revenue model"
-msgstr ""
+msgstr "새로운 이연 수익 항목 모델을 생성합니다"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__create_uid
@@ -803,7 +803,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__degressive
 #, python-format
 msgid "Declining"
-msgstr ""
+msgstr "정률법"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method_progress_factor
@@ -813,7 +813,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__degressive_then_linear
 msgid "Declining then Straight Line"
-msgstr ""
+msgstr "정률법 이후 정액법 적용"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
@@ -925,7 +925,7 @@ msgstr "이연 수익 모델"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Revenue Options"
-msgstr ""
+msgstr "이연 수익 옵션"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -1125,7 +1125,7 @@ msgstr "기간"
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_duration_rate
 msgid "Duration / Rate"
-msgstr ""
+msgstr "상각기간 / 비율"
 
 #. module: account_asset
 #. odoo-python
@@ -1552,7 +1552,7 @@ msgstr "아니오"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__none
 msgid "No Prorata"
-msgstr ""
+msgstr "비율 적용 없음"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__non_deductible_tax_value
@@ -1713,7 +1713,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Recognition Values"
-msgstr ""
+msgstr "수익 인식"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
@@ -2081,6 +2081,11 @@ msgid ""
 "You can manually close an asset when the depreciation is over.\n"
 "By cancelling an asset, all depreciation entries will be reversed"
 msgstr ""
+"자산 항목을 생성할 경우, '초안' 상태로 만들어집니다.\n"
+"자산 항목이 확정되면, 상태는 '운영 중'으로 변경되며 감가상각 내용을 회계 장부에 전기할 수 있게 됩니다.\n"
+"일시적으로 자산의 감가상각을 중단하고자 할 경우 '보류' 상태를 직접 설정할 수 있습니다.\n"
+"감가상각이 종료되면 자산 항목을 직접 마감할 수 있습니다.\n"
+"자산 항목을 삭제할 경우, 모든 감가상각 입력 내용은 취소됩니다.  "
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12

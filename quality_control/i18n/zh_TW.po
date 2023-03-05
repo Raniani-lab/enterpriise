@@ -207,7 +207,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Archived"
-msgstr "已歸檔"
+msgstr "已封存"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__average
@@ -1146,7 +1146,7 @@ msgstr "警告訊息"
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__week
 msgid "Weeks"
-msgstr "周"
+msgstr "星期"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_quality_check_wizard

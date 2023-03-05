@@ -24,6 +24,7 @@
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2023
 # Svante Suominen <svante.suominen@web-veistamo.fi>, 2023
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # Konsta Aavaranta, 2023
 # 
 msgid ""
@@ -354,7 +355,7 @@ msgstr "Kustannuspaikka"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "Analyyttinen tarkkuus"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -1283,7 +1284,7 @@ msgstr ""
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr ""
+msgstr "Vastaavat transaktiot"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
@@ -1686,7 +1687,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Set as Checked"
-msgstr ""
+msgstr "Asetetaan valituksi"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2245,7 +2246,7 @@ msgstr "sekuntia transaktiota kohden."
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__tax_line
 msgid "tax_line"
-msgstr ""
+msgstr "vero_rivi"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view

@@ -22,7 +22,8 @@ msgstr ""
 #. module: l10n_be_reports_post_wizard
 #: model:ir.model,name:l10n_be_reports_post_wizard.model_l10n_be_reports_periodic_vat_xml_export
 msgid "Belgian Periodic VAT Report Export Wizard"
-msgstr "Assistant d'exportation de rapports périodiques de TVA en Belgique"
+msgstr ""
+"Assistant d'exportation de déclarations périodiques à la TVA en Belgique"
 
 #. module: l10n_be_reports_post_wizard
 #: model:ir.model,name:l10n_be_reports_post_wizard.model_account_move

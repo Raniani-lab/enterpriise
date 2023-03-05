@@ -5,8 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2022
-# Ryoko Tsuda <ryoko@quartile.co>, 2022
-# Andy Yiu, 2023
+# Ryoko Tsuda <ryoko@quartile.co>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Andy Yiu, 2023\n"
+"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -93,7 +92,7 @@ msgstr "実補充 %s %s (%s - %s)"
 #: model:ir.actions.act_window,name:mrp_mps.action_mrp_mps_form_view
 #, python-format
 msgid "Add a Product"
-msgstr "商品を追加"
+msgstr "プロダクトを追加"
 
 #. module: mrp_mps
 #. openerp-web
@@ -368,7 +367,7 @@ msgstr "MPS"
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_forecast_details_form_view
 msgid "Manufacturing Orders"
-msgstr "製造注文"
+msgstr "製造オーダ"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__manufacturing_period
@@ -438,12 +437,12 @@ msgstr ""
 #: model:ir.model,name:mrp_mps.model_product_template
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_id
 msgid "Product"
-msgstr "商品"
+msgstr "プロダクト"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_category_id
 msgid "Product Category"
-msgstr "商品カテゴリ"
+msgstr "プロダクトカテゴリ"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_product_forecast
@@ -453,17 +452,17 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_tmpl_id
 msgid "Product Template"
-msgstr "商品テンプレート"
+msgstr "プロダクトテンプレート"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_uom_id
 msgid "Product UoM"
-msgstr "商品単位"
+msgstr "プロダクト単位"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_product_product
 msgid "Product Variant"
-msgstr "商品バリアント"
+msgstr "プロダクトバリアント"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__production_schedule_id
@@ -478,12 +477,12 @@ msgstr "製造倉庫"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_purchase_order
 msgid "Purchase Order"
-msgstr "購買注文"
+msgstr "購買オーダ"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__purchase_order_line_ids
 msgid "Purchase Order Line"
-msgstr "購買注文明細"
+msgstr "購買オーダ明細"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__moves_qty

@@ -507,7 +507,7 @@ class AccountMove(models.Model):
         for doc in to_process:
             doc.move_id.l10n_mx_edi_update_sat_status()
             # Handle the case when the invoice has been cancelled manually government-side.
-            if doc.state == 'sent' and doc.move_id.l10n_mx_edi_sat_status == 'canceled':
+            if doc.state == 'sent' and doc.move_id.l10n_mx_edi_sat_status == 'cancelled':
                 doc.move_id.button_cancel()
             # Commit to avoid complete rollback on TimeoutError
             self._cr.commit()

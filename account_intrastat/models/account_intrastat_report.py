@@ -36,7 +36,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         # dict of the form {move_id: {column_group_key: {expression_label: value}}}
         move_info_dict = {}
 
-        # dict of the form {column_group_key: total_value}
+        # dict of the form {column_group_key: {expression_label: total_value}}
         total_values_dict = {}
 
         # Build query
@@ -61,8 +61,8 @@ class IntrastatReportCustomHandler(models.AbstractModel):
             current_move_info[column_group_key] = result
             current_move_info['name'] = result['name']
 
-            total_values_dict.setdefault(column_group_key, 0)
-            total_values_dict[column_group_key] += result['value']
+            total_values_dict.setdefault(column_group_key, {'value': 0})
+            total_values_dict[column_group_key]['value'] += result['value']
 
         # Create lines
         lines = []

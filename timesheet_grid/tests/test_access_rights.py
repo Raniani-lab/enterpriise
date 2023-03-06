@@ -389,7 +389,6 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
                 'name': 'Timesheet1',
                 'project_id': self.project_customer.id,
                 'task_id': self.task1.id,
-                'date': today - timedelta(days=3),
                 'unit_amount': 2,
                 'employee_id': self.empl_employee3.id,
             }, {
@@ -418,6 +417,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
 
         # The validation of a timesheet interrupts the timer of the running older timesheet
         timesheet1.with_user(self.user_employee3).action_timer_start()
+        timesheet1.write({'date': today - timedelta(days=3)})  # simulate the user forgot to stop his timer.
         self.assertTrue(timesheet1.is_timer_running)
         timesheet2.with_user(self.user_approver).action_validate_timesheet()
         self.assertFalse(timesheet1.is_timer_running)

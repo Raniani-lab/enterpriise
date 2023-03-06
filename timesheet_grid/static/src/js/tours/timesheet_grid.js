@@ -1,13 +1,12 @@
-"use strict";
-odoo.define('timesheet.tour', function(require) {
+/** @odoo-module */
 
-var core = require('web.core');
-const {Markup} = require('web.utils');
-const { registry } = require("@web/core/registry");
-const { stepUtils } = require('@web_tour/js/tour_step_utils');
+import { _t } from "@web/core/l10n/translation";
 
-var _t = core._t;
-const { markup } = owl;
+import { Markup } from "web.utils";
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
+
+import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add('timesheet_tour', {
     sequence: 100,
@@ -22,7 +21,7 @@ registry.category("web_tour.tours").add('timesheet_tour', {
     content: Markup(_t('Launch the <b>timer</b> to start a new activity.')),
     position: 'bottom',
 }, {
-    trigger: '.input_description_timer',
+    trigger: 'div[name=name] input',
     content: Markup(_t('Describe your activity <i>(e.g. sent an e-mail, meeting with the customer...)</i>.')),
     position: 'bottom',
 }, {
@@ -43,5 +42,3 @@ registry.category("web_tour.tours").add('timesheet_tour', {
     position: 'bottom',
     consumeEvent: 'change',
 }]});
-
-});

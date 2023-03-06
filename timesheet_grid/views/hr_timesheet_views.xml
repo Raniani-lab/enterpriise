@@ -11,6 +11,7 @@
                 <xpath expr="/tree" position="attributes">
                     <attribute name="decoration-muted">validated</attribute>
                     <attribute name="sample">1</attribute>
+                    <attribute name="js_class">timesheet_timer_list</attribute>
                 </xpath>
                 <xpath expr="/tree" position="inside">
                     <field name="id" invisible="1"/>
@@ -66,6 +67,9 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" ref="hr_timesheet.view_kanban_account_analytic_line"/>
             <field name="arch" type="xml">
+                <kanban position="attributes">
+                    <attribute name="js_class">timesheet_timer_kanban</attribute>
+                </kanban>
                 <xpath expr="/kanban" position="inside">
                     <field name="validated" invisible="1"/>
                 </xpath>
@@ -114,7 +118,7 @@
                     </div>
                     <div class="ms-1">
                         <div attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '=', False)] }">
-                            <field name="duration_unit_amount" widget="timesheet_uom_hour_toggle" decoration-danger="duration_unit_amount &gt; 24 or unit_amount &lt; 0"/>
+                            <field name="duration_unit_amount" widget="timesheet_uom_timer" decoration-danger="duration_unit_amount &gt; 24 or unit_amount &lt; 0"/>
                         </div>
                         <div attrs="{'invisible': [('validated', '=', False)]}">
                             <field name="unit_amount_validate" widget="timesheet_uom"/>
@@ -215,7 +219,7 @@
             <field name="model">account.analytic.line</field>
             <field name="arch" type="xml">
                 <grid string="Timesheets"
-                      js_class="new_timer_timesheet_grid"
+                      js_class="timer_timesheet_grid"
                       barchart_total="1"
                       create_inline="1"
                       form_view_id="%(timesheet_grid.my_timesheet_form_view)d"

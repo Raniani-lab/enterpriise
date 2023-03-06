@@ -315,16 +315,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("basic timesheet - groupby employees>task", async function (assert) {
         const { openView } = await start({
             serverData,
-            async mockRPC(route, args) {
-                if (args.method === "get_planned_and_worked_hours") {
-                    // TODO: check model
-                    return get_planned_and_worked_hours(...args.args);
-                } else if (args.method === "get_timesheet_and_working_hours_for_employees") {
-                    return get_timesheet_and_working_hours_for_employees(...args.args);
-                } else if (args.method === "grid_unavailability") {
-                    return {};
-                }
-            },
+            mockRPC: mockTimesheetGridRPC,
         });
 
         await openView({
@@ -444,16 +435,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("timesheet with employee section - groupby employees", async function (assert) {
         const { openView } = await start({
             serverData,
-            async mockRPC(route, args) {
-                if (args.method === "get_planned_and_worked_hours") {
-                    // TODO: check model
-                    return get_planned_and_worked_hours(...args.args);
-                } else if (args.method === "get_timesheet_and_working_hours_for_employees") {
-                    return get_timesheet_and_working_hours_for_employees(...args.args);
-                } else if (args.method === "grid_unavailability") {
-                    return {};
-                }
-            },
+            mockRPC: mockTimesheetGridRPC,
         });
 
         await openView({
@@ -494,16 +476,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("timesheet with employee section - groupby employee>task", async function (assert) {
         const { openView } = await start({
             serverData,
-            async mockRPC(route, args) {
-                if (args.method === "get_planned_and_worked_hours") {
-                    // TODO: check model
-                    return get_planned_and_worked_hours(...args.args);
-                } else if (args.method === "get_timesheet_and_working_hours_for_employees") {
-                    return get_timesheet_and_working_hours_for_employees(...args.args);
-                } else if (args.method === "grid_unavailability") {
-                    return {};
-                }
-            },
+            mockRPC: mockTimesheetGridRPC,
         });
 
         await openView({
@@ -557,16 +530,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.test("timesheet with employee section - groupby task>employees", async function (assert) {
         const { openView } = await start({
             serverData,
-            async mockRPC(route, args) {
-                if (args.method === "get_planned_and_worked_hours") {
-                    // TODO: check model
-                    return get_planned_and_worked_hours(...args.args);
-                } else if (args.method === "get_timesheet_and_working_hours_for_employees") {
-                    return get_timesheet_and_working_hours_for_employees(...args.args);
-                } else if (args.method === "grid_unavailability") {
-                    return {};
-                }
-            },
+            mockRPC: mockTimesheetGridRPC,
         });
 
         await openView({

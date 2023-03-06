@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import ast
-import pytz
 import re
 
 from datetime import datetime, timedelta
@@ -801,10 +800,15 @@ class AnalyticLine(models.Model):
         project = self.env['project.project'].browse(vals.get('project_id', False))
         if not project:
             task = self.env['project.task'].browse(vals.get('task_id', False))
-            project = task.project_id
-        result = project.check_can_start_timer()
+            project = task.project_id or self.env['project.project'].browse(self._get_favorite_project_id())
+        result = bool(project) and project.check_can_start_timer()
         if result is True:
-            timesheet = self.create(vals)
+            if "default_date" in self._context:
+                self = self.with_context(default_date=fields.Date.today())
+            timesheet = self.create({
+                **vals,
+                'project_id': project.id,
+            })
             timesheet.action_timer_start()
             return timesheet._get_timesheet_timer_data()
         return result
@@ -817,9 +821,17 @@ class AnalyticLine(models.Model):
         if self.validated:
             raise UserError(_('You cannot use the timer on validated timesheets.'))
         if self.employee_id.sudo().last_validated_timesheet_date and self.date < self.employee_id.sudo().last_validated_timesheet_date:
-            self.create([{'project_id': self.project_id.id, 'task_id': self.task_id.id}]).action_timer_start()
+            timesheet = self.create([{'project_id': self.project_id.id, 'task_id': self.task_id.id, 'date': datetime.today().date()}])
+            timesheet.action_timer_start()
         elif not self.user_timer_id.timer_start and self.display_timer:
-            super(AnalyticLine, self).action_timer_start()
+            if self.date < fields.Date.today():
+                self.action_start_new_timesheet_timer({
+                    'name': self.name,
+                    'project_id': self.project_id.id,
+                    'task_id': self.task_id.id,
+                })
+            else:
+                super(AnalyticLine, self).action_timer_start()
 
     def _get_last_timesheet_domain(self):
         self.ensure_one()
@@ -869,7 +881,7 @@ class AnalyticLine(models.Model):
             self = self.sudo()
         if self.validated:
             raise UserError(_('You cannot use the timer on validated timesheets.'))
-        if self.user_timer_id.timer_start and self.display_timer:
+        if self.user_timer_id.timer_start:
             minutes_spent = super(AnalyticLine, self).action_timer_stop()
             self._add_timesheet_time(minutes_spent, try_to_match)
 
@@ -922,6 +934,7 @@ class AnalyticLine(models.Model):
 
     @api.model
     def get_running_timer(self):
+        step_timer = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15))
         timer = self.env['timer.timer'].search([
             ('user_id', '=', self.env.user.id),
             ('timer_start', '!=', False),
@@ -929,17 +942,12 @@ class AnalyticLine(models.Model):
             ('res_model', '=', self._name),
         ], limit=1)
         if not timer:
-            return {}
+            return {'step_timer': step_timer}
 
         # sudo as we can have a timesheet related to a company other than the current one.
-        return self.sudo().browse(timer.res_id)._get_timesheet_timer_data(timer)
-
-    @api.model
-    def get_timer_data(self):
-        return {
-            'step_timer': int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15)),
-            'favorite_project': self._get_favorite_project_id()
-        }
+        timer_data = self.sudo().browse(timer.res_id)._get_timesheet_timer_data(timer)
+        timer_data['step_timer'] = step_timer
+        return timer_data
 
     @api.model
     def get_rounded_time(self, timer):
@@ -948,17 +956,16 @@ class AnalyticLine(models.Model):
         rounded_minutes = self._timer_rounding(timer, minimum_duration, rounding)
         return rounded_minutes / 60
 
-    def action_add_time_to_timesheet(self, project_id, task_id):
+    def action_add_time_to_timesheet(self, vals):
         minutes = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15))
         if self:
-            task_id = False if not task_id else task_id
-            if self.task_id.id == task_id and self.project_id.id == project_id:
+            task_id = vals.get('task_id', False)
+            if self.task_id.id == task_id and self.project_id.id == vals['project_id']:
                 self.unit_amount += minutes / 60
                 return self.id
         timesheet = self.create({
-            'project_id': project_id,
-            'task_id': task_id,
-            'unit_amount': minutes / 60
+            **vals,
+            'unit_amount': minutes / 60,
         })
         return timesheet.id
 

@@ -241,12 +241,7 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
             'create_date': date(2021, 1, 1),
             'employee_type': 'freelance',  # Avoid searching the contract if hr_contract module is installed before this module.
         })
-        employees_grid_data = [{
-            'id': employee.id,
-            'display_name': employee.name,
-            'grid_row_index': 0}]
-
-        working_hours = employee.get_timesheet_and_working_hours_for_employees(employees_grid_data, '2021-12-01', '2021-12-31')
+        working_hours = employee.get_timesheet_and_working_hours_for_employees('2021-12-01', '2021-12-31')
         self.assertEqual(working_hours[employee.id]['units_to_work'], 184.0, "Number of hours should be 23d * 8h/d = 184h")
 
         working_hours = employee.get_timesheet_and_working_hours('2021-12-01', '2021-12-31')
@@ -451,3 +446,31 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
             grid_anchor = datetime(2023, 1, d)
             dummy, last_week = AnalyticLine.with_context(grid_anchor=grid_anchor)._get_last_week()
             self.assertEqual(last_week, date(2023, 1, ((d - 1) // 7 - 1) * 7 + 1))
+
+    def test_action_start_timer_on_old_timesheet(self):
+        """ Test start timer in timesheet with a date before the current one.
+
+            In that case, the expected behaviour should be to create a new timesheet in which the date should be
+            the current one and then start the timer on that timesheet.
+        """
+        Timesheet = self.env['account.analytic.line'].with_user(self.user_manager)
+        self.assertFalse(
+            Timesheet.search([('is_timer_running', '=', True)]),
+            "No timesheet should have a timer running for the current user."
+        )
+        old_timesheet = Timesheet.create({
+            'name': 'Timesheet 1',
+            'date': fields.Date.today() - timedelta(days=1),
+            'project_id': self.project_customer.id,
+            'unit_amount': 1,
+        })
+        old_timesheet.action_timer_start()
+        self.assertFalse(old_timesheet.is_timer_running)
+        timesheet = Timesheet.search([('is_timer_running', '=', True)])
+        self.assertEqual(len(timesheet), 1, "A timesheet should have a timer running for the current user.")
+        self.assertTrue(timesheet.is_timer_running)
+        self.assertNotEqual(timesheet, old_timesheet)
+        self.assertEqual(timesheet.name, old_timesheet.name)
+        self.assertEqual(timesheet.date, fields.Date.today())
+        self.assertEqual(timesheet.project_id, old_timesheet.project_id)
+        self.assertEqual(timesheet.task_id, old_timesheet.task_id)

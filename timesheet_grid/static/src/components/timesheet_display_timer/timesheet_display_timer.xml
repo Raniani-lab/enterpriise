@@ -3,10 +3,10 @@
 
     <t t-name="timesheet_grid.TimesheetTimerFloatTimeField" t-inherit="web.FloatTimeField" owl="1">
         <xpath expr="//span" position="attributes">
-            <attribute name="t-att-class">props.timerRunning ? "fw-bold text-danger" : ""</attribute>
+            <attribute name="t-att-class">props.timerRunning and props.displayRed ? "fw-bold text-danger" : ""</attribute>
         </xpath>
         <xpath expr="//input" position="attributes">
-            <attribute name="t-att-class">props.timerRunning ? "fw-bold text-danger" : ""</attribute>
+            <attribute name="t-att-class">props.timerRunning and props.displayRed ? "fw-bold text-danger" : ""</attribute>
         </xpath>
     </t>
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="timesheet_grid.TimesheetTimerHeader" owl="1">
+        <div class="timesheet-timer d-md-flex align-items-center px-4 py-2 border-bottom bg-view"
+            t-on-timer-started="props.onTimerStarted"
+            t-on-timer-stopped="props.onTimerStopped"
+            t-on-timer-unlink="props.onTimerUnlinked"
+        >
+            <t t-if="_timerIsRunning">
+                <div class="d-flex align-items-center w-md-25">
+                    <button class="btn btn-primary btn_stop_timer" name="stop_timer" t-on-click.stop="_onClickStopTimer" data-hotkey="z" t-ref="stopButton">
+                        <i class="fa fa-stop me-2"></i> Stop
+                    </button>
+                    <div class="o_timer_discard">
+                        <button class="btn btn-muted stop-timer" t-on-click.stop="_onClickUnlinkTimer" title="Press Esc to discard">Cancel</button>
+                    </div>
+                    <div name="display_timer" class="ms-auto mx-md-auto fs-4 fw-bold">
+                        <TimesheetDisplayTimer
+                            t-if="props.timesheet"
+                            record="props.timesheet"
+                            name="'unit_amount'"
+                            timerRunning="true"
+                            displayRed="false"
+                            readonly="true"
+                            timerService="props.timerService"
+                        />
+                    </div>
+                </div>
+                <div t-if="_headerReadonly" class="input_m2o flex-fill p-md-2 px-0 ">
+                    <span class="px-2">
+                        A timer is running in another company.
+                    </span>
+                </div>
+                <div t-elif="props.timesheet" class="input_m2o d-flex flex-column flex-md-row flex-grow-1">
+                    <Field
+                        name="'project_id'"
+                        class="'mt-3 mt-md-0 px-md-2 flex-grow-1'"
+                        record="props.timesheet"
+                        attrs="props.fields['project_id'].attrs"
+                    />
+                    <Field
+                        name="'task_id'"
+                        class="'mt-3 mt-md-0 px-md-2 flex-grow-1'"
+                        record="props.timesheet"
+                        attrs="props.fields['task_id'].attrs"
+                    />
+                    <Field
+                        name="'name'"
+                        class="'mt-3 mt-md-0 px-md-2 flex-grow-1'"
+                        record="props.timesheet"
+                        attrs="props.fields['name'].attrs"
+                    />
+                </div>
+            </t>
+            <t t-else="">
+                <div class="d-flex align-items-center">
+                    <button class="btn_start_timer btn btn-odoo text-uppercase" t-on-click.stop="_onClickStartTimer" t-ref="startButton">
+                        <i class="fa fa-play me-2"></i> Start
+                    </button>
+                    <div class="ms-3">
+                        <span t-if="_addTimeMode"><span class="text-muted">Click on  </span><i class="fa fa-plus mx-2"></i><span class="text-muted">  to add </span><t t-esc="props.stepTimer"/> min</span>
+                        <span t-else="">
+                            <t t-if="!isMobile">
+                                <span class="text-muted">Press</span> <b>Enter</b> <span class="text-muted">or a letter to start the timer</span>
+                            </t>
+                            <t t-else=""> <span class="text-muted">Press </span><i class="fa fa-play mx-2"></i> <span class="text-muted">to start the timer</span></t>
+                        </span>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

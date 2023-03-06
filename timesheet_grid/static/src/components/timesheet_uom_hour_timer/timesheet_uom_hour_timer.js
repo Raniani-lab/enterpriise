@@ -6,28 +6,33 @@ import { _lt } from "@web/core/l10n/translation";
 
 import { TimesheetDisplayTimer } from "../timesheet_display_timer/timesheet_display_timer";
 
-const { Component } = owl;
+const { Component, useState } = owl;
 
 export class TimesheetUOMHourTimer extends Component {
-
     setup() {
         this.ormService = useService("orm");
+        this.state = useState(this.env.timerState || {});
     }
 
     get displayButton() {
-        return this.props.record.data.display_timer
-            && (this.props.record.mode === "readonly"
-                || this.props.record.isReadonly(this.props.name));
+        return (
+            this.props.record.data.display_timer &&
+            (this.props.record.mode === "readonly" || this.props.record.isReadonly(this.props.name))
+        );
     }
 
     get iconClass() {
-        const icon = this.isTimerRunning ? "stop" : "play";
+        const icon = this.addTimeMode ? "plus" : this.isTimerRunning ? "stop" : "play";
         const textColor = this.isTimerRunning ? "danger" : "primary";
-        return `fa fa-${icon}-circle text-${textColor}`;
+        return `fa fa-${icon} text-${textColor}`;
     }
 
     get isTimerRunning() {
         return this.props.record.data.is_timer_running;
+    }
+
+    get addTimeMode() {
+        return this.state.addTimeMode;
     }
 
     get title() {
@@ -37,17 +42,16 @@ export class TimesheetUOMHourTimer extends Component {
     async onClick(ev) {
         ev.preventDefault();
         const context = this.props.record.getFieldContext(this.props.name);
-        const action = this.isTimerRunning ? "stop" : "start";
+        const action = this.addTimeMode ? "increase" : this.isTimerRunning ? "stop" : "start";
         await this.ormService.call(
             this.props.record.resModel,
             `action_timer_${action}`,
             [[this.props.record.resId]],
-            { context },
+            { context }
         );
         await this.props.record.model.load();
         await this.props.record.model.notify();
     }
-
 }
 
 TimesheetUOMHourTimer.components = { TimesheetDisplayTimer };

@@ -106,7 +106,6 @@
 
     <record id="appointment_invite_action" model="ir.actions.act_window">
         <field name="name">Share Links</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">appointment.invite</field>
         <field name="view_mode">tree</field>
         <field name="help" type="html">

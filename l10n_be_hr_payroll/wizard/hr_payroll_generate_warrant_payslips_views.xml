@@ -46,7 +46,6 @@
 
     <record id="action_hr_payroll_generate_warrant_payslips" model="ir.actions.act_window">
         <field name="name">Generate Warrant Payslips</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">hr.payroll.generate.warrant.payslips</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

@@ -3,7 +3,6 @@
 <data>
     <record id="action_social_post" model="ir.actions.act_window">
         <field name="name">Social Posts</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">social.post</field>
         <field name="view_mode">kanban,calendar,list,form,pivot</field>
         <field name="context">{'search_default_filter_my_posts':1}</field>

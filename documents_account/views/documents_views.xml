@@ -3,7 +3,6 @@
 
     <record id="action_folder_settings_installer" model="ir.actions.act_window">
          <field name="name">Journals to synchronize</field>
-         <field name="type">ir.actions.act_window</field>
          <field name="res_model">documents.account.folder.setting</field>
          <field name="view_mode">tree,form</field>
     </record>

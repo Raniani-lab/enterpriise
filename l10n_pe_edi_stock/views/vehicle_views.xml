@@ -54,7 +54,6 @@
 
     <record id="l10n_pe_edi_vehicle_actions" model="ir.actions.act_window">
         <field name="name">Vehicles (PE)</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">l10n_pe_edi.vehicle</field>
         <field name="view_id" ref="vehicle_tree_view"/>
         <field name="search_view_id" ref="vehicle_search_view"/>

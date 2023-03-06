@@ -45,7 +45,6 @@
 
         <record model="ir.actions.act_window" id="action_log_book_form">
             <field name="name">Log book</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="res_model">pos_blackbox_be.log</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" eval="False"/>
@@ -71,7 +70,6 @@
 
         <record model="ir.actions.act_window" id="action_pos_order_pro_forma_form">
             <field name="name">Orders Pro Forma (PS)</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="res_model">pos.order_pro_forma</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" eval="False"/>

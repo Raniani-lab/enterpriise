@@ -60,7 +60,6 @@
 
     <record id="action_l10n_de_pos_dsfinvk_export" model="ir.actions.act_window">
         <field name="name">DSFinV-K Exports</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">l10n_de_pos.dsfinvk_export</field>
         <field name="view_mode">tree,form</field>
     </record>

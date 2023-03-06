@@ -3,7 +3,6 @@
     <record id="hr_contract_salary_personal_info_action" model="ir.actions.act_window">
         <field name="name">Personal Info</field>
         <field name="res_model">hr.contract.salary.personal.info</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="view_mode">tree,form</field>
     </record>
 

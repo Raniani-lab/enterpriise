@@ -114,7 +114,6 @@
 
     <record id="action_create_rental_order" model="ir.actions.act_window">
         <field name="name">Create Rental Orders</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order</field>
         <field name="view_id" ref="sale_renting.rental_order_primary_form_view"/>
         <field name="context">{'default_is_rental_order': 1, 'group_by_no_leaf': 0}</field>

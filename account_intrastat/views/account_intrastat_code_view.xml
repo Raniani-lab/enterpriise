@@ -122,7 +122,6 @@
 
         <record id="action_report_intrastat_code_tree" model="ir.actions.act_window">
             <field name="name">Intrastat Code</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="res_model">account.intrastat.code</field>
             <field name="context">{'search_default_group_by_type': 1, 'search_default_in_use':1}</field>
             <field name="view_mode">tree,form</field>

@@ -112,7 +112,6 @@ if records:
 
         <record id="action_account_report_tree" model="ir.actions.act_window">
             <field name="name">Accounting Reports</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="res_model">account.report</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="account_report_tree"/>
@@ -121,7 +120,6 @@ if records:
 
         <record id="action_account_report_horizontal_groups" model="ir.actions.act_window">
             <field name="name">Horizontal Groups</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="res_model">account.report.horizontal.group</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="account_report_horizontal_group_tree"/>

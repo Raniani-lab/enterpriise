@@ -3,7 +3,6 @@
 <data>
     <record id="action_social_stream" model="ir.actions.act_window">
         <field name="name">Social Streams</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">social.stream</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">

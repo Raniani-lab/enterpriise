@@ -3,7 +3,6 @@
 <data>
     <record id="social_post_template_action" model="ir.actions.act_window">
         <field name="name">Social Post Templates</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">social.post.template</field>
         <field name="view_mode">tree,form</field>
     </record>

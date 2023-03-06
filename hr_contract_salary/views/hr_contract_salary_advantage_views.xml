@@ -3,7 +3,6 @@
     <record id="hr_contract_advantage_action" model="ir.actions.act_window">
         <field name="name">Advantages</field>
         <field name="res_model">hr.contract.salary.advantage</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="context">{'search_default_groupby_structure_type': 1}</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -72,7 +71,7 @@
                             <div attrs="{'invisible': [('has_admin_access', '=', True)]}"
                                 class="alert alert-warning m-0 w-100" role="alert">
                                 <span>
-                                    This field can only be modified by a server administrator, contact them if these field requires modifications. 
+                                    This field can only be modified by a server administrator, contact them if these field requires modifications.
                                 </span>
                                 <span attrs="{'invisible': [('requested_documents_fields_string', '!=', False)]}">
                                     There are currently no requested fields.

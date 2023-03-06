@@ -23,7 +23,6 @@
     <!--    GENERATED MOVES -->
     <record model="ir.actions.act_window" id="generated_transfers_action">
         <field name="name">Generated Entries</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">account.move</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="account.view_move_tree"/>

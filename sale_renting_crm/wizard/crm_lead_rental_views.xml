@@ -26,7 +26,6 @@
 
     <record id="crm_lead_to_rental_action" model="ir.actions.act_window">
         <field name="name">New Rental</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">crm.lead.rental</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="crm_lead_rental_view_form"/>

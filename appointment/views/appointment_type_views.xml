@@ -343,7 +343,6 @@
 
     <record id="appointment_type_action" model="ir.actions.act_window">
         <field name="name">Online Appointments</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">appointment.type</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('category', '=', 'website')]</field>
@@ -358,7 +357,6 @@
 
     <record id="appointment_type_action_custom_and_anytime" model="ir.actions.act_window">
         <field name="name">Appointment Invitations</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">appointment.type</field>
         <field name="view_mode">tree,form</field>
         <field name="view_id" ref="appointment_type_view_tree_invitation"/>

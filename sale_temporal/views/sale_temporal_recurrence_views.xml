@@ -32,7 +32,6 @@
 
     <record id="sale_temporal_recurrence_action" model="ir.actions.act_window">
         <field name="name">Periods</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.temporal.recurrence</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">

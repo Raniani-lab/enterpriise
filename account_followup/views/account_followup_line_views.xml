@@ -83,7 +83,6 @@
 
     <record id="action_account_followup_line_definition_form" model="ir.actions.act_window">
         <field name="name">Follow-up Levels</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">account_followup.followup.line</field>
         <field name="search_view_id" ref="view_account_followup_line_filter"/>
         <field name="view_mode">tree,kanban,form</field>

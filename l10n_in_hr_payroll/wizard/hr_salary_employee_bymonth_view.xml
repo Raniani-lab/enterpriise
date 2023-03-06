@@ -23,7 +23,6 @@
 
         <record id="action_salary_employee_month" model="ir.actions.act_window">
             <field name="name">Yearly Salary by Head</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="res_model">hr.salary.employee.month</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>

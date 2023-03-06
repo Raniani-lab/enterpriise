@@ -38,7 +38,6 @@
     </record>
     <record id="action_add_iot_box" model="ir.actions.act_window">
         <field name="name">Connect an IoT Box</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">add.iot.box</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="view_add_iot_box"/>

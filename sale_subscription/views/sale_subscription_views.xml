@@ -63,7 +63,6 @@
     <record id="action_sale_order_log" model="ir.actions.act_window">
         <field name="name">MRR Analysis</field>
         <field name="view_mode">tree,graph</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.log</field>
     </record>
 
@@ -83,7 +82,6 @@
     <record id="action_sale_order_lines" model="ir.actions.act_window">
         <field name="name">Sale Order Lines</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.line</field>
     </record>
 
@@ -331,7 +329,7 @@
       <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
       <field name="arch" type="xml">
         <tree sample="1" multi_edit="1">
-            <field name="name" readonly="1"/> 
+            <field name="name" readonly="1"/>
             <field name="client_order_ref" optional="hide" readonly="1" decoration-bf="1"/>
             <field name="partner_id" readonly="1"/>
             <field name="date_order" optional="show" readonly="1"/>
@@ -345,7 +343,7 @@
             <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
             <field name="company_id" invisible="1" readonly="1"/>
             <field name="amount_untaxed" optional="hide" readonly="1"/>
-            <field name="amount_tax" optional="hide" readonly="1"/>            
+            <field name="amount_tax" optional="hide" readonly="1"/>
             <field name="percentage_satisfaction" optional="hide" readonly="1"/>
             <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" readonly="1"/>
             <field name="stage_id" widget="badge" decoration-info="stage_category == 'draft'" decoration-success="stage_category == 'progress'" optional="hide" readonly="1"/>
@@ -460,7 +458,6 @@
 
     <record id="sale_subscription_close_reason_action" model="ir.actions.act_window">
         <field name="name">Close Reasons</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.close.reason</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -668,7 +665,6 @@
 
     <record id="sale_subscription_alert_action" model="ir.actions.act_window">
         <field name="name">Automated actions</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.alert</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -683,7 +679,6 @@
 
     <record id="sale_subscription_stage_action" model="ir.actions.act_window">
         <field name="name">Stages</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.stage</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
@@ -745,7 +740,6 @@
 
     <record id="sale_subscription_template_action" model="ir.actions.act_window">
         <field name="name">Plans</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.template</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{
@@ -858,7 +852,6 @@
 
     <record id="sale_subscription_recurrence_action" model="ir.actions.act_window">
         <field name="name">Periods</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.temporal.recurrence</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" eval='sale_subscription_recurrence_search'/>

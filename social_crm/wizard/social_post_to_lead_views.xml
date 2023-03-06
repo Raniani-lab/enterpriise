@@ -37,7 +37,6 @@
 
     <record id="social_post_to_lead_action" model="ir.actions.act_window">
         <field name="name">Convert Post to Lead</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">social.post.to.lead</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="social_post_to_lead_view_form"/>

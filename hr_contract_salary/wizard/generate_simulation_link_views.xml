@@ -53,7 +53,6 @@
 
     <record id="generate_simulation_link_action" model="ir.actions.act_window">
         <field name="name">Generate a Simulation Link</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">generate.simulation.link</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="generate_simulation_link_view_form"/>
@@ -63,7 +62,6 @@
 
     <record id="generate_offer_link_action" model="ir.actions.act_window">
         <field name="name">Generate a Simulation Link</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">generate.simulation.link</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="generate_simulation_link_view_form"/>

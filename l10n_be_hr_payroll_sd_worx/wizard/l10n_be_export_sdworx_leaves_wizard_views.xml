@@ -39,7 +39,6 @@
 
     <record id="l10n_be_export_sdworx_leaves_wizard_action" model="ir.actions.act_window">
         <field name="name">Export Work Entries to SDWorx</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">l10n_be.export.sdworx.leaves.wizard</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="l10n_be_export_sdworx_leaves_wizard_view_form"/>

@@ -92,7 +92,6 @@
 
     <record id="hr_expense_parse_action_server" model="ir.actions.server">
             <field name="name">Send For Digitization</field>
-            <field name="type">ir.actions.server</field>
             <field name="model_id" ref="model_hr_expense"/>
             <field name="binding_model_id" ref="model_hr_expense"/>
             <field name="binding_view_types">list</field>

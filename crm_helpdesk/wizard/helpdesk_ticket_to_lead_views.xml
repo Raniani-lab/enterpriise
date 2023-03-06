@@ -32,7 +32,6 @@
 
     <record id="helpdesk_ticket_to_lead_action" model="ir.actions.act_window">
         <field name="name">Convert to Lead</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">helpdesk.ticket.to.lead</field>
         <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket"/>
         <field name="binding_view_types">form</field>

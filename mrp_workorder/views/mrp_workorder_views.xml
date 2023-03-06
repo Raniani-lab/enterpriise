@@ -158,7 +158,6 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
 
     <record model="ir.actions.act_window" id="mrp_workorder_action_tablet">
         <field name="name">Work Orders</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">mrp.workorder</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
@@ -268,7 +267,6 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
     </record>
     <record id="action_mrp_workorder_show_steps" model="ir.actions.act_window">
         <field name="name">Steps</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">quality.point</field>
         <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree'}),

@@ -33,7 +33,6 @@
 
     <record id="l10n_be_social_security_certificate_action" model="ir.actions.act_window">
         <field name="name">Social Security Certificate</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">l10n.be.social.security.certificate</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

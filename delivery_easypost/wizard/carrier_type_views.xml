@@ -20,7 +20,6 @@
 
         <record id="act_delivery_easypost_carrier_type" model="ir.actions.act_window">
             <field name="name">Select a carrier</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="res_model">delivery.carrier.easypost</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>

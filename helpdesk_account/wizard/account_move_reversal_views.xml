@@ -23,7 +23,6 @@
 
         <record id="helpdesk_ticket_action_refund" model="ir.actions.act_window">
             <field name="name">Refund</field>
-            <field name="type">ir.actions.act_window</field>
             <field name="res_model">account.move.reversal</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>

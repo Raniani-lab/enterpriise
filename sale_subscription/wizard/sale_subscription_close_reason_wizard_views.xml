@@ -21,7 +21,6 @@
     <!-- Action Subscriptions Close Reason -->
     <record id="sale_subscription_close_reason_wizard_action" model="ir.actions.act_window">
         <field name="name">Close Reason</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.subscription.close.reason.wizard</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="sale_subscription_close_reason_wizard_view_form"/>

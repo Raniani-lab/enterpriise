@@ -30,7 +30,6 @@
 
     <record id="action_l10n_ar_afip_ws_consult" model="ir.actions.act_window">
         <field name="name">Consult invoice in AFIP</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">l10n_ar_afip.ws.consult</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

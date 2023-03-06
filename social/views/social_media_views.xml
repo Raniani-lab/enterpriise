@@ -3,7 +3,6 @@
 <data>
     <record id="action_social_media" model="ir.actions.act_window">
         <field name="name">Social Media</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">social.media</field>
         <field name="view_mode">kanban,form</field>
     </record>

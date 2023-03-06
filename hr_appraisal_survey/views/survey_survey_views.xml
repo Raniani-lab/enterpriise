@@ -13,7 +13,6 @@
 
     <record id="survey_survey_action_appraisal" model="ir.actions.act_window">
         <field name="name">Surveys</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">survey.survey</field>
         <field name="domain">[('is_appraisal', '=', True)]</field>
         <field name="view_mode">kanban,tree,activity,form</field>

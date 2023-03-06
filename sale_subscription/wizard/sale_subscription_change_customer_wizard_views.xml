@@ -23,7 +23,6 @@
     <!-- Action Subscriptions Change Customer -->
     <record id="sale_subscription_change_customer_wizard_action" model="ir.actions.act_window">
         <field name="name">Change Customer</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.subscription.change.customer.wizard</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="sale_subscription_change_customer_view_form"/>

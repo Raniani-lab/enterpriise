@@ -31,7 +31,6 @@
 
     <record id="l10n_be_social_balance_sheet_action" model="ir.actions.act_window">
         <field name="name">Social Balance Sheet</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">l10n.be.social.balance.sheet</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

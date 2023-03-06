@@ -136,7 +136,6 @@
 
     <record id="action_hr_appraisal_goal" model="ir.actions.act_window">
         <field name="name">Goals</field>
-        <field name="type">ir.actions.act_window</field>
         <field name="res_model">hr.appraisal.goal</field>
         <field name="view_mode">kanban,tree,form,graph</field>
         <field name="help" type="html">

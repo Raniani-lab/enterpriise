@@ -522,3 +522,122 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
 
         self.patch(type(self.env["base"]), "web_read_group", muted_web_read_group)
         self.start_tour("/web?debug=tests", 'web_studio_test_create_model_with_clickable_stages', login="admin", timeout=200)
+
+    def test_enter_x2many_edition_with_multiple_subviews(self):
+        doesNotHaveGroup = self.env["res.groups"].create({
+            "name": "studio does not have"
+        })
+        doesNotHaveGroupXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_doesnothavegroup",
+            "model": "res.groups",
+            "module": "web_studio",
+            "res_id": doesNotHaveGroup.id,
+        })
+
+        hasGroup = self.env["res.groups"].create({
+            "name": "studio has group",
+            "users": [Command.link(2)]
+        })
+        hasGroupXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_hasgroup",
+            "model": "res.groups",
+            "module": "web_studio",
+            "res_id": hasGroup.id,
+        })
+
+        self.testView.arch = '''
+            <form>
+                <field name="name"/>
+                <field name="child_ids">
+                    <tree groups="{hasgroup}">
+                        <field name="type"/>
+                    </tree>
+                    <tree groups="{doesnothavegroup}">
+                        <field name="name"/>
+                    </tree>
+                </field>
+            </form>
+        '''.format(doesnothavegroup=doesNotHaveGroupXmlId.complete_name, hasgroup=hasGroupXmlId.complete_name)
+        self.start_tour("/web?debug=tests", 'web_studio_test_enter_x2many_edition_with_multiple_subviews',
+                        login="admin", timeout=200)
+
+    def test_enter_x2many_edition_with_multiple_subviews_correct_xpath(self):
+        operations = []
+        def edit_view_mocked(*args, **kwargs):
+            operations.extend(kwargs["operations"] if "operations" in kwargs else args[3])
+
+        watch_edit_view(self, edit_view_mocked)
+
+        doesNotHaveGroup = self.env["res.groups"].create({
+            "name": "studio does not have"
+        })
+        doesNotHaveGroupXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_doesnothavegroup",
+            "model": "res.groups",
+            "module": "web_studio",
+            "res_id": doesNotHaveGroup.id,
+        })
+
+        hasGroup = self.env["res.groups"].create({
+            "name": "studio has group",
+            "users": [Command.link(2)]
+        })
+        hasGroupXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_hasgroup",
+            "model": "res.groups",
+            "module": "web_studio",
+            "res_id": hasGroup.id,
+        })
+
+        self.testView.arch = '''
+              <form>
+                  <field name="name"/>
+                  <field name="child_ids">
+                      <tree groups="{doesnothavegroup}">
+                          <field name="name"/>
+                      </tree>
+                      <tree groups="{hasgroup}">
+                          <field name="name"/>
+                      </tree>
+                  </field>
+              </form>
+        '''.format(doesnothavegroup=doesNotHaveGroupXmlId.complete_name, hasgroup=hasGroupXmlId.complete_name)
+        self.start_tour("/web?debug=tests", 'web_studio_test_enter_x2many_edition_with_multiple_subviews_correct_xpath',
+                        login="admin", timeout=200)
+        studioView = _get_studio_view(self.testView)
+        assertViewArchEqual(self, studioView.arch, """
+            <data>
+               <xpath expr="//form[1]/field[@name='child_ids']/tree[2]/field[@name='name']" position="before">
+                 <field name="active" optional="show"/>
+               </xpath>
+            </data>
+        """)
+        self.assertEqual(len(operations), 1)
+        self.assertDictEqual(operations[0], {
+            'type': 'add',
+            'target': {
+                'tag': 'field',
+                'attrs': {
+                    'name': 'name'
+                },
+                'xpath_info': [
+                    {
+                        'tag': 'tree',
+                        'indice': 2
+                    },
+                    {
+                        'tag': 'field',
+                        'indice': 1
+                    },
+                ],
+                'subview_xpath': "//field[@name='child_ids']/tree[2]",
+            },
+            'position': 'before',
+            'node': {
+                'tag': 'field',
+                'attrs': {
+                    'name': 'active',
+                    'optional': 'show'
+                }
+            }
+        })

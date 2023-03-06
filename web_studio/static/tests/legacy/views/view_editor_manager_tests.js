@@ -5993,7 +5993,7 @@ QUnit.module('ViewEditorManager', {
                 const target = operation.target;
                 assert.deepEqual(target.attrs, {name: "display_name"});
                 assert.strictEqual(target.tag, "field");
-                assert.strictEqual(target.subview_xpath, "//field[@name='product_ids']/tree");
+                assert.strictEqual(target.subview_xpath, "//field[@name='product_ids']/tree[1]");
 
                 serverData.views["coucou,1,form"] = /*xml */ `
                     <form>
@@ -6406,13 +6406,13 @@ QUnit.module('ViewEditorManager', {
                     node: {
                         tag: 'field',
                         attrs: {name: 'coucou_id'},
-                        subview_xpath: "//field[@name='product_ids']/tree",
+                        subview_xpath: "//field[@name='product_ids']/tree[1]",
                     },
                     position: 'before',
                     target: {
                         tag: 'field',
                         attrs: {name: 'm2o'},
-                        subview_xpath: "//field[@name='product_ids']/tree",
+                        subview_xpath: "//field[@name='product_ids']/tree[1]",
                         xpath_info: [
                             {
                                 indice: 1,

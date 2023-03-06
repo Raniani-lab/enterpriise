@@ -29,14 +29,14 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
             'name': "my timesheet 1",
             'project_id': self.project_customer.id,
             'task_id': self.task1.id,
-            'date': today,
+            'date': today - timedelta(days=1),
             'unit_amount': 2.0,
         })
         self.timesheet2 = self.env['account.analytic.line'].with_user(self.user_employee).create({
             'name': "my timesheet 2",
             'project_id': self.project_customer.id,
             'task_id': self.task2.id,
-            'date': today,
+            'date': today - timedelta(days=1),
             'unit_amount': 3.11,
         })
 
@@ -91,12 +91,15 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         """ Check that the timers are stopped when validating the task even if the timer belongs to another user """
         # Start timer with employee user
         timesheet = self.timesheet1
+        timesheet.date = fields.Date.today()
         start_unit_amount = timesheet.unit_amount
         timesheet.with_user(self.user_employee).action_timer_start()
         timer = self.env['timer.timer'].search([("user_id", "=", self.user_employee.id), ('res_model', '=', 'account.analytic.line')])
         self.assertTrue(timer, 'A timer has to be running for the user employee')
-        # Validate timesheet with manager user
-        timesheet.with_user(self.user_manager).action_validate_timesheet()
+        with freeze_time(fields.Date.today() + timedelta(days=1)):
+            # Manager will validate the timesheet the next date but the employee forgot to stop his timer.
+            # Validate timesheet with manager user
+            timesheet.with_user(self.user_manager).action_validate_timesheet()
         # Check if old timer is stopped
         self.assertFalse(timer.exists())
         # Check if time spent is add to the validated timesheet
@@ -423,12 +426,12 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         timesheet = Timesheet.with_user(self.user_manager).create({
             'employee_id': employee.id,
             'project_id': self.project_customer.id,
-            'date': today_date,
+            'date': today_date - timedelta(days=1),
             'unit_amount': 2,
         })
         timesheet.with_user(self.user_manager).action_validate_timesheet()
 
-        column_date = f'{today_date}/{today_date + timedelta(days=1)}'
+        column_date = f'{today_date - timedelta(days=1)}/{today_date}'
         Timesheet.adjust_grid([('id', '=', timesheet.id)], 'date', column_date, 'unit_amount', 3.0)
 
         self.assertEqual(Timesheet.search_count([('employee_id', '=', employee.id)]), 2, "Should create new timesheet instead of updating validated timesheet in cell")

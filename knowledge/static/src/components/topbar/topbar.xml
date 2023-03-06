@@ -113,12 +113,12 @@
                                 title="Article items are not showed in the left-side menu&#10;but are shown in inserted kanban/list views"
                                 t-if="props.record.data.user_can_write and !props.record.data.is_article_item and props.record.data.parent_id and props.record.data.active"
                                 t-on-click="() => this.setIsArticleItem(true)">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-tasks"/> Convert into Article Item
+                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-tasks"/> Convert to Article Item
                             </button>
                             <button class="ps-0 dropdown-item"
                                 t-if="props.record.data.user_can_write and props.record.data.is_article_item and !props.record.data.has_item_parent"
                                 t-on-click="() => this.setIsArticleItem(false)">
-                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-sitemap"/> Convert into Article
+                                <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-sitemap"/> Convert to Article
                             </button>
                             <div class="dropdown-divider" t-if="props.record.data.user_can_write and props.record.data.active"/>
                             <div class="ps-0 dropdown-item user-select-none d-inline-flex align-items-start" t-if="props.record.data.user_can_write and props.record.data.active"

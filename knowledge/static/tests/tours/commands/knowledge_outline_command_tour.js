@@ -17,7 +17,7 @@ registry.category("web_tour.tours").add('knowledge_outline_command_tour', {
         openCommandBar(this.$anchor[0]);
     },
 }, { // click on the /outline command
-    trigger: '.oe-powerbox-commandName:contains("Article Structure")',
+    trigger: '.oe-powerbox-commandName:contains("Index")',
     run: 'click',
 }, { // wait for the block to appear in the editor
     trigger: '.o_knowledge_behavior_type_articles_structure',

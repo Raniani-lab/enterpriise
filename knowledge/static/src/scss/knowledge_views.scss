@@ -28,9 +28,6 @@
         min-width: 0;
     }
 
-    .o_breadcrumb_article_name > input:not(:focus) {
-        --o-input-border-color: transparent;
-    }
     .o_breadcrumb_article_name > input:not(.o_readonly_modifier):hover {
         border-bottom: $input-border-width solid $o-brand-primary;
     }
@@ -61,6 +58,7 @@
     .o_knowledge_editor .o_field_html .note-editable,
     .o_knowledge_editor .o_field_html .o_readonly,
     .o_knowledge_editor .o_field_properties {
+        margin-bottom: -0.5rem;
         padding-left: var(--editor-gutter-size) !important;
         padding-right: var(--editor-gutter-size) !important;
     }
@@ -254,6 +252,8 @@
 
     .o_knowledge_properties {
         min-width: 250px;
+        width: 25%;
+        background: var(--knowledge-properties-bg, $o-gray-100);
 
         .o_inner_group {
             width: 100%;
@@ -261,15 +261,31 @@
         }
         .o_property_field {
             .o_property_field_value {
+                line-height: 1;
+                margin-bottom: 0.5rem;
+                .o_input {
+                     border-bottom-color: #ccc !important;
+                }
                 .o_input_dropdown {
                     .dropdown {
                         padding-right: 10px;
                     }
                 }
             }
+            .o_field_property_label {
+                line-height: 1;
+            }
         }
         .o_field_property_add {
             margin-left: 0 !important;
+            button {
+                background-color: transparent;
+                border-color: transparent;
+                &:hover {
+                    background-color: var(--knowledge-properties-btn-bg, $o-gray-200);
+                    border-color: var(--knowledge-properties-btn-bg, $o-gray-200);
+                }
+            }
         }
     }
 }

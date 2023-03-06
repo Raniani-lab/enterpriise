@@ -24,4 +24,7 @@ registry.category("web_tour.tours").add('knowledge_index_command_tour', {
 }, { // click on the refresh button
     trigger: '.o_knowledge_behavior_type_articles_structure button[title="Update"]',
     run: 'click',
+}, { // click on the switch mode button
+    trigger: '.o_knowledge_behavior_type_articles_structure button[title="Switch Mode"]',
+    run: 'click',
 }]});

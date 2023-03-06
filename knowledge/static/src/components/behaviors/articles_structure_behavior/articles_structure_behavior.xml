@@ -9,6 +9,15 @@
             <div class="o_knowledge_toolbar o_knowledge_clean_for_save">
                 <div class="btn-group">
                     <button t-if="!this.props.readonly"
+                            t-on-click="_onSwitchMode"
+                            class="btn btn-primary btn-link btn-sm border-0"
+                            title="Switch Mode">
+                        <i t-attf-class="fa {{ this.state.showAllChildren ? 'fa-eye-slash' : 'fa-eye' }}" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">
+                            <t t-if="this.state.showAllChildren">Show Less</t>
+                            <t t-else="">Show All</t>
+                        </span>
+                    </button>
+                    <button t-if="!this.props.readonly"
                             t-on-click="_onRefreshBtnClick"
                             class="btn btn-primary btn-link btn-sm border-0"
                             title="Update">

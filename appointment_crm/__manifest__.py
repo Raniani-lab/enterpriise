@@ -25,5 +25,8 @@ Allow to generate lead from Scheduled Appointments through your Website
         'web.assets_backend': [
             'appointment_crm/static/src/views/**/*',
         ],
+        'web.assets_tests': [
+            'appointment_crm/static/tests/tours/**/*',
+        ],
     },
 }

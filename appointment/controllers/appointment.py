@@ -552,13 +552,13 @@ class AppointmentController(http.Controller):
         """
         prepares all values needed to create a new calendar.event
         """
-        categ_id = request.env.ref('appointment.calendar_event_type_data_online_appointment')
         alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
         partner_ids = list(set([staff_user.partner_id.id] + [partner.id]))
         if invite_token:
-            appointment_invite_id = request.env['appointment.invite'].sudo().search([('access_token', '=', invite_token)]).id
+            appointment_invite = request.env['appointment.invite'].sudo().search([('access_token', '=', invite_token)])
         else:
-            appointment_invite_id = False
+            appointment_invite = request.env['appointment.invite']
+        categ_ids = appointment_invite._get_meeting_categories_for_appointment()
         calendar_event_values = {
             'name': _('%s with %s', appointment_type.name, name),
             'start': date_start.strftime(dtf),
@@ -575,11 +575,11 @@ class AppointmentController(http.Controller):
             'alarm_ids': alarm_ids,
             'location': appointment_type.location,
             'partner_ids': [(4, pid, False) for pid in partner_ids],
-            'categ_ids': [(4, categ_id.id, False)],
+            'categ_ids': [(6, 0, categ_ids.ids)],
             'appointment_type_id': appointment_type.id,
             'appointment_answer_input_ids': [(0, 0, answer_input_values) for answer_input_values in question_answer_inputs],
             'user_id': staff_user.id,
-            'appointment_invite_id': appointment_invite_id,
+            'appointment_invite_id': appointment_invite.id,
         }
         if not appointment_type.location_id:
             CalendarEvent = request.env['calendar.event']

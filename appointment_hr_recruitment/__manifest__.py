@@ -12,4 +12,9 @@ Keeps track of all appointments related to applicants.
     'depends': ['appointment', 'hr_recruitment'],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_tests': [
+            'appointment_hr_recruitment/static/tests/tours/**/*',
+        ],
+    },
 }

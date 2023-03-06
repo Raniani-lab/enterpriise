@@ -30,6 +30,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_search_form_project_fsm_base"/>
         <field name="mode">primary</field>
+        <field name="priority">999</field>
         <field name="arch" type="xml">
             <search position="inside"/>
         </field>
@@ -40,6 +41,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project_task_view_search_fsm_base"/>
         <field name="mode">primary</field>
+        <field name="priority">20</field>
         <field name="arch" type="xml">
             <field name="description" position="after">
                 <field string="Properties" name="task_properties"/>

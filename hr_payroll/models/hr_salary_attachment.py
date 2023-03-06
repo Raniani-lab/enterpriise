@@ -23,7 +23,7 @@ class HrSalaryAttachment(models.Model):
         ),
         (
             'check_total_amount',
-            'CHECK ((total_amount > 0 AND total_amount >= monthly_amount) OR no_end_date = \'t\')',
+            'CHECK ((total_amount > 0 AND total_amount >= monthly_amount) OR no_end_date = True)',
             'Total amount must be strictly positive and greater than or equal to the monthly amount.'
         ),
         ('check_remaining_amount', 'CHECK (remaining_amount >= 0)', 'Remaining amount must be positive.'),
@@ -154,7 +154,7 @@ class HrSalaryAttachment(models.Model):
             if record.employee_count == 1 and record.date_start and record.state == 'open':
                 similar = possible_matches.filtered_domain([
                     ('id', '!=', record.id),
-                    ('employee_ids', 'in', record.employee_ids.id),
+                    ('employee_ids', 'in', record.employee_ids.ids),
                     ('monthly_amount', '=', record.monthly_amount),
                     ('date_start', '<=', record.date_start),
                     ('deduction_type_id', '=', record.deduction_type_id.id),

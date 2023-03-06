@@ -11,7 +11,6 @@ class HrPayslipLine(models.Model):
     _order = 'contract_id, sequence, code'
 
     name = fields.Char(required=True)
-    note = fields.Text(string='Description')
     sequence = fields.Integer(required=True, index=True, default=5,
                               help='Use to arrange calculation sequence')
     code = fields.Char(required=True,

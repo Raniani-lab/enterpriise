@@ -61,6 +61,6 @@
     <record id="action_hr_salary_attachment_type" model="ir.actions.act_window">
         <field name="name">Salary Attachment Types</field>
         <field name="res_model">hr.salary.attachment.type</field>
-        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_mode">tree,form</field>
     </record>
 </odoo>

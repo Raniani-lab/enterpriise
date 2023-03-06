@@ -165,5 +165,5 @@
         action="action_hr_salary_attachment_type"
         parent="menu_hr_salary_configuration"
         name="Salary Attachment Types"
-        sequence="40"/>
+        sequence="45"/>
 </odoo>

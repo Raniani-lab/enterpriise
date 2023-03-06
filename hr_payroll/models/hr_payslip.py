@@ -777,7 +777,6 @@ class HrPayslip(models.Model):
                                 'sequence': rule.sequence,
                                 'code': rule.code,
                                 'name':  rule_name,
-                                'note': html2plaintext(rule.note) if not is_html_empty(rule.note) else '',
                                 'salary_rule_id': rule.id,
                                 'contract_id': localdict['contract'].id,
                                 'employee_id': localdict['employee'].id,
@@ -789,7 +788,7 @@ class HrPayslip(models.Model):
                     else:
                         amount, qty, rate = rule._compute_rule(localdict)
                         #check if there is already a rule computed with that code
-                        previous_amount = rule.code in localdict and localdict[rule.code] or 0.0
+                        previous_amount = localdict.get(rule.code, 0.0)
                         #set/overwrite the amount computed for this rule in the localdict
                         tot_rule = amount * qty * rate / 100.0
                         localdict[rule.code] = tot_rule
@@ -803,7 +802,6 @@ class HrPayslip(models.Model):
                             'sequence': rule.sequence,
                             'code': rule.code,
                             'name': rule_name,
-                            'note': html2plaintext(rule.note) if not is_html_empty(rule.note) else '',
                             'salary_rule_id': rule.id,
                             'contract_id': localdict['contract'].id,
                             'employee_id': localdict['employee'].id,
@@ -1113,7 +1111,6 @@ class HrPayslip(models.Model):
                 'sequence': line.sequence,
                 'code': line.code,
                 'name': line.name,
-                'note': line.note,
                 'salary_rule_id': line.salary_rule_id.id,
                 'contract_id': line.contract_id.id,
                 'employee_id': line.employee_id.id,

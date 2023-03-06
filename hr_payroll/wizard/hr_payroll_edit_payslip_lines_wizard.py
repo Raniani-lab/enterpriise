@@ -84,7 +84,6 @@ class HrPayrollEditPayslipLine(models.TransientModel):
     _description = 'Edit payslip lines wizard line'
 
     name = fields.Char(translate=True)
-    note = fields.Text(string='Description')
     sequence = fields.Integer("Sequence")
     salary_rule_id = fields.Many2one(
         'hr.salary.rule', string='Rule',
@@ -112,7 +111,6 @@ class HrPayrollEditPayslipLine(models.TransientModel):
             'sequence': line.sequence,
             'code': line.code,
             'name': line.name,
-            'note': line.note,
             'salary_rule_id': line.salary_rule_id.id,
             'contract_id': line.contract_id.id,
             'employee_id': line.employee_id.id,

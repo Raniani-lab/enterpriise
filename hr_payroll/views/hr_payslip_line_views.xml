@@ -57,7 +57,6 @@
                         <field name="amount_percentage"  attrs="{'readonly':[('amount_select','!=','percentage')]}"/>
                         <field name="sequence"/>
                     </group>
-                    <field name="note"/>
                 </group>
             </form>
         </field>

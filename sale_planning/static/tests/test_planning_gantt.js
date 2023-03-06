@@ -62,6 +62,8 @@ QUnit.module('SalePlanning > GanttView', {
                     [{ false: [
                                 ["2021-10-12 08:00:00", "2022-10-12 12:00:00"],
                             ],
+                        }, {
+                        false: false,
                         },
                     ]
                 );

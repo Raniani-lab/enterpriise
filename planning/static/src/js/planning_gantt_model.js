@@ -118,6 +118,18 @@ const PlanningGanttModel = GanttModel.extend({
         this.ganttData.resourceWorkIntervalsDict = data;
     },
     /**
+     * Generate and store the flexible hours per resource into `ganttData.resourceFlexibleHoursDict` coming from the rpc call.
+     * @param flexibleHours dictionary {resource_id: true|false} if the resource has flexible hours
+     * @private
+     */
+    _generateAndStoreFlexibleHours(flexibleHours) {
+        const data = {};
+        for (const resourceId of Object.keys(flexibleHours)) {
+            data[resourceId] = flexibleHours[resourceId] || false
+        }
+        this.ganttData.resourceFlexibleHoursDict = data;
+    },
+    /**
      * Fetch resources' work intervals.
      *
      * @returns {Deferred}
@@ -133,6 +145,7 @@ const PlanningGanttModel = GanttModel.extend({
             context: this.context,
         }).then((result) => {
             this._generateAndStoreWorkIntervals(result[0]);
+            this._generateAndStoreFlexibleHours(result[1]);
         });
     },
     /**
@@ -206,7 +219,9 @@ const PlanningGanttModel = GanttModel.extend({
 
             // Populate record with associated allocated hours.
             const dateKey = this._serializeDateTimeAccordingToScale(periodStart);
-            if (!record.resource_id) {
+            if (!record.resource_id ||
+                (this.ganttData.resourceFlexibleHoursDict &&
+                this.ganttData.resourceFlexibleHoursDict[record.resource_id[0]])) {
                 record.allocatedHoursDict[dateKey] = Math.min(
                     (endDate - startDate) / (1000 * 60 * 60),
                     this.ganttData.companyHoursPerDay

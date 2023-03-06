@@ -31,6 +31,9 @@
                 &amp;nbsp;<a t-att-data-line_id="line.get('id')" action="action_partner_reconcile" class="no_print oe_link_reports">Reconcile</a>
             </t>
         </xpath>
+        <xpath expr="//td[contains(@t-att-class, 'o_account_report_name_ellipsis')]" position="attributes">
+            <attribute name="t-att-class" add="'o_account_report_name_ellipsis_partner_ledger'" separator=" + "/>
+        </xpath>
     </template>
 
     <template id="template_partner_ledger_report" inherit_id="account_reports.main_template" primary="True">

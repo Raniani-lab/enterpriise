@@ -64,7 +64,7 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         # working hours for employee after Timesheet creations
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 32, "Employee's one week units of work after the Timesheet creation should be 32.")
 
-    def test_adjust_grid_holiday(self):
+    def test_grid_update_holiday(self):
         Requests = self.env['hr.leave'].with_context(mail_create_nolog=True, mail_notrack=True)
         hr_leave_type_with_ts = self.env['hr.leave.type'].create({
             'name': 'Leave Type with timesheet generation',
@@ -86,10 +86,25 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         holiday.with_user(SUPERUSER_ID).action_validate()
         self.assertEqual(len(holiday.timesheet_ids), 1)
 
-        # create timesheet via adjust_grid
+        # create timesheet via grid_update_cell
         today_date = fields.Date.today()
-        column_date = f'{today_date}/{today_date + timedelta(days=1)}'
-        self.env['account.analytic.line'].with_user(SUPERUSER_ID).adjust_grid([('id', '=', holiday.timesheet_ids.id)], 'date', column_date, 'unit_amount', 3.0)
+        column_date = today_date
+        timesheet = holiday.timesheet_ids
+        domain = [  # domain given by the grid cell edited
+            ('date', '=', today_date),
+            ('employee_id', '=', self.empl_employee.id),
+            ('project_id', '=', timesheet.project_id.id),
+            ('task_id', '=', timesheet.task_id.id),
+        ]
+        self.env['account.analytic.line'] \
+            .with_user(SUPERUSER_ID) \
+            .with_context( # when the user will edit a grid cell, the context of the cell will be given
+                default_date=column_date,
+                default_project_id=timesheet.project_id.id,
+                default_task_id=timesheet.task_id.id,
+                default_employee_id=self.empl_employee.id,
+            ) \
+            .grid_update_cell(domain, 'unit_amount', 3.0)
 
         timesheets = self.env['account.analytic.line'].search([('employee_id', '=', self.empl_employee.id), ('unit_amount', 'in', [1, 3])])
 

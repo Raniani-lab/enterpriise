@@ -108,14 +108,14 @@ $wo-border-separation: $border-width solid $border-color;
 
 
             &-item {
-                background: rgb(230,230,230);
+                background: $o-gray-300;
                 cursor: pointer;
                 text-align: left;
                 padding: 0px 16px;
                 color: $o-black;
 
                 &:nth-child(odd) {
-                    background: $o-tooltip-title-background-color;
+                    background: $o-view-background-color;
                 }
                 &.selected {
                     background: #6EC89B;

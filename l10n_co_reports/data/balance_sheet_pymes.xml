@@ -213,42 +213,42 @@
                         <field name="code">L10N_CO_BS_CAPITAL</field>
                         <field name="name">Social Capital</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">31</field>
+                        <field name="account_codes_formula">-31</field>
                         <field name="groupby">account_id</field>
                     </record>
                     <record id="l10n_co_bs_report_capital_surplus" model="account.report.line">
                         <field name="code">L10N_CO_BS_SURPLUS</field>
                         <field name="name">Capital Surplus</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">32</field>
+                        <field name="account_codes_formula">-32</field>
                         <field name="groupby">account_id</field>
                     </record>
                     <record id="l10n_co_bs_report_reserves" model="account.report.line">
                         <field name="code">L10N_CO_BS_RESERVES</field>
                         <field name="name">Reserves</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">33</field>
+                        <field name="account_codes_formula">-33</field>
                         <field name="groupby">account_id</field>
                     </record>
                     <record id="l10n_co_bs_report_revaluation" model="account.report.line">
                         <field name="code">L10N_CO_BS_REVALUATION</field>
                         <field name="name">Revaluation of Equity</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">34</field>
+                        <field name="account_codes_formula">-34</field>
                         <field name="groupby">account_id</field>
                     </record>
                     <record id="l10n_co_bs_report_dividends" model="account.report.line">
                         <field name="code">L10N_CO_BS_DIVIDENDS</field>
                         <field name="name">Dividends or Participations Declared in Shares, Quotas or Parts of Social Interest</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">35</field>
+                        <field name="account_codes_formula">-35</field>
                         <field name="groupby">account_id</field>
                     </record>
                     <record id="l10n_co_bs_report_year_results" model="account.report.line">
                         <field name="code">L10N_CO_BS_YEAR_RESULTS</field>
                         <field name="name">Results for the Year</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">36</field>
+                        <field name="account_codes_formula">-36</field>
                         <field name="groupby">account_id</field>
                     </record>
                     <record id="l10n_co_bs_report_year_earnings" model="account.report.line">
@@ -302,7 +302,7 @@
                         <field name="code">L10N_CO_BS_VAL_SURPLUS</field>
                         <field name="name">Surplus from Valuations</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">38</field>
+                        <field name="account_codes_formula">-38</field>
                         <field name="groupby">account_id</field>
                     </record>
                 </field>

@@ -3,8 +3,6 @@
     flex-flow: row nowrap;
     margin-bottom: 5px;
     margin-top: -$o-sheet-vpadding;
-    margin-left: -16px;
-    margin-right: -16px;
     height: $o-statbutton-height;
     white-space: nowrap;
     border-bottom: 1px solid $border-color;
@@ -96,4 +94,38 @@
 
 .o_bank_rec_widget_lines_widget_label {
     max-width: 320px;
+}
+
+.o_bank_rec_right_div {
+    .o_content{
+        overflow: hidden !important;
+
+        .o_form_nosheet{
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+
+            .nav-tabs{
+                margin-left: 10px;
+            }
+
+            .o_inner_group {
+                padding: 0 50px;
+            }
+
+            .bank_rec_widget_form_discuss_anchor{
+                padding: 0 20px;
+            }
+
+            table tr td:first-child, table th:first-child {
+              padding-left: 10px;
+            }
+
+            .o_list_table {
+                th {
+                    border-left: none !important;
+                }
+            }
+
+        }
+    }
 }

@@ -93,7 +93,7 @@ class SignRequest(models.Model):
     request_item_infos = fields.Binary(compute="_compute_request_item_infos")
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
     completion_date = fields.Date(string="Completion Date", compute="_compute_progress", compute_sudo=True)
-    communication_company_id = fields.Many2one('res.company', string="Company used for communication")
+    communication_company_id = fields.Many2one('res.company', string="Company used for communication", default=lambda self: self.env.company)
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
     template_tags = fields.Many2many('sign.template.tag', string='Tags')

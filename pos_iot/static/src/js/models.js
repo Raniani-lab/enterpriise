@@ -3,6 +3,7 @@
 import { PosGlobalState, Product, register_payment_method } from "@point_of_sale/js/models";
 import { PaymentIngenico, PaymentWorldline } from "@pos_iot/js/payment";
 import { DeviceController } from "@iot/device_controller";
+import { IoTPrinter } from "@pos_iot/js/iot_printer";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 import { _t } from "@web/core/l10n/translation";
@@ -39,6 +40,17 @@ patch(PosGlobalState.prototype, "pos_iot.PosGlobalState", {
             } else {
                 deviceControllers[type] = deviceProxy;
             }
+        }
+    },
+    create_printer(config) {
+        if (config.device_identifier && config.printer_type === "iot") {
+            const device = new DeviceController(this.env.services.iot_longpolling, {
+                iot_ip: config.proxy_ip,
+                identifier: config.device_identifier,
+            });
+            return new IoTPrinter({ device });
+        } else {
+            return this._super(...arguments);
         }
     },
 });

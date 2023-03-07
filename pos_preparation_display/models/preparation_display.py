@@ -95,9 +95,12 @@ class PosPreparationDisplay(models.Model):
             ])
 
             for order in orders:
-                order_stage = order.order_stage_ids.filtered(lambda s: s.preparation_display_id.id == preparation_display.id and s.done)
-                if order_stage.stage_id.id == preparation_display.stage_ids[-1].id:
-                    continue
+                order_stage = order.order_stage_ids.filtered(lambda s: s.preparation_display_id.id == preparation_display.id)
+
+                if order_stage:
+                    order_stage_last = sorted(order_stage, key=lambda s: s.write_date, reverse=True)[0]
+                    if order_stage_last.stage_id.id == preparation_display.stage_ids[-1].id:
+                        continue
 
                 for orderline in order.preparation_display_order_line_ids:
                     if orderline.product_id.pos_categ_id.id in preparation_display.category_ids.ids and orderline.product_quantity > 0:

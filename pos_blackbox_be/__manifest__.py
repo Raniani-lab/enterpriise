@@ -26,7 +26,7 @@ An obfuscated and certified version of the pos_blackbox_be may be provided on
 requests for on-premise installations.
 No modified version is certified and supported by Odoo SA.
     """,
-    'depends': ['pos_restaurant_iot', 'l10n_be', 'web_enterprise'],
+    'depends': ['pos_iot', 'pos_restaurant', 'l10n_be', 'web_enterprise'],
     'data': [
         'security/pos_blackbox_be_security.xml',
         'security/ir.model.access.csv',

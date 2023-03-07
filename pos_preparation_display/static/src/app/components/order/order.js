@@ -5,19 +5,6 @@ import { Orderline } from "@pos_preparation_display/app/components/orderline/ord
 import { deserializeDateTime } from "@web/core/l10n/dates";
 import { shallowEqual } from "@web/core/utils/arrays";
 
-//this will be use by a modulo 9 so max 9 values.
-const colorHeader = [
-    "#8560D4",
-    "#BB4947",
-    "#DB8735",
-    "#87C647",
-    "#3DAB6C",
-    "#3CB5A9",
-    "#3C85C1",
-    "#5061C7",
-    "#D0517C",
-];
-
 export class Order extends Component {
     static props = {
         order: Object,
@@ -51,23 +38,7 @@ export class Order extends Component {
         return this.preparationDisplay.stages.get(order.stageId);
     }
     get headerColor() {
-        const table = this.props.order.table;
-        let tableOrdersInStage = [];
-
-        if (table.id && this.preparationDisplay.tables[table.id].length) {
-            const tableOrders = this.preparationDisplay.tables[table.id];
-            tableOrdersInStage = tableOrders.filter((order) => order.stageId === this.stage.id);
-
-            if (this.preparationDisplay.selectedStageId === 0) {
-                tableOrdersInStage = tableOrders;
-            }
-        }
-
-        if (tableOrdersInStage.length > 1) {
-            return colorHeader[table.id % 9];
-        } else {
-            return "#E0E2E6";
-        }
+        return "#E0E2E6";
     }
     _computeDuration() {
         const timeDiff = (

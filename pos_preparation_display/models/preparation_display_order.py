@@ -181,11 +181,5 @@ class PosPreparationDisplayOrder(models.Model):
                 'stage_id': current_order_stage.stage_id.id if current_order_stage else None,
                 'last_stage_change': current_order_stage.write_date if current_order_stage else self.create_date,
                 'displayed': self.displayed,
-                'table': {
-                    'id': self.pos_order_id.table_id.id,
-                    'seats': self.pos_order_id.table_id.seats,
-                    'name': self.pos_order_id.table_id.name,
-                    'color': self.pos_order_id.table_id.color,
-                },
                 'orderlines': preparation_display_orderlines,
             }

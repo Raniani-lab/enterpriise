@@ -6,10 +6,7 @@
     'category': 'Sales/Point of Sale',
     'sequence': 7,
     'summary': 'Display Orders for Preparation stage.',
-    'depends': ['pos_restaurant'],
-    'demo': [
-        'demo/preparation_display_demo.xml',
-    ],
+    'depends': ['point_of_sale'],
     'data': [
         'security/ir.model.access.csv',
         'security/preparation_display_security.xml',
@@ -19,6 +16,7 @@
         'data/preparation_display_data.xml',
     ],
     'installable': True,
+    'auto_install': True,
     'assets': {
         'pos_preparation_display.assets': [
             ('include', 'web._assets_helpers'),
@@ -50,6 +48,9 @@
         ],
         'point_of_sale.assets': [
             'pos_preparation_display/static/src/override/**/*.js',
+        ],
+        'point_of_sale.qunit_suite_tests': [
+            'pos_preparation_display/static/tests/*.js',
         ],
     },
     'license': 'LGPL-3',

@@ -6,7 +6,7 @@ class PosPreparationDisplayOrderline(models.Model):
     _description = "Point of Sale preparation order line"
 
     todo = fields.Boolean("Status of the orderline", help="The status of a command line, todo or not")
-    internal_note = fields.Char(help="Kitchen notes written at the time of the order")
+    internal_note = fields.Char(help="Internal notes written at the time of the order")
     product_id = fields.Many2one('product.product', string="Product ID")
     product_quantity = fields.Integer("Quantity of ordered product")
     product_cancelled = fields.Integer("Quantity of cancelled product")

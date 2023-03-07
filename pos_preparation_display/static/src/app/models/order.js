@@ -7,23 +7,24 @@ export class Order extends Reactive {
         stage_id,
         displayed,
         responsible,
-        table,
         orderlines,
         create_date,
         last_stage_change,
         pos_order_id,
     }) {
         super();
+        this.setup(...arguments);
+    }
 
-        this.id = id;
-        this.stageId = stage_id;
-        this.displayed = displayed;
-        this.responsible = responsible;
-        this.table = table;
-        this.orderlines = orderlines;
-        this.createDate = create_date;
-        this.lastStageChange = last_stage_change;
-        this.posOrderId = pos_order_id;
+    setup(order) {
+        this.id = order.id;
+        this.stageId = order.stage_id;
+        this.displayed = order.displayed;
+        this.responsible = order.responsible;
+        this.orderlines = order.orderlines;
+        this.createDate = order.create_date;
+        this.lastStageChange = order.last_stage_change;
+        this.posOrderId = order.pos_order_id;
         this.changeStageTimeout = null;
     }
 

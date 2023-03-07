@@ -1,7 +1,6 @@
 /** @odoo-module **/
-import { PosGlobalState, Order } from "@point_of_sale/js/models";
+import { PosGlobalState } from "@point_of_sale/js/models";
 import { patch } from "@web/core/utils/patch";
-import "@pos_restaurant/js/models";
 
 patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
     setup() {
@@ -14,54 +13,42 @@ patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
         const preparationDisplayCategories = this.preparationDisplays.flatMap(
             (preparationDisplay) => preparationDisplay.pdis_category_ids
         );
-
-        if (!this.printers_category_ids_set) {
-            this.printers_category_ids_set = new Set();
-        }
         this.preparationDisplayCategoryIds = new Set(preparationDisplayCategories);
-        this.printers_category_ids_set = new Set([
-            ...this.printers_category_ids_set,
-            ...preparationDisplayCategories,
-        ]);
     },
 
-    // @override
-    isInterfacePrinter() {
-        if (!this.config.module_pos_restaurant) {
-            return false;
+    // @override - add preparation display categories to global order preparation categories
+    get orderPreparationCategories() {
+        let categoryIds = this._super();
+        if (this.preparationDisplayCategoryIds) {
+            categoryIds = new Set([...categoryIds, ...this.preparationDisplayCategoryIds]);
         }
-        return true;
-    },
-
-    // @override
-    addSubmitOrderButton() {
-        return this.config.module_pos_restaurant;
+        return categoryIds;
     },
 
     // @override
     async _processData(loadedData) {
         await this._super(loadedData);
-
-        if (this.config.module_pos_restaurant) {
-            this.preparationDisplays = loadedData["pos_preparation_display.display"];
-        }
+        this.preparationDisplays = loadedData["pos_preparation_display.display"];
     },
 
     // @override
     async after_load_server_data() {
         await this._super(...arguments);
-
-        if (this.config.module_pos_restaurant) {
-            this._initializePreparationDisplay();
-        }
+        this._initializePreparationDisplay();
     },
 
     async sendPreparationDisplayOrder() {
-        await this._pushOrdersToServer();
-
         const currentOrder = this.get_order();
-        const orderChange = currentOrder.printingChanges;
 
+        // In the point_of_sale, we try to find the server_id in order to keep the
+        // orders traceable in the preparation tools.
+        // For the pos_restaurant, this is mandatory, without the server_id,
+        // we cannot find the order table.
+        if (!currentOrder.server_id) {
+            await this.sendDraftToServer();
+        }
+
+        const orderChange = currentOrder.changesToOrder;
         const preparationDisplayOrderLineIds = Object.entries(orderChange).flatMap(
             ([type, changes]) =>
                 changes
@@ -71,57 +58,40 @@ patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
                     })
                     .map((change) => {
                         const product = this.db.get_product_by_id(change.product_id);
-
+                        let quantity = change.quantity;
                         if (type === "cancelled") {
-                            change.quantity = -change.quantity;
+                            quantity = -change.quantity;
                         }
 
                         return {
                             todo: true,
                             internal_note: change.note,
                             product_id: change.product_id,
-                            product_quantity: change.quantity,
+                            product_quantity: quantity,
                             product_category_id: product.pos_categ_id[0],
                         };
                     })
         );
 
         if (!preparationDisplayOrderLineIds.length) {
+            return true;
+        }
+
+        try {
+            const posPreparationDisplayOrder = {
+                preparation_display_order_line_ids: preparationDisplayOrderLineIds,
+                displayed: true,
+                pos_order_id: currentOrder.server_id || false,
+            };
+
+            await this.env.services.orm.call("pos_preparation_display.order", "process_order", [
+                posPreparationDisplayOrder,
+            ]);
+        } catch (e) {
+            console.warn(e);
             return false;
         }
 
-        const posPreparationDisplayOrder = {
-            preparation_display_order_line_ids: preparationDisplayOrderLineIds,
-            displayed: true,
-            pos_order_id: currentOrder.server_id || false,
-        };
-
-        await this.env.services.orm.call("pos_preparation_display.order", "process_order", [
-            posPreparationDisplayOrder,
-        ]);
-
         return true;
-    },
-});
-
-patch(Order.prototype, "pos_preparation_display.Order", {
-    // @override
-    hasChangesToPrint() {
-        const categories = this.pos.preparationDisplays.flatMap(
-            (display) => display.pdis_category_ids
-        );
-
-        const changes = this._getPrintingCategoriesChanges(categories);
-
-        if (changes.new.length > 0 || changes.cancelled.length > 0) {
-            return true;
-        } else {
-            return this._super(...arguments);
-        }
-    },
-    async submitOrder() {
-        const _super = this._super;
-        await this.pos.sendPreparationDisplayOrder();
-        _super(...arguments);
     },
 });

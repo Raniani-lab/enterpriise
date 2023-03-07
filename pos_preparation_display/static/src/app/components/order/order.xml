@@ -8,15 +8,8 @@
             <div
                 class="o_pdis_order w-100 bg-200 p-1"
                 t-on-click="() => this.preparationDisplay.changeOrderStage(this.props.order, true)">
-                <div class="o_pdis_table-info d-flex justify-content-between align-items-center px-1">
-                    <div class="d-flex flex-wrap">
-                        <div class="o_pdis_table pe-1" t-esc="this.props.order.table.name" t-if="this.props.order.table.name" />
-                        <div class="o_pdis_seats ps-2" t-if="this.props.order.table.seats">
-                            <i class="fa fa-users pe-1" aria-hidden="true"></i>
-                            <span t-esc="this.props.order.table.seats" />
-                        </div>
-                    </div>
-                    <div t-esc="this.stage.name" class=" o_pdis_stage badge rounded" t-att-style="`background-color: ${this.stage.color}80 !important;`" />
+                <div class="o_pdis_customer-info d-flex justify-content-between align-items-center px-1">
+                    <div t-esc="this.stage.name" class="o_pdis_stage badge rounded" t-att-style="`background-color: ${this.stage.color}80 !important;`" />
                 </div>
                 <div class="o_pdis_order-info  d-flex flex-wrap justify-content-between align-items-center">
                     <div class="o_pdis_responsible px-1 py-2 text-truncate">

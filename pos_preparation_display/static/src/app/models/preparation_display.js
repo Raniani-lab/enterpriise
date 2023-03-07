@@ -10,7 +10,9 @@ import { deserializeDateTime } from "@web/core/l10n/dates";
 export class PreparationDisplay extends Reactive {
     constructor({ categories, orders, stages }, env, preparationDisplayId) {
         super();
-
+        this.setup(...arguments);
+    }
+    setup(data, env, preparationDisplayId) {
         this.id = preparationDisplayId;
         this.env = env;
         this.showCategoryFilter = true;
@@ -23,11 +25,10 @@ export class PreparationDisplay extends Reactive {
         this.selectedCategories = new Set();
         this.selectedProducts = new Set();
         this.filteredOrders = [];
-        this.tables = {};
         this.rawData = {
-            categories: categories,
-            orders: orders,
-            stages: stages,
+            categories: data.categories,
+            orders: data.orders,
+            stages: data.stages,
         };
 
         this.restoreFilterFromLocalStorage();
@@ -37,7 +38,6 @@ export class PreparationDisplay extends Reactive {
     }
 
     filterOrders() {
-        this.tables = {};
         const stages = this.stages;
         const selectedCategories = this.selectedCategories;
         const selectedProducts = this.selectedProducts;
@@ -59,11 +59,6 @@ export class PreparationDisplay extends Reactive {
                             this.stages.get(order.stageId).orderCount++;
                             countedOrders.add(order.id);
                         }
-
-                        if (!this.tables[order.table.id]) {
-                            this.tables[order.table.id] = [];
-                        }
-                        this.tables[order.table.id].push(order);
 
                         // second filter, if a stage is selected the order must be in.
                         if (order.stageId !== this.selectedStageId && this.selectedStageId) {

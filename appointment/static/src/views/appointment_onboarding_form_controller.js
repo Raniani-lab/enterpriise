@@ -8,21 +8,24 @@ export default class AppointmentOnboardingAppointmentTypeFormController extends 
     setup() {
         super.setup();
         this.orm = useService('orm');
+        this.actionService = useService('action');
     }
     /**
      * Overridden to mark the onboarding step as completed and reload the view.
      *
      * @override
      */
-    async saveButtonClicked()  {
+    async saveButtonClicked() {
         await super.saveButtonClicked();
-        const wasFirstValidation = await this.orm.call(
+        const validationResponse = await this.orm.call(
             'onboarding.onboarding.step',
-            'action_save_appointment_onboarding_create_appointment_type_step',
+            'action_validate_step',
+            ['appointment.appointment_onboarding_create_appointment_type_step']
         );
         this.env.dialogData.close();
-        if (wasFirstValidation) {
-            window.location.reload();
+        //refresh the view below the onboarding panel
+        if (["JUST_DONE", "NOT_FOUND"].includes(validationResponse)) {
+            this.actionService.restore(this.actionService.currentController.jsId);
         }
     }
     /**

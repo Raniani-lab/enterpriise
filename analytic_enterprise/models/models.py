@@ -10,15 +10,3 @@ class AccountAnalyticLine(models.Model):
     def grid_compute_year_range(self, anchor):
         result = self.env.company.compute_fiscalyear_dates(fields.Date.to_date(anchor))
         return {'date_from': result['date_from'], 'date_to': result['date_to']}
-
-    @api.model
-    def _grid_start_of(self, span, step, anchor):
-        if span != 'year':
-            return super(AccountAnalyticLine, self)._grid_start_of(span, step, anchor)
-        return self.env.company.compute_fiscalyear_dates(anchor)['date_from']
-
-    @api.model
-    def _grid_end_of(self, span, step, anchor):
-        if span != 'year':
-            return super(AccountAnalyticLine, self)._grid_end_of(span, step, anchor)
-        return self.env.company.compute_fiscalyear_dates(anchor)['date_to']

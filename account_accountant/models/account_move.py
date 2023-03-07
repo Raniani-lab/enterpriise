@@ -139,18 +139,21 @@ class AccountMoveLine(models.Model):
         return {'fr': 'french'}.get(lang, 'english')
 
     def _build_predictive_query(self, additional_domain=None):
-        query = self.env['account.move.line']._where_calc([
-            ('move_id.move_type', '=', self.move_id.move_type),
-            ('parent_state', '=', 'posted'),
-            ('display_type', '=', 'product'),
+        move_query = self.env['account.move']._where_calc([
+            ('move_type', '=', self.move_id.move_type),
+            ('state', '=', 'posted'),
+            ('partner_id', '=', self.move_id.partner_id.id),
             ('company_id', '=', self.move_id.journal_id.company_id.id or self.env.company.id),
-        ] + (additional_domain or []))
-        query.order = 'account_move_line__move_id.invoice_date DESC'
-        query.limit = int(self.env["ir.config_parameter"].sudo().get_param(
+        ])
+        move_query.order = 'account_move.invoice_date'
+        move_query.limit = int(self.env["ir.config_parameter"].sudo().get_param(
             "account.bill.predict.history.limit",
-            '10000',
+            '100',
         ))
-        return query
+        return self.env['account.move.line']._where_calc([
+            ('move_id', 'in', move_query),
+            ('display_type', '=', 'product'),
+        ] + (additional_domain or []))
 
     def _predicted_field(self, field, query=None, additional_queries=None):
         r"""Predict the most likely value based on the previous history.
@@ -158,9 +161,7 @@ class AccountMoveLine(models.Model):
         This method uses postgres tsvector in order to try to deduce a field of
         an invoice line based on the text entered into the name (description)
         field and the partner linked.
-        We give some more weight to search with the same partner_id (roughly
-        20%) in order to have better result
-        We only limit the search on the previous 10000 entries, which according
+        We only limit the search on the previous 100 entries, which according
         to our tests bore the best results. However this limit parameter is
         configurable by creating a config parameter with the key:
         account.bill.predict.history.limit
@@ -185,7 +186,7 @@ class AccountMoveLine(models.Model):
             return False
 
         psql_lang = self._get_predict_postgres_dictionary()
-        description = self.name + ' partnerid' + str(self.partner_id.id or '').replace('-', 'x')
+        description = self.name + ' account_move_line' # give more priority to main query than additional queries
         parsed_description = re.sub(r"[*&()|!':<>=%/~@,.;$\[\]]+", " ", description)
         parsed_description = ' | '.join(parsed_description.split())
 
@@ -194,13 +195,8 @@ class AccountMoveLine(models.Model):
             self.env.cr.execute(f"""
                 WITH source AS ({'(' + ') UNION ALL ('.join([self.env.cr.mogrify(f'''
                     SELECT {field} AS prediction,
-                           (
-                               setweight(to_tsvector(%%(lang)s, account_move_line.name), 'B'))
-                               || (setweight(to_tsvector(
-                                   'simple',
-                                   'partnerid' || replace(account_move_line.partner_id::text, '-', 'x')
-                               ), 'A')
-                           ) AS document
+                           setweight(to_tsvector(%%(lang)s, account_move_line.name), 'B')
+                           || setweight(to_tsvector('simple', 'account_move_line'), 'A') AS document
                       FROM {from_clause}
                      WHERE {where_clause}
                   GROUP BY account_move_line.id
@@ -266,7 +262,9 @@ class AccountMoveLine(models.Model):
     @api.onchange('name')
     def _onchange_name_predictive(self):
         if (self.move_id.quick_edit_mode or self.move_id.move_type == 'in_invoice')and self.name and self.display_type == 'product':
-            if not self.product_id and self.company_id.predict_bill_product:
+            predict_product = int(self.env['ir.config_parameter'].sudo().get_param('account_predictive_bills.predict_product', '1'))
+
+            if predict_product and not self.product_id and self.company_id.predict_bill_product:
                 predicted_product_id = self._predict_product()
                 if predicted_product_id and predicted_product_id != self.product_id.id:
                     name = self.name

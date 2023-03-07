@@ -226,6 +226,7 @@ class ProviderFedex(models.Model):
         res = []
 
         for picking in pickings:
+            order_currency = picking.sale_id.currency_id or picking.company_id.currency_id
 
             srm = FedexRequest(self.log_xml, request_type="shipping", prod_environment=self.prod_environment)
             superself = self.sudo()
@@ -236,7 +237,7 @@ class ProviderFedex(models.Model):
 
             package_type = picking.package_ids and picking.package_ids[0].package_type_id.shipper_package_code or self.fedex_default_package_type_id.shipper_package_code
             srm.shipment_request(self.fedex_droppoff_type, self.fedex_service_type, package_type, self.fedex_weight_unit, self.fedex_saturday_delivery)
-            srm.set_currency(_convert_curr_iso_fdx(picking.company_id.currency_id.name))
+            srm.set_currency(_convert_curr_iso_fdx(order_currency.name))
             srm.set_shipper(picking.company_id.partner_id, picking.picking_type_id.warehouse_id.partner_id)
             srm.set_recipient(picking.partner_id)
 
@@ -245,7 +246,6 @@ class ProviderFedex(models.Model):
             srm.shipment_label('COMMON2D', self.fedex_label_file_type, self.fedex_label_stock_type, 'TOP_EDGE_OF_TEXT_FIRST', 'SHIPPING_LABEL_FIRST')
 
             order = picking.sale_id
-            order_currency = picking.sale_id.currency_id or picking.company_id.currency_id
 
             net_weight = self._fedex_convert_weight(picking.shipping_weight, self.fedex_weight_unit)
 

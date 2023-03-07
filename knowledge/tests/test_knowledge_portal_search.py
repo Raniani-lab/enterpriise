@@ -19,6 +19,11 @@ class TestKnowledgePortalSearch(HttpCase):
         # - Sibling Article
         portal_partner_id = self.env['res.users'].search([('login', '=', 'portal')]).partner_id.id
 
+        # Create a cover for my article
+        pixel = 'R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='
+        attachment = self.env['ir.attachment'].create({'name': 'pixel', 'datas': pixel, 'res_model': 'knowledge.cover', 'res_id': 0})
+        cover = self.env['knowledge.cover'].create({'attachment_id': attachment.id})
+
         my_article = self.env['knowledge.article'].create([{
             'name': 'My Article',
             'parent_id': False,
@@ -26,8 +31,8 @@ class TestKnowledgePortalSearch(HttpCase):
             'article_member_ids': [(0, 0, {
                 'partner_id': portal_partner_id,
                 'permission': 'read',
-                })
-             ],
+            })],
+            'cover_image_id': cover.id,
         }])
         self.env['knowledge.article'].create([{
             'name': 'Child Article',

@@ -5108,7 +5108,7 @@ QUnit.test("position of no content help in sample mode", async (assert) => {
 
     patchWithCleanup(GanttRenderer.prototype, {
         isDisabled(row) {
-            if (row.resId === 1) {
+            if (this.visibleRows.indexOf(row) === 0) {
                 return false;
             }
             return true;

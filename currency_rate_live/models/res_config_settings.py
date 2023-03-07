@@ -141,7 +141,7 @@ CURRENCY_PROVIDER_SELECTION = [
     (['CL'], 'mindicador', 'Chilean mindicador.cl'),
     (['EG'], 'cbegy', 'Central Bank of Egypt'),
     (['MX'], 'banxico', 'Mexican Bank'),
-    (['PE'], 'bcrp', 'Bank of Peru'),
+    (['PE'], 'bcrp', 'SUNAT (replaces Bank of Peru)'),
     (['RO'], 'bnr', 'National Bank Of Romania'),
     (['TR'], 'tcmb', 'Turkey Republic Central Bank'),
     (['PL'], 'nbp', 'National Bank of Poland'),
@@ -526,75 +526,35 @@ class ResCompany(models.Model):
         return rslt
 
     def _parse_bcrp_data(self, available_currencies):
-        """Bank of Peru (bcrp)
-        API Doc: https://estadisticas.bcrp.gob.pe/estadisticas/series/ayuda/api
-            - https://estadisticas.bcrp.gob.pe/estadisticas/series/api/[códigos de series]/[formato de salida]/[periodo inicial]/[periodo final]/[idioma]
-        Source: https://estadisticas.bcrp.gob.pe/estadisticas/series/diarias/tipo-de-cambio
-            PD04640PD	TC Sistema bancario SBS (S/ por US$) - Venta
-            PD04648PD	TC Euro (S/ por Euro) - Venta
+        """Sunat
+        Source: https://www.sunat.gob.pe/descarga/TipoCambio.txt
+        * The value of the rate is the "official" rate
+        * The base currency is always PEN but with the inverse 1/rate.
         """
 
-        def normalize_date(date):
-            month_mapping = {
-                'Jan': '01',
-                'Feb': '02',
-                'Mar': '03',
-                'Apr': '04',
-                'May': '05',
-                'Jun': '06',
-                'Jul': '07',
-                'Aug': '08',
-                'Set': '09',  # for some reason, the service uses `Set` instead of the common `Sep`
-                'Oct': '10',
-                'Nov': '11',
-                'Dec': '12',
-            }
-
-            return date[:3] + month_mapping[date[3:6]] + date[6:]
-
-        bcrp_date_format_url = '%Y-%m-%d'
-        bcrp_date_format_res = '%d.%m.%y'
         result = {}
         available_currency_names = available_currencies.mapped('name')
-        if 'PEN' not in available_currency_names:
+        if 'PEN' not in available_currency_names or "USD" not in available_currency_names:
             return result
         result['PEN'] = (1.0, fields.Date.context_today(self.with_context(tz='America/Lima')))
-        url_format = "https://estadisticas.bcrp.gob.pe/estadisticas/series/api/%(currency_code)s/json/%(date_start)s/%(date_end)s/ing"
-        foreigns = {
-            # currency code from webservices
-            'USD': 'PD04640PD',
-            'EUR': 'PD04648PD',
-        }
-        date_pe = self.mapped('currency_next_execution_date')[0] or datetime.datetime.now(timezone('America/Lima'))
-        # In case the desired date does not have an exchange rate, it means that we must use the previous day until we
-        # find a change. It is left 7 since in tests we have found cases of up to 5 days without update but no more
-        # than that. That is not to say that that cannot change in the future, so we leave a little margin.
-        first_pe_str = (date_pe - datetime.timedelta(days=7)).strftime(bcrp_date_format_url)
-        second_pe_str = date_pe.strftime(bcrp_date_format_url)
-        data = {
-            'date_start': first_pe_str,
-            'date_end': second_pe_str,
-        }
-        for currency_odoo_code, currency_pe_code in foreigns.items():
-            if currency_odoo_code not in available_currency_names:
-                continue
-            data.update({'currency_code': currency_pe_code})
-            url = url_format % data
-            try:
-                res = requests.get(url, timeout=10)
-                res.raise_for_status()
-                series = res.json()
-            except Exception as e:
-                _logger.error(e)
-                continue
-            date_rate_str = series['periods'][-1]['name']
-            fetched_rate = float(series['periods'][-1]['values'][0])
-            rate = 1.0 / fetched_rate if fetched_rate else 0
-            if not rate:
-                continue
-            normalized_date = normalize_date(date_rate_str)
-            date_rate = datetime.datetime.strptime(normalized_date, bcrp_date_format_res).strftime(DEFAULT_SERVER_DATE_FORMAT)
-            result[currency_odoo_code] = (rate, date_rate)
+        url_format = "https://www.sunat.gob.pe/a/txt/tipoCambio.txt"
+        try:
+            res = requests.get(url_format, timeout=10)
+            res.raise_for_status()
+            line = res.text.splitlines()[0] or ""
+        except Exception as e:
+            _logger.error(e)
+            return result
+        sunat_value = line.split("|")
+        try:
+            rate = float(sunat_value[2])
+        except ValueError as e:
+            _logger.error(e)
+            return result
+        rate = 1.0 / rate if rate else 0
+        date_rate_str = sunat_value[0]
+        date_rate = datetime.datetime.strptime(date_rate_str, '%d/%m/%Y').strftime(DEFAULT_SERVER_DATE_FORMAT)
+        result["USD"] = (rate, date_rate)
         return result
 
     def _parse_mindicador_data(self, available_currencies):

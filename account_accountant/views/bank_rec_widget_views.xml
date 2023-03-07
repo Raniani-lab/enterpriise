@@ -58,8 +58,8 @@
                            filter_domain="['|', ('move_id.name', 'ilike', self), ('move_id.ref', 'ilike', self)]"/>
                     <field name="statement_line_id" string="Statement Line"/>
                     <separator/>
-                    <filter name="deposits" string="Deposits" domain="[('amount', '&lt;', 0.0)]"/>
-                    <filter name="payments" string="Payments" domain="[('amount', '>', 0.0)]"/>
+                    <filter name="deposits" string="Deposits" domain="[('amount', '>', 0.0)]"/>
+                    <filter name="payments" string="Payments" domain="[('amount', '&lt;', 0.0)]"/>
                     <separator/>
                     <filter name="no_statement" string="No statement" domain="[('statement_id', '=', False)]"/>
                     <filter name="invalid_statement" string="Invalid statements"

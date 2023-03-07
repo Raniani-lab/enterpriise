@@ -22,7 +22,7 @@
                 </group>
             </group>
             <xpath expr="//field[@name='country_of_birth']" position="after">
-                <field name="is_non_resident" eval="False" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
+                <field name="is_non_resident" eval="False"/>
             </xpath>
         </field>
     </record>

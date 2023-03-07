@@ -33,8 +33,7 @@ export class PlanningFormController extends FormController {
     }
 
     async onRecordSaved(record) {
-        const dirtyFields = record.dirtyFields.map((f) => f.name);
-        if (dirtyFields.includes("repeat") && record.data["repeat"]) {
+        if (record.isFieldDirty("repeat") && record.data["repeat"]) {
             const message = this.env._t("The recurring shifts have successfully been created.");
             this.notification.add(
                 markup(

@@ -60,7 +60,7 @@
                             ('state', '=', ('pending')),
                             '&amp;',
                             ('manager_user_ids', 'not in', uid), ('is_appraisal_manager', '=', False)]&quot;}"/>
-                        <field name="date_close" attrs="{'readonly':[('state','in', ('pending','done'))]}"/>
+                        <field name="date_close" attrs="{'readonly':[('state','in', ['done','cancel'])]}"/>
                     </group>
                     <group>
                         <field name="department_id"/>

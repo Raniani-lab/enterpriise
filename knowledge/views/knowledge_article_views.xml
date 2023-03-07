@@ -313,6 +313,7 @@
                 <field name="root_article_id"/>
                 <field name="body"/>
                 <field name="last_edition_uid"/>
+                <field name="article_properties"/>
 
                 <filter name="filter_not_is_article_item" string="Articles"
                     domain="[('is_article_item', '=', False)]"/>
@@ -349,6 +350,7 @@
                 <field name="root_article_id"/>
                 <field name="body"/>
                 <field name="last_edition_uid"/>
+                <field name="article_properties"/>
 
                 <filter name="filter_active" string="Archived"
                     domain="[('active', '=', False)]"/>

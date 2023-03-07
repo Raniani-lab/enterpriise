@@ -49,7 +49,7 @@ tour.register('l10n_mx_edi_pos.tour_invoice_previous_order', {
     },
     {
         content: "Pick the first order in the list",
-        trigger: "div.order-row:first",
+        trigger: "div.order-row:contains('Paid'):first",
     },
     {
         content: "Ask an invoice for this order",

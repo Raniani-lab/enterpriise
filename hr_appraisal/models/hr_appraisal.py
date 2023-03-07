@@ -295,7 +295,6 @@ class HrAppraisal(models.Model):
             vals['employee_feedback_published'] = True
             vals['manager_feedback_published'] = True
             self.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
-            vals['date_close'] = current_date
             self._appraisal_plan_post()
             body = _("The appraisal's status has been set to Done by %s", self.env.user.name)
             appraisal.message_notify(
@@ -307,7 +306,6 @@ class HrAppraisal(models.Model):
         if 'state' in vals and vals['state'] == 'cancel':
             self.meeting_ids.unlink()
             self.activity_unlink(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
-            vals['date_close'] = current_date
         previous_managers = {}
         if 'manager_ids' in vals:
             previous_managers = {x: y for x, y in self.mapped(lambda a: (a.id, a.manager_ids))}
@@ -406,10 +404,10 @@ class HrAppraisal(models.Model):
         return action
 
     def action_confirm(self):
-        self.write({'state': 'pending'})
+        self.state = 'pending'
 
     def action_done(self):
-        self.write({'state': 'done'})
+        self.state = 'done'
 
     def action_back(self):
         self.action_confirm()

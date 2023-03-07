@@ -158,6 +158,12 @@ class AppointmentType(models.Model):
         for record in self:
             record.staff_user_count = len(record.staff_user_ids)
 
+    @api.constrains('appointment_duration')
+    def _check_appointment_duration(self):
+        for record in self:
+            if not record.appointment_duration > 0.0:
+                raise ValidationError(_('Appointment Duration should be higher than 0.00.'))
+
     @api.constrains('category', 'staff_user_ids', 'slot_ids')
     def _check_staff_user_configuration(self):
         anytime_appointments = self.search([('category', '=', 'anytime')])

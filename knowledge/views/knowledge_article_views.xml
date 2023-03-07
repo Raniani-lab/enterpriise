@@ -13,7 +13,7 @@
         <field name="arch" type="xml">
             <form js_class="knowledge_article_view_form" disable_autofocus="1">
                 <field name="active" invisible="1"/>
-                <field name="article_properties_is_empty" invisible="1"/>
+                <field name="article_properties" invisible="1"/>
                 <field name="category" invisible="1"/>
                 <field name="is_article_item" invisible="1"/>
                 <field name="is_locked" invisible="1" readonly="1"/>
@@ -134,21 +134,9 @@
                                             </div>
                                         </div>
                                         <!-- Properties -->
-                                        <div class="o_knowledge_properties col-12 col-lg-2 position-relative d-print-none p-0 border-start"
-                                             attrs="{'invisible': [('parent_id', '=', False)]}">
-                                            <div class="px-2 pt-5 o_scroll_view_lg">
-                                                <field name="article_properties" nolabel="1" class="d-block o_field_highlight"
-                                                       attrs="{'readonly': ['|', ('is_locked', '=', True), ('user_can_write', '=', False)]}"/>
-                                            </div>
-                                        </div>
+                                        <widget name="knowledge_properties_panel"/>
                                         <!-- Chatter -->
-                                        <div class="o_knowledge_chatter col-12 col-lg-4 position-relative d-print-none p-0">
-                                            <div class="oe_chatter o_scroll_view_lg">
-                                                <field name="message_follower_ids"/>
-                                                <field name="activity_ids"/>
-                                                <field name="message_ids"/>
-                                            </div>
-                                        </div>
+                                        <widget name="knowledge_chatter_panel"/>
                                     </div>
                                 </div>
                             </div>

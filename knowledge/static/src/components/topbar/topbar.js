@@ -1,4 +1,5 @@
 /** @odoo-module **/
+import config from "web.config";
 import { formatDateTime } from '@web/core/l10n/dates';
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
@@ -6,7 +7,7 @@ import { useService } from '@web/core/utils/hooks';
 import { useOpenChat } from "@mail/web/open_chat_hook";
 
 
-import { Component, onPatched, useEffect, useRef, useState } from '@odoo/owl';
+import { Component, useEffect, useRef, useState } from '@odoo/owl';
 
 import MoveArticleDialog from "@knowledge/components/move_article_dialog/move_article_dialog";
 import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
@@ -28,20 +29,12 @@ class KnowledgeTopbar extends Component {
 
         this.state = useState({
             displayChatter: false,
-            displayPropertyPanel: !this.props.record.data.article_properties_is_empty,
+            displayPropertyPanel: !this.articlePropertiesIsEmpty,
+            addingProperty: false,
             displaySharePanel: false,
         });
 
         this.openChat = useOpenChat('res.users');
-
-        onPatched(() => {
-            // Create the first property when clicking on "Add Properties"
-            // button, once the properties panel is added in the dom.
-            if (this.addPropertyOnPatch && document.querySelector('.o_knowledge_properties')) {
-                document.querySelector('.o_field_property_add button').click();
-                this.addPropertyOnPatch = false;
-            }
-        });
 
         useEffect((optionsBtn) => {
             // Refresh "last edited" and "create date" when opening the options
@@ -54,11 +47,18 @@ class KnowledgeTopbar extends Component {
             }
         }, () => [this.optionsBtn.el]);
 
+
         useEffect(() => {
-            // When opening (or moving) an article, display the properties
-            // panel if the article has properties.
-            this.state.displayPropertyPanel = !this.props.record.data.article_properties_is_empty;
-        }, () => [this.resId, this.props.record.data.article_properties_is_empty]);
+            // When opening an article via the sidebar (or when moving one),
+            // display the properties panel if the article has properties and we are not on mobile.
+            if (!config.device.isMobile && !this.articlePropertiesIsEmpty) {
+                this.addProperties();
+            } else if (this.articlePropertiesIsEmpty && this.state.displayPropertyPanel) {
+                // We close the panel if the opened article has no properties and the panel was open.
+                this.toggleProperties();
+            }
+            this.state.addingProperty = false;
+        }, () => [this.props.record.data.id, this.articlePropertiesIsEmpty]);
 
         useEffect((shareBtn) => {
             if (shareBtn) {
@@ -108,11 +108,6 @@ class KnowledgeTopbar extends Component {
         event.target.classList.remove('disabled');
     }
 
-    async addProperties() {
-        this.toggleProperties();
-        this.addPropertyOnPatch = true;
-    }
-
     _setDates() {
         if (this.props.record.data.create_date && this.props.record.data.last_edition_date) {
             this.state.createDate = this.props.record.data.create_date.toRelative();
@@ -120,9 +115,19 @@ class KnowledgeTopbar extends Component {
         }
     }
 
+    get articlePropertiesIsEmpty() {
+        return this.props.record.data.article_properties.filter((prop) => !prop.definition_deleted).length === 0;
+    }
+
     toggleProperties() {
-        this.env.toggleProperties();
         this.state.displayPropertyPanel = !this.state.displayPropertyPanel;
+        this.env.bus.trigger('KNOWLEDGE:TOGGLE_PROPERTIES', {displayPropertyPanel: this.state.displayPropertyPanel});
+    }
+
+    addProperties() {
+        this.state.displayPropertyPanel = true;
+        this.state.addingProperty = true;
+        this.env.bus.trigger('KNOWLEDGE:TOGGLE_PROPERTIES', {displayPropertyPanel: true});
     }
 
     /**
@@ -172,7 +177,7 @@ class KnowledgeTopbar extends Component {
     toggleChatter() {
         if (this.props.record.data.id) {
             this.state.displayChatter = !this.state.displayChatter;
-            this.env.toggleChatter();
+            this.env.bus.trigger('KNOWLEDGE:TOGGLE_CHATTER', {displayChatter: this.state.displayChatter});
         }
     }
 

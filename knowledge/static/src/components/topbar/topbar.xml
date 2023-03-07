@@ -73,8 +73,8 @@
                         <span class="d-none d-lg-inline">Add Properties</span>
                         <span class="d-lg-none">Properties</span>
                     </span>
-                    <button t-elif="!props.record.data.article_properties.length" t-on-click="addProperties"
-                        class="btn btn-light text-nowrap text-muted o_knowledge_add_properties">
+                    <button t-elif="!state.addingProperty and !props.record.data.article_properties.length" t-on-click="addProperties"
+                        class="btn btn-light text-nowrap o_knowledge_add_properties">
                         <i class="fa fa-fw fs-6 fa-cog me-1" title="Add Properties"/>
                         <span class="d-none d-lg-inline">Add Properties</span>
                         <span class="d-lg-none">Properties</span>
@@ -100,7 +100,7 @@
                     <a t-ref="btn_chatter" role="button" t-attf-class="btn btn-light btn-chatter #{state.displayChatter ? 'active' : ''}" data-hotkey="d" t-if="props.record.data.id" t-on-click="toggleChatter">
                         <i class="fa fa-fw fs-6 fa-comments" title="Open chatter"/>
                     </a>
-                    <a t-ref="btn_properties" t-if="props.record.data.id and props.record.data.article_properties.length" role="button" t-attf-class="btn btn-light btn-properties #{state.displayPropertyPanel ? 'active' : ''}" data-hotkey="d" t-on-click="toggleProperties">
+                    <a t-ref="btn_properties" t-if="state.addingProperty or props.record.data.id and props.record.data.article_properties.length" role="button" t-attf-class="btn btn-light btn-properties #{state.displayPropertyPanel ? 'active' : ''}" data-hotkey="d" t-on-click="toggleProperties">
                         <i class="fa fa-fw fs-6 fa-cog" title="Show Properties"/>
                     </a>
                     <div class="o-dropdown dropdown o-dropdown--no-caret" t-if="props.record.data.id">

@@ -3,69 +3,12 @@
 import { formView } from '@web/views/form/form_view';
 import { FormCompiler } from '@web/views/form/form_compiler';
 import { registry } from "@web/core/registry";
-import { createElement } from "@web/core/utils/xml";
 import { KnowledgeArticleFormController } from './knowledge_controller.js';
 import { KnowledgeArticleFormRenderer } from './knowledge_renderers.js';
 
 class KnowledgeFormCompiler extends FormCompiler {
     setup() {
         super.setup();
-        this.compilers.push(
-            { selector: "div.o_knowledge_chatter", fn: this.compileKnowledgeChatter },
-            { selector: "div.o_knowledge_properties", fn: this.compileKnowledgeProperties},
-        );
-    }
-
-    /**
-     * This function is used to compile the properties panel inside Knowledge and to add it as a reactive behavior
-     * instead of adding it directly inside of the form arch.
-     * We add the attribute "t-if=state.displayPropertiesPanel" which enables us to only add the properties
-     * panel to the template when a button is pressed.
-     * @param {HTMLElement} el This is the element returned by a search via the selector provided in the
-     *  compiler. (should be the div containing the properties field)
-     * @returns
-     */
-    compileKnowledgeProperties(el) {
-        const compiled = createElement(el.nodeName);
-        for (const attr of el.attributes) {
-            compiled.setAttribute(attr.name, attr.value);
-        }
-        compiled.setAttribute("t-if", "state.displayPropertyPanel");
-        for (const child of el.children) {
-            if (child.nodeType !== Node.TEXT_NODE) {
-                compiled.appendChild(child);
-            }
-        }
-        const field = compiled.getElementsByTagName("field")[0];
-
-        field.parentElement.replaceChild(this.compileField(field, {}), field);
-        return compiled;
-    }
-
-    /**
-     * This function is used to compile the chatter inside Knowledge and to add it as a reactive behavior
-     * instead of adding it directly inside of the form arch.
-     * We add the attribute "t-if=state.displayChatter" which enables us to only add the chatter
-     * to the template when a button is pressed.
-     * @param {HTMLElement} el This is the element returned by a search via the selector provided in the
-     *  compiler. (should be the div containing the chatter)
-     * @returns
-     */
-    compileKnowledgeChatter(el) {
-        const compiled = createElement(el.nodeName);
-        for (const attr of el.attributes) {
-            compiled.setAttribute(attr.name, attr.value);
-        }
-        compiled.setAttribute("t-if", "state.displayChatter");
-        for (const child of el.children) {
-            if (child.nodeType !== Node.TEXT_NODE) {
-                compiled.appendChild(child);
-            }
-        }
-        const compiledChatter = registry.category("form_compilers").get("chatter_compiler").fn(compiled.children[0]);
-        compiledChatter.classList.add(...compiled.children[0].classList);
-        compiled.replaceChild(compiledChatter, compiled.children[0]);
-        return compiled;
     }
 
    /**

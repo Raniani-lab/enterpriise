@@ -157,8 +157,6 @@ class Article(models.Model):
     # Property fields
     article_properties_definition = fields.PropertiesDefinition('Article Item Properties')
     article_properties = fields.Properties('Properties', definition="parent_id.article_properties_definition", copy=True)
-    article_properties_is_empty = fields.Boolean('Is Property Field Empty?',
-         compute="_compute_article_properties_is_empty")
 
     _sql_constraints = [
         ('check_permission_on_root',
@@ -622,18 +620,6 @@ class Article(models.Model):
                 limit_days = self.DEFAULT_ARTICLE_TRASH_LIMIT_DAYS
             for article in trashed_articles:
                 article.deletion_date = article.write_date + timedelta(days=limit_days)
-
-    @api.depends("article_properties")
-    def _compute_article_properties_is_empty(self):
-        """ When deleting the last property it is not deleted but flagged as to
-        be deleted (property['definition_deleted'] = True). This method checks
-        if the properties field is empty or contains properties about to be
-        removed. This field is meant to be used for conditional display. """
-        for article in self:
-            article.article_properties_is_empty = not article.article_properties or all(
-                article_property.get('definition_deleted')
-                for article_property in article.article_properties
-            )
 
     # ------------------------------------------------------------
     # CRUD

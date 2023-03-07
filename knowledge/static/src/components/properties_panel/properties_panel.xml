@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <div t-name="knowledge.KnowledgeArticleProperties" owl="1" t-ref="root">
+        <div class="o_knowledge_properties_field" t-if="this.state.displayPropertyPanel and this.props.record.data.parent_id">
+            <div class="m-2 pt-5 o_scroll_view_lg">
+                <div class='o_field_widget o_field_properties'>
+                    <PropertiesField
+                        columns="1"
+                        name="'article_properties'"
+                        record="this.props.record"
+                        readonly="this.props.record.data.is_locked || !this.props.record.data.user_can_write"
+                        context="this.props.record.context"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</templates>

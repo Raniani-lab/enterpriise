@@ -27,6 +27,9 @@ registry.category("web_tour.tours").add('knowledge_properties_tour', {
 }, { // click on add properties
     trigger: 'button.o_knowledge_add_properties',
     run: 'click',
+}, {
+    trigger: '.o_field_property_add button',
+    run: 'click'
 }, { // modify property name
     trigger: '.o_field_property_definition_header input',
     run: 'text myproperty',

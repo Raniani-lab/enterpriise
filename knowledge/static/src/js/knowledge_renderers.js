@@ -9,7 +9,7 @@ import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
 import { patch } from "@web/core/utils/patch";
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
-import { onMounted, useChildSubEnv, useEffect, useRef, useState, xml } from "@odoo/owl";
+import { onMounted, useChildSubEnv, useEffect, useRef, xml } from "@odoo/owl";
 import { useEmojiPicker, loadEmoji } from "@mail/emoji_picker/emoji_picker";
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
@@ -19,11 +19,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     //--------------------------------------------------------------------------
     setup() {
         super.setup();
-
-        this.state = useState({
-            displayChatter: false,
-            displayPropertyPanel: !this.props.record.data.article_properties_is_empty,
-        });
 
         this.actionService = useService("action");
         this.dialog = useService("dialog");
@@ -89,12 +84,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             }
         });
 
-        useEffect(() => {
-            // When opening an article, display the properties panel if the
-            // article has properties.
-            this.state.displayPropertyPanel = !this.props.record.data.article_properties_is_empty;
-        }, () => [this.resId, this.props.record.data.article_properties_is_empty]);
-
         this.emojiPicker = useEmojiPicker(undefined, { hasRemoveFeature: true });
 
         useChildSubEnv({
@@ -107,8 +96,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             _renderTree: this._renderTree.bind(this),
             showEmojiPicker: this._showEmojiPicker.bind(this),
             toggleFavorite: this.toggleFavorite.bind(this),
-            toggleProperties: this.toggleProperties.bind(this),
-            toggleChatter: this.toggleChatter.bind(this),
             _saveIfDirty: this._saveIfDirty.bind(this),
             _moveArticle: this._moveArticle.bind(this),
         });
@@ -129,9 +116,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     get renderingContext() {
         return {
             env: this.env,
-            props: this.props,
             root: this.root,
-            state: this.state,
             resizeSidebar: (el) => this.resizeSidebar(el),
             __comp__: this, // used by the compiler
             this: this, // used by the arch directly
@@ -262,23 +247,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
     get resId() {
         return this.props.record.resId;
-    }
-
-    /**
-     * Show/hide the chatter. When showing it, it fetches data required for
-     * new messages, activities, ...
-     */
-    toggleChatter() {
-        if (this.resId) {
-            this.state.displayChatter = !this.state.displayChatter;
-        }
-    }
-
-    /**
-     * Show/hide the Property Fields right panel.
-     */
-    toggleProperties() {
-        this.state.displayPropertyPanel = !this.state.displayPropertyPanel;
     }
 
     /**

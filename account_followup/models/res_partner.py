@@ -298,7 +298,7 @@ class ResPartner(models.Model):
         self.ensure_one()
         if not options:
             options = {}
-        invoices_to_print = self._get_included_unreconciled_aml_ids().move_id
+        invoices_to_print = self._get_included_unreconciled_aml_ids().move_id.filtered(lambda l: l.is_invoice(include_receipts=True))
         if options.get('manual_followup'):
             # For manual reminders, only print invoices with the selected attachments
             return invoices_to_print.filtered(lambda inv: inv.message_main_attachment_id.id in options.get('attachment_ids'))

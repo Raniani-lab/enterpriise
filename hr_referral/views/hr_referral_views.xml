@@ -23,7 +23,7 @@
         <field name="model">hr.referral.points</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="ref_user_id"/>
+                <field name="ref_user_id" widget="many2one_avatar_user"/>
                 <field name="points"/>
                 <field name="stage_id"/>
                 <field name="applicant_id"/>
@@ -38,7 +38,7 @@
         <field name="model">hr.referral.points</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="ref_user_id"/>
+                <field name="ref_user_id" widget="many2one_avatar_user"/>
                 <field name="points"/>
                 <field name="hr_referral_reward_id"/>
                 <field name="company_id" groups="base.group_multi_company"/>
@@ -54,7 +54,7 @@
                 <sheet>
                     <group>
                         <group name="main_details">
-                            <field name="ref_user_id"/>
+                            <field name="ref_user_id" widget="many2one_avatar_user"/>
                             <field name="points"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>

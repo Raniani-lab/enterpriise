@@ -23,11 +23,11 @@
                             <field name="is_manager" invisible="1"/>
                             <field name="employee_autocomplete_ids" invisible="1"/>
                             <field name="is_implicit_manager" invisible="1"/>
-                            <field name="employee_id" domain="[['id', 'in', employee_autocomplete_ids]]" attrs="{'readonly': [('is_manager', '=', False), ('is_implicit_manager', '=', False)]}"/>
+                            <field name="employee_id" domain="[['id', 'in', employee_autocomplete_ids]]" attrs="{'readonly': [('is_manager', '=', False), ('is_implicit_manager', '=', False)]}" widget="many2one_avatar_user"/>
                             <field name="progression" class="pe-3" widget="selection_badge"/>
                         </group>
                         <group>
-                            <field name="manager_id" force_save="1" attrs="{'readonly': [('is_manager', '=', False)]}"/>
+                            <field name="manager_id" force_save="1" attrs="{'readonly': [('is_manager', '=', False)]}" widget="many2one_avatar_user"/>
                             <field name="deadline"/>
                         </group>
                     </group>
@@ -55,8 +55,8 @@
                 <field name="deadline" widget="remaining_days"/>
                 <field name="activity_ids" widget="list_activity"/>
                 <field name="progression" widget="badge" decoration-success="progression == '100'"/>
-                <field name="employee_id" widget="many2one_avatar_employee"/>
-                <field name="manager_id" widget="many2one_avatar_employee"/>
+                <field name="employee_id" widget="many2one_avatar_user"/>
+                <field name="manager_id" widget="many2one_avatar_user"/>
             </tree>
         </field>
     </record>
@@ -88,7 +88,7 @@
                                 </t>
                             </div>
                             <div class="o_kanban_record_subtitle" >
-                                <field name="employee_id" />
+                                <field name="employee_id"/>
                             </div>
                             <div class="o_kanban_record_bottom mt-auto d-flex justify-content-between align-items-end">
                                 <div class="oe_kanban_bottom_left">
@@ -96,7 +96,7 @@
                                     <field name="deadline" widget="remaining_days"/>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
-                                    <field name="employee_id" widget="many2one_avatar_employee"/>
+                                    <field name="employee_id" widget="many2one_avatar_user"/>
                                 </div>
                             </div>
                             <div class="clearfix"></div>

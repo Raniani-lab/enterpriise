@@ -55,7 +55,7 @@
                         </group>
                         <field name="line_ids" readonly="1">
                             <tree>
-                                <field name="employee_id"/>
+                                <field name="employee_id" widget="many2one_avatar_user"/>
                                 <field name="certificate"/>
                                 <field name="taxable_amount"/>
                                 <field name="amount" options="{'currency_field': 'currency_id'}"/>

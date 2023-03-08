@@ -48,6 +48,10 @@ class HrPayslip(models.Model):
         'hr.employee', string='Employee', required=True, readonly=True,
         states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), '|', ('active', '=', True), ('active', '=', False)]")
+    image_128 = fields.Image(related='employee_id.image_128')
+    image_1920 = fields.Image(related='employee_id.image_1920')
+    avatar_128 = fields.Image(related='employee_id.avatar_128')
+    avatar_1920 = fields.Image(related='employee_id.avatar_1920')
     department_id = fields.Many2one('hr.department', string='Department', related='employee_id.department_id', readonly=True, store=True)
     job_id = fields.Many2one('hr.job', string='Job Position', related='employee_id.job_id', readonly=True, store=True)
     date_from = fields.Date(

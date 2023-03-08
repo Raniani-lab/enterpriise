@@ -31,7 +31,7 @@ registry.category("web_tour.tours").add('payroll_dashboard_ui_tour', {
     },
     {
         content: "Set HR Responsible",
-        trigger: 'div.o_field_widget.o_field_many2one[name="hr_responsible_id"] div input',
+        trigger: 'div[name="hr_responsible_id"] div input',
         run: 'text Laurie',
     },
     {

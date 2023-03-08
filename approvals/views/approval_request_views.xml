@@ -129,7 +129,7 @@
                     </div>
                     <group>
                         <group name="request_main">
-                            <field name="request_owner_id" domain="[('share', '=', False)]" attrs="{'readonly':['|', ('change_request_owner', '=', False), ('request_status','not in',('new', 'pending'))]}"/>
+                            <field name="request_owner_id" domain="[('share', '=', False)]" attrs="{'readonly':['|', ('change_request_owner', '=', False), ('request_status','not in',('new', 'pending'))]}" widget="many2one_avatar_user"/>
                             <field name="category_id" attrs="{'readonly':[('request_status','!=','new')]}" force_save="1"/>
                             <field name="date_confirmed" groups="base.group_no_one" readonly="1"/>
                             <label for="date" string="Date" attrs="{'invisible':[('has_date','==','no')]}"/>

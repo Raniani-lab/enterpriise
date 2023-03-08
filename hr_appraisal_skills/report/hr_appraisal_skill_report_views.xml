@@ -6,7 +6,7 @@
             <tree expand="1" class="o_appraisal_skill_report" decoration-success="evolution == 'just_added' or evolution == 'improvement'"
                 decoration-danger="evolution == 'decline'">
                 <field name="evolution" invisible="1"/>
-                <field name="employee_id"/>
+                <field name="employee_id" widget="many2one_avatar_user"/>
                 <field name="skill_type_id"/>
                 <field name="skill_id"/>
                 <field name="previous_skill_level_id" width="100px"/>

@@ -853,7 +853,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "Manager",
-            trigger: '.o_field_widget.o_field_many2one[name=parent_id]',
+            trigger: '.o_field_widget.o_field_many2one_avatar_user.o_field_many2one_avatar[name=parent_id]',
             run: function (actions) {
                 actions.text("Mitchell", this.$anchor.find("input"));
             },
@@ -897,7 +897,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "HR Responsible",
-            trigger: '.o_field_widget.o_field_many2one[name=hr_responsible_id]',
+            trigger: 'div.o_field_widget.o_required_modifier.o_field_many2one_avatar_user.o_field_many2one_avatar[name=hr_responsible_id]',
             run: function (actions) {
                 actions.text("Laurie Poiret", this.$anchor.find("input"));
             },

@@ -621,6 +621,9 @@ class AnalyticLine(models.Model):
         domain = expression.AND([new_row_domain, additionnal_domain])
         line = self.search(domain)
 
+        if line.project_id and not line.project_id.allow_timesheets:
+            raise UserError(_("You cannot adjust the time of the timesheet for a project with timesheets disabled."))
+
         day = column_value.split('/')[0]
         if len(line) > 1 or len(line) == 1 and line.validated:  # copy the last line as adjustment
             line[0].copy(self._prepare_duplicate_timesheet_line_values(

@@ -113,7 +113,6 @@
             <field name="model_id" position="attributes">
                 <attribute name="string">Deferred Expense Model</attribute>
                 <attribute name="domain">[('state', '=', 'model'), ('account_asset_id.account_type', '=?', account_type), ('asset_type', '=', 'expense')]</attribute>
-                <attribute name="context">{'default_asset_type': 'expense'}</attribute>
             </field>
             <xpath expr="//page[@name='depreciation_board']" position="attributes">
                 <attribute name="string">Expense Board</attribute>

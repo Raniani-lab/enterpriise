@@ -182,11 +182,11 @@ class AccountAsset(models.Model):
                 record.original_value += record.non_deductible_tax_value
 
     @api.depends('original_move_line_ids')
-    @api.depends_context('default_account_asset_id')
+    @api.depends_context('form_view_ref')
     def _compute_display_account_asset_id(self):
         for record in self:
-            # Hide the field when creating an asset model from the CoA.
-            model_from_coa = self.env.context.get('default_account_asset_id') and record.state == 'model'
+            # Hide the field when creating an asset model from the CoA. (form_view_ref is set from there)
+            model_from_coa = self.env.context.get('form_view_ref') and record.state == 'model'
             record.display_account_asset_id = not record.original_move_line_ids and not model_from_coa
 
     @api.depends('account_depreciation_id', 'account_depreciation_expense_id', 'original_move_line_ids')

@@ -124,7 +124,6 @@
             <field name="model_id" position="attributes">
                 <attribute name="string">Deferred Revenue Model</attribute>
                 <attribute name="domain">[('state', '=', 'model'), ('account_asset_id.account_type', '=?', account_type), ('asset_type', '=', 'sale')]</attribute>
-                <attribute name="context">{'default_asset_type': 'sale'}</attribute>
             </field>
             <xpath expr="//page[@name='depreciation_board']" position="attributes">
                 <attribute name="string">Revenue Board</attribute>

@@ -27,15 +27,15 @@ class GermanySalesReportTest(AccountSalesReportCommon):
     @freeze_time('2019-12-31')
     def test_ec_sales_report(self):
         l_tax = self.env['account.tax'].search([
-            ('name', '=', 'Tax-exempt intra-Community. Delivery (§4 para. 1b UStG)'),
+            ('name', '=', '0% EU D'),
             ('company_id', '=', self.company_data['company'].id)
         ])[0]
         t_tax = self.env['account.tax'].search([
-            ('name', '=', '0% Sales tax triangular transaction first customer'),
+            ('name', '=', '0% TT F'),
             ('company_id', '=', self.company_data['company'].id)
         ])[0]
         s_tax = self.env['account.tax'].search([
-            ('name', '=', '0% VAT Supply of mobile telephones, etc. (§13b)'),
+            ('name', '=', '0% MOB'),
             ('company_id', '=', self.company_data['company'].id)
         ])[0]
         self._create_invoices([

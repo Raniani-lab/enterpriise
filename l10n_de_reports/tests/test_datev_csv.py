@@ -28,11 +28,11 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             ('company_id', '=', cls.company_data['company'].id),
         ], limit=1)
         cls.tax_19 = cls.env['account.tax'].search([
-            ('name', '=', '19% input tax'),
+            ('name', '=', '19% I'),
             ('company_id', '=', cls.company_data['company'].id),
         ], limit=1)
         cls.tax_7 = cls.env['account.tax'].search([
-            ('name', '=', '7% input tax'),
+            ('name', '=', '7% I'),
             ('company_id', '=', cls.company_data['company'].id),
         ], limit=1)
 

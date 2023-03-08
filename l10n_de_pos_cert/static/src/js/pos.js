@@ -27,12 +27,8 @@ patch(PosGlobalState.prototype, "l10n_de_pos_cert.PosGlobalState", {
     async after_load_server_data() {
         const _super = this._super;
         if (this.isCountryGermanyAndFiskaly()) {
-            await this.env.services
-                .rpc({
-                    model: "pos.config",
-                    method: "l10n_de_get_fiskaly_urls_and_keys",
-                    args: [this.config.id],
-                })
+            await this.env.services.orm
+                .call("pos.config", "l10n_de_get_fiskaly_urls_and_keys", [this.config.id])
                 .then((data) => {
                     this.company.l10n_de_fiskaly_api_key = data["api_key"];
                     this.company.l10n_de_fiskaly_api_secret = data["api_secret"];

@@ -96,11 +96,9 @@ patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
             pos_order_id: currentOrder.server_id,
         };
 
-        await this.env.services.rpc({
-            model: "pos_preparation_display.order",
-            method: "process_order",
-            args: [[], posPreparationDisplayOrder],
-        });
+        await this.env.services.orm.call("pos_preparation_display.order", "process_order", [
+            posPreparationDisplayOrder,
+        ]);
 
         return true;
     },

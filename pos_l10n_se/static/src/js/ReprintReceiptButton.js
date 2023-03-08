@@ -11,6 +11,7 @@ patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
     setup() {
         this._super(...arguments);
         this.popup = useService("popup");
+        this.orm = useService("orm");
     },
     async _onClick() {
         const _super = this._super;
@@ -18,11 +19,9 @@ patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
             const order = this.props.order;
 
             if (order) {
-                const isReprint = await this.rpc({
-                    model: "pos.order",
-                    method: "is_already_reprint",
-                    args: [[this.env.pos.validated_orders_name_server_id_map[order.name]]],
-                });
+                const isReprint = await this.orm.call("pos.order", "is_already_reprint", [
+                    [this.env.pos.validated_orders_name_server_id_map[order.name]],
+                ]);
                 if (isReprint) {
                     await this.popup.add(ErrorPopup, {
                         title: _t("POS error"),
@@ -33,11 +32,9 @@ patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
                     await this.env.pos.push_single_order(order);
                     order.receipt_type = false;
                     order.isReprint = true;
-                    await this.rpc({
-                        model: "pos.order",
-                        method: "set_is_reprint",
-                        args: [[this.env.pos.validated_orders_name_server_id_map[order.name]]],
-                    });
+                    await this.orm.call("pos.order", "set_is_reprint", [
+                        [this.env.pos.validated_orders_name_server_id_map[order.name]],
+                    ]);
                     return _super(...arguments);
                 }
             }

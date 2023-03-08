@@ -92,18 +92,14 @@ patch(PosGlobalState.prototype, "pos_l10n_se.PosGlobalState", {
         order.blackbox_unit_id = data.unit_id;
     },
     async get_order_sequence_number() {
-        return await this.env.services.rpc({
-            model: "pos.config",
-            method: "get_order_sequence_number",
-            args: [this.config.id],
-        });
+        return await this.env.services.orm.call("pos.config", "get_order_sequence_number", [
+            this.config.id,
+        ]);
     },
     async get_profo_order_sequence_number() {
-        return await this.env.services.rpc({
-            model: "pos.config",
-            method: "get_profo_order_sequence_number",
-            args: [this.config.id],
-        });
+        return await this.env.services.orm.call("pos.config", "get_profo_order_sequence_number", [
+            this.config.id,
+        ]);
     },
 });
 

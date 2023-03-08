@@ -50,11 +50,11 @@ patch(PosGlobalState.prototype, "l10n_de_pos_res_cert.PosGlobalState", {
         let differences = {};
         if (ordersCheckDifference.length > 0) {
             try {
-                differences = await this.env.services.rpc({
-                    model: "pos.order",
-                    method: "retrieve_line_difference",
-                    args: [ordersCheckDifference],
-                });
+                differences = await this.env.services.orm.call(
+                    "pos.order",
+                    "retrieve_line_difference",
+                    [ordersCheckDifference]
+                );
             } catch (error) {
                 this.set_synch("disconnected");
                 throw error;
@@ -200,12 +200,8 @@ patch(Order.prototype, "l10n_de_pos_res_cert.Order", {
         };
     },
     async retrieveAndSendLineDifference() {
-        await this.pos.env.services
-            .rpc({
-                model: "pos.order",
-                method: "retrieve_line_difference",
-                args: [[this.exportOrderLinesAsJson()]],
-            })
+        await this.pos.env.services.orm
+            .call("pos.order", "retrieve_line_difference", [[this.exportOrderLinesAsJson()]])
             .then(async (data) => {
                 if (data[this.uid].length > 0) {
                     await this.sendLineDifference(data[this.uid]);

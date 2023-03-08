@@ -1,4 +1,4 @@
-from odoo import fields, models, Command
+from odoo import fields, models, Command, api
 
 
 class PosPreparationDisplayOrder(models.Model):
@@ -15,6 +15,7 @@ class PosPreparationDisplayOrder(models.Model):
         string="Order Lines",
         readonly=True)
 
+    @api.model
     def process_order(self, order):
         positive_orderlines = []
         negative_orderlines = []

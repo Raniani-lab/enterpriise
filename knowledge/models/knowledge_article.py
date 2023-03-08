@@ -490,9 +490,15 @@ class Article(models.Model):
             article.user_favorite_sequence = favorite.sequence if favorite else -1
 
     def _inverse_is_user_favorite(self):
-        """ Read access is sufficient for toggling its own favorite status. """
-        to_fav = self.filtered(lambda article: self.env.user not in article.favorite_ids.user_id)
-        to_unfav = self - to_fav
+        """ Read access is sufficient for toggling its own favorite status.
+        Articles 'to favorite' are based on the flag set to True and the related favorite record not
+        existing yet.
+        Articles 'to unfavorite' are based on the flag set to False and the related favorite record
+        existing. """
+        to_fav = self.filtered(lambda article:
+                               article.is_user_favorite and self.env.user not in article.favorite_ids.user_id)
+        to_unfav = self.filtered(lambda article:
+                                 not article.is_user_favorite and self.env.user in article.favorite_ids.user_id)
 
         if to_fav:
             to_fav.favorite_ids = [(0, 0, {'user_id': self.env.uid})]
@@ -933,7 +939,13 @@ class Article(models.Model):
             # Return a meaningful error message as this may be called through UI
             raise AccessError(_("You cannot add or remove this article to your favorites"))
 
-        self.sudo()._inverse_is_user_favorite()
+        # need to sudo to be able to write on the article model even with read access
+        to_favorite_sudo = self.sudo().filtered(lambda article: not article.is_user_favorite)
+        to_unfavorite_sudo = self.sudo() - to_favorite_sudo
+        to_favorite_sudo.is_user_favorite = True
+        to_unfavorite_sudo.is_user_favorite = False
+        # manually invalidate cache as inverse writes on a separate model
+        self.invalidate_recordset(fnames=["is_user_favorite", "favorite_ids"])
         return self[0].is_user_favorite if self else False
 
     def action_article_archive(self):

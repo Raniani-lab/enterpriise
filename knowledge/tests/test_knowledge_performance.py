@@ -86,7 +86,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_favorite(self):
-        with self.assertQueryCount(employee=9):
+        with self.assertQueryCount(employee=12):
             shared_article = self.shared_children[0].with_env(self.env)
             shared_article.action_toggle_favorite()
 

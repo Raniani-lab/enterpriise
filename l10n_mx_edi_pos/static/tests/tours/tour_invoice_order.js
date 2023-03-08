@@ -17,7 +17,7 @@ tour.register('l10n_mx_edi_pos.tour_invoice_order', {
     },
     {
         content: "Select a product",
-        trigger: "div:contains('Acoustic Bloc Screens')",
+        trigger: "div.product-content:contains('Acoustic Bloc Screens')",
     },
     {
         content: "go to Payment",

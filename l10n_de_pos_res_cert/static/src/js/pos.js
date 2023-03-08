@@ -14,7 +14,7 @@ patch(PosGlobalState.prototype, "l10n_de_pos_res_cert.PosGlobalState", {
         return this.isRestaurantCountryGermanyAndFiskaly() || result;
     },
     //@Override
-    _updateTableOrder(orderResponseData, tableOrders) {
+    _updateOrder(orderResponseData, tableOrders) {
         const order = this._super(...arguments);
         if (this.isRestaurantCountryGermanyAndFiskaly() && orderResponseData.differences && order) {
             order.createAndFinishOrderTransaction(orderResponseData.differences);

@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, _
 from odoo.tools import float_compare
+from odoo.osv import expression
 
 
 class SaleOrder(models.Model):
@@ -105,3 +106,12 @@ class SaleOrder(models.Model):
             return self.env.ref('sale_renting.rental_order_action')
         else:
             return super()._get_portal_return_action()
+
+    def _get_product_catalog_domain(self):
+        """Override of `_get_product_catalog_domain` to extend the domain.
+
+        :returns: A list of tuples that represents a domain.
+        :rtype: list
+        """
+        domain = super()._get_product_catalog_domain()
+        return expression.AND([domain, [('rent_ok', '=', False)]])

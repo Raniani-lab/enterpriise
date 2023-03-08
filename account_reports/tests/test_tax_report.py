@@ -41,8 +41,9 @@ class TestTaxReport(TestAccountReportsCommon):
 
         # Setup fiscal data
         cls.company_data['company'].write({
-            'country_id': cls.fiscal_country.id, # Will also set fiscal_country_id
-            'state_id': cls.country_state_1.id,  # Not necessary at the moment; put there for consistency and robustness with possible future changes
+            'country_id': cls.fiscal_country.id,
+            'account_fiscal_country_id': cls.fiscal_country.id,
+            'state_id': cls. country_state_1.id, # Not necessary at the moment; put there for consistency and robustness with possible future changes
             'account_tax_periodicity': 'trimester',
         })
 

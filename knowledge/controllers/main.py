@@ -324,7 +324,7 @@ class KnowledgeController(http.Controller):
                 'partner_name': member['partner_name'],
                 'partner_email': member['partner_email'],
                 'permission': member['permission'],
-                'based_on': f'{member["based_on_icon"] or self._get_no_icon_placeholder()} {member["based_on_name"] or _("Untitled")}' if member['based_on'] else False,
+                'based_on': f'{member["based_on_icon"] or request.env["knowledge.article"]._get_no_icon_placeholder()} {member["based_on_name"] or _("Untitled")}' if member['based_on'] else False,
                 'based_on_id': member['based_on'] if member['based_on'] in based_on_articles.ids else False,
                 'partner_share': member['partner_share'],
                 'is_unique_writer': member['permission'] == "write" and article.inherited_permission != "write" and not any(

@@ -20,8 +20,8 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
             'vat': 'LU12345613',
         })
 
-        cls.tax_17 = cls.env['account.tax'].search([('company_id', '=', cls.company_data['company'].id), ('name', '=', '17-P-G')])
-        cls.tax_3 = cls.env['account.tax'].search([('company_id', '=', cls.company_data['company'].id), ('name', '=', '3-P-G')])
+        cls.tax_17 = cls.env['account.tax'].search([('company_id', '=', cls.company_data['company'].id), ('name', '=', '17% G')])
+        cls.tax_3 = cls.env['account.tax'].search([('company_id', '=', cls.company_data['company'].id), ('name', '=', '3% G')])
 
         cls.product = cls.env['product.product'].create({'name': 'product_1', 'lst_price': 100.0})
         cls.partner_be = cls.env['res.partner'].create({

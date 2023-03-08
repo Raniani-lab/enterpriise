@@ -19,9 +19,9 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
     def setUpClass(cls, chart_template_ref='lu'):
         super().setUpClass(chart_template_ref)
 
-        cls.l_tax = cls.env['account.tax'].search([('name', '=', '0-IC-S-G'), ('company_id', '=', cls.company_data['company'].id)])
-        cls.t_tax = cls.env['account.tax'].search([('name', '=', '0-ICT-S-G'), ('company_id', '=', cls.company_data['company'].id)])
-        cls.s_tax = cls.env['account.tax'].search([('name', '=', '0-IC-S-S'), ('company_id', '=', cls.company_data['company'].id)])
+        cls.l_tax = cls.env['account.tax'].search([('name', '=', '0% IC S G'), ('company_id', '=', cls.company_data['company'].id)])
+        cls.t_tax = cls.env['account.tax'].search([('name', '=', '0% ICT G'), ('company_id', '=', cls.company_data['company'].id)])
+        cls.s_tax = cls.env['account.tax'].search([('name', '=', '0% IC S'), ('company_id', '=', cls.company_data['company'].id)])
         cls.l_tax.active = cls.t_tax.active = cls.s_tax.active = True
 
         cls.product_1 = cls.env['product.product'].create({'name': 'product_1', 'lst_price': 1.0})

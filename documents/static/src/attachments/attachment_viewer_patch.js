@@ -28,13 +28,14 @@ patch(FileViewer.prototype, "documents", {
         );
     },
     onClickPdfSplit() {
+        this.close();
         if (this.documentService.documentList?.initialRecordSelectionLength === 1) {
             return this.documentService.documentList?.pdfManagerOpenCallback([
-                this.documentService.documentList.selectedDocument,
+                this.documentService.documentList.selectedDocument.record,
             ]);
         }
         return this.documentService.documentList?.pdfManagerOpenCallback(
-            this.documentService.documentList.documents
+            this.documentService.documentList.documents.map((document) => document.record)
         );
     },
     close() {

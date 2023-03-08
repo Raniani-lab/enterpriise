@@ -1,27 +1,47 @@
 /** @odoo-module **/
 
-import { PdfGroupName } from '@documents/owl/components/pdf_group_name/pdf_group_name';
-import { PdfPage } from '@documents/owl/components/pdf_page/pdf_page';
-import { computeMultiSelection } from 'documents.utils';
-import { isEventHandled, markEventHandled } from '@web/core/utils/misc';
-import { useService } from '@web/core/utils/hooks';
-import { Dialog } from "@web/core/dialog/dialog";
+import { PdfGroupName } from "@documents/owl/components/pdf_group_name/pdf_group_name";
+import { PdfPage } from "@documents/owl/components/pdf_page/pdf_page";
 import { getBundle, loadBundle } from "@web/core/assets";
+import { csrf_token } from "web.core";
+import { useCommand } from "@web/core/commands/command_hook";
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { Dialog } from "@web/core/dialog/dialog";
+import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
+import { _t } from "@web/core/l10n/translation";
 import { uniqueId } from "@web/core/utils/functions";
+import { useService } from "@web/core/utils/hooks";
+import { sprintf } from "@web/core/utils/strings";
 
-import { csrf_token, _t } from 'web.core';
+import { ExitSplitToolsDialog } from "@documents/owl/components/pdf_exit_dialog/pdf_exit_dialog";
 
-const { Component, onMounted, onWillUnmount, onWillStart, toRaw, useRef, useState } = owl;
+import { Component, onWillStart, toRaw, useRef, useState, useEffect } from "@odoo/owl";
 
 export class PdfManager extends Component {
+    static components = {
+        Dialog,
+        PdfPage,
+        PdfGroupName,
+    };
+    static defaultProps = {
+        rules: [],
+    };
+    static props = {
+        documents: Array,
+        rules: { type: Array, optional: true },
+        onProcessDocuments: { type: Function },
+        close: { type: Function },
+    };
+    static template = "documents.component.PdfManager";
 
-    /**
-     * @override
-     */
     setup() {
         this.root = useRef("root");
+        this.pageViewer = useRef("pageViewer");
+        this.selectionBox = useRef("selectionBox");
         this.addFileInput = useRef("addFileInput");
         this.notification = useService("notification");
+        this.dialog = useService("dialog");
+        this.commandService = useService("command");
         this.state = useState({
             // Disables upload button if currently uploading.
             uploadingLock: false,
@@ -34,60 +54,185 @@ export class PdfManager extends Component {
             groupIds: [],
             /*
              * Will be sent to the backend.
-             *  object pages[pageId] = { pageId, groupId, isSelected, fileId, localPageNumber }
+             *  object pages[pageId] = { pageId, groupId, isSelected, fileId, localPageNumber, isActivated}
              */
             pages: {},
             // object pageCanvases[pageId] = { canvas, pageObject }
             pageCanvases: {},
+            // The page that has the focus
+            focusedPage: undefined,
+            // The last selected page
+            lastSelectedPage: undefined,
             // The page that is open as large preview.
             viewedPage: undefined,
+            // The page's name that is open as large preview.
+            viewedPageName: undefined,
+            // The page's index that is open as large preview.
+            viewedPageIndex: undefined,
+            // Number of pages in the split tools.
+            numberOfPages: undefined,
             // whether to archive the original documents.
             archive: true,
             // Whether to keep the document(s) or not.
             keepDocument: true,
-            // the anchor of the page selection, used to determine the record from which record selections should occur
-            anchorId: undefined,
-            // shift keys held down.
-            lShiftKeyDown: false,
-            rShiftKeyDown: false,
             // Whether there are remaining pages to process.
             remaining: false,
-            // Whether exit was clicked or not.
-            isExit: false,
             //name of the opened document
-            fileName: '',
+            fileName: "",
+            // edit on group name
+            edit: false,
+            isSelecting: false,
+            selectionBoxArgs: { left: "0px", top: "0px", width: "0px", height: "0px" },
         });
-        /*
-         * This object will be processed and sent to the backend.
-         * object _newFiles[fileId] = { type, file, documentId, pageIds, activePageIds }
-         */
+
+        this._exitSplitToolsClick = false;
         this._newFiles = {};
-        this._onGlobalKeydown = this._onGlobalKeydown.bind(this);
-        this._onGlobalCaptureKeyup = this._onGlobalCaptureKeyup.bind(this);
+        this._selectionX = 0.0;
+        this._selectionY = 0.0;
+        this._selectionScrollTop = 0.0;
+        this._selectionScrollLeft = 0.0;
+        this._ruleApplied = false;
+        this._onMouseDown = this._onMouseDown.bind(this);
+        this._onMouseUp = this._onMouseUp.bind(this);
+        this._onMouseMove = this._onMouseMove.bind(this);
+        this._onShiftDown = this._onShiftDown.bind(this);
+        this._setUseCommand = this._setUseCommand.bind(this);
+        this._exitSplitTools = this._exitSplitTools.bind(this);
 
         onWillStart(async () => {
             await this._loadAssets();
         });
 
-        onMounted(() => {
-            document.addEventListener('keydown', this._onGlobalKeydown);
-            document.addEventListener('keyup', this._onGlobalCaptureKeyup, true);
+        useEffect(
+            () => {
+                const _onOutsideClick = this._onOutsideClick.bind(this);
+                if (this.props.documents.length === 1) {
+                    this.state.fileName = this._removePdfExtension(this.props.documents[0].name);
+                }
+                for (const pdf_document of this.props.documents) {
+                    this._addFile(pdf_document.name, {
+                        url: `/documents/content/${pdf_document.id}`,
+                        documentId: pdf_document.id,
+                    });
+                }
+                document.addEventListener("click", _onOutsideClick, true);
+                document.addEventListener("mousedown", this._onMouseDown, true);
+                document.addEventListener("mouseup", this._onMouseUp, true);
+                document.addEventListener("mousemove", this._onMouseMove, true);
+                document.addEventListener("keydown", this._onShiftDown, true);
+                return () => {
+                    document.removeEventListener("click", _onOutsideClick, true);
+                    document.removeEventListener("mousedown", this._onMouseDown, true);
+                    document.removeEventListener("mouseup", this._onMouseUp, true);
+                    document.removeEventListener("mousemove", this._onMouseMove, true);
+                    document.removeEventListener("keydown", this._onShiftDown, true);
+                };
+            },
+            () => []
+        );
 
-            if (this.props.documents.length === 1) {
-                this.state.fileName = this._removePdfExtension(this.props.documents[0].name);
+        // Shortcuts and navigation
+        this._setUseCommand(
+            _t("Focus previous page"),
+            this._focusNextPage.bind(this, "left", false),
+            "arrowleft",
+            {
+                allowRepeat: true,
             }
-
-            for (const pdf_document of this.props.documents) {
-                this._addFile(pdf_document.name, {
-                    url: `/documents/content/${pdf_document.id}`,
-                    documentId: pdf_document.id,
-                });
+        );
+        this._setUseCommand(
+            _t("Focus next page"),
+            this._focusNextPage.bind(this, "right", false),
+            "arrowright",
+            {
+                allowRepeat: true,
             }
+        );
+        this._setUseCommand(
+            _t("Focus first page of previous group"),
+            this._focusNextGroup.bind(this, "left"),
+            "control+ArrowLeft"
+        );
+        this._setUseCommand(
+            _t("Focus first page of next group"),
+            this._focusNextGroup.bind(this, "right"),
+            "control+ArrowRight"
+        );
+        this._setUseCommand(_t("Activate/Deactivate page"), () => {}, "shift");
+        this._setUseCommand(
+            _t("Activate/Deactivate all pages"),
+            this._selectAll.bind(this),
+            "control+a"
+        );
+        this._setUseCommand(
+            _t("Activate previous page"),
+            this._focusNextPage.bind(this, "left", true),
+            "shift+ArrowLeft",
+            {
+                allowRepeat: true,
+            }
+        );
+        this._setUseCommand(
+            _t("Activate next page"),
+            this._focusNextPage.bind(this, "right", true),
+            "shift+ArrowRight",
+            {
+                allowRepeat: true,
+            }
+        );
+        this._setUseCommand(
+            _t("Activate previous pages of the group"),
+            this._activateUntilSplit.bind(this, "left"),
+            "control+shift+ArrowLeft"
+        );
+        this._setUseCommand(
+            _t("Activate next pages of the group"),
+            this._activateUntilSplit.bind(this, "right"),
+            "control+shift+ArrowRight"
+        );
+        this._setUseCommand(_t("Deactivate/Unselect/Exit"), this._onPushExit.bind(this), "escape");
+        this._setUseCommand(_t("Select page"), this._spaceKeySelect.bind(this), "space", {
+            allowRepeat: true,
         });
+        this._setUseCommand(
+            _t("Split activated pages"),
+            this._splitSelectionHandler.bind(this),
+            "s",
+            {
+                allowRepeat: true,
+            }
+        );
+        this._setUseCommand(_t("Preview page"), this._onEnter.bind(this), "enter");
+        this._setUseCommand(
+            _t("Delete page or selected pages"),
+            this.onArchive.bind(this),
+            "backspace"
+        );
+        useHotkey("ArrowDown", this._focusNextPage.bind(this, "down", false), {
+            allowRepeat: true,
+        });
+        useHotkey("ArrowUp", this._focusNextPage.bind(this, "up", false), { allowRepeat: true });
+        useHotkey("shift+ArrowDown", this._focusNextPage.bind(this, "down", true), {
+            allowRepeat: true,
+        });
+        useHotkey("shift+ArrowUp", this._focusNextPage.bind(this, "up", true), {
+            allowRepeat: true,
+        });
+    }
 
-        onWillUnmount(() => {
-            document.removeEventListener('keydown', this._onGlobalKeydown);
-            document.removeEventListener('keyup', this._onGlobalCaptureKeyup);
+    /**
+     * Set the useCommand hook for shortcuts
+     * @param {String} name
+     * @param {Function} callback
+     * @param {String} hotkey
+     * @param {Object} options
+     * @private
+     */
+    _setUseCommand(name, callback, hotkey, options) {
+        useCommand(name, callback, {
+            category: "smart_action",
+            hotkey: hotkey,
+            hotkeyOptions: options,
         });
     }
 
@@ -96,51 +241,180 @@ export class PdfManager extends Component {
     //--------------------------------------------------------------------------
 
     /**
-     * @return {number[]}
+     * @return {String[]}
      */
     get ignoredPageIds() {
         return Object.keys(this.state.pages).filter(
-            key => !this.state.pages[key].isSelected && this.state.pages[key].groupId
+            (key) => !this.state.pages[key].isSelected && this.state.pages[key].groupId
         );
     }
-
     /**
-     * @return {number[]}
+     * @return {String[]}
      */
-    get activePageIds() {
+    get selectedPageIds() {
         return Object.keys(this.state.pages).filter(
-            key => this.state.pages[key].isSelected && this.state.pages[key].groupId
+            (key) => this.state.pages[key].isSelected && this.state.pages[key].groupId
         );
     }
-
+    /**
+     * @return {String[]}
+     */
+    get activatedPageIds() {
+        return Object.keys(this.state.pages).filter(
+            (key) => this.state.pages[key].isActivated && this.state.pages[key].groupId
+        );
+    }
+    /**
+     * @return {Boolean}
+     */
     get isDebugMode() {
         return Boolean(odoo.debug);
     }
-
-    get allSelected() {
-        return !Object.values(this.state.pages).some(page => !page.isSelected);
-    }
-
-    //----------------------------------------------------------------------
-    // Private
-    //----------------------------------------------------------------------
-
-
     /**
-     * use to remove .pdf extention from file name
-     *
-     * @private
-     * @param {String} name
+     * @return {String[]}
      */
-     _removePdfExtension(name) {
-        const extIndex = name.lastIndexOf('.pdf');
-        if (extIndex >= 0) {
-            name = name.substring(0, extIndex);
-        }
-        return name;
+    get allActivated() {
+        return !Object.values(this.state.pages).some((page) => !page.isActivated);
     }
     /**
+     * @return {String[]}
+     */
+    get sortedPagesIds() {
+        return this.state.groupIds.flatMap((groupId) =>
+            Object.values(this.state.groupData[groupId].pageIds)
+        );
+    }
+
+    //----------------------------------------------------------------------
+    // Handlers
+    //----------------------------------------------------------------------
+
+    /**
+     * Toggle the edit of groups names when double clicking on the name
      * @public
+     * @param {String} groupId
+     * @param {Boolean} toggle
+     */
+    onToggleEdit(groupId, toggle) {
+        this.state.edit = toggle ? groupId : false;
+        const toggleActivation = this.state.groupData[groupId].pageIds.some(
+            (pageId) => this.state.pages[pageId].isActivated !== true
+        );
+        this.state.groupData[groupId].pageIds.map((pageId) => {
+            this.state.pages[pageId].isActivated = toggleActivation;
+        });
+    }
+    /**
+     * Returns the number of cards per line
+     * @private
+     */
+    _computeCardsPerLine() {
+        const allPages = [...document.querySelectorAll(".o_documents_pdf_page_frame")];
+        const top = allPages[0].getBoundingClientRect().top;
+        return allPages.filter((page) => page.getBoundingClientRect().top === top).length;
+    }
+    /**
+     * Unselect every page
+     * @private
+     */
+    _resetSelection() {
+        for (const page of Object.values(this.state.pages)) {
+            page.isSelected = false;
+        }
+        this.state.lastSelectedPage = undefined;
+    }
+    /**
+     * Desactivate every page
+     * @private
+     */
+    _desactivatePages() {
+        for (const pageId of this.activatedPageIds) {
+            this.state.pages[pageId].isActivated = false;
+        }
+    }
+    /**
+     * Handles the activation/desactivation of the splitters in the active pages
+     * @private
+     */
+    _splitSelectionHandler() {
+        if (this.state.viewedPage) {
+            return;
+        }
+        const activatedPages = this.activatedPageIds;
+        const focusedPageIsActivated = activatedPages.includes(this.state.focusedPage);
+        const sortedPagesIds = this.sortedPagesIds;
+        if (this.state.focusedPage && !focusedPageIsActivated) {
+            const indexPage = sortedPagesIds.indexOf(this.state.focusedPage);
+            const previousPageId = sortedPagesIds[indexPage - 1];
+            if (indexPage !== 0) {
+                this._pageSeparator(previousPageId, this.state.pages[previousPageId].groupId);
+            }
+            return;
+        }
+        let toggleSeparatorBool = true;
+        const pagesToSplit = [];
+        const pagesToGather = [];
+        for (const pageId of activatedPages) {
+            const indexPage = sortedPagesIds.indexOf(pageId);
+            if (
+                indexPage < sortedPagesIds.length - 1 &&
+                this.state.pages[sortedPagesIds[indexPage + 1]].isActivated
+            ) {
+                const parent = document
+                    .querySelector(`[data-id=${pageId}]`)
+                    .closest(".o_documents_pdf_page_frame");
+                const isSeparatorActive = parent.nextElementSibling.classList.contains(
+                    "o_pdf_separator_activated"
+                );
+                toggleSeparatorBool = toggleSeparatorBool && isSeparatorActive;
+                if (isSeparatorActive) {
+                    pagesToGather.push(this.state.pages[pageId]);
+                } else {
+                    pagesToSplit.push(this.state.pages[pageId]);
+                }
+            }
+        }
+        const pagesToTreat = toggleSeparatorBool ? pagesToGather : pagesToSplit;
+        for (const page of pagesToTreat) {
+            this._pageSeparator(page.pageId, page.groupId);
+        }
+    }
+    /**
+     * Puts a splitter between 2 adjacent pages and modify the groups accordingly
+     * @private
+     * @param {String} pageId
+     * @param {String} groupId
+     */
+    _pageSeparator(pageId, groupId) {
+        const page = this.state.pages[pageId];
+        const groupPageIds = this.state.groupData[groupId].pageIds;
+        const pageIndex = groupPageIds.indexOf(pageId);
+        const groupIndex = this.state.groupIds.indexOf(groupId);
+        const isLastPage = pageIndex === groupPageIds.length - 1;
+
+        if (isLastPage) {
+            // merging the following group into the current one.
+            const targetGroupId = this.state.groupIds[groupIndex + 1];
+            if (targetGroupId) {
+                const pageIds = this.state.groupData[targetGroupId].pageIds;
+                for (const pageId of pageIds) {
+                    this._addPage(pageId, page.groupId);
+                }
+            }
+        } else {
+            // making a new group with all the following pages.
+            const newGroupPages = groupPageIds.slice(pageIndex + 1);
+            const newGroupId = this._createGroup({
+                index: groupIndex + 1,
+            });
+            for (const page of newGroupPages) {
+                this._addPage(page, newGroupId);
+            }
+        }
+    }
+    /**
+     * Add pdf file inside the split tools
+     * @private
      * @param {String} name
      * @param {Object} param1
      * @param {number} [param1.documentId] the id of the `documents.document` record.
@@ -155,27 +429,26 @@ export class PdfManager extends Component {
             url = URL.createObjectURL(file);
         }
         this.state.uploadingLock = true;
-        const fileId = uniqueId('file');
+        const fileId = uniqueId("file");
         const pdf = await this._getPdf(url);
 
         if (file) {
-            this._newFiles[fileId] = { type: 'file', file };
+            this._newFiles[fileId] = { type: "file", file };
         } else if (documentId) {
-            this._newFiles[fileId] = { type: 'document', documentId };
+            this._newFiles[fileId] = { type: "document", documentId };
         }
         name = this._removePdfExtension(name || _t("New File"));
 
         const pageCount = pdf.numPages;
         const { pageIds, newPages } = this._createPages({ fileId, name, pageCount });
-        this._newFiles[fileId].pageIds = this._newFiles[fileId].activePageIds = pageIds;
+        this._newFiles[fileId].pageIds = this._newFiles[fileId].selectedPageIds = pageIds;
         this.state.uploadingLock = false;
 
         await this._loadCanvases({ newPages, pageCount, pdf });
     }
-
     /**
-     * Adds a page to a group (also removes the page from its former group).
-     *
+     * Adds a page to a group (also removes the page from its
+     * former group).
      * @private
      * @param {String} pageId
      * @param {String} groupId
@@ -194,54 +467,66 @@ export class PdfManager extends Component {
         }
         this.state.pages[pageId].groupId = groupId;
     }
+    /**
+     * @private
+     * @param {String} message
+     */
     _displayErrorNotification(message) {
-        this.notification.add(
-            message,
-            {
-                title: _t("Error"),
-            },
-        );
+        this.notification.add(message, {
+            title: _t("Error"),
+        });
+    }
+    /**
+     * @private
+     * @param {number} number
+     */
+    _displayNumberCreatedDocuments(number) {
+        this.notification.add(sprintf(_t("%s new document(s) created"), number), {
+            type: "success",
+        });
+    }
+    /**
+     * @private
+     * @param {number} number
+     */
+    _displayNumberDeletedPages(number) {
+        this.notification.add(sprintf(_t("%s page(s) deleted"), number), {
+            type: "success",
+        });
     }
     /**
      * Ignored pages are not committed but are instead kept in the
      * PDF Manager. If no ignored page remain, the PDF Manager closes and the
      * view is reloaded.
-     *
      * @private
      * @param {number} [ruleId]
      */
     async _applyChanges(ruleId) {
-        const processedPageIds = this.activePageIds;
-        if (processedPageIds.length === 0 && !this.state.isExit) {
+        let processedPageIds = this.selectedPageIds;
+        let pageIds = this.ignoredPageIds;
+        if (processedPageIds.length === 0 && !this.state.focusedPage) {
             this._displayErrorNotification(_t("No document has been selected"));
             return;
         }
-        let pageIds;
-        if (this.state.isExit) {
-            pageIds = this.activePageIds.concat(this.ignoredPageIds);
-        } else {
-            pageIds = this.ignoredPageIds;
-            for (const pageId of pageIds) {
-                this._removePage(pageId);
-            }
+        if (processedPageIds.length === 0) {
+            processedPageIds = [this.state.focusedPage];
+            pageIds = pageIds.filter((pageId) => pageId !== this.state.focusedPage);
         }
-        const exit = this.state.isExit || !pageIds.length;
+        const exit = !pageIds.length;
 
         let fileName = _t("Remaining Pages");
         if (this.state.fileName) {
             fileName = this.state.fileName + " " + fileName;
         }
-
         try {
-            const result = await this._sendChanges({ exit, ruleId });
-            const documentIds = JSON.parse(result);
+            const documentIds = await this._sendChanges();
             this.props.onProcessDocuments({ documentIds, ruleId, exit });
-            // this.trigger('process-documents', { documentIds, ruleId, exit });
+            this._displayNumberCreatedDocuments(documentIds.length);
             if (!exit) {
+                this._ruleApplied = true;
                 for (const pageId of processedPageIds) {
                     this._removePage(pageId, { fromFile: true });
                 }
-                this._createGroup({ name: fileName, pageIds, isSelected: true });
             } else {
                 this.props.close();
             }
@@ -252,8 +537,8 @@ export class PdfManager extends Component {
             }
         } finally {
             this.state.uploadingLock = false;
-            this.state.anchorId = undefined;
             this.state.remaining = true;
+            this.state.numberOfPages = this.sortedPagesIds.length;
         }
     }
     /**
@@ -266,7 +551,7 @@ export class PdfManager extends Component {
      * @return {String} groupId (unique)
      */
     _createGroup({ name, pageIds, index, isSelected } = {}) {
-        const groupId = uniqueId('group');
+        const groupId = uniqueId("group");
         pageIds = pageIds || [];
         this.state.groupData[groupId] = {
             groupId,
@@ -297,21 +582,12 @@ export class PdfManager extends Component {
      * @return {Object} newPages
      */
     _createPages({ fileId, name, pageCount }) {
-        let groupId;
-        let groupName = name + '-p1';
-        let groupLock = false;
-        //returns:
         const pageIds = [];
         const newPages = {};
         // creating page and groups
+        const groupId = this._createGroup({ name });
         for (let pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
-            // creating multiple groups if single file
-            if (!groupLock) {
-                groupId = this._createGroup({ name: groupName });
-                groupLock = this.props.documents.length > 1;
-                groupName = `${name}-p${pageNumber + 1}`;
-            }
-            const pageId = uniqueId('page');
+            const pageId = uniqueId("page");
             this.state.pages[pageId] = {
                 pageId,
                 groupId,
@@ -324,11 +600,11 @@ export class PdfManager extends Component {
             this.state.groupData[groupId].pageIds.push(pageId);
             pageIds.push(pageId);
         }
+        this.state.numberOfPages = this.sortedPagesIds.length;
         return { pageIds, newPages };
     }
     /**
      * Used to use a mocked version of Xhr in the tests.
-     *
      * @private
      * @return {XMLHttpRequest}
      */
@@ -337,7 +613,6 @@ export class PdfManager extends Component {
     }
     /**
      * To be overwritten in tests (along with _renderCanvas()).
-     *
      * @private
      * @param {String} url
      * @return {PdfJsObject} pdf
@@ -350,15 +625,14 @@ export class PdfManager extends Component {
     }
     /**
      * To be overwritten in tests.
-     *
      * @private
      */
     async _loadAssets() {
         let libs;
         try {
-            libs = await getBundle('documents.pdf_js_assets');
+            libs = await getBundle("documents.pdf_js_assets");
         } catch {
-            libs = await getBundle('web.pdf_js_lib');
+            libs = await getBundle("web.pdf_js_lib");
         } finally {
             await loadBundle(libs);
         }
@@ -377,12 +651,101 @@ export class PdfManager extends Component {
             }
             const pageId = newPages[pageNumber];
             const page = await pdf.getPage(pageNumber);
-            const canvas = await this._renderCanvas(page, {
+            const canvas = await this._renderCanvas(toRaw(page), {
                 width: 160,
                 height: 230,
             });
             this.state.pageCanvases[pageId] = { page, canvas };
         }
+    }
+    /**
+     * @private
+     * @param {Object} page
+     * @param {Object} param1
+     * @param {number} param1.width
+     * @param {number} param1.height
+     * @return {DomElement} canvas
+     */
+    async _renderCanvas(page, { width, height }) {
+        const viewPort = page.getViewport({ scale: 1 });
+        const canvas = document.createElement("canvas");
+        canvas.className = "o_documents_pdf_canvas";
+        canvas.width = width;
+        canvas.height = height;
+        const scale = Math.min(canvas.width / viewPort.width, canvas.height / viewPort.height);
+        await page.render({
+            canvasContext: canvas.getContext("2d"),
+            viewport: page.getViewport({ scale }),
+        }).promise;
+        return canvas;
+    }
+    /**
+     * Endpoint of the manager, sends the page structure to be split to the
+     * server and closes the manager.
+     * @private
+     */
+    async _sendChanges() {
+        this.state.uploadingLock = true;
+        const fileIds = [];
+        const files = [];
+        for (const key in this._newFiles) {
+            if (this._newFiles[key].type === "file") {
+                files.push(this._newFiles[key].file);
+                fileIds.push(key);
+            }
+        }
+        const fileGroups = Object.values(JSON.parse(JSON.stringify(this.state.groupData)));
+        let activePages = this.selectedPageIds;
+        if (!activePages.length) {
+            activePages = this.state.focusedPage;
+            this.state.focusedPage = false;
+        }
+        for (const group of fileGroups) {
+            group.pageIds = group.pageIds.filter((page) => activePages.includes(page));
+        }
+        const newFiles = fileGroups.filter((group) => group.pageIds.length > 0);
+        for (const newFile of newFiles) {
+            newFile.new_pages = [];
+            for (const pageId of newFile.pageIds) {
+                const fileId = this.state.pages[pageId].fileId;
+                const file = this._newFiles[fileId];
+                const old_file_type = file.type;
+                const old_file_index =
+                    old_file_type === "file" ? fileIds.indexOf(fileId) : file.documentId;
+                newFile.new_pages.push({
+                    old_file_type,
+                    old_file_index,
+                    old_page_number: this.state.pages[pageId].localPageNumber,
+                });
+            }
+            delete newFile.pageIds;
+        }
+        // When splitting a file we want them displayed in the same order as they were in the file.
+        newFiles.reverse();
+        // Http request
+        const document = this.props.documents[0];
+        const data = new FormData();
+        data.append("csrf_token", csrf_token);
+        for (const file of files) {
+            data.append("ufile", file);
+        }
+        data.append("new_files", JSON.stringify(newFiles));
+        data.append("archive", this.state.archive);
+        data.append(
+            "vals",
+            JSON.stringify({
+                folder_id: document.folder_id[0],
+                tag_ids: document.tag_ids.currentIds,
+                owner_id: document.owner_id[0],
+                partner_id: document.partner_id[0],
+                active: this.state.keepDocument,
+            })
+        );
+        const response = await fetch("/documents/pdf_split", {
+            method: "post",
+            body: data,
+        });
+        return response.json();
     }
     /**
      * @private
@@ -399,9 +762,10 @@ export class PdfManager extends Component {
             }
         }
         this.state.groupIds = this.state.groupIds.filter(
-            listedGroupId => listedGroupId !== groupId
+            (listedGroupId) => listedGroupId !== groupId
         );
         delete this.state.groupData[groupId];
+        this.state.numberOfPages = this.sortedPagesIds.length;
     }
     /**
      * @private
@@ -415,27 +779,23 @@ export class PdfManager extends Component {
         if (!page) {
             return;
         }
-
-        // set not supported?
         const pageIds = this.state.groupData[page.groupId].pageIds;
-        this.state.groupData[page.groupId].pageIds = pageIds.filter(
-            number => number !== pageId
-        );
-        // if pageIds.length === 0, delete group or leave empty group?
+        this.state.groupData[page.groupId].pageIds = pageIds.filter((number) => number !== pageId);
         if (page.groupId) {
             this._removeGroup(page.groupId);
         }
         page.groupId = false;
         if (fromFile) {
-            const activePageIds = this._newFiles[page.fileId].activePageIds;
-            this._newFiles[page.fileId].activePageIds = activePageIds.filter(
-                number => number !== pageId
+            const selectedPageIds = this._newFiles[page.fileId].selectedPageIds;
+            this._newFiles[page.fileId].selectedPageIds = selectedPageIds.filter(
+                (number) => number !== pageId
             );
-            if (this._newFiles[page.fileId].activePageIds.length === 0) {
+            if (this._newFiles[page.fileId].selectedPageIds.length === 0) {
                 this._removeFile(page.fileId);
             }
             page.fileId = false;
         }
+        this.state.numberOfPages = this.sortedPagesIds.length;
     }
     /**
      * @private
@@ -447,145 +807,442 @@ export class PdfManager extends Component {
             delete this.state.pages[pageId];
         }
         delete this._newFiles[fileId];
+        this.state.numberOfPages = this.sortedPagesIds.length;
     }
     /**
+     * use to remove .pdf extention from file name
      * @private
-     * @param {Object} page
-     * @param {Object} param1
-     * @param {number} param1.width
-     * @param {number} param1.height
-     * @return {DomElement} canvas
+     * @param {String} name
      */
-    async _renderCanvas(page, { width, height }) {
-        page = toRaw(page);
-        const viewPort = page.getViewport({ scale: 1 });
-        const canvas = document.createElement("canvas");
-        canvas.className = "o_documents_pdf_canvas";
-        canvas.width = width;
-        canvas.height = height;
-        const scale = Math.min(canvas.width / viewPort.width, canvas.height / viewPort.height);
-        await page.render({
-            canvasContext: canvas.getContext("2d"),
-            viewport: page.getViewport({ scale }),
-        }).promise;
-        return canvas;
+    _removePdfExtension(name) {
+        return name.replace(/\.pdf$/gi, "");
     }
     /**
-     * Endpoint of the manager, sends the page structure to be split to the
-     * server and closes the manager.
-     *
-     * @private
-     * @param {Object} [param0]
-     * @param {boolean} [param0.exit] whether to exit the PdfManager.
-     * @param {number} [param0.ruleId] the rule to apply to the new records.
+     * Opens the exit dialog
      * @private
      */
-    async _sendChanges({ exit, ruleId } = {}) {
-        this.state.uploadingLock = true;
-        const data = new FormData();
-
-        const fileIds = [];
-        const files = [];
-        for (const key in this._newFiles) {
-            if (this._newFiles[key].type === 'file') {
-                files.push(this._newFiles[key].file);
-                fileIds.push(key);
-            }
-        }
-        const fileGroups = JSON.parse(JSON.stringify(this.state.groupData));
-        let newFiles = [{'groupId': '', 'name': '', 'pageIds': []}];
-        if (this.state.isExit) {
-            newFiles[0].groupId = Object.keys(fileGroups)[0];
-            newFiles[0].name = fileGroups[newFiles[0].groupId].name;
-            for (const key in fileGroups) {
-                newFiles[0]['pageIds'] = newFiles[0]['pageIds'].concat(fileGroups[key].pageIds);
-            }
-        } else {
-            newFiles = Object.values(fileGroups);
-        }
-        newFiles.forEach((newFile) => {
-            newFile.new_pages = [];
-            for (const pageId of newFile.pageIds) {
-                const fileId = this.state.pages[pageId].fileId;
-                const file = this._newFiles[fileId];
-                const old_file_type = file.type;
-                const old_file_index = old_file_type === 'file'
-                    ? fileIds.indexOf(fileId)
-                    : file.documentId;
-                newFile.new_pages.push({
-                    old_file_type,
-                    old_file_index,
-                    old_page_number: this.state.pages[pageId].localPageNumber,
-                });
-            }
-            delete newFile.pageIds;
+    _exitSplitTools(formerTargetCallback = () => {}) {
+        this.dialog.add(ExitSplitToolsDialog, {
+            isRuleApplied: this._ruleApplied,
+            onDeleteRemainingPages: async () => {
+                await this.props.close();
+                formerTargetCallback();
+            },
+            onGatherRemainingPages: async () => {
+                await this._exitByGatheringRemainingPages();
+                formerTargetCallback();
+            },
+            close: () => {},
         });
-        // When splitting a file we want them displayed in the same order as they were in the file.
-        newFiles.reverse();
+    }
+    /**
+     * Gather the remaining pages so they are kept into one document that is sent to the backend
+     * @private
+     */
+    async _exitByGatheringRemainingPages() {
+        const allPages = this.sortedPagesIds;
+        this.state.groupData = {};
+        this.state.groupIds = [];
+        this._createGroup({ name: _t("(Remaining pages"), pageIds: allPages, isSelected: true });
+        await this._applyChanges();
+    }
+    /**
+     * Adapt the scroll of the page viewer in order to keep the focused page visible
+     * @private
+     */
+    _keepFocusedPageInScreen() {
+        const card = document.querySelector(`[data-id=${this.state.focusedPage}]`);
+        const focusedCardCoordinates = card.getBoundingClientRect();
+        const pageViewerCoordinates = this.pageViewer.el.getBoundingClientRect();
+        const bottomDifference = focusedCardCoordinates.bottom - pageViewerCoordinates.bottom;
+        const topDifference = focusedCardCoordinates.top - pageViewerCoordinates.top;
+        // 60 and 10 are harcoded values to improve the UI when scrolling.
+        if (bottomDifference > 0) {
+            this.pageViewer.el.scrollBy(0, bottomDifference + 60);
+        }
+        if (topDifference < 0) {
+            this.pageViewer.el.scrollBy(0, topDifference - 10);
+        }
+    }
 
-        return new Promise((resolve, reject) => {
-            const xhr = this._createXhr();
-            xhr.open('POST', '/documents/pdf_split');
-            data.append('csrf_token', csrf_token);
-            for (const file of files) {
-                data.append('ufile', file);
+    //----------------------------------------------------------------------
+    // Keyboard events and handlers
+    //----------------------------------------------------------------------
+
+    /**
+     * If a page is focused, triggers the previewer opening
+     * @private
+     */
+    _onEnter() {
+        if (this.state.focusedPage && !this.state.viewedPage) {
+            this.onClickPage(this.state.focusedPage);
+        }
+    }
+    /**
+     * On shift pressed, the focused page is activated
+     * @private
+     * @param {Event} ev
+     */
+    _onShiftDown(ev) {
+        if (
+            ev.key === "Shift" &&
+            !ev.metaKey &&
+            !ev.ctrlKey &&
+            !this.state.viewedPage &&
+            !this.state.edit &&
+            this.state.focusedPage
+        ) {
+            this.state.pages[this.state.focusedPage].isActivated =
+                !this.state.pages[this.state.focusedPage].isActivated;
+        }
+    }
+    /**
+     * Focus next targetted page
+     * @private
+     * @param {String} direction
+     * @param {Boolean} doActivate
+     */
+    _focusNextPage(direction, doActivate) {
+        if (this.state.viewedPage) {
+            if (direction === "left") {
+                this.onClickPrevious();
             }
-            data.append('new_files', JSON.stringify(newFiles));
-            data.append('archive', this.state.archive);
-
-            const document = this.props.documents[0];
-            data.append('vals', JSON.stringify({
-                folder_id: document.folder_id[0],
-                tag_ids: document.tag_ids.currentIds,
-                owner_id: document.owner_id[0],
-                partner_id: document.partner_id[0],
-                active: this.state.keepDocument,
-            }));
-
-            xhr.send(data);
-            xhr.onload = () => {
-                if (xhr.status === 200) {
-                    resolve(xhr.response);
-                } else {
-                    reject(xhr.response);
+            if (direction === "right") {
+                this.onClickNext();
+            }
+            return;
+        }
+        if (this.state.focusedPage) {
+            const sortedPagesIds = this.sortedPagesIds;
+            const indexFocusedPage = sortedPagesIds.indexOf(this.state.focusedPage);
+            const numberPerLine = this._computeCardsPerLine();
+            const shift = { right: 1, left: -1, down: numberPerLine, up: -numberPerLine }[
+                direction
+            ];
+            const nextFocusedPageId = sortedPagesIds[indexFocusedPage + shift];
+            if (nextFocusedPageId) {
+                if (doActivate) {
+                    this.state.pages[this.state.focusedPage].isActivated =
+                        !this.state.pages[nextFocusedPageId].isActivated;
+                    this.state.pages[nextFocusedPageId].isActivated = true;
                 }
-            };
-            xhr.onerror = () => {
-                reject();
-            };
-        });
+                this.state.focusedPage = nextFocusedPageId;
+            }
+        } else if (this.state.lastSelectedPage) {
+            this.state.focusedPage = this.state.lastSelectedPage;
+            this._focusNextPage(direction, doActivate);
+        } else {
+            this.state.focusedPage = this.sortedPagesIds[0];
+            if (doActivate) {
+                this.state.pages[this.state.focusedPage].isActivated =
+                    !this.state.pages[this.state.focusedPage].isActivated;
+            }
+        }
+        this._keepFocusedPageInScreen();
+    }
+    /**
+     * Focus the first page of the next tragetted group
+     * @private
+     * @param {String} direction
+     */
+    _focusNextGroup(direction) {
+        if (this.state.viewedPage) {
+            return;
+        }
+        if (this.state.focusedPage) {
+            const index = this.state.groupIds.indexOf(
+                this.state.pages[this.state.focusedPage].groupId
+            );
+            const shift = direction === "right" ? 1 : -1;
+            const nextNeigbor = this.state.groupData[this.state.groupIds[index + shift]];
+            if (nextNeigbor) {
+                this.state.focusedPage = nextNeigbor.pageIds[0];
+            }
+        } else if (this.state.lastSelectedPage) {
+            this.state.focusedPage = this.state.lastSelectedPage;
+            this._focusNextGroup(direction);
+        } else {
+            this.state.focusedPage = this.sortedPagesIds[0];
+        }
+        this._keepFocusedPageInScreen();
+    }
+    /**
+     * On space key pressed :
+     * - if no focused page, active pages are (un)selected
+     * - if focused page is active, all active pages are (un)selected
+     * - if focused page is not active, focused page (un)selected
+     * @private
+     */
+    _spaceKeySelect() {
+        if (this.state.viewedPage) {
+            return;
+        }
+        const activatedPages = this.activatedPageIds;
+        const focusedPageIsActivated = activatedPages.includes(this.state.focusedPage);
+        if (this.state.focusedPage && !focusedPageIsActivated) {
+            this.state.pages[this.state.focusedPage].isSelected =
+                !this.state.pages[this.state.focusedPage].isSelected;
+        } else {
+            const doSelect = !activatedPages.every((pageId) => this.state.pages[pageId].isSelected);
+            for (const pageId of activatedPages) {
+                this.state.pages[pageId].isSelected = doSelect;
+            }
+        }
+    }
+    /**
+     * activate all the pages from focused page until beginning/end
+     * of the group according to the arrow key pressed
+     * @private
+     * @param {String} direction
+     */
+    _activateUntilSplit(direction) {
+        if (this.state.viewedPage) {
+            return;
+        }
+        if (this.state.focusedPage) {
+            const groupData =
+                this.state.groupData[this.state.pages[this.state.focusedPage].groupId];
+            const pageIndex = groupData.pageIds.indexOf(this.state.focusedPage);
+            const pagesToActivate =
+                direction === "right"
+                    ? groupData.pageIds.slice(pageIndex, groupData.pageIds.length)
+                    : groupData.pageIds.slice(0, pageIndex + 1);
+            const toggleActivateBool = pagesToActivate.every(
+                (pageId) => this.state.pages[pageId].isActivated
+            );
+            for (const pageId of pagesToActivate) {
+                this.state.pages[pageId].isActivated = !toggleActivateBool;
+            }
+        } else if (this.state.lastSelectedPage) {
+            this.state.focusedPage = this.state.lastSelectedPage;
+            this._activateUntilSplit(direction);
+        } else {
+            this.state.focusedPage = this.sortedPagesIds[0];
+        }
+    }
+    /**
+     * (Un)select all active pages
+     * @private
+     */
+    _selectAll() {
+        if (this.state.viewedPage) {
+            return;
+        }
+        const allActivated = this.allActivated;
+        for (const page of Object.values(this.state.pages)) {
+            page.isActivated = !allActivated;
+        }
+    }
+    /**
+     * Exit key pressing behaviour :
+     * - Desactivate pages
+     * - Unselect pages
+     * - Exit split tools
+     * @private
+     */
+    _onPushExit() {
+        // If we are in the previewer, exit the previewer and focus on previewed page
+        if (this.state.viewedPage) {
+            this.state.focusedPage = this.state.viewedPage;
+            this.previewCanvas = undefined;
+            this.state.viewedPage = undefined;
+            return;
+        }
+        // If one page is focus, loose the focus
+        if (this.activatedPageIds.length) {
+            this._desactivatePages();
+            return;
+        }
+        // If some selection, undo the selection
+        if (this.selectedPageIds.length) {
+            this.state.focusedPage = undefined;
+            this._resetSelection();
+            return;
+        }
+        this._exitSplitTools();
     }
 
     //--------------------------------------------------------------------------
-    // Handlers
+    // Click events and handlers
     //--------------------------------------------------------------------------
-
     /**
      * @private
+     * @param {Event} ev
+     */
+    _onMouseDown(ev) {
+        if (
+            ev.target.closest(".o_pdf_page") ||
+            ev.target.closest(".o_page_splitter_wrapper") ||
+            ev.target.closest(".o_documents_pdf_manager_top_bar") ||
+            ev.target.closest(".o_main_navbar") ||
+            ev.target.closest(".o_documents_pdf_page_preview") ||
+            ev.target.closest(".o_pdf_group_name_block") ||
+            ev.which !== 1
+        ) {
+            return;
+        }
+        this._selectionX = ev.pageX;
+        this._selectionY = ev.pageY - 40;
+        this._selectionScrollTop = this.pageViewer.el.scrollTop;
+        this._selectionScrollLeft = this.pageViewer.el.scrollLeft;
+        this.state.selectionBoxArgs["left"] = this._selectionX + "px";
+        this.state.selectionBoxArgs["top"] = this._selectionY + "px";
+        this.state.selectionBoxArgs["width"] = 0 + "px";
+        this.state.selectionBoxArgs["height"] = 0 + "px";
+        this.state.isSelecting = true;
+        if (!ev.ctrlKey && !ev.metaKey && !ev.shiftKey) {
+            if (!this.activatedPageIds.length) {
+                this._resetSelection();
+                this.state.focusedPage = undefined;
+            }
+            this.state.edit = false;
+            this._desactivatePages();
+        }
+    }
+    /**
+     * On mouse move, the selection area expends according the cursor position
+     * If selection area enters into a page, the latter is activated except if shift key is pressed.
+     * In this case, it is desactivated
+     * @private
+     * @param {Event} ev
+     */
+    _onMouseMove(ev) {
+        if (!this.state.isSelecting) {
+            return;
+        }
+        this.state.focusedPage = false;
+        const x = ev.pageX;
+        const y = ev.pageY - 40;
+        const scrollTopDiff = this.pageViewer.el.scrollTop - this._selectionScrollTop;
+        const scrollLeftDiff = this.pageViewer.el.scrollLeft - this._selectionScrollLeft;
+        this.state.selectionBoxArgs["left"] =
+            x - this._selectionX + scrollLeftDiff < 0
+                ? x + "px"
+                : this._selectionX - scrollLeftDiff + "px";
+        this.state.selectionBoxArgs["top"] =
+            y - this._selectionY + scrollTopDiff < 0
+                ? y + "px"
+                : this._selectionY - scrollTopDiff + "px";
+        this.state.selectionBoxArgs["width"] =
+            Math.abs(x - (this._selectionX - scrollLeftDiff)) + "px";
+        this.state.selectionBoxArgs["height"] =
+            Math.abs(y - (this._selectionY - scrollTopDiff)) + "px";
+
+        const boxCoordinates = this.selectionBox.el.getBoundingClientRect();
+        const boxTop = boxCoordinates.top;
+        const boxBottom = boxTop + boxCoordinates.height;
+        const boxLeft = boxCoordinates.left;
+        const boxRight = boxLeft + boxCoordinates.width;
+        const cards = document.querySelectorAll(".o_pdf_page");
+        for (const card of cards) {
+            const cardCoordinates = card.getBoundingClientRect();
+            const cardTop = cardCoordinates.top;
+            const cardBottom = cardTop + cardCoordinates.height;
+            const cardLeft = cardCoordinates.left;
+            const cardRight = cardLeft + cardCoordinates.width;
+
+            if (
+                boxLeft < cardRight &&
+                boxRight > cardLeft &&
+                boxTop < cardBottom &&
+                boxBottom > cardTop
+            ) {
+                this.state.pages[card.dataset.id].isActivated = !ev.shiftKey;
+            } else if (!ev.metaKey && !ev.ctrlKey && !ev.shiftKey) {
+                this.state.pages[card.dataset.id].isActivated = false;
+            }
+        }
+    }
+    /**
+     * On mouse up, former activate pages are desactivated except if ctrl/shift key is pressed
+     * If no active pages, selected pages are unselected
+     * @private
+     */
+    _onMouseUp() {
+        this.state.isSelecting = false;
+    }
+    /**
+     * @public
+     * @param {number} ruleId
+     */
+    onClickRule(ruleId) {
+        this._applyChanges(ruleId);
+    }
+    /**
+     * @public
+     */
+    onClickSplit() {
+        this.state.keepDocument = true;
+        this._applyChanges();
+    }
+    /**
+     * @public
      * @param {MouseEvent} ev
      */
-    _onClickArchive(ev) {
-        ev.stopPropagation;
+    onClickArchive(ev) {
         ev.target.blur();
         this.state.archive = !this.state.archive;
     }
     /**
-     * @private
-     * @param {MouseEvent} ev
+     * @public
      */
-    _onClickDropdown(ev) {
-        markEventHandled(ev, 'PdfManager.toggleDropdown');
-    }
-    _onClickGlobalAdd() {
+    onClickGlobalAdd() {
         this.addFileInput.el.click();
     }
     /**
-     * @private
+     * @public
+     */
+    onArchive() {
+        const processedPageIds = this.selectedPageIds;
+        const numberOfProcessedPages = processedPageIds.length;
+        if (numberOfProcessedPages === 0 && !this.state.focusedPage && !this.state.viewedPage) {
+            this._displayErrorNotification(_t("No document has been selected"));
+            return;
+        }
+        const sortedPagesIds = this.sortedPagesIds;
+        let pagesToDelete = processedPageIds;
+        let messageInput = _t("Are you sure that you want to delete the selected page(s)");
+        let nextFocusedPageId = processedPageIds.includes(this.state.focusedPage)
+            ? false
+            : this.state.focusedPage;
+        if (numberOfProcessedPages === 0 || this.state.viewedPage) {
+            // A previewed page is always focused
+            pagesToDelete = [this.state.focusedPage];
+            messageInput = this.state.viewedPage
+                ? _t("Are you sure that you want to delete this page ?")
+                : _t("Are you sure that you want to delete the focused page ?");
+            const focusedPageIndex = sortedPagesIds.indexOf(this.state.focusedPage);
+            if (focusedPageIndex + 1 < sortedPagesIds.length) {
+                nextFocusedPageId = sortedPagesIds[focusedPageIndex + 1];
+            } else if (focusedPageIndex - 1 >= 0) {
+                nextFocusedPageId = sortedPagesIds[focusedPageIndex - 1];
+            } else {
+                nextFocusedPageId = undefined;
+            }
+        }
+        this.dialog.add(ConfirmationDialog, {
+            body: messageInput,
+            confirm: () => {
+                for (const pageId of pagesToDelete) {
+                    this._removePage(pageId);
+                }
+                this._displayNumberDeletedPages(pagesToDelete.length);
+                this.state.focusedPage = nextFocusedPageId;
+                if (this.state.viewedPage && nextFocusedPageId) {
+                    this.onClickPage(nextFocusedPageId);
+                } else {
+                    this.state.viewedPage = undefined;
+                }
+            },
+            cancel: () => {},
+        });
+    }
+    /**
+     * @public
      * @param {MouseEvent} ev
      */
-    async _onFileInputChange(ev) {
+    async onFileInputChange(ev) {
         this.state.fileName = "";
-        ev.stopPropagation();
         if (!ev.target.files.length) {
             return;
         }
@@ -596,236 +1253,185 @@ export class PdfManager extends Component {
         ev.target.value = null;
     }
     /**
-     * Come back to the document app
-     *
-     * @private
+     * @public
      */
-    _onClickExit() {
-        this.state.isExit = true;
-        if (this.state.remaining) {
-            this.state.keepDocument = true;
-            this._applyChanges();
-        } else {
-            this.props.close();
-        }
-    }
-
-    /**
-     * @private
-     */
-    _onArchive() {
-        this.state.keepDocument = false;
-        this._applyChanges();
+    onClickExit() {
+        this._exitSplitTools();
     }
     /**
      * @private
-     * @param {customEvent} ev
-     * @param {String} ev.detail
+     * @param {Event} ev
      */
-    _onSelectClicked(pageId, isCheckbox, isRangeSelection, isKeepSelection) {
-        const selectedPageIds = this.activePageIds;
-        const anchorId = this.state.anchorId || selectedPageIds[0];
-        const recordIds = [];
-
-        for (const groupId of this.state.groupIds) {
-            recordIds.push(...this.state.groupData[groupId].pageIds);
-        }
-        const { newSelection, anchor } = computeMultiSelection(recordIds, pageId, {
-            anchor: anchorId,
-            isCheckbox,
-            isKeepSelection,
-            isRangeSelection: isRangeSelection && anchorId,
-            selected: selectedPageIds,
-        });
-        const selectionSet = new Set(newSelection);
-        this.state.anchorId = anchor;
-        for (const pageId in this.state.pages) {
-            this.state.pages[pageId].isSelected = selectionSet.has(pageId);
+    _onOutsideClick(ev) {
+        if (
+            (!this._exitSplitToolsClick &&
+                (ev.target.closest(".dropdown-item") || ev.target.closest(".o_menu_toggle")) &&
+                ev.target.closest(".dropdown-item")?.dataset.menu !== "shortcuts" &&
+                ev.target.closest(".dropdown-item")?.dataset.menu !== "settings" &&
+                ev.target.closest(".dropdown-item")?.dataset.menu !== "support" &&
+                ev.target.closest(".dropdown-item")?.dataset.menu !== "documentation" &&
+                !ev.target.closest("[data-dropdown-is-mobile]")) ||
+            ev.target.closest(".o_burger_menu_content")
+        ) {
+            ev.stopPropagation();
+            ev.preventDefault();
+            this._exitSplitTools(() => {
+                this._exitSplitToolsClick = true;
+                ev.target.click();
+            });
         }
     }
-
     /**
-     * @private
-     * @param {MouseEvent} ev
+     * Open the previewer
+     * @public
+     * @param {String} pageId
      */
-    _onGlobalClick(ev) {
-        if(ev.target.closest(".o_documents_pdf_page_frame") || ev.target.closest(".o_documents_pdf_manager_top_bar")) {
-            return;
-        }
-        for (const page of Object.values(this.state.pages)) {
-            page.isSelected = false;
-        }
-    }
-
-    /**
-     * @private
-     * @param {MouseEvent} ev
-     */
-    _onClickManager(ev) {
-        this._onGlobalClick(ev);
-        if (isEventHandled(ev, 'PdfManager.toggleDropdown')) {
-            return;
-        }
-        ev.stopPropagation();
-        this.previewCanvas = undefined;
-        this.state.viewedPage = undefined;
-    }
-    /**
-     * @private
-     * @param {customEvent} ev
-     * @param {String} ev.detail
-     */
-    async _onClickPage(pageId) {
+    async onClickPage(pageId) {
+        this.state.focusedPage = pageId;
         const page = this.state.pageCanvases[pageId].page;
         if (!page) {
             return;
         }
-        this.previewCanvas = await this._renderCanvas(page, {
-            width: 1300,
-            height: 1800,
+        const previewWrapper = document.querySelector(".o_documents_pdf_page_preview");
+        const ratio = 18 / 13;
+        const width = previewWrapper.clientWidth - (30 * window.innerWidth) / 100;
+        this.previewCanvas = await this._renderCanvas(toRaw(page), {
+            width: width,
+            height: width * ratio,
         });
         this.state.viewedPage = pageId;
+        const targetGroup = this.state.groupData[this.state.pages[pageId].groupId];
+        this.state.viewedPageName =
+            targetGroup.name + "-p" + (targetGroup.pageIds.indexOf(pageId) + 1);
+        const sortedPagesIds = this.sortedPagesIds;
+        this.state.viewedPageIndex = sortedPagesIds.indexOf(pageId);
     }
     /**
-     * @private
-     * @param {String} pageId
-     * @param {String} groupId
-     * @param {MouseEvent} ev
+     * @public
      */
-    _onClickPageSeparator(pageId, groupId, ev) {
-        ev.stopPropagation();
-        const page = this.state.pages[pageId];
-        const groupPageIds = this.state.groupData[groupId].pageIds;
-        const pageIndex = groupPageIds.indexOf(pageId);
-        const groupIndex = this.state.groupIds.indexOf(groupId);
-        const isLastPage = pageIndex === groupPageIds.length - 1;
-
-        if (isLastPage) {
-            // merging the following group into the current one.
-            const targetGroupId = this.state.groupIds[groupIndex + 1];
-            if (targetGroupId) {
-                const pageIds = this.state.groupData[targetGroupId].pageIds;
-                for (const pageId of pageIds) {
-                    this._addPage(pageId, page.groupId);
-                }
-            }
-        } else {
-            // making a new group with all the following pages.
-            const newGroupPages = groupPageIds.slice(pageIndex + 1);
-            const name = this.state.groupData[groupId].name;
-            const newGroupId = this._createGroup({
-                name,
-                index: groupIndex + 1,
-            });
-            for (const page of newGroupPages) {
-                this._addPage(page, newGroupId);
-            }
+    async onClickPrevious() {
+        if (this.state.viewedPageIndex > 0) {
+            await this.onClickPage(this.sortedPagesIds[this.state.viewedPageIndex - 1]);
         }
     }
     /**
-     * @private
+     * @public
+     */
+    async onClickNext() {
+        if (this.state.viewedPageIndex < this.state.numberOfPages - 1) {
+            await this.onClickPage(this.sortedPagesIds[this.state.viewedPageIndex + 1]);
+        }
+    }
+    /**
+     * @public
      * @param {customEvent} ev
      */
-    _onClickPreview(ev) {
-        this.previewCanvas = undefined;
-        this.state.viewedPage = undefined;
+    onClickExitPreview(ev) {
+        if (
+            ev.target.classList.contains("o_documents_pdf_page_preview") ||
+            ev.target.closest(".o_close_button")
+        ) {
+            this.state.focusedPage = this.state.viewedPage;
+            this.previewCanvas = undefined;
+            this.state.viewedPage = undefined;
+        }
     }
     /**
-     * @private
-     * @param {number} ruleId
-     * @param {MouseEvent} ev
+     * Activate clicked page.
+     * If shift key is pressed, trigger the range activation between last clicked page and current page
+     * @public
+     * @param {String} pageId
+     * @param {Boolean} isRangeSelection
+     * @param {Boolean} ctrlKey
      */
-    _onClickRule(ruleId, ev) {
-        this._applyChanges(ruleId);
+    onActivateClicked(pageId, isRangeSelection, ctrlKey) {
+        if (!isRangeSelection && !ctrlKey) {
+            const toggleActivation =
+                this.activatedPageIds.length === 1 && this.activatedPageIds[0] === pageId;
+            this._desactivatePages();
+            this.state.pages[pageId].isActivated = !toggleActivation;
+        } else {
+            this.state.pages[pageId].isActivated = !this.state.pages[pageId].isActivated;
+            if (
+                isRangeSelection &&
+                this.state.lastSelectedPage &&
+                this.state.pages[pageId].isActivated
+            ) {
+                const sortedPagesIds = this.sortedPagesIds;
+                const pageIndex = sortedPagesIds.indexOf(pageId);
+                const lastSelectedPageIndex = sortedPagesIds.indexOf(this.state.lastSelectedPage);
+                const pagesToActivate =
+                    pageIndex < lastSelectedPageIndex
+                        ? sortedPagesIds.slice(pageIndex, lastSelectedPageIndex + 1)
+                        : sortedPagesIds.slice(lastSelectedPageIndex, pageIndex + 1);
+                for (const pageId of pagesToActivate) {
+                    this.state.pages[pageId].isActivated = true;
+                }
+            }
+        }
+        this.state.lastSelectedPage = pageId;
     }
     /**
-     * @private
-     * @param {MouseEvent} ev
+     * Select clicked page.
+     * If shift key is pressed, trigger the range selection between last clicked page and current page
+     * @public
+     * @param {String} pageId
+     * @param {Boolean} isRangeSelection
      */
-    _onClickSplit(ev) {
-        ev.stopPropagation();
-        this.state.keepDocument = true;
-        this._applyChanges();
+    onSelectClicked(pageId, isRangeSelection) {
+        const activatedPages = this.activatedPageIds;
+        const clickedPageIsActivated = activatedPages.includes(pageId);
+        const toggleSelect = !this.state.pages[pageId].isSelected;
+        this.state.pages[pageId].isSelected = toggleSelect;
+        if (clickedPageIsActivated) {
+            for (const page of activatedPages) {
+                this.state.pages[page].isSelected = toggleSelect;
+            }
+        } else if (isRangeSelection && this.state.lastSelectedPage && toggleSelect) {
+            const sortedPagesIds = this.sortedPagesIds;
+            const pageIndex = sortedPagesIds.indexOf(pageId);
+            const lastSelectedPageIndex = sortedPagesIds.indexOf(this.state.lastSelectedPage);
+            const pagesToSelect =
+                pageIndex < lastSelectedPageIndex
+                    ? sortedPagesIds.slice(pageIndex, lastSelectedPageIndex + 1)
+                    : sortedPagesIds.slice(lastSelectedPageIndex, pageIndex + 1);
+            for (const pageId of pagesToSelect) {
+                this.state.pages[pageId].isSelected = true;
+            }
+        }
+        this.state.lastSelectedPage = pageId;
     }
     /**
-     * @private
-     * @param {customEvent} ev
+     * @public
+     * @param {String} pageId
+     * @param {String} groupId
+     */
+    onClickPageSeparator(pageId, groupId) {
+        this._pageSeparator(pageId, groupId);
+    }
+    /**
+     * @public
      * @param {String} groupId
      * @param {String} name
      */
-    _onEditName(groupId, name) {
+    onEditName(groupId, name) {
         this.state.groupData[groupId].name = name || _t("unnamed");
     }
     /**
-     * @private
-     * @param {KeyboardEvent} ev
-     */
-    _onGlobalCaptureKeyup(ev) {
-        if (ev.code === 'ShiftLeft') {
-            this.state.lShiftKeyDown = false;
-        } else if (ev.code === 'ShiftRight') {
-            this.state.rShiftKeyDown = false;
-        }
-    }
-    /**
-     * @private
-     * @param {KeyboardEvent} ev
-     * @param {boolean} ev.altKey
-     * @param {string} ev.key
-     */
-    _onGlobalKeydown(ev) {
-        if ($(ev.target).is('input')) {
-            return;
-        }
-        if (ev.key === 'Escape') {
-            this.props.close();
-        } else if (ev.key === 'A' && ev.shiftKey) {
-            const allSelectedSetter = !this.allSelected;
-            for (const page of Object.values(this.state.pages)) {
-                page.isSelected = allSelectedSetter;
-            }
-        } else if (ev.code === 'ShiftLeft') {
-            this.state.lShiftKeyDown = true;
-        } else if (ev.code === 'ShiftRight') {
-            this.state.rShiftKeyDown = true;
-        }
-    }
-    /**
-     * @private
+     * @public
      * @param {customEvent} ev
      */
-    _onPageDragStart(ev) {
+    onPageDragStart(ev) {
         ev.stopPropagation();
     }
     /**
-     * @private
-     * @param {customEvent} ev
-     * @param {Object} ev.detail
-     * @param {number} ev.detail.targetPageId
-     * @param {number} ev.detail.pageId
+     * @public
+     * @param {String} ev.detail.targetPageId
+     * @param {String} ev.detail.pageId
      */
-    _onPageDrop(targetPageId, pageId) {
+    onPageDrop(targetPageId, pageId) {
         const targetGroupId = this.state.pages[targetPageId].groupId;
         const index = this.state.groupData[targetGroupId].pageIds.indexOf(targetPageId);
         this._addPage(pageId, targetGroupId, { index });
     }
 }
-
-PdfManager.components = {
-    Dialog,
-    PdfPage,
-    PdfGroupName,
-};
-
-PdfManager.defaultProps = {
-    rules: [],
-};
-
-PdfManager.props = {
-    documents: Array,
-    rules: { type: Array, optional: true },
-    onProcessDocuments: { type: Function },
-    close: { type: Function },
-};
-
-PdfManager.template = 'documents.component.PdfManager';

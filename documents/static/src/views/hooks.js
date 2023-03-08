@@ -228,7 +228,7 @@ function useDocumentsViewFilePreviewer({
             component.dialogService.add(
                 PdfManager,
                 {
-                    documents: documents,
+                    documents: documents.map((doc) => doc.data),
                     rules: rules.map((rule) => rule.data),
                     onProcessDocuments: ({ documentIds, ruleId, exit }) => {
                         if (documentIds && documentIds.length) {
@@ -245,10 +245,10 @@ function useDocumentsViewFilePreviewer({
                             return;
                         }
                         await component.model.load();
-                        const records = component.model.root.records;
                         let count = 0;
-                        for (const record of records) {
+                        for (const record of documents) {
                             if (!newDocumentIds.includes(record.resId)) {
+                                record.model.root.deleteRecords(record);
                                 continue;
                             }
                             record.onRecordClick(null, {

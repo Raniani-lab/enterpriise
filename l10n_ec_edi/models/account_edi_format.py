@@ -38,11 +38,11 @@ class AccountEdiFormat(models.Model):
     def _is_compatible_with_journal(self, journal):
         # EXTENDS account.edi.format
         # For Ecuador include the journals for sales invoices, purchase liquidations and purchase withholds
-        if journal.country_code != 'EC' or self.code != 'ecuadorian_edi':
-            return super(AccountEdiFormat, self)._is_compatible_with_journal(journal)
-        return (journal.type == 'sale' and journal.l10n_latam_use_documents) \
-                or (journal.type == 'general' and journal.l10n_ec_withhold_type == 'in_withhold') \
-                or (journal.type == 'purchase' and journal.l10n_ec_is_purchase_liquidation)
+        if self.code != 'ecuadorian_edi':
+            return super()._is_compatible_with_journal(journal)
+        return journal.country_code == 'EC' and ((journal.type == 'sale' and journal.l10n_latam_use_documents)
+                or (journal.type == 'general' and journal.l10n_ec_withhold_type == 'in_withhold')
+                or (journal.type == 'purchase' and journal.l10n_ec_is_purchase_liquidation))
 
     def _needs_web_services(self):
         # EXTENDS account.edi.format

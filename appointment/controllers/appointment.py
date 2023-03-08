@@ -213,7 +213,10 @@ class AppointmentController(http.Controller):
             'timezone': request.session['timezone'],  # bw compatibility
         }, **page_values
         )
-        return request.render("appointment.appointment_info", render_params)
+        # Do not let the browser store the page, this ensures correct timezone and params management in case
+        # the user goes back and forth to this endpoint using browser controls (or mouse back button)
+        # this is especially necessary as we alter the request.session parameters.
+        return request.render("appointment.appointment_info", render_params, headers={'Cache-Control': 'no-store'})
 
     def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, **kwargs):
         """ Computes all values needed to choose between / common to all appointment_type page templates.

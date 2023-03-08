@@ -156,8 +156,10 @@ class MrpWorkorder(models.Model):
     def _cal_cost(self):
         return super()._cal_cost() + sum(self.time_ids.mapped('total_cost'))
 
-    def button_start(self):
+    def button_start(self, bypass=False):
         # this override checks if the connected people are allowed to work on the wo
+        if bypass:
+            return super().button_start()
         if not self.workcenter_id.allow_employee or not request:
             return super().button_start()
         connected_employees = self.env['hr.employee'].get_employees_connected()
@@ -227,6 +229,8 @@ class MrpWorkorder(models.Model):
             if self.allow_employee:
                 if self.env['hr.employee'].get_session_owner():
                     return True
+                else:
+                    self.button_start(bypass=True)
             else:
                 return True
         return False

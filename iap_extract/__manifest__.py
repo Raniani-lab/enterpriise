@@ -8,6 +8,7 @@
     'summary': 'Common module for requesting data from the extract server',
     'depends': ['base', 'mail'],
     'data': [
+        'data/config_parameter_endpoint.xml',
         'data/mail_template_data.xml',
     ],
     'auto_install': True,

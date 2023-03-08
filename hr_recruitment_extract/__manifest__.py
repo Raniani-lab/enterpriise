@@ -9,7 +9,6 @@
     'depends': ['hr_recruitment', 'iap_extract', 'iap_mail', 'mail_enterprise'],
     'data': [
         'data/ir_cron_data.xml',
-        'data/config_parameter_endpoint.xml',
         'data/ir_actions_server_data.xml',
         'views/hr_applicant_views.xml',
         'views/res_config_settings_views.xml',

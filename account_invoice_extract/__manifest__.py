@@ -9,7 +9,6 @@
     'depends': ['account', 'iap_extract', 'iap_mail', 'mail_enterprise'],
     'data': [
         'security/ir.model.access.csv',
-        'data/config_parameter_endpoint.xml',
         'data/extraction_status.xml',
         'data/res_config_settings_views.xml',
         'data/crons.xml',

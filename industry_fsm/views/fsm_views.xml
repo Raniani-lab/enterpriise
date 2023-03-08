@@ -41,6 +41,9 @@
         <field name="inherit_id" ref="project_task_view_search_fsm_base"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
+            <field name="description" position="after">
+                <field string="Properties" name="task_properties"/>
+            </field>
             <filter name="inactive" position="before">
                 <filter string="Unread Messages" name="message_needaction" domain="[('message_needaction', '=', True)]" groups="mail.group_mail_notification_type_inbox"/>
                 <separator/>

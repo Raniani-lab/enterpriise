@@ -169,10 +169,20 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.display_timesheet_timer = ticket.use_helpdesk_timesheet and not ticket.encode_uom_in_days
 
-    @api.depends('timesheet_ids')
+    @api.depends('timesheet_ids.unit_amount')
     def _compute_total_hours_spent(self):
+        if not any(self._ids):
+            for ticket in self:
+                ticket.total_hours_spent = round(sum(ticket.timesheet_ids.mapped('unit_amount')), 2)
+            return
+        timesheet_read_group = self.env['account.analytic.line']._read_group(
+            [('helpdesk_ticket_id', 'in', self.ids)],
+            ['unit_amount', 'helpdesk_ticket_id'],
+            ['helpdesk_ticket_id'],
+        )
+        timesheets_per_ticket = {row['helpdesk_ticket_id'][0]: row['unit_amount'] for row in timesheet_read_group}
         for ticket in self:
-            ticket.total_hours_spent = round(sum(ticket.timesheet_ids.mapped('unit_amount')), 2)
+            ticket.total_hours_spent = round(timesheets_per_ticket.get(ticket.id, 0.0), 2)
 
     @api.depends('project_id')
     def _compute_analytic_account_id(self):

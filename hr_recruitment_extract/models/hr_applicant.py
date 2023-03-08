@@ -6,7 +6,7 @@ from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import UserError
 
 
-CLIENT_OCR_VERSION = 100
+OCR_VERSION = 101
 
 class HrApplicant(models.Model):
     _name = 'hr.applicant'
@@ -100,7 +100,7 @@ class HrApplicant(models.Model):
             self.filtered('extract_can_show_send_button').action_manual_send_for_digitization()
 
     def _contact_iap_extract(self, pathinfo, params):
-        params['version'] = CLIENT_OCR_VERSION
+        params['version'] = OCR_VERSION
         endpoint = self.env['ir.config_parameter'].sudo().get_param('iap_extract_endpoint', 'https://iap-extract.odoo.com')
         return iap_tools.iap_jsonrpc(endpoint + '/api/extract/applicant/1/' + pathinfo, params=params)
 

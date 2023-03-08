@@ -13,7 +13,7 @@ import json
 _logger = logging.getLogger(__name__)
 
 PARTNER_AUTOCOMPLETE_ENDPOINT = 'https://partner-autocomplete.odoo.com'
-CLIENT_OCR_VERSION = 120
+OCR_VERSION = 121
 
 
 class AccountInvoiceExtractionWords(models.Model):
@@ -79,7 +79,7 @@ class AccountMove(models.Model):
 
     @api.model
     def _contact_iap_extract(self, pathinfo, params):
-        params['version'] = CLIENT_OCR_VERSION
+        params['version'] = OCR_VERSION
         endpoint = self.env['ir.config_parameter'].sudo().get_param('iap_extract_endpoint', 'https://iap-extract.odoo.com')
         return iap_tools.iap_jsonrpc(endpoint + '/api/extract/invoice/1/' + pathinfo, params=params)
 

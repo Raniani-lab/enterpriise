@@ -24,7 +24,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
             'raw': b'My expense',
         })
 
-    def get_default_extract_response(self):
+    def get_result_success_response(self):
         return {
             'status': 'success',
             'results': [{
@@ -34,19 +34,17 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
                 'currency': {'selected_value': {'content': 'euro', 'words': []}},
                 'bill_reference': {'selected_value': {'content': 'bill-ref007', 'words': []}},
             }],
-            'document_id': 1234567,
         }
 
     def test_auto_send_for_digitization(self):
         # test that the uploaded attachment is sent to the extract server when `auto_send` is set
         self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
-        extract_response = self.get_default_extract_response()
 
         usd_currency = self.env.ref('base.USD')
         eur_currency = self.env.ref('base.EUR')
         eur_currency.active = True
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(self.parse_success_response()):
             self.expense.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.expense.extract_state, 'waiting_extraction')
@@ -56,6 +54,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         self.assertFalse(self.expense.reference)
         self.assertEqual(self.expense.currency_id, usd_currency)
 
+        extract_response = self.get_result_success_response()
         with self._mock_iap_extract(extract_response):
             self.expense.check_all_status()
 
@@ -71,7 +70,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
     def test_manual_send_for_digitization(self):
         # test the `manual_send` mode for digitization.
         self.env.company.expense_extract_show_ocr_option_selection = 'manual_send'
-        extract_response = self.get_default_extract_response()
+        extract_response = self.get_result_success_response()
 
         eur_currency = self.env.ref('base.EUR')
         eur_currency.active = True
@@ -79,13 +78,13 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         self.assertEqual(self.expense.extract_state, 'no_extract_requested')
         self.assertFalse(self.expense.extract_can_show_send_button)
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(self.parse_success_response()):
             self.expense.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.expense.extract_state, 'no_extract_requested')
         self.assertTrue(self.expense.extract_can_show_send_button)
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(self.parse_success_response()):
             self.expense.action_send_for_digitization()
 
         # upon success, no button shall be provided
@@ -106,9 +105,8 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
     def test_no_send_for_digitization(self):
         # test that the `no_send` mode for digitization prevents the users from sending
         self.env.company.expense_extract_show_ocr_option_selection = 'no_send'
-        extract_response = self.get_default_extract_response()
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(self.parse_success_response()):
             self.expense.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.expense.extract_state, 'no_extract_requested')
@@ -118,7 +116,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         # test that upon not enough credit error, the retry button is provided
         self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
 
-        with self._mock_iap_extract({'status': 'error_no_credit'}):
+        with self._mock_iap_extract(self.parse_credit_error_response()):
             self.expense.message_post(attachment_ids=[self.attachment.id])
 
         self.assertFalse(self.expense.extract_can_show_send_button)
@@ -126,9 +124,8 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
     def test_status_not_ready(self):
         # test the 'processing' ocr status effects
         self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
-        status_response = {'status': 'processing'}
 
-        with self._mock_iap_extract(status_response):
+        with self._mock_iap_extract(self.parse_processing_response()):
             self.expense._check_ocr_status()
 
         self.assertEqual(self.expense.extract_state, 'extract_not_ready')
@@ -137,15 +134,16 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
     def test_expense_validation(self):
         # test that when the expense is hired, the validation is sent to the server
         self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
-        extract_response = self.get_default_extract_response()
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(self.parse_success_response()):
             self.expense.message_post(attachment_ids=[self.attachment.id])
+
+        with self._mock_iap_extract(self.get_result_success_response()):
             self.expense._check_ocr_status()
 
         self.assertEqual(self.expense.extract_state, 'waiting_validation')
 
-        with self._mock_iap_extract({'status': 'success'}):
+        with self._mock_iap_extract(self.validate_success_response()):
             self.expense.action_submit_expenses()
 
         self.assertEqual(self.expense.extract_state, 'done')

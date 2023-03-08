@@ -59,7 +59,7 @@
                 </div>
             </xpath>
             <xpath expr="//field[@name='account_id']" position='after'>
-                <field name="extract_remote_id" groups="base.group_no_one"/>
+                <field name="extract_document_uuid" groups="base.group_no_one"/>
             </xpath>
         </field>
     </record>
@@ -70,7 +70,7 @@
         <field name="inherit_id" ref="hr_expense.hr_expense_view_graph"/>
         <field name="arch" type="xml">
             <xpath expr="//graph" position="inside">
-                <field name="extract_remote_id" invisible="1"/>
+                <field name="extract_document_uuid" invisible="1"/>
                 <field name="extract_status" invisible="1"/>
             </xpath>
         </field>

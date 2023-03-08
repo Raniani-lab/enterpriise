@@ -17,7 +17,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
             'raw': b'My attachment',
         })
 
-    def get_default_extract_response(self):
+    def get_result_success_response(self):
         return {
             'status': 'success',
             'results': [{
@@ -26,15 +26,13 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
                 'phone': {'selected_value': {'content': '+32488888888'}, 'words': []},
                 'mobile': {'selected_value': {'content': '+32499999999'}, 'words': []},
             }],
-            'document_id': 1234567,
         }
 
     def test_auto_send_for_digitization(self):
         # test the `auto_send` mode for digitization does send the attachment upon upload
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
-        extract_response = self.get_default_extract_response()
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(self.parse_success_response()):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.applicant.extract_state, 'waiting_extraction')
@@ -44,6 +42,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         self.assertFalse(self.applicant.partner_phone)
         self.assertFalse(self.applicant.partner_mobile)
 
+        extract_response = self.get_result_success_response()
         with self._mock_iap_extract(extract_response):
             self.applicant.check_all_status()
 
@@ -55,23 +54,23 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
     def test_manual_send_for_digitization(self):
         # test the `manual_send` mode for digitization
         self.env.company.recruitment_extract_show_ocr_option_selection = 'manual_send'
-        extract_response = self.get_default_extract_response()
 
         self.assertEqual(self.applicant.extract_state, 'no_extract_requested')
         self.assertFalse(self.applicant.extract_can_show_send_button)
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(self.parse_success_response()):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.applicant.extract_state, 'no_extract_requested')
         self.assertTrue(self.applicant.extract_can_show_send_button)
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(self.parse_success_response()):
             self.applicant.action_send_for_digitization()
 
         # upon success, no button shall be provided
         self.assertFalse(self.applicant.extract_can_show_send_button)
 
+        extract_response = self.get_result_success_response()
         with self._mock_iap_extract(extract_response):
             self.applicant.check_all_status()
 
@@ -83,9 +82,8 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
     def test_no_send_for_digitization(self):
         # test that the `no_send` mode for digitization prevents the users from sending
         self.env.company.recruitment_extract_show_ocr_option_selection = 'no_send'
-        extract_response = self.get_default_extract_response()
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(self.parse_success_response()):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.applicant.extract_state, 'no_extract_requested')
@@ -95,7 +93,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         # test that upon not enough credit error, the retry button is provided
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
 
-        with self._mock_iap_extract({'status': 'error_no_credit'}):
+        with self._mock_iap_extract(self.parse_credit_error_response()):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertFalse(self.applicant.extract_can_show_send_button)
@@ -103,9 +101,8 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
     def test_status_not_ready(self):
         # test the 'processing' ocr status effects
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
-        status_response = {'status': 'processing'}
 
-        with self._mock_iap_extract(status_response):
+        with self._mock_iap_extract(self.parse_processing_response()):
             self.applicant._check_ocr_status()
 
         self.assertEqual(self.applicant.extract_state, 'extract_not_ready')
@@ -114,7 +111,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
     def test_applicant_validation(self):
         # test that when the applicant is hired, the validation is sent to the server
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
-        extract_response = self.get_default_extract_response()
+        extract_response = self.get_result_success_response()
 
         with self._mock_iap_extract(extract_response):
             self.applicant._check_ocr_status()
@@ -122,7 +119,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         self.assertEqual(self.applicant.extract_state, 'waiting_validation')
 
         hired_stages = self.env['hr.recruitment.stage'].search([('hired_stage', '=', True)])
-        with self._mock_iap_extract({'status': 'success'}):
+        with self._mock_iap_extract(self.validate_success_response()):
             self.applicant.write({'stage_id': hired_stages[0].id})
 
         self.assertEqual(self.applicant.extract_state, 'done')

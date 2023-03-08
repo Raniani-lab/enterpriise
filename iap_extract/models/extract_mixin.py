@@ -51,7 +51,7 @@ class ExtractMixin(models.AbstractModel):
         'Extract state', default='no_extract_requested', required=True, copy=False)
     extract_status = fields.Char('Extract status', copy=False)
     extract_error_message = fields.Text('Error message', compute='_compute_error_message')
-    extract_remote_id = fields.Integer('Id of the request to IAP-OCR', default='-1', copy=False, readonly=True)
+    extract_document_uuid = fields.Char('ID of the request to IAP-OCR', copy=False, readonly=True)
     extract_can_show_send_button = fields.Boolean('Can show the ocr send button', compute='_compute_show_send_button')
     is_in_extractable_state = fields.Boolean(compute='_compute_is_in_extractable_state', store=True)
     extract_state_processed = fields.Boolean(compute='_compute_extract_state_processed', store=True)
@@ -110,7 +110,7 @@ class ExtractMixin(models.AbstractModel):
     def _cron_validate(self):
         records_to_validate = self.search(self._get_validation_domain())
         documents = {
-            record.extract_remote_id: {
+            record.extract_document_uuid: {
                 field: record.get_validation(field),
             } for record in records_to_validate for field in self._get_validation_fields()
         }
@@ -207,7 +207,7 @@ class ExtractMixin(models.AbstractModel):
                 self.extract_status = result['status']
                 if result['status'] == 'success':
                     self.extract_state = 'waiting_extraction'
-                    self.extract_remote_id = result['document_id']
+                    self.extract_document_uuid = result['document_uuid']
                     if self.env['ir.config_parameter'].sudo().get_param("iap_extract.already_notified", True):
                         self.env['ir.config_parameter'].sudo().set_param("iap_extract.already_notified", False)
                     self._retry_ocr_success_callback()
@@ -258,7 +258,7 @@ class ExtractMixin(models.AbstractModel):
     def _check_ocr_status(self):
         """ Contact iap to get the actual status of the ocr request. This function returns the OCR results if any. """
         self.ensure_one()
-        result = self._contact_iap_extract('get_result', params={'document_id': self.extract_remote_id})
+        result = self._contact_iap_extract('get_result', params={'document_uuid': self.extract_document_uuid})
         self.extract_status = result['status']
         ocr_results = None
         if result['status'] == 'success':

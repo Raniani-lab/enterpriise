@@ -13,6 +13,17 @@ from odoo.tests import common
 
 
 class TestExtractMixin(common.TransactionCase):
+    def parse_success_response(self):
+        return {'status': 'success', 'document_uuid': 'some_uuid'}
+
+    def parse_processing_response(self):
+        return {'status': 'processing'}
+
+    def parse_credit_error_response(self):
+        return {'status': 'error_no_credit'}
+
+    def validate_success_response(self):
+        return {'status': 'success'}
 
     @classmethod
     def setUpClass(cls):

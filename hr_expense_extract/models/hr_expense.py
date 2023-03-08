@@ -11,7 +11,7 @@ from odoo.tools import is_html_empty
 import time
 
 
-CLIENT_OCR_VERSION = 130
+OCR_VERSION = 131
 
 
 class HrExpense(models.Model):
@@ -27,7 +27,7 @@ class HrExpense(models.Model):
 
     @api.model
     def _contact_iap_extract(self, pathinfo, params):
-        params['version'] = CLIENT_OCR_VERSION
+        params['version'] = OCR_VERSION
         endpoint = self.env['ir.config_parameter'].sudo().get_param('iap_extract_endpoint', 'https://iap-extract.odoo.com')
         return iap_tools.iap_jsonrpc(endpoint + '/api/extract/expense/1/' + pathinfo, params=params)
 

@@ -79,6 +79,13 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
 
             return rslt
 
+        def get_excluded_taxes():
+            tag_49_ids = self.env.ref('l10n_be.tax_report_line_49').expression_ids._get_matching_tags().ids
+            trl_49 = self.env['account.tax.repartition.line'].search([('tag_ids', 'in', tag_49_ids), ('document_type', '=', 'refund')])
+            tag_47_ids = self.env.ref('l10n_be.tax_report_line_47').expression_ids._get_matching_tags().ids
+            trl_47 = self.env['account.tax.repartition.line'].search([('tag_ids', 'in', tag_47_ids), ('document_type', '=', 'invoice')])
+            return trl_47.tax_id & trl_49.tax_id
+
         report = self.env.ref('l10n_be_reports.l10n_be_partner_vat_listing')
         report._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
 
@@ -86,11 +93,15 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             raise UserError(_('Grouping by ID key is not supported by partner VAT custom engine.'))
 
         partner_ids = self.env['res.partner'].with_context(active_test=False).search([('vat', 'ilike', 'BE%')]).ids
+        excluded_tax_ids = get_excluded_taxes().ids
 
         if not partner_ids:
             return [] if current_groupby else {'vat_number': None, 'turnover': 0, 'vat_amount': 0, 'has_sublines': False}
 
         tables, where_clause, where_params = report._query_get(options, 'strict_range')
+
+        if excluded_tax_ids:
+            where_params = [tuple(excluded_tax_ids), *where_params]
 
         query = f'''
             SELECT
@@ -121,6 +132,12 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
                         OR inv.move_type IN ('out_refund', 'out_invoice')
                     )
                     AND inv.state = 'posted'
+                    {"""AND NOT EXISTS (
+                        SELECT 1
+                        FROM account_move_line_account_tax_rel amlatr
+                        WHERE "account_move_line".id = amlatr.account_move_line_id
+                        AND amlatr.account_tax_id IN %s
+                    )"""if excluded_tax_ids else ''}
                     AND {where_clause}
                 GROUP BY
                     {f'"account_move_line".{current_groupby},' if current_groupby else ''}
@@ -148,6 +165,12 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
                         OR inv.move_type = 'out_refund'
                     )
                     AND inv.state = 'posted'
+                    {"""AND NOT EXISTS (
+                        SELECT 1
+                        FROM account_move_line_account_tax_rel amlatr
+                        WHERE "account_move_line".id = amlatr.account_move_line_id
+                        AND amlatr.account_tax_id IN %s
+                    )"""if excluded_tax_ids else ''}
                     AND {where_clause}
                 GROUP BY
                     {f'"account_move_line".{current_groupby},' if current_groupby else ''}
@@ -175,6 +198,12 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
                         OR inv.move_type IN ('out_refund', 'out_invoice')
                     )
                     AND inv.state = 'posted'
+                    {"""AND NOT EXISTS (
+                        SELECT 1
+                        FROM account_move_line_account_tax_rel amlatr
+                        WHERE "account_move_line".id = amlatr.account_move_line_id
+                        AND amlatr.account_tax_id IN %s
+                    )"""if excluded_tax_ids else ''}
                     AND {where_clause}
                 GROUP BY
                     {f'"account_move_line".{current_groupby},' if current_groupby else ''}

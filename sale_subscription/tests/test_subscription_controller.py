@@ -84,7 +84,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
             self.assertEqual(res.status_code, 303)
             self.env.invalidate_all()
             self.assertEqual(self.subscription.subscription_state, '6_churn', 'The subscription should be closed.')
-            self.assertEqual(self.subscription.end_date, date(2023, 11, 17), 'The end date of the subscription should not be updated.')
+            self.assertEqual(self.subscription.end_date, date(2021, 11, 18), 'The end date of the subscription should be updated.')
 
     def test_prevents_assigning_not_owned_payment_tokens_to_subscriptions(self):
         malicious_user_subscription = self.env['sale.order'].create({

@@ -141,10 +141,10 @@ class TestSaleSubscription(TestCommissionsSetup):
         # `is_subscription` is True when there are recurring lines in the sale order.
         form.commission_plan_frozen = True
         form.commission_plan_id = self.env['commission.plan']
-        form.end_date = fields.Date.today()
 
         sub = form.save()
         sub.action_confirm()
+        sub._cron_recurring_create_invoice()
         # renew
         res = sub.prepare_renewal_order()
         res_id = res['res_id']

@@ -353,7 +353,8 @@ class TestSubscription(TestSubscriptionCommon):
                 renewal_so.action_confirm()
             renewal_so.start_date = renewal_start_date
             renewal_so.action_confirm()
-            self.assertEqual(self.subscription.recurring_monthly, 0, 'Should be closed')
+
+            self.assertEqual(self.subscription.recurring_monthly, 189, 'Should be closed but with an MRR')
             self.assertEqual(renewal_so.subscription_state, '3_progress', 'so should now be in progress')
             self.assertEqual(self.subscription.subscription_state, '5_renewed')
             self.assertEqual(renewal_so.date_order.date(), self.subscription.end_date, 'renewal start date should depends on the parent end date')
@@ -1056,6 +1057,7 @@ class TestSubscription(TestSubscriptionCommon):
                 'partner_id': self.user_portal.partner_id.id,
                 'pricelist_id': self.company_data['default_pricelist'].id,
                 'recurrence_id': self.recurrence_month.id,
+                'client_order_ref': 'free',
                 'order_line': [
                     (0, 0, {
                         'name': self.product.name,
@@ -1113,10 +1115,16 @@ class TestSubscription(TestSubscriptionCommon):
             free_renewal_so.order_line.write({'product_uom_qty': 2, 'price_unit': 0})
             self.flush_tracking()
             self.assertEqual(renewal_so.subscription_state, '2_renewal')
+            (sub | free_sub).pause_subscription() # we pause the contracts to make sure no parasite log are created
+            self.flush_tracking()
+            self.env['sale.order']._cron_recurring_create_invoice()
+            self.flush_tracking()
             (renewal_so | free_renewal_so).action_confirm()
             self.flush_tracking()
             self.assertEqual(sub.subscription_state, '5_renewed')
             self.assertEqual(renewal_so.subscription_state, '3_progress')
+            (sub | free_sub).resume_subscription() # we resume the contracts to make sure no parasite log are created
+            self.flush_tracking()
             # Most of the time, the renewal invoice is created by the salesman
             # before the renewal start date
             renewal_invoices = (free_renewal_so | renewal_so)._create_invoices()
@@ -1125,13 +1133,13 @@ class TestSubscription(TestSubscriptionCommon):
             # "upsell" of the simple sub that did not start yet
             future_sub.order_line.product_uom_qty = 4
             self.flush_tracking()
-            self.assertEqual(sub.recurring_monthly, 0, "The first SO should be closed")
+            self.assertEqual(sub.recurring_monthly, 21, "MRR should still be non null")
             self.assertEqual(sub.subscription_state, '5_renewed')
             self.assertEqual(renewal_so.recurring_monthly, 63, "MRR of renewal should not be computed before start_date of the lines")
             self.flush_tracking()
             # renew is still not ongoing;  Total MRR is 21 coming from the original sub
             self.env['sale.order'].sudo()._cron_subscription_expiration()
-            self.assertEqual(sub.recurring_monthly, 0)
+            self.assertEqual(sub.recurring_monthly, 21)
             self.assertEqual(renewal_so.recurring_monthly, 63)
             self.env['sale.order']._cron_recurring_create_invoice()
             self.flush_tracking()
@@ -1145,7 +1153,7 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2021-05-05"): # We switch the cron the X of may to make sure the day of the cron does not affect the numbers
             # Renewal period is from 2021-05 to 2021-06
             self.env['sale.order']._cron_recurring_create_invoice()
-            self.assertEqual(sub.recurring_monthly, 0)
+            self.assertEqual(sub.recurring_monthly, 21)
             self.assertEqual(sub.subscription_state, '5_renewed')
             self.assertEqual(renewal_so.next_invoice_date, datetime.date(2021, 6, 1))
             self.assertEqual(renewal_so.recurring_monthly, 63)
@@ -1159,7 +1167,7 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2021-06-01"):
             self.subscription._cron_update_kpi()
             self.env['sale.order']._cron_recurring_create_invoice()
-            self.assertEqual(sub.recurring_monthly, 0)
+            self.assertEqual(sub.recurring_monthly, 21)
             self.assertEqual(renewal_so.recurring_monthly, 63)
             self.flush_tracking()
 
@@ -1169,7 +1177,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.env['sale.order']._cron_recurring_create_invoice()
             self.env['sale.order']._cron_subscription_expiration()
             # we trigger the compute because it depends on today value.
-            self.assertEqual(sub.recurring_monthly, 0)
+            self.assertEqual(sub.recurring_monthly, 21)
             self.assertEqual(renewal_so.recurring_monthly, 63)
             self.flush_tracking()
 
@@ -1180,7 +1188,7 @@ class TestSubscription(TestSubscriptionCommon):
             # Total MRR is 80 coming from renewed sub
             self.env['sale.order']._cron_recurring_create_invoice()
             self.env['sale.order'].sudo()._cron_subscription_expiration()
-            self.assertEqual(sub.recurring_monthly, 0)
+            self.assertEqual(sub.recurring_monthly, 21)
             self.assertEqual(renewal_so.recurring_monthly, 63)
             self.assertEqual(sub.subscription_state, '5_renewed')
             self.flush_tracking()
@@ -1193,6 +1201,7 @@ class TestSubscription(TestSubscriptionCommon):
             # free subscription is not free anymore
             free_renewal_so.order_line.price_unit = 10
             self.flush_tracking()
+            # arj todo here
             self.subscription._cron_update_kpi()
             self.assertEqual(sub.kpi_1month_mrr_delta, 0)
             self.assertEqual(sub.kpi_1month_mrr_percentage, 0)
@@ -1756,6 +1765,7 @@ class TestSubscription(TestSubscriptionCommon):
         """ Prevent to confirm several renewal quotation for the same subscription """
         self.subscription.write({'start_date': False, 'next_invoice_date': False})
         self.subscription.action_confirm()
+        self.subscription._cron_recurring_create_invoice()
         action = self.subscription.prepare_renewal_order()
         renewal_so_1 = self.env['sale.order'].browse(action['res_id'])
         action = self.subscription.prepare_renewal_order()

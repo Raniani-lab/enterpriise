@@ -177,6 +177,47 @@
         <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_3')]]" context="{'action_no_send_mail': True}"/>
         <function model="sale.order" name="set_close" eval="[[ref('subscription_portal_3')]]"/>
 
+        <!-- Sale order Logs -->
+        <record id="subscription_log_1" model="sale.order.log">
+            <field name="event_date" eval="DateTime.today() - relativedelta(months=4)"/>
+            <field name="order_id" ref="subscription_portal_1"/>
+            <field name="subscription_state">3_progress</field>
+            <field name="currency_id" ref="base.USD"/>
+            <field name="event_type">0_creation</field>
+            <field name="amount_signed">70</field>
+            <field name="recurring_monthly">70</field>
+        </record>
+
+        <record id="subscription_log_2" model="sale.order.log">
+            <field name="event_date" eval="DateTime.today() - relativedelta(months=3)"/>
+            <field name="order_id" ref="subscription_portal_2"/>
+            <field name="subscription_state">3_progress</field>
+            <field name="currency_id" ref="base.USD"/>
+            <field name="event_type">0_creation</field>
+            <field name="amount_signed">16.67</field>
+            <field name="recurring_monthly">16.67</field>
+        </record>
+
+        <record id="subscription_log_3" model="sale.order.log">
+            <field name="event_date" eval="DateTime.today() - relativedelta(months=3)"/>
+            <field name="order_id" ref="subscription_portal_3"/>
+            <field name="subscription_state">3_progress</field>
+            <field name="currency_id" ref="base.USD"/>
+            <field name="event_type">0_creation</field>
+            <field name="amount_signed">60</field>
+            <field name="recurring_monthly">60</field>
+        </record>
+
+        <record id="subscription_log_3_churn" model="sale.order.log">
+            <field name="event_date" eval="DateTime.today()"/>
+            <field name="order_id" ref="subscription_portal_3"/>
+            <field name="subscription_state">6_churn</field>
+            <field name="currency_id" ref="base.USD"/>
+            <field name="event_type">2_churn</field>
+            <field name="amount_signed">-60</field>
+            <field name="recurring_monthly">0</field>
+        </record>
+
         <!-- Demo Alerts-->
 
         <record id="subscription_alert_percent_revenue" model="sale.order.alert">

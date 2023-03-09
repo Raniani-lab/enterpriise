@@ -33,7 +33,6 @@ Features:
         'wizard/sale_subscription_close_reason_wizard_views.xml',
         'wizard/sale_subscription_change_customer_wizard_views.xml',
         'views/sale_order_views.xml',
-        'views/sale_order_log.xml',
         'views/sale_order_template.xml',
         'views/product_template_views.xml',
         'views/sale_subscription_alert.xml',
@@ -48,6 +47,7 @@ Features:
         'data/sale_subscription_data.xml',
         'data/sms_template_data.xml',
         'report/sale_subscription_report_view.xml',
+        'report/sale_order_log_report_view.xml',
     ],
     'demo': [
         'data/sale_subscription_demo.xml'

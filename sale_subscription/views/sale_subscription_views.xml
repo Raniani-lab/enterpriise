@@ -37,11 +37,12 @@
                 <filter string="Unassigned" name="contracts_not_assigned" help="Subscriptions that are not assigned to an account manager." domain="[('user_id', '=', False)]"/>
                 <separator/>
                 <filter name="quotations" string="Quotations" domain="[('subscription_state','in', ['1_draft', '2_renewal'])]"/>
-                <filter name="progress" string="In Progress" domain="[('subscription_state','=', '3_progress')]"/>
-                <filter name="paused" string="Paused" domain="[('subscription_state','=', '4_paused')]"/>
+                <filter name="active" string="Active" domain="[('subscription_state','in', ['3_progress', '4_paused'])]" help="Running Subscriptions"/>
                 <filter name="churned" string="Churned" domain="[('subscription_state','=', '6_churn')]"/>
                 <separator/>
-                <filter name="active" string="Active" domain="[('subscription_state','in', ['3_progress', '4_paused'])]" help="Running Subscriptions"/>
+                <filter name="progress" string="In Progress" domain="[('subscription_state','=', '3_progress')]"/>
+                <filter name="paused" string="Paused" domain="[('subscription_state','=', '4_paused')]"/>
+                <separator/>
                 <separator/>
                 <filter string="To Renew" name="to_renew" domain="[('next_invoice_date', '&lt;', context_today().strftime('%Y-%m-%d')), ('subscription_state', '=', '3_progress')]"/>
                 <filter name="payment_exception" string="Failed Payments" domain="[('payment_exception','=', True)]" help="Contracts whose payment has failed"/>
@@ -49,9 +50,11 @@
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>
                 <separator/>
-                <filter name="filter_first_contract_date" date="first_contract_date"/>
-                <filter name="filter_recurring_next_date" string="Next invoice Date" date="next_invoice_date"/>
-                <filter name="filter_end_date" date="end_date"/>
+                <filter name="first_contract_date" date="first_contract_date"/>
+                <separator/>
+                <filter name="recurring_next_date" string="Next invoice Date" date="next_invoice_date"/>
+                <separator/>
+                <filter name="end_date" date="end_date"/>
                 <separator/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"
                     domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
@@ -266,9 +269,9 @@
             <field name="company_id" groups="base.group_multi_company" readonly="1"/>
             <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}" readonly="1"/>
             <field name="recurring_monthly" string="MRR" optional="hide" readonly="1"/>
-            <field name="recurring_total" string="Recurring Amount" optional="show" readonly="1"/>
+            <field name="recurring_total" string="Recurring" optional="show" readonly="1"/>
             <field name="recurrence_id" optional="show" readonly="1"/>
-            <field name="non_recurring_total" string="Non Recurring Amount" optional="hide" readonly="1"/>
+            <field name="non_recurring_total" string="Non Recurring" optional="hide" readonly="1"/>
             <field name="sale_order_template_id" string="Plan" optional="hide"/>
             <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" readonly="1"/>
             <field name="subscription_state" string="Status" widget="badge"
@@ -287,6 +290,19 @@
         </tree>
       </field>
     </record>
+
+    <record id="sale_subscription_history_view_tree" model="ir.ui.view">
+      <field name="name">sale.subscription.order.tree</field>
+      <field name="model">sale.order</field>
+       <field name="inherit_id" ref="sale_subscription_view_tree"/>
+      <field name="arch" type="xml">
+          <tree position="attributes">
+                <!-- use the default order defined on the model -->
+              <attribute name="default_order">id desc</attribute>
+          </tree>
+      </field>
+    </record>
+
 
     <record id="sale_subscription_tree" model="ir.actions.act_window.view" >
         <field name="sequence" eval="1"/>
@@ -326,15 +342,16 @@
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form,pivot,graph,cohort,activity</field>
         <field name="context">{
+            'search_default_quotations': 1,
         }</field>
-        <field name="domain">[('is_subscription', '=', True)]</field>
+        <!-- All kind of subscription except upsell -->
+        <field name="domain">[('subscription_state', 'in', ['1_draft', '2_renewal', '3_progress', '4_paused', '5_renewed', '6_churn'])]</field>
         <field name="view_ids" eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_subscription.sale_subscription_quotation_tree_view')}),
                 (0, 0, {'view_mode': 'kanban'}),
                 (0, 0, {'view_mode': 'form'}),
             ]"/>
         <field name="search_view_id" ref='sale_subscription_view_search'/>
-
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a subscription quotation

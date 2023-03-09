@@ -215,15 +215,9 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             ('move_id.move_type', 'in', self.env['account.move'].get_sale_types(include_receipts=True)),
             ('move_id.date', '>=', options['date']['date_from']),
             ('move_id.date', '<=', options['date']['date_to']),
+            ('move_id.partner_id.vat', 'ilike', 'BE%'),
+            ('tax_tag_ids', 'in', options['partner_vat_listing_operations_tag_ids'] + options['partner_vat_listing_taxes_tag_ids']),
         ]
-
-        # This action can also be called from the EC Sales Report.
-        # In that case, we don't want to restrict the partner's VAT or 'tax_tag_ids'.
-        if self == self.env.ref('l10n_be_reports.l10n_be_partner_vat_listing'):
-            domain += [
-                ('move_id.partner_id.vat', 'ilike', 'BE%'),
-                ('tax_tag_ids', 'in', options['partner_vat_listing_operations_tag_ids'] + options['partner_vat_listing_taxes_tag_ids']),
-            ]
 
         return {
             'name': _('VAT Listing Audit'),

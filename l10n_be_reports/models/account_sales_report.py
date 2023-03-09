@@ -236,4 +236,24 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
         }
 
     def ec_sales_list_open_invoices(self, options, params=None):
-        return self.env['l10n_be.partner.vat.handler'].partner_vat_listing_open_invoices(options, params)
+        ec_category, _model, res_id = self.env['account.report']._parse_line_id(params['line_id'])[-1]
+
+        domain = [
+            ('move_id.move_type', 'in', self.env['account.move'].get_sale_types(include_receipts=True)),
+            ('move_id.date', '>=', options['date']['date_from']),
+            ('move_id.date', '<=', options['date']['date_to']),
+            ('tax_tag_ids', 'in', options['sales_report_taxes'][ec_category]),
+        ]
+
+        return {
+            'name': _('EC Sales List Audit'),
+            'type': 'ir.actions.act_window',
+            'views': [[self.env.ref('account.view_move_line_tree').id, 'list'], [False, 'form']],
+            'res_model': 'account.move.line',
+            'context': {
+                'search_default_partner_id': res_id,
+                'search_default_group_by_partner': 1,
+                'expand': 1,
+            },
+            'domain': domain,
+        }

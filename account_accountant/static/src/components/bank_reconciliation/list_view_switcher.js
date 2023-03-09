@@ -1,15 +1,15 @@
 /** @odoo-module **/
-
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import { Component } from "@odoo/owl";
 
-const { Component } = owl;
+export class ListViewSwitcher extends Component {
+    static template = "account_accountant.ListViewSwitcher";
+    static props = standardFieldProps;
 
-export class BankRecWidgetViewSwitcher extends Component {
     setup() {
         this.action = useService("action");
-        this.bankRecService = useService("bank_rec_widget");
     }
 
     /** Called when the Match/View button is clicked. **/
@@ -25,7 +25,7 @@ export class BankRecWidgetViewSwitcher extends Component {
         this.env.searchModel.addAutoCompletionValues(searchItem.id, autocompleteValue);
 
         // Switch to the kanban.
-        this.action.switchView("kanban", {selectedStLineId: stLineId});
+        this.action.switchView("kanban", { skipRestore: this.env.skipKanbanRestoreNeeded(stLineId) });
     }
 
     /** Give the button's label for the current record. **/
@@ -33,13 +33,5 @@ export class BankRecWidgetViewSwitcher extends Component {
         return this.props.record.data.is_reconciled ? this.env._t("View") : this.env._t("Match");
     }
 }
-BankRecWidgetViewSwitcher.template = "account_accountant.BankRecWidgetViewSwitcher";
-BankRecWidgetViewSwitcher.props = {
-    ...standardFieldProps,
-};
 
-export const bankRecWidgetViewSwitcher = {
-    component: BankRecWidgetViewSwitcher,
-};
-
-registry.category("fields").add('bank_rec_widget_view_switcher', bankRecWidgetViewSwitcher);
+registry.category("fields").add('bank_rec_list_view_switcher', {component: ListViewSwitcher});

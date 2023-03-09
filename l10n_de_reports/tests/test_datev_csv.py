@@ -346,7 +346,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         receivable_line = move.line_ids.filtered(lambda line: line.account_id.account_type in ('asset_receivable', 'liability_payable'))
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=statement.line_ids.id).new({})
         wizard._action_add_new_amls(receivable_line, allow_partial=False)
-        wizard.button_validate(async_action=False)
+        wizard._action_validate()
 
         bank_account_code = str(self.env.company.bank_journal_ids.default_account_id.code).ljust(8, '0')
 

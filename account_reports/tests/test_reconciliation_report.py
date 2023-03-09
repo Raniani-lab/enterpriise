@@ -110,13 +110,13 @@ class TestReconciliationReport(TestAccountReportsCommon):
         payment_line = payment_1.line_ids.filtered(lambda line: line.account_id == bank_journal.company_id.account_journal_payment_debit_account_id)
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         wizard._action_add_new_amls(payment_line, allow_partial=False)
-        wizard.button_validate(async_action=False)
+        wizard._action_validate()
 
         st_line = statement_2.line_ids.filtered(lambda line: line.payment_ref == 'line_3')
         payment_line = payment_2.line_ids.filtered(lambda line: line.account_id == bank_journal.company_id.account_journal_payment_credit_account_id)
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         wizard._action_add_new_amls(payment_line, allow_partial=False)
-        wizard.button_validate(async_action=False)
+        wizard._action_validate()
 
         # ==== Report ====
 

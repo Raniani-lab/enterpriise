@@ -10,10 +10,6 @@ from odoo.addons.web.controllers.utils import clean_action
 class BankRecWidget(models.Model):
     _inherit = 'bank.rec.widget'
 
-    batch_payments_widget = fields.Binary(
-        compute='_compute_batch_payments_widget',
-        readonly=False,
-    )
     selected_batch_payment_ids = fields.Many2many(
         comodel_name='account.batch.payment',
         compute='_compute_selected_batch_payment_ids',
@@ -52,46 +48,6 @@ class BankRecWidget(models.Model):
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
 
-    @api.depends('st_line_id')
-    def _compute_batch_payments_widget(self):
-        for wizard in self:
-            st_line = wizard.st_line_id
-
-            context = {
-                'search_view_ref': 'account_accountant_batch_payment.view_account_batch_payment_search_bank_rec_widget',
-                'tree_view_ref': 'account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget',
-            }
-
-            dynamic_filters = []
-
-            # == Dynamic filter for the same journal ==
-            journal = st_line.journal_id
-            dynamic_filters.append({
-                'name': 'same_journal',
-                'description': journal.display_name,
-                'domain': [('journal_id', '=', journal.id)],
-            })
-            context['search_default_same_journal'] = True
-
-            # == Dynamic Currency filter ==
-            if wizard.transaction_currency_id != wizard.company_currency_id:
-                context['search_default_currency_id'] = wizard.transaction_currency_id.id
-
-            # Stringify the domain.
-            for dynamic_filter in dynamic_filters:
-                dynamic_filter['domain'] = str(dynamic_filter['domain'])
-
-            # Collect the available batch payments.
-            available_amls_in_batch_payments = wizard._fetch_available_amls_in_batch_payments()
-
-            wizard.batch_payments_widget = {
-                'domain': [('id', 'in', list(available_amls_in_batch_payments.keys()))],
-
-                'dynamic_filters': dynamic_filters,
-
-                'context': context,
-            }
-
     @api.depends('company_id', 'line_ids.source_batch_payment_id')
     def _compute_selected_batch_payment_ids(self):
         for wizard in self:
@@ -114,29 +70,55 @@ class BankRecWidget(models.Model):
             wizard.selected_batch_payment_ids = [Command.set(selected_batch_payment_ids)]
 
     # -------------------------------------------------------------------------
-    # ONCHANGE METHODS
+    # HELPERS RPC
     # -------------------------------------------------------------------------
 
-    def _process_todo_command(self, command_name, command_args):
+    def _prepare_embedded_views_data(self):
+        # EXTENDS 'account_accountant'
+        results = super()._prepare_embedded_views_data()
+        st_line = self.st_line_id
+
+        context = {
+            'search_view_ref': 'account_accountant_batch_payment.view_account_batch_payment_search_bank_rec_widget',
+            'tree_view_ref': 'account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget',
+        }
+
+        dynamic_filters = []
+
+        # == Dynamic filter for the same journal ==
+        journal = st_line.journal_id
+        dynamic_filters.append({
+            'name': 'same_journal',
+            'description': journal.display_name,
+            'domain': [('journal_id', '=', journal.id)],
+        })
+        context['search_default_same_journal'] = True
+
+        # == Dynamic Currency filter ==
+        if self.transaction_currency_id != self.company_currency_id:
+            context['search_default_currency_id'] = self.transaction_currency_id.id
+
+        # Stringify the domain.
+        for dynamic_filter in dynamic_filters:
+            dynamic_filter['domain'] = str(dynamic_filter['domain'])
+
+        # Collect the available batch payments.
+        available_amls_in_batch_payments = self._fetch_available_amls_in_batch_payments()
+
+        results['batch_payments'] = {
+            'domain': [('id', 'in', list(available_amls_in_batch_payments.keys()))],
+            'dynamic_filters': dynamic_filters,
+            'context': context,
+        }
+        return results
+
+    # -------------------------------------------------------------------------
+    # LINES METHODS
+    # -------------------------------------------------------------------------
+
+    def _lines_prepare_new_aml_line(self, aml, **kwargs):
         # EXTENDS account_accountant
-        if command_name == 'add_new_batch_payment':
-            batch_payment_id = int(command_args[0])
-            batch_payment = self.env['account.batch.payment'].browse(batch_payment_id)
-            self._action_add_new_batch_payments(batch_payment)
-        elif command_name == 'remove_new_batch_payment':
-            aml_id = int(command_args[0])
-            batch_payment = self.env['account.batch.payment'].browse(aml_id)
-            self._action_remove_new_batch_payments(batch_payment)
-        else:
-            super()._process_todo_command(command_name, command_args)
-
-    # -------------------------------------------------------------------------
-    # LINES_WIDGET METHODS
-    # -------------------------------------------------------------------------
-
-    def _lines_widget_prepare_new_aml_line(self, aml, **kwargs):
-        # EXTENDS account_accountant
-        return super()._lines_widget_prepare_new_aml_line(
+        return super()._lines_prepare_new_aml_line(
             aml,
             source_batch_payment_id=aml.payment_id.batch_payment_id,
             **kwargs,
@@ -158,12 +140,22 @@ class BankRecWidget(models.Model):
                     amls |= liquidity_lines.filtered_domain(amls_domain)
         self._action_add_new_amls(amls, allow_partial=False)
 
+    def _js_action_add_new_batch_payment(self, batch_payment_id):
+        self.ensure_one()
+        batch_payment = self.env['account.batch.payment'].browse(batch_payment_id)
+        self._action_add_new_batch_payments(batch_payment)
+
     def _action_remove_new_batch_payments(self, batch_payments):
         self.ensure_one()
-        for line in self.line_ids.filtered(lambda x: x.flag == 'new_aml' and x.source_batch_payment_id in batch_payments):
-            self._action_remove_line(line.index)
+        lines = self.line_ids.filtered(lambda x: x.flag == 'new_aml' and x.source_batch_payment_id in batch_payments)
+        self._action_remove_lines(lines)
 
-    def button_validate(self, async_action=False):
+    def _js_action_remove_new_batch_payment(self, batch_payment_id):
+        self.ensure_one()
+        batch_payment = self.env['account.batch.payment'].browse(batch_payment_id)
+        self._action_remove_new_batch_payments(batch_payment)
+
+    def _js_action_validate(self):
         # EXTENDS account_accountant
         # Open the 'account.batch.payment.rejection' wizard if needed.
 
@@ -171,22 +163,23 @@ class BankRecWidget(models.Model):
             .filtered(lambda x: x.flag == 'new_aml' and x.source_batch_payment_id)\
             .source_aml_id.payment_id
         if self.env['account.batch.payment.rejection']._fetch_rejected_payment_ids(payments_with_batch):
-            self.next_action_todo = clean_action(
-                {
-                    'name': _("Batch Payment"),
-                    'type': 'ir.actions.act_window',
-                    'res_model': 'account.batch.payment.rejection',
-                    'view_mode': 'form',
-                    'target': 'new',
-                    'context': {
-                        'default_in_reconcile_payment_ids': [Command.set(payments_with_batch.ids)],
+            self.return_todo_command = {
+                'open_batch_rejection_wizard': clean_action(
+                    {
+                        'name': _("Batch Payment"),
+                        'type': 'ir.actions.act_window',
+                        'res_model': 'account.batch.payment.rejection',
+                        'view_mode': 'form',
+                        'target': 'new',
+                        'context': {
+                            'default_in_reconcile_payment_ids': [Command.set(payments_with_batch.ids)],
+                        },
                     },
-                },
-                self.env,
-            )
-        else:
-            super().button_validate(async_action=async_action)
+                    self.env,
+                ),
+            }
+            return
+        super()._js_action_validate()
 
-    def button_validate_no_batch_payment_wizard(self):
-        """ Execute 'button_validate' without the batch payment rejection wizard. """
-        return super().button_validate()
+    def _js_action_validate_no_batch_payment_check(self):
+        super()._js_action_validate()

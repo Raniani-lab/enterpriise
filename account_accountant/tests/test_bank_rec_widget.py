@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo.addons.account_accountant.tests.test_bank_rec_widget_common import TestBankRecWidgetCommon, WizardForm
+from odoo.addons.account_accountant.tests.test_bank_rec_widget_common import TestBankRecWidgetCommon
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tools import html2plaintext
@@ -34,7 +34,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         cls.account_revenue1 = cls.company_data['default_account_revenue']
         cls.account_revenue2 = cls.copy_account(cls.account_revenue1)
 
-    def assert_form_extra_text_value(self, value, regex):
+    def assert_form_extra_text_value(self, wizard, regex):
+        line = wizard.line_ids.filtered(lambda x: x.index == wizard.form_index)
+        value = line.suggestion_html
         if regex:
             cleaned_value = html2plaintext(value).replace('\n', '')
             if not re.match(regex, cleaned_value):
@@ -88,7 +90,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # 6000.0 curr2 == 1000.0 comp_curr (rate 6:1)
         inv_line = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
+            currency_id=self.currency_data_2['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 6000.0}],
         )
@@ -104,9 +106,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # The amount is the same, no message under the 'amount' field.
-        self.assert_form_extra_text_value(wizard.form_extra_text, False)
+        self.assert_form_extra_text_value(wizard, False)
 
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -117,7 +119,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(inv_line.move_id, [{'payment_state': 'paid'}])
 
         # Reset the wizard.
-        wizard.button_reset()
+        wizard._js_action_reset()
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0},
@@ -128,7 +130,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # 9000.0 curr2 == 1500.0 comp_curr (rate 6:1)
         inv_line = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
+            currency_id=self.currency_data_2['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 9000.0}],
         )
@@ -142,22 +144,18 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Check the message under the 'amount' field.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
         self.assert_form_extra_text_value(
-            wizard.form_extra_text,
+            wizard,
             r".+open amount of 9,000.000.+ reduced by 6,000.000.+ set the invoice as fully paid .",
         )
-        self.assertRecordValues(wizard, [{
-            'form_suggest_amount_currency': 9000.0,
-            'form_suggest_balance': 1500.0,
+        self.assertRecordValues(line, [{
+            'suggestion_amount_currency': -9000.0,
+            'suggestion_balance': -1500.0,
         }])
 
         # Switch to a full reconciliation.
-        form = WizardForm(wizard)
-        form.todo_command = 'button_clicked,button_form_apply_suggestion'
-        wizard = form.save()
+        wizard._js_action_apply_line_suggestion(line.index)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0},
@@ -168,26 +166,22 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Check the message under the 'amount' field.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
         self.assert_form_extra_text_value(
-            wizard.form_extra_text,
+            wizard,
             r".+open amount of 9,000.000.+ paid .+ record a partial payment .",
         )
-        self.assertRecordValues(wizard, [{
-            'form_suggest_amount_currency': 6000.0,
-            'form_suggest_balance': 1000.0,
+        self.assertRecordValues(line, [{
+            'suggestion_amount_currency': -6000.0,
+            'suggestion_balance': -1000.0,
         }])
 
         # Switch back to a partial reconciliation.
-        form = WizardForm(wizard)
-        form.todo_command = 'button_clicked,button_form_apply_suggestion'
-        wizard = form.save()
+        wizard._js_action_apply_line_suggestion(line.index)
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Reconcile
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -228,9 +222,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # The amount is the same, no message under the 'amount' field.
-        self.assert_form_extra_text_value(wizard.form_extra_text, False)
+        self.assert_form_extra_text_value(wizard, False)
 
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -241,7 +235,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(inv_line.move_id, [{'payment_state': 'paid'}])
 
         # Reset the wizard.
-        wizard.button_reset()
+        wizard._js_action_reset()
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0},
@@ -265,22 +259,18 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Check the message under the 'amount' field.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
         self.assert_form_extra_text_value(
-            wizard.form_extra_text,
+            wizard,
             r".+open amount of .+1,200.00.+ reduced by .+800.00.+ set the invoice as fully paid .",
         )
-        self.assertRecordValues(wizard, [{
-            'form_suggest_amount_currency': 1200.0,
-            'form_suggest_balance': 1200.0,
+        self.assertRecordValues(line, [{
+            'suggestion_amount_currency': -1200.0,
+            'suggestion_balance': -1200.0,
         }])
 
         # Switch to a full reconciliation.
-        form = WizardForm(wizard)
-        form.todo_command = 'button_clicked,button_form_apply_suggestion'
-        wizard = form.save()
+        wizard._js_action_apply_line_suggestion(line.index)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0},
@@ -291,26 +281,22 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Check the message under the 'amount' field.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
         self.assert_form_extra_text_value(
-            wizard.form_extra_text,
+            wizard,
             r".+open amount of .+1,200.00.+ paid .+ record a partial payment .",
         )
-        self.assertRecordValues(wizard, [{
-            'form_suggest_amount_currency': 800.0,
-            'form_suggest_balance': 800.0,
+        self.assertRecordValues(line, [{
+            'suggestion_amount_currency': -800.0,
+            'suggestion_balance': -800.0,
         }])
 
         # Switch back to a partial reconciliation.
-        form = WizardForm(wizard)
-        form.todo_command = 'button_clicked,button_form_apply_suggestion'
-        wizard = form.save()
+        wizard._js_action_apply_line_suggestion(line.index)
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Reconcile
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -334,7 +320,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # 4800.0 curr2 == 800.0 comp_curr (rate 6:1)
         inv_line = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
+            currency_id=self.currency_data_2['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 4800.0}],
         )
@@ -350,7 +336,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # The amount is the same, no message under the 'amount' field.
-        self.assert_form_extra_text_value(wizard.form_extra_text, False)
+        self.assert_form_extra_text_value(wizard, False)
 
         # Remove the line to see if the exchange difference is well removed.
         wizard._action_remove_new_amls(inv_line)
@@ -361,10 +347,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         ])
         self.assertRecordValues(wizard, [{'state': 'invalid'}])
 
-        # Mount the line again.
+        # Mount the line again and validate.
         wizard._action_add_new_amls(inv_line)
-
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -375,7 +360,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(inv_line.move_id, [{'payment_state': 'paid'}])
 
         # Reset the wizard.
-        wizard.button_reset()
+        wizard._js_action_reset()
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0},
@@ -386,7 +371,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # 7200.0 curr2 == 1200.0 comp_curr (rate 6:1)
         inv_line = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
+            currency_id=self.currency_data_2['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 7200.0}],
         )
@@ -400,22 +385,18 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Check the message under the 'amount' field.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
         self.assert_form_extra_text_value(
-            wizard.form_extra_text,
+            wizard,
             r".+open amount of 7,200.000.+ reduced by 4,800.000.+ set the invoice as fully paid .",
         )
-        self.assertRecordValues(wizard, [{
-            'form_suggest_amount_currency': 7200.0,
-            'form_suggest_balance': 1200.0,
+        self.assertRecordValues(line, [{
+            'suggestion_amount_currency': -7200.0,
+            'suggestion_balance': -1200.0,
         }])
 
         # Switch to a full reconciliation.
-        form = WizardForm(wizard)
-        form.todo_command = 'button_clicked,button_form_apply_suggestion'
-        wizard = form.save()
+        wizard._js_action_apply_line_suggestion(line.index)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0},
@@ -426,26 +407,22 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Check the message under the 'amount' field.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
         self.assert_form_extra_text_value(
-            wizard.form_extra_text,
+            wizard,
             r".+open amount of 7,200.000.+ paid .+ record a partial payment .",
         )
-        self.assertRecordValues(wizard, [{
-            'form_suggest_amount_currency': 4800.0,
-            'form_suggest_balance': 800.0,
+        self.assertRecordValues(line, [{
+            'suggestion_amount_currency': -4800.0,
+            'suggestion_balance': -800.0,
         }])
 
         # Switch back to a partial reconciliation.
-        form = WizardForm(wizard)
-        form.todo_command = 'button_clicked,button_form_apply_suggestion'
-        wizard = form.save()
+        wizard._js_action_apply_line_suggestion(line.index)
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Reconcile
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -469,7 +446,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # 21600.0 curr3 == 1800.0 comp_curr (rate 12:1)
         inv_line = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_3['currency'],
+            currency_id=self.currency_data_3['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 21600.0}],
         )
@@ -484,9 +461,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # The amount is the same, no message under the 'amount' field.
-        self.assert_form_extra_text_value(wizard.form_extra_text, False)
+        self.assert_form_extra_text_value(wizard, False)
 
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1800.0,      'currency_id': self.company_data['currency'].id,    'balance': 1800.0,  'reconciled': False},
@@ -496,7 +473,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(inv_line.move_id, [{'payment_state': 'paid'}])
 
         # Reset the wizard.
-        wizard.button_reset()
+        wizard._js_action_reset()
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1800.0,      'currency_id': self.company_data['currency'].id,    'balance': 1800.0},
@@ -507,7 +484,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # 32400.0 curr3 == 2700.0 comp_curr (rate 12:1)
         inv_line = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_3['currency'],
+            currency_id=self.currency_data_3['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 32400.0}],
         )
@@ -520,22 +497,18 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Check the message under the 'amount' field.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
         self.assert_form_extra_text_value(
-            wizard.form_extra_text,
+            wizard,
             r".+open amount of 32,400.000.+ reduced by 21,600.000.+ set the invoice as fully paid .",
         )
-        self.assertRecordValues(wizard, [{
-            'form_suggest_amount_currency': 32400.0,
-            'form_suggest_balance': 2700.0,
+        self.assertRecordValues(line, [{
+            'suggestion_amount_currency': -32400.0,
+            'suggestion_balance': -2700.0,
         }])
 
         # Switch to a full reconciliation.
-        form = WizardForm(wizard)
-        form.todo_command = 'button_clicked,button_form_apply_suggestion'
-        wizard = form.save()
+        wizard._js_action_apply_line_suggestion(line.index)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1800.0,      'currency_id': self.company_data['currency'].id,    'balance': 1800.0},
@@ -545,26 +518,22 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Check the message under the 'amount' field.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
         self.assert_form_extra_text_value(
-            wizard.form_extra_text,
+            wizard,
             r".+open amount of 32,400.000.+ paid .+ record a partial payment .",
         )
-        self.assertRecordValues(wizard, [{
-            'form_suggest_amount_currency': 21600.0,
-            'form_suggest_balance': 1800.0,
+        self.assertRecordValues(line, [{
+            'suggestion_amount_currency': -21600.0,
+            'suggestion_balance': -1800.0,
         }])
 
         # Switch back to a partial reconciliation.
-        form = WizardForm(wizard)
-        form.todo_command = 'button_clicked,button_form_apply_suggestion'
-        wizard = form.save()
+        wizard._js_action_apply_line_suggestion(line.index)
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Reconcile
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1800.0,      'currency_id': self.company_data['currency'].id,    'balance': 1800.0,  'reconciled': False},
@@ -602,14 +571,14 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # 112.7 curr1 == 105.49 comp_curr
         inv_line1 = self._create_invoice_line(
             'in_invoice',
-            currency_id=self.currency_data['currency'],
+            currency_id=self.currency_data['currency'].id,
             invoice_date='2017-02-01',
             invoice_line_ids=[{'price_unit': 112.7}],
         )
         # 847.44 curr1 == 793.26 comp_curr
         inv_line2 = self._create_invoice_line(
             'in_invoice',
-            currency_id=self.currency_data['currency'],
+            currency_id=self.currency_data['currency'].id,
             invoice_date='2017-02-01',
             invoice_line_ids=[{'price_unit': 847.44}],
         )
@@ -649,7 +618,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Validate and check the statement line.
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line, [{'partner_id': self.partner_a.id}])
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
         account = self.partner_a.property_account_receivable_id
@@ -661,14 +630,14 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'reconciled'}])
 
         # Match an invoice with a different partner.
-        wizard.button_reset()
+        wizard._js_action_reset()
         inv_line = self._create_invoice_line(
             'out_invoice',
-            partner_id=partner,
+            partner_id=partner.id,
             invoice_line_ids=[{'price_unit': 1000.0}],
         )
         wizard._action_add_new_amls(inv_line)
-        wizard.button_validate()
+        wizard._action_validate()
         liquidity_line, suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(st_line, [{'partner_id': partner.id}])
         self.assertRecordValues(liquidity_line + other_line, [
@@ -679,21 +648,21 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'reconciled'}])
 
         # Reset the wizard and match invoices with different partners.
-        wizard.button_reset()
+        wizard._js_action_reset()
         partner1 = self.partner_a.copy()
         inv_line1 = self._create_invoice_line(
             'out_invoice',
-            partner_id=partner1,
+            partner_id=partner1.id,
             invoice_line_ids=[{'price_unit': 300.0}],
         )
         partner2 = self.partner_a.copy()
         inv_line2 = self._create_invoice_line(
             'out_invoice',
-            partner_id=partner2,
+            partner_id=partner2.id,
             invoice_line_ids=[{'price_unit': 300.0}],
         )
         wizard._action_add_new_amls(inv_line1 + inv_line2)
-        wizard.button_validate()
+        wizard._action_validate()
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(st_line, [{'partner_id': False}])
         self.assertRecordValues(liquidity_line + other_line, [
@@ -708,7 +677,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # Clear the accounts set on the partner and reset the widget.
         # The wizard should be invalid since we are not able to set an open balance.
         partner.property_account_receivable_id = None
-        wizard.button_reset()
+        wizard._js_action_reset()
         liquidity_line, suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -726,27 +695,27 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         journal_account = positive_st_line.journal_id.default_account_id
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=positive_st_line.id).new({})
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{wizard.line_ids.filtered(lambda l: l.flag != "liquidity").index}'
+        suspense_line = wizard.line_ids.filtered(lambda l: l.flag != "liquidity")
+        wizard._js_action_mount_line_in_edit(suspense_line.index)
 
-        form.form_partner_id = self.partner_a
-        wizard = form.save()
+        suspense_line.partner_id = self.partner_a
+        wizard._line_value_changed_partner_id(suspense_line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'partner_id': False,             'account_id': journal_account.id},
             {'partner_id': self.partner_a.id, 'account_id': self.partner_a.property_account_receivable_id.id},
         ])
 
-        form.form_partner_id = self.partner_b
-        wizard = form.save()
+        suspense_line.partner_id = self.partner_b
+        wizard._line_value_changed_partner_id(suspense_line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'partner_id': False,             'account_id': journal_account.id},
             {'partner_id': self.partner_b.id, 'account_id': self.partner_b.property_account_payable_id.id},
         ])
 
-        form.form_partner_id = partner_c
-        wizard = form.save()
+        suspense_line.partner_id = partner_c
+        wizard._line_value_changed_partner_id(suspense_line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'partner_id': False,             'account_id': journal_account.id},
@@ -755,27 +724,27 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         negative_st_line = self._create_st_line(-1000)
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=negative_st_line.id).new({})
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{wizard.line_ids.filtered(lambda l: l.flag != "liquidity").index}'
+        suspense_line = wizard.line_ids.filtered(lambda l: l.flag != "liquidity")
+        wizard._js_action_mount_line_in_edit(suspense_line.index)
 
-        form.form_partner_id = self.partner_a
-        wizard = form.save()
+        suspense_line.partner_id = self.partner_a
+        wizard._line_value_changed_partner_id(suspense_line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'partner_id': False,             'account_id': journal_account.id},
             {'partner_id': self.partner_a.id, 'account_id': self.partner_a.property_account_receivable_id.id},
         ])
 
-        form.form_partner_id = self.partner_b
-        wizard = form.save()
+        suspense_line.partner_id = self.partner_b
+        wizard._line_value_changed_partner_id(suspense_line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'partner_id': False,             'account_id': journal_account.id},
             {'partner_id': self.partner_b.id, 'account_id': self.partner_b.property_account_payable_id.id},
         ])
 
-        form.form_partner_id = partner_c
-        wizard = form.save()
+        suspense_line.partner_id = partner_c
+        wizard._line_value_changed_partner_id(suspense_line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'partner_id': False,             'account_id': journal_account.id},
@@ -791,12 +760,11 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Mount the auto-balance line in edit mode.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
-        wizard._action_mount_line_in_edit(line.index)
+        wizard._js_action_mount_line_in_edit(line.index)
         liquidity_line, suspense_line, _other_lines = st_line._seek_for_lines()
-        self.assertRecordValues(wizard, [{
-            'form_index': line.index,
-            'form_account_id': suspense_line.account_id.id,
-            'form_balance': -1000.0,
+        self.assertRecordValues(line, [{
+            'account_id': suspense_line.account_id.id,
+            'balance': -1000.0,
         }])
 
         # Switch to a custom account.
@@ -805,9 +773,8 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             'code': "424242",
             'account_type': "asset_current",
         })
-        form = WizardForm(wizard)
-        form.form_account_id = account
-        wizard = form.save()
+        line.account_id = account
+        wizard._line_value_changed_account_id(line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',   'account_id': liquidity_line.account_id.id, 'balance': 1000.0},
@@ -818,7 +785,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Validate and check the statement line.
-        wizard.button_validate()
+        wizard._action_validate()
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(liquidity_line + other_line, [
             # pylint: disable=C0326
@@ -867,10 +834,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_tax_ids.add(tax_21)
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.tax_ids = [Command.link(tax_21.id)]
+        wizard._line_value_changed_tax_ids(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -881,10 +847,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Edit the base line. The tax tags should be the refund ones.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_balance = 500.0
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.balance = 500.0
+        wizard._line_value_changed_balance(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -896,10 +861,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Edit the base line.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_balance = -500.0
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.balance = -500.0
+        wizard._line_value_changed_balance(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -911,10 +875,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Edit the tax line.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'tax_line')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_balance = -100.0
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.balance = -100.0
+        wizard._line_value_changed_balance(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -931,10 +894,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         })
 
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_tax_ids.add(tax_10)
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.tax_ids = [Command.link(tax_10.id)]
+        wizard._line_value_changed_tax_ids(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -947,10 +909,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Remove the taxes.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_tax_ids.clear()
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.tax_ids = [Command.clear()]
+        wizard._line_value_changed_tax_ids(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -961,10 +922,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Reset the amount.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_balance = -1000.0
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.balance = -1000.0
+        wizard._line_value_changed_balance(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -974,10 +934,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Add taxes. We should be back into the "price included taxes" mode.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_tax_ids.add(tax_21)
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.tax_ids = [Command.link(tax_21.id)]
+        wizard._line_value_changed_tax_ids(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -987,10 +946,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         ])
 
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_tax_ids.add(tax_10)
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.tax_ids = [Command.link(tax_10.id)]
+        wizard._line_value_changed_tax_ids(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -1002,10 +960,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Changing the account should recompute the taxes but preserve the "price included taxes" mode.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_account_id = self.account_revenue1
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.account_id = self.account_revenue1
+        wizard._line_value_changed_account_id(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -1019,7 +976,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Validate and check the statement line.
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'balance': 1000.0},
@@ -1066,11 +1023,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
-        form = WizardForm(wizard)
-        form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_account_id = self.account_revenue1
-        form.form_tax_ids.add(caba_tax)
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.account_id = self.account_revenue1
+        line.tax_ids = [Command.link(caba_tax.id)]
+        wizard._line_value_changed_tax_ids(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -1081,7 +1037,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
-        wizard.button_validate()
+        wizard._action_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'balance': 120.0,  'tax_ids': [],           'tax_line_id': False,       'account_id': st_line.journal_id.default_account_id.id},
@@ -1098,7 +1054,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         self.assertRecordValues(wizard, [{'state': 'valid'}])
         # Validate and check the statement line.
-        wizard.button_validate()
+        wizard._action_validate()
         liquidity_line, _suspense_line, _other_line = st_line._seek_for_lines()
         self.assertRecordValues(liquidity_line, [
             {'account_id': original_journal_account_id.id, 'balance': 100.0},
@@ -1158,10 +1114,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         ])
 
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        wizard._action_mount_line_in_edit(line.index)
-        form = WizardForm(wizard)
-        form.form_balance = 600.0
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.balance = -600.0
+        wizard._line_value_changed_balance(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -1187,16 +1142,17 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             foreign_currency_id=self.currency_data_2['currency'].id,
             amount_currency=6000.0,  # rate 5:1
         )
+
         inv_line_1 = self._create_invoice_line(
             'out_invoice',
             invoice_date='2016-01-01',
-            currency_id=self.currency_data_2['currency'],
+            currency_id=self.currency_data_2['currency'].id,
             invoice_line_ids=[{'price_unit': 6000.0}],  # 1000 company curr (rate 6:1)
         )
         inv_line_2 = self._create_invoice_line(
             'out_invoice',
             invoice_date='2017-01-01',
-            currency_id=self.currency_data_2['currency'],
+            currency_id=self.currency_data_2['currency'].id,
             invoice_line_ids=[{'price_unit': 4000.0}], # 1000 company curr (rate 4:1)
         )
 
@@ -1210,10 +1166,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         ])
 
         line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
-        wizard._action_mount_line_in_edit(line.index)
-        form = WizardForm(wizard)
-        form.form_amount_currency = 3000.0
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.amount_currency = -3000.0
+        wizard._line_value_changed_amount_currency(line)
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
@@ -1252,10 +1207,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Custom balance.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
-        wizard._action_mount_line_in_edit(line.index)
-        form = WizardForm(wizard)
-        form.form_balance = -1500.0
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.balance = -1500.0
+        wizard._line_value_changed_balance(line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1800.0,  'currency_id': self.company_data['currency'].id,    'balance': 1800.0},
@@ -1265,10 +1219,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Custom amount_currency.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        wizard._action_mount_line_in_edit(line.index)
-        form = WizardForm(wizard)
-        form.form_amount_currency = -4200.0
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.amount_currency = -4200.0
+        wizard._line_value_changed_amount_currency(line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1800.0,  'currency_id': self.company_data['currency'].id,    'balance': 1800.0},
@@ -1278,10 +1231,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Custom currency_id.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        wizard._action_mount_line_in_edit(line.index)
-        form = WizardForm(wizard)
-        form.form_currency_id = self.currency_data['currency']
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.currency_id = self.currency_data['currency']
+        wizard._line_value_changed_currency_id(line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1800.0,  'currency_id': self.company_data['currency'].id,    'balance': 1800.0},
@@ -1291,10 +1243,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Custom balance.
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
-        wizard._action_mount_line_in_edit(line.index)
-        form = WizardForm(wizard)
-        form.form_balance = -1800.0
-        wizard = form.save()
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.balance = -1800.0
+        wizard._line_value_changed_balance(line)
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1800.0,  'currency_id': self.company_data['currency'].id,    'balance': 1800.0},
@@ -1439,11 +1390,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         wizard._action_add_new_amls(inv_line)
-        wizard._action_add_new_amls(inv_line)
+        self.assertTrue(len(wizard.line_ids), 2)
 
-        # Trigger the compute
-        with self.assertRaises(UserError), self.cr.savepoint():
-            wizard.lines_widget
+        wizard._action_add_new_amls(inv_line)
+        self.assertTrue(len(wizard.line_ids), 2)
 
     @freeze_time('2017-01-01')
     def test_reconcile_model_with_payment_tolerance(self):
@@ -1466,9 +1416,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         })
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
-        form = WizardForm(wizard)
-        form.todo_command = 'trigger_matching_rules'
-        wizard = form.save()
+        wizard._action_trigger_matching_rules()
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
             {'flag': 'liquidity',       'balance': 998.0,   'reconcile_model_id': False},
@@ -1484,20 +1432,20 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         inv_line1_with_epd = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
-            partner_id=self.partner_a,
-            invoice_payment_term_id=self.early_payment_term,
+            currency_id=self.currency_data_2['currency'].id,
+            partner_id=self.partner_a.id,
+            invoice_payment_term_id=self.early_payment_term.id,
             invoice_date='2016-12-01',
             invoice_line_ids=[
                 {
                     'price_unit': 4800.0,
-                    'account_id': self.account_revenue1,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue1.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
                 {
                     'price_unit': 9600.0,
-                    'account_id': self.account_revenue2,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue2.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
             ],
         )
@@ -1520,20 +1468,20 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         inv_line2_with_epd = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
-            partner_id=self.partner_a,
-            invoice_payment_term_id=self.early_payment_term,
+            currency_id=self.currency_data_2['currency'].id,
+            partner_id=self.partner_a.id,
+            invoice_payment_term_id=self.early_payment_term.id,
             invoice_date='2017-01-20',
             invoice_line_ids=[
                 {
                     'price_unit': 480.0,
-                    'account_id': self.account_revenue1,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue1.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
                 {
                     'price_unit': 960.0,
-                    'account_id': self.account_revenue2,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue2.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
             ],
         )
@@ -1591,20 +1539,20 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         inv_line1_with_epd = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
-            partner_id=self.partner_a,
-            invoice_payment_term_id=self.early_payment_term,
+            currency_id=self.currency_data_2['currency'].id,
+            partner_id=self.partner_a.id,
+            invoice_payment_term_id=self.early_payment_term.id,
             invoice_date='2016-12-01',
             invoice_line_ids=[
                 {
                     'price_unit': 4800.0,
-                    'account_id': self.account_revenue1,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue1.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
                 {
                     'price_unit': 9600.0,
-                    'account_id': self.account_revenue2,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue2.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
             ],
         )
@@ -1627,20 +1575,20 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         inv_line2_with_epd = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
-            partner_id=self.partner_a,
-            invoice_payment_term_id=self.early_payment_term,
+            currency_id=self.currency_data_2['currency'].id,
+            partner_id=self.partner_a.id,
+            invoice_payment_term_id=self.early_payment_term.id,
             invoice_date='2017-01-20',
             invoice_line_ids=[
                 {
                     'price_unit': 480.0,
-                    'account_id': self.account_revenue1,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue1.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
                 {
                     'price_unit': 960.0,
-                    'account_id': self.account_revenue2,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue2.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
             ],
         )
@@ -1696,20 +1644,20 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         inv_line1_with_epd = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
-            partner_id=self.partner_a,
-            invoice_payment_term_id=self.early_payment_term,
+            currency_id=self.currency_data_2['currency'].id,
+            partner_id=self.partner_a.id,
+            invoice_payment_term_id=self.early_payment_term.id,
             invoice_date='2016-12-01',
             invoice_line_ids=[
                 {
                     'price_unit': 4800.0,
-                    'account_id': self.account_revenue1,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue1.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
                 {
                     'price_unit': 9600.0,
-                    'account_id': self.account_revenue2,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue2.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
             ],
         )
@@ -1732,20 +1680,20 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         inv_line2_with_epd = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
-            partner_id=self.partner_a,
-            invoice_payment_term_id=self.early_payment_term,
+            currency_id=self.currency_data_2['currency'].id,
+            partner_id=self.partner_a.id,
+            invoice_payment_term_id=self.early_payment_term.id,
             invoice_date='2017-01-20',
             invoice_line_ids=[
                 {
                     'price_unit': 480.0,
-                    'account_id': self.account_revenue1,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue1.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
                 {
                     'price_unit': 960.0,
-                    'account_id': self.account_revenue2,
-                    'tax_ids': self.company_data['default_tax_sale'],
+                    'account_id': self.account_revenue2.id,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
                 },
             ],
         )
@@ -1857,7 +1805,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         wizard._action_add_new_amls(bill.line_ids.filtered(lambda x: x.account_type == 'liability_payable'))
-        wizard.button_validate()
+        wizard._action_validate()
 
         self.assertRecordValues(st_line.line_ids.sorted('balance'), [
             # pylint: disable=bad-whitespace
@@ -1881,7 +1829,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # invoice with currency_data and rate 1:2
         invoice_line1 = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data['currency'],
+            currency_id=self.currency_data['currency'].id,
             invoice_date='2017-01-01',
             invoice_line_ids=[{'price_unit': 300.0}], # = 150 USD
         )
@@ -1899,14 +1847,14 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # invoice with currency_data_2 and rate 1:6
         invoice_line2 = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
+            currency_id=self.currency_data_2['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 600.0}], # = 100 USD
         )
         # invoice with currency_data_2 and rate 1:4
         invoice_line3 = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data_2['currency'],
+            currency_id=self.currency_data_2['currency'].id,
             invoice_date='2017-01-01',
             invoice_line_ids=[{'price_unit': 400.0}], # = 100 USD
         )
@@ -1940,19 +1888,19 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         inv1 = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data['currency'],
+            currency_id=self.currency_data['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 2400.0}],
         )
         inv2 = self._create_invoice_line(
             'out_invoice',
-            currency_id=self.currency_data['currency'],
+            currency_id=self.currency_data['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 2400.0}],
         )
         refund = self._create_invoice_line(
             'out_refund',
-            currency_id=self.currency_data['currency'],
+            currency_id=self.currency_data['currency'].id,
             invoice_date='2016-01-01',
             invoice_line_ids=[{'price_unit': 1200.0}],
         )

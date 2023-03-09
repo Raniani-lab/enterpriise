@@ -75,7 +75,7 @@
                 trigger: 'button[name="action_open_reconcile"]',
                 content: _t('Let’s reconcile the fetched bank transactions.'),
             }, {
-                trigger: 'button[name="button_validate"]',
+                trigger: 'button:contains("Validate")',
                 content: _t('Process this transaction.'),
             }, {
                 trigger: '.breadcrumb-item:not(.active):first',

@@ -18,4 +18,4 @@ export const bankRecMany2OneMultiID = {
     component: BankRecMany2OneMultiID,
 };
 
-registry.category("fields").add("bankrec_many2one_multi_id", bankRecMany2OneMultiID);
+registry.category("fields").add("bank_rec_list_many2one_multi_id", bankRecMany2OneMultiID);

@@ -3,7 +3,6 @@
 
 from odoo.addons.base.models.res_bank import sanitize_account_number
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.addons.account_accountant.tests.test_bank_rec_widget import WizardForm
 from odoo.tests import tagged
 from odoo import fields, Command
 from unittest.mock import patch
@@ -70,17 +69,16 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
             date2 = fields.Date.from_string(date2)
         self.assertEqual(date1, date2)
 
-    def reconncile_st_lines(self, st_lines):
+    def reconcile_st_lines(self, st_lines):
         for line in st_lines:
             wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=line.id).new({})
-            auto_balance_line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
-            form = WizardForm(wizard)
-            form._view['modifiers']['todo_command']['invisible'] = False
-            form.todo_command = f'mount_line_in_edit,{auto_balance_line.index}'
-            form.form_name = "toto"
-            form.form_account_id = self.account
-            wizard = form.save()
-            wizard.button_validate(async_action=False)
+            line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
+            wizard._js_action_mount_line_in_edit(line.index)
+            line.name = "toto"
+            wizard._line_value_changed_name(line)
+            line.account_id = self.account
+            wizard._line_value_changed_account_id(line)
+            wizard._action_validate()
 
     # Tests
     def test_creation_initial_sync_statement(self):
@@ -155,7 +153,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         # Assign partner
         created_st_line.partner_id = self.partner_a
         # process the bank statement line
-        self.reconncile_st_lines(created_st_line)
+        self.reconcile_st_lines(created_st_line)
         # Check that partner has correct vendor_name associated to it
         self.assertEqual(self.partner_a.online_partner_information, 'test_vendor_name')
 
@@ -167,7 +165,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         # Ensure that statement has a partner set
         self.assertEqual(created_st_line.partner_id, self.partner_a)
         # Validate and check that partner has no vendor_information set
-        self.reconncile_st_lines(created_st_line)
+        self.reconcile_st_lines(created_st_line)
         self.assertEqual(self.partner_a.online_partner_information, False)
 
         # Create another statement with same information
@@ -178,7 +176,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         # Ensure that statement has a partner set
         self.assertEqual(created_st_line.partner_id, self.partner_a)
         # Validate and check that partner has no vendor_name set
-        self.reconncile_st_lines(created_st_line)
+        self.reconcile_st_lines(created_st_line)
         self.assertEqual(self.partner_a.online_partner_information, False)
 
     @patch('odoo.addons.account_online_synchronization.models.account_online.AccountOnlineLink._fetch_transactions')

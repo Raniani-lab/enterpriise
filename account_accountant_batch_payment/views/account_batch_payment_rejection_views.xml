@@ -6,12 +6,10 @@
             <field name="name">account.batch.payment.rejection.form</field>
             <field name="model">account.batch.payment.rejection</field>
             <field name="arch" type="xml">
-                <form string="Batch Payment" js_class="bank_rec_batch_reject_wizard">
+                <form string="Batch Payment">
                     <!-- Invisible fields -->
                     <field name="in_reconcile_payment_ids" invisible="1"/>
                     <field name="rejected_payment_ids" invisible="1"/>
-                    <field name="next_action_todo" invisible="1"/>
-                    <field name="cancel_action_todo" invisible="1"/>
 
                     <div>
                         <span attrs="{'invisible': [('nb_batch_payment_ids', '!=', 1)]}"><field name="nb_rejected_payment_ids"/> payments from the batch have been removed.</span>

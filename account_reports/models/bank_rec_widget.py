@@ -1,12 +1,13 @@
 import ast
 
-from odoo import models
+from odoo import api, models
 from odoo.addons.web.controllers.utils import clean_action
 
 
 class BankRecWidget(models.Model):
     _inherit = "bank.rec.widget"
 
+    @api.model
     def action_open_bank_reconciliation_report(self, journal_id):
         # OVERRIDE account_accountant
         action = self.env['ir.actions.actions']._for_xml_id("account_reports.action_account_report_bank_reconciliation")

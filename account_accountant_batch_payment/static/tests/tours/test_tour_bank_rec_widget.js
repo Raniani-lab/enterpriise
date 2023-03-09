@@ -20,7 +20,7 @@ registry.category("web_tour.tours").add('account_accountant_batch_payment_bank_r
         },
         {
             content: "The 'line1' should be selected by default",
-            trigger: "div[name='lines_widget'] td[field='name']:contains('line1')",
+            trigger: "div[name='line_ids'] td[field='name']:contains('line1')",
             run: function() {},
         },
 
@@ -36,14 +36,14 @@ registry.category("web_tour.tours").add('account_accountant_batch_payment_bank_r
         {
             content: "Remove the payment of 100.0",
             extra_trigger: "div.bank_rec_widget_form_batch_payments_list_anchor table.o_list_table tr.o_rec_widget_list_selected_item",
-            trigger: "div[name='lines_widget'] .fa-trash-o:last",
+            trigger: "div[name='line_ids'] .fa-trash-o:last",
         },
 
         // Check the batch rejection wizard.
         {
             content: "Validate and open the wizard",
-            extra_trigger: "button.btn-primary[name='button_validate']",
-            trigger: "button[name='button_validate']",
+            extra_trigger: "button.btn-primary:contains('Validate')",
+            trigger: "button:contains('Validate')",
         },
         {
             content: "Click on 'Cancel'",
@@ -53,7 +53,7 @@ registry.category("web_tour.tours").add('account_accountant_batch_payment_bank_r
         {
             content: "Validate and open the wizard",
             extra_trigger: "body:not(.modal-open)",
-            trigger: "button[name='button_validate']",
+            trigger: "button:contains('Validate')",
         },
         {
             content: "Click on 'Expect Payments Later'",
@@ -64,8 +64,8 @@ registry.category("web_tour.tours").add('account_accountant_batch_payment_bank_r
         // Reconcile 'line2' with the remaining payment in batch.
         {
             content: "The 'line2' should be selected by default",
-            extra_trigger: "div[name='lines_widget'] td[field='name']:contains('line2')",
-            trigger: "div[name='lines_widget'] td[field='name']:contains('line2')",
+            extra_trigger: "div[name='line_ids'] td[field='name']:contains('line2')",
+            trigger: "div[name='line_ids'] td[field='name']:contains('line2')",
             run: function() {},
         },
         {
@@ -78,13 +78,13 @@ registry.category("web_tour.tours").add('account_accountant_batch_payment_bank_r
         },
         {
             content: "Validate. The wizard should be opened.",
-            extra_trigger: "button.btn-primary[name='button_validate']",
-            trigger: "button[name='button_validate']",
+            extra_trigger: "button.btn-primary:contains('Validate')",
+            trigger: "button:contains('Validate')",
         },
         {
             content: "The 'line3' should be selected by default",
-            extra_trigger: "div[name='lines_widget'] td[field='name']:contains('line3')",
-            trigger: "div[name='lines_widget'] td[field='name']:contains('line3')",
+            extra_trigger: "div[name='line_ids'] td[field='name']:contains('line3')",
+            trigger: "div[name='line_ids'] td[field='name']:contains('line3')",
             run: function() {},
         },
         stepUtils.toggleHomeMenu(),

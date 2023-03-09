@@ -30,10 +30,12 @@ export class PreparationDisplay extends Reactive {
             stages: stages,
         };
 
+        this.restoreFilterFromLocalStorage();
         this.processStages();
         this.processCategories();
         this.processOrders();
     }
+
     filterOrders() {
         this.tables = {};
         const stages = this.stages;
@@ -48,11 +50,10 @@ export class PreparationDisplay extends Reactive {
                 return order.orderlines.find((orderline) => {
                     // the order must be in selected categories or products (if set) and must be flag as displayed.
                     if (
-                        selectedProducts.has(orderline.productId) ||
-                        selectedCategories.has(orderline.productCategoryId) ||
-                        (selectedProducts.size === 0 &&
-                            selectedCategories.size === 0 &&
-                            order.displayed)
+                        (selectedProducts.has(orderline.productId) ||
+                            selectedCategories.has(orderline.productCategoryId) ||
+                            (selectedProducts.size === 0 && selectedCategories.size === 0)) &&
+                        order.displayed
                     ) {
                         if (!countedOrders.has(order.id)) {
                             this.stages.get(order.stageId).orderCount++;
@@ -99,6 +100,7 @@ export class PreparationDisplay extends Reactive {
 
         this.filteredOrders = ordersToDisplay;
     }
+
     get lastStage() {
         return [...this.stages.values()][this.stages.size - 1];
     }
@@ -106,10 +108,12 @@ export class PreparationDisplay extends Reactive {
     get firstStage() {
         return [...this.stages.values()][0];
     }
+
     selectStage(stageId) {
         this.selectedStageId = stageId;
         this.filterOrders();
     }
+
     async doneOrders(orders) {
         await this.orm.call(
             "pos_preparation_display.order",
@@ -119,15 +123,7 @@ export class PreparationDisplay extends Reactive {
         );
         this.filterOrders();
     }
-    wsMoveToNextStage(orderId, stageId, lastStageChange) {
-        const order = this.orders[orderId];
-        clearTimeout(order.changeStageTimeout);
 
-        order.stageId = stageId;
-        order.lastStageChange = lastStageChange;
-        order.resetOrderlineStatus();
-        this.filterOrders();
-    }
     orderNextStage(order) {
         if (order.stageId === this.lastStage.id) {
             return this.firstStage;
@@ -138,52 +134,58 @@ export class PreparationDisplay extends Reactive {
 
         return stages[currentStagesIdx + 1] ?? false;
     }
+
     async changeOrderStage(order, force = false) {
-        let nextStage;
-        const orderlineDone = order.orderlines.every((orderline) => orderline.todo === false);
-        const orderlineCancelled = order.orderlines.every(
-            (orderline) => orderline.productQuantity - orderline.productCancelled === 0
-        );
+        const linesVisibility = this.getOrderlinesVisibility(order);
 
-        if (orderlineCancelled) {
-            nextStage = this.lastStage;
-        } else {
-            nextStage = this.orderNextStage(order);
-        }
-
-        if (order.changeStageTimeout) {
-            if (orderlineDone) {
-                order.resetOrderlineStatus();
+        if (force) {
+            if (linesVisibility.visibleTodo === 0 || order.changeStageTimeout) {
+                this.resetOrderlineStatus(order, true);
+                order.clearChangeTimeout();
+                return;
             }
 
+            for (const orderline of linesVisibility.visible) {
+                if (force) {
+                    orderline.todo = false;
+                }
+            }
+        }
+
+        this.syncOrderlinesStatus(order);
+        if (order.changeStageTimeout) {
             order.clearChangeTimeout();
             return;
         }
 
-        if (!force) {
-            if (!nextStage || !orderlineDone) {
-                return;
-            }
-        }
+        const allOrderlineDone = order.orderlines.every((orderline) => !orderline.todo);
+        if (allOrderlineDone) {
+            let nextStage = this.orderNextStage(order);
 
-        for (const orderline of order.orderlines) {
-            orderline.todo = false;
-        }
-
-        order.changeStageTimeout = setTimeout(async () => {
-            order.stageId = nextStage.id;
-            order.lastStageChange = await this.orm.call(
-                "pos_preparation_display.order",
-                "change_order_stage",
-                [[order.id], order.stageId, this.id],
-                {}
+            const allOrderlineCancelled = order.orderlines.every(
+                (orderline) => orderline.productQuantity - orderline.productCancelled === 0
             );
 
-            order.resetOrderlineStatus();
-            order.clearChangeTimeout();
-            this.filterOrders();
-        }, 10000);
+            if (allOrderlineCancelled) {
+                nextStage = this.lastStage;
+            }
+
+            order.changeStageTimeout = setTimeout(async () => {
+                order.stageId = nextStage.id;
+                order.lastStageChange = await this.orm.call(
+                    "pos_preparation_display.order",
+                    "change_order_stage",
+                    [[order.id], order.stageId, this.id],
+                    {}
+                );
+
+                this.resetOrderlineStatus(order, false, true);
+                order.clearChangeTimeout();
+                this.filterOrders();
+            }, 10000);
+        }
     }
+
     async getOrders() {
         this.rawData.orders = await this.orm.call(
             "pos_preparation_display.order",
@@ -194,6 +196,7 @@ export class PreparationDisplay extends Reactive {
 
         this.processOrders();
     }
+
     processCategories() {
         this.categories = Object.fromEntries(
             this.rawData.categories
@@ -201,13 +204,14 @@ export class PreparationDisplay extends Reactive {
                 .sort((a, b) => a.sequence - b.sequence)
         );
     }
+
     processStages() {
         this.selectStage(this.rawData.stages[0].id);
         this.stages = new Map(
             this.rawData.stages.map((stage) => [stage.id, new Stage(stage, this)])
         );
     }
-    //fixme remove cancelled fonctionality
+
     processOrders() {
         this.stages.forEach((stage) => (stage.orders = []));
 
@@ -243,9 +247,31 @@ export class PreparationDisplay extends Reactive {
         this.filterOrders();
         return this.orders;
     }
-    wsChangeLineStatus(orderlineId, todo) {
-        this.orderlines[orderlineId].todo = todo;
+
+    wsChangeLinesStatus(linesStatus) {
+        for (const status of linesStatus) {
+            if (!this.orderlines[status.id]) {
+                continue;
+            }
+
+            this.orderlines[status.id].todo = status.todo;
+
+            if (status.todo) {
+                this.orderlines[status.id].order.clearChangeTimeout();
+            }
+        }
     }
+
+    wsMoveToNextStage(orderId, stageId, lastStageChange) {
+        const order = this.orders[orderId];
+        clearTimeout(order.changeStageTimeout);
+
+        order.stageId = stageId;
+        order.lastStageChange = lastStageChange;
+        this.resetOrderlineStatus(order, false, true);
+        this.filterOrders();
+    }
+
     toggleCategory(categoryId) {
         if (this.selectedCategories.has(categoryId)) {
             this.selectedCategories.delete(categoryId);
@@ -254,7 +280,9 @@ export class PreparationDisplay extends Reactive {
         }
 
         this.filterOrders();
+        this.saveFilterToLocalStorage();
     }
+
     toggleProduct(productId) {
         if (this.selectedProducts.has(productId)) {
             this.selectedProducts.delete(productId);
@@ -263,7 +291,9 @@ export class PreparationDisplay extends Reactive {
         }
 
         this.filterOrders();
+        this.saveFilterToLocalStorage();
     }
+
     async resetOrders() {
         this.orders = {};
         this.rawData.orders = await this.orm.call(
@@ -273,6 +303,87 @@ export class PreparationDisplay extends Reactive {
             {}
         );
     }
+
+    saveFilterToLocalStorage() {
+        const userService = this.env.services.user;
+        const localStorageName = `preparation_display_${this.id}.db_${userService.db.name}.user_${userService.userId}`;
+
+        localStorage.setItem(
+            localStorageName,
+            JSON.stringify({
+                products: Array.from(this.selectedProducts),
+                categories: Array.from(this.selectedCategories),
+            })
+        );
+    }
+
+    restoreFilterFromLocalStorage() {
+        const userService = this.env.services.user;
+        const localStorageName = `preparation_display_${this.id}.db_${userService.db.name}.user_${userService.userId}`;
+        const localStorageData = JSON.parse(localStorage.getItem(localStorageName));
+
+        if (localStorageData) {
+            this.selectedCategories = new Set(localStorageData.categories);
+            this.selectedProducts = new Set(localStorageData.products);
+        }
+    }
+
+    async syncOrderlinesStatus(order) {
+        const orderlinesStatus = {};
+        const orderlineIds = [];
+
+        for (const orderline of order.orderlines) {
+            orderlineIds.push(orderline.id);
+            orderlinesStatus[orderline.id] = orderline.todo;
+        }
+
+        await this.orm.call(
+            "pos_preparation_display.orderline",
+            "change_line_status",
+            [orderlineIds, orderlinesStatus],
+            {}
+        );
+    }
+
+    resetOrderlineStatus(order, sync = false, all = false) {
+        for (const orderline of order.orderlines) {
+            if (
+                orderline.productQuantity - orderline.productCancelled !== 0 &&
+                (this.checkOrderlineVisibility(orderline) || all)
+            ) {
+                orderline.todo = true;
+            }
+        }
+
+        if (sync) {
+            this.syncOrderlinesStatus(order);
+        }
+    }
+
+    checkOrderlineVisibility(orderline) {
+        return (
+            this.selectedCategories.has(orderline.productCategoryId) ||
+            this.selectedProducts.has(orderline.productId) ||
+            (this.selectedCategories.size === 0 && this.selectedProducts.size === 0)
+        );
+    }
+
+    getOrderlinesVisibility(order) {
+        const orderlines = {
+            visible: [],
+            visibleTodo: 0,
+        };
+
+        for (const orderline of order.orderlines) {
+            if (this.checkOrderlineVisibility(orderline)) {
+                orderlines.visible.push(orderline);
+                orderlines.visibleTodo += orderline.todo ? 1 : 0;
+            }
+        }
+
+        return orderlines;
+    }
+
     exit() {
         window.location.href = "/web#action=pos_preparation_display.action_preparation_display";
     }

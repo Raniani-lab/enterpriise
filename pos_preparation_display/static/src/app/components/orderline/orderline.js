@@ -19,14 +19,6 @@ export class Orderline extends Component {
         const order = this.props.orderline.order;
 
         orderline.todo = newState;
-
-        await this.orm.call(
-            "pos_preparation_display.orderline",
-            "change_line_status",
-            [[orderline.id], newState],
-            {}
-        );
-
         this.preparationDisplay.changeOrderStage(order);
     }
 }

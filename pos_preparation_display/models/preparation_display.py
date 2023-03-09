@@ -64,12 +64,14 @@ class PosPreparationDisplay(models.Model):
             orders = self.env['pos_preparation_display.order'].search([('pos_config_id', 'in', preparation_display.get_pos_config_ids().ids)], limit=1000, order='id desc')
 
             for order in orders:
-                current_order_stage = []
+                current_order_stage = None
 
                 if order.order_stage_ids:
-                    current_order_stage = order.order_stage_ids.filtered(lambda stage: stage.preparation_display_id.id == self.id)[-1]
+                    filtered_stages = order.order_stage_ids.filtered(lambda stage: stage.preparation_display_id.id == preparation_display.id)
+                    if len(filtered_stages) > 0:
+                        current_order_stage = filtered_stages[-1]
 
-                if current_order_stage.id != last_stage.id:
+                if not current_order_stage or current_order_stage.id != last_stage.id:
                     order.order_stage_ids.create({
                         'preparation_display_id': preparation_display.id,
                         'stage_id': last_stage.id,

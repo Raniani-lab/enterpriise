@@ -13,12 +13,18 @@ class PosPreparationDisplayOrderline(models.Model):
     preparation_display_order_id = fields.Many2one(
         'pos_preparation_display.order', required=True, index=True, ondelete='cascade')
 
-    def change_line_status(self, todo):
-        self.ensure_one()
-        self.todo = todo
+    def change_line_status(self, status):
+        orderlines_status = []
 
-        preparation_displays = self.env['pos_preparation_display.display'].search(
-            ['|', ('category_ids', 'in', self.product_id.pos_categ_id.id), ('category_ids', '=', False)])
+        categories = self.mapped('product_id.pos_categ_id')
+        preparation_displays = self.env['pos_preparation_display.display'].search(['|', ('category_ids', 'in', categories), ('category_ids', '=', False)])
+
+        for orderline in self:
+            orderline.todo = status[str(orderline.id)]
+            orderlines_status.append({
+                'id': orderline.id,
+                'todo': orderline.todo
+            })
 
         self.env['bus.bus']._sendmany([
             [
@@ -26,8 +32,7 @@ class PosPreparationDisplayOrderline(models.Model):
                 'change_orderline_status',
                 {
                     'preparation_display_id': preparation_display.id,
-                    'orderline_id': self.id,
-                    'todo': todo
+                    'status': orderlines_status
                 }
             ]
             for preparation_display in preparation_displays

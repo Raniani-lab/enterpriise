@@ -24,7 +24,7 @@
                         <span t-esc="this.props.order.responsible"/>
                     </div>
                     <div class="o_pdis_alert-timer px-1"
-                        t-on-click="() => this.doneOrder()">
+                        t-on-click.stop="doneOrder">
                         <div class="rounded"
                             t-att-class="{ 'o_pdis_is_alert bg-danger text-white': this.isAlert, 'o_pdis_archive-order cursor-pointer': this.preparationDisplay.lastStage.id === this.props.order.stageId }">
                             <div t-if="this.preparationDisplay.lastStage.id !== this.props.order.stageId" class="px-2 py-1">
@@ -41,7 +41,7 @@
             </div>
             <div class="o_pdis_orderline w-100 overflow-auto" t-ref="orderlines-container" t-on-scroll="() => this.productBubbleHighlight()">
                 <t t-foreach="this.props.order.orderlines" t-as="orderline" t-key="orderline.id">
-                    <t t-if="this.shouldDisplayOrderline(orderline)">
+                    <t t-if="this.preparationDisplay.checkOrderlineVisibility(orderline)">
                         <Orderline orderline="orderline"/>
                     </t>
                 </t>

@@ -69,17 +69,6 @@ export class Order extends Component {
             return "#E0E2E6";
         }
     }
-    shouldDisplayOrderline(orderline) {
-        const selectedCategories = this.preparationDisplay.selectedCategories;
-        const selectedProducts = this.preparationDisplay.selectedProducts;
-        if (
-            selectedCategories.has(orderline.productCategoryId) ||
-            selectedProducts.has(orderline.productId) ||
-            (!selectedCategories.size && !selectedProducts.size)
-        ) {
-            return true;
-        }
-    }
     _computeDuration() {
         const timeDiff = (
             (luxon.DateTime.now().ts - deserializeDateTime(this.props.order.lastStageChange).ts) /

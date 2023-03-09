@@ -40,10 +40,7 @@ const preparationDisplayService = {
                             datas.last_stage_change
                         );
                     case "change_orderline_status":
-                        return preparationDisplayService.wsChangeLineStatus(
-                            datas.orderline_id,
-                            datas.todo
-                        );
+                        return preparationDisplayService.wsChangeLinesStatus(datas.status);
                 }
             });
 

@@ -111,7 +111,12 @@ class PosPreparationDisplayOrder(models.Model):
                 order_stage.stage_id == last_stage
             )
 
-            current_order_stage.done = True
+            if current_order_stage:
+                current_order_stage.done = True
+
+        self.env['bus.bus']._sendone(f'preparation_display-{preparation_display.id}', 'load_orders', {
+            'preparation_display_id': preparation_display.id,
+        })
 
     def get_preparation_display_order(self, preparation_display_id):
         preparation_display = self.env['pos_preparation_display.display'].browse(preparation_display_id)
@@ -121,10 +126,12 @@ class PosPreparationDisplayOrder(models.Model):
 
         preparation_display_orders = []
         for order in orders:
-            current_order_stage = []
+            current_order_stage = None
 
             if order.order_stage_ids:
-                current_order_stage = order.order_stage_ids.filtered(lambda stage: stage.preparation_display_id.id == preparation_display.id)[-1]
+                filtered_stages = order.order_stage_ids.filtered(lambda stage: stage.preparation_display_id.id == preparation_display.id)
+                if filtered_stages:
+                    current_order_stage = filtered_stages[-1]
 
             if current_order_stage and current_order_stage.stage_id == last_stage and current_order_stage.done:
                 continue
@@ -159,10 +166,12 @@ class PosPreparationDisplayOrder(models.Model):
                 })
 
         if preparation_display_orderlines:
-            current_order_stage = []
+            current_order_stage = None
 
             if self.order_stage_ids:
-                current_order_stage = self.order_stage_ids.filtered(lambda stage: stage.preparation_display_id.id == preparation_display.id)[-1]
+                filtered_stages = self.order_stage_ids.filtered(lambda stage: stage.preparation_display_id.id == preparation_display.id)
+                if filtered_stages:
+                    current_order_stage = filtered_stages[-1]
 
             return {
                 'id': self.id,

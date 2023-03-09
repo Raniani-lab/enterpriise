@@ -28,6 +28,10 @@ export class Orderline extends Reactive {
         this.order = order;
     }
 
+    get isCancelled() {
+        return this.productCount === 0 ? true : false;
+    }
+
     get productCount() {
         const productCount = this.productQuantity - this.productCancelled;
         return productCount;

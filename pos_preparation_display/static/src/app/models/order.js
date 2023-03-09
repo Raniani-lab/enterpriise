@@ -27,14 +27,6 @@ export class Order extends Reactive {
         this.changeStageTimeout = null;
     }
 
-    resetOrderlineStatus() {
-        for (const orderline of this.orderlines) {
-            if (orderline.productQuantity - orderline.productCancelled !== 0) {
-                orderline.todo = true;
-            }
-        }
-    }
-
     clearChangeTimeout() {
         clearTimeout(this.changeStageTimeout);
         this.changeStageTimeout = null;

@@ -41,6 +41,7 @@ export class PreparationDisplay extends Component {
         this.preparationDisplay.selectedCategories = new Set();
         this.preparationDisplay.selectedProducts = new Set();
         this.preparationDisplay.filterOrders();
+        this.preparationDisplay.saveFilterToLocalStorage();
     }
     toggleCategoryFilter() {
         this.preparationDisplay.showCategoryFilter = !this.preparationDisplay.showCategoryFilter;

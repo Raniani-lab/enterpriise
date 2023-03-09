@@ -14,7 +14,7 @@
                             </button>
                         </div>
                         <div class="text-end">
-                            <span t-esc="formatMinutes(line.duration)"/>
+                            <MrpTimer ongoing="line.ongoing" value="line.duration"/>
                         </div>
                         <div class="text-end">
 

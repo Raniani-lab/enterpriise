@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
+import { MrpTimer } from "@mrp/widgets/timer";
 import { useService } from "@web/core/utils/hooks";
-import { formatMinutes } from "@mrp/widgets/timer";
 import time from 'web.time';
 
 const { Component, onWillStart } = owl;
@@ -11,7 +11,6 @@ export class WorkingEmployeePopup extends Component {
         super.setup();
         this.orm = useService('orm');
         this.workorderId = this.props.popupData.workorderId;
-        this.formatMinutes = formatMinutes;
 
         onWillStart(() => this._getState());
     }
@@ -81,6 +80,7 @@ export class WorkingEmployeePopup extends Component {
     }
 }
 
+WorkingEmployeePopup.components = { MrpTimer };
 WorkingEmployeePopup.props = {
     popupData: Object,
     onAddEmployee: Function,

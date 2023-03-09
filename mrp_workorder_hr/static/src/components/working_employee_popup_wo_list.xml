@@ -37,7 +37,7 @@
                                             <t t-esc="wo.name"/>
                                         </div>
                                         <div class="o_workorder_timer">
-                                            <span t-esc="formatMinutes(wo.duration)"/>
+                                            <MrpTimer ongoing="wo.ongoing" value="wo.duration"/>
                                         </div>
                                         <div class="o_button_timer">
                                             <button t-if="wo.ongoing" class="btn btn-danger text-uppercase o_btn_start_stop" t-on-click="() => this.stopEmployee(employee.id,wo.id)">Pause</button>

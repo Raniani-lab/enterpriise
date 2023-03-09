@@ -155,13 +155,13 @@ class TestNlXafExport(TestAccountReportsCommon):
                     <vatCodes>
                         <vatCode>
                             <vatID>___ignore___</vatID>
-                            <vatDesc>Sales/turnover high</vatDesc>
+                            <vatDesc>21% ST</vatDesc>
                         </vatCode><vatCode>
                             <vatID>___ignore___</vatID>
-                            <vatDesc>Sales/turnover high (Copy)</vatDesc>
+                            <vatDesc>21% ST (Copy)</vatDesc>
                         </vatCode><vatCode>
                             <vatID>___ignore___</vatID>
-                            <vatDesc>VAT receivable high (purchases) (Copy)</vatDesc>
+                            <vatDesc>21% (Copy)</vatDesc>
                         </vatCode>
                     </vatCodes>
                     <periods>
@@ -291,7 +291,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>150000</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc>Sales/turnover high</desc>
+                                    <desc>21% ST</desc>
                                     <amnt>252.0</amnt>
                                     <amntTp>C</amntTp>
                                     <custSupID>___ignore___</custSupID>
@@ -305,7 +305,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>150000</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc>Sales/turnover high (Copy)</desc>
+                                    <desc>21% ST (Copy)</desc>
                                     <amnt>42.0</amnt>
                                     <amntTp>C</amntTp>
                                     <custSupID>___ignore___</custSupID>
@@ -368,7 +368,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>150000</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc>Sales/turnover high</desc>
+                                    <desc>21% ST</desc>
                                     <amnt>252.0</amnt>
                                     <amntTp>C</amntTp>
                                     <custSupID>___ignore___</custSupID>
@@ -382,7 +382,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>150000</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc>Sales/turnover high (Copy)</desc>
+                                    <desc>21% ST (Copy)</desc>
                                     <amnt>42.0</amnt>
                                     <amntTp>C</amntTp>
                                     <custSupID>___ignore___</custSupID>
@@ -445,7 +445,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>150000</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc>Sales/turnover high</desc>
+                                    <desc>21% ST</desc>
                                     <amnt>252.0</amnt>
                                     <amntTp>C</amntTp>
                                     <custSupID>___ignore___</custSupID>
@@ -459,7 +459,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>150000</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc>Sales/turnover high (Copy)</desc>
+                                    <desc>21% ST (Copy)</desc>
                                     <amnt>42.0</amnt>
                                     <amntTp>C</amntTp>
                                     <custSupID>___ignore___</custSupID>
@@ -522,7 +522,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>150000</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc>Sales/turnover high</desc>
+                                    <desc>21% ST</desc>
                                     <amnt>252.0</amnt>
                                     <amntTp>D</amntTp>
                                     <custSupID>___ignore___</custSupID>
@@ -536,7 +536,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>150000</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc>Sales/turnover high (Copy)</desc>
+                                    <desc>21% ST (Copy)</desc>
                                     <amnt>42.0</amnt>
                                     <amntTp>D</amntTp>
                                     <custSupID>___ignore___</custSupID>
@@ -604,7 +604,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>152000</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc>VAT receivable high (purchases) (Copy)</desc>
+                                    <desc>21% (Copy)</desc>
                                     <amnt>201.6</amnt>
                                     <amntTp>D</amntTp>
                                     <custSupID>___ignore___</custSupID>

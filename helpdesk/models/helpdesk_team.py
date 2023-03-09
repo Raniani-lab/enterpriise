@@ -757,8 +757,10 @@ class HelpdeskTeam(models.Model):
         action = self.action_view_ticket()
         action_params = self._get_action_view_ticket_params()
         action.update({
-            'context': action_params['context'],
-            'domain': expression.AND([action_params['domain'], [('priority', '=', 3)]]),
+            'context': {
+                **action_params['context'],
+                'search_default_urgent_priority': True,
+            },
         })
         return action
 

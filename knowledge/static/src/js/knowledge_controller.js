@@ -8,8 +8,18 @@ export class KnowledgeArticleFormController extends FormController {
         super.setup();
         this.root = useRef('root');
         useChildSubEnv({
+            ensureArticleName: this.ensureArticleName.bind(this),
             renameArticle: this.renameArticle.bind(this),
         });
+    }
+
+    /**
+     * If the article has no name set, tries to rename it.
+     */
+    ensureArticleName() {
+        if (!this.model.root.data.name) {
+            this.renameArticle();
+        }
     }
     
     /**
@@ -19,11 +29,15 @@ export class KnowledgeArticleFormController extends FormController {
      * @overwrite
      */
     onWillSaveRecord(record) {
-        if (!record.data.name) {
-            this.renameArticle();
-        }
+        this.ensureArticleName();
     }
 
+    /**
+     * Rename the article using the given name, or using the article title if
+     * no name is given (first h1 in the body). If no title is found, the
+     * article is kept untitled.
+     * @param {string} name - new name of the article
+     */
     renameArticle(name) {
         if (!name) {
             const title = this.root.el.querySelector('#body h1');

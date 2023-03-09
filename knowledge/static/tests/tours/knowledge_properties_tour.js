@@ -25,7 +25,7 @@ registry.category("web_tour.tours").add('knowledge_properties_tour', {
     trigger: '.breadcrumb-item.active:contains("ChildArticle")',
     run: () => {},
 }, { // click on add properties
-    trigger: 'a.o_knowledge_add_properties.o_knowledge_option_button',
+    trigger: 'button.o_knowledge_add_properties',
     run: 'click',
 }, { // modify property name
     trigger: '.o_field_property_definition_header input',

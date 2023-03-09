@@ -3,11 +3,12 @@
 import config from "web.config";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { FormRenderer } from '@web/views/form/form_renderer';
+import { KnowledgeCoverDialog } from '@knowledge/components/knowledge_cover/knowledge_cover_dialog';
 import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
 import { patch } from "@web/core/utils/patch";
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
-import { onMounted, onPatched, onWillDestroy, useChildSubEnv, useEffect, useRef, useState, xml } from "@odoo/owl";
+import { onMounted, onWillDestroy, useChildSubEnv, useEffect, useRef, useState, xml } from "@odoo/owl";
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -19,10 +20,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
         this.state = useState({
             displayChatter: false,
-            displaySharePanel: false,
-            displayPropertyPanel: false,
-            displayPropertyToggle: false,
-            triggerClickOnAddProperty: false,
+            displayPropertyPanel: !this.props.record.data.article_properties_is_empty,
         });
 
         this.actionService = useService("action");
@@ -50,14 +48,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
         this.device = config.device;
         this.sidebarSize = localStorage.getItem('knowledgeArticleSidebarSize');
-
-        onPatched(() => {
-            // Handle Add property button
-            if (this.state.triggerClickOnAddProperty && this.root.el.querySelector('.o_field_property_add > button')) {
-                this.state.triggerClickOnAddProperty = false;
-                this.root.el.querySelector('.o_field_property_add > button').click();
-            }
-        });
 
         useEffect(() => {
             // ADSC: Make tree component with "t-on-" instead of adding these eventListeners
@@ -91,33 +81,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             };
             this.tree.el.addEventListener('click', listener);
 
-            /**
-             * Show/hide the Share Panel (invite, update members permissions, ...)
-             * Done on events of BS dropdown instead of onClick because user might
-             * click on another dropdown toggle button, which would not fire the
-             * click on toggle Share Panel itself. This leads to an inconsistent
-             * state between the display and the state, which is solved by correctly
-             * using dropdown events.
-             */
-            const buttonSharePanel = this.root.el.querySelector('#dropdown_share_panel');
-            if (buttonSharePanel) {
-                buttonSharePanel.addEventListener(
-                    // Prevent hiding the dropdown when the invite modal is shown
-                    'hide.bs.dropdown', (ev) => {
-                        if (this.uiService.activeElement !== document) {
-                            ev.preventDefault();
-                        }
-                });
-                buttonSharePanel.addEventListener(
-                    'shown.bs.dropdown',
-                    () => this.state.displaySharePanel = true
-                );
-                buttonSharePanel.addEventListener(
-                    'hidden.bs.dropdown',
-                    () => this.state.displaySharePanel = false
-                );
-            }
-
             return () => {
                 this.tree.el.removeEventListener('click', listener);
             };
@@ -134,14 +97,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         });
 
         useEffect(() => {
-            // If the article has some properties set,
-            // we should display the property panel that is hidden by default.
-            const displayPropertyPanel = this.props.record.data.article_properties && this.props.record.data.article_properties.length > 0;
-            this.state.displayPropertyToggle = displayPropertyPanel;
-            this.state.displayPropertyPanel = displayPropertyPanel;
-        }, () => {
-            return [this.props.record.data.article_properties && this.props.record.data.article_properties.length > 0];
-        });
+            // When opening an article, display the properties panel if the
+            // article has properties.
+            this.state.displayPropertyPanel = !this.props.record.data.article_properties_is_empty;
+        }, () => [this.resId, this.props.record.data.article_properties_is_empty]);
 
         onWillDestroy(async () => {
             const messaging = await this.loadEmoji;
@@ -150,20 +109,19 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         });
 
         useChildSubEnv({
-            _showEmojiPicker: this._showEmojiPicker.bind(this),
+            addIcon: this.addIcon.bind(this),
             createArticle: this.createArticle.bind(this),
             openArticle: this.openArticle.bind(this),
+            openCoverSelector: this.openCoverSelector.bind(this),
             config: this.env.config,
             _resizeNameInput: this._resizeNameInput.bind(this),
             _renderTree: this._renderTree.bind(this),
+            showEmojiPicker: this._showEmojiPicker.bind(this),
             toggleFavorite: this.toggleFavorite.bind(this),
             toggleProperties: this.toggleProperties.bind(this),
             toggleChatter: this.toggleChatter.bind(this),
-            _arePropertiesActivated: this._arePropertiesActivated.bind(this),
-            _isPanelDisplayed: this._isPanelDisplayed.bind(this),
             _saveIfDirty: this._saveIfDirty.bind(this),
             messagingService: this.messagingService,
-            addProperties: this.addProperties.bind(this),
             _moveArticle: this._moveArticle.bind(this),
         });
     }
@@ -186,38 +144,22 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             props: this.props,
             root: this.root,
             state: this.state,
-            addIcon: (ev) => this.addIcon(ev),
-            createArticle: (category, targetParentId) => this.createArticle(category, targetParentId),
             resizeSidebar: (el) => this.resizeSidebar(el),
-            _showEmojiPicker: (ev) => this._showEmojiPicker(ev),
             __comp__: this, // used by the compiler
             this: this, // used by the arch directly
         };
     }
-
 
     /**
      * Add a random icon to the article.
      * @param {Event} event
      */
     addIcon(event) {
-        event.preventDefault();
         if (!this.messaging || !this.messaging.knowledge) {
             return;
         }
         const icon = this.messaging.knowledge.randomEmojis[Math.floor(Math.random() * this.messaging.knowledge.randomEmojis.length)].codepoints;
         this._renderEmoji(icon, this.resId);
-    }
-
-    /**
-     * Open the Properties Panel and start to add the first property field.
-     */
-    addProperties(event) {
-        // See onPatched: triggers a click when properties widget is ready and added
-        // in to DOM. It adds a property directly.
-        this.state.triggerClickOnAddProperty = true;
-        this.state.displayPropertyToggle = true;
-        this.state.displayPropertyPanel = true;
     }
 
     /**
@@ -324,6 +266,14 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         }
     }
 
+    openCoverSelector() {
+        this.dialog.add(KnowledgeCoverDialog, {
+            articleCoverId: this.props.record.data.cover_image_id[0],
+            articleName: this.props.record.data.name || "",
+            save: (id) => this.props.record.update({cover_image_id: [id]})
+        });
+    }
+
     get resId() {
         return this.props.record.resId;
     }
@@ -334,7 +284,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      */
     toggleChatter() {
         if (this.resId) {
-            this.root.el.querySelector('.btn-chatter').classList.toggle('active');
             this.state.displayChatter = !this.state.displayChatter;
         }
     }
@@ -343,9 +292,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * Show/hide the Property Fields right panel.
      */
     toggleProperties() {
-        // This first time toggle properties is called is to display the property panel.
-        // Once done, we should always display property toggle.
-        this.state.displayPropertyToggle = true;
         this.state.displayPropertyPanel = !this.state.displayPropertyPanel;
     }
 
@@ -377,18 +323,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         if (!this.device.isMobile) {
             this._setTreeFavoriteListener();
         }
-    }
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    _arePropertiesActivated() {
-        return this.state.displayPropertyToggle;
-    }
-
-    _isPanelDisplayed() {
-        return this.state.displayPropertyPanel;
     }
 
     //--------------------------------------------------------------------------
@@ -822,31 +756,17 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     }
 
     /**
-     * Unlike Bootstrap 4, Bootstrap 5 requires that the dropdown-menu be inside
-     * a direct sibling of the dropdown toggle even though the real condition
-     * technically is that the dropdown-menu and the dropdown toggle must have a
-     * common ancestor with position: relative.
-     *
-     * In our case, we want to display a page blocker which will prevent the
-     * user to drag an article while the emoji picker is open, along with the
-     * emoji picker itself.
-     *
-     * To circumvent the harsher Bootstrap 5 limitation, the dropdown-menu
-     * element is set manually if the default selector did not find it.
-     *
-     * @see bootstrap.dropdown._getMenuElement
-     * @see bootstrap.selector-engine.next
-     *
+     * Shows the emoji picker under the icon clicked.
      * @private
      */
     _showEmojiPicker(ev) {
         if (!this.messaging || !this.messaging.knowledge) {
             return;
         }
-        const articleId = Number(ev.target.closest('.o_article_emoji_dropdown').dataset.articleId) || this.resId;
+        const articleId = Number(ev.target.closest('.o_article_emoji_dropdown')?.dataset.articleId) || this.resId;
         this.messaging.knowledge.update({
             currentArticle: { id: articleId },
-            emojiPickerPopoverAnchorRef: { el: ev.target.closest('.o_article_emoji_dropdown .o_article_emoji') },
+            emojiPickerPopoverAnchorRef: { el: ev.target.closest('.o_article_emoji') },
             emojiPickerPopoverView: {},
         });
     }

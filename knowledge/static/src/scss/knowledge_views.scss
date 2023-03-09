@@ -32,6 +32,10 @@
         border-bottom: $input-border-width solid $o-brand-primary;
     }
 
+    span.o_knowledge_add_properties {
+        cursor: not-allowed;
+    }
+
     .o_toggle_favorite {
         .fa-star, &:hover {
             color: $o-main-favorite-color;
@@ -43,18 +47,10 @@
         max-width: 70vw;
     }
 
-    .o_knowledge_icon_cover_buttons {
-        background-color: var(--knowledge-view-bg, $o-white);
-        .o_knowledge_option_button_fake {
-            opacity: 0;
-        }
-    }
-
     .o_knowledge_editor .o_field_html .note-editable{
         padding-top: 0px;
     }
     .o_knowledge_icon.o_large,
-    .o_knowledge_icon_cover_buttons,
     .o_knowledge_editor .o_field_html .note-editable,
     .o_knowledge_editor .o_field_html .o_readonly,
     .o_knowledge_editor .o_field_properties {
@@ -63,7 +59,6 @@
         padding-right: var(--editor-gutter-size) !important;
     }
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon,
-    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon_cover_buttons,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .note-editable,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .o_readonly,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_properties {
@@ -351,7 +346,7 @@
             overflow-x: hidden;
         }
         .o_overlap_cover {
-            margin-bottom: -80px;
+            margin-bottom: -90px !important;
             .o_article_emoji {
                 position:relative;
                 top:-70px;
@@ -394,11 +389,11 @@
 @media (hover: hover) { // Devices supporting hover
     .o_knowledge_form_view {
         .o_knowledge_edit_cover_buttons,
-        .o_knowledge_icon_cover_buttons {
+        .o_knowledge_add_buttons {
             transition: opacity 0.3s ease-in-out;
         }
         .o_knowledge_cover:not(:hover) .o_knowledge_edit_cover_buttons,
-        .o_knowledge_icon_cover_buttons:not(:hover) {
+        .o_knowledge_header:not(:hover) .o_knowledge_add_buttons {
             opacity: 0;
         }
         .o_section_header:not(:hover) .o_section_create,

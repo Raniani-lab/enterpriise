@@ -13,31 +13,7 @@ class KnowledgeFormCompiler extends FormCompiler {
         this.compilers.push(
             { selector: "div.o_knowledge_chatter", fn: this.compileKnowledgeChatter },
             { selector: "div.o_knowledge_properties", fn: this.compileKnowledgeProperties},
-            { selector: "a.o_knowledge_add_properties", fn: this.compileKnowledgePropertiesBtn}
         );
-    }
-
-    /**
-     * This function is used to compile the button "Add Properties" inside Knowledge and to add it as
-     * a reactive behavior instead of adding it directly inside of the form arch.
-     * We add the attribute "t-if=!state.displayPropertyPanel" which enables us to only add the button
-     * to the template when properties are activated for the current article.
-     * @param {HTMLElement} el This is the element returned by a search via the selector provided in the
-     *  compiler. (should be the button itself)
-     * @returns
-     */
-    compileKnowledgePropertiesBtn(el){
-        const compiled = createElement(el.nodeName);
-        for (const attr of el.attributes) {
-            compiled.setAttribute(attr.name, attr.value);
-        }
-        compiled.setAttribute("t-if", "!state.displayPropertyPanel");
-        for (const child of el.children) {
-            compiled.appendChild(child);
-        }
-        const text = document.createTextNode(el.textContent);
-        compiled.appendChild(text);
-        return compiled;
     }
 
     /**

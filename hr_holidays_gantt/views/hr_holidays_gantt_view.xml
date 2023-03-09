@@ -11,7 +11,7 @@
                        date_start="date_from"
                        date_stop="date_to"
                        string="Days"
-                       color="holiday_status_id"
+                       color="color"
                        default_group_by='employee_id'
                        decoration-warning="state == 'refuse'"
                        decoration-info="state in ['confirm', 'validate1']"

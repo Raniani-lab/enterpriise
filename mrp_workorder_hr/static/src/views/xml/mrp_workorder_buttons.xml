@@ -12,8 +12,8 @@
                     <span t-esc="useEmployee.employees.admin.name" style="padding-left:5px; vertical-align:middle" readonly="1"></span>
                 </t>
             </button>
-            <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee">
-                <span >LOG OUT</span>
+            <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee text-uppercase">
+                <span>Log out</span>
             </button>
         </xpath>
         <xpath expr="//div[last()]" position="after">
@@ -48,8 +48,8 @@
                     <span t-esc="useEmployee.employees.admin.name" style="padding-left:5px; vertical-align:middle" readonly="1"></span>
                 </t>
             </button>
-            <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee">
-                <span >LOG OUT</span>
+            <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee text-uppercase">
+                <span>Log out</span>
             </button>
         </xpath>
         <xpath expr="//div[last()]" position="after">

@@ -67,7 +67,7 @@ class PosPreparationDisplay(models.Model):
                 current_order_stage = []
 
                 if order.order_stage_ids:
-                    current_order_stage = order.order_stage_ids[-1]
+                    current_order_stage = order.order_stage_ids.filtered(lambda stage: stage.preparation_display_id.id == self.id)[-1]
 
                 if current_order_stage.id != last_stage.id:
                     order.order_stage_ids.create({

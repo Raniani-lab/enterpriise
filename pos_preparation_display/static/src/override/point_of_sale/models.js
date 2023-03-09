@@ -64,21 +64,26 @@ patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
 
         const preparationDisplayOrderLineIds = Object.entries(orderChange).flatMap(
             ([type, changes]) =>
-                changes.map((change) => {
-                    const product = this.db.get_product_by_id(change.product_id);
+                changes
+                    .filter((change) => {
+                        const product = this.db.get_product_by_id(change.product_id);
+                        return product.pos_categ_id[0];
+                    })
+                    .map((change) => {
+                        const product = this.db.get_product_by_id(change.product_id);
 
-                    if (type === "cancelled") {
-                        change.quantity = -change.quantity;
-                    }
+                        if (type === "cancelled") {
+                            change.quantity = -change.quantity;
+                        }
 
-                    return {
-                        todo: true,
-                        internal_note: change.note,
-                        product_id: change.product_id,
-                        product_quantity: change.quantity,
-                        product_category_id: product.pos_categ_id[0],
-                    };
-                })
+                        return {
+                            todo: true,
+                            internal_note: change.note,
+                            product_id: change.product_id,
+                            product_quantity: change.quantity,
+                            product_category_id: product.pos_categ_id[0],
+                        };
+                    })
         );
 
         if (!preparationDisplayOrderLineIds.length) {

@@ -123,7 +123,7 @@ class PosPreparationDisplayOrder(models.Model):
             current_order_stage = []
 
             if order.order_stage_ids:
-                current_order_stage = order.order_stage_ids[-1]
+                current_order_stage = order.order_stage_ids.filtered(lambda stage: stage.preparation_display_id.id == preparation_display.id)[-1]
 
             if current_order_stage and current_order_stage.stage_id == last_stage and current_order_stage.done:
                 continue
@@ -161,7 +161,7 @@ class PosPreparationDisplayOrder(models.Model):
             current_order_stage = []
 
             if self.order_stage_ids:
-                current_order_stage = self.order_stage_ids[-1]
+                current_order_stage = self.order_stage_ids.filtered(lambda stage: stage.preparation_display_id.id == preparation_display.id)[-1]
 
             return {
                 'id': self.id,

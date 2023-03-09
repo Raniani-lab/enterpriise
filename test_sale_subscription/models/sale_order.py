@@ -70,13 +70,24 @@ class SaleOrder(models.Model):
             subs_to_invoice.next_invoice_date = False
             # prevent tu auto close the contract when the invoice cron run later than 15 days after the next_invoice_date
             subs_to_invoice.sale_order_template_id.auto_close_limit = 60
+            self._test_demo_flush_tracking()
             subs_to_invoice.action_confirm()
+            self._test_demo_flush_tracking()
             subs_to_invoice._test_demo_create_invoices()
             self._test_demo_flush_tracking()
 
         time_start = fields.Date.today() - relativedelta(months=11)
         with freeze_time(time_start.replace(day=10)):
-            sub_1.order_line[0].product_uom_qty += 1
+            sub_1.order_line[0].product_uom_qty += 3
+            sub_4 = sub_0.copy(default={
+                'client_order_ref': 'test_subscription_portal_4',
+                'partner_id': self.env.ref('base.res_partner_2').id,
+            })
+            sub_4.order_line.product_uom_qty = 10
+            self._test_demo_flush_tracking()
+            sub_4.action_confirm()
+            self._test_demo_flush_tracking()
+            subs_to_invoice |= sub_4
             subs_to_invoice._test_demo_create_invoices()
             self._test_demo_flush_tracking()
 
@@ -88,11 +99,23 @@ class SaleOrder(models.Model):
         # Upsell SO in the middle of the period
         time_start = fields.Date.today() - relativedelta(months=9)
         with freeze_time(time_start.replace(day=20)):
+            sub_5 = sub_0.copy(default={
+                'client_order_ref': 'test_subscription_portal_5',
+                'partner_id': self.env.ref('base.res_partner_3').id,
+            })
+            sub_5.order_line.product_uom_qty = 5
+            self._test_demo_flush_tracking()
+            sub_5.action_confirm()
+            self._test_demo_flush_tracking()
+            subs_to_invoice |= sub_5
             subs_to_invoice._test_demo_create_invoices()
+            self._test_demo_flush_tracking()
             action = sub_0.prepare_upsell_order()
             upsell_so = self.env['sale.order'].browse(action['res_id'])
-            upsell_so.order_line[0].product_uom_qty += 1
+            upsell_so.order_line[0].product_uom_qty += 3
+            self._test_demo_flush_tracking()
             upsell_so.action_confirm()
+            self._test_demo_flush_tracking()
             upsell_so._test_demo_create_invoices()
             self._test_demo_flush_tracking()
 
@@ -109,7 +132,9 @@ class SaleOrder(models.Model):
             renew_so_1.order_line[0].product_uom_qty = 1
             renew_so_1.order_line[1].product_uom_qty = 4
             renew_so_1.order_line[2].product_uom_qty = 2
+            self._test_demo_flush_tracking()
             renew_so_1.action_confirm()
+            self._test_demo_flush_tracking()
             renew_so_1._test_demo_create_invoices()
             subs_to_invoice |= renew_so_1
             self._test_demo_flush_tracking()
@@ -122,12 +147,15 @@ class SaleOrder(models.Model):
             sub_2.next_invoice_date = False
             self._test_demo_flush_tracking()
             sub_2.action_confirm()
+            self._test_demo_flush_tracking()
             subs_to_invoice |= sub_2
             subs_to_invoice._test_demo_create_invoices()
             self._test_demo_flush_tracking()
 
         time_start = fields.Date.today() - relativedelta(months=5)
         with freeze_time(time_start.replace(day=10)):
+            sub_4.set_close()
+            self._test_demo_flush_tracking()
             subs_to_invoice._test_demo_create_invoices()
             self._test_demo_flush_tracking()
 
@@ -135,7 +163,7 @@ class SaleOrder(models.Model):
         with freeze_time(time_start.replace(day=10)):
             action = sub_2.prepare_renewal_order()
             renew_so_2 = self.env['sale.order'].browse(action['res_id'])
-            renew_so_2.order_line[0].product_uom_qty = 6
+            renew_so_2.order_line[0].product_uom_qty = 12
             self._test_demo_flush_tracking()
             renew_so_2.action_confirm()
             subs_to_invoice |= renew_so_2
@@ -144,6 +172,8 @@ class SaleOrder(models.Model):
 
         time_start = fields.Date.today() - relativedelta(months=3)
         with freeze_time(time_start.replace(day=10)):
+            sub_5.set_close()
+            self._test_demo_flush_tracking()
             subs_to_invoice._test_demo_create_invoices()
             self._test_demo_flush_tracking()
 
@@ -153,11 +183,12 @@ class SaleOrder(models.Model):
             # reset the dates that were defined "today", this allows to prevent the invoices in the past
             sub_3.start_date = False
             sub_3.next_invoice_date = False
-            sub_3.order_line.product_uom_qty = 3
+            sub_3.order_line.product_uom_qty = 6
+            self._test_demo_flush_tracking()
             sub_3.action_confirm()
+            self._test_demo_flush_tracking()
             subs_to_invoice |= sub_3
             subs_to_invoice._test_demo_create_invoices()
-            self._test_demo_flush_tracking()
             self._test_demo_flush_tracking()
 
         time_start = fields.Date.today() - relativedelta(months=1) + relativedelta(days=10)
@@ -166,8 +197,10 @@ class SaleOrder(models.Model):
             # reset the dates that were defined "today", this allows to prevent the invoices in the past
             sub_4.start_date = False
             sub_4.next_invoice_date = False
-            sub_4.order_line.product_uom_qty = 2
+            sub_4.order_line.product_uom_qty = 4
+            self._test_demo_flush_tracking()
             sub_4.action_confirm()
+            self._test_demo_flush_tracking()
             subs_to_invoice |= sub_4
             subs_to_invoice._test_demo_create_invoices()
             sub_3.order_line.product_uom_qty = 1
@@ -175,17 +208,20 @@ class SaleOrder(models.Model):
 
         time_start = fields.Date.today() - relativedelta(days=10)
         with freeze_time(time_start):
+            self._test_demo_flush_tracking()
             subs_to_invoice._test_demo_create_invoices()
-            renew_so_1.order_line[0].product_uom_qty += 1 # 2
-            renew_so_2.order_line[0].product_uom_qty += 1 # 7
-            sub_3.action_cancel()
+            self._test_demo_flush_tracking()
+            renew_so_1.order_line[0].product_uom_qty += 2
+            renew_so_2.order_line[0].product_uom_qty += 2
             self._test_demo_flush_tracking()
 
         time_start = fields.Date.today() - relativedelta(days=2)
         with freeze_time(time_start):
+            self._test_demo_flush_tracking()
             subs_to_invoice._test_demo_create_invoices()
-            renew_so_1.order_line[0].product_uom_qty += 1 # 3
-            renew_so_2.order_line[0].product_uom_qty += 1 # 8
+            self._test_demo_flush_tracking()
+            renew_so_1.order_line[0].product_uom_qty += 3
+            renew_so_2.order_line[0].product_uom_qty += 3
             self._test_demo_flush_tracking()
 
         subs_to_invoice.filtered(lambda so: so.state == 'sale')._test_demo_create_invoices(automatic=False)

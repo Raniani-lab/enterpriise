@@ -49,7 +49,7 @@
         <field name="sale_order_template_id" ref="template_draft_multi"/>
         <field name="name">Office Cleaning Service (SUB)</field>
         <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-        <field name="product_uom_qty">4</field>
+        <field name="product_uom_qty">8</field>
         <field name="product_uom_id" ref="uom.product_uom_unit"/>
     </record>
 
@@ -57,7 +57,7 @@
         <field name="sale_order_template_id" ref="template_draft_multi"/>
         <field name="name">Office Cleaning Service (SUB)</field>
         <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
-        <field name="product_uom_qty">4</field>
+        <field name="product_uom_qty">12</field>
         <field name="product_uom_id" ref="uom.product_uom_unit"/>
     </record>
 
@@ -65,7 +65,7 @@
         <field name="sale_order_template_id" ref="template_draft_multi"/>
         <field name="name">Office Cleaning Service (SUB)</field>
         <field name="product_id" ref="product_fire_insurance"/>
-        <field name="product_uom_qty">1</field>
+        <field name="product_uom_qty">3</field>
         <field name="product_uom_id" ref="uom.product_uom_unit"/>
     </record>
 
@@ -82,7 +82,8 @@
     <record id="test_subscription_portal_1" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="template_draft_multi"/>
-        <field name="user_id" ref="base.user_admin"/>
+        <field name="user_id" ref="base.user_demo"/>
+        <field name="team_id" ref="sales_team.team_sales_department"/>
         <field name="note">Full flow 2</field>
         <field name="client_order_ref">test_subscription_portal_1</field>
         <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
@@ -97,6 +98,7 @@
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="sale_subscription.monthly_template"/>
         <field name="user_id" ref="base.user_admin"/>
+        <field name="team_id" ref="sales_team.team_sales_department"/>
         <field name="client_order_ref">test_subscription_portal_2</field>
         <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
     </record>
@@ -108,7 +110,7 @@
     <record id="test_subscription_portal_3" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="sale_subscription.monthly_template"/>
-        <field name="user_id" ref="base.user_admin"/>
+        <field name="user_id" ref="base.user_demo"/>
         <field name="client_order_ref">test_subscription_portal_3</field>
         <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
     </record>
@@ -121,6 +123,7 @@
         <field name="partner_id" ref="base.partner_demo_portal"/>
         <field name="sale_order_template_id" ref="template_draft_multi"/>
         <field name="user_id" ref="base.user_admin"/>
+        <field name="team_id" ref="sales_team.team_sales_department"/>
         <field name="state">draft</field>
         <field name="client_order_ref">test_subscription_portal_4</field>
         <field name="recurrence_id" ref="sale_temporal.recurrence_quarterly"/>
@@ -130,8 +133,8 @@
         <field name="name">Office Cleaning Service (SUB)</field>
         <field name="order_id" ref="test_subscription_portal_4"/>
         <field name="product_id" ref="product_fire_insurance"/>
-        <field name="product_uom_qty">3</field>
-        <field name="price_unit">20.0</field>
+        <field name="product_uom_qty">10</field>
+        <field name="price_unit">200.0</field>
         <field name="pricing_id" ref="product_pricing_insurance1"/>
         <field name="product_uom" ref="uom.product_uom_unit"/>
     </record>

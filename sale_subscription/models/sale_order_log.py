@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
-
+from odoo.addons.sale_subscription.models.sale_order import SUBSCRIPTION_STATES
 
 class SaleOrderLog(models.Model):
     _name = 'sale.order.log'
@@ -17,33 +17,41 @@ class SaleOrderLog(models.Model):
     create_date = fields.Datetime(string='Date', readonly=True)
     event_type = fields.Selection(
         string='Type of event',
-        selection=[('0_creation', 'Creation'), ('1_change', 'MRR change'), ('2_churn', 'Churn'), ('3_transfer', 'Transfer')],
+        selection=[('0_creation', 'New'),
+                   ('1_expansion', 'Expansion'),
+                   ('15_contraction', 'Contraction'),
+                   ('2_churn', 'Churn'),
+                   ('3_transfer', 'Transfer')],
         required=True,
         readonly=True
     )
     recurring_monthly = fields.Monetary(string='New MRR', required=True,
                                         help="MRR, after applying the changes of that particular event", readonly=True)
-    subscription_state = fields.Selection(selection=[
-        ('1_draft', 'Quotation'),         # Quotation for a new subscription
-        ('3_progress', 'In Progress'),    # Active Subscription or confirmed renewal for active subscription
-        ('6_churn', 'Churned'),           # Closed or ended subscription
-        ('2_renewal', 'Renewal Quotation'), # Renewal Quotation for existing subscription
-        ('5_renewed', 'Renewed'),         # Active or ended subscription that has been renewed
-        ('4_paused', 'Paused'),           # Active subscription with paused invoicing
-        ('7_upsell', 'Upsell'),           # Quotation or SO upselling a subscription
-    ], required=True, default='1_draft', help="Subscription stage category when the change occurred")
+    subscription_state = fields.Selection(selection=SUBSCRIPTION_STATES, required=True, help="Subscription stage category when the change occurred")
     user_id = fields.Many2one('res.users', string='Salesperson')
     team_id = fields.Many2one('crm.team', string='Sales Team', ondelete="set null")
-    amount_signed = fields.Monetary(string='Change in MRR', readonly=True)
+    amount_signed = fields.Monetary()
+    amount_contraction = fields.Monetary(compute='_compute_amount', store=True)
+    amount_expansion = fields.Monetary(compute='_compute_amount', store=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, readonly=True)
-    amount_company_currency = fields.Monetary(
-        string='Change in MRR (company currency)', currency_field='company_currency_id',
-        compute="_compute_amount_company_currency", store=True, readonly=True)
     event_date = fields.Date(string='Event Date', required=True)
-    company_currency_id = fields.Many2one('res.currency', string='Company Currency', related='company_id.currency_id', store=True, readonly=True)
     company_id = fields.Many2one('res.company', string='Company', related='order_id.company_id', store=True, readonly=True)
+    origin_order_id = fields.Many2one('sale.order', string='Origin Contract', store=True, compute='_compute_origin_order_id')
 
-    @api.depends('company_id', 'company_currency_id', 'amount_signed', 'event_date')
-    def _compute_amount_company_currency(self):
+    @api.depends('order_id')
+    def _compute_origin_order_id(self):
         for log in self:
-            log.amount_company_currency = log.currency_id._convert(from_amount=log.amount_signed, to_currency=log.company_currency_id, date=log.event_date, company=log.company_id)
+            log.origin_order_id = log.order_id.origin_order_id or log.order_id
+
+    @api.depends('amount_signed')
+    def _compute_amount(self):
+        for log in self:
+            if log.currency_id.compare_amounts(log.amount_signed, 0) < 0:
+                log.amount_contraction = log.amount_signed
+            else:
+                log.amount_expansion = log.amount_signed
+
+    @api.depends('order_id')
+    def _compute_origin_order_id(self):
+        for log in self:
+            log.origin_order_id = log.order_id.origin_order_id or log.order_id

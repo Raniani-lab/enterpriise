@@ -21,6 +21,16 @@ SUBSCRIPTION_DRAFT_STATE = ['1_draft', '2_renewal']
 SUBSCRIPTION_PROGRESS_STATE = ['3_progress', '4_paused']
 SUBSCRIPTION_CLOSED_STATE = ['6_churn', '5_renewed']
 
+SUBSCRIPTION_STATES = [
+            ('1_draft', 'Quotation'),           # Quotation for a new subscription
+            ('2_renewal', 'Renewal Quotation'), # Renewal Quotation for existing subscription
+            ('3_progress', 'In Progress'),      # Active Subscription or confirmed renewal for active subscription
+            ('4_paused', 'Paused'),             # Active subscription with paused invoicing
+            ('5_renewed', 'Renewed'),           # Active or ended subscription that has been renewed
+            ('6_churn', 'Churned'),             # Closed or ended subscription
+            ('7_upsell', 'Upsell'),             # Quotation or SO upselling a subscription
+]
+
 
 class SaleOrder(models.Model):
     _name = "sale.order"
@@ -37,15 +47,7 @@ class SaleOrder(models.Model):
                                      string='Recurrence', ondelete='restrict', readonly=False, store=True)
     subscription_state = fields.Selection(
         string='Stage',
-        selection=[
-            ('1_draft', 'Quotation'),           # Quotation for a new subscription
-            ('2_renewal', 'Renewal Quotation'), # Renewal Quotation for existing subscription
-            ('3_progress', 'In Progress'),      # Active Subscription or confirmed renewal for active subscription
-            ('4_paused', 'Paused'),             # Active subscription with paused invoicing
-            ('5_renewed', 'Renewed'),           # Active or ended subscription that has been renewed
-            ('6_churn', 'Churned'),             # Closed or ended subscription
-            ('7_upsell', 'Upsell'),             # Quotation or SO upselling a subscription
-        ],
+        selection=SUBSCRIPTION_STATES,
         compute='_compute_subscription_state', store=True, tracking=True, group_expand='_group_expand_states',
     )
 
@@ -106,7 +108,7 @@ class SaleOrder(models.Model):
     recurring_monthly = fields.Monetary(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue",
                                         store=True, tracking=True)
     non_recurring_total = fields.Monetary(compute='_compute_non_recurring_total', string="Total Non Recurring Revenue")
-    order_log_ids = fields.One2many('sale.order.log', 'order_id', string='Subscription Logs', readonly=True)
+    order_log_ids = fields.One2many('sale.order.log', 'order_id', string='Subscription Logs', readonly=True, copy=False)
     percentage_satisfaction = fields.Integer(
         compute="_compute_percentage_satisfaction",
         string="% Happy", store=True, compute_sudo=True, default=-1,
@@ -488,7 +490,8 @@ class SaleOrder(models.Model):
             if not existing_transfer_log:
                 # We transfer from the current MRR to the latest known MRR.
                 # The parent contrat is now done and its MRR is 0
-                parent_mrr = self.subscription_id.order_log_ids and self.subscription_id.order_log_ids[-1].recurring_monthly or 0
+                parent_progress_logs = self.subscription_id.order_log_ids.filtered(lambda l: l.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
+                parent_mrr = parent_progress_logs and parent_progress_logs.sorted('event_date')[-1].recurring_monthly or 0
                 transfer_mrr = min([self.recurring_monthly, parent_mrr])
         if not float_is_zero(transfer_mrr, precision_rounding=cur_round):
             transfer_values = template_value.copy()
@@ -503,9 +506,12 @@ class SaleOrder(models.Model):
 
         if not float_is_zero(mrr_difference, precision_rounding=cur_round):
             mrr_value = template_value.copy()
-            event_type = '1_change' if self.order_log_ids else '0_creation'
-            if self.subscription_state == '5_renewed':
+            if self.order_log_ids:
+                event_type = self._get_change_event_type(mrr_difference)
+            elif self.subscription_state == '5_renewed':
                 event_type = '3_transfer'
+            else:
+                event_type = '0_creation'
             mrr_value.update({'event_type': event_type, 'amount_signed': mrr_difference, 'recurring_monthly': self.recurring_monthly})
             self.env['sale.order.log'].sudo().create(mrr_value)
 
@@ -518,6 +524,7 @@ class SaleOrder(models.Model):
         confirmed_renewal = self.origin_order_id and self.subscription_state in SUBSCRIPTION_PROGRESS_STATE
         alive_renewed = self.subscription_child_ids.filtered(lambda s: s.subscription_state == '3_progress')
         reopened_order = old_state == '6_churn' and new_state in SUBSCRIPTION_PROGRESS_STATE
+        event_date = values['event_date']
         if new_state in SUBSCRIPTION_PROGRESS_STATE + SUBSCRIPTION_CLOSED_STATE and old_state != new_state:
             # subscription started, churned or transferred to renew
             if new_state in SUBSCRIPTION_PROGRESS_STATE:
@@ -531,7 +538,7 @@ class SaleOrder(models.Model):
                     if not float_is_zero(self.recurring_monthly - parent_mrr, precision_rounding=cur_round):
                         mrr_change_value = values.copy()
                         mrr_change_value.update({
-                            'event_type': '1_change',
+                            'event_type': self._get_change_event_type(self.recurring_monthly - parent_mrr),
                             'recurring_monthly': self.recurring_monthly,
                             'amount_signed': self.recurring_monthly - parent_mrr
                         })
@@ -544,19 +551,19 @@ class SaleOrder(models.Model):
                     if not float_is_zero(mrr_difference, precision_rounding=cur_round):
                         reopen_values = values.copy()
                         reopen_values.update({
-                            'event_type': '1_change',
+                            'event_type': self._get_change_event_type(mrr_difference),
                             'amount_signed': mrr_difference,
                             'recurring_monthly': self.recurring_monthly,
                         })
                         self.env['sale.order.log'].sudo().create(reopen_values)
                     # Return True will prevent to create another MRR LOG
                     return True
-                elif old_state == 'paused': # We don't create logs when we restart a paused contract.
-                    return
-                else:
+                elif new_state == '3_progress':
                     event_type = '0_creation'
                     amount_signed = self.recurring_monthly
                     recurring_monthly = self.recurring_monthly
+                else:
+                    return
             else:
                 event_type = '3_transfer' if alive_renewed else '2_churn'
                 amount_signed = - initial_values['recurring_monthly']
@@ -573,7 +580,8 @@ class SaleOrder(models.Model):
             values.update({
                 'event_type': event_type,
                 'amount_signed': amount_signed,
-                'recurring_monthly': recurring_monthly
+                'recurring_monthly': recurring_monthly,
+                'event_date': event_date,
             })
             # prevent duplicate logs
             if not self.order_log_ids.filtered(
@@ -607,6 +615,12 @@ class SaleOrder(models.Model):
         if ('recurring_monthly' in updated_fields) and not stage_res:
             self._create_mrr_log(values, initial_values)
         return res
+
+    def _get_change_event_type(self, mrr_difference):
+        self.ensure_one()
+        if self.currency_id.compare_amounts(mrr_difference, 0) <= 0:
+            return '15_contraction'
+        return '1_expansion'
 
     def _prepare_invoice(self):
         vals = super()._prepare_invoice()
@@ -914,7 +928,9 @@ class SaleOrder(models.Model):
         genealogy_orders_ids = self.search(['|', ('id', 'in', origin_order_ids), ('origin_order_id', 'in', origin_order_ids)])
         action.update({
             'name': _('MRR changes'),
-            'domain': [('order_id', 'in', genealogy_orders_ids.ids), ('event_type', '!=', '3_transfer')],
+            'domain': [('order_id', 'in', genealogy_orders_ids.ids),
+                       ('event_type', '!=', '3_transfer')
+                       ],
         })
         return action
 
@@ -1361,7 +1377,7 @@ class SaleOrder(models.Model):
                         subscription.message_post(body=msg_body)
                         subscription.payment_exception = True
                     # We still update the next_invoice_date if it is due
-                    elif subscription.next_invoice_date <= today:
+                    elif subscription.next_invoice_date and subscription.next_invoice_date <= today:
                         subscription._update_next_invoice_date()
                         if invoice_is_free:
                             for line in invoiceable_lines:
@@ -1605,7 +1621,7 @@ class SaleOrder(models.Model):
         delta, percentage = False, False
         subscription_log = self.env['sale.order.log'].search([
             ('order_id', '=', self.id),
-            ('event_type', 'in', ['0_creation', '1_change', '2_transfer']),
+            ('event_type', 'in', ['0_creation', '1_expansion', '15_contraction', '2_transfer']),
             ('event_date', '<=', date)],
             order='event_date desc',
             limit=1)
@@ -1739,7 +1755,7 @@ class SaleOrder(models.Model):
             invoice = tx.invoice_ids[0]
             self.send_success_mail(tx, invoice)
             msg_body = _(
-                "Manual payment succeeded. Payment reference: %s; Amount: %(amount)s. Invoice %(invoice)s",
+                "Manual payment succeeded. Payment reference: %(tx_model)s; Amount: %(amount)s. Invoice %(invoice)s",
                 tx_model=tx._get_html_link(), amount=tx.amount,
                 invoice=invoice._get_html_link(),
             )

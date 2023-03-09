@@ -595,7 +595,7 @@ class TestSubscription(TestSubscriptionCommon):
         # 2weeks - today : 120
         date_log = datetime.date.today() - relativedelta(weeks=16)
         self.env['sale.order.log'].sudo().create({
-            'event_type': '1_change',
+            'event_type': '1_expansion',
             'event_date': date_log,
             'create_date': date_log,
             'order_id': self.subscription.id,
@@ -609,7 +609,7 @@ class TestSubscription(TestSubscriptionCommon):
 
         date_log = datetime.date.today() - relativedelta(weeks=6)
         self.env['sale.order.log'].sudo().create({
-            'event_type': '1_change',
+            'event_type': '1_expansion',
             'event_date': date_log,
             'create_date': date_log,
             'order_id': self.subscription.id,
@@ -624,7 +624,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.subscription.recurring_monthly = 120.0
         date_log = datetime.date.today() - relativedelta(weeks=2)
         self.env['sale.order.log'].sudo().create({
-            'event_type': '1_change',
+            'event_type': '1_expansion',
             'event_date': date_log,
             'create_date': date_log,
             'order_id': self.subscription.id,
@@ -1210,8 +1210,8 @@ class TestSubscription(TestSubscriptionCommon):
         renew_logs = renewal_so.order_log_ids.sorted('event_date')
         renew_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log in renew_logs]
         self.assertEqual(renew_data, [('3_transfer', datetime.date(2021, 5, 1), '3_progress', 21.0, 21.0),
-                                      ('1_change', datetime.date(2021, 5, 1), '3_progress', 42.0, 63.0),
-                                      ('1_change', datetime.date(2021, 9, 1), '3_progress', 21.0, 84.0)])
+                                      ('1_expansion', datetime.date(2021, 5, 1), '3_progress', 42.0, 63.0),
+                                      ('1_expansion', datetime.date(2021, 9, 1), '3_progress', 21.0, 84.0)])
         free_log_ids = free_sub.order_log_ids.sorted('event_date')
         sub_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log in
                     free_log_ids]
@@ -1226,7 +1226,7 @@ class TestSubscription(TestSubscriptionCommon):
                        in future_data]
 
         self.assertEqual(simple_data, [('0_creation', datetime.date(2021, 6, 1), '3_progress', 1.0, 1.0),
-                                       ('1_change', datetime.date(2021, 6, 1), '3_progress', 3.0, 4.0)])
+                                       ('1_expansion', datetime.date(2021, 6, 1), '3_progress', 3.0, 4.0)])
 
     def test_option_template(self):
         self.product.product_tmpl_id.product_pricing_ids = [(6, 0, 0)]
@@ -2385,12 +2385,12 @@ class TestSubscription(TestSubscriptionCommon):
                 (log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly)
                 for log in order_log_ids]
             self.assertEqual(sub_data, [('0_creation', datetime.date(2023, 3, 1), '3_progress', 3.0, 3.0),
-                                        ('1_change', datetime.date(2023, 3, 2), '3_progress', 7.0, 10.0)])
+                                        ('1_expansion', datetime.date(2023, 3, 2), '3_progress', 7.0, 10.0)])
             order_log_ids = sub_mrr_change.order_log_ids.sorted('event_date')
             sub_data = [
                 (log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly)
                 for log in order_log_ids]
 
             self.assertEqual(sub_data, [('0_creation', datetime.date(2023, 3, 1), '3_progress', 3.0, 3.0),
-                                        ('1_change', datetime.date(2023, 3, 2), '3_progress', 7.0, 10.0),
-                                        ('1_change', datetime.date(2023, 3, 10), '3_progress', -4.0, 6.0)])
+                                        ('1_expansion', datetime.date(2023, 3, 2), '3_progress', 7.0, 10.0),
+                                        ('15_contraction', datetime.date(2023, 3, 10), '3_progress', -4.0, 6.0)])

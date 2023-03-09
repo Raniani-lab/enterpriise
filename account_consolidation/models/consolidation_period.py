@@ -693,7 +693,7 @@ class ConsolidationCompanyPeriod(models.Model):
         """
         self.ensure_one()
         return [
-            ('move_id.state', '=', 'posted'),
+            ('parent_state', '=', 'posted'),
             ('company_id', '=', self.company_id.id),
             ('journal_id', 'not in', self.mapped('exclude_journal_ids.id')),
             ('account_id.consolidation_account_ids', '=', consolidation_account.id),

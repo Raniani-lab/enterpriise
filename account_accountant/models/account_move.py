@@ -141,7 +141,7 @@ class AccountMoveLine(models.Model):
     def _build_predictive_query(self, additional_domain=None):
         query = self.env['account.move.line']._where_calc([
             ('move_id.move_type', '=', self.move_id.move_type),
-            ('move_id.state', '=', 'posted'),
+            ('parent_state', '=', 'posted'),
             ('display_type', '=', 'product'),
             ('company_id', '=', self.move_id.journal_id.company_id.id or self.env.company.id),
         ] + (additional_domain or []))

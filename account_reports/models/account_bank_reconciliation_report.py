@@ -216,7 +216,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
 
         domain = [
             ('display_type', 'not in', ('line_section', 'line_note')),
-            ('move_id.state', '!=', 'cancel'),
+            ('parent_state', '!=', 'cancel'),
             ('account_id', '=', journal.default_account_id.id),
             ('statement_line_id', '=', False),
             ('date', '<=', options['date']['date_to']),
@@ -226,7 +226,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
             domain.append(('date', '>', journal.company_id.fiscalyear_lock_date))
 
         if not options['all_entries']:
-            domain.append(('move_id.state', '=', 'posted'))
+            domain.append(('parent_state', '=', 'posted'))
 
         if journal.company_id.account_opening_move_id:
             domain.append(('move_id', '!=', journal.company_id.account_opening_move_id.id))

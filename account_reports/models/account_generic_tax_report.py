@@ -385,7 +385,7 @@ class AccountTaxReportHandler(models.AbstractModel):
     def _get_amls_with_archived_tags_domain(self, options):
         domain = [
             ('tax_tag_ids.active', '=', False),
-            ('move_id.state', '=', 'posted'),
+            ('parent_state', '=', 'posted'),
             ('date', '>=', options['date']['date_from']),
         ]
         if options['date']['mode'] == 'single':

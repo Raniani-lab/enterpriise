@@ -151,7 +151,7 @@ class TransferModel(models.Model):
             ('account_id', 'in', self.account_ids.ids),
             ('date', '>=', start_date),
             ('date', '<=', end_date),
-            ('move_id.state', '=', 'posted')
+            ('parent_state', '=', 'posted')
         ]
 
     # PROTECTEDS

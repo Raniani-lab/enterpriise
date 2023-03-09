@@ -7,13 +7,10 @@ var Dialog = require('web.Dialog');
 var dom = require('web.dom');
 var framework = require('web.framework');
 var session = require('web.session');
-var view_registry = require('web.view_registry');
 const { processArch } = require("@web/legacy/legacy_load_views");
 
 var AbstractEditorManager = require('web_studio.AbstractEditorManager');
 var bus = require('web_studio.bus');
-var EditorMixin = require('web_studio.EditorMixin');
-var EditorMixinOwl = require('web_studio.EditorMixinOwl');
 
 var SearchEditor = require('web_studio.SearchEditor');
 var SearchRenderer = require('web_studio.SearchRenderer');
@@ -23,7 +20,6 @@ var NewButtonBoxDialog = require('web_studio.NewButtonBoxDialog');
 var NewFieldDialog = require('web_studio.NewFieldDialog');
 var utils = require('web_studio.utils');
 const { ViewEditorSidebar } = require('@web_studio/legacy/js/views/view_editor_sidebar');
-const { isComponent } = require('web.utils');
 const viewUtils = require("web.viewUtils");
 
 const { computeReportMeasures } = require("@web/views/utils");
@@ -39,19 +35,6 @@ const viewRegistry = registry.category("views");
 const { resetViewCompilerCache } = require("@web/views/view_compiler");
 const { extendEnv } = require('@web_studio/client_action/view_editors/utils')
 const { getNodesFromXpath, getLegacyNode, xpathToLegacyXpathInfo, serializeXmlToString, parseStringToXml, nodeStudioXpathSymbol } = require('@web_studio/client_action/view_editors/xml_utils')
-
-const CONVERTED_VIEWS = [
-    "calendar",
-    "cohort",
-    "gantt",
-    "graph",
-    "map",
-    "pivot",
-    "form",
-    "kanban",
-    "list",
-    "activity",
-];
 
 var _t = core._t;
 var QWeb = core.qweb;
@@ -1304,50 +1287,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             }
             def = Promise.resolve(this.view);
         } else {
-            if (CONVERTED_VIEWS.includes(this.view_type)) {
-                return this.instantiateWowlController(viewParams);
-            }
-            const View = view_registry.get(this.view_type);
-            this.view = new View(fields_view, _.extend({}, viewParams));
-            if (this.mode === 'edition') {
-                var Editor = Editors[this.view_type];
-                if (!Editor) {
-                    // generate the Editor on the fly if it doesn't exist
-                    if (isComponent(View.prototype.config.Renderer)) {
-                        const Renderer = class extends EditorMixinOwl(View.prototype.config.Renderer) { };
-                        const propsValidation = View.prototype.config.Renderer.props;
-                        if (propsValidation) {
-                            const optString = { type: String, optional: 1 };
-                            Renderer.props = Object.assign({}, propsValidation, {
-                                mode: propsValidation.mode || String,
-                                chatter_allowed: propsValidation.chatter_allowed || Boolean,
-                                show_invisible: propsValidation.show_invisible || Boolean,
-                                arch: propsValidation.arch || Object,
-                                x2mField: propsValidation.x2mField || optString,
-                                viewType: propsValidation.viewType || String,
-                            });
-                        }
-                        params.Component = Renderer;
-                        Editor = EditorWrapper;
-                    } else {
-                        Editor = View.prototype.config.Renderer.extend(EditorMixin);
-                    }
-                }
-                var chatterAllowed = this.x2mField ? false : this.chatter_allowed;
-                var editorParams = _.defaults(params, {
-                    mode: 'readonly',
-                    chatter_allowed: chatterAllowed,
-                    show_invisible: this._getShowInvisible(),
-                    arch: this.view.arch,
-                    x2mField: this.x2mField,
-                    viewType: this.view_type,
-                });
-                def = this.view.createStudioEditor(this, Editor, editorParams);
-            } else {
-                def = this.view.createStudioRenderer(this, {
-                    mode: 'readonly',
-                });
-            }
+            return this.instantiateWowlController(viewParams);
         }
         const editor = await def;
         return editor;

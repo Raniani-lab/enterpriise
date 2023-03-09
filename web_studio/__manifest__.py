@@ -81,7 +81,6 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/js/py.js',
             'web_studio/static/src/legacy/js/common/**/*.js',
             'web_studio/static/src/legacy/js/reports/**/*.js',
-            'web_studio/static/src/legacy/js/views/abstract_view.js',
             'web_studio/static/src/legacy/js/views/view_components.js',
             'web_studio/static/src/legacy/js/views/view_editor_manager.js',
             'web_studio/static/src/legacy/js/views/view_editor_sidebar.js',

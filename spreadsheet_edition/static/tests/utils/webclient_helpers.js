@@ -12,7 +12,6 @@ import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
 import { ormService } from "@web/core/orm_service";
 import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
-import { viewService } from "@web/views/view_service";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
@@ -33,8 +32,7 @@ export async function prepareWebClientForSpreadsheet() {
     serviceRegistry.add("hotkey", hotkeyService);
     serviceRegistry.add("dialog", dialogService);
     serviceRegistry.add("ui", uiService);
-    serviceRegistry.add("view", viewService, { force: true }); // #action-serv-leg-compat-js-class
-    serviceRegistry.add("orm", ormService, { force: true }); // #action-serv-leg-compat-js-class
+    serviceRegistry.add("orm", ormService);
     serviceRegistry.add("bus_service", busService);
     serviceRegistry.add("bus.parameters", busParametersService);
     serviceRegistry.add("multi_tab", multiTabService);

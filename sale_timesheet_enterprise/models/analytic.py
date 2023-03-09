@@ -23,10 +23,13 @@ class AnalyticLine(models.Model):
         for timesheet in self:
             timesheet.has_so_access = sale_man_group and timesheet.order_id.sudo().user_id == self.env.user
 
-    def _get_adjust_grid_domain(self, column_value):
-        """ Don't adjust already invoiced timesheet """
-        domain = super(AnalyticLine, self)._get_adjust_grid_domain(column_value)
-        return expression.AND([domain, [('timesheet_invoice_id', '=', False)]])
+    @api.model
+    def grid_update_cell(self, domain, measure_field_name, value):
+        return super().grid_update_cell(
+            expression.AND([domain, [('timesheet_invoice_id', '=', False)]]),
+            measure_field_name,
+            value,
+        )
 
     def _get_last_timesheet_domain(self):
         """ Do not update the timesheet which are already linked with invoice """

@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import re
 import ast
+import re
 
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import SU
-from lxml import etree
 from collections import defaultdict
 
 from odoo import tools, models, fields, api, _
@@ -62,291 +61,51 @@ class AnalyticLine(models.Model):
                                           and not analytic_line._should_not_display_timer()
 
     @api.model
-    def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None, orderby=None):
-        if not orderby and row_fields:
-            orderby = ','.join(row_fields)
-        return super().read_grid(row_fields,
-            col_field, cell_field, domain=domain, range=range,
-            readonly_field=readonly_field, orderby=orderby)
-
-    @api.model
-    def read_grid_grouped(self, row_fields, col_field, cell_field, section_field, domain,
-                          current_range=None, readonly_field=None, orderby=None):
-        if not orderby:
-            orderby_list = [section_field] + row_fields
-            orderby = ','.join(orderby_list)
-        return super().read_grid_grouped(
-            row_fields, col_field, cell_field, section_field, domain,
-            current_range=current_range, readonly_field=readonly_field, orderby=orderby,
-        )
-
-    @api.model
-    def _apply_grid_grouped_expand(
-            self, grid_domain, row_fields, built_grids, section_field=None, group_expand_section_values=None):
-        """ Returns the built_grids, after having applied the group_expand on it, according to the grid_domain,
-            row_fields, section_field and group_expand_domain_info.
-
-            :param grid_domain: The grid domain.
-            :param row_fields: The row fields.
-            :param built_grids: The grids that have been previously built and on top of which the group expand has to
-                                be performed.
-            :param section_field: The section field.
-            :param group_expand_section_values: A set containing the record ids for the section field, resulting from the
-                                             read_group_raw. The ids can be used in order to limit the queries scopes.
-            :return: The modified built_grids.
-        """
-        result = super()._apply_grid_grouped_expand(grid_domain, row_fields, built_grids, section_field, group_expand_section_values)
-
-        if group_expand_section_values is None:
-            group_expand_section_values = set()
-
-        if not self.env.context.get('group_expand', False):
-            return result
-
-        # For the group_expand, we need to have some information :
-        #   1) search in domain one rule with one of next conditions :
-        #       -   project_id = value
-        #       -   employee_id = value
-        #   2) search in account.analytic.line if the user timesheeted
-        #      in the past 7 days. We reuse the actual domain and
-        #      modify it to enforce its validity concerning the dates,
-        #      while keeping the restrictions about other fields.
-        #      Example: Filter timesheet from my team this week:
-        #      [['project_id', '!=', False],
-        #       '|',
-        #           ['employee_id.timesheet_manager_id', '=', 2],
-        #           '|',
-        #               ['employee_id.parent_id.user_id', '=', 2],
-        #               '|',
-        #                   ['project_id.user_id', '=', 2],
-        #                   ['user_id', '=', 2]]
-        #       '&',
-        #           ['date', '>=', '2020-06-01'],
-        #           ['date', '<=', '2020-06-07']
-        #
-        #      Becomes:
-        #      [('project_id', '!=', False),
-        #       ('date', '>=', datetime.date(2020, 5, 28)),
-        #       ('date', '<=', '2020-06-04'),
-        #       ['project_id', '!=', False],
-        #       '|',
-        #           ['employee_id.timesheet_manager_id', '=', 2],
-        #           '|',
-        #              ['employee_id.parent_id.user_id', '=', 2],
-        #              '|',
-        #                  ['project_id.user_id', '=', 2],
-        #                  ['user_id', '=', 2]]
-        #       '&',
-        #           ['date', '>=', '1970-01-01'],
-        #           ['date', '<=', '2250-01-01']
-        #   3) retrieve data and create correctly the grid and rows in result
-
-        grid_anchor, last_week = self._get_last_week()
-        domain_search = [
-            ('project_id', '!=', False),
-            '|',
-                ('task_id.active', '=', True),
-                ('task_id', '=', False),
-            ('date', '>=', last_week),
-            ('date', '<=', grid_anchor)
-        ]
-        domain_project_task = defaultdict(list)
-
-        # check if project_id, task_id or employee_id is in domain
-        # if not then group_expand return an empty dict.
-        apply_group_expand = False
-
-        for rule in grid_domain:
-            if len(rule) == 3:
-                name, operator, value = rule
-                if name in ['project_id', 'employee_id', 'task_id']:
-                    apply_group_expand = True
-                elif name == 'date':
-                    if operator == '=':
-                        operator = '<='
-                    value = '2250-01-01' if operator in ['<', '<='] else '1970-01-01'
-                domain_search.append([name, operator, value])
-                if name in ['project_id', 'task_id']:
-                    if operator in ['=', '!='] and value:
-                        field = "name" if isinstance(value, str) else "id"
-                        domain_project_task[name].append((field, operator, value))
-                    elif operator in ['ilike', 'not ilike']:
-                        domain_project_task[name].append(('name', operator, value))
-            else:
-                domain_search.append(rule)
-
-        if group_expand_section_values:
-            if section_field in ['project_id', 'employee_id', 'task_id']:
-                apply_group_expand = True
-                if section_field == 'employee_id':
-                    domain_search = expression.AND([domain_search, [(section_field, 'in', list(group_expand_section_values))]])
-                if section_field in ['project_id', 'task_id']:
-                    domain_project_task[section_field] = expression.AND([domain_project_task[section_field], [('id', 'in', list(group_expand_section_values))]])
-
-        if not apply_group_expand:
-            return result
-
-        rows_dict = defaultdict(dict)
-
-        def is_record_candidate(grid, record):
-            return not any(record == grid_row['values'] for grid_row in grid['rows'])
-
-        def add_record(section_key, key, value):
-            rows_dict[section_key][key] = value
-
-        # step 2: search timesheets
-        timesheets = self.search(domain_search)
-
-        # step 3: retrieve data and create correctly the grid and rows in result
-        timesheet_section_field = self.env['account.analytic.line']._fields[section_field] if section_field else False
-
-        def read_row_value(row_field, timesheet):
-            field_name = row_field.split(':')[0]  # remove all groupby operator e.g. "date:quarter"
-            return timesheets._fields[field_name].convert_to_read(timesheet[field_name], timesheet)
-
-        for timesheet in timesheets:
-            # check uniq project or task, or employee
-            timesheet_section_key = timesheet[timesheet_section_field.name].id if timesheet_section_field else False
-            record = {
-                row_field: read_row_value(row_field, timesheet)
-                for row_field in row_fields
-            }
-            key = tuple(record.values())
-            if timesheet_section_field:
-                for grid in result:
-                    grid_section = grid['__label']
-                    if timesheet_section_field.type == 'many2one' and grid_section:
-                        grid_section = grid_section[0]
-                    if grid_section == timesheet_section_key and is_record_candidate(grid, record):
-                        add_record(grid['__label'], key, {'values': record, 'domain': [('id', '=', timesheet.id)]})
-                        break
-            else:
-                if is_record_candidate(result, record):
-                    add_record(False, key, {'values': record, 'domain': [('id', '=', timesheet.id)]})
-
-        def read_row_fake_value(row_field, project, task):
-            if row_field == 'project_id':
-                return (project or task.project_id).name_get()[0]
-            elif row_field == 'task_id' and task:
-                return task.name_get()[0]
-            else:
-                return False
-
-        if 'project_id' in domain_project_task:
-            project_ids = self.env['project.project'].search(domain_project_task['project_id'])
-            for project_id in project_ids:
-                record = {
-                    row_field: read_row_fake_value(row_field, project_id, False)
-                    for row_field in row_fields
-                }
-                key = tuple(record.values())
-                if timesheet_section_field:
-                    for grid in result:
-                        if is_record_candidate(grid, record):
-                            add_record(grid['__label'], key, {'values': record, 'domain': [('id', '=', -1)]})
-                else:
-                    if is_record_candidate(result, record):
-                        domain = expression.normalize_domain(
-                            [(field, '=', value[0]) for field, value in list(zip(row_fields, key)) if value and value[0]])
-                        add_record(False, key, {'values': record, 'domain': domain})
-
-        if 'task_id' in domain_project_task:
-            task_ids = self.env['project.task'].search(domain_project_task['task_id'] + [('project_id', '!=', False)])
-            for task_id in task_ids:
-                record = {
-                    row_field: read_row_fake_value(row_field, False, task_id)
-                    for row_field in row_fields
-                }
-                key = tuple(record.values())
-                if timesheet_section_field:
-                    for grid in result:
-                        if is_record_candidate(grid, record):
-                            add_record(grid['__label'], key, {'values': record, 'domain': [('id', '=', -1)]})
-                else:
-                    if is_record_candidate(result, record):
-                        domain = expression.normalize_domain(
-                            [(field, '=', value[0]) for field, value in list(zip(row_fields, key)) if value and value[0]])
-                        add_record(False, key, {'values': record, 'domain': domain})
-
-        if rows_dict:
-            if timesheet_section_field:
-                read_grid_grouped_result_dict = {res['__label']: res for res in result}
-            for section_id, rows in rows_dict.items():
-                res = result
-                rows = rows.values()
-                rows = sorted(rows, key=lambda l: [
-                    l['values'][field]
-                    if field not in self._fields or self._fields[field].type != 'many2one'
-                    else l['values'][field][1] if l['values'][field] else " "
-                    for field in row_fields[0:2]
-                ])
-                # _grid_make_empty_cell return a dict, in this dictionary,
-                # we need to check if the cell is in the current date,
-                # then, we add a key 'is_current' into this dictionary
-                # to get the result of this checking.
-                if section_field:
-                    domain_section_id = section_id
-                    if timesheet_section_field.type == 'many2one' and domain_section_id:
-                        domain_section_id = domain_section_id[0]
-                    grid_domain = expression.AND([grid_domain, [(section_field, '=', domain_section_id)]])
-                    res = read_grid_grouped_result_dict[section_id]
-                grid = [
-                    [{**self._grid_make_empty_cell(r['domain'], c['domain'], grid_domain), 'is_current': c.get('is_current', False),
-                      'is_unavailable': c.get('is_unavailable', False)} for c in res['cols']]
-                    for r in rows]
-
-                if len(rows) > 0:
-                    # update grid and rows in result
-                    if len(res['rows']) == 0 and len(res['grid']) == 0:
-                        res.update(rows=rows, grid=grid)
-                    else:
-                        res['rows'].extend(rows)
-                        res['grid'].extend(grid)
-
-        return result
-
-    def _grid_range_of(self, span, step, anchor, field):
-        """
-            Override to calculate the unavabilities of the company
-        """
-        res = super()._grid_range_of(span, step, anchor, field)
-        unavailable_days = self._get_unavailable_dates(res.start, res.end)
-        # Saving the list of unavailable days to use in method _grid_datetime_is_unavailable
-        self.env.context = dict(self.env.context, unavailable_days=unavailable_days)
-        return res
-
-    def _get_unavailable_dates(self, start_date, end_date):
-        """
-        Returns the list of days when the current company is closed (we, or holidays)
-        """
-        start_dt = datetime(year=start_date.year, month=start_date.month, day=start_date.day)
-        end_dt = datetime(year=end_date.year, month=end_date.month, day=end_date.day, hour=23, minute=59, second=59)
+    def grid_unavailability(self, start_date, end_date, groupby='', res_ids=None):
+        start_datetime = fields.Datetime.from_string(start_date)
+        end_datetime = fields.Datetime.from_string(end_date) + relativedelta(hour=23, minute=59, second=59)
+        unavailability_intervals_per_employee_id = {}
         # naive datetimes are made explicit in UTC
-        from_datetime, dummy = make_aware(start_dt)
-        to_datetime, dummy = make_aware(end_dt)
+        from_datetime, dummy = make_aware(start_datetime)
+        to_datetime, dummy = make_aware(end_datetime)
         # We need to display in grey the unavailable full days
         # We start by getting the availability intervals to avoid false positive with range outside the office hours
-        items = self.env.company.resource_calendar_id._work_intervals_batch(from_datetime, to_datetime)[False]
-        # get the dates where some work can be done in the interval. It returns a list of sets.
-        available_dates = list(map(lambda item: {item[0].date(), item[1].date()}, items))
-        # flatten the list of sets to get a simple list of dates and add it to the pile.
-        avaibilities = [date for dates in available_dates for date in dates]
-        unavailable_days = []
-        cur_day = from_datetime
-        while cur_day <= to_datetime:
-            if not cur_day.date() in avaibilities:
-                unavailable_days.append(cur_day.date())
-            cur_day = cur_day + timedelta(days=1)
-        return set(unavailable_days)
 
+        def get_unavailable_dates(intervals):
+            # get the dates where some work can be done in the interval. It returns a list of sets.
+            available_dates = [{start.date(), end.date()} for start, end, dummy in intervals]
+            # flatten the list of sets to get a simple list of dates and add it to the pile.
+            availability_date_list = [date for dates in available_dates for date in dates]
+            unavailable_days = []
+            cur_day = from_datetime
+            while cur_day <= to_datetime:
+                if cur_day.date() not in availability_date_list:
+                    unavailable_days.append(cur_day.date())
+                cur_day = cur_day + timedelta(days=1)
+            return list(set(unavailable_days))
 
-    def _grid_datetime_is_unavailable(self, field, span, step, column_dates):
-        """
-            :param column_dates: tuple of start/stop dates of a grid column, timezoned in UTC
-        """
-        unavailable_days = self.env.context.get('unavailable_days')
-        if unavailable_days and column_dates in unavailable_days:
-            return True
+        def get_company_unavailable_dates():
+            return get_unavailable_dates(self.env.company.resource_calendar_id._work_intervals_batch(from_datetime, to_datetime)[False])
+
+        if groupby == 'employee_id':
+            employees = self.env['hr.employee'].browse(set(res_ids))
+            availability_intervals_per_resource_id, calendar_work_intervals = employees.resource_id._get_valid_work_intervals(from_datetime, to_datetime)
+            employee_id_per_resource_id = {emp.resource_id.id: emp.id for emp in employees}
+            if not calendar_work_intervals:
+                unavailability_intervals_per_employee_id[False] = get_company_unavailable_dates()
+                return unavailability_intervals_per_employee_id
+            company_unavailable_days = get_unavailable_dates(calendar_work_intervals[self.env.company.resource_calendar_id.id])
+            unavailability_intervals_per_employee_id = {
+                employee_id:
+                    get_unavailable_dates(availability_intervals_per_resource_id[resource_id])
+                    if resource_id in availability_intervals_per_resource_id
+                    else company_unavailable_days
+                for resource_id, employee_id in employee_id_per_resource_id.items()
+            }
+            unavailability_intervals_per_employee_id[False] = company_unavailable_days
+        else:
+            unavailability_intervals_per_employee_id[False] = get_company_unavailable_dates()
+        return unavailability_intervals_per_employee_id
 
     @api.depends('project_id')
     def _compute_is_timesheet(self):
@@ -549,6 +308,30 @@ class AnalyticLine(models.Model):
 
         return super()._check_can_write(vals)
 
+    @api.model
+    def grid_update_cell(self, domain, measure_field_name, value):
+        if value == 0:  # nothing to do
+            return
+        timesheets = self.search(domain, limit=2)
+        if len(timesheets) > 1 or (len(timesheets) == 1 and timesheets.validated):
+            timesheets[0].copy({
+                'name': '/',
+                measure_field_name: value,
+            })
+        elif len(timesheets) == 1:
+            timesheets[measure_field_name] += value
+        else:
+            project_id = self._context.get('default_project_id', False)
+            task_id = self._context.get('default_task_id', False)
+            if not project_id and task_id:
+                project_id = self.env['project.task'].browse(task_id).project_id.id
+            self.create({
+                'name': '/',
+                'project_id': project_id,
+                'task_id': task_id,
+                measure_field_name: value,
+            })
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_manager(self):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') and self.filtered(
@@ -588,57 +371,6 @@ class AnalyticLine(models.Model):
                 task_id = subdomain[2]
         return project_id, task_id
 
-    def adjust_grid(self, row_domain, column_field, column_value, cell_field, change):
-        if column_field != 'date' or cell_field != 'unit_amount':
-            raise ValueError(
-                "{} can only adjust unit_amount (got {}) by date (got {})".format(
-                    self._name,
-                    cell_field,
-                    column_field,
-                ))
-
-        additionnal_domain = self._get_adjust_grid_domain(column_value)
-        # Remove date from the domain
-        new_row_domain = []
-        for leaf in row_domain:
-            if leaf[0] == 'date':
-                new_row_domain += ['|', expression.TRUE_LEAF, leaf]
-            else:
-                new_row_domain.append(leaf)
-        domain = expression.AND([new_row_domain, additionnal_domain])
-        line = self.search(domain)
-
-        day = column_value.split('/')[0]
-        if len(line) > 1 or len(line) == 1 and line.validated:  # copy the last line as adjustment
-            line[0].copy(self._prepare_duplicate_timesheet_line_values(
-                column_field, day, cell_field, change)
-            )
-        elif len(line) == 1:  # update existing line
-            line.write({
-                cell_field: line[cell_field] + change
-            })
-        else:  # create new one
-            line_in_domain = self.search(row_domain, limit=1)
-            if line_in_domain:
-                line_in_domain.copy(self._prepare_duplicate_timesheet_line_values(
-                    column_field, day, cell_field, change)
-                )
-            else:
-                project, task = self._get_project_task_from_domain(domain)
-
-                if task and not project:
-                    project = self.env['project.task'].browse([task]).project_id.id
-
-                if project:
-                    self.create([{
-                        'project_id': project,
-                        'task_id': task,
-                        column_field: day,
-                        cell_field: change,
-                    }])
-
-        return False
-
     def _prepare_duplicate_timesheet_line_values(self, column_field, day, cell_field, change):
         # Prepares all values that should be set/modified when duplicating the current analytic line
         return {
@@ -646,11 +378,6 @@ class AnalyticLine(models.Model):
             column_field: day,
             cell_field: change,
         }
-
-    def _get_adjust_grid_domain(self, column_value):
-        # span is always daily and value is an iso range
-        day = column_value.split('/')[0]
-        return [('date', '=', day)]
 
     def _group_expand_employee_ids(self, employees, domain, order):
         """ Group expand by employee_ids in grid view
@@ -724,6 +451,24 @@ class AnalyticLine(models.Model):
     # Timer Methods
     # ----------------------------------------------------
 
+    @api.model
+    def action_start_new_timesheet_timer(self, vals):
+        project = self.env['project.project'].browse(vals.get('project_id', False))
+        if not project:
+            task = self.env['project.task'].browse(vals.get('task_id', False))
+            project = task.project_id or self.env['project.project'].browse(self._get_favorite_project_id())
+        result = bool(project) and project.check_can_start_timer()
+        if result is True:
+            if "default_date" in self._context:
+                self = self.with_context(default_date=fields.Date.today())
+            timesheet = self.create({
+                **vals,
+                'project_id': project.id,
+            })
+            timesheet.action_timer_start()
+            return timesheet._get_timesheet_timer_data()
+        return result
+
     def action_timer_start(self):
         """ Action start the timer of current timesheet
 
@@ -732,9 +477,17 @@ class AnalyticLine(models.Model):
         if self.validated:
             raise UserError(_('You cannot use the timer on validated timesheets.'))
         if self.employee_id.sudo().last_validated_timesheet_date and self.date < self.employee_id.sudo().last_validated_timesheet_date:
-            self.create([{'project_id': self.project_id.id, 'task_id': self.task_id.id}]).action_timer_start()
+            timesheet = self.create([{'project_id': self.project_id.id, 'task_id': self.task_id.id, 'date': datetime.today().date()}])
+            timesheet.action_timer_start()
         elif not self.user_timer_id.timer_start and self.display_timer:
-            super(AnalyticLine, self).action_timer_start()
+            if self.date < fields.Date.today():
+                self.action_start_new_timesheet_timer({
+                    'name': self.name,
+                    'project_id': self.project_id.id,
+                    'task_id': self.task_id.id,
+                })
+            else:
+                super(AnalyticLine, self).action_timer_start()
 
     def _get_last_timesheet_domain(self):
         self.ensure_one()
@@ -784,7 +537,7 @@ class AnalyticLine(models.Model):
             self = self.sudo()
         if self.validated:
             raise UserError(_('You cannot use the timer on validated timesheets.'))
-        if self.user_timer_id.timer_start and self.display_timer:
+        if self.user_timer_id.timer_start:
             minutes_spent = super(AnalyticLine, self).action_timer_stop()
             self._add_timesheet_time(minutes_spent, try_to_match)
 
@@ -816,8 +569,28 @@ class AnalyticLine(models.Model):
     def _action_interrupt_user_timers(self):
         self.action_timer_stop()
 
+    def _get_timesheet_timer_data(self, timer=None):
+        if not timer:
+            timer = self.user_timer_id
+        running_seconds = (fields.Datetime.now() - timer.timer_start).total_seconds() + self.unit_amount * 3600
+        data = {
+            'id': timer.res_id,
+            'start': running_seconds,
+            'project_id': self.project_id.id,
+            'task_id': self.task_id.id,
+            'description': self.name,
+        }
+        if self.project_id.company_id not in self.env.companies:
+            data.update({
+                'readonly': True,
+                'project_name': self.project_id.name,
+                'task_name': self.task_id.name or '',
+            })
+        return data
+
     @api.model
     def get_running_timer(self):
+        step_timer = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15))
         timer = self.env['timer.timer'].search([
             ('user_id', '=', self.env.user.id),
             ('timer_start', '!=', False),
@@ -825,33 +598,12 @@ class AnalyticLine(models.Model):
             ('res_model', '=', self._name),
         ], limit=1)
         if not timer:
-            return {}
+            return {'step_timer': step_timer}
 
         # sudo as we can have a timesheet related to a company other than the current one.
-        timesheet = self.sudo().browse(timer.res_id)
-
-        running_seconds = (fields.Datetime.now() - timer.timer_start).total_seconds() + timesheet.unit_amount * 3600
-        values = {
-            'id': timer.res_id,
-            'start': running_seconds,
-            'project_id': timesheet.project_id.id,
-            'task_id': timesheet.task_id.id,
-            'description': timesheet.name,
-        }
-        if timesheet.project_id.company_id not in self.env.companies:
-            values.update({
-                'readonly': True,
-                'project_name': timesheet.project_id.name,
-                'task_name': timesheet.task_id.name or '',
-            })
-        return values
-
-    @api.model
-    def get_timer_data(self):
-        return {
-            'step_timer': int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15)),
-            'favorite_project': self._get_favorite_project_id()
-        }
+        timer_data = self.sudo().browse(timer.res_id)._get_timesheet_timer_data(timer)
+        timer_data['step_timer'] = step_timer
+        return timer_data
 
     @api.model
     def get_rounded_time(self, timer):
@@ -860,18 +612,18 @@ class AnalyticLine(models.Model):
         rounded_minutes = self._timer_rounding(timer, minimum_duration, rounding)
         return rounded_minutes / 60
 
-    def action_add_time_to_timesheet(self, project, task, seconds):
+    def action_add_time_to_timesheet(self, vals):
+        minutes = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15))
         if self:
-            task = False if not task else task
-            if self.task_id.id == task and self.project_id.id == project:
-                self.unit_amount += seconds / 3600
+            task_id = vals.get('task_id', False)
+            if self.task_id.id == task_id and self.project_id.id == vals['project_id']:
+                self.unit_amount += minutes / 60
                 return self.id
-        timesheet_id = self.create({
-            'project_id': project,
-            'task_id': task,
-            'unit_amount': seconds / 3600
+        timesheet = self.create({
+            **vals,
+            'unit_amount': minutes / 60,
         })
-        return timesheet_id.id
+        return timesheet.id
 
     def action_add_time_to_timer(self, time):
         if self.validated:
@@ -957,6 +709,11 @@ class AnalyticLine(models.Model):
             2. Manager (Administrator): with this access right, the user can validate all timesheets.
         """
         domain = [('is_timesheet', '=', True), ('validated', '=', validated)]
+        if not validated:
+            domain = expression.AND([
+                domain,
+                [("date", "<", fields.Date.today())],
+            ])
 
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
             return expression.AND([

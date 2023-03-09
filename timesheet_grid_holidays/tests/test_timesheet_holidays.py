@@ -12,16 +12,13 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
 
     def test_overtime_calcution_timesheet_holiday_flow(self):
         """ Employee's leave is not calculated as overtime hours when employee is on time off."""
-
-        HrEmployee = self.env['hr.employee']
-        employees_grid_data = [{'id': self.empl_employee.id}]
         self.empl_employee.write({
             'create_date': date(2021, 1, 1),
             'employee_type': 'freelance',  # Avoid searching the contract if hr_contract module is installed before this module.
         })
         start_date = '2021-10-04'
         end_date = '2021-10-09'
-        result = HrEmployee.get_timesheet_and_working_hours_for_employees(employees_grid_data, start_date, end_date)
+        result = self.empl_employee.get_timesheet_and_working_hours_for_employees(start_date, end_date)
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 40, "Employee weekly working hours should be 40.")
         self.assertEqual(result[self.empl_employee.id]['worked_hours'], 0.0, "Employee's working hours should be None.")
 
@@ -49,7 +46,7 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
             'number_of_days': number_of_days,
         })
         holiday.with_user(SUPERUSER_ID).action_validate()
-        result = HrEmployee.get_timesheet_and_working_hours_for_employees(employees_grid_data, start_date, end_date)
+        result = self.empl_employee.get_timesheet_and_working_hours_for_employees(start_date, end_date)
         self.assertTrue(len(holiday.timesheet_ids) > 0, 'Timesheet entry should be created in Internal project for time off.')
         # working hours for employee after leave creations
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 32, "Employee's weekly units of work after the leave creation should be 32.")
@@ -63,11 +60,11 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
             'unit_amount': 8.0,
         })
         timesheet1.with_user(self.user_manager).action_validate_timesheet()
-        result = HrEmployee.get_timesheet_and_working_hours_for_employees(employees_grid_data, start_date, end_date)
+        result = self.empl_employee.get_timesheet_and_working_hours_for_employees(start_date, end_date)
         # working hours for employee after Timesheet creations
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 32, "Employee's one week units of work after the Timesheet creation should be 32.")
 
-    def test_adjust_grid_holiday(self):
+    def test_grid_update_holiday(self):
         Requests = self.env['hr.leave'].with_context(mail_create_nolog=True, mail_notrack=True)
         hr_leave_type_with_ts = self.env['hr.leave.type'].create({
             'name': 'Leave Type with timesheet generation',
@@ -89,10 +86,25 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         holiday.with_user(SUPERUSER_ID).action_validate()
         self.assertEqual(len(holiday.timesheet_ids), 1)
 
-        # create timesheet via adjust_grid
+        # create timesheet via grid_update_cell
         today_date = fields.Date.today()
-        column_date = f'{today_date}/{today_date + timedelta(days=1)}'
-        self.env['account.analytic.line'].with_user(SUPERUSER_ID).adjust_grid([('id', '=', holiday.timesheet_ids.id)], 'date', column_date, 'unit_amount', 3.0)
+        column_date = today_date
+        timesheet = holiday.timesheet_ids
+        domain = [  # domain given by the grid cell edited
+            ('date', '=', today_date),
+            ('employee_id', '=', self.empl_employee.id),
+            ('project_id', '=', timesheet.project_id.id),
+            ('task_id', '=', timesheet.task_id.id),
+        ]
+        self.env['account.analytic.line'] \
+            .with_user(SUPERUSER_ID) \
+            .with_context( # when the user will edit a grid cell, the context of the cell will be given
+                default_date=column_date,
+                default_project_id=timesheet.project_id.id,
+                default_task_id=timesheet.task_id.id,
+                default_employee_id=self.empl_employee.id,
+            ) \
+            .grid_update_cell(domain, 'unit_amount', 3.0)
 
         timesheets = self.env['account.analytic.line'].search([('employee_id', '=', self.empl_employee.id), ('unit_amount', 'in', [1, 3])])
 

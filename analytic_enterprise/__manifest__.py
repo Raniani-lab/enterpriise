@@ -21,4 +21,9 @@ that have no counterpart in the general financial accounts.
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'analytic_enterprise/static/src/**/*',
+        ],
+    },
 }

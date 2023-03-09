@@ -107,8 +107,8 @@ QUnit.module("timesheet_grid", (hooks) => {
         await makeView(makeViewArgs);
         const secondRow = target.querySelector('.o_list_table .o_data_row:nth-of-type(2) div[name="unit_amount"] button i');
         const thirdRow = target.querySelector('.o_list_table .o_data_row:nth-of-type(3) div[name="unit_amount"] button i');
-        assert.hasClass(secondRow, "fa-play-circle");
-        assert.hasClass(thirdRow, "fa-stop-circle");
+        assert.hasClass(secondRow, "fa-play");
+        assert.hasClass(thirdRow, "fa-stop");
     });
 
     QUnit.test("correct rpc calls are performed (click play)", async function (assert) {
@@ -122,7 +122,7 @@ QUnit.module("timesheet_grid", (hooks) => {
         };
         await makeView({ ...makeViewArgs, mockRPC });
         const secondRow = target.querySelector('.o_list_table .o_data_row:nth-of-type(2) div[name="unit_amount"] button i');
-        assert.hasClass(secondRow, "fa-play-circle");
+        assert.hasClass(secondRow, "fa-play");
         await click(secondRow.parentNode);
         assert.verifySteps(["action_timer_start"]);
     });
@@ -138,7 +138,7 @@ QUnit.module("timesheet_grid", (hooks) => {
         };
         await makeView({ ...makeViewArgs, mockRPC });
         const thirdRow = target.querySelector('.o_list_table .o_data_row:nth-of-type(3) div[name="unit_amount"] button i');
-        assert.hasClass(thirdRow, "fa-stop-circle");
+        assert.hasClass(thirdRow, "fa-stop");
         await click(thirdRow.parentNode);
         assert.verifySteps(["action_timer_stop"]);
     });

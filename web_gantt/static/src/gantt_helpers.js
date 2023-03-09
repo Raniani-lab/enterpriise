@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { useEffect } from "@odoo/owl";
-import { Domain } from "@web/core/domain";
 import { makeDraggableHook } from "@web/core/utils/draggable_hook_builder";
 import { clamp } from "@web/core/utils/numbers";
 import { pick } from "@web/core/utils/objects";
@@ -201,62 +200,6 @@ export function useMultiHover({ ref, selector, related, className }) {
         },
         () => [...ref.el.querySelectorAll(selector)]
     );
-}
-
-/**
- * @param {any[]} domain
- * @param {string[]} keysToRemove
- * @returns {Domain}
- */
-export function removeDomainLeaf(domain, keysToRemove) {
-    function processLeaf(elements, idx, operatorCtx, newDomain) {
-        const leaf = elements[idx];
-        if (leaf.type === 10) {
-            if (keysToRemove.includes(leaf.value[0].value)) {
-                if (operatorCtx === "&") {
-                    newDomain.ast.value.push(...Domain.TRUE.ast.value);
-                } else if (operatorCtx === "|") {
-                    newDomain.ast.value.push(...Domain.FALSE.ast.value);
-                }
-            } else {
-                newDomain.ast.value.push(leaf);
-            }
-            return 1;
-        } else if (leaf.type === 1) {
-            // Special case to avoid OR ('|') that can never resolve to true
-            if (
-                leaf.value === "|" &&
-                elements[idx + 1].type === 10 &&
-                elements[idx + 2].type === 10 &&
-                keysToRemove.includes(elements[idx + 1].value[0].value) &&
-                keysToRemove.includes(elements[idx + 2].value[0].value)
-            ) {
-                newDomain.ast.value.push(...Domain.TRUE.ast.value);
-                return 3;
-            }
-            newDomain.ast.value.push(leaf);
-            if (leaf.value === "!") {
-                return 1 + processLeaf(elements, idx + 1, "&", newDomain);
-            }
-            const firstLeafSkip = processLeaf(elements, idx + 1, leaf.value, newDomain);
-            const secondLeafSkip = processLeaf(
-                elements,
-                idx + 1 + firstLeafSkip,
-                leaf.value,
-                newDomain
-            );
-            return 1 + firstLeafSkip + secondLeafSkip;
-        }
-        return 0;
-    }
-
-    domain = new Domain(domain);
-    if (domain.ast.value.length === 0) {
-        return domain;
-    }
-    const newDomain = new Domain([]);
-    processLeaf(domain.ast.value, 0, "&", newDomain);
-    return newDomain;
 }
 
 const NB_GANTT_RECORD_COLORS = 12;

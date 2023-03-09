@@ -32,7 +32,6 @@ import {
     dateAddFixedOffset,
     getCellColor,
     getColorIndex,
-    removeDomainLeaf,
     useGanttConnectorDraggable,
     useGanttDraggable,
     useGanttResizable,
@@ -1209,7 +1208,7 @@ export class GanttRenderer extends Component {
      */
     getPlanDialogDomain() {
         const { dateStartField, dateStopField } = this.model.metaData;
-        const newDomain = removeDomainLeaf(this.env.searchModel.globalDomain, [
+        const newDomain = Domain.removeDomainLeaves(this.env.searchModel.globalDomain, [
             dateStartField,
             dateStopField,
         ]);

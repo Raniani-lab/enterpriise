@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, _
+from odoo import api, models, _
+from odoo.osv import expression
 from odoo.exceptions import RedirectWarning, UserError
 
 
@@ -21,3 +22,11 @@ class AnalyticLine(models.Model):
             action = self._get_redirect_action()
             raise RedirectWarning(warning_msg, action, _('View Time Off'))
         return super().action_merge_timesheets()
+
+    @api.model
+    def grid_update_cell(self, domain, measure_field_name, value):
+        return super().grid_update_cell(
+            expression.AND([domain, [('holiday_id', '=', False)]]),
+            measure_field_name,
+            value,
+        )

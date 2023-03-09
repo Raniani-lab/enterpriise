@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates>
+    <t t-name="web_grid.Renderer" owl="1">
+        <div class="o_grid_renderer" t-ref="renderer">
+            <div class="o_grid_grid d-grid gap-0"
+                 t-attf-style="grid-template-rows: {{ gridTemplateRows }} ; grid-template-columns: {{ gridTemplateColumns }}"
+                 t-on-mouseover.stop="onMouseOver"
+                 t-on-mouseout.stop="onMouseOut"
+            >
+                <t t-call="web_grid.Header"/>
+                <t t-set="section_index" t-value="0"/>
+                <t t-foreach="virtualRows" t-as="row" t-key="row.id">
+                    <t t-if="row.isSection">
+                        <t t-if="props.createInline and !row.isFake" t-set="section_index" t-value="section_index + 1"/>
+                        <t t-call="web_grid.Section"/>
+                    </t>
+                    <t t-else="">
+                        <t t-call="web_grid.Row"/>
+                        <t t-if="props.createInline and row.id === row.section.lastRow.id">
+                            <t t-call="web_grid.AddLine"/>
+                        </t>
+                    </t>
+                </t>
+                <t t-if="props.createInline and !props.model.hasData()" t-call="web_grid.AddLine"/>
+                <t t-call="web_grid.Footer"/>
+                <t t-if="props.options.hasBarChartTotal" t-call="web_grid.barChart"/>
+            </div>
+        </div>
+    </t>
+    <t t-name="web_grid.Header" owl="1">
+        <div class="o_grid_column_title z-index-1 position-sticky start-0 border-bottom bg-view"
+             t-attf-style="grid-row: {{rowsGap}}; grid-column: {{columnsGap}};"/>
+        <div t-foreach="props.columns"
+             t-as="column"
+             t-key="column.id"
+             class="o_grid_column_title o_grid_highlightable position-relative p-2 pt-3 border-bottom text-center transition-base"
+             t-att-class="{
+                'fw-bold' : !column.isToday,
+                'bg-view' : !column.isToday and !highlightedState[`column-${column.id}`],
+                'bg-info bg-opacity-25 fw-bolder': column.isToday,
+                'bg-opacity-0': highlightedState[`column-${column.id}`],
+                'text-opacity-25' : getUnavailableClass(column) === 'o_grid_unavailable'
+             }"
+             t-att-data-state-highlight-triggers="`column-${column.id}`"
+             t-attf-style="grid-row: {{rowsGap}}; grid-column: {{column_index + 1 + columnsGap}};"
+        >
+            <span t-esc="column.title"/>
+        </div>
+        <div t-if="!props.options.hideLineTotal"
+             class="o_grid_column_title o_grid_row_total position-md-sticky end-0 d-flex align-items-center justify-content-center p-2 bg-secondary text-bg-dark fw-bold text-center"
+             t-attf-style="grid-row: {{rowsGap}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
+        >
+            <t t-esc="measureLabel"/>
+        </div>
+    </t>
+    <t t-name="web_grid.Section" owl="1">
+        <t t-set="section" t-value="row"/>
+        <t t-set="rowPosition" t-value="getRowPosition(section)"/>
+        <t t-if="!section.isFake">
+            <div class="o_grid_section o_grid_section_title o_grid_highlightable z-index-1 position-sticky start-0 d-flex align-items-center ps-3 border-top bg-200 fw-bold"
+                 t-att-data-state-highlight-triggers="`section-${section.id}`"
+                 t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
+            >
+                <Record t-if="section.value"
+                        fields="props.model.fieldsInfo"
+                        resModel="props.model.resModel"
+                        values="section.initialRecordValues"
+                        fieldNames="[props.sectionField.name]"
+                        t-slot-scope="data"
+                        mode="'readonly'"
+                        t-key="props.sectionField.name"
+                >
+                    <Field record="data.record"
+                           class="'text-truncate'"
+                           t-props="getFieldAdditionalProps(props.sectionField.name)"
+                    />
+                </Record>
+                <span t-if="!section.value"
+                      class="o_grid_no_data text-300"
+                        >None</span>
+            </div>
+            <div t-foreach="props.columns"
+                t-as="column"
+                t-key="column.id"
+                class="o_grid_section o_grid_highlightable position-relative d-flex align-items-center justify-content-center bg-200 fw-bold"
+                t-att-class="{
+                    'border-top' : !column.isToday,
+                    'text-opacity-25' : getUnavailableClass(column) === 'o_grid_unavailable'
+                }"
+                t-att-data-state-highlight-triggers="`column-${column.id},section-${section.id}`"
+                t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
+            >   <div class="position-absolute top-0 start-0 w-100 h-100 opacity-50 transition-base "
+                     t-att-class="{
+                        'bg-info-light' : column.isToday,
+                        'bg-300' : !column.isToday and highlightedState[`column-${column.id}`],
+                     }"
+                />
+                <div class="o_grid_cell position-relative d-flex justify-content-center align-items-center w-100 h-100">
+                    <button t-if="editionState.hoveredCellInfo === `column-${column.id},section-${section.id}`"
+                            class="o_grid_search_btn btn btn-sm position-absolute start-0 px-1"
+                            t-on-click.synthetic="() => this.onMagnifierGlassClick(section, column)"
+                    >
+                        <i class="fa fa-search"/>
+                    </button>
+                    <span t-att-class="{
+                            'text-opacity-25' : section.grandTotalPerColumn[column.id] === 0
+                          }"
+                          t-esc="formatValue(section.grandTotalPerColumn[column.id])"
+                    />
+                </div>
+            </div>
+            <div t-if="!props.options.hideLineTotal"
+                 class="o_grid_section o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 d-flex align-items-center justify-content-center p-2 fw-bold text-bg-secondary"
+                 t-att-data-state-highlight-triggers="`section-${section.id},row-total`"
+                 t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
+            >
+                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25 bg-dark transition-base"/>
+                <div class="position-relative d-flex align-items-center w-100">
+                    <span t-att-class="{
+                            'text-opacity-25': section.grandTotal === 0
+                            }"
+                            t-esc="formatValue(section.grandTotal)"
+                    />
+                </div>
+            </div>
+        </t>
+    </t>
+    <t t-name="web_grid.Row" owl="1">
+        <t t-set="rowPosition" t-value="getRowPosition(row)"/>
+        <t t-set="isEven" t-value="rowPosition % 2 !== 0"/>
+        <div name="row"
+             class="o_grid_row o_grid_row_title o_grid_highlightable z-index-1 position-sticky start-0 d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-items-md-center p-2 transition-base"
+             t-att-class="{
+                'bg-view': isEven and !highlightedState[`row-${row.id}`],
+                'bg-light': !isEven and !highlightedState[`row-${row.id}`],
+                'bg-200': highlightedState[`row-${row.id}`],
+                'fst-italic': row.isAdditionalRow,
+             }"
+             t-att-data-state-highlight-triggers="`row-${row.id}`"
+             t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
+        >
+            <t t-set="rowFields" t-value="props.model.rowFields.map(field => field.name)"/>
+            <Record fields="props.model.fieldsInfo"
+                    resModel="props.model.resModel"
+                    values="row.initialRecordValues"
+                    fieldNames="rowFields"
+                    t-slot-scope="data"
+                    mode="'readonly'"
+                    t-key="rowFields.join('-')"
+            >
+                <t t-foreach="props.rowFields" t-as="rowField" t-key="rowField_index">
+                    <Field t-if="data.record.data[rowField.name]"
+                           class="'text-truncate o_grid_field_' + rowField.name.replace('_id','') + [isMobile ? '' : ' text-nowrap']"
+                           record="data.record"
+                           t-props="getFieldAdditionalProps(rowField.name)"
+                    />
+                    <span t-if="!data.record.data[rowField.name] and rowField_index === 0"
+                          class="o_grid_no_data text-300"
+                    >None</span>
+                    <span t-if="!rowField_last and data.record.data[props.rowFields[rowField_index + 1].name]"
+                          class="o_grid_row_data_separator d-none d-md-inline px-2 text-300"
+                    >
+                        |
+                    </span>
+                </t>
+            </Record>
+        </div>
+        <div t-foreach="row.model.columnsArray"
+             t-as="column"
+             t-key="column.id"
+             class="o_grid_row o_grid_highlightable position-relative d-flex align-items-center justify-content-center transition-base"
+             t-att-class="{
+                 'bg-view bg-opacity-50': isEven and !highlightedState[`column-${column.id}`] and !highlightedState[`row-${row.id}`],
+                 'bg-200': highlightedState[`row-${row.id}`],
+                 'fst-italic': row.isAdditionalRow,
+                 'text-danger': row.cells[column.id].value lt 0,
+                 'text-opacity-50': getUnavailableClass(column, { section, row }) === 'o_grid_unavailable',
+             }"
+             t-att-data-state-highlight-triggers="`row-${row.id},column-${column.id}`"
+             t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
+             t-on-keydown.synthetic="(ev) => this.onCellKeydown(ev, row.cells[column.id])"
+        >
+            <div class="position-absolute top-0 start-0 w-100 h-100 opacity-50 transition-base"
+                 t-att-class="{
+                   'bg-info' : column.isToday,
+                   'bg-opacity-50': editionState.hoveredCellInfo === `row-${row.id},column-${column.id}` or highlightedState[`row-${row.id}`],
+                   'bg-opacity-25': editionState.hoveredCellInfo !== `row-${row.id},column-${column.id}` and !highlightedState[`row-${row.id}`],
+                   'bg-300' : !column.isToday and (editionState.hoveredCellInfo === `row-${row.id},column-${column.id}`),
+                }"
+            />
+            <t t-if="editionState.hoveredCellInfo === `row-${row.id},column-${column.id}` or editionState.editedCellInfo === `row-${row.id},column-${column.id}`">
+                <t t-component="gridCell.component"
+                   cell="row.cells[column.id]"
+                   value="row.cells[column.id].value"
+                   fieldInfo="props.model.fieldsInfo[props.model.measureFieldName]"
+                   readonly="!props.isEditable || row.cells[column.id].readonly"
+                   openRecords.bind="openRecords"
+                   editMode="editionState.editedCellInfo === `row-${row.id},column-${column.id}`"
+                   onEdit.bind="onEditCell"
+                />
+            </t>
+            <t t-else="">
+                <div class="position-relative d-flex justify-content-center align-items-center w-100 h-100">
+                    <span t-att-class="{
+                        'text-opacity-25' : row.cells[column.id].value === 0
+                    }"
+                         t-esc="formatValue(row.cells[column.id].value)"/>
+                </div>
+            </t>
+        </div>
+        <div t-if="!props.options.hideLineTotal"
+             class="o_grid_row o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 d-flex align-items-center justify-content-center p-2 transition-base"
+             t-att-class="{
+                'bg-dark text-bg-dark': row.grandTotal gte 0 and (highlightedState[`row-${row.id}`] or highlightedState['row-total']),
+                'text-bg-secondary': row.grandTotal gte 0 and !(highlightedState[`row-${row.id}`] or highlightedState['row-total']),
+                'fst-italic': row.isAdditionalRow,
+                'bg-danger text-bg-danger': row.grandTotal lt 0,
+             }"
+             t-att-data-state-highlight-triggers="`row-${row.id}`"
+             t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
+        >
+            <div class="position-absolute top-0 start-0 w-100 h-100 bg-opacity-25 transition-base"/>
+            <span>
+                <t t-esc="formatValue(row.grandTotal)"/>
+            </span>
+        </div>
+    </t>
+    <t t-name="web_grid.AddLine" owl="1">
+        <t t-set="rowPosition" t-value="getRowPosition(row or undefined, true)"/>
+        <div t-if="props.createInline"
+             class="o_grid_row o_grid_add_line d-flex align-items-center z-index-1 position-sticky start-0 transition-base"
+             t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
+        >
+            <a class="btn btn-link"
+               t-on-click="() => this.onCreateInlineClick(row?.section)"
+               data-hotkey="i">
+               <i class="fa fa-plus-circle fs-4 me-1"/>Add a line
+            </a>
+        </div>
+        <div t-foreach="props.columns"
+             t-as="column"
+             t-key="column.id"
+             class="o_grid_row o_grid_add_line o_grid_highlightable transition-base"
+             t-att-class="{
+                'bg-info bg-opacity-25 opacity-50': column.isToday,
+             }"
+             t-att-data-state-highlight-triggers="`column-${column.id}`"
+             t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
+        />
+        <div class="o_grid_add_line position-md-sticky end-0 text-bg-secondary transition-base"
+             t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
+        ></div>
+    </t>
+    <t t-name="web_grid.Footer" owl="1">
+        <t t-if="!props.options.hideColumnTotal">
+            <t t-set="rowPosition" t-value="getTotalRowPosition()"/>
+            <div class="bg-view"
+                 t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"/>
+            <t t-set="grandTotal"
+               t-value="0"
+            />
+            <div t-foreach="props.columns"
+                 t-as="column"
+                 t-key="column.id"
+                 class="o_grid_row o_grid_column_total o_grid_highlightable bg-view transition-base"
+                 t-att-class="{
+                    'text-danger': column.grandTotal lt 0,
+                 }"
+                 t-att-data-state-highlight-triggers="`column-${column.id}`"
+                 t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
+            >
+                <t t-set="grandTotal"
+                   t-value="grandTotal + column.grandTotal"
+                />
+                <div class="h-100 d-flex justify-content-center align-items-center transition-base"
+                     t-if="column.grandTotal !== 0">
+                    <div class="o_grid_bar_chart_total_title"
+                         t-att-class="{
+                         'text-opacity-50' : getUnavailableClass(column) === 'o_grid_unavailable'
+                         }">
+                        <span class="fs-5 fw-bolder">
+                            <t t-esc="formatValue(column.grandTotal)"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div t-if="!props.options.hideLineTotal"
+                t-att-data-state-highlight-triggers="`row-total`"
+                class="o_grid_highlightable position-md-sticky end-0 d-flex align-items-center justify-content-center text-bg-secondary fw-bold transition-base"
+                t-att-class="{
+                    'bg-danger text-bg-danger': grandTotal lt 0,
+                }"
+                t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
+            >
+                <span>
+                    <t t-esc="formatValue(grandTotal)"/>
+                </span>
+            </div>
+        </t>
+    </t>
+    <t t-name="web_grid.barChart" owl="1">
+        <t t-if="!props.options.hideColumnTotal">
+            <t t-set="rowPosition" t-value="getTotalRowPosition()"/>
+            <div class="o_grid_row_barChart"
+                 t-attf-style="grid-row: {{rowPosition + 1}}; grid-column: {{columnsGap}};"/>
+            <t t-set="grandTotal" t-value="0"/>
+            <div t-foreach="props.columns"
+                t-as="column"
+                t-key="column.id"
+                class="o_grid_row o_grid_column_total o_grid_highlightable o_grid_bar_chart_container transition-base"
+                t-att-data-state-highlight-triggers="`column-${column.id}`"
+                t-attf-style="grid-row: {{rowPosition + 1}}; grid-column: {{column_index + 1 + columnsGap}};"
+            >
+                <t t-set="grandTotal" t-value="grandTotal + column.grandTotal"/>
+                <div class="h-100 position-relative"
+                     t-if="column.grandTotal !== 0">
+                    <div class="o_grid_bar_chart_total_pill position-absolute w-100 border-top border-odoo border-2 bg-odoo bg-opacity-50" t-if="props.options.hasBarChartTotal"
+                         t-att-style="getColumnBarChartHeightStyle(column)"
+                    >
+                    </div>
+                </div>
+            </div>
+            <div/>
+        </t>
+    </t>
+</templates>

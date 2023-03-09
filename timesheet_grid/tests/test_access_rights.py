@@ -38,7 +38,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'name': 'My timesheet 1',
             'project_id': self.project_customer.id,
             'task_id': self.task2.id,
-            'date': today,
+            'date': today - timedelta(days=1),
             'unit_amount': 2,
             'employee_id': self.empl_employee.id
         })
@@ -55,7 +55,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'name': 'My timesheet 4',
             'project_id': self.project_customer.id,
             'task_id': self.task1.id,
-            'date': today,
+            'date': today - timedelta(days=1),
             'unit_amount': 2,
             'employee_id': self.empl_employee3.id
         })
@@ -64,7 +64,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'name': 'My old timesheet',
             'project_id': self.project_customer.id,
             'task_id': self.task1.id,
-            'date': fields.Datetime.today() - timedelta(days=10),
+            'date': today - timedelta(days=10),
             'unit_amount': 2,
             'employee_id': self.empl_employee3.id,
         })
@@ -73,7 +73,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'name': 'My old timesheet 2',
             'project_id': self.project_customer.id,
             'task_id': self.task1.id,
-            'date': fields.Datetime.today() - timedelta(days=10),
+            'date': today - timedelta(days=10),
             'unit_amount': 2,
             'employee_id': self.empl_employee2.id,
         })
@@ -92,7 +92,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'name': 'Timesheet Approver2',
             'project_id': self.project_customer.id,
             'task_id': self.task1.id,
-            'date': today,
+            'date': today - timedelta(days=1),
             'unit_amount': 1,
             'employee_id': self.empl_approver2.id
         })
@@ -108,7 +108,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'name': 'My timesheet 5',
             'project_id': self.project_customer.id,
             'task_id': self.task1.id,
-            'date': today,
+            'date': today - timedelta(days=1),
             'unit_amount': 2,
             'employee_id': self.empl_employee4.id
         })
@@ -327,11 +327,12 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
         self.assertFalse(self.empl_employee3.last_validated_timesheet_date)
 
         # User can create timesheet with any date if timesheet.employee_id.last_validated_timesheet_date = False
+        yesterday = fields.Date.today() - timedelta(days=1)
         timesheet1 = self.env['account.analytic.line'].with_user(self.user_employee3).create({
             'name': 'timesheet 1',
             'project_id': self.project_customer.id,
             'task_id': self.task1.id,
-            'date': fields.Datetime.today(),
+            'date': yesterday,
             'unit_amount': 2,
             'employee_id': self.empl_employee3.id,
         })
@@ -371,7 +372,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             })
 
         timesheet.with_user(self.user_approver).action_validate_timesheet()
-        self.assertEqual(self.empl_employee3.last_validated_timesheet_date, max([self.timesheet3.date, self.timesheet2.date, timesheet.date]))
+        self.assertEqual(self.empl_employee3.last_validated_timesheet_date, yesterday)
 
         (timesheet + self.timesheet2 + self.timesheet4).with_user(self.user_approver).action_invalidate_timesheet()
         self.assertEqual(self.empl_employee3.last_validated_timesheet_date, self.timesheet3.date)
@@ -389,7 +390,6 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
                 'name': 'Timesheet1',
                 'project_id': self.project_customer.id,
                 'task_id': self.task1.id,
-                'date': today - timedelta(days=3),
                 'unit_amount': 2,
                 'employee_id': self.empl_employee3.id,
             }, {
@@ -418,6 +418,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
 
         # The validation of a timesheet interrupts the timer of the running older timesheet
         timesheet1.with_user(self.user_employee3).action_timer_start()
+        timesheet1.write({'date': today - timedelta(days=3)})  # simulate the user forgot to stop his timer.
         self.assertTrue(timesheet1.is_timer_running)
         timesheet2.with_user(self.user_approver).action_validate_timesheet()
         self.assertFalse(timesheet1.is_timer_running)

@@ -6,7 +6,7 @@ import { serializeDateTime } from "@web/core/l10n/dates";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { getFixture, mount, nextTick } from "@web/../tests/helpers/utils";
 
-import { TimesheetDisplayTimer, TimesheetTimerFloatTimerField } from "../src/js/components/timesheet_display_timer/timesheet_display_timer";
+import { TimesheetDisplayTimer, TimesheetTimerFloatTimerField } from "@timesheet_grid/components/timesheet_display_timer/timesheet_display_timer";
 import { timerService } from "@timer/services/timer_service";
 import { EventBus } from "@odoo/owl";
 
@@ -34,6 +34,7 @@ QUnit.module("timesheet_grid", (hooks) => {
                 isInvalid: () => false,
                 model: new EventBus(),
             },
+            displayRed: false,
         };
         await mount(TimesheetTimerFloatTimerField, target, { env, props });
         await nextTick();

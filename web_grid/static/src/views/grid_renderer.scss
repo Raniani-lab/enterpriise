@@ -1,0 +1,26 @@
+.o_view_sample_data .o_grid_renderer {
+    pointer-events: none;
+}
+
+.o_grid_renderer {
+    height: inherit;
+
+    .o_grid_row, .o_grid_section {
+        min-height: 3rem;
+    }
+
+    span, button {
+        opacity: var(--text-opacity);
+    }
+
+    .o_grid_column_title {
+        span {
+            white-space: pre-line;
+        }
+    }
+
+    .o_grid_grid .o_input {
+        text-align: center;
+        padding: 0;
+    }
+}

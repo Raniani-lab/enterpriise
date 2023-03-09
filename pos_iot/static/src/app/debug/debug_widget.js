@@ -8,8 +8,8 @@ patch(DebugWidget, "pos_iot.DebugWidget", {
      * @override
      */
     refreshDisplay() {
-        if (this.env.proxy.display) {
-            this.env.proxy.display.action({ action: "display_refresh" });
+        if (this.hardwareProxy.display) {
+            this.hardwareProxy.display.action({ action: "display_refresh" });
         }
     },
 });

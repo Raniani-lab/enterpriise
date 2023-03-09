@@ -2,26 +2,27 @@
 /* global posmodel */
 
 import core from "web.core";
-import { IoTLongpolling } from "@iot/iot_longpolling";
+import { IoTLongpolling, iotLongpollingService } from "@iot/iot_longpolling";
 import { patch } from "@web/core/utils/patch";
 import { IoTErrorPopup } from "./IoTErrorPopup";
 
 var _t = core._t;
 
-patch(IoTLongpolling, "pos_iot.IoTLongpolling static", {
-    serviceDependencies: ["popup", ...IoTLongpolling.serviceDependencies],
+patch(iotLongpollingService, "pos_iot.IoTLongpolling", {
+    dependencies: ["popup", "hardware_proxy", ...iotLongpollingService.dependencies],
 });
 patch(IoTLongpolling.prototype, "pos_iot.IotLongpolling", {
-    setup({ popup }) {
+    setup({ popup, hardware_proxy }) {
         this._super(...arguments);
         this.popup = popup;
+        this.hardwareProxy = hardware_proxy;
     },
     _doWarnFail: function (url) {
         this.popup.add(IoTErrorPopup, {
             title: _t("Connection to IoT Box failed"),
             url: url,
         });
-        posmodel.env.proxy.proxy_connection_status(url, false);
+        this.hardwareProxy.setProxyConnectionStatus(url, false);
         const order = posmodel.get_order();
         if (
             order &&
@@ -34,17 +35,16 @@ patch(IoTLongpolling.prototype, "pos_iot.IotLongpolling", {
             order.selected_paymentline.set_payment_status("force_done");
         }
     },
-
-    _onSuccess: function (iot_ip, result) {
-        posmodel.env.proxy.proxy_connection_status(iot_ip, true);
+    _onSuccess(iot_ip, result) {
+        this.hardwareProxy.setProxyConnectionStatus(iot_ip, true);
         return this._super.apply(this, arguments);
     },
-    action: function (iot_ip, device_identifier, data) {
+    action(iot_ip, device_identifier, data) {
         var res = this._super.apply(this, arguments);
-        res.then(function () {
-            posmodel.env.proxy.proxy_connection_status(iot_ip, true);
-        }).guardedCatch(function () {
-            posmodel.env.proxy.proxy_connection_status(iot_ip, false);
+        res.then(() => {
+            this.hardwareProxy.setProxyConnectionStatus(iot_ip, true);
+        }).guardedCatch(() => {
+            this.hardwareProxy.setProxyConnectionStatus(iot_ip, false);
         });
         return res;
     },

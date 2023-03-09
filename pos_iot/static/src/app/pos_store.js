@@ -27,15 +27,15 @@ patch(PosStore.prototype, "pos_iot.PosStore", {
         }
     },
     connectToProxy() {
-        this.globalState.env.proxy.ping_boxes();
+        this.hardwareProxy.pingBoxes();
         if (this.globalState.config.iface_scan_via_proxy) {
-            this.barcodeReader?.connectToProxy(this.globalState.env.proxy);
+            this.barcodeReader?.connectToProxy();
         }
         if (this.globalState.config.iface_print_via_proxy) {
-            this.globalState.env.proxy.connect_to_printer();
+            this.hardwareProxy.connectToPrinter();
         }
-        if (!this.globalState.env.proxy.status_loop_running) {
-            this.globalState.env.proxy.status_loop();
+        if (!this.hardwareProxy.statusLoopRunning) {
+            this.hardwareProxy.statusLoop();
         }
         return Promise.resolve();
     },

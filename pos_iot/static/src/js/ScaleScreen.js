@@ -4,48 +4,43 @@ import { ScaleScreen } from "@point_of_sale/js/Screens/ScaleScreen/ScaleScreen";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 import { ErrorTracebackPopup } from "@point_of_sale/js/Popups/ErrorTracebackPopup";
-import { useService } from "@web/core/utils/hooks";
+import { useService, useBus } from "@web/core/utils/hooks";
 
 patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
     setup() {
         this._super(...arguments);
         this.popup = useService("popup");
+        useBus(this.hardwareProxy, "change_status", this.onProxyStatusChange);
+    },
+    async onProxyStatusChange({ detail: newStatus }) {
+        if (this.iot_box.connected && newStatus.drivers.scale?.status === "connected") {
+            this._error = false;
+        } else {
+            if (!this._error) {
+                this._error = true;
+                this.popup.add(ErrorPopup, {
+                    title: this.env._t("Could not connect to IoT scale"),
+                    body: this.env._t(
+                        "The IoT scale is not responding. You should check your connection."
+                    ),
+                });
+            }
+        }
     },
     get scale() {
-        return this.env.proxy.iot_device_proxies.scale;
+        return this.hardwareProxy.deviceProxies.scale;
     },
     get isManualMeasurement() {
-        return this.scale && this.scale.manual_measurement;
+        return this.scale?.manual_measurement;
     },
     /**
      * @override
      */
     onMounted() {
-        this.iot_box = _.find(this.env.proxy.iot_boxes, (iot_box) => {
-            return iot_box.ip == this.scale._iot_ip;
-        });
+        this.iot_box = this.hardwareProxy.iotBoxes.find((box) => box.ip === this.scale._iot_ip);
         this._error = false;
-        this.env.proxy.on("change:status", this, async (eh, status) => {
-            if (
-                !this.iot_box.connected ||
-                !status.newValue.drivers.scale ||
-                status.newValue.drivers.scale.status !== "connected"
-            ) {
-                if (!this._error) {
-                    this._error = true;
-                    await this.popup.add(ErrorPopup, {
-                        title: this.env._t("Could not connect to IoT scale"),
-                        body: this.env._t(
-                            "The IoT scale is not responding. You should check your connection."
-                        ),
-                    });
-                }
-            } else {
-                this._error = false;
-            }
-        });
         if (!this.isManualMeasurement) {
-            this.env.proxy_queue.schedule(() => this.scale.action({ action: "start_reading" }));
+            this.scale.action({ action: "start_reading" });
         }
         this._super(...arguments);
     },
@@ -54,23 +49,20 @@ patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
      */
     onWillUnmount() {
         this._super(...arguments);
-        this.env.proxy_queue.schedule(() => this.scale.action({ action: "stop_reading" }));
-        if (this.scale) {
-            this.scale.remove_listener();
-        }
+        // FIXME POSREF shouldn't the stop_reading action be awaited before removing the listener?
+        this.scale.action({ action: "stop_reading" });
+        this.scale.remove_listener();
     },
     measureWeight() {
-        this.env.proxy_queue.schedule(() => this.scale.action({ action: "read_once" }));
+        this.scale.action({ action: "read_once" });
     },
     /**
      * @override
      * Completely replace how the original _readScale works.
      */
-    _readScale() {
-        this.env.proxy_queue.schedule(async () => {
-            await this.scale.add_listener(this._onValueChange.bind(this));
-            await this.scale.action({ action: "read_once" });
-        });
+    async _readScale() {
+        await this.scale.add_listener(this._onValueChange.bind(this));
+        await this.scale.action({ action: "read_once" });
     },
     async _onValueChange(data) {
         if (data.status.status === "error") {

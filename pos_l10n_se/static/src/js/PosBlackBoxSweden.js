@@ -19,7 +19,7 @@ patch(PosGlobalState.prototype, "pos_l10n_se.PosGlobalState", {
         const result = this._super(...arguments);
         return this.useBlackBoxSweden() || result;
     },
-    async push_single_order(order, opts) {
+    async push_single_order(order) {
         const _super = this._super;
         if (this.useBlackBoxSweden() && order) {
             if (!order.receipt_type) {
@@ -47,7 +47,7 @@ patch(PosGlobalState.prototype, "pos_l10n_se.PosGlobalState", {
         }
     },
     async push_order_to_blackbox(order) {
-        const fdm = this.env.proxy.iot_device_proxies.fiscal_data_module;
+        const fdm = this.hardwareProxy.deviceProxies.fiscal_data_module;
         const data = {
             date: moment(order.creation_date).format("YYYYMMDDHHmm"),
             receipt_id: order.sequence_number.toString(),

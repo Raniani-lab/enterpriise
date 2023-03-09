@@ -6,13 +6,13 @@ import { patch } from "@web/core/utils/patch";
 patch(CustomerFacingDisplayButton.prototype, "pos_iot.CustomerFacingDisplayButton", {
     async onClickProxy() {
         const renderedHtml = await this.env.pos.render_html_for_customer_facing_display();
-        this.env.proxy.take_ownership_over_customer_screen(renderedHtml);
+        this.hardwareProxy.takeControlOfCustomerDisplay(renderedHtml);
     },
     _start() {
-        if (this.env.proxy.iot_device_proxies.display) {
-            this.env.proxy.iot_device_proxies.display.add_listener(this._checkOwner.bind(this));
+        if (this.hardwareProxy.deviceProxies.display) {
+            this.hardwareProxy.deviceProxies.display.add_listener(this._checkOwner.bind(this));
             setTimeout(() => {
-                this.env.proxy.iot_device_proxies.display.action({ action: "get_owner" });
+                this.hardwareProxy.deviceProxies.display.action({ action: "get_owner" });
             }, 1500);
         }
     },

@@ -57,6 +57,8 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
         tag_exe = self.env.ref('l10n_mx.tag_diot_exento')
         tag_ret = self.env.ref('l10n_mx.tag_diot_ret')
 
+        diot_tags = (tag_16 | tag_16_non_cre | tag_8 | tag_8_non_cre | tag_imp | tag_0 | tag_exe)
+
         raw_results_select_list = []
         lang = self.env.user.lang or get_lang(self.env).code
         if current_groupby == 'partner_id':
@@ -79,42 +81,72 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
                 NULL AS partner_nationality,
             ''')
 
-        raw_results_select_list += [
-            f'''
-                CASE
-                   WHEN tag.id = %s THEN account_move_line.debit
-                   ELSE 0
-                END AS {column_name},
-            '''
-            for column_name in ('paid_16', 'paid_16_non_cred', 'paid_8', 'paid_8_non_cred', 'importation_16', 'paid_0', 'exempt')
-        ]
-
+        tag_columns = ('paid_16', 'paid_16_non_cred', 'paid_8', 'paid_8_non_cred', 'importation_16', 'paid_0', 'exempt')
         tail_query, tail_params = report._get_engine_query_tail(offset, limit)
+
+        withholding_taxes = self.env['account.tax.repartition.line'].search([('tag_ids', 'in', tag_ret.id)]).tax_id
+        withholding_taxes_query = ""
+        withholding_taxes_params = []
+        if withholding_taxes:
+            withholding_taxes_query = f"""
+                UNION ALL
+
+                SELECT
+                    {f'account_move_line.{current_groupby}' if current_groupby else 'NULL'} AS grouping_key,
+                    {''.join(raw_results_select_list)}
+                    {', '.join(f'0 AS {column}' for column in tag_columns)},
+                    -account_move_line.balance AS withheld,
+                    0 AS refunds
+                FROM {tables}
+                JOIN res_partner AS partner ON partner.id = account_move_line.partner_id
+                JOIN res_country AS country ON country.id = partner.country_id
+                WHERE {where_clause}
+                AND tax_line_id IN %s
+            """
+            withholding_taxes_params = [*where_params, tuple(withholding_taxes.ids)]
+
+        diot_taxes = self.env['account.tax.repartition.line'].search([('tag_ids', 'in', diot_tags.ids)]).tax_id
+        diot_taxes_query = ""
+        diot_taxes_params = []
+        if diot_taxes:
+            diot_taxes_query = f"""
+                UNION ALL
+
+                SELECT
+                    {f'account_move_line.{current_groupby}' if current_groupby else 'NULL'} AS grouping_key,
+                    {''.join(raw_results_select_list)}
+                    {', '.join(f'0 AS {column}' for column in tag_columns)},
+                    0 AS withheld,
+                    account_move_line.credit AS refunds
+                FROM {tables}
+                JOIN res_partner AS partner ON partner.id = account_move_line.partner_id
+                JOIN res_country AS country ON country.id = partner.country_id
+                WHERE {where_clause}
+                AND tax_line_id IN %s
+                AND account_move_line.credit != 0.0
+            """
+            diot_taxes_params = [*where_params, tuple(diot_taxes.ids)]
+
         self._cr.execute(f"""
             WITH raw_results as (
                 SELECT
                     {f'account_move_line.{current_groupby}' if current_groupby else 'NULL'} AS grouping_key,
                     {''.join(raw_results_select_list)}
-                   CASE
-                        WHEN tag.id = %s
-                        THEN account_move_line.balance * -tax.amount / 100
-                        ELSE 0
-                   END AS withheld,
-                   CASE
-                        WHEN tag.id != %s
-                        THEN account_move_line.credit * tax.amount / 100
-                        ELSE 0
-                   END AS refunds
+                    {', '.join(f'CASE WHEN tag.id = %s THEN account_move_line.debit ELSE 0 END AS {column}' for column in tag_columns)},
+                    0 AS withheld,
+                    0 AS refunds
                 FROM {tables}
-                JOIN account_move AS move ON move.id = account_move_line.move_id
                 JOIN account_account_tag_account_move_line_rel AS tag_aml_rel ON account_move_line.id = tag_aml_rel.account_move_line_id
                 JOIN account_account_tag AS tag ON tag.id = tag_aml_rel.account_account_tag_id
-                JOIN account_move_line_account_tax_rel AS aml_tax_rel ON account_move_line.id = aml_tax_rel.account_move_line_id
-                JOIN account_tax AS tax ON tax.id = aml_tax_rel.account_tax_id
                 JOIN res_partner AS partner ON partner.id = account_move_line.partner_id
                 JOIN res_country AS country ON country.id = partner.country_id
                 WHERE {where_clause}
-                ORDER BY partner.name, account_move_line.date, account_move_line.id
+                AND tag.id IN %s
+                AND account_move_line.debit != 0.0
+
+                {diot_taxes_query}
+
+                {withholding_taxes_query}
             )
             SELECT
                raw_results.grouping_key AS grouping_key,
@@ -142,21 +174,17 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
                 raw_results.country_code,
                 raw_results.partner_nationality
            {tail_query}
-        """,
+            """,
             [
-                tag_16.id,
-                tag_16_non_cre.id,
-                tag_8.id,
-                tag_8_non_cre.id,
-                tag_imp.id,
-                tag_0.id,
-                tag_exe.id,
-                tag_ret.id,
-                tag_ret.id,
+                *(diot_tags.ids),
                 *where_params,
+                tuple(diot_tags.ids),
+                *diot_taxes_params,
+                *withholding_taxes_params,
                 *tail_params,
-            ],
+            ]
         )
+
         return self.env.cr.dictfetchall()
 
     def action_get_diot_txt(self, options):

@@ -317,6 +317,7 @@
                 <field name="account_depreciation_expense_id" optional="hide"/>
                 <field name="currency_id" groups="base.group_multi_currency" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="company_id" groups="!base.group_multi_company" invisible="1"/>
                 <field name="state"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
@@ -334,6 +335,7 @@
                 <field name="method"/>
                 <field name="method_number" string="Number of Depreciations"/>
                 <field name="method_period" string="Period length"/>
+                <field name="company_id" invisible="1"/>
                 <field name="state" invisible="1"/>
             </tree>
         </field>

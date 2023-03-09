@@ -141,7 +141,7 @@ class Tablet extends Component {
                     value: this.selectedStep.worksheet_url,
                     page: 1,
                 };
-            } else if (this.selectedStep.source_document === "operation" && this.data.operation !== undefined && this.selectedStep.worksheet_page) {
+            } else if (this.selectedStep.source_document !== "step" && this.data.operation !== undefined) {
                 if (this.data.operation.worksheet) {
                     return {
                         resModel: "mrp.routing.workcenter",

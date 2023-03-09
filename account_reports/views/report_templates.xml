@@ -306,11 +306,11 @@
                         </th>
                     </t>
 
-                    <th t-if="options.get('show_growth_comparison')" class="o_account_report_column_header" colspan="1" style="text-align: center">
+                    <th t-if="options.get('show_growth_comparison') and headers_val_first" class="o_account_report_column_header" colspan="1" style="text-align: center">
                         <span class="fa fa-percent"/>
                     </th>
 
-                    <th t-if="options['show_debug_column']" class="o_account_report_column_header" colspan="1" style="text-align: center">
+                    <th t-if="options['show_debug_column'] and headers_val_first" class="o_account_report_column_header" colspan="1" style="text-align: center">
                         <span class="fa fa-bug"/>
                     </th>
                 </tr>

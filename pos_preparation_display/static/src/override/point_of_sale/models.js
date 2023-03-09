@@ -119,4 +119,9 @@ patch(Order.prototype, "pos_preparation_display.Order", {
             return this._super(...arguments);
         }
     },
+    async submitOrder() {
+        const _super = this._super;
+        await this.pos.sendPreparationDisplayOrder();
+        _super(...arguments);
+    },
 });

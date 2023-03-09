@@ -1563,12 +1563,15 @@ class SaleOrder(models.Model):
             'date_end': self.end_date,
             'mail_notify_force_send': False,
             'no_new_invoice': True}}
-        _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
         if auto_commit:
             self.env.cr.commit()
-        invoice.with_context(email_context).message_post_with_template(
-                self.sale_order_template_id.invoice_mail_template_id.id, auto_commit=auto_commit)
-        invoice.is_move_sent = True
+        invoice_mail_template_id = self.sale_order_template_id.invoice_mail_template_id \
+            or self.env.ref('sale_subscription.mail_template_subscription_invoice', raise_if_not_found=False)
+        if invoice_mail_template_id:
+            _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
+            invoice.with_context(email_context).message_post_with_template(
+                    invoice_mail_template_id.id, auto_commit=auto_commit)
+            invoice.is_move_sent = True
 
     def _send_subscription_rating_mail(self, force_send=False):
         for subscription in self:

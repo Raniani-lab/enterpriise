@@ -591,7 +591,10 @@ class AccountOnlineLink(models.Model):
     def _success_link(self):
         self.ensure_one()
         self._log_information(state='connected')
-        self._fetch_accounts()
+        account_online_accounts = self._fetch_accounts()
+        if len(account_online_accounts) == 1:
+            account_online_accounts._assign_journal()
+            return self._fetch_transactions(accounts=account_online_accounts)
         return self._link_accounts_to_journals_action()
 
     def _success_updateCredentials(self):

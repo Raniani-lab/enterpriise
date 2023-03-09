@@ -125,5 +125,5 @@ class AccountJournal(models.Model):
         self.ensure_one()
         self._portal_ensure_token()
         template = self.env.ref('account_online_synchronization.email_template_sync_reminder')
-        template.send_mail(self.id)
-        self.message_post(body=_('Renewal mail sent to %s') % self.renewal_contact_email)
+        subtype = self.env.ref('account_online_synchronization.bank_sync_consent_renewal')
+        self.message_post_with_source(source_ref=template, subtype_id=subtype.id)

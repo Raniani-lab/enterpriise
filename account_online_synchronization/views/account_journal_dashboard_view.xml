@@ -21,17 +21,11 @@
                 <xpath expr='//div[@name="bank_journal_cta"]' position='inside'>
                     <t t-if="dashboard.bank_statements_source === 'online_sync'">
                         <t t-if="record.account_online_link_state.raw_value === 'connected'">
-                            <t t-set="test_danger_expiring_date" t-value="record.expiring_synchronization_due_day.value &lt;= 3"/>
-                            <t t-set="test_warning_expiring_date" t-value="record.expiring_synchronization_due_day.value &lt;= 7"/>
                             <a attrs="{'invisible': [('account_online_account_id', '=', False)]}" type="object"
                                 name="manual_sync" class="oe_inline" groups="account.group_account_manager">Fetch Transactions</a>
                             <br attrs="{'invisible': [('expiring_synchronization_date', '=', False)]}"/>
                             <span groups="account.group_account_manager" attrs="{'invisible': [('expiring_synchronization_date', '=', False)]}">
-                                <widget name="connected_until_widget"
-                                        t-att-formatted_date="luxon.DateTime.fromISO(record.expiring_synchronization_date.raw_value).toFormat('MMM dd')"
-                                        t-att-styling="test_warning_expiring_date ? test_danger_expiring_date ? 'text-danger' : 'text-warning' : ''"
-                                        t-att-journal_id="record.id.raw_value"
-                                        t-att-warning="test_danger_expiring_date"/>
+                                <widget name="connected_until_widget"/>
                             </span>
                         </t>
                         <t t-elif="record.account_online_link_state.raw_value == 'error' || (record.expiring_synchronization_date.raw_value &amp;&amp; record.expiring_synchronization_due_day.value &lt;= 0)">

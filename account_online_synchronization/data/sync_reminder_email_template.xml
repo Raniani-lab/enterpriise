@@ -3,7 +3,7 @@
     <data>
         <record id="email_template_sync_reminder" model="mail.template">
             <field name="name">Bank connection expiration reminder</field>
-            <field name="subject">Your bank connection expires in {{ object.expiring_synchronization_due_day }} days</field>
+            <field name="subject">Your bank connection is expiring soon</field>
             <field name="email_from">{{ object.company_id.email_formatted or user.email_formatted }}</field>
             <field name="email_to">{{ object.renewal_contact_email }}</field>
             <field name="model_id" ref="account_online_synchronization.model_account_journal"/>
@@ -22,7 +22,7 @@
                                                     <td valign="top" style="font-size: 13px;">
                                                         <div>
                                                             Hello,<br /><br />
-                                                            The connection between <b><a t-att-href='object.get_base_url()' t-out="object.get_base_url() or ''">https://yourcompany.odoo.com</a></b> and <t t-out="object.account_online_link_id.name or ''">Belfius</t> <t t-if="object.expiring_synchronization_due_day">expired.</t><t t-else="">expires in <t t-out="object.expiring_synchronization_due_day or ''">10</t> days.</t><br/>
+                                                            The connection between <b><a t-att-href='object.get_base_url()' t-out="object.get_base_url() or ''">https://yourcompany.odoo.com</a></b> and <t t-out="object.account_online_link_id.name or ''">Belfius</t> <t t-if="not object.expiring_synchronization_due_day">expired.</t><t t-else="">expires in <t t-out="object.expiring_synchronization_due_day or ''">10</t> days.</t><br/>
                                                             <div style="margin: 16px 0px 16px 0px;">
                                                                 <a t-attf-href="{{ website_url }}/renew_consent/{{ object.id }}?access_token={{object.access_token}}"
                                                                    style="background-color: #4caf50; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">

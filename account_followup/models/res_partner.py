@@ -206,7 +206,7 @@ class ResPartner(models.Model):
             ('reconciled', '=', False),
             ('account_id.deprecated', '=', False),
             ('account_id.account_type', '=', 'asset_receivable'),
-            ('move_id.state', '=', 'posted'),
+            ('parent_state', '=', 'posted'),
             ('partner_id', 'in', self.ids),
             ('company_id', '=', self.env.company.id),
         ]

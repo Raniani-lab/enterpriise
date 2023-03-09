@@ -155,14 +155,16 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
                 self.assertEqual(invoice_line.price_total, extract_response['results'][0]['invoice_lines'][i]['total']['selected_value']['content'])
 
     def test_included_default_tax(self):
-        # test that a default purchase included tax is not removed from the lines even if it's not detected
+        # test that a tax included coming from the account is not removed from the lines even if it's not detected
         tax_10_included = self.env['account.tax'].create({
             'name': 'Tax 10% included',
             'amount': 10,
             'type_tax_use': 'purchase',
             'price_include': True,
         })
-        self.env.company.account_purchase_tax_id = tax_10_included
+        self.company_data['default_account_expense'].write({
+            'tax_ids': tax_10_included
+        })
 
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_result_success_response()
@@ -185,7 +187,9 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             'type_tax_use': 'purchase',
             'price_include': True,
         })
-        self.env.company.account_purchase_tax_id = tax_15_included
+        self.company_data['default_account_expense'].write({
+            'tax_ids': tax_15_included
+        })
 
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_result_success_response()

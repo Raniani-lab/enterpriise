@@ -485,8 +485,9 @@ class AccountMove(models.Model):
                 if len(taxes_by_document) != 0:
                     taxes_found |= max(taxes_by_document, key=lambda tax: len(tax[1]))[0]
                 else:
-                    if self.company_id.account_purchase_tax_id and self.company_id.account_purchase_tax_id.amount == taxes and self.company_id.account_purchase_tax_id.amount_type == taxes_type:
-                        taxes_found |= self.company_id.account_purchase_tax_id
+                    purchase_tax = self.journal_id.default_account_id.tax_ids.filtered(lambda tax: tax.type_tax_use == 'purchase')
+                    if len(purchase_tax) == 1 and purchase_tax.amount == taxes and purchase_tax.amount_type == taxes_type:
+                        taxes_found |= purchase_tax
                     else:
                         taxes_records = self.env['account.tax'].search([
                             ('amount', '=', taxes),

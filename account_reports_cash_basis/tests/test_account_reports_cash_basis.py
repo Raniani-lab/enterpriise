@@ -168,7 +168,7 @@ class TestAccountReports(TestAccountReportsCommon):
         payment_date = fields.Date.from_string('2010-01-01')
         invoice_date = fields.Date.from_string('2011-01-01')
 
-        invoice = self.init_invoice('out_invoice', amounts=[100.0], partner=self.partner_a, invoice_date=invoice_date, post=True)
+        invoice = self.init_invoice('out_invoice', amounts=[100.0], taxes=self.env.company.account_sale_tax_id, partner=self.partner_a, invoice_date=invoice_date, post=True)
         self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
             'payment_date': payment_date,
         })._create_payments()

@@ -8,7 +8,6 @@ import { formView } from "@web/views/form/form_view";
 class WorksheetValidationController extends FormController {
     setup() {
         super.setup();
-        this.action = useService("action");
         this.orm = useService("orm");
     }
 
@@ -20,7 +19,9 @@ class WorksheetValidationController extends FormController {
                 [record.data.x_quality_check_id[0]],
                 { context: record.context }
             );
-            await this.action.doAction(action);
+            if (action) {
+                await this.model.actionService.doAction(action);
+            }
         }
     }
 

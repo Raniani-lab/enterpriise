@@ -1728,14 +1728,16 @@ class SaleOrder(models.Model):
         auto_commit = not bool(config['test_enable'] or config['test_file'])
         if auto_commit:
             self.env.cr.commit()
-        _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
-        if self.sale_order_template_id.invoice_mail_template_id:
+        invoice_mail_template_id = self.sale_order_template_id.invoice_mail_template_id \
+            or self.env.ref('sale_subscription.mail_template_subscription_invoice', raise_if_not_found=False)
+        if invoice_mail_template_id:
+            _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
             invoice.with_context(email_context).message_post_with_source(
-                self.sale_order_template_id.invoice_mail_template_id,
+                invoice_mail_template_id,
                 force_send=False,
                 subtype_xmlid='mail.mt_comment',
             )
-        invoice.is_move_sent = True
+            invoice.is_move_sent = True
 
     def _reconcile_and_assign_token(self, tx):
         """ Callback method to make the reconciliation and assign the payment token.

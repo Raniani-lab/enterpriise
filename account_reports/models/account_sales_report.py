@@ -55,7 +55,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
                                 or None]
                     partner_values[col_grp_key]['sales_type_code'] = ', '.join(set(partner_values[col_grp_key]['sales_type_code']))
                 if has_found_a_line:
-                    lines.append((0, self._get_report_line_partner(report, options, partner, partner_values)))
+                    lines.append((0, self._get_report_line_partner(report, options, partner, partner_values, markup=tax_ec_category)))
 
         # Report total line.
         lines.append((0, self._get_report_line_total(report, options, totals_by_column_group)))
@@ -116,7 +116,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         ]
         options['ec_tax_filter_selection'] = (previous_options or {}).get('ec_tax_filter_selection', default_tax_filter)
 
-    def _get_report_line_partner(self, report, options, partner, partner_values):
+    def _get_report_line_partner(self, report, options, partner, partner_values, markup=''):
         """
         Convert the partner values to a report line.
         :param dict options: Report options
@@ -135,7 +135,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
             }) # value is not None => allows to avoid the "0.0" or None values but only those
 
         return {
-            'id': report._get_generic_line_id('res.partner', partner.id),
+            'id': report._get_generic_line_id('res.partner', partner.id, markup=markup),
             'name': partner is not None and (partner.name or '')[:128] or _('Unknown Partner'),
             'columns': column_values,
             'level': 2,
@@ -277,7 +277,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
 
 
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
-            tables, where_clause, where_params = report._query_get(column_group_options, 'normal')
+            tables, where_clause, where_params = report._query_get(column_group_options, 'strict_range')
             params.append(column_group_key)
             params += where_params
             if allowed_ids:

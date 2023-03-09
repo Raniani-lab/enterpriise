@@ -267,22 +267,26 @@
             width: 100%;
             grid-template-columns: 1fr;
         }
+        .o_input,
+        .o_field_property_tag,
+        .o_field_property_many2one_value:not(:empty),
+        .o_field_property_many2many_value:not(:empty) {
+            border-bottom: $input-border-width solid $o-gray-300;
+        }
+        .o_input:focus,
+        .o_field_property_tag:focus-within,
+        .o_field_property_many2one_value:not(:empty):focus-within,
+        .o_field_property_many2many_value:not(:empty):focus-within {
+            border-bottom: $input-border-width solid $o-brand-primary;
+        }
+        .o_input_dropdown {
+            input {
+                border: 0 !important;
+            }
+        }
         .o_property_field {
-            .o_property_field_value {
-                line-height: 1;
-                margin-bottom: 0.5rem;
-                .o_input {
-                     border-bottom-color: #ccc !important;
-                }
-                .o_input_dropdown {
-                    .dropdown {
-                        padding-right: 10px;
-                    }
-                }
-            }
-            .o_field_property_label {
-                line-height: 1;
-            }
+            display: block !important;
+            margin-bottom: 0 !important;
         }
         .o_field_property_add {
             margin-left: 0 !important;

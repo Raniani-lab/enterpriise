@@ -52,7 +52,7 @@ class SaleOrder(models.Model):
             if mapped_data.get(order.id):
                 order.planning_initial_date = mapped_data[order.id].date()
             else:
-                order.planning_initial_date = False
+                order.planning_initial_date = fields.Date.today()
 
     # -----------------------------------------------------------------
     # Action methods

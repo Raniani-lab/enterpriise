@@ -30,6 +30,7 @@
 
         <record id="fsm_project" model="project.project">
             <field name="name">Field Service</field>
+            <field name="user_id" ref="base.user_admin"/>
             <field name="is_fsm" eval="True"/>
             <field name="allow_task_dependencies" eval="False"/>
             <field name="allow_timesheets" eval="True"/>

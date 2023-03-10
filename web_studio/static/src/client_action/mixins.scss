@@ -113,7 +113,7 @@
   }
 }
 
-@mixin o-web-studio-sidebar-btn-link($color: $o-enterprise-primary-color) {
+@mixin o-web-studio-sidebar-btn-link($color: $o-enterprise-action-color) {
   color: $color;
   &:hover {
     color: darken($color, 5%);

@@ -140,7 +140,7 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
         .o_social_stream_post_published_date {
             color: lighten($o-main-text-color, 10%);
             &:hover {
-                color: $o-enterprise-primary-color;
+                color: $o-enterprise-action-color;
             }
         }
     }
@@ -407,7 +407,7 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
     .o_social_comment_published_date, .o_social_post_published_date {
         color: lighten($o-main-text-color, 10%);
         &:hover {
-            color: $o-enterprise-primary-color;
+            color: $o-enterprise-action-color;
         }
     }
 

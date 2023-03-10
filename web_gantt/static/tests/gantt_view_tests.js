@@ -627,7 +627,7 @@ QUnit.test("multi-level grouped gantt rendering", async (assert) => {
     assert.ok(
         [...target.querySelectorAll(".o_gantt_group_pill .o_gantt_consolidated_pill")].every(
             (el) => {
-                return getComputedStyle(el).backgroundColor === "rgb(1, 126, 132)";
+                return getComputedStyle(el).backgroundColor === "rgb(113, 75, 103)";
             }
         )
     );
@@ -3459,9 +3459,9 @@ QUnit.test("Today style of group rows", async (assert) => {
     assert.hasClass(cell4, "o_group_open");
     let cell4ComputedBackGround = window.getComputedStyle(cell4).background;
     assert.ok(
-        cell4ComputedBackGround.includes("linear-gradient(rgb(246, 247, 250), rgb(230, 232, 241))")
+        cell4ComputedBackGround.includes("linear-gradient(rgb(249, 250, 251), rgb(234, 237, 241))")
     );
-    assert.notOk(cell4ComputedBackGround.includes("rgb(251, 249, 243)"));
+    assert.notOk(cell4ComputedBackGround.includes("rgb(252, 250, 243)"));
 
     // Today group cell: open
     let cell5 = getCell(1, 5, { ignoreHoverableClass: true });
@@ -3469,9 +3469,9 @@ QUnit.test("Today style of group rows", async (assert) => {
     assert.hasClass(cell5, "o_group_open");
     let cell5ComputedBackGround = window.getComputedStyle(cell5).background;
     assert.ok(
-        cell5ComputedBackGround.includes("linear-gradient(rgb(246, 247, 250), rgb(230, 232, 241))")
+        cell5ComputedBackGround.includes("linear-gradient(rgb(249, 250, 251), rgb(234, 237, 241))")
     );
-    assert.notOk(cell5ComputedBackGround.includes("rgb(251, 249, 243)"));
+    assert.notOk(cell5ComputedBackGround.includes("rgb(252, 250, 243)"));
 
     await click(target.querySelector(SELECTORS.group)); // fold group
 
@@ -3482,9 +3482,9 @@ QUnit.test("Today style of group rows", async (assert) => {
     assert.doesNotHaveClass(cell4, "o_group_open");
     cell4ComputedBackGround = window.getComputedStyle(cell4).background;
     assert.ok(
-        cell4ComputedBackGround.includes("linear-gradient(rgb(230, 232, 241), rgb(246, 247, 250))")
+        cell4ComputedBackGround.includes("linear-gradient(rgb(234, 237, 241), rgb(249, 250, 251))")
     );
-    assert.notOk(cell4ComputedBackGround.includes("rgb(251, 249, 243)"));
+    assert.notOk(cell4ComputedBackGround.includes("rgb(252, 250, 243)"));
 
     // Today group cell: closed
     cell5 = getCell(1, 5, { ignoreHoverableClass: true });
@@ -3492,9 +3492,9 @@ QUnit.test("Today style of group rows", async (assert) => {
     assert.doesNotHaveClass(cell5, "o_group_open");
     cell5ComputedBackGround = window.getComputedStyle(cell5).background;
     assert.notOk(
-        cell5ComputedBackGround.includes("linear-gradient(rgb(230, 232, 241), rgb(246, 247, 250))")
+        cell5ComputedBackGround.includes("linear-gradient(rgb(234, 237, 241), rgb(249, 250, 251))")
     );
-    assert.ok(cell5ComputedBackGround.includes("rgb(251, 249, 243)"));
+    assert.ok(cell5ComputedBackGround.includes("rgb(252, 250, 243)"));
 });
 
 QUnit.test("style without unavailabilities", async (assert) => {

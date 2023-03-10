@@ -37,14 +37,7 @@ class MrpWorkorder(models.Model):
             if not wo.workcenter_id.allow_employee:
                 wo_ids_without_employees.add(wo.id)
                 continue
-            now = datetime.now()
-            loss_type_times = defaultdict(lambda: self.env['mrp.workcenter.productivity'])
-            for time in wo.time_ids:
-                loss_type_times[time.loss_id.loss_type] |= time
-            duration = 0
-            for dummy, times in loss_type_times.items():
-                duration += self._intervals_duration([(t.date_start, t.date_end or now, t) for t in times])
-            wo.duration = duration
+            wo.duration = wo.get_duration()
         return super(MrpWorkorder, self.env['mrp.workorder'].browse(wo_ids_without_employees))._compute_duration()
 
     @api.depends('employee_ids')
@@ -146,12 +139,38 @@ class MrpWorkorder(models.Model):
             duration += timer.loss_id._convert_to_duration(date_start, date_stop, timer.workcenter_id)
         return duration
 
+    def get_duration(self):
+        self.ensure_one()
+        if self.workcenter_id.allow_employee:
+            now = datetime.now()
+            loss_type_times = defaultdict(lambda: self.env['mrp.workcenter.productivity'])
+            for time in self.time_ids:
+                loss_type_times[time.loss_id.loss_type] |= time
+            duration = 0
+            for dummy, times in loss_type_times.items():
+                duration += self._intervals_duration([(t.date_start, t.date_end or now, t) for t in times])
+            return duration
+        return self.duration + super().get_working_duration()
+
     def get_working_duration(self):
         self.ensure_one()
         if self.workcenter_id.allow_employee:
             now = datetime.now()
             return self._intervals_duration([(t.date_start, now, t) for t in self.time_ids if not t.date_end])
         return super().get_working_duration()
+
+    def get_productive_duration(self):
+        self.ensure_one()
+        if self.workcenter_id.allow_employee:
+            now = datetime.now()
+            productive_times = []
+            for time in self.time_ids:
+                if time.loss_id.loss_type == "productive":
+                    productive_times.append(time)
+            duration = 0
+            duration += self._intervals_duration([(t.date_start, t.date_end or now, t) for t in productive_times])
+            return duration
+        return super().get_productive_duration()
 
     def _cal_cost(self):
         return super()._cal_cost() + sum(self.time_ids.mapped('total_cost'))

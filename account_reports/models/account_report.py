@@ -4032,6 +4032,7 @@ class AccountReport(models.Model):
             'has_more': False,
         }
 
+    @api.model
     def _get_prefix_groups_matched_prefix_from_line_id(self, line_dict_id):
         matched_prefix = ''
         for markup, dummy1, dummy2 in self._parse_line_id(line_dict_id):

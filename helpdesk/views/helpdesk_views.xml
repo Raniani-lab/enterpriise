@@ -625,7 +625,7 @@
                             </div>
                             <div class="oe_kanban_content">
                                 <div>
-                                    <strong><field name="name"/> (#<field name="ticket_ref"/>)</strong>
+                                    <strong class="o_kanban_record_title"><field name="name"/> (#<field name="ticket_ref"/>)</strong>
                                 </div>
                                 <div>
                                     <field name="commercial_partner_id"/>

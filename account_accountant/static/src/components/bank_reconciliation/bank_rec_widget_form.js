@@ -29,7 +29,7 @@ export class BankRecWidgetFormController extends FormController {
         });
 
         // Called at each onchange.
-        this.model.addEventListener("update", () => this.onRecordChanged());
+        this.model.bus.addEventListener("update", () => this.onRecordChanged());
 
         // Allow to disable the buttons. It needs to be handled manually since the form is never saved.
         this.disabledButtons = [];

@@ -100,7 +100,7 @@ export class BankRecKanbanController extends KanbanController {
         });
 
         // Mount the first available statement line when the model is fully loaded.
-        this.model.addEventListener(
+        this.model.bus.addEventListener(
             "update",
             () => {
                 const propsState = this.props.state || {};
@@ -131,7 +131,7 @@ export class BankRecKanbanController extends KanbanController {
         this.env.searchModel.addEventListener(
             "update",
             () => {
-                this.model.addEventListener(
+                this.model.bus.addEventListener(
                     "update",
                     () => {
                         // keep the current selected line if it's still in the list of st lines

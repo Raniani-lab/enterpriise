@@ -2095,3 +2095,96 @@ class TestAccountAsset(TestAccountReportsCommon):
             'credit': 0,
             'account_id': self.env.company.loss_account_id.id,
         }])
+
+    def test_depreciation_schedule_prefix_groups(self):
+        for i in range(1, 3):
+            asset = self.env['account.asset'].create({
+                'method_period': '12',
+                'method_number': 4,
+                'name': f"Asset {i}",
+                'original_value': i * 100.0,
+                'asset_type': 'purchase',
+                'acquisition_date': fields.Date.today() - relativedelta(years=3),
+                'account_asset_id': self.company_data['default_account_assets'].id,
+                'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
+                'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+                'journal_id': self.company_data['default_journal_misc'].id,
+                'prorata_computation_type': 'none',
+            })
+            asset.validate()
+
+        self.env['account.move']._autopost_draft_entries()
+
+        self.env.company.totals_below_sections = False
+        report = self.env.ref('account_asset.assets_report')
+
+        # No prefix group, no group by account
+        options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': False})
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            report._get_lines(options),
+            #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
+            [    0,                         5,            6,        7,       8,          9,                  10,             11,            12,               13],
+            [
+                ('truck',                   10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
+                ('Asset 1',                   100,       '',       '',         100,        75,               '',             '',              75,               25,),
+                ('Asset 2',                   200,       '',       '',         200,       150,               '',             '',             150,               50,),
+                ('Total',                   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+            ],
+            options,
+        )
+
+        # No prefix group, group by account
+        options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': True})
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            report._get_lines(options),
+            #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
+            [    0,                         5,            6,        7,       8,          9,                  10,             11,            12,               13],
+            [
+                ('101000 Current Assets',   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+                ('truck',                   10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
+                ('Asset 1',                   100,       '',       '',         100,        75,               '',             '',              75,               25,),
+                ('Asset 2',                   200,       '',       '',         200,       150,               '',             '',             150,               50,),
+                ('Total',                   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+            ],
+            options,
+        )
+
+        self.env['ir.config_parameter'].set_param('account_reports.assets_report.groupby_prefix_groups_threshold', 3)
+        # Prefix group, no group by account
+        options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': False, 'unfold_all': True})
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            report._get_lines(options),
+            #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
+            [    0,                         5,            6,        7,       8,          9,                  10,             11,            12,               13],
+            [
+                ('A (2 lines)',               300,       '',       '',         300,       225,               '',             '',             225,               75,),
+                ('Asset 1',                   100,       '',       '',         100,        75,               '',             '',              75,               25,),
+                ('Asset 2',                   200,       '',       '',         200,       150,               '',             '',             150,               50,),
+                ('T (1 line)',              10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
+                ('truck',                   10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
+                ('Total',                   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+            ],
+            options,
+        )
+
+        # Prefix group, group by account
+        options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': True, 'unfold_all': True})
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            report._get_lines(options),
+            #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
+            [    0,                         5,            6,        7,       8,          9,                  10,             11,            12,               13],
+            [
+                ('101000 Current Assets',   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+                ('A (2 lines)',               300,       '',       '',         300,       225,               '',             '',             225,               75,),
+                ('Asset 1',                   100,       '',       '',         100,        75,               '',             '',              75,               25,),
+                ('Asset 2',                   200,       '',       '',         200,       150,               '',             '',             150,               50,),
+                ('T (1 line)',              10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
+                ('truck',                   10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
+                ('Total',                   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+            ],
+            options,
+        )

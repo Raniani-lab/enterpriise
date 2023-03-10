@@ -34,6 +34,7 @@
         'web.assets_backend': [
             'documents_spreadsheet/static/src/bundle/**/*.scss',
             'documents_spreadsheet/static/src/documents_view/**/*',
+            'documents_spreadsheet/static/src/spreadsheet_clone_xlsx_dialog/**/*',
             'documents_spreadsheet/static/src/spreadsheet_selector_dialog/**/*',
             'documents_spreadsheet/static/src/spreadsheet_template/**/*',
             'documents_spreadsheet/static/src/helpers.js',

@@ -3,6 +3,7 @@
 import { TemplateDialog } from "@documents_spreadsheet/spreadsheet_template/spreadsheet_template_dialog";
 import { useService } from "@web/core/utils/hooks";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { SpreadsheetCloneXlsxDialog } from "@documents_spreadsheet/spreadsheet_clone_xlsx_dialog/spreadsheet_clone_xlsx_dialog";
 import { _t } from "@web/core/l10n/translation";
 
 import { XLSX_MIME_TYPE } from "@documents_spreadsheet/helpers";
@@ -37,25 +38,33 @@ export const DocumentsSpreadsheetControllerMixin = {
                 },
             });
         } else if (documents[0].data.mimetype === XLSX_MIME_TYPE) {
-            this.dialogService.add(ConfirmationDialog, {
-                body: _t(
-                    "Your file is about to be saved as an Odoo Spreadsheet to allow for edition."
-                ),
-                confirm: async () => {
-                    const spreadsheetId = await this.orm.call(
-                        "documents.document",
-                        "clone_xlsx_into_spreadsheet",
-                        [documents[0].resId]
-                    );
-                    this.action.doAction({
-                        type: "ir.actions.client",
-                        tag: "action_open_spreadsheet",
-                        params: {
-                            spreadsheet_id: spreadsheetId,
-                        },
-                    });
-                },
-            });
+            if (!documents[0].data.active) {
+                this.dialogService.add(ConfirmationDialog, {
+                    title: _t("Restore file?"),
+                    body: _t(
+                        "Spreadsheet files cannot be handled from the Trash. Would you like to restore this document?"
+                    ),
+                    cancel: () => {},
+                    confirm: async () => {
+                        await this.orm.call("documents.document", "action_unarchive", [
+                            documents[0].resId,
+                        ]);
+                        toggleDomainFilterIfEnabled(
+                            this.env.searchModel,
+                            "[('active', '=', False)]"
+                        );
+                    },
+                    confirmLabel: _t("Restore"),
+                });
+            } else {
+                this.dialogService.add(SpreadsheetCloneXlsxDialog, {
+                    title: _t("Format issue"),
+                    cancel: () => {},
+                    cancelLabel: _t("Discard"),
+                    documentId: documents[0].resId,
+                    confirmLabel: _t("Open with Odoo Spreadsheet"),
+                });
+            }
         }
     },
 
@@ -66,3 +75,12 @@ export const DocumentsSpreadsheetControllerMixin = {
         });
     },
 };
+
+function toggleDomainFilterIfEnabled(searchModel, domain) {
+    for (const { searchItemId } of searchModel.query) {
+        if (searchModel.searchItems[searchItemId].domain === domain) {
+            searchModel.toggleSearchItem(searchItemId);
+            return;
+        }
+    }
+}

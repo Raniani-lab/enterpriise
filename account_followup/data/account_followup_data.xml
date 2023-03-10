@@ -18,15 +18,23 @@
                         <br />
                     </p>
                     <p>
-                        Exception made if there was a mistake of ours, it seems that an amount of <t t-out="format_amount(object.total_overdue, object.currency_id) or ''"/>
-                        stays unpaid. Please, take appropriate measures in order to carry out this payment in the next 8 days.
+                        It has come to our attention that you have an outstanding balance of <t t-out="format_amount(object.total_overdue, object.currency_id) or ''"/>
+                        <br />
                     </p>
                     <p>
-                        Would your payment have been carried out after this mail was sent, please ignore this message.
-                        Do not hesitate to contact our accounting department.
+                        We kindly request that you take necessary action to settle this amount within the next 8 days.
                     </p>
                     <p>
-                        Best Regards,
+                        If you have already made the payment after receiving this message, please disregard it.
+                        Our accounting department is available if you require any assistance or have any questions.
+                        <br />
+                    </p>
+                    <p>
+                        Thank you for your cooperation.
+                        <br />
+                    </p>
+                    <p>
+                        Sincerely,
                         <t t-if="not is_html_empty(object._get_followup_responsible().signature)">
                             <br />
                             <t t-out="object._get_followup_responsible().signature"/>

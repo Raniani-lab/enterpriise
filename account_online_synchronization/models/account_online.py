@@ -126,7 +126,7 @@ class AccountOnlineLink(models.Model):
             rec.next_refresh = self.env['ir.cron'].sudo().search([('id', '=', self.env.ref('account_online_synchronization.online_sync_cron').id)], limit=1).nextcall
 
     account_online_account_ids = fields.One2many('account.online.account', 'account_online_link_id')
-    last_refresh = fields.Datetime(readonly=True, default=fields.Datetime.now())
+    last_refresh = fields.Datetime(readonly=True, default=fields.Datetime.now)
     next_refresh = fields.Datetime("Next synchronization", compute='_compute_next_synchronization')
     state = fields.Selection([('connected', 'Connected'), ('error', 'Error'), ('disconnected', 'Not Connected')],
                              default='disconnected', tracking=True, required=True, readonly=True)

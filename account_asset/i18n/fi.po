@@ -539,7 +539,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr ""
+msgstr "Varojen/tulojen kirjaaminen"
 
 #. module: account_asset
 #. odoo-python

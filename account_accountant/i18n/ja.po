@@ -401,7 +401,7 @@ msgstr "銀行明細.pdf"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "一つの明細書明細の銀行勘定調整ウィジェット"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -698,7 +698,7 @@ msgstr ""
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Exchange Difference: %s"
-msgstr ""
+msgstr "為替差: %s"
 
 #. module: account_accountant
 #. odoo-javascript

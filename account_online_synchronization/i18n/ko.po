@@ -168,7 +168,7 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "단일 명세서 내역에 대한 은행 조정 위젯"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
@@ -509,22 +509,22 @@ msgstr "마지막 동기화"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Link Account to Journal"
-msgstr ""
+msgstr "분개장에 계정 연결"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
 msgid "Link account to journal"
-msgstr ""
+msgstr "분개장에 계정 연결"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_link_journal
 msgid "Link list of bank accounts to journals"
-msgstr ""
+msgstr "분개장에 은행 계좌 목록 연결"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_link_journal_line
 msgid "Link one bank account to a journal"
-msgstr ""
+msgstr "분개장에 하나의 은행 계좌를 연결"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_main_attachment_id
@@ -636,7 +636,7 @@ msgstr "온라인 식별자"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__next_link_synchronization
 msgid "Online Link Next synchronization"
-msgstr ""
+msgstr "온라인 링크 다음 동기화"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__online_partner_information
@@ -656,7 +656,7 @@ msgstr "온라인 동기화 실행"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__online_transaction_identifier
 msgid "Online Transaction Identifier"
-msgstr ""
+msgstr "온라인 거래 식별자"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_bank_statement.py:0
@@ -668,7 +668,7 @@ msgstr "열린 명세서 : 최초 동기화"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Please reconnect your online account."
-msgstr ""
+msgstr "온라인 계정을 다시 연결하세요."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
@@ -765,7 +765,7 @@ msgstr ""
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
 msgid "There is no new bank account to link."
-msgstr ""
+msgstr "연결할 새 은행 계좌가 없습니다."
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
@@ -792,7 +792,7 @@ msgstr "API연결할 토큰"
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__refresh_token
 msgid "Token used to sign API request, Never disclose it"
-msgstr ""
+msgstr "API 요청에 서명하는 데 사용되는 토큰으로, 절대 다른 사람에게 알려주지 마십시오"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__transactions
@@ -828,14 +828,14 @@ msgstr "웹사이트 대화 이력"
 #: code:addons/account_online_synchronization/wizard/account_link_journal_wizard.py:0
 #, python-format
 msgid "You can not link two accounts to the same journal."
-msgstr ""
+msgstr "두 계정을 같은 분개장으로 연결할 수 없습니다"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "You cannot have two journals associated with the same Online Account."
-msgstr ""
+msgstr "동일한 온라인 계정으로는 두 개의 분개장을 연결시킬 수 없습니다."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
@@ -843,6 +843,8 @@ msgid ""
 "bank account(s).<br/>\n"
 "                            Let's associate each one with an accounting journal."
 msgstr ""
+"은행 계좌.<br/>\n"
+"                            각각을 회계 분개장에 연결시킵니다."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync

@@ -95,7 +95,7 @@ msgid ""
 "<span class=\"o_stat_text\">Pass:</span>\n"
 "                        <span class=\"o_stat_text\">Fail:</span>"
 msgstr ""
-"<span class=\"o_stat_text\">Succès:</span>\n"
+"<span class=\"o_stat_text\">Réussite:</span>\n"
 "                        Échec:</span>"
 
 #. module: quality_control
@@ -529,7 +529,7 @@ msgstr "Nom du lot/numéro de série"
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.quality_control_menu_traceability
 msgid "Lots/Serial Numbers"
-msgstr "Numéros de lots/séries"
+msgstr "Lots/Numéros de série"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__tolerance_max
@@ -557,7 +557,7 @@ msgstr "Mesurer la réussite"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid "Message If Failure"
-msgstr "Message en cas de défaillance"
+msgstr "Message en cas d'échec"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__tolerance_min
@@ -919,7 +919,7 @@ msgstr "Qté de points de controle qualité"
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_point_action
 msgid "Quality Control Points"
-msgstr "Points de contrôle de la qualité"
+msgstr "Points de contrôle qualité"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_product_product__quality_fail_qty
@@ -936,7 +936,7 @@ msgstr "Vue d'ensemble qualité"
 #: model:ir.model.fields,field_description:quality_control.field_product_product__quality_pass_qty
 #: model:ir.model.fields,field_description:quality_control.field_product_template__quality_pass_qty
 msgid "Quality Pass Qty"
-msgstr "Qté de succès du contrôle qualité"
+msgstr "Qté de réussite du contrôle qualité"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.product_product_form_view_quality_control

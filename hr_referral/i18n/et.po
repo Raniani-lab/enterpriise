@@ -129,7 +129,7 @@ msgid ""
 "A new alert has been added to the Referrals app! Check your <a "
 "href=%(url)s>dashboard</a> now!"
 msgstr ""
-"Uus teavitus on lisatud Referrals rakendusse! Kontrolli enda <a "
+"Uus teavitus on lisatud Soovitused moodulisse! Kontrolli enda <a "
 "href=%(url)s>töölauda</a> kohe!"
 
 #. module: hr_referral
@@ -166,7 +166,7 @@ msgstr "Tegevustüübi ikoon"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__name
 msgid "Alert"
-msgstr "Hoiatus"
+msgstr "Teavitus"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_alert
@@ -177,7 +177,7 @@ msgstr "Teavitus Referral rakenduses"
 #: model:ir.actions.act_window,name:hr_referral.action_hr_referral_alert_configuration
 #: model:ir.ui.menu,name:hr_referral.menu_hr_referral_alert_configuration
 msgid "Alerts"
-msgstr "Hoiatused"
+msgstr "Teavitused"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_recruitment_stage__points
@@ -327,7 +327,7 @@ msgstr "Kulu"
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.action_hr_referral_alert_configuration
 msgid "Create new alerts"
-msgstr "Loo uusi hoiatusi"
+msgstr "Loo uusi teavitusi"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__create_uid
@@ -393,8 +393,8 @@ msgid ""
 "must select Front, it will be placed in the front of the dashboard, above "
 "superhero."
 msgstr ""
-"Määrake sõbra asukoht. Kui see on väike sõber nagu koer, peate valima Front,"
-" see asetatakse armatuurlaua ette superkangelase kohale."
+"Määrake sõbra asukoht. Kui see on näiteks väike sõber koer, peate valima EES"
+" (front), sellisel juhul kuvatakse sõbra kujutis Töölaual Teie ees."
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__department_id
@@ -626,8 +626,8 @@ msgid ""
 "Hello,<br><br>There are some amazing job offers in my company! Have a look, "
 "they  can be interesting for you<br><a href=\"%s\">See Job Offers</a>"
 msgstr ""
-"Tere!,<br><br>Meie ettevõttes on suurepäraseid tööpakkumisi. Tutvuge nendega"
-"  , äkki mõni pakkumine huvitab Teid<br><a href=\"%s\">Tutvuge "
+"Tere!<br><br>Meie ettevõttes on suurepäraseid tööpakkumisi. Tutvuge nendega,"
+" ning äkki mõni pakkumine huvitab Teid<br><a href=\"%s\">Tutvuge "
 "pakkumistega</a>"
 
 #. module: hr_referral
@@ -637,8 +637,9 @@ msgid ""
 "Hello,<br><br>There is an amazing job offer for %s in my company! It will be"
 " a fit for you<br><a href=\"%s\">See Job Offer</a>"
 msgstr ""
-"Tere!<br><br>Meie ettevõttes on %s suurepärane tööpakkumine! See sobib "
-"Teile<br><a href=\"%s\">Vaadake tööpakkumist</a>"
+"Tere!<br><br>Meie ettevõttes on saadaval suurepärane tööpakkumine "
+"ametikohale %s! See kindlasti meeldib sulle!<br><a href=\"%s\">Vaata "
+"tööpakkumist</a>"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_applicant__referral_state__hired
@@ -870,7 +871,7 @@ msgstr "Maksimumpunktid"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__medium_id
 msgid "Medium"
-msgstr "Keskmine"
+msgstr "Levitamise vahend"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error
@@ -896,7 +897,7 @@ msgstr "Minu soovitaja"
 #: code:addons/hr_referral/wizard/hr_referral_alert_mail_wizard.py:0
 #, python-format
 msgid "New Alert In Referrals App"
-msgstr "Uus hoiatus soovitajate App´is"
+msgstr "Uus teavitus soovitajate moodulis"
 
 #. module: hr_referral
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
@@ -1008,7 +1009,7 @@ msgstr "Punktiikoon"
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_backend_kanban
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
 msgid "Points"
-msgstr "Punktid"
+msgstr "Punkti"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__points_not_hired
@@ -1432,8 +1433,9 @@ msgid ""
 "This link contains a tracker so that people clicking on it will account to a"
 " referral for you, even if they apply on a position after a few days."
 msgstr ""
-"This link contains a tracker so that people clicking on it will account to a"
-" referral for you, even if they apply on a position after a few days."
+"See link on jälgitav, ehk kui inimene sellele klikib, tunneb süsteem ära, et"
+" just Sina oled tema soovitaja. Isegi siis, kui inimene kandideerib "
+"ametikohale mitme päeva pärast."
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_recruitment_stage__use_in_referral

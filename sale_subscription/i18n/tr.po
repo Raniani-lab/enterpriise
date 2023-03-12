@@ -14,16 +14,16 @@
 # abc Def <hdogan1974@gmail.com>, 2022
 # Halil, 2022
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2022
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2022
 # Levent Karakaş <levent@mektup.at>, 2022
-# Tugay Hatıl <tugayh@projetgrup.com>, 2022
 # Umur Akın <umura@projetgrup.com>, 2022
 # Martin Trigaux, 2022
 # Jérôme JEK <jek@odoo.com>, 2022
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # Murat Durmuş <muratd@projetgrup.com>, 2022
 # Ediz Duman <neps1192@gmail.com>, 2023
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
+# Tugay Hatıl <tugayh@projetgrup.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -31,7 +31,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Ediz Duman <neps1192@gmail.com>, 2023\n"
+"Last-Translator: Tugay Hatıl <tugayh@projetgrup.com>, 2023\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -979,6 +979,10 @@ msgid ""
 "Post as Message: log on document\n"
 "Post as Note: mass SMS with archives"
 msgstr ""
+"SMS gönderme yöntemini seçin:\n"
+"SMS: toplu SMS\n"
+"Mesaj Olarak Gönder: belgede oturum aç\n"
+"Not Olarak Gönder: arşivli toplu SMS"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__mail_post_method
@@ -988,6 +992,10 @@ msgid ""
 "Post as Message: post on document and notify followers\n"
 "Post as Note: log a note on document"
 msgstr ""
+"E-posta gönderme yöntemini seçin:\n"
+"E-posta: doğrudan e-posta gönderin\n"
+"Mesaj Olarak Gönderin: belgede yayınlayın ve takipçileri bilgilendirin\n"
+"Not Olarak Gönder: belgeye bir not kaydedin"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__2_churn
@@ -1261,6 +1269,8 @@ msgid ""
 "        You can put a negative number if you need a delay before the\n"
 "        trigger date, like sending a reminder 15 minutes before a meeting."
 msgstr ""
+"Tetikleme tarihinden sonraki gecikme. \n"
+"Bir toplantıdan 15 dakika önce hatırlatma göndermek gibi, tetikleme tarihinden önce bir gecikmeye ihtiyacınız varsa negatif bir sayı koyabilirsiniz."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range
@@ -2179,6 +2189,8 @@ msgid ""
 "Payment reminder for subscription {{ object.client_order_ref or object.name "
 "}}"
 msgstr ""
+"Abonelik için ödeme hatırlatıcısı {{ object.client_order_ref or object.name "
+"}}"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -2656,7 +2668,7 @@ msgstr "Olarak gönder"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_method
 msgid "Send as (SMS)"
-msgstr ""
+msgstr "(SMS) olarak gönder"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_success
@@ -2821,7 +2833,7 @@ msgstr "Gönder"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_autofollow
 msgid "Subscribe Recipients"
-msgstr ""
+msgstr "Alıcılara Abone Ol"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3108,6 +3120,7 @@ msgstr ""
 msgid ""
 "Termination of subscription {{ object.client_order_ref or object.name }}"
 msgstr ""
+"Aboneliğin sonlandırılması {{ object.client_order_ref or object.name }}"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3131,6 +3144,8 @@ msgid ""
 "The action will be triggered if and only if one of these fields is updated. "
 "If empty, all fields are watched."
 msgstr ""
+"Eylem, ancak ve ancak bu alanlardan biri güncellenirse tetiklenir. Boşsa, "
+"tüm alanlar izlenir."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3555,6 +3570,8 @@ msgid ""
 "When should the condition be triggered.\n"
 "                If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
+"Koşul ne zaman tetiklenmeli?\n"
+"Varsa, zamanlayıcı tarafından kontrol edilecektir. Boşsa, oluşturma ve güncelleme sırasında kontrol edilecektir."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active
@@ -3761,6 +3778,10 @@ msgid ""
 "your subscription failed. As your payment should have been made on {{ "
 "object.next_invoice_date }}, your subscription has been terminated."
 msgstr ""
+"{{ object.company_id.name }}: Aboneliğiniz için bir ödemeyi işleme koymaya "
+"yönelik son girişimimiz başarısız oldu. Ödemenizin {{ "
+"object.next_invoice_date }} tarihinde yapılmış olması gerektiğinden, "
+"aboneliğiniz sonlandırıldı."
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
@@ -3768,11 +3789,13 @@ msgid ""
 "{{ object.company_id.name }}: Please check the subscription {{ object.name "
 "}}"
 msgstr ""
+"{{ object.company_id.name }}: Lütfen aboneliği kontrol edin {{ object.name "
+"}}"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_rating
 msgid "{{ object.company_id.name }}: Service Rating Request"
-msgstr ""
+msgstr "{{ object.company_id.name }}: Hizmet Derecelendirme Talebi"
 
 #. module: sale_subscription
 #: model:sms.template,body:sale_subscription.sms_template_data_payment_reminder
@@ -3782,6 +3805,10 @@ msgid ""
 " suspended on {{ object.next_invoice_date }} unless the payment succeeds in "
 "the meantime."
 msgstr ""
+"{{ object.company_id.name }}: Aboneliğiniz için ödeme işlemini "
+"gerçekleştiremedik. Aboneliğiniz {{ object.name }} hala geçerlidir, ancak bu"
+" arada ödeme başarılı olmazsa {{ object.next_invoice_date }} tarihinde "
+"askıya alınacaktır."
 
 #. module: sale_subscription
 #: model:sms.template,body:sale_subscription.sms_template_data_default_alert
@@ -3790,3 +3817,6 @@ msgid ""
 " attention. If you have some concerns about it, please contact {{ "
 "object.user_id.name }}, your contact person."
 msgstr ""
+"{{ object.company_id.name }}: Aboneliğiniz  {{ object.name }} dikkatinizi "
+"bekliyor. Bu konuda bazı endişeleriniz varsa, lütfen irtibat kişiniz olan {{"
+" object.user_id.name }}, ile iletişime geçin."

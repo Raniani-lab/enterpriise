@@ -31,7 +31,7 @@ msgstr "動作窗視圖"
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Add a Line"
-msgstr "添加明細"
+msgstr "加入資料行"
 
 #. module: web_grid
 #. openerp-web

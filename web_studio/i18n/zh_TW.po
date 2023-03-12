@@ -111,7 +111,7 @@ msgstr ""
 msgid ""
 "<div><p>The <strong>%s</strong> property is only applied to records matching"
 " this filter.</p></div>"
-msgstr ""
+msgstr "<div><p><strong>%s</strong> 屬性只會套用至符合此篩選條件的項目。</p></div>"
 
 #. module: web_studio
 #. odoo-python
@@ -3071,7 +3071,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Properties"
-msgstr "權益"
+msgstr "屬性"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3785,7 +3785,7 @@ msgstr "總數"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Table"
-msgstr "桌子"
+msgstr "表格"
 
 #. module: web_studio
 #. odoo-javascript

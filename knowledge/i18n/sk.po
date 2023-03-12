@@ -6,13 +6,13 @@
 # Alexandra Brencicova <alexandra.brencicova@gmail.com>, 2022
 # SAKodoo <sak@odoo.com>, 2022
 # Matus Krnac <matus.krnac@gmail.com>, 2022
-# Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
 # Jan Prokop, 2022
 # Jaroslav Bosansky <jaro.bosansky@ekoenergo.sk>, 2022
 # Martin Datko <martin.datko@datko.eu>, 2022
 # Martin Trigaux, 2022
 # Lívia Dudejová <livia.dudejova@26house.com>, 2022
 # Damian Brencic <brencicdamian12313@gmail.com>, 2023
+# Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Damian Brencic <brencicdamian12313@gmail.com>, 2023\n"
+"Last-Translator: Rastislav Brencic <rastislav.brencic@azet.sk>, 2023\n"
 "Language-Team: Slovak (https://www.transifex.com/odoo/teams/41243/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -965,7 +965,7 @@ msgstr "Položky článku"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article_member
 msgid "Article Member"
-msgstr "Článok Člen"
+msgstr "Člen článku"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1061,7 +1061,7 @@ msgstr "Telo"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_can_read
 msgid "Can Read"
-msgstr "Vie čítať"
+msgstr "Vie prečítať"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_can_write
@@ -1088,7 +1088,7 @@ msgstr "Nie je možné aktualizovať článok alebo používateľa obľúbeného
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article_member__permission__read
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_invite__permission__read
 msgid "Can read"
-msgstr "Vie čítať"
+msgstr "Vie prečítať"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__write
@@ -1096,7 +1096,7 @@ msgstr "Vie čítať"
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article_member__permission__write
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_invite__permission__write
 msgid "Can write"
-msgstr "Vie písať"
+msgstr "Vie prečítať"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1557,14 +1557,14 @@ msgstr "Vložiť odkaz"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a Kanban View"
-msgstr "Vložte zobrazenie Kanban"
+msgstr "Vložte zobrazenie kanban"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a Kanban view of article items"
-msgstr "Vložte zobrazenie Kanban položiek článku"
+msgstr "Vložte zobrazenie kanban položiek článku"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1635,7 +1635,7 @@ msgstr "Je článok aktívny"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_user_favorite
 msgid "Is Favorited"
-msgstr "Je Obľúbený"
+msgstr "Je obľúbený"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_is_follower
@@ -1657,7 +1657,7 @@ msgstr "Je pole vlastníctva prázdne?"
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item Kanban"
-msgstr "Položka Kanban"
+msgstr "Položka kanban"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1689,7 +1689,7 @@ msgstr "Vedomostný článok"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_cover
 msgid "Knowledge Cover"
-msgstr "Znalosti Cover"
+msgstr "Pokrytie vedomostí"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_invite
@@ -1839,7 +1839,7 @@ msgstr "Správy"
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid "Missing File"
-msgstr "Missing File"
+msgstr "Chýba súbor"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2727,21 +2727,21 @@ msgstr "boli odoslané do koša.<br/><br/>"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "cover"
-msgstr "kryt"
+msgstr "pokrytie"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Buildings"
-msgstr "napr. Budovy"
+msgstr "napr. budovy"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "e.g. Todos"
-msgstr "napr. Todos"
+msgstr "napr. úlohy"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
@@ -2751,7 +2751,7 @@ msgstr "má"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "have"
-msgstr "mať"
+msgstr "má"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite

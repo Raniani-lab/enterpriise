@@ -10,8 +10,8 @@
 # Jan Prokop, 2022
 # Alexandra Brencicova <alexandra.brencicova@gmail.com>, 2022
 # Filip Matúšek <filip.matusek@26house.com>, 2022
-# Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
 # Damian Brencic <brencicdamian12313@gmail.com>, 2023
+# Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Damian Brencic <brencicdamian12313@gmail.com>, 2023\n"
+"Last-Translator: Rastislav Brencic <rastislav.brencic@azet.sk>, 2023\n"
 "Language-Team: Slovak (https://www.transifex.com/odoo/teams/41243/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,22 +45,22 @@ msgstr "# Hodnotenia"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__sla_policy_count
 msgid "# SLA Policy"
-msgstr "# Zásady SLA"
+msgstr "# Pravidlá SLA"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__urgent_ticket
 msgid "# Urgent Ticket"
-msgstr "# Naliehavý lístok"
+msgstr "# Naliehavá požiadavka"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__failed_sla_rate
 msgid "% of Failed SLA"
-msgstr "% neúspešných SLA"
+msgstr "% neúspešné SLA"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ongoing_sla_rate
 msgid "% of SLA In Progress"
-msgstr "% SLA prebieha"
+msgstr "% SLA v progrese"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__successful_sla_rate
@@ -95,7 +95,7 @@ msgstr "8 hodín do konca"
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "<b class=\"tip_title\">Tip: Create tickets from incoming emails</b>"
 msgstr ""
-"<b class=\"tip_title\">Tip: Vytvorte si lístky z prichádzajúcich "
+"<b class=\"tip_title\">Tip: vytvorte požiadavky z prichádzajúcich "
 "e-mailov</b>"
 
 #. module: helpdesk
@@ -341,7 +341,7 @@ msgstr "<span class=\"o_stat_text\">Hodnotenie</span>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "<span class=\"text-muted\">Failed</span>"
-msgstr "<span class=\"text-muted\">Nepodarilo sa</span>"
+msgstr "<span class=\"text-muted\">Nepodarené</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -366,7 +366,7 @@ msgstr "<span class=\"text-secondary fw-normal\"> Otvorené</span>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "<span class=\"text-secondary fw-normal\"> Tickets</span>"
-msgstr "<span class=\"text-secondary fw-normal\"> Vstupenky</span>"
+msgstr "<span class=\"text-secondary fw-normal\"> Požiadavky</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -376,7 +376,7 @@ msgstr "<span><b>Nasledovníci </b></span>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "<span>Average Rating</span>"
-msgstr "<span>Priemerné hodnotenie</span>"
+msgstr "<span>Priemer hodnotenia</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -386,12 +386,12 @@ msgstr "<span>Prehľady</span>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "<span>Success Rate</span>"
-msgstr "<span>Úspešne hodnotenie</span>"
+msgstr "<span>Hodnotenie úspechu</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "<span>Tickets Closed</span>"
-msgstr "<span>Vstupenky zatvorené</span>"
+msgstr "<span>Uzatvorené požiadavky</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -527,8 +527,8 @@ msgstr ""
 msgid ""
 "Adapt your pipeline to your workflow and track the progress of your tickets."
 msgstr ""
-"Prispôsobte svoj kanál svojmu pracovnému postupu a sledujte priebeh svojich "
-"lístkov."
+"Prispôsobte vaše otvorené úlohy svojmu pracovnému postupu a sledujte priebeh"
+" svojich požiadaviek."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
@@ -583,7 +583,7 @@ msgstr "Alias ​​kontakt bezpečnosť"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_email_from
 msgid "Alias Email From"
-msgstr "Alias Email Od"
+msgstr "Alias email od"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_name
@@ -625,7 +625,7 @@ msgstr "Všetci interní používatelia"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Allow your customers to close their own tickets"
-msgstr "Umožnite svojim zákazníkom uzavrieť si vlastné vstupenky"
+msgstr "Umožnite svojim zákazníkom uzavrieť si vlastné požiadavky"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
@@ -720,7 +720,7 @@ msgstr "Nadobúdateľ"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Assignment &amp; Visibility"
-msgstr "Priradenie &amp; Viditeľnosť"
+msgstr "Priradenie &amp; viditeľnosť"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__assign_method
@@ -746,8 +746,8 @@ msgid ""
 "Automate the assignment of new tickets to the right people, and make sure "
 "all tickets are being handled"
 msgstr ""
-"Automatizujte prideľovanie nových lístkov tým správnym ľuďom a uistite sa, "
-"že sa spracujú všetky lístky"
+"Automatizujte prideľovanie nových požiadaviek tým správnym ľuďom a uistite "
+"sa, že sa spracujú všetky požiadavky"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_assignment
@@ -788,19 +788,19 @@ msgstr "Priemerné hodnotenie (%)"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Dissatisfied"
-msgstr "Priemerné hodnotenie: Nespokojný"
+msgstr "Priemerné hodnotenie: nespokojný"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Okay"
-msgstr "Priemerné hodnotenie: Dobre"
+msgstr "Priemerné hodnotenie: dobre"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Satisfied"
-msgstr "Priemerné hodnotenie: Spokojný"
+msgstr "Priemerné hodnotenie: spokojný"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -892,7 +892,7 @@ msgstr "Zatvoriť"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Close Ticket"
-msgstr "Zavrieť lístok"
+msgstr "Uzavrieť požiadavku"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__close_date
@@ -1201,7 +1201,7 @@ msgstr "Zákazníci"
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "Customers will be added to the followers of their tickets."
-msgstr "Zákazníci budú pridaní k sledovateľom ich vstupeniek."
+msgstr "Zákazníci budú pridaní k sledovateľom ich požiadaviek."
 
 #. module: helpdesk
 #. odoo-javascript
@@ -1340,12 +1340,12 @@ msgstr "Rozbaľovacie menu"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__balanced
 msgid "Each user has an equal number of open tickets"
-msgstr "Každý užívateľ má rovnaký počet otvorených lístkov"
+msgstr "Každý užívateľ má rovnaký počet otvorených požiadaviek"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__randomly
 msgid "Each user is assigned an equal number of tickets"
-msgstr "Každý užívateľ má priradený rovnaký počet lístkov"
+msgstr "Každý užívateľ má priradený rovnaký počet požiadaviek"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
@@ -1442,14 +1442,14 @@ msgstr "Neúspešná politika SLA"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__sla_failed
 msgid "Failed SLA Ticket"
-msgstr "Neúspešný lístok SLA"
+msgstr "Neúspešná SLA požiadavka"
 
 #. module: helpdesk
 #. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Failed Tickets"
-msgstr "Neúspešné vstupenky"
+msgstr "Neúspešné požiadavky"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_fsm
@@ -1475,7 +1475,7 @@ msgstr "Zložené v kanban"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Follow All Team's Tickets"
-msgstr "Sledujte vstupenky všetkých tímov"
+msgstr "Sledujte požiadavky všetkých tímov"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -1523,13 +1523,13 @@ msgid ""
 "Get statistics on your tickets and how long it takes to assign and resolve "
 "them."
 msgstr ""
-"Získajte štatistiky o svojich tiketoch a o tom, ako dlho trvá ich priradenie"
-" a vyriešenie."
+"Získajte štatistiky o svojich požiadavkách a o tom, ako dlho trvá ich "
+"priradenie a vyriešenie."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Get tickets through an online form"
-msgstr "Získajte vstupenky prostredníctvom online formulára"
+msgstr "Získajte požiadavky prostredníctvom online formulára"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1544,8 +1544,8 @@ msgid ""
 "Grant employees access to your helpdesk team or tickets by adding them as "
 "followers."
 msgstr ""
-"Udeľte zamestnancom prístup k vášmu tímu helpdesk alebo lístkom ich pridaním"
-" ako sledovateľov."
+"Udeľte zamestnancom prístup k vášmu helpdesk tímu alebo k požiadavkám ich "
+"pridaním ako sledovateľov."
 
 #. module: helpdesk
 #. odoo-python
@@ -1555,8 +1555,8 @@ msgid ""
 "Grant portal users access to your helpdesk team or tickets by adding them as"
 " followers."
 msgstr ""
-"Udeľte používateľom portálu prístup k vášmu tímu helpdesk alebo lístkom ich "
-"pridaním ako sledovateľov."
+"Udeľte používateľom portálu prístup k vášmu helpdesk tímu alebo k "
+"požiadavkám ich pridaním ako sledovateľov."
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_ticket__kanban_state__done
@@ -1684,7 +1684,7 @@ msgstr "Typ Helpdesk požiadavky"
 #: model:ir.actions.server,name:helpdesk.ir_cron_auto_close_ticket_ir_actions_server
 #: model:ir.cron,cron_name:helpdesk.ir_cron_auto_close_ticket
 msgid "Helpdesk Ticket: Automatically close the tickets"
-msgstr "Helpdesk Ticket: Automaticky zatvorte vstupenky"
+msgstr "Helpdesk požiadavka: automaticky zatvorte požiadavky"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_main
@@ -1695,17 +1695,17 @@ msgstr "Helpdesk požiadavky"
 #. module: helpdesk
 #: model:mail.template,name:helpdesk.new_ticket_request_email_template
 msgid "Helpdesk: Request Acknowledgment"
-msgstr "Helpdesk: Žiadosť o potvrdenie"
+msgstr "Helpdesk: žiadosť o potvrdenie"
 
 #. module: helpdesk
 #: model:mail.template,name:helpdesk.solved_ticket_request_email_template
 msgid "Helpdesk: Ticket Closed"
-msgstr "Helpdesk: Vstupenka uzavretá"
+msgstr "Helpdesk: požiadavka uzavretá"
 
 #. module: helpdesk
 #: model:mail.template,name:helpdesk.rating_ticket_request_email_template
 msgid "Helpdesk: Ticket Rating Request"
-msgstr "Helpdesk: Žiadosť o hodnotenie vstupeniek"
+msgstr "Helpdesk: žiadosť o hodnotenie požiadaviek"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -2085,7 +2085,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Make sure tickets are handled on time"
-msgstr "Uistite sa, že lístky sú vybavované včas"
+msgstr "Uistite sa, že požiadavky sú vybavované načas"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action_main
@@ -2098,8 +2098,8 @@ msgid ""
 "Maximum number of working hours a ticket should take to reach the target "
 "stage, starting from the date it was created."
 msgstr ""
-"Maximálny počet pracovných hodín, ktoré by tiket mal trvať na dosiahnutie "
-"cieľovej fázy, počnúc dátumom vytvorenia."
+"Maximálny počet pracovných hodín, na dosiahnutie cieľovej fázy požiadavky, "
+"počnúc dátumom vytvorenia."
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.rating_rating_action_helpdesk
@@ -2108,7 +2108,7 @@ msgid ""
 "tickets are solved."
 msgstr ""
 "Zmerajte svoju spokojnosť zákazníkov odoslaním žiadostí o hodnotenie, keď "
-"budú vaše lístky vyriešené."
+"budú vaše požiadavky vyriešené."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__medium_id
@@ -2245,8 +2245,8 @@ msgid ""
 "New tickets will automatically be assigned to the team members that are "
 "available, according to their working hours and their time off."
 msgstr ""
-"Nové lístky budú automaticky pridelené členom tímu, ktorí sú k dispozícii, "
-"podľa ich pracovného času a voľna."
+"Nové požiadavky budú automaticky pridelené členom tímu, ktorí sú k "
+"dispozícii, podľa ich pracovného času."
 
 #. module: helpdesk
 #. odoo-python
@@ -2377,7 +2377,7 @@ msgstr "Počet neúspešných SLA"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage_delete_wizard__ticket_count
 msgid "Number of Tickets"
-msgstr "Počet vstupeniek"
+msgstr "Počet požiadaviek"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_has_error_counter
@@ -2400,22 +2400,22 @@ msgstr "Počet doručených správ s chybou"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "Number of open tickets with at least one SLA failed."
-msgstr "Počet otvorených lístkov s aspoň jednou SLA zlyhal."
+msgstr "Počet otvorených požiadaviek s aspoň s jedným SLA zlyhaním."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_open_ticket_count
 msgid "Number of other open tickets from the same partner"
-msgstr "Počet ďalších otvorených tiketov od toho istého partnera"
+msgstr "Počet ďalších otvorených požiadaviek od toho istého partnera"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_ticket_count
 msgid "Number of other tickets from the same partner"
-msgstr "Počet ďalších vstupeniek od rovnakého partnera"
+msgstr "Počet ďalších požiadaviek od rovnakého partnera"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "Number of tickets closed in the past 7 days."
-msgstr "Počet vstupeniek uzavretých za posledných 7 dní."
+msgstr "Počet požiadaviek uzavretých za posledných 7 dní."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -2525,7 +2525,7 @@ msgstr "E-mail partnera sa aktualizuje"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_ticket_ids
 msgid "Partner Tickets"
-msgstr "Partnerské vstupenky"
+msgstr "Partnerské požiadavky"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__privacy_visibility
@@ -2553,8 +2553,7 @@ msgstr "Percento spokojných hodnotení"
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Percentage of tickets that were closed without failing any SLAs."
-msgstr ""
-"Percento lístkov, ktoré boli uzavreté bez nedodržania akýchkoľvek SLA."
+msgstr "Percento požiadaviek, ktoré boli uzavreté dodržaním všetkých SLA."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2571,7 +2570,7 @@ msgstr "Analýza výkonu"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__auto_close_day
 msgid "Period of inactivity after which tickets will be automatically closed."
-msgstr "Obdobie nečinnosti, po ktorom sa vstupenky automaticky zatvoria."
+msgstr "Obdobie nečinnosti, po ktorom sa požiadavky automaticky zatvoria."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
@@ -2630,7 +2629,8 @@ msgstr "URL portálového prístupu"
 msgid ""
 "Portal users will be removed from the followers of the team and its tickets."
 msgstr ""
-"Používatelia portálu budú odstránení zo sledovateľov tímu a jeho lístkov."
+"Používatelia portálu budú odstránení zo sledovateľov tímu a jeho "
+"požiadaviek."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__priority
@@ -2666,7 +2666,7 @@ msgstr "Otázka"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_report_analysis_view_search
 msgid "Rated Tickets"
-msgstr "Ohodnotené vstupenky"
+msgstr "Hodnotené požiadavky"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_ids
@@ -2734,8 +2734,8 @@ msgid ""
 "Ratio of tickets whose SLA has successfully been reached on time compared to"
 " the total number of tickets closed in the past 7 days."
 msgstr ""
-"Pomer tiketov, ktorých SLA bola úspešne dosiahnutá včas, v porovnaní s "
-"celkovým počtom tiketov uzavretých za posledných 7 dní."
+"Pomer požiadaviek, ktorých SLA bola úspešne dosiahnutá včas, v porovnaní s "
+"celkovým počtom požiadaviek uzavretých za posledných 7 dní."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -2773,8 +2773,8 @@ msgid ""
 "Receive notifications whenever tickets are created, rated or discussed on in"
 " this team"
 msgstr ""
-"Dostávajte upozornenia vždy, keď sa v tomto tíme vytvoria, ohodnotia alebo o"
-" nich diskutuje"
+"Dostávajte upozornenia vždy, keď sa vytvoria požiadavky, hodnotia alebo o "
+"nich diskutuje v tíme"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_force_thread_id
@@ -2935,7 +2935,7 @@ msgid ""
 "SLA Policies that will automatically apply to the tickets submitted by this "
 "customer."
 msgstr ""
-"Zásady SLA, ktoré sa budú automaticky vzťahovať na vstupenky predložené "
+"Zásady SLA, ktoré sa budú automaticky vzťahovať na požiadavky predložené "
 "týmto zákazníkom."
 
 #. module: helpdesk
@@ -3256,7 +3256,7 @@ msgid ""
 "Stages the team will use. This team's tickets will only be able to be in "
 "these stages."
 msgstr ""
-"Etapy, ktoré tím použije. Vstupenky tohto tímu budú môcť byť len v týchto "
+"Fázy, ktoré tím použije. Požiadavky tohto tímu budú môcť byť len v týchto "
 "fázach."
 
 #. module: helpdesk
@@ -3305,7 +3305,7 @@ msgstr "Analýza úspešnosti"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_success
 msgid "Success SLA Policy"
-msgstr "<div></div>"
+msgstr "Zásady úspechu SLA"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tag_view_tree
@@ -3512,7 +3512,7 @@ msgid ""
 "This will archive the stages and all of the tickets they contain from the "
 "following teams:"
 msgstr ""
-"Týmto sa archivujú etapy a všetky vstupenky, ktoré obsahujú, od "
+"Týmto sa archivujú fázy a všetky požiadavky, ktoré obsahujú, od "
 "nasledujúcich tímov:"
 
 #. module: helpdesk
@@ -3563,7 +3563,7 @@ msgstr "Uzavretá požiadavka"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__ticket_count
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage__ticket_count
 msgid "Ticket Count"
-msgstr "Počet lístkov"
+msgstr "Počet požiadaviek"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__create_date
@@ -3585,12 +3585,12 @@ msgstr "Uzávierka požiadavky"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__ticket_ref
 msgid "Ticket IDs Sequence"
-msgstr "Sekvencia ID lístkov"
+msgstr "Sekvencia ID požiadaviek"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__ticket_properties
 msgid "Ticket Properties"
-msgstr "Vlastnosti lístka"
+msgstr "Vlastnosti požiadavky"
 
 #. module: helpdesk
 #: model:mail.message.subtype,name:helpdesk.mt_team_ticket_rated
@@ -3676,7 +3676,7 @@ msgstr "Požiadavky"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_analysis
 #, python-format
 msgid "Tickets Analysis"
-msgstr "Tickets Analysis"
+msgstr "Analýza požiadaviek"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed
@@ -3693,7 +3693,7 @@ msgstr "Vyhľadávanie požiadaviek "
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__fold
 msgid "Tickets in a folded stage are considered as closed."
-msgstr "Vstupenky v zloženom stave sa považujú za uzavreté."
+msgstr "Požiadavky v zloženom stave sa považujú za uzavreté."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_helpdesk_sale_timesheet
@@ -3718,7 +3718,7 @@ msgstr "Pracovné výkazy"
 #. module: helpdesk
 #: model:digest.tip,name:helpdesk.digest_tip_helpdesk_0
 msgid "Tip: Create tickets from incoming emails"
-msgstr "Tip: Vytvorte si lístky z prichádzajúcich e-mailov"
+msgstr "Tip: vytvorte si požiadavky z prichádzajúcich e-mailov"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_my_ticket_action_no_create
@@ -3763,7 +3763,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Track customer satisfaction on tickets"
-msgstr "Sledujte spokojnosť zákazníkov na lístkoch"
+msgstr "Sledujte spokojnosť zákazníkov s požiadavkami"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_report_analysis_action
@@ -3771,13 +3771,13 @@ msgid ""
 "Track the performance of your teams, the success rate of your tickets, and "
 "how quickly you reach your service level agreements (SLAs)."
 msgstr ""
-"Sledujte výkonnosť svojich tímov, mieru úspešnosti svojich tiketov a ako "
-"rýchlo dosiahnete dohody o úrovni služieb (SLA)."
+"Sledujte výkonnosť svojich tímov, mieru úspešnosti svojich požiadaviek a ako"
+" rýchlo dosiahnete dohody o úrovni služieb (SLA)."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Track the time spent on tickets"
-msgstr "Track the time spent on tickets"
+msgstr "Sledujte čas strávený na požiadavkách"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_twitter
@@ -3815,14 +3815,14 @@ msgstr "Typy"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_type_action
 msgid "Types are perfect for categorizing your tickets."
-msgstr "Typy sú ideálne na kategorizáciu lístkov."
+msgstr "Typy sú ideálne na kategorizáciu požiadaviek."
 
 #. module: helpdesk
 #. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "Unarchive Tickets"
-msgstr "Zrušiť archiváciu vstupeniek"
+msgstr "Zrušiť archiváciu požiadaviek"
 
 #. module: helpdesk
 #. odoo-python
@@ -4003,7 +4003,7 @@ msgid ""
 "Would you like to unarchive all of the tickets contained in these stages as "
 "well?"
 msgstr ""
-"Chceli by ste tiež zrušiť archiváciu všetkých lístkov v týchto fázach?"
+"Chceli by ste tiež zrušiť archiváciu všetkých požiadaviek v týchto fázach?"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
@@ -4011,8 +4011,8 @@ msgid ""
 "You cannot delete stages containing tickets. You can either archive them or "
 "first delete all of their tickets."
 msgstr ""
-"Etapy obsahujúce lístky nemôžete vymazať. Môžete ich buď archivovať, alebo "
-"najprv vymazať všetky ich lístky."
+"Etapy obsahujúce požiadavky nemôžete vymazať. Môžete ich buď archivovať, "
+"alebo najprv vymazať všetky ich požiadavky."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
@@ -4020,8 +4020,8 @@ msgid ""
 "You cannot delete stages containing tickets. You should first delete all of "
 "their tickets."
 msgstr ""
-"Etapy obsahujúce lístky nemôžete vymazať. Najprv by ste mali vymazať všetky "
-"ich lístky."
+"Etapy obsahujúce požiadavky nemôžete vymazať. Najprv by ste mali vymazať "
+"všetky ich požiadavky."
 
 #. module: helpdesk
 #: model:ir.model.constraint,message:helpdesk.constraint_res_users_target_closed_not_zero
@@ -4033,7 +4033,7 @@ msgstr "Nemôžete mať negatívne ciele   "
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_sla
 msgid "You completed all your tickets on time."
-msgstr "Všetky svoje lístky ste vyplnili včas."
+msgstr "Všetky svoje požiadavky ste vyplnili včas."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -4043,18 +4043,18 @@ msgstr "Napr. zatvorené požiadavky do 36 hodín "
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "e.g. Customer Care"
-msgstr "napr. Starostlivosť o zákazníka"
+msgstr "napr. starostlivosť o zákazníka"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 #: model_terms:ir.ui.view,arch_db:helpdesk.quick_create_ticket_form
 msgid "e.g. Product arrived damaged"
-msgstr "napr. Tovar prišiel poškodený"
+msgstr "napr. tovar prišiel poškodený"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_type_view_tree
 msgid "e.g. Question"
-msgstr "napr. Otázka"
+msgstr "napr. otázka"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -4069,12 +4069,12 @@ msgstr "email"
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "generate tickets in your pipeline."
-msgstr "generovať lístky vo svojom potrubí."
+msgstr "generovať požiadavky vo svojej pipeline."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.ticket_creation
 msgid "has been created from ticket:"
-msgstr "bol vytvorený z lístka:"
+msgstr "bol vytvorený z požiadavky:"
 
 #. module: helpdesk
 #: model:ir.actions.server,name:helpdesk.helpdesk_ratings_server_action
@@ -4091,7 +4091,7 @@ msgstr "tímové vyhladávanie"
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
 #, python-format
 msgid "ticket"
-msgstr "lístok"
+msgstr "požiadavka"
 
 #. module: helpdesk
 #: model:mail.template,subject:helpdesk.rating_ticket_request_email_template

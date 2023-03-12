@@ -4059,7 +4059,7 @@ msgstr "ip"
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "like"
-msgstr ""
+msgstr "like（包含，大小寫相同）"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_initial

@@ -86,7 +86,7 @@ msgstr "%s y"
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s: Depreciation"
-msgstr ""
+msgstr "%s：折舊"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -2113,7 +2113,7 @@ msgstr "年"
 msgid ""
 "You can't post an entry related to a draft asset. Please post the asset "
 "before."
-msgstr ""
+msgstr "使用草稿資產的記項，不可進行過賬。請先將有關資產過賬。"
 
 #. module: account_asset
 #. odoo-python
@@ -2166,7 +2166,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
-msgstr ""
+msgstr "使用已過賬資產的記項，不可重設為草稿。"
 
 #. module: account_asset
 #. odoo-python

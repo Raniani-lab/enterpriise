@@ -67,7 +67,7 @@ msgid ""
 "Indicates whether the 'Should Be Paid' status is defined automatically or "
 "manually."
 msgstr ""
-"Indique si le statut 'Doit être payé' est défini automatiquement ou "
+"Indique si le statut 'Doit être payée' est défini automatiquement ou "
 "manuellement."
 
 #. module: account_3way_match
@@ -109,7 +109,7 @@ msgstr "Libérer pour payer"
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move__release_to_pay_manual
 #: model:ir.model.fields,field_description:account_3way_match.field_account_payment__release_to_pay_manual
 msgid "Should Be Paid"
-msgstr "Doit être payé"
+msgstr "Doit être payée"
 
 #. module: account_3way_match
 #: model:ir.model.fields,help:account_3way_match.field_account_bank_statement_line__release_to_pay

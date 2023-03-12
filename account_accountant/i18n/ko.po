@@ -412,7 +412,7 @@ msgstr "예금거래 명세서.pdf"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "단일 명세서 내역에 대한 은행 조정 위젯"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -537,7 +537,7 @@ msgstr "조정 모델을 생성합니다"
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_form_bank_rec_widget
 msgid "Create Statement"
-msgstr ""
+msgstr "명세서 생성"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -929,7 +929,7 @@ msgstr "ID"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0003"
-msgstr ""
+msgstr "INV/2032/0003"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -937,7 +937,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0012"
-msgstr ""
+msgstr "INV/2032/0012"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
@@ -1253,7 +1253,7 @@ msgstr ""
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr ""
+msgstr "일치하는 거래"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
@@ -1433,7 +1433,7 @@ msgstr "지급금"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Payable:"
-msgstr ""
+msgstr "미지급금:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_payment_form_inherit_account_accountant
@@ -1445,7 +1445,7 @@ msgstr "결제 일치 작업"
 #: model:ir.model.fields,field_description:account_accountant.field_account_move__payment_state_before_switch
 #: model:ir.model.fields,field_description:account_accountant.field_account_payment__payment_state_before_switch
 msgid "Payment State Before Switch"
-msgstr ""
+msgstr "전환 전 결제 상태"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_payment
@@ -1468,14 +1468,14 @@ msgstr "고객이 없는 지불은 일치 시킬 수 없습니다."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Pick a date to lock"
-msgstr ""
+msgstr "잠금 날짜를 선택하십시오"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Please install the 'Accounting Reports' module."
-msgstr ""
+msgstr "'회계 보고서' 모듈을 설치하십시오."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1528,7 +1528,7 @@ msgstr "미수금"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
-msgstr ""
+msgstr "미수금: "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
@@ -1623,7 +1623,7 @@ msgstr "저장 및 신규"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "고객 검색"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1637,12 +1637,12 @@ msgstr "협력사 선택"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Select a transaction"
-msgstr ""
+msgstr "거래 선택"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
 msgid "Selected Aml"
-msgstr ""
+msgstr "선택한 Aml "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1673,7 +1673,7 @@ msgstr "일부 필드가 정의되지 않았습니다."
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_id
 msgid "Source Aml"
-msgstr ""
+msgstr "자료 Aml"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_id
@@ -1777,7 +1777,7 @@ msgstr "세무 신고 잠금일"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
 msgid "Tax Tag"
-msgstr ""
+msgstr "세금 태그"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1950,7 +1950,7 @@ msgstr ""
 #: code:addons/account_accountant/models/res_company.py:0
 #, python-format
 msgid "Unreconciled statements lines"
-msgstr ""
+msgstr "조정되지 않은 명세서 항목"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1996,7 +1996,7 @@ msgstr "화면"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "View models"
-msgstr ""
+msgstr "모델 보기"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__wizard_id
@@ -2007,7 +2007,7 @@ msgstr "마법사"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__company_currency_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__company_currency_id
 msgid "Wizard Company Currency"
-msgstr ""
+msgstr "마법사 회사 통화"
 
 #. module: account_accountant
 #. odoo-python
@@ -2039,7 +2039,7 @@ msgstr "두 회계 연도는 겹칠 수 없습니다. 회계 연도의 시작 �
 msgid ""
 "You can't have maximum one auto balance line at the same time in the bank "
 "reconciliation widget"
-msgstr ""
+msgstr "은행 조정 위젯에서 자동 잔액 항목은 최대 하나만 동시에 설정할 수 있습니다."
 
 #. module: account_accountant
 #. odoo-python
@@ -2048,7 +2048,7 @@ msgstr ""
 msgid ""
 "You can't have multiple liquidity journal item at the same time in the bank "
 "reconciliation widget"
-msgstr ""
+msgstr "은행 조정 위젯에서 유동성 분개 항목은 동시에 여러 번 포함될 수 없습니다."
 
 #. module: account_accountant
 #. odoo-python
@@ -2057,7 +2057,7 @@ msgstr ""
 msgid ""
 "You can't have multiple times the same journal item in the bank "
 "reconciliation widget"
-msgstr ""
+msgstr "은행 조정 위젯에서 동일한 분개장이 여러 번 포함될 수 없습니다."
 
 #. module: account_accountant
 #. odoo-python
@@ -2073,7 +2073,7 @@ msgstr "여러 공급업체의 미지급금과 미수급 계정을 동시에 한
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "You cannot set a lock date in the future."
-msgstr ""
+msgstr "잠금 날짜는 미래 시점의 날짜로 설정할 수 없습니다."
 
 #. module: account_accountant
 #. odoo-python
@@ -2081,7 +2081,7 @@ msgstr ""
 #, python-format
 msgid ""
 "You might want to %(btn_start)sfully reconcile%(btn_end)s the document."
-msgstr ""
+msgstr "문서를 %(btn_start)s조정 완료%(btn_end)s로 설정할 수 있습니다."
 
 #. module: account_accountant
 #. odoo-python
@@ -2090,14 +2090,14 @@ msgstr ""
 msgid ""
 "You might want to make a %(btn_start)spartial reconciliation%(btn_end)s "
 "instead."
-msgstr ""
+msgstr "대신 %(btn_start)s일부 조정%(btn_end)s으로 설정할 수 있습니다."
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "You might want to record a %(btn_start)spartial payment%(btn_end)s."
-msgstr ""
+msgstr "%(btn_start)s일부 지불%(btn_end)s로 기록할 수 있습니다."
 
 #. module: account_accountant
 #. odoo-python
@@ -2105,7 +2105,7 @@ msgstr ""
 #, python-format
 msgid ""
 "You might want to set the invoice as %(btn_start)sfully paid%(btn_end)s."
-msgstr ""
+msgstr "청구서를 %(btn_start)s지불 완료%(btn_end)s로 설정할 수 있습니다."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2117,7 +2117,7 @@ msgstr "조정했습니다."
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__aml
 msgid "aml"
-msgstr ""
+msgstr "aml"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2129,7 +2129,7 @@ msgstr "그리고 후속 고객"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__auto_balance
 msgid "auto_balance"
-msgstr ""
+msgstr "auto_balance"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_widget_wizard
@@ -2139,27 +2139,27 @@ msgstr "예: 은행 수수료"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__early_payment
 msgid "early_payment"
-msgstr ""
+msgstr "early_payment"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__exchange_diff
 msgid "exchange_diff"
-msgstr ""
+msgstr "exchange_diff"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity
 msgid "liquidity"
-msgstr ""
+msgstr "유동성"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__manual
 msgid "manual"
-msgstr ""
+msgstr "manual"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__new_aml
 msgid "new_aml"
-msgstr ""
+msgstr "new_aml"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2199,7 +2199,7 @@ msgstr "거래당 시간(초)."
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__tax_line
 msgid "tax_line"
-msgstr ""
+msgstr "tax_line"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view

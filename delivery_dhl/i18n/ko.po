@@ -430,7 +430,7 @@ msgstr "패키지 무게 단위"
 msgid ""
 "Please define an incoterm in the associated sale order or set a default "
 "incoterm for the company in the accounting's settings."
-msgstr ""
+msgstr "관련 판매발주서나에서 인코텀즈를 정의하거나 회계 설정에서 회사의 기본 인코텀즈를 설정하십시오."
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:0

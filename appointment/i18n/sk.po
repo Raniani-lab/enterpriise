@@ -5,7 +5,6 @@
 # Translators:
 # Jan Prokop, 2022
 # Matus Krnac <matus.krnac@gmail.com>, 2022
-# Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
 # SAKodoo <sak@odoo.com>, 2022
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # Filip Brenčič <brencicf5@gmail.com>, 2022
@@ -13,6 +12,7 @@
 # Martin Trigaux, 2022
 # Filip Hanes <filip.hanes@protonmail.com>, 2022
 # Damian Brencic <brencicdamian12313@gmail.com>, 2023
+# Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Damian Brencic <brencicdamian12313@gmail.com>, 2023\n"
+"Last-Translator: Rastislav Brencic <rastislav.brencic@azet.sk>, 2023\n"
 "Language-Team: Slovak (https://www.transifex.com/odoo/teams/41243/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -634,12 +634,12 @@ msgstr "Termín zrušený o: %(partners)s"
 #. module: appointment
 #: model:mail.template,name:appointment.appointment_booked_mail_template
 msgid "Appointment: Appointment Booked"
-msgstr "Termín: Termín rezervovaný"
+msgstr "Termín: termín rezervovaný"
 
 #. module: appointment
 #: model:mail.template,name:appointment.appointment_canceled_mail_template
 msgid "Appointment: Appointment Canceled"
-msgstr "Stretnutie: Stretnutie zrušené"
+msgstr "Stretnutie: stretnutie zrušené"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -1158,7 +1158,7 @@ msgstr "Úvodná správa"
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_invite_ids
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_tree
 msgid "Invitation Links"
-msgstr "Odkazy na pozvánky"
+msgstr "Pozývacie linky"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_is_follower
@@ -1192,7 +1192,7 @@ msgstr "Pripojte sa na"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Join with Odoo Discuss"
-msgstr "Pripojte sa k Odoo Diskutujte"
+msgstr "Pripojte sa k Odoo Discuss"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__country_ids
@@ -1721,7 +1721,7 @@ msgstr "Hľadajte v Zodpovednom"
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Select Dates"
-msgstr "Vyberte Dátumy"
+msgstr "Vyberte dátumy"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_answer_id
@@ -1881,7 +1881,7 @@ msgstr "Počiatočná hodina"
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_configure_calendar_provider_step
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_preview_invite_step
 msgid "Step Completed! - Click to review"
-msgstr "Krok dokončený! - Kliknutím zobrazíte recenziu"
+msgstr "Krok dokončený! - kliknutím zobrazíte recenziu"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__answer_input_ids
@@ -2146,7 +2146,7 @@ msgstr "s"
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "With Outlook or Google"
-msgstr "S Outlookom alebo Google"
+msgstr "S Outlook alebo Google"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form

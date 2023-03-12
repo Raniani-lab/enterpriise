@@ -1388,6 +1388,10 @@ msgid ""
 "Post as Message: post on document and notify followers\n"
 "Post as Note: log a note on document"
 msgstr ""
+"Wybierz metodę wysyłania emaili:\n"
+"Email: wysyłaj emaile bezpośrednie\n"
+"Postuj jako Wiadomość: zapostuj wiadomość w dokumencie i powiadom followersów\n"
+"Postuj jako Notatka: zapisz notatkę w dokumencie"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__2_churn
@@ -2480,7 +2484,7 @@ msgstr "Wyzwalacz pól onchange"
 #: code:addons/sale_subscription/models/sale_order_template.py:0
 #, python-format
 msgid "Operation not supported"
-msgstr ""
+msgstr "Operacja nie jest wspierana"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__help
@@ -3048,7 +3052,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_method
 msgid "Send as"
-msgstr ""
+msgstr "Wyślij jako"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_method
@@ -3220,7 +3224,7 @@ msgstr "Wyślij"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_autofollow
 msgid "Subscribe Recipients"
-msgstr ""
+msgstr "Adresaci subskrypcji"
 
 #. module: sale_subscription
 #. odoo-python

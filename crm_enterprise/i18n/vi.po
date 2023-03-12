@@ -166,7 +166,7 @@ msgstr "Doanh thu theo tỷ lệ"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 msgid "Sales Teams"
-msgstr "Nhóm bán hàng"
+msgstr "Đội ngũ kinh doanh bán hàng"
 
 #. module: crm_enterprise
 #: model_terms:ir.actions.act_window,help:crm_enterprise.crm_lead_action_dashboard

@@ -91,7 +91,7 @@ msgstr "Tööle võetud"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired Ratio"
-msgstr "Tööle võtmise määr"
+msgstr "Värbamise määr"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web

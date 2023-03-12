@@ -562,7 +562,7 @@ msgstr ""
 msgid ""
 "<span style=\"font-size: 14px;\">Click anywhere, and just start "
 "typing</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">아무 곳이나 클릭 후 입력하시면 됩니다</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding

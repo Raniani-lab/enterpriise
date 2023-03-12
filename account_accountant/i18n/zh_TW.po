@@ -970,7 +970,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__index
 msgid "Index"
-msgstr ""
+msgstr "索引"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__invalid
@@ -1625,14 +1625,14 @@ msgstr "儲存並關閉"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Save & New"
-msgstr "儲存並新增"
+msgstr "儲存，新增另項"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Save and New"
-msgstr "儲存並新增"
+msgstr "儲存，新增另項"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1909,12 +1909,12 @@ msgstr "Tip: Find an Accountant or register your Accounting Firm"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "To Check"
-msgstr "待檢查"
+msgstr "設為待檢查"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "To check"
-msgstr "設為待檢查"
+msgstr "待檢查"
 
 #. module: account_accountant
 #. odoo-javascript

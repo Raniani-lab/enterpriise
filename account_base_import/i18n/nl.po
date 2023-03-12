@@ -315,7 +315,7 @@ msgid ""
 "to import a Winbooks full back-up (Maintenance > Backup) to get the chart of accounts, contacts, taxes, history of journal entries, and documents.\n"
 "                            Support versions: Winbooks Desktop 5.50, 6, 7, 8."
 msgstr ""
-"om een volledige back-up van Winbooks te importeren (Onderhoud > Back-up) om het grootboekschema, contacten, belastingen, geschiedenis van journaalboekingen en documenten te krijgen.\n"
+"om een volledige back-up van Winbooks te importeren (Onderhoud > Back-up) om het grootboekschema, contacten, belastingen, geschiedenis van boekingen en documenten te krijgen.\n"
 "                            Ondersteuningsversies: Winbooks Desktop 5.50, 6, 7, 8."
 
 #. module: account_base_import

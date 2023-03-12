@@ -54,7 +54,7 @@ msgstr ""
 msgid ""
 "All fields will be automated by Artificial Intelligence, it might take 5 "
 "seconds."
-msgstr ""
+msgstr "AI 人工智能將對所有欄位進行自動化處理，過程約需 5 秒。"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__amount
@@ -212,7 +212,7 @@ msgstr "費用報告"
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Expense is being Digitized"
-msgstr ""
+msgstr "開支現正進行數碼化處理⋯"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
@@ -443,7 +443,7 @@ msgstr ""
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
-msgstr ""
+msgstr "未完成數據擷取。此過程通常需要 5 至 10 秒。"
 
 #. module: hr_expense_extract
 #. odoo-python

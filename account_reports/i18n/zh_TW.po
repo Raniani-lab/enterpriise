@@ -569,7 +569,7 @@ msgstr "活動類型"
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Add a note"
-msgstr "增加備註"
+msgstr "加入備註"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__totals_below_sections
@@ -830,7 +830,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Balance in GL"
-msgstr "Balance in GL"
+msgstr "總賬結餘"
 
 #. module: account_reports
 #. odoo-python
@@ -2653,7 +2653,7 @@ msgstr "調節"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Reconciliation Report"
-msgstr "調節報告"
+msgstr "對賬報表"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.partner_ledger_report_ref
@@ -3426,7 +3426,7 @@ msgid ""
 "You cannot reset this closing entry to draft, as it would delete carryover "
 "values impacting the tax report of a locked period. To do this, you first "
 "need to modify you tax return lock date."
-msgstr ""
+msgstr "此收結記項不可重設為草稿，因為這樣做會刪除撥入下期的賬項，從而對已鎖定期間的稅務報表造成影響。要執行此操作，你須先修改報稅表的鎖定期間。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

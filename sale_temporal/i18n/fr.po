@@ -299,7 +299,7 @@ msgid ""
 "Select Variants of the Product for which this rule applies. Leave empty if "
 "this rule applies for any variant of this template."
 msgstr ""
-"Sélectionnez les variantes du produit auxquelles cette règle s'applique. "
+"Sélectionnez les variantes de produit auxquelles cette règle s'applique. "
 "Laissez vide si cette règle s'applique à toutes les variantes de ce modèle."
 
 #. module: sale_temporal

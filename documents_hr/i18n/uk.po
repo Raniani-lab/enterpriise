@@ -226,6 +226,8 @@ msgid ""
 "You must set a private address on the Employee in order to use Document's "
 "features."
 msgstr ""
+"Ви повинні встановити приватну адресу для працівника, щоб використовувати "
+"функції документа."
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_folder

@@ -2104,7 +2104,7 @@ msgstr ""
 #: code:addons/sign/controllers/terms.py:0
 #, python-format
 msgid "Oops"
-msgstr ""
+msgstr "이런"
 
 #. module: sign
 #: model:sign.template,redirect_url_text:sign.template_sign_1
@@ -3339,7 +3339,7 @@ msgstr ""
 #: code:addons/sign/controllers/terms.py:0
 #, python-format
 msgid "The requested page is invalid, or doesn't exist anymore."
-msgstr ""
+msgstr "요청하신 페이지는 유효하지 않거나 존재하지 않는 페이지입니다."
 
 #. module: sign
 #. odoo-python

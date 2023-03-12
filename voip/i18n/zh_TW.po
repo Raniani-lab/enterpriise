@@ -636,7 +636,7 @@ msgstr ""
 #: code:addons/voip/static/src/components/activity/activity.xml:0
 #, python-format
 msgid "Mobile:"
-msgstr "手機:"
+msgstr "手提："
 
 #. module: voip
 #. openerp-web
@@ -732,7 +732,7 @@ msgstr ""
 #: code:addons/voip/static/src/components/activity/activity.xml:0
 #, python-format
 msgid "Phone:"
-msgstr "電話:"
+msgstr "電話："
 
 #. module: voip
 #. openerp-web

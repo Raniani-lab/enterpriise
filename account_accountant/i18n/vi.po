@@ -408,7 +408,7 @@ msgstr "Sao kê ngân hàng.pdf"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "Tiện ích đối chiếu ngân hàng cho một dòng sao kê"
 
 #. module: account_accountant
 #. odoo-javascript

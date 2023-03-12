@@ -53,7 +53,7 @@ msgstr ""
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "<span class=\"o_stat_text\">Budget</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">예산</span>"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__account_ids
@@ -117,7 +117,7 @@ msgstr "분석 계정"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_plan_id
 msgid "Analytic Plan"
-msgstr ""
+msgstr "분석 계획"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -568,7 +568,7 @@ msgstr "이론 금액"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Theoretical amount"
-msgstr ""
+msgstr "이론적 금액"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -593,7 +593,7 @@ msgstr "오늘 활동"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_analytic_account__total_planned_amount
 msgid "Total Planned Amount"
-msgstr ""
+msgstr "총 예산편성 금액"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_exception_decoration
@@ -631,4 +631,4 @@ msgstr "예산 명세에 최소 예산 상태 또는 분석 계정을 입력해�
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "e.g. Budget 2023: Optimistic"
-msgstr ""
+msgstr "예: 2023년도 예산: 양호"

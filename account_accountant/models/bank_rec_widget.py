@@ -1781,28 +1781,15 @@ class BankRecWidget(models.Model):
         move.line_ids._create_analytic_lines()
 
     def collect_global_info_data(self, journal_id):
-        domain = [
-            ('display_type', 'not in', ('line_section', 'line_note')),
-            ('move_id.state', '=', 'posted'),
-            ('journal_id', '=', journal_id),
-        ]
-
-        query = self.env['account.move.line']._where_calc(domain)
-        tables, where_clause, where_params = query.get_sql()
-
         self._cr.execute(f'''
-            WITH statement_lines AS (
-                SELECT DISTINCT account_move_line.statement_line_id
-                FROM {tables}
-                WHERE {where_clause}
-            )
             SELECT
                 st_line.currency_id,
                 COALESCE(SUM(st_line.amount), 0.0) AS amount
-            FROM statement_lines
-            JOIN account_bank_statement_line st_line ON st_line.id = statement_lines.statement_line_id
+            FROM account_bank_statement_line st_line
+            JOIN account_move am ON st_line.move_id = am.id
+            WHERE am.state = 'posted' AND am.journal_id = %s
             GROUP BY st_line.currency_id
-        ''', where_params)
+        ''', [journal_id])
 
         balance_by_currency = {}
         for currency_id, amount in self._cr.fetchall():

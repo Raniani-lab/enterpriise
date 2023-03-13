@@ -833,7 +833,7 @@ class SaleOrder(models.Model):
         self._set_closed_state()
         for sub in self:
             renew = sub.subscription_child_ids.filtered(
-                lambda so: so.subscription_management == 'renew' and so.state in ['sale', 'done'] and so.date_order and so.date_order.date() >= sub.end_date)
+                lambda so: so.subscription_management == 'renew' and so.state in ['sale', 'done'])
             if renew and renew_close_reason:
                 # The subscription has been renewed. We set a close_reason to avoid consider it as a simple churn.
                 sub.write({'close_reason_id': renew_close_reason.id})

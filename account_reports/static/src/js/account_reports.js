@@ -463,7 +463,7 @@ var accountReportsWidget = AbstractAction.extend({
         });
 
         // Make sure all ancestors are displayed.
-        const $matchingChilds = this.$('tr[data-parent-id]:not(.o_account_reports_filtered_lines)');
+        const $matchingChilds = this.$('tr[data-parent-id]:not(.o_account_reports_filtered_lines):visible');
         $($matchingChilds.get().reverse()).each(function(index, el) {
             const id = $.escapeSelector(String(el.dataset.parentId));
             const $parent = self.$('.o_account_report_line[data-id="' + id + '"]');

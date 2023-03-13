@@ -7,23 +7,21 @@ from odoo import fields, models, _
 class SurveySurvey(models.Model):
     _inherit = 'survey.survey'
 
-    is_appraisal = fields.Boolean(
-        string="Appraisal Managers Only",
-        help="Check this option to restrict the answers to appraisal managers only.")
+    survey_type = fields.Selection(selection_add=[('appraisal', 'Appraisal')], ondelete={'appraisal': 'set default'})
 
     def action_survey_user_input_completed(self):
         action = super().action_survey_user_input_completed()
-        if self.is_appraisal:
+        if self.survey_type == 'appraisal':
             action.update({
-                'domain': [('survey_id.is_appraisal', '=', True)]
+                'domain': [('survey_id.survey_type', '=', 'appraisal')]
             })
         return action
 
     def action_survey_user_input(self):
         action = super().action_survey_user_input()
-        if self.is_appraisal:
+        if self.survey_type == 'appraisal':
             action.update({
-                'domain': [('survey_id.is_appraisal', '=', True)]
+                'domain': [('survey_id.survey_type', '=', 'appraisal')]
             })
         return action
 

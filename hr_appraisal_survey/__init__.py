@@ -22,7 +22,7 @@ def uninstall_hook(env):
         'survey.survey_user_input_line_rule_survey_user_read',
         'survey.survey_user_input_line_rule_survey_user_cw'
     ]
-    domain = "('survey_id.is_appraisal', '=', False)"
+    domain = "('survey_id.survey_type', '!=', 'appraisal')"
     for xml_id in xml_ids:
         rule = env.ref(xml_id, raise_if_not_found=False)
         if rule:
@@ -37,7 +37,7 @@ def uninstall_hook(env):
     ]
     for xml_id in action_xml_ids:
         act_window = env.ref(xml_id, raise_if_not_found=False)
-        if act_window and act_window.domain and 'is_appraisal' in act_window.domain:
+        if act_window and act_window.domain and 'appraisal' in act_window.domain and 'survey_type' in act_window.domain:
             if 'is_page' in act_window.domain:
                 act_window.domain = [('is_page', '=', False)]
             else:

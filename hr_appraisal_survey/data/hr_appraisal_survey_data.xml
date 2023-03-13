@@ -2,10 +2,10 @@
 <odoo>
     <data noupdate="1">
     <record model="survey.survey" id="appraisal_feedback_template">
+        <field name="survey_type">appraisal</field>
         <field name="title">Employee Appraisal Form</field>
         <field name="user_id" ref="base.user_admin"/>
         <field name="access_mode">token</field>
-        <field name="is_appraisal" eval="True"/>
         <field name="is_attempts_limited" eval="True"/>
         <field name="users_can_go_back" eval="True" />
         <field name="description" type="html">
@@ -79,10 +79,10 @@
 
     <!-- 360 Feedback -->
     <record model="survey.survey" id="appraisal_360_feedback_template">
+        <field name="survey_type">appraisal</field>
         <field name="title">360 Feedback</field>
         <field name="user_id" ref="base.user_admin"/>
         <field name="access_mode">token</field>
-        <field name="is_appraisal" eval="True"/>
         <field name="is_attempts_limited" eval="True"/>
         <field name="users_can_go_back" eval="True" />
         <field name="description" type="html">

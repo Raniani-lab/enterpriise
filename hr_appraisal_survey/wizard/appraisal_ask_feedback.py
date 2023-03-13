@@ -35,7 +35,7 @@ class AppraisalAskFeedback(models.TransientModel):
         'res.partner', string='Author', required=True,
         default=lambda self: self.env.user.partner_id.id,
     )
-    survey_template_id = fields.Many2one('survey.survey', required=True, domain=[('is_appraisal', '=', True)])
+    survey_template_id = fields.Many2one('survey.survey', required=True, domain=[('survey_type', '=', 'appraisal')])
     employee_ids = fields.Many2many(
         'hr.employee', string="Recipients", required=True)
     deadline = fields.Date(string="Answer Deadline", required=True, compute='_compute_deadline', store=True, readonly=False)

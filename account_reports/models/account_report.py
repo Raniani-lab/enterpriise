@@ -869,7 +869,7 @@ class AccountReport(models.Model):
                 'unfolded': unfolded,
                 'level': level,
                 'parent_id': parent_id,
-                'columns': [{'name': self.format_value(total, figure_type='monetary'), 'no_format': total} for total in column_totals]
+                'columns': [{'name': self.format_value(total, figure_type='monetary', blank_if_zero=options['columns'][index]['blank_if_zero']), 'no_format': total} for index, total in enumerate(column_totals)]
             }
 
         def compute_group_totals(line, group=None):

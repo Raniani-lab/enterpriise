@@ -156,6 +156,6 @@ class TrialBalanceCustomHandler(models.AbstractModel):
                 model, dummy = report._get_model_info_from_id(line['id'])
                 if model == 'account.group':
                     line_classes = line.get('class', '')
-                    line['class'] = line_classes + ' o_account_coa_column_contrast'
+                    line['class'] = line_classes + ' o_account_coa_column_contrast_hierarchy'
 
         return lines

@@ -5,15 +5,17 @@ import pytz
 
 from datetime import date, datetime, timedelta
 from freezegun import freeze_time
+from werkzeug.urls import url_encode, url_join
 
+import odoo
 from odoo.addons.appointment.tests.common import AppointmentCommon
 from odoo.exceptions import ValidationError
-from odoo.tests import Form, tagged, users
+from odoo.tests import Form, tagged, users, HttpCase
 from odoo.tools import mute_logger
 
 
 @tagged('appointment_slots')
-class AppointmentTest(AppointmentCommon):
+class AppointmentTest(AppointmentCommon, HttpCase):
 
     @users('apt_manager')
     def test_appointment_type_create(self):
@@ -232,6 +234,49 @@ class AppointmentTest(AppointmentCommon):
         # April month
         self.assertEqual(slots[2]['nb_slots_previous_months'], nb_february_slots + nb_march_slots)
         self.assertEqual(slots[2]['nb_slots_next_months'], 0)
+
+    @freeze_time('2023-01-9')
+    def test_booking_validity(self):
+        """
+        When confirming an appointment, we must recheck that it is indeed a valid slot,
+        because the user can modify the date URL parameter used to book the appointment.
+        We make sure the date is a valid slot, not outside of those specified by the employee,
+        and that it's not an old valid slot (a slot that is valid, but it's in the past,
+        so we shouldn't be able to book for a date that has already passed)
+        """
+        # add the timezone of the visitor on the session (same as appointment to simplify)
+        session = self.authenticate(None, None)
+        session['timezone'] = self.apt_type_bxls_2days.appointment_tz
+        odoo.http.root.session_store.save(session)
+        appointment = self.apt_type_bxls_2days
+        appointment_invite = self.env['appointment.invite'].create({'appointment_type_ids': appointment.ids})
+        appointment_url = url_join(appointment.get_base_url(), '/appointment/%s' % appointment.id)
+        appointment_info_url = "%s/info?" % appointment_url
+        url_inside_of_slot = appointment_info_url + url_encode({
+            'staff_user_id': self.staff_user_bxls.id,
+            'date_time': datetime(2023, 1, 9, 9, 0),  # 9/01/2023 is a Monday, there is a slot at 9:00
+            'duration': 1,
+            **appointment_invite._get_redirect_url_parameters(),
+        })
+        response = self.url_open(url_inside_of_slot)
+        self.assertEqual(response.status_code, 200, "Response should be Ok (200)")
+        url_outside_of_slot = appointment_info_url + url_encode({
+            'staff_user_id': self.staff_user_bxls.id,
+            'date_time': datetime(2023, 1, 9, 22, 0),  # 9/01/2023 is a Monday, there is no slot at 22:00
+            'duration': 1,
+            **appointment_invite._get_redirect_url_parameters(),
+        })
+        response = self.url_open(url_outside_of_slot)
+        self.assertEqual(response.status_code, 404, "Response should be Page Not Found (404)")
+        url_inactive_past_slot = appointment_info_url + url_encode({
+            'staff_user_id': self.staff_user_bxls.id,
+            'date_time': datetime(2023, 1, 2, 22, 0),
+            # 2/01/2023 is a Monday, there is a slot at 9:00, but that Monday has already passed
+            'duration': 1,
+            **appointment_invite._get_redirect_url_parameters(),
+        })
+        response = self.url_open(url_inactive_past_slot)
+        self.assertEqual(response.status_code, 404, "Response should be Page Not Found (404)")
 
     @users('apt_manager')
     def test_generate_slots_recurring(self):

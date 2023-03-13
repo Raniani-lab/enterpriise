@@ -700,3 +700,27 @@ class AppointmentType(models.Model):
             nb_slots_previous_months = total_nb_slots - nb_slots_next_months
             start = start + relativedelta(months=1)
         return months
+
+    def _check_appointment_is_valid_slot(self, staff_user, timezone, start_dt, duration):
+        """
+        Given slot parameters check if it is still valid, based on employee
+        availability, slot boundaries, ...
+        :param (optional record) staff_user: the user for whom the appointment was booked for
+        :param str timezone: visitor's timezone
+        :param datetime start_dt: start datetime of the appointment (UTC)
+        :param float duration: the duration of the appointment in hours
+        :return: True if at least one slot is available, False if no slots were found
+        """
+        # the user can be a public/portal user that doesn't have read access to the appointment_type.
+        self_sudo = self.sudo()
+        end_dt = start_dt + relativedelta(hours=self_sudo.appointment_duration)
+        slots = self_sudo._slots_generate(start_dt, end_dt, timezone)
+        slots[:] = [slot for slot in slots if slot['UTC'] == (start_dt.replace(tzinfo=None), end_dt.replace(tzinfo=None))]
+        if slots and (not staff_user or staff_user in self_sudo.staff_user_ids):
+            self_sudo._slots_available(slots, start_dt, end_dt, staff_user)
+        return any([
+            slot for slot in slots
+            if slot.get("staff_user_id", False) == staff_user
+            and ((slot['slot'].sudo().slot_type == 'recurring' and self_sudo.appointment_duration == duration) or
+                 (slot['slot'].sudo().slot_type == 'unique' and slot['slot'].sudo().duration == duration))
+        ])

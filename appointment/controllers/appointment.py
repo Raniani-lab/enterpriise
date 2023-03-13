@@ -5,6 +5,8 @@ import pytz
 import re
 import uuid
 
+from pytz.exceptions import UnknownTimeZoneError
+
 from babel.dates import format_datetime, format_date, format_time
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
@@ -374,6 +376,10 @@ class AppointmentController(http.Controller):
         )
         if not appointment_type:
             raise NotFound()
+
+        if not self._check_appointment_is_valid_slot(appointment_type, staff_user_id, date_time, duration, **kwargs):
+            raise NotFound()
+
         partner = self._get_customer_partner()
         partner_data = partner.read(fields=['name', 'mobile', 'email'])[0] if partner else {}
         date_time_object = datetime.strptime(date_time, dtf)
@@ -399,6 +405,46 @@ class AppointmentController(http.Controller):
             'timezone': request.session.get('timezone') or appointment_type.appointment_tz,  # bw compatibility
             'users_possible': self._get_possible_staff_users(appointment_type, json.loads(kwargs.get('filter_staff_user_ids') or '[]')),
         })
+
+    def _check_appointment_is_valid_slot(self, appointment_type, staff_user_id, start_dt, duration, **kwargs):
+        """
+        Given slot parameters check it is still valid, based on staff_user
+        availability, slot boundaries, ...
+        :param record appointment_type: an appointment.type record under which
+          the appointment is about to be taken;
+        :param str(int) staff_user_id: staff_user linked to the appointment slot;
+        :param datetime start_dt: appointment slot starting datetime that will be
+          localized in customer timezone;
+        :param str(float) duration: the duration of the appointment;
+        """
+        if not appointment_type or not staff_user_id or not start_dt or not duration:
+            return False
+
+        try:
+            duration = float(duration)
+        except ValueError:
+            # Value Error: the duration is not a valid float
+            return False
+
+        try:
+            staff_user = request.env['res.users'].sudo().search([('id', '=', int(staff_user_id))])
+        except ValueError:
+            # ValueError: the staff_user_id might not be a valid integer
+            return False
+
+        try:
+            session_tz = request.session['timezone']
+            tz_info = pytz.timezone(session_tz)
+            start_dt_utc = tz_info.localize(fields.Datetime.from_string(start_dt)).astimezone(pytz.utc)
+        except (ValueError, UnknownTimeZoneError):
+            # ValueError: the datetime may be ill-formatted
+            return False
+
+        # we shouldn't be able to book an appointment in the past
+        if start_dt_utc < datetime.today().astimezone(pytz.utc):
+            return False
+
+        return appointment_type._check_appointment_is_valid_slot(staff_user, session_tz, start_dt_utc, duration)
 
     @http.route(['/appointment/<int:appointment_type_id>/submit'],
                 type='http', auth="public", website=True, methods=["POST"])

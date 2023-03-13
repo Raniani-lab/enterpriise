@@ -8,7 +8,6 @@ export class TimesheetGridDataPoint extends GridDataPoint {
     async load() {
         this.unavailabilityDaysPerEmployeeId = {};
         await super.load();
-        this.data.workingHours = {};
         if (!this.orm.isSample) {
             await Promise.all(this.timesheetWorkingHoursPromises);
         }
@@ -20,6 +19,11 @@ export class TimesheetGridDataPoint extends GridDataPoint {
             this._fetchWorkingHoursData("project_id"),
             this._fetchAllTimesheetM2OAvatarData(),
         ];
+    }
+
+    async _initialiseData() {
+        await super._initialiseData();
+        this.data.workingHours = {};
     }
 
     /**

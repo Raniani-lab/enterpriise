@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { Domain } from "@web/core/domain";
 import { registry } from "@web/core/registry";
 import { ormService } from "@web/core/orm_service";
 import { serializeDateTime, serializeDate, deserializeDate } from "@web/core/l10n/dates";
@@ -66,6 +67,46 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.module("TimerTimesheetGridView");
+
+    QUnit.test("sample data in timesheet timer grid view", async function (assert) {
+        serverData.views["analytic.line,false,grid"] = serverData.views[
+            "analytic.line,false,grid"
+        ].replace('js_class="timer_timesheet_grid"', 'js_class="timer_timesheet_grid" sample="1"');
+        const { openView } = await start({
+            serverData,
+            async mockRPC(route, args) {
+                if (args.method === "get_running_timer") {
+                    return {
+                        step_timer: 30,
+                    };
+                } else if (args.method === "action_start_new_timesheet_timer") {
+                    return false;
+                } else if (args.method === "get_daily_working_hours") {
+                    assert.strictEqual(args.model, "hr.employee");
+                    return {};
+                } else if (args.method === "get_server_time") {
+                    assert.strictEqual(args.model, "timer.timer");
+                    return serializeDateTime(DateTime.now());
+                }
+                return mockTimesheetGridRPC(route, args);
+            },
+        });
+
+        await openView({
+            res_model: "analytic.line",
+            views: [[false, "grid"]],
+            domain: Domain.FALSE.toString(),
+            context: { group_by: ["project_id", "task_id"] },
+        });
+
+        await click(target, ".o_grid_navigation_buttons button[data-hotkey=t]");
+
+        assert.containsOnce(
+            target,
+            ".o_grid_view",
+            "The view should be correctly rendered with the sample data enabled when no data is found"
+        );
+    });
 
     QUnit.test("basic timesheet timer grid view", async function (assert) {
         const { openView } = await start({

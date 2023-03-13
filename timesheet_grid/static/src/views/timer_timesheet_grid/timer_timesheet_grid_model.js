@@ -71,7 +71,8 @@ export class TimerTimesheetGridDataPoint extends TimesheetGridDataPoint {
     }
 
     async _initialiseData() {
-        super._initialiseData();
+        await super._initialiseData();
+        this.data.workingHours.daily = {};
         this.data.rowPerKeyBinding = {};
         this.data.keyBindingPerRowId = {};
         this.data.stepTimer = 0;

@@ -608,17 +608,24 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     'class': col_class,
                 })
 
-        first_column_group_key = options['columns'][0]['column_group_key']
-        if eval_dict[first_column_group_key]['payment_id']:
-            caret_type = 'account.payment'
-        else:
-            caret_type = 'account.move.line'
+        aml_id = None
+        move_name = None
+        caret_type = None
+        for column_group_dict in eval_dict.values():
+            aml_id = column_group_dict.get('id', '')
+            if aml_id:
+                if column_group_dict.get('payment_id'):
+                    caret_type = 'account.payment'
+                else:
+                    caret_type = 'account.move.line'
+                move_name = column_group_dict['move_name']
+                break
 
         return {
-            'id': report._get_generic_line_id('account.move.line', eval_dict[first_column_group_key]['id'], parent_line_id=parent_line_id),
+            'id': report._get_generic_line_id('account.move.line', aml_id, parent_line_id=parent_line_id),
             'caret_options': caret_type,
             'parent_id': parent_line_id,
-            'name': eval_dict[first_column_group_key]['move_name'],
+            'name': move_name,
             'columns': line_columns,
             'level': 2,
         }

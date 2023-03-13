@@ -266,9 +266,14 @@
             <field name="user_id" ref="base.user_admin"/>
         </record>
 
-        <!-- Set the demo user as a fsm user -->
-        <record id="group_fsm_user" model="res.groups">
-            <field name="users" eval="[(4,ref('base.user_demo'))]"/>
+        <!-- Set the demo user as a project and fsm user -->
+        <record id="base.user_demo" model="res.users">
+            <field name="groups_id" eval="[
+                Command.unlink(ref('group_fsm_manager')),
+                Command.unlink(ref('hr_timesheet.group_hr_timesheet_approver')),
+                Command.unlink(ref('project.group_project_manager')),
+                Command.link(ref('group_fsm_user'))
+            ]"/>
         </record>
 
     </data>

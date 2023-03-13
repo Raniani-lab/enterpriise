@@ -57,7 +57,10 @@
         <t t-set="section" t-value="row"/>
         <t t-set="rowPosition" t-value="getRowPosition(section)"/>
         <t t-if="!section.isFake">
-            <div class="o_grid_section o_grid_section_title o_grid_highlightable z-index-1 position-sticky start-0 d-flex align-items-center ps-3 border-top bg-200 fw-bold"
+            <div class="o_grid_section o_grid_section_title o_grid_highlightable d-flex align-items-center ps-3 border-top bg-200 fw-bold"
+                 t-att-class="{
+                    'z-index-1 position-sticky start-0': !props.model.useSampleModel,
+                 }"
                  t-att-data-state-highlight-triggers="`section-${section.id}`"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
             >
@@ -129,8 +132,9 @@
         <t t-set="rowPosition" t-value="getRowPosition(row)"/>
         <t t-set="isEven" t-value="rowPosition % 2 !== 0"/>
         <div name="row"
-             class="o_grid_row o_grid_row_title o_grid_highlightable z-index-1 position-sticky start-0 d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-items-md-center p-2 transition-base"
+             class="o_grid_row o_grid_row_title o_grid_highlightable d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-items-md-center p-2 transition-base"
              t-att-class="{
+                'z-index-1 position-sticky start-0': !props.model.useSampleModel,
                 'bg-view': isEven and !highlightedState[`row-${row.id}`],
                 'bg-light': !isEven and !highlightedState[`row-${row.id}`],
                 'bg-200': highlightedState[`row-${row.id}`],

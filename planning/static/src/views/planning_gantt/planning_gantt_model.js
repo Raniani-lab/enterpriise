@@ -1,8 +1,8 @@
 /* @odoo-module */
 
-import { computeRange, deserializeDateTime, serializeDateTime } from "@web/core/l10n/dates";
+import { deserializeDateTime, serializeDateTime } from "@web/core/l10n/dates";
 import { formatPercentage } from "@web/views/fields/formatters";
-import { GanttModel } from "@web_gantt/gantt_model";
+import { GanttModel, computeRange } from "@web_gantt/gantt_model";
 
 const GROUPBY_COMBINATIONS = [
     "role_id",

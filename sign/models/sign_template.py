@@ -347,7 +347,7 @@ class SignItem(models.Model):
 
     template_id = fields.Many2one('sign.template', string="Document Template", required=True, ondelete='cascade')
 
-    type_id = fields.Many2one('sign.item.type', string="Type", required=True, ondelete='cascade')
+    type_id = fields.Many2one('sign.item.type', string="Type", required=True, ondelete='restrict')
 
     required = fields.Boolean(default=True)
     responsible_id = fields.Many2one("sign.item.role", string="Responsible", ondelete="restrict")

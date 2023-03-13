@@ -265,7 +265,7 @@ class Planning(models.Model):
         slots_with_calendar = self - planning_slots
         for slot in planning_slots:
             # for each planning slot, compute the duration
-            ratio = slot.allocated_percentage / 100.0 or 1
+            ratio = slot.allocated_percentage / 100.0
             slot.allocated_hours = slot._calculate_slot_duration() * ratio
         if slots_with_calendar:
             # for forecasted slots, compute the conjunction of the slot resource's work intervals and the slot.
@@ -1757,7 +1757,7 @@ class Planning(models.Model):
             return self.allocated_hours
         # if the slot goes over the gantt period, compute the duration only within
         # the gantt period
-        ratio = self.allocated_percentage / 100.0 or 1
+        ratio = self.allocated_percentage / 100.0
         working_hours = self._get_working_hours_over_period(start_utc, stop_utc, work_intervals, calendar_intervals)
         return working_hours * ratio
 

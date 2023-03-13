@@ -13,6 +13,17 @@
         </field>
     </record>
 
+    <record id="hr_timesheet_line_tree_my_inherit_helpdesk_timesheet" model="ir.ui.view">
+        <field name="name">account.analytic.line.tree.inherit.helpdesk.timesheet</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='task_id']" position="after">
+                <field name="helpdesk_ticket_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="hr_timesheet_line_tree_inherit_helpdesk_timesheet" model="ir.ui.view">
         <field name="name">account.analytic.line.tree.inherit.helpdesk.timesheet</field>
         <field name="model">account.analytic.line</field>

@@ -22,6 +22,11 @@
         'report/helpdesk_ticket_analysis_views.xml',
         'report/report_timesheet_templates.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'helpdesk_timesheet/static/src/**/*',
+        ],
+    },
     'demo': ['data/helpdesk_timesheet_demo.xml'],
     'license': 'OEEL-1',
     'post_init_hook': '_helpdesk_timesheet_post_init',

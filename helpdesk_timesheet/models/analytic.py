@@ -91,3 +91,6 @@ class AccountAnalyticLine(models.Model):
                         ('helpdesk_ticket_id.message_partner_ids', 'child_of', [self.env.user.partner_id.commercial_partner_id.id]),
                 ('project_id.privacy_visibility', '=', 'portal')
         ]
+
+    def _get_timesheet_timer_data(self, timer=None):
+        return {**super()._get_timesheet_timer_data(), 'helpdesk_ticket_id': self.helpdesk_ticket_id.id}

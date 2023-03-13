@@ -9,6 +9,7 @@ import {
     useState,
     useComponent,
     onWillStart,
+    onWillUnmount,
     onWillUpdateProps,
     useExternalListener,
     useSubEnv,
@@ -18,6 +19,12 @@ export class TimesheetTimerRendererHook {
     constructor(propsList, env) {
         this.propsList = propsList;
         this.env = env;
+        this.setup();
+        this._setProjectTaskDebounce = useDebounced(this._setProjectTask.bind(this), 500);
+        this.showTimer = propsList.records.some((record) => record.data.display_timer);
+    }
+
+    setup() {
         this.orm = useService("orm");
         this.timesheetUOMService = useService("timesheet_uom");
         this.timerState = useState({
@@ -29,8 +36,6 @@ export class TimesheetTimerRendererHook {
             timerRunning: false,
             headerReadonly: false,
         });
-        this._setProjectTaskDebounce = useDebounced(this._setProjectTask.bind(this), 500);
-        this.showTimer = propsList.records.some((record) => record.data.display_timer);
     }
 
     get fields() {
@@ -81,6 +86,8 @@ export class TimesheetTimerRendererHook {
         await this._popRecord();
         this._setAddTimeMode(false);
     }
+
+    onWillUnmount() {}
 
     async onWillUpdateProps(nextProps) {
         await this._fetchRunningTimer();
@@ -295,6 +302,7 @@ export function useTimesheetTimerRendererHook() {
         timerState: timesheetTimerRendererHook.timerState,
     });
     onWillStart(timesheetTimerRendererHook.onWillStart.bind(timesheetTimerRendererHook));
+    onWillUnmount(timesheetTimerRendererHook.onWillUnmount.bind(timesheetTimerRendererHook));
     onWillUpdateProps(
         timesheetTimerRendererHook.onWillUpdateProps.bind(timesheetTimerRendererHook)
     );

@@ -47,7 +47,11 @@ class GermanTaxReportCustomHandler(models.AbstractModel):
             except stdnum.exceptions.InvalidComponent:
                 self._redirect_to_misconfigured_company_number(_("Your company's SteuerNummer is not compatible with your state"))
             except stdnum.exceptions.InvalidFormat:
-                self._redirect_to_misconfigured_company_number(_("Your company's SteuerNummer is not valid"))
+                if stdnum.de.stnr.is_valid(self.env.company.l10n_de_stnr, self.env.company.state_id.with_context(lang='de_DE').name):
+                    # the SteuerNummer is already in the right format, and so, can't be converted
+                    steuer_nummer = self.env.company.l10n_de_stnr
+                else:
+                    self._redirect_to_misconfigured_company_number(_("Your company's SteuerNummer is not valid"))
         else:
             self._redirect_to_misconfigured_company_number(_("Your company's SteuerNummer field should be filled"))
 

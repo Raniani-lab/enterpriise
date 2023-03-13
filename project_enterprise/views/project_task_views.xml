@@ -7,8 +7,8 @@
         <field name="inherit_id" ref="project.project_task_view_tree_base"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id' and not(@invisible='1')]" position="after">
-                <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" optional="hide" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
-                <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" optional="hide" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
+                <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" optional="hide" attrs="{'required': [('planned_date_end', '!=', False)], 'invisible': [('project_id', '=', False)]}"/>
+                <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" optional="hide" attrs="{'required': [('planned_date_begin', '!=', False)], 'invisible': [('project_id', '=', False)]}"/>
             </xpath>
         </field>
     </record>
@@ -32,8 +32,8 @@
                 </div>
             </xpath>
             <xpath expr="//div[@id='date_deadline_and_recurring_task']" position="after">
-                <label for="planned_date_begin" string="Planned Date"/>
-                <div class="w-100">
+                <label for="planned_date_begin" string="Planned Date" attrs="{'invisible': [('project_id', '=', False)]}"/>
+                <div class="w-100" attrs="{'invisible': [('project_id', '=', False)]}">
                     <div class="o_row">
                         <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
                         <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
@@ -93,7 +93,7 @@
                         </div>
                         <div t-if="user_names"><strong>Assignees — </strong> <t t-esc="user_names"/></div>
                         <div t-if="partner_id"><strong>Customer — </strong> <t t-esc="partner_id[1]"/></div>
-                        <div>
+                        <div t-if="project_id">
                             <t t-esc="planned_date_begin.toFormat('f ')"/>
                             <i class="fa fa-long-arrow-right" title="Arrow"/>
                             <t t-esc="planned_date_end.toFormat(' f')"/>

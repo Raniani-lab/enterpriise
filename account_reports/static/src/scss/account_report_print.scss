@@ -57,6 +57,32 @@
             color: black !important;
         }
     }
+
+    .o_account_reports_page.o_account_trial_balance_report .o_account_reports_table {
+
+        .o_account_reports_header_hierarchy {
+
+            tr:first-child th:not(:first-child) {
+                border: 1px solid lightgrey;
+            }
+
+            .o_account_report_column_header{
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+        }
+        .o_foldable_total {
+            font-weight: bold !important;
+        }
+    }
+
+    .number{
+        font-weight: normal !important;
+        color: black !important;
+    }
+    .total td{
+        font-weight: bold !important;
+    }
 }
 a {
     color: inherit !important;

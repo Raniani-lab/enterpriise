@@ -1876,7 +1876,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         options = self._generate_options(report, fields.Date.today() + relativedelta(months=-7, day=1), fields.Date.today() + relativedelta(months=-6, day=31))
 
         expected_values_open_asset = [
-            ("refund", "", "", 500.0, -500.0, "", "", 100.0, -100.0, -400.0),
+            ("refund", 0, 0, 500.0, -500.0, 0, 0, 100.0, -100.0, -400.0),
         ]
 
         self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_open_asset, options)
@@ -1905,7 +1905,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.env['account.move'].search(res_move['domain']).action_post()
 
         expected_values_closed_asset = [
-            ("refund", "", 500.0, 500.0, "", "", 500.0, 500.0, "", ""),
+            ("refund", 0, 500.0, 500.0, 0, 0, 500.0, 500.0, 0, 0),
         ]
         options = self._generate_options(report, fields.Date.today() + relativedelta(months=-7, day=1), fields.Date.today())
         self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_closed_asset, options)
@@ -2126,10 +2126,10 @@ class TestAccountAsset(TestAccountReportsCommon):
             #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
             [    0,                         5,            6,        7,       8,          9,                  10,             11,            12,               13],
             [
-                ('truck',                   10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
-                ('Asset 1',                   100,       '',       '',         100,        75,               '',             '',              75,               25,),
-                ('Asset 2',                   200,       '',       '',         200,       150,               '',             '',             150,               50,),
-                ('Total',                   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+                ('truck',                   10000,       0,       0,       10000,      4500,               0,             0,            4500,             5500,),
+                ('Asset 1',                   100,       0,       0,         100,        75,               0,             0,              75,               25,),
+                ('Asset 2',                   200,       0,       0,         200,       150,               0,             0,             150,               50,),
+                ('Total',                   10300,       0,       0,       10300,      4725,               0,             0,            4725,             5575,),
             ],
             options,
         )
@@ -2142,11 +2142,11 @@ class TestAccountAsset(TestAccountReportsCommon):
             #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
             [    0,                         5,            6,        7,       8,          9,                  10,             11,            12,               13],
             [
-                ('101000 Current Assets',   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
-                ('truck',                   10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
-                ('Asset 1',                   100,       '',       '',         100,        75,               '',             '',              75,               25,),
-                ('Asset 2',                   200,       '',       '',         200,       150,               '',             '',             150,               50,),
-                ('Total',                   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+                ('101000 Current Assets',   10300,       0,       0,       10300,      4725,               0,             0,            4725,             5575,),
+                ('truck',                   10000,       0,       0,       10000,      4500,               0,             0,            4500,             5500,),
+                ('Asset 1',                   100,       0,       0,         100,        75,               0,             0,              75,               25,),
+                ('Asset 2',                   200,       0,       0,         200,       150,               0,             0,             150,               50,),
+                ('Total',                   10300,       0,       0,       10300,      4725,               0,             0,            4725,             5575,),
             ],
             options,
         )
@@ -2160,12 +2160,12 @@ class TestAccountAsset(TestAccountReportsCommon):
             #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
             [    0,                         5,            6,        7,       8,          9,                  10,             11,            12,               13],
             [
-                ('A (2 lines)',               300,       '',       '',         300,       225,               '',             '',             225,               75,),
-                ('Asset 1',                   100,       '',       '',         100,        75,               '',             '',              75,               25,),
-                ('Asset 2',                   200,       '',       '',         200,       150,               '',             '',             150,               50,),
-                ('T (1 line)',              10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
-                ('truck',                   10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
-                ('Total',                   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+                ('A (2 lines)',               300,       0,       0,         300,       225,               0,             0,             225,               75,),
+                ('Asset 1',                   100,       0,       0,         100,        75,               0,             0,              75,               25,),
+                ('Asset 2',                   200,       0,       0,         200,       150,               0,             0,             150,               50,),
+                ('T (1 line)',              10000,       0,       0,       10000,      4500,               0,             0,            4500,             5500,),
+                ('truck',                   10000,       0,       0,       10000,      4500,               0,             0,            4500,             5500,),
+                ('Total',                   10300,       0,       0,       10300,      4725,               0,             0,            4725,             5575,),
             ],
             options,
         )
@@ -2178,13 +2178,13 @@ class TestAccountAsset(TestAccountReportsCommon):
             #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
             [    0,                         5,            6,        7,       8,          9,                  10,             11,            12,               13],
             [
-                ('101000 Current Assets',   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
-                ('A (2 lines)',               300,       '',       '',         300,       225,               '',             '',             225,               75,),
-                ('Asset 1',                   100,       '',       '',         100,        75,               '',             '',              75,               25,),
-                ('Asset 2',                   200,       '',       '',         200,       150,               '',             '',             150,               50,),
-                ('T (1 line)',              10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
-                ('truck',                   10000,       '',       '',       10000,      4500,               '',             '',            4500,             5500,),
-                ('Total',                   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
+                ('101000 Current Assets',   10300,       0,       0,       10300,      4725,               0,             0,            4725,             5575,),
+                ('A (2 lines)',               300,       0,       0,         300,       225,               0,             0,             225,               75,),
+                ('Asset 1',                   100,       0,       0,         100,        75,               0,             0,              75,               25,),
+                ('Asset 2',                   200,       0,       0,         200,       150,               0,             0,             150,               50,),
+                ('T (1 line)',              10000,       0,       0,       10000,      4500,               0,             0,            4500,             5500,),
+                ('truck',                   10000,       0,       0,       10000,      4500,               0,             0,            4500,             5500,),
+                ('Total',                   10300,       0,       0,       10300,      4725,               0,             0,            4725,             5575,),
             ],
             options,
         )

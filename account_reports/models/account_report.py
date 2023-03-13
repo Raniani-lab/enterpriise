@@ -867,7 +867,7 @@ class AccountReport(models.Model):
             columns = []
             for column_total, column in zip(column_totals, options['columns']):
                 figure_type = column.get('figure_type')
-                columns.append({'name': self.format_value(column_total, figure_type=figure_type), 'no_format': column_total})
+                columns.append({'name': self.format_value(column_total, figure_type=figure_type, blank_if_zero=column['blank_if_zero']), 'no_format': column_total})
             return {
                 'id': line_id,
                 'name': name,

@@ -130,7 +130,9 @@ class AccountReport(models.AbstractModel):
             elif fname == 'analytic_distribution':
                 selected_fields.append(sql.SQL('to_jsonb(account_id) AS "account_move_line.analytic_distribution"'))
             else:
-                if line_fields[fname].get("type") in ("many2one", "one2many", "many2many", "monetary"):
+                if line_fields[fname].get("translate"):
+                    typecast = sql.SQL('jsonb')
+                elif line_fields[fname].get("type") in ("many2one", "one2many", "many2many", "monetary"):
                     typecast = sql.SQL('integer')
                 elif line_fields[fname].get("type") == "datetime":
                     typecast = sql.SQL('date')

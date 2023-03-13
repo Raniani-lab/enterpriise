@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, time
+from datetime import date, datetime, time
+from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.tools import format_date, date_utils
 
@@ -52,3 +53,66 @@ class HrPayslip(models.Model):
                 'data/salary_rules/hr_salary_rule_without_pf_data.xml',
                 'data/salary_rules/hr_salary_rule_worker_data.xml',
             ])]
+
+    @api.model
+    def _get_dashboard_warnings(self):
+        res = super()._get_dashboard_warnings()
+        indian_companies = self.env.companies.filtered(lambda c: c.country_id.code == 'IN')
+        if indian_companies:
+            # Employees Without PAN Number
+            Employee = self.env['hr.employee']
+            employees_wo_pan = Employee.search([
+                ('l10n_in_pan', '=', False),
+                ('company_id', 'in', indian_companies.ids),
+            ])
+            if employees_wo_pan:
+                no_pan_id_str = _('Employees Without PAN Number')
+                res.append({
+                    'string': no_pan_id_str,
+                    'count': len(employees_wo_pan),
+                    'action': self._dashboard_default_action(no_pan_id_str, 'hr.employee', employees_wo_pan.ids)
+                })
+
+            # Employees Without UAN Number
+            employees_wo_uan = Employee.search([
+                ('l10n_in_uan', '=', False),
+                ('company_id', 'in', indian_companies.ids),
+            ])
+            if employees_wo_uan:
+                no_uan_id_str = _('Employees Without UAN Number')
+                res.append({
+                    'string': no_uan_id_str,
+                    'count': len(employees_wo_uan),
+                    'action': self._dashboard_default_action(no_uan_id_str, 'hr.employee', employees_wo_uan.ids)
+                })
+
+            # Employees Without ESIC Number
+            employees_wo_esic = Employee.search([
+                ('l10n_in_esic_number', '=', False),
+                ('company_id', 'in', indian_companies.ids),
+            ])
+            if employees_wo_esic:
+                no_esic_id_str = _('Employees Without ESIC Number')
+                res.append({
+                    'string': no_esic_id_str,
+                    'count': len(employees_wo_esic),
+                    'action': self._dashboard_default_action(no_esic_id_str, 'hr.employee', employees_wo_esic.ids)
+                })
+
+            # Employees who are on the probation & their contracts expire within a week
+            probation_contract_type = self.env.ref('l10n_in_hr_payroll.l10n_in_contract_type_probation')
+            nearly_expired_contracts = self.env['hr.contract'].search([
+                ('contract_type_id', '=', probation_contract_type.id),
+                ('state', '=', 'open'), ('kanban_state', '!=', 'blocked'),
+                ('date_end', '<=', fields.Date.to_string(date.today() + relativedelta(days=7))),
+                ('date_end', '>=', fields.Date.to_string(date.today() + relativedelta(days=1))),
+            ])
+            if nearly_expired_contracts:
+                prob_end_str = _("Employees Probation ends within a week")
+                employee_ids = nearly_expired_contracts.employee_id.ids
+                res.append({
+                    'string': prob_end_str,
+                    'count': len(employee_ids),
+                    'action': self._dashboard_default_action(prob_end_str, 'hr.employee', employee_ids)
+                })
+        return res

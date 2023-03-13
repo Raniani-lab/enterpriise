@@ -1387,6 +1387,19 @@ class HrPayslip(models.Model):
                 'action': self._dashboard_default_action(no_id_str, 'hr.employee', employees_wo_id.ids)
             })
 
+        # Employees Without Bank Account Number
+        employees_wo_bnk_acc = self.env['hr.employee'].search([
+            ('bank_account_id', '=', False),
+            ('contract_id', '!=', False),
+        ])
+        if employees_wo_bnk_acc:
+            no_bnk_acc_id_str = _('Employees Without Bank account Number')
+            result.append({
+                'string': no_bnk_acc_id_str,
+                'count': len(employees_wo_bnk_acc),
+                'action': self._dashboard_default_action(no_bnk_acc_id_str, 'hr.employee', employees_wo_bnk_acc.ids)
+            })
+
         return result
 
     def _get_employee_stats_actions(self):

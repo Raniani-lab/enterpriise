@@ -1127,7 +1127,7 @@ class TestWorkOrder(common.TestMrpCommon):
 
         production.workorder_ids[0].button_start()
         wo_form = Form(production.workorder_ids[0], view='mrp_workorder.mrp_workorder_view_form_tablet')
-        with mute_logger('odoo.tests.common.onchange'):
+        with mute_logger('odoo.tests.form.onchange'):
             wo_form.finished_lot_id = sn1
         wo = wo_form.save()
         qc_form = Form(wo.current_quality_check_id, view='mrp_workorder.quality_check_view_form_tablet')

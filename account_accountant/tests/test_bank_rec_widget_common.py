@@ -17,7 +17,7 @@ class WizardForm(Form):
         object.__setattr__(self, 'bankRecWidget', recordp)
         super().__init__(recordp.browse(), view=view)
 
-    def _init_from_defaults(self, model):
+    def _init_from_defaults(self):
         # EXTENDS base
         # Initialize the wizard with the default provided record.
         widget = self.bankRecWidget
@@ -29,7 +29,7 @@ class WizardForm(Form):
             }
             self._values.update(values)
         else:
-            super()._init_from_defaults(model)
+            super()._init_from_defaults()
 
     def save(self):
         # EXTENDS base

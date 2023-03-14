@@ -289,7 +289,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 CASE WHEN account_move.move_type IN ('in_invoice', 'out_refund') THEN 'Arrival' ELSE 'Dispatch' END AS type,
                 partner.vat as partner_vat,
                 ROUND(
-                    prod.weight * account_move_line.quantity / (
+                    COALESCE(prod.weight, 0) * account_move_line.quantity / (
                         CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                         THEN inv_line_uom.factor ELSE 1 END
                     ) * (

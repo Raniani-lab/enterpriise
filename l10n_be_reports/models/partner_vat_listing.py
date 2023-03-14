@@ -279,21 +279,18 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
         options['date']['date_from'] = options['date']['date_from'][0:4] + '-01-01'
         options['date']['date_to'] = options['date']['date_to'][0:4] + '-12-31'
         lines = report.with_context(print_mode=True)._get_lines(options)
+        partner_lines = filter(lambda line: report._get_model_info_from_id(line['id'])[0] == 'res.partner', lines)
 
         data_client_info = ''
         seq = 0
         sum_turnover = 0.00
         sum_tax = 0.00
 
-        for vat_number, values in groupby(lines[1:], key=lambda line: line['columns'][0]['name']):
+        for vat_number, values in groupby(partner_lines, key=lambda line: line['columns'][0]['name']):
             turnover = 0.0
             vat_amount = 0.0
 
             for value in list(values):
-                line_model = report._get_model_info_from_id(value['id'])[0]
-
-                if line_model != 'res.partner':
-                    continue
 
                 for column in value['columns']:
                     col_expr_label = column['expression_label']

@@ -15,7 +15,6 @@ Patch({
                         'calendar',
                         'pivot',
                         'cohort',
-                        'dashboard',
                         'map',
                         'activity',
                     ];

@@ -163,7 +163,12 @@ class AccountMoveLine(models.Model):
             enabled_types += ['out_invoice']
 
         if self.move_id.move_type in enabled_types and self.name and self.display_type == 'product':
-            if not self.product_id:
+
+            predict_product = self.env.context.get('account_predictive_bills_predict_product', True)
+            predict_account = self.env.context.get('account_predictive_bills_predict_account', True)
+            predict_taxes = self.env.context.get('account_predictive_bills_predict_taxes', True)
+
+            if predict_product and not self.product_id:
                 predicted_product_id = self._predict_product()
                 if predicted_product_id and predicted_product_id != self.product_id.id:
                     name = self.name
@@ -172,14 +177,16 @@ class AccountMoveLine(models.Model):
 
             # Product may or may not have been set above, if it has been set, account and taxes are set too
             if not self.product_id:
-                # Predict account.
-                predicted_account_id = self._predict_account()
-                if predicted_account_id and predicted_account_id != self.account_id.id:
-                    self.account_id = predicted_account_id
+                if predict_account:
+                    # Predict account.
+                    predicted_account_id = self._predict_account()
+                    if predicted_account_id and predicted_account_id != self.account_id.id:
+                        self.account_id = predicted_account_id
 
-                # Predict taxes
-                predicted_tax_ids = self._predict_taxes()
-                if predicted_tax_ids == [None]:
-                    predicted_tax_ids = []
-                if predicted_tax_ids is not False and set(predicted_tax_ids) != set(self.tax_ids.ids):
-                    self.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)
+                if predict_taxes:
+                    # Predict taxes
+                    predicted_tax_ids = self._predict_taxes()
+                    if predicted_tax_ids == [None]:
+                        predicted_tax_ids = []
+                    if predicted_tax_ids is not False and set(predicted_tax_ids) != set(self.tax_ids.ids):
+                        self.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)

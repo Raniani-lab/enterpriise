@@ -179,6 +179,40 @@ const HtmlFieldPatch = {
         });
     },
     /**
+     * The editor has to pause (collaborative) external steps when a new
+     * Behavior (coming from an external step) has to be rendered, because
+     * some of the following external steps could concern a rendered element
+     * inside the Behavior. This override adds a callback for the editor to
+     * specify when he should stop applying external steps (the callback
+     * analyzes the editable, checks if a new Behavior has to be rendered, and
+     * returns a promise resolved when that Behavior is rendered).
+     *
+     * @override
+     */
+    get wysiwygOptions() {
+        const options = this._super();
+        /**
+         * @param {Element} element to scan for new Behaviors
+         * @returns {Promise|null} resolved when the pre-rendering is done, or
+         *                         null if there is nothing to pre-render
+         */
+        const renderExternalBehaviors = (element) => {
+            let behaviorsData = [];
+            // Check that the mutex is idle synchronously to avoid unnecessary
+            // overheads in the editor that would be caused by returning a
+            // resolved Promise instead of null.
+            if (!this.behaviorState.updateMutex._unlockedProm) {
+                behaviorsData = this._scanFieldForBehaviors(element);
+                if (!behaviorsData.length) {
+                    return null;
+                }
+            }
+            return this.updateBehaviors(behaviorsData, element);
+        };
+        options.postProcessExternalSteps = renderExternalBehaviors;
+        return options;
+    },
+    /**
      * @returns {Object}
      */
     get behaviorTypes() {

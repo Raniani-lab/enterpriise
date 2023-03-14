@@ -555,18 +555,18 @@ class AccountAsset(models.Model):
         return number_days, self.currency_id.round(amount)
 
     def compute_depreciation_board(self):
-        self.ensure_one()
-        new_depreciation_moves_data = self._recompute_board()
-
-        # Need to unlink draft move before adding new one because if we create new move before, it will cause an error
+        # Need to unlink draft moves before adding new ones because if we create new moves before, it will cause an error
         # in the compute for the depreciable/cumulative value
         self.depreciation_move_ids.filtered(lambda mv: mv.state == 'draft').unlink()
-        new_depreciation_moves = self.env['account.move'].create(new_depreciation_moves_data)
-        if self.state == 'open':
-            # In case of the asset is in running mode, we post in the past and set to auto post move in the future
-            new_depreciation_moves._post()
 
-        return True
+        new_depreciation_moves_data = []
+        for asset in self:
+            new_depreciation_moves_data.extend(asset._recompute_board())
+
+        new_depreciation_moves = self.env['account.move'].create(new_depreciation_moves_data)
+        new_depreciation_moves_to_post = new_depreciation_moves.filtered(lambda move: move.asset_id.state == 'open')
+        # In case of the asset is in running mode, we post in the past and set to auto post move in the future
+        new_depreciation_moves_to_post._post()
 
     def _recompute_board(self):
         self.ensure_one()

@@ -988,3 +988,31 @@ class TestAccountAssetNew(AccountTestInvoicingCommon):
             self._get_depreciation_move_values(date='2024-11-30', depreciation_value=348.15, remaining_value=10096.15, depreciated_value=47903.85, state='draft'),
             self._get_depreciation_move_values(date='2024-12-31', depreciation_value=10096.15, remaining_value=0, depreciated_value=58000, state='draft'),
         ])
+
+    def test_compute_board_in_mass(self):
+        book = self.create_asset(value=35, periodicity="monthly", periods=2, method="linear", salvage_value=0)
+        shelf = self.create_asset(value=250, periodicity="monthly", periods=8, method="linear", salvage_value=0)
+        screw = self.create_asset(value=1, periodicity="monthly", periods=1, method="linear", salvage_value=0)
+
+        (book + screw).validate()
+        (book + shelf + screw).compute_depreciation_board()
+
+        self.assertRecordValues(book.depreciation_move_ids, [
+            self._get_depreciation_move_values(date='2020-01-31', depreciation_value=17.5, remaining_value=17.5, depreciated_value=17.5, state='posted'),
+            self._get_depreciation_move_values(date='2020-02-29', depreciation_value=17.5, remaining_value=0, depreciated_value=35, state='posted'),
+        ])
+
+        self.assertRecordValues(shelf.depreciation_move_ids, [
+            self._get_depreciation_move_values(date='2020-01-31', depreciation_value=31.25, remaining_value=218.75, depreciated_value=31.25, state='draft'),
+            self._get_depreciation_move_values(date='2020-02-29', depreciation_value=31.25, remaining_value=187.5, depreciated_value=62.5, state='draft'),
+            self._get_depreciation_move_values(date='2020-03-31', depreciation_value=31.25, remaining_value=156.25, depreciated_value=93.75, state='draft'),
+            self._get_depreciation_move_values(date='2020-04-30', depreciation_value=31.25, remaining_value=125, depreciated_value=125, state='draft'),
+            self._get_depreciation_move_values(date='2020-05-31', depreciation_value=31.25, remaining_value=93.75, depreciated_value=156.25, state='draft'),
+            self._get_depreciation_move_values(date='2020-06-30', depreciation_value=31.25, remaining_value=62.5, depreciated_value=187.5, state='draft'),
+            self._get_depreciation_move_values(date='2020-07-31', depreciation_value=31.25, remaining_value=31.25, depreciated_value=218.75, state='draft'),
+            self._get_depreciation_move_values(date='2020-08-31', depreciation_value=31.25, remaining_value=0, depreciated_value=250, state='draft'),
+        ])
+
+        self.assertRecordValues(screw.depreciation_move_ids, [
+            self._get_depreciation_move_values(date='2020-01-31', depreciation_value=1, remaining_value=0, depreciated_value=1, state='posted'),
+        ])

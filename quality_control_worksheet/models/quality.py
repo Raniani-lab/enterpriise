@@ -59,7 +59,6 @@ class QualityCheck(models.Model):
                 **context,
                 'edit': True,
                 'default_x_quality_check_id': self.id,
-                'form_view_initial_mode': 'edit',
             },
         })
         return action

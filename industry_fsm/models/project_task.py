@@ -254,7 +254,7 @@ class Task(models.Model):
             'res_model': 'project.task',
             'res_id': self.id,
             'view_mode': 'form',
-            'context': {'form_view_initial_mode': 'edit', 'task_worksheet_comment': True},
+            'context': {'task_worksheet_comment': True},
             'views': [[self.env.ref('industry_fsm.fsm_form_view_comment').id, 'form']],
         }
 

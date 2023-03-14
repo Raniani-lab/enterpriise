@@ -342,8 +342,7 @@ class WorksheetTemplate(models.Model):
         action = self.action_id.read()[0]
         action.update({
             'views': [[False, "form"]],
-            'context': {'default_x_%s_id' % self.res_model.replace('.', '_'): True,  # to hide model_id from view
-                        'form_view_initial_mode': 'readonly'}  # to avoid edit mode at studio exit
+            'context': {'default_x_%s_id' % self.res_model.replace('.', '_'): True},  # to hide model_id from view
         })
         return action
 

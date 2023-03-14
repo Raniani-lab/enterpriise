@@ -247,7 +247,6 @@ class Task(models.Model):
             'name': self.name,
             'context': {
                 'fsm_mode': True,
-                'form_view_initial_mode': 'edit',
                 'default_partner_id': self.partner_id.id,
                 'default_task_id': self.id,
                 'default_company_id': self.company_id.id,

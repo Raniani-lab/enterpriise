@@ -113,7 +113,6 @@ class Task(models.Model):
                 **context,
                 'edit': True,
                 'default_x_project_task_id': self.id,
-                'form_view_initial_mode': 'edit',
             },
         })
         return action

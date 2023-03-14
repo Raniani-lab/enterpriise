@@ -6,10 +6,5 @@
       <field name="res_model">helpdesk.ticket</field>
       <field name="view_mode">form</field>
       <field name="view_id" ref="helpdesk.helpdesk_ticket_view_form"/>
-      <field name="context">
-          {
-                'form_view_initial_mode': 'edit',
-          }
-      </field>
     </record>
 </odoo>

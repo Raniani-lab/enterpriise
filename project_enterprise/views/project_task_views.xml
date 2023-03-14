@@ -72,7 +72,7 @@
                 date_stop="planned_date_end"
                 default_scale="month"
                 scales="day,week,month,year"
-                color="project_color"
+                color="project_id"
                 string="Planning"
                 js_class="task_gantt"
                 display_unavailability="1"
@@ -109,7 +109,6 @@
                 <field name="user_ids"/>
                 <field name="user_names"/>
                 <field name="partner_id"/>
-                <field name="project_color"/>
                 <field name="planning_overlap"/>
             </gantt>
         </field>

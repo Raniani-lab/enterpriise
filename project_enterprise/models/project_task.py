@@ -26,7 +26,6 @@ class Task(models.Model):
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)
     partner_street = fields.Char(related='partner_id.street', readonly=False)
-    project_color = fields.Integer('Project color', related='project_id.color')
 
     # Task Dependencies fields
     display_warning_dependency_in_gantt = fields.Boolean(compute="_compute_display_warning_dependency_in_gantt")

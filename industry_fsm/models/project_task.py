@@ -440,6 +440,7 @@ class Task(models.Model):
 
     @api.model
     def get_views(self, views, options=None):
+        options = options or {}
         options['toolbar'] = not self._context.get('task_worksheet_comment') and options.get('toolbar')
         res = super().get_views(views, options)
         return res

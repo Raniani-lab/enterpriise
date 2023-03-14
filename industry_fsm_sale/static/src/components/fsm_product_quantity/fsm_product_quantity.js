@@ -89,10 +89,11 @@ FsmProductQuantity.template = 'industry_fsm_sale.FsmProductQuantity';
 export const fsmProductQuantity = {
     ...floatField,
     component: FsmProductQuantity,
-    extractProps: (fieldInfo) => ({
-        ...floatField.extractProps(fieldInfo),
-        hideButtons: archParseBoolean(fieldInfo.attrs.hide_buttons),
-    }),
+    extractProps({ attrs }) {
+        const props = floatField.extractProps(...arguments);
+        props.hideButtons = archParseBoolean(attrs.hide_buttons);
+        return props;
+    },
 };
 
 registry.category("fields").add("fsm_product_quantity", fsmProductQuantity);

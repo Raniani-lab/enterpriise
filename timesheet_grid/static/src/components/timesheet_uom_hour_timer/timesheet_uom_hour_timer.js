@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
+import { _lt } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { _lt } from "@web/core/l10n/translation";
 
 import { TimesheetDisplayTimer } from "../timesheet_display_timer/timesheet_display_timer";
 
@@ -15,10 +15,7 @@ export class TimesheetUOMHourTimer extends Component {
     }
 
     get displayButton() {
-        return (
-            this.props.record.data.display_timer &&
-            (this.props.record.mode === "readonly" || this.props.record.isReadonly(this.props.name))
-        );
+        return this.props.record.data.display_timer && this.props.readonly;
     }
 
     get iconClass() {
@@ -41,13 +38,12 @@ export class TimesheetUOMHourTimer extends Component {
 
     async onClick(ev) {
         ev.preventDefault();
-        const context = this.props.record.getFieldContext(this.props.name);
         const action = this.addTimeMode ? "increase" : this.isTimerRunning ? "stop" : "start";
         await this.ormService.call(
             this.props.record.resModel,
             `action_timer_${action}`,
             [[this.props.record.resId]],
-            { context }
+            { context: this.props.context }
         );
         await this.props.record.model.load();
         await this.props.record.model.notify();
@@ -60,6 +56,11 @@ TimesheetUOMHourTimer.template = "timesheet_grid.TimesheetUOMHourTimer";
 
 export const timesheetUOMHourTimer = {
     component: TimesheetUOMHourTimer,
+    extractProps(fieldInfo, dynamicInfo) {
+        return {
+            context: dynamicInfo.context,
+        };
+    },
     fieldDependencies: [
         { name: "duration_unit_amount", type: "float" },
         { name: "display_timer", type: "boolean" },

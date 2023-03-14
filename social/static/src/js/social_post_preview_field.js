@@ -28,10 +28,11 @@ patch(FieldPostPreview.prototype, 'social_preview_formatter_mixin', SocialPostFo
 export const fieldPostPreview = {
     ...htmlField,
     component: FieldPostPreview,
-    extractProps: (fieldInfo) => ({
-        ...htmlField.extractProps(fieldInfo),
-        mediaType: fieldInfo.attrs.media_type || '',
-    }),
+    extractProps({ attrs }) {
+        const props = htmlField.extractProps(...arguments);
+        props.mediaType = attrs.media_type || '';
+        return props;
+    },
 };
 
 registry.category("fields").add("social_post_preview", fieldPostPreview);

@@ -6,10 +6,11 @@ import { serializeDateTime } from "@web/core/l10n/dates";
 
 const { extractProps } = saleOrderLineProductField;
 patch(saleOrderLineProductField, "sale_renting_field", {
-    extractProps: (fieldInfo) => ({
-        ...extractProps(fieldInfo),
-        rent: fieldInfo.options.rent,
-    }),
+    extractProps({ options }) {
+        const props = extractProps(...arguments);
+        props.rent = options.rent;
+        return props;
+    },
 });
 
 patch(SaleOrderLineProductField, "sale_renting_props", {

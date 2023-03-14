@@ -27,21 +27,20 @@ export class TimerToggleButton extends Component {
     }
 
     async onClick(ev) {
-        const context = this.props.record.getFieldContext(this.props.name);
         const action = this.props.record.data[this.props.name] ? "stop" : "start";
         await this.orm.call(
             this.props.record.resModel,
             `action_timer_${action}`,
             [[this.props.record.resId]],
-            { context },
-            );
+            { context: this.props.context }
+        );
         await this.props.record.model.load();
         await this.props.record.model.notify();
     }
-
 }
 
 TimerToggleButton.props = {
     ...standardFieldProps,
+    context: { type: Object },
 };
 TimerToggleButton.template = "timer.ToggleButton";

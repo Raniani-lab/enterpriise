@@ -24,6 +24,7 @@ TimesheetTimerFloatTimerField.props = {
     displayRed: { type: Boolean },
     value: true,
     name: { optional: true },
+    context: { type: Object, optional: true },
 };
 
 export class TimesheetDisplayTimer extends Component {
@@ -34,6 +35,7 @@ export class TimesheetDisplayTimer extends Component {
     static props = {
         ...standardFieldProps,
         timerRunning: { type: Boolean, optional: true },
+        context: { type: Object, optional: true },
         displayRed: { type: Boolean, optional: true },
         timerService: { type: Object, optional: true },
     };

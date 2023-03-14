@@ -30,11 +30,9 @@ QUnit.module("timer", (hooks) => {
         });
         const props = {
             name: "timer",
+            context: {},
             record: {
                 resModel: "dummy",
-                getFieldContext() {
-                    return {};
-                },
                 model: {
                     load() {
                         assert.step("load");

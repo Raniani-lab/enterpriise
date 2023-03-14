@@ -1205,7 +1205,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             const resIds = staticList.records.map((r) => r.resId);
             const wowlX2ManyInfo = {
                 resModel: staticList.resModel,
-                fieldContext: record.getFieldContext(fieldName),
+                fieldContext: record._getFieldContext(fieldName),
                 resId: resIds[0],
                 resIds,
                 viewType,

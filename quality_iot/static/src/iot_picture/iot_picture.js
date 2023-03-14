@@ -64,11 +64,12 @@ TabletImageIoTField.template = 'quality_iot.TabletImageIoTField';
 export const tabletImageIoTField = {
     ...tabletImageField,
     component: TabletImageIoTField,
-    extractProps: (fieldInfo) => ({
-        ...tabletImageField.extractProps(fieldInfo),
-        ip_field: fieldInfo.options.ip_field,
-        identifier_field: fieldInfo.options.identifier,
-    }),
+    extractProps({ options }) {
+        const props = tabletImageField.extractProps(...arguments);
+        props.ip_field = options.ip_field;
+        props.identifier_field = options.identifier;
+        return props;
+    },
 };
 
 registry.category("fields").add("iot_picture", tabletImageIoTField);

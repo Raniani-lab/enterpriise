@@ -246,6 +246,8 @@ class AccountAsset(models.Model):
             related_purchase_value = sum(asset.original_move_line_ids.mapped('balance'))
             if asset.account_asset_id.multiple_assets_per_line and len(asset.original_move_line_ids) == 1:
                 related_purchase_value /= max(1, int(asset.original_move_line_ids.quantity))
+            if asset.asset_type == 'sale':
+                related_purchase_value *= -1
             asset.related_purchase_value = related_purchase_value
 
     @api.depends('original_move_line_ids')
@@ -611,6 +613,9 @@ class AccountAsset(models.Model):
                     period_end_depreciation_date = final_depreciation_date
 
                 if not float_is_zero(amount, precision_rounding=self.currency_id.rounding):
+                    # For deferred revenues, we should invert the amounts.
+                    if self.asset_type == 'sale':
+                        amount *= -1
                     depreciation_move_values.append(self.env['account.move']._prepare_move_for_asset_depreciation({
                         'amount': amount,
                         'asset_id': self,

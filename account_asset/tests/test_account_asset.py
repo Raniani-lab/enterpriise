@@ -2184,3 +2184,49 @@ class TestAccountAsset(TestAccountReportsCommon):
                 ('Total',                   10300,       '',       '',       10300,      4725,               '',             '',            4725,             5575,),
             ]
         )
+
+    def test_deferred_revenue_sign_from_invoice(self):
+        """ Ensure that a deferred revenue created from an out_invoice line has a positive original value. """
+        liability_account = self.env['account.account'].create({
+            "name": "Liability Account",
+            "code": "la",
+            "account_type": 'liability_current',
+            "create_asset": "validate",
+            "asset_type": "sale",
+        })
+
+        def_revenue_model = self.env['account.asset'].create({
+            'account_depreciation_id': liability_account.id,
+            'account_depreciation_expense_id': self.company_data['default_account_revenue'].id,
+            'journal_id': self.company_data['default_journal_sale'].id,
+            'name': 'Maintenance Contract - 1 Month',
+            'method_number': 1,
+            'method_period': '1',
+            'prorata_computation_type': 'none',
+            'asset_type': 'sale',
+            'state': 'model',
+        })
+
+        liability_account.asset_model = def_revenue_model
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': '2020-12-31',
+            'invoice_line_ids': [(0, 0, {
+                'name': 'Insurance claim',
+                'account_id': liability_account.id,
+                'price_unit': 250,
+                'quantity': 1,
+            })],
+        })
+        invoice.action_post()
+
+        recognition = invoice.asset_ids
+        # The original value should be positive
+        self.assertEqual(recognition.original_value, 250)
+        # Check that the accounts are properly debited/credited
+        revenue_line = recognition.depreciation_move_ids[0].line_ids.filtered(lambda l: l.account_id == self.company_data['default_account_revenue'])
+        depreciation_line = recognition.depreciation_move_ids[0].line_ids.filtered(lambda l: l.account_id == liability_account)
+        self.assertEqual(revenue_line.balance, -250)
+        self.assertEqual(depreciation_line.balance, 250)

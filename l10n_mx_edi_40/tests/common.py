@@ -169,7 +169,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
         cls.expected_invoice_cfdi_values = '''
             <Comprobante
                 Certificado="___ignore___"
-                Fecha="2017-01-01T17:00:00"
+                Fecha="2017-01-01T23:59:00"
                 Folio="1"
                 FormaPago="99"
                 LugarExpedicion="85134"

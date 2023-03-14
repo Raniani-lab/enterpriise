@@ -86,7 +86,7 @@ class HelpdeskTeam(models.Model):
     use_website_helpdesk_form = fields.Boolean('Website Form', compute='_compute_use_website_helpdesk_form', readonly=False, store=True)
     use_website_helpdesk_livechat = fields.Boolean('Live Chat')
     use_website_helpdesk_forum = fields.Boolean('Community Forum', compute='_compute_use_website_helpdesk_forum', readonly=False, store=True)
-    use_website_helpdesk_slides = fields.Boolean('Enable eLearning', compute='_compute_use_website_helpdesk_slides', readonly=False, store=True)
+    use_website_helpdesk_slides = fields.Boolean('eLearning', compute='_compute_use_website_helpdesk_slides', readonly=False, store=True)
     use_website_helpdesk_knowledge = fields.Boolean('Knowledge', compute='_compute_use_website_helpdesk_knowledge', readonly=False, store=True)
     use_helpdesk_timesheet = fields.Boolean(
         'Timesheets', compute='_compute_use_helpdesk_timesheet',

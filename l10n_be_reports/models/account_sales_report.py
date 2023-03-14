@@ -183,7 +183,7 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
         date_from = fields.Date.from_string(options['date'].get('date_from'))
         period_type = options['date'].get('period_type')
         month = date_from.month if period_type == 'month' else None
-        quarter = date_from.month // 4 + 1 if period_type == 'quarter' else None
+        quarter = (date_from.month - 1) // 3 + 1 if period_type == 'quarter' else None
 
         xml_data.update({
             'company_name': company.name,

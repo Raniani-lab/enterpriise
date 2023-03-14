@@ -61,8 +61,6 @@ class AccountMove(models.Model):
                 asset_depreciation = sum(
                     move.line_ids.filtered(lambda l: l.account_id == account).mapped('balance')
                 )
-                if asset.asset_type == 'sale':
-                    asset_depreciation *= -1
                 # Special case of closing entry - only disposed assets of type 'purchase' should match this condition
                 if any(
                     (line.account_id, -line.balance) == (asset.account_asset_id, asset.original_value)

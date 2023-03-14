@@ -48,7 +48,7 @@
                                         'default_state': 'model',
                                         'form_view_ref': form_view_ref,
                                         'default_asset_type': asset_type,
-                                        'default_account_asset_id': id,
+                                        'default_account_depreciation_id': id,
                                    }"
                                    options="{'no_quick_create': True}"/>
                         </group>

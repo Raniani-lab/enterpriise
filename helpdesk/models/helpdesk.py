@@ -943,7 +943,7 @@ class HelpdeskTeam(models.Model):
         ticket_ids = self.env['helpdesk.ticket']._search([('team_id.company_id', 'in', self._context.get('allowed_company_ids'))])
         action['domain'] = expression.AND([
             ast.literal_eval(action.get('domain', '[]')),
-            [('res_id', 'in', ticket_ids)],
+            [('res_id', 'in', list(ticket_ids))],
         ])
         return action
     # ---------------------------------------------------

@@ -44,7 +44,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_I_1.it_att_b_i_1_v_balance - IT_ATT_B_I_1.it_att_b_i_1_f_balance</field>
+                                                <field name="formula">IT_ATT_B_I_1.it_att_b_i_1_v_balance + IT_ATT_B_I_1.it_att_b_i_1_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_1_it_att_b_i_1_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_i_1_v_balance</field>
@@ -66,7 +66,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_2_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_I_2.it_att_b_i_2_v_balance - IT_ATT_B_I_2.it_att_b_i_2_f_balance</field>
+                                                <field name="formula">IT_ATT_B_I_2.it_att_b_i_2_v_balance + IT_ATT_B_I_2.it_att_b_i_2_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_2_it_att_b_i_2_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_i_2_v_balance</field>
@@ -88,7 +88,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_3_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_I_3.it_att_b_i_3_v_balance - IT_ATT_B_I_3.it_att_b_i_3_f_balance</field>
+                                                <field name="formula">IT_ATT_B_I_3.it_att_b_i_3_v_balance + IT_ATT_B_I_3.it_att_b_i_3_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_3_it_att_b_i_3_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_i_3_v_balance</field>
@@ -110,7 +110,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_4_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_I_4.it_att_b_i_4_v_balance - IT_ATT_B_I_4.it_att_b_i_4_f_balance</field>
+                                                <field name="formula">IT_ATT_B_I_4.it_att_b_i_4_v_balance + IT_ATT_B_I_4.it_att_b_i_4_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_4_it_att_b_i_4_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_i_4_v_balance</field>
@@ -132,7 +132,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_5_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_I_5.it_att_b_i_5_v_balance - IT_ATT_B_I_5.it_att_b_i_5_f_balance</field>
+                                                <field name="formula">IT_ATT_B_I_5.it_att_b_i_5_v_balance + IT_ATT_B_I_5.it_att_b_i_5_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_5_it_att_b_i_5_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_i_5_v_balance</field>
@@ -162,7 +162,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_7_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_I_7.it_att_b_i_7_v_balance - IT_ATT_B_I_7.it_att_b_i_7_f_balance</field>
+                                                <field name="formula">IT_ATT_B_I_7.it_att_b_i_7_v_balance + IT_ATT_B_I_7.it_att_b_i_7_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_I_7_it_att_b_i_7_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_i_7_v_balance</field>
@@ -191,7 +191,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_II_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_II_1.it_att_b_ii_1_v_balance - IT_ATT_B_II_1.it_att_b_ii_1_f_balance</field>
+                                                <field name="formula">IT_ATT_B_II_1.it_att_b_ii_1_v_balance + IT_ATT_B_II_1.it_att_b_ii_1_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_II_1_it_att_b_ii_1_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_ii_1_v_balance</field>
@@ -213,7 +213,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_II_2_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_II_2.it_att_b_ii_2_v_balance - IT_ATT_B_II_2.it_att_b_ii_2_f_balance</field>
+                                                <field name="formula">IT_ATT_B_II_2.it_att_b_ii_2_v_balance + IT_ATT_B_II_2.it_att_b_ii_2_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_II_2_it_att_b_ii_2_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_ii_2_v_balance</field>
@@ -235,7 +235,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_II_3_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_II_3.it_att_b_ii_3_v_balance - IT_ATT_B_II_3.it_att_b_ii_3_f_balance</field>
+                                                <field name="formula">IT_ATT_B_II_3.it_att_b_ii_3_v_balance + IT_ATT_B_II_3.it_att_b_ii_3_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_II_3_it_att_b_ii_3_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_ii_3_v_balance</field>
@@ -257,7 +257,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_B_II_4_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_B_II_4.it_att_b_ii_4_v_balance - IT_ATT_B_II_4.it_att_b_ii_4_f_balance</field>
+                                                <field name="formula">IT_ATT_B_II_4.it_att_b_ii_4_v_balance + IT_ATT_B_II_4.it_att_b_ii_4_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_B_II_4_it_att_b_ii_4_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_b_ii_4_v_balance</field>
@@ -579,7 +579,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_C_II_1_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_C_II_1.it_att_c_ii_1_v_balance - IT_ATT_C_II_1.it_att_c_ii_1_f_balance</field>
+                                                <field name="formula">IT_ATT_C_II_1.it_att_c_ii_1_v_balance + IT_ATT_C_II_1.it_att_c_ii_1_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_C_II_1_it_att_c_ii_1_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_c_ii_1_v_balance</field>
@@ -599,7 +599,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_C_II_1_it_att_c_ii_1_f_balance" model="account.report.expression">
                                                 <field name="label">it_att_c_ii_1_f_balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">-IT_ATT_C_II_1.it_att_c_ii_1_f_entro_balance + IT_ATT_C_II_1.it_att_c_ii_1_f_oltro_balance</field>
+                                                <field name="formula">IT_ATT_C_II_1.it_att_c_ii_1_f_entro_balance + IT_ATT_C_II_1.it_att_c_ii_1_f_oltro_balance</field>
                                             </record>
                                         </field>
                                         <field name="children_ids">
@@ -609,7 +609,7 @@
                                                 <field name="groupby">account_id</field>
                                                 <field name="hide_if_zero" eval="True"/>
                                                 <field name="foldable" eval="True"/>
-                                                <field name="account_codes_formula">1531 + 1503 + 1501\(150199) + 1507 + 1508 + 1505 + 1510 + 1506 + 1511 + 1509</field>
+                                                <field name="account_codes_formula">1531 + 1503 + 1501\(150199) + 1502 + 1507 + 1508 + 1505 + 1510 + 1506 + 1511 + 1509</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_C_II_1_oltro" model="account.report.line">
                                                 <field name="name">Over 12 months</field>
@@ -852,7 +852,7 @@
                                             <record id="account_financial_report_line_it_sp_ATT_C_III_6_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">IT_ATT_C_III_6.it_att_c_iii_6_v_balance - IT_ATT_C_III_6.it_att_c_iii_6_f_balance</field>
+                                                <field name="formula">IT_ATT_C_III_6.it_att_c_iii_6_v_balance + IT_ATT_C_III_6.it_att_c_iii_6_f_balance</field>
                                             </record>
                                             <record id="account_financial_report_line_it_sp_ATT_C_III_6_it_att_c_iii_6_v_balance" model="account.report.expression">
                                                 <field name="label">it_att_c_iii_6_v_balance</field>
@@ -928,7 +928,7 @@
                                 <field name="code">IT_PASS_A_I</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">-2104 - 2101 - 2105</field>
+                                <field name="account_codes_formula">- 2101 - 2105</field>
                             </record>
                             <record id="account_financial_report_line_it_sp_PASS_A_II" model="account.report.line">
                                 <field name="name">II. Share premium reserve</field>
@@ -1410,7 +1410,7 @@
                         <field name="code">IT_PASS_E</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">-270</field>
+                        <field name="account_codes_formula">-270 - 280 - 281</field>
                     </record>
                 </field>
             </record>

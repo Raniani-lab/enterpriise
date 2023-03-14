@@ -102,7 +102,7 @@
                                 <field name="code">ITR_PASS_A_I</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">-2104 - 2101 - 2105</field>
+                                <field name="account_codes_formula">- 2101 - 2105</field>
                             </record>
                             <record id="account_financial_report_line_it_sp_reduce_PASS_A_II" model="account.report.line">
                                 <field name="name">II. Share premium reserve</field>
@@ -197,7 +197,7 @@
                         <field name="code">ITR_PASS_D</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">-26 - 25 - 27 - 24</field>
+                        <field name="account_codes_formula">-26 - 25 - 27 - 28 - 24</field>
                     </record>
                 </field>
             </record>

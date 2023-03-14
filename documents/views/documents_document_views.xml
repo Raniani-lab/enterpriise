@@ -71,11 +71,12 @@
                 <field name="activity_ids"/>
                 <field name="activity_state"/>
                 <field name="is_editable_attachment"/>
+                <field name="is_multipage"/>
                 <field name="thumbnail_status"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div draggable="true" class="d-flex flex-column oe_kanban_global_area o_kanban_attachment o_documents_attachment"
-                            t-att-data-id="record.id.raw_value">
+                             t-attf-class="#{record.is_multipage.raw_value ? 'o_kanban_stack' : ''}" t-att-data-id="record.id.raw_value">
                             <t t-set="fileRequest" t-value="record.type.raw_value === 'empty'"/>
                             <div class="o_kanban_image" t-attf-class="#{fileRequest ? 'o_request_image' : ''}">
                                 <t t-set="isPdf" t-value="['application/pdf', 'application/pdf;base64'].includes(record.mimetype.value)"/>
@@ -139,6 +140,10 @@
                                 </div>
                             </div>
                         </div>
+                        <t t-if="record.is_multipage.raw_value">
+                            <div class="o_kanban_stack"/>
+                            <div class="o_kanban_stack"/>
+                        </t>
                     </t>
                 </templates>
             </kanban>

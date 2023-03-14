@@ -31,11 +31,34 @@
 
             &:hover .o-file-upload-progress-bar-abort {
                 display: inline-block;
-                z-index: 3;
+                z-index: 5;
+            }
+
+            .o_kanban_stack {
+                width: calc(100% - 6px);
+                height: calc(100% - 6px);
+                &:nth-of-type(1){
+                    z-index: 2;
+                }
+                &:nth-of-type(2) {
+                    position: absolute;
+                    z-index: 1;
+                    transform: translate(3px, 3px);
+                }
+                &:nth-of-type(3) {
+                    position: absolute;
+                    transform: translate(6px, 6px);
+                }
             }
         }
 
         .o_kanban_record .o_kanban_attachment {
+            &.o_record_selected, &.o_record_selected ~ div  {
+                opacity: 1;
+                border-color: $o-brand-primary;
+                box-shadow: 0 0 0 1px $o-brand-primary;
+            }
+
             &.oe_file_request {
                 border-style: dashed;
                 background-color: #fff0;
@@ -109,7 +132,8 @@
                 @include o-position-absolute($o-kanban-inside-vgutter - 4px , $o-kanban-inside-hgutter - 4px);
                 padding: $o-dms-p-tiny;
                 font-size: 16px;
-                z-index: 3;
+                z-index: 4;
+                transform: translate(-6px);
             }
 
             .fa-star-o {
@@ -128,10 +152,6 @@
         }
 
         .o_record_selected {
-            opacity: 1;
-            border-color: $o-brand-primary;
-            box-shadow: 0 0 0 1px $o-brand-primary;
-
             .o_record_selector{
                 @include o-hover-opacity(0.8, 1);
 

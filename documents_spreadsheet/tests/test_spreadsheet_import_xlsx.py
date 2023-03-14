@@ -68,3 +68,28 @@ class SpreadsheetImportXlsx(SpreadsheetTestCommon):
             document_xlsx.clone_xlsx_into_spreadsheet()
 
         self.assertEqual(error_catcher.exception.args[0], ("The xlsx file is corrupted"))
+
+    def test_import_xlsx_computes_multipage(self):
+        """Import xlsx leads to accurate multipage computation"""
+        folder = self.env["documents.folder"].create({"name": "Test folder"})
+
+        cases = [('test.xlsx', False), ('test2sheets.xlsx', True)]
+
+        for filename, is_multipage in cases:
+            with file_open(f'documents_spreadsheet/tests/data/{filename}', 'rb') as f:
+                spreadsheet_data = base64.encodebytes(f.read())
+                document_xlsx = self.env['documents.document'].create(
+                    {
+                        'datas': spreadsheet_data,
+                        'name': filename,
+                        'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        'folder_id': folder.id,
+                    }
+                )
+                with self.subTest(is_multipage=is_multipage, kind="xlsx"):
+                    self.assertEqual(document_xlsx.is_multipage, is_multipage)
+
+            spreadsheet_id = document_xlsx.clone_xlsx_into_spreadsheet()
+            spreadsheet = self.env["documents.document"].browse(spreadsheet_id).exists()
+            with self.subTest(is_multipage=is_multipage, kind="spreadsheet"):
+                self.assertEqual(spreadsheet.is_multipage, is_multipage)

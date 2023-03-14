@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+import base64
+import io
+import re
+from ast import literal_eval
+from collections import OrderedDict
+
+from PyPDF2 import PdfFileReader
+from PyPDF2.utils import PdfReadError
+from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
 from odoo.osv import expression
 from odoo.tools import image_process
 from odoo.tools.misc import clean_context
-import base64
-from ast import literal_eval
-from dateutil.relativedelta import relativedelta
-from collections import OrderedDict
-import re
 
 
 class Document(models.Model):
@@ -23,6 +28,7 @@ class Document(models.Model):
     attachment_name = fields.Char('Attachment Name', related='attachment_id.name', readonly=False)
     attachment_type = fields.Selection(string='Attachment Type', related='attachment_id.type', readonly=False)
     is_editable_attachment = fields.Boolean(default=False, help='True if we can edit the link attachment.')
+    is_multipage = fields.Boolean('Is considered multipage', compute='_compute_is_multipage', store=True)
     datas = fields.Binary(related='attachment_id.datas', related_sudo=True, readonly=False, prefetch=False)
     raw = fields.Binary(related='attachment_id.raw', related_sudo=True, readonly=False, prefetch=False)
     file_size = fields.Integer(related='attachment_id.file_size', store=True)
@@ -91,6 +97,12 @@ class Document(models.Model):
             if record.attachment_id:
                 record.attachment_name = record.name
 
+    @api.depends('datas', 'mimetype')
+    def _compute_is_multipage(self):
+        for document in self:
+            # external computation to be extended
+            document.is_multipage = bool(document._get_is_multipage())  # None => False
+
     @api.depends('attachment_id', 'attachment_id.res_model', 'attachment_id.res_id')
     def _compute_res_record(self):
         for record in self:
@@ -152,6 +164,19 @@ class Document(models.Model):
                 record.type = 'binary'
             elif record.url:
                 record.type = 'url'
+
+    def _get_is_multipage(self):
+        """
+        :return: Whether the document can be considered multipage or `None` if unable determine
+        :rtype: bool | None
+        """
+        if self.mimetype in ('application/pdf', 'application/pdf;base64'):
+            stream = io.BytesIO(base64.b64decode(self.datas))
+            try:
+                return PdfFileReader(stream, strict=False).numPages > 1
+            except (ValueError, PdfReadError):
+                # ValueError for known bug in PyPDF2 v.1.26 (details in commit message)
+                pass
 
     def _get_models(self, domain):
         """

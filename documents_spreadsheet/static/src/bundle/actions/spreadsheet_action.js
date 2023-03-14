@@ -99,8 +99,11 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.actionService.doAction(action, { clear_breadcrumbs: true });
     }
 
-    async onSpreadsheetLeft({ thumbnail }) {
-        await this.orm.write("documents.document", [this.resId], { thumbnail });
+    async onSpreadsheetLeft({ data, thumbnail }) {
+        await this.orm.write("documents.document", [this.resId], {
+            is_multipage: data.sheets?.length > 1 || false,
+            thumbnail,
+        });
     }
 
     /**

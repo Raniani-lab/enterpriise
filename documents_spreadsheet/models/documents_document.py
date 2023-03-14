@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import json
 import base64
-import zipfile
 import io
+import json
+import zipfile
+
+from lxml import etree
 
 from odoo import _, fields, models, api
+from odoo.addons.spreadsheet.utils import empty_spreadsheet_data_base64
+from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.tools import image_process
-from odoo.exceptions import UserError
-
-from odoo.addons.spreadsheet.utils import empty_spreadsheet_data_base64
-
 
 SUPPORTED_PATHS = (
     "[Content_Types].xml",
@@ -178,40 +178,87 @@ class Document(models.Model):
 
         self.ensure_one()
 
+        unzipped = self._unzip_xlsx()
+
+        doc = self.copy({
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+            "name": self.name.rstrip(".xlsx"),
+            "spreadsheet_data": json.dumps(unzipped)
+        })
+
+        if archive_source:
+            self.action_archive()
+
+        return doc.id
+
+    def _get_is_multipage(self):
+        """Override for spreadsheets and xlsx."""
+        is_multipage = super()._get_is_multipage()
+        if is_multipage is not None:
+            return is_multipage
+
+        if self.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+            try:
+                spreadsheet_data = self._unzip_xlsx()
+            except XSLXReadUserError:
+                # No need to raise for this, just return that we don't know
+                return None
+            return self._is_xlsx_data_multipage(spreadsheet_data)
+
+        if self.handler == "spreadsheet":
+            spreadsheet_data = json.loads(self.spreadsheet_data)
+            if spreadsheet_data.get("sheets"):
+                return len(spreadsheet_data["sheets"]) > 1
+            return self._is_xlsx_data_multipage(spreadsheet_data)
+
+    @api.model
+    def _is_xlsx_data_multipage(self, spreadsheet_data):
+        for filename, content in spreadsheet_data.items():
+            if filename.endswith("workbook.xml.rels"):
+                tree = etree.fromstring(content.encode())
+                nodes = tree.findall(
+                    './/rels:Relationship',
+                    {'rels': 'http://schemas.openxmlformats.org/package/2006/relationships'}
+                )
+                found_first_sheet = False
+                for node in nodes:
+                    if node.attrib["Type"].endswith('/relationships/worksheet'):
+                        if found_first_sheet:
+                            return True
+                        found_first_sheet = True
+                break
+
+        return False
+
+    def _unzip_xlsx(self):
         file = io.BytesIO(self.attachment_id.raw)
         if not zipfile.is_zipfile(file) or self.mimetype != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-            raise UserError(_("The file is not a xlsx file"))
+            raise XSLXReadUserError(_("The file is not a xlsx file"))
 
         unzipped_size = 0
         with zipfile.ZipFile(file) as input_zip:
             if len(input_zip.infolist()) > 1000:
-                raise UserError(_("The xlsx file is too big"))
+                raise XSLXReadUserError(_("The xlsx file is too big"))
 
-            if not "[Content_Types].xml" in input_zip.namelist() or\
-                not any(name.startswith("xl/") for name in input_zip.namelist()):
-                raise UserError(_("The xlsx file is corrupted"))
+            if "[Content_Types].xml" not in input_zip.namelist() or \
+                    not any(name.startswith("xl/") for name in input_zip.namelist()):
+                raise XSLXReadUserError(_("The xlsx file is corrupted"))
 
             unzipped = {}
             for info in input_zip.infolist():
-                if not info.filename.endswith((".xml", ".xml.rels")) or\
-                    not info.filename.startswith(SUPPORTED_PATHS):
+                if not info.filename.endswith((".xml", ".xml.rels")) or \
+                        not info.filename.startswith(SUPPORTED_PATHS):
                     # Don't extract files others than xmls or unsupported xmls
                     continue
 
                 unzipped_size += info.file_size
-                if(unzipped_size > 50 * 1000 * 1000): # 50MB
-                    raise UserError(_("The xlsx file is too big"))
+                if unzipped_size > 50 * 1000 * 1000:  # 50MB
+                    raise XSLXReadUserError(_("The xlsx file is too big"))
 
                 unzipped[info.filename] = input_zip.read(info.filename).decode()
+        return unzipped
 
-            doc = self.copy({
-                "handler": "spreadsheet",
-                "mimetype": "application/o-spreadsheet",
-                "name": self.name.replace(".xlsx", ""),
-                "spreadsheet_data": json.dumps(unzipped)
-            })
 
-            if archive_source:
-                self.action_archive()
-
-            return doc.id
+class XSLXReadUserError(UserError):
+    pass

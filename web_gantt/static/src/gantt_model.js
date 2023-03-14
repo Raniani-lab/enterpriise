@@ -11,7 +11,6 @@ import { pick } from "@web/core/utils/objects";
 import { sprintf } from "@web/core/utils/strings";
 import { formatFloat } from "@web/views/fields/formatters";
 import { Model } from "@web/views/model";
-import { orderByToString } from "@web/views/utils";
 
 const { DateTime } = luxon;
 
@@ -614,17 +613,10 @@ export class GanttModel extends Model {
         const domain = this._getDomain(metaData);
         const fields = this._getFields(metaData);
 
-        const orderby = orderByToString(
-            groupedBy.map((f) => {
-                return { name: f, asc: true };
-            })
-        );
-
         const proms = [this.orm.webSearchRead(resModel, domain, fields, { context })];
         if (groupedBy.length) {
             proms.push(
                 this.orm.webReadGroup(resModel, domain, fields, groupedBy, {
-                    orderby,
                     lazy: groupedBy.length === 1,
                     context,
                 })

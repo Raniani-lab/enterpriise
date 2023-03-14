@@ -469,7 +469,7 @@
                                                 <field name="engine">domain</field>
                                                 <field name="date_scope">from_beginning</field>
                                                 <field name="formula">[('account_id.code', '&gt;=', '290'), ('account_id.code', '&lt;', '2991'), ('account_id.account_type', '!=', 'equity_unaffected')]</field>
-                                                <field name="subformula">sum</field>
+                                                <field name="subformula">-sum</field>
                                             </record>
                                         </field>
                                     </record>

@@ -258,7 +258,7 @@
                             <record id="account_financial_html_report_line_bs_lt_d_1" model="account.report.line">
                                 <field name="name">CAPITAL</field>
                                 <field name="code">BS_D_1_</field>
-                                <field name="aggregation_formula">BS_D_1_1_.balance + BS_D_1_2_.balance + BS_D_1_3_.balance</field>
+                                <field name="aggregation_formula">BS_D_1_1_.balance - BS_D_1_2_.balance - BS_D_1_3_.balance</field>
                                 <field name="children_ids">
                                     <record id="account_financial_html_report_line_bs_lt_d_1_1" model="account.report.line">
                                         <field name="name">Authorized (subscribed) or primary capital</field>
@@ -938,7 +938,7 @@
                                 <field name="code">BS_B_4_</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">27</field>
+                                <field name="account_codes_formula">27 + 999</field>
                             </record>
                         </field>
                     </record>

@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 {
     'name': 'UPS: Bill My Account',
     'category': 'Inventory/Delivery',
@@ -7,7 +7,7 @@
     'description': """
 This module allows ecommerce users to enter their UPS account number and delivery fees will be charged on that account number.
     """,
-    'depends': ['delivery_ups', 'website_sale_delivery', 'payment_custom'],
+    'depends': ['delivery_ups', 'website_sale', 'payment_custom'],
     'data': [
         'data/payment_provider_data.xml',
         'views/delivery_ups_templates.xml',
@@ -17,10 +17,10 @@ This module allows ecommerce users to enter their UPS account number and deliver
     'license': 'OEEL-1',
     'assets': {
         'web.assets_common': [
-            'website_delivery_ups/static/src/**/*',
+            'website_sale_ups/static/src/**/*',
         ],
         'web.assets_frontend': [
-            'website_delivery_ups/static/src/**/*',
+            'website_sale_ups/static/src/**/*',
         ],
     }
 }

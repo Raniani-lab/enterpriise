@@ -12,7 +12,7 @@
     guide.
     """,
     'depends': [
-        'delivery',
+        'stock_delivery',
         'l10n_mx_edi',
         'web_map',
     ],

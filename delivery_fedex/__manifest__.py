@@ -7,7 +7,7 @@
     'sequence': 295,
     'version': '1.0',
     'application': True,
-    'depends': ['delivery', 'mail'],
+    'depends': ['stock_delivery', 'mail'],
     'data': [
         'data/delivery_fedex.xml',
         'views/delivery_fedex.xml',

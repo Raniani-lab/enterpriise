@@ -1,4 +1,4 @@
-odoo.define('website_delivery_ups.delivery_ups', function (require) {
+odoo.define('website_sale_ups.delivery_ups', function (require) {
 "use strict";
 
     var ajax = require('web.ajax');

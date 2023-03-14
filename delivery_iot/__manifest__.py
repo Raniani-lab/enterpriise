@@ -8,7 +8,7 @@ Allows using IoT devices, such as scales and printers, for delivery operations.
 """,
     'category': 'Manufacturing/Internet of Things (IoT)',
     'version': '1.0',
-    'depends': ['iot', 'delivery'],
+    'depends': ['iot', 'stock_delivery'],
     'data': [
         'wizard/choose_delivery_package_views.xml',
         'views/iot_views.xml',

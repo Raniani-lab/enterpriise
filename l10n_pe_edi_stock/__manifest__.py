@@ -15,7 +15,7 @@
     guide.
     """,
     'depends': [
-        'delivery',
+        'stock_delivery',
         'l10n_pe_edi',
     ],
     "demo": [

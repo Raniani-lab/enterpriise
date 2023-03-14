@@ -31,7 +31,7 @@ Key Features
   'application': True,
 
   # any module necessary for this one to work correctly
-  'depends': ['base', 'sale_management', 'stock', 'delivery', 'attachment_indexation'],
+  'depends': ['base', 'sale_management', 'stock', 'stock_delivery', 'attachment_indexation'],
   'external_dependencies': {'python': ['ebaysdk']},
 
   # always loaded

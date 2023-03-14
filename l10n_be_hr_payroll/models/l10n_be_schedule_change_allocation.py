@@ -45,7 +45,7 @@ class L10nBeScheduleChangeAllocation(models.Model):
                     'number_of_days': number_of_days,
                 })
                 record.leave_allocation_id._message_log(body=_('New working schedule on %(contract_name)s.<br/>'
-                'New total : %(days)s') % {'contract_name': record.contract_id.name, 'days': number_of_days})
+                'New total: %(days)s') % {'contract_name': record.contract_id.name, 'days': number_of_days})
 
     @api.model
     def _cron_update_allocation_from_new_schedule(self, date=None):

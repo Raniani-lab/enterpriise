@@ -9,43 +9,43 @@
                 </h1>
                 <t name="origin">
                     <div name="picking" t-if="doc.picking_id">
-                        <strong>Transfer : </strong>
+                        <strong>Transfer: </strong>
                         <span t-field="doc.picking_id.display_name"/>
                     </div>
                 </t>
                 <div>
-                    <strong>Product : </strong>
+                    <strong>Product: </strong>
                     <span t-field="doc.product_id.display_name"/>
                 </div>
                 <div name="lot" t-if="doc.lot_id">
-                    <strong>Lot/Serial Number : </strong>
+                    <strong>Lot/Serial Number: </strong>
                     <span t-field="doc.lot_id.display_name"/>
                 </div>
                 <div t-if="doc.user_id">
-                    <strong>Tested by : </strong>
+                    <strong>Tested by: </strong>
                     <span t-field="doc.user_id.display_name"/>
                 </div>
                 <div t-if="doc.control_date">
-                    <strong>Tested on : </strong>
+                    <strong>Tested on: </strong>
                     <span t-field="doc.control_date"/>
                 </div>
                 <div>
-                    <strong>Test Type : </strong>
+                    <strong>Test Type: </strong>
                     <span t-field="doc.test_type_id.display_name"/>
                 </div>
                 <div t-if="doc.additional_note">
-                    <strong>Notes : </strong>
+                    <strong>Notes: </strong>
                     <span t-field="doc.additional_note"/>
                 </div>
                 <t name="qc_content">
                     <div t-if="doc.test_type == 'measure'">
                         <hr/>
                         <div>
-                            <strong>Measure : </strong>
+                            <strong>Measure: </strong>
                             <span t-field="doc.measure"/>
                         </div>
                         <div t-if="doc.warning_message">
-                            <strong>Warning : </strong>
+                            <strong>Warning: </strong>
                             <span t-field="doc.warning_message"/>
                         </div>
                     </div>

@@ -58,7 +58,7 @@ def _get_xml_export_representative_node(report):
         if missing_fields:
             message = _('Some fields required for the export are missing. Please specify them.')
             action = {
-                'name': _("Company : %s", representative.name),
+                'name': _("Company: %s", representative.name),
                 'type': 'ir.actions.act_window',
                 'view_mode': 'form',
                 'res_model': 'res.partner',

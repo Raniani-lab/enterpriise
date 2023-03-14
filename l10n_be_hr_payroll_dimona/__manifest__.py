@@ -23,11 +23,11 @@ Prerequisites:
   a technical user (.cer file) and to authenticate remotely to the ONSS (.pem) file. On a UNIX
   system, you may use the following commands:
 
-  - PFX -> CRT : openssl pkcs12 -in my_cert.pfx -out my_cert.crt -nokeys -clcerts
+  - PFX -> CRT: openssl pkcs12 -in my_cert.pfx -out my_cert.crt -nokeys -clcerts
 
-  - CRT -> CER : openssl x509 -inform pem -in my_cert.crt -outform der -out my_cert.cer
+  - CRT -> CER: openssl x509 -inform pem -in my_cert.crt -outform der -out my_cert.cer
 
-  - PFX -> PEM : openssl pkcs12 -in my_cert.pfx -out my_cert.pem -nodes
+  - PFX -> PEM: openssl pkcs12 -in my_cert.pfx -out my_cert.pem -nodes
 
 - Before you can use the social security REST web service, you must create an account
   for yourself or for your client and configure the security. (The whole procedure is

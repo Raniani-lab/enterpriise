@@ -419,7 +419,7 @@ class JournalReportCustomHandler(models.AbstractModel):
         for column in options['columns']:
             col_value = eval_dict[column['column_group_key']]
             if column['expression_label'] == 'credit':  # Add a text in the credit column
-                line_columns.append({'name': _('Starting Balance :') if is_starting_balance else _('Ending Balance :')})
+                line_columns.append({'name': _('Starting Balance:') if is_starting_balance else _('Ending Balance:')})
             elif column['expression_label'] == 'additional_col_1':
                 formatted_value = report.format_value(col_value, blank_if_zero=False, figure_type='monetary_without_symbol')
 

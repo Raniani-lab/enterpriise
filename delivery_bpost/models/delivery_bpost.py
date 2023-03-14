@@ -158,5 +158,5 @@ class ProviderBpost(models.Model):
             carrier_price = quote_currency._convert(shipping['price'], order_currency, company, order.date_order or fields.Date.today())
         carrier_tracking_ref = shipping['main_label']['tracking_codes']
         # bpost does not seem to handle multipackage
-        logmessage = (_("Return shipment created into bpost <br/> <b>Tracking Number : </b>%s") % (carrier_tracking_ref[0]))
+        logmessage = (_("Return shipment created into bpost <br/> <b>Tracking Number: </b>%s") % (carrier_tracking_ref[0]))
         pickings.message_post(body=logmessage, attachments=[('%s-%s-%s.%s' % (self.get_return_label_prefix(), carrier_tracking_ref[0], 1, self.bpost_label_format), shipping['main_label']['label'])])

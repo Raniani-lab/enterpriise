@@ -68,8 +68,8 @@ class Article(models.Model):
         string='Has Access',
         compute="_compute_user_has_access", search="_search_user_has_access")
     user_has_access_parent_path = fields.Boolean(
-        string='Can the user join ?', compute='_compute_user_has_access_parent_path', recursive=True,
-        help="Has the user access to each parent from current article until its root ?",
+        string='Can the user join?', compute='_compute_user_has_access_parent_path', recursive=True,
+        help="Has the user access to each parent from current article until its root?",
     )
     user_has_write_access = fields.Boolean(
         string='Has Write Access',
@@ -136,11 +136,11 @@ class Article(models.Model):
         compute="_compute_favorite_count", store=True, copy=False, default=0)
     # Visibility
     is_article_visible_by_everyone = fields.Boolean(
-        string="Can everyone see the Article ?", compute="_compute_is_article_visible_by_everyone",
+        string="Can everyone see the Article?", compute="_compute_is_article_visible_by_everyone",
         readonly=False, recursive=True, store=True,
     )
     is_article_visible = fields.Boolean(
-        string='Can the user see the article ?', compute='_compute_is_article_visible',
+        string='Can the user see the article?', compute='_compute_is_article_visible',
         search='_search_is_article_visible', recursive=True
     )
     # Trash management

@@ -14,7 +14,7 @@ As per Canadian Payment Association (https://www.payments.ca/sites/default/files
 
 Supported formats
 -----------------
-- Check on top : Quicken / QuickBooks standard
+- Check on top: Quicken / QuickBooks standard
 - Check on middle: Peachtree standard
 - Check on bottom: ADP standard
     """,

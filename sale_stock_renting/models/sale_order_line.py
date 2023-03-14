@@ -93,7 +93,7 @@ class RentalOrderLine(models.Model):
                     """ When setting the pickedup_lots:
                     If the total reserved quantity is picked_up we need to unreserve
                     the reserved_lots not picked to ensure the consistency of rental reservations.
-                    NOTE : This is only guaranteed for generic 6, _, _ orm magic commands.
+                    NOTE: This is only guaranteed for generic 6, _, _ orm magic commands.
                     """
                     vals['reserved_lot_ids'] = vals['pickedup_lot_ids']
 
@@ -127,7 +127,7 @@ class RentalOrderLine(models.Model):
                     sol._move_serials(returned_lots, rented_location, stock_location)
                     sol._return_serials(removed_returned_lots, stock_location, rented_location)
             elif sol.product_id.tracking != 'serial' and (vals.get('qty_delivered', False) or vals.get('qty_returned', False)):
-                # for products not tracked : move quantities
+                # for products not tracked: move quantities
                 qty_delivered_change = sol.qty_delivered - old_vals[sol.id][0]
                 qty_returned_change = sol.qty_returned - old_vals[sol.id][1]
                 if qty_delivered_change > 0:
@@ -157,7 +157,7 @@ class RentalOrderLine(models.Model):
             'location_dest_id': location_dest_id.id,
             'partner_id': self.order_partner_id.id,
             'sale_line_id': self.id,
-            'name': _("Rental move :") + " %s" % (self.order_id.name),
+            'name': _("Rental move:") + " %s" % (self.order_id.name),
         })
 
         for lot_id in lot_ids:
@@ -181,7 +181,7 @@ class RentalOrderLine(models.Model):
         :param stock.location location_id:
         :param stock.location location_dest_id:
         """
-        # VFE NOTE : or use stock moves to undo return/pickups ???
+        # VFE NOTE: or use stock moves to undo return/pickups???
         if not lot_ids:
             return
         rental_stock_move = self.env['stock.move'].search([
@@ -211,7 +211,7 @@ class RentalOrderLine(models.Model):
             'location_dest_id': location_dest_id.id,
             'partner_id': self.order_partner_id.id,
             'sale_line_id': self.id,
-            'name': _("Rental move :") + " %s" % (self.order_id.name),
+            'name': _("Rental move:") + " %s" % (self.order_id.name),
             'state': 'confirmed',
         })
         rental_stock_move._action_assign()
@@ -225,7 +225,7 @@ class RentalOrderLine(models.Model):
         :param stock.location location_id:
         :param stock.location location_dest_id:
         """
-        # VFE NOTE : or use stock moves to undo return/pickups ???
+        # VFE NOTE: or use stock moves to undo return/pickups???
         rental_stock_move = self.env['stock.move'].search([
             ('sale_line_id', '=', self.id),
             ('location_id', '=', location_id.id),

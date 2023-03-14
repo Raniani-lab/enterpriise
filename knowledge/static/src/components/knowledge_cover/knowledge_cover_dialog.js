@@ -19,9 +19,9 @@ export class AutoResizeCover extends AutoResizeImage {
      */
     remove() {
         this.dialogs.add(ConfirmationDialog, {
-            body: this.env._t("Are you sure you want to delete this cover ? It will be removed from every article it is used in."),
+            body: this.env._t("Are you sure you want to delete this cover? It will be removed from every article it is used in."),
             confirm: async () => {
-                const res = await this.orm.unlink(this.props.model, 
+                const res = await this.orm.unlink(this.props.model,
                     [this.props.resId],
                 );
                 if (res) {

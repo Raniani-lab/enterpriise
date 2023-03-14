@@ -158,7 +158,7 @@ class ProviderUSPS(models.Model):
 
             carrier_tracking_ref = booking['tracking_number']
 
-            logmessage = (_("Shipment created into USPS <br/> <b>Tracking Number : </b>%s") % (carrier_tracking_ref))
+            logmessage = (_("Shipment created into USPS <br/> <b>Tracking Number: </b>%s") % (carrier_tracking_ref))
             usps_labels = [('LabelUSPS-%s.%s' % (carrier_tracking_ref, self.usps_label_file_type), booking['label'])]
             if picking.sale_id:
                 for pick in picking.sale_id.picking_ids:
@@ -186,7 +186,7 @@ class ProviderUSPS(models.Model):
             raise UserError(booking['error_message'])
 
         carrier_tracking_ref = booking['tracking_number']
-        logmessage = (_("Shipment created into USPS <br/> <b>Tracking Number : </b>%s") % (carrier_tracking_ref))
+        logmessage = (_("Shipment created into USPS <br/> <b>Tracking Number: </b>%s") % (carrier_tracking_ref))
         picking.message_post(body=logmessage, attachments=[('%s-%s-%s.%s' % (self.get_return_label_prefix(), carrier_tracking_ref, 1, self.usps_label_file_type), booking['label'])])
 
 

@@ -120,7 +120,7 @@ export class PermissionPanel extends Component {
             $select.val(oldPermission);
             this.loadPanel();
         };
-        const loseAccessMessage = _t('Are you sure you want to set the internal permission to "none" ? If you do, you will no longer have access to the article.');
+        const loseAccessMessage = _t('Are you sure you want to set the internal permission to "none"? If you do, you will no longer have access to the article.');
         const confirmLabel = willLoseAccess ? _t('Lose Access') : _t('Restrict Access');
         const confirmTitle = willLoseAccess ? false : _t('Restrict Access');
         this._showConfirmDialog(willLoseAccess ? loseAccessMessage : restrictMessage, confirmTitle, { confirmLabel, confirm, cancel: discard });

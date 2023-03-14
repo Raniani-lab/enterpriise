@@ -13,7 +13,7 @@
 
         Only the CSV format of FEC is implemented.
         'utf-8', 'utf-8-sig' and 'iso8859_15' are the only allowed encodings.
-        Several delimiters are allowed : ';' or '|' or ',' or '\t'.
+        Several delimiters are allowed: ';' or '|' or ',' or '\t'.
 
         Official Technical Specification (fr)
         https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000027804775/

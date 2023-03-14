@@ -13,7 +13,7 @@
                         </div>
                         <div class="row border">
                             <div class="col-12">
-                                <strong>1. N° :</strong> <span t-esc="data['f2009_volgnummer']"/>
+                                <strong>1. Nᵒ:</strong> <span t-esc="data['f2009_volgnummer']"/>
                             </div>
                         </div>
                         <div class="row">

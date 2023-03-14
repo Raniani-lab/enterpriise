@@ -815,8 +815,8 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                             <div><strong><t t-esc="record.name.value"/></strong></div>
-                            <div><strong>Products :</strong> <t t-esc="record.product_ids.value"/></div>
-                            <div><strong>Operations :</strong> <t t-esc="record.picking_type_ids.value"/></div>
+                            <div><strong>Products:</strong> <t t-esc="record.product_ids.value"/></div>
+                            <div><strong>Operations:</strong> <t t-esc="record.picking_type_ids.value"/></div>
                         </div>
                     </t>
                 </templates>

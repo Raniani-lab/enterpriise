@@ -26,7 +26,7 @@
                         <div class="container">
                             <h4 id="payslip_name" t-field="o.name"/>
                             <div class="my-2">
-                                <strong> Pay Period : </strong> <t t-if="o.date_from &lt; o.contract_id.date_start">
+                                <strong> Pay Period: </strong> <t t-if="o.date_from &lt; o.contract_id.date_start">
                                     <span t-field="o.contract_id.date_start"/>
                                 </t>
                                 <t t-else="">
@@ -39,7 +39,7 @@
                                 <t t-else="">
                                     <span t-field="o.date_to"/>
                                 </t>
-                                <strong> Computed on : </strong><span t-field="o.compute_date"/>
+                                <strong> Computed on: </strong><span t-field="o.compute_date"/>
                             </div>
                             <t t-set="is_invalid" t-value="o._is_invalid()"/>
                             <t t-if="is_invalid">

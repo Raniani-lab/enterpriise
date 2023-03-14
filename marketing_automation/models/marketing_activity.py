@@ -56,7 +56,7 @@ class MarketingActivity(models.Model):
     interval_standardized = fields.Integer('Send after (in hours)', compute='_compute_interval_standardized', store=True, readonly=True)
     # validity
     validity_duration = fields.Boolean('Validity Duration',
-        help='Check this to make sure your actions are not executed after a specific amount of time after the scheduled date. (e.g. : Time-limited offer, Upcoming event, …)')
+        help='Check this to make sure your actions are not executed after a specific amount of time after the scheduled date. (e.g. Time-limited offer, Upcoming event, …)')
     validity_duration_number = fields.Integer(string='Valid during', default=0)
     validity_duration_type = fields.Selection([
         ('hours', 'Hours'),

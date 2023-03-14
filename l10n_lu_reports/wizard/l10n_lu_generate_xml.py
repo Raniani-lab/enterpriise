@@ -38,7 +38,7 @@ class L10nLuGenerateXML(models.TransientModel):
                 raise RedirectWarning(
                     message=_("Some fields required for the export are missing or invalid. Please verify them."),
                     action={
-                        'name': _("Company : %s", agent.name),
+                        'name': _("Company: %s", agent.name),
                         'type': 'ir.actions.act_window',
                         'view_mode': 'form',
                         'res_model': 'res.partner',
@@ -79,7 +79,7 @@ class L10nLuGenerateXML(models.TransientModel):
                     "The company's Matr. Number hasn't been defined. Please configure it in the company's information."
                 ),
                 action={
-                    'name': _("Company : %s", company.name),
+                    'name': _("Company: %s", company.name),
                     'type': 'ir.actions.act_window',
                     'view_mode': 'form',
                     'res_model': 'res.company',

@@ -206,10 +206,14 @@ class AccountEdiFormat(models.Model):
         :param invoice:
         :return:
         '''
-        cfdi_date = datetime.combine(
-            fields.Datetime.from_string(invoice.invoice_date),
-            invoice.l10n_mx_edi_post_time.time(),
-        ).strftime('%Y-%m-%dT%H:%M:%S')
+        if invoice.invoice_date >= fields.Date.context_today(self) and invoice.invoice_date == invoice.l10n_mx_edi_post_time.date():
+            cfdi_date = invoice.l10n_mx_edi_post_time.strftime('%Y-%m-%dT%H:%M:%S')
+        else:
+            cfdi_time = datetime.strptime('23:59:00', '%H:%M:%S').time()
+            cfdi_date = datetime.combine(
+                fields.Datetime.from_string(invoice.invoice_date),
+                cfdi_time
+            ).strftime('%Y-%m-%dT%H:%M:%S')
 
         cfdi_values = {
             **invoice._prepare_edi_vals_to_export(),

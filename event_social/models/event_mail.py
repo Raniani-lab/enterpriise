@@ -51,3 +51,11 @@ class EventMailScheduler(models.Model):
             })
 
         return super(EventMailScheduler, self - social_post_mails).execute()
+
+    @api.onchange('notification_type')
+    def set_template_ref_model(self):
+        super().set_template_ref_model()
+        mail_model = self.env['social.post.template']
+        if self.notification_type == 'social_post':
+            record = mail_model.search([], limit=1)
+            self.template_ref = "{},{}".format('social.post.template', record.id) if record else False

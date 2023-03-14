@@ -26,6 +26,7 @@ class ResCompany(models.Model):
     avalara_commit = fields.Boolean(string="Commit in Avatax")
     avalara_address_validation = fields.Boolean(string="Avalara Address Validation")
     avalara_use_upc = fields.Boolean(string="Use UPC", default=True)
+    setting_account_avatax = fields.Boolean(string='Use AvaTax', store=True)
 
 
 class ResConfigSettings(models.TransientModel):
@@ -71,6 +72,10 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         string="Use UPC",
         help="Use Universal Product Code instead of custom defined codes in Avalara.",
+    )
+    setting_account_avatax = fields.Boolean(
+        related='company_id.setting_account_avatax',
+        readonly=False,
     )
 
     def avatax_sync_company_params(self):

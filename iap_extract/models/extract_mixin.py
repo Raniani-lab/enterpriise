@@ -168,6 +168,13 @@ class ExtractMixin(models.AbstractModel):
             for record in records_to_preupdate:
                 record._try_to_check_ocr_status()
 
+    def get_user_infos(self):
+        user_infos = {
+            'user_lang': self.env.user.lang,
+            'user_email': self.env.user.email,
+        }
+        return user_infos
+
     def get_validation(self):
         """ Return the validation of the record. This method is meant to be overridden """
         return None
@@ -191,10 +198,7 @@ class ExtractMixin(models.AbstractModel):
                 self.extract_status = 'error_invalid_account_token'
                 return
 
-            user_infos = {
-                'user_lang': self.env.user.lang,
-                'user_email': self.env.user.email,
-            }
+            user_infos = self.get_user_infos()
             params = {
                 'account_token': account_token.account_token,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),

@@ -147,14 +147,13 @@ class AccountMove(models.Model):
             _logger.error("Couldn't check status of account.move with id %d: %s", self.id, str(e))
 
     def get_user_infos(self):
-        user_infos = {
+        user_infos = super().get_user_infos()
+        user_infos.update({
             'user_company_VAT': self.company_id.vat,
             'user_company_name': self.company_id.name,
             'user_company_country_code': self.company_id.country_id.code,
-            'user_lang': self.env.user.lang,
-            'user_email': self.env.user.email,
             'perspective': 'supplier' if self.is_sale_document() else 'client',
-        }
+        })
         return user_infos
 
     def retry_ocr(self):

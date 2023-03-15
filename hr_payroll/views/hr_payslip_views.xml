@@ -238,6 +238,17 @@
         </field>
     </record>
 
+    <record id="view_hr_payslip_pivot" model="ir.ui.view">
+        <field name="name">hr.payslip.pivot</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <pivot string="Payslips" sample="1">
+                <field name="net_wage" type="measure"/>
+                <field name="department_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
     <record id="view_hr_payslip_filter" model="ir.ui.view">
         <field name="name">hr.payslip.select</field>
         <field name="model">hr.payslip</field>

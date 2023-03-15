@@ -21,7 +21,7 @@
                     })"/>;
                 </script>
 
-                <t t-call-assets="web.assets_frontend" t-js="false"/>
+                <t t-call-assets="web.assets_frontend"/>
 
                 <t t-if="request.httprequest.cookies.get('color_scheme') == 'dark'">
                     <t t-call-assets="web.dark_mode_assets_common" t-js="false"/>

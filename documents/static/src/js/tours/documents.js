@@ -38,7 +38,6 @@ registry.category("web_tour.tours").add('documents_tour', {
     position: 'bottom',
 }, { // equivalent to '.o_inspector_rule:contains('Send to Legal') .o_inspector_trigger_rule' but language agnostic.
     trigger: '.o_inspector_rule[data-id="3"] .o_inspector_trigger_rule',
-    extra_trigger: '.o_documents_image_background',
     content: Markup(_t("Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your process, according to the workspace.</i>")),
     position: 'bottom',
 }, { // the nth(0) ensures that the filter of the preceding step has been applied.

@@ -36,29 +36,6 @@ class AccountBankStatement(models.Model):
             })
         return statement_report_action.report_action(docids=self)
 
-    # -------------------------------------------------------------------------
-    # LOW-LEVEL METHODS
-    # -------------------------------------------------------------------------
-
-    @api.model
-    def get_view(self, view_id=None, view_type='form', **options):
-        # EXTENDS base
-        # include field 'create_date' to avoid a module update (required to compute balance start)
-        # TO BE REMOVED IN MASTER
-        res = super().get_view(view_id=view_id, view_type=view_type, options=options)
-        if view_type == 'form':
-            form_view = self.env.ref('account_accountant.view_bank_statement_form_bank_rec_widget')
-            tree = etree.fromstring(res['arch'])
-            if res.get('id') == form_view.id and len(tree.xpath("//field[@name='create_date']")) == 0:
-                arch_tree = etree.fromstring(form_view.arch)
-                arch_tree.insert(0, etree.Element('field', attrib={
-                    'name': 'create_date',
-                    'invisible': '1',
-                }))
-                form_view.sudo().write({'arch': etree.tostring(arch_tree, encoding='unicode')})
-                return super().get_view(view_id=view_id, view_type=view_type, options=options)
-        return res
-
 class AccountBankStatementLine(models.Model):
     _inherit = 'account.bank.statement.line'
 
@@ -248,25 +225,3 @@ class AccountBankStatementLine(models.Model):
             if self.ref:
                 st_line_text_values.append(self.ref)
         return st_line_text_values
-
-    # -------------------------------------------------------------------------
-    # LOW-LEVEL METHODS
-    # -------------------------------------------------------------------------
-
-    @api.model
-    def get_view(self, view_id=None, view_type='form', **options):
-        # EXTENDS base
-        # include widget on field 'statement_id' to avoid a module update (required to get line_ids in multi-edit mode)
-        # TO BE REMOVED IN MASTER
-        res = super().get_view(view_id=view_id, view_type=view_type, options=options)
-        if view_type == 'tree':
-            tree_view = self.env.ref('account_accountant.view_bank_statement_line_tree_bank_rec_widget')
-            tree = etree.fromstring(res['arch'])
-            xpath = "//field[@name='statement_id']"
-            field_elems = tree.xpath(xpath)
-            if res.get('id') == tree_view.id and field_elems and not field_elems[0].get('widget'):
-                arch_tree = etree.fromstring(tree_view.arch)
-                arch_tree.xpath(xpath)[0].attrib['widget'] = "bankrec_many2one_multi_id"
-                tree_view.with_context({}).sudo().write({'arch': etree.tostring(arch_tree, encoding='unicode')})
-                return super().get_view(view_id=view_id, view_type=view_type, options=options)
-        return res

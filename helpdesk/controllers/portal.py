@@ -48,7 +48,7 @@ class CustomerPortal(portal.CustomerPortal):
 
         searchbar_sortings = {
             'date': {'label': _('Newest'), 'order': 'create_date desc'},
-            'reference': {'label': _('Reference'), 'order': 'id'},
+            'reference': {'label': _('Reference'), 'order': 'id desc'},
             'name': {'label': _('Subject'), 'order': 'name'},
             'user': {'label': _('Assigned to'), 'order': 'user_id'},
             'stage': {'label': _('Stage'), 'order': 'stage_id'},

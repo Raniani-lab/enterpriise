@@ -246,10 +246,10 @@ class SaleOrder(models.Model):
                 continue
             order.recurring_total = sum(order.order_line.filtered(lambda l: l.temporal_type == 'subscription').mapped('price_subtotal'))
 
-    @api.depends('amount_total', 'recurring_total')
+    @api.depends('amount_untaxed', 'recurring_total')
     def _compute_non_recurring_total(self):
         for order in self:
-            order.non_recurring_total = order.amount_total - order.recurring_total
+            order.non_recurring_total = order.amount_untaxed - order.recurring_total
 
     @api.depends('is_subscription', 'order_line.price_total')
     def _compute_recurring_details(self):

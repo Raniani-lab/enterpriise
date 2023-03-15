@@ -229,10 +229,11 @@ class SaleOrder(models.Model):
         where confirmation is set the next_invoice_date and first invoice do not update it (in automatic mode).
         """
         for order in self:
-            if not order.is_subscription:
-                order.recurring_monthly = 0.0
+            if order.is_subscription or order.subscription_state == '7_upsell':
+                order.recurring_monthly = sum(order.order_line.mapped('recurring_monthly'))
                 continue
-            order.recurring_monthly = sum(order.order_line.mapped('recurring_monthly'))
+            order.recurring_monthly = 0
+
 
     @api.depends('subscription_state', 'state', 'is_subscription', 'amount_untaxed')
     def _compute_recurring_total(self):
@@ -241,10 +242,11 @@ class SaleOrder(models.Model):
         where confirmation is set the next_invoice_date and first invoice do not update it (in automatic mode).
         """
         for order in self:
-            if not order.is_subscription:
-                order.recurring_total = 0.0
+            if order.is_subscription or order.subscription_state == '7_upsell':
+                order.recurring_total = sum(order.order_line.filtered(lambda l: l.temporal_type == 'subscription').mapped('price_subtotal'))
                 continue
-            order.recurring_total = sum(order.order_line.filtered(lambda l: l.temporal_type == 'subscription').mapped('price_subtotal'))
+            order.recurring_total = 0
+
 
     @api.depends('amount_untaxed', 'recurring_total')
     def _compute_non_recurring_total(self):

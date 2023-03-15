@@ -15,6 +15,9 @@
         'wizard/helpdesk_ticket_convert_to_task_wizard_views.xml',
         'wizard/project_task_convert_to_ticket_wizard_views.xml',
     ],
+    'demo': [
+        'data/project_helpdesk_demo.xml',
+    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

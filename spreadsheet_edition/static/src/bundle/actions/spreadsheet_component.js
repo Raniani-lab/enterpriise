@@ -290,10 +290,8 @@ export default class SpreadsheetComponent extends LegacyComponent {
                 type: "ir.actions.client",
                 tag: "action_download_spreadsheet",
                 params: {
-                    orm: this.orm,
                     name: this.props.name,
-                    data: this.model.exportData(),
-                    stateUpdateMessages: [],
+                    xlsxData: this.model.exportXLSX(),
                 },
             });
         } finally {

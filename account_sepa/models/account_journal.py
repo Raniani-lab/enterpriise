@@ -126,12 +126,11 @@ class AccountJournal(models.Model):
         payments_date_instr_wise = defaultdict(lambda: [])
         today = fields.Date.today()
         for payment in payments:
-            local_instrument = self._get_local_instrument(payment)
             required_payment_date = payment['payment_date'] if payment['payment_date'] > today else today
             currency = payment['currency_id'] or self.company_id.currency_id.id
-            payments_date_instr_wise[(required_payment_date, local_instrument, currency)].append(payment)
+            payments_date_instr_wise[(required_payment_date, currency)].append(payment)
         count = 0
-        for (payment_date, local_instrument, currency), payments_list in payments_date_instr_wise.items():
+        for (payment_date, currency), payments_list in payments_date_instr_wise.items():
             count += 1
             PmtInf = etree.SubElement(CstmrCdtTrfInitn, "PmtInf")
             PmtInfId = etree.SubElement(PmtInf, "PmtInfId")
@@ -145,7 +144,7 @@ class AccountJournal(models.Model):
             CtrlSum = etree.SubElement(PmtInf, "CtrlSum")
             CtrlSum.text = self._get_CtrlSum(payments_list)
 
-            PmtTpInf = self._get_PmtTpInf(sct_generic, local_instrument)
+            PmtTpInf = self._get_PmtTpInf(sct_generic)
             if len(PmtTpInf) != 0: #Boolean conversion from etree element triggers a deprecation warning ; this is the proper way
                 PmtInf.append(PmtTpInf)
 
@@ -169,7 +168,7 @@ class AccountJournal(models.Model):
 
             # One CdtTrfTxInf per transaction
             for payment in payments_list:
-                PmtInf.append(self._get_CdtTrfTxInf(PmtInfId, payment, sct_generic, pain_version, local_instrument))
+                PmtInf.append(self._get_CdtTrfTxInf(PmtInfId, payment, sct_generic, pain_version))
 
         return etree.tostring(Document, pretty_print=True, xml_declaration=True, encoding='utf-8')
 
@@ -256,16 +255,13 @@ class AccountJournal(models.Model):
 
         return ret
 
-    def _get_PmtTpInf(self, sct_generic=False, local_instrument=None):
+    def _get_PmtTpInf(self, sct_generic=False):
         PmtTpInf = etree.Element("PmtTpInf")
 
         if not sct_generic and self.sepa_pain_version != 'pain.001.001.03.ch.02':
             SvcLvl = etree.SubElement(PmtTpInf, "SvcLvl")
             Cd = etree.SubElement(SvcLvl, "Cd")
             Cd.text = 'SEPA'
-
-        if local_instrument:
-            create_xml_node_chain(PmtTpInf, ['LclInstrm', 'Prtry'], local_instrument)
 
         return PmtTpInf
 
@@ -301,16 +297,15 @@ class AccountJournal(models.Model):
             AdrLine.text = sanitize_communication((partner_id.zip + " " + partner_id.city)[:70])
         return PstlAdr
 
-    def _skip_CdtrAgt(self, partner_bank, pain_version, local_instrument):
+    def _skip_CdtrAgt(self, partner_bank, pain_version):
         return (
             self.env.context.get('skip_bic', False)
             # Creditor Agent can be omitted with IBAN and QR-IBAN accounts
             or pain_version == 'pain.001.001.03.ch.02'
-            and (self._is_qr_iban({'partner_bank_id' : partner_bank.id, 'journal_id' : self.id})
-                 or local_instrument == 'CH01')
+            and (self._is_qr_iban({'partner_bank_id' : partner_bank.id, 'journal_id' : self.id}))
         )
 
-    def _get_CdtTrfTxInf(self, PmtInfId, payment, sct_generic, pain_version, local_instrument=None):
+    def _get_CdtTrfTxInf(self, PmtInfId, payment, sct_generic, pain_version):
         CdtTrfTxInf = etree.Element("CdtTrfTxInf")
         PmtId = etree.SubElement(CdtTrfTxInf, "PmtId")
         if payment['name']:
@@ -343,7 +338,7 @@ class AccountJournal(models.Model):
 
         partner_bank = self.env['res.partner.bank'].sudo().browse(partner_bank_id)
 
-        if not self._skip_CdtrAgt(partner_bank, pain_version, local_instrument):
+        if not self._skip_CdtrAgt(partner_bank, pain_version):
             CdtTrfTxInf.append(self._get_CdtrAgt(partner_bank, sct_generic, pain_version))
 
         Cdtr = etree.SubElement(CdtTrfTxInf, "Cdtr")
@@ -356,7 +351,7 @@ class AccountJournal(models.Model):
 
         CdtTrfTxInf.append(self._get_CdtrAcct(partner_bank, sct_generic))
 
-        val_RmtInf = self._get_RmtInf(payment, local_instrument)
+        val_RmtInf = self._get_RmtInf(payment)
         if val_RmtInf is not False:
             CdtTrfTxInf.append(val_RmtInf)
         return CdtTrfTxInf
@@ -404,14 +399,14 @@ class AccountJournal(models.Model):
 
         return CdtrAcct
 
-    def _get_RmtInf(self, payment, local_instrument=None):
+    def _get_RmtInf(self, payment):
         if not payment['ref']:
             return False
         RmtInf = etree.Element("RmtInf")
 
         # In Switzerland, postal accounts and QR-IBAN accounts always require a structured communication with the ISR reference
         qr_iban = self._is_qr_iban(payment)
-        if local_instrument == 'CH01' or qr_iban:
+        if qr_iban:
             ref = payment['ref'].replace(' ', '')
             ref = ref.rjust(27, '0')
             CdtrRefInf = create_xml_node_chain(RmtInf, ['Strd', 'CdtrRefInf'])[1]
@@ -423,22 +418,6 @@ class AccountJournal(models.Model):
             Ustrd = etree.SubElement(RmtInf, "Ustrd")
             Ustrd.text = sanitize_communication(payment['ref'])
         return RmtInf
-
-    def _has_isr_ref(self, payment_comm):
-        """Check if the communication is a valid ISR reference (for Switzerland)
-        e.g.
-        12371
-        000000000000000000000012371
-        210000000003139471430009017
-        21 00000 00003 13947 14300 09017
-        This is used to determine SEPA local instrument
-        """
-        if not payment_comm:
-            return False
-        if re.match(r'^(\d{2,27}|\d{2}( \d{5}){5})$', payment_comm):
-            ref = payment_comm.replace(' ', '')
-            return ref == mod10r(ref[:-1])
-        return False
 
     def _is_qr_iban(self, payment_dict):
         """ Tells if the bank account linked to the payment has a QR-IBAN account number.
@@ -461,20 +440,6 @@ class AccountJournal(models.Model):
         iid = iban[iid_start_index : iid_end_index+1]
         return re.match('\d+', iid) \
             and 30000 <= int(iid) <= 31999 # Those values for iid are reserved for QR-IBANs only
-
-    def _get_local_instrument(self, payment_dict):
-        """ Local instrument node is used to indicate the use of some regional
-        variant, such as in Switzerland.
-        """
-        partner_bank = self.env['res.partner.bank'].browse(payment_dict['partner_bank_id'])
-        company = self.env['account.journal'].browse(payment_dict['journal_id']).company_id
-        if (
-            partner_bank.acc_type == 'postal'
-            and partner_bank.company_id.id in (False, company.id)
-            and self._has_isr_ref(payment_dict['ref'])
-        ):
-            return 'CH01'
-        return None
 
     def _get_cleaned_bic_code(self, bank_account):
         """ Checks if the BIC code is matching the pattern from the XSD to avoid

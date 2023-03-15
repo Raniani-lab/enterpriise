@@ -120,6 +120,13 @@ class AccountEdiFormat(models.Model):
         bullet_list_msg = ''.join('<li>%s</li>' % msg for msg in errors)
         return '%s<ul>%s</ul>' % (error_title, bullet_list_msg)
 
+    @api.model
+    def _l10n_mx_edi_get_invoice_attachment(self, res_model, res_id):
+        return self.env['ir.attachment'].search([
+            ('name', 'like', '%-MX-Invoice-3.3.xml'),
+            ('res_model', '=', res_model),
+            ('res_id', '=', res_id)], limit=1, order='create_date desc')
+
     # -------------------------------------------------------------------------
     # CFDI Generation: Generic
     # ----------------------------------------

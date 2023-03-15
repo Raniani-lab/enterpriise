@@ -465,7 +465,7 @@ class AccountMove(models.Model):
             # However, the attachment might still be there, so try to retrieve it.
             cfdi_doc = move.edi_document_ids.filtered(lambda document: document.edi_format_id == self.env.ref('l10n_mx_edi.edi_cfdi_3_3'))
             if cfdi_doc and not cfdi_doc.sudo().attachment_id:
-                attachment = self.env['ir.attachment'].search([('name', 'like', '%-MX-Invoice-3.3.xml'), ('res_model', '=', 'account.move'), ('res_id', '=', move.id)], limit=1, order='create_date desc')
+                attachment = self.env['account.edi.format']._l10n_mx_edi_get_invoice_attachment(res_model='account.move', res_id=move.id)
                 if attachment:
                     cfdi_data = base64.decodebytes(attachment.with_context(bin_size=False).datas)
                     cfdi_infos = move._l10n_mx_edi_decode_cfdi(cfdi_data=cfdi_data)

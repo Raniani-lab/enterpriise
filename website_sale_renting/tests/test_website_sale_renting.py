@@ -3,6 +3,8 @@
 
 from dateutil.relativedelta import relativedelta, FR, SA, SU
 
+from freezegun import freeze_time
+
 from odoo import fields
 from odoo.tests import tagged
 from .common import TestWebsiteSaleRentingCommon
@@ -10,6 +12,7 @@ from .common import TestWebsiteSaleRentingCommon
 @tagged('post_install', '-at_install')
 class TestWebsiteSaleRenting(TestWebsiteSaleRentingCommon):
 
+    @freeze_time('2023, 1, 1')
     def test_invalid_dates(self):
         so = self.env['sale.order'].create({
             'partner_id': self.partner.id,

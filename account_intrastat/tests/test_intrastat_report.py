@@ -184,7 +184,8 @@ class TestIntrastatReport(TestAccountReportsCommon):
                 ('19 (Dispatch)', 'Netherlands', '101', '102', '100', None, 1.2, 240.0),
                 # account.move (bill) 2
                 ('29 (Arrival)', 'Netherlands', '101', '102', '100', None, 0.5, 950.0),
-            ]
+            ],
+            options,
         )
         # Setting the intrastat type to Arrival or Dispatch should result in a 'Total' line at the end
         options['intrastat_type'][1]['selected'] = True
@@ -200,7 +201,8 @@ class TestIntrastatReport(TestAccountReportsCommon):
                 ('INV/2022/00001', '19 (Dispatch)',  80.0),
                 ('INV/2022/00001', '19 (Dispatch)', 240.0),
                 ('Total',  None, 320),
-            ]
+            ],
+            options,
         )
 
     def test_no_supplementary_units(self):
@@ -231,6 +233,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
             [
                 ('INV/2022/00001', '19 (Dispatch)', 'Belgium',     '97040000',    None)
             ],
+            options,
         )
 
     def test_unitary_supplementary_units(self):
@@ -294,6 +297,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
                 ('INV/2022/00001', '19 (Dispatch)', 'Belgium',     '90212110',   1.23),
                 ('INV/2022/00001', '19 (Dispatch)', 'Belgium',     '90212110',   2.4 ),
             ],
+            options,
         )
 
     def test_metres_supplementary_units(self):
@@ -329,6 +333,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
             [
                 ('INV/2022/00001', '19 (Dispatch)', 'Belgium',     '37061020',    1230),
             ],
+            options,
         )
 
     def test_xlsx_output(self):
@@ -382,4 +387,5 @@ class TestIntrastatReport(TestAccountReportsCommon):
                 ('INV/2022/00001',    '19',          'BE',    '22042176',    'ES'),
                 ('BILL/2022/05/0001', '29',          'NL',    '22042176',    'ES'),
             ],
+            options,
         )

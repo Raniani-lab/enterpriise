@@ -619,7 +619,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
             value = report_data[layout_line_id].get(expression_label, 0.0).get(column_group_key, 0.0) if layout_line_id in report_data else 0.0
 
             column_values.append({
-                'name': report.format_value(value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
+                'name': report.format_value(options, value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
                 'no_format': value,
                 'class': 'number',
             })
@@ -647,7 +647,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
             value = aml_data[expression_label].get(column_group_key, 0.0)
 
             column_values.append({
-                'name': report.format_value(value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
+                'name': report.format_value(options, value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
                 'no_format': value,
                 'class': 'number',
             })
@@ -678,7 +678,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                 unexplained_difference = True
 
             column_values.append({
-                'name': report.format_value(delta, blank_if_zero=False, figure_type='monetary'),
+                'name': report.format_value(options, delta, blank_if_zero=False, figure_type='monetary'),
                 'no_format': delta,
                 'class': 'number',
             })

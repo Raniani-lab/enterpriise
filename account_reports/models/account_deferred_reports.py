@@ -225,7 +225,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
             return [
                 {
                     'no_format': totals[period],
-                    'name': report.format_value(totals[period], currency=self.env.company.currency_id, figure_type='monetary_without_symbol'),
+                    'name': report.format_value(options, totals[period], currency=self.env.company.currency_id, figure_type='monetary'),
                     'class': 'number'
                 }
                 for period in periods

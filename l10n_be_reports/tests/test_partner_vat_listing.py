@@ -84,6 +84,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
                 ('Partner A (BE)',          'BE0246697724',     1000.0,             210.0),
                 ('Partner B (BE)',          'BE0766998497',     2000.0,             420.0),
             ],
+            options,
         )
 
     def test_misc_operation(self):
@@ -105,6 +106,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
                 ('Partner A (BE)',          'BE0246697724',     1000.0,             210.0),
                 ('Partner B (BE)',          'BE0766998497',     2000.0,             420.0),
             ],
+            options,
         )
 
     def test_invoices_with_refunds(self):
@@ -128,6 +130,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
                 ('Partner A (BE)',          'BE0246697724',     800.0,              168.0),
                 ('Partner B (BE)',          'BE0766998497',     0.0,                0.0),
             ],
+            options,
         )
 
     def test_refunds_without_invoices(self):
@@ -144,6 +147,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
                 ('Partner VAT Listing',     '',                 -1000.0,            -210.0),
                 ('Partner A (BE)',          'BE0246697724',     -1000.0,            -210.0),
             ],
+            options,
         )
 
     def test_zero_tax(self):
@@ -161,6 +165,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
                 ('Partner VAT Listing',     '',                 1000.0,            0.0),
                 ('Partner A (BE)',          'BE0246697724',     1000.0,            0.0),
             ],
+            options,
         )
 
     @freeze_time('2019-12-31')
@@ -210,6 +215,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
             [
                 ('Partner VAT Listing',     '',                 0,                  0),
             ],
+            options,
         )
 
     @freeze_time('2019-12-31')

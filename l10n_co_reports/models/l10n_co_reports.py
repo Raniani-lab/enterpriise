@@ -48,7 +48,7 @@ class ColumbianReportCustomHandler(models.AbstractModel):
                         if col_expr == 'bimestre':
                             col_name = col_val = self._get_bimonth_name(current_value['bimestre'])
                         else:
-                            col_name = report.format_value(col_val, figure_type=column['figure_type'], blank_if_zero=False)
+                            col_name = report.format_value(options, col_val, figure_type=column['figure_type'], blank_if_zero=False)
                             col_class = 'number'
 
                 column_values.append({

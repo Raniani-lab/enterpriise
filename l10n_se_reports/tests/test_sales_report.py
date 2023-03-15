@@ -55,6 +55,7 @@ class SwedishSalesReportTest(AccountSalesReportCommon):
                 (self.partner_b.name,   self.partner_b.vat, '',                                 f'2,000.00{NON_BREAKING_SPACE}kr',  f'4,000.00{NON_BREAKING_SPACE}kr'),
                 ('Total',               '',                 f'6,000.00{NON_BREAKING_SPACE}kr',  f'2,000.00{NON_BREAKING_SPACE}kr',  f'11,000.00{NON_BREAKING_SPACE}kr'),
             ],
+            options,
         )
         correct_report = 'SKV574008\r\n' \
                          'SE123456789701;1912;Because I am accountman!;;accountman@test.com;\r\n' \

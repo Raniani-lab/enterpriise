@@ -60,6 +60,7 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
                 (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  'S (44)',   f'700.00{NON_BREAKING_SPACE}€'),
                 ('Total',              '',                      '',                      '',         f'3,000.00{NON_BREAKING_SPACE}€'),
             ],
+            options,
         )
 
         expected_xml = '''

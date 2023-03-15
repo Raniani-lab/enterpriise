@@ -61,7 +61,7 @@ class AustralianReportCustomHandler(models.AbstractModel):
                 value = partner_info.get(column['column_group_key'], {}).get(expression_label, False)
                 columns.append({
                     'name': report.format_value(
-                        value, company_currency, figure_type=column['figure_type']
+                        options, value, company_currency, figure_type=column['figure_type']
                     ) if column['figure_type'] == 'monetary' else value,
                     'no_format': value,
                     'class': column['figure_type'],
@@ -82,7 +82,7 @@ class AustralianReportCustomHandler(models.AbstractModel):
                 expression_label = column['expression_label']
                 value = total_values_dict.get(column['column_group_key'], {}).get(expression_label, False)
                 total_columns.append({
-                    'name': report.format_value(value, figure_type=column['figure_type']) if value else None,
+                    'name': report.format_value(options, value, figure_type=column['figure_type']) if value else None,
                     'no_format': value,
                     'class': 'number',
                 })

@@ -114,6 +114,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 ('DE',          '104',             'QU'),
                 ('DE',          '105',             'QU'),
             ],
+            options,
         )
         self.assertEqual(options['intrastat_warnings'], {
             'missing_comm': invoice.invoice_line_ids.product_id.ids,
@@ -145,6 +146,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 ('DE',          None,              '101',           'QU'),
                 ('DE',          None,              '102',           'QU'),
             ],
+            options,
         )
         self.assertEqual(options['intrastat_warnings'], {
             'missing_trans': invoice.invoice_line_ids.ids,

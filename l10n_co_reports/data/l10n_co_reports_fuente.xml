@@ -21,12 +21,10 @@
             <record id="l10n_co_reports_fuente_tax_base_amount" model="account.report.column">
                 <field name="name">Monto del Pago Sujeto Retención</field>
                 <field name="expression_label">tax_base_amount</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_co_reports_fuente_balance" model="account.report.column">
                 <field name="name">Retenido Consignado</field>
                 <field name="expression_label">balance</field>
-                <field name="figure_type">monetary</field>
                 <field name="blank_if_zero" eval="True"/>
             </record>
         </field>

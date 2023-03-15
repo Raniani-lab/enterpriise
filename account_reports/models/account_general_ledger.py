@@ -31,7 +31,9 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
     def _custom_options_initializer(self, report, options, previous_options=None):
         # Remove multi-currency columns if needed
         super()._custom_options_initializer(report, options, previous_options=previous_options)
-        if not self.user_has_groups('base.group_multi_currency'):
+        if self.user_has_groups('base.group_multi_currency'):
+            options['multi_currency'] = True
+        else:
             options['columns'] = [
                 column for column in options['columns']
                 if column['expression_label'] != 'amount_currency'
@@ -564,9 +566,9 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
             else:
                 if col_expr_label == 'amount_currency':
-                    formatted_value = report.format_value(col_value, currency=account.currency_id, figure_type=column['figure_type'])
+                    formatted_value = report.format_value(options, col_value, currency=account.currency_id, figure_type=column['figure_type'])
                 else:
-                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=col_expr_label != 'balance')
+                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'], blank_if_zero=col_expr_label != 'balance')
 
                 line_columns.append({
                     'name': formatted_value,
@@ -602,7 +604,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     currency = self.env['res.currency'].browse(eval_dict[column['column_group_key']]['currency_id'])
 
                     if currency != self.env.company.currency_id:
-                        formatted_value = report.format_value(col_value, currency=currency, figure_type=column['figure_type'])
+                        formatted_value = report.format_value(options, col_value, currency=currency, figure_type=column['figure_type'])
                     else:
                         formatted_value = ''
                 elif col_expr_label == 'date':
@@ -610,12 +612,12 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     col_class = 'date'
                 elif col_expr_label == 'balance':
                     col_value += init_bal_by_col_group[column['column_group_key']]
-                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=False)
+                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'], blank_if_zero=False)
                 elif col_expr_label == 'communication' or col_expr_label == 'partner_name':
                     col_class = 'acc_rep_line_ellipsis'
-                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
+                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'])
                 else:
-                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
+                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'])
                     if col_expr_label not in ('debit', 'credit'):
                         col_class = ''
 
@@ -655,7 +657,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             if col_value is None:
                 line_columns.append({})
             else:
-                formatted_value = report.format_value(col_value, blank_if_zero=False, figure_type='monetary')
+                formatted_value = report.format_value(options, col_value, blank_if_zero=False, figure_type='monetary')
                 line_columns.append({
                     'name': formatted_value,
                     'no_format': col_value,

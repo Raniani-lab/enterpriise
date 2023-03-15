@@ -109,11 +109,12 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         # There should be a carryover pop-up of value -1000.0
         info_popup_data = json.loads(lines[0]['columns'][0]['info_popup_data'])
-        self.assertEqual(info_popup_data['carryover'], '$\xa0-1,000.00')
+        self.assertEqual(info_popup_data['carryover'], '-1,000.00')
 
         # The carry over should be applied on the next period
         options = self._generate_options(self.report, '2022-01-01', '2022-12-31')
@@ -127,11 +128,12 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         info_popup_data = json.loads(lines[0]['columns'][0]['info_popup_data'])
-        self.assertEqual(info_popup_data['carryover'], '$\xa0-1,000.00')
-        self.assertEqual(info_popup_data['applied_carryover'], '$\xa0-1,000.00')
+        self.assertEqual(info_popup_data['carryover'], '-1,000.00')
+        self.assertEqual(info_popup_data['applied_carryover'], '-1,000.00')
 
     def test_tax_report_carry_over_tax_unit(self):
         self.env['account.tax.unit'].create({
@@ -224,6 +226,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      1000.0),
             ],
+            options,
         )
 
         # There should be no carryover pop-up
@@ -243,11 +246,12 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         # There should be a carryover pop-up
         info_popup_data = json.loads(lines_company_1[0]['columns'][0]['info_popup_data'])
-        self.assertEqual(info_popup_data['carryover'], '$\xa0-1,000.00')
+        self.assertEqual(info_popup_data['carryover'], '-1,000.00')
 
         # COMPANY 2 REPORT (current period)
         # ==============================================================================================================
@@ -263,6 +267,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      2000.0),
             ],
+            options,
         )
 
         # There should be no carryover pop-up
@@ -280,6 +285,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         # There should be no carryover pop-up
@@ -298,6 +304,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         self.assertTrue('info_popup_data' not in lines_company_1[0]['columns'][0].keys())
@@ -314,6 +321,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         # There should be no carryover pop-up

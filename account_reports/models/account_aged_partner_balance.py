@@ -25,7 +25,9 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
-        if not report.user_has_groups('base.group_multi_currency'):
+        if report.user_has_groups('base.group_multi_currency'):
+            options['multi_currency'] = True
+        else:
             options['columns'] = [
                 column for column in options['columns']
                 if column['expression_label'] not in {'amount_currency', 'currency'}
@@ -109,7 +111,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                 rslt.update({
                     'invoice_date': query_res['invoice_date'][0] if len(query_res['invoice_date']) == 1 else None,
                     'due_date': query_res['due_date'][0] if len(query_res['due_date']) == 1 else None,
-                    'amount_currency': report.format_value(query_res['amount_currency'], currency=currency),
+                    'amount_currency': report.format_value(options, query_res['amount_currency'], currency=currency),
                     'currency': currency.display_name if currency else None,
                     'account_name': query_res['account_name'][0] if len(query_res['account_name']) == 1 else None,
                     'expected_date': expected_date or None,

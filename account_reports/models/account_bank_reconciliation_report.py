@@ -76,7 +76,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
 
             # Compute the 'Amount' cell.
             balance_cells[column_group_key] = {
-                'name': report.format_value(balance_gl, currency=report_currency, figure_type='monetary'),
+                'name': report.format_value(options, balance_gl, currency=report_currency, figure_type='monetary'),
                 'balance': balance_gl,
                 'class': 'number',
             }
@@ -93,8 +93,8 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                             "The current balance in the General Ledger %s doesn't match the balance of your last bank statement %s leading "
                             "to an unexplained difference of %s.",
                              balance_cells[column_group_key]['name'],
-                             report.format_value(balance_end, currency=report_currency, figure_type='monetary'),
-                             report.format_value(difference, currency=report_currency, figure_type='monetary'),
+                             report.format_value(options, balance_end, currency=report_currency, figure_type='monetary'),
+                             report.format_value(options, difference, currency=report_currency, figure_type='monetary'),
                          ),
                     })
 
@@ -152,7 +152,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                 'title_hover': _("Transactions that were entered into Odoo, but not yet reconciled (Payments triggered by invoices/bills or manually)"),
                 'columns': [
                     {
-                        'name': report.format_value(totals.get(column['column_group_key']), currency=report_currency, figure_type='monetary'),
+                        'name': report.format_value(options, totals.get(column['column_group_key']), currency=report_currency, figure_type='monetary'),
                         'no_format': totals.get(column['column_group_key']),
                         'class': 'number',
                     }
@@ -260,7 +260,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
             'title_hover': title_hover,
             'columns': [
                 {
-                    'name': report.format_value(totals.get(column['column_group_key']), currency=report_currency, figure_type='monetary'),
+                    'name': report.format_value(options, totals.get(column['column_group_key']), currency=report_currency, figure_type='monetary'),
                     'no_format': totals.get(column['column_group_key']),
                     'class': 'number',
                 }
@@ -332,11 +332,11 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                         col_value = results['amount_currency'] * reconcile_rate
                         col_class = 'number'
                         foreign_currency = self.env['res.currency'].browse(results['foreign_currency_id'])
-                        formatted_value = report.format_value(col_value, currency=foreign_currency, figure_type=column['figure_type'])
+                        formatted_value = report.format_value(options, col_value, currency=foreign_currency, figure_type=column['figure_type'])
                     elif col_expr_label == 'amount':
                         col_value *= reconcile_rate
                         col_class = 'number'
-                        formatted_value = report.format_value(col_value, currency=report_currency, figure_type=column['figure_type'])
+                        formatted_value = report.format_value(options, col_value, currency=report_currency, figure_type=column['figure_type'])
                         line_amounts[column['column_group_key']] += col_value
                         if col_value >= 0:
                             plus_totals[column['column_group_key']] += col_value
@@ -346,7 +346,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                         col_class = 'date'
                         formatted_value = format_date(self.env, col_value)
                     else:
-                        formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
+                        formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'])
 
                     columns.append({
                         'name': formatted_value,
@@ -509,7 +509,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                             foreign_currency = self.env['res.currency'].browse(results['currency_id'])
                             col_value = results['amount_residual_currency'] if results['is_account_reconcile'] else results['amount_currency']
                         col_class = 'number'
-                        formatted_value = report.format_value(col_value, currency=foreign_currency, figure_type=column['figure_type'])
+                        formatted_value = report.format_value(options, col_value, currency=foreign_currency, figure_type=column['figure_type'])
                     elif col_expr_label == 'amount':
                         if no_convert:
                             col_value = results['amount_residual_currency'] if results['is_account_reconcile'] else results['amount_currency']
@@ -517,7 +517,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                             balance = results['amount'] if results['is_account_reconcile'] else results['balance']
                             col_value = company_currency._convert(balance, journal_currency, journal.company_id, options['date']['date_to'])
                         col_class = 'number'
-                        formatted_value = report.format_value(col_value, currency=journal_currency, figure_type=column['figure_type'])
+                        formatted_value = report.format_value(options, col_value, currency=journal_currency, figure_type=column['figure_type'])
                         line_amounts[column['column_group_key']] += col_value
                         if col_value >= 0:
                             plus_totals[column['column_group_key']] += col_value
@@ -529,7 +529,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                     else:
                         if no_convert:
                             col_value = ''
-                        formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
+                        formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'])
 
                     columns.append({
                         'name': formatted_value,
@@ -691,4 +691,3 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
             default_context={'create': False},
             name=last_statement.display_name,
         )
-

@@ -80,6 +80,9 @@ class JournalReportCustomHandler(models.AbstractModel):
             if line_id not in unfolded_lines:
                 unfolded_lines.append(line_id)
 
+        if self.user_has_groups('base.group_multi_currency'):
+            options['multi_currency'] = True
+
     def _query_journal(self, options):
         params = []
         queries = []
@@ -447,7 +450,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             if column['expression_label'] == 'credit':  # Add a text in the credit column
                 line_columns.append({'name': _('Starting Balance:') if is_starting_balance else _('Ending Balance:')})
             elif column['expression_label'] == 'additional_col_1':
-                formatted_value = report.format_value(col_value, blank_if_zero=False, figure_type='monetary')
+                formatted_value = report.format_value(options, col_value, blank_if_zero=False, figure_type='monetary')
 
                 line_columns.append({
                     'name': formatted_value,
@@ -486,8 +489,8 @@ class JournalReportCustomHandler(models.AbstractModel):
             columns.extend([
                 {'name': '%s %s' % (values['account_code'], '' if values['partner_name'] else values['account_name']), 'partner_name': values['partner_name'], 'class': 'acc_rep_line_ellipsis' + (' color-blue' if not_receivable_with_partner else ''), 'template': 'account_reports.cell_template_journal_audit_report', 'style': 'text-align:left;'},
                 {'name': values['name'], 'class': 'acc_rep_line_ellipsis', 'style': 'text-align:left;'},
-                {'name': report.format_value(values['debit'], figure_type='monetary'), 'no_format': values['debit'], 'class': 'number'},
-                {'name': report.format_value(values['credit'], figure_type='monetary'), 'no_format': values['credit'], 'class': 'number'},
+                {'name': report.format_value(options, values['debit'], figure_type='monetary'), 'no_format': values['debit'], 'class': 'number'},
+                {'name': report.format_value(options, values['credit'], figure_type='monetary'), 'no_format': values['credit'], 'class': 'number'},
             ] + self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment))
         return {
             'id': line_key,
@@ -530,8 +533,8 @@ class JournalReportCustomHandler(models.AbstractModel):
             columns.extend([
                account_name_col,
                {'name': values['name'], 'class': 'acc_rep_line_ellipsis', 'style': 'text-align:left;'},
-               {'name': report.format_value(values['debit'], figure_type='monetary'), 'no_format': values['debit'], 'class': 'number'},
-               {'name': report.format_value(values['credit'], figure_type='monetary'), 'no_format': values['credit'], 'class': 'number'},
+               {'name': report.format_value(options, values['debit'], figure_type='monetary'), 'no_format': values['debit'], 'class': 'number'},
+               {'name': report.format_value(options, values['credit'], figure_type='monetary'), 'no_format': values['credit'], 'class': 'number'},
             ] + self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment))
         return {
             'id': report._get_generic_line_id('account.move.line', values['move_line_id'], parent_line_id=parent_key),
@@ -555,7 +558,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             if journal.type == 'bank' or not (self.user_has_groups('base.group_multi_currency') and values[column_group_key]['is_multicurrency']):
                 amount_currency_name = ''
             else:
-                amount_currency_name = _('Amount in currency: %s', self.env['account.report'].format_value(values[column_group_key]['amount_currency_total'], currency=self.env['res.currency'].browse(values[column_group_key]['move_currency']), blank_if_zero=False, figure_type='monetary'))
+                amount_currency_name = _('Amount in currency: %s', self.env['account.report'].format_value(options, values[column_group_key]['amount_currency_total'], currency=self.env['res.currency'].browse(values[column_group_key]['move_currency']), blank_if_zero=False, figure_type='monetary'))
             if line_index == 0:
                 res = values[column_group_key]['reference'] or amount_currency_name
                 # if the invoice ref equals the payment ref then let's not repeat the information
@@ -588,7 +591,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 tax_val = _('T: %s', ', '.join(values['taxes']))
             elif values['tax_base_amount']:
                 # Display the base amount on wich this tax line is based off, formatted as such: "B: $0.0"
-                tax_val = _('B: %s', report.format_value(values['tax_base_amount'], blank_if_zero=False, figure_type='monetary'))
+                tax_val = _('B: %s', report.format_value(options, values['tax_base_amount'], blank_if_zero=False, figure_type='monetary'))
             values['tax_grids'] = values['tax_grids']
             additional_col = [
                 {'name': tax_val, 'class': 'text-start'},
@@ -598,7 +601,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             if values['account_type'] not in ('liability_credit_card', 'asset_cash') and current_balance:
                 additional_col = [
                     {
-                        'name': report.format_value(current_balance, figure_type='monetary'),
+                        'name': report.format_value(options, current_balance, figure_type='monetary'),
                         'no_format': current_balance,
                         'class': 'number',
                     },
@@ -607,7 +610,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             if self.user_has_groups('base.group_multi_currency') and values['move_line_currency'] != values['company_currency']:
                 amount = -values['amount_currency'] if not is_unreconciled_payment else values['amount_currency']
                 additional_col[-1] = {
-                    'name': report.format_value(amount, currency=self.env['res.currency'].browse(values['move_line_currency']), figure_type='monetary'),
+                    'name': report.format_value(options, amount, currency=self.env['res.currency'].browse(values['move_line_currency']), figure_type='monetary'),
                     'no_format': amount,
                     'class': 'number',
                 }
@@ -842,12 +845,12 @@ class JournalReportCustomHandler(models.AbstractModel):
         opposite = {'+': '-', '-': '+'}
         for country_name, tag_id, name, balance, sign in query_res:
             res[country_name][name]['tag_id'] = tag_id
-            res[country_name][name][sign] = report.format_value(balance, blank_if_zero=False, figure_type='monetary')
+            res[country_name][name][sign] = report.format_value(options, balance, blank_if_zero=False, figure_type='monetary')
             # We need them formatted, to ensure they are displayed correctly in the report. (E.g. 0.0, not 0)
             if not opposite[sign] in res[country_name][name]:
-                res[country_name][name][opposite[sign]] = report.format_value(0, blank_if_zero=False, figure_type='monetary')
+                res[country_name][name][opposite[sign]] = report.format_value(options, 0, blank_if_zero=False, figure_type='monetary')
             res[country_name][name][sign + '_no_format'] = balance
-            res[country_name][name]['impact'] = report.format_value(res[country_name][name].get('+_no_format', 0) - res[country_name][name].get('-_no_format', 0), blank_if_zero=False, figure_type='monetary')
+            res[country_name][name]['impact'] = report.format_value(options, res[country_name][name].get('+_no_format', 0) - res[country_name][name].get('-_no_format', 0), blank_if_zero=False, figure_type='monetary')
 
         return res
 
@@ -892,8 +895,8 @@ class JournalReportCustomHandler(models.AbstractModel):
         res = defaultdict(list)
         for tax in taxes:
             res[tax.country_id.name].append({
-                'base_amount': report.format_value(tax_values[tax.id]['base_amount'], blank_if_zero=False, figure_type='monetary'),
-                'tax_amount': report.format_value(tax_values[tax.id]['tax_amount'], blank_if_zero=False, figure_type='monetary'),
+                'base_amount': report.format_value(options, tax_values[tax.id]['base_amount'], blank_if_zero=False, figure_type='monetary'),
+                'tax_amount': report.format_value(options, tax_values[tax.id]['tax_amount'], blank_if_zero=False, figure_type='monetary'),
                 'name': tax.name,
                 'line_id': report._get_generic_line_id('account.tax', tax.id)
             })

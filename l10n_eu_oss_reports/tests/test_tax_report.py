@@ -108,6 +108,7 @@ class OSSTaxReportTest(TestAccountReportsCommon):
                 ("Total Netherlands",        '',               ''),
                 ("Total Sales",              '',               85),
             ],
+            options,
         )
 
     def test_generate_oss_xml_be(self):
@@ -267,6 +268,7 @@ class TestTaxReportOSSNoMapping(TestAccountReportsCommon):
                 ('Invoice base', 100.00),
                 ('Refund base',      ''),
             ],
+            options,
         )
 
     def test_closing_entry(self):
@@ -312,4 +314,5 @@ class TestTaxReportOSSNoMapping(TestAccountReportsCommon):
                 ("Total Denmark",              '',             25.0),
                 ("Total Sales",                '',             25.0),
             ],
+            options,
         )

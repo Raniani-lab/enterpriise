@@ -13,17 +13,14 @@
             <record id="account_financial_report_bs_column_gross" model="account.report.column">
                 <field name="name">Gross</field>
                 <field name="expression_label">gross</field>
-                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_financial_report_bs_column_depr_prov" model="account.report.column">
                 <field name="name">Depr - Prov</field>
                 <field name="expression_label">depr_prov</field>
-                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_financial_report_bs_column_net" model="account.report.column">
                 <field name="name">Net</field>
                 <field name="expression_label">net</field>
-                <field name="figure_type">monetary_without_symbol</field>
             </record>
         </field>
         <field name="line_ids">

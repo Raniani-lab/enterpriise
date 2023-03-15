@@ -1844,7 +1844,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             ("refund", 0, 0, 500.0, -500.0, 0, 0, 100.0, -100.0, -400.0),
         ]
 
-        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_open_asset)
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_open_asset, options)
 
         invoice = self.env['account.move'].create({
             'move_type': 'in_invoice',
@@ -1873,7 +1873,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             ("refund", 0, 500.0, 500.0, 0, 0, 500.0, 500.0, 0, 0),
         ]
         options = self._generate_options(report, fields.Date.today() + relativedelta(months=-7, day=1), fields.Date.today())
-        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_closed_asset)
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_closed_asset, options)
 
     def test_depreciation_schedule_hierarchy(self):
         # Remove previously existing assets.

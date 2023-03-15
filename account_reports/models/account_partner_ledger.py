@@ -111,6 +111,9 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
 
         options['forced_domain'] = options.get('forced_domain', []) + domain
 
+        if self.user_has_groups('base.group_multi_currency'):
+            options['multi_currency'] = True
+
     def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
         partner_ids_to_expand = []
 
@@ -583,9 +586,9 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             value = partner_values[column['column_group_key']].get(col_expr_label)
 
             if col_expr_label in {'debit', 'credit', 'balance'}:
-                formatted_value = report.format_value(value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
+                formatted_value = report.format_value(options, value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
             else:
-                formatted_value = report.format_value(value, figure_type=column['figure_type']) if value is not None else value
+                formatted_value = report.format_value(options, value, figure_type=column['figure_type']) if value is not None else value
 
             unfoldable = unfoldable or (col_expr_label in ('debit', 'credit') and not company_currency.is_zero(value))
 
@@ -637,18 +640,18 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                 elif col_expr_label == 'amount_currency':
                     currency = self.env['res.currency'].browse(aml_query_result['currency_id'])
                     if currency != self.env.company.currency_id:
-                        formatted_value = report.format_value(col_value, currency=currency, figure_type=column['figure_type'])
+                        formatted_value = report.format_value(options, col_value, currency=currency, figure_type=column['figure_type'])
                     else:
                         formatted_value = ''
                 elif col_expr_label == 'balance':
                     col_value += init_bal_by_col_group[column['column_group_key']]
-                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
+                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
                 else:
                     if col_expr_label == 'ref':
                         col_class = 'acc_rep_line_ellipsis'
                     elif col_expr_label not in ('debit', 'credit'):
                         col_class = ''
-                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
+                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'])
 
                 columns.append({
                     'name': formatted_value,
@@ -674,9 +677,9 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
 
             if col_expr_label in {'debit', 'credit', 'balance'}:
-                formatted_value = report.format_value(value, figure_type=column['figure_type'], blank_if_zero=False)
+                formatted_value = report.format_value(options, value, figure_type=column['figure_type'], blank_if_zero=False)
             else:
-                formatted_value = report.format_value(value, figure_type=column['figure_type']) if value else None
+                formatted_value = report.format_value(options, value, figure_type=column['figure_type']) if value else None
 
             column_values.append({
                 'name': formatted_value,

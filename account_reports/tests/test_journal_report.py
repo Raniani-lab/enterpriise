@@ -186,6 +186,7 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 ('',                                                                                                                   ),
                 ('Bank (BNK1)',                                                                                                        ),
             ],
+            options,
         )
 
     def test_report_journal_sale_journal_multicurrency_disabled(self):
@@ -197,25 +198,26 @@ class TestJournalAuditReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #   Name                                    Account                   Debit           Credit         Taxes               Tax grids
-            [   0,                                      1,                        3,              4,             5,                  6],
+            #   Name                                    Account                   Debit           Credit         Taxes                    Tax grids
+            [   0,                                      1,                        3,              4,             5,                       6],
             [
-                ('Customer Invoices (INV)',                                                                                           ),
-                ('Name',                                'Account',                'Debit',        'Credit',      'Taxes',            'Tax Grids'),
-                ('INV/2017/00001',                      '121000 ',                3000.0,         '',            '',                 ''),
-                ('ref123',                              '400000 Product Sales',   '',             3000.0,        '',                 ''),
-                ('INV/2017/00002',                      '121000 ',                1500.0,         '',            '',                 ''),
-                ('ref234',                              '400000 Product Sales',   '',             1500.0,        '',                 ''),
-                ('INV/2017/00003',                      '121000 ',                1000.0,         '',            '',                 ''),
-                ('',                                    '400000 Product Sales',   '',             1000.0,        '',                 ''),
+                ('Customer Invoices (INV)',                                                                                                ),
+                ('Name',                                'Account',                'Debit',        'Credit',      'Taxes',                'Tax Grids'),
+                ('INV/2017/00001',                      '121000 ',                3000.0,         '',            '',                     ''),
+                ('ref123',                              '400000 Product Sales',   '',             3000.0,        '',                     ''),
+                ('INV/2017/00002',                      '121000 ',                1500.0,         '',            '',                     ''),
+                ('ref234',                              '400000 Product Sales',   '',             1500.0,        '',                     ''),
+                ('INV/2017/00003',                      '121000 ',                1000.0,         '',            '',                     ''),
+                ('',                                    '400000 Product Sales',   '',             1000.0,        '',                     ''),
                 # Invoice with taxes
-                ('INV/2017/00004',                      '121000 ',                1650.0,         '',            '',                 ''),
-                ('ref345',                              '400000 Product Sales',   '',             1500.0,        'T: Tax 10%',       ''),
+                ('INV/2017/00004',                      '121000 ',                1650.0,         '',            '',                     ''),
+                ('ref345',                              '400000 Product Sales',   '',             1500.0,        'T: Tax 10%',           ''),
                 ('',                                    '400000 Product Sales',   '',             150.0,         'B: $\xa01,500.00', '+c10'),
                 # This is the tax summary line, it's rendered in a custom way and don't have values in the name/columns
-                ('',                                                                                                                   ),
-                ('Bank (BNK1)',                                                                                                        ),
+                ('',                                                                                                                       ),
+                ('Bank (BNK1)',                                                                                                            ),
             ],
+            options,
         )
 
     def test_report_journal_bank_journal(self):
@@ -232,10 +234,11 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 ('Customer Invoices (INV)',                                                                                                   ),
                 ('Bank (BNK1)',                                                                                                               ),
                 ('Name',                                'Account',                'Debit',        'Credit',             'Balance',          'Amount In Currency'),
-                ('',                                    '',                       '',             'Starting Balance:',  '100.00',             ''),
-                ('BNK1/2017/00001',                     '400000 Product Sales',   '',             200.00,               '300.00',             ''),
-                ('',                                    '',                       '',             'Ending Balance:',    '300.00',             ''),
+                ('',                                    '',                       '',             'Starting Balance:',  '$\xa0100.00',      ''),
+                ('BNK1/2017/00001',                     '400000 Product Sales',   '',             200.00,               '$\xa0300.00',      ''),
+                ('',                                    '',                       '',             'Ending Balance:',    '$\xa0300.00',      ''),
             ],
+            options,
         )
 
     def test_report_journal_bank_journal_multicurrency(self):
@@ -275,11 +278,12 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 ('Customer Invoices (INV)',                                                                                                   ),
                 ('Bank (BNK1)',                                                                                                               ),
                 ('Name',                                'Account',                'Debit',        'Credit',             'Balance',          'Amount In Currency'),
-                ('',                                    '',                       '',             'Starting Balance:',  '100.00',             ''),
-                ('BNK1/2017/00001',                     '400000 Product Sales',   '',             200.00,               '300.00',             ''),
-                ('BNK1/2017/00002',                     '400000 Product Sales',   '',             175.00,               '475.00',             '150.000\xa0🍫'),
-                ('',                                    '',                       '',             'Ending Balance:',    '475.00',             ''),
+                ('',                                    '',                       '',             'Starting Balance:',  '$\xa0100.00',      ''),
+                ('BNK1/2017/00001',                     '400000 Product Sales',   '',             200.00,               '$\xa0300.00',      ''),
+                ('BNK1/2017/00002',                     '400000 Product Sales',   '',             175.00,               '$\xa0475.00',      '150.000\xa0🍫'),
+                ('',                                    '',                       '',             'Ending Balance:',    '$\xa0475.00',      ''),
             ],
+            options,
         )
 
     def test_report_journal_bank_journal_multicurrency_disabled(self):
@@ -312,11 +316,12 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 ('Customer Invoices (INV)',                                                                                                   ),
                 ('Bank (BNK1)',                                                                                                               ),
                 ('Name',                                'Account',                'Debit',        'Credit',             'Balance',          ''),
-                ('',                                    '',                       '',             'Starting Balance:',  '100.00',             ''),
-                ('BNK1/2017/00001',                     '400000 Product Sales',   '',             200.00,               '300.00',             ''),
-                ('BNK1/2017/00002',                     '400000 Product Sales',   '',             175.00,               '475.00',             ''),
-                ('',                                    '',                       '',             'Ending Balance:',    '475.00',             ''),
+                ('',                                    '',                       '',             'Starting Balance:',  '$\xa0100.00',      ''),
+                ('BNK1/2017/00001',                     '400000 Product Sales',   '',             200.00,               '$\xa0300.00',      ''),
+                ('BNK1/2017/00002',                     '400000 Product Sales',   '',             175.00,               '$\xa0475.00',      ''),
+                ('',                                    '',                       '',             'Ending Balance:',    '$\xa0475.00',      ''),
             ],
+            options,
         )
 
     def test_report_journal_sale_journal_group_by_months(self):
@@ -375,6 +380,7 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 ('ref123',                              '400000 Product Sales',   '',             3000.0,        '',                 ''),
                 ('Bank (BNK1)',                                                                                                        ),
             ],
+            options,
         )
 
     def test_report_journal_sale_journal_sort_by_date(self):
@@ -442,4 +448,5 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 ('',                                                                                                                   ),
                 ('Bank (BNK1)',                                                                                                        ),
             ],
+            options,
         )

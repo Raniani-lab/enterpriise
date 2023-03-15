@@ -119,6 +119,7 @@ class TestDiot(TestAccountReportsCommon):
 
                 (  "",              "",              "",        "",         "", 30.0,           "", 32.0,          "",      "",    28.0,     "",    -1.26,   9.92),
             ],
+            options,
         )
 
         self.assertEqual(
@@ -171,7 +172,8 @@ class TestDiot(TestAccountReportsCommon):
                 (  "",   "",              "",   "",         "", "","", "","","", "","", "", 16.0),
                 ("04", "85", "XAXX010101000", "MX",  "Mexican", "","", "","","", "","", "", 16.0),
                 (  "",   "",              "",   "",         "", "","", "","","", "","", "", 16.0),
-            ]
+            ],
+            options,
         )
 
         self.assertEqual(

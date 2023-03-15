@@ -22,6 +22,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         report = self.env['account.followup.report']
         options = {
             'partner_id': self.partner_a.id,
+            'multi_currency': True,
         }
 
         # 2016-01-01: First invoice, partially paid.
@@ -64,6 +65,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
                     ('INV/2016/00001',                      '01/01/2016',   '01/01/2016',   '',       300.0),
                     ('',                                    '',             '',             '',       300.0),
                 ],
+                options,
             )
 
         # 2016-01-05: Credit note due at 2016-01-10.
@@ -94,6 +96,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
                     ('',                                    '',             '',             '',       100.0),
                     ('',                                    '',             '',             '',       300.0),
                 ],
+                options,
             )
 
         # 2016-01-15: Draft invoice + previous credit note reached the date_maturity + first invoice reached the delay
@@ -122,6 +125,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
                     ('',                                    '',             '',             '',       100.0),
                     ('',                                    '',             '',             '',       100.0),
                 ],
+                options,
             )
 
         # Trigger the followup report notice.

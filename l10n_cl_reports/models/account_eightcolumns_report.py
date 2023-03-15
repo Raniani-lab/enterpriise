@@ -126,7 +126,7 @@ class ChileanReportCustomHandler(models.AbstractModel):
             value = vals.get(column['column_group_key'], {}).get(expression_label, False)
 
             columns.append({
-                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value,
                 'class': 'number',
             })
@@ -155,7 +155,7 @@ class ChileanReportCustomHandler(models.AbstractModel):
             value = total_vals.get(column['column_group_key'], {}).get(expression_label, False)
 
             columns.append({
-                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value,
                 'class': 'number',
             })

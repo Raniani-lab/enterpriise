@@ -31,7 +31,7 @@ class OSSTaxReportCustomHandlerOss(models.AbstractModel):
 
                 country_columns = []
                 for tax_sum in tax_sums:
-                    country_columns += [{'name': ''}, {'no_format': tax_sum, 'name': report.format_value(tax_sum, figure_type='monetary')}]
+                    country_columns += [{'name': ''}, {'no_format': tax_sum, 'name': report.format_value(options, tax_sum, figure_type='monetary')}]
 
                 country_line_id = report._get_generic_line_id('res.country', country.id, parent_line_id=parent_line['id'])
                 country_line = {

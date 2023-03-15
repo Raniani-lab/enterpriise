@@ -35,8 +35,8 @@ class AssetsReportCustomHandler(models.AbstractModel):
         total_columns = []
         for column_data in options['columns']:
             col_value = totals_by_column_group[column_data['column_group_key']].get(column_data['expression_label'])
-            if column_data.get('figure_type') in ('monetary', 'monetary_without_symbol'):
-                total_columns.append({'name': report.format_value(col_value, self.env.company.currency_id, figure_type=column_data.get('figure_type'), blank_if_zero=column_data['blank_if_zero']), 'no_format': col_value})
+            if column_data.get('figure_type') == 'monetary':
+                total_columns.append({'name': report.format_value(options, col_value, self.env.company.currency_id, figure_type=column_data.get('figure_type'), blank_if_zero=column_data['blank_if_zero']), 'no_format': col_value})
             else:
                 total_columns.append({})
 
@@ -92,7 +92,7 @@ class AssetsReportCustomHandler(models.AbstractModel):
                     all_columns.append({})
                 elif column_data['figure_type'] == 'monetary':
                     all_columns.append({
-                        'name': report.format_value(col_value, company_currency, figure_type='monetary', blank_if_zero=column_data['blank_if_zero']),
+                        'name': report.format_value(options, col_value, company_currency, figure_type='monetary', blank_if_zero=column_data['blank_if_zero']),
                         'no_format': col_value,
                     })
                 else:
@@ -331,7 +331,7 @@ class AssetsReportCustomHandler(models.AbstractModel):
                     account_line_vals['columns'].append({})
                 else:
                     account_line_vals['columns'].append({
-                        'name': report.format_value(tot_val, self.env.company.currency_id, figure_type='monetary', blank_if_zero=options['columns'][column_index]['blank_if_zero']),
+                        'name': report.format_value(options, tot_val, self.env.company.currency_id, figure_type='monetary', blank_if_zero=options['columns'][column_index]['blank_if_zero']),
                         'no_format': tot_val,
                     })
 

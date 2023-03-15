@@ -93,6 +93,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
                 (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  'S',   f'700.00{NON_BREAKING_SPACE}€'),
                 ("Total",              '',                      '',                      '',    f'3,000.00{NON_BREAKING_SPACE}€'),
             ],
+            options,
         )
         self.env[report.custom_handler_model_name].get_file_name(options)
         file_ref = options['filename']

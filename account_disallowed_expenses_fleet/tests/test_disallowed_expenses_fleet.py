@@ -191,6 +191,7 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
                     ('600020 Expenses (copy)',                 400.0,          '56.00%',     224.0,               3),
                 ('Total',                                     3200.0,          '',          1088.0,               1),
             ],
+            options,
         )
 
     def test_disallowed_expenses_report_unfold_all_with_vehicle_split(self):
@@ -222,6 +223,7 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
                     ('600000 Expenses',                        100.0,          '60.00%',      60.0,               3),
                 ('Total',                                     3200.0,          '',          1088.0,               1),
             ],
+            options,
         )
 
     def test_disallowed_expenses_report_comparison(self):
@@ -296,4 +298,5 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
                     ('611011 Frozen Account',      25.0,          '',              '',               79.0,            '',           '',                  3),
                 ('Total',                        3246.0,          '',          1098.5,               79.0,            '',           0.0,                 1),
             ],
+            options,
         )

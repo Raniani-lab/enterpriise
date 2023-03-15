@@ -139,7 +139,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
             expression_label = column['expression_label']
             value = partner_values[column['column_group_key']].get(expression_label)
             column_values.append({
-                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else value,
+                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else value,
                 'no_format': value,
                 'class': 'number' if column['figure_type'] == 'monetary' else 'text'
             }) # value is not None => allows to avoid the "0.0" or None values but only those
@@ -164,7 +164,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         for column in options['columns']:
             value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
             column_values.append({
-                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value if column['figure_type'] == 'monetary' else '',
                 'class': 'number' if column['figure_type'] == 'monetary' else 'text'
             })

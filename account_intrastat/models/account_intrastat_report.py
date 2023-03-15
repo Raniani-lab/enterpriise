@@ -195,7 +195,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 value = f"{value} ({line_vals.get(column['column_group_key'], {}).get('type', False)})"
 
             columns.append({
-                'name': report.format_value(value, figure_type=column['figure_type']) if value else None,
+                'name': report.format_value(options, value, figure_type=column['figure_type']) if value else None,
                 'no_format': value,
                 'class': 'number' if expression_label in number_values else '',
             })
@@ -237,7 +237,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
             value = total_vals.get(column['column_group_key'], {}).get(expression_label, False)
 
             columns.append({
-                'name': report.format_value(value, figure_type=column['figure_type']) if value else None,
+                'name': report.format_value(options, value, figure_type=column['figure_type']) if value else None,
                 'no_format': value,
                 'class': 'number',
             })

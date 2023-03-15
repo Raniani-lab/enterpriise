@@ -274,6 +274,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test_line_3',         600.0),
                 ('101001 101001',       600.0),
             ],
+            options,
         )
 
         # Check redirection.
@@ -361,6 +362,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('101003 101003',           1),
                 ('101004 101004',           1),
             ],
+            options,
         )
 
         # Check redirection.
@@ -483,6 +485,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('345D 345D',            10.0),
                 ('test_line_12',           ''),
             ],
+            options,
         )
 
         # Check redirection.
@@ -536,6 +539,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test_line_1',            ''),
                 ('test_line_2',            ''),
             ],
+            options,
         )
 
         options = self._generate_options(report, '2020-01-02', '2020-01-02')
@@ -547,6 +551,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test_line_1',         100.0),
                 ('test_line_2',         100.0),
             ],
+            options,
         )
 
         options = self._generate_options(report, '2020-01-03', '2020-01-03')
@@ -559,6 +564,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test_line_1',         500.0),
                 ('test_line_2',         500.0),
             ],
+            options,
         )
 
         # Check redirection.
@@ -582,6 +588,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test_line_1',            ''),
                 ('test_line_2',            ''),
             ],
+            options,
         )
 
         options = self._generate_options(report, '2020-01-02', '2020-01-04')
@@ -593,6 +600,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test_line_1',          600.0),
                 ('test_line_2',          500.0),
             ],
+            options,
         )
 
         # Check redirection.
@@ -624,6 +632,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test_line_1',          800.0),
                 ('test_line_2',          300.0),
             ],
+            options,
         )
 
     def test_engine_custom(self):
@@ -669,6 +678,7 @@ class TestReportEngines(TestAccountReportsCommon):
                     ('test_line_1',        -300.0),
                     ('101002 101002',      -300.0),
                 ],
+                options,
             )
 
     def test_engine_aggregation(self):
@@ -849,6 +859,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test11_5',            100.0),
                 ('test11_6',               ''),
             ],
+            options,
         )
 
         # Check redirection.
@@ -894,6 +905,7 @@ class TestReportEngines(TestAccountReportsCommon):
         )
 
         other_report = self._create_report([other_report_line_1, other_report_line_2, other_report_line_3, other_report_line_4])
+        other_report_options = self._generate_options(other_report, '2021-01-01', '2021-01-01')
 
         # Main report
         main_report_line_1 = self._prepare_test_report_line(
@@ -931,11 +943,12 @@ class TestReportEngines(TestAccountReportsCommon):
         )
 
         main_report = self._create_report([main_report_line_1, main_report_line_2, main_report_line_3, main_report_line_4, main_report_line_5, main_report_line_6])
+        main_report_options = self._generate_options(main_report, '2021-01-01', '2021-01-01')
 
         # First check other_report
         self.assertLinesValues(
             # pylint: disable=bad-whitespace
-            other_report._get_lines(self._generate_options(other_report, '2021-01-01', '2021-01-01')),
+            other_report._get_lines(other_report_options),
             [   0,                                      1],
             [
                 ('other_report_line_1',               2.0),
@@ -943,12 +956,13 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('other_report_line_3',               6.0),
                 ('other_report_line_4',               5.0),
             ],
+            other_report_options,
         )
 
         # Check main_report
         self.assertLinesValues(
             # pylint: disable=bad-whitespace
-            main_report._get_lines(self._generate_options(main_report, '2021-01-01', '2021-01-01')),
+            main_report._get_lines(main_report_options),
             [   0,                                      1],
             [
                 ('main_report_line_1',                4.0),
@@ -958,6 +972,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('main_report_line_5',               27.0),
                 ('main_report_line_6',               27.0),
             ],
+            main_report_options,
         )
 
     def test_engine_aggregation_expansion(self):
@@ -1049,11 +1064,12 @@ class TestReportEngines(TestAccountReportsCommon):
             lines,
             [   0,                                1],
             [
-                ('test_line_1',     '$ 6,000.00'),
-                ('Partner A',       '$ 1,000.00'),
-                ('Partner B',       '$ 2,000.00'),
+                ('test_line_1',          '6,000.00'),
+                ('Partner A',            '1,000.00'),
+                ('Partner B',            '2,000.00'),
                 ('Load more...',                 ''),
-            ]
+            ],
+            options,
         )
 
         load_more_line = lines[-1]
@@ -1070,8 +1086,9 @@ class TestReportEngines(TestAccountReportsCommon):
             load_more_res,
             [   0,                                1],
             [
-                ('Partner C',       '$ 3,000.00'),
-            ]
+                ('Partner C',            '3,000.00'),
+            ],
+            options,
         )
 
     def test_engine_external_boolean(self):

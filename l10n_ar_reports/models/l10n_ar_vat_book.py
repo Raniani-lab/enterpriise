@@ -133,7 +133,7 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             value = move_vals.get(column['column_group_key'], {}).get(expression_label)
 
             columns.append({
-                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value,
                 'class': 'number' if expression_label in number_values else '',
             })
@@ -157,7 +157,7 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             value = total_vals.get(column['column_group_key'], {}).get(expression_label)
 
             columns.append({
-                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value,
                 'class': 'number',
             })

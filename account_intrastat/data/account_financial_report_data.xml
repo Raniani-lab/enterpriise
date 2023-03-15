@@ -70,7 +70,6 @@
                 <record id="intrastat_report_column_value" model="account.report.column">
                     <field name="name">Value</field>
                     <field name="expression_label">value</field>
-                    <field name="figure_type">monetary</field>
                 </record>
             </field>
         </record>

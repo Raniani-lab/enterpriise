@@ -102,6 +102,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('Total 121000.1 Account Receivable',  500.0,          200.0,         166.67,          -33.33),
                 ('Total Gol',                           1200.0,          480.0,          400.0,           -80.0),
             ],
+            options,
             currency_map={
                 1: {'currency': self.currency_data['currency']},
             },
@@ -129,6 +130,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('Total 121000.1 Account Receivable',          500.0,          200.0,          250.0,           50.0),
                 ('Total Gol',                                   1200.0,          480.0,          600.0,          120.0),
             ],
+            options,
             currency_map={
                 1: {'currency': self.currency_data['currency']},
             },
@@ -209,6 +211,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('Total 121000.1 Account Receivable',        500.0,      200.0,      250.0,       50.0),
                 ('Total Gol',                                  500.0,      200.0,      250.0,       50.0),
             ],
+            options,
             currency_map={
                 1: {'currency': self.currency_data['currency']},
             },
@@ -270,6 +273,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('Total 121000 Account Receivable',              700.0,          280.0,          350.0,           70.0),
                 ('Total Gol',                                    700.0,          280.0,          350.0,           70.0),
             ],
+            options,
             currency_map={
                 1: {'currency': self.currency_data['currency']},
             },
@@ -334,6 +338,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('Total 121000 Account Receivable',            3000.0,      1000.0,      1000.0,       ''),
                 ('Total Gol',                                  3000.0,      1000.0,      1000.0,       ''),
             ],
+            options,
             currency_map={
                 1: {'currency': self.currency_data['currency']},
             },

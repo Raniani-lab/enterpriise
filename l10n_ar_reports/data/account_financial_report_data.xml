@@ -33,52 +33,42 @@
             <record id="l10n_ar_vat_book_report_column_taxed" model="account.report.column">
                 <field name="name">Taxed</field>
                 <field name="expression_label">taxed</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_not_taxed" model="account.report.column">
                 <field name="name">Not Taxed</field>
                 <field name="expression_label">not_taxed</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_vat_25" model="account.report.column">
                 <field name="name">VAT 2,5%</field>
                 <field name="expression_label">vat_25</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_vat_5" model="account.report.column">
                 <field name="name">VAT 5%</field>
                 <field name="expression_label">vat_5</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_vat_10" model="account.report.column">
                 <field name="name">VAT 10,5%</field>
                 <field name="expression_label">vat_10</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_vat_21" model="account.report.column">
                 <field name="name">VAT 21%</field>
                 <field name="expression_label">vat_21</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_vat_27" model="account.report.column">
                 <field name="name">VAT 27%</field>
                 <field name="expression_label">vat_27</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_vat_per" model="account.report.column">
                 <field name="name">VAT Perc</field>
                 <field name="expression_label">vat_per</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_other_taxes" model="account.report.column">
                 <field name="name">Other Taxes</field>
                 <field name="expression_label">other_taxes</field>
-                <field name="figure_type">monetary</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_total" model="account.report.column">
                 <field name="name">Total</field>
                 <field name="expression_label">total</field>
-                <field name="figure_type">monetary</field>
             </record>
         </field>
     </record>

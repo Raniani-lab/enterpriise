@@ -169,7 +169,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
             foreign_currency = self.env['res.currency'].browse(query_res['currency_id'][0]) if len(query_res['currency_id']) == 1 else None
 
             return {
-                'balance_currency': report.format_value(query_res['balance_currency'], currency=foreign_currency, figure_type='monetary'),
+                'balance_currency': report.format_value(options, query_res['balance_currency'], currency=foreign_currency, figure_type='monetary'),
                 'balance_operation': query_res['balance_operation'],
                 'balance_current': query_res['balance_current'],
                 'adjustment': query_res['adjustment'],

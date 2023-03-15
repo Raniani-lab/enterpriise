@@ -12,17 +12,14 @@
             <record id="account_financial_report_pl_column_cur_op" model="account.report.column">
                 <field name="name">Operations</field>
                 <field name="expression_label">cur_op</field>
-                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_financial_report_pl_column_prev_op" model="account.report.column">
                 <field name="name">Prev. Years' Operations</field>
                 <field name="expression_label">prev_op</field>
-                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_financial_report_pl_column_cur_tot" model="account.report.column">
                 <field name="name">Totals</field>
                 <field name="expression_label">cur_tot</field>
-                <field name="figure_type">monetary_without_symbol</field>
             </record>
         </field>
         <field name="line_ids">

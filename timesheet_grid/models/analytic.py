@@ -329,6 +329,10 @@ class AnalyticLine(models.Model):
             task_id = self._context.get('default_task_id', False)
             if not project_id and task_id:
                 project_id = self.env['project.task'].browse(task_id).project_id.id
+
+            if not self.env['project.project'].browse(project_id).allow_timesheets:
+                raise UserError(_("You cannot adjust the time of the timesheet for a project with timesheets disabled."))
+
             self.create({
                 'name': '/',
                 'project_id': project_id,

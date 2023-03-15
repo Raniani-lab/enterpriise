@@ -4,6 +4,7 @@
         <field name="name">sale.subscription.order.form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
+        <field name="priority" eval="10"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <field name="is_subscription" invisible="1"/>
@@ -102,7 +103,6 @@
             <xpath expr="//div[@name='button_box']" position="after">
                 <field name="payment_exception" invisible="1"/>
                 <div class="px-2 rounded-pill text-bg-danger float-end" attrs="{'invisible': [('payment_exception', '=', False)]}">Payment Failure</div>
-                <div class="badge rounded-pill bg-default float-end border border-default fs-6" attrs="{'invisible': [('subscription_state', 'not in', ['closed'])]}">Closed</div>
                 <field name="is_subscription" invisible="1"/>
                 <field name="is_upselling"  invisible="1"/>
                 <field name="is_renewing"  invisible="1"/>
@@ -127,8 +127,8 @@
                        decoration-warning="subscription_state in ['4_paused']"
                        decoration-danger="subscription_state in ['6_churn']"
                     />
-                <div name="subscription_state" class="float-end fs-6 badge rounded-pill text-bg-info"
-                     attrs="{'invisible': [('subscription_state', 'not in', ['1_draft'])]}">Subscription Quotation</div>
+                <div name="subscription_quotation_pill" class="float-end fs-6 badge rounded-pill text-bg-info"
+                     attrs="{'invisible': ['|', ('subscription_state', '!=', '1_draft'), ('state', 'not in', ['draft', 'sent'])]}">Subscription Quotation</div>
             </xpath>
             <xpath expr="//header" position="after">
                 <div role="alert" class="alert alert-warning mb-0 p-3 text-center" attrs="{'invisible': [('archived_product_count', '=', 0)]}">
@@ -193,9 +193,9 @@
                 <field name="payment_token_id" groups="base.group_no_one" options="{'no_create': 'True'}"/>
                 <field name="payment_exception" groups="base.group_no_one"/>
             </group>
-            <group name="sale_total" position="inside">
+            <field name="tax_totals" position="after">
                 <field name="recurring_details" nolabel="1" colspan="2"/>
-            </group>
+            </field>
         </field>
     </record>
 
@@ -204,7 +204,6 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_tree"/>
         <field name="arch" type="xml">
-            <!-- TODO make work -->
             <xpath expr="//tree" position="attributes">
                 <attribute name="decoration-info">subscription_state in ['1_draft', '2_quotation']</attribute>
                 <attribute name="decoration-warning">subscription_state == '4_paused'</attribute>

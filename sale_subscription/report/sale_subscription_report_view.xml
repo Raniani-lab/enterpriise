@@ -8,7 +8,8 @@
         <field name="domain">[('is_subscription', '=', True), ('subscription_state', 'not in', ['2_renewal', '5_renewed'] )]</field>
         <field name="context">{
             'search_default_group_by_product': 1,
-            'search_default_filter_open': 1,
+            'search_default_filter_progress': 1,
+            'search_default_filter_paused': 1,
             }
         </field>
     </record>
@@ -83,7 +84,6 @@
         <field name="arch" type="xml">
             <tree string="Subscription Analysis" create="0" delete="0" action="action_open_subscription_order" type="object">
                 <field name="name"/>
-                <field name="name"/>
                 <field name="partner_id" optional="show"/>
                 <field name="first_contract_date" optional="hide"/>
                 <field name="date" optional="hide"/>
@@ -94,7 +94,7 @@
                 <field name="user_id" optional="show" widget="many2one_avatar_user"/>
                 <field name="team_id" optional="show"/>
                 <field name="company_id" optional="show" groups="base.group_multi_company"/>
-                <field name="recurring_monthly" optional="show" sum="Sum of Monthly Recurring Revenue"/>
+                <field name="recurring_monthly" optional="show" sum="Sum of Monthly Recurring"/>
                 <field name="recurring_total" optional="hide"/>
                 <field name="recurring_yearly" optional="hide" sum="Sum of Yearly Recurring Revenue"/>
                 <field name="subscription_state" string="Status" widget="badge"
@@ -164,8 +164,6 @@
                 <field name="product_id"/>
                 <field name="partner_id" operator="child_of"/>
                 <filter name="filter_my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid)]"/>
-                <separator/>
-                <filter name="filter_active" string="Active" domain="[('subscription_state', 'in', ['3_progress', '4_paused'])]" help="Running Subscriptions"/>
                 <separator/>
                 <filter name="filter_quotations" string="Quotations" domain="[('subscription_state', '=', '1_draft')]"/>
                 <filter name="filter_progress" string="In Progress" domain="[('subscription_state', '=', '3_progress')]"/>

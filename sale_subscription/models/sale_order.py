@@ -105,8 +105,8 @@ class SaleOrder(models.Model):
                                   store=True)  # TODO master: move to module
     commercial_partner_id = fields.Many2one('res.partner', related='partner_id.commercial_partner_id')
 
-    recurring_total = fields.Monetary(compute='_compute_recurring_total', string="Total Recurring Revenue", store=True)
-    recurring_monthly = fields.Monetary(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue",
+    recurring_total = fields.Monetary(compute='_compute_recurring_total', string="Total Recurring", store=True)
+    recurring_monthly = fields.Monetary(compute='_compute_recurring_monthly', string="Monthly Recurring",
                                         store=True, tracking=True)
     non_recurring_total = fields.Monetary(compute='_compute_non_recurring_total', string="Total Non Recurring Revenue")
     order_log_ids = fields.One2many('sale.order.log', 'order_id', string='Subscription Logs', readonly=True, copy=False)
@@ -870,7 +870,7 @@ class SaleOrder(models.Model):
         action = {
             "type": "ir.actions.act_window",
             "res_model": "sale.order",
-            "views": [[self.env.ref('sale_subscription.sale_subscription_history_view_tree').id, "tree"],
+            "views": [[self.env.ref('sale_subscription.sale_subscription_quotation_tree_view').id, "tree"],
                       [self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, "form"]]
         }
         origin_order_id = self.origin_order_id.id or self.id

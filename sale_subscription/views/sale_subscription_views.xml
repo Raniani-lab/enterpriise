@@ -37,11 +37,9 @@
                 <filter string="Unassigned" name="contracts_not_assigned" help="Subscriptions that are not assigned to an account manager." domain="[('user_id', '=', False)]"/>
                 <separator/>
                 <filter name="quotations" string="Quotations" domain="[('subscription_state','in', ['1_draft', '2_renewal'])]"/>
-                <filter name="active" string="Active" domain="[('subscription_state','in', ['3_progress', '4_paused'])]" help="Running Subscriptions"/>
-                <filter name="churned" string="Churned" domain="[('subscription_state','=', '6_churn')]"/>
-                <separator/>
                 <filter name="progress" string="In Progress" domain="[('subscription_state','=', '3_progress')]"/>
                 <filter name="paused" string="Paused" domain="[('subscription_state','=', '4_paused')]"/>
+                <filter name="churned" string="Churned" domain="[('subscription_state','=', '6_churn')]"/>
                 <separator/>
                 <separator/>
                 <filter string="To Renew" name="to_renew" domain="[('next_invoice_date', '&lt;', context_today().strftime('%Y-%m-%d')), ('subscription_state', '=', '3_progress')]"/>
@@ -95,7 +93,8 @@
         <field name="view_mode">tree,kanban,form,pivot,graph,cohort,activity</field>
         <field name="context">{
             'default_is_subscription': 1,
-            'search_default_active': 1,
+            'search_default_progress': 1,
+            'search_default_paused': 1,
         }</field>
         <field name="domain">[('is_subscription', '=', True), ('subscription_state', 'not in', ['2_renewal', '5_renewed'] )]</field>
         <field name="search_view_id" eval='sale_subscription_view_search'/>
@@ -159,6 +158,21 @@
         </field>
     </record>
 
+
+    <record id="sale_subscription_upsell_primary_view_tree" model="ir.ui.view">
+      <field name="name">sale.subscription.order.tree</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_quotation_tree"/>
+      <field name="mode">primary</field>
+      <field name="priority">999</field>
+      <field name="arch" type="xml">
+          <tree position="attributes">
+                <!-- use the default order defined on the model -->
+              <attribute name="default_order">id desc</attribute>
+          </tree>
+      </field>
+    </record>
+
     <record id="sale_subscription_action_upsell" model="ir.actions.act_window">
         <field name="name">Upsells</field>
         <field name="res_model">sale.order</field>
@@ -166,7 +180,7 @@
         <field name="domain">[('subscription_state', '=', '7_upsell')]</field>
         <field name="context">{'create': False}</field>
         <field name="view_ids" eval="[(5, 0, 0),
-                (0, 0, {'view_mode': 'tree', 'view_id': ref('sale.view_quotation_tree')}),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_subscription_upsell_primary_view_tree')}),
                 (0, 0, {'view_mode': 'kanban'}),
                 (0, 0, {'view_mode': 'form'}),
             ]"/>
@@ -250,8 +264,10 @@
       <field name="model">sale.order</field>
       <field name="arch" type="xml">
         <tree sample="1" multi_edit="1" default_order="next_invoice_date asc, end_date asc"
-              decoration-info="subscription_state in ['1_draft', '2_quotation']"
-              decoration-warning="subscription_state == '4_paused'">
+              decoration-info="subscription_state in ['1_draft', '2_renewal'] and state =='draft'"
+              decoration-primary="subscription_state in ['1_draft', '2_renewal'] and state =='sent'"
+              decoration-warning="subscription_state == '4_paused'"
+              decoration-muted="state == 'cancel'">
             <field name="name" string="Number" readonly="1" decoration-bf="1"/>
             <field name="client_order_ref" optional="hide" readonly="1" decoration-bf="1"/>
             <field name="partner_id" readonly="1"/>
@@ -259,8 +275,8 @@
             <field name="first_contract_date" optional="hide" readonly="1"/>
             <field name="start_date" optional="hide" readonly="1"/>
             <field name="next_invoice_date" string="Next Invoice" class="fw-bold"
-                   decoration-info="start_date and start_date &gt; current_date"
-                   decoration-danger="next_invoice_date and next_invoice_date &lt;= current_date"
+                   decoration-info="first_contract_date and first_contract_date &gt; current_date"
+                   decoration-danger="next_invoice_date and next_invoice_date &lt; current_date"
                    attrs="{'invisible': [('subscription_state', 'not in', ['3_progress', '4_paused'])]}" readonly="1"/>
             <field name="team_id" optional="hide"/>
             <field name="user_id" widget="many2one_avatar_user"/>
@@ -291,19 +307,6 @@
       </field>
     </record>
 
-    <record id="sale_subscription_history_view_tree" model="ir.ui.view">
-      <field name="name">sale.subscription.order.tree</field>
-      <field name="model">sale.order</field>
-       <field name="inherit_id" ref="sale_subscription_view_tree"/>
-      <field name="arch" type="xml">
-          <tree position="attributes">
-                <!-- use the default order defined on the model -->
-              <attribute name="default_order">id desc</attribute>
-          </tree>
-      </field>
-    </record>
-
-
     <record id="sale_subscription_tree" model="ir.actions.act_window.view" >
         <field name="sequence" eval="1"/>
         <field name="view_mode">tree</field>
@@ -325,11 +328,15 @@
         <field name="mode">primary</field>
         <field name="priority">999</field>
         <field name="arch" type="xml">
+            <tree position="attributes">
+                <!-- use the default order defined on the model -->
+              <attribute name="default_order">id desc</attribute>
+            </tree>
             <field name="amount_total" position="attributes">
                 <attribute name="optional">show</attribute>
             </field>
             <field name="next_invoice_date" position="before">
-                <field name="validity_date" readonly="1" optional="show"/>
+                <field name="validity_date" readonly="1" optional="hide"/>
             </field>
             <field name="next_invoice_date" position="attributes">
                 <attribute name="optional">hide</attribute>
@@ -342,7 +349,7 @@
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form,pivot,graph,cohort,activity</field>
         <field name="context">{
-            'search_default_quotations': 1,
+            'search_default_my_subscriptions': 1,
         }</field>
         <!-- All kind of subscription except upsell -->
         <field name="domain">[('subscription_state', 'in', ['1_draft', '2_renewal', '3_progress', '4_paused', '5_renewed', '6_churn'])]</field>
@@ -369,7 +376,7 @@
 
     <!-- Form from subscription App -->
     <record id="sale_subscription_primary_form_view" model="ir.ui.view">
-        <field name="name">sale.subscription.order.form</field>
+        <field name="name">sale.subscription.order.primary.form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale_subscription.sale_subscription_order_view_form"/>
         <field name="mode">primary</field>

@@ -107,7 +107,13 @@ class SignTemplate(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        attachments = self.env['ir.attachment'].browse([vals.get('attachment_id') for vals in vals_list])
+        # Sometimes the attachment is not already created in database when the sign template create method is called
+        attachment_vals = [{'name': val['name'], 'datas': val.pop('datas')} for val in vals_list if not val.get('attachment_id') and val.get('datas')]
+        attachments_iter = iter(self.env['ir.attachment'].create(attachment_vals))
+        for val in vals_list:
+            if not val.get('attachment_id', True):
+                val['attachment_id'] = next(attachments_iter).id
+        attachments = self.env['ir.attachment'].browse([vals.get('attachment_id') for vals in vals_list if vals.get('attachment_id')])
         for attachment in attachments:
             self._check_pdf_data_validity(attachment.datas)
         # copy the attachment if it has been attached to a record

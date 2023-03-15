@@ -46,7 +46,7 @@
         <field name="name">helpdesk.team.form</field>
         <field name="model">helpdesk.team</field>
         <field name="arch" type="xml">
-            <form string="team search" class="oe_form_configuration">
+            <form string="team search" class="oe_form_configuration" js_class="helpdesk_team_form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_open_ticket_view" type="object" icon="fa-life-ring" class="oe_stat_button">

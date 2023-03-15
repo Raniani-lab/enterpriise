@@ -505,6 +505,32 @@ class HelpdeskTeam(models.Model):
             'use_fsm': 'helpdesk_fsm',
         }
 
+    @api.model
+    def check_modules_to_install(self, enabled_features):
+        """ check if a module has to be installed according to the fields given in parameter.
+
+            :param list enabled_features: list of features enabled in the frontend by the user
+                                        to check if a module will be installed when the helpdesk
+                                        team is saved.
+            :return: boolean value, True if at least a module will be installed after saving
+                    the changes in helpdesk team, otherwise False.
+        """
+        if not enabled_features:
+            return False
+        module_names = [
+            module_name
+            for fname, module_name in self._get_field_modules().items()
+            if fname in enabled_features
+        ]
+        if module_names:
+            return bool(
+                self.env['ir.module.module'].search_count([
+                    ('name', 'in', module_names),
+                    ('state', 'not in', ('installed', 'to install', 'to upgrade')),
+                ], limit=1)
+            )
+        return False
+
     def _check_modules_to_install(self):
         # determine the modules to be installed
         expected = [

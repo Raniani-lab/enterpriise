@@ -39,6 +39,7 @@ class CustomerPortal(portal.CustomerPortal):
             'page_name': 'ticket',
             'ticket': ticket,
             'ticket_link_section': [],
+            'ticket_closed': kwargs.get('ticket_closed', False),
         }
         return self._get_page_view_values(ticket, access_token, values, 'my_tickets_history', False, **kwargs)
 
@@ -204,4 +205,4 @@ class CustomerPortal(portal.CustomerPortal):
             body = _('Ticket closed by the customer')
             ticket_sudo.with_context(mail_create_nosubscribe=True).message_post(body=body, message_type='comment', subtype_xmlid='mail.mt_note')
 
-        return request.redirect('/my/ticket/%s/%s' % (ticket_id, access_token or ''))
+        return request.redirect('/my/ticket/%s/%s?ticket_closed=1' % (ticket_id, access_token or ''))

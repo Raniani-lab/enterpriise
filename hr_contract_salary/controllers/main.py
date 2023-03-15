@@ -235,11 +235,21 @@ class HrContractSalary(http.Controller):
                 'active': False,
                 'company_id': contract.company_id.id,
             })
+            # Pre-filling
+            temporary_name = ""
+            temporary_mobile = ""
+            # Pre-filling name / phone / mail if coming from an applicant
+            if kw.get('applicant_id'):
+                applicant = request.env['hr.applicant'].sudo().browse(int(kw.get('applicant_id')))
+                temporary_name = applicant.partner_name
+                temporary_mobile = applicant.partner_phone
+                address_home_id.email = applicant.email_from
             contract.employee_id = request.env['hr.employee'].with_context(
                 tracking_disable=True,
                 salary_simulation=True,
             ).with_user(SUPERUSER_ID).sudo().create({
-                'name': '',
+                'name': temporary_name,
+                'phone': temporary_mobile,
                 'active': False,
                 'country_id': contract_country.id,
                 'certificate': False,  # To force encoding it

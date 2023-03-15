@@ -4,8 +4,9 @@
 import uuid
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.fields import Date
+from odoo.exceptions import UserError
 
 from werkzeug.urls import url_encode
 
@@ -31,8 +32,8 @@ class GenerateSimulationLink(models.TransientModel):
     final_yearly_costs = fields.Monetary(string="Yearly Cost", compute='_compute_final_yearly_costs', store=True, readonly=False, required=True)
     currency_id = fields.Many2one(related='contract_id.currency_id')
     applicant_id = fields.Many2one('hr.applicant')
-    job_title = fields.Char("Job Title")
-    company_id = fields.Many2one(related="contract_id.company_id")
+    job_title = fields.Char("Job Title", store=True, readonly=False)
+    company_id = fields.Many2one('res.company', compute="_compute_company_id")
     employee_job_id = fields.Many2one(
         'hr.job', string="Job Position",
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
@@ -51,12 +52,20 @@ class GenerateSimulationLink(models.TransientModel):
         for wizard in self:
             wizard.final_yearly_costs = wizard.contract_id.final_yearly_costs
 
-    @api.depends('employee_id.address_home_id.email', 'applicant_id.email_from')
+    @api.depends('contract_id')
+    def _compute_company_id(self):
+        for wizard in self:
+            if wizard.contract_id:
+                wizard.company_id = wizard.contract_id.company_id
+            else:
+                wizard.company_id = wizard.env.company.id
+
+    @api.depends('employee_id.work_email', 'applicant_id.email_from')
     def _compute_email_to(self):
         for wizard in self:
             if wizard.employee_id:
-                wizard.email_to = wizard.employee_id.address_home_id.email
-            elif wizard.applicant_id:
+                wizard.email_to = wizard.employee_id.work_email
+            elif wizard.applicant_id and wizard.env.context.get('active_model') == 'hr.applicant':
                 wizard.email_to = wizard.applicant_id.email_from
 
     def _get_url_triggers(self):
@@ -65,26 +74,26 @@ class GenerateSimulationLink(models.TransientModel):
     @api.depends(lambda self: [key for key in self._fields.keys()])
     def _compute_url(self):
         for wizard in self:
-            url = wizard.contract_id.get_base_url() + '/salary_package/simulation/contract/%s?' % (wizard.contract_id.id)
-            params = {}
-            for trigger in self._get_url_triggers():
-                if wizard[trigger]:
-                    params[trigger] = wizard[trigger].id if isinstance(wizard[trigger], models.BaseModel) else wizard[trigger]
-            if wizard.applicant_id:
-                params['token'] = wizard.applicant_id.access_token
-            if wizard.contract_start_date:
-                params['contract_start_date'] = wizard.contract_start_date
-            if params:
-                url = url + url_encode(params)
-            wizard.url = url
+            if wizard.contract_id:
+                url = wizard.contract_id.get_base_url() + '/salary_package/simulation/contract/%s?' % (wizard.contract_id.id)
+                params = {}
+                for trigger in self._get_url_triggers():
+                    if wizard[trigger]:
+                        params[trigger] = wizard[trigger].id if isinstance(wizard[trigger], models.BaseModel) else wizard[trigger]
+                if wizard.applicant_id:
+                    params['token'] = wizard.applicant_id.access_token
+                if wizard.contract_start_date:
+                    params['contract_start_date'] = wizard.contract_start_date
+                if params:
+                    url = url + url_encode(params)
+                wizard.url = url
+            else:
+                wizard.url = ""
 
-    @api.depends('employee_job_id')
+    @api.depends('contract_id')
     def _compute_warning_message(self):
         for wizard in self:
-            current_job = wizard.employee_contract_id.job_id
-            new_job = wizard.employee_job_id
-
-            if (not current_job or current_job.id != new_job.id) and not new_job.default_contract_id:
+            if (wizard.env.context.get('active_model') == 'hr.applicant' and not wizard.applicant_id.partner_name) and wizard.contract_id:
                 wizard.display_warning_message = True
             else:
                 wizard.display_warning_message = False
@@ -108,6 +117,9 @@ class GenerateSimulationLink(models.TransientModel):
         return [(w.id, w.employee_id.name or w.applicant_id.partner_name) for w in self]
 
     def send_offer(self):
+        if self.env.context.get('active_model') == "hr.applicant" and not self.applicant_id.partner_name:
+            raise UserError(_('Offer link can not be send. The applicant needs to have a name.'))
+
         try:
             template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id
         except ValueError:

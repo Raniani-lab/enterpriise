@@ -313,6 +313,10 @@ class AnalyticLine(models.Model):
         if value == 0:  # nothing to do
             return
         timesheets = self.search(domain, limit=2)
+
+        if timesheets.project_id and not timesheets.project_id.allow_timesheets:
+            raise UserError(_("You cannot adjust the time of the timesheet for a project with timesheets disabled."))
+
         if len(timesheets) > 1 or (len(timesheets) == 1 and timesheets.validated):
             timesheets[0].copy({
                 'name': '/',

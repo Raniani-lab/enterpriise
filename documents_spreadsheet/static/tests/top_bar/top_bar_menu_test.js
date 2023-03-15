@@ -5,6 +5,8 @@ import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { click, mockDownload, nextTick } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
+import { mockActionService } from "@documents_spreadsheet/../tests/spreadsheet_test_utils";
+import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 
 const { topbarMenuRegistry } = spreadsheet.registries;
 
@@ -27,6 +29,22 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
         await doMenuAction(topbarMenuRegistry, ["file", "new_sheet"], env);
         assert.verifySteps(["action_open_new_spreadsheet"]);
     });
+
+    QUnit.test(
+        "Action action_download_spreadsheet is correctly fired with topbar menu",
+        async function (assert) {
+            let actionParam;
+            const { env, model } = await createSpreadsheet();
+            mockActionService(env, (action) => (actionParam = action.params));
+            const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
+            const download = file.children.find((item) => item.id === "download");
+            await download.execute(env);
+            assert.deepEqual(actionParam, {
+                xlsxData: model.exportXLSX(),
+                name: UNTITLED_SPREADSHEET_NAME,
+            });
+        }
+    );
 
     QUnit.test("Can download xlsx file", async function (assert) {
         mockDownload((options) => {

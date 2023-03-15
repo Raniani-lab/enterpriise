@@ -275,9 +275,8 @@ export class AbstractSpreadsheetAction extends Component {
                 type: "ir.actions.client",
                 tag: "action_download_spreadsheet",
                 params: {
-                    orm: this.orm,
                     name: this.state.spreadsheetName,
-                    data: this.model.exportData(),
+                    xlsxData: this.model.exportXLSX(),
                 },
             });
         } finally {

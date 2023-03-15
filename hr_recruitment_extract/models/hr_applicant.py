@@ -272,8 +272,11 @@ class HrApplicant(models.Model):
     def _cron_parse(self):
         for rec in self.search([('extract_state', '=', 'waiting_upload')]):
             try:
-                with self.env.cr.savepoint():
+                with self.env.cr.savepoint(flush=False):
                     rec.retry_ocr()
+                    # We handle the flush manually so that if an error occurs, e.g. a concurrent update error,
+                    # the savepoint will be rollbacked when exiting the context manager
+                    self.env.cr.flush()
                 self.env.cr.commit()
             except (IntegrityError, OperationalError) as e:
                 _logger.error("Couldn't upload %s with id %d: %s", rec._name, rec.id, str(e))

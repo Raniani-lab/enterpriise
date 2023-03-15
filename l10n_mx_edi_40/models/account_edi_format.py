@@ -3,12 +3,20 @@
 import logging
 import re
 
-from odoo import models
+from odoo import models, api
 
 _logger = logging.getLogger(__name__)
 
 class AccountEdiFormat(models.Model):
     _inherit = 'account.edi.format'
+
+    @api.model
+    def _l10n_mx_edi_get_invoice_attachment(self, res_model, res_id):
+        # OVERRIDE
+        return self.env['ir.attachment'].search([
+            ('name', 'like', '%-MX-Invoice-4.0.xml'),
+            ('res_model', '=', res_model),
+            ('res_id', '=', res_id)], limit=1, order='create_date desc')
 
     def _l10n_mx_edi_clean_to_legal_name(self, name):
         """ We remove the SA de CV / SL de CV / S de RL de CV as they are never in the official name in the XML"""

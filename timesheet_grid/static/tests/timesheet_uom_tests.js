@@ -18,16 +18,17 @@ import { setupTestEnv } from "@hr_timesheet/../tests/hr_timesheet_common_tests";
 import { timerService } from "@timer/services/timer_service";
 import { timesheetGridUOMService } from "@timesheet_grid/services/timesheet_grid_uom_service";
 
-import { setupTimesheetGrid, mockTimesheetGridRPC } from "./timesheet_grid_tests";
+import { TimesheetGridSetupHelper } from "./helpers";
 import { hoverGridCell } from "@web_grid/../tests/helpers";
 
 const { DateTime } = luxon;
 
-let serverData, target;
+let serverData, target, timesheetGridSetup;
 
 QUnit.module("timesheet_grid", function (hooks) {
     hooks.beforeEach(async () => {
-        const result = await setupTimesheetGrid();
+        timesheetGridSetup = new TimesheetGridSetupHelper(true);
+        const result = await timesheetGridSetup.setupTimesheetGrid();
         const pyEnv = result.pyEnv;
         const timesheetModel = pyEnv.mockServer.models["analytic.line"];
         timesheetModel.fields.timer_start = {
@@ -82,7 +83,7 @@ QUnit.module("timesheet_grid", function (hooks) {
                         assert.strictEqual(args.model, "hr.employee");
                         return {};
                     }
-                    return mockTimesheetGridRPC(route, args);
+                    return timesheetGridSetup.mockTimesheetGridRPC(route, args);
                 },
             });
 
@@ -123,7 +124,7 @@ QUnit.module("timesheet_grid", function (hooks) {
                     } else if (args.method === "action_timer_unlink") {
                         return null;
                     }
-                    return mockTimesheetGridRPC(route, args);
+                    return timesheetGridSetup.mockTimesheetGridRPC(route, args);
                 },
             });
             await openView({
@@ -161,7 +162,7 @@ QUnit.module("timesheet_grid", function (hooks) {
                     } else if (args.method === "action_timer_unlink") {
                         return null;
                     }
-                    return mockTimesheetGridRPC(route, args);
+                    return timesheetGridSetup.mockTimesheetGridRPC(route, args);
                 },
             });
             await openView({
@@ -198,7 +199,7 @@ QUnit.module("timesheet_grid", function (hooks) {
                 } else if (args.method === "action_timer_unlink") {
                     return null;
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
         await openView({

@@ -22,25 +22,16 @@ import { setupTestEnv } from "@hr_timesheet/../tests/hr_timesheet_common_tests";
 import { timerService } from "@timer/services/timer_service";
 import { timesheetGridUOMService } from "@timesheet_grid/services/timesheet_grid_uom_service";
 
-import { setupTimesheetGrid, mockTimesheetGridRPC } from "./timesheet_grid_tests";
+import { TimesheetGridSetupHelper } from "./helpers";
 
 const { DateTime } = luxon;
 
-let serverData, target;
+let serverData, target, timesheetGridSetup;
 
 QUnit.module("Views", (hooks) => {
     hooks.beforeEach(async () => {
-        const result = await setupTimesheetGrid();
-        const pyEnv = result.pyEnv;
-        const timesheetModel = pyEnv.mockServer.models["analytic.line"];
-        timesheetModel.fields.timer_start = {
-            string: "Timer Start",
-            type: "datetime",
-        };
-        timesheetModel.fields.company_id = {
-            type: "many2one",
-            relation: "res.company",
-        };
+        timesheetGridSetup = new TimesheetGridSetupHelper(true);
+        const result = await timesheetGridSetup.setupTimesheetGrid();
         serverData = result.serverData;
         let grid = serverData.views["analytic.line,false,grid"].replace(
             'js_class="timesheet_grid"',
@@ -89,7 +80,7 @@ QUnit.module("Views", (hooks) => {
                     assert.strictEqual(args.model, "timer.timer");
                     return serializeDateTime(DateTime.now());
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -128,7 +119,7 @@ QUnit.module("Views", (hooks) => {
                 } else if (args.method === "action_timer_unlink") {
                     return null;
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -251,7 +242,7 @@ QUnit.module("Views", (hooks) => {
                     assert.strictEqual(args.model, "timer.timer");
                     return serializeDateTime(DateTime.now());
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -334,7 +325,7 @@ QUnit.module("Views", (hooks) => {
                     timerRunning = false;
                     return 0.15;
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -430,7 +421,7 @@ QUnit.module("Views", (hooks) => {
                     timerRunning = false;
                     return null;
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -494,7 +485,7 @@ QUnit.module("Views", (hooks) => {
                     assert.strictEqual(args.model, "hr.employee");
                     return {};
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -588,7 +579,7 @@ QUnit.module("Views", (hooks) => {
                     assert.strictEqual(args.model, "timer.timer");
                     return serializeDateTime(DateTime.now());
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -716,7 +707,7 @@ QUnit.module("Views", (hooks) => {
                 } else if (args.method === "action_timer_stop") {
                     return null;
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -892,7 +883,7 @@ QUnit.module("Views", (hooks) => {
                     timerRunning = false;
                     return null;
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -941,7 +932,7 @@ QUnit.module("Views", (hooks) => {
                         }
                         return dailyWorkingHours;
                     }
-                    return mockTimesheetGridRPC(route, args);
+                    return timesheetGridSetup.mockTimesheetGridRPC(route, args);
                 },
             });
 
@@ -1051,7 +1042,7 @@ QUnit.module("Views", (hooks) => {
                     args.kwargs.args =
                         args.model === "project.project" ? [["allow_timesheets", "=", true]] : [];
                 }
-                return mockTimesheetGridRPC(route, args);
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
         });
 
@@ -1164,7 +1155,7 @@ QUnit.module("Views", (hooks) => {
                     } else if (args.method === "action_timer_stop") {
                         return 0.25;
                     }
-                    return mockTimesheetGridRPC(route, args);
+                    return timesheetGridSetup.mockTimesheetGridRPC(route, args);
                 },
             });
 
@@ -1247,7 +1238,7 @@ QUnit.module("Views", (hooks) => {
                     } else if (args.method === "action_timer_stop") {
                         return 0.25;
                     }
-                    return mockTimesheetGridRPC(route, args);
+                    return timesheetGridSetup.mockTimesheetGridRPC(route, args);
                 },
             });
 

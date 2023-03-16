@@ -52,7 +52,8 @@ class CrmLead(models.Model):
         return self.action_new_rental_quotation()
 
     def _get_action_rental_context(self):
-        return {
+        self.ensure_one()
+        rental_quotation_context = {
             "search_default_opportunity_id": self.id,
             "default_opportunity_id": self.id,
             "default_partner_id": self.partner_id.id,
@@ -64,6 +65,9 @@ class CrmLead(models.Model):
             "default_company_id": self.company_id.id or self.env.company.id,
             "default_is_rental_order": True,
         }
+        if self.user_id:
+            rental_quotation_context['default_user_id'] = self.user_id.id
+        return rental_quotation_context
 
     def action_new_rental_quotation(self):
         return {

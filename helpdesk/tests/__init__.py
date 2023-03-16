@@ -10,3 +10,4 @@ from . import test_ui
 from . import test_doc_links
 from . import test_helpdesk_team_privacy_visibility
 from . import test_multi_company
+from . import test_helpdesk_ticket_mail_tracking_duration

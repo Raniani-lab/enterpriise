@@ -328,8 +328,7 @@
         <field name="arch" type="xml">
             <form string="Helpdesk Ticket">
                 <header>
-                    <field name="stage_id" widget="statusbar"
-                        options="{'clickable': '1', 'fold_field': 'fold'}"/>
+                    <field name="stage_id" widget="statusbar_duration" options="{'clickable': '1', 'fold_field': 'fold'}"/>
                 </header>
                 <sheet>
                     <field name="legend_blocked" invisible="1"/>

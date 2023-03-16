@@ -22,7 +22,15 @@ class HelpdeskTicket(models.Model):
     _description = 'Helpdesk Ticket'
     _order = 'priority desc, id desc'
     _primary_email = 'partner_email'
-    _inherit = ['portal.mixin', 'mail.thread.cc', 'utm.mixin', 'rating.mixin', 'mail.activity.mixin']
+    _inherit = [
+        'portal.mixin',
+        'mail.thread.cc',
+        'utm.mixin',
+        'rating.mixin',
+        'mail.activity.mixin',
+        'mail.tracking.duration.mixin',
+    ]
+    _track_duration_field = 'stage_id'
 
     @api.model
     def default_get(self, fields):

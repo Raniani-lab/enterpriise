@@ -7,12 +7,14 @@ from odoo.exceptions import UserError
 from odoo.tools import misc
 from odoo.tools.translate import _
 
+
 L10N_CL_SII_REGIONAL_OFFICES_ITEMS = [
     ('ur_Anc', 'Ancud'),
     ('ur_Ang', 'Angol'),
     ('ur_Ant', 'Antofagasta'),
     ('ur_Ari', 'Arica y Parinacota'),
     ('ur_Ays', 'Aysén'),
+    ('ur_Buin', 'Buin'),
     ('ur_Cal', 'Calama'),
     ('ur_Cas', 'Castro'),
     ('ur_Cau', 'Cauquenes'),
@@ -38,6 +40,10 @@ L10N_CL_SII_REGIONAL_OFFICES_ITEMS = [
     ('ur_Lin', 'Linares'),
     ('ur_Lod', 'Los Andes'),
     ('ur_Log', 'Los Ángeles'),
+    ('ur_LosRios', 'Los Ríos'),
+    ('ur_Nunoa', 'Ñuñoa'),
+    ('ur_Maipu', 'Maipu'),
+    ('ur_Melipilla', 'Melipilla'),
     ('ur_Oso', 'Osorno'),
     ('ur_Ova', 'Ovalle'),
     ('ur_Pan', 'Panguipulli'),
@@ -51,6 +57,7 @@ L10N_CL_SII_REGIONAL_OFFICES_ITEMS = [
     ('ur_Qui', 'Quillota'),
     ('ur_Ran', 'Rancagua'),
     ('ur_SaA', 'San Antonio'),
+    ('ur_SanBernardo', 'San Bernardo'),
     ('ur_Sar', 'San Carlos'),
     ('ur_SaF', 'San Felipe'),
     ('ur_SaD', 'San Fernando'),
@@ -74,7 +81,6 @@ L10N_CL_SII_REGIONAL_OFFICES_ITEMS = [
     ('ur_ViR', 'Villarrica'),
     ('ur_ViM', 'Viña del Mar'),
 ]
-
 
 class ResCompany(models.Model):
     _inherit = 'res.company'

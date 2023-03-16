@@ -179,11 +179,11 @@
         <TaxTable>
             <TaxTableEntry>
                 <TaxType>sale</TaxType>
-                <Description>Sale 21% (VAT1)</Description>
+                <Description>21%</Description>
                 <TaxCodeDetails>
                     <TaxCodeDetail>
                         <TaxCode>___ignore___</TaxCode>
-                        <Description>Sale 21% (VAT1)</Description>
+                        <Description>21%</Description>
                         <TaxPercentage>21.0</TaxPercentage>
                         <Country>LT</Country>
                     </TaxCodeDetail>
@@ -191,11 +191,11 @@
             </TaxTableEntry>
             <TaxTableEntry>
                 <TaxType>purchase</TaxType>
-                <Description>Purchase 21% (VAT1)</Description>
+                <Description>21%</Description>
                 <TaxCodeDetails>
                     <TaxCodeDetail>
                         <TaxCode>___ignore___</TaxCode>
-                        <Description>Purchase 21% (VAT1)</Description>
+                        <Description>21%</Description>
                         <TaxPercentage>21.0</TaxPercentage>
                         <Country>LT</Country>
                     </TaxCodeDetail>
@@ -249,7 +249,7 @@
                                     <TaxInformation>
                                         <TaxCode>___ignore___</TaxCode>
                                         <TaxPercentage>21.0</TaxPercentage>
-                                        <TaxBaseDescription>Sale 21% (VAT1)</TaxBaseDescription>
+                                        <TaxBaseDescription>21%</TaxBaseDescription>
                                         <TaxAmount>
                                             <Amount>1050.00</Amount>
                                         </TaxAmount>
@@ -301,7 +301,7 @@
                                     <TaxInformation>
                                         <TaxCode>___ignore___</TaxCode>
                                         <TaxPercentage>21.0</TaxPercentage>
-                                        <TaxBaseDescription>Sale 21% (VAT1)</TaxBaseDescription>
+                                        <TaxBaseDescription>21%</TaxBaseDescription>
                                         <TaxAmount>
                                             <Amount>630.00</Amount>
                                         </TaxAmount>
@@ -353,7 +353,7 @@
                                     <TaxInformation>
                                         <TaxCode>___ignore___</TaxCode>
                                         <TaxPercentage>21.0</TaxPercentage>
-                                        <TaxBaseDescription>Sale 21% (VAT1)</TaxBaseDescription>
+                                        <TaxBaseDescription>21%</TaxBaseDescription>
                                         <TaxAmount>
                                             <Amount>630.00</Amount>
                                         </TaxAmount>
@@ -412,7 +412,7 @@
                                     <TaxInformation>
                                         <TaxCode>___ignore___</TaxCode>
                                         <TaxPercentage>21.0</TaxPercentage>
-                                        <TaxBaseDescription>Purchase 21% (VAT1)</TaxBaseDescription>
+                                        <TaxBaseDescription>21%</TaxBaseDescription>
                                         <TaxAmount>
                                             <Amount>1680.00</Amount>
                                         </TaxAmount>

@@ -59,7 +59,7 @@
                 </div>
             </xpath>
             <xpath expr="//field[@name='account_id']" position='after'>
-                <field name="extract_document_uuid" groups="base.group_no_one"/>
+                <field name="extract_document_uuid" groups="base.group_no_one" widget="CopyClipboardChar"/>
             </xpath>
         </field>
     </record>

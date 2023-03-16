@@ -76,7 +76,7 @@
                        name="extraction_info_group"
                        attrs="{'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}"
                        groups="base.group_no_one">
-                    <field name="extract_document_uuid"/>
+                    <field name="extract_document_uuid" widget="CopyClipboardChar"/>
                 </group>
             </xpath>
         </field>

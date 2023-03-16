@@ -19,7 +19,7 @@ class TestF29Reports(TestAccountReportsCommon):
         })
         cl_account_310115 = cls.env['account.account'].search([('company_id', '=', cls.company_data['company'].id), ('code', '=', '310115')]).id
         cl_account_410230 = cls.env['account.account'].search([('company_id', '=', cls.company_data['company'].id), ('code', '=', '410230')]).id
-        cl_purchase_tax = cls.env['account.tax'].search([('name', '=', 'VAT Purchase 19% Fixed Assets'), ('company_id', '=', cls.company_data['company'].id)])
+        cl_purchase_tax = cls.env['account.tax'].search([('name', '=', '19% F A'), ('company_id', '=', cls.company_data['company'].id)])
 
         invoice = cls.env['account.move'].create({
             'move_type': 'out_invoice',

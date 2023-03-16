@@ -58,7 +58,7 @@ class TestPeEdiCommon(AccountEdiTestCommon):
             'l10n_pe_edi_test_env': True,
         })
 
-        cls.national_bank = cls.env.ref("l10n_pe_edi.peruvian_national_bank")
+        cls.national_bank = cls.env.ref("l10n_pe.peruvian_national_bank")
         cls.national_bank_account = cls.env['res.partner.bank'].create({
             'acc_number': 'CUENTAPRUEBA',
             'bank_id': cls.national_bank.id,

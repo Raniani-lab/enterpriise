@@ -191,7 +191,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                 <Description>Merverdiavgift</Description>
                                 <TaxCodeDetails>
                                     <TaxCode>___ignore___</TaxCode>
-                                    <Description>3 Output VAT high rate 25%</Description>
+                                    <Description>25%</Description>
                                     <TaxPercentage>25.0</TaxPercentage>
                                     <Country>NO</Country>
                                     <StandardTaxCode>02</StandardTaxCode>
@@ -251,7 +251,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                         <TaxType>MVA</TaxType>
                                         <TaxCode>___ignore___</TaxCode>
                                         <TaxPercentage>25.0</TaxPercentage>
-                                        <TaxBaseDescription>3 Output VAT high rate 25%</TaxBaseDescription>
+                                        <TaxBaseDescription>25%</TaxBaseDescription>
                                         <TaxAmount>
                                             <Amount>1250.00</Amount>
                                         </TaxAmount>
@@ -263,7 +263,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                     <ValueDate>2019-01-01</ValueDate>
                                     <SourceDocumentID>___ignore___</SourceDocumentID>
                                     <CustomerID>___ignore___</CustomerID>
-                                    <Description>3 Output VAT high rate 25%</Description>
+                                    <Description>25%</Description>
                                     <CreditAmount>
                                         <Amount>1250.00</Amount>
                                     </CreditAmount>
@@ -304,7 +304,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                         <TaxType>MVA</TaxType>
                                         <TaxCode>___ignore___</TaxCode>
                                         <TaxPercentage>25.0</TaxPercentage>
-                                        <TaxBaseDescription>3 Output VAT high rate 25%</TaxBaseDescription>
+                                        <TaxBaseDescription>25%</TaxBaseDescription>
                                         <TaxAmount>
                                             <Amount>750.00</Amount>
                                         </TaxAmount>
@@ -316,7 +316,7 @@ class TestNoSaftReport(TestAccountReportsCommon):
                                     <ValueDate>2019-03-01</ValueDate>
                                     <SourceDocumentID>___ignore___</SourceDocumentID>
                                     <CustomerID>___ignore___</CustomerID>
-                                    <Description>3 Output VAT high rate 25%</Description>
+                                    <Description>25%</Description>
                                     <DebitAmount>
                                         <Amount>750.00</Amount>
                                     </DebitAmount>

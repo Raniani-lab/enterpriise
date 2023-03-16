@@ -179,7 +179,7 @@ class TestEvatXmlReport(TestAccountReportsCommon):
                         <fastsattMerverdiavgift>1250.0</fastsattMerverdiavgift>
                         <mvaSpesifikasjonslinje>
                             <mvaKode>3</mvaKode>
-                            <mvaKodeRegnskapsystem>3 Output VAT high rate 25%</mvaKodeRegnskapsystem>
+                            <mvaKodeRegnskapsystem>25%</mvaKodeRegnskapsystem>
                             <grunnlag>5000.0</grunnlag>
                             <sats>25.0</sats>
                             <merverdiavgift>1250.0</merverdiavgift>
@@ -224,12 +224,12 @@ class TestEvatXmlReport(TestAccountReportsCommon):
                         <fastsattMerverdiavgift>-600.0</fastsattMerverdiavgift>
                         <mvaSpesifikasjonslinje>
                             <mvaKode>1</mvaKode>
-                            <mvaKodeRegnskapsystem>1 Input VAT high rate 25%</mvaKodeRegnskapsystem>
+                            <mvaKodeRegnskapsystem>25%</mvaKodeRegnskapsystem>
                             <merverdiavgift>-2000.0</merverdiavgift>
                         </mvaSpesifikasjonslinje>
                         <mvaSpesifikasjonslinje>
                             <mvaKode>3</mvaKode>
-                            <mvaKodeRegnskapsystem>3 Output VAT high rate 25%</mvaKodeRegnskapsystem>
+                            <mvaKodeRegnskapsystem>25%</mvaKodeRegnskapsystem>
                             <grunnlag>5600.0</grunnlag>
                             <sats>25.0</sats>
                             <merverdiavgift>1400.0</merverdiavgift>

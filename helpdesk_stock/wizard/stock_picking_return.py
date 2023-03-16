@@ -32,7 +32,10 @@ class ReturnPicking(models.TransientModel):
                 if picking:
                     r.picking_id = picking
             if r.sale_order_id:
-                r.picking_id = r.sale_order_id.picking_ids[0] if r.sale_order_id.picking_ids else False
+                picking = r.sale_order_id.picking_ids.filtered(lambda p: p.id in r.suitable_picking_ids.ids) \
+                    if r.sale_order_id.picking_ids \
+                    else False
+                r.picking_id = picking[0] if picking else False
 
     @api.depends('ticket_id.partner_id.commercial_partner_id', 'sale_order_id')
     def _compute_suitable_picking_ids(self):

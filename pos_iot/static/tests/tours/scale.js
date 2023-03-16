@@ -55,7 +55,13 @@ registry.category("web_tour.tours").add("pos_iot_scale_tour", {
             trigger: ".buy-product",
         },
         {
+            trigger: ".menu-button",
+        },
+        {
             trigger: ".header-button",
+        },
+        {
+            trigger: ".menu-button",
         },
         {
             trigger: ".header-button",

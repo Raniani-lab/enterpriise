@@ -2,13 +2,14 @@
 <templates id="template" xml:space="preserve">
 
     <t t-name="LastTransactionStatusButton" owl="1">
-        <div class="header-button balance-button" t-on-click="sendLastTransactionStatus">
-            <span class="last-transaction-status-button">
+        <li class="menu-item navbar-button" t-on-click="sendLastTransactionStatus">
+            <span>
                 <i t-if="state.pending" class="fa fa-spinner fa-spin"/>
                 <t t-else="">Last Transaction Status</t>
             </span>
-        </div>
+        </li>
     </t>
+    
 
     <t t-name="LastTransactionPopup" owl="1">
         <div role="dialog" class="modal-dialog">

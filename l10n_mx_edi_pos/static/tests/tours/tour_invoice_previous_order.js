@@ -36,8 +36,12 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_previous_o
         trigger: "div.button:contains('New Order')",
     },
     {
+        content: "Click on the burger menu",
+        trigger: "div.menu-button"
+    },
+    {
         content: "Check the previous Order",
-        trigger: "div.ticket-button:contains('Orders')",
+        trigger: "li.ticket-button:contains('Orders')",
     },
     {
         content: "Select dropdown",

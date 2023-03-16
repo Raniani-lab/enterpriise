@@ -99,7 +99,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
 
     # ACTIONS
     def action_multi_currency_revaluation_open_general_ledger(self, options, params):
-        account_line_id = self._get_generic_line_id('account.account', params.get('id'))
+        account_line_id = self.env['account.report']._get_generic_line_id('account.account', params.get('id'))
         general_ledger_options = self.env.ref('account_reports.general_ledger_report')._get_options(options)
         general_ledger_options['unfolded_lines'] = [account_line_id]
 

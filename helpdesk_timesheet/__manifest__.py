@@ -26,6 +26,9 @@
         'web.assets_backend': [
             'helpdesk_timesheet/static/src/**/*',
         ],
+        'web.qunit_suite_tests': [
+            "helpdesk_timesheet/static/tests/*",
+        ],
     },
     'demo': ['data/helpdesk_timesheet_demo.xml'],
     'license': 'OEEL-1',

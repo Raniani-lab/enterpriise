@@ -335,7 +335,7 @@ Best Regards,
         """
         partner = self.env['res.partner'].browse(options.get('partner_id'))
         followup_contacts = partner._get_all_followup_contacts() or partner
-        followup_recipients = options.get('email_recipients_ids', followup_contacts)
+        followup_recipients = options.get('email_recipient_ids', followup_contacts)
         sent_at_least_once = False
         for to_send_partner in followup_recipients:
             email = to_send_partner.email

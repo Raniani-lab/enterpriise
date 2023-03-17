@@ -19,7 +19,6 @@ class TestBasicFeaturesSettings(TestProjectCommon):
 
     def test_basic_features(self):
         for config_flag, project_flag in (
-            ('group_subtask_project', 'allow_subtasks'),
             ('group_project_task_dependencies', 'allow_task_dependencies'),
             ('group_project_milestone', 'allow_milestones'),
         ):

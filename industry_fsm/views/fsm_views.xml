@@ -121,7 +121,9 @@
                 <field name="fsm_done" />
             </xpath>
             <xpath expr="//templates//t[@t-if='record.partner_id.value']" position="inside">
-                <t t-if="record.is_fsm.raw_value and record.partner_city.value"> • <field name="partner_city" /></t>
+                <span t-if="record.is_fsm.raw_value and record.partner_city.value" style="display: block; margin-top: 4px;">
+                    • <field name="partner_city"/>
+                </span>
             </xpath>
             <div name="date_deadline" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('is_closed', '=', True)]}</attribute>

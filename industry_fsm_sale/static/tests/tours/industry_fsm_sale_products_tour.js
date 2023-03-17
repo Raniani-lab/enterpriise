@@ -17,7 +17,7 @@ registry.category("web_tour.tours").add('industry_fsm_sale_products_tour', {
     trigger: '.o_searchview_autocomplete .o_menu_item:contains("Fsm task")',
     content: 'Validate search',
 }, {
-    trigger: '.o_kanban_record div[name="name"]:contains("Fsm task")',
+    trigger: '.o_kanban_record span:contains("Fsm task")',
     content: 'Open task',
 }, {
     trigger: 'button[name="action_fsm_view_material"] div[name="material_line_total_price"] span:contains("~M~")',

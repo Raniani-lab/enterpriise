@@ -8,8 +8,6 @@ class Project(models.Model):
     _inherit = "project.project"
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
-    allow_subtasks = fields.Boolean(
-        compute="_compute_allow_subtasks", store=True, readonly=False)
     allow_task_dependencies = fields.Boolean(compute='_compute_allow_task_dependencies', store=True, readonly=False)
     allow_worksheets = fields.Boolean(
         "Worksheets", compute="_compute_allow_worksheets", store=True, readonly=False)
@@ -25,12 +23,6 @@ class Project(models.Model):
             if project.is_fsm and project.name == fsm_project_default_name and not project.is_internal_project:
                 name_mapping[project.id] = f'{name_mapping[project.id]} - {project.company_id.name}'
         return list(name_mapping.items())
-
-    @api.depends("is_fsm")
-    def _compute_allow_subtasks(self):
-        has_group = self.env.user.has_group("project.group_subtask_project")
-        for project in self:
-            project.allow_subtasks = has_group and not project.is_fsm
 
     @api.depends('is_fsm')
     def _compute_allow_task_dependencies(self):
@@ -52,8 +44,6 @@ class Project(models.Model):
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
-        if 'allow_subtasks' in fields_list:
-            defaults['allow_subtasks'] = defaults.get('allow_subtasks', False) and not defaults.get('is_fsm')
         if 'allow_task_dependencies' in fields_list:
             defaults['allow_task_dependencies'] = defaults.get('allow_task_dependencies', False) and not defaults.get('is_fsm')
         if 'allow_milestones' in fields_list:

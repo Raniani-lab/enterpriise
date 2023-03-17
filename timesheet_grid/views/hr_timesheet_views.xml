@@ -396,7 +396,6 @@
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="progress"/>
-                    <field name="allow_subtasks"/>
                     <field name="effective_hours"/>
                     <field name="total_hours_spent"/>
                     <field name="encode_uom_in_days"/>
@@ -406,8 +405,7 @@
                     <div t-if="allow_timesheets">
                         <strong t-if="encode_uom_in_days">Days Spent — </strong>
                         <strong t-else="">Hours Spent — </strong>
-                        <t t-if="allow_subtasks"><t t-esc="total_hours_spent_formatted"/></t>
-                        <t t-else=""><t t-esc="effective_hours_formatted"/></t>
+                        <t t-esc="total_hours_spent_formatted"/>
                         (<t t-esc="progressFormatted"/>%)
                     </div>
                 </xpath>

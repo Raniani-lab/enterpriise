@@ -10,11 +10,6 @@ class TestWorksheet(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        # Enable the company setting
-        cls.env['res.config.settings'].create({
-            'group_subtask_project': True
-        }).execute()
-
         cls.worksheet_template = cls.env['worksheet.template'].create({
             'name': 'New worksheet',
             'color': 4,

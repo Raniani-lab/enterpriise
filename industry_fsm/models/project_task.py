@@ -311,7 +311,7 @@ class Task(models.Model):
         }
 
     def action_fsm_validate(self, stop_running_timers=False):
-        """ Moves Task to next stage.
+        """ Moves Task to done state.
             If allow billable on task, timesheet product set on project and user has privileges :
             Create SO confirmed with time and material.
         """
@@ -340,19 +340,7 @@ class Task(models.Model):
                     'res_id': wizard.id,
                 }
 
-        closed_stage_by_project = {
-            project.id:
-                project.type_ids.filtered(lambda stage: stage.fold)[:1] or project.type_ids[-1:]
-            for project in self.project_id
-        }
-        for task in self:
-            # determine closed stage for task
-            closed_stage = closed_stage_by_project.get(self.project_id.id)
-            values = {'fsm_done': True, 'state': '1_done'}
-            if closed_stage:
-                values['stage_id'] = closed_stage.id
-
-            task.write(values)
+        self.write({'fsm_done': True, 'state': '1_done'})
 
         return True
 

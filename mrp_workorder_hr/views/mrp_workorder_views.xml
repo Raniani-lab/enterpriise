@@ -55,7 +55,7 @@
         <field name="inherit_id" ref="mrp.workcenter_line_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//t[@name='user_avatar']" position="after">
-                <t t-if="record.employee_ids.raw_value"><field name="employee_ids" widget="many2many_avatar_employee"/></t>
+                <t t-if="record.employee_ids.raw_value"><field name="employee_ids" widget="list.many2many_avatar_user"/></t>
             </xpath>
             <xpath expr="//t[@name='user_avatar']" position='attributes'>
                 <attribute name="t-if">record.last_working_user_id.raw_value &amp; ! allow_employee</attribute>
@@ -75,7 +75,7 @@
             <xpath expr="//field[@name='name']" position="after">
                     <field name="allowed_employees" invisible="1"/>
                     <field name="all_employees_allowed" invisible="1"/>
-                    <field name="employee_assigned_ids" widget="many2many_avatar_employee" domain="not all_employees_allowed and [('id','in',allowed_employees)] or []" optional="hidden"/>
+                    <field name="employee_assigned_ids" widget="many2many_avatar_user" domain="not all_employees_allowed and [('id','in',allowed_employees)] or []" optional="hidden"/>
             </xpath>
             <xpath expr="//button[@name='open_tablet_view']" position="after">
                 <field name="employee_ids" widget="many2many_avatar_employee" readonly="1" nolabel="1"/>

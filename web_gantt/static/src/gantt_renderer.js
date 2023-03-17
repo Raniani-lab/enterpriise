@@ -668,9 +668,6 @@ export class GanttRenderer extends Component {
 
         const { connector, hoverable, pill } = this.hovered;
 
-        this.cellButtonsProps.reactive.cell = null;
-        this.progressBarsReactive.el = null;
-
         // Update cell in drag
         const isCellHovered = hoverable?.matches(".o_gantt_cell");
         this.cellForDrag.el = isCellHovered ? hoverable : null;
@@ -683,6 +680,8 @@ export class GanttRenderer extends Component {
         }
 
         if (this.isDragging) {
+            this.cellButtonsProps.reactive.cell = null;
+            this.progressBarsReactive.el = null;
             return;
         }
 
@@ -695,6 +694,8 @@ export class GanttRenderer extends Component {
                 }
             }
             if (hoveredConnectorId) {
+                this.progressBarsReactive.el = null;
+                this.cellButtonsProps.reactive.cell = null;
                 return this.toggleConnectorHighlighting(hoveredConnectorId, true);
             }
         }
@@ -709,11 +710,16 @@ export class GanttRenderer extends Component {
         this.togglePillHighlighting(hoveredPillId, true);
 
         // Update cell buttons
+        let isSet = false;
         if (canCellCreate || canPlan) {
             const isUngroupedCellHovered = hoverable?.matches(".o_gantt_cell:not(.o_gantt_group)");
             if (isUngroupedCellHovered && !ev?.target.closest(".o_connector_creator")) {
+                isSet = true;
                 this.cellButtonsProps.reactive.cell = hoverable;
             }
+        }
+        if (!isSet) {
+            this.cellButtonsProps.reactive.cell = null;
         }
 
         // Update progress bars

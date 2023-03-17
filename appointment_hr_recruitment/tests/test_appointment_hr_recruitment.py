@@ -4,7 +4,7 @@
 from odoo.tests import HttpCase, tagged, users
 
 
-@tagged('post_install')
+@tagged('post_install', '-at_install')
 class AppointmentHrRecruitmentTest(HttpCase):
 
     @users('admin')

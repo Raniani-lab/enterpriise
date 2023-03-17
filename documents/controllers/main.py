@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import base64
-import zipfile
 import io
 import json
 import logging
-import os
+import zipfile
 from contextlib import ExitStack
+
+from markupsafe import Markup
+from werkzeug.exceptions import Forbidden
 
 from odoo import http
 from odoo.exceptions import AccessError
 from odoo.http import request, content_disposition
 from odoo.tools.translate import _
-from odoo.tools import image_process
-
-from werkzeug.exceptions import Forbidden
 
 logger = logging.getLogger(__name__)
 
@@ -341,12 +340,12 @@ class ShareRoute(http.Controller):
         folder = share.folder_id
         folder_id = folder.id or False
         button_text = share.name or _('Share link')
-        chatter_message = _('''<b> File uploaded by: </b> %s <br/>
+        chatter_message = Markup(_('''<b> File uploaded by: </b> %s <br/>
                                <b> Link created by: </b> %s <br/>
                                <a class="btn btn-primary" href="/web#id=%s&model=documents.share&view_type=form" target="_blank">
                                   <b>%s</b>
                                </a>
-                             ''') % (
+                             ''')) % (
                 http.request.env.user.name,
                 share.create_uid.name,
                 share_id,
@@ -402,9 +401,9 @@ class ShareRoute(http.Controller):
                 logger.exception("Failed to upload document")
         else:
             return http.request.not_found()
-        return """<script type='text/javascript'>
+        return Markup("""<script type='text/javascript'>
                     window.open("/document/share/%s/%s", "_self");
-                </script>""" % (share_id, token)
+                </script>""") % (share_id, token)
 
     # Frontend portals #############################################################################
 

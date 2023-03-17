@@ -484,8 +484,8 @@ export const useGanttResizable = makeDraggableHook({
         return { pill: parent };
     },
     onDrag({ ctx, addStyle }) {
-        const { current, mouse, pillSelector } = ctx;
-        const closestStep = closest(mouse.x, current.steps);
+        const { current, pointer, pillSelector } = ctx;
+        const closestStep = closest(pointer.x, current.steps);
         const { x, width } = current.initialPillRect;
 
         if (closestStep === current.lastStep) {
@@ -520,9 +520,9 @@ export const useGanttResizable = makeDraggableHook({
         return { pill: parentPill };
     },
     onDrop({ ctx }) {
-        const { current, mouse, pillSelector } = ctx;
+        const { current, pointer, pillSelector } = ctx;
         const parentPill = current.element.closest(pillSelector);
-        const closestStep = closest(mouse.x, current.steps);
+        const closestStep = closest(pointer.x, current.steps);
 
         if (closestStep === current.initialStep) {
             return;
@@ -537,7 +537,7 @@ export const useGanttResizable = makeDraggableHook({
         return { pill: parentPill, diff, direction };
     },
     onWillStartDrag({ ctx, addStyle, getRect }) {
-        const { cellSelector, current, mouse, pillSelector, precision } = ctx;
+        const { cellSelector, current, pointer, pillSelector, precision } = ctx;
 
         ctx.cursor = getComputedStyle(current.element).cursor;
         current.pill = current.element.closest(pillSelector);
@@ -571,7 +571,7 @@ export const useGanttResizable = makeDraggableHook({
         current.steps.sort((a, b) => (current.isStart ? b - a : a - b));
 
         current.initialPillRect = pRect;
-        current.initialStep = closest(mouse.x, current.steps);
+        current.initialStep = closest(pointer.x, current.steps);
 
         addStyle(ctx.ref.el, { pointerEvents: "auto" });
     },

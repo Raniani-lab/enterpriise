@@ -87,6 +87,18 @@
         }
     }
 
+    &:not(.o_ios_app) .o_caption {
+        height: ($font-size-base * $line-height-sm) * 2;
+    }
+    .o_dragged_app {
+        transition: transform 0.5s;
+        transform: rotate(6deg);
+        .o_app_icon {
+            box-shadow: 0 8px 15px -10px black;
+            transform: translateY(-1px);
+        }
+    }
+
     // iOS iPhone list layout due to Apple AppStore review
     @include media-breakpoint-down(md) {
         &.o_ios_app {

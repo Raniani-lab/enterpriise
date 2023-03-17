@@ -4,7 +4,7 @@ import { registry } from "@web/core/registry";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { cleanDomFromBootstrap } from "@web/legacy/utils";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_helpers";
+import { computeAppsAndMenuItems, reorderApps } from "@web/webclient/menus/menu_helpers";
 import { AppCreator } from "./app_creator/app_creator";
 import { Editor } from "./editor/editor";
 import { StudioNavbar } from "./navbar/navbar";
@@ -14,6 +14,8 @@ import { Component, onWillStart, onMounted, onPatched, onWillUnmount } from "@od
 
 export class StudioClientAction extends Component {
     setup() {
+        const user = useService("user");
+        const homemenuConfig = JSON.parse(user.settings?.homemenu_config || "null");
         this.studio = useService("studio");
         useBus(this.studio.bus, "UPDATE", () => {
             this.render();
@@ -22,12 +24,20 @@ export class StudioClientAction extends Component {
 
         this.menus = useService("menu");
         this.actionService = useService("action");
+        let apps = computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps;
+        if (homemenuConfig) {
+            reorderApps(apps, homemenuConfig);
+        }
         this.homeMenuProps = {
-            apps: computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps,
+            apps: apps,
         };
         useBus(this.env.bus, "MENUS:APP-CHANGED", () => {
+            apps = computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps;
+            if (homemenuConfig) {
+                reorderApps(apps, homemenuConfig);
+            }
             this.homeMenuProps = {
-                apps: computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps,
+                apps: apps,
             };
             this.render();
         });

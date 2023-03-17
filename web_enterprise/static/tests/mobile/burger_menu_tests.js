@@ -63,7 +63,7 @@ QUnit.test("Burger Menu on home menu over an App", async (assert) => {
     };
 
     await createEnterpriseWebClient({ serverData });
-    await click(document.body, ".o_app:first-of-type");
+    await click(document.body, ".o_draggable:first-of-type .o_app");
     await legacyExtraNextTick();
     await click(document.body, ".o_menu_toggle");
     await legacyExtraNextTick();
@@ -73,10 +73,7 @@ QUnit.test("Burger Menu on home menu over an App", async (assert) => {
 
     await click(document.body, ".o_mobile_menu_toggle");
     assert.containsOnce(document.body, ".o_burger_menu");
-    assert.containsNone(
-        document.body,
-        ".o_burger_menu nav.o_burger_menu_content li"
-    );
+    assert.containsNone(document.body, ".o_burger_menu nav.o_burger_menu_content li");
     assert.doesNotHaveClass(
         document.body.querySelector(".o_burger_menu_content"),
         "o_burger_menu_dark"

@@ -174,13 +174,13 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, "div.o_apps");
         assert.containsN(
             target,
-            "div.o_apps > a.o_app.o_menuitem",
+            "div.o_apps > div.o_draggable > a.o_app.o_menuitem",
             4,
             "should contain 3 normal app icons + the new app button"
         );
 
         // App with image
-        const firstApp = target.querySelector("div.o_apps > a.o_app.o_menuitem");
+        const firstApp = target.querySelector("div.o_apps > div.o_draggable > a.o_app.o_menuitem");
         assert.strictEqual(firstApp.dataset.menuXmlid, "app.1");
         assert.containsOnce(firstApp, "img.o_app_icon");
         assert.strictEqual(
@@ -192,7 +192,9 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(firstApp, ".o_web_studio_edit_icon i");
 
         // App with custom icon
-        const secondApp = target.querySelectorAll("div.o_apps > a.o_app.o_menuitem")[1];
+        const secondApp = target.querySelectorAll(
+            "div.o_apps > div.o_draggable > a.o_app.o_menuitem"
+        )[1];
         assert.strictEqual(secondApp.dataset.menuXmlid, "app.2");
         assert.containsOnce(secondApp, "div.o_app_icon");
         assert.strictEqual(
@@ -211,7 +213,7 @@ QUnit.module("Studio", (hooks) => {
         // New app button
         assert.containsOnce(
             target,
-            "div.o_apps > a.o_app.o_web_studio_new_app",
+            "div.o_apps > div.o_draggable > a.o_app.o_web_studio_new_app",
             'should contain a "New App icon"'
         );
         const newApp = target.querySelector("a.o_app.o_web_studio_new_app");

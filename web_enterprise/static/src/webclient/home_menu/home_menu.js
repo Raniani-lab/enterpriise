@@ -4,6 +4,8 @@ import { isIosApp, isMobileOS, isMacOS } from "@web/core/browser/feature_detecti
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { useService } from "@web/core/utils/hooks";
 import { ExpirationPanel } from "./expiration_panel";
+import { useSortable } from "@web/core/utils/sortable";
+import { reorderApps } from "@web/webclient/menus/menu_helpers";
 
 import {
     Component,
@@ -50,6 +52,7 @@ export class HomeMenu extends Component {
     setup() {
         this.command = useService("command");
         this.menus = useService("menu");
+        this.user = useService("user");
         this.homeMenuService = useService("home_menu");
         this.subscription = useState(useService("enterprise_subscription"));
         this.ui = useService("ui");
@@ -58,10 +61,26 @@ export class HomeMenu extends Component {
             isIosApp: isIosApp(),
         });
         this.inputRef = useRef("input");
+        this.rootRef = useRef("root");
+        this.pressTimer;
+        this.apps = useState(this.props.apps);
 
         if (!this.env.isSmall) {
             this._registerHotkeys();
         }
+
+        useSortable({
+            enable: this._enableAppsSorting,
+            // Params
+            ref: this.rootRef,
+            elements: ".o_draggable",
+            cursor: "move",
+            delay: 500,
+            tolerance: 10,
+            // Hooks
+            onWillStartDrag: (params) => this._sortStart(params),
+            onDrop: (params) => this._sortAppDrop(params),
+        });
 
         onWillUpdateProps(() => {
             // State is reset on each remount
@@ -94,7 +113,7 @@ export class HomeMenu extends Component {
      * @returns {Object[]}
      */
     get displayedApps() {
-        return this.props.apps;
+        return this.apps;
     }
 
     /**
@@ -203,9 +222,45 @@ export class HomeMenu extends Component {
         }
     }
 
+    _enableAppsSorting() {
+        return true;
+    }
+
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
+
+    /**
+     * @param {Object} params
+     * @param {HTMLElement} params.element
+     * @param {HTMLElement} params.previous
+     */
+    _sortAppDrop({ element, previous }) {
+        const order = this.props.apps.map((app) => app.xmlid);
+        const elementId = element.children[0].dataset.menuXmlid;
+        const elementIndex = order.indexOf(elementId);
+        // first remove dragged element
+        order.splice(elementIndex, 1);
+        if (previous) {
+            const prevIndex = order.indexOf(previous.children[0].dataset.menuXmlid);
+            // insert dragged element after previous element
+            order.splice(prevIndex + 1, 0, elementId);
+        } else {
+            // insert dragged element at beginning if no previous element
+            order.splice(0, 0, elementId);
+        }
+        // apply new order
+        reorderApps(this.apps, order);
+        this.user.setUserSettings("homemenu_config", JSON.stringify(order));
+    }
+
+    /**
+     * @param {Object} params
+     * @param {HTMLElement} params.element
+     */
+    _sortStart({ element, addClass }) {
+        addClass(element.children[0], "o_dragged_app");
+    }
 
     /**
      * @private

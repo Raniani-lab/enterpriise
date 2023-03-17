@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import { Mutex } from "@web/core/utils/concurrency";
 import { useService } from "@web/core/utils/hooks";
-import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_helpers";
+import { computeAppsAndMenuItems, reorderApps } from "@web/webclient/menus/menu_helpers";
 import {
     ControllerNotFoundError,
     standardActionServiceProps,
@@ -13,18 +13,23 @@ import { HomeMenu } from "./home_menu";
 import { Component, onMounted, onWillUnmount, xml } from "@odoo/owl";
 
 export const homeMenuService = {
-    dependencies: ["action", "router"],
-    start(env) {
+    dependencies: ["action", "router", "user"],
+    start(env, { user }) {
         let hasHomeMenu = false; // true iff the HomeMenu is currently displayed
         let hasBackgroundAction = false; // true iff there is an action behind the HomeMenu
         const mutex = new Mutex(); // used to protect against concurrent toggling requests
-
         class HomeMenuAction extends Component {
             setup() {
                 this.router = useService("router");
                 this.menus = useService("menu");
+                const user = useService("user");
+                const homemenuConfig = JSON.parse(user.settings?.homemenu_config || "null");
+                const apps = computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps;
+                if (homemenuConfig) {
+                    reorderApps(apps, homemenuConfig);
+                }
                 this.homeMenuProps = {
-                    apps: computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps,
+                    apps: apps,
                 };
                 onMounted(() => this.onMounted());
                 onWillUnmount(this.onWillUnmount);

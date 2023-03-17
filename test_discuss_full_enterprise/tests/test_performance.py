@@ -8,6 +8,7 @@ old_method = TestDiscussFullPerformance._get_init_messaging_result
 def _get_init_messaging_result(self):
     res = old_method(self)
     res['current_user_settings'].update({
+        'homemenu_config': False,
         'how_to_call_on_mobile': 'ask',
         'external_device_number': False,
         'onsip_auth_username': False,

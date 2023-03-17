@@ -16,6 +16,7 @@ import { ormService } from "@web/core/orm_service";
 import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { errorService } from "@web/core/errors/error_service";
+import { session } from "@web/session";
 import { browser } from "@web/core/browser/browser";
 
 import { Component, xml } from "@odoo/owl";
@@ -397,7 +398,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await nextTick();
             assert.deepEqual(webClient.env.services.router.current.hash, { action: "menu" });
 
-            await click(fixture.querySelector(".o_app.o_menuitem:nth-child(2)"));
+            await click(fixture.querySelector(".o_apps > .o_draggable:nth-child(2) > .o_app"));
             await nextTick();
             assert.deepEqual(webClient.env.services.router.current.hash, {
                 action: 1002,
@@ -453,7 +454,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     QUnit.test("loadState back and forth keeps relevant keys in state", async function (assert) {
         const webClient = await createEnterpriseWebClient({ fixture, serverData });
 
-        await click(fixture.querySelector(".o_app.o_menuitem:nth-child(2)"));
+        await click(fixture.querySelector(".o_apps > .o_draggable:nth-child(2) > .o_app"));
         await nextTick();
         assert.containsOnce(fixture, ".test_client_action");
         assert.containsNone(fixture, ".o_home_menu");
@@ -483,7 +484,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.containsOnce(fixture, ".o_home_menu");
             assert.isNotVisible(fixture.querySelector(".o_main_navbar .o_menu_toggle"));
 
-            await click(fixture.querySelector(".o_app.o_menuitem:nth-child(2)"));
+            await click(fixture.querySelector(".o_apps > .o_draggable:nth-child(2) > .o_app"));
             assert.containsOnce(fixture, ".test_client_action");
             assert.containsNone(fixture, ".o_home_menu");
 
@@ -529,4 +530,29 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             menu_id: 1,
         });
     });
+
+    QUnit.test(
+        "Apps are reordered at startup based on session's user settings",
+        async function (assert) {
+            // Config is written with apps xmlids order (default is menu_1, menu_2)
+            patchWithCleanup(session, {
+                user_settings: { id: 1, homemenu_config: '["menu_2","menu_1"]' },
+            });
+            await createEnterpriseWebClient({ fixture, serverData });
+
+            const apps = document.querySelectorAll(".o_app");
+            assert.strictEqual(
+                apps[0].getAttribute("data-menu-xmlid"),
+                "menu_2",
+                "first displayed app has menu_2 xmlid"
+            );
+            assert.strictEqual(
+                apps[1].getAttribute("data-menu-xmlid"),
+                "menu_1",
+                "second displayed app has menu_1 xmlid"
+            );
+            assert.strictEqual(apps[0].textContent, "App2", "first displayed app is App2");
+            assert.strictEqual(apps[1].textContent, "App1", "second displayed app is App1");
+        }
+    );
 });

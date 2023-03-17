@@ -217,6 +217,10 @@ class Tablet extends Component {
             display: { controlPanel: false },
             workorderBus: this.workorderBus,
         };
+        check.onRecordChanged = async (rootRecord) => {
+            await rootRecord.save();
+            this.render(true);
+        }
         return { workorder, check };
     }
 

@@ -21,7 +21,7 @@
                     </sheet>
                     <footer>
                         <button name="generate_coupon" type="object" string="Generate" class="oe_highlight" data-hotkey="q"/>
-                        <button special="cancel" data-hotkey="z" string="Cancel"/>
+                        <button special="cancel" data-hotkey="z" string="Discard"/>
                     </footer>
                 </form>
             </field>

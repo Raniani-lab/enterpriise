@@ -11,7 +11,7 @@
                 </group>
                 <footer>
                     <button name="action_coupon_send" string="Send" type="object" class="btn btn-primary" data-hotkey="v"/>
-                    <button string="Cancel" special="cancel" class="btn btn-secondary" data-hotkey="w"/>
+                    <button string="Discard" special="cancel" class="btn btn-secondary" data-hotkey="w"/>
                 </footer>
             </form>
         </field>

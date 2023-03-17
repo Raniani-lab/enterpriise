@@ -13,7 +13,7 @@
                         <i class="fa fa-stop me-2"></i> Stop
                     </button>
                     <div class="o_timer_discard">
-                        <button class="btn btn-muted stop-timer" t-on-click.stop="_onClickUnlinkTimer" title="Press Esc to discard">Cancel</button>
+                        <button class="btn btn-muted stop-timer" t-on-click.stop="_onClickUnlinkTimer" title="Press Esc to discard">Discard</button>
                     </div>
                     <div name="display_timer" class="ms-auto mx-md-auto fs-4 fw-bold">
                         <TimesheetDisplayTimer

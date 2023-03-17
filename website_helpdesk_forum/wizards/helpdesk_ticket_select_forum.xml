@@ -21,7 +21,7 @@
                 <footer>
                     <button string="Create and View Post" name="action_create_view_post" type="object" class="oe_highlight"/>
                     <button string="Create Post" name="action_create_post" type="object" class="btn-secondary"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button string="Discard" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
         </field>

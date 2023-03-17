@@ -32,7 +32,7 @@
         <field name="name">helpdesk.ticket.graph</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <graph string="Helpdesk Tickets" type="bar" sample="1">
+            <graph string="Helpdesk Tickets" type="bar" sample="1" js_class="helpdesk_ticket_graph">
                 <field name="stage_id"/>
                 <field name="rating_last_value" string="Rating (/5)"/>
                 <field name="close_hours" string="Hours to Close" widget="float_time"/>
@@ -48,7 +48,7 @@
         <field name="name">helpdesk.ticket.pivot</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <pivot string="Helpdesk Tickets" sample="1">
+            <pivot string="Helpdesk Tickets" sample="1" js_class="helpdesk_ticket_pivot">
                 <field name="stage_id" type="col"/>
                 <field name="rating_last_value" string="Rating (/5)"/>
                 <field name="close_hours" string="Hours to Close" widget="float_time"/>
@@ -108,12 +108,14 @@
                     <filter string="Helpdesk Team" name="team" context="{'group_by':'team_id'}" invisible="context.get('default_team_id', False)"/>
                     <filter string="Stage" name="stage" context="{'group_by':'stage_id'}"/>
                     <filter string="Status" name="state" context="{'group_by': 'kanban_state'}"/>
+                    <filter string="SLA" name="sla_ids" context="{'group_by': 'sla_ids'}" groups="helpdesk.group_use_sla"/>
                     <filter string="Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
                     <filter string="Tags" name="tag" context="{'group_by': 'tag_ids'}"/>
                     <filter string="Priority" name="priority" context="{'group_by': 'priority'}"/>
                     <filter string="Customer" name="partner" context="{'group_by': 'partner_id'}"/>
                     <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
                     <filter string="Create Date" name="created_by" context="{'group_by': 'create_date'}"/>
+                    <filter string="SLA Deadline" name="sla_deadline" context="{'group_by': 'sla_deadline'}" groups="helpdesk.group_use_sla"/>
                 </group>
             </search>
         </field>
@@ -174,7 +176,7 @@
         <field name="name">helpdesk.ticket.tree</field>
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
-            <tree string="Tickets" multi_edit="1" sample="1" default_order="priority desc, sla_deadline, id">
+            <tree string="Tickets" multi_edit="1" sample="1" default_order="priority desc, sla_deadline, id" js_class="helpdesk_ticket_list">
                 <field name="company_id" column_invisible="True"/>
                 <field name="use_sla" column_invisible="True"/>
                 <field name="fold" column_invisible="True"/>
@@ -282,21 +284,19 @@
                                 <div>
                                     <strong class="o_kanban_record_title"><field name="name"/> (#<field name="ticket_ref"/>)</strong>
                                 </div>
-                                <div>
+                                <div class="o_kanban_record_body">
                                     <field name="commercial_partner_id"/>
-                                </div>
-                                <div>
-                                    <field name="ticket_type_id"/>
-                                </div>
-                                <div>
-                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                                </div>
-                                <field name="use_sla" invisible="1"/>
-                                <div t-if="record.sla_deadline.raw_value &amp;&amp; record.use_sla.raw_value &amp;&amp; !record.fold.raw_value">
-                                    <t t-if="luxon.DateTime.fromISO(record.sla_deadline.raw_value) &lt; luxon.DateTime.local()" t-set="red" t-value="'oe_kanban_text_red'"/>
-                                    <span t-attf-class="{{red}}">
-                                        <field name="sla_deadline" widget="remaining_days"/>
-                                    </span>
+                                    <div>
+                                        <field name="ticket_type_id"/>
+                                    </div>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" invisible="not tag_ids"/>
+                                    <field name="use_sla" invisible="1"/>
+                                    <div t-if="record.sla_deadline.raw_value &amp;&amp; record.use_sla.raw_value &amp;&amp; !record.fold.raw_value">
+                                        <t t-if="luxon.DateTime.fromISO(record.sla_deadline.raw_value) &lt; luxon.DateTime.local()" t-set="red" t-value="'oe_kanban_text_red'"/>
+                                        <span t-attf-class="{{red}}">
+                                            <field name="sla_deadline" widget="remaining_days"/>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div class="o_kanban_record_bottom">
                                     <div class="oe_kanban_bottom_left">
@@ -373,8 +373,8 @@
                     <div class="oe_title">
                         <h1><field name="name" options="{'line_breaks': False}" widget="text" class="field_name" placeholder="e.g. Product arrived damaged"/></h1>
                     </div>
-                    <div class="d-flex mb-4">
-                        <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" options="{'color_field': 'color', 'no_edit_color': True}" class="mb-0" readonly="1" invisible="not use_sla" groups="helpdesk.group_use_sla"/>
+                    <div class="d-flex mb-4" invisible="not sla_status_ids" groups="helpdesk.group_use_sla">
+                        <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" invisible="not use_sla" options="{'color_field': 'color', 'no_edit_color': True}" class="mb-0" readonly="1" groups="helpdesk.group_use_sla"/>
                         <div invisible="not sla_deadline or not use_sla" groups="helpdesk.group_use_sla" class="mx-2 text-muted d-inline-flex align-items-center h-100">
                             <i class="fa fa-lg fa-clock-o me-2 mt-1" aria-label="Sla Deadline" title="Sla Deadline"/>
                             <field name="sla_deadline" class="mb-0" widget="remaining_days"/>

@@ -106,7 +106,7 @@ class HelpdeskTeam(models.Model):
         'Ratings on Website', compute='_compute_portal_show_rating', store=True, readonly=False,
         help="If enabled, portal users will have access to your customer satisfaction statistics from the last 30 days in their portal.\n"
              "They will only have access to the ratings themselves, and not to the written feedback if any was left. You can also manually hide ratings of your choosing.")
-    use_sla = fields.Boolean('SLA Policies')
+    use_sla = fields.Boolean('SLA Policies', default=True)
     unassigned_tickets = fields.Integer(string='Unassigned Tickets', compute='_compute_unassigned_tickets')
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Hours',
         default=lambda self: self.env.company.resource_calendar_id, domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",

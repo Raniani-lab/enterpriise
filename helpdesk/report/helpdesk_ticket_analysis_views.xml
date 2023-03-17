@@ -95,7 +95,7 @@
                 <field name="ticket_type_id" optional="hide"/>
                 <field name="priority" optional="show" widget="priority"/>
                 <field name="stage_id" optional="show" readonly="1"/>
-                <field name="ticket_deadline" optional="show" widget="remaining_days"/>
+                <field name="sla_deadline" optional="show" widget="remaining_days"/>
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" column_invisible="context.get('default_team_id', False)"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" column_invisible="not context.get('default_team_id', False)"/>
             </tree>

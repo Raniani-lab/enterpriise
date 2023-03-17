@@ -542,6 +542,15 @@ class HelpdeskTicket(models.Model):
         if 'stage_id' in vals:
             self.sudo()._sla_reach(vals['stage_id'])
 
+        if 'stage_id' in vals and self.env['helpdesk.stage'].browse(vals['stage_id']).fold:
+            odoobot_partner_id = self.env['ir.model.data']._xmlid_to_res_id('base.partner_root')
+            for ticket in self:
+                exceeded_hours = ticket.sla_status_ids.mapped('exceeded_hours')
+                if exceeded_hours:
+                    min_hours = min([hours for hours in exceeded_hours if hours > 0], default=min(exceeded_hours))
+                    message = _("This ticket was successfully closed %s hours before its SLA deadline.", round(abs(min_hours))) if min_hours < 0 \
+                        else _("This ticket was closed %s hours after its SLA deadline.", round(min_hours))
+                    ticket.message_post(body=message, subtype_xmlid="mail.mt_note", author_id=odoobot_partner_id)
         return res
 
     def copy(self, default=None):

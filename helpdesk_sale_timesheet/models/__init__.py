@@ -7,3 +7,4 @@ from . import account_analytic_line
 from . import helpdesk_sla
 from . import product
 from . import sale_order
+from . import sale_order_line

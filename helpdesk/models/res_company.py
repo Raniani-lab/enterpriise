@@ -26,6 +26,7 @@ class ResCompany(models.Model):
             results += [{
                 'name': team_name,
                 'company_id': company.id,
+                'use_sla': False,
                 'stage_ids': [Command.set(stage_ids)],
                 'alias_name': "%s-%s" % (team_name, company.name),
             }]

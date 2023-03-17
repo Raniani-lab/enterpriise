@@ -32,7 +32,7 @@ class HelpdeskTicketReport(models.Model):
     partner_phone = fields.Char(string='Customer Phone', readonly=True)
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Type", readonly=True)
     stage_id = fields.Many2one('helpdesk.stage', string="Stage", readonly=True)
-    ticket_deadline = fields.Datetime("Ticket Deadline", readonly=True)
+    sla_deadline = fields.Datetime("Ticket Deadline", readonly=True)
     ticket_deadline_hours = fields.Float("Hours to SLA Deadline", group_operator="avg", readonly=True)
     ticket_close_hours = fields.Float("Hours to Close", group_operator="avg", readonly=True)
     ticket_open_hours = fields.Float("Hours Open", group_operator="avg", readonly=True)
@@ -68,7 +68,7 @@ class HelpdeskTicketReport(models.Model):
                    T.partner_phone AS partner_phone,
                    T.ticket_type_id AS ticket_type_id,
                    T.stage_id AS stage_id,
-                   T.sla_deadline AS ticket_deadline,
+                   T.sla_deadline AS sla_deadline,
                    NULLIF(T.sla_deadline_hours, 0) AS ticket_deadline_hours,
                    NULLIF(T.close_hours, 0) AS ticket_close_hours,
                    EXTRACT(EPOCH FROM (COALESCE(T.assign_date, NOW() AT TIME ZONE 'UTC') - T.create_date)) / 3600 AS ticket_open_hours,

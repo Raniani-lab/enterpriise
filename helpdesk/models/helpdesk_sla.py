@@ -13,8 +13,11 @@ class HelpdeskSLA(models.Model):
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
         if 'team_id' in fields_list or 'stage_id' in fields_list:
-            team = self.env['helpdesk.team'].search([], limit=1)
-            defaults['team_id'] = team.id
+            default_team_id = self._context.get('default_team_id')
+            team = self.env['helpdesk.team'].browse(default_team_id)
+            if not default_team_id:
+                defaults['team_id'] = team.id
+                team = self.env['helpdesk.team'].search([], limit=1)
             stages = team.stage_ids.filtered(lambda x: x.fold)
             defaults['stage_id'] = stages and stages.ids[0] or team.stage_ids and team.stage_ids.ids[-1]
         return defaults

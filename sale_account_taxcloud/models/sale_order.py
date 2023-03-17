@@ -22,6 +22,15 @@ class SaleOrder(models.Model):
             order.validate_taxes_on_sales_order()
         return super(SaleOrder, self).action_confirm()
 
+    def action_quotation_send(self):
+        self.validate_taxes_on_sales_order()
+        return super().action_quotation_send()
+
+    def action_quotation_sent(self):
+        for order in self:
+            order.validate_taxes_on_sales_order()
+        return super().action_quotation_sent()
+
     @api.model
     def _get_TaxCloudRequest(self, api_id, api_key):
         return TaxCloudRequest(api_id, api_key)

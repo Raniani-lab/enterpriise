@@ -77,6 +77,7 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         productserial1 with serial1 (qty 1)
         productserial1 with serial2 (qty 1)
         productserial1 with serial3 (qty 1)
+        productserial1 without serial (qty 1)
         productlot1 with a lot named lot2 (qty 1)
         productlot1 with a lot named lot3 (qty 1)
         - Validate
@@ -92,8 +93,8 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
 
         inventory_moves = self.env['stock.move'].search([('product_id', 'in', [self.productlot1.id, self.productserial1.id]),
                                                          ('is_inventory', '=', True)])
-        self.assertEqual(len(inventory_moves), 6)
-        self.assertEqual(inventory_moves.mapped('state'), ['done', 'done', 'done', 'done', 'done', 'done'])
+        self.assertEqual(len(inventory_moves), 7)
+        self.assertTrue(all(s == 'done' for s in inventory_moves.mapped('state')))
 
         moves_with_lot = inventory_moves.filtered(lambda l: l.product_id == self.productlot1)
         mls_with_lot = self.env['stock.move.line']
@@ -104,7 +105,7 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         for move in moves_with_sn:
             mls_with_sn |= move._get_move_lines()
         self.assertEqual(len(mls_with_lot), 3)
-        self.assertEqual(len(mls_with_sn), 3)
+        self.assertEqual(len(mls_with_sn), 4)
         self.assertEqual(mls_with_lot.mapped('lot_id.name'), ['lot1', 'lot2', 'lot3'])
         self.assertEqual(mls_with_lot.filtered(lambda ml: ml.lot_id.name == 'lot1').qty_done, 3)
         self.assertEqual(mls_with_lot.filtered(lambda ml: ml.lot_id.name == 'lot2').qty_done, 1)

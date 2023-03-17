@@ -274,10 +274,16 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
     },
 
     {
-        trigger: '.o_field_widget[name="product_id"]',
+        trigger: ".o_field_widget[name=product_id] input",
+        run: 'text productserial1',
     },
+
     {
-        trigger: '.o_discard',
+        trigger: ".ui-menu-item > a:contains('productserial1')",
+    },
+
+    {
+        trigger: '.o_save',
     },
 
     // Scan tracked by lots product, then scan new lots.
@@ -285,7 +291,7 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
         trigger: '.o_sublines .o_barcode_line:nth-child(3)',
         run: function () {
             helper.assertLinesCount(2);
-            helper.assertSublinesCount(3);
+            helper.assertSublinesCount(4);
         },
     },
 
@@ -293,10 +299,12 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
         trigger: '.o_barcode_client_action',
         run: 'scan productlot1',
     },
+
     {
         trigger: '.o_barcode_line.o_selected:contains("productlot1")',
         run: 'scan lot2',
     },
+
     {
         trigger: '.o_barcode_line .o_barcode_line:contains("lot2")',
         run: 'scan lot3',
@@ -311,7 +319,23 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
             helper.assertSublinesCount(3);
         }
     },
-    ...stepUtils.validateBarcodeOperation(),
+
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+
+    {
+        trigger: '.modal-header'
+    },
+
+    {
+        trigger: 'button[name="action_confirm"]'
+    },
+
+    {
+        trigger: '.o_notification.border-success',
+    },
 
     {
         trigger: '.o_stock_barcode_main_menu',

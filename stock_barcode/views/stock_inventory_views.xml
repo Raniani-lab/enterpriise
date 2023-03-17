@@ -45,9 +45,7 @@
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline" attrs="{'invisible': ['|',('tracking', '=','none'), ('product_id','=', False)]}">
                         <i class="fa fa-fw fa-lg fa-barcode me-3" title="Serial/Lot Number"/>
                         <field name="lot_id"
-                            attrs="{
-                                'required': [('tracking', '!=', 'none')],
-                                'readonly': [('id', '!=', False)]}"
+                            attrs="{'readonly': [('id', '!=', False)]}"
                             context="{'default_company_id': company_id, 'default_product_id': product_id}"
                             placeholder="Serial/Lot Number"/>
                     </div>

@@ -1,8 +1,7 @@
 @include media-breakpoint-up(md) {
     .o_helpdesk_team_kanban_view_view .o_kanban_renderer {
-        .o_kanban_record, .o_kanban_header {
-            min-width: map-get($grid-breakpoints, 'xl') * 0.35;
-        }
+        --KanbanGroup-width: #{map-get($grid-breakpoints, 'xl') * 0.35};
+        --KanbanRecord-width: #{map-get($grid-breakpoints, 'xl') * 0.35};
     }
 }
 

@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import base64
-import zipfile
 import io
 import json
 import logging
-import os
+import zipfile
 from contextlib import ExitStack
+
 from markupsafe import Markup
+from werkzeug.exceptions import Forbidden
 
 from odoo import Command, http
 from odoo.exceptions import AccessError
 from odoo.http import request, content_disposition
 from odoo.tools.translate import _
-from odoo.tools import image_process
-
-from werkzeug.exceptions import Forbidden
 
 logger = logging.getLogger(__name__)
 
@@ -436,9 +434,9 @@ class ShareRoute(http.Controller):
                     documents.documents_set_activity(settings_record=share)
         else:
             return http.request.not_found()
-        return """<script type='text/javascript'>
+        return Markup("""<script type='text/javascript'>
                     window.open("/document/share/%s/%s", "_self");
-                </script>""" % (share_id, token)
+                </script>""") % (share_id, token)
 
     # Frontend portals #############################################################################
 

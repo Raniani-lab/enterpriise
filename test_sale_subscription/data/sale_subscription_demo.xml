@@ -92,7 +92,7 @@
     <function
         model="sale.order"
         name="_onchange_sale_order_template_id"
-        eval="[obj().env.ref('test_sale_subscription.test_subscription_portal_1').filtered(lambda s: s.state != 'done').ids]"/>
+        eval="[[ref('test_sale_subscription.test_subscription_portal_1')]]"/>
 
     <record id="test_subscription_portal_2" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
@@ -103,9 +103,10 @@
         <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
     </record>
 
-    <function model="sale.order"
-              name="_onchange_sale_order_template_id"
-              eval="[obj().env.ref('test_sale_subscription.test_subscription_portal_2').filtered(lambda s: s.state != 'done').ids]"/>
+    <function
+        model="sale.order"
+        name="_onchange_sale_order_template_id"
+        eval="[[ref('test_sale_subscription.test_subscription_portal_2')]]"/>
 
     <record id="test_subscription_portal_3" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>
@@ -115,9 +116,10 @@
         <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
     </record>
 
-    <function model="sale.order"
-              name="_onchange_sale_order_template_id"
-              eval="[obj().env.ref('test_sale_subscription.test_subscription_portal_3').filtered(lambda s: s.state != 'done').ids]"/>
+    <function
+        model="sale.order"
+        name="_onchange_sale_order_template_id"
+        eval="[[ref('test_sale_subscription.test_subscription_portal_3')]]"/>
 
     <record id="test_subscription_portal_4" model="sale.order">
         <field name="partner_id" ref="base.partner_demo_portal"/>

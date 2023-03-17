@@ -83,7 +83,10 @@ class RentalOrderLine(models.Model):
 
         # TODO add context for disabling stock moves in write ?
         old_vals = dict()
-        movable_confirmed_rental_lines = self.filtered(lambda sol: sol.is_rental and sol.state in ['sale', 'done'] and sol.product_id.type in ["product", "consu"])
+        movable_confirmed_rental_lines = self.filtered(
+            lambda sol: sol.is_rental
+                and sol.state == 'sale'
+                and sol.product_id.type in ["product", "consu"])
         for sol in movable_confirmed_rental_lines:
             old_vals[sol.id] = (sol.pickedup_lot_ids, sol.returned_lot_ids) if sol.product_id.tracking == 'serial' else (sol.qty_delivered, sol.qty_returned)
             if vals.get('pickedup_lot_ids', False) and vals['pickedup_lot_ids'][0][0] == 6:

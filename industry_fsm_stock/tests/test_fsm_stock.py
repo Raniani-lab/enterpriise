@@ -497,7 +497,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
 
         product.tracking = 'none'
         self.task.with_user(self.project_user).action_fsm_validate()
-        self.task.sale_order_id.sudo().state = 'done'
+        self.task.sale_order_id.sudo().action_lock()
         self.assertEqual(product.set_fsm_quantity(3), False)
 
     def test_stock_moves_and_pickings_when_task_is_done(self):

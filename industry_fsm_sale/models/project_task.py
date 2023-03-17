@@ -30,7 +30,7 @@ class Task(models.Model):
     portal_invoice_count = fields.Integer('Invoice Count', compute='_compute_portal_invoice_count')
     sale_line_id = fields.Many2one('sale.order.line', domain="[('company_id', '=', company_id),\
             '|', ('order_partner_id', '=?', partner_id), ('order_id.partner_shipping_id', '=?', partner_id), \
-            ('is_service', '=', True), ('order_partner_id', '=?', partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]")
+            ('is_service', '=', True), ('order_partner_id', '=?', partner_id), ('is_expense', '=', False), ('state', '=', 'sale')]")
 
     @property
     def SELF_READABLE_FIELDS(self):
@@ -324,7 +324,7 @@ class Task(models.Model):
                 'create': self.env['product.template'].check_access_rights('create', raise_exception=False),
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id,
-                'hide_qty_buttons': self.sale_order_id.sudo().state == 'done',
+                'hide_qty_buttons': self.sale_order_id.sudo().locked,
                 'default_invoice_policy': 'delivery',
             },
             'help': _("""<p class="o_view_nocontent_smiling_face">

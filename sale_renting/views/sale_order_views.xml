@@ -16,10 +16,10 @@
             </header>
             <button name="action_quotation_send" position="before">
                 <button name="open_pickup" type="object" class="btn-primary" string="Pickup" data-hotkey="y"
-                    attrs="{'invisible':['|', ('has_pickable_lines','=',False), ('state', 'not in', ['sale', 'done'])]}"/>
+                    attrs="{'invisible':['|', ('has_pickable_lines', '=', False), ('state', '!=', 'sale')]}"/>
                 <button name="open_return" type="object" class="btn-primary" string="Return" data-hotkey="k"
                     attrs="{'invisible':['|',
-                    ('state', 'not in', ['sale', 'done']),
+                    ('state', '!=', 'sale'),
                     '|',
                         ('has_returnable_lines','=',False),
                         '&amp;',
@@ -28,7 +28,7 @@
                     }"/>
                 <button name="open_return" type="object" class="btn-secondary" string="Return" data-hotkey="k"
                     attrs="{'invisible':['|',
-                    ('state', 'not in', ['sale', 'done']),
+                    ('state', '!=', 'sale'),
                     '|',
                         ('has_returnable_lines','=',False),
                         '&amp;',
@@ -40,27 +40,27 @@
                 <div class="badge rounded-pill text-bg-success float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('has_rented_products', '=', False),
-                    '|', ('state', 'not in', ['sale', 'done']),
+                    '|', ('state', '!=', 'sale'),
                     '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Booked</div>
                 <div class="badge rounded-pill text-bg-danger float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('has_rented_products', '=', False),
-                    '|', ('state', 'not in', ['sale', 'done']),
+                    '|', ('state', '!=', 'sale'),
                     '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Pickup</div>
                 <div class="badge rounded-pill text-bg-warning float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('has_rented_products', '=', False),
-                    '|', ('state', 'not in', ['sale', 'done']),
+                    '|', ('state', '!=', 'sale'),
                     '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>
                 <div class="badge rounded-pill text-bg-danger float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('has_rented_products', '=', False),
-                    '|', ('state', 'not in', ['sale', 'done']),
+                    '|', ('state', '!=', 'sale'),
                     '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', False)]}">Late Return</div>
                 <div class="badge rounded-pill text-bg-default float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('has_rented_products', '=', False),
-                    '|', ('state', 'not in', ['sale', 'done']), ('rental_status', '!=', 'returned')]}">Returned</div>
+                    '|', ('state', '!=', 'sale'), ('rental_status', '!=', 'returned')]}">Returned</div>
             </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='product_uom_qty']" position='after'>
                 <field name="temporal_type" invisible="1"/>
@@ -70,7 +70,7 @@
                 <field name="return_date" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='order_line']//tree//field[@name='qty_delivered']" position="after">
-                <field name="qty_returned" attrs="{'column_invisible': ['|', ('parent.state', 'not in', ['sale', 'done']), ('parent.is_rental_order', '=', False)],
+                <field name="qty_returned" attrs="{'column_invisible': ['|', ('parent.state', '!=', 'sale'), ('parent.is_rental_order', '=', False)],
                     'invisible': ['|', ('is_rental', '=', False), ('is_product_rentable', '=', False)]
                 }"/>
             </xpath>

@@ -90,7 +90,7 @@ class RentalWizard(models.TransientModel):
                     ('is_rental', '=', True),
                     ('product_id', '=', rent.product_id.id),
                     ('order_id.rental_status', 'in', ['pickup', 'return']),
-                    ('state', 'in', ['sale', 'done']),
+                    ('state', '=', 'sale'),
                     ('id', '!=', rent.rental_order_line_id.id)]
                 if rent.warehouse_id:
                     domain += [('order_id.warehouse_id', '=', rent.warehouse_id.id)]

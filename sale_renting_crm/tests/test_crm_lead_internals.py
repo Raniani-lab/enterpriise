@@ -65,8 +65,7 @@ class TestLead(crm_common.TestCrmCommon):
             dict(base_order_vals),
             dict(base_order_vals)
         ])
-        orders[0:2].action_unlock()
-        orders[1].action_confirm()
+        orders[0:2].action_confirm()
         self.env.flush_all()
 
         self.assertEqual(lead.rental_quotation_count, 1)

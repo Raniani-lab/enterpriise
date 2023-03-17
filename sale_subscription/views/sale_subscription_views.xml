@@ -298,7 +298,7 @@
                    decoration-info="subscription_state in ['1_draft', '2_renewal']"
                    readonly="1"/>
             <field name="state" string="Order Status"
-                    decoration-success="state in ['sale','done']"
+                    decoration-success="state == 'sale'"
                     decoration-info="state == 'draft'"
                     decoration-primary="state == 'sent'"
                     widget="badge" optional="hide"/>            <field name="pricelist_id" invisible="1" readonly="1"/>
@@ -419,7 +419,7 @@
             </field>
             <field name="sale_order_template_id" position="replace">
                 <field name="sale_order_template_id" string="Subscription Plan"
-                       attrs="{'readonly': [('state', 'in', ['sale', 'done'])], 'invisible': [('subscription_state', '=', '7_upsell')]}"
+                       attrs="{'readonly': [('state', '=', 'sale')], 'invisible': [('subscription_state', '=', '7_upsell')]}"
                        domain="[('is_subscription', '=', True)]"/>
             </field>
         </field>

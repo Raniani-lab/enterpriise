@@ -17,12 +17,12 @@
                 <field name="so_line"
                     groups="!sales_team.group_sale_salesman"
                     attrs="{'column_invisible': ['|', ('parent.use_helpdesk_sale_timesheet', '=', False), ('parent.partner_id', '=', False)], 'readonly': [('readonly_timesheet', '=', True)]}"
-                    domain="[('is_service', '=', True), ('order_partner_id', 'child_of', parent.commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]"
+                    domain="[('is_service', '=', True), ('order_partner_id', 'child_of', parent.commercial_partner_id), ('is_expense', '=', False), ('state', '=', 'sale')]"
                     optional="show" options="{'no_create': True, 'no_open': True}"/>
                 <field name="so_line"
                     groups="sales_team.group_sale_salesman"
                     attrs="{'column_invisible': ['|', ('parent.use_helpdesk_sale_timesheet', '=', False), ('parent.partner_id', '=', False)], 'readonly': [('readonly_timesheet', '=', True)]}"
-                    domain="[('is_service', '=', True), ('order_partner_id', 'child_of', parent.commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]"
+                    domain="[('is_service', '=', True), ('order_partner_id', 'child_of', parent.commercial_partner_id), ('is_expense', '=', False), ('state', '=', 'sale')]"
                     context="{'with_remaining_hours': True, 'with_price_unit': True}"
                     optional="hide" options="{'no_create': True, 'no_open': True}"/>
             </xpath>

@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import fields, models, tools
+from odoo.addons.sale.models.sale_order import SALE_ORDER_STATE
 
 
 class RentalReport(models.Model):
@@ -20,13 +21,7 @@ class RentalReport(models.Model):
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
     product_tmpl_id = fields.Many2one('product.template', 'Product Template', readonly=True)
     categ_id = fields.Many2one('product.category', 'Product Category', readonly=True)
-    state = fields.Selection([
-        ('draft', 'Draft Quotation'),
-        ('sent', 'Quotation Sent'),
-        ('sale', 'Sales Order'),
-        ('done', 'Sales Done'),
-        ('cancel', 'Cancelled'),
-    ], string='Status', readonly=True)
+    state = fields.Selection(selection=SALE_ORDER_STATE, string="Status", readonly=True)
     price = fields.Float('Daily Amount', readonly=True)
     currency_id = fields.Many2one('res.currency', 'Currency', readonly=True)
 

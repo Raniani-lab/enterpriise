@@ -61,7 +61,7 @@ class SaleOrder(models.Model):
                 _logger.error("Could not find demo data to use")
                 return
             # Allows multiple -i of the module
-            if sub_1.state == 'done':
+            if sub_1.locked:
                 return
 
             subs_to_invoice |= sub_0 | sub_1

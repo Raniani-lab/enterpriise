@@ -1,6 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import api, fields, models, tools
+from odoo.addons.sale.models.sale_order import SALE_ORDER_STATE
+from odoo.addons.sale_renting.models.sale_order import RENTAL_STATUS
 
 
 class RentalSchedule(models.Model):
@@ -44,21 +46,8 @@ class RentalSchedule(models.Model):
     team_id = fields.Many2one('crm.team', 'Sales Team', readonly=True)
     country_id = fields.Many2one('res.country', 'Customer Country', readonly=True)
     commercial_partner_id = fields.Many2one('res.partner', 'Customer Entity', readonly=True)
-    rental_status = fields.Selection([
-        ('draft', 'Quotation'),
-        ('sent', 'Quotation Sent'),
-        ('pickup', 'Reserved'),
-        ('return', 'Pickedup'),
-        ('returned', 'Returned'),
-        ('cancel', 'Cancelled'),
-    ], string="Rental Status", readonly=True)
-    state = fields.Selection([
-        ('draft', 'Draft Quotation'),
-        ('sent', 'Quotation Sent'),
-        ('sale', 'Sales Order'),
-        ('done', 'Sales Done'),
-        ('cancel', 'Cancelled'),
-    ], string='Status', readonly=True)
+    rental_status = fields.Selection(selection=RENTAL_STATUS, string="Rental Status", readonly=True)
+    state = fields.Selection(selection=SALE_ORDER_STATE, string="Status", readonly=True)
 
     order_id = fields.Many2one('sale.order', 'Order #', readonly=True)
     order_line_id = fields.Many2one('sale.order.line', 'Order line #', readonly=True)
@@ -89,7 +78,7 @@ class RentalSchedule(models.Model):
 
     def _late(self):
         return """
-            CASE WHEN sol.state NOT IN ('sale', 'done') THEN FALSE
+            CASE WHEN sol.state != 'sale' THEN FALSE
                 WHEN sol.start_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_delivered < sol.product_uom_qty THEN TRUE
                 WHEN sol.return_date < NOW() AT TIME ZONE 'UTC' AND sol.qty_returned < sol.qty_delivered THEN TRUE
             ELSE FALSE

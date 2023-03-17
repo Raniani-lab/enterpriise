@@ -34,7 +34,7 @@ class ResConfigSettings(models.TransientModel):
             # recompute the qty_delivered in sale.order.line for sale.order
             # where his state is set to 'sale'.
             sale_order_lines = self.env['sale.order.line'].sudo().search([
-                ('state', 'in', ['sale', 'done']),
+                ('state', '=', 'sale'),
                 ('invoice_status', 'in', ['no', 'to invoice']),
                 ('product_id.type', '=', 'service'),
                 ('product_id.service_type', '=', 'timesheet'),

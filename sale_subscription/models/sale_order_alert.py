@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import logging
 from ast import literal_eval
 
 from odoo import api, fields, models, _
-
-_logger = logging.getLogger
+from odoo.addons.sale.models.sale_order import SALE_ORDER_STATE
 
 
 class SaleOrderAlert(models.Model):
@@ -74,15 +72,7 @@ class SaleOrderAlert(models.Model):
             ('7_upsell', 'Upsell'),           # Quotation or SO upselling a subscription
         ]
     )
-    order_state = fields.Selection(
-        selection=[
-            ('draft', "Quotation"),
-            ('sent', "Quotation Sent"),
-            ('sale', "Sales Order"),
-            ('done', "Locked"),
-            ('cancel', "Cancelled"),
-        ],
-        string="Status")
+    order_state = fields.Selection(selection=SALE_ORDER_STATE, string="Status")
     activity_user = fields.Selection([
         ('contract', 'Subscription Salesperson'),
         ('channel_leader', 'Sales Team Leader'),

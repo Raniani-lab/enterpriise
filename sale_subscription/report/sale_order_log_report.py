@@ -6,8 +6,9 @@ from datetime import date
 
 from odoo import api, fields, models, tools
 from odoo.osv import expression
-from odoo.addons.resource.models.utils import filter_domain_leaf
 
+from odoo.addons.resource.models.utils import filter_domain_leaf
+from odoo.addons.sale.models.sale_order import SALE_ORDER_STATE
 from odoo.addons.sale_subscription.models.sale_order import SUBSCRIPTION_PROGRESS_STATE, SUBSCRIPTION_STATES
 
 
@@ -48,13 +49,7 @@ class SaleOrderLogReport(models.Model):
     industry_id = fields.Many2one('res.partner.industry', 'Customer Industry', readonly=True)
     commercial_partner_id = fields.Many2one('res.partner', 'Customer Entity', readonly=True)
     subscription_state = fields.Selection(SUBSCRIPTION_STATES, readonly=True)
-    state = fields.Selection([
-        ('draft', 'Draft Quotation'),
-        ('sent', 'Quotation Sent'),
-        ('sale', 'Sales Order'),
-        ('done', 'Sales Done'),
-        ('cancel', 'Cancelled'),
-    ], string='Status', readonly=True)
+    state = fields.Selection(selection=SALE_ORDER_STATE, string="Status", readonly=True)
     health = fields.Selection([
         ('normal', 'Neutral'),
         ('done', 'Good'),
@@ -111,11 +106,11 @@ class SaleOrderLogReport(models.Model):
             so.state AS state,
             so.pricelist_id AS pricelist_id,
             log.origin_order_id AS origin_order_id,
-            
+
             log.amount_signed AS amount_signed,
             log.recurring_monthly AS recurring_monthly,
             log.recurring_monthly * 12 AS recurring_yearly,
-           
+
             log.amount_signed * r2.rate/r1.rate AS amount_signed_graph,
             log.amount_signed * r2.rate/r1.rate AS recurring_monthly_graph, -- will be integrated for cumulated values
             log.amount_signed * 12 * r2.rate/r1.rate AS recurring_yearly_graph, -- will be integrated for cumulated values,
@@ -123,10 +118,10 @@ class SaleOrderLogReport(models.Model):
             r2.rate AS user_rate,
             log.currency_id AS LOG_cur_id,
             log.company_id AS log_cmp,
-            CASE 
+            CASE
                 WHEN event_type = '0_creation' THEN 1
                 WHEN event_type = '2_churn' THEN -1
-                ELSE 0 
+                ELSE 0
             END as contract_number,
             so.campaign_id AS campaign_id,
             so.first_contract_date AS first_contract_date,
@@ -197,7 +192,7 @@ class SaleOrderLogReport(models.Model):
             SELECT {self._select()}
               FROM {self._from()}
              WHERE {self._where()}
-          GROUP BY {self._group_by()} 
+          GROUP BY {self._group_by()}
         """
 
     def action_open_sale_order(self):

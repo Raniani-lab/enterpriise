@@ -435,8 +435,6 @@ class TestSubscription(TestSubscriptionCommon):
                 'price_unit': self.product3.list_price,
             })]
             upsell_so.action_confirm()
-            # We make sure that two confirmation won't add twice the same quantities
-            upsell_so.action_confirm()
             self.subscription._create_recurring_invoice()
             self.subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
             discounts = [round(v, 2) for v in upsell_so.order_line.sorted('discount').mapped('discount')]
@@ -1766,8 +1764,9 @@ class TestSubscription(TestSubscriptionCommon):
         self.subscription.recurrence_id = self.recurrence_month
         self.product.recurring_invoice = False
         self.product2.recurring_invoice = False
+        sub2 = self.subscription.copy()
         with self.assertRaisesRegex(UserError, 'You cannot save a sale order with a recurrence and no recurring product.'):
-            self.subscription.action_confirm()
+            sub2.action_confirm()
 
     def test_multiple_renew(self):
         """ Prevent to confirm several renewal quotation for the same subscription """
@@ -1958,7 +1957,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(self.subscription.invoice_count, 1)
 
         with freeze_time("2021-02-03"):
-            self.subscription.action_done()
+            self.subscription.action_lock()
             self.env['sale.order']._cron_recurring_create_invoice()
             self.assertEqual(self.subscription.invoice_count, 1)
 
@@ -2462,7 +2461,8 @@ class TestSubscription(TestSubscriptionCommon):
         renewal_so2.action_confirm()
         self.assertEqual(renewal_so2.subscription_state, '3_progress')
         self.assertEqual(renewal_so.subscription_state, '5_renewed')
-        self.assertEqual(renewal_so.state, 'done')
+        self.assertEqual(renewal_so.state, 'sale')
+        self.assertTrue(renewal_so.locked)
         with self.assertRaises(ValidationError):
             renewal_so._action_cancel()
 
@@ -2547,9 +2547,6 @@ class TestSubscription(TestSubscriptionCommon):
             renewal_so.action_confirm()
             self.flush_tracking()
             self.env['sale.order']._cron_recurring_create_invoice()
-            self.flush_tracking()
-            renewal_so.action_confirm()
-            self.flush_tracking()
             order_log_ids = sub.order_log_ids.sorted(key=lambda log: (log.event_date, log.id))
             sub_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
                         for log in order_log_ids]

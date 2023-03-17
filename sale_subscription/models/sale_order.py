@@ -139,7 +139,7 @@ class SaleOrder(models.Model):
 
     _sql_constraints = [
         ('sale_subscription_state_coherence',
-         "CHECK(NOT (is_subscription=TRUE AND state IN ('sale', 'done') AND subscription_state='1_draft'))",
+         "CHECK(NOT (is_subscription=TRUE AND state = 'sale' AND subscription_state='1_draft'))",
          "You cannot set to draft a confirmed subscription. Please create a new quotation"),
         ('check_start_date_lower_next_invoice_date', 'CHECK((next_invoice_date IS NULL OR start_date IS NULL) OR (next_invoice_date >= start_date))',
          'The next invoice date of a sale order should be after its start date.'),
@@ -206,7 +206,7 @@ class SaleOrder(models.Model):
     def _compute_type_name(self):
         other_orders = self.env['sale.order']
         for order in self:
-            if not (order.is_subscription and order.state in ('sale', 'done')):
+            if not (order.is_subscription and order.state == 'sale'):
                 other_orders |= order
                 continue
             order.type_name = _('Subscription')
@@ -375,7 +375,7 @@ class SaleOrder(models.Model):
         for order in self:
             last_date = order.next_invoice_date and order.next_invoice_date - get_timedelta(order.recurrence_id.duration, order.recurrence_id.unit)
             start_date = order.start_date or fields.Date.today()
-            if order.state in ['sale', 'done'] and last_date and last_date >= start_date:
+            if order.state == 'sale' and last_date and last_date >= start_date:
                 # we use get_timedelta and not the effective invoice date because
                 # we don't want gaps. Invoicing date could be shifted because of technical issues.
                 order.last_invoice_date = last_date
@@ -1075,7 +1075,7 @@ class SaleOrder(models.Model):
             progress_renewed = order.subscription_state in SUBSCRIPTION_PROGRESS_STATE
             if renew and renewal_order and progress_renewed:
                 order.subscription_state = '5_renewed'
-                order.state = 'done'
+                order.locked = True
             else:
                 order.subscription_state = '6_churn'
 
@@ -1208,6 +1208,9 @@ class SaleOrder(models.Model):
                 pending_section = line
                 continue
 
+            if line.state != 'sale':
+                continue
+
             if automatic_invoice:
                 # We don't invoice line before their SO's next_invoice_date
                 line_condition = line.order_id.next_invoice_date and line.order_id.next_invoice_date <= date_from and line.order_id.start_date and line.order_id.start_date <= date_from
@@ -1222,11 +1225,23 @@ class SaleOrder(models.Model):
             elif line.display_type or line.temporal_type != 'subscription':
                 # Avoid invoicing section/notes or lines starting in the future or not starting at all
                 line_to_invoice = False
-            elif line_condition and line.product_id.invoice_policy == 'order' and line.order_id.state == 'sale':
-                # Invoice due lines
-                line_to_invoice = True
-            elif line_condition and line.product_id.invoice_policy == 'delivery' and (not float_is_zero(line.qty_delivered, precision_rounding=line.product_id.uom_id.rounding)):
-                line_to_invoice = True
+            elif line_condition:
+                if(
+                    line.product_id.invoice_policy == 'order'
+                    and not line.order_id.locked
+                    # TODO ARJ replace locked check by check on subscription_state
+                    # needed for test_invoice_done_order
+                ):
+                    # Invoice due lines
+                    line_to_invoice = True
+                elif (
+                    line.product_id.invoice_policy == 'delivery'
+                    and not float_is_zero(
+                        line.qty_delivered,
+                        precision_rounding=line.product_id.uom_id.rounding,
+                    )
+                ):
+                    line_to_invoice = True
 
             if line_to_invoice:
                 if line.is_downpayment:
@@ -1585,7 +1600,7 @@ class SaleOrder(models.Model):
                   FROM sale_order so
              LEFT JOIN sale_order_template sot ON sot.id=so.sale_order_template_id
                  WHERE so.is_subscription
-                   AND so.state IN ('sale', 'done')
+                   AND so.state = 'sale'
                    AND so.subscription_state = '3_progress'
                 AND (so.next_invoice_date + INTERVAL '1 day' * COALESCE(sot.auto_close_limit,15))< %s
             """, [today.strftime('%Y-%m-%d')]
@@ -1621,7 +1636,7 @@ class SaleOrder(models.Model):
                    LEFT JOIN sale_order_template sot ON sot.id = so.sale_order_template_id
            LEFT JOIN LATERAL ( SELECT MAX(date_maturity) AS dm FROM account_move_line aml WHERE aml.move_id = am.id) AS aml2 ON TRUE
                       WHERE so.is_subscription
-                        AND so.state IN ('sale', 'done')
+                        AND so.state = 'sale'
                         AND so.subscription_state ='3_progress'
                         AND am.payment_state = 'not_paid'
                         AND am.move_type = 'out_invoice'
@@ -1659,7 +1674,7 @@ class SaleOrder(models.Model):
         domain_close = [
             ('is_subscription', '=', True),
             ('end_date', '<', today),
-            ('state', 'in', ['sale', 'done']),
+            ('state', '=', 'sale'),
             ('subscription_state', 'in', SUBSCRIPTION_PROGRESS_STATE)]
         subscriptions_close = self.search(domain_close)
         unpaid_results = self._handle_unpaid_subscriptions()

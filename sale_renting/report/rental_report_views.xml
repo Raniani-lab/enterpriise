@@ -54,7 +54,7 @@
                 <field name="date"/>
                 <filter string="Date" name="year" invisible="1" date="date" default_period="this_year"/>
                 <filter name="Quotations" string="Quotations" domain="[('state','in', ['draft', 'sent'])]"/>
-                <filter name="confirmed_orders" string="Confirmed Orders" domain="[('state', 'in', ['sale', 'done'])]"/>
+                <filter name="confirmed_orders" string="Confirmed Orders" domain="[('state', '=', 'sale')]"/>
                 <separator/>
                 <filter name="filter_date" date="date" default_period="this_year"/>
                 <field name="product_id"/>

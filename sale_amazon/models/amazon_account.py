@@ -550,7 +550,7 @@ class AmazonAccount(models.Model):
                 if order.amazon_channel == 'fba':
                     self._generate_stock_moves(order)
                 elif order.amazon_channel == 'fbm':
-                    order.with_context(mail_notrack=True).action_done()
+                    order.with_context(mail_notrack=True).action_lock()
                 _logger.info(
                     "Created a new sales order with amazon_order_ref %(ref)s for Amazon account"
                     " with id %(id)s.", {'ref': amazon_order_ref, 'id': self.id}
@@ -621,11 +621,11 @@ class AmazonAccount(models.Model):
         fulfillment_channel = order_data['FulfillmentChannel']
         # The state is first set to 'sale' and later to 'done' to generate a picking if fulfilled
         # by merchant, or directly set to 'done' to generate no picking if fulfilled by Amazon.
-        state = 'done' if fulfillment_channel == 'AFN' else 'sale'
         purchase_date = dateutil.parser.parse(order_data['PurchaseDate']).replace(tzinfo=None)
         order_vals = {
             'origin': f"Amazon Order {amazon_order_ref}",
-            'state': state,
+            'state': 'sale',
+            'locked': fulfillment_channel == 'AFN',
             'date_order': purchase_date,
             'partner_id': contact_partner.id,
             'pricelist_id': self._find_or_create_pricelist(currency).id,

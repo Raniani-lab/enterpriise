@@ -26,11 +26,15 @@
                     <a class="alert-link" href="/web#action=account.action_account_config" role="button">Go to Settings.</a>
                 </div>
             </xpath>
-            <xpath expr="//group[@name='note_group']" position="before">
-                <div class="oe_right" attrs="{'invisible': [('is_taxcloud', '=', False)]}">
-                    <button name="validate_taxes_on_sales_order" string="Update taxes" type="object"/>
-                </div>
-            </xpath>
+            <div name="so_button_below_order_lines" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </div>
+            <div name="so_button_below_order_lines" position="inside">
+                <button name="validate_taxes_on_sales_order"
+                        string="Update taxes"
+                        type="object"
+                        attrs="{'invisible': [('is_taxcloud', '=', False)]}"/>
+            </div>
         </field>
     </record>
 </odoo>

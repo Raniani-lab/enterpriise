@@ -132,7 +132,11 @@ class Project(models.Model):
     def _get_profitability_sale_order_items_domain(self, domain=None):
         quotation_projects = self.filtered('allow_quotations')
         if quotation_projects:
-            include_additional_sale_orders = [('order_id', 'in', quotation_projects._get_additional_quotations([('state', 'in', ['sale', 'done'])]).ids)]
+            include_additional_sale_orders = [
+                ('order_id', 'in', quotation_projects._get_additional_quotations([
+                    ('state', '=', 'sale'),
+                ]).ids)
+            ]
             domain = include_additional_sale_orders \
                 if domain is None \
                 else expression.OR([domain, include_additional_sale_orders])

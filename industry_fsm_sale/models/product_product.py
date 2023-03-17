@@ -61,7 +61,7 @@ class ProductProduct(models.Model):
                 sale_lines_per_product[product.id] |= SaleOrderLine_sudo.browse(ids)
             for product in self:
                 sale_lines = sale_lines_per_product.get(product.id, self.env['sale.order.line'])
-                all_editable_lines = sale_lines.filtered(lambda l: l.qty_delivered == 0 or l.qty_delivered_method == 'manual' or l.state != 'done')
+                all_editable_lines = sale_lines.filtered(lambda l: l.qty_delivered == 0 or l.qty_delivered_method == 'manual' or not l.order_id.locked)
                 diff_qty = product.fsm_quantity - sum(sale_lines.mapped('product_uom_qty'))
                 if all_editable_lines:  # existing line: change ordered qty (and delivered, if delivered method)
                     if diff_qty > 0:
@@ -143,7 +143,7 @@ class ProductProduct(models.Model):
         self = self.sudo()
 
         # don't add material on locked SO
-        if task.sale_order_id.sudo().state == 'done':
+        if task.sale_order_id.sudo().locked:
             return False
         # ensure that the task is linked to a sale order
         task._fsm_ensure_sale_order()

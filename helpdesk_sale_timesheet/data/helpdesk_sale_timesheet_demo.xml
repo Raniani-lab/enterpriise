@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo noupdate="0">
-    
+<odoo noupdate="1">
+
     <record id="helpdesk.helpdesk_team3" model="helpdesk.team">
         <field name="use_helpdesk_sale_timesheet" eval="True"/>
     </record>

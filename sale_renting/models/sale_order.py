@@ -5,19 +5,25 @@ from odoo import api, fields, models, _
 from odoo.tools import float_compare
 from odoo.osv import expression
 
+RENTAL_STATUS = [
+    ('draft', "Quotation"),
+    ('sent', "Quotation Sent"),
+    ('pickup', "Reserved"),
+    ('return', "Pickedup"),
+    ('returned', "Returned"),
+    ('cancel', "Cancelled"),
+]
+
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     is_rental_order = fields.Boolean("Created In App Rental")
-    rental_status = fields.Selection([
-        ('draft', 'Quotation'),
-        ('sent', 'Quotation Sent'),
-        ('pickup', 'Booked'),
-        ('return', 'Picked-up'),
-        ('returned', 'Returned'),
-        ('cancel', 'Cancelled'),
-    ], string="Rental Status", compute='_compute_rental_status', store=True)
+    rental_status = fields.Selection(
+        selection=RENTAL_STATUS,
+        string="Rental Status",
+        compute='_compute_rental_status',
+        store=True)
     # rental_status = next action to do basically, but shown string is action done.
 
     has_pickable_lines = fields.Boolean(compute="_compute_rental_status", store=True)
@@ -39,7 +45,7 @@ class SaleOrder(models.Model):
     @api.depends('state', 'order_line', 'order_line.product_uom_qty', 'order_line.qty_delivered', 'order_line.qty_returned')
     def _compute_rental_status(self):
         for order in self:
-            if order.state in ['sale', 'done'] and order.is_rental_order:
+            if order.state == 'sale' and order.is_rental_order:
                 rental_order_lines = order.order_line.filtered(lambda l: l.is_rental and l.start_date and l.return_date)
                 pickeable_lines = rental_order_lines.filtered(lambda sol: sol.qty_delivered < sol.product_uom_qty)
                 returnable_lines = rental_order_lines.filtered(lambda sol: sol.qty_returned < sol.qty_delivered)
@@ -75,14 +81,14 @@ class SaleOrder(models.Model):
         status = "pickup"
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         lines_to_pickup = self.order_line.filtered(
-            lambda r: r.state in ['sale', 'done'] and r.is_rental and float_compare(r.product_uom_qty, r.qty_delivered, precision_digits=precision) > 0)
+            lambda r: r.state == 'sale' and r.is_rental and float_compare(r.product_uom_qty, r.qty_delivered, precision_digits=precision) > 0)
         return self._open_rental_wizard(status, lines_to_pickup.ids)
 
     def open_return(self):
         status = "return"
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         lines_to_return = self.order_line.filtered(
-            lambda r: r.state in ['sale', 'done'] and r.is_rental and float_compare(r.qty_delivered, r.qty_returned, precision_digits=precision) > 0)
+            lambda r: r.state == 'sale' and r.is_rental and float_compare(r.qty_delivered, r.qty_returned, precision_digits=precision) > 0)
         return self._open_rental_wizard(status, lines_to_return.ids)
 
     def _open_rental_wizard(self, status, order_line_ids):

@@ -118,7 +118,7 @@ class ProductProduct(models.Model):
         domain = [
             ('is_rental', '=', True),
             ('product_id', '=', self.id),
-            ('state', 'in', ['sale', 'done']),
+            ('state', '=', 'sale'),
         ]
 
         ignored_soline_id = kwargs.get('ignored_soline_id', False)

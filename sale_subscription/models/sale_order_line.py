@@ -55,7 +55,7 @@ class SaleOrderLine(models.Model):
                 # free subscription lines are never to invoice whatever the dates
                 line.invoice_status = 'no'
                 continue
-            to_invoice_check = line.order_id.next_invoice_date and line.state in ('sale', 'done') and line.order_id.next_invoice_date >= today
+            to_invoice_check = line.order_id.next_invoice_date and line.state == 'sale' and line.order_id.next_invoice_date >= today
             if line.order_id.end_date:
                 to_invoice_check = to_invoice_check and line.order_id.end_date > today
             if to_invoice_check and line.order_id.start_date and line.order_id.start_date > today or (currency_id.is_zero(line.price_subtotal)):
@@ -155,7 +155,7 @@ class SaleOrderLine(models.Model):
         result = {}
         qty_invoiced = self._get_subscription_qty_invoiced(last_invoice_date, next_invoice_date)
         for line in self:
-            if line.state not in ['sale', 'done']:
+            if line.state != 'sale':
                 continue
             if line.product_id.invoice_policy == 'order':
                 result[line.id] = line.product_uom_qty - qty_invoiced.get(line.id, 0.0)
@@ -167,7 +167,7 @@ class SaleOrderLine(models.Model):
         result = {}
         amount_sign = {'out_invoice': 1, 'out_refund': -1}
         for line in self:
-            if line.temporal_type != 'subscription' or line.order_id.state not in ['sale', 'done']:
+            if line.temporal_type != 'subscription' or line.order_id.state != 'sale':
                 continue
             qty_invoiced = 0.0
             last_period_start = line.order_id.next_invoice_date and line.order_id.next_invoice_date - get_timedelta(line.order_id.recurrence_id.duration, line.order_id.recurrence_id.unit)

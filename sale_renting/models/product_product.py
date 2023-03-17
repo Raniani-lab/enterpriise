@@ -21,7 +21,7 @@ class ProductProduct(models.Model):
         return [
             ('is_rental', '=', True),
             ('product_id', 'in', self.ids),
-            ('state', 'in', ['sale', 'done'])]
+            ('state', '=', 'sale')]
 
     def _get_qty_in_rent(self):
         """

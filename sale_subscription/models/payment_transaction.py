@@ -54,7 +54,7 @@ class PaymentTransaction(models.Model):
         # filter transaction which are only a partial payment of subscription
         tx_with_partial_payments = self.env["payment.transaction"]
         for tx in self:
-            for order in tx.sale_order_ids.filtered(lambda so: so.state in ('sale', 'done') and so.is_subscription):
+            for order in tx.sale_order_ids.filtered(lambda so: so.state == 'sale' and so.is_subscription):
                 if order.currency_id.compare_amounts(tx.amount, order.amount_total) != 0:
                     tx_with_partial_payments |= tx
         return tx_with_partial_payments

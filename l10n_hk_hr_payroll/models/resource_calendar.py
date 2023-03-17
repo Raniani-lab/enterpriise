@@ -18,7 +18,7 @@ class ResourceCalendar(models.Model):
         else:
             resources_list = list(resources) + [self.env['resource.resource']]
 
-        leave_attendance_intervals = self._attendance_intervals_batch(
+        leave_attendance_intervals = self.sudo()._attendance_intervals_batch(
             start_dt, end_dt, resources=resources, domain=[('work_entry_type_id.is_leave', '=', True)], tz=tz)
         return {
             r.id: (work_intervals[r.id] - leave_attendance_intervals[r.id]) for r in resources_list

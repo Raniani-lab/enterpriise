@@ -2988,7 +2988,7 @@ document.createElement("a").classList.contains
 
         assert.doesNotHaveClass(gantt.$('.o_gantt_row_group .o_gantt_pill'), 'ui-resizable',
             'the group row pill should not be resizable');
-        assert.hasClass(gantt.$('.o_gantt_row_group .o_gantt_pill'), 'o_fake_draggable',
+        assert.doesNotHaveClass(gantt.$('.o_gantt_row_group .o_gantt_pill'), 'o_fake_draggable',
             'the group row pill should not be draggable');
         assert.hasClass(gantt.$('.o_gantt_row:not(.o_gantt_row_group) .o_gantt_pill'), 'ui-resizable',
             'the pill should be resizable');

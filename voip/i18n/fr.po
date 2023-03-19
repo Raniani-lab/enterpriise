@@ -380,7 +380,7 @@ msgstr "Durée en minutes."
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #. module: voip
 #. openerp-web

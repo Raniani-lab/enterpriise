@@ -10,7 +10,6 @@
 # Martin Aavastik <martin@avalah.ee>, 2022
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
-# Leaanika Randmets, 2022
 # Anna, 2023
 # Jana Jaakson, 2023
 # Rivo Zängov <eraser@eraser.ee>, 2023
@@ -19,6 +18,7 @@
 # Eneli Õigus <enelioigus@gmail.com>, 2023
 # Martin Trigaux, 2023
 # Birgit Vijar, 2023
+# Leaanika Randmets, 2023
 # 
 msgid ""
 msgstr ""
@@ -26,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Birgit Vijar, 2023\n"
+"Last-Translator: Leaanika Randmets, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +54,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ -2,678.00"
-msgstr ""
+msgstr "-2,678.00 €"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -62,7 +62,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ 2,678.00"
-msgstr ""
+msgstr "2,678.00 €"
 
 #. module: account_accountant
 #. odoo-python
@@ -87,7 +87,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "-1,134.50"
-msgstr ""
+msgstr "-1,134.50"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -566,7 +566,7 @@ msgstr "Looge uus kontogrupp"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Create additional entries"
-msgstr ""
+msgstr "Loo lisanduvad kanded"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -940,7 +940,7 @@ msgstr "ID"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0003"
-msgstr ""
+msgstr "INV/2032/0003"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -948,7 +948,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0012"
-msgstr ""
+msgstr "INV/2032/0012"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
@@ -1097,7 +1097,7 @@ msgstr "Silt"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Larry Smith"
-msgstr ""
+msgstr "Larry Smith"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1250,7 +1250,7 @@ msgstr "Sobita olemasolevad kirjed"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Match payments and invoices"
-msgstr ""
+msgstr "Sobita makseid ja arveid"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1367,7 +1367,7 @@ msgstr "Märkused"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Odoo Bank Reconciliation"
-msgstr ""
+msgstr "Odoo panga sobitamine"
 
 #. module: account_accountant
 #. odoo-python
@@ -1646,7 +1646,7 @@ msgstr "Salvesta ja loo uus"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "Otsi klienti"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1660,7 +1660,7 @@ msgstr "Märgi partner"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Select a transaction"
-msgstr ""
+msgstr "Vali tehing"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
@@ -1927,13 +1927,14 @@ msgstr "Kontrolli üle"
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
 msgstr ""
+"Arvete ja maksete sobitamiseks ning uute andmike kannete postitamiseks"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr ""
+msgstr "Sobita avatud kannetega"
 
 #. module: account_accountant
 #. odoo-javascript

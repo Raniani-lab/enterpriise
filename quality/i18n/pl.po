@@ -257,7 +257,7 @@ msgstr "Data utworzenia"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr ""
+msgstr "Niestandardowa wiadomość o odbiorze"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_assign
@@ -796,7 +796,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model,name:quality.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Kontrola jakości"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point

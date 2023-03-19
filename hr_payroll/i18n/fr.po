@@ -1322,7 +1322,7 @@ msgstr "Fiche de paie brouillon"
 #: model:ir.actions.server,name:hr_payroll.action_edit_payslip_lines
 #, python-format
 msgid "Edit Payslip Lines"
-msgstr "Modifier les lignes de fiche de paie"
+msgstr "Éditer les lignes de fiche de paie"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__edit_payslip_lines_wizard_id

@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid " (%s of %s)"
-msgstr ""
+msgstr "(%s의 %s)"
 
 #. module: account_asset
 #. odoo-python
@@ -56,35 +56,35 @@ msgstr "# 전기 감가상각 항목"
 msgid ""
 "%s Future entries will be recomputed to depreciate the asset following the "
 "changes."
-msgstr ""
+msgstr "%s 이후 항목 입력 시 자산의 감가상각 변경사항 반영을 위해 다시 계산됩니다."
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s created from invoice: %s"
-msgstr ""
+msgstr "%s 항목이 다음 청구서에서 생성됨: %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s m"
-msgstr ""
+msgstr "%s 월"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s y"
-msgstr ""
+msgstr "%s y"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s: Depreciation"
-msgstr ""
+msgstr "%s: 감가상각"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -110,7 +110,7 @@ msgstr "이 이동에 대해 이연 수익이 생성되었습니다 :"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A depreciation entry will be posted on and including the date %s."
-msgstr ""
+msgstr "감가상각 항목이 해당 날짜를 포함하여 %s 날짜를 기준으로 전기됩니다"
 
 #. module: account_asset
 #. odoo-python
@@ -147,21 +147,21 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to %s has been deleted: %s"
-msgstr ""
+msgstr "%s에 연결된 문서가 삭제되었습니다: %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to this move has been deleted: %s"
-msgstr ""
+msgstr "이 작업에 연결된 문서가 삭제되었습니다: %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A gross increase has been created: %s"
-msgstr ""
+msgstr "다음과 같이 총 금액이 증가하였습니다: %s"
 
 #. module: account_asset
 #. odoo-python
@@ -403,7 +403,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_counterpart_id
 msgid "Asset Counterpart Account"
-msgstr ""
+msgstr "자산 상대 계정"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_id_display_name
@@ -415,7 +415,7 @@ msgstr "자산 ID 표시명"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_lifetime_days
 msgid "Asset Lifetime Days"
-msgstr ""
+msgstr "자산 내용연수"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_model
@@ -453,7 +453,7 @@ msgstr "자산 옵션"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
 msgid "Asset Paused Days"
-msgstr ""
+msgstr "자산 중단기간"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
@@ -493,28 +493,28 @@ msgstr "생성된 자산"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset disposed. %s"
-msgstr ""
+msgstr "처분 자산. %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset paused. %s"
-msgstr ""
+msgstr "중단 자산. %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset sold. %s"
-msgstr ""
+msgstr "매각 자산. %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Asset unpaused. %s"
-msgstr ""
+msgstr "중단해제 자산. %s"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
@@ -1940,7 +1940,7 @@ msgstr "두 감가상각 사이의 시간"
 msgid ""
 "The amount you have entered (%s) does not match the Related Purchase's value"
 " (%s). Please make sure this is what you want."
-msgstr ""
+msgstr "입력한 금액 %s)이 해당 구매 항목 가치 (%s)와 일치하지 않습니다. 입력 내용이 정확한지 확인하십시오."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__asset_id

@@ -23,12 +23,12 @@ msgstr ""
 #. module: approvals_purchase_stock
 #: model:ir.model,name:approvals_purchase_stock.model_approval_request
 msgid "Approval Request"
-msgstr ""
+msgstr "Wniosek o zatwierdzenie"
 
 #. module: approvals_purchase_stock
 #: model:ir.model.fields,field_description:approvals_purchase_stock.field_approval_request__hide_location
 msgid "Hide Location"
-msgstr ""
+msgstr "Ukryj lokalizację"
 
 #. module: approvals_purchase_stock
 #: model:ir.model,name:approvals_purchase_stock.model_approval_product_line

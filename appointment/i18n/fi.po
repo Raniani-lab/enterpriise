@@ -504,7 +504,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 #, python-format
 msgid "Appointment"
-msgstr ""
+msgstr "Ajanvaraus"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_answer_input
@@ -1253,7 +1253,7 @@ msgstr ""
 #: code:addons/appointment/static/src/views/appointment_onboarding_link_form_renderer.js:0
 #, python-format
 msgid "Link copied to clipboard."
-msgstr ""
+msgstr "Linkki kopioitu leikepöydälle."
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__location_id
@@ -1355,7 +1355,7 @@ msgstr "Nimi"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Navigation"
-msgstr ""
+msgstr "Navigaatio"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_alarm__default_for_new_appointment_type

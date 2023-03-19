@@ -779,7 +779,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg
 #, python-format
 msgid "Average Rating"
-msgstr ""
+msgstr "Keskimääräinen arvio"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_avg_percentage
@@ -871,7 +871,7 @@ msgstr "Peruttu"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Centralize, manage, share and grow your knowledge library"
-msgstr ""
+msgstr "Keskitä, hallitse, jaa ja kasvata tietämyskirjastoasi"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1020,7 +1020,7 @@ msgstr "Asetukset"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Configure a custom domain"
-msgstr ""
+msgstr "Mukautetun toimialueen määrittäminen"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_confirmation_wizard
@@ -1136,7 +1136,7 @@ msgstr "Tiketin tämänhetkinen vaihe"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr ""
+msgstr "Mukautettu palautettu viesti"
 
 #. module: helpdesk
 #. odoo-python
@@ -1818,6 +1818,8 @@ msgid ""
 "If set, this content will automatically be sent out to unauthorized users "
 "instead of the default message."
 msgstr ""
+"Jos asetettu, lähetetään automaattisesti luvattomille käyttäjille "
+"oletusviestin sijasta."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__time
@@ -2412,7 +2414,7 @@ msgstr ""
 #. module: helpdesk
 #: model:helpdesk.stage,name:helpdesk.stage_on_hold
 msgid "On Hold"
-msgstr ""
+msgstr "Pidossa"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_status__status__ongoing
@@ -2448,6 +2450,9 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"Valinnainen sen viestiketjun (tietueen) ID, johon kaikki saapuvat viestit "
+"liitetään, vaikka niihin ei vastattaisikaan. Jos tämä asetetaan, uusien "
+"tietueiden luominen estetään kokonaan."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_page
@@ -2486,16 +2491,19 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"Aliaksen hallussa oleva emomalli. Alias-viittauksen sisältävä malli ei "
+"välttämättä ole alias_model_id:llä annettu malli (esimerkki: project "
+"(parent_model) ja task (model))"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__is_partner_email_update
 msgid "Partner Email will Update"
-msgstr ""
+msgstr "Kumppanin sähköposti päivittyy"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__is_partner_phone_update
 msgid "Partner Phone will Update"
-msgstr ""
+msgstr "Kumppanin puhelin päivittyy"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_ticket_ids
@@ -2586,6 +2594,10 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
+"Käytäntö, jolla lähetetään viesti asiakirjaan mailgatewayn avulla.\n"
+"- everyone: kaikki voivat lähettää viestin\n"
+"- partners: vain todennetut kumppanit\n"
+"- seuraajat: vain asiaan liittyvän asiakirjan seuraajat tai seuraavien kanavien jäsenet\n"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__access_url
@@ -2653,7 +2665,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg_text
 msgid "Rating Avg Text"
-msgstr ""
+msgstr "Kekismääräisen luokituksen teksti"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_feedback
@@ -2674,12 +2686,12 @@ msgstr "Arvion viimeisin arvo"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_percentage_satisfaction
 msgid "Rating Satisfaction"
-msgstr ""
+msgstr "Arvion tyytyväisyys"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_text
 msgid "Rating Text"
-msgstr ""
+msgstr "Luokitusteksti"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_count
@@ -2987,7 +2999,7 @@ msgstr ""
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Sample"
-msgstr ""
+msgstr "Esimerkki"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -3369,6 +3381,9 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"Malli (Odoo Document Kind), jota tämä alias vastaa. Kaikki saapuvat "
+"sähköpostiviestit, jotka eivät vastaa olemassa olevaan tietueeseen, "
+"aiheuttavat uuden tietueen luomisen tähän malliin (esim. projektitehtävä)"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_name
@@ -3376,6 +3391,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"Sähköpostin aliaksen nimi, esim. 'jobs', jos haluat saada sähköposteja "
+"osoitteeseen <jobs@example.odoo.com>"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_user_id
@@ -3385,6 +3402,11 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"Tämän aliaksen sähköpostiviestien vastaanottamisen yhteydessä luotujen "
+"tietueiden omistaja. Jos tätä kenttää ei ole asetettu, järjestelmä yrittää "
+"löytää oikean omistajan lähettäjän (From) -osoitteen perusteella tai käyttää"
+" järjestelmänvalvojan tiliä, jos kyseisestä osoitteesta ei löydy "
+"järjestelmän käyttäjää."
 
 #. module: helpdesk
 #. odoo-python

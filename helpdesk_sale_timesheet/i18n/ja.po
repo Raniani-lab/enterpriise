@@ -225,7 +225,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids
 msgid "Sales Order Items"
-msgstr ""
+msgstr "販売オーダ明細"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id

@@ -859,7 +859,7 @@ msgstr "Saatavana verkkosivustolla"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg
 msgid "Average Rating"
-msgstr ""
+msgstr "Keskimääräinen arvio"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__bad
@@ -878,22 +878,22 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__filter_pre_domain
 msgid "Before Update Domain"
-msgstr ""
+msgstr "Ennen toimialueen päivittämistä"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_model_id
 msgid "Binding Model"
-msgstr ""
+msgstr "Sitova malli"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_type
 msgid "Binding Type"
-msgstr ""
+msgstr "Sidostyyppi"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_view_types
 msgid "Binding View Types"
-msgstr ""
+msgstr "Sitovat näkymätyypit"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -980,6 +980,10 @@ msgid ""
 "Post as Message: log on document\n"
 "Post as Note: mass SMS with archives"
 msgstr ""
+"Valitse tapa tekstiviestien lähettämiseen:\n"
+"SMS: joukkotekstiviesti\n"
+"Lähetä viestinä: kirjaa dokumenttiin\n"
+"Lähetä huomiona: joukkotekstiviesti liitteen kanssa"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__mail_post_method
@@ -989,6 +993,10 @@ msgid ""
 "Post as Message: post on document and notify followers\n"
 "Post as Note: log a note on document"
 msgstr ""
+"Valitse sähköpostin lähettämisen tapa:\n"
+"EMail: lähetä suoraan sähköpostina\n"
+"Lähetä viestinä: kirjoita dokumentiin ja lähetä huomatus seuraajille\n"
+"Lähetä huomiona: kirjaa huomio dokumenttiin"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__2_churn
@@ -1263,6 +1271,9 @@ msgid ""
 "        You can put a negative number if you need a delay before the\n"
 "        trigger date, like sending a reminder 15 minutes before a meeting."
 msgstr ""
+"Viivästytä laukaisupäivän jälkeen.\n"
+"        Voit asettaa negatiivisen luvun, jos tarvitaan viive ennen laukeamisaikaa.\n"
+"        Esimerkiksi 15 minuuttia ennen kokousta."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range
@@ -1313,12 +1324,12 @@ msgstr "Luonnos"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_date_deadline_range
 msgid "Due Date In"
-msgstr ""
+msgstr "Erääntyy"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_date_deadline_range_type
 msgid "Due type"
-msgstr ""
+msgstr "Erääntymisen tyyppi"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_boundary
@@ -1387,7 +1398,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__on_change_field_ids
 msgid "Fields that trigger the onchange."
-msgstr ""
+msgstr "Kentät, jotka käynnistävät onchange-laukaisimen."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__origin_order_id
@@ -1781,7 +1792,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__least_delay_msg
 msgid "Least Delay Msg"
-msgstr ""
+msgstr "Viimeisimmän viiveen viesti"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -1807,7 +1818,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__link_field_id
 msgid "Link Field"
-msgstr ""
+msgstr "Linkitetty kenttä"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -1942,11 +1953,13 @@ msgid ""
 "Model for record creation / update. Set this field only to specify a "
 "different model than the base model."
 msgstr ""
+"Malli tietueen luomiselle tai päivittämiselle. Aseta tämä kenttä vain "
+"määrittämään toisen mallin kuin perusmallin."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__model_id
 msgid "Model on which the server action runs."
-msgstr ""
+msgstr "Malli, jossa palvelintoiminto ajetaan."
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_create_or_write
@@ -2056,7 +2069,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__on_change_field_ids
 msgid "On Change Fields Trigger"
-msgstr ""
+msgstr "Muuttuvan kentän laukaisin"
 
 #. module: sale_subscription
 #. odoo-python
@@ -2240,6 +2253,8 @@ msgid ""
 "Provide the field used to link the newly created record on the record used "
 "by the server action."
 msgstr ""
+"Anna kenttä, jota käytetään linkittämään uusi luotu tietue siihen "
+"tietueeseen, jota palvelintoiminto käyttää."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__code
@@ -2291,7 +2306,7 @@ msgstr "Arvostelu"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg_text
 msgid "Rating Avg Text"
-msgstr ""
+msgstr "Kekismääräisen luokituksen teksti"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__rating_template_id
@@ -2327,7 +2342,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_percentage_satisfaction
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Rating Satisfaction"
-msgstr ""
+msgstr "Arvion tyytyväisyys"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__rating_percentage
@@ -2339,7 +2354,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_text
 msgid "Rating Text"
-msgstr ""
+msgstr "Luokitusteksti"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_count
@@ -2626,12 +2641,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_method
 msgid "Send as"
-msgstr ""
+msgstr "Lähetä nimellä"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_method
 msgid "Send as (SMS)"
-msgstr ""
+msgstr "Lähetä tekstiviestinä"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_success
@@ -2691,6 +2706,7 @@ msgid ""
 "Setting a value makes this action available in the sidebar for the given "
 "model."
 msgstr ""
+"Arvon asettaminen saa tämän tominnon saataville annetun mallin sivupalkkiin."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__show_rec_invoice_button
@@ -2794,7 +2810,7 @@ msgstr "Tallenna"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_autofollow
 msgid "Subscribe Recipients"
-msgstr ""
+msgstr "Tilaa vastaanottajat"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3036,7 +3052,7 @@ msgstr "Kohdemalli"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__crud_model_name
 msgid "Target Model Name"
-msgstr ""
+msgstr "Kohdemallin nimi"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3099,6 +3115,8 @@ msgid ""
 "The action will be triggered if and only if one of these fields is updated. "
 "If empty, all fields are watched."
 msgstr ""
+"Toiminto voidaan laukaista vain jos jotain sen kentistä päivitetään. Jos "
+"nämä ovat tyhjiä, kaikkia kenttiä seurataan."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3295,7 +3313,7 @@ msgstr "Liipaisupäivämäärä"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trigger_field_ids
 msgid "Trigger Fields"
-msgstr ""
+msgstr "Laukeavat kentät"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -3337,6 +3355,15 @@ msgid ""
 "- 'Create Next Activity': create an activity (Discuss)\n"
 "- 'Send SMS Text Message': send SMS, log them on documents (SMS)"
 msgstr ""
+"Palvelintoiminnon tyyppi. Seuraavat ovat mahdollisia:\n"
+"- 'Execute Python Code': ajaa Python-koodia\n"
+"- 'Create a new Record': luo uuden tietueen uusilla arvoilla\n"
+"- 'Update a Record': päivittää tietueen arvot\n"
+"- 'Execute several actions': määrittää toiminnon, joka käynnistää useita muita toimintoja\n"
+"- 'Send Email': lähettää viestin, huomion tai sähköpostin (Discuss)\n"
+"- 'Add Followers': lisää tietueelle seuraajia (Discuss)\n"
+"- 'Create Next Activity': luo uuden aktiviteetin (Discuss)\n"
+"- 'Send SMS Text Message': lähettää tekstiviestin (SMS), kirjaa ne dokumenttiin"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3398,6 +3425,9 @@ msgid ""
 " 'Generic User From Record' to specify the field name of the user to choose "
 "on the record."
 msgstr ""
+"Käytä 'Tietty käyttäjä'\" määrittääksesi aina saman käyttäjän seuraavaan "
+"toimintaan. Käytä 'Yleinen käyttäjä tietueesta' määrittääksesi tietueelle "
+"valittavan käyttäjän nimen."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_calendar_id
@@ -3484,6 +3514,8 @@ msgid ""
 "When calculating a day-based timed condition, it is possible to use a "
 "calendar to compute the date based on working days."
 msgstr ""
+"Päiväkohtaista ajastusehtoa laskettaessa on mahdollista laskea päivämäärä "
+"työpäivien perusteella kalenterin avulla."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__sequence
@@ -3491,6 +3523,8 @@ msgid ""
 "When dealing with multiple actions, the execution order is based on the "
 "sequence. Low number means high priority."
 msgstr ""
+"Kun käsitellään useita toimintoja, suoritusjärjestys perustuu järjestykseen."
+" Pieni numero tarkoittaa korkeaa prioriteettia."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_id
@@ -3498,6 +3532,8 @@ msgid ""
 "When should the condition be triggered.\n"
 "                If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
+"Milloin ehto pitäisi laukaista.\n"
+"                 Jos asetettu, Odoon eräajo-ohjelma (cron) käsittelee tämän. Jos tyhjä, tarkistetaan luonnin ja päivityksen yhteydessä."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active
@@ -3515,6 +3551,8 @@ msgid ""
 "Write Python code that the action will execute. Some variables are available"
 " for use; help about python expression is given in the help tab."
 msgstr ""
+"Kirjoita Python-koodi, jonka toiminto suorittaa. Jotkut muuttujat ovat "
+"käytettävissä; Ohjeet python-lausekkeesta löytyvät Ohje-välilehdeltä."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_yearly

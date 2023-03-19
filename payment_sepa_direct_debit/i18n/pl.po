@@ -267,7 +267,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "IBAN"
-msgstr ""
+msgstr "IBAN"
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0

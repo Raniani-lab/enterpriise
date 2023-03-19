@@ -881,14 +881,14 @@ msgstr "Brouillon"
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 #, python-format
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #. module: account_consolidation
 #. odoo-python
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #, python-format
 msgid "Edit %s"
-msgstr "Modifier %s"
+msgstr "Éditer %s"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__currency_rate_end

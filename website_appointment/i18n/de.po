@@ -91,7 +91,7 @@ msgstr "Termin"
 #. module: website_appointment
 #: model:ir.actions.act_window,name:website_appointment.action_appointment_pages_list
 msgid "Appointment Pages"
-msgstr ""
+msgstr "Terminseiten"
 
 #. module: website_appointment
 #: model:ir.model,name:website_appointment.model_appointment_type

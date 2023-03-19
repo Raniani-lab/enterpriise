@@ -415,7 +415,7 @@ msgstr "പ്രോഡക്റ്റ്"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Product Category"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ് കാറ്റഗറി"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
@@ -487,7 +487,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_form_quotation
 #, python-format
 msgid "Quotations"
-msgstr ""
+msgstr "ക്വട്ടേഷൻസ് "
 
 #. module: industry_fsm_sale
 #: model:project.task.type,legend_done:industry_fsm_sale.field_service_project_stage_0

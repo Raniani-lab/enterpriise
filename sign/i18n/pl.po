@@ -608,7 +608,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__group_ids
 msgid "Authorized Groups"
-msgstr ""
+msgstr "Grupy upoważnione"
 
 #. module: sign
 #. odoo-javascript

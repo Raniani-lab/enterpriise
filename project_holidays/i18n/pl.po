@@ -24,12 +24,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_holidays.field_project_task__is_absent
 #: model_terms:ir.ui.view,arch_db:project_holidays.view_task_search_form_inherit_holidays
 msgid "Employees on Time Off"
-msgstr ""
+msgstr "Pracownicy mający wolne"
 
 #. module: project_holidays
 #: model:ir.model.fields,field_description:project_holidays.field_project_task__leave_warning
 msgid "Leave Warning"
-msgstr ""
+msgstr "Ostrzeżenie przed opuszczeniem"
 
 #. module: project_holidays
 #: code:addons/project_holidays/models/project.py:0

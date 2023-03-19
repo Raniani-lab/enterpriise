@@ -1591,13 +1591,13 @@ msgstr "Vous avez besoin d'un autre"
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Your referrer got a step further!"
-msgstr "Votre référé a avancé d'une étape !"
+msgstr "La personne que vous avez recommandée a avancé d'une étape !"
 
 #. module: hr_referral
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Your referrer is hired!"
-msgstr "Votre référé est engagé !"
+msgstr "La personne que vous avez recommandée est engagée !"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban

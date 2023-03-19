@@ -1015,7 +1015,7 @@ msgstr "Kryteria"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr ""
+msgstr "Niestandardowa wiadomość o odbiorze"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__days
@@ -1348,7 +1348,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_ir_binary
 msgid "File streaming helper model for controllers"
-msgstr ""
+msgstr "Model przesyłania strumieniowego plików dla kontrolerów"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
@@ -1612,7 +1612,7 @@ msgstr "Czynności zaległe"
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_legal
 msgid "Legal"
-msgstr ""
+msgstr "Prawne"
 
 #. module: documents
 #. odoo-javascript

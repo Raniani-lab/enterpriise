@@ -768,7 +768,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Like"
-msgstr ""
+msgstr "Tykkää"
 
 #. module: social
 #. odoo-javascript
@@ -1404,7 +1404,7 @@ msgstr ""
 #. module: social
 #: model:ir.ui.menu,name:social.menu_social_global
 msgid "Social Marketing"
-msgstr ""
+msgstr "Some-markkinointi"
 
 #. module: social
 #. odoo-javascript

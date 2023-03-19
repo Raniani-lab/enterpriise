@@ -988,7 +988,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_backend_kanban
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
 msgid "Points"
-msgstr ""
+msgstr "Pisteet"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__points_not_hired

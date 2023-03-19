@@ -872,7 +872,7 @@ msgstr "Konta bankowe i gotówkowe"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "Widżet uzgodnień bankowych dla pozycji wyciągu"
 
 #. module: account_reports
 #. odoo-python
@@ -1823,7 +1823,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
 msgid "Include"
-msgstr ""
+msgstr "Załącz"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -3038,7 +3038,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "There are"
-msgstr ""
+msgstr "Są"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template

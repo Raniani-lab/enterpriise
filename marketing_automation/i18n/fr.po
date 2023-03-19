@@ -516,7 +516,7 @@ msgstr "Ne pas mettre à jour"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__activity_type__email
@@ -1130,7 +1130,7 @@ msgstr "Traité"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "REJECTED"
-msgstr "ÉCHEC"
+msgstr "ÉCHECS"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__received_ratio
@@ -1418,7 +1418,7 @@ msgstr "Étiquettes"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
 msgid "Target"
-msgstr "Objectif"
+msgstr "Cible"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree

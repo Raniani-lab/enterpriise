@@ -153,7 +153,7 @@ msgstr "Tietokanta vanhenee:"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Dismiss"
-msgstr ""
+msgstr "Hylkää"
 
 #. module: web_enterprise
 #: model:ir.actions.server,name:web_enterprise.download_contact

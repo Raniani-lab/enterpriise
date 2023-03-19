@@ -166,6 +166,8 @@ msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
 msgstr ""
+"Hạng mục đơn bán hàng này không có giá trị đích của số giờ đã lập kế hoạch. "
+"Số giờ đã lập kế hoạch:"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours

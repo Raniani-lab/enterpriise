@@ -446,7 +446,7 @@ msgstr "Par ex. Notes de frais du voyage d'affaires à Paris"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Edit Request"
-msgstr "Modifier la demande"
+msgstr "Éditer la demande"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__manager_approval

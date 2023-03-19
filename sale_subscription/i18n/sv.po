@@ -1938,7 +1938,7 @@ msgstr "Modell som serveråtgärden körs på."
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_create_or_write
 msgid "Modification"
-msgstr ""
+msgstr "Ändring"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_account_move_line__subscription_mrr

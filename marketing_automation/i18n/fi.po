@@ -690,7 +690,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__crm_lead_count
 msgid "Leads/Opportunities count"
-msgstr ""
+msgstr "Liidien / myyntimahdollisuuksien määrä"
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.link_tracker_action_marketing_campaign
@@ -1079,7 +1079,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
 msgid "Participants"
-msgstr ""
+msgstr "Ilmoittautuneita yhteensä"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_activity.py:0
@@ -1494,7 +1494,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__trigger_type
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__trigger_type
 msgid "Trigger Type"
-msgstr ""
+msgstr "Liipaisin-tyyppi"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_utm_campaign

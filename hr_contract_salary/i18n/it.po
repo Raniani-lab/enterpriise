@@ -286,7 +286,7 @@ msgstr "Casella di selezione"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__child_ids
 msgid "Child"
-msgstr ""
+msgstr "Secondaria"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation_type

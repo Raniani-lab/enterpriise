@@ -123,17 +123,17 @@ msgstr "<br><b>청구서/공급업체 청구서</b>메뉴에서 청구서 관리
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "<i class=\"fa fa-check\"/> Matched"
-msgstr ""
+msgstr "<i class=\"fa fa-check\"/> 일치"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "<i>Lock all journal entries</i>"
-msgstr ""
+msgstr "<i>전체 분개장 항목 잠그기</i>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "<i>Lock specific journal entries</i>"
-msgstr ""
+msgstr "<i>특정 분개장 항목 잠그기</i>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -264,7 +264,7 @@ msgstr "회계 마감일"
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_line_form_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Add a Transaction"
-msgstr ""
+msgstr "거래 추가"
 
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.account_tag_action
@@ -300,7 +300,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Amongst unmatched bank transactions"
-msgstr ""
+msgstr "일치하지 않는 은행 거래 중"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -556,7 +556,7 @@ msgstr "새 계정 그룹 만들기"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Create additional entries"
-msgstr ""
+msgstr "추가 항목 생성"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -703,6 +703,8 @@ msgid ""
 "after installing Accounting if you were using only Invoicing before, before "
 "importing all your actual accounting data in to Odoo."
 msgstr ""
+"이 날짜 이전의 전체 결제 및 청구서 항목에서는 '청구서 발행' 상태를 수신하고 이와 관련된 모든 회계 항목을 숨김 처리합니다. 이전에 "
+"청구서 앱만 사용했다면 Odoo로 실제 회계 데이터 전체를 가져오기 전에 회계 앱을 설치한 후 이 옵션을 사용하십시오."
 
 #. module: account_accountant
 #. odoo-python
@@ -1032,7 +1034,7 @@ msgstr "전표 환율"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 msgid "Journal Entries Lock Date"
-msgstr ""
+msgstr "전표 잠금 날짜"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_move

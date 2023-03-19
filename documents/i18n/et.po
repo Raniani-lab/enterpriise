@@ -17,9 +17,9 @@
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Patrick-Jordan Kiudorv, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
-# Leaanika Randmets, 2022
 # Anna, 2023
 # Jana Jaakson, 2023
+# Leaanika Randmets, 2023
 # 
 msgid ""
 msgstr ""
@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Jana Jaakson, 2023\n"
+"Last-Translator: Leaanika Randmets, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -87,7 +87,7 @@ msgstr "2022"
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
 msgid "2023"
-msgstr ""
+msgstr "2023"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -2316,7 +2316,7 @@ msgstr "Järjestus"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
 msgid "Set As 2023 Contracts"
-msgstr ""
+msgstr "Määra 2023. lepinguteks"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id

@@ -1083,7 +1083,7 @@ msgstr "Durée en jours"
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_kanban
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles

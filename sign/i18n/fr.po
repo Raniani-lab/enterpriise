@@ -1219,12 +1219,12 @@ msgstr "Économies environnementales en utilisant les Signatures électroniques"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Edit field types"
-msgstr "Modifier les types de champ"
+msgstr "Éditer les types de champ"
 
 #. module: sign
 #. odoo-javascript
@@ -1232,7 +1232,7 @@ msgstr "Modifier les types de champ"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Edit template name"
-msgstr "Modifier le nom du modèle"
+msgstr "Éditer le nom du modèle"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signer_email

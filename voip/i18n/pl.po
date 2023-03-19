@@ -973,7 +973,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
 msgid "The URL of your WebSocket"
-msgstr ""
+msgstr "URL WebSocket"
 
 #. module: voip
 #. openerp-web
@@ -1154,7 +1154,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__wsServer
 msgid "WebSocket"
-msgstr ""
+msgstr "WebSocket"
 
 #. module: voip
 #. openerp-web

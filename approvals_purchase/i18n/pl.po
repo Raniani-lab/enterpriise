@@ -38,7 +38,7 @@ msgstr ""
 #. module: approvals_purchase
 #: model:ir.model,name:approvals_purchase.model_approval_request
 msgid "Approval Request"
-msgstr ""
+msgstr "Wniosek o zatwierdzenie"
 
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_category__approval_type

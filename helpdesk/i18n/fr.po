@@ -672,7 +672,7 @@ msgstr "Administrateur"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "After-Sales"
-msgstr "Après-ventes"
+msgstr "Services après-vente"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_id
@@ -702,7 +702,7 @@ msgstr "Domaine d'alias"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__display_alias_name
 msgid "Alias email"
-msgstr "Alias email"
+msgstr "Alias de messagerie"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_model_id
@@ -819,7 +819,7 @@ msgstr "Assigné à"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis_closed
 msgid "Assignee"
-msgstr "Bénéficiaire"
+msgstr "Responsable"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1461,7 +1461,7 @@ msgstr "Chaque utilisateur se voit attribuer un nombre égal de tickets"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
@@ -1472,7 +1472,7 @@ msgstr "Email"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_alias
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_tree
 msgid "Email Alias"
-msgstr "Email Alias"
+msgstr "Alias de messagerie"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage__template_id
@@ -2571,7 +2571,7 @@ msgstr "En cours"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #, python-format
 msgid "Open"
-msgstr "Ouvrir"
+msgstr "Ouvert"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -3561,8 +3561,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
-"Le nom de l'alias de messagerie, par exemple 'carrières' pour récupérer les "
-"emails de <carrières@example.odoo.com>"
+"Le nom de l'alias, par exemple 'carrières' pour récupérer les emails de "
+"<carrières@example.odoo.com>"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_user_id

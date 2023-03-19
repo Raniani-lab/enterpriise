@@ -1266,19 +1266,19 @@ msgstr "Date d'échéance"
 #: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
 #, python-format
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Edit the linked record"
-msgstr "Modifier l'enregistrement lié"
+msgstr "Éditer l'enregistrement lié"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Email Alias"
-msgstr "Alias d'email"
+msgstr "Alias de messagerie"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__email_cc

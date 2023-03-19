@@ -1270,7 +1270,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__res_model
 msgid "Res Model"
-msgstr ""
+msgstr "Res-malli"
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_salary_resume_action

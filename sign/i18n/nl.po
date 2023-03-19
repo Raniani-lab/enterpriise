@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # Camille Dantinne <cmd@odoo.com>, 2022
-# Jolien De Paepe, 2023
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -221,7 +221,7 @@ msgstr "<small><i> Ondertekent </i></small>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "<small><i> Waiting Signature </i></small>"
-msgstr "<small><i> Wachten op handtekening </i></small>"
+msgstr "<small><i> Wachtend op handtekening </i></small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -3831,12 +3831,12 @@ msgstr "Bekeken/gedownload door"
 #: model:ir.ui.menu,name:sign.sign_request_waiting_for_me
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Waiting for me"
-msgstr "Wachten op mij"
+msgstr "Wachtend op mijn handtekening"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Waiting for others"
-msgstr "Wachten op anderen"
+msgstr "Wachtend op anderen"
 
 #. module: sign
 #. odoo-javascript

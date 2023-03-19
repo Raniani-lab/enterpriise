@@ -6,9 +6,9 @@
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # digitalliuzg8888, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
-# Martin Trigaux, 2022
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
 # Emily Jia <eji@odoo.com>, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2038,8 +2038,7 @@ msgstr "结算单邮件模板"
 #: model:mail.template,subject:sale_subscription.email_payment_success
 msgid ""
 "Invoice for subscription {{ ctx.get('code', ctx.get('subscription_name')) }}"
-msgstr ""
-"Invoice for subscription {{ ctx.get（'code'， ctx.get（'subscription_name'）） }}"
+msgstr "订阅的结算单 {{ ctx.get('code', ctx.get('subscription_name')) }}"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.mail_template_subscription_invoice
@@ -2056,8 +2055,8 @@ msgid ""
 "Invoice_{{ ctx.get('code', ctx.get('subscription_name')) }}_{{ "
 "format_date(ctx.get('previous_date')) }}"
 msgstr ""
-"Invoice_{{ ctx.get（'code'， ctx.get（'subscription_name'）） }}_{{ "
-"format_date（ctx.get（'previous_date'）） }}"
+"Invoice_{{ ctx.get('code', ctx.get('subscription_name')) }}_{{ "
+"format_date(ctx.get('previous_date')) }}"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__journal_id

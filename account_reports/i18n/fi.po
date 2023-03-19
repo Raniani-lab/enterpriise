@@ -862,7 +862,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "Pankkien täsmäytyksen widget yhdelle tiliöintiriville"
 
 #. module: account_reports
 #. odoo-python
@@ -1357,7 +1357,7 @@ msgstr "Verkkotunnus"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_fiscal_position_choser
 msgid "Domestic"
-msgstr ""
+msgstr "Kotimaa"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -2106,7 +2106,7 @@ msgstr "Rivit"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Load more..."
-msgstr ""
+msgstr "Lataa lisää..."
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__main_company_id

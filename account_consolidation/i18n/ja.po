@@ -142,6 +142,8 @@ msgid ""
 "<span class=\"fa fa-bar-chart\"/>\n"
 "                Comparison"
 msgstr ""
+"<span class=\"fa fa-bar-chart\"/>\n"
+"                比較"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.search_template_consolidation_report_journals

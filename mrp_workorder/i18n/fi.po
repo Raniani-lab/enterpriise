@@ -652,7 +652,7 @@ msgstr "PDF"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__picture
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__picture
 msgid "Picture"
-msgstr ""
+msgstr "Kuva"
 
 #. module: mrp_workorder
 #: model:ir.ui.menu,name:mrp_workorder.menu_mrp_workorder_production
@@ -1240,7 +1240,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__test_report_type__zpl
 msgid "ZPL"
-msgstr ""
+msgstr "ZPL"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet

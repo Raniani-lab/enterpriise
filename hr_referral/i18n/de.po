@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
+# EugenBrodskiSAMSAIT <eugen.brodski@samsa-it.de>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Friederike Fasterling-Nesselbosch, 2022\n"
+"Last-Translator: EugenBrodskiSAMSAIT <eugen.brodski@samsa-it.de>, 2023\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +41,7 @@ msgstr "# Auf Empfehlung eingestellt"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "<b>Responsible: </b>"
-msgstr "<b>Verantwortlicher:</b>"
+msgstr "<b>Verantwortlich:</b>"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban

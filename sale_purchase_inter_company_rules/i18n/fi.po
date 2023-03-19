@@ -7,6 +7,7 @@
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
 # Marko Happonen <marko.happonen@sprintit.fi>, 2022
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-07 10:57+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Marko Happonen <marko.happonen@sprintit.fi>, 2022\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
 "Language-Team: Finnish (https://www.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,6 +45,7 @@ msgstr ""
 #, python-format
 msgid "Automatically generated from %(origin)s of company %(company)s."
 msgstr ""
+"Automaattisesti luotu %(origin)s - lähteestä ja yrityksestä %(company)s."
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_res_company
@@ -138,6 +140,8 @@ msgstr "Myyntitilausrivi"
 #: model:ir.model.fields,help:sale_purchase_inter_company_rules.field_res_company__rule_type
 msgid "Select the type to setup inter company rules in selected company."
 msgstr ""
+"Valitse tyyppi voidaksesi asettaa yritysten väliset säännöt tälle "
+"yritykselle"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_purchase_order_id

@@ -1620,28 +1620,28 @@ msgstr "Dupliquer"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/icon_creator_dialog/icon_creator_dialog.js:0
 #, python-format
 msgid "Edit Application Icon"
-msgstr "Modifier l'icône de l'application"
+msgstr "Éditer l'icône de l'application"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_manager.xml:0
 #, python-format
 msgid "Edit Form View"
-msgstr "Modifier la vue formulaire"
+msgstr "Éditer la vue formulaire"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_manager.xml:0
 #, python-format
 msgid "Edit List View"
-msgstr "Modifier la vue liste"
+msgstr "Éditer la vue liste"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1664,14 +1664,14 @@ msgstr "Éditer la rubrique"
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "Edit Value"
-msgstr "Modifier la valeur"
+msgstr "Éditer la valeur"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Edit Values"
-msgstr "Modifier les valeurs"
+msgstr "Éditer les valeurs"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1679,7 +1679,7 @@ msgstr "Modifier les valeurs"
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Edit selection"
-msgstr "Modifier la sélection"
+msgstr "Éditer la sélection"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1707,7 +1707,7 @@ msgstr "Email"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Email Alias"
-msgstr "Alias d'email"
+msgstr "Alias de messagerie"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_template
@@ -3608,9 +3608,9 @@ msgid ""
 "Set an <b>email alias</b>. Then, try to send an email to this address; it "
 "will create a document automatically for you. Pretty cool, huh?"
 msgstr ""
-"Définissez un <b>alias d'email</b>. Ensuite, essayez d'envoyer un email à "
-"cette adresse. Cela créera un document automatiquement pour vous. Plutôt pas"
-" mal, hein ?"
+"Définissez un <b>alias de messagerie</b>. Ensuite, essayez d'envoyer un "
+"email à cette adresse. Cela créera un document automatiquement pour vous. "
+"Plutôt pas mal, hein ?"
 
 #. module: web_studio
 #. odoo-javascript

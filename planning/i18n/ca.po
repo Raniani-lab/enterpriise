@@ -7,7 +7,6 @@
 # Sandra Franch <sandra.franch@upc.edu>, 2022
 # José Cabrera Lozano <jose.cabrera@edukative.es>, 2022
 # Arnau Ros, 2022
-# jabelchi, 2022
 # M Palau <mpalau@tda.ad>, 2022
 # Josep Sànchez <papapep@gmx.com>, 2022
 # Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2022
@@ -20,10 +19,11 @@
 # Quim - eccit <quim@eccit.com>, 2022
 # CristianCruzParra, 2022
 # Cristian Cruz, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # marcescu, 2022
 # Ivan Espinola, 2023
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
+# jabelchi, 2023
 # 
 msgid ""
 msgstr ""
@@ -31,7 +31,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2023\n"
+"Last-Translator: jabelchi, 2023\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -145,9 +145,9 @@ msgid ""
 " duplicate it instead.</i> <b>Adjust the size</b> of the shift to modify its"
 " period."
 msgstr ""
-"<b>Arrosegar i deixar anar</b> el teu canvi per programar-lo. <i>Consell: "
-"fes CTRL (o Cmd) per duplicar-lo en canvi.</i> <b>Adjuntar el tamany</b> del"
-" canvi per modificar el periode."
+"<b>Arrossegueu i deixeu anar</b> el torni per a re-programar-lo. <i>Consell:"
+" feu CTRL (o Cmd) per a duplicar-lo.</i> <b>Ajusteu el tamany</b> del torn "
+"per a modificar el període."
 
 #. module: planning
 #. odoo-javascript
@@ -348,8 +348,8 @@ msgid ""
 "<i class=\"fa fa-check-circle text-success\"/> This shift is no longer "
 "assigned to you."
 msgstr ""
-"<i class=\"fa fa-check-circle text-success\"/>Aquest torn ja no es troba "
-"assignat a vostè."
+"<i class=\"fa fa-check-circle text-success\"/>Ja no teniu aquest torn "
+"assignat."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
@@ -357,8 +357,8 @@ msgid ""
 "<i class=\"fa fa-check-circle text-success\"/> You were successfully "
 "assigned this open shift."
 msgstr ""
-"<i class=\"fa fa-check-circle text-success\"/> Has sigut assignat a aquest "
-"torn obert amb èxit."
+"<i class=\"fa fa-check-circle text-success\"/> Heu estat assignat a aquest "
+"torn obert."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_kanban
@@ -382,7 +382,7 @@ msgid ""
 "assigned to another employee."
 msgstr ""
 "<i class=\"fa fa-exclamation-circle text-warning\"/>Aquest torn ja està "
-"assignat a altre empleat."
+"assignat a un altre empleat."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
@@ -799,7 +799,7 @@ msgstr "Per rol"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_allow_self_unassign
 msgid "Can Employee Un-Assign Themselves?"
-msgstr "Pot empleat desassignar-se a si mateix?"
+msgstr "Pot un empleat desassignar-se ell mateix?"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.hr_employee_view_form_simplified
@@ -939,7 +939,7 @@ msgstr "Data limit"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__unassign_deadline
 msgid "Deadline for unassignment"
-msgstr "Termini de desassignació"
+msgstr "Data límit per desassignació"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_planning__self_unassign_days_before
@@ -952,7 +952,7 @@ msgstr "Termini en dies de desassignació de torns"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__default_planning_role_id
 msgid "Default Planning Role"
-msgstr "Funció de planificació per defecte"
+msgstr "Rol de planificació per defecte"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.employee_no_email_list_wizard
@@ -1729,7 +1729,7 @@ msgstr "Torn del planning"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Planning:"
-msgstr "Planificar:"
+msgstr "Planificació:"
 
 #. module: planning
 #: model:mail.template,name:planning.email_template_planning_planning
@@ -1964,7 +1964,7 @@ msgstr "Desa aquest torn un cop estigui llest."
 #: model:ir.ui.menu,name:planning.planning_menu_schedule
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_gantt
 msgid "Schedule"
-msgstr "Programari"
+msgstr "Planificació"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_resource
@@ -2078,7 +2078,7 @@ msgstr "Torns"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Shifts from"
-msgstr "Torns de"
+msgstr "Torns des de"
 
 #. module: planning
 #. odoo-python
@@ -2098,7 +2098,7 @@ msgstr "Torns del membre del teu departament"
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Shifts of Your Team Member"
-msgstr "Torns del membre del teu equip"
+msgstr "Torns dels membres del teu equip"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__slot_ids
@@ -2183,7 +2183,7 @@ msgstr "La duració no pot ser negativa."
 #: code:addons/planning/models/planning_template.py:0
 #, python-format
 msgid "The duration is too long."
-msgstr ""
+msgstr "La durada és massa llarga"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_check_start_date_lower_end_date
@@ -2246,7 +2246,7 @@ msgstr "El torn s'ha enviat correctament."
 #: code:addons/planning/static/src/views/hooks.js:0
 #, python-format
 msgid "The shifts from the previous week have successfully been copied."
-msgstr "Els torns de la darrera setmana han sigut copiats correctament."
+msgstr "Els torns de la darrera setmana han estat copiats correctament."
 
 #. module: planning
 #. odoo-javascript
@@ -2502,7 +2502,7 @@ msgstr "Ahir"
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "You are not allowed to reset to draft shifts."
-msgstr "No teniu permís per restablir els torns d'esborrany."
+msgstr "No teniu permís per restablir a esborrany els torns."
 
 #. module: planning
 #. odoo-python
@@ -2540,7 +2540,7 @@ msgstr "T'han anul·lat correctament l'assignació d'aquest torn"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.slot_unassign
 msgid "Your Planning"
-msgstr "La teva planificació"
+msgstr "La vostra planificació"
 
 #. module: planning
 #: model:mail.template,subject:planning.email_template_planning_planning

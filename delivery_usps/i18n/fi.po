@@ -68,7 +68,7 @@ msgstr "Dokumentit"
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_delivery_nature__domestic
 msgid "Domestic"
-msgstr ""
+msgstr "Kotimaa"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:0
@@ -119,12 +119,12 @@ msgstr ""
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_delivery_nature__international
 msgid "International"
-msgstr ""
+msgstr "Kansainvälinen"
 
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps
 msgid "Label Format"
-msgstr ""
+msgstr "Etiketin muoto"
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_size_container__large
@@ -258,7 +258,7 @@ msgstr ""
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "Anna vähintään yksi lähetettävä tuote."
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:0
@@ -329,13 +329,13 @@ msgstr "Palauta"
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_content_type__sample
 msgid "Sample"
-msgstr ""
+msgstr "Esimerkki"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Shipment #%s has been cancelled"
-msgstr ""
+msgstr "Lähetys #%s on peruutettu"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/delivery_usps.py:0
@@ -379,6 +379,8 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"Arvioitua toimitushintaa ei voida laskea, koska seuraavan tuotteen (seuraavien tuotteiden) paino puuttuu:\n"
+" %s"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:0

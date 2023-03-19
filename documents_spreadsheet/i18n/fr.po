@@ -180,7 +180,7 @@ msgstr "Fichier de feuilles de calcul"
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_tree
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Éditer"
 
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder

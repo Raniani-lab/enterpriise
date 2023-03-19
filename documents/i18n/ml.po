@@ -2086,7 +2086,7 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_sales
 msgid "Sales"
-msgstr ""
+msgstr "സെയിൽസ്"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form

@@ -9,6 +9,7 @@
 # Felix Schubert <felix.schubert@go-erp.com>, 2022
 # Michael Hofer, 2022
 # Wolfgang Taferner, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Wolfgang Taferner, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1499,7 +1500,7 @@ msgstr "Externe ID"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Failed Payments"
-msgstr ""
+msgstr "Fehlgeschlagene Zahlungen"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__on_change_field_ids
@@ -1509,7 +1510,7 @@ msgstr "Felder die den Onchange auslösen."
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__origin_order_id
 msgid "First contract"
-msgstr ""
+msgstr "Erstvertrag"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_boundary__limited
@@ -1529,7 +1530,7 @@ msgstr "Für immer"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Frequency:"
-msgstr ""
+msgstr "Häufigkeit:"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1779,6 +1780,7 @@ msgstr "E-Mail-Vorlage für Rechnung"
 msgid ""
 "Invoice for subscription {{ ctx.get('code', ctx.get('subscription_name')) }}"
 msgstr ""
+"Rechnung für Abonnement {{ ctx.get('code', ctx.get('subscription_name')) }}"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.mail_template_subscription_invoice
@@ -1795,6 +1797,8 @@ msgid ""
 "Invoice_{{ ctx.get('code', ctx.get('subscription_name')) }}_{{ "
 "format_date(ctx.get('previous_date')) }}"
 msgstr ""
+"Invoice_{{ ctx.get('code', ctx.get('subscription_name')) }}_{{ "
+"format_date(ctx.get('previous_date')) }}"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__journal_id
@@ -2171,7 +2175,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Not Started Yet"
-msgstr ""
+msgstr "Noch nicht begonnen"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_note
@@ -2300,6 +2304,8 @@ msgid ""
 "Payment reminder for subscription {{ object.client_order_ref or object.name "
 "}}"
 msgstr ""
+"Zahlungserinnerung für Abonnement {{ object.client_order_ref or object.name "
+"}}"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -2328,7 +2334,7 @@ msgstr "Pläne"
 #: code:addons/sale_subscription/static/src/js/manage_form.js:0
 #, python-format
 msgid "Please provide another payment method for these subscriptions."
-msgstr ""
+msgstr "Bitte geben Sie eine andere Zahlungsmethode für diese Abonnements an."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__pricelist_id
@@ -2420,7 +2426,7 @@ msgstr "Option Angebotsvorlage"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "Quotation Template:"
-msgstr ""
+msgstr "Angebotsvorlage:"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_template_ids
@@ -2537,6 +2543,8 @@ msgid ""
 "Recurring product are discounted according to the prorated period from %s to"
 " %s"
 msgstr ""
+"Für wiederkehrende Produkte wird nach dem anteilsmäßig zugeordneten Zeitraum"
+" vom %s bis zum%s ein Rabatt gewährt."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3232,6 +3240,7 @@ msgstr "Zeitlicher Typ"
 msgid ""
 "Termination of subscription {{ object.client_order_ref or object.name }}"
 msgstr ""
+"Beendigung des Abonnements {{ object.client_order_ref or object.name }}"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3889,6 +3898,10 @@ msgid ""
 "your subscription failed. As your payment should have been made on {{ "
 "object.next_invoice_date }}, your subscription has been terminated."
 msgstr ""
+"{{ object.company_id.name }}: Unser letzter Versuch, eine Zahlung für Ihr "
+"Abonnement zu verarbeiten, ist fehlgeschlagen. Da Ihre Zahlung am {{ "
+"object.next_invoice_date }}, hätte erfolgen sollen, wurde Ihr Abonnement "
+"gekündigt."
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert

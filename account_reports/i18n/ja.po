@@ -203,6 +203,8 @@ msgid ""
 "<span class=\"fa fa-book\"/>\n"
 "            Fiscal Position:"
 msgstr ""
+"<span class=\"fa fa-book\"/>\n"
+"            財政状態:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_journals
@@ -915,7 +917,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Cannot generate carryover values for all fiscal positions at once!"
-msgstr ""
+msgstr "一括ですべての財政状態に繰越値を生成することはできません~"
 
 #. module: account_reports
 #. odoo-javascript

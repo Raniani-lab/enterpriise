@@ -891,7 +891,7 @@ msgstr "Edytuj"
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #, python-format
 msgid "Edit %s"
-msgstr ""
+msgstr "Edytuj %s"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__currency_rate_end

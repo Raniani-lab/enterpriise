@@ -788,7 +788,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Kontrola jakości"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_check_fail
@@ -798,7 +798,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_check_todo
 msgid "Quality Check Todo"
-msgstr ""
+msgstr "Kontrola jakości do zrobienia"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point

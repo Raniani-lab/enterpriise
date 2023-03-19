@@ -42,7 +42,7 @@ msgstr ""
 #. module: social_sale
 #: model_terms:ir.ui.view,arch_db:social_sale.social_post_view_form
 msgid "Quotations"
-msgstr ""
+msgstr "ക്വട്ടേഷൻസ് "
 
 #. module: social_sale
 #: model_terms:ir.ui.view,arch_db:social_sale.social_post_view_form

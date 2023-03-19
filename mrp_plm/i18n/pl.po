@@ -158,7 +158,7 @@ msgstr "Dodaj opis..."
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_tag_action
 msgid "Add a new tag"
-msgstr "Dodaj nowy znacznik"
+msgstr "Dodaj nowy tag"
 
 #. module: mrp_plm
 #: model:res.groups,name:mrp_plm.group_plm_manager
@@ -532,7 +532,7 @@ msgstr "Data utworzenia"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr ""
+msgstr "Niestandardowa wiadomość o odbiorze"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__effectivity

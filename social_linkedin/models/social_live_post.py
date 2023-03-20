@@ -3,7 +3,7 @@
 
 import logging
 import requests
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 from werkzeug.urls import url_join
 
 from odoo import models, fields, tools, _
@@ -103,7 +103,19 @@ class SocialLivePostLinkedin(models.Model):
                     }
 
             elif url_in_message:
-                data["content"] = {"article": {"source": url_in_message, "title": url_in_message}}
+                tracker_code = urlparse(url_in_message).path.split('/r/')[-1]
+                link_tracker = self.env['link.tracker'].search([
+                    ('link_code_ids.code', '=', tracker_code),
+                    ('source_id', '=', live_post.post_id.source_id.id),
+                ], limit=1)
+                original_url = link_tracker.url or url_in_message
+                data['content'] = {
+                    'article': {
+                        'source': url_in_message,
+                        'title': link_tracker.title or original_url,
+                        'description': original_url,
+                    },
+                }
 
             response = requests.post(
                 url_join(self.env['social.media']._LINKEDIN_ENDPOINT, 'posts'),

@@ -22,7 +22,6 @@
     'data': [
         'views/views.xml',
         "views/res_users_views.xml",
-        "data/tax_report.xml",
         'security/ir.model.access.csv',
         'security/hmrc_security.xml',
         'wizard/hmrc_send_wizard.xml',

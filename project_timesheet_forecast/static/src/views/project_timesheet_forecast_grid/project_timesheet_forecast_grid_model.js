@@ -33,12 +33,8 @@ patch(TimesheetGridDataPoint.prototype, "project_timesheet_forecast.TimesheetGri
             ["user_id", "=", this.searchParams.context.uid],
             ["state", "=", "published"],
             ["project_id", "!=", false],
-            [
-                "start_datetime",
-                ">=",
-                serializeDate(this.navigationInfo.periodStart.minus({ weeks: 1 })),
-            ],
-            ["end_datetime", "<", serializeDate(this.navigationInfo.periodStart)],
+            ["start_datetime", "<", serializeDate(this.navigationInfo.periodEnd)],
+            ["end_datetime", ">", serializeDate(this.navigationInfo.periodStart)],
         ]);
 
         const previousWeekSlotsInfo = this.orm.webReadGroup(

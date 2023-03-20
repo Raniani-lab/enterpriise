@@ -25,7 +25,7 @@ registry.category("web_tour.tours").add('timesheet_tour', {
     content: Markup(_t('Describe your activity <i>(e.g. sent an e-mail, meeting with the customer...)</i>.')),
     position: 'bottom',
 }, {
-    trigger: '.timer_project_id .o_field_many2one',
+    trigger: 'div[name=project_id] .o_field_many2one_selection',
     content: Markup(_t('Select the <b>project</b> on which you are working.')),
     position: 'right',
 }, {
@@ -37,7 +37,11 @@ registry.category("web_tour.tours").add('timesheet_tour', {
     content: Markup(_t('Launch the <b>timer</b> for this project by pressing the <b>[a] key</b>. Easily switch from one project to another by using those keys. <i>Tip: you can also directly add 15 minutes to this project by hitting the <b>shift + [A] keys</b>.</i>')),
     position: 'right',
 }, {
-    trigger: '.o_view_grid tbody:not(.o_grid_section) td:not(.o_grid_unavailable) .o_grid_input',
+    trigger: '.o_grid_view .o_grid_row:not(.o_grid_section).o_grid_cell_today',
+    content: _t("Click on the cell to set the number of hours you spent on this project."),
+    position: 'bottom',
+}, {
+    trigger: '.o_grid_view .o_grid_row:not(.o_grid_section).o_grid_cell_today input',
     content: Markup(_t('Set the number of hours you spent on this project (e.g. 1:30 or 1.5). <i>Tip: use the tab keys to easily navigate from one cell to another.</i>')),
     position: 'bottom',
     consumeEvent: 'change',

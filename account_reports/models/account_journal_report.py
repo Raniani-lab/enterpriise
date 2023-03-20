@@ -204,32 +204,35 @@ class JournalReportCustomHandler(models.AbstractModel):
                     }
         # If we have no offsets, check if we can create a tax line: This line will contain two tables, one for the tax summary and one for the tax grid summary.
         if offset == 0:
-            tax_data = {
-                'date_from': options.get('date', {}).get('date_from'),
-                'date_to': options.get('date', {}).get('date_to'),
-                'journal_id': journal.id,
-                'journal_type': journal.type,
-            }
-            # This is a special line with a special template to render it.
-            # It will contain two tables, which are the tax report and tax grid summary sections.
-            tax_report_lines = self._get_generic_tax_summary_for_sections(options, tax_data)
-            tax_grid_summary_lines = self._get_tax_grids_summary(options, tax_data)
-            if tax_report_lines or tax_grid_summary_lines:
-                after_load_more_lines.append({
-                    'id': report._get_generic_line_id(False, False, parent_line_id=parent_line_id, markup='tax_report_section'),
-                    'name': '',
-                    'parent_id': parent_line_id,
+            # It is faster to first check that we need a tax section; this avoids computing a tax report for nothing.
+            journal_has_tax = bool(self.env['account.move.line'].search_count([('journal_id', '=', journal.id), ('tax_ids', '!=', False)], limit=1))
+            if journal_has_tax:
+                tax_data = {
+                    'date_from': options.get('date', {}).get('date_from'),
+                    'date_to': options.get('date', {}).get('date_to'),
                     'journal_id': journal.id,
-                    'is_tax_section_line': True,
-                    'tax_report_lines': tax_report_lines,
-                    'tax_grid_summary_lines': tax_grid_summary_lines,
-                    'date_from': tax_data['date_from'],
-                    'date_to': tax_data['date_to'],
-                    'columns': [],
-                    'colspan': len(options['columns']) + 1,
-                    'level': 3,
-                    'class': 'o_account_reports_ja_subtable',
-                })
+                    'journal_type': journal.type,
+                }
+                # This is a special line with a special template to render it.
+                # It will contain two tables, which are the tax report and tax grid summary sections.
+                tax_report_lines = self._get_generic_tax_summary_for_sections(options, tax_data)
+                tax_grid_summary_lines = self._get_tax_grids_summary(options, tax_data)
+                if tax_report_lines or tax_grid_summary_lines:
+                    after_load_more_lines.append({
+                        'id': report._get_generic_line_id(False, False, parent_line_id=parent_line_id, markup='tax_report_section'),
+                        'name': '',
+                        'parent_id': parent_line_id,
+                        'journal_id': journal.id,
+                        'is_tax_section_line': True,
+                        'tax_report_lines': tax_report_lines,
+                        'tax_grid_summary_lines': tax_grid_summary_lines,
+                        'date_from': tax_data['date_from'],
+                        'date_to': tax_data['date_to'],
+                        'columns': [],
+                        'colspan': len(options['columns']) + 1,
+                        'level': 3,
+                        'class': 'o_account_reports_ja_subtable',
+                    })
 
         return lines, after_load_more_lines, has_more_lines, treated_results_count, next_progress, current_balances
 
@@ -604,6 +607,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             'report_id': generix_tax_report.id,
             'date_from': data.get('date_from'),
             'date_to': data.get('date_to'),
+            'disable_archived_tag_test': True,
         })
         tax_report_options = generix_tax_report._get_options(previous_option)
         # Even though it doesn't have a journal selector, we can force a journal in the options to only get the lines for a specific journal.

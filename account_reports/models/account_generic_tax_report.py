@@ -20,7 +20,8 @@ class AccountTaxReportHandler(models.AbstractModel):
     def _custom_options_initializer(self, report, options, previous_options=None):
         options['buttons'].append({'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 80})
         domain = self._get_amls_with_archived_tags_domain(options)
-        options['contains_archived_tag'] = bool(self.env['account.move.line'].search(domain, limit=1))
+        if not previous_options or not previous_options.get('disable_archived_tag_test'):
+            options['contains_archived_tag'] = bool(self.env['account.move.line'].search(domain, limit=1))
 
     # -------------------------------------------------------------------------
     # TAX CLOSING

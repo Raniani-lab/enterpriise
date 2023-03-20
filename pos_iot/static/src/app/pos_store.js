@@ -26,10 +26,10 @@ patch(PosStore.prototype, "pos_iot.PosStore", {
             return this._super(...arguments);
         }
     },
-    connect_to_proxy() {
+    connectToProxy() {
         this.globalState.env.proxy.ping_boxes();
         if (this.globalState.config.iface_scan_via_proxy) {
-            this.globalState.env.barcode_reader.connect_to_proxy();
+            this.barcodeReader?.connectToProxy(this.globalState.env.proxy);
         }
         if (this.globalState.config.iface_print_via_proxy) {
             this.globalState.env.proxy.connect_to_printer();

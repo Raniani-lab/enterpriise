@@ -356,11 +356,11 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
             }
         },
 
-        connect_to_proxy: function () {
+        connectToProxy: function () {
             if(this.config.blackbox_pos_production_id) {
                 var self = this;
                 var fdm = this.iot_device_proxies.fiscal_data_module;
-                return posmodel_super.connect_to_proxy.apply(this, arguments).then(function () {
+                return posmodel_super.connectToProxy.apply(this, arguments).then(function () {
                     fdm.add_listener(self._check_iotbox_serial.bind(self));
                     fdm.action({ action: 'request_serial' });
                 });

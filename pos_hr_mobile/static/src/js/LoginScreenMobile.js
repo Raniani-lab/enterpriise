@@ -9,7 +9,8 @@ import { useService } from "@web/core/utils/hooks";
 patch(LoginScreen.prototype, "pos_hr_mobile.LoginScreen", {
     setup() {
         this._super(...arguments);
-        this.hasMobileScanner = isBarcodeScannerSupported();
+        this.barcodeReader = useService("barcode_reader");
+        this.hasMobileScanner = isBarcodeScannerSupported() && this.barcodeReader;
         this.popup = useService("popup");
     },
     async open_mobile_scanner() {
@@ -29,7 +30,7 @@ patch(LoginScreen.prototype, "pos_hr_mobile.LoginScreen", {
             throw error;
         }
         if (data) {
-            this.env.barcode_reader.scan(data);
+            this.barcodeReader.scan(data);
             if ("vibrate" in window.navigator) {
                 window.navigator.vibrate(100);
             }

@@ -67,8 +67,7 @@ class HrAppraisal(models.Model):
     meeting_ids = fields.Many2many('calendar.event', string='Meetings')
     meeting_count_display = fields.Char(string='Meeting Count', compute='_compute_meeting_count')
     date_final_interview = fields.Date(string="Final Interview", compute='_compute_final_interview')
-    is_implicit_manager = fields.Boolean(compute='_compute_user_manager_rights')
-    is_appraisal_manager = fields.Boolean(compute='_compute_user_manager_rights')
+    is_manager = fields.Boolean(compute='_compute_user_manager_rights')
     employee_autocomplete_ids = fields.Many2many('hr.employee', compute='_compute_user_manager_rights')
     waiting_feedback = fields.Boolean(
         string="Waiting Feedback from Employee/Managers", compute='_compute_waiting_feedback')
@@ -102,19 +101,14 @@ class HrAppraisal(models.Model):
                 appraisal.can_see_employee_publish, appraisal.can_see_manager_publish = True, True
 
     @api.depends_context('uid')
-    @api.depends('employee_id', 'manager_ids')
+    @api.depends('manager_ids', 'employee_id', 'employee_id.parent_id')
     def _compute_user_manager_rights(self):
+        user_appraisal_admin = self.user_has_groups('hr_appraisal.group_hr_appraisal_user')
+        user_employee_id = self.env.user.employee_id
+        self.employee_autocomplete_ids = user_employee_id.employee_autocomplete_ids
         for appraisal in self:
             appraisal.manager_user_ids = appraisal.manager_ids.mapped('user_id')
-        is_appraisal_manager = self.user_has_groups('hr_appraisal.group_hr_appraisal_user')
-        self.is_appraisal_manager = is_appraisal_manager
-        if is_appraisal_manager:
-            self.is_implicit_manager = False
-            self.employee_autocomplete_ids = self.env['hr.employee'].search([('company_id', '=', self.env.company.id)])
-        else:
-            child_ids = self.env.user.employee_id.child_ids
-            self.employee_autocomplete_ids = child_ids + self.env.user.employee_id
-            self.is_implicit_manager = len(self.employee_autocomplete_ids) > 1
+            appraisal.is_manager = user_appraisal_admin or user_employee_id in appraisal.manager_ids + appraisal.employee_id.parent_id
 
     @api.depends_context('uid')
     @api.depends('employee_id', 'employee_feedback_published')
@@ -278,7 +272,7 @@ class HrAppraisal(models.Model):
         force_published = self.env['hr.appraisal']
         if vals.get('employee_feedback_published'):
             user_employees = self.env.user.employee_ids
-            force_published = self.filtered(lambda a: (a.is_implicit_manager or a.is_appraisal_manager) and not (a.employee_feedback_published or a.employee_id in user_employees))
+            force_published = self.filtered(lambda a: (a.is_manager) and not (a.employee_feedback_published or a.employee_id in user_employees))
         current_date = datetime.date.today()
         if 'state' in vals and vals['state'] in ['pending', 'done']:
             for appraisal in self:

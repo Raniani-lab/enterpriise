@@ -82,7 +82,7 @@
             '|',
             '|',
             '|',
-            ('is_implicit_manager', '=', True),
+            ('is_manager', '=', True),
             ('employee_id.user_id', '=', user.id),
             ('manager_id.user_id', '=', user.id),
             '&amp;',

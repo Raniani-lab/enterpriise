@@ -37,8 +37,7 @@ export class BooleanToggleConfirm extends BooleanToggleField {
         }
 
         const isEmployee = record.employee_user_id && record.employee_user_id[0] === session.uid;
-        const isManager = record.is_appraisal_manager || record.is_implicit_manager;
-        if (isManager && value && !isEmployee) {
+        if (record.is_manager && value && !isEmployee) {
             this.dialogService.add(ConfirmationDialog, {
                 body: this.env._t("The employee's feedback will be published without their consent. Do you really want to publish it? This action will be logged in the chatter."),
                 confirm: updateAndSave,

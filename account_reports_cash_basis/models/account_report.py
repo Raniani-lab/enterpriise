@@ -118,6 +118,12 @@ class AccountReport(models.Model):
         action['context'].pop('cash_basis', '')
         return action
 
+    def action_audit_cell(self, options, params):
+        action = super().action_audit_cell(options, params)
+        if options.get('report_cash_basis'):
+            action['domain'].append(('move_id.payment_state', 'in', ('in_payment', 'paid', 'partial', 'reversed')))
+        return action
+
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"

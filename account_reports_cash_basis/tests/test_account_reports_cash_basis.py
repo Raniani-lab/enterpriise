@@ -380,3 +380,35 @@ class TestAccountReports(TestAccountReportsCommon):
                 ('INV/2023/00001', '', 1000.0, -3000.0),  # The last payment is displayed on another line
             ],
         )
+
+    def test_cash_basis_audit_cells(self):
+        def _get_audit_params_from_report_line(options, report_line_id, report_line_dict):
+            return {
+                'report_line_id': report_line_id,
+                'calling_line_dict_id': report_line_dict['id'],
+                'expression_label': 'balance',
+                'column_group_key': next(iter(options['column_groups'])),
+            }
+
+        report = self.env.ref('account_reports.profit_and_loss')
+        invoice_date = '2023-07-01'
+        invoice_1 = self.init_invoice('out_invoice', amounts=[1000.0], taxes=[], partner=self.partner_a, invoice_date=invoice_date, post=True)
+        invoice_2 = self.init_invoice('out_invoice', amounts=[1000.0], taxes=[], partner=self.partner_a, invoice_date=invoice_date, post=True)
+        moves = invoice_1 + invoice_2
+
+        self.env['account.payment.register'].with_context(active_ids=invoice_1.ids, active_model='account.move').create(
+            {'payment_date': invoice_date, 'amount': 1000}
+        )._create_payments()
+
+        options = self._generate_options(report, '2023-07-01', '2023-07-31')
+        lines = report._get_lines(options)
+        operating_income_line_id = self.env.ref('account_reports.account_financial_report_income0').id
+        operating_income_line_dict = [x for x in lines if report._get_model_info_from_id(x['id']) == ('account.report.line', operating_income_line_id)][0]
+        action_dict = report.action_audit_cell(options, _get_audit_params_from_report_line(options, operating_income_line_id, operating_income_line_dict))
+        expected_move_lines = moves.line_ids.filtered(lambda l: l.account_id == self.revenue_account_1)
+        self.assertEqual(moves.line_ids.filtered_domain(action_dict['domain']), expected_move_lines)
+
+        options['report_cash_basis'] = True
+        action_dict = report.action_audit_cell(options, _get_audit_params_from_report_line(options, operating_income_line_id, operating_income_line_dict))
+        expected_move_lines = invoice_1.line_ids.filtered(lambda l: l.account_id == self.revenue_account_1)
+        self.assertEqual(moves.line_ids.filtered_domain(action_dict['domain']), expected_move_lines)

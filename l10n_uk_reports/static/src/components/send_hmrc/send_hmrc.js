@@ -28,11 +28,10 @@ export class SendHmrcButton extends Component {
             'hmrc_gov_client_device_id': localStorage.getItem('hmrc_gov_client_device_id'),
         }
 
-        await this.props.record.save();
         await this.orm.call(
-            'l10n_uk.hmrc.send.wizard',
-            'send',
-            [this.props.record.resId, clientInfo]
+            'l10n_uk.vat.obligation',
+            'action_submit_vat_return',
+            [this.props.record.data.obligation_id[0], clientInfo]
         );
     }
 

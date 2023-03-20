@@ -37,7 +37,3 @@ class HmrcSendWizard(models.TransientModel):
     message = fields.Boolean('Message', readonly=True) # Show message if no obligation corresponds to report options
     accept_legal = fields.Boolean('Accept Legal Statement') # A checkbox to warn the user that what he sends is legally binding
     hmrc_gov_client_device_id = fields.Char(default=lambda x: uuid.uuid4())
-
-    def send(self, data):
-        # Check correct obligation and send it to the HMRC
-        self.obligation_id.action_submit_vat_return(data)

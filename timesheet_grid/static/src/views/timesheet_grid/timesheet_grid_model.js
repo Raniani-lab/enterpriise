@@ -44,7 +44,7 @@ export class TimesheetGridDataPoint extends GridDataPoint {
                 this.resModel,
                 Domain.and([this.searchParams.domain, previouslyTimesheetedDomain]).toList({}),
                 this.fields,
-                this._groupByFields,
+                this.groupByFields,
                 { lazy: false }
             )
             .then((readGroupResults) => {

@@ -639,7 +639,7 @@ export class GridDataPoint {
      *                                      }
      * @private
      */
-    fetchAdditionalData() {
+    _fetchAdditionalData() {
         return [];
     }
 
@@ -883,7 +883,7 @@ export class GridDataPoint {
 
         const [data, additionalData] = await Promise.all([
             this.fetchData(),
-            Promise.all(this.fetchAdditionalData()),
+            Promise.all(this._fetchAdditionalData()),
         ]);
         this._generateData(data);
         appendAdditionData(mergeAdditionalData(additionalData));

@@ -369,10 +369,10 @@ class HrAppraisal(models.Model):
         return records
 
     @api.model
-    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
-        if set(groupby) & {'manager_feedback', 'employee_feedback'}:
+    def _read_group_check_field_access_rights(self, field_names):
+        super()._read_group_check_field_access_rights(field_names)
+        if {'manager_feedback', 'employee_feedback'}.intersection(field_names):
             raise UserError(_('Such grouping is not allowed.'))
-        return super().read_group(domain, fields, groupby, offset, limit, orderby, lazy)
 
     def mapped(self, func):
         if func and isinstance(func, str):

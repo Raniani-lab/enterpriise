@@ -54,9 +54,9 @@ class Applicant(models.Model):
         return super().read(fields, load)
 
     @api.model
-    def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
-        self._check_referral_fields_access(fields)
-        return super().read_group(domain, fields, groupby, offset, limit, orderby, lazy)
+    def _read_group_check_field_access_rights(self, field_names):
+        super()._read_group_check_field_access_rights(field_names)
+        self._check_referral_fields_access(field_names)
 
     @api.model
     def _search(self, domain, offset=0, limit=None, order=None, access_rights_uid=None):

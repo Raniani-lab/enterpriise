@@ -95,10 +95,13 @@ export class UserAgent {
             console.error(error);
             this.voip.triggerError(
                 sprintf(
-                    _t("An error occurred during the instantiation of the User Agent:</br></br> %(error message)s"),
+                    _t(
+                        "An error occurred during the instantiation of the User Agent:</br></br> %(error message)s"
+                    ),
                     { "error message": error.message }
                 )
             );
+            return;
         }
         this.voip.triggerError(_t("Connecting…"));
         try {

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import requests
+
 from odoo import api, fields, models
 
 
@@ -75,7 +77,13 @@ class SocialLivePost(models.Model):
 
     @api.model
     def refresh_statistics(self):
-        self.env['social.live.post']._refresh_statistics()
+        # as refreshing the statistics is a recurring task, we ignore occasional "read timeouts"
+        # from the third party services, as it would most likely mean a temporary slow connection
+        # and/or a slow response from their side
+        try:
+            self.env['social.live.post']._refresh_statistics()
+        except requests.exceptions.ReadTimeout:
+            pass
 
     def _refresh_statistics(self):
         """ Every social module should override this method.

@@ -4,11 +4,10 @@ import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getFixture } from "@web/../tests/helpers/utils";
 import { createSpreadsheetTemplate } from "../spreadsheet_test_utils";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { Model } from "@odoo/o-spreadsheet";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 
-const { Model } = spreadsheet;
 
 QUnit.module("documents_spreadsheet > template action", {}, () => {
     QUnit.test(

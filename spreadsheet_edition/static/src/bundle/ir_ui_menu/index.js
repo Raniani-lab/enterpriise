@@ -1,9 +1,8 @@
 /** @odoo-module */
 
 import { _lt } from "@web/core/l10n/translation";
-import spreadsheet, {
-    initCallbackRegistry,
-} from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
+import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 import {
     buildIrMenuIdLink,
     buildViewLink,

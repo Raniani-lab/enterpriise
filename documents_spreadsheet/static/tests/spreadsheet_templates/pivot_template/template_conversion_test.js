@@ -2,14 +2,12 @@
 
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { Model } from "@odoo/o-spreadsheet";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getCellContent } from "@spreadsheet/../tests/utils/getters";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { convertFromSpreadsheetTemplate } from "@documents_spreadsheet/bundle/helpers";
-
-const { Model } = spreadsheet;
 
 /**
  * @param {object} params

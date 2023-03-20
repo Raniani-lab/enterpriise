@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import ListDataSource from "@spreadsheet/list/list_data_source";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();

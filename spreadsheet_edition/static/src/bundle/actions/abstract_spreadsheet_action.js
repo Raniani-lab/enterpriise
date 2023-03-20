@@ -5,11 +5,10 @@ import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { _t } from "@web/core/l10n/translation";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
-import spreadsheet, {
-    initCallbackRegistry,
-} from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
+import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 
 import { loadSpreadsheetDependencies } from "@spreadsheet/helpers/helpers";
 
@@ -119,6 +118,7 @@ export class AbstractSpreadsheetAction extends Component {
             this.stateUpdateMessages
         );
         if (this.env.debug) {
+            // eslint-disable-next-line no-import-assign
             spreadsheet.__DEBUG__ = spreadsheet.__DEBUG__ || {};
             spreadsheet.__DEBUG__.model = this.model;
         }

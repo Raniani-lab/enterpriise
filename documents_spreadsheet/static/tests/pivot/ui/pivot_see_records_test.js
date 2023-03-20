@@ -3,7 +3,7 @@ import { click, nextTick, legacyExtraNextTick, getFixture } from "@web/../tests/
 
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createSpreadsheetFromPivotView } from "../../utils/pivot_helpers";
 

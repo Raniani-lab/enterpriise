@@ -13,10 +13,8 @@ import { ormService } from "@web/core/orm_service";
 import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { Spreadsheet } from "@odoo/o-spreadsheet";
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
-
-const { Spreadsheet } = spreadsheet;
 
 const serviceRegistry = registry.category("services");
 

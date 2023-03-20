@@ -1,5 +1,5 @@
 /** @odoo-module */
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 
 import { Component } from "@odoo/owl";
 const { Menu } = spreadsheet;

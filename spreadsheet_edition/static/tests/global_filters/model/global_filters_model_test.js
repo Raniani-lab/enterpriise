@@ -1,13 +1,12 @@
 /** @odoo-module */
 
 import { nextTick } from "@web/../tests/helpers/utils";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { registries } from "@odoo/o-spreadsheet";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { addGlobalFilter, selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
-const { registries } = spreadsheet;
 const { cellMenuRegistry } = registries;
 
 QUnit.module("spreadsheet_edition > Global filters model", {}, () => {

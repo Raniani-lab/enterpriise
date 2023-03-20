@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import { CommonOdooChartConfigPanel } from "./common/config_panel";
 import { OdooBarChartConfigPanel } from "./odoo_bar/odoo_bar_config_panel";
 import { OdooLineChartConfigPanel } from "./odoo_line/odoo_line_config_panel";

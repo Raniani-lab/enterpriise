@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
-import spreadsheet, {
-    initCallbackRegistry,
-} from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
+import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 

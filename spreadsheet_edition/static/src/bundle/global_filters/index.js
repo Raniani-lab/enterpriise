@@ -2,7 +2,7 @@
 
 import { _t, _lt } from "@web/core/l10n/translation";
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 
 import GlobalFiltersSidePanel from "./global_filters_side_panel";
 import { FilterComponent } from "./filter_component";

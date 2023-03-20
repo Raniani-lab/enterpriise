@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import PivotDataSource from "@spreadsheet/pivot/pivot_data_source";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();

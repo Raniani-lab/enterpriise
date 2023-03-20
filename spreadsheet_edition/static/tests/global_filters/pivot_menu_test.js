@@ -6,7 +6,7 @@ import { addGlobalFilter, selectCell } from "@spreadsheet/../tests/utils/command
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 import { getCellContent } from "@spreadsheet/../tests/utils/getters";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 
 const { topbarMenuRegistry } = spreadsheet.registries;
 

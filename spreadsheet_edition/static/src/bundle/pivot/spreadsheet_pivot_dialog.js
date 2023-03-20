@@ -4,7 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 
 import { makePivotFormula } from "@spreadsheet/pivot/pivot_helpers";
 

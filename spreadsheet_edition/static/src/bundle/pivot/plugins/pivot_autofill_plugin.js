@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { astToFormula, UIPlugin } from "@odoo/o-spreadsheet";
 import { FORMATS } from "@spreadsheet/helpers/constants";
 import {
     getFirstPivotFunction,
@@ -12,8 +12,6 @@ import {
 /**
  * @typedef {import("@spreadsheet/pivot/pivot_table").SpreadsheetPivotTable} SpreadsheetPivotTable
  */
-
-const { astToFormula } = spreadsheet;
 
 /**
  * @typedef CurrentElement
@@ -28,7 +26,7 @@ const { astToFormula } = spreadsheet;
  * @property {string|undefined} group
  */
 
-export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
+export default class PivotAutofillPlugin extends UIPlugin {
     // ---------------------------------------------------------------------
     // Getters
     // ---------------------------------------------------------------------

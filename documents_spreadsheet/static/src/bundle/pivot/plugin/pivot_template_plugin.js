@@ -1,9 +1,7 @@
 odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
     ("use strict");
 
-    const spreadsheet = require("@spreadsheet/o_spreadsheet/o_spreadsheet_extended")[
-        Symbol.for("default")
-    ];
+    const spreadsheet = require("@odoo/o-spreadsheet");
     const CommandResult = require("@spreadsheet/o_spreadsheet/cancelled_reason")[
         Symbol.for("default")
     ];

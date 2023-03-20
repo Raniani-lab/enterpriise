@@ -1,10 +1,8 @@
 /** @odoo-module */
 
 import { _t, _lt } from "@web/core/l10n/translation";
-
-import spreadsheet, {
-    initCallbackRegistry,
-} from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
+import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 
 import PivotAutofillPlugin from "./plugins/pivot_autofill_plugin";
 import PivotSidePanel from "./side_panels/pivot_list_side_panel";

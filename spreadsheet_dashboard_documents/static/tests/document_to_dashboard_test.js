@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import { createSpreadsheet } from "@documents_spreadsheet/../tests/spreadsheet_test_utils";
 import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";

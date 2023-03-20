@@ -5,7 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 import { SpreadsheetName } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_name";
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { Model } from "@odoo/o-spreadsheet";
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import { convertFromSpreadsheetTemplate } from "@documents_spreadsheet/bundle/helpers";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
@@ -15,8 +15,6 @@ import { sprintf } from "@web/core/utils/strings";
 import { _t } from "@web/core/l10n/translation";
 
 import { Component, useSubEnv, useState } from "@odoo/owl";
-
-const { Model } = spreadsheet;
 
 export class SpreadsheetAction extends AbstractSpreadsheetAction {
     setup() {

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { registries, components } from "@odoo/o-spreadsheet";
 
 import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 import { registry } from "@web/core/registry";
@@ -16,7 +16,6 @@ import { getCell } from "@spreadsheet/../tests/utils/getters";
 import { setCellContent, setSelection } from "@spreadsheet/../tests/utils/commands";
 import { getMenuServerData } from "@spreadsheet/../tests/links/menu_data_utils";
 
-const { registries, components } = spreadsheet;
 const { cellMenuRegistry } = registries;
 const { Grid } = components;
 

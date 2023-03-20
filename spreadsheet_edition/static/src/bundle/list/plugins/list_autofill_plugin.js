@@ -1,12 +1,10 @@
 /** @odoo-module */
 
 import { _t } from "web.core";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { astToFormula, UIPlugin } from "@odoo/o-spreadsheet";
 import { getFirstListFunction, getNumberOfListFormulas } from "@spreadsheet/list/list_helpers";
 
-const { astToFormula } = spreadsheet;
-
-export default class ListAutofillPlugin extends spreadsheet.UIPlugin {
+export default class ListAutofillPlugin extends UIPlugin {
     // ---------------------------------------------------------------------
     // Getters
     // ---------------------------------------------------------------------

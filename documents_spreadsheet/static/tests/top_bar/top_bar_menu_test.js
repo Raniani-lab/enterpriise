@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { click, mockDownload, nextTick } from "@web/../tests/helpers/utils";

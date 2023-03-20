@@ -6,7 +6,7 @@ import { dom, fields } from "web.test_utils";
 
 import { actionService } from "@web/webclient/actions/action_service";
 import { createSpreadsheet, createSpreadsheetTemplate } from "../spreadsheet_test_utils";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";

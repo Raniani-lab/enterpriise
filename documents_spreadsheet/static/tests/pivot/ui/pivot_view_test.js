@@ -34,9 +34,7 @@ import {
 } from "@spreadsheet/../tests/utils/getters";
 import { session } from "@web/session";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-
-const { Model } = spreadsheet;
+import { Model } from "@odoo/o-spreadsheet";
 
 QUnit.module("spreadsheet pivot view", {}, () => {
     QUnit.test("simple pivot export", async (assert) => {

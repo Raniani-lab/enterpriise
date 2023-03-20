@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import { nextTick } from "@web/../tests/helpers/utils";
 import { dom } from "web.test_utils";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";

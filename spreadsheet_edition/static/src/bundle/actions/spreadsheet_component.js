@@ -6,11 +6,9 @@ import { useService } from "@web/core/utils/hooks";
 
 import { DEFAULT_LINES_NUMBER } from "@spreadsheet/helpers/constants";
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { Spreadsheet, Model } from "@odoo/o-spreadsheet";
 
 import { useState, useSubEnv, Component } from "@odoo/owl";
-
-const { Spreadsheet, Model } = spreadsheet;
 
 const tags = new Set();
 

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { Model } from "@odoo/o-spreadsheet";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
 import { ormService } from "@web/core/orm_service";
@@ -11,7 +11,6 @@ import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { setupDataSourceEvaluation } from "@spreadsheet/../tests/utils/model";
 import { spreadsheetCollaborativeService } from "@spreadsheet_edition/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_service";
 
-const { Model } = spreadsheet;
 const serviceRegistry = registry.category("services");
 
 export function makeFakeSpreadsheetService() {

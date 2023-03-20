@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import { _lt } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 const { topbarMenuRegistry } = spreadsheet.registries;

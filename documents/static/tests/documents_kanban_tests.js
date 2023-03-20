@@ -4353,11 +4353,7 @@ QUnit.module("documents", {}, function () {
 
                 patchWithCleanup(kanban.env.services.notification, {
                     add(message, _option) {
-                        assert.strictEqual(
-                            message,
-                            "File is too large.",
-                            "the notification message should be File is too large."
-                        );
+                        assert.ok(message.startsWith('Some files could not be uploaded'));
                     },
                 });
 

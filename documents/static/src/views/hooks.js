@@ -3,6 +3,7 @@
 import { useBus, useService } from "@web/core/utils/hooks";
 import { escape, sprintf } from "@web/core/utils/strings";
 import { memoize } from "@web/core/utils/functions";
+import { formatFloat } from "@web/views/fields/formatters";
 import { useSetupView } from "@web/views/view_hook";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";
@@ -420,39 +421,42 @@ function useDocumentsViewFileUpload() {
     });
 
     const uploadFiles = async ({ files, folderId, recordId, context, tagIds }) => {
-        if (
-            component.maxUploadSize &&
-            [...files].some((file) => file.size > component.maxUploadSize)
-        ) {
-            return notification.add(env._t("File is too large."), {
-                type: "danger",
-            });
-        }
-        await fileUpload.upload("/documents/upload_attachment", files, {
-            buildFormData: (formData) => {
-                formData.append("folder_id", folderId);
-                if (recordId) {
-                    formData.append("document_id", recordId);
-                }
-                if (!tagIds.length && context?.default_tag_ids) {
-                    tagIds = context.default_tag_ids;
-                }
-                formData.append("tag_ids", tagIds);
-                if (context) {
-                    for (const key of [
-                        "default_owner_id",
-                        "default_partner_id",
-                        "default_res_id",
-                        "default_res_model",
-                    ]) {
-                        if (context[key]) {
-                            formData.append(key.replace("default_", ""), context[key]);
+        const validFiles = component.maxUploadSize ?
+            [...files].filter((file) => file.size <= component.maxUploadSize) : files;
+        if (validFiles.length !== 0) {
+            await fileUpload.upload("/documents/upload_attachment", validFiles, {
+                buildFormData: (formData) => {
+                    formData.append("folder_id", folderId);
+                    if (recordId) {
+                        formData.append("document_id", recordId);
+                    }
+                    if (!tagIds.length && context?.default_tag_ids) {
+                        tagIds = context.default_tag_ids;
+                    }
+                    formData.append("tag_ids", tagIds);
+                    if (context) {
+                        for (const key of [
+                            "default_owner_id",
+                            "default_partner_id",
+                            "default_res_id",
+                            "default_res_model",
+                        ]) {
+                            if (context[key]) {
+                                formData.append(key.replace("default_", ""), context[key]);
+                            }
                         }
                     }
-                }
-            },
-            displayErrorNotification: false,
-        });
+                },
+                displayErrorNotification: false,
+            });
+        }
+        if (validFiles.length < files.length) {
+            const message = sprintf(
+                env._t("Some files could not be uploaded (max size: %s)."),
+                formatFloat(component.maxUploadSize, { humanReadable: true })
+            );
+            return notification.add(message, { type: "danger" });
+        }
     };
 
     useBus(bus, "documents-upload-files", (ev) => {

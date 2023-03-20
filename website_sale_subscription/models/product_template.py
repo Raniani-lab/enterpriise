@@ -16,7 +16,7 @@ class ProductTemplate(models.Model):
             for optional_template in template.optional_product_ids:
                 if self.env['product.pricing']._get_first_suitable_pricing(template).recurrence_id != \
                         self.env['product.pricing']._get_first_suitable_pricing(optional_template).recurrence_id:
-                    raise UserError(_('You cannot have a optional product that has a different default pricing.'))
+                    raise UserError(_('You cannot have an optional product that has a different default pricing.'))
 
     def _website_can_be_added(self, so=None, pricelist=None, pricing=None, product=None):
         """ Return true if the product/template can be added to the active SO

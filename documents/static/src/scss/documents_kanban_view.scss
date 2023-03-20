@@ -151,6 +151,11 @@
                 display: none;
             }
         }
+
+        &.o_documents_drop_over_unauthorized {
+            @extend .o_documents_drop_over;
+            background: $red-100;
+        }
     }
 }
 

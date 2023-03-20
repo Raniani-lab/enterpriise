@@ -43,6 +43,12 @@
     }
 }
 
+.o_documents_drop_over_unauthorized_zone {
+    @extend .o_documents_drop_over_zone;
+    &:after {
+        border: 2px dashed map-get($o-theme-text-colors, 'danger');
+    }
+}
 
 .o_documents_drop_over {
     align-items: flex-start;
@@ -59,6 +65,11 @@
     .o_view_nocontent {
         display: none;
     }
+}
+
+.o_documents_drop_over_unauthorized {
+    @extend .o_documents_drop_over;
+    background: $red-100;
 }
 
 ////// ========== Progress Bars =============

@@ -40,41 +40,48 @@ export class DocumentsDropZone extends Component {
         return this.props.parentRoot;
     }
 
+    get isFolder() {
+        return !!this.env.searchModel.getSelectedFolderId();
+    }
+
+    get rootDropOverClass() {
+        return this.isFolder ? "o_documents_drop_over" : "o_documents_drop_over_unauthorized";
+    }
+
     onDragOver(ev) {
-        if (!this.env.searchModel.getSelectedFolderId() || !ev.dataTransfer.types.includes("Files")) {
+        if (!ev.dataTransfer.types.includes("Files")) {
             return;
         }
         ev.stopPropagation();
         ev.preventDefault();
-        if (this.root && this.root.el && !this.root.el.classList.contains("o_documents_drop_over")) {
-            this.root.el.classList.add("o_documents_drop_over");
-        }
+
+        this.root?.el?.classList.toggle(this.rootDropOverClass, true);
         this.state.dragOver = true;
     }
 
     onDragLeave(ev) {
         ev.stopPropagation();
         ev.preventDefault();
-        if (this.root && this.root.el) {
-            this.root.el.classList.remove("o_documents_drop_over");
-        }
+
+        this.root?.el?.classList.remove(this.rootDropOverClass);
         this.state.dragOver = false;
     }
 
-    async onDrop(ev) {
-        if (!this.env.searchModel.getSelectedFolderId() || !ev.dataTransfer.types.includes("Files")) {
+    onDrop(ev) {
+        if (!ev.dataTransfer.types.includes("Files")) {
             return;
         }
-        if (this.root && this.root.el) {
-            this.root.el.classList.remove("o_documents_drop_over");
-        }
+
+        this.root?.el?.classList.remove(this.rootDropOverClass);
         this.state.dragOver = false;
-        await this.env.documentsView.bus.trigger("documents-upload-files", {
-            files: ev.dataTransfer.files,
-            folderId: this.env.searchModel.getSelectedFolderId(),
-            recordId: false,
-            tagIds: this.env.searchModel.getSelectedTagIds(),
-        });
+        if (this.isFolder) {
+            this.env.documentsView.bus.trigger("documents-upload-files", {
+                files: ev.dataTransfer.files,
+                folderId: this.env.searchModel.getSelectedFolderId(),
+                recordId: false,
+                tagIds: this.env.searchModel.getSelectedTagIds(),
+            });
+        }
     }
 }
 DocumentsDropZone.template = "documents.DocumentsDropZone";

@@ -490,39 +490,32 @@ class BankRecWidget(models.Model):
             for account in outbound_accounts:
                 account_ids.add(account.id)
 
-            dynamic_filters.append({
-                'name': 'receivable_matching',
-                'description': _("Receivable"),
+            rec_pay_matching_filter = {
+                'name': 'receivable_payable_matching',
+                'description': _("Customer/Vendor"),
                 'domain': [
                     '|',
+                    # Matching invoices.
                     '&',
-                    ('account_id.account_type', '=', 'asset_receivable'),
+                    ('account_id.account_type', 'in', ('asset_receivable', 'liability_payable')),
                     ('payment_id', '=', False),
+                    # Matching Payments.
                     '&',
-                    '&',
-                    ('journal_id.type', 'in', ('bank', 'cash')),
                     ('account_id', 'in', tuple(account_ids)),
-                    ('payment_id.partner_type', '=', 'customer'),
+                    ('payment_id', '!=', False),
                 ],
                 'no_separator': True,
-                'is_default': st_line.amount >= 0.0,
-            })
-            dynamic_filters.append({
-                'name': 'payable_matching',
-                'description': _("Payable"),
-                'domain': [
-                    '|',
-                    '&',
-                    ('account_id.account_type', '=', 'liability_payable'),
-                    ('payment_id', '=', False),
-                    '&',
-                    '&',
-                    ('journal_id.type', 'in', ('bank', 'cash')),
-                    ('account_id', 'in', tuple(account_ids)),
-                    ('payment_id.partner_type', '=', 'supplier'),
-                ],
-                'is_default': st_line.amount < 0.0,
-            })
+                'is_default': True,
+            }
+
+            misc_matching_filter = {
+                'name': 'misc_matching',
+                'description': _("Miscellaneous"),
+                'domain': ['!'] + rec_pay_matching_filter['domain'],
+                'is_default': False,
+            }
+
+            dynamic_filters.extend([rec_pay_matching_filter, misc_matching_filter])
 
             # Stringify the domain.
             for dynamic_filter in dynamic_filters:

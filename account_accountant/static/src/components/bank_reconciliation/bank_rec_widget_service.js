@@ -1,6 +1,7 @@
 /** @odoo-module **/
 import { registry } from "@web/core/registry";
-const { reactive } = owl;
+import { reactive } from "@odoo/owl";
+const { DateTime } = luxon;
 
 export class BankRecWidget {
 
@@ -12,6 +13,23 @@ export class BankRecWidget {
 
         this.kanbanState = null;
         this.stLineStates = {};
+        this.reconciliationCounter = {};
+    }
+
+    /** Reset the timing and reconciliation counter */
+    initReconCounter() {
+        this.reconciliationCounter = {
+            startTime: DateTime.now(),
+            reconciledCount: 0,
+            timeDiff: null,
+        }
+    }
+
+    incrementReconCounter() {
+        const start = this.reconciliationCounter.startTime.set({millisecond: 0});
+        const end = DateTime.now().set({millisecond: 0});
+        this.reconciliationCounter.timeDiff = end.diff(start, "seconds");
+        this.reconciliationCounter.reconciledCount++;
     }
 
     /** Get the default values for the state representing the form. **/

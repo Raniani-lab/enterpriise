@@ -173,7 +173,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "AML Search Filter has been reset",
-            trigger: ".o_list_view .o_facet_value:last-child:contains('Receivable')",
+            trigger: ".o_list_view .o_facet_value:last-child:contains('Customer/Vendor')",
             run: () => {},
         },
         // Test statement line selection when using the pager
@@ -451,9 +451,9 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
             run: "dblclick",
         },
         {
-            content: "No Lines Displayed and right div is empty",
-            extra_trigger: ".o_bank_rec_right_div .bank_rec_tutorial",
-            trigger: ".o_view_nocontent_smiling_face",
+            content: "Rainbow man",
+            extra_trigger: ".o_view_nocontent",
+            trigger: ".o_reward_rainbow_man",
             run: () => {}
         },
         // Test the next st line is always selected when Not Matched Filter is active
@@ -462,9 +462,9 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
             trigger: ".o_kanban_view .o_searchview_facet:nth-child(2) .o_facet_remove",
         },
         {
-            content: "Remove the kanbans 'not matched' filter to reset all lines",
+            content: "Remove the kanbans 'not matched' filter to reset all lines - use the rainbow man button",
             extra_trigger: ".o_kanban_view .o_searchview:first() .o_searchview_facet:nth-child(2):contains('Not Matched')",
-            trigger: ".o_kanban_view .o_searchview:first() .o_searchview_facet:nth-child(2) .o_facet_remove",
+            trigger: "p.btn-primary:contains('All Transactions')",
         },
         {
             content: "Wait for search model change and line3 to appear",

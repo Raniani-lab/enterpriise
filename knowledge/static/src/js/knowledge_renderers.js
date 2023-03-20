@@ -142,7 +142,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      */
     async addIcon(event) {
         const { emojis } = await loadEmoji();
-        const randomEmojis = emojis.filter(emoji => ['💩', '💀', '☠️', '🤮', '🖕', '🤢'].includes(emoji.codepoints));
+        const randomEmojis = emojis.filter(emoji => !['💩', '💀', '☠️', '🤮', '🖕', '🤢'].includes(emoji.codepoints));
         const icon = randomEmojis[Math.floor(Math.random() * randomEmojis.length)].codepoints;
         this._renderEmoji(icon, this.resId);
     }

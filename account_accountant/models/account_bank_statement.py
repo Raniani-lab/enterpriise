@@ -91,10 +91,10 @@ class AccountBankStatementLine(models.Model):
             'domain': [('state', '!=', 'cancel')] + (extra_domain or []),
             'help': _("""
                 <p class="o_view_nocontent_smiling_face">
-                    All done!
+                    Nothing to do here!
                 </p>
                 <p>
-                    Create new transactions, or make sure that there is no active filter in the search bar.
+                    No transactions matching your filters were found.
                 </p>
             """),
         }

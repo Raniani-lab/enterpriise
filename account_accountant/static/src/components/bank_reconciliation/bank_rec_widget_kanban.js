@@ -13,9 +13,9 @@ import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 import { KanbanRecord } from "@web/views/kanban/kanban_record";
 
 import { BankRecWidgetGlobalInfo } from "./bank_rec_widget_global_info";
-import { BankRecTutorial } from "./bank_rec_widget_tutorial";
+import { BankRecActionHelper } from "./bank_rec_widget_action_helper";
 
-const { useState, useRef, useChildSubEnv, markup } = owl;
+import { useState, useRef, useChildSubEnv } from "@odoo/owl";
 
 export class BankRecKanbanRecord extends KanbanRecord {
 
@@ -61,6 +61,7 @@ export class BankRecKanbanController extends KanbanController {
             currentJournalId: null,
         });
         this.bankRecService.kanbanState = this.state;
+        this.bankRecService.initReconCounter();
 
         // Move to the next available statement line after a click on a button form.
         this.bankRecService.useTodoCommand("kanban-move-to-next-line", () => {
@@ -77,6 +78,7 @@ export class BankRecKanbanController extends KanbanController {
             // find the next line "after".
             let records = this.records;
 
+            this.bankRecService.incrementReconCounter();
             await this.bankRecService.trigger("kanban-reload", true);
 
             const stLineId = this.state.selectedStLineId;
@@ -306,33 +308,6 @@ export class BankRecKanbanController extends KanbanController {
     get records() {
         return this.model.root.records;
     }
-
-    get tutorialProps() {
-        return {
-            title: this.env._t("Odoo Bank Reconciliation"),
-            subtitle: this.env._t("Learn how blazing fast bank matching works"),
-            contentTemplate: "account_accountant.BankRecTutorialContent",
-            demoTemplate: "account_accountant.BankRecTutorialDemo",
-            steps: [
-                {
-                    title: this.env._t("Select a transaction"),
-                    description: this.env._t("Amongst unmatched bank transactions"),
-                },
-                {
-                    title: this.env._t("Match payments and invoices"),
-                    description: this.env._t("To reconcile with open entries"),
-                },
-                {
-                    title: this.env._t("Create additional entries"),
-                    description: markup(this.env._t("Use the <strong>Manual Operations</strong> tab to register the difference, or create expenses on the fly")),
-                },
-                {
-                    title: this.env._t("Validate"),
-                    description: this.env._t("To reconcile invoices & payments, and post new journal entries"),
-                },
-            ],
-        }
-    }
 }
 BankRecKanbanController.template = "account.BankReconKanbanController";
 BankRecKanbanController.props = {
@@ -342,7 +317,6 @@ BankRecKanbanController.props = {
 BankRecKanbanController.components = {
     ...BankRecKanbanController.components,
     BankRecWidgetGlobalInfo,
-    BankRecTutorial,
     View,
 }
 
@@ -354,12 +328,12 @@ export class BankRecKanbanRenderer extends KanbanRenderer {
             this.render();
         });
     }
-
 }
 BankRecKanbanRenderer.template = "account.BankRecKanbanRenderer";
 BankRecKanbanRenderer.components = {
     ...KanbanRenderer.components,
     KanbanRecord: BankRecKanbanRecord,
+    BankRecActionHelper: BankRecActionHelper,
 }
 
 export const BankRecKanbanView = {

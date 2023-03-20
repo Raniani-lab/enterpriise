@@ -3,14 +3,11 @@
 
     <t t-name="account.BankReconKanbanController" t-inherit="web.KanbanView" t-inherit-mode="primary" owl="1">
         <xpath expr="//Layout" position="attributes">
-            <attribute name="className">model.useSampleModel ? 'o_view_sample_data o_bank_rec_main_div' : 'o_bank_rec_main_div'</attribute>
+            <attribute name="className">records.length ? 'o_bank_rec_main_div' : ''</attribute>
         </xpath>
         <xpath expr="//t[@t-component='props.Renderer']" position="after">
             <div class="o_bank_rec_right_div">
-                <t t-if="state.selectedStLineId">
-                    <View t-props="this.prepareFormProps()" t-key="state.selectedStLineId"/>
-                </t>
-                <BankRecTutorial t-else="" t-props="tutorialProps"/>
+                <View t-if="state.selectedStLineId" t-props="this.prepareFormProps()" t-key="state.selectedStLineId"/>
             </div>
         </xpath>
     </t>
@@ -30,6 +27,9 @@
         <xpath expr="//div[@t-ref='root']" position="attributes">
             <attribute name="class" add="o_bank_rec_kanban_div" separator=" "/>
         </xpath>
+        <t t-call="web.ActionHelper" position="replace">
+            <BankRecActionHelper t-if="props.noContentHelp" noContentHelp="props.noContentHelp"/>
+        </t>
     </t>
 
     <t t-name="account.BankRecKanbanRenderer.Buttons" t-inherit="web.KanbanView.Buttons" t-inherit-mode="primary" owl="1">
@@ -38,6 +38,37 @@
                 <BankRecWidgetGlobalInfo t-key="state.currentJournalId"/>
             </t>
         </xpath>
+    </t>
+
+    <t t-name="account_accountant.BankRecActionHelper" owl="1">
+        <div class="o_view_nocontent">
+            <div class="o_nocontent_help">
+                <RainbowMan t-if="showRainbow" t-props="rainbowProps"/>
+                <t t-else="">
+                    <t t-out="props.noContentHelp"/>
+                    <BankRecFinishButtons/>
+                </t>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="account_accountant.bankRecFinishButtons" owl="1">
+        <p t-if="otherFiltersActive" class="btn btn-primary" t-on-click="clearFilters">All Transactions</p>
+        <p>
+            <t t-set="linkName" t-value="breadcrumbs.length > 1 ? breadcrumbs.slice(-2)[0].name : 'Dashboard'"/>
+            <a href="#" t-on-click.stop.prevent="breadcrumbBackOrDashboard">Back to <t t-out="linkName"/></a>
+        </p>
+    </t>
+
+    <t t-name="account_accountant.rainbowMessage" owl="1">
+        <t t-set="summary" t-value="counterSummary"/>
+        <h2>Congrats, you're all done!</h2>
+        <p>You reconciled <strong t-out="summary.reconciledCount"/><t t-if="summary.reconciledCount gt 1"> transactions in </t><t t-else=""> transaction in </t><strong t-out="summary.humanDuration"/>.
+            <t t-if="summary.reconciledCount gt 1">
+                <br/>That's on average <b t-out="summary.secondsPerTransaction"/> seconds per transaction.
+            </t>
+        </p>
+        <BankRecFinishButtons/>
     </t>
 
     <t t-name="account_accountant.BankRecWidgetGlobalInfo" owl="1">
@@ -106,7 +137,7 @@
         <t t-set="data" t-value="getRenderValues()"/>
         <div class="o_list_renderer table-responsive">
                 <table class="o_list_table table table-sm position-relative mb-0 o_list_table_ungrouped table-striped o_bank_rec_lines_widget_table"
-                       style="table-layout: auto">
+                       style="table-layout: fixed">
                     <thead>
                         <t t-foreach="data.columns" t-as="column" t-key="column[0]">
                             <t t-if="['amount_currency', 'debit', 'credit'].includes(column[0])">
@@ -176,7 +207,7 @@
                                             <td class="o_data_cell o_field_cell o_list_char"
                                                 field="name"
                                                 t-on-click="() => state.extraNoteVisible = !state.extraNoteVisible">
-                                                <div class="o_bank_rec_widget_lines_widget_label">
+                                                <div class="o_bank_rec_widget_lines_widget_label text-truncate">
                                                     <t t-if="data.state == 'reconciled'">
                                                         <span class="o_form_uri"
                                                                 style="cursor: pointer"

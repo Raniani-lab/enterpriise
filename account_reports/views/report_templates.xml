@@ -119,6 +119,9 @@
                         Company Currency: <t t-out="options['company_currency']['currency_name']"/>
                     </t>
                 </div>
+                <div class="col-12" name="pdf_options_header">
+                    <t t-call="account_reports.filter_extra_options_template"/>
+                </div>
             </div>
         </div>
     </template>
@@ -557,21 +560,25 @@
         </div>
     </template>
 
+    <template id="filter_extra_options_template">
+        <span class="fa fa-filter"/> Options:
+        <t t-if="report.filter_show_draft" groups="account.group_account_readonly">
+            <t t-if="options['all_entries']">With Draft Entries</t>
+            <t t-else="">Posted Entries Only</t>
+        </t>
+        <t t-if="report.filter_unreconciled">
+            <t t-if="report.filter_show_draft and options['unreconciled']">, </t>
+            <t t-if="options['unreconciled']">Only Show Unreconciled Entries</t>
+        </t>
+        <t t-if="options.get('include_analytic_without_aml') == True">
+            <t t-if="report.filter_show_draft and options['include_analytic_without_aml']">,</t>
+            Including Analytic Simulations
+        </t>
+    </template>
+
     <template id="search_template_extra_options">
         <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-            <span class="fa fa-filter"/> Options:
-            <t t-if="report.filter_show_draft" groups="account.group_account_readonly">
-                <t t-if="options['all_entries']">With Draft Entries</t>
-                <t t-if="not options['all_entries']">Posted Entries Only</t>
-            </t>
-            <t t-if="report.filter_unreconciled">
-                <t t-if="report.filter_show_draft and options['unreconciled']">, </t>
-                <t t-if="options['unreconciled']">Only Show Unreconciled Entries</t>
-            </t>
-            <t t-if="options.get('include_analytic_without_aml') == True">
-                <t t-if="report.filter_show_draft and options['include_analytic_without_aml']">,</t>
-                Including Analytic Simulations
-            </t>
+            <t t-call="account_reports.filter_extra_options_template"/>
         </button>
         <div class="dropdown-menu o_filter_menu" role="menu">
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_show_draft" title="Include unposted entries" data-filter="all_entries" groups="account.group_account_readonly">Include Unposted Entries</a>

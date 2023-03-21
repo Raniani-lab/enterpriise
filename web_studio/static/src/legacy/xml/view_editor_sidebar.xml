@@ -568,7 +568,7 @@
         <t t-set="attrs_invisible" t-value="widget.state.attrs.modifiers.invisible and widget.state.attrs.modifiers.invisible !== true"/>
         <div t-attf-class="form-check{{attrs_invisible ? ' o_web_studio_checkbox_inactive' : ''}}">
             <input type="checkbox" id="invisible" name="invisible" class="form-check-input" data-type="attributes"
-                t-att-checked="widget.state.attrs.invisible ? 'checked' : undefined"/>
+                t-att-checked="widget.state.attrs.modifiers.invisible or widget.state.attrs.invisible ? 'checked' : undefined"/>
             <label for="invisible" class="form-check-label">Invisible</label>
             <a role="button" href="#" data-type="invisible" class="btn btn-link o_web_studio_attrs">Conditional</a>
         </div>

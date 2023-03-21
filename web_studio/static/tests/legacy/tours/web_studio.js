@@ -1310,4 +1310,54 @@ tour.register(
     ]
 );
 
+tour.register('web_studio_test_hide_page_of_notebook', {
+    test: true,
+}, [{
+    // open studio
+    trigger: '.o_main_navbar .o_web_studio_navbar_item a',
+    extra_trigger: ".o_home_menu_background",
+}, {
+    trigger: '.o_web_studio_new_app',
+}, {
+    // the next steps are here to create a new app
+    trigger: '.o_web_studio_app_creator_next',
+}, {
+    trigger: '.o_web_studio_app_creator_name > input',
+    run: 'text ' + (createdAppString = randomString(6)),
+}, {
+    trigger: '.o_web_studio_app_creator_next.is_ready',
+}, {
+    trigger: '.o_web_studio_app_creator_menu > input',
+    run: `text ${createdAppString}`,
+}, {
+    trigger: '.o_web_studio_app_creator_next.is_ready',
+}, {
+    trigger: 'input[name="lines"]'
+}, {
+    trigger: '.o_web_studio_model_configurator_next',
+}, {
+    // wait for studio to be loaded
+    extra_trigger: '.o_web_studio_sidebar',
+    // go to view
+    trigger: '.o_web_studio_view ',
+    timeout: 60000,
+}, {
+    // show invisible elements
+    trigger: 'label[for="show_invisible"]',
+}, {
+    // select the first page of the notebook
+    trigger: 'a[name="lines"]',
+}, {
+    // make it invisible
+    trigger: "#invisible",
+    run: "click",
+}, {
+    extra_trigger: ".o_web_studio_snackbar_icon.show.fa.fa-check",
+    // click again on the page to refresh the sidebar
+    trigger: 'a[name="lines"]',
+}, {
+    // invisible checkbox must be checked
+    trigger: "#invisible:checked",
+}]);
+
 });

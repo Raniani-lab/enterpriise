@@ -83,6 +83,8 @@ class TestUi(odoo.tests.HttpCase):
         self.assertEqual(fields_of_interest[0].get("invisible"), None)
         self.assertEqual(fields_of_interest[1].get("invisible"), "1")
 
+    def test_hide_page_of_notebook(self):
+        self.start_tour("/web?debug=tests", 'web_studio_test_hide_page_of_notebook', login="admin")
 
 def _get_studio_view(view):
     domain = [('inherit_id', '=', view.id), ('name', '=', "Odoo Studio: %s customization" % (view.name))]

@@ -1553,6 +1553,8 @@ class TestWorkOrder(common.TestMrpCommon):
         compo = self.bom_4.bom_line_ids.product_id
 
         compo.type = 'product'
+        compo.uom_id = self.env.ref('uom.product_uom_kgm').id
+        self.bom_4.bom_line_ids.product_uom_id = compo.uom_id
         self.env['stock.quant']._update_available_quantity(finished, warehouse.lot_stock_id, 1.0)
         self.env['stock.quant']._update_available_quantity(compo, warehouse.lot_stock_id, 1.0)
 

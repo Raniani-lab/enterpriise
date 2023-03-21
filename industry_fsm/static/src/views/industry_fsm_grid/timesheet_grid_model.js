@@ -11,4 +11,11 @@ patch(TimesheetGridDataPoint.prototype, "industry_fsm.TimesheetGridDataPoint", {
     _getPreviousWeekTimesheetDomain() {
         return Domain.and([this._super(), [["project_id.is_fsm", "=", false]]]);
     },
+
+    /**
+     * @override
+     */
+    _getFavoriteTaskDomain() {
+        return Domain.and([this._super(), [["is_fsm", "=", false]]]);
+    },
 });

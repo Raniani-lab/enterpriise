@@ -11,4 +11,11 @@ patch(TimesheetGridDataPoint.prototype, "helpdesk_timesheet.TimesheetGridDataPoi
     _getPreviousWeekTimesheetDomain() {
         return Domain.and([this._super(), [["project_id.has_helpdesk_team", "=", false]]]);
     },
+
+    /**
+     * @override
+     */
+    _getFavoriteTaskDomain() {
+        return Domain.and([this._super(), [["project_id.has_helpdesk_team", "=", false]]]);
+    },
 });

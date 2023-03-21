@@ -26,6 +26,16 @@ export class TimesheetGridDataPoint extends GridDataPoint {
         this.data.workingHours = {};
     }
 
+    _getFavoriteTaskDomain() {
+        return [
+            ["project_id", "!=", false],
+            ["user_ids", "in", this.searchParams.context.uid],
+            ["allow_timesheets", "=", true],
+            ["planned_date_begin", "<=", serializeDate(this.navigationInfo.periodEnd)],
+            ["planned_date_end", ">=", serializeDate(this.navigationInfo.periodStart)],
+        ];
+    }
+
     _getPreviousWeekTimesheetDomain() {
         return [
             ["project_id.allow_timesheets", "=", true],
@@ -172,8 +182,10 @@ export class TimesheetGridDataPoint extends GridDataPoint {
             fieldsToConsider.includes(field.name)
         );
         if (
-            (!isProjectOrTaskAsSectionField && !isProjectOrTaskInRows) ||
-            (!isProjectIdInDomainFields && !isTaskIdInDomainFields)
+            !(this.rowFields.some((field) => field.name === 'task_id') || (
+                (isProjectOrTaskAsSectionField || isProjectOrTaskInRows) &&
+                (isProjectIdInDomainFields || isTaskIdInDomainFields)
+            ))
         ) {
             return additionalGroups;
         }
@@ -317,8 +329,25 @@ export class TimesheetGridDataPoint extends GridDataPoint {
                 );
             }
         }
+        const addTaskData = (taskDomain, limit) => {
+            additionalGroups.push(
+                this.orm
+                    .webSearchRead("project.task", taskDomain.toList({}), [
+                        "id",
+                        "display_name",
+                        "project_id",
+                    ], {
+                        limit: limit,
+                    })
+                    .then((data) => {
+                        return prepareAdditionalData(data.records.map((r) => (
+                            { task_id: [r.id, r.display_name], project_id: r.project_id }
+                        )));
+                    })
+            );
+        };
         if (isProjectIdInDomainFields || isTaskIdInDomainFields) {
-            if (this.sectionField && this.sectionField.name === "task_id") {
+            if (this.sectionField?.name === "task_id") {
                 taskDomain = Domain.and([
                     taskDomain,
                     [["id", "in", domainIds]],
@@ -326,24 +355,13 @@ export class TimesheetGridDataPoint extends GridDataPoint {
                 ]);
             }
             if (!this.sectionField || isProjectOrTaskAsSectionField) {
-                additionalGroups.push(
-                    this.orm
-                        .webSearchRead("project.task", taskDomain.toList({}), [
-                            "id",
-                            "display_name",
-                            "project_id",
-                        ])
-                        .then((data) => {
-                            const timesheet_data = data.records.map((r) => {
-                                return {
-                                    task_id: [r.id, r.display_name],
-                                    project_id: r.project_id,
-                                };
-                            });
-                            return prepareAdditionalData(timesheet_data);
-                        })
-                );
+                addTaskData(taskDomain, 15);
             }
+        } else if (this.navigationInfo.periodEnd > this.model.today && !this.sectionField) {
+            addTaskData(Domain.and([
+                taskDomain,
+                this._getFavoriteTaskDomain(),
+            ]), 5);
         }
 
         return additionalGroups;

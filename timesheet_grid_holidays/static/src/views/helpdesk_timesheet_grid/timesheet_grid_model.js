@@ -11,4 +11,11 @@ patch(TimesheetGridDataPoint.prototype, "timesheet_grid_holidays.TimesheetGridDa
     _getPreviousWeekTimesheetDomain() {
         return Domain.and([this._super(), ["|", ["task_id.is_timeoff_task", "=", false], ["task_id", "=", false]]]);
     },
+
+    /**
+     * @override
+     */
+    _getFavoriteTaskDomain() {
+        return Domain.and([this._super(), [["is_timeoff_task", "=", false]]]);
+    },
 });

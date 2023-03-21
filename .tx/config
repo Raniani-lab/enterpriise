@@ -286,6 +286,11 @@ file_filter = data_merge/i18n/<lang>.po
 source_file = data_merge/i18n/data_merge.pot
 source_lang = en
 
+[o:odoo:p:odoo-16:r:data_merge_stock_account]
+file_filter = data_merge_stock_account/i18n/<lang>.po
+source_file = data_merge_stock_account/i18n/data_merge_stock_account.pot
+source_lang = en
+
 [o:odoo:p:odoo-16:r:delivery_bpost]
 file_filter = delivery_bpost/i18n/<lang>.po
 source_file = delivery_bpost/i18n/delivery_bpost.pot

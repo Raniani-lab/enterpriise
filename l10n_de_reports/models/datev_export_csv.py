@@ -26,7 +26,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         :param dict previous_options: Previous report options
         """
         super()._custom_options_initializer(report, options, previous_options)
-        if self.env.company.country_code == 'DE':
+        if self.env.company.country_code in ('DE', 'CH', 'AT'):
             options.setdefault('buttons', []).extend((
                 {
                     'name': _('Datev (zip)'),

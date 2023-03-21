@@ -26,15 +26,12 @@ export class TimesheetGridDataPoint extends GridDataPoint {
         this.data.workingHours = {};
     }
 
-    /**
-     *
-     * @override
-     */
-    _fetchAdditionalData() {
-        const additionalGroups = super._fetchAdditionalData();
-
-        const previouslyTimesheetedDomain = [
-            "&",
+    _getPreviousWeekTimesheetDomain() {
+        return [
+            ["project_id.allow_timesheets", "=", true],
+            "|",
+                ["task_id.active", "=", true],
+                ["task_id", "=", false],
             [
                 this.columnFieldName,
                 ">=",
@@ -42,6 +39,15 @@ export class TimesheetGridDataPoint extends GridDataPoint {
             ],
             [this.columnFieldName, "<", serializeDate(this.navigationInfo.periodStart)],
         ];
+    }
+
+    /**
+     * @override
+     */
+    _fetchAdditionalData() {
+        const additionalGroups = super._fetchAdditionalData();
+
+        const previouslyTimesheetedDomain = this._getPreviousWeekTimesheetDomain();
 
         const previouslyWeekTimesheet = this.orm
             .webReadGroup(

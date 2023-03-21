@@ -10,7 +10,7 @@ class Project(models.Model):
     ticket_count = fields.Integer('# Tickets', compute='_compute_ticket_count')
 
     helpdesk_team = fields.One2many('helpdesk.team', 'project_id')
-    has_helpdesk_team = fields.Boolean('Has Helpdesk Teams', compute='_compute_has_helpdesk_team', compute_sudo=True)
+    has_helpdesk_team = fields.Boolean('Has Helpdesk Teams', compute='_compute_has_helpdesk_team', search='_search_has_helpdesk_team', compute_sudo=True)
 
     @api.depends('ticket_ids.project_id')
     def _compute_ticket_count(self):
@@ -32,6 +32,17 @@ class Project(models.Model):
         data = {project.id: count for project, count in result}
         for project in self:
             project.has_helpdesk_team = data.get(project.id, False)
+
+    def _search_has_helpdesk_team(self, operator, value):
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise NotImplementedError(_('Operation not supported'))
+
+        helpdesk_team_ids = self.env['helpdesk.team']._read_group(
+            [('use_helpdesk_timesheet', '=', True), ('project_id', '!=', False)],
+            [], ['project_id:recordset']
+        )[0][0].ids
+        operator_new = "in" if (operator == "=") == bool(value) else "not in"
+        return [('id', operator_new, helpdesk_team_ids)]
 
     def action_open_project_tickets(self):
         action = self.env["ir.actions.actions"]._for_xml_id("helpdesk_timesheet.project_project_action_view_helpdesk_tickets")

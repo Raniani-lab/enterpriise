@@ -6,88 +6,84 @@
 
             <!-- Custom numbers on invoice lines -->
             <xpath expr="//*[name()='cfdi:Concepto']" position="inside">
-                <t t-if="not record.l10n_mx_edi_external_trade">
-                    <t t-foreach="line_values['custom_numbers']" t-as="custom_number">
-                        <cfdi:InformacionAduanera
-                            xmlns:cfdi="http://www.sat.gob.mx/cfd/4"
-                            t-att-NumeroPedimento="custom_number"/>
-                    </t>
+                <t t-foreach="line_values.get('informacion_aduanera_list', [])" t-as="numero_pedimento">
+                    <cfdi:InformacionAduanera
+                        xmlns:cfdi="http://www.sat.gob.mx/cfd/4"
+                        t-att-NumeroPedimento="numero_pedimento"/>
                 </t>
             </xpath>
 
             <!-- External Trade -->
             <xpath expr="//*[name()='cfdi:Receptor']" position="attributes">
-                <attribute name="t-att-NumRegIdTrib">ext_trade_customer_reg_trib if record.l10n_mx_edi_external_trade_type == '02' else None</attribute>
+                <attribute name="t-att-NumRegIdTrib">receptor.get('num_reg_id_trib')</attribute>
             </xpath>
             <xpath expr="//*[name()='cfdi:Comprobante']" position="inside">
-                <t t-if="record.l10n_mx_edi_external_trade_type == '02'">
-                    <cfdi:Complemento
-                            xmlns:cfdi="http://www.sat.gob.mx/cfd/4">
+                <t t-if="comercio_exterior">
+                    <cfdi:Complemento xmlns:cfdi="http://www.sat.gob.mx/cfd/4">
                         <cce11:ComercioExterior
                             xmlns:cce11="http://www.sat.gob.mx/ComercioExterior11"
                             Version="1.1"
                             TipoOperacion="2"
                             ClaveDePedimento="A1"
-                            t-att-CertificadoOrigen="'1' if record.l10n_mx_edi_cer_source else '0'"
-                            t-att-NumCertificadoOrigen="record.l10n_mx_edi_cer_source"
-                            t-att-NumeroExportadorConfiable="ext_trade_num_exp"
-                            t-att-Incoterm="record.invoice_incoterm_id.code"
+                            t-att-CertificadoOrigen="comercio_exterior['certificado_origen']"
+                            t-att-NumCertificadoOrigen="comercio_exterior['num_certificado_origen']"
+                            t-att-NumeroExportadorConfiable="comercio_exterior['numero_exportador_confiable']"
+                            t-att-Incoterm="comercio_exterior['incoterm']"
                             Subdivision="0"
-                            t-att-Observaciones="format_string(record.narration, 300)"
-                            t-att-TipoCambioUSD="format_float(ext_trade_rate_usd_mxn, 6)"
-                            t-att-TotalUSD="format_float(ext_trade_total_price_subtotal_usd, 2)">
+                            t-att-Observaciones="format_string(comercio_exterior['observaciones'], 300)"
+                            t-att-TipoCambioUSD="format_float(comercio_exterior['tipo_cambio_usd'], precision=6)"
+                            t-att-TotalUSD="format_float(comercio_exterior['total_usd'], precision=2)">
                             <cce11:Emisor
-                                t-att-Curp="supplier.l10n_mx_edi_curp or None">
+                                t-att-Curp="comercio_exterior['emisor']['curp']">
                                 <cce11:Domicilio
-                                    t-att-Calle="format_string(supplier.street_name or '') or None"
-                                    t-att-NumeroExterior="format_string(supplier.street_number or '') or None"
-                                    t-att-NumeroInterior="format_string(supplier.street_number2 or '') or None"
-                                    t-att-Colonia="supplier.l10n_mx_edi_colony_code"
-                                    t-att-Localidad="supplier.l10n_mx_edi_locality_id.code"
-                                    t-att-Municipio="supplier.city_id.l10n_mx_edi_code"
-                                    t-att-Estado="supplier.state_id.code"
-                                    t-att-Pais="supplier.country_id.l10n_mx_edi_code"
-                                    t-att-CodigoPostal="supplier.zip"/>
+                                    t-att-Calle="format_string(comercio_exterior['emisor']['calle'], 100)"
+                                    t-att-NumeroExterior="format_string(comercio_exterior['emisor']['numero_exterior'], 100)"
+                                    t-att-NumeroInterior="format_string(comercio_exterior['emisor']['numero_interior'], 100)"
+                                    t-att-Colonia="comercio_exterior['emisor']['colonia']"
+                                    t-att-Localidad="comercio_exterior['emisor']['localidad']"
+                                    t-att-Municipio="comercio_exterior['emisor']['municipio']"
+                                    t-att-Estado="comercio_exterior['emisor']['estado']"
+                                    t-att-Pais="comercio_exterior['emisor']['pais']"
+                                    t-att-CodigoPostal="comercio_exterior['emisor']['codigo_postal']"/>
                             </cce11:Emisor>
                             <cce11:Receptor
-                                t-att-NumRegIdTrib="ext_trade_customer_reg_trib">
+                                t-att-NumRegIdTrib="comercio_exterior['receptor'].get('num_reg_id_trib')">
                                 <cce11:Domicilio
-                                    t-att-Calle="format_string(customer.street_name or '') or None"
-                                    t-att-NumeroExterior="format_string(customer.street_number or '') or None"
-                                    t-att-NumeroInterior="format_string(customer.street_number2 or '') or None"
-                                    t-att-Colonia="customer.l10n_mx_edi_colony_code if customer.country_id.l10n_mx_edi_code == 'MEX' else format_string(customer.l10n_mx_edi_colony) or None"
-                                    t-att-Localidad="customer.l10n_mx_edi_locality_id.code if customer.country_id.l10n_mx_edi_code == 'MEX' else customer.l10n_mx_edi_locality or None"
-                                    t-att-Municipio="customer.city_id.l10n_mx_edi_code if customer.country_id.l10n_mx_edi_code == 'MEX' else customer.city"
-                                    t-att-Estado="customer.state_id.code if customer.country_id.l10n_mx_edi_code in ('MEX', 'USA', 'CAN') or customer.state_id.code else None"
-                                    t-att-Pais="customer.country_id.l10n_mx_edi_code"
-                                    t-att-CodigoPostal="customer.zip"/>
+                                    t-att-Calle="format_string(comercio_exterior['receptor']['calle'], 100)"
+                                    t-att-NumeroExterior="format_string(comercio_exterior['receptor']['numero_exterior'], 100)"
+                                    t-att-NumeroInterior="format_string(comercio_exterior['receptor']['numero_interior'], 100)"
+                                    t-att-Colonia="comercio_exterior['receptor']['colonia']"
+                                    t-att-Localidad="comercio_exterior['receptor']['localidad']"
+                                    t-att-Municipio="comercio_exterior['receptor']['municipio']"
+                                    t-att-Estado="comercio_exterior['receptor']['estado']"
+                                    t-att-Pais="comercio_exterior['receptor']['pais']"
+                                    t-att-CodigoPostal="comercio_exterior['receptor']['codigo_postal']"/>
                             </cce11:Receptor>
-                            <t t-if="ext_trade_delivery_partner and ext_trade_delivery_partner != record.partner_id">
+                            <t t-if="comercio_exterior.get('destinario')">
                                 <cce11:Destinatario
-                                    t-att-NumRegIdTrib="ext_trade_delivery_partner.vat if ext_trade_delivery_partner.country_id == ext_trade_delivery_partner.commercial_partner_id.country_id else None"
-                                    t-att-Nombre="ext_trade_delivery_partner.name">
+                                    t-att-NumRegIdTrib="comercio_exterior['destinario'].get('num_reg_id_trib')"
+                                    t-att-Nombre="comercio_exterior['destinario']['nombre']">
                                     <cce11:Domicilio
-                                        t-att-Calle="format_string(ext_trade_delivery_partner.street_name or '') or None"
-                                        t-att-NumeroExterior="format_string(ext_trade_delivery_partner.street_number or '') or None"
-                                        t-att-NumeroInterior="format_string(ext_trade_delivery_partner.street_number2 or '') or None"
-                                        t-att-Colonia="ext_trade_delivery_partner.l10n_mx_edi_colony_code if ext_trade_delivery_partner.country_id.l10n_mx_edi_code == 'MEX' else format_string(ext_trade_delivery_partner.l10n_mx_edi_colony or '') or None"
-                                        t-att-Localidad="ext_trade_delivery_partner.l10n_mx_edi_locality_id.code if ext_trade_delivery_partner.country_id.l10n_mx_edi_code == 'MEX' else ext_trade_delivery_partner.l10n_mx_edi_locality"
-                                        t-att-Municipio="ext_trade_delivery_partner.city_id.l10n_mx_edi_code if ext_trade_delivery_partner.country_id.l10n_mx_edi_code == 'MEX' else ext_trade_delivery_partner.city"
-                                        t-att-Estado="ext_trade_delivery_partner.state_id.code if ext_trade_delivery_partner.country_id.l10n_mx_edi_code in ('MEX', 'USA', 'CAN') or ext_trade_delivery_partner.state_id.code else 'NA'"
-                                        t-att-Pais="ext_trade_delivery_partner.country_id.l10n_mx_edi_code"
-                                        t-att-CodigoPostal="ext_trade_delivery_partner.zip"/>
+                                        t-att-Calle="format_string(comercio_exterior['destinario']['calle'], 100)"
+                                        t-att-NumeroExterior="format_string(comercio_exterior['destinario']['numero_exterior'], 100)"
+                                        t-att-NumeroInterior="format_string(comercio_exterior['destinario']['numero_interior'], 100)"
+                                        t-att-Colonia="comercio_exterior['destinario']['colonia']"
+                                        t-att-Localidad="comercio_exterior['destinario']['localidad']"
+                                        t-att-Municipio="comercio_exterior['destinario']['municipio']"
+                                        t-att-Estado="comercio_exterior['destinario']['estado']"
+                                        t-att-Pais="comercio_exterior['destinario']['pais']"
+                                        t-att-CodigoPostal="comercio_exterior['destinario']['codigo_postal']"/>
                                 </cce11:Destinatario>
                             </t>
                             <cce11:Mercancias>
-                                <t t-foreach="ext_trade_goods_details" t-as="good_details">
-                                    <t t-set="product" t-value="good_details['product']"/>
+                                <t t-foreach="comercio_exterior['mercancia_list']" t-as="mercancia">
                                     <cce11:Mercancia
-                                        t-att-NoIdentificacion="format_string(product.default_code, 100)"
-                                        t-att-FraccionArancelaria="product.l10n_mx_edi_tariff_fraction_id.code"
-                                        t-att-CantidadAduana="format_float(good_details['quantity_aduana'], 3)"
-                                        t-att-UnidadAduana="product.l10n_mx_edi_umt_aduana_id.l10n_mx_edi_code_aduana"
-                                        t-att-ValorUnitarioAduana="format_float(good_details['price_unit_usd'], 2)"
-                                        t-att-ValorDolares="format_float(good_details['line_total_usd'], 2)">
+                                        t-att-NoIdentificacion="format_string(mercancia['no_identificacion'], 100)"
+                                        t-att-FraccionArancelaria="mercancia['fraccion_arancelaria']"
+                                        t-att-CantidadAduana="format_float(mercancia['cantidad_aduana'], precision=3)"
+                                        t-att-UnidadAduana="mercancia['unidad_aduana']"
+                                        t-att-ValorUnitarioAduana="format_float(mercancia['valor_unitario_udana'], precision=2)"
+                                        t-att-ValorDolares="format_float(mercancia['valor_dolares'], precision=2)">
                                     </cce11:Mercancia>
                                 </t>
                             </cce11:Mercancias>

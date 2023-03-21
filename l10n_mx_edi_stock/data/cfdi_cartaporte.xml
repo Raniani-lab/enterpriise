@@ -5,6 +5,8 @@
             t-att-Fecha="cfdi_date"
             t-att-Folio="folio_number"
             t-att-Serie="serie"
+            t-att-NoCertificado="certificate_number"
+            t-att-Certificado="certificate_key"
             t-att-LugarExpedicion="lugar_expedicion"
             Moneda="XXX"
             Serie="CartaPorte"
@@ -48,11 +50,11 @@
             </cfdi:Conceptos>
             <cfdi:Complemento t-if="record.l10n_mx_edi_transport_type == '01'">
                 <cartaporte20:CartaPorte
-                    t-att-TranspInternac="'Sí' if record.l10n_mx_edi_is_export else 'No'"
+                    t-att-TranspInternac="'Sí' if record.l10n_mx_edi_external_trade else 'No'"
                     t-att-TotalDistRec="record.l10n_mx_edi_distance"
-                    t-att-EntradaSalidaMerc="'Salida' if record.l10n_mx_edi_is_export else None"
-                    t-att-ViaEntradaSalida="record.l10n_mx_edi_transport_type if record.l10n_mx_edi_is_export else None"
-                    t-att-PaisOrigenDestino="record.partner_id.country_id.l10n_mx_edi_code if record.l10n_mx_edi_is_export else None"
+                    t-att-EntradaSalidaMerc="'Salida' if record.l10n_mx_edi_external_trade else None"
+                    t-att-ViaEntradaSalida="record.l10n_mx_edi_transport_type if record.l10n_mx_edi_external_trade else None"
+                    t-att-PaisOrigenDestino="record.partner_id.country_id.l10n_mx_edi_code if record.l10n_mx_edi_external_trade else None"
                     Version="2.0">
                     <cartaporte20:Ubicaciones>
                         <t t-set="warehouse_partner" t-value="record.picking_type_id.warehouse_id.partner_id"/>
@@ -72,9 +74,9 @@
                             t-att-IDUbicacion="'DE' + str(record.location_dest_id.id).rjust(6,'0')"
                             t-att-DistanciaRecorrida="record.l10n_mx_edi_distance"
                             t-att-FechaHoraSalidaLlegada="scheduled_date"
-                            t-att-RFCRemitenteDestinatario="customer.vat if not record.l10n_mx_edi_is_export else 'XEXX010101000'"
-                            t-att-NumRegIdTrib="customer.vat if record.l10n_mx_edi_is_export else None"
-                            t-att-ResidenciaFiscal="record.partner_id.country_id.l10n_mx_edi_code if record.l10n_mx_edi_is_export else None">
+                            t-att-RFCRemitenteDestinatario="customer.vat if not record.l10n_mx_edi_external_trade else 'XEXX010101000'"
+                            t-att-NumRegIdTrib="customer.vat if record.l10n_mx_edi_external_trade else None"
+                            t-att-ResidenciaFiscal="record.partner_id.country_id.l10n_mx_edi_code if record.l10n_mx_edi_external_trade else None">
                             <cartaporte20:Domicilio
                                 t-att-Calle="record.partner_id.street"
                                 t-att-CodigoPostal="record.partner_id.zip"

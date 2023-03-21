@@ -137,25 +137,6 @@ class Certificate(models.Model):
         cadena_transformer = etree.parse(tools.file_open(xslt_path))
         return str(etree.XSLT(cadena_transformer)(xml_tree))
 
-    def _certify_and_stamp(self, xml_content_str, xslt_path, no_cert_attrib_name='NoCertificado'):
-        """ Appends the Sello stamp, certificate, and serial number to CFDI documents
-        :param xml_content_str: The XML document string to certify and stamp
-        :param xslt_path: Path to the XSLT used to generate the cadena chain (pipe delimited string of important values)
-        :param no_cert_attrib_name: string of the NoCertificado (default) attribute which can be replaced with noCertificado
-        :return: A string of the XML with appended attributes: NoCertificado, Certificado, Sello
-        """
-        # TODO: improve functions _l10n_mx_edi_export_payment_cfdi & _l10n_mx_edi_export_invoice_cfdi in l10n_mx_edi/models/account_edi_format.py
-        self.ensure_one()
-        if not xml_content_str:
-            return None
-        tree = objectify.fromstring(xml_content_str)
-        tree.attrib[no_cert_attrib_name] = self.serial_number
-        tree.attrib['Certificado'] = self._get_data()[0]
-        cadena_chain = self._get_cadena_chain(tree, xslt_path)
-        sello = self._get_encrypted_cadena(cadena_chain)
-        tree.attrib['Sello'] = sello
-        return etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='UTF-8')
-
     @api.constrains('content', 'key', 'password')
     def _check_credentials(self):
         '''Check the validity of content/key/password and fill the fields
@@ -192,9 +173,8 @@ class Certificate(models.Model):
 
     @api.ondelete(at_uninstall=True)
     def _unlink_except_invoices(self):
-        mx_edi = self.env.ref('l10n_mx_edi.edi_cfdi_3_3')
-        if self.env['account.edi.document'].sudo().search([
-            ('edi_format_id', '=', mx_edi.id),
+        # TODO: missing type ?
+        if self.env['l10n_mx_edi.document'].sudo().search([
             ('state', '=', 'sent'),
         ], limit=1):
             raise UserError(_(

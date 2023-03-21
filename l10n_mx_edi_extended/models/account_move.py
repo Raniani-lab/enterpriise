@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError
 from odoo.tools.sql import column_exists, create_column
 
 import re
+from collections import defaultdict
 
 
 CUSTOM_NUMBERS_PATTERN = re.compile(r'[0-9]{2}  [0-9]{2}  [0-9]{4}  [0-9]{7}')
@@ -42,50 +43,14 @@ class AccountMove(models.Model):
             create_column(self.env.cr, 'account_move', 'l10n_mx_edi_external_trade_type', 'varchar')
         return super()._auto_init()
 
+    # -------------------------------------------------------------------------
+    # CFDI: HELPERS
+    # -------------------------------------------------------------------------
+
     def _get_l10n_mx_edi_issued_address(self):
         # OVERRIDE
         self.ensure_one()
         return self.journal_id.l10n_mx_address_issued_id or super()._get_l10n_mx_edi_issued_address()
-
-    def _l10n_mx_edi_decode_cfdi(self, cfdi_data=None):
-        # OVERRIDE
-
-        def get_node(cfdi_node, attribute, namespaces):
-            if hasattr(cfdi_node, 'Complemento'):
-                node = cfdi_node.Complemento.xpath(attribute, namespaces=namespaces)
-                return node[0] if node else None
-            else:
-                return None
-
-        vals = super()._l10n_mx_edi_decode_cfdi(cfdi_data=cfdi_data)
-        if vals.get('cfdi_node') is None:
-            return vals
-
-        cfdi_node = vals['cfdi_node']
-
-        external_trade_node = get_node(
-            cfdi_node,
-            'cce11:ComercioExterior[1]',
-            {'cce11': 'http://www.sat.gob.mx/ComercioExterior11'},
-        )
-        if external_trade_node is None:
-            external_trade_node = {}
-
-        vals.update({
-            'ext_trade_node': external_trade_node,
-            'ext_trade_certificate_key': external_trade_node.get('ClaveDePedimento', ''),
-            'ext_trade_certificate_source': external_trade_node.get('CertificadoOrigen', '').replace('0', 'No').replace('1', 'Si'),
-            'ext_trade_nb_certificate_origin': external_trade_node.get('CertificadoOrigen', ''),
-            'ext_trade_certificate_origin': external_trade_node.get('NumCertificadoOrigen', ''),
-            'ext_trade_operation_type': external_trade_node.get('TipoOperacion', '').replace('2', 'Exportación'),
-            'ext_trade_subdivision': external_trade_node.get('Subdivision', ''),
-            'ext_trade_nb_reliable_exporter': external_trade_node.get('NumeroExportadorConfiable', ''),
-            'ext_trade_incoterm': external_trade_node.get('Incoterm', ''),
-            'ext_trade_rate_usd': external_trade_node.get('TipoCambioUSD', ''),
-            'ext_trade_total_usd': external_trade_node.get('TotalUSD', ''),
-        })
-
-        return vals
 
     @api.depends('l10n_mx_edi_external_trade_type')
     def _compute_l10n_mx_edi_external_trade(self):
@@ -97,17 +62,156 @@ class AccountMove(models.Model):
         for move in self:
             move.l10n_mx_edi_external_trade_type = move.partner_id.l10n_mx_edi_external_trade_type
 
+    # -------------------------------------------------------------------------
+    # CFDI
+    # -------------------------------------------------------------------------
+
+    def _l10n_mx_edi_get_invoice_cfdi_values(self, percentage_paid=None):
+        # EXTENDS 'l10n_mx_edi'
+        cfdi_values = super()._l10n_mx_edi_get_invoice_cfdi_values(percentage_paid=percentage_paid)
+        cfdi_values['exportacion'] = self.l10n_mx_edi_external_trade_type or '01'
+
+        # External Trade
+        ext_trade_values = cfdi_values['comercio_exterior'] = {}
+        if self.l10n_mx_edi_external_trade_type == '02':
+
+            # Customer.
+            customer_values = cfdi_values['receptor']
+            customer = customer_values['customer']
+            if customer_values['rfc'] == 'XEXX010101000':
+                cfdi_values['receptor']['num_reg_id_trib'] = customer.vat
+                # A value must be registered in the ResidenciaFiscal field when information is registered in the
+                # NumRegIdTrib field.
+                cfdi_values['receptor']['residencia_fiscal'] = customer.country_id.l10n_mx_edi_code
+
+            ext_trade_values['receptor'] = {
+                **cfdi_values['receptor'],
+                'curp': customer.l10n_mx_edi_curp,
+                'calle': customer.street_name,
+                'numero_exterior': customer.street_number,
+                'numero_interior': customer.street_number2,
+                'colonia': customer.l10n_mx_edi_colony_code,
+                'localidad': customer.l10n_mx_edi_locality_id.code,
+                'municipio': customer.city_id.l10n_mx_edi_code,
+                'estado': customer.state_id.code,
+                'pais': customer.country_id.l10n_mx_edi_code,
+                'codigo_postal': customer.zip,
+            }
+
+            # Supplier.
+            supplier_values = cfdi_values['emisor']
+            supplier = supplier_values['supplier']
+            ext_trade_values['emisor'] = {
+                'curp': supplier.l10n_mx_edi_curp,
+                'calle': supplier.street_name,
+                'numero_exterior': supplier.street_number,
+                'numero_interior': supplier.street_number2,
+                'colonia': supplier.l10n_mx_edi_colony_code,
+                'localidad': supplier.l10n_mx_edi_locality_id.code,
+                'municipio': supplier.city_id.l10n_mx_edi_code,
+                'estado': supplier.state_id.code,
+                'pais': supplier.country_id.l10n_mx_edi_code,
+                'codigo_postal': supplier.zip,
+            }
+
+            # Shipping.
+            shipping = self.partner_shipping_id
+            if shipping != customer:
+
+                # In case of COMEX we need to fill "NumRegIdTrib" with the real tax id of the customer
+                # but let the generic RFC.
+                shipping_values = self._l10n_mx_edi_get_customer_cfdi_values(shipping, to_public=self.l10n_mx_edi_cfdi_to_public)
+                if (
+                    shipping.country_id == shipping.commercial_partner_id.country_id
+                    and shipping_values['rfc'] == 'XEXX010101000'
+                ):
+                    shipping_vat = shipping.vat.strip() if shipping.vat else None
+                else:
+                    shipping_vat = None
+
+                if shipping.country_id.l10n_mx_edi_code == 'MEX':
+                    colony = shipping.l10n_mx_edi_colony_code
+                    locality = shipping.l10n_mx_edi_locality_id
+                    city = shipping.city_id.l10n_mx_edi_code
+                else:
+                    colony = shipping.l10n_mx_edi_colony
+                    locality = shipping.l10n_mx_edi_locality
+                    city = shipping.city
+
+                if shipping.country_id.l10n_mx_edi_code in ('MEX', 'USA', 'CAN') or shipping.state_id.code:
+                    state = shipping.state_id.code
+                else:
+                    state = 'NA'
+
+                ext_trade_values['destinario'] = {
+                    'num_reg_id_trib': shipping_vat,
+                    'nombre': shipping.name,
+                    'calle': supplier.street_name,
+                    'numero_exterior': supplier.street_number,
+                    'numero_interior': supplier.street_number2,
+                    'colonia': colony,
+                    'localidad': locality,
+                    'municipio': city,
+                    'estado': state,
+                    'pais': supplier.country_id.l10n_mx_edi_code,
+                    'codigo_postal': supplier.zip,
+                }
+
+            # Certificate.
+            ext_trade_values['certificado_origen'] = '1' if self.l10n_mx_edi_cer_source else '0'
+            ext_trade_values['num_certificado_origen'] = self.l10n_mx_edi_cer_source
+
+            # Rate.
+            mxn = self.env["res.currency"].search([('name', '=', 'MXN')], limit=1)
+            usd = self.env["res.currency"].search([('name', '=', 'USD')], limit=1)
+            ext_trade_values['tipo_cambio_usd'] = usd._get_conversion_rate(usd, mxn, self.company_id, self.date)
+            if cfdi_values['tipo_cambio'] and ext_trade_values['tipo_cambio_usd']:
+                to_usd_rate = cfdi_values['tipo_cambio'] / ext_trade_values['tipo_cambio_usd']
+            else:
+                to_usd_rate = 0.0
+
+            # Misc.
+            if customer.country_id in self.env.ref('base.europe').country_ids:
+                ext_trade_values['numero_exportador_confiable'] = self.company_id.l10n_mx_edi_num_exporter
+            else:
+                ext_trade_values['numero_exportador_confiable'] = None
+            ext_trade_values['incoterm'] = self.invoice_incoterm_id.code
+            ext_trade_values['observaciones'] = self.narration
+
+            # Details per product.
+            product_values_map = defaultdict(lambda: {
+                'quantity': 0.0,
+                'price_unit': 0.0,
+                'total': 0.0,
+            })
+            for line_vals in cfdi_values['conceptos_list']:
+                line = line_vals['line']
+                product_values_map[line.product_id]['quantity'] += line.l10n_mx_edi_qty_umt
+                product_values_map[line.product_id]['price_unit'] += line.l10n_mx_edi_price_unit_umt
+                product_values_map[line.product_id]['total'] += line_vals['importe']
+            ext_trade_values['total_usd'] = 0.0
+            ext_trade_values['mercancia_list'] = []
+            for product, product_values in product_values_map.items():
+                total_usd = usd.round(product_values['total'] * to_usd_rate)
+                ext_trade_values['mercancia_list'].append({
+                    'no_identificacion': product.default_code,
+                    'fraccion_arancelaria': product.l10n_mx_edi_tariff_fraction_id.code,
+                    'cantidad_aduana': product_values['quantity'],
+                    'unidad_aduana': product.l10n_mx_edi_umt_aduana_id.l10n_mx_edi_code_aduana,
+                    'valor_unitario_udana': usd.round(product_values['price_unit'] * to_usd_rate),
+                    'valor_dolares': total_usd,
+                })
+                ext_trade_values['total_usd'] += total_usd
+        else:
+            # Invoice lines.
+            for line_vals in cfdi_values['conceptos_list']:
+                line_vals['informacion_aduanera_list'] = line_vals['line']._l10n_mx_edi_get_custom_numbers()
+
+        return cfdi_values
+
+
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
-
-    def _auto_init(self):
-        if not column_exists(self.env.cr, "account_move_line", "l10n_mx_edi_umt_aduana_id"):
-            create_column(self.env.cr, "account_move_line", "l10n_mx_edi_umt_aduana_id", "int4")
-            # Since l10n_mx_edi_umt_aduana_id columns does not exist we can assume the columns
-            # l10n_mx_edi_qty_umt and l10n_mx_edi_price_unit_umt do not exist either
-            create_column(self.env.cr, "account_move_line", "l10n_mx_edi_qty_umt", "numeric")
-            create_column(self.env.cr, "account_move_line", "l10n_mx_edi_price_unit_umt", "float8")
-        return super()._auto_init()
 
     l10n_mx_edi_customs_number = fields.Char(
         help='Optional field for entering the customs information in the case '
@@ -142,6 +246,15 @@ class AccountMoveLine(models.Model):
         compute='_compute_l10n_mx_edi_price_unit_umt',
         help="Unit value expressed in the UMT from product. It is used in the attribute 'ValorUnitarioAduana' in the "
              "CFDI")
+
+    def _auto_init(self):
+        if not column_exists(self.env.cr, "account_move_line", "l10n_mx_edi_umt_aduana_id"):
+            create_column(self.env.cr, "account_move_line", "l10n_mx_edi_umt_aduana_id", "int4")
+            # Since l10n_mx_edi_umt_aduana_id columns does not exist we can assume the columns
+            # l10n_mx_edi_qty_umt and l10n_mx_edi_price_unit_umt do not exist either
+            create_column(self.env.cr, "account_move_line", "l10n_mx_edi_qty_umt", "numeric")
+            create_column(self.env.cr, "account_move_line", "l10n_mx_edi_price_unit_umt", "float8")
+        return super()._auto_init()
 
     # -------------------------------------------------------------------------
     # HELPERS

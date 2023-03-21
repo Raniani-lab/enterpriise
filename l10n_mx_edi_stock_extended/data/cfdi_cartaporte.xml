@@ -10,7 +10,7 @@
         <xpath expr="//*[name()='cfdi:Concepto']" position="inside">
             <cfdi:InformacionAduanera
                 xmlns:cfdi="http://www.sat.gob.mx/cfd/4"
-                t-if="record.l10n_mx_edi_is_export and record.l10n_mx_edi_customs_no"
+                t-if="record.l10n_mx_edi_external_trade and record.l10n_mx_edi_customs_no"
                 t-att-NumeroPedimento="record.l10n_mx_edi_customs_no" />
         </xpath>
 
@@ -20,7 +20,7 @@
         </xpath>
 
         <xpath expr="//*[name()='cartaporte20:Mercancia']" position="attributes">
-            <attribute name="t-att-FraccionArancelaria">move.product_id.l10n_mx_edi_tariff_fraction_id.code if record.l10n_mx_edi_is_export else None</attribute>
+            <attribute name="t-att-FraccionArancelaria">move.product_id.l10n_mx_edi_tariff_fraction_id.code if record.l10n_mx_edi_external_trade else None</attribute>
             <attribute name="t-att-MaterialPeligroso">'Sí' if move.product_id.l10n_mx_edi_hazardous_material_code else None</attribute>
             <attribute name="t-att-CveMaterialPeligroso">move.product_id.l10n_mx_edi_hazardous_material_code</attribute>
             <attribute name="t-att-Embalaje">move.product_id.l10n_mx_edi_hazard_package_type if move.product_id.l10n_mx_edi_hazardous_material_code else None</attribute>

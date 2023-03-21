@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from . import account_bank_statement
-from . import account_edi_format
+from . import l10n_mx_edi_document
 from . import account_move
 from . import account_payment
+from . import account_move_send
 from . import account_journal
 from . import account_payment_register
 from . import ir_attachment

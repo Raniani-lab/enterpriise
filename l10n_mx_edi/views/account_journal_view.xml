@@ -2,8 +2,8 @@
 <odoo>
     <data>
 
-        <record id="view_account_journal_form_inh_l10n_mx" model="ir.ui.view">
-            <field name="name">view.account.journal.form.inherit.l10n_mx_edi</field>
+        <record id="account_journal_form_inherit_l10n_mx_edi" model="ir.ui.view">
+            <field name="name">account.journal.form.inherit.l10n_mx_edi</field>
             <field name="model">account.journal</field>
             <field name="inherit_id" ref="account.view_account_journal_form"/>
             <field name="arch" type="xml">

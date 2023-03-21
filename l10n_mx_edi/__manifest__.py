@@ -14,7 +14,6 @@ Allow the user to generate the EDI document for Mexican invoicing.
 This module allows the creation of the EDI documents and the communication with the Mexican certification providers (PACs) to sign/cancel them.
     """,
     'depends': [
-        'account_edi',
         'account_accountant',
         'l10n_mx',
         'base_vat',
@@ -29,23 +28,21 @@ This module allows the creation of the EDI documents and the communication with 
 
         'data/4.0/cfdi.xml',
         'data/4.0/payment20.xml',
-        'data/account_edi_data.xml',
         'data/l10n_mx_edi_payment_method_data.xml',
         'data/ir_cron.xml',
         'data/res_currency_data.xml',
 
-        'views/account_bank_statement_view.xml',
         'views/account_journal_view.xml',
+        'views/account_move_send_views.xml',
         'views/account_move_view.xml',
-        'views/account_payment_view.xml',
+        'views/account_payment_views.xml',
         'views/account_payment_register_views.xml',
         'views/account_tax_view.xml',
         'views/ir_ui_view.xml',
         'views/l10n_mx_edi_certificate_view.xml',
         'views/l10n_mx_edi_payment_method_view.xml',
-        "views/l10n_mx_edi_report_invoice.xml",
-        "views/l10n_mx_edi_report_payment.xml",
-        "views/l10n_mx_edi_report_bank_statement_line.xml",
+        "views/report_invoice.xml",
+        "views/report_payment.xml",
         'views/res_partner_view.xml',
         'views/res_bank_view.xml',
         'views/res_config_settings_view.xml',
@@ -55,13 +52,15 @@ This module allows the creation of the EDI documents and the communication with 
     'demo': [
         'demo/demo_cfdi.xml',
         'demo/demo_addenda.xml',
-        'demo/res_partner.xml',
     ],
     'post_init_hook': 'post_init_hook',
     'installable': True,
-    'auto_install': ['l10n_mx', 'account_edi'],
+    'auto_install': ['l10n_mx'],
     'license': 'OEEL-1',
     'assets': {
+        'web.assets_backend': [
+            'l10n_mx_edi/static/src/components/**/*',
+        ],
         'web.report_assets_pdf': [
             'l10n_mx_edi/static/src/scss/**/*',
         ],

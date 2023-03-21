@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="l10n_mx_edi.DocumentStatePopover" owl="1">
+        <span t-out="props.message"/>
+    </t>
+
+    <t t-name="l10n_mx_edi.DocumentState" t-inherit="web.SelectionField" t-inherit-mode="primary" owl="1">
+        <span position="after">
+            <span t-if="message"> </span>
+            <a t-if="message"
+               t-on-click="(ev) => this.showMessagePopover(ev)"
+               class="fa fa-info-circle"/>
+        </span>
+    </t>
+</templates>

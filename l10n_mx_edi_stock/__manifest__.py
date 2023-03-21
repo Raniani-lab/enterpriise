@@ -27,7 +27,7 @@
         'data/l10n_mx_edi_part.xml',
         'views/res_partner_views.xml',
         'views/stock_picking_views.xml',
-        'views/vehicle_views.xml',
+        'views/l10n_mx_edi_vehicle_views.xml',
         'views/report_deliveryslip.xml',
     ],
     'installable': True,

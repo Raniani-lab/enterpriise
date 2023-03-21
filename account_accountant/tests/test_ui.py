@@ -24,6 +24,6 @@ class TestUi(odoo.tests.HttpCase):
         })
         # This tour doesn't work with demo data on runbot
         all_moves = self.env['account.move'].search([('move_type', '!=', 'entry')])
-        all_moves.button_draft()
+        all_moves.filtered(lambda x: x.state != 'draft').button_draft()
         all_moves.with_context(force_delete=True).unlink()
         self.start_tour("/web", 'account_accountant_tour', login="admin")

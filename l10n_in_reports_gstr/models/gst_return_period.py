@@ -1189,7 +1189,8 @@ class L10nInGSTReturnPeriod(models.Model):
             ("date", ">=", self.start_date),
             ("date", "<=", self.end_date),
             ("move_id.state", "=", "posted"),
-            ("company_id", "in", self.company_ids.ids or self.company_id.ids)
+            ("company_id", "in", self.company_ids.ids or self.company_id.ids),
+            ("display_type", "!=", 'rounding')
         ]
         if section_code == "b2b":
             return (

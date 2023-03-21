@@ -24,7 +24,11 @@ class GenerateSimulationLink(models.TransientModel):
     @api.depends('contract_id.available_cars_amount', 'contract_id.max_unused_cars')
     def _compute_show_new_car(self):
         for wizard in self:
-            wizard.show_new_car = wizard.contract_id.available_cars_amount >= wizard.contract_id.max_unused_cars
+            if wizard.env.context.get('active_model') == "hr.applicant":
+                wizard.show_new_car = False
+                wizard.new_car = True
+            else:
+                wizard.show_new_car = wizard.contract_id.available_cars_amount >= wizard.contract_id.max_unused_cars
 
     def _compute_from_contract_id(self):
         super()._compute_from_contract_id()

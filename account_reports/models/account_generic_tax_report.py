@@ -27,9 +27,22 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         options['buttons'].append({'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 80})
-        domain = self._get_amls_with_archived_tags_domain(options)
+
         if not previous_options or not previous_options.get('disable_archived_tag_test'):
-            options['contains_archived_tag'] = bool(self.env['account.move.line'].search(domain, limit=1))
+            tables, where_clause, where_params = report._query_get(options, 'strict_range')
+            self._cr.execute(f"""
+                SELECT 1
+                FROM {tables}
+                JOIN account_account_tag_account_move_line_rel aml_tag
+                    ON account_move_line.id = aml_tag.account_move_line_id
+                JOIN account_account_tag tag
+                    ON aml_tag.account_account_tag_id = tag.id
+                WHERE {where_clause}
+                AND NOT tag.active
+                LIMIT 1
+            """, where_params)
+
+            options['contains_archived_tag'] = bool(self._cr.fetchone())
 
     def _get_dynamic_lines(self, report, options, grouping):
         """ Compute the report lines for the generic tax report.

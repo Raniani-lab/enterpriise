@@ -5,6 +5,7 @@ from collections import defaultdict
 
 from odoo import Command, http, _
 from odoo.http import request
+from odoo.exceptions import UserError
 from odoo.modules.module import get_resource_path
 from odoo.osv import expression
 from odoo.tools import pdf, split_every
@@ -149,16 +150,12 @@ class StockBarcodeController(http.Controller):
         action and action.sudo().write({'params': {'message_demo_barcodes': False}})
 
     @http.route('/stock_barcode/print_inventory_commands', type='http', auth='user')
-    def print_inventory_commands(self):
+    def print_inventory_commands(self, barcode_type=False):
         if not request.env.user.has_group('stock.group_stock_user'):
             return request.not_found()
 
         barcode_pdfs = []
-
-        # get fixed command barcodes
-        file_path = get_resource_path('stock_barcode', 'static/img', 'barcodes_actions.pdf')
-        with file_open(file_path, "rb") as commands_file:
-            barcode_pdfs.append(commands_file.read())
+        Report = request.env['ir.actions.report']
 
         # make sure we use the selected company if possible
         allowed_company_ids = self._get_allowed_company_ids()
@@ -168,22 +165,29 @@ class StockBarcodeController(http.Controller):
                   ('barcode', '!=', ''),
                   ('company_id', 'in', allowed_company_ids)]
 
-        # get picking types barcodes
-        picking_type_ids = request.env['stock.picking.type'].search(domain)
-        Report = request.env['ir.actions.report']
-        for picking_type_batch in split_every(100, picking_type_ids.ids):
-            picking_types_pdf, _ = Report._render_qweb_pdf('stock.action_report_picking_type_label', picking_type_batch)
-            if picking_types_pdf:
-                barcode_pdfs.append(picking_types_pdf)
+        # get fixed command barcodes
+        if barcode_type == 'barcode_commands_and_operation_types':
+            file_path = get_resource_path('stock_barcode', 'static/img', 'barcodes_actions.pdf')
+            with file_open(file_path, "rb") as commands_file:
+                barcode_pdfs.append(commands_file.read())
+
+            # get picking types barcodes
+            picking_type_ids = request.env['stock.picking.type'].search(domain)
+            for picking_type_batch in split_every(112, picking_type_ids.ids):
+                picking_types_pdf, _content_type = Report._render_qweb_pdf('stock.action_report_picking_type_label', picking_type_batch)
+                if picking_types_pdf:
+                    barcode_pdfs.append(picking_types_pdf)
 
         # get locations barcodes
-        if request.env.user.has_group('stock.group_stock_multi_locations'):
+        if barcode_type == 'locations' and request.env.user.has_group('stock.group_stock_multi_locations'):
             locations_ids = request.env['stock.location'].search(domain)
-            for location_ids_batch in split_every(100, locations_ids.ids):
-                locations_pdf, _ = Report._render_qweb_pdf('stock.action_report_location_barcode', location_ids_batch)
+            for location_ids_batch in split_every(112, locations_ids.ids):
+                locations_pdf, _content_type = Report._render_qweb_pdf('stock.action_report_location_barcode', location_ids_batch)
                 if locations_pdf:
                     barcode_pdfs.append(locations_pdf)
 
+        if not barcode_pdfs:
+            raise UserError(_("Barcodes are not available."))
         merged_pdf = pdf.merge_pdf(barcode_pdfs)
 
         pdfhttpheaders = [

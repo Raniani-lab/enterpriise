@@ -13,7 +13,7 @@
                 We have created a few demo data with barcodes for you to explore the features. Print the
                 <a href="/stock_barcode/static/img/barcodes_demo.pdf" target="_blank">stock barcodes sheet</a>
                     to check out what this module can do! You can also print the barcode
-                <a class="o_stock_inventory_commands_download" href="/stock_barcode/print_inventory_commands" target="_blank" aria-label="Download" title="Download">commands for Inventory</a>.
+                <a class="o_stock_inventory_commands_download" href="stock_barcode/print_inventory_commands?barcode_type=barcode_commands_and_operation_types" target="_blank" aria-label="Download" title="Download">commands and operation types</a>.
             </div>
 
             <div class="o_stock_barcode_container position-relative d-inline-block mt-4 mb-5">

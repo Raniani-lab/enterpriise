@@ -12,7 +12,7 @@
     'data': [
         'security/ir.model.access.csv',
 
-        'data/3.3/cfdi.xml',
+        'data/4.0/cfdi.xml',
         'data/product_data.xml',
         'data/uom_uom_data.xml',
 
@@ -30,6 +30,7 @@
     ],
     'demo': [
         'demo/demo_cfdi.xml',
+        'demo/res_partner.xml',
     ],
     'installable': True,
     'post_init_hook': 'post_init_hook',

@@ -76,5 +76,6 @@ class AccountEdiFormat(models.Model):
                 'ext_trade_delivery_partner': invoice.partner_shipping_id,
                 'ext_trade_customer_reg_trib': customer.vat,
                 'customer_fiscal_residence': customer_fiscal_residence,
+                'l10n_mx_edi_external_trade_type': invoice.l10n_mx_edi_external_trade_type or '01',
             })
         return vals

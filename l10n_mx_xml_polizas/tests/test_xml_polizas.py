@@ -6,7 +6,7 @@ from freezegun import freeze_time
 
 from odoo.tests import tagged
 from odoo.addons.account_reports.tests.test_general_ledger_report import TestAccountReportsCommon
-from odoo.addons.l10n_mx_edi_40.tests.common import TestMxEdiCommon
+from odoo.addons.l10n_mx_edi.tests.common import TestMxEdiCommon
 
 @tagged('post_install', 'post_install_l10n', '-at_install')
 class AccountXmlPolizasWizard(TestMxEdiCommon, TestAccountReportsCommon):

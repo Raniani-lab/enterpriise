@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields
+from odoo.addons.l10n_mx_edi.models.account_move import USAGE_SELECTION
 
 
 class PosOrder(models.Model):
@@ -11,30 +12,7 @@ class PosOrder(models.Model):
     )
 
     l10n_mx_edi_usage = fields.Selection(
-        selection=[
-            ('G01', 'Acquisition of merchandise'),
-            ('G02', 'Returns, discounts or bonuses'),
-            ('G03', 'General expenses'),
-            ('I01', 'Constructions'),
-            ('I02', 'Office furniture and equipment investment'),
-            ('I03', 'Transportation equipment'),
-            ('I04', 'Computer equipment and accessories'),
-            ('I05', 'Dices, dies, molds, matrices and tooling'),
-            ('I06', 'Telephone communications'),
-            ('I07', 'Satellite communications'),
-            ('I08', 'Other machinery and equipment'),
-            ('D01', 'Medical, dental and hospital expenses.'),
-            ('D02', 'Medical expenses for disability'),
-            ('D03', 'Funeral expenses'),
-            ('D04', 'Donations'),
-            ('D05', 'Real interest effectively paid for mortgage loans (room house)'),
-            ('D06', 'Voluntary contributions to SAR'),
-            ('D07', 'Medical insurance premiums'),
-            ('D08', 'Mandatory School Transportation Expenses'),
-            ('D09', 'Depositsamically display the fiscal_regime when the country selec in savings accounts, premiums based on pension plans.'),
-            ('D10', 'Payments for educational services (Colegiatura)'),
-            ('S01', "Without fiscal effects"),
-        ],
+        selection=USAGE_SELECTION,
         string="Usage",
         default='G01',
         help="The code that corresponds to the use that will be made of the receipt by the recipient.",

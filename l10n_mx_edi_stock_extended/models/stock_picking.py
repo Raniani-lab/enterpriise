@@ -3,6 +3,9 @@
 from odoo import models, fields, _
 from odoo.exceptions import UserError
 
+from .product_template import MX_PACKAGING_CATALOG
+
+
 class Picking(models.Model):
     _inherit = 'stock.picking'
 
@@ -24,3 +27,6 @@ class Picking(models.Model):
     def _l10n_mx_edi_check_comex_availability(self):
         if self.filtered(lambda p: not p.partner_id.zip or not p.partner_id.state_id):
             raise UserError(_('A zip code and state are required to generate a delivery guide'))
+
+    def _l10n_mx_edi_get_packaging_desc(self, code):
+        return dict(MX_PACKAGING_CATALOG).get(code, None)

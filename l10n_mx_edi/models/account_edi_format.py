@@ -31,6 +31,28 @@ class AccountEdiFormat(models.Model):
     # CFDI: Helpers
     # -------------------------------------------------------------------------
 
+    def _l10n_mx_edi_clean_to_legal_name(self, name):
+        """
+        We remove the most common 'denominación'/'razón social' as they are never in the official name:
+            Company S. en C.
+            Company S. de R.L.
+            Company S.A.
+            Company S. en C. por A.
+            Company S. C. L.
+            Company S. C. L. (limitada)
+            Company S. C. S.
+            Company S. C. S. (suplementada)
+            Company S.A.S.
+            Company SA de CV
+
+        It will not match:
+            Company de CV
+            Company SAS de cv
+        """
+        BUSINESS_NAME_RE = r"(?i:\s+(s\.?\s?(a\.?)( de c\.?v\.?|)|(s\.?\s?(a\.?s\.?)|s\.? en c\.?( por a\.?)?|s\.?\s?c\.?\s?(l\.?(\s?\(?limitada)?\)?|s\.?(\s?\(?suplementada\)?)?)|s\.? de r\.?l\.?)))\s*$"
+        res = re.sub(BUSINESS_NAME_RE, "", name).upper()
+        return res
+
     @api.model
     def _l10n_mx_edi_get_serie_and_folio(self, move):
         name_numbers = list(re.finditer('\d+', move.name))
@@ -123,7 +145,7 @@ class AccountEdiFormat(models.Model):
     @api.model
     def _l10n_mx_edi_get_invoice_attachment(self, res_model, res_id):
         return self.env['ir.attachment'].search([
-            ('name', 'like', '%-MX-Invoice-3.3.xml'),
+            ('name', 'like', '%-MX-Invoice-4.0.xml'),
             ('res_model', '=', res_model),
             ('res_id', '=', res_id)], limit=1, order='create_date desc')
 
@@ -161,6 +183,7 @@ class AccountEdiFormat(models.Model):
 
         customer = move.partner_id if move.partner_id.type == 'invoice' else move.partner_id.commercial_partner_id
         supplier = move.company_id.partner_id.commercial_partner_id
+        issued_address = move._get_l10n_mx_edi_issued_address()
 
         if not customer:
             customer_rfc = False
@@ -179,7 +202,7 @@ class AccountEdiFormat(models.Model):
             origin_type = None
             origin_uuids = []
 
-        return {
+        res = {
             **self._l10n_mx_edi_get_serie_and_folio(move),
             'certificate': certificate,
             'certificate_number': certificate.serial_number,
@@ -194,7 +217,24 @@ class AccountEdiFormat(models.Model):
             'origin_uuids': origin_uuids,
             'format_string': _format_string_cfdi,
             'format_float': _format_float_cfdi,
+            'fiscal_regime': customer.l10n_mx_edi_fiscal_regime or '616',
+            'tax_objected': move._l10n_mx_edi_get_tax_objected(),
+            'supplier_name': self._l10n_mx_edi_clean_to_legal_name(move.company_id.name),
+            'customer_name': self._l10n_mx_edi_clean_to_legal_name(move.commercial_partner_id.name),
+            'domicilio_fiscal_receptor': customer.zip if customer.country_id.code == 'MX' else issued_address.zip or supplier.zip,
+            'uso_cfdi': move.l10n_mx_edi_usage,
         }
+
+        if move.l10n_mx_edi_cfdi_to_public:
+            res.update({
+                'customer_rfc': "XAXX010101000",
+                'customer_name': "“PUBLICO EN GENERAL”",
+                'fiscal_regime': '616',
+                'uso_cfdi': 'S01',
+                'domicilio_fiscal_receptor': issued_address.zip or supplier.zip,
+            })
+
+        return res
 
     # -------------------------------------------------------------------------
     # CFDI Generation: Invoices
@@ -395,7 +435,7 @@ class AccountEdiFormat(models.Model):
         return cfdi_values
 
     def _l10n_mx_edi_get_invoice_templates(self):
-        return 'l10n_mx_edi.cfdiv33', 'cfdv33.xsd'
+        return 'l10n_mx_edi.cfdiv40', 'cfdv40.xsd'
 
     def _l10n_mx_edi_export_invoice_cfdi(self, invoice):
         ''' Create the CFDI attachment for the invoice passed as parameter.
@@ -659,7 +699,7 @@ class AccountEdiFormat(models.Model):
         return cfdi_values
 
     def _l10n_mx_edi_get_payment_template(self):
-        return 'l10n_mx_edi.payment10'
+        return 'l10n_mx_edi.payment20'
 
     def _l10n_mx_edi_export_payment_cfdi(self, move):
         ''' Create the CFDI attachment for the journal entry passed as parameter being a payment used to pay some
@@ -1212,7 +1252,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             })
 
         # == Create the attachment ==
-        cfdi_filename = ('%s-%s-MX-Invoice-3.3.xml' % (invoice.journal_id.code, invoice.name)).replace('/', '')
+        cfdi_filename = ('%s-%s-MX-Invoice-4.0.xml' % (invoice.journal_id.code, invoice.name)).replace('/', '')
         cfdi_attachment = self.env['ir.attachment'].create({
             'name': cfdi_filename,
             'res_id': invoice.id,
@@ -1278,7 +1318,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
 
         # == Create the attachment ==
         cfdi_signed = res['cfdi_signed'] if res['cfdi_encoding'] == 'base64' else base64.encodebytes(res['cfdi_signed'])
-        cfdi_filename = f'{payment.journal_id.code}-{payment.name}-MX-Payment-10.xml'.replace('/', '')
+        cfdi_filename = f'{payment.journal_id.code}-{payment.name}-MX-Payment-20.xml'.replace('/', '')
         cfdi_attachment = self.env['ir.attachment'].create({
             'name': cfdi_filename,
             'res_id': payment.id,

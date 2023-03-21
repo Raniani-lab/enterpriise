@@ -6,7 +6,7 @@
     'category': 'Accounting/Localizations/EDI',
     'depends': [
         'sale',
-        'l10n_mx_edi_40',
+        'l10n_mx_edi',
     ],
     'data': [
         'views/sale_order_view.xml',

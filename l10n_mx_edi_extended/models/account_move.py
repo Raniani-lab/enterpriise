@@ -18,6 +18,15 @@ class AccountMove(models.Model):
         compute='_compute_l10n_mx_edi_external_trade',
         help="If this field is active, the CFDI that generates this invoice will include the complement "
              "'External Trade'.")
+    l10n_mx_edi_external_trade_type = fields.Selection(
+        selection=[
+            ('02', 'Definitive'),
+            ('03', 'Temporary'),
+        ],
+        string="External Trade",
+        readonly=False, store=True,
+        compute='_compute_l10n_mx_edi_external_trade_type',
+        help="If this field is 02, the CFDI will include the complement.")
 
     def _auto_init(self):
         """
@@ -29,6 +38,8 @@ class AccountMove(models.Model):
             # _compute_l10n_mx_edi_external_trade uses res_partner.l10n_mx_edi_external_trade,
             # which is a new field in this module hence all values set to False.
             self.env.cr.execute("UPDATE account_move set l10n_mx_edi_external_trade=FALSE;")
+        if not column_exists(self.env.cr, 'account_move', 'l10n_mx_edi_external_trade_type'):
+            create_column(self.env.cr, 'account_move', 'l10n_mx_edi_external_trade_type', 'varchar')
         return super()._auto_init()
 
     def _get_l10n_mx_edi_issued_address(self):
@@ -76,14 +87,15 @@ class AccountMove(models.Model):
 
         return vals
 
-    @api.depends('partner_id')
+    @api.depends('l10n_mx_edi_external_trade_type')
     def _compute_l10n_mx_edi_external_trade(self):
         for move in self:
-            if move.l10n_mx_edi_cfdi_request == 'on_invoice':
-                move.l10n_mx_edi_external_trade = move.partner_id.l10n_mx_edi_external_trade
-            else:
-                move.l10n_mx_edi_external_trade = False
+            move.l10n_mx_edi_external_trade = move.l10n_mx_edi_external_trade_type == '02'
 
+    @api.depends('partner_id', 'partner_id.l10n_mx_edi_external_trade_type')
+    def _compute_l10n_mx_edi_external_trade_type(self):
+        for move in self:
+            move.l10n_mx_edi_external_trade_type = move.partner_id.l10n_mx_edi_external_trade_type
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"

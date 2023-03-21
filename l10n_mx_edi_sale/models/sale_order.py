@@ -16,7 +16,7 @@ class SaleOrder(models.Model):
     )
 
     l10n_mx_edi_usage = fields.Selection(
-        selection=USAGE_SELECTION + [('S01', "Without fiscal effects")],
+        selection=USAGE_SELECTION,
         string="Usage",
         default='S01',
         help="The code that corresponds to the use that will be made of the receipt by the recipient.",

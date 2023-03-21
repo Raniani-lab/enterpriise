@@ -20,6 +20,8 @@
         'data/cfdi_cartaporte.xml',
         'views/stock_picking_views.xml',
         'views/report_deliveryslip.xml',
+        'views/product_views.xml',
+        'views/vehicle_views.xml',
     ],
     'installable': True,
     'auto_install': True,

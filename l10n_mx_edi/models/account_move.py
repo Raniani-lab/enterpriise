@@ -15,8 +15,8 @@ from pytz import timezone
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-CFDI_XSLT_CADENA = 'l10n_mx_edi/data/3.3/cadenaoriginal.xslt'
-CFDI_XSLT_CADENA_TFD = 'l10n_mx_edi/data/xslt/3.3/cadenaoriginal_TFD_1_1.xslt'
+CFDI_XSLT_CADENA = 'l10n_mx_edi/data/4.0/xslt/cadenaoriginal.xslt'
+CFDI_XSLT_CADENA_TFD = 'l10n_mx_edi/data/4.0/xslt/cadenaoriginal_TFD.xslt'
 USAGE_SELECTION = [
     ('G01', 'Acquisition of merchandise'),
     ('G02', 'Returns, discounts or bonuses'),
@@ -39,7 +39,7 @@ USAGE_SELECTION = [
     ('D08', 'Mandatory School Transportation Expenses'),
     ('D09', 'Deposits in savings accounts, premiums based on pension plans.'),
     ('D10', 'Payments for educational services (Colegiatura)'),
-    ('P01', 'To define (CFDI 3.3 only)'),
+    ('S01', "Without fiscal effects"),
 ]
 
 
@@ -73,8 +73,8 @@ class AccountMove(models.Model):
     l10n_mx_edi_usage = fields.Selection(
         selection=USAGE_SELECTION,
         string="Usage",
-        default='P01',
-        help="Used in CFDI 3.3 to express the key to the usage that will gives the receiver to this invoice. This "
+        default='S01',
+        help="Used in CFDI to express the key to the usage that will gives the receiver to this invoice. This "
              "value is defined by the customer.\nNote: It is not cause for cancellation if the key set is not the usage "
              "that will give the receiver of the document.")
     l10n_mx_edi_origin = fields.Char(
@@ -133,6 +133,10 @@ class AccountMove(models.Model):
     l10n_mx_edi_payment_policy = fields.Selection(string='Payment Policy',
         selection=[('PPD', 'PPD'), ('PUE', 'PUE')],
         compute='_compute_l10n_mx_edi_payment_policy')
+    l10n_mx_edi_cfdi_to_public = fields.Boolean(
+        string="CFDI to public",
+        help="Send the CFDI with recipient 'publico en general'",
+    )
 
     def _auto_init(self):
         """
@@ -159,7 +163,20 @@ class AccountMove(models.Model):
         return self.company_id.partner_id.commercial_partner_id
 
     def _l10n_mx_edi_get_tax_objected(self):
-        return '02'
+        """Used to determine the IEPS tax breakdown in CFDI
+             01 - Used by foreign partners not subject to tax
+             02 - Default for MX partners. Splits IEPS taxes
+             03 - Special override when IEPS split / Taxes are not required"""
+        self.ensure_one()
+        customer = self.partner_id if self.partner_id.type == 'invoice' else self.partner_id.commercial_partner_id
+        if customer.l10n_mx_edi_no_tax_breakdown:
+            return '03'
+        elif (self.move_type in self.get_invoice_types() and not self.invoice_line_ids.tax_ids) or \
+             (self.move_type == 'entry' and not self._get_reconciled_invoices().invoice_line_ids.tax_ids):
+            # the invoice has no taxes OR for payments and bank statement lines, the reconciled invoices have no taxes
+            return '01'
+        else:
+            return '02'
 
     def _l10n_mx_edi_decode_cfdi(self, cfdi_data=None):
         ''' Helper to extract relevant data from the CFDI to be used, for example, when printing the invoice.

@@ -27,8 +27,8 @@ This module allows the creation of the EDI documents and the communication with 
         'security/ir.model.access.csv',
         'security/l10n_mx_edi_certificate.xml',
 
-        'data/3.3/cfdi.xml',
-        'data/3.3/payment10.xml',
+        'data/4.0/cfdi.xml',
+        'data/4.0/payment20.xml',
         'data/account_edi_data.xml',
         'data/l10n_mx_edi_payment_method_data.xml',
         'data/ir_cron.xml',
@@ -55,6 +55,7 @@ This module allows the creation of the EDI documents and the communication with 
     'demo': [
         'demo/demo_cfdi.xml',
         'demo/demo_addenda.xml',
+        'demo/res_partner.xml',
     ],
     'post_init_hook': 'post_init_hook',
     'installable': True,

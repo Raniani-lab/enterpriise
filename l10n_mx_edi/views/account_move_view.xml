@@ -34,11 +34,18 @@
                 <xpath expr="//field[@name='ref']" position="after">
                     <field name="l10n_mx_edi_payment_method_id"
                            attrs="{'readonly': [('state', '!=', 'draft')], 'invisible': [('l10n_mx_edi_cfdi_request', '=', False)]}"/>
-                    <field name="l10n_mx_edi_payment_policy" 
+                    <field name="l10n_mx_edi_payment_policy"
                         attrs="{'invisible': [('l10n_mx_edi_cfdi_request', '=', False)]}"/>
                     <field name="l10n_mx_edi_usage"
                            attrs="{'readonly':[('state', '!=', 'draft')], 'invisible': [('l10n_mx_edi_cfdi_request', '=', False)]}"/>
                 </xpath>
+
+                <!-- Publico General -->
+                <xpath expr="//label[@for='invoice_date']" position="before">
+                    <field name="l10n_mx_edi_cfdi_to_public"
+                        attrs="{'invisible': [('l10n_mx_edi_cfdi_request', 'not in', ('on_invoice', 'on_refund'))]}"/>
+                </xpath>
+
             </field>
         </record>
     </data>

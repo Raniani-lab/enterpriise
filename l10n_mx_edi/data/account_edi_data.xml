@@ -3,7 +3,7 @@
     <data>
 
         <record id="edi_cfdi_3_3" model="account.edi.format">
-            <field name="name">CFDI (3.3)</field>
+            <field name="name">CFDI (4.0)</field>
             <field name="code">cfdi_3_3</field>
         </record>
 

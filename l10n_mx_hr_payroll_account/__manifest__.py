@@ -11,7 +11,7 @@
 Accounting Data for Mexico Payroll Rules
 ============================================
     """,
-    'depends': ['hr_payroll_account', 'l10n_mx', 'l10n_mx_hr_payroll', 'l10n_mx_edi_40'],
+    'depends': ['hr_payroll_account', 'l10n_mx', 'l10n_mx_hr_payroll', 'l10n_mx_edi'],
     'data': [
         'data/l10n_mx_hr_payroll_account_data.xml',
     ],

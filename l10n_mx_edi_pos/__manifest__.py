@@ -7,7 +7,7 @@
     'description': """
     """,
     'depends': [
-        'l10n_mx_edi_40',
+        'l10n_mx_edi',
         'point_of_sale',
     ],
     'data': [

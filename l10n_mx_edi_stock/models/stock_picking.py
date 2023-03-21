@@ -10,7 +10,7 @@ from werkzeug.urls import url_quote
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 
-CFDI_XSLT_CADENA = 'l10n_mx_edi_stock/data/cadenaoriginal_cartaporte.xslt'
+CFDI_XSLT_CADENA = 'l10n_mx_edi/data/4.0/xslt/cadenaoriginal.xslt'
 ATTACHMENT_NAME = 'CFDI_DeliveryGuide_{}.xml'
 MAPBOX_GEOCODE_URL = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
 MAPBOX_MATRIX_URL = 'https://api.mapbox.com/directions-matrix/v1/mapbox/driving/'
@@ -188,7 +188,7 @@ class Picking(models.Model):
         '''
         combined_xsd_str = '''
         <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-            <xs:import namespace="http://www.sat.gob.mx/cfd/3" schemaLocation="http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd"/>
+            <xs:import namespace="http://www.sat.gob.mx/cfd/4" schemaLocation="http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd"/>
             <xs:import namespace="http://www.sat.gob.mx/CartaPorte20" schemaLocation="http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd"/>
         </xs:schema>
         '''

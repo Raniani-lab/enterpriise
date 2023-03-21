@@ -75,7 +75,7 @@
 
         <xpath expr="//table" position="replace">
             <t t-if="o.move_id.l10n_mx_edi_cfdi_uuid">
-                <t t-set="docs_related" t-value="cfdi_vals.get('cfdi_node') and cfdi_vals['cfdi_node'].Complemento.xpath('//pago10:DoctoRelacionado', namespaces={'pago10': 'http://www.sat.gob.mx/Pagos'})"/>
+                <t t-set="docs_related" t-value="cfdi_vals.get('cfdi_node') and cfdi_vals['cfdi_node'].Complemento.xpath('//pago20:DoctoRelacionado', namespaces={'pago20': 'http://www.sat.gob.mx/Pagos20'})"/>
                 <!-- Section to bank accounts-->
                 <t t-set="vat_em" t-value="docs_related[0].getparent().get('RfcEmisorCtaOrd', '') if docs_related else ''"/>
                 <t t-set="bank_em" t-value="docs_related[0].getparent().get('NomBancoOrdExt', '') if docs_related else ''"/>

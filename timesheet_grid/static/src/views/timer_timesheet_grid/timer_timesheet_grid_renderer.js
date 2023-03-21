@@ -21,7 +21,6 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
         this.timerState = useState(this.getDefaultTimerState());
         this.timesheetUOMService = useService("timesheet_uom");
 
-        useExternalListener(window, "keydown", this.onKeyDown);
         useExternalListener(window, "keyup", this.onKeyUp);
     }
 
@@ -132,6 +131,7 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
     }
 
     /**
+     * @override
      * @param {KeyboardEvent} ev
      */
     onKeyDown(ev) {
@@ -168,6 +168,7 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
                 }
             }
         }
+        super.onKeyDown(ev);
     }
     /**
      * @param {KeyboardEvent} ev

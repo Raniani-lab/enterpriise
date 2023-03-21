@@ -62,8 +62,13 @@ export function useInputHook(params) {
     }
     function onKeydown(ev) {
         const hotkey = getActiveHotkey(ev);
-        if (params.commitChanges && ["enter", "tab", "shift+tab"].includes(hotkey)) {
+        if (params.discard && hotkey === "escape") {
+            params.discard();
+        } else if (params.commitChanges && ["enter", "tab", "shift+tab"].includes(hotkey)) {
             commitChanges();
+        }
+        if (params.onKeyDown) {
+            params.onKeyDown(ev);
         }
     }
 

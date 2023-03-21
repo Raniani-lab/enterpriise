@@ -59,11 +59,8 @@
         <xpath expr="//div[@name='row']" position="before">
             <div t-if="showTimerButton"
                 class="o_grid_row_timer o_grid_highlightable ps-2 ps-md-3 py-2 transition-base"
-                t-att-class="{
-                    'bg-view bg-opacity-50' : isEven and !highlightedState[`row-${row.id}`],
-                    'bg-200 bg-opacity-25' : highlightedState[`row-${row.id}`],
-                 }"
-                t-att-data-state-highlight-triggers="`row-${row.id},timer-${row.id}`"
+                t-att-data-grid-row="rowPosition"
+                t-att-data-grid-column="1"
                 t-attf-style="grid-row: {{rowPosition}}; grid-column: 1;"
             >
                 <GridTimerButtonCell
@@ -103,9 +100,6 @@
     <t t-name="timesheet_grid.TimerGridTotal" t-inherit="web_grid.barChart" owl="1">
         <xpath expr="//div[hasclass('o_grid_bar_chart_total_pill')]" position="after">
             <span t-if="column.grandTotal !== column.model.data.workingHours.daily[column.value]"
-                  t-att-class="{
-                    'opacity-0' : !highlightedState[`column-${column.id}`]
-                  }"
                    class="o_grid_bar_chart_overtime position-absolute top-50 start-50 translate-middle px-2 rounded-pill bg-white fw-bolder text-warning transition-base"
                    title="Daily overtime"> <t t-esc="formatDailyOvertime(column)"/>
             </span>
@@ -113,9 +107,6 @@
         <xpath expr="//div[hasclass('o_grid_row_total') and hasclass('o_grid_column_total')]/div" position="inside">
             <t t-set="weeklyOvertime" t-value="getWeeklyOvertime()"/>
             <span t-if="weeklyOvertime !== 0"
-                  t-att-class="{
-                    'opacity-0' : !(highlightedState['row-total'] || highlightedState[`column-${props.columns.length}`])
-                  }"
                    class="o_grid_bar_chart_overtime position-absolute top-50 start-50 translate-middle px-2 rounded-pill bg-white fw-bolder text-warning transition-base"
                    title="Weekly overtime">
                 <t t-esc="formatWeeklyOvertime(weeklyOvertime)"/>

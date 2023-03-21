@@ -63,9 +63,7 @@ QUnit.module("Grid Cells", (hook) => {
             viewId: false,
         });
 
-        const cells = target.querySelectorAll(
-            ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_row_total,.o_grid_column_total)"
-        );
+        const cells = target.querySelectorAll(".o_grid_row .o_grid_cell_readonly");
         const cell = cells[0];
         await hoverGridCell(cell);
         await nextTick();
@@ -95,9 +93,7 @@ QUnit.module("Grid Cells", (hook) => {
         );
         await editInput(target, ".o_grid_cell input", "09:30");
         assert.strictEqual(
-            target.querySelector(
-                ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_row_total,.o_grid_column_total)"
-            ).textContent,
+            target.querySelector(".o_grid_cell_readonly").textContent,
             "9:30",
             "The edition should be taken into account."
         );

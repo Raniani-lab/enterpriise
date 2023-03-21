@@ -2,10 +2,10 @@
 
 import { registry } from "@web/core/registry";
 import { formatFloatFactor } from "@web/views/fields/formatters";
-import { useMagnifierGlass } from "@web_grid/hooks/grid_cell_hook";
+import { useGridCell, useMagnifierGlass } from "@web_grid/hooks/grid_cell_hook";
 import { standardGridCellProps } from "./grid_cell";
 
-import { Component, useState } from "@odoo/owl";
+import { Component, useRef, useState } from "@odoo/owl";
 
 function formatter(value, options = {}) {
     return formatFloatFactor(value, options);
@@ -19,11 +19,14 @@ export class FloatToggleGridCell extends Component {
     static template = "web_grid.FloatToggleGridCell";
 
     setup() {
-        this.magnifierGlassHook = useMagnifierGlass(this.props);
+        this.rootRef = useRef("root");
+        this.magnifierGlassHook = useMagnifierGlass();
         this.state = useState({
-            edit: this.isEditable(this.props) && this.props.editMode,
+            edit: this.props.editMode,
             invalid: false,
+            cell: null,
         });
+        useGridCell();
     }
 
     get factor() {
@@ -35,18 +38,22 @@ export class FloatToggleGridCell extends Component {
     }
 
     get value() {
-        return this.props.value * this.factor;
+        return (this.state.cell.value || 0) * this.factor;
     }
 
     get formattedValue() {
-        return formatter(this.props.value, {
+        return formatter(this.state.cell.value || 0, {
             digits: this.props.fieldInfo.attrs?.digits || 2,
             factor: this.factor,
         });
     }
 
     isEditable(props = this.props) {
-        return !props.readonly && props.cell?.readonly === false;
+        return (
+            !props.readonly &&
+            this.state.cell?.readonly === false &&
+            !this.state.cell.row.isSection
+        );
     }
 
     onChange() {
@@ -59,14 +66,12 @@ export class FloatToggleGridCell extends Component {
     }
 
     update(value) {
-        this.props.cell.update(value);
-        this.state.edit = false;
-        this.props.onEdit(false);
+        this.state.cell.update(value);
     }
 
     onCellClick() {
-        if (this.isEditable()) {
-            this.state.edit = true;
+        if (this.isEditable() && !this.state.edit) {
+            this.onChange();
             this.props.onEdit(true);
         }
     }

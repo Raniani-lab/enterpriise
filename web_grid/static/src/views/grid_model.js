@@ -215,16 +215,18 @@ export class GridSection extends GridRow {
         super(...arguments);
         this.sectionId = sectionId++;
         this.rows = {};
+        // @deprecated remove me in master
         this.grandTotalPerColumn = {};
         this.isSection = true;
         this.grandTotal = 0;
         this.lastRow = null;
-        this._initializeGrandTotalPerColumn();
     }
 
     /**
      * Initialize the grand total per column to 0 for each column.
      * @private
+     * @deprecated the cells can be used instead
+     * TODO: remove me in master
      */
     _initializeGrandTotalPerColumn() {
         for (const column of this._dataPoint.columnsArray) {
@@ -297,7 +299,7 @@ export class GridSection extends GridRow {
      * @param delta {Number} the delta to apply on the grand totals.
      */
     updateGrandTotal(column, delta) {
-        this.grandTotalPerColumn[column.id] += delta;
+        this.cells[column.id].value += delta;
         this.grandTotal += delta;
     }
 }

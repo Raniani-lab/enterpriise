@@ -16,7 +16,6 @@ import {
 } from "@web/../tests/helpers/utils";
 import { toggleMenuItem, toggleGroupByMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-
 import { hoverGridCell } from "./helpers";
 
 let serverData, target;
@@ -1006,12 +1005,10 @@ QUnit.module("Views", (hooks) => {
             ".o_grid_search_btn",
             "No search button should be displayed in the grid cells."
         );
-        const cells = target.querySelectorAll(
-            ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_row_total,.o_grid_column_total)"
-        );
+        const cells = target.querySelectorAll(".o_grid_row .o_grid_cell_readonly");
         const cell = cells[1];
-        await triggerEvent(cell, null, "mouseover");
-        await click(cell, "button.o_grid_search_btn");
+        await hoverGridCell(cell);
+        await click(target, ".o_grid_cell button.o_grid_search_btn");
     });
 
     QUnit.test("editing a value [REQUIRE FOCUS]", async function (assert) {
@@ -1063,17 +1060,38 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        const cells = target.querySelectorAll(
-            ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_row_total,.o_grid_column_total)"
-        );
+        const cells = target.querySelectorAll(".o_grid_row .o_grid_cell_readonly");
         const cell = cells[0];
-        assert.strictEqual(cell.querySelector("span").textContent, "0:00");
-        await triggerEvent(cell, null, "mouseover");
-        await click(cell, "div.o_grid_cell > div");
-        assert.containsOnce(target, ".o_grid_row.o_grid_highlightable input");
-        await editInput(target, ".o_grid_row.o_grid_highlightable input", "2");
+        assert.strictEqual(cell.textContent, "0:00");
+        await hoverGridCell(cell);
+        assert.containsOnce(
+            target,
+            ".o_grid_cell",
+            "The GridCell component should be mounted on the grid cell hovered."
+        );
+        const gridCellComponentEl = target.querySelector(".o_grid_cell");
+        const gridCell = cell.closest(".o_grid_row");
+        assert.strictEqual(
+            gridCellComponentEl.style["grid-row"],
+            gridCell.style["grid-row"],
+            "The GridCell component should be mounted in the same cell than the one hovered in the grid view."
+        );
+        assert.strictEqual(
+            gridCellComponentEl.style["grid-column"],
+            gridCell.style["grid-column"],
+            "The GridCell component should be mounted in the same cell than the one hovered in the grid view."
+        );
+        assert.strictEqual(
+            gridCellComponentEl.style["z-index"],
+            "1",
+            "The GridCell component should be mounted in the same cell than the one hovered in the grid view."
+        );
+        await click(target, ".o_grid_cell");
         await nextTick();
-        assert.strictEqual(cell.querySelector("span").textContent, "2:00");
+        assert.containsOnce(target, ".o_grid_cell input");
+        await editInput(target, ".o_grid_cell input", "2");
+        await nextTick();
+        assert.strictEqual(cell.textContent, "2:00");
     });
 
     QUnit.test("hide row total", async function (assert) {
@@ -1187,15 +1205,14 @@ QUnit.module("Views", (hooks) => {
             );
         }
 
-        const cells = target.querySelectorAll(
-            ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_row_total,.o_grid_column_total)"
-        );
+        const cells = target.querySelectorAll(".o_grid_row .o_grid_cell_readonly");
         const cell = cells[0];
-        assert.strictEqual(cell.querySelector("span").textContent, "0:00");
-        await triggerEvent(cell, null, "mouseover");
-        await click(cell, "div.o_grid_cell > div");
-        assert.containsOnce(target, ".o_grid_row.o_grid_highlightable input");
-        await editInput(target, ".o_grid_row.o_grid_highlightable input", "2");
+        assert.strictEqual(cell.textContent, "0:00");
+        await hoverGridCell(cell);
+        await click(target, ".o_grid_cell");
+        await nextTick();
+        assert.containsOnce(target, ".o_grid_cell input");
+        await editInput(target, ".o_grid_cell input", "2");
         assert.containsN(
             target,
             ".o_grid_bar_chart_total_pill",
@@ -1230,25 +1247,23 @@ QUnit.module("Views", (hooks) => {
             ".o_grid_row.o_grid_highlightable.bg-200",
             "No cell should be highlighted"
         );
-        const cells = target.querySelectorAll(
-            ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_row_total,.o_grid_column_total)"
-        );
+        const cells = target.querySelectorAll(".o_grid_row .o_grid_cell_readonly");
         const cell = cells[0];
-        await triggerEvent(cell, null, "mouseover");
+        await hoverGridCell(cell);
         assert.containsN(
             target,
-            ".o_grid_row.o_grid_highlightable.bg-200",
+            ".o_grid_row.o_grid_highlightable.o_grid_highlighted.o_grid_row_highlighted",
             8,
             "8 cells should be highlighted (the cells in the same rows (title row included))"
         );
         assert.containsOnce(
             target,
-            ".o_grid_row_total.bg-dark.text-bg-dark",
+            ".o_grid_row_total.o_grid_highlighted.o_grid_row_highlighted",
             "The row total should also be highlighted"
         );
         assert.containsOnce(
             target,
-            ".o_grid_column_title.bg-opacity-0",
+            ".o_grid_column_title.o_grid_highlighted",
             "The column title in the same column then the cell hovered should be highlighted"
         );
     });
@@ -1588,27 +1603,25 @@ QUnit.module("Views", (hooks) => {
                 }
             },
         });
-        const cells = target.querySelectorAll(
-            ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_row_total,.o_grid_column_total)"
-        );
+        const cells = target.querySelectorAll(".o_grid_row .o_grid_cell_readonly");
         let cell = cells[0];
-        await triggerEvent(cell, null, "mouseover");
-        assert.containsOnce(target, ".o_grid_search_btn");
+        await hoverGridCell(cell);
+        assert.containsOnce(target, ".o_grid_cell .o_grid_search_btn");
         assert.containsNone(
             target,
             ".o_grid_cell.o_field_cursor_disabled",
             "The cell should not be in readonly"
         );
-        await triggerEvent(cell, null, "mouseout");
+        await triggerEvent(target, ".o_grid_cell", "mouseout");
         cell = cells[1];
-        await triggerEvent(cell, null, "mouseover");
-        assert.containsOnce(target, ".o_grid_search_btn");
+        await hoverGridCell(cell);
+        assert.containsOnce(target, ".o_grid_cell .o_grid_search_btn");
         assert.containsOnce(
             target,
             ".o_grid_cell.o_field_cursor_disabled",
             "The cell should be in readonly since at least one timesheet is validated in that cell"
         );
-        await click(cell, "button.o_grid_search_btn");
+        await click(target, "button.o_grid_search_btn");
     });
 
     QUnit.test(

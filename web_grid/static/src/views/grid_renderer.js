@@ -12,7 +12,15 @@ import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
 
 import { GridComponent } from "@web_grid/components/grid_cell";
 
-import { Component, markup, useState, onWillUpdateProps, useExternalListener } from "@odoo/owl";
+import {
+    Component,
+    markup,
+    useState,
+    onWillUpdateProps,
+    reactive,
+    useRef,
+    useExternalListener,
+} from "@odoo/owl";
 
 export class GridRenderer extends Component {
     static components = {
@@ -48,20 +56,41 @@ export class GridRenderer extends Component {
     };
 
     setup() {
+        this.rendererRef = useRef("renderer");
         this.actionService = useService("action");
-        this.highlightedState = useState(this.getDefaultState(this.props.model.data));
         this.editionState = useState({
             hoveredCellInfo: false,
             editedCellInfo: false,
         });
         this.hoveredElement = null;
+        const fieldInfo = this.props.model.fieldsInfo[this.props.model.measureFieldName];
+        this.hoveredCellProps = {
+            // props cell hovered
+            reactive: reactive({ cell: null }),
+            fieldInfo,
+            readonly: !this.props.isEditable,
+            openRecords: this.openRecords.bind(this),
+            editMode: false,
+            onEdit: this.onEditCell.bind(this),
+            getCell: this.getCell.bind(this),
+        };
+        this.editCellProps = {
+            // props for cell in edit mode
+            reactive: reactive({ cell: null }),
+            fieldInfo,
+            readonly: !this.props.isEditable,
+            openRecords: this.openRecords.bind(this),
+            editMode: true,
+            onEdit: this.onEditCell.bind(this),
+            getCell: this.getCell.bind(this),
+            onKeyDown: this.onCellKeydown.bind(this),
+        };
         this.isEditing = false;
         onWillUpdateProps(this.onWillUpdateProps);
         this.onMouseOver = useDebounced(this._onMouseOver, 10);
         this.onMouseOut = useDebounced(this._onMouseOut, 10);
-        const field = this.props.model.fieldsInfo[this.props.model.measureFieldName];
         const measureFieldWidget = this.props.widgetPerFieldName[this.props.model.measureFieldName];
-        const widgetName = measureFieldWidget || field.type;
+        const widgetName = measureFieldWidget || fieldInfo.type;
         this.gridCell = registry.category("grid_components").get(widgetName);
         this.virtualRows = useVirtual({
             getItems: () => this.props.rows,
@@ -70,6 +99,11 @@ export class GridRenderer extends Component {
             getItemHeight: (item) => this.getItemHeight(item),
         });
         useExternalListener(window, "click", this.onClick);
+        useExternalListener(window, "keydown", this.onKeyDown);
+    }
+
+    getCell(rowId, columnId) {
+        return this.props.model.data.rows[rowId]?.cells[columnId];
     }
 
     getItemHeight(item) {
@@ -113,31 +147,19 @@ export class GridRenderer extends Component {
         );
     }
 
-    onWillUpdateProps(nextProps) {
-        for (const key of Object.keys(this.highlightedState)) {
-            delete this.highlightedState[key];
-        }
-        Object.assign(this.highlightedState, this.getDefaultState(nextProps.model.data));
-    }
+    onWillUpdateProps(nextProps) {}
 
     formatValue(value) {
         return this.gridCell.formatter(value);
     }
 
+    /**
+     * @deprecated
+     * TODO: [XBO] remove me in master
+     * @param {*} data
+     */
     getDefaultState(data) {
-        const res = {};
-
-        for (const sectionId of Object.keys(data.sections)) {
-            res[`section-${sectionId}`] = false;
-        }
-        for (const rowId of Object.keys(data.rows)) {
-            res[`row-${rowId}`] = false;
-        }
-        for (const columnId of Object.keys(data.columns)) {
-            res[`column-${columnId}`] = false;
-        }
-        res["row-total"] = false;
-        return res;
+        return {};
     }
 
     get rowsCount() {
@@ -219,23 +241,56 @@ export class GridRenderer extends Component {
             // We are not in an element that should trigger a highlight.
             return;
         }
-        const stateHighlightTriggers =
-            highlightableElement.dataset.stateHighlightTriggers.split(",");
-        for (const stateHighlightTrigger of stateHighlightTriggers) {
-            if (!this.highlightedState[stateHighlightTrigger]) {
-                this.highlightedState[stateHighlightTrigger] = true;
+        const { column, gridRow, gridColumn, row } = highlightableElement.dataset;
+        const isCellInColumnTotalHighlighted =
+            highlightableElement.classList.contains("o_grid_row_total");
+        const elementsToHighlight = this.rendererRef.el.querySelectorAll(
+            `.o_grid_highlightable[data-grid-row="${gridRow}"], .o_grid_highlightable[data-grid-column="${gridColumn}"]:not(.o_grid_row_title${
+                isCellInColumnTotalHighlighted ? ",.o_grid_row_total" : ""
+            })`
+        );
+        for (const node of elementsToHighlight) {
+            node.classList.add("o_grid_highlighted");
+            if (node.dataset.gridRow === gridRow) {
+                if (node.dataset.gridColumn === gridColumn) {
+                    node.classList.add("o_grid_cell_highlighted");
+                } else {
+                    node.classList.add("o_grid_row_highlighted");
+                }
             }
         }
-        this.editionState.hoveredCellInfo = highlightableElement.dataset.stateHighlightTriggers;
         this.hoveredElement = highlightableElement;
+        const cell = this.editCellProps.reactive.cell;
+        if (
+            row &&
+            column &&
+            !(cell && cell.dataset.row === row && cell.dataset.column === column)
+        ) {
+            this.hoveredCellProps.reactive.cell = highlightableElement;
+        }
     }
 
+    /**
+     * Mouse out handler
+     *
+     * @param {MouseEvent} ev
+     */
     _onMouseOut(ev) {
         if (!this.hoveredElement) {
             // If hoveredElement is not set this means were not in a o_grid_highlightable. So ignore it.
             return;
         }
+        /** @type {HTMLElement | null} */
         let relatedTarget = ev.relatedTarget;
+        const gridCell = relatedTarget?.closest(".o_grid_cell");
+        if (
+            gridCell &&
+            gridCell.dataset.gridRow === this.hoveredElement.dataset.gridRow &&
+            gridCell.dataset.gridColumn === this.hoveredElement.dataset.gridColumn &&
+            gridCell !== this.editCellProps.reactive.cell
+        ) {
+            return;
+        }
         while (relatedTarget) {
             // Go up the parent chain
             if (relatedTarget === this.hoveredElement) {
@@ -245,20 +300,49 @@ export class GridRenderer extends Component {
             }
             relatedTarget = relatedTarget.parentElement;
         }
-        const stateHighlightTriggers =
-            this.hoveredElement.dataset.stateHighlightTriggers.split(",");
-        for (const stateHighlightTrigger of stateHighlightTriggers) {
-            if (this.highlightedState[stateHighlightTrigger]) {
-                this.highlightedState[stateHighlightTrigger] = false;
-            }
+        const { gridRow, gridColumn } = this.hoveredElement.dataset;
+        const elementsHighlighted = this.rendererRef.el.querySelectorAll(
+            `.o_grid_highlightable[data-grid-row="${gridRow}"], .o_grid_highlightable[data-grid-column="${gridColumn}"]`
+        );
+        for (const node of elementsHighlighted) {
+            node.classList.remove(
+                "o_grid_highlighted",
+                "o_grid_row_highlighted",
+                "o_grid_cell_highlighted"
+            );
         }
-        this.editionState.hoveredCellInfo = false;
         this.hoveredElement = null;
+        if (this.hoveredCellProps.reactive.cell) {
+            this.hoveredCellProps.reactive.cell
+                .querySelector(".o_grid_cell_readonly")
+                .classList.remove("d-none");
+            this.hoveredCellProps.reactive.cell = null;
+        }
     }
 
     onEditCell(value) {
-        this.isEditing = value;
-        this.editionState.editedCellInfo = value && this.editionState.hoveredCellInfo;
+        if (this.editCellProps.reactive.cell) {
+            this.editCellProps.reactive.cell
+                .querySelector(".o_grid_cell_readonly")
+                .classList.remove("d-none");
+        }
+        if (value) {
+            this.editCellProps.reactive.cell = this.hoveredCellProps.reactive.cell;
+            this.hoveredCellProps.reactive.cell = null;
+        } else {
+            this.editCellProps.reactive.cell = null;
+        }
+    }
+
+    _onKeyDown(ev) {
+        const hotkey = getActiveHotkey(ev);
+        if (hotkey === "escape" && this.editCellProps.reactive.cell) {
+            this.onEditCell(false);
+        }
+    }
+
+    onKeyDown(ev) {
+        this._onKeyDown(ev);
     }
 
     /**
@@ -276,14 +360,12 @@ export class GridRenderer extends Component {
      * Handle keydown when cell is edited in the grid view.
      *
      * @param {KeyboardEvent} ev
-     * @param {import("./grid_model").GridCell} cell
+     * @param {import("./grid_model").GridCell | null} cell
      */
     onCellKeydown(ev, cell) {
         const hotkey = getActiveHotkey(ev);
-        if (!["tab", "shift+tab"].includes(hotkey)) {
-            if (hotkey === "escape") {
-                this.editionState.editedCellInfo = false;
-            }
+        if (!this.rendererRef.el || !cell || !["tab", "shift+tab"].includes(hotkey)) {
+            this._onKeyDown(ev);
             return;
         }
         // Purpose: prevent browser defaults
@@ -328,7 +410,11 @@ export class GridRenderer extends Component {
                 }
             }
         }
-        this.editionState.editedCellInfo = `row-${rowId},column-${columnId}`;
+        this.onEditCell(false);
+        this.hoveredCellProps.reactive.cell = this.rendererRef.el.querySelector(
+            `.o_grid_highlightable[data-row="${rowId}"][data-column="${columnId}"]`
+        );
+        this.onEditCell(true);
     }
 
     async openRecords(actionTitle, domain, context) {

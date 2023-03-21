@@ -1006,7 +1006,7 @@ QUnit.module("Views", (hooks) => {
             );
             assert.containsN(
                 target,
-                ".o_grid_bar_chart_container .o_grid_bar_chart_overtime.opacity-0",
+                ".o_grid_bar_chart_container:not(.o_grid_highlighted) .o_grid_bar_chart_overtime",
                 4,
                 "4 overtimes indication should be displayed in 4 cells displaying barchart total should not be visible"
             );
@@ -1014,7 +1014,7 @@ QUnit.module("Views", (hooks) => {
             await nextTick();
             assert.containsOnce(
                 target,
-                ".o_grid_bar_chart_container .o_grid_bar_chart_overtime:not(.opacity-0)",
+                ".o_grid_bar_chart_container.o_grid_highlighted .o_grid_bar_chart_overtime",
                 "The overtime of the total column hovered should be visible"
             );
         }

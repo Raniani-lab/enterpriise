@@ -40,8 +40,14 @@ registry.category("web_tour.tours").add('timesheet_tour', {
     trigger: '.o_grid_view .o_grid_row:not(.o_grid_section).o_grid_cell_today',
     content: _t("Click on the cell to set the number of hours you spent on this project."),
     position: 'bottom',
+    consumeEvent: 'mouseover',
 }, {
-    trigger: '.o_grid_view .o_grid_row:not(.o_grid_section).o_grid_cell_today input',
+    trigger: '.o_grid_view .o_grid_cell',
+    extra_trigger: '.o_grid_view .o_grid_row:not(.o_grid_section).o_grid_cell_today',
+    content: _t("Click on the cell to set the number of hours you spent on this project."),
+    position: 'bottom',
+}, {
+    trigger: '.o_grid_view .o_grid_cell',
     content: Markup(_t('Set the number of hours you spent on this project (e.g. 1:30 or 1.5). <i>Tip: use the tab keys to easily navigate from one cell to another.</i>')),
     position: 'bottom',
     consumeEvent: 'change',

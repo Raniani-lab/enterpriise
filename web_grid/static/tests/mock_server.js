@@ -13,13 +13,17 @@ patch(MockServer.prototype, "web_grid", {
 
     mockGridUpdateCell(modelName, args, kwargs) {
         const [domain, fieldNameToUpdate, value] = args;
-        const recordsFetched = this.mockSearch(modelName, [domain], kwargs);
+        const recordsFetched = this.mockSearchRead(
+            modelName,
+            [domain, [fieldNameToUpdate]],
+            kwargs
+        );
         if (recordsFetched.length > 1) {
             this.mockCopy(modelName, [recordsFetched[0].id, { [fieldNameToUpdate]: value }]);
         } else if (recordsFetched.length === 1) {
             const record = recordsFetched[0];
             this.mockWrite(modelName, [
-                record.id,
+                [record.id],
                 { [fieldNameToUpdate]: record[fieldNameToUpdate] + value },
             ]);
         } else {

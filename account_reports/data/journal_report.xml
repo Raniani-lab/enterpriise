@@ -195,7 +195,7 @@
     </template>
 
     <template id="journal_report_pdf_export_filters" inherit_id="account_reports.pdf_export_filters" primary="True">
-        <xpath expr="//div[hasclass('row')]//div[hasclass('col-4')][2]" position="inside">
+        <xpath expr="//div[@name='filter_info_template_journals']" position="after">
             <div class="col-12">
                 <t t-if="options.get('all_entries')">
                     Posted and Draft Entries

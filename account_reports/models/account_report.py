@@ -4303,7 +4303,8 @@ class AccountReport(models.Model):
             landscape=landscape,
             specific_paperformat_args={
                 'data-report-margin-top': 10,
-                'data-report-header-spacing': 10
+                'data-report-header-spacing': 10,
+                'data-report-margin-bottom': 15,
             }
         )
 

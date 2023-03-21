@@ -401,7 +401,7 @@ class QualityCheck(models.Model):
         for quant in quants:
             vals = shared_vals.copy()
             quantity = quant.quantity - quant.reserved_quantity
-            quantity = self.product_id.uom_id._compute_quantity(quantity, move_uom, rounding_method='HALF-UP')
+            quantity = self.component_id.uom_id._compute_quantity(quantity, move_uom, rounding_method='HALF-UP')
             rounding = quant.product_uom_id.rounding
             if (float_compare(quant.quantity, 0, precision_rounding=rounding) <= 0 or
                     float_compare(quantity, 0, precision_rounding=move_uom.rounding) <= 0):

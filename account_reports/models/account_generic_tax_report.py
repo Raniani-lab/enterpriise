@@ -923,7 +923,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
             domain.append(('date', '<=', options['date']['date_to']))
         return domain
 
-    def action_open_amls_with_archive_tags(self, options, params=None):
+    def action_open_amls_with_archived_tags(self, options, params=None):
         return {
             'name': _("Journal items with archived tax tags"),
             'type': 'ir.actions.act_window',

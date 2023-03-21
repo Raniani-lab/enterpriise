@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
+import { parseFloatTime } from "@web/views/fields/parsers";
 import { formatFloatTime } from "@web/views/fields/formatters";
 import { GridCell } from "./grid_cell";
 
@@ -11,6 +12,10 @@ function formatter(value, options = {}) {
 export class FloatTimeGridCell extends GridCell {
     get formattedValue() {
         return formatter(this.value);
+    }
+
+    parse(value) {
+        return parseFloatTime(value);
     }
 }
 

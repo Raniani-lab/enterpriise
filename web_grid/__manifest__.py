@@ -12,6 +12,8 @@
             'web_grid/static/src/**/*',
         ],
         'web.qunit_suite_tests': [
+            'web_grid/static/tests/helpers.js',
+            'web_grid/static/tests/grid_cells/*',
             'web_grid/static/tests/grid_view_tests.js',
             'web_grid/static/tests/mock_server.js',
         ],

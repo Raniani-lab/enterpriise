@@ -92,7 +92,7 @@ class HelpdeskTicket(models.Model):
             raise UserError(_('No posts associated to this ticket.'))
 
         if len(self.forum_post_ids) > 1:
-            action = self.env['ir.actions.actions']._for_xml_id('website_forum.action_forum_posts')
+            action = self.env['ir.actions.actions']._for_xml_id('website_forum.forum_post_action_forum_main')
             action['domain'] = [('id', 'in', self.forum_post_ids.ids)]
             return action
 

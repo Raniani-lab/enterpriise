@@ -104,15 +104,8 @@
                     </t>
                 </div>
                 <div class="col-12">
-                    <t t-if="options.get('ir_filters') != None">
-                        Filter:
-                        <t t-set="selected_filter_name">None</t>
-                        <t t-foreach="options['ir_filters']" t-as="current_filter">
-                            <t t-if="current_filter['selected']">
-                                <t t-set="selected_filter_name" t-value="current_filter['name']"/>
-                            </t>
-                        </t>
-                        <t t-out="selected_filter_name"/>
+                    <t t-if="options.get('available_horizontal_groups') != None">
+                        <t t-call="account_reports.template_horizontal_group_display"/>
                     </t>
                 </div>
                 <div class="col-12">
@@ -426,6 +419,17 @@
         </span>
     </template>
 
+    <template id="template_horizontal_group_display">
+        Horizontal Group:
+        <t t-set="filter_name">None</t>
+        <t t-foreach="options['available_horizontal_groups']" t-as="horizontal_group">
+            <t t-if="horizontal_group['id'] == options['selected_horizontal_group_id']">
+                <t t-set="filter_name" t-value="horizontal_group['name']"/>
+            </t>
+        </t>
+        <t t-out="filter_name"/>
+    </template>
+
     <template id="main_template_with_filter_input_accounts" inherit_id="account_reports.main_template"  primary="True">
         <xpath expr="//div[hasclass('print_only')]" position="after">
             <div class="o_reports_filter_input_wrapper no_print">
@@ -652,14 +656,7 @@
     <template id="search_template_horizontal_groups">
         <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
             <span class="fa fa-filter"/>
-            Horizontal Group:
-            <t t-set="filter_name">None</t>
-            <t t-foreach="options['available_horizontal_groups']" t-as="horizontal_group">
-                <t t-if="horizontal_group['id'] == options['selected_horizontal_group_id']">
-                    <t t-set="filter_name" t-value="horizontal_group['name']"/>
-                </t>
-            </t>
-            <t t-out="filter_name"/>
+            <t t-call="account_reports.template_horizontal_group_display"/>
         </button>
         <div class="dropdown-menu o_filter_menu" role="menu">
             <a title="None"

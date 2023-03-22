@@ -3,6 +3,7 @@
 
 import uuid
 from odoo import _, api, fields, models, SUPERUSER_ID
+from odoo.tools import html2plaintext
 
 
 class CalendarEvent(models.Model):
@@ -103,3 +104,23 @@ class CalendarEvent(models.Model):
         if self.appointment_type_id and 'active' in init_values and not self.active:
             return self.env.ref('mail.mt_comment')
         return super()._track_subtype(init_values)
+
+    def _get_customer_description(self):
+        # Description should make sense for the person who booked the meeting
+        if self.appointment_type_id:
+            message_confirmation = self.appointment_type_id.message_confirmation or ''
+            contact_details = ''
+            if self.partner_id and (self.partner_id.name or self.partner_id.email or self.partner_id.phone):
+                email_detail_line = _('Email: %(email)s', email=self.partner_id.email) if self.partner_id.email else ''
+                phone_detail_line = _('Phone: %(phone)s', phone=self.partner_id.phone) if self.partner_id.phone else ''
+                contact_details = '\n'.join(line for line in (_('Contact Details:'), self.partner_id.name, email_detail_line, phone_detail_line) if line)
+            return f"{html2plaintext(message_confirmation)}\n\n{contact_details}".strip()
+        return super()._get_customer_description()
+
+    def _get_customer_summary(self):
+        # Summary should make sense for the person who booked the meeting
+        if self.appointment_type_id and self.partner_id:
+            return _('%(appointment_name)s with %(partner_name)s',
+                     appointment_name=self.appointment_type_id.name,
+                     partner_name=self.partner_id.name or _('somebody'))
+        return super()._get_customer_summary()

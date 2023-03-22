@@ -279,6 +279,68 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         self.assertEqual(response.status_code, 404, "Response should be Page Not Found (404)")
 
     @users('apt_manager')
+    def test_customer_event_description(self):
+        """Check calendar file description generation."""
+        appointment_type = self.apt_type_bxls_2days
+        host_user = self.apt_manager
+        host_partner = host_user.partner_id
+
+        message_confirmation = '<p>Please try to be there <strong>5 minutes</strong> before the time.<p><br>Thank you.'
+        host_name = 'Appointment Manager'
+        host_mail = 'manager@appointments.lan'
+        host_phone = '2519475531'
+
+        def _set_values(message=message_confirmation, name=host_name, mail=host_mail, phone=host_phone):
+            appointment_type.message_confirmation = message
+            host_partner.write({
+                'name': name,
+                'email': mail,
+                'phone': phone,
+            })
+        attendee = self.env['res.partner'].sudo().create({
+            'name': 'John Doe',
+        })
+        appointment = self.env['calendar.event'].create({
+            'name': '%s with %s' % (appointment_type.name, attendee.name),
+            'start': datetime.now(),
+            'start_date': datetime.now(),
+            'stop': datetime.now() + timedelta(hours=1),
+            'allday': False,
+            'duration': appointment_type.appointment_duration,
+            'description': "<p>Test</p>",
+            'location': appointment_type.location,
+            'partner_ids': [odoo.Command.link(partner.id) for partner in [attendee, host_partner]],
+            'appointment_type_id': appointment_type.id,
+            'user_id': host_user.id,
+        })
+        # sanity check with a simple test
+        _set_values()
+        self.assertEqual(appointment._get_customer_description(),
+                         'Please try to be there *5 minutes* before the time.\nThank you.\n\n'
+                         'Contact Details:\n'
+                         'Appointment Manager\nEmail: manager@appointments.lan\nPhone: 2519475531')
+        for changes in [{},
+                        {'message': False},
+                        {'name': ''}, {'mail': False}, {'phone': False},
+                        {'name': '', 'mail': False, 'phone': False},
+                        {'message': False, 'name': '', 'mail': False, 'phone': False}]:
+            _set_values(**changes)
+            message = ''
+            details = ''
+            if appointment_type.message_confirmation:
+                message = 'Please try to be there *5 minutes* before the time.\nThank you.\n\n'
+            if host_partner.name or host_partner.email or host_partner.phone:
+                details = '\n'.join(line for line in (
+                    'Contact Details:',
+                    host_partner.name,
+                    f'Email: {host_partner.email}' if host_partner.email else False,
+                    f'Phone: {host_partner.phone}' if host_partner.phone else False)
+                    if line)
+            self.assertEqual(appointment._get_customer_description(), (message + details).strip())
+            self.assertEqual(appointment._get_customer_summary(),
+                             f'{appointment_type.name} with {host_partner.name or "somebody"}')
+
+    @users('apt_manager')
     def test_generate_slots_recurring(self):
         """ Generates recurring slots, check begin and end slot boundaries. """
         apt_type = self.apt_type_bxls_2days.with_user(self.env.user)

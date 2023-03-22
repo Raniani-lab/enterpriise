@@ -11,7 +11,7 @@ from odoo import fields, _
 from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.calendar.controllers.main import CalendarController
 from odoo.http import request, route
-from odoo.tools import html2plaintext, is_html_empty
+from odoo.tools import is_html_empty
 from odoo.tools.misc import get_lang
 
 
@@ -80,13 +80,11 @@ class AppointmentCalendarController(CalendarController):
         locale = get_lang(request.env).code
         day_name = format_func(date_start, 'EEE', locale=locale)
         date_start = f'{day_name} {format_func(date_start, locale=locale)}{date_start_suffix}'
-        # convert_online_event_desc_to_text method for correct data formatting in external calendars
-        details = event.appointment_type_id and event.appointment_type_id.message_confirmation or event.convert_online_event_desc_to_text(event.description) or ''
         params = {
             'action': 'TEMPLATE',
-            'text': event.name,
+            'text': event._get_customer_summary(),
             'dates': f'{url_date_start}/{url_date_stop}',
-            'details': html2plaintext(details.encode('utf-8'))
+            'details': event._get_customer_description(),
         }
         if event.location:
             params.update(location=event.location.replace('\n', ' '))

@@ -4061,7 +4061,7 @@ QUnit.module("documents", {}, function () {
             });
 
             QUnit.test("SearchPanel: can edit folders", async function (assert) {
-                assert.expect(8);
+                assert.expect(7);
 
                 serviceRegistry.add(
                     "user",
@@ -4098,15 +4098,6 @@ QUnit.module("documents", {}, function () {
                     ".o_search_panel_category_value:nth-of-type(1) .o_documents_search_panel_section_edit"
                 );
 
-                // Test deletion on folder
-                patchWithCleanup(kanban.env.services.action, {
-                    doAction(action) {
-                        assert.strictEqual(
-                            action,
-                            "documents.documents_folder_deletion_wizard_action"
-                        );
-                    },
-                });
                 triggerEvent(
                     target,
                     ".o_search_panel_category_value:nth-of-type(2) .o_documents_search_panel_section_edit",
@@ -4116,7 +4107,6 @@ QUnit.module("documents", {}, function () {
                 );
                 await nextTick();
                 assert.containsOnce(target, ".o_search_panel_item_settings_popover");
-                triggerEvent(target, ".o_search_panel_value_edit_delete", "click");
 
                 // Test edition of folder settings
                 patchWithCleanup(kanban.env.services.action, {

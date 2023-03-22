@@ -6,7 +6,6 @@ import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { useService } from "@web/core/utils/hooks";
 import { device } from "web.config";
 import { sprintf } from "web.utils";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 const VALUE_SELECTOR = [".o_search_panel_category_value", ".o_search_panel_filter_value"].join();
 const FOLDER_VALUE_SELECTOR = ".o_search_panel_category_value";
@@ -24,7 +23,6 @@ export class DocumentsSearchPanelItemSettingsPopover extends Component {
         "close", // Function, close the popover
         "createChildEnabled", // Whether we have the option to create a new child or not
         "onCreateChild", // Function, create new child
-        "onDelete", // Function, delete element
         "onEdit", // Function, edit element
     ];
 }
@@ -153,11 +151,6 @@ export class DocumentsSearchPanel extends SearchPanel {
                 this.popoverClose();
                 this.addNewSectionValue(section, value || group);
             },
-            onDelete: () => {
-                this.popoverClose();
-                this.state.showMobileSearch = false;
-                this.removeSectionValue(section, resModel, resId);
-            },
             createChildEnabled: this.supportedNewChildModels.includes(resModel),
         }, {
             onClose: () => {
@@ -218,27 +211,6 @@ export class DocumentsSearchPanel extends SearchPanel {
         }, {
             onClose: this._reloadSearchModel.bind(this, true),
         });
-    }
-
-    async removeSectionValue(section, resModel, resId) {
-        if (resModel !== "documents.folder") {
-            this.dialog.add(ConfirmationDialog, {
-                body: this.env._t("Are you sure you want to delete this record?"),
-                confirm: async () => {
-                    await this.orm.unlink(resModel, [resId]);
-                    await this._reloadSearchModel(resModel === "documents.folder" && !section.enableCounters);
-                }
-            });
-        } else {
-            this.action.doAction("documents.documents_folder_deletion_wizard_action", {
-                additionalContext: {
-                    default_folder_id: resId,
-                },
-                onClose: () => {
-                    this._reloadSearchModel(true).then(this.render.bind(this, true));
-                },
-            });
-        }
     }
 
     //---------------------------------------------------------------------

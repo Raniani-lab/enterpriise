@@ -9,5 +9,17 @@
                 </t>
             </div>
         </xpath>
+        <xpath expr="//div[hasclass('o-mail-AttachmentViewer-navigation')][@aria-label='Previous']" position="attributes">
+            <attribute name="class" add="bg-dark" separator=" "/>
+        </xpath>
+        <xpath expr="//div[hasclass('o-mail-AttachmentViewer-navigation')][@aria-label='Next']" position="attributes">
+            <attribute name="class" add="bg-dark" separator=" "/>
+        </xpath>
+        <xpath expr="//span[hasclass('fa-chevron-left')]" position="attributes">
+            <attribute name="class" add="pe-1 text-white display-6" separator=" "/>
+        </xpath>
+        <xpath expr="//span[hasclass('fa-chevron-right')]" position="attributes">
+            <attribute name="class" add="ps-1 text-white display-6" separator=" "/>
+        </xpath>
     </t>
 </templates>

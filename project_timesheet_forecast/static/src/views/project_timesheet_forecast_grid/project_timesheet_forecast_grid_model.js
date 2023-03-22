@@ -12,6 +12,10 @@ patch(TimesheetGridDataPoint.prototype, "project_timesheet_forecast.TimesheetGri
     _postFetchAdditionalData() {
         const additionalGroups = this._super();
 
+        if (!this.searchParams.context.group_expand || this.navigationInfo.periodEnd <= this.model.today) {
+            return additionalGroups;
+        }
+
         /*
          * The goal of this code is to add records in the grid in order to ease encoding.
          * We will add entries if there are published 'slots' for the current employee, within a defined timeline

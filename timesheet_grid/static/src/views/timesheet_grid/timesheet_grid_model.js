@@ -56,6 +56,9 @@ export class TimesheetGridDataPoint extends GridDataPoint {
      */
     _fetchAdditionalData() {
         const additionalGroups = super._fetchAdditionalData();
+        if (!this.searchParams.context.group_expand || this.navigationInfo.periodEnd <= this.model.today) {
+            return additionalGroups;
+        }
 
         const previouslyTimesheetedDomain = this._getPreviousWeekTimesheetDomain();
 
@@ -134,6 +137,10 @@ export class TimesheetGridDataPoint extends GridDataPoint {
      */
     _postFetchAdditionalData() {
         const additionalGroups = super._postFetchAdditionalData();
+
+        if (!this.searchParams.context.group_expand) {
+            return additionalGroups;
+        }
 
         /*
          * The goal of this code is to add records in the grid in order to ease encoding.

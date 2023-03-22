@@ -2770,9 +2770,14 @@ class AccountReport(models.Model):
             """)
             prefix_params += prefix_where_params
 
+        # Build a map to associate each account with the prefixes it matches
+        accounts_prefix_map = defaultdict(list)
+        self._cr.execute(' UNION ALL '.join(all_prefixes_queries), prefix_params)
+        for prefix, account_id in self._cr.fetchall():
+            accounts_prefix_map[account_id].append(tuple(prefix))
+
         # Run main query
         tables, where_clause, where_params = self._query_get(options, date_scope)
-        where_params = prefix_params + where_params
 
         currency_table_query = self.env['res.currency']._get_query_currency_table(options)
         extra_groupby_sql = f', account_move_line.{current_groupby}' if current_groupby else ''
@@ -2780,19 +2785,15 @@ class AccountReport(models.Model):
         tail_query, tail_params = self._get_engine_query_tail(offset, limit)
 
         query = f"""
-            WITH accounts_by_prefix AS ({' UNION ALL '.join(all_prefixes_queries)})
-
             SELECT
-                accounts_by_prefix.account_id,
-                accounts_by_prefix.prefix,
+                account_move_line.account_id AS account_id,
                 SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS sum,
                 COUNT(account_move_line.id) AS aml_count
                 {extra_select_sql}
             FROM {tables}
-            JOIN accounts_by_prefix ON accounts_by_prefix.account_id = account_move_line.account_id
             JOIN {currency_table_query} ON currency_table.company_id = account_move_line.company_id
             WHERE {where_clause}
-            GROUP BY accounts_by_prefix.prefix,accounts_by_prefix.account_id{extra_groupby_sql}
+            GROUP BY account_move_line.account_id{extra_groupby_sql}
             {tail_query}
         """
         self._cr.execute(query, where_params + tail_params)
@@ -2804,10 +2805,11 @@ class AccountReport(models.Model):
         for query_res in self._cr.dictfetchall():
             # Done this way so that we can run similar code for groupby and non-groupby
             grouping_key = query_res['grouping_key'] if current_groupby else None
-            prefix_key = tuple(query_res['prefix'])
-            res_by_prefix_account_id.setdefault(prefix_key, {})\
-                                    .setdefault(query_res['account_id'], [])\
-                                    .append((grouping_key, {'result': query_res['sum'], 'has_sublines': query_res['aml_count'] > 0}))
+            account_id = query_res['account_id']
+            for prefix_key in accounts_prefix_map[account_id]:
+                res_by_prefix_account_id.setdefault(prefix_key, {})\
+                                        .setdefault(account_id, [])\
+                                        .append((grouping_key, {'result': query_res['sum'], 'has_sublines': query_res['aml_count'] > 0}))
 
         for formula, prefix_details in prefix_details_by_formula.items():
             rslt_key = (formula, formulas_dict[formula])

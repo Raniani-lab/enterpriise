@@ -118,61 +118,43 @@
         </field>
     </record>
 
-    <record id="view_picking_type_form_inherit_stock_barcode" model="ir.ui.view">
-        <field name="name">Operation Types</field>
-        <field name="model">stock.picking.type</field>
-        <field name="inherit_id" ref="stock.view_picking_type_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='warehouse_id']" position="after">
-                <field name="barcode"/>
-            </xpath>
-        </field>
-    </record>
-
     <record id="stock_barcode_view_picking_type_form" model="ir.ui.view">
         <field name="name">Operation Types</field>
         <field name="model">stock.picking.type</field>
         <field name="inherit_id" ref="stock.view_picking_type_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet//group[@name='first']" position="before">
-                <notebook>
-                    <page name="general" string="General">
-                    </page>
-                    <field name="is_barcode_picking_type" invisible="1"/>
-                    <page name="barcode_app" string="Barcode App" invisible="not is_barcode_picking_type">
-                        <group name="restrict_scan_settings" string="Mandatory Scan">
-                            <field name="restrict_scan_source_location" string="Source Location"
-                                    groups="stock.group_stock_multi_locations"
-                                    invisible="code == 'incoming'"/>
-                            <field name="restrict_scan_product" string="Product"/>
-                            <field name="restrict_scan_tracking_number" string="Lot/Serial"
-                                    groups="stock.group_production_lot"/>
-                            <field name="restrict_put_in_pack"
-                                    groups="stock.group_tracking_lot" string="Put in Pack"/>
-                            <field name="restrict_scan_dest_location" string="Destination Location"
-                                    groups="stock.group_stock_multi_locations"
-                                    invisible="code == 'outgoing'"/>
-                        </group>
-                        <field name="show_barcode_validation" invisible="1"/>
-                        <group name="barcode_validation" string="Final Validation" invisible="not show_barcode_validation">
-                            <!-- show_barcode_validation handles combined groups/invisible complexity -->
-                            <field name="barcode_validation_full"
-                                invisible="restrict_scan_product"/>
-                            <field name="barcode_validation_all_product_packed"
-                                    groups="stock.group_tracking_lot"
-                                    invisible="restrict_put_in_pack != 'optional'"/>
-                            <field name="barcode_validation_after_dest_location"
-                                    groups="stock.group_stock_multi_locations"
-                                    invisible="code == 'outgoing' or restrict_scan_dest_location != 'optional'"/>
-                        </group>
-                    </page>
-                </notebook>
-            </xpath>
-            <xpath expr="//page[@name='general']" position="inside">
-                <xpath expr="//sheet//group[@name='first']" position="move"/>
-            </xpath>
-            <xpath expr="//page[@name='general']" position="inside">
-                <xpath expr="//sheet//group[@name='second']" position="move"/>
+            <field name='warehouse_id' position="after">
+                <field name="barcode"/>
+            </field>
+            <xpath expr="//page[@name='hardware']" position="after">
+                <field name="is_barcode_picking_type" invisible="1"/>
+                <page name="barcode_app" string="Barcode App" invisible="not is_barcode_picking_type">
+                    <group name="restrict_scan_settings" string="Mandatory Scan">
+                        <field name="restrict_scan_source_location" string="Source Location"
+                                groups="stock.group_stock_multi_locations"
+                                invisible="code == 'incoming'"/>
+                        <field name="restrict_scan_product" string="Product"/>
+                        <field name="restrict_scan_tracking_number" string="Lot/Serial"
+                                groups="stock.group_production_lot"/>
+                        <field name="restrict_put_in_pack"
+                                groups="stock.group_tracking_lot" string="Put in Pack"/>
+                        <field name="restrict_scan_dest_location" string="Destination Location"
+                                groups="stock.group_stock_multi_locations"
+                                invisible="code == 'outgoing'"/>
+                    </group>
+                    <field name="show_barcode_validation" invisible="1"/>
+                    <group name="barcode_validation" string="Final Validation" invisible="not show_barcode_validation">
+                        <!-- show_barcode_validation handles combined groups/invisible complexity -->
+                        <field name="barcode_validation_full"
+                            invisible="restrict_scan_product"/>
+                        <field name="barcode_validation_all_product_packed"
+                                groups="stock.group_tracking_lot"
+                                invisible="restrict_put_in_pack != 'optional'"/>
+                        <field name="barcode_validation_after_dest_location"
+                                groups="stock.group_stock_multi_locations"
+                                invisible="code == 'outgoing' or restrict_scan_dest_location != 'optional'"/>
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>

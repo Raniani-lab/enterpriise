@@ -475,7 +475,10 @@ export default class BarcodeModel extends EventBus {
         const options = {
             onClose: ev => this._closeValidate(ev)
         };
-        if (action && action.res_model) {
+        if (action && (action.res_model || action.type == "ir.actions.client")) {
+            if (action.type == "ir.actions.client") {
+                action.params = Object.assign(action.params || {}, options)
+            }
             return this.action.doAction(action, options);
         }
         return options.onClose();

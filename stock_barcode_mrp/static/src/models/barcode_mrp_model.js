@@ -13,6 +13,7 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
         this.validateContext = {};
         this.backorderModel = 'mrp.production';
         this.actionName = 'stock_barcode_mrp.stock_barcode_mo_client_action';
+        this.needSourceConfirmation = false;
     }
 
     get printButtons() {
@@ -35,7 +36,6 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
         ];
         return buttons;
     }
-
 
     get barcodeInfo() {
         const barcodeInfo = super.barcodeInfo;

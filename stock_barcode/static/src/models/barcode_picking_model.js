@@ -24,6 +24,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         this.shouldShortenLocationName = true;
         this.actionName = "stock_barcode.stock_barcode_picking_client_action";
         this.backorderModel = 'stock.picking';
+        this.needSourceConfirmation = {};
     }
 
     setData(data) {
@@ -46,7 +47,17 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     createNewLine(params) {
         const product = params.fieldsParams.product_id;
-        if (this.askBeforeNewLinesCreation(product)) {
+        if (this.needSourceConfirmation &&
+            this.needSourceConfirmation[this.location.id]?.[product.id]) {
+            const message = _t("You are about to take the product %(productName)s from the " +
+                "location %(locationName)s but this product isn't reserved in this location.\n" +
+                "Scan the current location to confirm that.",
+                { productName: product.display_name, locationName: this.location.display_name }
+            );
+            this.needSourceConfirmation[this.location.id][product.id] = false;
+            this.notification(message, { type: "danger" });
+            return false;
+        } else if (this.askBeforeNewLinesCreation(product)) {
             const body = _t(
                 "Scanned product %s is not reserved for this transfer. Are you sure you want to add it?",
                 (product.code ? `[${product.code}] ` : '') + product.display_name,
@@ -150,7 +161,22 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     lineCanBeTakenFromTheCurrentLocation(line) {
         // A line with no qty. done can be taken regardless its location (it will be overridden).
-        return super.lineCanBeTakenFromTheCurrentLocation(line) || !this.getQtyDone(line);
+        const res = !this.getQtyDone(line) || super.lineCanBeTakenFromTheCurrentLocation(...arguments);
+        // If source location's scan is mandatory, the source should be confirmed (scanned once
+        // again) to confirm we want to take this product from the current location.
+        if (res && this.config.restrict_scan_source_location &&
+            line.location_id.id !== this.location.id && line.reserved_uom_qty) {
+            if (this.needSourceConfirmation[this.location.id] === undefined) {
+                this.needSourceConfirmation[this.location.id] = {};
+            }
+            if (!this.scanHistory[1].location || this.scanHistory[1].location.id !== this.location.id) {
+                this.needSourceConfirmation[this.location.id][line.product_id.id] = true;
+                return false;
+            }
+            // The source was scanned just before, no need to confirm it for this product anymore.
+            this.needSourceConfirmation[this.location.id][line.product_id.id] = false;
+        }
+        return res;
     }
 
     async updateLine(line, args) {

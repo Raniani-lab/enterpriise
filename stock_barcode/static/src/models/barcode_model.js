@@ -21,9 +21,12 @@ export default class BarcodeModel extends EventBus {
         this.unfoldLineKey = false;
         this.currentSortIndex = 0;
         this.validateContext = {};
+        // Keeps the history of all barcodes scanned (start with the most recent.)
+        this.scanHistory = [];
         // Keeps track of list scanned record(s) by type.
         this.lastScanned = { packageId: false, product: false, sourceLocation: false };
         this._currentLocation = false; // Reminds the current source when the scanned one is forgotten.
+        this.needSourceConfirmation = false;
     }
 
     setData(data) {
@@ -915,6 +918,9 @@ export default class BarcodeModel extends EventBus {
             barcodeData.error = parseErrorMessage;
         }
 
+        // Keep in memory every scans.
+        this.scanHistory.unshift(barcodeData);
+
         if (barcodeData.match) { // Makes flash the screen if the scanned barcode was recognized.
             this.trigger('flash');
         }
@@ -1156,6 +1162,10 @@ export default class BarcodeModel extends EventBus {
      * @returns {Boolean}
      */
     lineCanBeTakenFromTheCurrentLocation(line) {
+        return this.lineIsInTheCurrentLocation(line);
+    }
+
+    lineIsInTheCurrentLocation(line) {
         return Boolean(
             !this.groups.group_stock_multi_locations ||
             !this.lastScanned.sourceLocation || // No current location so we don't care.
@@ -1277,12 +1287,23 @@ export default class BarcodeModel extends EventBus {
             )) {
                 continue;
             }
-            if (this._lineIsNotComplete(line) && this.lineCanBeTakenFromTheCurrentLocation(line)) {
-                // Found a uncompleted compatible line, stop searching if it has the same location
-                // than the scanned one (or if no location was scanned).
-                foundLine = line;
-                if (this.tracking === 'none' || !dataLotName || dataLotName === lineLotName) {
-                    break;
+            if (this._lineIsNotComplete(line)) {
+                if (this.lineCanBeTakenFromTheCurrentLocation(line)) {
+                    // Found a uncompleted compatible line, stop searching if it has the same location
+                    // than the scanned one (or if no location was scanned).
+                    foundLine = line;
+                    if ((this.lineIsInTheCurrentLocation(line)) &&
+                        (this.tracking === 'none' || !dataLotName || dataLotName === lineLotName)) {
+                        break;
+                    }
+                } else if (this.needSourceConfirmation && foundLine && !this._lineIsNotComplete(foundLine)) {
+                    // Found a empty line in another location, we should take it but depending of
+                    // the config, maybe we can't (location should be confirmed first).
+                    // That said, we already found another line but if it's completed, forget we
+                    // found it to avoid to create a new line in the current location because it's
+                    // basicaly the same than increment the other line found in another location.
+                    foundLine = false;
+                    continue;
                 }
             }
             // The line matches but there could be a better candidate, so keep searching.

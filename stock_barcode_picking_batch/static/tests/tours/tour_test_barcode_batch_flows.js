@@ -464,11 +464,14 @@ registry.category("web_tour.tours").add('test_barcode_batch_delivery_1', {test: 
             helper.assertLineLocations(lines[5], '.../Section 3');
         }
     },
+    // Scans again product2 but it's reserved in Section 3 and we're still in Section 2 and scaning
+    // the location is mandatory. So the application should ask to scan the location to confirm.
+    { trigger: ".o_barcode_client_action", run: "scan product2" },
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product2' // Must complete the line from Section 3 but change its source for Section 2.
+        trigger: ".o_notification.border-danger:contains('Scan the current location to confirm that.')",
+        run: "scan LOC-01-02-00",
     },
-
+    { trigger: ".o_barcode_client_action", run: "scan product2" },
     {
         trigger: '.o_barcode_line:nth-child(6).o_selected.o_line_completed .product-label:contains("product2")',
         run: function () {

@@ -9,23 +9,26 @@ export class WorkedDaysField extends Field {
     get fieldComponentProps() {
         const props = super.fieldComponentProps;
         const record = this.props.record;
-        const oldUpdate = props.update;
-        props.update = async (value) => {
-            if (this.props.name === 'amount' && record.data.amount !== value) {
-                await record.update({ [this.props.name]: value });
-                await record.save( { stayInEdition: true, noReload: true });
-                // getting the wizard id. when js team gets rid of the basic relational model, we'll clean this
-                const wizardId = record.model.__bm_load_params__.res_id;
-                if (wizardId) {
-                    const action = await this.env.services.orm.call(
-                        "hr.payroll.edit.payslip.lines.wizard",
-                        "recompute_worked_days_lines",
-                        [wizardId]
-                    );
-                    await this.env.services.action.doAction(action);
+        if (!record.isWorkedDaysField) {
+            record.isWorkedDaysField = true;
+            const oldUpdate = record.update.bind(record);
+            record.update = async (value) => {
+                if (this.props.name === 'amount' && record.data.amount !== value) {
+                    await record.update(value);
+                    await record.save( { stayInEdition: true, noReload: true });
+                    // getting the wizard id. when js team gets rid of the basic relational model, we'll clean this
+                    const wizardId = record.model.__bm_load_params__.res_id;
+                    if (wizardId) {
+                        const action = await this.env.services.orm.call(
+                            "hr.payroll.edit.payslip.lines.wizard",
+                            "recompute_worked_days_lines",
+                            [wizardId]
+                        );
+                        await this.env.services.action.doAction(action);
+                    }
+                } else {
+                    await oldUpdate(value);
                 }
-            } else {
-                await oldUpdate(value);
             }
         }
         return props;
@@ -64,23 +67,26 @@ export class PayslipLineField extends Field {
     get fieldComponentProps() {
         const props = super.fieldComponentProps;
         const record = this.props.record;
-        const oldUpdate = props.update;
-        props.update = async (value) => {
-            if (this.props.name === 'amount' || this.props.name === 'quantity') {
-                await record.update({ [this.props.name]: value });
-                await record.save( { stayInEdition: true, noReload: true });
-                const wizardId = record.model.__bm_load_params__.res_id;
-                if (wizardId) {
-                    const line_id = record.data.id;
-                    const action = await this.env.services.orm.call(
-                        "hr.payroll.edit.payslip.lines.wizard",
-                        "recompute_following_lines",
-                        [wizardId, line_id]
-                    );
-                    await this.env.services.action.doAction(action);
+        if (!record.isPayslipLineField) {
+            record.isPayslipLineField = true;
+            const oldUpdate = record.update.bind(record);
+            record.update = async (value) => {
+                if (this.props.name === 'amount' || this.props.name === 'quantity') {
+                    await record.update(value);
+                    await record.save( { stayInEdition: true, noReload: true });
+                    const wizardId = record.model.__bm_load_params__.res_id;
+                    if (wizardId) {
+                        const line_id = record.data.id;
+                        const action = await this.env.services.orm.call(
+                            "hr.payroll.edit.payslip.lines.wizard",
+                            "recompute_following_lines",
+                            [wizardId, line_id]
+                        );
+                        await this.env.services.action.doAction(action);
+                    }
+                } else {
+                    await oldUpdate(value);
                 }
-            } else {
-                await oldUpdate(value);
             }
         }
         return props;

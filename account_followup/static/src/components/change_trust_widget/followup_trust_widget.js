@@ -44,7 +44,7 @@ class FollowupTrustWidget extends Component {
     }
 
     async setTrust(trust) {
-        this.props.update(trust);
+        this.props.record.update({ [this.props.name]: trust });
         this.closePopover();
     }
 

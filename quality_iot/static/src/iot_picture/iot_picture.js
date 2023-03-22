@@ -27,7 +27,7 @@ export class TabletImageIoTField extends TabletImageField {
                 if (data.owner && data.owner === data.session_id) {
                     this.notification.add(data.message);
                     if (data.image) {
-                        this.props.update(data.image);
+                        this.props.record.update({ [this.props.name]: data.image });
                     }
                 }
             },

@@ -21,7 +21,7 @@ class IoTMeasureRealTimeValue extends FloatField {
             onValueChange: (data) => {
                 if (this.env.model.root.isInEdition) {
                     // Only update the value in the record when the record is in edition mode.
-                    return this.props.update(data.value);
+                    return this.props.record.update({ [this.props.name]: data.value });
                 }
             },
         });

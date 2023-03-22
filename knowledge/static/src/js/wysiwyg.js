@@ -8,13 +8,17 @@ import {
     preserveCursor,
     setCursorEnd,
 } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
-import { ArticleLinkBehaviorDialog } from '@knowledge/components/behaviors/article_behavior_dialog/article_behavior_dialog';
+import { ArticleSelectionBehaviorDialog } from '@knowledge/components/behaviors/article_behavior_dialog/article_behavior_dialog';
 import { Markup } from 'web.utils';
 import {
     encodeDataBehaviorProps,
 } from "@knowledge/js/knowledge_utils";
 
 Wysiwyg.include({
+    defaultOptions: {
+        ...Wysiwyg.prototype.defaultOptions,
+        allowCommandFile: true,
+    },
     /**
      * @override
      */
@@ -90,18 +94,20 @@ Wysiwyg.include({
                 this._insertArticleLink();
             },
         });
+
         if (this.options.knowledgeCommands) {
             categories.push(
                 { name: _t('Knowledge'), priority: 11 },
                 { name: _t('Knowledge Databases'), priority: 10 }
             );
+
             commands.push({
                 category: _t('Knowledge'),
                 name: _t('File'),
                 priority: 20,
                 description: _t('Upload a file'),
                 fontawesome: 'fa-file',
-                isDisabled: () => this._filterCommandInBehavior(),
+                isDisabled: () => this._filterCommandInBehavior() || !this.options.allowCommandFile,
                 callback: () => {
                     this.openMediaDialog({
                         noVideos: true,
@@ -259,18 +265,22 @@ Wysiwyg.include({
      */
     _insertArticleLink: function () {
         const restoreSelection = preserveCursor(this.odooEditor.document);
-        Component.env.services.dialog.add(ArticleLinkBehaviorDialog, {save: article => {
-            const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
-                href: '/knowledge/article/' + article.articleId,
-                data: JSON.stringify({
-                    article_id: article.articleId,
-                    display_name: article.displayName,
-                })
-            }))[0];
-            const nameNode = document.createTextNode(article.display_name);
-            articleLinkBlock.appendChild(nameNode);
-            this._notifyNewBehavior(articleLinkBlock, restoreSelection);
-        }});
+        Component.env.services.dialog.add(ArticleSelectionBehaviorDialog, {
+            title: _t('Link an Article'),
+            confirmLabel: _t('Insert Link'),
+            articleSelected: article => {
+                const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
+                    href: '/knowledge/article/' + article.articleId,
+                    data: JSON.stringify({
+                        article_id: article.articleId,
+                        display_name: article.displayName,
+                    })
+                }))[0];
+                const nameNode = document.createTextNode(article.display_name);
+                articleLinkBlock.appendChild(nameNode);
+                this._notifyNewBehavior(articleLinkBlock, restoreSelection);
+            }
+        });
     },
     /**
      * Inserts a view in the editor

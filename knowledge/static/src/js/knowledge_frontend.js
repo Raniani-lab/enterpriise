@@ -13,7 +13,6 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
     events: {
         'keyup .knowledge_search_bar': '_searchArticles',
         'click .o_article_caret': '_onFold',
-        'click .o_favorites_toggle_button': '_toggleFavorite',
         'click .o_knowledge_toc_link': '_onTocLinkClick',
         'click .o_knowledge_article_load_more': '_loadMoreArticles',
     },
@@ -107,39 +106,6 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
     },
 
     /**
-     * @param {Event} event
-     */
-    _toggleFavorite: async function (event) {
-        const star = event.currentTarget;
-        const id = parseInt(star.dataset.articleId);
-        const result = await this._rpc({
-            model: 'knowledge.article',
-            method: 'action_toggle_favorite',
-            args: [[id]]
-        });
-        const icon = star.querySelector('i');
-        icon.classList.toggle('fa-star', result);
-        icon.classList.toggle('fa-star-o', !result);
-
-        // Add the article to the favorite tree if the favorite tree is visible
-        if (!document.querySelector('.o_favorite_container')) {
-            return;
-        }
-        let unfoldedFavoriteArticlesIds = localStorage.getItem('knowledge.unfolded.favorite.ids');
-        unfoldedFavoriteArticlesIds = unfoldedFavoriteArticlesIds ? unfoldedFavoriteArticlesIds.split(";").map(Number) : [];
-        // Add/Remove the article to/from the favorite in the sidebar
-        const template = await this._rpc({
-            route: '/knowledge/tree_panel/favorites',
-            params: {
-                active_article_id: id,
-                unfolded_favorite_articles_ids: unfoldedFavoriteArticlesIds,
-            }
-        });
-        document.querySelector('.o_favorite_container').innerHTML = template;
-        this._setTreeFavoriteListener();
-    },
-
-    /**
      * Renders the tree listing all articles.
      * To minimize loading time, the function will initially load the root articles.
      * The other articles will be loaded lazily: The user will have to click on
@@ -153,12 +119,9 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
         const container = this.el.querySelector('.o_knowledge_tree');
         let unfoldedArticlesIds = localStorage.getItem('knowledge.unfolded.ids');
         unfoldedArticlesIds = unfoldedArticlesIds ? unfoldedArticlesIds.split(";").map(Number) : [];
-        let unfoldedFavoriteArticlesIds = localStorage.getItem('knowledge.unfolded.favorite.ids');
-        unfoldedFavoriteArticlesIds = unfoldedFavoriteArticlesIds ? unfoldedFavoriteArticlesIds.split(";").map(Number) : [];
         const params = new URLSearchParams(document.location.search);
         if (Boolean(params.get('auto_unfold'))) {
             unfoldedArticlesIds.push(active_article_id);
-            unfoldedFavoriteArticlesIds.push(active_article_id);
         }
         try {
             const htmlTree = await this._rpc({
@@ -166,25 +129,12 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
                 params: {
                     active_article_id: active_article_id,
                     unfolded_articles_ids: unfoldedArticlesIds,
-                    unfolded_favorite_articles_ids: unfoldedFavoriteArticlesIds
                 }
             });
             container.innerHTML = htmlTree;
-            this._setTreeFavoriteListener();
         } catch {
             container.innerHTML = "";
         }
-    },
-
-    _resequenceFavorites: function (favoriteIds) {
-        this._rpc({
-            route: '/web/dataset/resequence',
-            params: {
-                model: "knowledge.article.favorite",
-                ids: favoriteIds,
-                offset: 1,
-            }
-        });
     },
 
     _fetchChildrenArticles: function (parentId) {

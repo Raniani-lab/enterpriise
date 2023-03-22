@@ -201,7 +201,7 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonBusinessCase):
             shared_article.invite_members(partners, 'write')
         self.assertMembers(shared_article, False,
                            {self.partner_employee: 'write',
-                            self.customer: 'read',  # shared partners are always read only
+                            self.customer: 'write',
                             self.partner_employee_manager: 'write',
                             self.partner_employee2: 'write'},
                            msg='Invite: should add rights for people')
@@ -220,7 +220,9 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonBusinessCase):
 
         # check access is effectively granted
         shared_article.with_user(self.user_employee2).check_access_rule('write')
+        shared_article.with_user(self.customer).check_access_rule('write')
         direct_child_write.with_user(self.user_employee2).check_access_rule('write')
+        direct_child_write.with_user(self.customer).check_access_rule('write')
         with self.assertRaises(exceptions.AccessError,
                                msg='Invite: access should have been blocked'):
             direct_child_read.with_user(self.user_employee2).check_access_rule('read')
@@ -236,7 +238,7 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonBusinessCase):
 
         self.assertMembers(shared_article, False,
                            {self.partner_employee: 'write',
-                            self.customer: 'read',
+                            self.customer: 'write',
                             self.partner_employee_manager: 'none',
                             self.partner_employee2: 'read'})
 

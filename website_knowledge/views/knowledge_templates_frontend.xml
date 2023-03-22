@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-     <template id="website_knowledge_article_view_frontend" name="Website Knowledge Layout" inherit_id="knowledge.knowledge_article_view_frontend">
-        <xpath expr="//a[hasclass('o_favorites_toggle_button')]" position="replace">
-            <a t-if="article and not request.env.user._is_public()"
-               href="#" class="o_favorites_toggle_button ps-1" t-att-data-article-id="article.id">
-                <i t-if="article.is_user_favorite" class="fa fa-star" />
-                <i t-else="" class="fa fa-star-o" />
-            </a>
-        </xpath>
-    </template>
-
     <template id="website_knowledge_article_tree_frontend" name="Website Knowledge Article Tree" inherit_id="knowledge.knowledge_article_tree_frontend">
         <xpath expr="//section[1]" position="replace">
             <section t-if="public_articles">

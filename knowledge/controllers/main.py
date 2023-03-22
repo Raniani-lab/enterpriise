@@ -3,7 +3,7 @@
 
 import werkzeug
 
-from odoo import http, tools, _
+from odoo import conf, http, tools, _
 from odoo.exceptions import AccessError, ValidationError
 from odoo.http import request
 from odoo.osv import expression
@@ -22,10 +22,11 @@ class KnowledgeController(http.Controller):
         """ This route will redirect internal users to the backend view of the
         article and the share users to the frontend view instead. """
         article = request.env["knowledge.article"]._get_first_accessible_article()
-        if request.env.user.has_group('base.group_user') and not article:
+        if request.env.user._is_internal():
             return self._redirect_to_backend_view(article)
-        if not article:
-            return self._redirect_to_portal_view(False, hide_side_bar=True)
+        elif request.env.user._is_portal():
+            return self._redirect_to_portal_view(article)
+
         return request.redirect("/knowledge/article/%s" % article.id)
 
     @http.route('/knowledge/article/<int:article_id>', type='http', auth='user')
@@ -33,11 +34,15 @@ class KnowledgeController(http.Controller):
         """ This route will redirect internal users to the backend view of the
         article and the share users to the frontend view instead."""
         article = request.env['knowledge.article'].search([('id', '=', article_id)])
-        if request.env.user.has_group('base.group_user'):
-            if not article:
-                return werkzeug.exceptions.Forbidden()
+        if not article:
+            return werkzeug.exceptions.Forbidden()
+
+        if request.env.user._is_internal():
             return self._redirect_to_backend_view(article)
-        return self._redirect_to_portal_view(article)
+        elif request.env.user._is_portal():
+            return self._redirect_to_portal_view(article)
+
+        return self._redirect_to_public_view(article)
 
     @http.route('/knowledge/article/invite/<int:member_id>/<string:invitation_hash>', type='http', auth='public')
     def article_invite(self, member_id, invitation_hash):
@@ -80,11 +85,40 @@ class KnowledgeController(http.Controller):
             limit=1,
         ) > 0
 
-    def _redirect_to_portal_view(self, article, hide_side_bar=False):
+    def _redirect_to_portal_view(self, article):
+        # We build the session information necessary for the web client to load
+        session_info = request.env['ir.http'].session_info()
+        user_context = dict(request.env.context)
+        mods = conf.server_wide_modules or []
+        lang = user_context.get("lang")
+        cache_hashes = {
+            "translations": request.env['ir.http'].get_web_translations_hash(mods, lang),
+        }
+
+        session_info.update(
+            cache_hashes=cache_hashes,
+            knowledge_article_id=article.id,
+            user_companies={
+                'current_company': request.env.company.id,
+                'allowed_companies': {
+                    request.env.company.id: {
+                        'id': request.env.company.id,
+                        'name': request.env.company.name,
+                    },
+                },
+            },
+        )
+
+        return request.render(
+            'knowledge.knowledge_portal_view',
+            {'session_info': session_info},
+        )
+
+    def _redirect_to_public_view(self, article, hide_side_bar=False):
         show_sidebar = False if hide_side_bar else self._check_sidebar_display()
         return request.render('knowledge.knowledge_article_view_frontend', {
             'article': article,
-            'portal_readonly_mode': True,  # used to bypass access check (to speed up loading)
+            'readonly_mode': True,  # used to bypass access check (to speed up loading)
             'show_sidebar': show_sidebar
         })
 
@@ -175,7 +209,7 @@ class KnowledgeController(http.Controller):
                 lambda article: article.category == "private" and article.user_has_write_access),
             "unfolded_articles_ids": unfolded_articles_ids,
             "unfolded_favorite_articles_ids": unfolded_favorite_articles_ids,
-            'portal_readonly_mode': not request.env.user.has_group('base.group_user'),
+            'readonly_mode': request.env.user._is_public(),
             "favorites_sudo": favorites_sudo,
         }
 
@@ -223,7 +257,7 @@ class KnowledgeController(http.Controller):
         values = {
             "search_tree": True, # Display the flatenned tree instead of the basic tree with sections
             "active_article_id": active_article_id,
-            'portal_readonly_mode': not request.env.user.has_group('base.group_user'),
+            'readonly_mode': request.env.user._is_public(),
             'articles': all_visible_articles,
         }
 
@@ -242,7 +276,7 @@ class KnowledgeController(http.Controller):
             'articles': articles,
             "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             "articles_displayed_offset": 0,
-            'portal_readonly_mode': not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
+            'readonly_mode': request.env.user._is_public(),  # used to bypass access check (to speed up loading)
             "user_write_access_by_article": {
                 article.id: article.user_can_write
                 for article in articles
@@ -274,7 +308,7 @@ class KnowledgeController(http.Controller):
             "all_visible_articles": all_visible_articles,
             "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             "unfolded_favorite_articles_ids": unfolded_favorite_articles_ids,
-            "portal_readonly_mode": not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
+            "readonly_mode": request.env.user._is_public(),  # used to bypass access check (to speed up loading)
             "user_write_access_by_article": {
                 article.id: article.user_can_write
                 for article in all_visible_articles
@@ -358,7 +392,7 @@ class KnowledgeController(http.Controller):
             "articles_displayed_offset": offset,
             "has_parent": bool(parent_id),
             "force_show_active_article": force_show_active_article,
-            "portal_readonly_mode": not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
+            "readonly_mode": not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
             "unfolded_articles_ids": unfolded_articles_ids,
             "user_write_access_by_article": {
                 article.id: article.user_can_write

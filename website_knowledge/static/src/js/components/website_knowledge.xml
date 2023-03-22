@@ -26,7 +26,7 @@
                  </t>
                 </div>
                 <div class="o_knowledge_share_toggle align-self-center pe-3 form-check form-switch"
-                     t-if="this.props.record.data.user_can_write">
+                     t-if="this.props.record.data.user_can_write and isInternalUser">
                     <input class="form-check-input" type="checkbox" role="switch" t-att-checked="this.props.record.data.website_published"/>
                 </div>
             </div>

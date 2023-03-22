@@ -23,13 +23,15 @@ export class PermissionPanel extends Component {
         this.rpc = useService('rpc');
         /** @type {import("@mail/core/thread_service").ThreadService} */
         this.threadService = useService("mail.thread");
+        this.userService = useService('user');
 
         this.state = useState({
             loading: true,
             partner_id: session.partner_id
         });
-        onWillStart(() => {
+        onWillStart(async () => {
             this.loadPanel();
+            this.isInternalUser = await this.userService.hasGroup('base.group_user');
         });
     }
 

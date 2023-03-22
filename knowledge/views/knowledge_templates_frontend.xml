@@ -22,7 +22,7 @@
                             <!-- File explorer -->
                             <div class="flex-grow-1 position-relative border-bottom">
                                 <div class="o_scroll_view px-3">
-                                    <div class="o_knowledge_tree" t-att-data-portal-readonly-mode="portal_readonly_mode">
+                                    <div class="o_knowledge_tree">
                                         <div class="p-5 text-center">
                                             <i class="fa fa-circle-o-notch fa-2x fa-spin" title="loader" role="img"/>
                                         </div>
@@ -49,11 +49,6 @@
                                         <span t-if="article.name" t-out="article.name"/>
                                         <span t-else="">Untitled</span>
                                     </t>
-                                    <a t-if="article" href="#" class="o_favorites_toggle_button ps-1"
-                                       t-att-data-article-id="article.id">
-                                        <i t-if="article.is_user_favorite" class="fa fa-star" />
-                                        <i t-else="" class="fa fa-star-o" />
-                                    </a>
                                 </div>
                                 <!-- Log In -->
                                 <div class="d-table my-auto o_knowledge_public_virality">
@@ -114,7 +109,7 @@
             <t t-if="articles">
                 <ul class="o_tree m-0 px-0 pt-1 pb-2">
                     <t t-foreach="articles" t-as="article">
-                        <t t-set="readonly" t-value="portal_readonly_mode or not user_write_access_by_article.get(article.id)"/>
+                        <t t-set="readonly" t-value="readonly_mode or not user_write_access_by_article.get(article.id)"/>
                         <t t-set="isActive" t-value="article.id == active_article_id if active_article_id else False"/>
                         <li t-attf-class="o_article #{ 'readonly' if readonly else '' }"
                             t-attf-id="article_#{article.id}" t-att-data-article-id="article.id"

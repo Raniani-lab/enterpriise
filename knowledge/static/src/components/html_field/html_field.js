@@ -537,6 +537,9 @@ patch(htmlField, "knowledge_html_field", {
     extractProps(fieldInfo) {
         const props = this._super(...arguments);
         props.wysiwygOptions.knowledgeCommands = fieldInfo.options.knowledge_commands;
+        if ('allowCommandFile' in fieldInfo.options) {
+            props.wysiwygOptions.allowCommandFile = Boolean(fieldInfo.options.allowCommandFile);
+        }
         return props;
     },
 });

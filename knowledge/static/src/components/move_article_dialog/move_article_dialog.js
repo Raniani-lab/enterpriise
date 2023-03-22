@@ -11,7 +11,7 @@ class MoveArticleDialog extends Component {
         this.title = _t("Move an Article");
         this.rpc = useService("rpc");
         this.orm = useService("orm");
-        this.user = useService("user");
+        this.userService = useService("user");
 
         this.input = useRef("input");
         onMounted(() => this.initSelect2());
@@ -43,7 +43,7 @@ class MoveArticleDialog extends Component {
     }
 
     get loggedUserPicture() {
-        return `/web/image?model=res.users&field=avatar_128&id=${this.user.userId}`;
+        return `/web/image?model=res.users&field=avatar_128&id=${this.userService.userId}`;
     }
 
     initSelect2() {

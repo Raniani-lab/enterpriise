@@ -11,6 +11,9 @@
         <field name="name">Subscription reached its end date</field>
         <field name="visible_in_portal" eval="False"/>
     </record>
+    <record id="close_reason_cancel" model="sale.order.close.reason">
+        <field name="name">Cancelled</field>
+    </record>
     <record id="close_reason_4" model="sale.order.close.reason">
         <field name="name">I don't use it</field>
     </record>

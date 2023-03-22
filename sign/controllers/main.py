@@ -8,7 +8,7 @@ import re
 
 from PyPDF2 import PdfFileReader
 
-from odoo import http, models, tools, Command, _
+from odoo import http, models, tools, Command, _, fields
 from odoo.http import request, content_disposition
 from odoo.tools import consteq
 from odoo.addons.iap.tools import iap_tools
@@ -120,7 +120,7 @@ class Sign(http.Controller):
     @http.route(["/sign/document/mail/<int:id>/<token>"], type='http', auth='public')
     def sign_document_from_mail(self, id, token):
         sign_request = request.env['sign.request'].sudo().browse(id)
-        if not sign_request:
+        if not sign_request or sign_request.validity and sign_request.validity < fields.Date.today():
             return http.request.render('sign.deleted_sign_request')
         current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
         current_request_item.access_via_link = True
@@ -308,7 +308,7 @@ class Sign(http.Controller):
             ('state', '=', 'sent')
         ], limit=1)
 
-        if not request_item_sudo:
+        if not request_item_sudo or request_item_sudo.sign_request_id.validity and request_item_sudo.sign_request_id.validity < fields.Date.today():
             return {'success': False}
 
         result = {'success': True}
@@ -491,3 +491,10 @@ class Sign(http.Controller):
             return False
         sign_request_item.ignored = True
         return True
+
+    @http.route(['/sign/sign_ignore/<int:item_id>/<token>'], type='http', auth='public')
+    def ignore_sign_request_item_from_mail(self, item_id, token):
+        if self.ignore_sign_request_item(item_id, token):
+            return http.request.render('sign.ignore_sign_request_item')
+        else:
+            return http.request.not_found()

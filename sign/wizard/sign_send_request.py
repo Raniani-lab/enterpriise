@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models, _, Command
 from odoo.exceptions import UserError
 
@@ -56,6 +58,19 @@ class SignSendRequest(models.TransientModel):
     message_cc = fields.Html("CC Message", help="Message to be sent to contacts in copy of the signed document")
     attachment_ids = fields.Many2many('ir.attachment', string='Attachments')
     filename = fields.Char("Filename", required=True)
+
+    validity = fields.Date(string='Valid Until', default=lambda self: fields.Date.today() + relativedelta(months=6))
+    reminder = fields.Integer(string='Reminder', help='Number of day between two reminder', default=7)
+
+    @api.onchange('validity')
+    def _onchange_validity(self):
+        if self.validity < fields.Date.today():
+            raise UserError(_('Request expiration date must be set in the future.'))
+
+    @api.onchange('reminder')
+    def _onchange_reminder(self):
+        if self.reminder > 365:
+            self.reminder = 365
 
     @api.onchange('template_id')
     def _onchange_template_id(self):
@@ -115,6 +130,8 @@ class SignSendRequest(models.TransientModel):
             'message_cc': message_cc,
             'attachment_ids': [Command.set(attachment_ids.ids)],
             'refusal_allowed': refusal_allowed,
+            'validity': self.validity,
+            'reminder': self.reminder,
         })
         sign_request.message_subscribe(partner_ids=cc_partner_ids)
         return sign_request

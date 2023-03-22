@@ -74,7 +74,8 @@ class SignRequest(models.Model):
         ("sent", "Sent"),
         ("signed", "Fully Signed"),
         ("refused", "Refused"),
-        ("canceled", "Canceled")
+        ("canceled", "Canceled"),
+        ("expired", "Expired"),
     ], default='sent', tracking=True, group_expand='_expand_states', copy=False)
 
     completed_document = fields.Binary(readonly=True, string="Completed Document", attachment=True, copy=False)
@@ -104,6 +105,10 @@ class SignRequest(models.Model):
     completed_document_attachment_ids = fields.Many2many('ir.attachment', 'sign_request_completed_document_rel', string='Completed Documents', readonly=True, copy=False, ondelete="restrict")
 
     need_my_signature = fields.Boolean(compute='_compute_need_my_signature', search='_search_need_my_signature')
+
+    validity = fields.Date(string='Valid Until')
+    reminder = fields.Integer(string='Reminder', default=0)
+    last_reminder = fields.Date(string='Last reminder', default=lambda self: fields.Date.today())
 
     @api.depends_context('uid')
     def _compute_need_my_signature(self):
@@ -355,6 +360,27 @@ class SignRequest(models.Model):
         self._check_senders_validity()
         for sign_request in self:
             sign_request._get_next_sign_request_items().send_signature_accesses()
+            sign_request.last_reminder = fields.Date.today()
+
+    @api.model
+    def _cron_reminder(self):
+        today = fields.Date.today()
+        self.env.cr.execute(f'''
+        SELECT id 
+        FROM sign_request sr
+        WHERE sr.state = 'sent' AND (
+            sr.validity < '{today}' 
+         OR sr.reminder > 0 AND sr.last_reminder + sr.reminder * ('1 day'::interval) >= '{today}'
+        )
+        ''')
+        res = self.env.cr.fetchall()
+        request_to_send = self.env['sign.request']
+        for request in self.browse(v[0] for v in res):
+            if request.validity < today:
+                request.state = 'expired'
+            else:
+                request_to_send += request
+        request_to_send.send_signature_accesses()
 
     def _sign(self):
         """ Sign a SignRequest. It can only be used in the SignRequestItem._sign """
@@ -845,8 +871,10 @@ class SignRequestItem(models.Model):
         self.ensure_one()
         if not self.env.su:
             raise UserError(_("This function can only be called with sudo."))
-        if self.state != 'sent' or self.sign_request_id.state != 'sent':
+        elif self.state != 'sent' or self.sign_request_id.state != 'sent':
             raise UserError(_("This sign request item cannot be signed"))
+        elif self.sign_request_id.validity and self.sign_request_id.validity < fields.Date.today():
+            raise UserError(_('This sign request is not valid anymore'))
 
         # edit request template while signing
         new_sign_items = kwargs.get('new_sign_items', False)
@@ -894,8 +922,10 @@ class SignRequestItem(models.Model):
         self.ensure_one()
         if not self.env.su:
             raise UserError(_("This function can only be called with sudo."))
-        if self.state != 'sent' or self.sign_request_id.state != 'sent':
+        elif self.state != 'sent' or self.sign_request_id.state != 'sent':
             raise UserError(_("This sign request item cannot be signed"))
+        elif self.sign_request_id.validity and self.sign_request_id.validity < fields.Date.today():
+            raise UserError(_('This sign request is not valid anymore'))
 
         required_ids = set(self.sign_request_id.template_id.sign_item_ids.filtered(
             lambda r: r.responsible_id.id == self.role_id.id and r.required).ids)

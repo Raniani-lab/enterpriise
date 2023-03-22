@@ -29,7 +29,7 @@
                     <div attrs="{'invisible' :[('cc_partner_ids', '=', [])]}">
                         <field name="message_cc" placeholder="Optional Message..."/>
                         <group>
-                                <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" class="o_sign_attachments"/>
+                            <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" class="o_sign_attachments"/>
                         </group>
                     </div>
                 </div>
@@ -44,10 +44,19 @@
                         </div>
                     </page>
                     <page name="signature_options" string="Options">
-                        <group string="Signature Options">
-                            <field name="filename" placeholder="Name for the file"  colspan="2"/>
-                            <field name="set_sign_order" attrs="{'invisible': [('signers_count', '&lt;', 2)]}" groups="sign.show_sign_order"/>
-                            <field name="refusal_allowed"/>
+                        <group>
+                            <group string="Signature Options">
+                                <field name="filename" placeholder="Name for the file"  colspan="2"/>
+                                <field name="set_sign_order" attrs="{'invisible': [('signers_count', '&lt;', 2)]}" groups="sign.show_sign_order"/>
+                                <field name="refusal_allowed"/>
+                            </group>
+                            <group string="Expiration &amp; Reminders">
+                                <field name="validity"/>
+                                <label for="reminder"/>
+                                <div class="col-8">
+                                    Send a reminder every <field name="reminder" class="oe_inline o_field_highlight"/> days.
+                                </div>
+                            </group>
                         </group>
                         <group string="Contacts in copy">
                             <field name="cc_partner_ids" string="Contacts" widget="many2many_tags" placeholder="Write email or search contact..." context="{'show_email': True}"/>

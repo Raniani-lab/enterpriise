@@ -2,6 +2,7 @@
 
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import { BackorderDialog } from '../components/backorder_dialog';
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { _t } from "@web/core/l10n/translation";
 import { escape } from '@web/core/utils/strings';
 import { session } from '@web/session';
@@ -41,6 +42,30 @@ export default class BarcodePickingModel extends BarcodeModel {
     askBeforeNewLinesCreation(product) {
         return !this.record.immediate_transfer && product &&
             !this.currentState.lines.some(line => line.product_id.id === product.id);
+    }
+
+    createNewLine(params) {
+        const product = params.fieldsParams.product_id;
+        if (this.askBeforeNewLinesCreation(product)) {
+            const body = _t(
+                "Scanned product %s is not reserved for this transfer. Are you sure you want to add it?",
+                (product.code ? `[${product.code}] ` : '') + product.display_name,
+            );
+            const confirmationPromise = new Promise((resolve, reject) => {
+                this.dialogService.add(ConfirmationDialog, {
+                    title: _t("Add extra product?"),
+                    body,
+                    cancel: reject,
+                    confirm: async () => {
+                        const newLine = await this._createNewLine(params);
+                        resolve(newLine);
+                    },
+                    close: reject,
+                });
+            });
+            return confirmationPromise;
+        }
+        return super.createNewLine(...arguments);
     }
 
     getDisplayIncrementBtn(line) {

@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { BarcodeParser } from "@barcodes/js/barcode_parser";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Mutex } from "@web/core/utils/concurrency";
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 import { _t } from "@web/core/l10n/translation";
@@ -106,10 +105,6 @@ export default class BarcodeModel extends EventBus {
 
     async apply() {
         throw new Error('Not Implemented');
-    }
-
-    askBeforeNewLinesCreation(product) {
-        return false;
     }
 
     get barcodeInfo() {
@@ -513,34 +508,7 @@ export default class BarcodeModel extends EventBus {
     }
 
     createNewLine(params) {
-        const product = params.fieldsParams.product_id;
-        if (this.askBeforeNewLinesCreation(product)) {
-            const confirmationPromise = new Promise((resolve, reject) => {
-                const body = product.code
-                    ? _t(
-                          "Scanned product [%s] %s is not reserved for this transfer. Are you sure you want to add it?",
-                          product.code,
-                          product.display_name
-                      )
-                    : _t(
-                          "Scanned product %s is not reserved for this transfer. Are you sure you want to add it?",
-                          product.display_name
-                      );
-
-                this.dialogService.add(ConfirmationDialog, {
-                    body, title: _t("Add extra product?"),
-                    cancel: reject,
-                    confirm: async () => {
-                        const newLine = await this._createNewLine(params);
-                        resolve(newLine);
-                    },
-                    close: reject,
-                });
-            });
-            return confirmationPromise;
-        } else {
-            return this._createNewLine(params);
-        }
+        return this._createNewLine(params);
     }
 
     /**

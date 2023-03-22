@@ -89,7 +89,7 @@ class L10nInReportAccount(models.Model):
                     tax_rate = int(tax_rate)
                 pos_matched_lines = list(filter(lambda pol: _is_pos_order_line_matched_account_move_line(line, details_pos_lines[pol]), details_pos_lines))
                 remaining_values = {
-                    "txval": line_tax_details.get('base_amount_currency', 0.00) * -1,
+                    "txval": line_tax_details.get('base_amount', 0.00) * -1,
                     "iamt": line_tax_details.get('igst', 0.00) * -1,
                     "samt": line_tax_details.get('sgst', 0.00) * -1,
                     "camt": line_tax_details.get('cgst', 0.00) * -1,
@@ -116,13 +116,13 @@ class L10nInReportAccount(models.Model):
                         hsn_json[group_key]['camt'] += remaining_values['camt']
                         hsn_json[group_key]['csamt'] += remaining_values['csamt']
                     else:
-                        hsn_json[group_key]['txval'] += line_tax_details.get('base_amount_currency', 0.00) * pos_ratio * -1
+                        hsn_json[group_key]['txval'] += line_tax_details.get('base_amount', 0.00) * pos_ratio * -1
                         hsn_json[group_key]['iamt'] += line_tax_details.get('igst', 0.00) * pos_ratio * -1
                         hsn_json[group_key]['samt'] += line_tax_details.get('cgst', 0.00) * pos_ratio * -1
                         hsn_json[group_key]['camt'] += line_tax_details.get('sgst', 0.00) * pos_ratio * -1
                         hsn_json[group_key]['csamt'] += line_tax_details.get('cess', 0.00) * pos_ratio * -1
 
-                        remaining_values['txval'] -= line_tax_details.get('base_amount_currency', 0.00) * pos_ratio * -1
+                        remaining_values['txval'] -= line_tax_details.get('base_amount', 0.00) * pos_ratio * -1
                         remaining_values['iamt'] -= line_tax_details.get('igst', 0.00) * pos_ratio * -1
                         remaining_values['samt'] -= line_tax_details.get('cgst', 0.00) * pos_ratio * -1
                         remaining_values['camt'] -= line_tax_details.get('sgst', 0.00) * pos_ratio * -1

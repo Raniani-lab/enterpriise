@@ -118,6 +118,7 @@ class Applicant(models.Model):
 
     def archive_applicant(self):
         self.write({'referral_state': 'closed'})
+        self._send_notification(_("Sorry, your referral %s has been refused in the recruitment process.") % self.name)
         return super(Applicant, self).archive_applicant()
 
     def _send_notification(self, body):

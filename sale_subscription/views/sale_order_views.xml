@@ -111,7 +111,8 @@
                 <button class="float-end fs-6 btn"
                         type="object"
                         name="subscription_open_related"
-                        attrs="{'invisible': [('subscription_state', 'not in', ['2_renewal', '5_renewed', '7_upsell'])]}">
+                        attrs="{'invisible': ['|', ('subscription_state', 'not in', ['2_renewal', '5_renewed', '7_upsell']),
+                                              ('state', 'not in', ['draft', 'sent'])]}">
                     <field name="subscription_state"
                            widget="badge"
                            decoration-info="subscription_state in ['2_renewal']"
@@ -120,7 +121,7 @@
                     />
                 </button>
                 <field name="subscription_state" class="float-end fs-6"
-                       attrs="{'invisible': [('subscription_state', 'not in', ['3_progress', '4_paused', '6_churn'])]}"
+                       attrs="{'invisible': ['|', ('subscription_state', 'not in', ['3_progress', '4_paused', '6_churn']), ('state', '=', 'cancel')]}"
                        widget="badge"
                        decoration-info="subscription_state in ['1_draft']"
                        decoration-success="subscription_state in ['3_progress']"

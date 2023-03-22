@@ -26,23 +26,33 @@ class HelpdeskTeam(models.Model):
             ['helpdesk_ticket_id', 'product_uom_id'],
             lazy=False)
         timesheet_data_dict = defaultdict(list)
+        ticket_ids = []
         uom_ids = set(helpdesk_timesheet_teams.timesheet_encode_uom_id.ids)
         for result in timesheets_read_group:
+            ticket_id = result['helpdesk_ticket_id'][0]
+            ticket_ids.append(ticket_id)
             uom_id = result['product_uom_id'] and result['product_uom_id'][0]
             if uom_id:
                 uom_ids.add(uom_id)
-            timesheet_data_dict[result['helpdesk_ticket_id'][0]].append((uom_id, result['unit_amount']))
+            timesheet_data_dict[ticket_id].append((uom_id, result['unit_amount']))
 
+        ticket_ids_per_team_id = {
+            group['team_id'][0]: group['ids']
+            for group in self.env['helpdesk.ticket'].read_group(
+                [('id', 'in', ticket_ids)],
+                ['team_id', 'ids:array_agg(id)'],
+                ['team_id']
+            )
+        }
         uoms_dict = {uom.id: uom for uom in self.env['uom.uom'].browse(uom_ids)}
+        encode_uom_in_days = self.env.company.timesheet_encode_uom_id == self.env.ref('uom.product_uom_day')
         for team in helpdesk_timesheet_teams:
-            total_time = sum([
-                sum([
-                    unit_amount * uoms_dict.get(product_uom_id, team.timesheet_encode_uom_id).factor_inv
-                    for product_uom_id, unit_amount in timesheet_data
-                ], 0.0)
-                for ticket_id, timesheet_data in timesheet_data_dict.items()
-                if ticket_id in team.ticket_ids.ids
-            ], 0.0)
+            ticket_ids = ticket_ids_per_team_id.get(team.id, [])
+            total_time = 0.0
+            for ticket_id in ticket_ids:
+                for product_uom_id, unit_amount in timesheet_data_dict[ticket_id]:
+                    factor = uoms_dict.get(product_uom_id, team.timesheet_encode_uom_id).factor_inv
+                    total_time += unit_amount * (1.0 if encode_uom_in_days else factor)
             total_time *= team.timesheet_encode_uom_id.factor
             team.total_timesheet_time = int(round(total_time))
         (self - helpdesk_timesheet_teams).total_timesheet_time = 0

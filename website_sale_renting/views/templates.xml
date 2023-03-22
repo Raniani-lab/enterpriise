@@ -32,7 +32,7 @@
     </template>
 
     <template id="rental_product" inherit_id="website_sale.product" name="Select pickup Date and Return Date">
-        <xpath expr="//div[hasclass('js_main_product')]/t[@t-placeholder='select']" position="after">
+        <xpath expr="//div[hasclass('js_main_product')]//t[@t-placeholder='select']" position="after">
             <div t-if="combination_info['is_rental']" class="o_not_editable">
                 <div class="mb-3 align-middle input-group-lg o_website_sale_daterange_picker variant_attribute">
                     <input type="hidden" name="default_start_date"

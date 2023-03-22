@@ -2404,3 +2404,33 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(sub_data, [('0_creation', datetime.date(2023, 3, 1), '3_progress', 3.0, 3.0),
                                         ('1_expansion', datetime.date(2023, 3, 2), '3_progress', 7.0, 10.0),
                                         ('15_contraction', datetime.date(2023, 3, 10), '3_progress', -4.0, 6.0)])
+
+    def test_cancel_constraint(self):
+        sub_progress = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'recurrence_id': self.recurrence_month.id,
+            'order_line': [
+                (0, 0, {
+                    'name': self.product.name,
+                    'product_id': self.product.id,
+                    'product_uom_qty': 3.0,
+                    'product_uom': self.product.uom_id.id,
+                })],
+        })
+        sub_paused = sub_progress.copy()
+        (sub_progress | sub_paused).action_confirm()
+        sub_paused.subscription_state = '4_paused'
+        sub_paused._action_cancel()
+        sub_progress._create_recurring_invoice()
+        with self.assertRaises(ValidationError):
+            sub_paused.subscription_state = '4_paused'
+        sub_progress._action_cancel()
+        with self.assertRaises(ValidationError):
+            sub_progress.subscription_state = '3_progress'
+        action = sub_progress.prepare_renewal_order()
+        renewal_so = self.env['sale.order'].browse(action['res_id'])
+        renewal_so.action_confirm()
+        self.assertEqual(sub_progress.subscription_state, '5_renewed')
+        self.assertEqual(sub_progress.state, 'done')
+        with self.assertRaises(ValidationError):
+            sub_progress._action_cancel()

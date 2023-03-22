@@ -161,6 +161,14 @@ class SaleOrder(models.Model):
             if so.recurrence_id and so.order_line and so not in recurring_product_orders:
                 raise UserError(_('You cannot save a sale order with a recurrence and no recurring product.'))
 
+    @api.constrains('subscription_state', 'state')
+    def _constraint_canceled_subscription(self):
+        incompatible_states = SUBSCRIPTION_PROGRESS_STATE + ['5_renewed']
+        for so in self:
+            if so.state == 'cancel' and so.subscription_state in incompatible_states:
+                raise ValidationError(_('A canceled SO cannot be in progress.'
+                                        'You should close %s before canceling it.' % so._get_html_link()))
+
     @api.depends('recurrence_id', 'subscription_state')
     def _compute_is_subscription(self):
         for order in self:
@@ -720,6 +728,9 @@ class SaleOrder(models.Model):
             elif order.subscription_state == '2_renewal':
                 cancel_message_body = _("The renewal %s has been canceled.", order._get_html_link())
                 order.subscription_id.message_post(body=cancel_message_body)
+            elif order.subscription_state in SUBSCRIPTION_PROGRESS_STATE:
+                # should not happen with the constraint but this is a safety for some custos.
+                order.subscription_state = '6_churn'
         return super()._action_cancel()
 
     def _prepare_confirmation_values(self):

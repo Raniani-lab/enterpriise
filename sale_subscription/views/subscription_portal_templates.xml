@@ -525,6 +525,13 @@
 
     <!-- Sale order (quotations): display recurrency -->
     <template id="sale_order_portal_content_inherit" inherit_id="sale.sale_order_portal_content">
+        <div id="informations" position="before">
+            <div class="card-body">
+                <div t-if="sale_order.pending_transaction" class="alert alert-warning" role="alert">
+                    <p>This quote has a pending payment transaction. It will be confirmed once it is validated</p>
+                </div>
+            </div>
+        </div>
         <xpath expr='//div[@id="informations"]' position="after">
             <div class="row" id="recurrency">
                     <div class="mb-3 col-6" t-if="sale_order.recurrence_id">

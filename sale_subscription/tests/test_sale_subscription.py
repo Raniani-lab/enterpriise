@@ -1470,7 +1470,7 @@ class TestSubscription(TestSubscriptionCommon):
             'currency_id': self.env.company.currency_id.id,
             'partner_id': portal_partner.id,
         })
-        self.subscription.with_user(self.user_portal).sudo().send_success_mail(tx, invoice)
+        self.subscription.with_user(self.user_portal).sudo()._send_success_mail(invoice, tx)
 
     def test_upsell_date_check(self):
         """ Test what happens when the upsell invoice is not generated before the next invoice cron call """

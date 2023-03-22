@@ -119,6 +119,9 @@ class CustomerPortal(payment_portal.PaymentPortal):
 
         enable_manage_payment_form = request.env.user.partner_id in (order_sudo.partner_id.child_ids | order_sudo.partner_id)
         is_follower = request.env.user.partner_id in order_sudo.message_follower_ids.partner_id
+        if order_sudo.pending_transaction and not message:
+            message = _("This subscription has a pending payment transaction.")
+            message_class = 'alert-warning'
         periods = {'day': 'days', 'week': 'weeks', 'month': 'months', 'year': 'years'}
         # Calculate the duration when the customer can reopen his subscription
         missing_periods = 1
@@ -180,6 +183,22 @@ class CustomerPortal(payment_portal.PaymentPortal):
 
 class PaymentPortal(payment_portal.PaymentPortal):
 
+    def _create_transaction(self, *args, **kwargs):
+        """ Override of payment to set subscriptions in pending states.
+
+        :param int sale_order_id: The sale order for which a payment id made, as a `sale.order` id
+        :param dict custom_create_values: Additional create values overwriting the default ones
+        :return: The result of the parent method
+        :rtype: recordset of `payment.transaction`
+        """
+        tx_sudo = super()._create_transaction(
+            *args, **kwargs
+        )
+        subscriptions = tx_sudo.sale_order_ids.filtered('is_subscription')
+        subscriptions.pending_transaction = True
+        return tx_sudo
+
+
     @http.route('/my/subscription/<int:order_id>/transaction', type='json', auth='public')
     def subscription_transaction(
         self, order_id, access_token, is_validation=False, **kwargs
@@ -198,10 +217,6 @@ class PaymentPortal(payment_portal.PaymentPortal):
             return redirection
         kwargs.update(partner_id=order_sudo.partner_id.id)
         kwargs.pop('custom_create_values', None)  # Don't allow passing arbitrary create values
-        common_callback_values = {
-            'callback_model_id': request.env['ir.model']._get_id(order_sudo._name),
-            'callback_res_id': order_sudo.id,
-        }
         if not is_validation:  # Renewal transaction
             unpaid_invoice_sudo = order_sudo.invoice_ids.filtered(
                 lambda am: am.state == 'posted' and
@@ -221,10 +236,9 @@ class PaymentPortal(payment_portal.PaymentPortal):
             # Create the transaction.
             tx_sudo = self._create_transaction(
                 custom_create_values={
-                    **common_callback_values,
                     'sale_order_ids': [Command.set([order_id])],
                     'invoice_ids': [Command.set([invoice_sudo[:1].id])],
-                    'callback_method': '_reconcile_and_assign_token',
+                    'subscription_action': 'assign_token',
                 },
                 is_validation=is_validation,
                 **kwargs
@@ -235,9 +249,8 @@ class PaymentPortal(payment_portal.PaymentPortal):
             )
             tx_sudo = self._create_transaction(
                 custom_create_values={
-                    **common_callback_values,
                     'sale_order_ids': [Command.set([order_id])],
-                    'callback_method': '_assign_token',
+                    'subscription_action': 'assign_token',
                 },
                 is_validation=is_validation,
                 **kwargs

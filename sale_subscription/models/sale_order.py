@@ -89,6 +89,8 @@ class SaleOrder(models.Model):
     payment_exception = fields.Boolean("Contract in exception",
                                        help="Automatic payment with token failed. The payment provider configuration and token should be checked",
                                        copy=False)
+    pending_transaction = fields.Boolean(help="The last transaction of the order is currently pending",
+                                        copy=False)
     payment_term_id = fields.Many2one(tracking=True)
 
     ###################
@@ -1267,20 +1269,34 @@ class SaleOrder(models.Model):
         )
         self.message_post(body=msg_body)
 
-    def _subscription_post_success_payment(self, invoice, transaction):
-        """ Action done after the successful payment has been performed """
+    def _subscription_post_success_payment(self, transaction, invoices, automatic=True):
+        """
+         Action done after the successful payment has been performed
+        :param transaction: single payment.transaction record
+        :param invoices: account.move recordset
+        :param automatic: True if the transaction was created during the subscription invoicing cron
+        """
         self.ensure_one()
-        invoice.write({'payment_reference': transaction.reference, 'ref': transaction.reference})
-        msg_body = escape(_(
-            'Automatic payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer.')) % {
-            'ref': transaction._get_html_link(title=transaction.reference),
-            'amount': transaction.amount,
-            'inv': self.next_invoice_date,
-        }
-        self.message_post(body=msg_body)
-        if invoice.state != 'posted':
-            invoice.with_context(ocr_trigger_delta=15)._post()
-        self.send_success_mail(transaction, invoice)
+        transaction.ensure_one()
+        for invoice in invoices:
+            invoice.write({'payment_reference': transaction.reference, 'ref': transaction.reference})
+            if automatic:
+                msg_body = escape(_(
+                    'Automatic payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer.')) % {
+                    'ref': transaction._get_html_link(title=transaction.reference),
+                    'amount': transaction.amount,
+                    'inv': self.next_invoice_date,
+                }
+            else:
+                msg_body = escape(_(
+                    'Manual payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s. Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to customer.')) % {
+                    'ref': transaction._get_html_link(title=transaction.reference),
+                    'amount': transaction.amount,
+                    'inv': self.next_invoice_date,
+                }
+            self.message_post(body=msg_body)
+            if invoice.state != 'posted':
+                invoice.with_context(ocr_trigger_delta=15)._post()
 
     def _get_subscription_mail_payment_context(self, mail_ctx=None):
         self.ensure_one()
@@ -1386,6 +1402,7 @@ class SaleOrder(models.Model):
                          ('is_subscription', '=', True),
                          ('subscription_state', '=', '3_progress'),
                          ('payment_exception', '=', False),
+                         ('pending_transaction', '=', False),
                          '|', ('next_invoice_date', '<=', current_date), ('end_date', '<=', current_date)]
         if extra_domain:
             search_domain = expression.AND([search_domain, extra_domain])
@@ -1545,7 +1562,6 @@ class SaleOrder(models.Model):
             if not order.payment_token_id:
                 invoice.action_post()
             else:
-                payment_callback_done = False
                 existing_transactions = order.transaction_ids
                 try:
                     payment_token = order.payment_token_id
@@ -1560,16 +1576,16 @@ class SaleOrder(models.Model):
                             self._subscription_commit_cursor(auto_commit)
                             continue
                         transaction = order._do_payment(payment_token, invoice, auto_commit=auto_commit)
-                        payment_callback_done = transaction and transaction.sudo().callback_is_done
                         # commit change as soon as we try the payment, so we have a trace in the payment_transaction table
+                        order.pending_transaction = True
                         self._subscription_commit_cursor(auto_commit)
                     # if transaction is a success, post a message
-                    if transaction and transaction.state == 'done':
-                        order.with_context(mail_notrack=True).write({'payment_exception': False})
-                        self._subscription_post_success_payment(invoice, transaction)
+                    if transaction and transaction.renewal_state in ['pending', 'authorized', 'done']:
+                        order.with_context(mail_notrack=True).write({'payment_exception': False, 'pending_transaction': False})
+                        invoice._post()
                         self._subscription_commit_cursor(auto_commit)
                     # if no transaction or failure, log error, rollback and remove invoice
-                    if transaction and not transaction.renewal_allowed:
+                    if transaction and transaction.renewal_state == 'cancel':
                         self._subscription_rollback_cursor(auto_commit)
                         order._handle_subscription_payment_failure(invoice, transaction, email_context)
                         existing_invoices -= invoice  # It will be unlinked in the call above
@@ -1577,19 +1593,18 @@ class SaleOrder(models.Model):
                     last_tx_sudo = (order.transaction_ids - existing_transactions).sudo()
                     error_message = "Error during renewal of contract [%s] %s (%s)" % (
                         order.id, order.client_order_ref or order.name,
-                        'Payment recorded: %s' % last_tx_sudo.reference if last_tx_sudo and last_tx_sudo.state == 'done'
+                        'Payment recorded: %s' % last_tx_sudo.reference if last_tx_sudo and last_tx_sudo.renewal_state in ['pending', 'done']
                         else 'Payment not recorded'
                     )
                     _logger.exception(error_message)
                     self._subscription_rollback_cursor(auto_commit)
                     mail = Mail.sudo().create({'body_html': error_message, 'subject': error_message,
-                                        'email_to': email_context.get('responsible_email'), 'auto_delete': True})
+                                               'email_to': email_context.get('responsible_email'), 'auto_delete': True})
                     mail.send()
                     if invoice.state == 'draft':
                         existing_invoices -= invoice
-                        if not payment_callback_done:
+                        if not last_tx_sudo or not last_tx_sudo.renewal_state not in ['pending', 'authorized']:
                             invoice.unlink()
-
         return existing_invoices
 
     def _get_expired_subscriptions(self):
@@ -1746,42 +1761,52 @@ class SaleOrder(models.Model):
                 'token_id': payment_token.id,
                 'operation': 'offline',
                 'invoice_ids': [(6, 0, [invoice.id])],
-                'callback_model_id': self.env['ir.model']._get_id(subscription._name),
-                'callback_res_id': subscription.id,
-                'callback_method': 'reconcile_pending_transaction'})
+                'subscription_action': 'automatic_send_mail',
+                })
         transactions_sudo = PaymentTransactionSudo.create(values)
         self._subscription_commit_cursor(auto_commit)
         for tx_sudo in transactions_sudo:
             tx_sudo._send_payment_request()
         return transactions_sudo
 
-    def send_success_mail(self, tx, invoice):
-        self.ensure_one()
-        if invoice.is_move_sent or not invoice._is_ready_to_be_sent() or invoice.state != 'posted':
-            return
+    def _send_success_mail(self, invoices, tx):
+        """
+        Send mail once the transaction to pay subscription invoice has succeeded
+        :param invoices: one or more account.move recordset
+        :param tx: single payment.transaction
+        """
+        tx.ensure_one()
+        template = self.env.ref('sale_subscription.email_payment_success').sudo()
         current_date = fields.Date.today()
-        # if no recurring next date, have next invoice date be today + interval
-        next_date = self.next_invoice_date or current_date + self.recurrence_id.get_recurrence_timedelta()
-        email_context = {**self.env.context.copy(),
-                         **{'payment_token': self.payment_token_id.payment_details,
-                            '5_renewed': True,
-                            'total_amount': tx.amount,
-                            'next_date': next_date,
-                            'previous_date': self.next_invoice_date,
-                            'email_to': self.partner_id.email,
-                            'code': self.client_order_ref,
-                            'subscription_name': self.name,
-                            'currency': self.currency_id.name,
-                            'date_end': self.end_date}}
-        _logger.debug("Sending Payment Confirmation Mail to %s for subscription %s", self.partner_id.email, self.id)
-        template = self.env.ref('sale_subscription.email_payment_success')
+        subscription_ids = []
+        for invoice in invoices:
+            subscriptions = invoice.invoice_line_ids.subscription_id
+            if not subscriptions or not invoice.is_move_sent or not invoice._is_ready_to_be_sent() or invoice.state != 'posted':
+                continue
+            subscription_ids += subscriptions.ids
+        for subscription in self.env['sale.order'].browse(subscription_ids):
+            # Most of the time, we invoice one sub per invoice
+            next_date = subscription.next_invoice_date or current_date
+            # if no recurring next date, have next invoice be today + interval
+            if not subscription.next_invoice_date:
+                error_msg = "The success mail could not be sent for subscription %s and invoice %s." % (subscription.name, invoice.name)
+                _logger.error(error_msg)
+                continue
+            email_context = {**self.env.context.copy(),
+                             **{'payment_token': self.payment_token_id.payment_details,
+                                '5_renewed': True,
+                                'total_amount': tx.amount,
+                                'next_date': next_date,
+                                'previous_date': self.next_invoice_date,
+                                'email_to': self.partner_id.email,
+                                'code': self.client_order_ref,
+                                'subscription_name': self.name,
+                                'currency': self.currency_id.name,
+                                'date_end': self.end_date}}
+            _logger.debug("Sending Payment Confirmation Mail to %s for subscription %s", self.partner_id.email, self.id)
 
-        # This function can be called by the public user via the callback_method set in
-        # /my/subscription/transaction/. The email template contains the invoice PDF in
-        # attachment, so to render it successfully sudo() is not enough.
-        if self.env.su:
-            template = template.with_user(SUPERUSER_ID)
-        return invoice.with_context(email_context)._generate_pdf_and_send_invoice(template)
+            invoice.is_move_sent = True
+            invoice.with_context(email_context)._generate_pdf_and_send_invoice(template)
     @api.model
     def _process_invoices_to_send(self, account_moves):
         for invoice in account_moves:
@@ -1810,61 +1835,13 @@ class SaleOrder(models.Model):
             _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
             invoice.with_context(email_context)._generate_pdf_and_send_invoice(invoice_mail_template_id)
 
-    def _reconcile_and_assign_token(self, tx):
-        """ Callback method to make the reconciliation and assign the payment token.
-            This method is always used in non-automatic mode, all the recurring lines should be invoiced
-        :param recordset tx: The transaction that created the token, and that must be reconciled,
-                             as a `payment.transaction` record
-        :return: Whether the conditions were met to execute the callback
-        """
-        self.ensure_one()
-        if tx.renewal_allowed:
-            self._assign_token(tx)
-            self.with_context(recurring_automatic=False)._reconcile_and_send_mail(tx)
-            return True
-        return False
-
     def _assign_token(self, tx):
         """ Callback method to assign a token after the validation of a transaction.
         Note: self.ensure_one()
         :param recordset tx: The validated transaction, as a `payment.transaction` record
         :return: Whether the conditions were met to execute the callback
         """
-        self.ensure_one()
-        if tx.renewal_allowed:
+        if tx.renewal_state == 'authorized':
             self.payment_token_id = tx.token_id.id
-            return True
-        return False
-
-    def _reconcile_and_send_mail(self, tx):
-        """ Callback method to make the reconciliation and send a confirmation email.
-        :param recordset tx: The transaction to reconcile, as a `payment.transaction` record
-        """
-        self.ensure_one()
-        if self.reconcile_pending_transaction(tx):
-            invoice = tx.invoice_ids[:1]
-            if not invoice:
-                return False
-            self.send_success_mail(tx, invoice)
-            msg_body = escape(_("Manual payment succeeded. Payment reference: %(ref)s; Amount: %(amount)s. Invoice %(invoice)s")) % {
-                'ref': tx._get_html_link(),
-                'amount': tx.amount,
-                'invoice': invoice._get_html_link(),
-            }
-            self.message_post(body=msg_body)
-            return True
-        return False
-
-    def reconcile_pending_transaction(self, tx):
-        """ Callback method to make the reconciliation.
-        :param recordset tx: The transaction to reconcile, as a `payment.transaction` record
-        :return: Whether the transaction was successfully reconciled
-        """
-        self.ensure_one()
-        if tx.renewal_allowed:  # The payment is confirmed, it can be reconciled
-            # avoid to create an invoice when one is already linked
-            if not tx.invoice_ids:
-                tx._create_or_link_to_invoice()
-            self.set_open()
             return True
         return False

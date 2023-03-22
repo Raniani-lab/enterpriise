@@ -33,7 +33,6 @@ class SaleOrderTemplate(models.Model):
              "If the chosen payment method has failed to renew the subscription after this time, "
              "the subscription is automatically closed.")
 
-    # ARJ TODO master: use a setting or a config parameter
     invoice_mail_template_id = fields.Many2one(
         'mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.move')],
         default=lambda self: self.env.ref('sale_subscription.mail_template_subscription_invoice', raise_if_not_found=False))

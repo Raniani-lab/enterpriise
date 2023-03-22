@@ -1,19 +1,38 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, Command
+
+from odoo import api, fields, models
 
 
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
     # used to control the renewal flow based on the transaction state
-    renewal_allowed = fields.Boolean(
-        compute='_compute_renewal_allowed', store=False)
+    renewal_state = fields.Selection([('draft', 'Draft'),
+                                      ('pending', 'Pending'),
+                                      ('authorized', 'Authorized'),
+                                      ('cancel', 'Refused')], compute='_compute_renewal_state')
+    subscription_action = fields.Selection([
+        ('automatic_send_mail', 'Send Mail (automatic payment)'),
+        ('manual_send_mail', 'Send Mail (manual payment)'),
+        ('assign_token', 'Assign Token'),
+    ])
 
     @api.depends('state')
-    def _compute_renewal_allowed(self):
+    def _compute_renewal_state(self):
         for tx in self:
-            tx.renewal_allowed = tx.state in ('done', 'authorized')
+            if tx.state in ['draft', 'pending']:
+                renewal_state = tx.state
+            elif tx.state in ('done', 'authorized'):
+                renewal_state = 'authorized'
+            else:
+                # tx state in cancel or error
+                renewal_state = 'cancel'
+            tx.renewal_state = renewal_state
+
+    ####################
+    # Business Methods #
+    ####################
 
     def _create_or_link_to_invoice(self):
         tx_to_invoice = self.env['payment.transaction']
@@ -27,13 +46,14 @@ class PaymentTransaction(models.Model):
 
         tx_to_invoice._invoice_sale_orders()
         tx_to_invoice.invoice_ids._post()
-        tx_to_invoice.invoice_ids.transaction_ids._send_invoice()
+        tx_to_invoice.filtered(lambda t: not t.subscription_action).invoice_ids.transaction_ids._send_invoice()
 
     def _reconcile_after_done(self):
         # override to force invoice creation if the transaction is done for a subscription
         # We don't take care of the sale.automatic_invoice parameter in that case.
         res = super()._reconcile_after_done()
         self._create_or_link_to_invoice()
+        self._post_subscription_action()
         return res
 
     def _get_invoiced_subscription_transaction(self):
@@ -69,3 +89,27 @@ class PaymentTransaction(models.Model):
         # Create invoice
         res = super(PaymentTransaction, transaction_to_invoice)._invoice_sale_orders()
         return res
+
+    def _post_subscription_action(self):
+        """
+        Execute the subscription action once the transaction is in an acceptable state
+        This will also reopen the order and remove the payment pending state.
+        Partial payment should not have a subscription_action defined and therefore should not reopen the order.
+        """
+        for tx in self:
+            orders = tx.sale_order_ids
+            # quotation subscription paid on portal have pending transactions
+            orders.pending_transaction = False
+            if not tx.subscription_action or not tx.renewal_state == 'authorized':
+                # We don't assign failing tokens, and we don't send emails
+                continue
+            orders = tx.sale_order_ids
+            orders.set_open()
+            # A mail is always sent for assigned token flow
+            if tx.subscription_action == 'assign_token':
+                orders._assign_token(tx)
+            orders._send_success_mail(tx.invoice_ids, tx)
+            if tx.subscription_action in ['manual_send_mail', 'automatic_send_mail']:
+                automatic = tx.subscription_action == 'automatic_send_mail'
+                for order in orders:
+                    order._subscription_post_success_payment(tx, tx.invoice_ids, automatic=automatic)

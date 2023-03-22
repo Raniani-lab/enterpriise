@@ -103,6 +103,8 @@
             <xpath expr="//div[@name='button_box']" position="after">
                 <field name="payment_exception" invisible="1"/>
                 <div class="px-2 rounded-pill text-bg-danger float-end" attrs="{'invisible': [('payment_exception', '=', False)]}">Payment Failure</div>
+                <field name="pending_transaction" invisible="1"/>
+                <div class="px-2 rounded-pill text-bg-warning float-end" attrs="{'invisible': [('pending_transaction', '=', False)]}">Pending transaction</div>
                 <field name="is_subscription" invisible="1"/>
                 <field name="is_upselling"  invisible="1"/>
                 <field name="is_renewing"  invisible="1"/>
@@ -202,6 +204,7 @@
                     <field name="subscription_id" groups="base.group_no_one" readonly="1"/>
                     <field name="payment_token_id" groups="base.group_no_one" options="{'no_create': 'True'}"/>
                     <field name="payment_exception" groups="base.group_no_one"/>
+                    <field name="pending_transaction" groups="base.group_no_one"/>
                 </group>
                 <field name="commercial_partner_id" invisible="1"/>
             </group>

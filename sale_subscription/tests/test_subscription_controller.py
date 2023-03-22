@@ -150,7 +150,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         self.original_prepare_invoice = self.subscription._prepare_invoice
         self.mock_send_success_count = 0
         with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=self._mock_subscription_do_payment),\
-            patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder.send_success_mail', wraps=self._mock_subscription_send_success_mail):
+            patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._send_success_mail', wraps=self._mock_subscription_send_success_mail):
             self.env['ir.config_parameter'].sudo().set_param('sale.automatic_invoice', 'False')
             subscription = self._portal_payment_controller_flow()
             subscription.transaction_ids.unlink()
@@ -221,13 +221,14 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'flow': 'direct',
                 }
         self._make_json_rpc_request(url, data)
+        self.env['payment.transaction'].search([('reference', '=', data['reference_prefix'])])
+        # the transaction is associated to the invoice in tx._reconcile_after_done()
         invoice_transactions = subscription.invoice_ids.transaction_ids
         self.assertEqual(len(invoice_transactions), 2, "Two transactions should be created. Calling /my/subscription/transaction/ creates a new one")
         last_transaction_id = subscription.transaction_ids - first_transaction_id
         self.assertEqual(len(subscription.transaction_ids), 2)
         self.assertEqual(last_transaction_id.sale_order_ids, subscription)
-        self.assertEqual(last_transaction_id.reference, "test_automatic_invoice_token",
-                         "The reference should come from the prefix")
+        self.assertEqual(last_transaction_id.reference, "test_automatic_invoice_token", "The reference should come from the prefix")
         last_transaction_id._set_done()
         self.assertEqual(subscription.invoice_ids.sorted('id').mapped('state'), ['posted', 'draft'])
         subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
@@ -292,7 +293,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
     def test_portal_partial_payment(self):
         with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment',
                    wraps=self._mock_subscription_do_payment), \
-                patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder.send_success_mail',
+                patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._send_success_mail',
                       wraps=self._mock_subscription_send_success_mail):
             self.env['ir.config_parameter'].sudo().set_param('sale.automatic_invoice', 'False')
             subscription = self.subscription.create({

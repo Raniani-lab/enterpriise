@@ -13,7 +13,7 @@ class SaleOrder(models.Model):
     def _compute_project_ids(self):
         generatable_orders = self.filtered(lambda so: so._can_generate_service())
         super(SaleOrder, generatable_orders)._compute_project_ids()
-        (self - generatable_orders).write({
+        (self - generatable_orders).update({
             'project_ids': False,
             'project_count': 0,
         })

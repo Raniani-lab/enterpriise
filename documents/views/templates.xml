@@ -5,7 +5,8 @@
 
     <template id="documents.not_available">
         <t t-call="documents.public_page_layout">
-            <h2 class="o_documents_portal_central_message text-center mt160 text-white">This link has expired</h2>
+            <h2 class="o_documents_portal_central_message text-center mt160 text-white">Sorry, this link is no longer valid.</h2>
+            <h4 class="o_documents_portal_central_message text-center mt40 text-white">Please contact the person that shared this link for more information.</h4>
         </t>
     </template>
 

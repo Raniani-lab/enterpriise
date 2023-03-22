@@ -904,6 +904,7 @@ class Article(models.Model):
     def action_archive(self):
         return self._action_archive_articles()
 
+    @api.model
     def name_create(self, name):
         """" This override is meant to make the 'name_create' symmetrical to the name_get.
         When creating an article, we attempt to extract a potential icon from the beginning of the

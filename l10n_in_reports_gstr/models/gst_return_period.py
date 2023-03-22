@@ -387,7 +387,7 @@ class L10nInGSTReturnPeriod(models.Model):
             return {
                 account.move(1): {
                     account.move.line(1):{
-                        'base_amount_currency': 100,
+                        'base_amount': 100,
                         'gst_tax_rate': 18.00,
                         'igst': 0.00,
                         'cgst': 9.00,
@@ -461,7 +461,7 @@ class L10nInGSTReturnPeriod(models.Model):
             move_id = base_line.move_id
             tax_vals_map.setdefault(move_id, {})
             tax_vals_map[move_id].setdefault(base_line, {
-                'base_amount_currency': tax_vals['base_amount_currency'],
+                'base_amount': tax_vals['base_amount'],
                 'l10n_in_reverse_charge': tax_vals['l10n_in_reverse_charge'],
                 'gst_tax_rate': tax_vals['gst_tax_rate'],
                 'igst': 0.00,
@@ -472,19 +472,19 @@ class L10nInGSTReturnPeriod(models.Model):
             })
             tax_vals_map[move_id][base_line]['line_tax_details'].append(tax_vals)
             if tax_vals.get('tax_type') == 'IGST':
-                tax_vals_map[move_id][base_line]['igst'] += (tax_vals['tax_amount_currency'])
+                tax_vals_map[move_id][base_line]['igst'] += (tax_vals['tax_amount'])
             elif tax_vals.get('tax_type') == 'CGST':
-                tax_vals_map[move_id][base_line]['cgst'] += (tax_vals['tax_amount_currency'])
+                tax_vals_map[move_id][base_line]['cgst'] += (tax_vals['tax_amount'])
             elif tax_vals.get('tax_type') == 'SGST':
-                tax_vals_map[move_id][base_line]['sgst'] += (tax_vals['tax_amount_currency'])
+                tax_vals_map[move_id][base_line]['sgst'] += (tax_vals['tax_amount'])
             elif tax_vals.get('tax_type') == 'CESS':
-                tax_vals_map[move_id][base_line]['cess'] += (tax_vals['tax_amount_currency'])
+                tax_vals_map[move_id][base_line]['cess'] += (tax_vals['tax_amount'])
         # IF line have 0% tax or not have tax then we add it manually
         for journal_item in journal_items:
             move_id = journal_item.move_id
             tax_vals_map.setdefault(move_id, {})
             tax_vals_map[move_id].setdefault(journal_item, {
-                'base_amount_currency': journal_item.balance,
+                'base_amount': journal_item.balance,
                 'l10n_in_reverse_charge': False,
                 'gst_tax_rate': 0.0,
                 'igst': 0.00,
@@ -540,7 +540,7 @@ class L10nInGSTReturnPeriod(models.Model):
                         hsn_json[group_key]['qty'] -= line.quantity
                     else:
                         hsn_json[group_key]['qty'] += line.quantity
-                hsn_json[group_key]['txval'] += line_tax_details.get('base_amount_currency', 0.00) * -1
+                hsn_json[group_key]['txval'] += line_tax_details.get('base_amount', 0.00) * -1
                 hsn_json[group_key]['iamt'] += line_tax_details.get('igst', 0.00) * -1
                 hsn_json[group_key]['samt'] += line_tax_details.get('cgst', 0.00) * -1
                 hsn_json[group_key]['camt'] += line_tax_details.get('sgst', 0.00) * -1
@@ -603,7 +603,7 @@ class L10nInGSTReturnPeriod(models.Model):
                             "rt": tax_rate, "txval": 0.00, "iamt": 0.00, "samt": 0.00, "camt": 0.00, "csamt": 0.00})
                         if line_tax_details['igst']:
                             is_igst_amount = True
-                        lines_json[tax_rate]['txval'] += line_tax_details['base_amount_currency'] * -1
+                        lines_json[tax_rate]['txval'] += line_tax_details['base_amount'] * -1
                         lines_json[tax_rate]['iamt'] += line_tax_details['igst'] * -1
                         lines_json[tax_rate]['camt'] += line_tax_details['cgst'] * -1
                         lines_json[tax_rate]['samt'] += line_tax_details['sgst'] * -1
@@ -671,7 +671,7 @@ class L10nInGSTReturnPeriod(models.Model):
                         tax_rate = line_tax_details.get('gst_tax_rate')
                         lines_json.setdefault(tax_rate, {
                             "rt": tax_rate, "txval": 0.00, "iamt": 0.00, "csamt": 0.00})
-                        lines_json[tax_rate]['txval'] += line_tax_details['base_amount_currency'] * -1
+                        lines_json[tax_rate]['txval'] += line_tax_details['base_amount'] * -1
                         lines_json[tax_rate]['iamt'] += line_tax_details['igst'] * -1
                         lines_json[tax_rate]['csamt'] += line_tax_details['cess'] * -1
                     if lines_json:
@@ -722,7 +722,7 @@ class L10nInGSTReturnPeriod(models.Model):
                         "typ": "OE",
                         "rt": tax_rate,
                         "txval": 0.00, "iamt": 0.00, "samt": 0.00, "camt": 0.00, "csamt": 0.00})
-                    b2cs_json[group_key]['txval'] += line_tax_details['base_amount_currency'] * -1
+                    b2cs_json[group_key]['txval'] += line_tax_details['base_amount'] * -1
                     b2cs_json[group_key]['iamt'] += line_tax_details['igst'] * -1
                     b2cs_json[group_key]['camt'] += line_tax_details['cgst'] * -1
                     b2cs_json[group_key]['samt'] += line_tax_details['sgst'] * -1
@@ -781,7 +781,7 @@ class L10nInGSTReturnPeriod(models.Model):
                             is_igst_amount = True
                         lines_json.setdefault(tax_rate, {
                             "rt": tax_rate, "txval": 0.00, "iamt": 0.00, "samt": 0.00, "camt": 0.00, "csamt": 0.00})
-                        lines_json[tax_rate]['txval'] += line_tax_details['base_amount_currency']
+                        lines_json[tax_rate]['txval'] += line_tax_details['base_amount']
                         lines_json[tax_rate]['iamt'] += line_tax_details['igst']
                         lines_json[tax_rate]['samt'] += line_tax_details['cgst']
                         lines_json[tax_rate]['camt'] += line_tax_details['sgst']
@@ -851,7 +851,7 @@ class L10nInGSTReturnPeriod(models.Model):
                     tax_rate = line_tax_detail['gst_tax_rate']
                     lines_json.setdefault(tax_rate, {
                         "rt": tax_rate, "txval": 0.00, "iamt": 0.00, "csamt": 0.00})
-                    lines_json[tax_rate]['txval'] += line_tax_detail['base_amount_currency']
+                    lines_json[tax_rate]['txval'] += line_tax_detail['base_amount']
                     lines_json[tax_rate]['iamt'] += line_tax_detail['igst']
                     lines_json[tax_rate]['csamt'] += line_tax_detail['cess']
                 if lines_json:
@@ -864,7 +864,7 @@ class L10nInGSTReturnPeriod(models.Model):
                         "ntty": move_id.move_type == "out_refund" and "C" or "D",
                         "nt_num": move_id.name,
                         "nt_dt": move_id.invoice_date.strftime("%d-%m-%Y"),
-                        "val": AccountEdiFormat._l10n_in_round_value(move_id.amount_total_in_currency_signed * -1),
+                        "val": AccountEdiFormat._l10n_in_round_value(move_id.amount_total_signed * -1),
                         "typ": invoice_type,
                         "itms": [
                             {"num": index, "itm_det": {
@@ -913,7 +913,7 @@ class L10nInGSTReturnPeriod(models.Model):
                         is_igst_amount = True
                     tax_rate = line_tax_details['gst_tax_rate']
                     lines_json.setdefault(tax_rate, {"rt": tax_rate, "txval": 0.00, "iamt": 0.00, "csamt": 0.00})
-                    lines_json[tax_rate]['txval'] += line_tax_details['base_amount_currency'] * -1
+                    lines_json[tax_rate]['txval'] += line_tax_details['base_amount'] * -1
                     lines_json[tax_rate]['iamt'] += line_tax_details['igst'] * -1
                     lines_json[tax_rate]['csamt'] += line_tax_details['cess'] * -1
                 if lines_json:
@@ -924,7 +924,7 @@ class L10nInGSTReturnPeriod(models.Model):
                     export_inv = {
                         "inum": move_id.name,
                         "idt": move_id.invoice_date.strftime("%d-%m-%Y"),
-                        "val": AccountEdiFormat._l10n_in_round_value(move_id.amount_total_in_currency_signed),
+                        "val": AccountEdiFormat._l10n_in_round_value(move_id.amount_total_signed),
                         "itms": list({
                             **d,
                             "txval": AccountEdiFormat._l10n_in_round_value(d['txval']),
@@ -984,11 +984,11 @@ class L10nInGSTReturnPeriod(models.Model):
                 for line, line_tax_detail  in tax_details.items():
                     base_line_tag_ids = line.tax_tag_ids
                     if any(tag_id in base_line_tag_ids for tag_id in nil_tag_ids):
-                        nil_json[supply_type]['nil_amt'] += line_tax_detail['base_amount_currency'] * -1
+                        nil_json[supply_type]['nil_amt'] += line_tax_detail['base_amount'] * -1
                     if any(tag_id in base_line_tag_ids for tag_id in exempt_tag_ids):
-                        nil_json[supply_type]['expt_amt'] += line_tax_detail['base_amount_currency'] * -1
+                        nil_json[supply_type]['expt_amt'] += line_tax_detail['base_amount'] * -1
                     if any(tag_id in base_line_tag_ids for tag_id in non_gst_tag_ids):
-                        nil_json[supply_type]['ngsup_amt'] += line_tax_detail['base_amount_currency'] * -1
+                        nil_json[supply_type]['ngsup_amt'] += line_tax_detail['base_amount'] * -1
             return nil_json and {'inv': list({
                 **d,
                 "nil_amt": AccountEdiFormat._l10n_in_round_value(d['nil_amt']),

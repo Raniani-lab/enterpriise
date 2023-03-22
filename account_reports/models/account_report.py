@@ -1438,7 +1438,6 @@ class AccountReport(models.Model):
 
         domain = [
             ('display_type', 'not in', ('line_section', 'line_note')),
-            ('parent_state', '!=', 'cancel'),
             ('company_id', 'in', self.get_report_company_ids(options)),
         ]
         domain += self._get_options_journals_domain(options)

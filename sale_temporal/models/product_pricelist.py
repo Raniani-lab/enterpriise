@@ -43,7 +43,7 @@ class Pricelist(models.Model):
                         start_date=start_date, end_date=end_date, duration=duration, unit=unit,
                         pricelist=self, currency=self.currency_id
                     )
-                    if not duration:
+                    if not duration and start_date and end_date:
                         duration_vals = Pricing._compute_duration_vals(start_date, end_date)
                         duration = pricing and duration_vals[pricing.recurrence_id.unit or 'day'] or 0
                 else:

@@ -676,3 +676,39 @@ class TestQualityCheck(TestQualityCommon):
 
         ml.lot_name = '1458'
         self.assertEqual(ml.check_ids.lot_name, '1458')
+
+    def test_update_sml_done_qty(self):
+        """
+        When changing the done quantity of a SML, the related QC should be
+        updated too
+        """
+        self.env['quality.point'].create({
+            'product_ids': [(4, self.product.id)],
+            'picking_type_ids': [(4, self.picking_type_id)],
+            'measure_on': 'move_line',
+        })
+
+        picking = self.env['stock.picking'].create({
+            'picking_type_id': self.picking_type_id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id,
+        })
+        move = self.env['stock.move'].create({
+            'name': self.product.name,
+            'product_id': self.product.id,
+            'product_uom_qty': 2,
+            'product_uom': self.product.uom_id.id,
+            'picking_id': picking.id,
+            'location_id': self.location_id,
+            'location_dest_id': self.location_dest_id,
+        })
+        picking.action_confirm()
+
+        move.quantity_done = 1.0
+        self.assertEqual(picking.check_ids.qty_line, 1)
+
+        move.quantity_done = 0.0
+        self.assertEqual(picking.check_ids.qty_line, 0)
+
+        move.quantity_done = 2.0
+        self.assertEqual(picking.check_ids.qty_line, 2)

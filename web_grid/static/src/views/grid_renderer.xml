@@ -236,7 +236,7 @@
              class="o_grid_row o_grid_add_line d-flex align-items-center z-index-1 position-sticky start-0 transition-base"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
         >
-            <a class="btn btn-link"
+            <a class="btn btn-link o_text_overflow"
                t-on-click="() => this.onCreateInlineClick(row?.section)"
                data-hotkey="i">
                <i class="fa fa-plus-circle fs-4 me-1"/>Add a line

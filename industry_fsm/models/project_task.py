@@ -83,7 +83,7 @@ class Task(models.Model):
     display_send_report_secondary = fields.Boolean(compute='_compute_display_send_report_buttons')
     worksheet_signature = fields.Binary('Signature', copy=False, attachment=True)
     worksheet_signed_by = fields.Char('Signed By', copy=False)
-    fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True)
+    fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True, copy=False)
     comment = fields.Html(string='Comments', copy=False)
 
     @property

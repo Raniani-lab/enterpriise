@@ -131,11 +131,4 @@
         <field name="act_window_id" ref="helpdesk_sla_report_analysis_action"/>
     </record>
 
-    <menuitem
-        id="helpdesk_ticket_report_menu_sla_analysis"
-        name="SLA Status Analysis"
-        action="helpdesk_sla_report_analysis_action"
-        sequence="10"
-        parent="helpdesk_ticket_report_menu_main"/>
-
 </odoo>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="rating_rating_view_tree_inherit_helpdesk" model="ir.ui.view">
         <field name="name">rating.rating.tree.helpdesk</field>
         <field name="model">rating.rating</field>
@@ -226,11 +227,4 @@
         <field name="view_id" ref="rating_rating_view_graph_inherit_helpdesk"/>
     </record>
 
-    <menuitem
-        id="helpdesk_ticket_report_menu_ratings"
-        name="Customer Ratings"
-        action="helpdesk_ratings_server_action"
-        sequence="30"
-        groups="helpdesk.group_use_rating"
-        parent="helpdesk_ticket_report_menu_main"/>
 </odoo>

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
+
     <record id="view_repair_order_form_inherit_helpdesk_repair" model="ir.ui.view">
         <field name="name">repair.form.inherit.heldpesk.repair</field>
         <field name="model">repair.order</field>
@@ -11,5 +12,13 @@
             </field>
         </field>
     </record>
+
+    <record id="action_repair_order_form" model="ir.actions.act_window">
+        <field name="name">Create a Repair Order</field>
+        <field name="res_model">repair.order</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+    
     </data>
 </odoo>

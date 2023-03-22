@@ -5,24 +5,6 @@ from collections import defaultdict
 
 from odoo import _, api, fields, models
 from odoo.osv import expression
-from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_TIMESHEET
-
-
-class HelpdeskTeam(models.Model):
-    _inherit = 'helpdesk.team'
-
-    project_id = fields.Many2one(domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id), ('allow_billable', '=', use_helpdesk_sale_timesheet)]")
-
-    def _create_project(self, name, allow_billable, other):
-        new_values = dict(other, allow_billable=allow_billable)
-        return super(HelpdeskTeam, self)._create_project(name, allow_billable, new_values)
-
-    def write(self, vals):
-        result = super(HelpdeskTeam, self).write(vals)
-        if 'use_helpdesk_sale_timesheet' in vals and vals['use_helpdesk_sale_timesheet']:
-            projects = self.filtered(lambda team: team.project_id).mapped('project_id')
-            projects.write({'allow_billable': True, 'timesheet_product_id': projects._default_timesheet_product_id()})
-        return result
 
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
@@ -138,7 +120,8 @@ class HelpdeskTicket(models.Model):
             '|', '|', ('partner_ids', 'parent_of', self.partner_id.ids),
                       '|', ('partner_ids', 'child_of', self.partner_id.ids),
                            ('sale_line_ids', 'in', self.sale_line_id.ids),
-                 '&', ('partner_ids', '=', False), ('sale_line_ids', '=', False)
+                 '&', ('partner_ids', '=', False),
+                      ('sale_line_ids', '=', False)
         ]])
 
     def action_view_so(self):
@@ -152,59 +135,3 @@ class HelpdeskTicket(models.Model):
             "res_id": self.sale_line_id.order_id.id or self.sale_order_id.id
         }
         return action_window
-
-
-class AccountAnalyticLine(models.Model):
-    _inherit = 'account.analytic.line'
-
-    display_sol = fields.Boolean(compute="_compute_display_sol")
-
-    @api.depends('helpdesk_ticket_id', 'helpdesk_ticket_id.use_helpdesk_sale_timesheet')
-    def _compute_display_sol(self):
-        sale_project_ids = set(self.env['project.project']._search([('helpdesk_team.use_helpdesk_sale_timesheet', '=', True)]))
-        for line in self:
-            if line.project_id and not line.project_id.allow_billable and line.project_id.id not in sale_project_ids:
-                line.display_sol = False
-            else:
-                line.display_sol = not line.helpdesk_ticket_id or line.helpdesk_ticket_id.use_helpdesk_sale_timesheet
-
-    @api.depends('task_id.sale_line_id', 'project_id.sale_line_id', 'employee_id', 'project_id.allow_billable', 'helpdesk_ticket_id.sale_line_id')
-    def _compute_so_line(self):
-        non_billed_helpdesk_timesheets = self.filtered(lambda t: not t.is_so_line_edited and t.helpdesk_ticket_id and t._is_not_billed())
-        for timesheet in non_billed_helpdesk_timesheets:
-            timesheet.so_line = timesheet.project_id.allow_billable and timesheet.helpdesk_ticket_id.sale_line_id
-        super(AccountAnalyticLine, self - non_billed_helpdesk_timesheets)._compute_so_line()
-
-    @api.depends('timesheet_invoice_id.state')
-    def _compute_partner_id(self):
-        super(AccountAnalyticLine, self.filtered(lambda t: t._is_not_billed()))._compute_partner_id()
-
-    def _get_portal_helpdesk_timesheet(self):
-        param_invoiced_timesheet = self.env['ir.config_parameter'].sudo().get_param('sale.invoiced_timesheet', DEFAULT_INVOICED_TIMESHEET)
-        if param_invoiced_timesheet == 'approved':
-            return self.filtered(lambda line: line.validated)
-        return self
-
-    def _check_timesheet_can_be_billed(self):
-        return super(AccountAnalyticLine, self)._check_timesheet_can_be_billed() or self.so_line == self.helpdesk_ticket_id.sale_line_id
-
-    def _timesheet_get_sale_domain(self, order_lines_ids, invoice_ids):
-        domain = super(AccountAnalyticLine, self)._timesheet_get_sale_domain(order_lines_ids, invoice_ids)
-        if not invoice_ids:
-            return domain
-
-        return expression.OR([domain, [
-            '&',
-                '&',
-                    ('task_id', '=', False),
-                    ('helpdesk_ticket_id', '!=', False),
-                ('so_line', 'in', order_lines_ids.ids)
-        ]])
-
-
-class HelpdeskSLA(models.Model):
-    _inherit = 'helpdesk.sla'
-
-    sale_line_ids = fields.Many2many(
-        'sale.order.line', string="Sales Order Items",
-        domain="[('is_service', '=', True)]")

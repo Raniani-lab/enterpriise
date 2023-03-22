@@ -43,15 +43,6 @@
         </field>
     </record>
 
-    <record id="helpdesk_team_view_form_inherit_helpdesk_account" model="ir.ui.view">
-        <field name='name'>helpdesk.team.form.inherit.helpdesk.account</field>
-        <field name="model">helpdesk.team</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
-        <field name="arch" type="xml">
-            <div id="use_product_returns" position="replace"/>
-        </field>
-    </record>
-
     <record id="helpdesk_ticket_view_search_inherit_helpdesk_stock" model="ir.ui.view">
         <field name="name">helpdesk.ticket.search.inherit.stock</field>
         <field name="model">helpdesk.ticket</field>

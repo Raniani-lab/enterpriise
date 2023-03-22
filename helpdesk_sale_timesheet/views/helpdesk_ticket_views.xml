@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="helpdesk_team_view_form_inherit" model="ir.ui.view">
-        <field name="name">helpdesk.team.form.inherit.timesheet</field>
-        <field name="model">helpdesk.team</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[@id='helpdesk_sale_timesheet']" position='attributes'>
-                <attribute name="invisible">1</attribute>
-            </xpath>
-            <xpath expr="//field[@name='project_id']" position='attributes'>
-                <attribute name="context">{'default_allow_timesheets': 1, 'default_allow_billable': use_helpdesk_sale_timesheet}</attribute>
-            </xpath>
-        </field>
-    </record>
-
     <record id="helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet" model="ir.ui.view">
         <field name='name'>helpdesk.ticket.form.inherit.sale.timesheet</field>
         <field name="model">helpdesk.ticket</field>
@@ -76,17 +62,6 @@
         </field>
     </record>
 
-    <record id="helpdesk_sla_view_form_inherit_sale_timesheet" model="ir.ui.view">
-        <field name='name'>helpdesk.sla.form.inherit.sale.timesheet</field>
-        <field name="model">helpdesk.sla</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_sla_view_form"/>
-        <field name="arch" type="xml">
-            <field name='partner_ids' position="after">
-                <field name="sale_line_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_create': True}" groups="sales_team.group_sale_salesman"/>
-            </field>
-        </field>
-    </record>
-
     <record id="helpdesk_ticket_view_tree_inherit_sale_timesheet" model="ir.ui.view">
         <field name='name'>helpdesk.ticket.tree.inherit.sale.timesheet</field>
         <field name="model">helpdesk.ticket</field>
@@ -113,26 +88,4 @@
         </field>
     </record>
 
-    <record id="helpdesk_sla_view_tree_inherit_sale_timesheet" model="ir.ui.view">
-        <field name="name">helpdesk.sla.tree.inherit.sale.timesheet</field>
-        <field name="model">helpdesk.sla</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_sla_view_tree"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_ids']" position="after">
-                <field name="sale_line_ids" widget="many2many_tags" optional="hide"
-                    options="{'no_create_edit': True, 'no_create': True}" groups="sales_team.group_sale_salesman"/>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="helpdesk_sla_view_search_inherit_sale_timesheet" model="ir.ui.view">
-        <field name='name'>helpdesk.sla.search.inherit.sale.timesheet</field>
-        <field name="model">helpdesk.sla</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_sla_view_search"/>
-        <field name="arch" type="xml">
-            <field name='partner_ids' position="after">
-                <field name="sale_line_ids" groups="sales_team.group_sale_salesman"/>
-            </field>
-        </field>
-    </record>
 </odoo>

@@ -20,19 +20,5 @@
             </field>
         </record>
 
-        <record id="helpdesk_team_view_form" model="ir.ui.view">
-            <field name="name">helpdesk.team.form</field>
-            <field name="model">helpdesk.team</field>
-            <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form" />
-            <field name="arch" type="xml">
-                <xpath expr="//div[@id='field_service']" position="replace">
-                    <div attrs="{'invisible': [('use_fsm', '=', False)]}" class="mt-2">
-                        <label for="fsm_project_id" string="Project" />
-                        <field name="fsm_project_id" attrs="{'required': [('use_fsm', '=', True)]}" context="{'default_is_fsm': True}" />
-                    </div>
-                </xpath>
-            </field>
-        </record>
-
     </data>
 </odoo>

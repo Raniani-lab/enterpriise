@@ -11,7 +11,8 @@
     'data': [
         'security/ir.model.access.csv',
         'data/mail_message_subtype_data.xml',
-        'views/helpdesk_views.xml',
+        'views/helpdesk_ticket_views.xml',
+        'views/helpdesk_team_views.xml',
         'views/project_sharing_views.xml',
         'wizard/create_task_views.xml',
     ],

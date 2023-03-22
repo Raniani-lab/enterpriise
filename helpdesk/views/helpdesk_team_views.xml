@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <!-- HELPDESK.TEAM -->
     <record id="helpdesk_team_view_tree" model="ir.ui.view">
         <field name="name">helpdesk.team.tree</field>
         <field name="model">helpdesk.team</field>
@@ -495,10 +494,6 @@
         <field name="act_window_id" ref="helpdesk_team_action"/>
     </record>
 
-    <menuitem id="helpdesk_team_menu" name="Teams" action="helpdesk_team_action"
-        sequence="0" parent="helpdesk.helpdesk_menu_config"
-        groups="helpdesk.group_helpdesk_manager"/>
-
     <record id="helpdesk_team_dashboard_action_main" model="ir.actions.act_window">
         <field name="name">Helpdesk Overview</field>
         <field name="res_model">helpdesk.team</field>
@@ -514,9 +509,5 @@
             </p>
         </field>
     </record>
-
-    <menuitem id="helpdesk_menu_team_dashboard" action="helpdesk.helpdesk_team_dashboard_action_main"
-        sequence="5" parent="helpdesk.menu_helpdesk_root" name="Overview"
-        groups="helpdesk.group_helpdesk_user"/>
 
 </odoo>

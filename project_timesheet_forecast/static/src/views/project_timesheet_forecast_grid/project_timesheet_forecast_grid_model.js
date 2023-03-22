@@ -30,7 +30,8 @@ patch(TimesheetGridDataPoint.prototype, "project_timesheet_forecast.TimesheetGri
         }
 
         const domain = new Domain([
-            ["user_id", "=", this.searchParams.context.uid],
+            ["employee_id", "!=", false],
+            ["employee_id.user_id", "in", [false, this.searchParams.context.uid]],
             ["state", "=", "published"],
             ["project_id.allow_timesheets", "=", true],
             ["start_datetime", "<", serializeDate(this.navigationInfo.periodEnd)],

@@ -1668,7 +1668,7 @@ class L10nInGSTReturnPeriod(models.Model):
     # ========================================
 
     def _request(self, url, company, params=None):
-        iap_service = self.env["iap.account"].get("gstr_india")
+        iap_service = self.env["iap.account"].get("l10n_in_edi")
         if not params:
             params = {}
         params.update(

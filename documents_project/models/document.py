@@ -80,7 +80,7 @@ class Document(models.Model):
 
         project = self.env['project.project'].browse(res_id) \
             if res_model == 'project.project' \
-            else self.env['project.task'].browse(res_id).project_id
+            else self.env['project.task'].browse(res_id).sudo().project_id
 
         document_read_group = self.env['documents.document']._read_group(kwargs.get('search_domain', []), ['folder_ids:array_agg(folder_id)'], [])
         folder_ids = (document_read_group[0]['folder_ids'] if document_read_group else []) or []

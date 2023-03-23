@@ -1713,9 +1713,7 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        const cells = target.querySelectorAll(
-            ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_row_total,.o_grid_column_total)"
-        );
+        const cells = target.querySelectorAll(".o_grid_row .o_grid_cell_readonly");
         const cell = cells[1];
         await hoverGridCell(cell);
         await click(target, ".o_grid_cell");

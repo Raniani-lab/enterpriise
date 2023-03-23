@@ -341,6 +341,22 @@ export class GridRenderer extends Component {
         }
     }
 
+    /**
+     * Handle click on any element in the grid
+     *
+     * @param {MouseEvent} ev
+     */
+    onClick(ev) {
+        if (
+            !this.editCellProps.reactive.cell ||
+            ev.target.closest(".o_grid_highlighted") ||
+            ev.target.closest(".o_grid_cell")
+        ) {
+            return;
+        }
+        this.onEditCell(false);
+    }
+
     onKeyDown(ev) {
         this._onKeyDown(ev);
     }

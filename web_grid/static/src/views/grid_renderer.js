@@ -12,7 +12,7 @@ import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
 
 import { GridComponent } from "@web_grid/components/grid_cell";
 
-import { Component, markup, useState, onWillUpdateProps } from "@odoo/owl";
+import { Component, markup, useState, onWillUpdateProps, useExternalListener } from "@odoo/owl";
 
 export class GridRenderer extends Component {
     static components = {
@@ -69,6 +69,7 @@ export class GridRenderer extends Component {
             initialScroll: { top: 60 },
             getItemHeight: (item) => this.getItemHeight(item),
         });
+        useExternalListener(window, "click", this.onClick);
     }
 
     getItemHeight(item) {
@@ -258,6 +259,17 @@ export class GridRenderer extends Component {
     onEditCell(value) {
         this.isEditing = value;
         this.editionState.editedCellInfo = value && this.editionState.hoveredCellInfo;
+    }
+
+    /**
+     * Handle click on any element in the grid
+     *
+     * @param {MouseEvent} ev
+     */
+    onClick(ev) {
+        if (this.editionState.editedCellInfo && !ev.target.closest(".o_grid_highlightable")) {
+            this.onEditCell(false);
+        }
     }
 
     /**

@@ -17,6 +17,8 @@ import {
 import { toggleMenuItem, toggleGroupByMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 
+import { hoverGridCell } from "./helpers";
+
 let serverData, target;
 
 QUnit.module("Views", (hooks) => {
@@ -1679,6 +1681,41 @@ QUnit.module("Views", (hooks) => {
                 "None | ABC"
             ),
             "'None' should be displayed"
+        );
+    });
+
+    QUnit.test("stop edition when the user clicks outside", async function (assert) {
+        const arch = serverData.views["analytic.line,false,grid"].replace(
+            "<grid>",
+            '<grid editable="1">'
+        );
+        await makeView({
+            type: "grid",
+            resModel: "analytic.line",
+            serverData,
+            arch,
+            async mockRPC(route, args) {
+                if (args.method === "grid_unavailability") {
+                    return {};
+                }
+            },
+        });
+
+        const cells = target.querySelectorAll(
+            ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_row_total,.o_grid_column_total)"
+        );
+        const cell = cells[1];
+        await hoverGridCell(cell);
+        await click(target, ".o_grid_cell");
+        await nextTick();
+
+        assert.containsOnce(target, ".o_grid_cell input", "The cell should be in edit mode");
+
+        await click(target, ".o_grid_view");
+        assert.containsNone(
+            target,
+            ".o_grid_cell input",
+            "The GridCell should no longer be visible and so no cell is in edit mode."
         );
     });
 });

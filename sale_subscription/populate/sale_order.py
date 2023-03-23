@@ -27,6 +27,7 @@ class SaleOrder(models.Model):
     def _renew(self, sample_size):
         random = populate.Random('renew')
         to_renew = self.browse(random.choices(self.ids, k=int(len(self) * sample_size)))
+        to_renew._create_invoices()
         vals = []
         _logger.info("Renewing %d sale orders", len(to_renew))
         for so in to_renew:

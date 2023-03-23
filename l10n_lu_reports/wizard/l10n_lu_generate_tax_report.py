@@ -52,13 +52,13 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         Gets the formatted values for LU's tax report.
         Exact format depends on the period (monthly, quarterly, annual(simplified)).
         """
-        report = self.env.ref('l10n_lu.tax_report')
-        options = report._get_options()
+        report_gen_options = self.env.context.get('report_generation_options', {})
+        report = self.env['account.report'].browse(report_gen_options.get('report_id'))
+        options = report._get_options(report_gen_options)
         form = self.env[report.custom_handler_model_name].get_tax_electronic_report_values(options)['forms'][0]
         self.period = form['declaration_type'][-1]
         form['field_values'] = self._remove_zero_fields(form['field_values'], report.id)
         if self.period == 'A':
-            options = report._get_options()
             date_from = fields.Date.from_string(options['date'].get('date_from'))
             date_to = fields.Date.from_string(options['date'].get('date_to'))
             self._adapt_to_annual_report(form, date_from, date_to)

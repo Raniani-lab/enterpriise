@@ -52,6 +52,7 @@ class SignContract(Sign):
         if request_item.sign_request_id.nb_closed == 2:
             if contract.employee_id:
                 contract.employee_id.active = True
+                contract.applicant_id._move_to_hired_stage()
             if contract.employee_id.address_home_id:
                 contract.employee_id.address_home_id.active = True
             self._create_activity_advantage(contract, 'countersigned')

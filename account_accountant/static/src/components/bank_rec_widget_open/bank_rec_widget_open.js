@@ -7,13 +7,16 @@ const { Component } = owl;
 
 class OpenBankRecWidget extends Component {
     setup() {
-        this.orm = useService("orm");
         this.action = useService("action");
     }
 
     async openBankRec(ev) {
-        const action = await this.orm.call("account.bank.statement", "action_open_bank_reconcile_widget", [this.props.record.resId], {});
-        this.action.doAction(action);
+        this.action.doActionButton({
+            type: "object",
+            resId: this.props.record.resId,
+            name: "action_open_bank_reconcile_widget",
+            resModel: "account.bank.statement",
+        });
     }
 }
 

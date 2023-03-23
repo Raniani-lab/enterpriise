@@ -432,7 +432,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 line_columns.append({})
 
         return {
-            'id': report._get_generic_line_id(None, None, parent_line_id=parent_line_id, markup='initial'),
+            'id': report._get_generic_line_id(None, None, parent_line_id=parent_line_id, markup='initial' if is_starting_balance else 'final'),
             'class': 'o_account_reports_initial_balance',
             'name': '',
             'parent_id': parent_line_id,

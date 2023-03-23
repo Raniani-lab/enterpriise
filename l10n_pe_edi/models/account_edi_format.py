@@ -953,6 +953,17 @@ class AccountEdiFormat(models.Model):
         if any(not line.tax_ids for line in move.invoice_line_ids if line.display_type not in ('line_note', 'line_section')):
             res.append(_("Taxes need to be assigned on all invoice lines"))
 
+        # When this condition is met in `_l10n_pe_edi_get_spot` we will need this bank account.
+        # As the mentioned method is meant to be run by a CRON, the user won't be able to see the error hence we raise it here.
+        max_percent = max(move.invoice_line_ids.mapped('product_id.l10n_pe_withhold_percentage'), default=0)
+        need_national_bank_account = not (not max_percent or not move.l10n_pe_edi_operation_type in ['1001', '1002', '1003', '1004'] or move.move_type == 'out_refund')
+        if need_national_bank_account:
+            national_bank = self.env.ref('l10n_pe.peruvian_national_bank')
+            national_bank_account = move.company_id.bank_ids.filtered(lambda b: b.bank_id == national_bank)
+            if not national_bank_account:
+                res.append(_("To generate the electronic document with this invoice, the bank account at the national bank will be needed.\n"
+                             "Please configure it.\n"))
+
         return res
 
     def _is_compatible_with_journal(self, journal):

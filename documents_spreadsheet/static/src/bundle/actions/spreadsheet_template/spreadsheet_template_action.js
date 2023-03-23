@@ -21,6 +21,11 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
         this.isReadonly = record.isReadonly;
     }
 
+    createModel() {
+        super.createModel();
+        this.model.dispatch("SET_FORMULA_VISIBILITY", { show: true });
+    }
+
     /**
      * Fetch all the necessary data to open a spreadsheet template
      * @returns {Object}
@@ -33,7 +38,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
      * Create a new empty spreadsheet template
      * @returns {number} id of the newly created spreadsheet template
      */
-    async _onNewSpreadsheet() {
+    async createNewSpreadsheet() {
         const data = {
             name: _t("Untitled spreadsheet template"),
             data: btoa("{}"),
@@ -50,7 +55,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
      * @param {Object} values.data exported spreadsheet data
      * @param {string} values.thumbnail spreadsheet thumbnail
      */
-    async _onSpreadsheetLeft({ data, thumbnail }) {
+    async onSpreadsheetLeft({ data, thumbnail }) {
         await this.orm.write("spreadsheet.template", [this.resId], {
             data: jsonToBase64(data),
             thumbnail,
@@ -71,7 +76,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
         });
     }
 
-    async _onMakeCopy({ data, thumbnail }) {
+    async makeCopy({ data, thumbnail }) {
         const defaultValues = {
             data: jsonToBase64(data),
             thumbnail,

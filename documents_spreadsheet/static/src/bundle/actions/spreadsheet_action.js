@@ -1,19 +1,23 @@
 /** @odoo-module **/
 import { registry } from "@web/core/registry";
-import { download } from "@web/core/network/download";
 import { useService } from "@web/core/utils/hooks";
-import { session } from "@web/session";
 
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 import { SpreadsheetName } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_name";
 
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import { convertFromSpreadsheetTemplate } from "@documents_spreadsheet/bundle/helpers";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { DocumentsSpreadsheetControlPanel } from "../components/control_panel/spreadsheet_control_panel";
 import { RecordFileStore } from "@spreadsheet_edition/bundle/image/record_file_store";
+import { sprintf } from "@web/core/utils/strings";
+import { jsonToBase64 } from "@spreadsheet_edition/bundle/helpers";
+import { _t } from "@web/core/l10n/translation";
 
-import { Component, useState } from "@odoo/owl";
+import { Component, useSubEnv, useState } from "@odoo/owl";
+
+const { Model } = spreadsheet;
 
 export class SpreadsheetAction extends AbstractSpreadsheetAction {
     setup() {
@@ -22,23 +26,20 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.actionService = useService("action");
         this.notificationMessage = this.env._t("New spreadsheet created in Documents");
         this.state = useState({
-            connectedUsers: [{ name: session.username, id: session.uid }],
-            isSynced: true,
             isFavorited: false,
             spreadsheetName: UNTITLED_SPREADSHEET_NAME,
         });
 
         this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
         this.fileStore = new RecordFileStore("documents.document", this.resId, this.http, this.orm);
-    }
-
-    async onWillStart() {
-        await super.onWillStart();
         this.transportService = this.spreadsheetCollaborative.getCollaborativeChannel(
             Component.env,
             "documents.document",
             this.resId
         );
+        useSubEnv({
+            saveAsTemplate: this.saveAsTemplate.bind(this),
+        });
     }
 
     async _fetchData() {
@@ -67,20 +68,6 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     }
 
     /**
-     * @private
-     * @param {Object}
-     */
-    async _onDownload({ name, files }) {
-        await download({
-            url: "/spreadsheet/xlsx",
-            data: {
-                zip_name: `${name}.xlsx`,
-                files: JSON.stringify(files),
-            },
-        });
-    }
-
-    /**
      * @param {OdooEvent} ev
      * @returns {Promise}
      */
@@ -90,26 +77,9 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     }
 
     /**
-     * Updates the control panel with the sync status of spreadsheet
-     *
-     * @param {Object}
-     */
-    _onSpreadsheetSyncStatus({ synced, connectedUsers }) {
-        this.state.isSynced = synced;
-        this.state.connectedUsers = connectedUsers;
-    }
-
-    /**
-     * Reload the spreadsheet if an unexpected revision id is triggered.
-     */
-    _onUnexpectedRevisionId() {
-        this.actionService.doAction("reload_context");
-    }
-
-    /**
      * Create a copy of the given spreadsheet and display it
      */
-    async _onMakeCopy({ data, thumbnail }) {
+    async makeCopy({ data, thumbnail }) {
         const defaultValues = {
             mimetype: "application/o-spreadsheet",
             spreadsheet_data: JSON.stringify(data),
@@ -125,13 +95,13 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     /**
      * Create a new sheet and display it
      */
-    async _onNewSpreadsheet() {
+    async createNewSpreadsheet() {
         const action = await this.orm.call("documents.document", "action_open_new_spreadsheet");
         this._notifyCreation();
         this.actionService.doAction(action, { clear_breadcrumbs: true });
     }
 
-    async _onSpreadsheetLeft({ thumbnail }) {
+    async onSpreadsheetLeft({ thumbnail }) {
         await this.orm.write("documents.document", [this.resId], { thumbnail });
     }
 
@@ -145,6 +115,36 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.state.spreadsheetName = name;
         this.env.config.setDisplayName(this.state.spreadsheetName);
         return await this.orm.write("documents.document", [this.resId], { name });
+    }
+
+    /**
+     * @private
+     * @returns {Promise}
+     */
+    async saveAsTemplate() {
+        const model = new Model(this.model.exportData(), {
+            custom: {
+                env: this.env,
+                dataSources: this.model.config.custom.dataSources,
+            },
+        });
+        await model.config.custom.dataSources.waitForAllLoaded();
+        const proms = [];
+        for (const pivotId of model.getters.getPivotIds()) {
+            proms.push(model.getters.getPivotDataSource(pivotId).prepareForTemplateGeneration());
+        }
+        await Promise.all(proms);
+        model.dispatch("CONVERT_PIVOT_TO_TEMPLATE");
+        const data = model.exportData();
+        const name = this.state.spreadsheetName;
+
+        this.actionService.doAction("documents_spreadsheet.save_spreadsheet_template_action", {
+            additionalContext: {
+                default_template_name: sprintf(_t("%s - Template"), name),
+                default_data: jsonToBase64(data),
+                default_thumbnail: this.getThumbnail(),
+            },
+        });
     }
 }
 

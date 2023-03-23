@@ -3,8 +3,9 @@
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { useService } from "@web/core/utils/hooks";
 import { SpreadsheetName } from "./spreadsheet_name";
+import { session } from "@web/session";
 
-import { Component, useState } from "@odoo/owl";
+import { Component, onWillUnmount, useState } from "@odoo/owl";
 
 /**
  * @typedef {import("@spreadsheet_edition/bundle/actions/spreadsheet_component").User} User
@@ -18,6 +19,20 @@ export class SpreadsheetControlPanel extends Component {
         };
         this.actionService = useService("action");
         this.breadcrumbs = useState(this.env.config.breadcrumbs);
+        this.collaborative = useState({
+            isSynced: true,
+            connectedUsers: [{ name: session.username, id: session.id }],
+        });
+        const model = this.props.model;
+        if (this.props.displayCollaborativeInfo && model) {
+            model.on("update", this, this.syncState.bind(this));
+            onWillUnmount(() => model.off("update", this));
+        }
+    }
+
+    syncState() {
+        this.collaborative.isSynced = this.props.model.getters.isFullySynchronized();
+        this.collaborative.connectedUsers = this.getConnectedUsers();
     }
 
     /**
@@ -31,13 +46,31 @@ export class SpreadsheetControlPanel extends Component {
 
     get tooltipInfo() {
         return JSON.stringify({
-            users: this.props.connectedUsers.map((/**@type User*/ user) => {
+            users: this.collaborative.connectedUsers.map((/**@type User*/ user) => {
                 return {
                     name: user.name,
                     avatar: `/web/image?model=res.users&field=avatar_128&id=${user.id}`,
                 };
             }),
         });
+    }
+
+    /**
+     * Return the number of connected users. If one user has more than
+     * one open tab, it's only counted once.
+     * @return {Array<User>}
+     */
+    getConnectedUsers() {
+        const connectedUsers = [];
+        for (const client of this.props.model.getters.getConnectedClients()) {
+            if (!connectedUsers.some((user) => user.id === client.userId)) {
+                connectedUsers.push({
+                    id: client.userId,
+                    name: client.name,
+                });
+            }
+        }
+        return connectedUsers;
     }
 }
 
@@ -48,12 +81,12 @@ SpreadsheetControlPanel.components = {
 };
 SpreadsheetControlPanel.props = {
     spreadsheetName: String,
-    isSpreadsheetSynced: {
-        type: Boolean,
+    model: {
+        type: Object,
         optional: true,
     },
-    connectedUsers: {
-        type: Array,
+    displayCollaborativeInfo: {
+        type: Boolean,
         optional: true,
     },
     isReadonly: {
@@ -64,4 +97,7 @@ SpreadsheetControlPanel.props = {
         type: Function,
         optional: true,
     },
+};
+SpreadsheetControlPanel.defaultProps = {
+    displayCollaborativeInfo: true,
 };

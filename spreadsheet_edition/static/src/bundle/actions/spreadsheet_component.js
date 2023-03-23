@@ -2,25 +2,13 @@
 
 import { _t } from "@web/core/l10n/translation";
 import Dialog from "web.OwlDialog";
-import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { useService } from "@web/core/utils/hooks";
 
 import { DEFAULT_LINES_NUMBER } from "@spreadsheet/helpers/constants";
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { DataSources } from "@spreadsheet/data_sources/data_sources";
-import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 
-import {
-    onMounted,
-    onWillUnmount,
-    useExternalListener,
-    useState,
-    useSubEnv,
-    onWillStart,
-    Component,
-} from "@odoo/owl";
-const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
+import { useState, useSubEnv, Component } from "@odoo/owl";
 
 const { Spreadsheet, Model } = spreadsheet;
 
@@ -31,30 +19,28 @@ const tags = new Set();
  * @property {string} User.name
  * @property {string} User.id
  */
+
+/**
+ * Component wrapping the <Spreadsheet> component from o-spreadsheet
+ * to add user interactions extensions from odoo such as notifications,
+ * error dialogs, etc.
+ */
 export default class SpreadsheetComponent extends Component {
+    get model() {
+        return this.props.model;
+    }
     setup() {
         this.orm = useService("orm");
-        const user = useService("user");
-        this.ui = useService("ui");
         this.action = useService("action");
         this.notifications = useService("notification");
 
         useSubEnv({
-            newSpreadsheet: this.newSpreadsheet.bind(this),
-            makeCopy: this.makeCopy.bind(this),
-            download: this._download.bind(this),
             getLinesNumber: this._getLinesNumber.bind(this),
             notifyUser: this.notifyUser.bind(this),
             raiseError: this.raiseError.bind(this),
             editText: this.editText.bind(this),
             askConfirmation: this.askConfirmation.bind(this),
         });
-
-        useSetupAction({
-            beforeLeave: this._onLeave.bind(this),
-        });
-
-        useExternalListener(window, "beforeunload", this._onLeave.bind(this));
 
         this.state = useState({
             dialog: {
@@ -68,90 +54,9 @@ export default class SpreadsheetComponent extends Component {
             },
         });
 
-        const dataSources = new DataSources(this.orm);
-
-        this.model = new Model(
-            migrate(this.props.data),
-            {
-                custom: { env: this.env, orm: this.orm, dataSources },
-                external: {
-                    fileStore: this.props.fileStore,
-                    loadCurrencies: this.loadCurrencies.bind(this),
-                },
-                transportService: this.props.transportService,
-                client: {
-                    id: uuidGenerator.uuidv4(),
-                    name: user.name,
-                    userId: user.userId,
-                },
-                mode: this.props.isReadonly ? "readonly" : "normal",
-                snapshotRequested: this.props.snapshotRequested,
-            },
-            this.props.stateUpdateMessages
-        );
-
-        if (this.env.debug) {
-            spreadsheet.__DEBUG__ = spreadsheet.__DEBUG__ || {};
-            spreadsheet.__DEBUG__.model = this.model;
-        }
-
-        this.model.on("unexpected-revision-id", this, () => {
-            if (this.props.onUnexpectedRevisionId) {
-                this.props.onUnexpectedRevisionId();
-            }
-        });
-        dataSources.addEventListener("data-source-updated", () => {
-            const sheetId = this.model.getters.getActiveSheetId();
-            this.model.dispatch("EVALUATE_CELLS", { sheetId });
-        });
-        if (this.props.showFormulas) {
-            this.model.dispatch("SET_FORMULA_VISIBILITY", { show: true });
-        }
-
         this.dialogContent = undefined;
         this.pivot = undefined;
         this.confirmDialog = () => true;
-
-        onWillStart(async () => {
-            if (this.props.asyncInitCallback) {
-                await this.props.asyncInitCallback(this.model);
-            }
-        });
-
-        onMounted(() => {
-            if (this.props.initCallback) {
-                this.props.initCallback(this.model);
-            }
-            this.model.on("update", this, () => {
-                if (this.props.spreadsheetSyncStatus) {
-                    this.props.spreadsheetSyncStatus({
-                        synced: this.model.getters.isFullySynchronized(),
-                        connectedUsers: this.getConnectedUsers(),
-                    });
-                }
-            });
-        });
-
-        onWillUnmount(() => this._onLeave());
-    }
-
-    /**
-     * Return the number of connected users. If one user has more than
-     * one open tab, it's only counted once.
-     * @return {Array<User>}
-     */
-    getConnectedUsers() {
-        const connectedUsers = [];
-        for (const client of this.model.getters.getConnectedClients()) {
-            if (!connectedUsers.some((user) => user.id === client.userId)) {
-                connectedUsers.push({
-                    id: client.userId,
-                    name: client.name,
-                });
-            }
-        }
-
-        return connectedUsers;
     }
 
     /**
@@ -216,106 +121,6 @@ export default class SpreadsheetComponent extends Component {
     }
 
     /**
-     * Load currencies from database
-     */
-    async loadCurrencies() {
-        const odooCurrencies = await this.orm.searchRead(
-            "res.currency", // model
-            [], // domain
-            ["symbol", "full_name", "position", "name", "decimal_places"], // fields
-            {
-                // opts
-                order: "active DESC, full_name ASC",
-                context: { active_test: false },
-            }
-        );
-        return odooCurrencies.map((currency) => {
-            return {
-                code: currency.name,
-                symbol: currency.symbol,
-                position: currency.position || "after",
-                name: currency.full_name || _t("Currency"),
-                decimalPlaces: currency.decimal_places || 2,
-            };
-        });
-    }
-
-    /**
-     * Retrieve the spreadsheet_data and the thumbnail associated to the
-     * current spreadsheet
-     */
-    getSaveData() {
-        const data = this.model.exportData();
-        return {
-            data,
-            revisionId: data.revisionId,
-            thumbnail: this.getThumbnail(),
-        };
-    }
-
-    getThumbnail() {
-        const dimensions = spreadsheet.SPREADSHEET_DIMENSIONS;
-        const canvas = document.querySelector(".o-grid canvas:not(.o-figure-canvas)");
-        const canvasResizer = document.createElement("canvas");
-        const size = this.props.thumbnailSize;
-        canvasResizer.width = size;
-        canvasResizer.height = size;
-        const canvasCtx = canvasResizer.getContext("2d");
-        // use only 25 first rows in thumbnail
-        const sourceSize = Math.min(
-            25 * dimensions.DEFAULT_CELL_HEIGHT,
-            canvas.width,
-            canvas.height
-        );
-        canvasCtx.drawImage(
-            canvas,
-            dimensions.HEADER_WIDTH - 1,
-            dimensions.HEADER_HEIGHT - 1,
-            sourceSize,
-            sourceSize,
-            0,
-            0,
-            size,
-            size
-        );
-        return canvasResizer.toDataURL().replace("data:image/png;base64,", "");
-    }
-    /**
-     * Make a copy of the current document
-     */
-    makeCopy() {
-        const { data, thumbnail } = this.getSaveData();
-        this.props.onMakeCopy({ data, thumbnail });
-    }
-    /**
-     * Create a new spreadsheet
-     */
-    newSpreadsheet() {
-        this.props.onNewSpreadsheet();
-    }
-
-    /**
-     * Downloads the spreadsheet in xlsx format
-     */
-    async _download() {
-        this.ui.block();
-        try {
-            await this.action.doAction({
-                type: "ir.actions.client",
-                tag: "action_download_spreadsheet",
-                params: {
-                    orm: this.orm,
-                    name: this.props.name,
-                    data: this.model.exportData(),
-                    stateUpdateMessages: [],
-                },
-            });
-        } finally {
-            this.ui.unblock();
-        }
-    }
-
-    /**
      * Adds a notification to display to the user
      * @param {{text: string, tag: string}} notification
      */
@@ -344,73 +149,11 @@ export default class SpreadsheetComponent extends Component {
         };
         this.state.dialog.isDisplayed = true;
     }
-
-    _onLeave() {
-        if (this.alreadyLeft) {
-            return;
-        }
-        this.alreadyLeft = true;
-        this.model.leaveSession();
-        this.model.off("update", this);
-        if (!this.props.isReadonly) {
-            this.props.onSpreadsheetLeft(this.getSaveData());
-        }
-    }
 }
 
 SpreadsheetComponent.template = "spreadsheet_edition.SpreadsheetComponent";
 SpreadsheetComponent.components = { Spreadsheet, Dialog };
 Spreadsheet._t = _t;
 SpreadsheetComponent.props = {
-    name: String,
-    data: Object,
-    thumbnailSize: Number,
-    isReadonly: { type: Boolean, optional: true },
-    snapshotRequested: { type: Boolean, optional: true },
-    showFormulas: { type: Boolean, optional: true },
-    stateUpdateMessages: { type: Array, optional: true },
-    asyncInitCallback: {
-        optional: true,
-        type: Function,
-    },
-    initCallback: {
-        optional: true,
-        type: Function,
-    },
-    transportService: {
-        optional: true,
-        type: Object,
-    },
-    fileStore: {
-        optional: true,
-        type: Object,
-    },
-    spreadsheetSyncStatus: {
-        optional: true,
-        type: Function,
-    },
-    onDownload: {
-        optional: true,
-        type: Function,
-    },
-    onUnexpectedRevisionId: {
-        optional: true,
-        type: Function,
-    },
-    onMakeCopy: {
-        type: Function,
-    },
-    onSpreadsheetLeft: {
-        type: Function,
-    },
-    onNewSpreadsheet: {
-        type: Function,
-    },
-};
-SpreadsheetComponent.defaultProps = {
-    isReadonly: false,
-    snapshotRequested: false,
-    showFormulas: false,
-    stateUpdateMessages: [],
-    onDownload: () => {},
+    model: Model,
 };

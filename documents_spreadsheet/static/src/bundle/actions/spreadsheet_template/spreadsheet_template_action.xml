@@ -5,18 +5,10 @@
     <DocumentsSpreadsheetControlPanel
         spreadsheetName="state.spreadsheetName"
         isReadonly="isReadonly"
+        displayCollaborativeInfo="false"
         onSpreadsheetNameChanged.bind="_onSpreadSheetNameChanged"
     />
-    <SpreadsheetComponent
-        name="state.spreadsheetName"
-        data="spreadsheetData"
-        isReadonly="isReadonly"
-        showFormulas="showFormulas"
-        thumbnailSize="750"
-        onMakeCopy.bind="_onMakeCopy"
-        onNewSpreadsheet.bind="_onNewSpreadsheet"
-        onSpreadsheetLeft.bind="_onSpreadsheetLeft"
-    />
+    <SpreadsheetComponent model="model"/>
 </div>
 
 </templates>

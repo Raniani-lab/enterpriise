@@ -2,15 +2,13 @@
 
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { getFixture } from "@web/../tests/helpers/utils";
 import { jsonToBase64, base64ToJson } from "@spreadsheet_edition/bundle/helpers";
 import { createSpreadsheetTemplate } from "../spreadsheet_test_utils";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
-import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 
-import { onMounted } from "@odoo/owl";
 const { Model } = spreadsheet;
 
 QUnit.module("documents_spreadsheet > template action", {}, () => {
@@ -76,61 +74,46 @@ QUnit.module("documents_spreadsheet > template action", {}, () => {
         );
     });
 
-    QUnit.test(
-        "create and edit template and create new spreadsheet from it",
-        async function (assert) {
-            assert.expect(4);
-            const templateModel = new Model();
-            setCellContent(templateModel, "A1", "Firstname");
-            setCellContent(templateModel, "B1", "Lastname");
-            const id = 101;
-            const serverData = getBasicServerData();
-            serverData.models["spreadsheet.template"].records = [
-                {
-                    id,
-                    name: "template",
-                    data: jsonToBase64(templateModel.exportData()),
-                },
-            ];
-            let spreadSheetComponent;
-            patchWithCleanup(SpreadsheetComponent.prototype, {
-                setup() {
-                    this._super();
-                    onMounted(() => {
-                        spreadSheetComponent = this;
-                    });
-                },
-            });
-            const { model, webClient } = await createSpreadsheetTemplate({
-                serverData,
-                spreadsheetId: id,
-                mockRPC: function (route, args) {
-                    if (args.model == "spreadsheet.template") {
-                        if (args.method === "write") {
-                            const model = base64ToJson(args.args[1].data);
-                            assert.strictEqual(
-                                typeof model,
-                                "object",
-                                "Model type should be object"
-                            );
-                            const { A1, B1 } = model.sheets[0].cells;
-                            assert.equal(
-                                `${A1.content} ${B1.content}`,
-                                `Firstname Name`,
-                                "A1 and B1 should be changed after update"
-                            );
-                        }
+    QUnit.test("create and edit template and save it", async function (assert) {
+        const templateModel = new Model();
+        setCellContent(templateModel, "A1", "First name");
+        setCellContent(templateModel, "B1", "Last name");
+        const id = 101;
+        const serverData = getBasicServerData();
+        serverData.models["spreadsheet.template"].records = [
+            {
+                id,
+                name: "template",
+                data: jsonToBase64(templateModel.exportData()),
+            },
+        ];
+        const { model, webClient } = await createSpreadsheetTemplate({
+            serverData,
+            spreadsheetId: id,
+            mockRPC: function (route, args) {
+                if (args.model == "spreadsheet.template") {
+                    if (args.method === "write") {
+                        assert.step("write");
+                        const model = base64ToJson(args.args[1].data);
+                        assert.strictEqual(typeof model, "object", "Model type should be object");
+                        const { A1, B1 } = model.sheets[0].cells;
+                        assert.equal(
+                            `${A1.content} ${B1.content}`,
+                            `First name Name`,
+                            "A1 and B1 should be changed after update"
+                        );
                     }
-                },
-            });
+                }
+            },
+        });
 
-            setCellContent(model, "B1", "Name");
-            await spreadSheetComponent.props.onSpreadsheetLeft(spreadSheetComponent.getSaveData());
-            await doAction(webClient, {
-                type: "ir.actions.client",
-                tag: "action_open_template",
-                params: { active_id: id },
-            });
-        }
-    );
+        setCellContent(model, "B1", "Name");
+        // leaving the action by opening a new one will save the current spreadsheet
+        await doAction(webClient, {
+            type: "ir.actions.client",
+            tag: "action_open_template",
+            params: { active_id: id },
+        });
+        assert.verifySteps(["write"]);
+    });
 });

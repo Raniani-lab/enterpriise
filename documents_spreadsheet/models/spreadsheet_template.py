@@ -28,7 +28,6 @@ class SpreadsheetTemplate(models.Model):
             "tag": "action_open_template",
             "params": {
                 "spreadsheet_id": self.id,
-                "showFormulas": True,
             },
         }
 

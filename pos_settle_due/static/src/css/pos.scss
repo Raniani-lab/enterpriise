@@ -1,5 +1,9 @@
 
 /* So that the displayed amount doesn't show in multiple line */
+.pos .customer-button.partner-credit-limit-reached {
+    background-color: #FFB347;
+    border-color: #FFB347;
+}
 .pos .partner-line div.partner-due,
 .pos .partner-list thead th.partner-due {
     white-space:nowrap;

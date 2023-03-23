@@ -373,6 +373,9 @@
             &.o_large {
                 font-size: 80px;
             }
+            &.o_field_empty {
+                min-height: 0px !important;
+            }
         }
         .o_knowledge_editor .o_kanban_view .o_field_properties {
             // kanban view in editor

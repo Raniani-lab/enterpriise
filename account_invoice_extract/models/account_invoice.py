@@ -433,8 +433,8 @@ class AccountMove(models.Model):
         return None
 
     def _get_partner(self, ocr_results):
-        vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
-        iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
+        vat_number_ocr = self.get_ocr_selected_value(ocr_results, 'VAT_Number', "")
+        iban_ocr = self.get_ocr_selected_value(ocr_results, 'iban', "")
 
         if vat_number_ocr:
             partner_vat = self.find_partner_id_with_vat(vat_number_ocr)
@@ -536,19 +536,19 @@ class AccountMove(models.Model):
         """
         self.ensure_one()
 
-        invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
-        subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else 0.0
-        supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
-        date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
+        invoice_lines = ocr_results.get('invoice_lines', [])
+        subtotal_ocr = self.get_ocr_selected_value(ocr_results, 'subtotal', 0.0)
+        supplier_ocr = self.get_ocr_selected_value(ocr_results, 'supplier', "")
+        date_ocr = self.get_ocr_selected_value(ocr_results, 'date', "")
 
         invoice_lines_to_create = []
         if self.company_id.extract_single_line_per_tax:
             merged_lines = {}
             for il in invoice_lines:
-                total = il['total']['selected_value']['content'] if 'total' in il else 0.0
-                subtotal = il['subtotal']['selected_value']['content'] if 'subtotal' in il else total
-                taxes_ocr = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
-                taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in il['taxes']['selected_values']] if 'taxes' in il else []
+                total = self.get_ocr_selected_value(il, 'total', 0.0)
+                subtotal = self.get_ocr_selected_value(il, 'subtotal', total)
+                taxes_ocr = [value['content'] for value in il.get('taxes', {}).get('selected_values', [])]
+                taxes_type_ocr = [value.get('amount_type', 'percent') for value in il.get('taxes', {}).get('selected_values', [])]
                 taxes_records = self._get_taxes_record(taxes_ocr, taxes_type_ocr)
 
                 if not taxes_records and taxes_ocr:
@@ -584,13 +584,13 @@ class AccountMove(models.Model):
                 invoice_lines_to_create.append(vals)
         else:
             for il in invoice_lines:
-                description = il['description']['selected_value']['content'] if 'description' in il else "/"
-                total = il['total']['selected_value']['content'] if 'total' in il else 0.0
-                subtotal = il['subtotal']['selected_value']['content'] if 'subtotal' in il else total
-                unit_price = il['unit_price']['selected_value']['content'] if 'unit_price' in il else subtotal
-                quantity = il['quantity']['selected_value']['content'] if 'quantity' in il else 1.0
-                taxes_ocr = [value['content'] for value in il['taxes']['selected_values']] if 'taxes' in il else []
-                taxes_type_ocr = [value['amount_type'] if 'amount_type' in value else 'percent' for value in il['taxes']['selected_values']] if 'taxes' in il else []
+                description = self.get_ocr_selected_value(il, 'description', "/")
+                total = self.get_ocr_selected_value(il, 'total', 0.0)
+                subtotal = self.get_ocr_selected_value(il, 'subtotal', total)
+                unit_price = self.get_ocr_selected_value(il, 'unit_price', subtotal)
+                quantity = self.get_ocr_selected_value(il, 'quantity', 1.0)
+                taxes_ocr = [value['content'] for value in il.get('taxes', {}).get('selected_values', [])]
+                taxes_type_ocr = [value.get('amount_type', 'percent') for value in il.get('taxes', {}).get('selected_values', [])]
 
                 vals = {
                     'name': description,
@@ -645,17 +645,17 @@ class AccountMove(models.Model):
         return ocr_results
 
     def _save_form(self, ocr_results, force_write=False):
-        date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
-        due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
-        total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else 0.0
-        invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
-        currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
-        payment_ref_ocr = ocr_results['payment_ref']['selected_value']['content'] if 'payment_ref' in ocr_results else ""
-        iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
-        SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
-        qr_bill_ocr = ocr_results['qr-bill']['selected_value']['content'] if 'qr-bill' in ocr_results else None
-        supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
-        client_ocr = ocr_results['client']['selected_value']['content'] if 'client' in ocr_results else ""
+        date_ocr = self.get_ocr_selected_value(ocr_results, 'date', "")
+        due_date_ocr = self.get_ocr_selected_value(ocr_results, 'due_date', "")
+        total_ocr = self.get_ocr_selected_value(ocr_results, 'total', 0.0)
+        invoice_id_ocr = self.get_ocr_selected_value(ocr_results, 'invoice_id', "")
+        currency_ocr = self.get_ocr_selected_value(ocr_results, 'currency', "")
+        payment_ref_ocr = self.get_ocr_selected_value(ocr_results, 'payment_ref', "")
+        iban_ocr = self.get_ocr_selected_value(ocr_results, 'iban', "")
+        SWIFT_code_ocr = json.loads(self.get_ocr_selected_value(ocr_results, 'SWIFT_code', "{}")) or None
+        qr_bill_ocr = self.get_ocr_selected_value(ocr_results, 'qr-bill')
+        supplier_ocr = self.get_ocr_selected_value(ocr_results, 'supplier', "")
+        client_ocr = self.get_ocr_selected_value(ocr_results, 'client', "")
 
         self.extract_partner_name = client_ocr if self.is_sale_document() else supplier_ocr
 

@@ -59,10 +59,10 @@ class HrApplicant(models.Model):
     def _check_ocr_status(self):
         ocr_results = super()._check_ocr_status()
         if ocr_results is not None:
-            name_ocr = ocr_results['name']['selected_value']['content'] if 'name' in ocr_results else ""
-            email_from_ocr = ocr_results['email']['selected_value']['content'] if 'email' in ocr_results else ""
-            phone_ocr = ocr_results['phone']['selected_value']['content'] if 'phone' in ocr_results else ""
-            mobile_ocr = ocr_results['mobile']['selected_value']['content'] if 'mobile' in ocr_results else ""
+            name_ocr = self.get_ocr_selected_value(ocr_results, 'name', "")
+            email_from_ocr = self.get_ocr_selected_value(ocr_results, 'email', "")
+            phone_ocr = self.get_ocr_selected_value(ocr_results, 'phone', "")
+            mobile_ocr = self.get_ocr_selected_value(ocr_results, 'mobile', "")
 
             self.name = _("%s's Application", name_ocr)
             self.partner_name = name_ocr

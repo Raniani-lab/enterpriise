@@ -66,11 +66,11 @@ class HrExpense(models.Model):
         self.ensure_one()
         ocr_results = super()._check_ocr_status()
         if ocr_results is not None:
-            description_ocr = ocr_results['description']['selected_value']['content'] if 'description' in ocr_results else ""
-            total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else 0.0
-            date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
-            currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
-            bill_reference_ocr = ocr_results['bill_reference']['selected_value']['content'] if 'bill_reference' in ocr_results else ""
+            description_ocr = self.get_ocr_selected_value(ocr_results, 'description', "")
+            total_ocr = self.get_ocr_selected_value(ocr_results, 'total', 0.0)
+            date_ocr = self.get_ocr_selected_value(ocr_results, 'date', "")
+            currency_ocr = self.get_ocr_selected_value(ocr_results, 'currency', "")
+            bill_reference_ocr = self.get_ocr_selected_value(ocr_results, 'bill_reference', "")
 
             self.state = 'draft'
             if not self.name or self.name == self.message_main_attachment_id.name.split('.')[0]:

@@ -127,6 +127,10 @@ class ExtractMixin(models.AbstractModel):
         records_to_validate.extract_state = 'done'
         return records_to_validate
 
+    @staticmethod
+    def get_ocr_selected_value(ocr_results, feature, default=None):
+        return ocr_results.get(feature, {}).get('selected_value', {}).get('content', default)
+
     def action_manual_send_for_digitization(self):
         """ Manually trigger the ocr flow for the records.
         This function is meant to be overridden, and called with a title.

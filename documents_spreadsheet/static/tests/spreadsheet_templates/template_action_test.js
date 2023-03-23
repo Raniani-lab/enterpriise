@@ -3,7 +3,6 @@
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getFixture } from "@web/../tests/helpers/utils";
-import { jsonToBase64, base64ToJson } from "@spreadsheet_edition/bundle/helpers";
 import { createSpreadsheetTemplate } from "../spreadsheet_test_utils";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
@@ -60,7 +59,7 @@ QUnit.module("documents_spreadsheet > template action", {}, () => {
             {
                 id: 99,
                 name: "template",
-                data: jsonToBase64(model.exportData()),
+                spreadsheet_data: model.exportData(),
             },
         ];
         const { model: template } = await createSpreadsheetTemplate({
@@ -84,7 +83,7 @@ QUnit.module("documents_spreadsheet > template action", {}, () => {
             {
                 id,
                 name: "template",
-                data: jsonToBase64(templateModel.exportData()),
+                spreadsheet_data: templateModel.exportData(),
             },
         ];
         const { model, webClient } = await createSpreadsheetTemplate({
@@ -94,7 +93,7 @@ QUnit.module("documents_spreadsheet > template action", {}, () => {
                 if (args.model == "spreadsheet.template") {
                     if (args.method === "write") {
                         assert.step("write");
-                        const model = base64ToJson(args.args[1].data);
+                        const model = JSON.parse(args.args[1].spreadsheet_data);
                         assert.strictEqual(typeof model, "object", "Model type should be object");
                         const { A1, B1 } = model.sheets[0].cells;
                         assert.equal(

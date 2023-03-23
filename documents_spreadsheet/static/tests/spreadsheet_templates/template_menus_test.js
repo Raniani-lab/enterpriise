@@ -3,7 +3,6 @@
 import { nextTick, getFixture } from "@web/../tests/helpers/utils";
 import { registry } from "@web/core/registry";
 import { dom, fields } from "web.test_utils";
-import { jsonToBase64, base64ToJson } from "@spreadsheet_edition/bundle/helpers";
 
 import { actionService } from "@web/webclient/actions/action_service";
 import { createSpreadsheet, createSpreadsheetTemplate } from "../spreadsheet_test_utils";
@@ -46,7 +45,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
                     models["spreadsheet.template"].records.push({
                         id: 111,
                         name: "test template",
-                        data: jsonToBase64({}),
+                        spreadsheet_data: {},
                     });
                     return 111;
                 }
@@ -84,13 +83,13 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
             mockRPC: function (route, args) {
                 if (args.model == "spreadsheet.template" && args.method === "copy") {
                     assert.step("template_copied");
-                    const { data, thumbnail } = args.kwargs.default;
-                    assert.ok(data);
+                    const { spreadsheet_data, thumbnail } = args.kwargs.default;
+                    assert.ok(spreadsheet_data);
                     assert.ok(thumbnail);
                     models["spreadsheet.template"].records.push({
                         id: 111,
                         name: "template",
-                        data,
+                        spreadsheet_data: JSON.parse(spreadsheet_data),
                         thumbnail,
                     });
                     return 111;
@@ -118,7 +117,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
                             assert.step("create_template_wizard");
 
                             const context = options.additionalContext;
-                            const data = base64ToJson(context.default_data);
+                            const data = JSON.parse(context.default_spreadsheet_data);
                             const name = context.default_template_name;
                             const cells = data.sheets[0].cells;
                             assert.equal(

@@ -3,7 +3,6 @@ import { registry } from "@web/core/registry";
 import { _t } from "web.core";
 
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
-import { base64ToJson, jsonToBase64 } from "@spreadsheet_edition/bundle/helpers";
 import { useService } from "@web/core/utils/hooks";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { DocumentsSpreadsheetControlPanel } from "@documents_spreadsheet/bundle/components/control_panel/spreadsheet_control_panel";
@@ -16,7 +15,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
     }
 
     _initializeWith(record) {
-        this.spreadsheetData = base64ToJson(record.data);
+        this.spreadsheetData = record.data;
         this.state.spreadsheetName = record.name;
         this.isReadonly = record.isReadonly;
     }
@@ -41,7 +40,6 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
     async createNewSpreadsheet() {
         const data = {
             name: _t("Untitled spreadsheet template"),
-            data: btoa("{}"),
         };
         const id = await this.orm.create("spreadsheet.template", [data]);
         this._openSpreadsheet(id);
@@ -57,7 +55,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
      */
     async onSpreadsheetLeft({ data, thumbnail }) {
         await this.orm.write("spreadsheet.template", [this.resId], {
-            data: jsonToBase64(data),
+            spreadsheet_data: JSON.stringify(data),
             thumbnail,
         });
     }
@@ -78,7 +76,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
 
     async makeCopy({ data, thumbnail }) {
         const defaultValues = {
-            data: jsonToBase64(data),
+            spreadsheet_data: JSON.stringify(data),
             thumbnail,
         };
         const id = await this.orm.call("spreadsheet.template", "copy", [this.resId], {

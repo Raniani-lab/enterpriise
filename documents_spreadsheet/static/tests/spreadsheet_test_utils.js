@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { jsonToBase64 } from "@spreadsheet_edition/bundle/helpers";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
@@ -111,7 +110,7 @@ export async function createSpreadsheetTemplate(params = {}) {
         templates.push({
             id: spreadsheetId,
             name: "test template",
-            data: jsonToBase64({}),
+            spreadsheet_data: {},
         });
         params = { ...params, spreadsheetId };
     }

@@ -24,16 +24,16 @@ import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/
 const serviceRegistry = registry.category("services");
 
 const TEST_TEMPLATES = [
-    { id: 3, name: "Template 3", data: btoa("{}") },
-    { id: 4, name: "Template 4", data: btoa("{}") },
-    { id: 5, name: "Template 5", data: btoa("{}") },
-    { id: 6, name: "Template 6", data: btoa("{}") },
-    { id: 7, name: "Template 7", data: btoa("{}") },
-    { id: 8, name: "Template 8", data: btoa("{}") },
-    { id: 9, name: "Template 9", data: btoa("{}") },
-    { id: 10, name: "Template 10", data: btoa("{}") },
-    { id: 11, name: "Template 11", data: btoa("{}") },
-    { id: 12, name: "Template 12", data: btoa("{}") },
+    { id: 3, name: "Template 3", spreadsheet_data: "{}" },
+    { id: 4, name: "Template 4", spreadsheet_data: "{}" },
+    { id: 5, name: "Template 5", spreadsheet_data: "{}" },
+    { id: 6, name: "Template 6", spreadsheet_data: "{}" },
+    { id: 7, name: "Template 7", spreadsheet_data: "{}" },
+    { id: 8, name: "Template 8", spreadsheet_data: "{}" },
+    { id: 9, name: "Template 9", spreadsheet_data: "{}" },
+    { id: 10, name: "Template 10", spreadsheet_data: "{}" },
+    { id: 11, name: "Template 11", spreadsheet_data: "{}" },
+    { id: 12, name: "Template 12", spreadsheet_data: "{}" },
 ];
 
 async function getDocumentBasicData(views = {}) {
@@ -50,8 +50,8 @@ async function getDocumentBasicData(views = {}) {
         alias_id: mailAliasId1,
     });
     pyEnv["spreadsheet.template"].create([
-        { name: "Template 1", data: btoa("{}") },
-        { name: "Template 2", data: btoa("{}") },
+        { name: "Template 1", spreadsheet_data: "{}" },
+        { name: "Template 2", spreadsheet_data: "{}" },
     ]);
     return {
         models: {

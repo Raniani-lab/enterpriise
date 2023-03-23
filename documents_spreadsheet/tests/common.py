@@ -3,10 +3,8 @@
 
 from odoo.tests.common import TransactionCase, new_test_user
 from uuid import uuid4
-import base64
 
-
-TEXT = base64.b64encode(bytes("TEST", "utf-8"))
+TEST_CONTENT = "{}"
 GIF = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
 
 

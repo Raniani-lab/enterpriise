@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import base64
-from .common import SpreadsheetTestCommon
-
-
-TEXT = base64.b64encode(bytes("TEST", 'utf-8'))
+from .common import SpreadsheetTestCommon, TEST_CONTENT
 
 class SpreadsheetTemplate(SpreadsheetTestCommon):
 
     def test_copy_template_without_name(self):
         template = self.env["spreadsheet.template"].create({
-            "data": TEXT,
+            "spreadsheet_data": TEST_CONTENT,
             "name": "Template name",
         })
         self.assertEqual(
@@ -21,7 +17,7 @@ class SpreadsheetTemplate(SpreadsheetTestCommon):
 
     def test_copy_template_with_name(self):
         template = self.env["spreadsheet.template"].create({
-            "data": TEXT,
+            "spreadsheet_data": TEST_CONTENT,
             "name": "Template name",
         })
         self.assertEqual(
@@ -33,7 +29,7 @@ class SpreadsheetTemplate(SpreadsheetTestCommon):
     def test_allow_write_on_own_template(self):
         template = self.env["spreadsheet.template"].with_user(self.spreadsheet_user)\
             .create({
-                "data": TEXT,
+                "spreadsheet_data": TEST_CONTENT,
                 "name": "Template name",
             })
         self.assertFalse(
@@ -43,7 +39,7 @@ class SpreadsheetTemplate(SpreadsheetTestCommon):
 
     def test_forbid_write_on_others_template(self):
         template = self.env["spreadsheet.template"].create({
-            "data": TEXT,
+            "spreadsheet_data": TEST_CONTENT,
             "name": "Template name",
         })
         self.assertTrue(
@@ -53,7 +49,7 @@ class SpreadsheetTemplate(SpreadsheetTestCommon):
 
     def test_action_create_spreadsheet(self):
         template = self.env["spreadsheet.template"].create({
-            "data": TEXT,
+            "spreadsheet_data": TEST_CONTENT,
             "name": "Template name",
         })
         action = template.action_create_spreadsheet()
@@ -63,14 +59,14 @@ class SpreadsheetTemplate(SpreadsheetTestCommon):
         self.assertEqual(document.handler, "spreadsheet")
         self.assertEqual(document.mimetype, "application/o-spreadsheet")
         self.assertEqual(document.name, "Template name")
-        self.assertEqual(document.datas, TEXT)
+        self.assertEqual(document.spreadsheet_data, TEST_CONTENT)
         self.assertEqual(action["type"], "ir.actions.client")
         self.assertEqual(action["tag"], "action_open_spreadsheet")
         self.assertTrue(action["params"]["convert_from_template"])
 
     def test_action_create_spreadsheet_in_folder(self):
         template = self.env["spreadsheet.template"].create({
-            "data": TEXT,
+            "spreadsheet_data": TEST_CONTENT,
             "name": "Template name",
         })
         action = template.action_create_spreadsheet({

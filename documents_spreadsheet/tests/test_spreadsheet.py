@@ -6,7 +6,7 @@ import base64
 from freezegun import freeze_time
 from psycopg2 import IntegrityError
 
-from .common import SpreadsheetTestCommon, TEXT, GIF
+from .common import SpreadsheetTestCommon, TEST_CONTENT, GIF
 from odoo.exceptions import AccessError
 from odoo.tools import mute_logger
 from odoo.tests import Form
@@ -312,7 +312,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         context = {
             "default_spreadshee_name": "Spreadsheet test",
             "default_template_name": "Spreadsheet test - Template",
-            "default_data": TEXT,
+            "default_spreadsheet_data": TEST_CONTENT,
             "default_thumbnail": GIF,
         }
         wizard = Form(
@@ -324,7 +324,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         )
         self.assertTrue(template, "It should have created a template")
         self.assertEqual(template.name, "Spreadsheet test - Template")
-        self.assertEqual(template.data, TEXT)
+        self.assertEqual(template.spreadsheet_data, TEST_CONTENT)
         self.assertEqual(template.thumbnail, GIF)
 
     def test_user_right_own_template(self):
@@ -337,7 +337,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
             .create(
                 {
                     "name": "hello",
-                    "data": TEXT,
+                    "spreadsheet_data": TEST_CONTENT,
                 }
             )
         )
@@ -361,7 +361,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
             .create(
                 {
                     "name": "hello",
-                    "data": TEXT,
+                    "spreadsheet_data": TEST_CONTENT,
                 }
             )
         )
@@ -478,7 +478,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
     def test_read_non_spreadsheet_data(self):
         document = self.env["documents.document"].create({
             "name": "test.txt",
-            "datas": TEXT,
+            "datas": TEST_CONTENT,
             "mimetype": "text/plain",
             "folder_id": self.folder.id,
         })

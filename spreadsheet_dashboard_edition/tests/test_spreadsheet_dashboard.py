@@ -11,6 +11,7 @@ class TestSpreadsheetDashboard(TransactionCase):
             {
                 "name": "My Dashboard",
                 "dashboard_group_id": group.id,
+                "spreadsheet_data": "{}",
             }
         )
         self.assertEqual(dashboard.file_name, "My Dashboard.osheet.json")

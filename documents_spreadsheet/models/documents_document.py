@@ -33,9 +33,9 @@ SUPPORTED_PATHS = (
 
 class Document(models.Model):
     _name = "documents.document"
-    _inherit = ["documents.document", "spreadsheet.collaborative.mixin"]
+    _inherit = ["documents.document", "spreadsheet.mixin"]
 
-    _spreadsheet_data_field = "datas"
+    spreadsheet_binary_data = fields.Binary(compute='_compute_spreadsheet_binary_data', inverse='_inverse_spreadsheet_binary_data', default=None)
 
     handler = fields.Selection(
         [("spreadsheet", "Spreadsheet")], ondelete={"spreadsheet": "cascade"}
@@ -61,6 +61,22 @@ class Document(models.Model):
     def join_spreadsheet_session(self):
         data = super().join_spreadsheet_session()
         return dict(data, is_favorited=self.is_favorited)
+
+    @api.depends("datas", "handler")
+    def _compute_spreadsheet_binary_data(self):
+        for document in self:
+            if document.handler == "spreadsheet":
+                document.spreadsheet_binary_data = document.datas
+            else:
+                document.spreadsheet_binary_data = False
+
+    def _inverse_spreadsheet_binary_data(self):
+        for document in self:
+            if document.handler == "spreadsheet":
+                document.write({
+                    "datas": document.spreadsheet_binary_data,
+                    "mimetype": "application/o-spreadsheet"
+                })
 
     @api.depends("checksum", "handler")
     def _compute_thumbnail(self):
@@ -112,9 +128,6 @@ class Document(models.Model):
             if document.handler == 'spreadsheet':
                 self.env['spreadsheet.contributor']._update(self.env.user, document)
 
-    def _filter_non_spreadsheets(self):
-        return self.filtered(lambda document: document.handler == "spreadsheet")
-
     @api.model
     def action_open_new_spreadsheet(self, vals=None):
         if vals is None:
@@ -155,7 +168,7 @@ class Document(models.Model):
         # here to keep only the visible docs, but with the order of contribs.
         docs = ((user_docs & visible_docs) | visible_docs)
         if (limit):
-            docs = docs[offset:offset+limit]
+            docs = docs[offset:offset + limit]
         else:
             docs = docs[offset:]
         return docs.read(["name", "thumbnail"])
@@ -190,7 +203,6 @@ class Document(models.Model):
                     raise UserError(_("The xlsx file is too big"))
 
                 unzipped[info.filename] = input_zip.read(info.filename).decode()
-
 
             doc = self.copy({
                 "handler": "spreadsheet",

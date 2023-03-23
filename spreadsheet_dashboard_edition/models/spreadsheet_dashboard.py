@@ -3,9 +3,7 @@ from odoo import api, fields, models
 
 class SpreadsheetDashboard(models.Model):
     _name = 'spreadsheet.dashboard'
-    _inherit = ['spreadsheet.dashboard', 'spreadsheet.collaborative.mixin']
-
-    _spreadsheet_data_field = "data"
+    _inherit = ['spreadsheet.dashboard', 'spreadsheet.mixin']
 
     file_name = fields.Char(compute='_compute_file_name')
 
@@ -20,7 +18,7 @@ class SpreadsheetDashboard(models.Model):
         }
 
     def write(self, vals):
-        if "data" in vals:
+        if "spreadsheet_binary_data" in vals:
             self._delete_collaborative_data()
         return super().write(vals)
 

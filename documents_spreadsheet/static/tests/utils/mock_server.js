@@ -43,7 +43,7 @@ registry
             throw new Error(`Spreadsheet Template ${id} does not exist`);
         }
         return {
-            data: record.data,
+            data: typeof record.spreadsheet_data === "string" ? JSON.parse(record.spreadsheet_data) : record.spreadsheet_data,
             name: record.name,
             isReadonly: false,
         };

@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import json
 
 from odoo import fields, models, _
 from odoo.exceptions import AccessError
 
 class SpreadsheetTemplate(models.Model):
     _name = "spreadsheet.template"
+    _inherit = "spreadsheet.mixin"
     _description = "Spreadsheet Template"
     _order = "sequence"
 
     name = fields.Char(required=True, translate=True)
     sequence = fields.Integer(default=100)
-    data = fields.Binary(required=True)
-    thumbnail = fields.Binary()
 
     def copy(self, default=None):
         self.ensure_one()
@@ -39,7 +39,7 @@ class SpreadsheetTemplate(models.Model):
             "name": self.name,
             "mimetype": "application/o-spreadsheet",
             "handler": "spreadsheet",
-            "datas": self.data,
+            "spreadsheet_data": self.spreadsheet_data,
             **document_vals,
         })
         return {
@@ -68,6 +68,6 @@ class SpreadsheetTemplate(models.Model):
 
         return {
             "name": self.name,
-            "data": self.data,
+            "data": json.loads(self.spreadsheet_data),
             "isReadonly": not can_write,
         }

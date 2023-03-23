@@ -12,7 +12,6 @@ import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/a
 import { DocumentsSpreadsheetControlPanel } from "../components/control_panel/spreadsheet_control_panel";
 import { RecordFileStore } from "@spreadsheet_edition/bundle/image/record_file_store";
 import { sprintf } from "@web/core/utils/strings";
-import { jsonToBase64 } from "@spreadsheet_edition/bundle/helpers";
 import { _t } from "@web/core/l10n/translation";
 
 import { Component, useSubEnv, useState } from "@odoo/owl";
@@ -141,7 +140,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.actionService.doAction("documents_spreadsheet.save_spreadsheet_template_action", {
             additionalContext: {
                 default_template_name: sprintf(_t("%s - Template"), name),
-                default_data: jsonToBase64(data),
+                default_spreadsheet_data: JSON.stringify(data),
                 default_thumbnail: this.getThumbnail(),
             },
         });

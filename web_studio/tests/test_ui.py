@@ -641,3 +641,24 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                 }
             }
         })
+
+    def test_studio_arch_has_measure_field_ids(self):
+        view = self.env["ir.ui.view"].create({
+            "name": "simple view",
+            "model": "res.partner",
+            "type": "pivot",
+            "arch": '''
+                <pivot>
+                    <field name="display_name" type="measure"/>
+                </pivot>
+            '''
+        })
+
+        studio_view = self.env[view.model].with_context(studio=True).get_view(view.id, view.type)
+        field_id = self.env['ir.model.fields'].search([('model', '=', view.model), ('name', 'in', ['display_name'])]).ids[0]
+
+        assertViewArchEqual(self, studio_view["arch"], '''
+            <pivot studio_pivot_measure_field_ids="[{field_id}]">
+                <field name="display_name" type="measure"/>
+            </pivot>
+        '''.format(field_id=field_id))

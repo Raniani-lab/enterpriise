@@ -135,6 +135,7 @@ class View(models.Model):
                     modifiers.pop('invisible', None)
                     node.set('context-dependent-modifiers', json.dumps(modifiers))
 
+            model = tree.get('model_access_rights')
             res = super(View, self)._postprocess_access_rights(tree)
 
             for node, groups in node_groups.items():
@@ -142,9 +143,9 @@ class View(models.Model):
                 node.set('groups', groups)
                 self.set_studio_groups(node)
             if tree.tag == 'map':
-                self.set_studio_map_popup_fields(tree.get('model_access_rights'), tree)
+                self.set_studio_map_popup_fields(model, tree)
             if tree.tag == 'pivot':
-                self.set_studio_pivot_measure_fields(tree.get('model_access_rights'), tree)
+                self.set_studio_pivot_measure_fields(model, tree)
 
             return res
 

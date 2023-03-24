@@ -102,7 +102,35 @@ class DutchECSalesReportCustomHandler(models.AbstractModel):
         }
 
     def _get_lines_query_params(self, report, options, column_group_key):
+        goods_and_services_0_tax_tags_ids = self.env.ref('l10n_nl.tax_report_rub_3b_tag')._get_matching_tags().ids
+        triangular_tax = self.env.ref('l10n_nl.tax_report_rub_3bt_tag', raise_if_not_found=False)
+        triangular_tax_tags_ids = triangular_tax._get_matching_tags().ids if triangular_tax else []
+        goods, triangular, services = [options['ec_tax_filter_selection'][i]['selected'] for i in range(3)]
         tables, where_clause, where_params = report._query_get(options, 'strict_range')
+
+        params = [
+            column_group_key,
+            *where_params,
+        ]
+        filter_selection_where = ""
+        if not goods:
+            if not triangular:
+                filter_selection_where += "AND product_t.type = 'service'\n"
+                params += [tuple(goods_and_services_0_tax_tags_ids)]
+            else:
+                if services:
+                    # goods and services use the same tax, but goods and triangular transactions are both linked to products
+                    # so we need a special case for the filters Triangular + Services without Goods
+                    filter_selection_where += "AND (product_t.type = 'service' OR product_t.type != 'service' AND line_tag.account_account_tag_id IN %s)\n"
+                    params += [tuple(triangular_tax_tags_ids + goods_and_services_0_tax_tags_ids)]
+                params += [tuple(triangular_tax_tags_ids)]
+        elif triangular:
+            params += [tuple(triangular_tax_tags_ids + goods_and_services_0_tax_tags_ids)]
+        else:
+            params += [tuple(goods_and_services_0_tax_tags_ids)]
+        if not services:
+            filter_selection_where += "AND product_t.type != 'service'\n"
+
         query = f"""
             SELECT %s AS column_group_key,
                    account_move_line.partner_id,
@@ -116,8 +144,8 @@ class DutchECSalesReportCustomHandler(models.AbstractModel):
             LEFT JOIN res_company company ON account_move_line.company_id = company.id
             LEFT JOIN res_partner comp_partner ON company.partner_id = comp_partner.id
             LEFT JOIN account_move move ON account_move_line.move_id = move.id
-            LEFT JOIN res_country country ON move.intrastat_country_id = country.id
             LEFT JOIN res_country company_country ON comp_partner.country_id = company_country.id
+            LEFT JOIN res_country country ON p.country_id = country.id
             LEFT JOIN account_account_tag_account_move_line_rel line_tag on line_tag.account_move_line_id = account_move_line.id
             LEFT JOIN product_product product on product.id = account_move_line.product_id
             LEFT JOIN product_template product_t on product.product_tmpl_id = product_t.id
@@ -126,18 +154,12 @@ class DutchECSalesReportCustomHandler(models.AbstractModel):
             AND account_move_line.parent_state = 'posted'
             AND company_country.id != country.id
             AND country.intrastat = TRUE AND (country.code != 'GB' OR account_move_line.date < '2021-01-01')
+            {filter_selection_where}
             GROUP BY account_move_line.partner_id, p.name, p.vat, country.code
             HAVING ROUND(SUM(CASE WHEN product_t.type != 'service' THEN account_move_line.credit - account_move_line.debit ELSE 0 END)) != 0
             OR ROUND(SUM(CASE WHEN product_t.type = 'service' THEN account_move_line.credit - account_move_line.debit ELSE 0 END)) != 0
             ORDER BY p.name
         """
-
-        params = [
-            column_group_key,
-            *where_params,
-            tuple(self.env.ref('l10n_nl.tax_report_rub_3b_tag')._get_matching_tags().ids),
-        ]
-
         return query, params
 
     @api.model

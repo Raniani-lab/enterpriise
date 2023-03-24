@@ -123,16 +123,16 @@ class ProductTemplate(models.Model):
                 best_pricings[p.recurrence_id] = p
         suitable_pricings = best_pricings.values()
         currency = pricelist and pricelist.currency_id or self.env.company.currency_id
-        def _pricing_price(pricing, pricelist):
+        def _pricing_price(pricing):
             if pricing.currency_id == currency:
                 return pricing.price
             return pricing.currency_id._convert(
                 pricing.price,
-                pricelist.currency_id,
+                currency,
                 company_id or self.env.company,
                 fields.Date.context_today(self),
             )
-        pricing_table = [(p.name, format_amount(self.env, _pricing_price(p, pricelist), currency))
+        pricing_table = [(p.name, format_amount(self.env, _pricing_price(p), currency))
                             for p in suitable_pricings]
 
         return {

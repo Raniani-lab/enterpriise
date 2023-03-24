@@ -62,6 +62,5 @@ We support sending and cancelling of customer invoices.
     'external_dependencies': {
         'python': ['pyOpenSSL']
     },
-    'post_init_hook': 'post_init_hook',
     'installable': True,
 }

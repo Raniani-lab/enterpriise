@@ -15,23 +15,6 @@ Wysiwyg.include({
     /**
      * @override
      */
-    init: function (parent, options) {
-        if (options.knowledgeCommands) {
-            /**
-             * knowledgeCommands is a view option from a field_html that
-             * indicates that knowledge-specific commands should be loaded.
-             * powerboxFilters is an array of functions used to filter commands
-             * displayed in the powerbox.
-             */
-            options.powerboxFilters = options.powerboxFilters ? options.powerboxFilters : [];
-            options.powerboxFilters.push(this._filterKnowledgeCommandGroupInTable);
-            options.powerboxFilters.push(this._filterKnowledgeCommandGroupInTemplate);
-        }
-        this._super.apply(this, arguments);
-    },
-    /**
-     * @override
-     */
     resetEditor: async function () {
         await this._super(...arguments);
         this.$editable[0].dispatchEvent(new Event('refresh_behaviors'));
@@ -55,39 +38,40 @@ Wysiwyg.include({
         this._super(...arguments);
     },
     /**
-     * Prevent usage of commands from the group "Knowledge" inside the tables.
-     * @param {Array[Object]} commands commands available in this wysiwyg
-     * @returns {Array[Object]} commands which can be used after the filter was applied
+     * Check if the selection starts inside a table. This function can be used
+     * as the `isDisabled` property of a command of the PowerBox to disable
+     * a command in a table.
+     * @returns {boolean} true if the command should be filtered
      */
-    _filterKnowledgeCommandGroupInTable: function (commands) {
+    _filterCommandInTable: function () {
         let anchor = document.getSelection().anchorNode;
         if (anchor.nodeType !== Node.ELEMENT_NODE) {
             anchor = anchor.parentElement;
         }
         if (anchor && anchor.closest('table')) {
-            commands = commands.filter(command => command.category !== 'Knowledge');
+            return true;
         }
-        return commands;
+        return false;
     },
     /**
-     * Prevent usage of commands from the group "Knowledge" inside the block
-     * inserted by the /template Knowledge command. The content of a /template
-     * block is destined to be used in @see OdooEditor in modules other than
-     * Knowledge, where knowledge-specific commands may not be available.
-     * i.e.: prevent usage /template in a /template block
-     *
-     * @param {Array[Object]} commands commands available in this wysiwyg
-     * @returns {Array[Object]} commands which can be used after the filter was applied
+     * Check if the selection starts inside a Behavior element.
+     * This function can be used as the `isDisabled` property of a command of
+     * the PowerBox to disable a command in a template.
+     * Example: The content of a /template block is destined to be used in
+     * @see OdooEditor in modules other than Knowledge, where knowledge-specific
+     * commands may not be available, so commands inserting a non-supported
+     * Behavior in the /template content should be disabled.
+     * @returns {boolean} true if the command should be filtered
      */
-    _filterKnowledgeCommandGroupInTemplate: function (commands) {
+    _filterCommandInBehavior: function () {
         let anchor = document.getSelection().anchorNode;
         if (anchor.nodeType !== Node.ELEMENT_NODE) {
             anchor = anchor.parentElement;
         }
-        if (anchor && anchor.closest('.o_knowledge_content')) {
-            commands = commands.filter(command => command.category !== 'Knowledge');
+        if (anchor && anchor.closest('.o_knowledge_behavior_anchor')) {
+            return true;
         }
-        return commands;
+        return false;
     },
     /**
      * @override
@@ -115,6 +99,7 @@ Wysiwyg.include({
                 priority: 20,
                 description: _t('Embed a file.'),
                 fontawesome: 'fa-file',
+                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
                 callback: () => {
                     this.openMediaDialog({
                         noVideos: true,
@@ -130,6 +115,7 @@ Wysiwyg.include({
                 priority: 10,
                 description: _t('Add a template section.'),
                 fontawesome: 'fa-pencil-square',
+                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
                 callback: () => {
                     this._insertTemplate();
                 },
@@ -139,6 +125,7 @@ Wysiwyg.include({
                 priority: 30,
                 description: _t('Add a table of content.'),
                 fontawesome: 'fa-bookmark',
+                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
                 callback: () => {
                     this._insertTableOfContent();
                 },
@@ -148,6 +135,7 @@ Wysiwyg.include({
                 priority: 40,
                 description: _t('Insert a Kanban view of article items'),
                 fontawesome: 'fa-th-large',
+                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
                 callback: () => {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'kanban';
@@ -167,6 +155,7 @@ Wysiwyg.include({
                 priority: 50,
                 description: _t('Insert a List view of article items'),
                 fontawesome: 'fa-th-list',
+                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
                 callback: () => {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'list';
@@ -186,6 +175,7 @@ Wysiwyg.include({
                 priority: 60,
                 description: _t('Show the first level of nested articles.'),
                 fontawesome: 'fa-list',
+                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
                 callback: () => {
                     this._insertArticlesStructure(true);
                 }
@@ -195,6 +185,7 @@ Wysiwyg.include({
                 priority: 60,
                 description: _t('Show all nested articles.'),
                 fontawesome: 'fa-list',
+                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
                 callback: () => {
                     this._insertArticlesStructure(false);
                 }

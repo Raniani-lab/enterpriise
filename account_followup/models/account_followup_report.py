@@ -374,7 +374,7 @@ Best Regards,
                 self = self.with_context(lang=partner.lang or self.env.user.lang)
                 body_html = self.with_context(mail=True).get_followup_report_html(options)
 
-                attachment_ids = options.get('attachment_ids', partner.unpaid_invoice_ids.message_main_attachment_id.ids)
+                attachment_ids = options.get('attachment_ids', partner._get_invoices_to_print(options).message_main_attachment_id.ids)
 
                 partner.with_context(mail_post_autofollow=True, lang=partner.lang or self.env.user.lang).message_post(
                     partner_ids=[to_send_partner.id],

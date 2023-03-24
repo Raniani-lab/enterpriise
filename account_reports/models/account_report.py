@@ -4304,6 +4304,8 @@ class AccountReport(models.Model):
                 colspan = header_to_render.get('colspan', column_headers_render_data['level_colspan'][header_level_index])
                 write_with_colspan(sheet, x_offset, y_offset, header_to_render.get('name', ''), colspan, title_style)
                 x_offset += colspan
+            if print_options['show_growth_comparison']:
+                write_with_colspan(sheet, x_offset, y_offset, '%', 1, title_style)
             y_offset += 1
             x_offset = 1
 
@@ -4354,8 +4356,11 @@ class AccountReport(models.Model):
                 sheet.write(y + y_offset, 0, cell_value, col1_style)
 
             #write all the remaining cells
-            for x in range(1, len(lines[y]['columns']) + 1):
-                cell_type, cell_value = self._get_cell_type_value(lines[y]['columns'][x - 1])
+            columns = lines[y]['columns']
+            if print_options['show_growth_comparison'] and 'growth_comparison_data' in lines[y]:
+                columns += [lines[y].get('growth_comparison_data')]
+            for x, column in enumerate(columns, start=1):
+                cell_type, cell_value = self._get_cell_type_value(column)
                 if cell_type == 'date':
                     sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, date_default_style)
                 else:

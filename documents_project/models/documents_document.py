@@ -6,6 +6,7 @@ from collections import OrderedDict
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
+
 class Document(models.Model):
     _inherit = 'documents.document'
 

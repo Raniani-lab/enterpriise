@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 
-from odoo.addons.documents.controllers.main import ShareRoute
+from odoo.addons.documents.controllers.documents import ShareRoute
 
 class SpreadsheetShareRoute(ShareRoute):
 
-    def _get_downloadable_documents(self, documents):
+    @classmethod
+    def _get_downloadable_documents(cls, documents):
         """
             override of documents to prevent the download
             of spreadsheets binary as they are not usable

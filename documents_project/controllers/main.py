@@ -5,16 +5,15 @@ import base64
 import logging
 
 from odoo import http
+from odoo.addons.documents.controllers.documents import ShareRoute
+from odoo.addons.portal.controllers.portal import CustomerPortal
 from odoo.exceptions import AccessError, MissingError
 from odoo.http import request
-
-from odoo.addons.portal.controllers.portal import CustomerPortal
-from odoo.addons.documents.controllers.main import ShareRoute
 
 logger = logging.getLogger(__name__)
 
 
-class DocumentsProjectShareRoute(ShareRoute):
+class DocumentsProjectShareRoute(http.Controller):
 
 # ------------------------------------------------------------------------------
 # Business methods
@@ -44,19 +43,6 @@ class DocumentsProjectShareRoute(ShareRoute):
         if not avatar:
             return request.env['ir.http']._placeholder()
         return base64.b64decode(avatar)
-
-    def _create_uploaded_documents(self, files, share, folder, documents_values=None):
-        documents_values = documents_values or {}
-        project = folder._get_project_from_closest_ancestor()
-        if project:
-            documents_values.update({
-                'res_model': 'project.project',
-                'res_id': project.id,
-                'tag_ids': project.documents_tag_ids.ids,
-            })
-            if project.partner_id and not share.partner_id.id:
-                documents_values['partner_id'] = project.partner_id.id
-        return super()._create_uploaded_documents(files, share, folder, documents_values)
 
 # ------------------------------------------------------------------------------
 # Project routes
@@ -122,7 +108,7 @@ class DocumentsProjectShareRoute(ShareRoute):
             raise request.not_found()
 
         project_name = request.env['project.project'].browse(project_id).name
-        return self._make_zip(project_name + '.zip', documents)
+        return ShareRoute._make_zip(project_name + '.zip', documents)
 
     @http.route('/my/projects/<int:project_id>/documents/upload', type='http', auth='public', methods=['POST'], csrf=False)
     def portal_my_project_document_upload(self, project_id, access_token=None, **kwargs):
@@ -238,7 +224,7 @@ class DocumentsProjectShareRoute(ShareRoute):
             raise request.not_found()
 
         task_name = request.env['project.task'].sudo().browse(task_id).name
-        return self._make_zip(task_name + '.zip', documents)
+        return ShareRoute._make_zip(task_name + '.zip', documents)
 
     @http.route([
         '/my/tasks/<int:task_id>/documents/upload',
@@ -277,23 +263,3 @@ class DocumentsProjectShareRoute(ShareRoute):
 
         token_string = f"access_token={access_token}" if access_token else ""
         return request.redirect((f"/my/projects/{project_id}/task/{task_id}/documents/" if project_id else f"/my/tasks/{task_id}/documents/") + f"?{token_string}")
-
-# ------------------------------------------------------------------------------
-# Other routes
-# ------------------------------------------------------------------------------
-
-    @http.route()
-    def upload_document(self, folder_id, ufile, tag_ids, **kwargs):
-        if not kwargs.get('res_model') and not kwargs.get('res_id'):
-            current_folder = request.env['documents.folder'].browse(int(folder_id))
-            project = current_folder._get_project_from_closest_ancestor()
-            if project:
-                kwargs.update({
-                    'res_model': 'project.project',
-                    'res_id': project.id,
-                })
-                if project.partner_id:
-                    kwargs['partner_id'] = project.partner_id.id
-                if not tag_ids:
-                    tag_ids = ','.join(str(tag_id) for tag_id in project.documents_tag_ids.ids)
-        return super().upload_document(folder_id, ufile, tag_ids, **kwargs)

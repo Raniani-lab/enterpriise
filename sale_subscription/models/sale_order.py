@@ -261,31 +261,14 @@ class SaleOrder(models.Model):
         for order in self:
             order.non_recurring_total = order.amount_untaxed - order.recurring_total
 
-    @api.depends('is_subscription', 'order_line.price_total')
+    @api.depends('is_subscription', 'recurring_total')
     def _compute_recurring_details(self):
         subscription_orders = self.filtered(lambda sub: sub.is_subscription or sub.subscription_id)
         self.recurring_details = ""
         if subscription_orders.ids:
-            query = """
-                SELECT order_id, 
-                       pt.recurring_invoice recurring_invoice,
-                       SUM(price_subtotal) AS subtotal,
-                       SUM(price_total) as total 
-                  FROM sale_order_line sol 
-                  JOIN sale_order so ON sol.order_id=so.id
-                  JOIN product_product pp ON pp.id=sol.product_id 
-                  JOIN product_template pt ON pt.id=pp.product_tmpl_id 
-                 WHERE order_id IN %s
-                   AND so.recurrence_id IS NOT NULL
-                   AND pt.recurring_invoice IS NOT NULL
-              GROUP BY order_id,recurring_invoice
-            """
-            self.env.cr.execute(query, (tuple(subscription_orders.ids),))
-            recurring_details = self.env.cr.dictfetchall()
             for so in subscription_orders:
                 lang_code = so.partner_id.lang
-                values = [details for details in recurring_details if details['order_id'] == so.id and details['subtotal'] and details['total']]
-                recurring_amount = sum([v['subtotal'] for v in values if v.get('recurring_invoice')])
+                recurring_amount = so.recurring_total
                 non_recurring_amount = so.amount_untaxed - recurring_amount
                 recurring_formatted_amount = so.currency_id and format_amount(self.env, recurring_amount, so.currency_id, lang_code) or recurring_amount
                 non_recurring_formatted_amount = so.currency_id and format_amount(self.env, non_recurring_amount, so.currency_id, lang_code) or non_recurring_amount

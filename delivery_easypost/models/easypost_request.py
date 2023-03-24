@@ -186,8 +186,8 @@ class EasypostRequest():
         For each shipment add a customs items by move line containing
         - Product description (care it crash if bracket are used)
         - Quantity for this product in the current package
-        - Product price
-        - Product price currency
+        - Total Value (unit value * qty)
+        - Total Value currency
         - Total weight in ounces.
         - Original country code(warehouse)
         """
@@ -200,7 +200,7 @@ class EasypostRequest():
             customs_info.update({
                 'order[shipments][%d][customs_info][customs_items][%d][description]' % (shipment_id, customs_item_id): commodity.product_id.name,
                 'order[shipments][%d][customs_info][customs_items][%d][quantity]' % (shipment_id, customs_item_id): commodity.qty,
-                'order[shipments][%d][customs_info][customs_items][%d][value]' % (shipment_id, customs_item_id): commodity.monetary_value,
+                'order[shipments][%d][customs_info][customs_items][%d][value]' % (shipment_id, customs_item_id): commodity.monetary_value * commodity.qty,
                 'order[shipments][%d][customs_info][customs_items][%d][currency]' % (shipment_id, customs_item_id): currency.name,
                 'order[shipments][%d][customs_info][customs_items][%d][weight]' % (shipment_id, customs_item_id): carrier._easypost_convert_weight(commodity.product_id.weight * commodity.qty),
                 'order[shipments][%d][customs_info][customs_items][%d][origin_country]' % (shipment_id, customs_item_id): commodity.country_of_origin,

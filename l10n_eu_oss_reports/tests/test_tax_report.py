@@ -153,7 +153,7 @@ class TestTaxReportOSSNoMapping(TestAccountReportsCommon):
             'invoice_repartition_line_ids': [
                 Command.create({
                     'repartition_type': 'base',
-                    'tag_ids': [Command.set(report_line_invoice_base_line.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids + oss_tag.ids)],
+                    'tag_ids': [Command.set(report_line_invoice_base_line.expression_ids._get_matching_tags("+").ids + oss_tag.ids)],
                 }),
                 Command.create({
                     'repartition_type': 'tax',
@@ -163,7 +163,7 @@ class TestTaxReportOSSNoMapping(TestAccountReportsCommon):
             'refund_repartition_line_ids': [
                 Command.create({
                     'repartition_type': 'base',
-                    'tag_ids': [Command.set(report_line_refund_base_line.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids + oss_tag.ids)],
+                    'tag_ids': [Command.set(report_line_refund_base_line.expression_ids._get_matching_tags("+").ids + oss_tag.ids)],
                 }),
                 Command.create({
                     'repartition_type': 'tax',

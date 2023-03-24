@@ -138,7 +138,7 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 Command.create({'repartition_type': 'base'}),
                 Command.create({
                     'repartition_type': 'tax',
-                    'tag_ids': [Command.link(cls.tax_report.line_ids[0].expression_ids[0]._get_matching_tags().filtered(lambda x: not x.tax_negate).id)],
+                    'tag_ids': [Command.link(cls.tax_report.line_ids.expression_ids._get_matching_tags("+").id)],
                 })]
         })
         # Invoice in 2017 for company_1, with taxes

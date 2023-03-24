@@ -274,7 +274,7 @@ class TestTaxReport(TestAccountReportsCommon):
 
         to_write = {}
         for move_type_suffix in ('invoice', 'refund'):
-            tax_negate = move_type_suffix == 'refund'
+            sign = "-" if move_type_suffix == 'refund' else "+"
             report_line_sequence = tax_report.line_ids[-1].sequence + 1 if tax_report.line_ids else 0
 
 
@@ -283,7 +283,7 @@ class TestTaxReport(TestAccountReportsCommon):
             base_report_line = cls._create_tax_report_line(base_report_line_name, tax_report, tag_name=base_report_line_name, sequence=report_line_sequence)
             report_line_sequence += 1
 
-            base_tag = base_report_line.expression_ids._get_matching_tags().filtered(lambda x: x.tax_negate == tax_negate)
+            base_tag = base_report_line.expression_ids._get_matching_tags(sign)
 
             repartition_vals = [
                 Command.clear(),
@@ -296,7 +296,7 @@ class TestTaxReport(TestAccountReportsCommon):
                 tax_report_line = cls._create_tax_report_line(tax_report_line_name, tax_report, tag_name=tax_report_line_name, sequence=report_line_sequence)
                 report_line_sequence += 1
 
-                tax_tag = tax_report_line.expression_ids._get_matching_tags().filtered(lambda x: x.tax_negate == tax_negate)
+                tax_tag = tax_report_line.expression_ids._get_matching_tags(sign)
 
                 repartition_vals.append(Command.create({
                     'account_id': account.id if account else None,
@@ -1894,7 +1894,7 @@ class TestTaxReport(TestAccountReportsCommon):
             ('name', '=', f'{self.test_fpos_tax_sale.id}-invoice-base'),
         ])
 
-        plus_tag = report_line.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate)
+        plus_tag = report_line.expression_ids._get_matching_tags("+")
 
         comp2_move = self.env['account.move'].create({
             'journal_id': self.company_data_2['default_journal_misc'].id,
@@ -2071,21 +2071,21 @@ class TestTaxReport(TestAccountReportsCommon):
             'invoice_repartition_line_ids': [
                 Command.create({
                     'repartition_type': 'base',
-                    'tag_ids': [Command.set(report_line_invoice_base.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids)],
+                    'tag_ids': [Command.set(report_line_invoice_base.expression_ids._get_matching_tags("+").ids)],
                 }),
                 Command.create({
                     'repartition_type': 'tax',
-                    'tag_ids': [Command.set(report_line_invoice_tax.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids)],
+                    'tag_ids': [Command.set(report_line_invoice_tax.expression_ids._get_matching_tags("+").ids)],
                 }),
             ],
             'refund_repartition_line_ids': [
                 Command.create({
                     'repartition_type': 'base',
-                    'tag_ids': [Command.set(report_line_refund_base.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids)],
+                    'tag_ids': [Command.set(report_line_refund_base.expression_ids._get_matching_tags("+").ids)],
                 }),
                 Command.create({
                     'repartition_type': 'tax',
-                    'tag_ids': [Command.set(report_line_refund_tax.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids)],
+                    'tag_ids': [Command.set(report_line_refund_tax.expression_ids._get_matching_tags("+").ids)],
                 }),
             ],
         })

@@ -28,17 +28,13 @@ class HelpdeskSLAReport(models.Model):
     sla_stage_id = fields.Many2one('helpdesk.stage', string="SLA Stage", readonly=True)
     sla_deadline = fields.Datetime("SLA Deadline", group_operator='min', readonly=True)
     sla_reached_datetime = fields.Datetime("SLA Reached Date", group_operator='min', readonly=True)
-    sla_status = fields.Selection([('failed', 'SLA Failed'), ('reached', 'SLA Reached'), ('ongoing', 'SLA Ongoing')], string="Status", readonly=True)
+    sla_status = fields.Selection([('failed', 'SLA Failed'), ('reached', 'SLA Success'), ('ongoing', 'SLA in Progress')], string="Status", readonly=True)
     sla_status_fail = fields.Boolean("SLA Status Failed", group_operator='bool_or', readonly=True)
     sla_exceeded_hours = fields.Integer("Working Hours to Reach SLA", group_operator='avg', readonly=True, help="Day to reach the stage of the SLA, without taking the working calendar into account")
 
-    sla_status_successful = fields.Integer("Number of SLA Successful", readonly=True)
+    sla_status_successful = fields.Integer("Number of SLA Success", readonly=True)
     sla_status_failed = fields.Integer("Number of SLA Failed", readonly=True)
-    sla_status_ongoing = fields.Integer("Number SLA In Progress", readonly=True)
-
-    successful_sla_rate = fields.Float("% of Successful SLA", group_operator='avg', readonly=True)
-    failed_sla_rate = fields.Float("% of Failed SLA", group_operator='avg', readonly=True)
-    ongoing_sla_rate = fields.Float("% of SLA In Progress", group_operator='avg', readonly=True)
+    sla_status_ongoing = fields.Integer("Number of SLA in Progress", readonly=True)
 
     team_id = fields.Many2one('helpdesk.team', string='Team', readonly=True)
     company_id = fields.Many2one('res.company', string='Company', readonly=True)
@@ -79,19 +75,6 @@ class HelpdeskSLAReport(models.Model):
                                 WHEN SLA_S.reached_datetime IS NULL AND (SLA_S.deadline IS NULL OR SLA_S.deadline > NOW() AT TIME ZONE 'UTC') THEN 1
                                 ELSE 0
                             END AS sla_status_ongoing,
-                            CASE
-                                WHEN SLA_S.reached_datetime IS NOT NULL AND (SLA_S.deadline IS NULL OR SLA_S.reached_datetime < SLA_S.deadline) THEN 1
-                                ELSE 0
-                            END AS successful_sla_rate,
-                            CASE
-                                WHEN SLA_S.reached_datetime IS NOT NULL AND SLA_S.deadline IS NOT NULL AND SLA_S.reached_datetime >= SLA_S.deadline THEN 1
-                                WHEN SLA_S.reached_datetime IS NULL AND SLA_S.deadline IS NOT NULL AND SLA_S.deadline < NOW() AT TIME ZONE 'UTC' THEN 1
-                                ELSE 0
-                            END AS failed_sla_rate,
-                            CASE
-                                WHEN SLA_S.reached_datetime IS NULL AND (SLA_S.deadline IS NULL OR SLA_S.deadline > NOW() AT TIME ZONE 'UTC') THEN 1
-                                ELSE 0
-                            END AS ongoing_sla_rate,
                             CASE
                                 WHEN SLA_S.reached_datetime IS NOT NULL AND (SLA_S.deadline IS NULL OR SLA_S.reached_datetime < SLA_S.deadline) THEN 'reached'
                                 WHEN (SLA_S.reached_datetime IS NOT NULL AND SLA_S.deadline IS NOT NULL AND SLA_S.reached_datetime >= SLA_S.deadline) OR

@@ -8,11 +8,8 @@
         <pivot string="SLA Status Analysis" disable_linking="1" sample="1">
             <field name="team_id" type="row"/>
             <field name="sla_id" type="row"/>
-            <field name="sla_status_failed" type="measure"/>
-            <field name="failed_sla_rate" type="measure"/>
-            <field name="successful_sla_rate" widget="percentage"/>
-            <field name="failed_sla_rate" widget="percentage"/>
-            <field name="ongoing_sla_rate" widget="percentage"/>
+            <field name="sla_status_failed"/>
+            <field name="sla_status" type="col"/>
             <field name="ticket_close_hours" widget="float_time"/>
             <field name="ticket_assignation_hours" widget="float_time"/>
             <field name="sla_exceeded_hours" widget="float_time"/>
@@ -37,9 +34,9 @@
         <field name="model">helpdesk.sla.report.analysis</field>
         <field name="arch" type="xml">
             <graph string="SLA Status Analysis" disable_linking="1" sample="1">
-                 <field name="team_id"/>
                  <field name="sla_id"/>
-                 <field name="failed_sla_rate" type="measure"/>
+                 <field name="sla_status"/>
+                 <field name="sla_status_failed"/>
              </graph>
          </field>
     </record>

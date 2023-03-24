@@ -183,7 +183,7 @@
                                 >
                                     <div class="p-2">
                                         <h2 class="mb-0 text-reset" t-out="success_rate_percentege"/>
-                                        Success Rate
+                                        SLA Success Rate
                                     </div>
                                 </a>
                             </td>

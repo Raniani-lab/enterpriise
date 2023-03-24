@@ -74,7 +74,7 @@ export class GridTimesheetTimerHeader extends Component {
         } else if (fieldName === "task_id") {
             fieldInfo.context = `{'default_project_id': project_id}`;
         } else if (fieldName === "name") {
-            fieldInfo.attrs.placeholder = this.env._t("Describe your activity...");
+            fieldInfo.placeholder = this.env._t("Describe your activity...");
         }
         if (field.depends?.length) {
             fieldInfo.onChange = true;

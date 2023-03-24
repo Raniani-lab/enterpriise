@@ -52,16 +52,19 @@ export class TimesheetTimerRendererHook {
                     fieldInfo.modifiers = {};
                 }
                 fieldInfo.modifiers.required = true;
+                if (!fieldInfo.placeholder && fieldInfo.string) {
+                    fieldInfo.placeholder = fieldInfo.string;
+                }
             } else if (fieldName === "task_id") {
+                if (!fieldInfo.placeholder && fieldInfo.string) {
+                    fieldInfo.placeholder = fieldInfo.string;
+                }
                 fieldInfo.context = `{'default_project_id': project_id}`;
             } else if (fieldName === "name") {
                 if (fieldInfo.modifiers?.required) {
                     fieldInfo.modifiers.required = false;
                 }
-                if (!fieldInfo.attrs) {
-                    fieldInfo.attrs = {};
-                }
-                fieldInfo.attrs.placeholder = this.env._t("Describe your activity...");
+                fieldInfo.placeholder = this.env._t("Describe your activity...");
             }
             if (field.depends?.length && !fieldInfo.onChange) {
                 fieldInfo.onChange = true;

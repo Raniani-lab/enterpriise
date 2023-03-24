@@ -132,7 +132,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
         action = request.env.ref('sale_subscription.sale_subscription_action')
         token_management_url_params = {
             'manage_subscription': True,
-            'subscription_id': order_id,
+            'sale_order_id': order_id,
             'access_token': access_token,
         }
         progress_child = order_sudo.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
@@ -197,13 +197,14 @@ class CustomerPortal(payment_portal.PaymentPortal):
 class PaymentPortal(payment_portal.PaymentPortal):
 
     def _get_extra_payment_form_values(
-        self, manage_subscription=False, subscription_id=None, access_token=None, **kwargs
+        self, manage_subscription=False, sale_order_id=None, access_token=None, **kwargs
     ):
-        """ Override of `payment` to allow managing subscriptions from the /my/payment_method page.
+        """ Override of `payment` to reroute the payment flow to the /my/payment_method page when
+        managing tokens of the subscription.
 
         :param bool manage_subscription: Whether the payment form should be adapted to allow
                                          managing subscriptions. This allows distinguishing cases.
-        :param str subscription_id: The id of the subscription to manage.
+        :param str sale_order_id: The sale order for which a payment is made, as a `sale.order` id.
         :param str access_token: The access token of the subscription.
         :param dict kwargs: Locally unused keywords arguments.
         :return: The dict of extra payment form values.
@@ -211,26 +212,26 @@ class PaymentPortal(payment_portal.PaymentPortal):
         """
         extra_payment_form_values = super()._get_extra_payment_form_values(
             manage_subscription=manage_subscription,
-            subscription_id=subscription_id,
+            sale_order_id=sale_order_id,
             access_token=access_token,
             **kwargs,
         )
-        if manage_subscription:
-            subscription_id = self._cast_as_int(subscription_id)
-            order_sudo = self._document_check_access('sale.order', subscription_id, access_token)
-            landing_route_params = {
-                'message': _("Your payment method has been changed for this subscription."),
-                'message_class': 'alert-success',
-            }
-            extra_payment_form_values.update({
-                'subscription': order_sudo,
-                'allow_token_selection': True,
-                'allow_token_deletion': False,
-                'default_token_id': order_sudo.payment_token_id.id,
-                'transaction_route': order_sudo.get_portal_url(suffix='/transaction'),
-                'assign_token_route': f'/my/subscription/assign_token/{subscription_id}',
-                'landing_route': f'{order_sudo.get_portal_url()}&{url_encode(landing_route_params)}'
-            })
+        if sale_order_id:
+            sale_order_id = self._cast_as_int(sale_order_id)
+            if manage_subscription:
+                order_sudo = self._document_check_access('sale.order', sale_order_id, access_token)
+                extra_payment_form_values.update({
+                    'subscription': order_sudo,
+                    'allow_token_selection': True,
+                    'allow_token_deletion': False,
+                    'default_token_id': order_sudo.payment_token_id.id,
+                    'transaction_route': order_sudo.get_portal_url(suffix='/transaction'),
+                    'assign_token_route': f'/my/subscription/assign_token/{sale_order_id}',
+                    'landing_route': order_sudo.get_portal_url() + '&' + url_encode({
+                        'message': _("Your payment method has been changed for this subscription."),
+                        'message_class': 'alert-success',
+                    })
+                })
         return extra_payment_form_values
 
     def _create_transaction(self, *args, **kwargs):
@@ -267,8 +268,8 @@ class PaymentPortal(payment_portal.PaymentPortal):
             return redirection
         logged_in = not request.env.user._is_public()
         partner_sudo = request.env.user.partner_id if logged_in else order_sudo.partner_id
+        self._validate_transaction_kwargs(kwargs)
         kwargs.update(partner_id=partner_sudo.id)
-        kwargs.pop('custom_create_values', None)  # Don't allow passing arbitrary create values
         if not is_validation:  # Renewal transaction
             unpaid_invoice_sudo = order_sudo.invoice_ids.filtered(
                 lambda am: am.state == 'posted' and
@@ -296,9 +297,13 @@ class PaymentPortal(payment_portal.PaymentPortal):
                 **kwargs
             )
         else:  # Validation transaction
-            kwargs['reference_prefix'] = payment_utils.singularize_reference_prefix(
-                prefix='V'  # Validation transactions use their own reference prefix
-            )
+            kwargs.update({
+                'amount': None,  # The amount is computed when creating the transaction.
+                'currency_id': None,  # The currency is computed when creating the transaction.
+                'reference_prefix': payment_utils.singularize_reference_prefix(
+                    prefix='V'  # Validation transactions use their own reference prefix
+                ),
+            })
             tx_sudo = self._create_transaction(
                 custom_create_values={
                     'sale_order_ids': [Command.set([order_id])],

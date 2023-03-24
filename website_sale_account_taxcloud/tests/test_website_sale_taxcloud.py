@@ -83,8 +83,6 @@ class TestWebsiteSaleTaxCloud(HttpCase):
                         'token_id': False,
                         'tokenization_requested': True,
                         'flow': 'direct',
-                        'currency_id': sale_order.currency_id.id,
-                        'partner_id': sale_order.partner_id.id,
                         'landing_route': 'Test'
                     }
                 })

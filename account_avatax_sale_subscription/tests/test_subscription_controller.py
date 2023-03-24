@@ -38,7 +38,6 @@ class TestAvataxSubscriptionController(TestSaleSubscriptionAvalaraCommon, Paymen
         url = self._build_url("/my/subscription/%s/transaction/" % self.subscription.id)
         data = {
             'access_token': self.subscription.access_token,
-            'reference_prefix': 'test_automatic_invoice_token',
             'landing_route': self.subscription.get_portal_url(),
             'provider_id': self.dummy_provider.id,
             'payment_method_id': self.payment_method_id,

@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.exceptions import AccessError
-from odoo.tests import tagged
+from odoo.tests import tagged, JsonRpcException
 from odoo.tools import mute_logger
 
 from odoo.addons.payment.tests.http_common import PaymentHttpCommon
@@ -127,3 +127,15 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
             self.order.payment_token_id, dumb_token_so_user,
             "Previous forbidden operations shouldn't have modified the SO token"
         )
+
+    @mute_logger('odoo.http')
+    def test_transaction_route_rejects_unexpected_kwarg(self):
+        url = self._build_url(f'/my/subscription/{self.order.id}/transaction')
+        route_kwargs = {
+            'access_token': self.order._portal_ensure_token(),
+            'partner_id': self.partner.id,  # This should be rejected.
+        }
+        with mute_logger("odoo.http"), self.assertRaises(
+            JsonRpcException, msg='odoo.exceptions.ValidationError'
+        ):
+            self.make_jsonrpc_request(url, route_kwargs)

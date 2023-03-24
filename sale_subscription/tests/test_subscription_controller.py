@@ -179,17 +179,17 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
 
         url = self._build_url("/my/orders/%s/accept" % subscription.id)
         self.make_jsonrpc_request(url, data)
-        data = {'order_id': subscription.id,
-                'access_token': subscription.access_token,
-                'amount': subscription.amount_total,
-                'currency_id': subscription.currency_id.id,
-                'flow': 'direct',
-                'tokenization_requested': True,
-                'landing_route': subscription.get_portal_url(),
-                'provider_id': self.dummy_provider.id,
-                'payment_method_id': self.payment_method_id,
-                'token_id': False,
-                'partner_id': subscription.partner_id.id}
+        data = {
+            'provider_id': self.dummy_provider.id,
+            'payment_method_id': self.payment_method_id,
+            'token_id': None,
+            'order_id': subscription.id,
+            'access_token': subscription.access_token,
+            'amount': subscription.amount_total,
+            'flow': 'direct',
+            'tokenization_requested': True,
+            'landing_route': subscription.get_portal_url(),
+        }
         url = self._build_url("/my/orders/%s/transaction" % subscription.id)
         self.make_jsonrpc_request(url, data)
         subscription.transaction_ids.provider_id.support_manual_capture = 'full_only'
@@ -221,7 +221,6 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         first_transaction_id = subscription.transaction_ids
         url = self._build_url("/my/subscription/%s/transaction" % subscription.id)
         data = {'access_token': subscription.access_token,
-                'reference_prefix': 'test_automatic_invoice_token',
                 'landing_route': subscription.get_portal_url(),
                 'provider_id': self.dummy_provider.id,
                 'payment_method_id': self.payment_method_id,
@@ -229,14 +228,12 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'flow': 'direct',
                 }
         self.make_jsonrpc_request(url, data)
-        self.env['payment.transaction'].search([('reference', '=', data['reference_prefix'])])
         # the transaction is associated to the invoice in tx._reconcile_after_done()
         invoice_transactions = subscription.invoice_ids.transaction_ids
         self.assertEqual(len(invoice_transactions), 2, "Two transactions should be created. Calling /my/subscription/transaction/ creates a new one")
         last_transaction_id = subscription.transaction_ids - first_transaction_id
         self.assertEqual(len(subscription.transaction_ids), 2)
         self.assertEqual(last_transaction_id.sale_order_ids, subscription)
-        self.assertEqual(last_transaction_id.reference, "test_automatic_invoice_token", "The reference should come from the prefix")
         last_transaction_id._set_done()
         self.assertEqual(subscription.invoice_ids.sorted('id').mapped('state'), ['posted', 'draft'])
         subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
@@ -287,7 +284,6 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
 
         url = self._build_url("/my/subscription/%s/transaction/" % subscription.id)
         data = {'access_token': subscription.access_token,
-                'reference_prefix': 'test_automatic_invoice_token',
                 'landing_route': subscription.get_portal_url(),
                 'provider_id': self.dummy_provider.id,
                 'payment_method_id': self.payment_method_id,
@@ -318,21 +314,28 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
             # test customized /payment/pay route with sale_order_id param
             # partial amount specified
             self.amount = subscription.amount_total / 2.0 # self.amount is used to create the right transaction
-            route_values = self._prepare_pay_values()
-            route_values['sale_order_id'] = subscription.id
+            pay_route_values = self._prepare_pay_values(
+                amount=self.amount,
+                currency=subscription.currency_id,
+                partner=subscription.partner_id,
+            )
+            pay_route_values['sale_order_id'] = subscription.id
+            tx_context = self._get_portal_pay_context(**pay_route_values)
 
-            route_values.update({
-                'flow': 'direct',
+            tx_route_values = {
                 'provider_id': self.provider.id,
                 'payment_method_id': self.payment_method_id,
-                'token_id': False,
+                'token_id': None,
+                'amount': tx_context['amount'],
+                'flow': 'direct',
                 'tokenization_requested': False,
-                'validation_route': False,
-                'reference_prefix': 'PLOP',
                 'landing_route': '/my/subscriptions',
-            })
+                'access_token': tx_context['access_token'],
+            }
             with mute_logger('odoo.addons.payment.models.payment_transaction'):
-                processing_values = self._get_processing_values(**route_values)
+                processing_values = self._get_processing_values(
+                    tx_route=tx_context['transaction_route'], **tx_route_values
+                )
             tx_sudo = self._get_tx(processing_values['reference'])
             # make sure to have a token on the transaction. it is needed to test the confirmation flow
             tx_sudo.token_id = self.payment_method.id

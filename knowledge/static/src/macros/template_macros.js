@@ -35,7 +35,7 @@ export class SendAsMessageMacro extends AbstractMacro {
         }, {
             trigger: function () {
                 this.validatePage();
-                const dialog = this.getFirstVisibleElement('.o_dialog_container.modal-open .o_mail_composer_form');
+                const dialog = this.getFirstVisibleElement('.o_dialog .o_mail_composer_form');
                 if (dialog) {
                     return this.getFirstVisibleElement(dialog.querySelector('.o_field_html[name="body"] .odoo-editor-editable'));
                 }

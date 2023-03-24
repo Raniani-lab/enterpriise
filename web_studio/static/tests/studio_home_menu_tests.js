@@ -68,8 +68,8 @@ const genericHomeMenuProps = {
 
 const createStudioHomeMenu = async () => {
     class Parent extends Component {
-        get DialogContainer() {
-            return registry.category("main_components").get("DialogContainer");
+        get OverlayContainer() {
+            return registry.category("main_components").get("OverlayContainer");
         }
     }
     Parent.components = { StudioHomeMenu };
@@ -77,7 +77,7 @@ const createStudioHomeMenu = async () => {
         <div>
             <StudioHomeMenu t-props="props.homeMenuProps" />
             <div class="o_dialog_container" />
-            <t t-component="DialogContainer.Component" t-props="DialogContainer.props" />
+            <t t-component="OverlayContainer.Component" t-props="OverlayContainer.props" />
         </div>`;
 
     const env = await makeTestEnv();

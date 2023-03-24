@@ -234,11 +234,11 @@ QUnit.module(
             });
             // Check that a modal opened to create a res.partner with the VAT number pre-filled
             assert.strictEqual(
-                document.querySelector(".o_dialog_container input#vat").value,
+                document.querySelector(".o_dialog input#vat").value,
                 "BE0477472701",
                 "a modal to create a new partner should be opened with the content of the box clicked as the partner VAT number"
             );
-            await click(document, ".o_dialog_container .o_form_button_cancel");
+            await click(document, ".o_dialog .o_form_button_cancel");
 
             // Re-focus the field
             await triggerEvent(document, ".o_field_widget[name=partner_id] input", "focusin");
@@ -249,11 +249,11 @@ QUnit.module(
             });
             // Check that a modal opened to create a res.partner with the name pre-filled
             assert.strictEqual(
-                document.querySelector(".o_dialog_container input#name").value,
+                document.querySelector(".o_dialog input#name").value,
                 "Some partner",
                 "a modal to create a new partner should be opened with the content of the box clicked as the partner name"
             );
-            await click(document, ".o_dialog_container .o_form_button_cancel");
+            await click(document, ".o_dialog .o_form_button_cancel");
 
             // Re-focus the field
             await triggerEvent(document, ".o_field_widget[name=partner_id] input", "focusin");

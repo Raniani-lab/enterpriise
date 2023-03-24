@@ -2618,6 +2618,17 @@ QUnit.module('ViewEditorManager', {
     QUnit.test('undo when edition of kanban results in error', async function (assert) {
         let triggerError = false;
 
+        registry.category("services").add("legacy_dialog", {
+            dependencies: ["overlay"],
+            start(_, { overlay }) {
+                class LegacyDialogContainer extends owl.Component {
+                    static template = owl.xml`<div class="o_dialog_container"></div>`;
+                    static props = [];
+                }
+                overlay.add(LegacyDialogContainer, {});
+            },
+        });
+
         patchWithCleanup(KanbanRecord.prototype, {
             setup() {
                 this._super();

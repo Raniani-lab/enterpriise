@@ -1330,7 +1330,6 @@ QUnit.module("Views", (hooks) => {
 
             await click(target, ".o_grid_button_add");
             await nextTick();
-            assert.containsOnce(target, ".o_dialog_container.modal-open");
             assert.containsOnce(target, ".modal[role='dialog']");
 
             await selectDropdownItem(target, "task_id", "BS task");

@@ -126,6 +126,7 @@ class FleetVehicle(models.Model):
                     'recurring_cost_amount_depreciated': vehicle.model_id.default_recurring_cost_amount_depreciated,
                     'purchaser_id': vehicle.driver_id.id,
                     'company_id': vehicle.company_id.id,
+                    'user_id': vehicle.manager_id.id if vehicle.manager_id else self.env.user.id
                 })
         self.env['fleet.vehicle.log.contract'].create(contracts_vals_list)
         return vehicles

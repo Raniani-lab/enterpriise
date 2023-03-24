@@ -3,6 +3,7 @@
 
 from . import account_report
 from . import account_sales_report
+from . import account_general_ledger
 from . import partner_vat_listing
 from . import res_partner
 from . import res_company

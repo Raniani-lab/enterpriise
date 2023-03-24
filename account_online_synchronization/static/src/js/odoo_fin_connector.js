@@ -51,8 +51,8 @@ function OdooFinConnector(parent, action) {
                             actionResult = await orm.call('account.online.link', 'success', [[id], mode, data], {context: action.context});
                             return actionService.doAction(actionResult);
                         case 'connect_existing_account':
-                            await orm.call('account.online.link', 'connect_existing_account', [data], {context: action.context});
-                            return actionService.doAction({type: 'ir.actions.client', tag: 'reload'});
+                            actionResult = await orm.call('account.online.link', 'connect_existing_account', [data], {context: action.context});
+                            return actionService.doAction(actionResult);
                         default:
                             return;
                     }

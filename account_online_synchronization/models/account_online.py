@@ -20,6 +20,12 @@ _logger = logging.getLogger(__name__)
 pattern = re.compile("^[a-z0-9-_]+$")
 runbot_pattern = re.compile(r"^https:\/\/[a-z0-9-_]+\.[a-z0-9-_]+\.odoo\.com$")
 
+class OdooFinRedirectException(UserError):
+    """ When we need to open the iframe in a given mode. """
+
+    def __init__(self, message=_('Redirect'), mode='link'):
+        self.mode = mode
+        super().__init__(message)
 
 class AccountOnlineAccount(models.Model):
     _name = 'account.online.account'
@@ -123,8 +129,6 @@ class AccountOnlineAccount(models.Model):
             resp_json = self.account_online_link_id._fetch_odoo_fin('/proxy/v1/refresh', data=data)
             if resp_json.get('account_data'):
                 self.account_data = resp_json['account_data']
-            if resp_json.get('code') == 300:
-                return resp_json.get('data', {}).get('mode', 'error')
             if not resp_json.get('next_data'):
                 break
             data['next_data'] = resp_json.get('next_data') or {}
@@ -334,7 +338,7 @@ class AccountOnlineLink(models.Model):
                 self.env.cr.commit()
                 return self._fetch_odoo_fin(url, data, ignore_status)
             elif error.get('code') == 300:  # redirect, not an error
-                return error
+                raise OdooFinRedirectException(mode=error.get('data', {}).get('mode', 'link'))
             # If we are in the process of deleting the record ignore code 100 (invalid signature), 104 (account deleted)
             # 106 (provider_data corrupted) and allow user to delete his record from this side.
             elif error.get('code') in (100, 104, 106) and self.env.context.get('delete_sync'):
@@ -401,14 +405,15 @@ class AccountOnlineLink(models.Model):
 
     def _fetch_accounts(self, online_identifier=False):
         self.ensure_one()
-        # Delete all accounts not yet linked to a journal to clean up customer data and to ensure that we will fetch
-        # the correct balance in case we try to add a new account
-        self.account_online_account_ids.filtered(lambda acc: acc.journal_ids is False).unlink()
-        # Ignore account that is already there and linked to a journal as there is no need to fetch information for that one
         if online_identifier:
             matching_account = self.account_online_account_ids.filtered(lambda l: l.online_identifier == online_identifier)
-            if matching_account:
+            # Ignore account that is already there and linked to a journal as there is no need to fetch information for that one
+            if matching_account and matching_account.journal_ids:
                 return matching_account
+            # If we have the account locally but didn't link it to a journal yet, delete it first.
+            # This way, we'll get the information back from the proxy with updated balances. Avoiding potential issues.
+            elif matching_account and not matching_account.journal_ids:
+                matching_account.unlink()
         accounts = {}
         data = {}
         while True:
@@ -445,18 +450,18 @@ class AccountOnlineLink(models.Model):
         self.last_refresh = fields.Datetime.now()
         bank_statement_line_ids = self.env['account.bank.statement.line']
         acc = accounts or self.account_online_account_ids
-        for online_account in acc:
-            # Only get transactions on account linked to a journal
-            if online_account.journal_ids:
-                if refresh:
-                    status = online_account._refresh()
-                    if status == 'link':
-                        return self.action_new_synchronization()
-                    elif status is not True:
-                        return self._open_iframe(status)
-                bank_statement_line_ids += online_account._retrieve_transactions()
-
-        return self._show_fetched_transactions_action(bank_statement_line_ids)
+        try:
+            for online_account in acc:
+                # Only get transactions on account linked to a journal
+                if online_account.journal_ids:
+                    if refresh:
+                        online_account._refresh()
+                    bank_statement_line_ids += online_account._retrieve_transactions()
+            return self._show_fetched_transactions_action(bank_statement_line_ids)
+        except OdooFinRedirectException as e:
+            if e.mode == 'link':
+                return self.action_new_synchronization()
+            return self._open_iframe(e.mode)
 
     def _get_consent_expiring_date(self):
         self.ensure_one()
@@ -573,7 +578,7 @@ class AccountOnlineLink(models.Model):
             if new_account:
                 new_account._assign_journal()
                 return online_link._fetch_transactions(accounts=new_account)
-        return True
+        return {'type': 'ir.actions.client', 'tag': 'reload'}
 
     def exchange_token(self, exchange_token):
         self.ensure_one()
@@ -603,7 +608,7 @@ class AccountOnlineLink(models.Model):
 
     def _success_updateCredentials(self):
         self.ensure_one()
-        return {'type': 'ir.actions.client', 'tag': 'reload'}
+        return self._fetch_transactions()
 
     def _success_refreshAccounts(self):
         self.ensure_one()
@@ -621,10 +626,10 @@ class AccountOnlineLink(models.Model):
     def action_new_synchronization(self):
         # Search for an existing link that was not fully connected
         online_link = self
-        if not online_link:
+        if not online_link or online_link.provider_data:
             online_link = self.search([('account_online_account_ids', '=', False), ('provider_data', '=', False)], limit=1)
         # If not found, create a new one
-        if not online_link:
+        if not online_link or online_link.provider_data:
             online_link = self.create({})
         return online_link._open_iframe('link')
 

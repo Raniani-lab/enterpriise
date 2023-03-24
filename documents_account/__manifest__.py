@@ -19,10 +19,11 @@ Documents app in the desired format(s).
         'security/security.xml',
         'data/data.xml',
         'data/mail_activity_type_data.xml',
-        'views/documents_views.xml',
         'views/account_move_views.xml',
+        'views/documents_account_folder_setting_views.xml',
         'views/documents_workflow_rule_views.xml',
-        'wizard/report_export_wizard.xml',
+        'views/res_config_settings_views.xml',
+        'wizard/account_reports_export_wizard_views.xml',
     ],
     'demo': [
         'demo/demo.xml',

@@ -12,7 +12,10 @@ option to send products' attachments to the documents app.
 """,
     'website': ' ',
     'depends': ['documents', 'product'],
-    'data': ['data/data.xml', 'views/documents_views.xml'],
+    'data': [
+        'data/data.xml',
+        'views/res_config_settings_views.xml',
+    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

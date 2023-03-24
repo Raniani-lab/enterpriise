@@ -13,7 +13,7 @@ Employee payslips will be automatically integrated to the Document app.
     'depends': ['documents_hr', 'hr_payroll'],
     'data': [
         'data/data.xml',
-        'views/documents_views.xml',
+        'views/res_config_settings_views.xml',
         'security/security.xml'
     ],
     'installable': True,

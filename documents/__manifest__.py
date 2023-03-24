@@ -39,11 +39,11 @@
         'views/documents_workflow_action_views.xml',
         'views/documents_workflow_rule_views.xml',
         'views/documents_menu_views.xml',
-        'views/templates.xml',
+        'views/documents_templates_share.xml',
         'views/mail_activity_views.xml',
-        'wizard/documents_folder_deletion_wizard.xml',
-        'wizard/request_activity_views.xml',
-        'wizard/link_to_record_views.xml',
+        'wizard/documents_folder_deletion_wizard_views.xml',
+        'wizard/documents_link_to_record_wizard_views.xml',
+        'wizard/documents_request_wizard_views.xml',
     ],
 
     'demo': [

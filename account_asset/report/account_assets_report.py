@@ -352,6 +352,7 @@ class AssetReportCustomHandler(models.AbstractModel):
             'date_to': options['date']['date_to'],
             'date_from': options['date']['date_from'],
             'company_ids': company_ids,
+            'include_draft': options.get('all_entries', False),
         }
 
         prefix_query = ''
@@ -391,7 +392,7 @@ class AssetReportCustomHandler(models.AbstractModel):
              WHERE asset.company_id in %(company_ids)s
                AND (asset.acquisition_date <= %(date_to)s OR move.date <= %(date_to)s)
                AND (asset.disposal_date >= %(date_from)s OR asset.disposal_date IS NULL)
-               AND asset.state not in ('model', 'draft', 'cancelled')
+               AND (asset.state not in ('model', 'draft', 'cancelled') OR (asset.state = 'draft' AND %(include_draft)s))
                AND asset.asset_type = 'purchase'
                AND asset.active = 't'
                AND reversal.id IS NULL

@@ -20,10 +20,5 @@
             <field name="user_specific" eval="True"/>
             <field name="user_specific_write" eval="True"/>
         </record>
-
-        <record id="base.main_company" model="res.company">
-            <field name="documents_spreadsheet_folder_id" ref="documents_spreadsheet_folder"/>
-        </record>
-
     </data>
 </odoo>

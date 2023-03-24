@@ -20,14 +20,18 @@
 
     # always loaded
     'data': [
-        'data/ir_asset.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/digest_data.xml',
         'data/mail_activity_type_data.xml',
-        'data/documents_data.xml',
-        'data/workflow_data.xml',
-        'data/files_data.xml',
+        'data/documents_folder_data.xml',
+        'data/documents_facet_data.xml',
+        'data/documents_tag_data.xml',
+        'data/documents_share_data.xml',
+        'data/documents_document_data.xml',
+        'data/documents_workflow_data.xml',
+        'data/ir_asset_data.xml',
+        'data/ir_config_parameter_data.xml',
         'data/mail_template_data.xml',
         'views/res_config_settings_views.xml',
         'views/res_partner_views.xml',
@@ -47,7 +51,8 @@
     ],
 
     'demo': [
-        'demo/demo.xml',
+        'demo/documents_folder_demo.xml',
+        'demo/documents_document_demo.xml',
     ],
     'license': 'OEEL-1',
     'assets': {

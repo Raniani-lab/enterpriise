@@ -4,7 +4,7 @@
 import logging
 
 from odoo import http
-from odoo.addons.documents.controllers.main import ShareRoute
+from odoo.addons.documents.controllers.documents import ShareRoute
 from odoo.http import request
 
 logger = logging.getLogger(__name__)

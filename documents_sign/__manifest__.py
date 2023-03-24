@@ -14,12 +14,12 @@ The first element of the selection (in DRM) will be used as the signature attach
     'depends': ['documents', 'sign'],
 
     'data': [
-        'data/data.xml',
+        'data/documents_workflow_rule_data.xml',
         'views/sign_templates.xml',
     ],
 
     'demo': [
-        'demo/demo.xml',
+        'demo/documents_document_demo.xml',
     ],
 
     'installable': True,

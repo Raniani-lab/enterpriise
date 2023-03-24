@@ -12,7 +12,10 @@ Add the ability to create invoices from the document module.
     'website': ' ',
     'depends': ['documents', 'project'],
     'data': [
-        'data/documents_project_data.xml',
+        'data/documents_folder_data.xml',
+        'data/documents_facet_data.xml',
+        'data/documents_tag_data.xml',
+        'data/documents_workflow_data.xml',
         'views/documents_folder_views.xml',
         'views/documents_facet_views.xml',
         'views/documents_tag_views.xml',

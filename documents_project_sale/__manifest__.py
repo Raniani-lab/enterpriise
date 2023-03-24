@@ -13,7 +13,8 @@ Adds the ability to set workspace templates on products.
         'views/product_views.xml',
     ],
     'demo': [
-        'data/documents_project_sale_demo.xml',
+        'data/documents_demo.xml',
+        'data/project_sale_demo.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

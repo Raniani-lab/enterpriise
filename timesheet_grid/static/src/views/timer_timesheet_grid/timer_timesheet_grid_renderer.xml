@@ -59,6 +59,7 @@
         <xpath expr="//div[@name='row']" position="before">
             <div t-if="showTimerButton"
                 class="o_grid_row_timer o_grid_highlightable ps-2 ps-md-3 py-2 transition-base"
+                t-att-data-row="row.id"
                 t-att-data-grid-row="rowPosition"
                 t-att-data-grid-column="1"
                 t-attf-style="grid-row: {{rowPosition}}; grid-column: 1;"
@@ -67,7 +68,7 @@
                     row="row"
                     hotKey="props.model.data.keyBindingPerRowId[row.id]"
                     addTimeMode="timerState.addTimeMode"
-                    hovered="highlightedState[`timer-${row.id}`]"
+                    hovered="hoverTimerButtonsState[row.id]"
                     timerRunning="timerState.timerRunningRowId === row.id"
                     onTimerClick.bind="onTimerClick"
                 />

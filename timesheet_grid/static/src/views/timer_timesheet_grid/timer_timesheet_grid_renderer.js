@@ -6,7 +6,7 @@ import { TimesheetGridRenderer } from "../timesheet_grid/timesheet_grid_renderer
 import { GridTimerButtonCell } from "../../components/grid_timer_button_cell/grid_timer_button_cell";
 import { GridTimesheetTimerHeader } from "../../components/grid_timesheet_timer_header/grid_timesheet_timer_header";
 
-import { useState, useExternalListener } from "@odoo/owl";
+import { useState, useExternalListener, reactive } from "@odoo/owl";
 
 export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
     static template = "timesheet_grid.TimerGridRenderer";
@@ -18,6 +18,14 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
 
     setup() {
         super.setup();
+        this.hoverTimerButtonsState = useState(
+            this.getDefaultHoverTimerButtonsState(this.props.model.data)
+        );
+        this.timerReactive = reactive({
+            cells: Object.fromEntries(
+                Object.keys(this.props.model.data.rows).map((rowId) => [rowId, false])
+            ),
+        });
         this.timerState = useState(this.getDefaultTimerState());
         this.timesheetUOMService = useService("timesheet_uom");
 
@@ -26,6 +34,10 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
 
     onWillUpdateProps(nextProps) {
         super.onWillUpdateProps(nextProps);
+        Object.assign(
+            this.hoverTimerButtonsState,
+            this.getDefaultHoverTimerButtonsState(nextProps.model.data)
+        );
         const newState = this.getDefaultTimerState(nextProps);
         this.timerState.timesheet = newState.timesheet;
         this.timerState.timerRunning = newState.timerRunning;
@@ -33,10 +45,10 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
         this.timerState.timerRunningRowId = newState.timerRunningRowId;
     }
 
-    getDefaultState(data) {
-        const res = super.getDefaultState(data);
+    getDefaultHoverTimerButtonsState(data) {
+        const res = {};
         for (const rowId in data.rows) {
-            res[`timer-${rowId}`] = false;
+            res[rowId] = false;
         }
         return res;
     }
@@ -176,6 +188,41 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
     onKeyUp(ev) {
         if (ev.key === "Shift" && !this.isEditing) {
             this.timerState.addTimeMode = false;
+        }
+    }
+
+    _onMouseOver(ev) {
+        const searchTimerButtonHighlighted = !this.hoveredElement;
+        super._onMouseOver(ev);
+        if (
+            searchTimerButtonHighlighted &&
+            this.hoveredElement?.dataset.row &&
+            this.hoveredElement.classList.contains("o_grid_row_timer")
+        ) {
+            this.hoverTimerButtonsState[this.hoveredElement.dataset.row] = true;
+        }
+    }
+
+    /**
+     * Mouse out handler
+     *
+     * @param {MouseEvent} ev
+     */
+    _onMouseOut(ev) {
+        let rowIdHighlighted;
+        if (
+            this.hoveredElement?.dataset.row &&
+            this.hoveredElement.classList.contains("o_grid_row_timer")
+        ) {
+            rowIdHighlighted = this.hoveredElement.dataset.row;
+        }
+        super._onMouseOut(ev);
+        if (
+            !this.hoveredElement &&
+            rowIdHighlighted &&
+            this.hoverTimerButtonsState[rowIdHighlighted]
+        ) {
+            this.hoverTimerButtonsState[rowIdHighlighted] = false;
         }
     }
 

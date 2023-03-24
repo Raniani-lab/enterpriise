@@ -141,6 +141,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
     eventFunction: function (calEvent) {
         const planningToken = $('.planning_token').attr('value');
         const employeeToken = $('.employee_token').attr('value');
+        let displayFooter = false;
         $(".modal-title").text(calEvent.event.title);
         $(".modal-header").css("background-color", calEvent.event.backgroundColor);
         if (calEvent.event.extendedProps.request_to_switch && !calEvent.event.extendedProps.allow_self_unassign) {
@@ -180,6 +181,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
             && !calEvent.event.extendedProps.is_unassign_deadline_passed
             ) {
             document.getElementById("dismiss_shift").style.display = "block";
+            displayFooter = true;
         } else {
             document.getElementById("dismiss_shift").style.display = "none";
         }
@@ -189,6 +191,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
             && !calEvent.event.extendedProps.allow_self_unassign
             ) {
             document.getElementById("switch_shift").style.display = "block";
+            displayFooter = true;
         } else {
             document.getElementById("switch_shift").style.display = "none";
         }
@@ -197,6 +200,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
             && !calEvent.event.extendedProps.allow_self_unassign
             ) {
             document.getElementById("cancel_switch").style.display = "block";
+            displayFooter = true;
         } else {
             document.getElementById("cancel_switch").style.display = "none";
         }
@@ -204,6 +208,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         $("#modal_action_switch_shift").attr("action", "/planning/" + planningToken + "/" + employeeToken + "/switch/" + calEvent.event.extendedProps.slot_id);
         $("#modal_action_cancel_switch").attr("action", "/planning/" + planningToken + "/" + employeeToken + "/cancel_switch/" + calEvent.event.extendedProps.slot_id);
         $("#fc-slot-onclick-modal").modal("show");
+        document.getElementsByClassName("modal-footer")[0].style.display = displayFooter ? "block" : "none" ;
     },
 });
 

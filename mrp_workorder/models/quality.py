@@ -132,9 +132,6 @@ class QualityPoint(models.Model):
     def _compute_component_ids(self):
         self.component_ids = False
         for point in self:
-            if not point.is_workorder_step or not self.bom_id or point.test_type not in ('register_consumed_materials', 'register_byproducts'):
-                point.component_id = None
-                continue
             if point.test_type == 'register_byproducts':
                 point.component_ids = point.bom_id.byproduct_ids.product_id
             else:
@@ -169,6 +166,11 @@ class QualityPoint(models.Model):
     def _onchange_operation_id(self):
         if self.operation_id:
             self._change_product_ids_for_bom(self.bom_id)
+
+    @api.onchange('test_type_id')
+    def _onchange_test_type_id(self):
+        if self.test_type_id.technical_name not in ('register_byproducts', 'register_consumed_materials'):
+            self.component_id = False
 
 
 class QualityAlert(models.Model):

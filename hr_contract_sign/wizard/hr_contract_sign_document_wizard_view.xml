@@ -22,6 +22,7 @@
                 <group attrs="{'invisible': [('sign_template_ids', '=', [])]}" string="Sign Request Options">
                     <field name="employee_role_id" options="{'no_create': True}"/>
                     <field name="responsible_id" options="{'no_create_edit': True}"
+                        context="{'allow_create_employee': False, 'default_create_employee': False}"
                         attrs="{'invisible': [('has_both_template', '=', False)], 'required': [('has_both_template', '=', True)]}"/>
                     <field name="cc_partner_ids" widget="many2many_tags" placeholder="Write email or search contact..."/>
                 </group>

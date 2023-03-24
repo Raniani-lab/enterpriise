@@ -40,7 +40,7 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         mo_form.product_id = self.product
         mo_form.bom_id = self.bom
         mo_form.product_qty = 1.0
-        mo_form.analytic_account_id = self.analytic_account
+        mo_form.analytic_distribution = {str(self.analytic_account.id): 100.0}
         mo = mo_form.save()
         mo.action_confirm()
         with freeze_time('2027-10-01 10:00:00'):
@@ -55,14 +55,16 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         employee2_aa_line = mo.workorder_ids.employee_analytic_account_line_ids.filtered(lambda l: l.employee_id == self.employee2)
         self.assertEqual(employee1_aa_line.amount, -100.0)
         self.assertEqual(employee2_aa_line.amount, -200.0)
-        self.assertEqual(mo.workorder_ids.mo_analytic_account_line_id.amount, -10.0)
+        self.assertEqual(mo.workorder_ids.mo_analytic_account_line_ids.amount, -10.0)
         self.assertEqual(employee1_aa_line.account_id, self.analytic_account)
         self.assertEqual(employee2_aa_line.account_id, self.analytic_account)
         new_account = self.env['account.analytic.account'].create({
             'name': 'test_analytic_account_change',
             'plan_id': self.analytic_plan.id,
         })
-        mo.analytic_account_id = new_account
+        mo.analytic_distribution = {str(new_account.id): 100.0}
+        employee1_aa_line = mo.workorder_ids.employee_analytic_account_line_ids.filtered(lambda l: l.employee_id == self.employee1)
+        employee2_aa_line = mo.workorder_ids.employee_analytic_account_line_ids.filtered(lambda l: l.employee_id == self.employee2)
         self.assertEqual(employee2_aa_line.account_id, new_account)
         self.assertEqual(employee1_aa_line.account_id, new_account)
 
@@ -88,8 +90,8 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         mo.action_confirm()
         self.assertEqual(mo.state, 'confirmed')
 
-        mo.analytic_account_id = self.analytic_account
-        self.assertEqual(mo.analytic_account_id, self.analytic_account)
+        mo.analytic_distribution = {str(self.analytic_account.id): 100.0}
+        self.assertEqual(mo.analytic_account_ids, self.analytic_account)
 
         mo_form = Form(mo)
         mo_form.qty_producing = 1.0
@@ -129,8 +131,8 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         self.assertEqual(mo.workorder_ids[1].state, 'progress')
         self.assertTrue(mo.workorder_ids[1].time_ids)
 
-        mo.analytic_account_id = self.analytic_account
-        self.assertEqual(mo.analytic_account_id, self.analytic_account)
+        mo.analytic_distribution = {str(self.analytic_account.id): 100.0}
+        self.assertEqual(mo.analytic_account_ids, self.analytic_account)
 
         mo_form = Form(mo)
         mo_form.qty_producing = 1.0

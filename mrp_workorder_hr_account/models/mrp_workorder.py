@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import _, Command, models, fields
-from odoo.tools import float_is_zero
+from odoo import _, models, fields
 
 
 class MrpWorkcenterProductivity(models.Model):
@@ -10,27 +9,40 @@ class MrpWorkcenterProductivity(models.Model):
         previous_durations = self.mapped('duration')
         super()._compute_duration()
         for timer, previous_duration in zip(self, previous_durations):
-            if timer.workorder_id.production_id.analytic_account_id:
+            if timer.workorder_id.production_id.analytic_distribution or timer.workorder_id.employee_analytic_account_line_ids:
                 timer._create_analytic_entry(previous_duration)
 
-    def _create_analytic_entry(self, previous_duration=0):
-        for time in self:
-            employee_aal = time.workorder_id.employee_analytic_account_line_ids.filtered(
-                lambda line: line.employee_id and line.employee_id == time.employee_id
-            )
-            duration = (time.duration - previous_duration) / 60.0
-            amount = - duration * time.employee_cost
-            account = time.workorder_id.production_id.analytic_account_id
-            if employee_aal:
-                employee_aal.write({
-                    'unit_amount': employee_aal.unit_amount + duration,
-                    'amount': employee_aal.amount + amount,
-                })
-            elif not float_is_zero(amount, precision_rounding=account.currency_id.rounding):
-                aa_vals = time.workorder_id._prepare_analytic_line_values(account, duration, amount)
-                aa_vals['name'] = _("[EMPL] %s - %s", time.workorder_id.display_name, time.employee_id.name)
-                aa_vals['employee_id'] = time.employee_id.id
-                time.workorder_id.employee_analytic_account_line_ids = [Command.create(aa_vals)]
+    def _prepare_analytic_line_values(self, account, amount, unit_amount):
+        self.ensure_one()
+        res = self.workorder_id._prepare_analytic_line_values(account, amount, unit_amount)
+        res['name'] = _("[EMPL] %s - %s", self.workorder_id.display_name, self.employee_id.name)
+        res['employee_id'] = self.employee_id.id
+        return res
+
+    def _create_analytic_entry(self, previous_duration=0, old_dist=None):
+        """
+            Used for updating or creating the employee analytic lines in 2 cases:
+                - Update of the productivity for an employee, in which case old_dist is unused
+                - Update of the MO analytic distribution, in which case previous_duration is unused
+        """
+        self.ensure_one()
+        employee_aal = self.workorder_id.employee_analytic_account_line_ids.filtered(
+            lambda line: line.employee_id and line.employee_id == self.employee_id
+        )
+        distribution_update = old_dist and employee_aal
+        if distribution_update:
+            account = int(max(old_dist, key=old_dist.get))
+            biggest_aal = employee_aal.filtered(lambda line: line.account_id.id == account)
+            amount = biggest_aal.amount / (old_dist[str(account)] / 100)
+            duration = biggest_aal.unit_amount
+        else:
+            duration = (self.duration - previous_duration) / 60.0
+            amount = - duration * self.employee_cost
+
+        line_vals = self.env['account.analytic.account']._perform_analytic_distribution(
+            self.workorder_id.production_id.analytic_distribution, amount, duration, employee_aal, self, not distribution_update)
+        if line_vals:
+            self.workorder_id.employee_analytic_account_line_ids += self.env['account.analytic.line'].sudo().create(line_vals)
 
 
 class MrpWorkorder(models.Model):
@@ -41,3 +53,11 @@ class MrpWorkorder(models.Model):
     def _compute_duration(self):
         self.filtered(lambda wo: wo.workcenter_id.allow_employee)._create_or_update_analytic_entry()
         super()._compute_duration()
+
+    def action_cancel(self):
+        self.employee_analytic_account_line_ids.unlink()
+        return super().action_cancel()
+
+    def _update_productivity_analytic(self, old_dist):
+        for time_id in self.time_ids:
+            time_id._create_analytic_entry(previous_duration=0, old_dist=old_dist)

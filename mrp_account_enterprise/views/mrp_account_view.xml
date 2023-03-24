@@ -7,7 +7,10 @@
             <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
             <field name="arch" type="xml">
                 <group name="costing" position="inside">
-                    <field name="costs_hour_account_id" groups="analytic.group_analytic_accounting"/>
+                    <field name="analytic_distribution" widget="analytic_distribution"
+                           groups="analytic.group_analytic_accounting"
+                           options="{'product_field': 'product_id'}"
+                    />
                 </group>
             </field>
         </record>
@@ -18,7 +21,11 @@
             <field name="inherit_id" ref="mrp.mrp_workcenter_tree_view" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='costs_hour']" position="after">
-                    <field name="costs_hour_account_id" groups="analytic.group_analytic_accounting" optional="hide"/>
+                    <field name="analytic_distribution" widget="analytic_distribution"
+                           groups="analytic.group_analytic_accounting"
+                           options="{'product_field': 'product_id'}"
+                           optional="hide"
+                    />
                 </xpath>
             </field>
         </record>

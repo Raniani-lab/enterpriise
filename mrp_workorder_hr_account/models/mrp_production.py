@@ -8,15 +8,10 @@ class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
     def write(self, vals):
-        origin_analytic_account = {production: production.analytic_account_id for production in self}
+        old_dists = {production: production.analytic_distribution for production in self}
         res = super().write(vals)
         for production in self:
-            if 'analytic_account_id' in vals and production.state != 'draft':
-                if vals['analytic_account_id'] and origin_analytic_account[production]:
-                    production.workorder_ids.employee_analytic_account_line_ids.write({'account_id': vals['analytic_account_id']})
-                elif vals['analytic_account_id'] and not origin_analytic_account[production]:
-                    production.workorder_ids.time_ids._create_analytic_entry()
-                else:
-                    production.workorder_ids.employee_analytic_account_line_ids.unlink()
-
+            if 'analytic_distribution' in vals and production.state != 'draft':
+                for wo in production.workorder_ids:
+                    wo._update_productivity_analytic(old_dists[production])
         return res

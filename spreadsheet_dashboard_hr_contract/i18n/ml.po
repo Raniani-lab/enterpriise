@@ -46,7 +46,7 @@ msgstr "വകുപ്പ്"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Employee"
-msgstr ""
+msgstr "എംപ്ലോയീ "
 
 #. module: spreadsheet_dashboard_hr_contract
 #. openerp-web

@@ -23,12 +23,12 @@ msgstr ""
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "# Events with Registrations"
-msgstr ""
+msgstr "# tapahtumaa, joissa on ilmoittautumisia"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "# Invoice addresses"
-msgstr ""
+msgstr "# Laskutusosoite"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
@@ -38,42 +38,42 @@ msgstr "# Ilmoittautumiset"
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "# Unique Customers"
-msgstr ""
+msgstr "# Yksilöllistä asiakasta"
 
 #. module: event_sale_dashboard
 #: model:ir.model.fields,field_description:event_sale_dashboard.field_event_sale_report__avg_daily_registrations
 msgid "Average Daily Registrations"
-msgstr ""
+msgstr "Keskimääräiset päivittäiset ilmoittautumiset"
 
 #. module: event_sale_dashboard
 #: model:ir.model.fields,field_description:event_sale_dashboard.field_event_sale_report__avg_sold_daily_registrations
 msgid "Average Daily Registrations Sold"
-msgstr ""
+msgstr "Myydyt ilmoittautumiset keskimäärin päivässä"
 
 #. module: event_sale_dashboard
 #: model:ir.model.fields,field_description:event_sale_dashboard.field_event_sale_report__avg_amount_sale_order
 msgid "Average Sale Order Amount"
-msgstr ""
+msgstr "Keskimääräinen myyntitilauksen määrä"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Avg. Amount /Order"
-msgstr ""
+msgstr "Keskimääräinen määrä / tilaus"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Avg. Amount /Registration"
-msgstr ""
+msgstr "Keskimääräinen määrä / ilmoittautuminen"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Avg. Registrations /Day"
-msgstr ""
+msgstr "Ilmoittautumisia keskimäärin päivässä"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Avg. Registrations Sold /Day"
-msgstr ""
+msgstr "Ilmoittautumisia myyty keskimäärin päivässä"
 
 #. module: event_sale_dashboard
 #: model:ir.model,name:event_sale_dashboard.model_event_sale_report
@@ -88,14 +88,14 @@ msgstr "Tulot yhteensä"
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Unique invoiced partners"
-msgstr ""
+msgstr "Yksilölliset laskutettavat kumppanit"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Unique partners who made sale orders"
-msgstr ""
+msgstr "Yksilölliset kumppanit, jotka aikaansaivat myyntitilauksia"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Untaxed Total Revenues"
-msgstr ""
+msgstr "Verottomat tulot yhteensä"

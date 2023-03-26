@@ -962,7 +962,7 @@ msgstr "Créer"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_mark
 msgid "Create Bill"
-msgstr "Créer une facture"
+msgstr "Créer une facture fournisseur"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_share_id
@@ -1741,7 +1741,7 @@ msgstr "Marquer comme brouillon"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
 msgid "Mark all as Done"
-msgstr "Tout marquer comme Fait"
+msgstr "Tout marquer comme fait"
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_marketing_folder

@@ -4,8 +4,8 @@
 # 
 # Translators:
 # arfa simoncelli, 2022
-# Abe Manyo, 2022
 # Martin Trigaux, 2023
+# Abe Manyo, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Abe Manyo, 2023\n"
 "Language-Team: Indonesian (https://www.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,13 +35,21 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    Semuanya selesai!\n"
+"                </p>\n"
+"                <p>\n"
+"                    Buat transaksi baru, atau pastikan tidak ada filter yang aktif dalam kolom pencarian.\n"
+"                </p>\n"
+"            "
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ -2,678.00"
-msgstr ""
+msgstr "$ -2,678.00"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -49,7 +57,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ 2,678.00"
-msgstr ""
+msgstr "$ 2,678.00"
 
 #. module: account_accountant
 #. odoo-python
@@ -59,6 +67,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be fully "
 "reconciled by the transaction."
 msgstr ""
+"%(display_name_html)s dengan jumlah terbuka %(open_amount)s akan sepenuhnya "
+"direkonsiliasi melalui transaksi."
 
 #. module: account_accountant
 #. odoo-python
@@ -68,13 +78,15 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be reduced"
 " by %(amount)s."
 msgstr ""
+"%(display_name_html)s dengan jumlah terbuka %(open_amount)s akan dikurangi "
+"sebesar %(amount)s.  "
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "-1,134.50"
-msgstr ""
+msgstr "-1,134.50"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -84,7 +96,7 @@ msgstr "-> Rekonsiliasi"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "/&gt;"
-msgstr ""
+msgstr "/&gt;"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
@@ -169,6 +181,8 @@ msgid ""
 "<span class=\"o_form_label\" attrs=\"{'invisible': "
 "[('form_force_negative_sign', '=', False)]}\">-</span>"
 msgstr ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': "
+"[('form_force_negative_sign', '=', False)]}\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -269,7 +283,7 @@ msgstr "Tambahkan tanda baru"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 msgid "All Users Lock Date"
-msgstr ""
+msgstr "Tanggal Kunci Semua User"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -289,14 +303,14 @@ msgstr "Allow to define fiscal years of more or less than a year"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__amls_widget
 msgid "Amls Widget"
-msgstr ""
+msgstr "Widget Amls"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Amongst unmatched bank transactions"
-msgstr ""
+msgstr "Di antara transaksi bank yang tidak cocok"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -340,7 +354,7 @@ msgstr "Akun Analitik"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "Ketelitian Analitik"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -391,24 +405,24 @@ msgstr "Rekening Koran"
 #: code:addons/account_accountant/models/account_bank_statement.py:0
 #, python-format
 msgid "Bank Statement %s.pdf"
-msgstr "Bank Statement %s.pdf"
+msgstr "Rekening Koran %s.pdf"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_bank_statement_line
 msgid "Bank Statement Line"
-msgstr "Baris Pernyataan Bank"
+msgstr "Baris Rekening Koran"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/account_bank_statement.py:0
 #, python-format
 msgid "Bank Statement.pdf"
-msgstr "Bank Statement.pdf"
+msgstr "Rekening Koran.pdf"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr "Widget rekonsiliasi bank untuk satu baris laporan"
+msgstr "Widget rekonsiliasi bank untuk satu baris rekening koran"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -539,7 +553,7 @@ msgstr "Buat Model Rekonsiliasi"
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_form_bank_rec_widget
 msgid "Create Statement"
-msgstr ""
+msgstr "Buat Laporan"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -558,7 +572,7 @@ msgstr "Create a new account group"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Create additional entries"
-msgstr ""
+msgstr "Buat entri tambahan"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -576,6 +590,8 @@ msgid ""
 "Create your first vendor bill.<br/><br/><i>Tip: If you don’t have one on "
 "hand, use our sample bill.</i>"
 msgstr ""
+"Buat tagihan bill vendor pertama Anda.<br/><br/><i>Tip: Bila Anda tidak "
+"punya satu contoh saat ini, gunakan contoh tagihan kami.</i>"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid
@@ -601,7 +617,7 @@ msgstr "Kredit"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_bank_statement_line__cron_last_check
 msgid "Cron Last Check"
-msgstr ""
+msgstr "Pemeriksaan Cron Terakhir"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -641,7 +657,7 @@ msgstr "Tentukan tahun fiskal untuk lebih atau kurang dari satu tahun"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Deposits"
-msgstr ""
+msgstr "Deposit-Deposit"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
@@ -704,13 +720,17 @@ msgid ""
 "after installing Accounting if you were using only Invoicing before, before "
 "importing all your actual accounting data in to Odoo."
 msgstr ""
+"Semua pembayaran dan faktur sebelum tanggal ini akan menerima status 'Dari "
+"Faktur', menyembunyikan semua entri akuntansi yang terkait dengannya. "
+"Gunakan opsi ini setelah menginstal Akuntansi bila Anda sebelumnya hanya "
+"menggunakan Faktur, sebelum mengimpor semua data akuntansi Anda ke Odoo."
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Exchange Difference: %s"
-msgstr ""
+msgstr "Perbedaan Nilai Tukar: %s"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -768,22 +788,22 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
 msgid "Form Account"
-msgstr ""
+msgstr "Buat Akun"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_amount_currency
 msgid "Form Amount Currency"
-msgstr ""
+msgstr "Buat Jumlah Mata Uang"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_balance
 msgid "Form Balance"
-msgstr ""
+msgstr "Buat Saldo"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_currency_id
 msgid "Form Currency"
-msgstr ""
+msgstr "Buat Mata Uang"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_date

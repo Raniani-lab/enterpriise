@@ -48,7 +48,7 @@ msgstr ""
 #: code:addons/account_avatax_sale/models/sale_order.py:0
 #, python-format
 msgid "Taxes"
-msgstr ""
+msgstr "നികുതികൾ"
 
 #. module: account_avatax_sale
 #: code:addons/account_avatax_sale/models/sale_order.py:0

@@ -56,14 +56,14 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.actions.report,print_report_name:hr_payroll.action_report_payslip
 msgid "'Payslip - %s' % (object.name)"
-msgstr ""
+msgstr "'Gehaltsabrechnung - %s' % (object.name)"
 
 #. module: hr_payroll
 #. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "(%s Payslips)"
-msgstr ""
+msgstr "(%s Gehaltsabrechnungen)"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__state
@@ -112,12 +112,12 @@ msgstr "13. Gehalt"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "2. Index salaries for Marketing department"
-msgstr ""
+msgstr "2. Gehälter für Marketing-Abteilung indexieren."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "3. Create a new contract for Marc Demo with his new position"
-msgstr ""
+msgstr "3. Neuen Vertrag für Marc Demo mit seiner neuen Funktion erstellen."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_rule_parameter_view_form
@@ -130,7 +130,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
 msgid "<span class=\"ms-2\"> hours/week</span>"
-msgstr ""
+msgstr "<span class=\"ms-2\"> Stunden/Woche</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -149,6 +149,10 @@ msgid ""
 " selected employee(s) based on the dates and credit note specified on "
 "Payslips Run.</span>"
 msgstr ""
+"<span nolabel=\"1\" colspan=\"2\">Dieser Assistent erstellt die "
+"Gehaltsabrechnungen für alle ausgewählten Mitarbeiter auf der Grundlage der "
+"Daten und Gutschriften, die unter „Gehaltsabrechnungen“ angegeben "
+"wurden.</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
@@ -484,6 +488,8 @@ msgstr "Lohnabtretung"
 msgid ""
 "At least one previous negative net could be reported on this payslip for %s"
 msgstr ""
+"Auf dieser Gehaltsabrechnung konnte mindestens ein früheres negatives Netto "
+"für %s gemeldet werden."
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_attachment_count
@@ -1389,14 +1395,14 @@ msgstr "Mitarbeiter-Lohnabrechnung"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employee Trends"
-msgstr ""
+msgstr "Mitarbeitertrends"
 
 #. module: hr_payroll
 #. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employee whose contracts and company are differents"
-msgstr ""
+msgstr "Mitarbeiter, dessen Verträge und Unternehmen unterschiedlich sind"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract__hourly_wage
@@ -1432,28 +1438,28 @@ msgstr ""
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees With Both New And Running Contracts"
-msgstr ""
+msgstr "Mitarbeiter mit sowohl neuen als auch laufenden Verträgen"
 
 #. module: hr_payroll
 #. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees With Multiple Open Payslips of Same Type"
-msgstr ""
+msgstr "Mitarbeiter mit mehreren offenen Gehaltsabrechnungen derselben Art"
 
 #. module: hr_payroll
 #. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees Without Running Contracts"
-msgstr ""
+msgstr "Mitarbeiter ohne laufende Verträge"
 
 #. module: hr_payroll
 #. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees with payslips generated on the previous contract"
-msgstr ""
+msgstr "Mitarbeiter mit Gehaltsabrechnungen aus dem vorherigen Vertrag"
 
 #. module: hr_payroll
 #. odoo-python
@@ -1509,7 +1515,7 @@ msgstr "Gehaltsabrechnung exportieren"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "First, we'll create a new <strong>Contract</strong>."
-msgstr ""
+msgstr "Zuerst werden wir einen neuen <strong>Vertrag</strong> erstellen."
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__amount_fix
@@ -1612,7 +1618,7 @@ msgstr "Generierte Gehaltszettel"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Give assurance card to new registered employees"
-msgstr ""
+msgstr "Neu angemeldeten Mitarbeitern Versicherungskarte aushändigen."
 
 #. module: hr_payroll
 #. odoo-python
@@ -1665,7 +1671,7 @@ msgstr "Hat eine Nachricht"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__has_negative_net_to_report
 msgid "Has Negative Net To Report"
-msgstr ""
+msgstr "Hat negativen Nettobetrag zu melden"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__has_refund_slip
@@ -2524,7 +2530,7 @@ msgstr "Lohnabrechnungsregeln für Ihr Land"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Payroll tips &amp; tricks :"
-msgstr ""
+msgstr "Tipps &amp; Tricks für die Lohnbuchhaltung:"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_res_config_settings__module_hr_payroll_account
@@ -2702,7 +2708,7 @@ msgstr "Auszuzahlende Lohnzettel"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Payslips With Negative Amounts"
-msgstr ""
+msgstr "Gehaltsabrechnungen mit negativen Beträgen"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees
@@ -2714,7 +2720,7 @@ msgstr "Lohnabrechnungen pro Mitarbeiter"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Payslips with negative NET"
-msgstr ""
+msgstr "Gehaltsabrechnungen mit negativen Nettobetrag"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_index__percentage
@@ -3209,6 +3215,8 @@ msgstr "Halbjährlich"
 #: model:mail.template,description:hr_payroll.mail_template_new_payslip
 msgid "Sent to employee to notify them about their new payslip"
 msgstr ""
+"Versand an Mitarbeiter, um diese über ihre neue Lohnabrechnung zu "
+"informieren"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__sequence
@@ -3235,6 +3243,11 @@ msgid ""
 "generated for all the selected employees, based on their contracts "
 "configuration."
 msgstr ""
+"Legen Sie eine bestimmte Struktur fest, wenn Sie eine zusätzliche "
+"Gehaltsabrechnung erstellen möchten (z. B. Bonus am Ende des Jahres). Wenn "
+"Sie dieses Feld leer lassen, wird für alle ausgewählten Mitarbeiter eine "
+"reguläre Gehaltsabrechnung erstellt, die auf der Konfiguration ihrer "
+"Verträge basiert."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -3775,6 +3788,8 @@ msgstr "Benutzer"
 #: model:res.groups,comment:hr_payroll.group_hr_payroll_user
 msgid "User can manage all contracts, work entries and create payslips."
 msgstr ""
+"Benutzer können alle Verträge und Arbeitseinträge verwalten und "
+"Gehaltsabrechnungen erstellen."
 
 #. module: hr_payroll
 #: model:res.groups,comment:hr_payroll.group_hr_payroll_employee_manager
@@ -4094,6 +4109,7 @@ msgstr "Falsche Bereichsbedingung definiert für:"
 #, python-format
 msgid "You can access the Payslips from the Employee's Profile."
 msgstr ""
+"Sie können die Gehaltsabrechnungen über das Mitarbeiterprofil abrufen."
 
 #. module: hr_payroll
 #. odoo-python
@@ -4209,7 +4225,7 @@ msgstr "z.B. reguläre Vergütung"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "https://www.odoo.com/fr_FR/slides/slide/manage-payroll-1002"
-msgstr ""
+msgstr "https://www.odoo.com/fr_FR/slides/slide/manage-payroll-1002"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip

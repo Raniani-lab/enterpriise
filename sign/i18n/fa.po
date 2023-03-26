@@ -2453,7 +2453,7 @@ msgstr "توکن پیامک"
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_3
 msgid "Sales"
-msgstr "اصناف مرتبط (سقف‌کاذب، شرکتهای BMS, مجری تاسیسات ...)"
+msgstr "فروش ها"
 
 #. module: sign
 #. odoo-javascript

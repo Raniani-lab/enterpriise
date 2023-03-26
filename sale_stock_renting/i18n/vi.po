@@ -389,7 +389,7 @@ msgstr "Xem Cho thuê"
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__warehouse_id
 #: model:ir.model.fields,field_description:sale_stock_renting.field_sale_rental_schedule__warehouse_id
 msgid "Warehouse"
-msgstr "Nhà kho"
+msgstr "Kho hàng"
 
 #. module: sale_stock_renting
 #. odoo-python

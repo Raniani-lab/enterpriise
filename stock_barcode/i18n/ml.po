@@ -225,7 +225,7 @@ msgstr ""
 #: model:ir.ui.menu,name:stock_barcode.stock_barcode_menu
 #, python-format
 msgid "Barcode"
-msgstr ""
+msgstr "ബാർകോഡ്"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
@@ -748,7 +748,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking_type
 msgid "Picking Type"
-msgstr ""
+msgstr "പീക്കിങ് ടൈപ്പ് "
 
 #. module: stock_barcode
 #. openerp-web

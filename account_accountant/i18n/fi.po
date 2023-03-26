@@ -1257,7 +1257,7 @@ msgstr "Kauden lukitus"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Management Closing"
-msgstr ""
+msgstr "Hallitse sulkemista"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1282,14 +1282,14 @@ msgstr "Vastaavuus"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Match Existing Entries"
-msgstr ""
+msgstr "Olemassa olevien merkintöjen yhteensovittaminen"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Match payments and invoices"
-msgstr ""
+msgstr "Maksujen ja laskujen vastaavuus"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1303,7 +1303,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Matched"
-msgstr ""
+msgstr "Vastaavuus löytynyt"
 
 #. module: account_accountant
 #. odoo-python
@@ -1315,7 +1315,7 @@ msgstr "Vastaavat transaktiot"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
 msgid "Matching Rules Allow Auto Reconcile"
-msgstr ""
+msgstr "Vastaavuussäännöt salivat automaattisen täsmäytyksen"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1395,7 +1395,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Not Matched"
-msgstr ""
+msgstr "Ei täsmää"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1408,7 +1408,7 @@ msgstr "Muistiinpanot"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Odoo Bank Reconciliation"
-msgstr ""
+msgstr "Odoo pankkien täsmäytys"
 
 #. module: account_accountant
 #. odoo-python
@@ -1441,7 +1441,7 @@ msgstr "Avoin määrä"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Open Amount in Currency"
-msgstr ""
+msgstr "Avoin määrä valuuttana"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1455,7 +1455,7 @@ msgstr "Avoin saldo"
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Open balance: %s"
-msgstr ""
+msgstr "Avoin saldo: %s"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1499,7 +1499,7 @@ msgstr "ostovelat"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Payable:"
-msgstr ""
+msgstr "Maksettava:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_payment_form_inherit_account_accountant
@@ -1534,14 +1534,14 @@ msgstr "Payments without a customer can't be matched"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Pick a date to lock"
-msgstr ""
+msgstr "Valitse päivämäärä lukittavaksi"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Please install the 'Accounting Reports' module."
-msgstr ""
+msgstr "Asenna 'Taloushallinnon Raportit' -moduuli."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1561,6 +1561,9 @@ msgid ""
 "Prevents Journal Entry creation or modification prior to the defined date "
 "for all users. As a closed period, all accounting operations are prohibited."
 msgstr ""
+"Estää päiväkirjamerkintöjen luomisen tai muuttamisen ennen määritettyä "
+"päivämäärää kaikkien käyttäjien osalta. Suljettuna ajanjaksona kaikki "
+"kirjanpitotoimet ovat kiellettyjä."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
@@ -1568,6 +1571,8 @@ msgid ""
 "Prevents Journal entries creation prior to the defined date. Except for "
 "Accountants users."
 msgstr ""
+"Estää päiväkirjamerkintöjen luomisen ennen määritettyä päivämäärää. Lukuun "
+"ottamatta kirjanpito-oikeudet omaavia käyttäjiä."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
@@ -1576,6 +1581,9 @@ msgid ""
 " involving taxes). The Tax Return Lock Date is automatically set when the "
 "corresponding Journal Entry is posted."
 msgstr ""
+"Estää veroilmoitusten muuttamisen ennen määriteltyä päivämäärää "
+"(päiväkirjamerkinnät, joihin liittyy veroja). Veroilmoituksen lukituspäivä "
+"asetetaan automaattisesti, kun vastaava päiväkirjamerkintä kirjataan."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1594,7 +1602,7 @@ msgstr "Saatavat"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
-msgstr ""
+msgstr "Saatavat:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
@@ -1604,7 +1612,7 @@ msgstr "Vastaanotettu"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
 msgid "Reco Models Widget"
-msgstr ""
+msgstr "Täsmäytysten malli-pienoisohjelma"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1622,7 +1630,7 @@ msgstr "Täsmäytä"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr ""
+msgstr "Täsmäytysmalli"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
@@ -1689,7 +1697,7 @@ msgstr "Tallenna & Uusi"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "Hae asiakas"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1703,12 +1711,12 @@ msgstr "Valitse kumppani"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Select a transaction"
-msgstr ""
+msgstr "Valitse tapahtuma"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
 msgid "Selected Aml"
-msgstr ""
+msgstr "Valittu rahanpesun vastaisuus"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1739,37 +1747,37 @@ msgstr "Jotkut kentät ovat määrittelemättömiä"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_id
 msgid "Source Aml"
-msgstr ""
+msgstr "Rahanpesun vastaisuuden lähde"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_id
 msgid "Source Aml Move"
-msgstr ""
+msgstr "Rahanpesun vastaisuuden kirjaus"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_name
 msgid "Source Aml Move Name"
-msgstr ""
+msgstr "Rahanpesun vastaisuuden kirjauksen nimi"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_amount_currency
 msgid "Source Amount Currency"
-msgstr ""
+msgstr "Lähdevaluutta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_balance
 msgid "Source Balance"
-msgstr ""
+msgstr "Lähdesaldo"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_credit
 msgid "Source Credit"
-msgstr ""
+msgstr "Lähde credit"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_debit
 msgid "Source Debit"
-msgstr ""
+msgstr "Lähde debit"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_id
@@ -1816,7 +1824,7 @@ msgstr "Vero"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
 msgid "Tax Base Amount Currency"
-msgstr ""
+msgstr "Veropohjan määrän valuutta"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1843,7 +1851,7 @@ msgstr "Veroilmoituksen lukituspäivä"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
 msgid "Tax Tag"
-msgstr ""
+msgstr "Verotunniste"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1883,6 +1891,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be entirely paid by the transaction."
 msgstr ""
+"Lasku %(display_name_html)s, jonka avoin summa on %(open_amount)s, maksetaan"
+" kokonaan tapahtumalla."
 
 #. module: account_accountant
 #. odoo-python
@@ -1892,6 +1902,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be reduced by %(amount)s."
 msgstr ""
+"Laskua %(display_name_html)s, jonka avoin summa on %(open_amount)s, "
+"vähennetään %(amount)s."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1925,6 +1937,8 @@ msgid ""
 "This bank transaction has been automatically validated using the "
 "reconciliation model '%s'."
 msgstr ""
+"Tämä pankkitapahtuma on varmistettu automaattisesti täsmäytysmallilla "
+"\"%s\"."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1948,7 +1962,7 @@ msgstr "Vihje: Massapäivitä päiväkirjarivit"
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_1
 msgid "Tip: Find an Accountant or register your Accounting Firm"
-msgstr ""
+msgstr "Vinkki: Etsi kirjanpitäjä tai rekisteröi tilitoimisto"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1963,7 +1977,7 @@ msgstr "Tarkistettava"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "To check"
-msgstr ""
+msgstr "Tarkistettava"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1971,13 +1985,15 @@ msgstr ""
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
 msgstr ""
+"Laskujen ja maksujen täsmäyttäminen ja uusien päiväkirjamerkintöjen "
+"tekeminen"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr ""
+msgstr "Täsmäyttää avoimien kirjausten kanssa"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1989,7 +2005,7 @@ msgstr "Määrittele täsmäytyksen nopeuttaminen"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__todo_command
 msgid "Todo Command"
-msgstr ""
+msgstr "Aseta tehtäväksi -komento"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1999,7 +2015,7 @@ msgstr "Tapahtuma"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
-msgstr ""
+msgstr "Tapahtuman valuutta"
 
 #. module: account_accountant
 #. odoo-python
@@ -2012,14 +2028,14 @@ msgstr "Välitilit"
 #: model:ir.actions.server,name:account_accountant.auto_reconcile_bank_statement_line_ir_actions_server
 #: model:ir.cron,cron_name:account_accountant.auto_reconcile_bank_statement_line
 msgid "Try to reconcile automatically your statement lines"
-msgstr ""
+msgstr "Yritä täsmäyttää automaattisesti tiliöintirivit"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/res_company.py:0
 #, python-format
 msgid "Unreconciled statements lines"
-msgstr ""
+msgstr "Erittelemättömät lausumarivit"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2029,6 +2045,8 @@ msgid ""
 "Use the <strong>Manual Operations</strong> tab to register the difference, "
 "or create expenses on the fly"
 msgstr ""
+"Rekisteröi erotus <strong>Manuaaliset toiminnot</strong> -välilehdellä tai "
+"luo kuluja lennossa"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
@@ -2065,7 +2083,7 @@ msgstr "Näytä"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "View models"
-msgstr ""
+msgstr "Näytä mallit"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__wizard_id
@@ -2076,7 +2094,7 @@ msgstr "Ohjattu toiminto"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__company_currency_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__company_currency_id
 msgid "Wizard Company Currency"
-msgstr ""
+msgstr "Yrityksen valuutan ohjattu toiminto"
 
 #. module: account_accountant
 #. odoo-python
@@ -2111,6 +2129,8 @@ msgid ""
 "You can't have maximum one auto balance line at the same time in the bank "
 "reconciliation widget"
 msgstr ""
+"Pankkien täsmäytyswidgetissä voi olla enintään yksi automaattinen saldorivi "
+"samaan aikaan"
 
 #. module: account_accountant
 #. odoo-python
@@ -2120,6 +2140,8 @@ msgid ""
 "You can't have multiple liquidity journal item at the same time in the bank "
 "reconciliation widget"
 msgstr ""
+"Pankkien täsmäytyswidgetissä ei voi olla useita "
+"likviditeettipäiväkirjakohteita samaan aikaan"
 
 #. module: account_accountant
 #. odoo-python
@@ -2129,6 +2151,8 @@ msgid ""
 "You can't have multiple times the same journal item in the bank "
 "reconciliation widget"
 msgstr ""
+"Pankkien täsmäytyswidgetissä ei voi olla useaan kertaan samaa "
+"päiväkirjakirjausta"
 
 #. module: account_accountant
 #. odoo-python
@@ -2146,7 +2170,7 @@ msgstr ""
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "You cannot set a lock date in the future."
-msgstr ""
+msgstr "Et voi asettaa lukituspäivää tulevaisuuteen."
 
 #. module: account_accountant
 #. odoo-python
@@ -2155,6 +2179,7 @@ msgstr ""
 msgid ""
 "You might want to %(btn_start)sfully reconcile%(btn_end)s the document."
 msgstr ""
+"Kannattaa ehkä %(btn_start)s täsmäyttää kokonaan %(btn_end)s :n asiakirja."
 
 #. module: account_accountant
 #. odoo-python
@@ -2164,13 +2189,14 @@ msgid ""
 "You might want to make a %(btn_start)spartial reconciliation%(btn_end)s "
 "instead."
 msgstr ""
+"Kannattaa ehkä tehdä %(btn_start)s osittainen yhteensovittaminen%(btn_end)s."
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "You might want to record a %(btn_start)spartial payment%(btn_end)s."
-msgstr ""
+msgstr "Kannattaa ehkä kirjata %(btn_start)s osittainen maksu %(btn_end)s."
 
 #. module: account_accountant
 #. odoo-python
@@ -2179,6 +2205,8 @@ msgstr ""
 msgid ""
 "You might want to set the invoice as %(btn_start)sfully paid%(btn_end)s."
 msgstr ""
+"Kannattaa ehkä asettaa laskun arvoksi %(btn_start)s täysin "
+"maksettu%(btn_end)s."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2190,7 +2218,7 @@ msgstr "Täsmäytit"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__aml
 msgid "aml"
-msgstr ""
+msgstr "Rahanpesun vastainen"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2202,7 +2230,7 @@ msgstr "ja muistuta asiakkaita laskuista"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__auto_balance
 msgid "auto_balance"
-msgstr ""
+msgstr "auto_balance"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_widget_wizard
@@ -2212,27 +2240,27 @@ msgstr "esim. pankin toimitusmaksut"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__early_payment
 msgid "early_payment"
-msgstr ""
+msgstr "early_payment"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__exchange_diff
 msgid "exchange_diff"
-msgstr ""
+msgstr "exchange_diff"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity
 msgid "liquidity"
-msgstr ""
+msgstr "likviditeetti"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__manual
 msgid "manual"
-msgstr ""
+msgstr "manuaalinen"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__new_aml
 msgid "new_aml"
-msgstr ""
+msgstr "new_aml"
 
 #. module: account_accountant
 #. odoo-javascript

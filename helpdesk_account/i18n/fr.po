@@ -30,7 +30,7 @@ msgstr "Extourne de la pièce comptable"
 #: code:addons/helpdesk_account/controllers/portal.py:0
 #, python-format
 msgid "Credit Note"
-msgstr "Note de crédit"
+msgstr "Avoir"
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/controllers/portal.py:0
@@ -39,12 +39,12 @@ msgstr "Note de crédit"
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.helpdesk_ticket_view_form_inherit_helpdesk_invoicing
 #, python-format
 msgid "Credit Notes"
-msgstr "Notes de crédit"
+msgstr "Avoirs"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_helpdesk_ticket__invoices_count
 msgid "Credit Notes Count"
-msgstr "Nombre de notes de crédit"
+msgstr "Nombre d'avoirs"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_helpdesk_ticket

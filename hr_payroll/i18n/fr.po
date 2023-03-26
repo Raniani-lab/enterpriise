@@ -150,8 +150,8 @@ msgid ""
 "Payslips Run.</span>"
 msgstr ""
 "<span nolabel=\"1\" colspan=\"2\">Cet assistant génère les fiches de paie de"
-" tous les employés sélectionnés sur la base des dates et des notes de crédit"
-" figurant sur les bulletins de paie.</span>"
+" tous les employés sélectionnés sur la base des dates et des avoirs figurant"
+" sur les bulletins de paie.</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
@@ -1072,12 +1072,12 @@ msgstr "Créé le"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__credit_note
 msgid "Credit Note"
-msgstr "Note de crédit"
+msgstr "Avoir"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 msgid "Credit Notes"
-msgstr "Notes de crédit"
+msgstr "Avoirs"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract_history__time_credit

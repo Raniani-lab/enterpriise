@@ -34,7 +34,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:event_barcode.event_report_template_full_page_ticket_inherit_barcode
 #, python-format
 msgid "Barcode"
-msgstr ""
+msgstr "ബാർകോഡ്"
 
 #. module: event_barcode
 #: model:ir.actions.client,name:event_barcode.event_barcode_action_main_view

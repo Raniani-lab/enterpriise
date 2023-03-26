@@ -1844,7 +1844,7 @@ msgstr "Khu vực sản xuất"
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_workcenters
 msgid "Work Centers"
-msgstr "Năng lực sản xuất"
+msgstr "Khu vực sản xuất"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form

@@ -413,6 +413,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Toiminnot voivat laukaista tietyn toiminnan, kuten kalenterinäkymän "
+"avaamisen tai automaattisesti valmiiksi merkinnän, kun asiakirja on ladattu"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
@@ -4113,7 +4115,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "to:"
-msgstr ""
+msgstr "vastaanottaja:"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report

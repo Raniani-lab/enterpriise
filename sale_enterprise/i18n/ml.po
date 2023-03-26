@@ -62,7 +62,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_enterprise.sale_report_action_dashboard
 #: model:ir.ui.menu,name:sale_enterprise.menu_sale_report_dashboard
 msgid "Dashboard"
-msgstr ""
+msgstr "ഡാഷ്ബോർഡ്"
 
 #. module: sale_enterprise
 #: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__invoiced

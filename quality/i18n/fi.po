@@ -1031,7 +1031,7 @@ msgstr "Poikkeusaktiviteetin tyyppi tietueella"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_tag__color
 msgid "Used in the kanban view"
-msgstr ""
+msgstr "Käytetään kanban -näkymässä"
 
 #. module: quality
 #: model:res.groups,name:quality.group_quality_user
@@ -1084,4 +1084,4 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__active
 msgid "active"
-msgstr ""
+msgstr "aktiivinen"

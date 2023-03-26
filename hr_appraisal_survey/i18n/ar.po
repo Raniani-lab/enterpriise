@@ -181,6 +181,8 @@ msgid ""
 "<p>Identify professional, performance, or project objectives you recommend "
 "for employee’s continued career development over the coming year.</p>"
 msgstr ""
+"<p>قم بتحديد الأهداف المهنية أو أهداف الأداء أو أهداف المشروع التي توصي بها "
+"للتطور المستمر لمهنة الموظف خلال السنة القادمة.</p> "
 
 #. module: hr_appraisal_survey
 #: model:survey.question,description:hr_appraisal_survey.appraisal_3
@@ -195,6 +197,15 @@ msgid ""
 "            </ol>\n"
 "        "
 msgstr ""
+"<p>يقوم المُقيّم بتقييم أهم إنجازات العمل الخاصة بالموظف والأداء وفقاً للمقاييس الموضحة أدناه:</p>\n"
+"            <ol>\n"
+"                <li> يفوق التوقعات والمعايير المطلوبة لهذا المنصب بشكل كبير</li>\n"
+"                <li> يفوق التوقعات والمعايير</li>\n"
+"                <li> يستوفي التوقعات والمعايير</li>\n"
+"                <li> لم يستوفِ التوقعات والمعايير</li>\n"
+"                <li> دون التوقعات والمعايير بشكل كبير</li>\n"
+"            </ol>\n"
+"        "
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,description:hr_appraisal_survey.appraisal_feedback_template
@@ -334,7 +345,7 @@ msgstr "تقييم "
 #. module: hr_appraisal_survey
 #: model:mail.template,name:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Appraisal: Ask Feedback"
-msgstr ""
+msgstr "تقييم الموظف: اطلب الملاحظات "
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_5
@@ -738,7 +749,7 @@ msgstr "أرسل الاستطلاعات "
 #. module: hr_appraisal_survey
 #: model:mail.template,description:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Sent to employees to gather appraisal feedback"
-msgstr ""
+msgstr "يتم إرساله إلى الموظفين لجمع الملاحظات لتقييم الموظف "
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_4

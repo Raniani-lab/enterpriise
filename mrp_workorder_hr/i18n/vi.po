@@ -190,7 +190,7 @@ msgstr "Khu vực sản xuất"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_routing_workcenter
 msgid "Work Center Usage"
-msgstr "Sử dụng Năng lực sản xuất"
+msgstr "Sử dụng khu vực sản xuất"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workorder
@@ -200,7 +200,7 @@ msgstr "Lệnh làm việc"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter_productivity
 msgid "Workcenter Productivity Log"
-msgstr "Nhật ký sản xuất của Năng lực sản xuất"
+msgstr "Nhật ký năng xuất của khu vực sản xuất"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_ids

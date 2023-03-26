@@ -40,7 +40,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__accounts_count
 msgid "# Accounts"
-msgstr ""
+msgstr "# Tiliä"
 
 #. module: social
 #. odoo-python
@@ -190,7 +190,7 @@ msgstr "Liitteiden määrä"
 #: model:ir.model.fields,field_description:social.field_social_account__audience
 #, python-format
 msgid "Audience"
-msgstr ""
+msgstr "Yleisö"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__audience_trend
@@ -804,7 +804,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__link_url
 msgid "Link URL"
-msgstr ""
+msgstr "Linkin URL"
 
 #. module: social
 #. odoo-javascript
@@ -1432,7 +1432,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_live_post__post_id
 #: model_terms:ir.ui.view,arch_db:social.social_live_post_view_form
 msgid "Social Post"
-msgstr ""
+msgstr "Sosiaalisen median julkaisu"
 
 #. module: social
 #: model:ir.model,name:social.model_social_post_template

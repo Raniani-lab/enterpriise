@@ -5,9 +5,9 @@
 # Translators:
 # keecome <7017511@qq.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2023
 # Emily Jia <eji@odoo.com>, 2023
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
+"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -89,7 +89,7 @@ msgstr "-1,134.50"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
 msgid "-> Reconcile"
-msgstr "-> 调节"
+msgstr "-> 对账"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -515,7 +515,7 @@ msgstr "恭喜，大功告成了！"
 msgid ""
 "Congrats, you're all done! You reconciled %s transactions in %s. That's on "
 "average %s seconds per transaction."
-msgstr "恭喜，你已经完成了！您在%s 中核对了%s 个交易。平均每笔交易需要%s 秒。"
+msgstr "恭喜，你已经完成了！您在%s 中对账了%s 个交易。平均每笔交易需要%s 秒。"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1005,7 +1005,7 @@ msgstr "开票切换阈值"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_is_reconciled
 msgid "Is Reconciled"
-msgstr "调节"
+msgstr "对账"
 
 #. module: account_accountant
 #. odoo-python
@@ -1061,7 +1061,7 @@ msgstr "会计分录"
 #: model:ir.actions.client,name:account_accountant.action_manual_reconcile
 #, python-format
 msgid "Journal Items to Reconcile"
-msgstr "待调节的日记账项目"
+msgstr "待对账的日记账项目"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
@@ -1150,7 +1150,7 @@ msgstr "让我们回到仪表板。"
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s reconcile the fetched bank transactions."
-msgstr "让我们对提取的银行交易记录进行调节。"
+msgstr "让我们对提取的银行交易记录进行对账。"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1557,17 +1557,17 @@ msgstr "模型小部件"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_tree
 #, python-format
 msgid "Reconcile"
-msgstr "调节"
+msgstr "对账"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr "调节模型"
+msgstr "对账模型"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
 msgid "Reconciled"
-msgstr "已调节"
+msgstr "已对账"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1852,7 +1852,7 @@ msgstr "依据以前账单的历史记录系统将尝试对供应商账单进行
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "There is nothing to reconcile."
-msgstr "没有需要调节的."
+msgstr "没有需要对账的."
 
 #. module: account_accountant
 #. odoo-python
@@ -1868,7 +1868,7 @@ msgstr "此银行交易已使用对帐模型自动验证 '%s'."
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "This payment is registered but not reconciled."
-msgstr "付款被登记但没有调节."
+msgstr "付款被登记但没有对账."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1907,14 +1907,14 @@ msgstr "要检查"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
-msgstr "核对发票和付款，并发布新的日记账条目"
+msgstr "对账发票和付款，并发布新的日记账条目"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr "核对未关闭条目"
+msgstr "对账未关闭条目"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1956,7 +1956,7 @@ msgstr "尝试自动协调您的对账单行"
 #: code:addons/account_accountant/models/res_company.py:0
 #, python-format
 msgid "Unreconciled statements lines"
-msgstr "未对帐语句行"
+msgstr "未对帐对账单明细行"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2072,7 +2072,7 @@ msgstr "银行对帐小组件中不能多次出现相同的日记帐项目"
 msgid ""
 "You cannot reconcile the payable and receivable accounts of multiple "
 "partners together at the same time."
-msgstr "您不能同时调节多个合作伙伴的应付帐款和应收帐款。"
+msgstr "您不能同时对账多个合作伙伴的应付帐款和应收帐款。"
 
 #. module: account_accountant
 #. odoo-python
@@ -2118,7 +2118,7 @@ msgstr "您可能希望将结算设置为 %(btn_start)s已全额支付的 %(btn_
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "You reconciled"
-msgstr "调节了"
+msgstr "对账了"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__aml
@@ -2231,7 +2231,7 @@ msgstr "未付结算单"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "unreconciled entries"
-msgstr "未调节凭证"
+msgstr "未对账凭证"
 
 #. module: account_accountant
 #. odoo-javascript

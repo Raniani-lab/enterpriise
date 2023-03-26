@@ -29,7 +29,7 @@ msgstr ""
 #: model:ir.model,name:account_disallowed_expenses.model_account_account
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_category__account_ids
 msgid "Account"
-msgstr ""
+msgstr "അക്കൗണ്ട്"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_category__active
@@ -140,7 +140,7 @@ msgstr "ഡിസ്പ്ലേ നെയിം"
 #: code:addons/account_disallowed_expenses/report/account_disallowed_expenses_report.py:0
 #, python-format
 msgid "General Ledger"
-msgstr ""
+msgstr "ജനറൽ ലെഡ്ജർ"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_category__id

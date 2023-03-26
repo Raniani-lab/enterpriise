@@ -45,7 +45,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid " (%s of %s)"
-msgstr ""
+msgstr "(%s z %s)"
 
 #. module: account_asset
 #. odoo-python
@@ -57,7 +57,7 @@ msgstr " (kopia)"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciation_entries_count
 msgid "# Depreciation Entries"
-msgstr ""
+msgstr "# Wpisy amortyzacji"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_count
@@ -67,7 +67,7 @@ msgstr "# Przyrost brutto"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__depreciation_entries_count
 msgid "# Posted Depreciation Entries"
-msgstr ""
+msgstr "# Zaksięgowane wpisy amortyzacji"
 
 #. module: account_asset
 #. odoo-python
@@ -77,39 +77,40 @@ msgid ""
 "%s Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"%s Przyszłe wpisy zostaną przeliczone aby zamortyzować aktywa po zmianach"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s created from invoice: %s"
-msgstr ""
+msgstr "%s Utworzone z faktury: %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s m"
-msgstr ""
+msgstr "%s m"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s y"
-msgstr ""
+msgstr "%s y"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s: Depreciation"
-msgstr ""
+msgstr "%s: Amortyzacja"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "(incl."
-msgstr ""
+msgstr "(zawiera."
 
 #. module: account_asset
 #. odoo-python
@@ -130,7 +131,7 @@ msgstr ""
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A depreciation entry will be posted on and including the date %s."
-msgstr ""
+msgstr "Wpis amortyzacji zostanie zaksięgowany w dniu i z dniem %s."
 
 #. module: account_asset
 #. odoo-python
@@ -141,6 +142,8 @@ msgid ""
 "Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"Amortyzacja zostanie zaksięgowana z datą %s. <br/> %sPrzyszłe wpisy zostaną "
+"obliczone ponownie aby zamortyzować aktywa po zmianach."
 
 #. module: account_asset
 #. odoo-python
@@ -150,6 +153,8 @@ msgid ""
 "A depreciation entry will be posted on and including the date %s.<br/> A "
 "disposal entry will be posted on the %s account <b>%s</b>."
 msgstr ""
+"Wpis amortyzacji zostanie zaksięgowany w dniu i z dniem %s. <br/> Zapis o "
+"zbyciu zostanie zaksięgowany na %s koncie <b>%s</b>."
 
 #. module: account_asset
 #. odoo-python

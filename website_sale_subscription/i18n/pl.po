@@ -25,7 +25,7 @@ msgstr ""
 #. module: website_sale_subscription
 #: model_terms:ir.ui.view,arch_db:website_sale_subscription.subscription_search_result_price
 msgid "<small>per</small>"
-msgstr ""
+msgstr "<small> na </small>"
 
 #. module: website_sale_subscription
 #: model_terms:ir.ui.view,arch_db:website_sale_subscription.cart_lines_subscription
@@ -62,4 +62,4 @@ msgstr "Pozycja zamówienia sprzedaży"
 #, python-format
 msgid ""
 "You cannot have a optional product that has a different default pricing."
-msgstr ""
+msgstr "Nie możesz mieć opcjonalnego produktu który ma różne ceny domyślne."

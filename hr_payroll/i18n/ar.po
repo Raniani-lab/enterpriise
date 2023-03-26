@@ -162,6 +162,9 @@ msgid ""
 " contracts that are not running, this wizard can only index running "
 "contracts.</span>"
 msgstr ""
+"<span role=\"status\" class=\"alert alert-warning d-block\" "
+"attrs=\"{'invisible': [('display_warning', '=', False)]}\">لقد قمت بتحديد "
+"عقود غير جارية. يقوم هذا المعالج بفهرسة العقود الجارية فقط.</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
@@ -3203,7 +3206,7 @@ msgstr "شبه سنوي "
 #. module: hr_payroll
 #: model:mail.template,description:hr_payroll.mail_template_new_payslip
 msgid "Sent to employee to notify them about their new payslip"
-msgstr ""
+msgstr "يتم إرساله إلى الموظف لإخطاره بشأن إيصال الدفع الخاص به "
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__sequence

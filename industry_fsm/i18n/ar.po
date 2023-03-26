@@ -521,7 +521,7 @@ msgstr "ساعات العمل الفعلية"
 #. module: industry_fsm
 #: model:mail.template,description:industry_fsm.mail_template_data_task_report
 msgid "Email sent when clicking on \"send report\" in a task"
-msgstr ""
+msgstr "بريد إلكتروني يتم إرساله عند الضغط على \"إرسال التقرير\" في مهمة ما "
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__planned_date_end
@@ -559,12 +559,12 @@ msgstr "الخدمة الميدانية"
 #. module: industry_fsm
 #: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
 msgid "Field Service: Intervention Scheduled"
-msgstr ""
+msgstr "الخدمة الميدانية: تمت جدولة التداخل "
 
 #. module: industry_fsm
 #: model:mail.template,name:industry_fsm.mail_template_data_task_report
 msgid "Field Service: Task Report"
-msgstr ""
+msgstr "الخدمة الميدانية: تقرير المهمة "
 
 #. module: industry_fsm
 #. openerp-web

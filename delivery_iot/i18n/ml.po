@@ -80,7 +80,7 @@ msgstr ""
 #. module: delivery_iot
 #: model:ir.model,name:delivery_iot.model_stock_picking_type
 msgid "Picking Type"
-msgstr ""
+msgstr "പീക്കിങ് ടൈപ്പ് "
 
 #. module: delivery_iot
 #. openerp-web

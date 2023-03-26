@@ -326,7 +326,7 @@ msgid ""
 "This way the tax entries will be cancelled in TaxCloud."
 msgstr ""
 "Vous ne pouvez pas annuler une facture envoyée à TaxCloud.\n"
-"Vous devez plutôt lui rembourser (note de crédit).\n"
+"Vous devez plutôt lui rembourser (avoir).\n"
 "De cette façon, les écritures fiscales seront annulées dans TaxCloud."
 
 #. module: account_taxcloud

@@ -1098,7 +1098,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "Signature"
-msgstr ""
+msgstr "കയ്യൊപ്പ്"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/controllers/portal.py:0

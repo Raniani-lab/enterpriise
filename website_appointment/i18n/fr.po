@@ -230,18 +230,18 @@ msgstr "Planifier"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_validated
 msgid "Schedule Another Appointment"
-msgstr "Prendre un autre rendez-vous"
+msgstr "Programmer un autre rendez-vous"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards
 msgid "Schedule an Appointment"
-msgstr "Prendre un rendez-vous"
+msgstr "Programmer un rendez-vous"
 
 #. module: website_appointment
 #: code:addons/website_appointment/models/website.py:0
 #, python-format
 msgid "Schedule an appointment"
-msgstr "Prendre un rendez-vous"
+msgstr "Programmer un rendez-vous"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.website_calendar_index_topbar

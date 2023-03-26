@@ -1801,14 +1801,14 @@ msgstr "Insérer une vue Liste des éléments"
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert link in article"
-msgstr "Insérer un lien dans un article"
+msgstr "Insérer lien dans article"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert view in article"
-msgstr "Insérer une vue dans un article"
+msgstr "Insérer vue dans article"
 
 #. module: knowledge
 #. odoo-javascript

@@ -1379,6 +1379,10 @@ msgid ""
 "Post as Message: log on document\n"
 "Post as Note: mass SMS with archives"
 msgstr ""
+"Wybierz metodę wysyłki SMS:\n"
+"SMS: masowa wysyłka SMS\n"
+"Wyślij jako wiadomość: zapisz w dokumencie\n"
+"Wyślij jako notatkę: masowy SMS z archiwami"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__mail_post_method
@@ -3057,7 +3061,7 @@ msgstr "Wyślij jako"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_method
 msgid "Send as (SMS)"
-msgstr ""
+msgstr "Wyślij jako (SMS)"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_success
@@ -3532,6 +3536,8 @@ msgid ""
 "The action will be triggered if and only if one of these fields is updated. "
 "If empty, all fields are watched."
 msgstr ""
+"Akcja zostanie wywołana wtedy i tylko wtedy, gdy jedno z tych pól zostanie "
+"zaktualizowane. Jeśli puste, wszystkie pola są obserwowane."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3945,6 +3951,8 @@ msgid ""
 "When should the condition be triggered.\n"
 "                If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
+"Kiedy warunek powinien zostać wywołany. \n"
+"Jeśli jest obecny, zostanie sprawdzony przez schedulera. Jeśli pusty, zostanie sprawdzony przy tworzeniu i aktualizacji."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active

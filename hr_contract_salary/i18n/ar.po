@@ -659,7 +659,7 @@ msgstr "الموظف يوقع على عقده "
 #. module: hr_contract_salary
 #: model:mail.template,name:hr_contract_salary.mail_template_send_offer
 msgid "Employee: Contract And Salary Package"
-msgstr ""
+msgstr "الموظف: الهقد وباقة الراتب "
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1263,7 +1263,7 @@ msgstr "إعاده احتساب "
 #. module: hr_contract_salary
 #: model:mail.template,name:hr_contract_salary.mail_template_send_offer_applicant
 msgid "Recruitment: Your Salary Package"
-msgstr ""
+msgstr "التوظيف: باقة راتبك "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_value__color__red
@@ -1401,13 +1401,13 @@ msgstr "إرسال نسخة إلى"
 #. module: hr_contract_salary
 #: model:mail.template,description:hr_contract_salary.mail_template_send_offer_applicant
 msgid "Sent automatically when you generate an offer for an application"
-msgstr ""
+msgstr "يتم إرساله تلقائياً عندما تقوم بإنشاء عقد لطلب تقديم "
 
 #. module: hr_contract_salary
 #: model:mail.template,description:hr_contract_salary.mail_template_send_offer
 msgid ""
 "Sent manually when you generate a simulation link on the employee contract"
-msgstr ""
+msgstr "يتم إرساله يدوياً عندما تقوم بإنشاء رابط محاكاة في عقد الموظف "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sequence

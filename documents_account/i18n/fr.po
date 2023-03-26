@@ -139,12 +139,12 @@ msgstr "Créer"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_bill_rule_financial
 msgid "Create Bill"
-msgstr "Créer une facture"
+msgstr "Créer une facture fournisseur"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.credit_note_rule
 msgid "Create Credit Note"
-msgstr "Créer une note de crédit"
+msgstr "Créer un avoir"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
@@ -164,7 +164,7 @@ msgstr "Créé le"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_refund
 msgid "Credit note"
-msgstr "Note de crédit"
+msgstr "Avoir"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_invoice
@@ -334,7 +334,7 @@ msgstr "Cette facture a été initiée par une transaction bancaire."
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
 msgid "Vendor Credit Note"
-msgstr "Note de crédit fournisseur"
+msgstr "Avoir fournisseur"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_invoice

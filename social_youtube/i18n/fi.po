@@ -379,7 +379,7 @@ msgstr "Sosiaalinen media"
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "Sosiaalisen median julkaisu"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post_template

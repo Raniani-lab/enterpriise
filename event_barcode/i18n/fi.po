@@ -33,6 +33,8 @@ msgid ""
 "<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
 "label=\"Barcode\"/>"
 msgstr ""
+"<i class=\"fa-2x fa fa-barcode\" title=\"Viivakoodi\" role=\"img\" aria-"
+"label=\"Viivakoodi\"/>"
 
 #. module: event_barcode
 #. openerp-web
@@ -56,7 +58,7 @@ msgstr "Viivakoodi nimistö"
 #. module: event_barcode
 #: model:ir.model.constraint,message:event_barcode.constraint_event_registration_barcode_event_uniq
 msgid "Barcode should be unique"
-msgstr ""
+msgstr "Viivakoodin on oltava yksilöllinen"
 
 #. module: event_barcode
 #. openerp-web
@@ -104,7 +106,7 @@ msgstr "Vahvista"
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Confirm attendance for"
-msgstr ""
+msgstr "Vahvista osallistuminen"
 
 #. module: event_barcode
 #. openerp-web
@@ -130,7 +132,7 @@ msgstr "Tapahtumat"
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Invalid ticket"
-msgstr ""
+msgstr "Virheellinen lippu"
 
 #. module: event_barcode
 #. openerp-web
@@ -171,35 +173,35 @@ msgstr "Ilmoittautuminen"
 #: model_terms:ir.ui.view,arch_db:event_barcode.event_event_view_form
 #, python-format
 msgid "Registration Desk"
-msgstr ""
+msgstr "Ilmoittautumispöytä"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Registration Summary"
-msgstr ""
+msgstr "Ilmoittautumisen yhteenveto"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Registration confirmed"
-msgstr ""
+msgstr "Ilmoittautuminen vahvistettu"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Scan a badge"
-msgstr ""
+msgstr "Skannaa nimilappu"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Select Attendee"
-msgstr ""
+msgstr "Valitse osallistuja"
 
 #. module: event_barcode
 #. openerp-web
@@ -213,14 +215,14 @@ msgstr "Rekisteröityminen pitää maksaa"
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "This ticket is for another event"
-msgstr ""
+msgstr "Tämä lippu on toiseen tilaisuuteen"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "This ticket is not for an ongoing event"
-msgstr ""
+msgstr "Tämä lippu ei ole käynnissä olevaan tilaisuuteen"
 
 #. module: event_barcode
 #. openerp-web
@@ -255,14 +257,14 @@ msgstr "Tervetuloa"
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "is already registered"
-msgstr ""
+msgstr "on jo ilmoittautunut"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "is successfully registered"
-msgstr ""
+msgstr "on ilmoittautunut onnistuneesti"
 
 #. module: event_barcode
 #. openerp-web

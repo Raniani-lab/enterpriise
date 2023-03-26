@@ -97,7 +97,7 @@ msgstr "/&gt;"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
 msgid "1 Bank Transaction"
-msgstr ""
+msgstr "1 은행 거래"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
@@ -293,7 +293,7 @@ msgstr "회계연도를 1 년 이상 또는 미만으로 정의하도록 허용"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__amls_widget
 msgid "Amls Widget"
-msgstr ""
+msgstr "Amls 위젯"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -513,7 +513,7 @@ msgstr "축하합니다. 모두 완료하셨습니다!"
 msgid ""
 "Congrats, you're all done! You reconciled %s transactions in %s. That's on "
 "average %s seconds per transaction."
-msgstr ""
+msgstr "축하합니다. 작업이 완료되었습니다! %s에서 %s 거래 항목을 조정하였습니다. 거래 당 평균 %s초가 소요되었습니다."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1085,7 +1085,7 @@ msgstr "라벨"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Larry Smith"
-msgstr ""
+msgstr "Larry Smith"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1305,7 +1305,7 @@ msgstr "신규"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__next_action_todo
 msgid "Next Action Todo"
-msgstr ""
+msgstr "다음 해야 할 작업"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1695,22 +1695,22 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_balance
 msgid "Source Balance"
-msgstr ""
+msgstr "원 잔액"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_credit
 msgid "Source Credit"
-msgstr ""
+msgstr "원본 대변"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_debit
 msgid "Source Debit"
-msgstr ""
+msgstr "원본 차변"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_id
 msgid "St Line"
-msgstr ""
+msgstr "명세서 항목"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__date_from
@@ -1819,6 +1819,7 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be entirely paid by the transaction."
 msgstr ""
+"%(display_name_html)s 청구서의 %(open_amount)s에 해당하는 미결 금액이 거래에서 전액 지불될 예정입니다."
 
 #. module: account_accountant
 #. odoo-python
@@ -1828,6 +1829,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be reduced by %(amount)s."
 msgstr ""
+"%(display_name_html)s 청구서의 %(open_amount)s에 해당하는 미결 금액이 거래에서 %(amount)s 만큼 "
+"하향 조정될 예정입니다."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form

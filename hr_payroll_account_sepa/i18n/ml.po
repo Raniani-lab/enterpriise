@@ -70,7 +70,7 @@ msgstr "ഡിസ്പ്ലേ നെയിം"
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_employee
 msgid "Employee"
-msgstr ""
+msgstr "എംപ്ലോയീ "
 
 #. module: hr_payroll_account_sepa
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0

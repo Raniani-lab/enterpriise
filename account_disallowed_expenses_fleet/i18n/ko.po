@@ -23,7 +23,7 @@ msgstr ""
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_disallowed_expenses_category__car_category
 msgid "Car Category"
-msgstr ""
+msgstr "자동차 범주"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__company_id
@@ -48,13 +48,13 @@ msgstr "허용되지 않는 비용 카테고리"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_disallowed_expenses_fleet_report_handler
 msgid "Disallowed Expenses Fleet Custom Handler"
-msgstr ""
+msgstr "허용되지 않는 경비 차량관리 사용자지정 처리기"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_vehicle__rate_ids
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses_fleet.fleet_vehicle_view_form
 msgid "Disallowed Expenses Rate"
-msgstr ""
+msgstr "허용되지 않는 비용 비율"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__display_name
@@ -94,7 +94,7 @@ msgstr "시작일"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,help:account_disallowed_expenses_fleet.field_account_disallowed_expenses_category__car_category
 msgid "This checkbox makes the vehicle mandatory while booking a vendor bill."
-msgstr ""
+msgstr "확인란에 표시하시면 공급업체 청구서를 생성하는 경우 차량 선택을 필수로 하도록 합니다."
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_fleet_vehicle
@@ -105,9 +105,9 @@ msgstr "차량"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_fleet_disallowed_expenses_rate
 msgid "Vehicle Disallowed Expenses Rate"
-msgstr ""
+msgstr "차량 관련 비허용 경비 비율"
 
 #. module: account_disallowed_expenses_fleet
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses_fleet.disallowed_expenses_fleet_search_template_extra_options
 msgid "Vehicle Split"
-msgstr ""
+msgstr "차량 분할"

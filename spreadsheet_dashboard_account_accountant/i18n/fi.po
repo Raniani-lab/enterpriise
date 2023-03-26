@@ -206,7 +206,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average creditors days"
-msgstr ""
+msgstr "Toimittajien laskujen maksamisen keskimääräinen aika (päivää)"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -221,7 +221,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Average debtors days"
-msgstr ""
+msgstr "Omien saatavien laskujen maksamisen keskimääräinen aika (päivää)"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -290,7 +290,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Cash received"
-msgstr ""
+msgstr "Saadut käteisvarat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -298,7 +298,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Cash spent"
-msgstr ""
+msgstr "Käytetyt käteisvarat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -306,7 +306,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Cash surplus"
-msgstr ""
+msgstr "Kassan ylijäämä"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -314,7 +314,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Closing bank balance"
-msgstr ""
+msgstr "Pankin loppusaldo"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -387,7 +387,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Current assets to liabilities"
-msgstr ""
+msgstr "Lyhytaikaiset varat ja velat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -509,7 +509,7 @@ msgstr "Kaava"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Gross profit"
-msgstr ""
+msgstr "Bruttopaino"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -579,7 +579,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Net assets"
-msgstr ""
+msgstr "Nettovarallisuus"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -882,7 +882,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Short term cash forecast"
-msgstr ""
+msgstr "Lyhyen aikavälin käteisvaroja koskeva ennuste"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web

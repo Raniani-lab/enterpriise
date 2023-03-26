@@ -3273,7 +3273,7 @@ msgid ""
 "(Payments triggered by bills/credit notes or manually)"
 msgstr ""
 "Transactions(-) qui ont été saisies dans Odoo, mais pas encore rapprochées "
-"(paiements déclenchés par des factures/notes de crédit ou manuellement)"
+"(paiements déclenchés par des factures/avoirs ou manuellement)"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.trial_balance_report

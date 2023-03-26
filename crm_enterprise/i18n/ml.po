@@ -53,7 +53,7 @@ msgstr "കസ്റ്റമർ"
 #: model:ir.actions.act_window,name:crm_enterprise.crm_lead_action_dashboard
 #: model:ir.ui.menu,name:crm_enterprise.crm_enterprise_dashboard_menu
 msgid "Dashboard"
-msgstr ""
+msgstr "ഡാഷ്ബോർഡ്"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_to_convert

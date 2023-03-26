@@ -35,6 +35,10 @@ msgid ""
 "  * Exception, there is a difference between received and billed quantities\n"
 "This status is defined automatically, but you can force it by ticking the 'Force Status' checkbox."
 msgstr ""
+"* Tak, powinieneś opłacić rachunek, otrzymałeś produkty.\n"
+"* Nie, nie powinieneś opłacać rachunku, nie otrzymałeś produktów\n"
+"* Wyjątek, jest rozbieżność pomiędzy otrzymanymi i zafakturowanymi ilościami\n"
+"Ten status jest definiowany automatycznie, ale możesz go wymusić poprzez checkbox 'Force Status'"
 
 #. module: account_3way_match
 #: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match

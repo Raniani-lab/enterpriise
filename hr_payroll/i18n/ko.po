@@ -3165,7 +3165,7 @@ msgstr "순서"
 msgid ""
 "Set a specific department if you wish to select all the employees from this "
 "department (and subdepartments) at once."
-msgstr ""
+msgstr "해당 부서 (및 하위 부서)의 직원 전체를 한번에 선택하려면 특정 부서를 설정하십시오."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees

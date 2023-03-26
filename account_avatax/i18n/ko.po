@@ -31,7 +31,7 @@ msgstr "%(response)s"
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid "- %s (ID: %s) on %s"
-msgstr ""
+msgstr "- %s에서 %s (ID: %s) "
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
@@ -165,58 +165,58 @@ msgstr "Avalara 예외"
 #. module: account_avatax
 #: model:ir.actions.act_window,name:account_avatax.ir_logging_avalara_action
 msgid "Avalara Logging"
-msgstr ""
+msgstr "Avalara 로깅"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_res_partner__avalara_partner_code
 #: model:ir.model.fields,field_description:account_avatax.field_res_users__avalara_partner_code
 msgid "Avalara Partner Code"
-msgstr ""
+msgstr "Avalara 협력사 코드"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_res_partner__avalara_show_address_validation
 #: model:ir.model.fields,field_description:account_avatax.field_res_users__avalara_show_address_validation
 msgid "Avalara Show Address Validation"
-msgstr ""
+msgstr "Avalara 에서 주소 확인"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.account_fiscal_position_form_inherit
 msgid "Avatax"
-msgstr ""
+msgstr "Avatax"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_product_category__avatax_category_id
 #: model:ir.model.fields,field_description:account_avatax.field_product_product__avatax_category_id
 #: model:ir.model.fields,field_description:account_avatax.field_product_template__avatax_category_id
 msgid "Avatax Category"
-msgstr ""
+msgstr "Avatax 범주"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_bank_statement_line__avatax_tax_date
 #: model:ir.model.fields,field_description:account_avatax.field_account_move__avatax_tax_date
 #: model:ir.model.fields,field_description:account_avatax.field_account_payment__avatax_tax_date
 msgid "Avatax Date"
-msgstr ""
+msgstr "Avatax 일자"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_fiscal_position__avatax_invoice_account_id
 msgid "Avatax Invoice Account"
-msgstr ""
+msgstr "Avatax 청구서 공급가액"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_avatax_exemption
 msgid "Avatax Partner Exemption Codes"
-msgstr ""
+msgstr "Avatax 협력사 면제 코드"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_avatax_category
 msgid "Avatax Product Category"
-msgstr ""
+msgstr "Avatax 품목 범주"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_fiscal_position__avatax_refund_account_id
 msgid "Avatax Refund Account"
-msgstr ""
+msgstr "Avatax 환불 계정"
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_account_bank_statement_line__avatax_tax_date
@@ -225,7 +225,7 @@ msgstr ""
 msgid ""
 "Avatax will use this date to calculate the tax on this invoice. If not "
 "specified it will use the Invoice Date."
-msgstr ""
+msgstr "Avatax는 이 날짜를 기준으로 청구서에 대한 세금을 계산합니다. 지정하지 않으면 청구서 날짜를 사용합니다."
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
@@ -253,7 +253,7 @@ msgstr "거래 저장"
 #: model:ir.model.fields,field_description:account_avatax.field_res_company__avalara_commit
 #: model:ir.model.fields,field_description:account_avatax.field_res_config_settings__avalara_commit
 msgid "Commit in Avatax"
-msgstr ""
+msgstr "Avatax에서 실행"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_res_company
@@ -436,7 +436,7 @@ msgstr ""
 #: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #, python-format
 msgid "Odoo could not validate the address of %(partner)s with Avalara."
-msgstr ""
+msgstr "Odoo에서 Avalara로 %(partner)s의 주소를 확인할 수 없습니다."
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
@@ -445,6 +445,8 @@ msgid ""
 "Odoo could not void the transaction related to %(document)s in AvaTax\n"
 "Please check the status of `%(technical)s` in the AvaTax portal."
 msgstr ""
+"Odoo는 AvaTax에서의 %(document)s와 관련된 거래를 취소할 수 없습니다\n"
+"AvaTax 포털에서 `%(technical)s` 상태를 확인하세요."
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form

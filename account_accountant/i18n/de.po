@@ -36,6 +36,14 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    Alles erledigt!\n"
+"                </p>\n"
+"                <p>\n"
+"                    Erstellen Sie neue Transaktionen oder stellen Sie sicher, dass kein aktiver Filter in der Suchleiste gesetzt ist.\n"
+"                </p>\n"
+"            "
 
 #. module: account_accountant
 #. odoo-javascript

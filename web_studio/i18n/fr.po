@@ -2426,7 +2426,7 @@ msgstr "Libellé"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Large"
-msgstr "Grand"
+msgstr "Grande"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry____last_update
@@ -2581,7 +2581,7 @@ msgstr "Mesures"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Medium"
-msgstr "Moyen"
+msgstr "Moyenne"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_ui_menu
@@ -3675,7 +3675,7 @@ msgstr "Lent"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Small"
-msgstr "Petit"
+msgstr "Petite"
 
 #. module: web_studio
 #. odoo-javascript

@@ -264,7 +264,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap___barcode_scanned
 msgid "Barcode Scanned"
-msgstr ""
+msgstr "Viivakoodi skannattu"
 
 #. module: stock_barcode
 #. openerp-web
@@ -777,7 +777,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.js:0
 #, python-format
 msgid "Please, Scan again !"
-msgstr ""
+msgstr "Ole hyvä ja skannaa uudelleen !"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1391,7 +1391,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.actions.act_window,help:stock_barcode.stock_picking_action_kanban
 msgid "Transfers allow you to move products from one location to another."
-msgstr ""
+msgstr "Siirtojen avulla voit siirtää tuotteita paikasta toiseen."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -1420,7 +1420,7 @@ msgstr "Vahvista"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_scrap___barcode_scanned
 msgid "Value of the last barcode scanned."
-msgstr ""
+msgstr "Viimeksi skannatun viivakoodin arvo."
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_warehouse

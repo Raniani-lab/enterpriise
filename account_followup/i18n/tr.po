@@ -56,6 +56,11 @@ msgid ""
 "- Private: Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...).\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
+"- İletişim: Belirli bir şirketin çalışanlarının iletişim bilgilerini düzenlemek için bunu kullanın (örneğin, CEO, CFO, ...).\n"
+"- Fatura Adresi : Tüm faturalar için tercih edilen adres. Bu şirkete ait bir siparişi faturalandırırken varsayılan olarak seçilidir.\n"
+"- Teslimat Adresi: Tüm teslimatlar için tercih edilen adres. Bu şirkete ait bir siparişi teslim ettiğinizde varsayılan olarak seçilidir.\n"
+"- Özel: Özel adresler yalnızca yetkili kullanıcılar tarafından görülebilir ve hassas veriler içerir (çalışanların ev adresleri, ...).\n"
+"- Diğer: Şirketin diğer adresi (örneğin bağlı ortaklık, ...)"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
@@ -990,7 +995,7 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Write your message here..."
-msgstr ""
+msgstr "Mesajını buraya yaz..."
 
 #. module: account_followup
 #. odoo-python

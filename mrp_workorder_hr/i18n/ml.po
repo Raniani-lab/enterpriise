@@ -85,7 +85,7 @@ msgstr "കറൻസി"
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_quality_check__employee_id
 #, python-format
 msgid "Employee"
-msgstr ""
+msgstr "എംപ്ലോയീ "
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio

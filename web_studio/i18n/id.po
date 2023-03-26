@@ -3866,7 +3866,7 @@ msgstr "Jumlah"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Table"
-msgstr "Meja"
+msgstr "Tabel"
 
 #. module: web_studio
 #. odoo-javascript

@@ -552,11 +552,12 @@ msgstr "إرسال رسالة نصية قصيرة "
 msgid ""
 "Send the SEPA mandate in attachement, to partners who signed a new mandate"
 msgstr ""
+"إرسال تفويض SEPA في المرفقات إلى الشركاء الذين قاموا بالتوقيع على التفويض "
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 msgid "Sent to the customer to indicate their account will be charged"
-msgstr ""
+msgstr "يتم إرساله إلى العميل للإشارة إلى أنه سيتم تقاضي رسوم من حسابه "
 
 #. module: payment_sepa_direct_debit
 #. openerp-web

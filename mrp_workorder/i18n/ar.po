@@ -26,14 +26,14 @@ msgstr ""
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "%(user_name)s suggests to delete this instruction"
-msgstr ""
+msgstr "يقترح %(user_name)s حذف هذه الإرشادات "
 
 #. module: mrp_workorder
 #. odoo-python
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "%(user_name)s suggests to use this document as instruction"
-msgstr ""
+msgstr "يقترح %(user_name)s استخدام هذا المستند للإرشادات "
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
@@ -432,7 +432,7 @@ msgstr "تعليمات"
 #: code:addons/mrp_workorder/models/quality.py:0
 #, python-format
 msgid "Instruction:"
-msgstr ""
+msgstr "إرشادات: "
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
@@ -551,21 +551,21 @@ msgstr "إرشادات جديدة "
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "New Instruction suggested by %(user_name)s"
-msgstr ""
+msgstr "تم اقتراح إرشادات جديدة من قِبَل %(user_name)s "
 
 #. module: mrp_workorder
 #. odoo-python
 #: code:addons/mrp_workorder/models/quality.py:0
 #, python-format
 msgid "New Step suggested by %(user_name)s"
-msgstr ""
+msgstr "تم اقتراح خطوة جديدة من قِبَل %(user_name)s "
 
 #. module: mrp_workorder
 #. odoo-python
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "New Title suggested:"
-msgstr ""
+msgstr "العنوان الجديد المقترح: "
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
@@ -913,7 +913,7 @@ msgstr "إظهار المؤقت على شاشة أمر العمل "
 #. module: mrp_workorder
 #: model:product.template,description_sale:mrp_workorder.product_template_stool
 msgid "Small wooden stool"
-msgstr ""
+msgstr "مقعد خشبي صغير "
 
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__source_document__operation
@@ -980,7 +980,7 @@ msgstr "قدم البراز"
 #. module: mrp_workorder
 #: model:product.template,name:mrp_workorder.product_template_stool_top
 msgid "Stool Top"
-msgstr ""
+msgstr "سطح المقعد "
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -1268,9 +1268,9 @@ msgstr "عنوان"
 #. module: mrp_workorder
 #: model:product.template,description_sale:mrp_workorder.product_template_stool_foot
 msgid "wooden stool foot"
-msgstr ""
+msgstr "رجل المقعد الخشبي "
 
 #. module: mrp_workorder
 #: model:product.template,description_sale:mrp_workorder.product_template_stool_top
 msgid "wooden stool top"
-msgstr ""
+msgstr "سطح المقعد الخشبي "

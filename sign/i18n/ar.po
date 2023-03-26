@@ -1585,6 +1585,8 @@ msgid ""
 "having sent the request. Useful to replace a signatory who is out of office,"
 " etc."
 msgstr ""
+"إذا كان محدداً، يمكن تغيير مستند الشخص المستلم الذي يشغل هذا المنصب بعد "
+"إرسال الطلب. من المفيد استبدال الطرف الموقِّع عندما يكون خارج المكتب، إلخ. "
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
@@ -2804,6 +2806,8 @@ msgstr ""
 
 #. module: sign
 #. odoo-javascript
+#. odoo-python
+#: code:addons/sign/models/sign_request.py:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #: code:addons/sign/static/src/xml/sign_common.xml:0

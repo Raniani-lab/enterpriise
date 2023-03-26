@@ -42,6 +42,9 @@ msgid ""
 "- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period. \n"
 "  Negative recurring lines are considered free."
 msgstr ""
+"\n"
+"- عليك انتظار مرور مدة الاشتراك الحالي. ستكون الكميات الجديدة لفوترتها جاهزة عند نهاية الفترة الحالية. \n"
+"  تُعتبَر البنود المتكررة السالبة مجانية. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__percentage_satisfaction
@@ -2348,6 +2351,8 @@ msgid ""
 "Mix of negative recurring lines and non-recurring line. The contract should "
 "be fixed manually"
 msgstr ""
+"مزيج بين البنود المتكررة السالبة والبنود غير المتكررة. يجب تصحيح الحقد "
+"يدوياً "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_id
@@ -3557,6 +3562,8 @@ msgid ""
 "The following recurring orders have draft invoices. Please Confirm them or "
 "cancel them before creating new invoices. %s."
 msgstr ""
+"الطلبات المتكررة التالية بها فواتير بحالة المسودة. يرجى تأكيدها أو إلغاؤها "
+"قبل إنشاء فواتير جديدة. %s. "
 
 #. module: sale_subscription
 #. odoo-python
@@ -3566,6 +3573,8 @@ msgid ""
 "The following refund %s has been made on this contract. Please check the "
 "next invoice date if necessary."
 msgstr ""
+"لقد تم إرجاع الأموال %s لهذا العقد. يرجى التحقق من تاريخ الفاتورة التالية، "
+"إذا لزم الأمر. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
@@ -3637,7 +3646,7 @@ msgstr "لقد تم إلغاء عملية الارتقاء بالصفقة %s. "
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "There is already a draft invoice for subscription %s."
-msgstr ""
+msgstr "توجد مسودة فاتورة بالفعل للاشتراك %s. "
 
 #. module: sale_subscription
 #. odoo-python
@@ -4014,6 +4023,7 @@ msgid ""
 "You can not delete a confirmed subscription. You must first close and cancel"
 " it before you can delete it."
 msgstr ""
+"لا يمكنك حذف اشتراك مؤكد. عليك أولاً إغلاقه وإلغاؤه قبل أن تقوم بحذفه. "
 
 #. module: sale_subscription
 #. odoo-python
@@ -4111,7 +4121,7 @@ msgstr "خطتك"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Your contract is recurrent"
-msgstr ""
+msgstr "عقدك متكرر "
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit

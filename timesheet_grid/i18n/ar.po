@@ -991,6 +991,8 @@ msgid ""
 "Prevent employees from creating, modifying, or deleting timesheets prior to "
 "their most recent validated timesheet"
 msgstr ""
+"امنع الموظفين من إنشاء أو تعديل أو حذف الجداول الزمنية قبل تصديق جداولهم "
+"الزمنية السابقة "
 
 #. module: timesheet_grid
 #. odoo-javascript

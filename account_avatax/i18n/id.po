@@ -337,7 +337,7 @@ msgstr "Fiscal Position"
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_payment_link_wizard
 msgid "Generate Sales Payment Link"
-msgstr ""
+msgstr "Buat Link Pembayaran Penjualan"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0

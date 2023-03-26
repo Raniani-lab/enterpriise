@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Niyas Raphy, 2022
-# Malaz Abuidris <msea@odoo.com>, 2023
 # Martin Trigaux, 2023
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,13 +35,21 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    انتهيت!\n"
+"                </p>\n"
+"                <p>\n"
+"                    أنشئ معاملات جديدة أو تأكد من أنه لا يوجد عامل تصفية مطبّق في شريط البحث.\n"
+"                </p>\n"
+"            "
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ -2,678.00"
-msgstr ""
+msgstr "$ -2,678.00"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -49,7 +57,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ 2,678.00"
-msgstr ""
+msgstr "$ 2,678.00"
 
 #. module: account_accountant
 #. odoo-python
@@ -78,7 +86,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "-1,134.50"
-msgstr ""
+msgstr "-1,134.50"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -299,7 +307,7 @@ msgstr "أداة Amls "
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Amongst unmatched bank transactions"
-msgstr ""
+msgstr "بين المعاملات البنكية التي لم تتم مطابقتها "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -560,7 +568,7 @@ msgstr "إنشاء مجموعة حساب جديدة "
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Create additional entries"
-msgstr ""
+msgstr "إنشاء قيود إضافية "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -942,7 +950,7 @@ msgstr "المُعرف"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0003"
-msgstr ""
+msgstr "INV/2032/0003"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -950,7 +958,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0012"
-msgstr ""
+msgstr "INV/2032/0012"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
@@ -1102,7 +1110,7 @@ msgstr "بطاقة عنوان"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Larry Smith"
-msgstr ""
+msgstr "لاري سميث "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1141,7 +1149,7 @@ msgstr "آخر تحديث في"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Learn how blazing fast bank matching works"
-msgstr ""
+msgstr "اعرف المزيد عن مدى سرعة المطابقة البنكية "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1254,7 +1262,7 @@ msgstr "مطابقة القيود الموجودة "
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Match payments and invoices"
-msgstr ""
+msgstr "مطابقة المدفوعات والفواتير "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1373,7 +1381,7 @@ msgstr "الملاحظات"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Odoo Bank Reconciliation"
-msgstr ""
+msgstr "التسوية البنكية لدى أودو "
 
 #. module: account_accountant
 #. odoo-python
@@ -1658,7 +1666,7 @@ msgstr "حفظ وفتح ملف جديد"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "البحث عن العميل "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1672,7 +1680,7 @@ msgstr "اختر الشريك"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Select a transaction"
-msgstr ""
+msgstr "قم بتحديد معاملة "
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
@@ -1942,14 +1950,14 @@ msgstr "للتحقق منه "
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
-msgstr ""
+msgstr "لتسوية الفواتير والمدفوعات وترحيل قيود يومية جديدة "
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr ""
+msgstr "للتسوية مع القيود المفتوحة "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2001,6 +2009,8 @@ msgid ""
 "Use the <strong>Manual Operations</strong> tab to register the difference, "
 "or create expenses on the fly"
 msgstr ""
+"استخدم علامة تبويب <strong>العمليات اليدوية</strong> لتسجيل الفرق، أو قم "
+"بإنشاء النفقات بسرعة "
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid

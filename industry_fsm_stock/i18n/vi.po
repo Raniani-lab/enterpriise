@@ -182,7 +182,7 @@ msgid ""
 " Instead, create a return in your inventory."
 msgstr ""
 "Không thể giảm số lượng đã đặt xuống dưới số lượng đã giao. Thay vào đó, hãy"
-" tạo một phiếu trả hàng trong kho vận của bạn."
+" tạo một phiếu trả hàng trong tồn kho của bạn."
 
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_fsm_stock_tracking

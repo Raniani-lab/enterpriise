@@ -14,7 +14,6 @@
 # Nadir Gazioglu <nadirgazioglu@gmail.com>, 2022
 # Emre Akayoğlu <emre.akayoglu@mechsoft.com.tr>, 2022
 # Murat Durmuş <muratd@projetgrup.com>, 2022
-# Halil, 2022
 # Ediz Duman <neps1192@gmail.com>, 2022
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2022
 # abc Def <hdogan1974@gmail.com>, 2022
@@ -25,6 +24,7 @@
 # Umur Akın <umura@projetgrup.com>, 2022
 # Tugay Hatıl <tugayh@projetgrup.com>, 2022
 # Enes Dayanç, 2022
+# Halil, 2023
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
 # 
 msgid ""
@@ -603,7 +603,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__group_ids
 msgid "Authorized Groups"
-msgstr ""
+msgstr "Yetkili Gruplar"
 
 #. module: sign
 #. odoo-javascript
@@ -659,6 +659,10 @@ msgid ""
 " all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
+"Kabul Et ve İmzala'yı tıklayarak, seçilen imzaların / parafların, yasal "
+"olarak bağlayıcı sözleşmeler de dahil olmak üzere, belgeler üzerinde "
+"kullanıldığında, el yazısı imzam / imzalarımın tüm amaçları için geçerli bir"
+" elektronik temsili olacağını kabul ediyorum."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message_cc
@@ -4067,7 +4071,7 @@ msgstr "ip"
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "like"
-msgstr ""
+msgstr "beğen"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_initial
@@ -4086,7 +4090,7 @@ msgstr "sonraki"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 msgid "sign"
-msgstr ""
+msgstr "işaret"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_signature

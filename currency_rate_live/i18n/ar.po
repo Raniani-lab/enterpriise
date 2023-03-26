@@ -114,7 +114,7 @@ msgstr "بنك رومانيا الوطني "
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__nbp
 msgid "National Bank of Poland"
-msgstr ""
+msgstr "National Bank of Poland"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_next_execution_date

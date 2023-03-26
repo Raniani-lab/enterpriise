@@ -562,6 +562,8 @@ msgid ""
 "Sales order item that will be selected by default on the tasks and timesheets of this project, except if the employee set on the timesheets is explicitely linked to another sales order item on the project.\n"
 "It can be modified on each task and timesheet entry individually if necessary."
 msgstr ""
+"عنصر أمر البيع الذي سيتم تحديده افتراضياً في المهام والجداول الزمنية لهذا المشروع، إلا إذا كان الموظف المعين في الجداول الزمنية مرتبطاً بعنصر أمر بيع في المشروع. \n"
+"يمكن تعديله في كل مهمة وكل قيد للجداول الزمنية على حدة، إذا لزم الأرم. "
 
 #. module: industry_fsm_sale
 #. openerp-web

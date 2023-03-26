@@ -406,6 +406,9 @@ msgid ""
 "%(dep_delta)s. This corresponds to %(move_count)s cancelled "
 "%(word)s:<br>%(entries)s"
 msgstr ""
+"تم إلغاء الأصل <br>الحساب %(exp_acc)s تم الإيداع فيه من قِبَل %(exp_delta)s،"
+" بينما الحساب %(dep_acc)s تم الخصم منه من قِبَل %(dep_delta)s. يتوافق ذلك مع"
+" %(move_count)s الملغية %(word)s:<br>%(entries)s "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_counterpart_id
@@ -640,6 +643,10 @@ msgid ""
 "  * Declining: Calculated on basis of: Residual Value * Declining Factor\n"
 "  * Declining then Straight Line: Like Declining but with a minimum depreciation value equal to the straight line value."
 msgstr ""
+"اختر الطريقة لاستخدامها لاحتساب عدد بنود الإهلاك.\n"
+"  * القيمة الثابتة: يتم احتسابها على أساس: القيمة الكلية / المدة\n"
+"  * المنخفضة: يتم احتسابها على أساس: القيمة المتبقية * عامل الانخفاض\n"
+"  * الانخفاض ثم قيمة ثابتة: مثل القيمة المنخفضة ولكن مع قيمة إهلاك دنيا تساوي القيمة الثابتة. "
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__close

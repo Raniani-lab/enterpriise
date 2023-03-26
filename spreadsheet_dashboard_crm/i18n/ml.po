@@ -75,7 +75,7 @@ msgstr "ക്യാമ്പയിൻ"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "City"
-msgstr ""
+msgstr "സിറ്റി"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -226,7 +226,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Medium"
-msgstr ""
+msgstr "മീഡിയം"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -240,7 +240,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Opportunity"
-msgstr ""
+msgstr "ഒപ്പർച്യുണിറ്റി"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web

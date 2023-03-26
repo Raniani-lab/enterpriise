@@ -3526,7 +3526,82 @@ QUnit.module('ViewEditorManager', {
         await click(target, ".o_web_studio_add_dropdown");
         await click(target.querySelector(".modal .modal-footer .btn-primary"));
         assert.verifySteps(["edit_view"]);
-        assert.containsNone(target,".o_web_studio_add_dropdown");
+        assert.containsNone(target, ".o_web_studio_add_dropdown");
+    });
+
+    QUnit.test("toggle bold attribute", async (assert) => {
+        const newArch = `
+            <kanban>
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div class='oe_kanban_card'>
+                            <field name='display_name' bold="True"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`;
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: "coucou",
+            arch: `<kanban>
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div class='oe_kanban_card'>
+                            <field name='display_name'/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`,
+            mockRPC: function (route, args) {
+                if (route === "/web_studio/edit_view") {
+                    assert.step("edit_view");
+                    assert.deepEqual(args.operations[0], {
+                        type: "attributes",
+                        target: {
+                            tag: "field",
+                            attrs: { name: "display_name" },
+                            xpath_info: [
+                                { tag: "kanban", indice: 1 },
+                                { tag: "templates", indice: 1 },
+                                { tag: "t", indice: 1 },
+                                { tag: "div", indice: 1 },
+                                { tag: "field", indice: 1 },
+                            ],
+                        },
+                        position: "attributes",
+                        node: {
+                            tag: "field",
+                            attrs: { name: "display_name", modifiers: {} },
+                        },
+                        new_attrs: { bold: "True" },
+                    });
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
+                }
+            },
+        });
+
+        assert.containsNone(target, ".o_text_bold[data-field-name=display_name]");
+        await click(target, "[data-field-name=display_name]");
+        assert.containsOnce(target, ".o_web_studio_properties.active");
+        assert.hasAttrValue(
+            target.querySelector(".o_web_studio_sidebar input#bold"),
+            "checked",
+            undefined,
+            "show invisible checkbox is not checked"
+        );
+
+        await click(target, ".o_web_studio_sidebar input#bold");
+        assert.verifySteps(["edit_view"]);
+        assert.containsOnce(target, ".o_text_bold[data-field-name=display_name]");
+        await click(target, "[data-field-name=display_name]");
+        assert.containsOnce(target, ".o_web_studio_properties.active");
+        assert.hasAttrValue(
+            target.querySelector(".o_web_studio_sidebar input#bold"),
+            "checked",
+            "checked",
+            "show invisible checkbox is checked"
+        );
     });
 
     QUnit.module('Search');

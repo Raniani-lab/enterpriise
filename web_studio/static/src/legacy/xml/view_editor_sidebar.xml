@@ -609,7 +609,7 @@
         <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_checkbox">
             <div class="form-check">
                 <input type="checkbox" id="bold" name="bold" class="form-check-input" data-type="attributes"
-                    data-leave-empty="unchecked" t-att-checked="widget.state.attrs.bold ? 'checked' : undefined"/>
+                    data-leave-empty="unchecked" t-att-checked="widget.state.node.attrs.bold ? 'checked' : undefined"/>
                 <label for="bold" class="form-check-label">Bold</label>
             </div>
         </div>

@@ -258,9 +258,10 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def button_start(self):
         res = super().button_start()
-        for check in self.check_ids:
-            if check.component_id:
-                check._update_component_quantity()
+        if len(self.time_ids) == 1 or all(self.time_ids.mapped('date_end')):
+            for check in self.check_ids:
+                if check.component_id:
+                    check._update_component_quantity()
         return res
 
     def action_propose_change(self, change_type, title):

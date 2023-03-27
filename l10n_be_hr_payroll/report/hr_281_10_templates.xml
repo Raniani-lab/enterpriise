@@ -271,6 +271,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div style="page-break-before: always;"/>
                             <div class="row border border-top-0">
                                 <div class="col-12">
                                     <div class="row border-top">
@@ -511,6 +512,7 @@
                                         <div class="col-1 text-end">311</div>
                                         <div class="col-2 text-end"><span t-esc="data['f10_2194_covidovertimehourstotal']"/></div>
                                     </div>
+                                    <div style="page-break-before: always;"/>
                                     <div class="row border-top">
                                         <div class="col-8 fw-bold offset-1">c) provided in 2020 as part of the fight against COVID-19 to employers belonging to critical sectors and / or to employers belonging to critical sectors or net overtime hours worked in 2020 in the public sector</div>
                                     </div>
@@ -754,6 +756,7 @@
                                         <div class="col-7 fw-bold offset-3">Amount</div>
                                         <div class="col-2 text-end"><span t-esc="data['f10_2188_amountother4']"/></div>
                                     </div>
+                                    <div style="page-break-before: always;"/>
                                     <div class="row border-top">
                                         <div class="col-11 fw-bold offset-1">* Compensation granted to insurance inspectors in reimbursement of costs</div>
                                     </div>

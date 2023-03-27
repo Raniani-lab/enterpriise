@@ -260,6 +260,9 @@
         <t t-if="!props.options.hideColumnTotal">
             <t t-set="rowPosition" t-value="getTotalRowPosition()"/>
             <div class="bg-view"
+                 t-att-class="{
+                    'z-index-1 position-sticky start-0': !props.model.useSampleModel,
+                 }"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"/>
             <t t-set="grandTotal"
                t-value="0"
@@ -306,7 +309,10 @@
     <t t-name="web_grid.barChart" owl="1">
         <t t-if="!props.options.hideColumnTotal">
             <t t-set="rowPosition" t-value="getTotalRowPosition()"/>
-            <div class="o_grid_row_barChart"
+            <div class="o_grid_row_barChart bg-light"
+                 t-att-class="{
+                    'z-index-1 position-sticky start-0': !props.model.useSampleModel,
+                 }"
                  t-attf-style="grid-row: {{rowPosition + 1}}; grid-column: {{columnsGap}};"/>
             <t t-set="grandTotal" t-value="0"/>
             <div t-foreach="props.columns"

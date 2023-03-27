@@ -169,9 +169,12 @@ class SaleOrder(models.Model):
                 raise ValidationError(_('A canceled SO cannot be in progress.'
                                         'You should close %s before canceling it.' % so._get_html_link()))
 
-    @api.depends('recurrence_id', 'subscription_state')
+    @api.depends('recurrence_id')
     def _compute_is_subscription(self):
         for order in self:
+            # upsells have recurrence but are not considered subscription. The method don't depend on subscription_state
+            # to avois recomputing the is_subscription value each time the sub_state is updated. it would trigger
+            # other recompute we want to avoid
             if not order.recurrence_id or order.subscription_state == '7_upsell':
                 order.is_subscription = False
                 continue

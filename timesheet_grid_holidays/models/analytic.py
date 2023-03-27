@@ -30,3 +30,8 @@ class AnalyticLine(models.Model):
             measure_field_name,
             value,
         )
+
+    def action_timer_start(self):
+        if self.task_id.is_timeoff_task:
+            raise UserError(_('You cannot start a timer for a task that is linked to a time off request. To request additional time off, please use the Time Off application.'))
+        return super().action_timer_start()

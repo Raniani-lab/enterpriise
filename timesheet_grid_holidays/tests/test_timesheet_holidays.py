@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, SUPERUSER_ID
+from odoo.exceptions import UserError
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
@@ -109,3 +110,19 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         timesheets = self.env['account.analytic.line'].search([('employee_id', '=', self.empl_employee.id), ('unit_amount', 'in', [1, 3])])
 
         self.assertTrue((not timesheets[0].holiday_id) ^ (not timesheets[1].holiday_id), "The new timesheet should not be linked to a leave request")
+
+    def test_start_timer_in_timeoff_task(self):
+        common_vals = {
+            'project_id': self.env.company.internal_project_id.id,
+            'task_id': self.env.company.leave_timesheet_task_id.id,
+        }
+        Timesheet = self.env['account.analytic.line'].with_user(self.user_manager)
+        timesheet = Timesheet.create({
+            'name': "my timesheet 1",
+            **common_vals,
+        })
+        with self.assertRaises(UserError, msg="a user cannot start timer in timesheet in time off task"):
+            timesheet.action_timer_start()
+
+        with self.assertRaises(UserError, msg="the user cannot create a timesheet and start a timer in time off task"):
+            timesheet.action_start_new_timesheet_timer(common_vals)

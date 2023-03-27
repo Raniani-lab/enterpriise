@@ -131,7 +131,6 @@ export const DocumentsDataPointMixin = (component) => class extends component {
         try {
             const context = this.context;
             await this.model.orm.write(this.resModel, resIds, changes, { context });
-            this.invalidateCache();
             await Promise.all(this.selection.map((rec) => rec.load()));
             this.model.notify();
         } catch {

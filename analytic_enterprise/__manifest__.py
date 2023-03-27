@@ -25,5 +25,8 @@ that have no counterpart in the general financial accounts.
         'web.assets_backend': [
             'analytic_enterprise/static/src/**/*',
         ],
+        'web.qunit_suite_tests': [
+            'analytic_enterprise/static/tests/**/*',
+        ],
     },
 }

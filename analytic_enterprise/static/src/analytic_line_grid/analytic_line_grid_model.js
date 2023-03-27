@@ -21,17 +21,17 @@ export class AnalyticLineGridNavigationInfo extends GridNavigationInfo {
     }
 
     get periodEnd() {
-        if (this.range.span !== "year" || this._periodEnd) {
+        if (this.range.span !== "year" || !this._periodEnd) {
             return super.periodEnd;
         }
         return this._periodEnd;
     }
 
     async fetchPeriod() {
-        const { date_from, date_to } = await this.model.keepLast.add(
-            this.model.call(this.model.resModel, "grid_compute_year_range", [
-                serializeDate(this.anchor),
-            ])
+        const { date_from, date_to } = await this.model.orm.call(
+            this.model.resModel,
+            "grid_compute_year_range",
+            [serializeDate(this.anchor)]
         );
         this._periodStart = deserializeDate(date_from);
         this._periodEnd = deserializeDate(date_to);

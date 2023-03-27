@@ -361,11 +361,17 @@ class HrPayslip(models.Model):
                 result[payslip.struct_id.report_id] |= payslip
         return result
 
+    @api.model
+    def _get_email_template(self):
+        return self.env.ref(
+            'hr_payroll.mail_template_new_payslip', raise_if_not_found=False
+        )
+
     def _generate_pdf(self):
         mapped_reports = self._get_pdf_reports()
         attachments_vals_list = []
         generic_name = _("Payslip")
-        template = self.env.ref('hr_payroll.mail_template_new_payslip', raise_if_not_found=False)
+        template = self._get_email_template()
         for report, payslips in mapped_reports.items():
             for payslip in payslips:
                 pdf_content, dummy = self.env['ir.actions.report'].sudo()._render_qweb_pdf(report, payslip.id)

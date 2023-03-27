@@ -178,6 +178,14 @@
                 <attribute name="quick_create">0</attribute>
                 <attribute name="default_group_by">planned_date_begin:day</attribute>
             </xpath>
+            <xpath expr="//field[@name='planned_date_begin']" position="attributes">
+                <attribute name="widget">fsm_date</attribute>
+            </xpath>
+            <xpath expr="//i[hasclass('fa-long-arrow-right')]" position="replace"/>
+            <xpath expr="//field[@name='planned_date_end']" position="attributes">
+                <attribute name="widget">fsm_date</attribute>
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
 

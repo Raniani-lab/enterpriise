@@ -77,18 +77,18 @@ class AccountAsset(models.Model):
         compute='_compute_prorata_date', store=True, readonly=False,
     )
     paused_prorata_date = fields.Date(compute='_compute_paused_prorata_date')  # number of days to shift the computation of future deprecations
-    account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_account_asset_id', help="Account used to record the purchase of the asset at its original price.", store=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('company_id', '=', company_id), ('is_off_balance', '=', False)]")
+    account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_account_asset_id', help="Account used to record the purchase of the asset at its original price.", store=True, readonly=False, states={'close': [('readonly', True)]}, domain="[('company_id', '=', company_id), ('is_off_balance', '=', False)]")
     account_depreciation_id = fields.Many2one(
         comodel_name='account.account',
         string='Depreciation Account',
-        readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
+        states={'close': [('readonly', True)]},
         domain="[('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance')), ('deprecated', '=', False), ('company_id', '=', company_id)]",
         help="Account used in the depreciation entries, to decrease the asset value."
     )
     account_depreciation_expense_id = fields.Many2one(
         comodel_name='account.account',
         string='Expense Account',
-        readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
+        states={'close': [('readonly', True)]},
         domain="[('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance')), ('deprecated', '=', False), ('company_id', '=', company_id)]",
         help="Account used in the periodical entries, to record a part of the asset as expense.",
     )

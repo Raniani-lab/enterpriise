@@ -204,7 +204,7 @@ export class GridRenderer extends Component {
             ...(section?.context || {}),
             view_grid_add_line: true,
         };
-        const title = this.env._t("Add a line");
+        const title = this.env._t("Add a Line");
         this.props.createRecord({ context, title });
     }
 

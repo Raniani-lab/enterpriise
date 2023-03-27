@@ -41,13 +41,6 @@ export class TableOfContentBehavior extends AbstractBehavior {
     }
 
     /**
-     * @returns {OdooEditor}
-     */
-    get editor () {
-        return this.props.wysiwyg.odooEditor;
-    }
-
-    /**
      * Observes the changes made to the titles of the editor.
      * @returns {MutationObserver}
      */

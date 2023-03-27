@@ -70,15 +70,21 @@ class WebManifest(http.Controller):
 
     @http.route('/web/service-worker.js', type='http', auth='public', methods=['GET'])
     def service_worker(self):
+        response = request.make_response(
+            self._get_service_worker_content(),
+            [
+                ('Content-Type', 'text/javascript'),
+                ('Service-Worker-Allowed', '/web'),
+            ]
+        )
+        return response
+
+    def _get_service_worker_content(self):
         """ Returns a ServiceWorker javascript file scoped for the backend (aka. '/web')
         """
         with file_open('web_enterprise/static/src/service_worker.js') as f:
             body = f.read()
-        response = request.make_response(body, [
-            ('Content-Type', 'text/javascript'),
-            ('Service-Worker-Allowed', '/web'),
-        ])
-        return response
+            return body
 
     @http.route('/web/offline', type='http', auth='public', methods=['GET'])
     def offline(self):

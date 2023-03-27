@@ -1756,6 +1756,12 @@ QUnit.module("Views", (hooks) => {
                 "The action helper should also be displayed since the sample data is displayed even if display_empty='1'."
             );
 
+            assert.containsOnce(
+                target,
+                ".o_grid_buttons .o_grid_button_add",
+                "The `Add a Line` button should be displayed when no content data is displayed to be able to create a record."
+            );
+
             await click(target, ".o_grid_buttons span.fa-arrow-right");
             assert.containsNone(
                 target,
@@ -1766,6 +1772,11 @@ QUnit.module("Views", (hooks) => {
                 target,
                 ".o_view_nocontent",
                 "The no content helper should no longer be displayed since display_empty is true in the grid view."
+            );
+            assert.containsNone(
+                target,
+                ".o_grid_buttons .o_grid_button_add",
+                "The `Add a Line` button should no longer be displayed near the `Today` one since the no content helper is not displayed."
             );
             assert.containsOnce(
                 target,

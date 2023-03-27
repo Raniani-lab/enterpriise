@@ -938,13 +938,15 @@ class SaleOrder(models.Model):
         return action
 
     def action_sale_order_log(self):
+        self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("sale_subscription.sale_order_log_analysis_action")
         origin_order_ids = self.origin_order_id.ids + self.ids
         genealogy_orders_ids = self.search(['|', ('id', 'in', origin_order_ids), ('origin_order_id', 'in', origin_order_ids)])
         action.update({
             'name': _('MRR changes'),
             'domain': [('order_id', 'in', genealogy_orders_ids.ids)],
-            'context': {'search_default_group_by_event_date': 1},
+            'context': {'search_default_group_by_event_date': 1,
+                        'mrr_order_currency': self.currency_id.id},
         })
         return action
 

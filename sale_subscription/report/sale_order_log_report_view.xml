@@ -8,9 +8,9 @@
         <field name="arch" type="xml">
             <pivot string="Sale Order Log Analysis" sample="1">
                 <field name="event_date" interval="month" type="row"/>
-                <field name="origin_order_id" type="col"/>
-                <field name="recurring_monthly" invisible="1"/>
-                <field name="recurring_yearly" invisible="1"/>
+                <field name="recurring_yearly_graph" invisible="1"/>
+                <field name="recurring_monthly_graph" invisible="1"/>
+                <field name="amount_signed_graph" invisible="1"/>
             </pivot>
         </field>
     </record>
@@ -52,6 +52,7 @@
                        decoration-danger="event_type == '2_churn'"
                        optional="show"/>
                 <field name="recurring_monthly" string="New MRR" optional="show"/>
+                <field name="currency_id" optional="hide"/>
                 <field name="subscription_state" optional="hide"/>
             </tree>
         </field>
@@ -65,6 +66,7 @@
         <field name="context">{
             'search_default_group_by_event_date': 1,
             'search_default_group_by_event_type': 1,
+            'pivot_measures': ['recurring_monthly'],
             }
         </field>
     </record>
@@ -95,6 +97,7 @@
         <field name="domain">[('event_type', '!=', '3_transfer')]</field>
         <field name="context">{
             'search_default_group_by_event_date': 1,
+            'pivot_measures': ['recurring_monthly'],
             }
         </field>
     </record>
@@ -111,6 +114,7 @@
         <field name="model">sale.order.log.report</field>
         <field name="arch" type="xml">
             <search>
+                <field name="subscription_state"/>
                 <field name="order_id" string="Subscription"/>
                 <field name="origin_order_id" string="First Contract"/>
                 <field name="user_id"/>
@@ -119,6 +123,8 @@
                 <field name="end_date"/>
                 <field name="partner_id" operator="child_of"/>
                 <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid)]"/>
+                <field name="close_reason_id"/>
+                <field name="template_id"/>
                 <separator/>
                 <filter name="filter_new" string="New" domain="[('event_type','=','0_creation')]"/>
                 <filter name="filter_expansion" string="Expansion" domain="[('event_type','=','1_expansion')]"/>

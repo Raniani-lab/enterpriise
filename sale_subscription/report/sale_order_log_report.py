@@ -64,19 +64,23 @@ class SaleOrderLogReport(models.Model):
     order_id = fields.Many2one('sale.order', 'Sale Order', readonly=True)
     first_contract_date = fields.Date('First Contract Date', readonly=True)
     end_date = fields.Date(readonly=True)
+    close_reason_id = fields.Many2one("sale.order.close.reason", string="Close Reason", readonly=True)
 
     def _with(self):
-        return """
-        c AS (
-            SELECT c.id,COALESCE(
-                       (SELECT r.rate 
-                          FROM res_currency_rate r
-                         WHERE r.currency_id = c.id AND r.name <= CURRENT_DATE
-                      ORDER BY r.company_id, r.name DESC
-                       LIMIT 1
-                      ), 1.0) AS rate
-              FROM res_currency c
-          WHERE c.active=true
+        companies = self.env['res.company'].search([], order='id asc')
+        main_company_id = companies[:1]
+        return f"""
+        rate_query AS(
+            SELECT currency_id,
+                   rcr.name AS rate_date,
+                   rcr.rate AS rate_val,
+                   MAX(rcr.name) OVER (PARTITION BY currency_id)  AS max_rate_date,
+                   rcr.rate
+              FROM res_currency_rate rcr
+              JOIN res_currency rc ON rc.id= rcr.currency_id
+             WHERE rcr.company_id = {main_company_id.id} AND  rcr.name <= CURRENT_DATE
+               AND rc.active=true
+          ORDER BY rcr.name
         )
         """
 
@@ -106,10 +110,14 @@ class SaleOrderLogReport(models.Model):
             log.amount_signed AS amount_signed,
             log.recurring_monthly AS recurring_monthly,
             log.recurring_monthly * 12 AS recurring_yearly,
-            
-            log.amount_signed/c.rate AS amount_signed_graph,
-            log.amount_signed/c.rate AS recurring_monthly_graph, -- will be integrated for cumulated values
-            log.amount_signed * 12/c.rate AS recurring_yearly_graph, -- will be integrated for cumulated values
+           
+            log.amount_signed * r2.rate/r1.rate AS amount_signed_graph,
+            log.amount_signed * r2.rate/r1.rate AS recurring_monthly_graph, -- will be integrated for cumulated values
+            log.amount_signed * 12 * r2.rate/r1.rate AS recurring_yearly_graph, -- will be integrated for cumulated values,
+            r1.rate AS currency_rate,
+            r2.rate AS user_rate,
+            log.currency_id AS LOG_cur_id,
+            log.company_id AS log_cmp,
             CASE 
                 WHEN event_type = '0_creation' THEN 1
                 WHEN event_type = '2_churn' THEN -1
@@ -118,16 +126,22 @@ class SaleOrderLogReport(models.Model):
             so.campaign_id AS campaign_id,
             so.first_contract_date AS first_contract_date,
             so.end_date AS end_date,
-            c.rate
+            so.close_reason_id AS close_reason_id
         """
         return select
 
     def _from(self):
-        return """
-            sale_order_log log
-            LEFT JOIN sale_order so ON so.id=log.order_id
-            JOIN res_partner partner ON so.partner_id = partner.id
-            JOIN c ON c.id=log.currency_id
+        # To avoid looking at the res_currency table for all records, we build a small table with one line per
+        # activated currency. Joining on these values will be faster.
+        currency_id = self.env.context.get('mrr_order_currency', self.env.company.currency_id.id)
+        return f"""sale_order_log log
+                JOIN sale_order so ON so.id=log.order_id
+                JOIN res_partner partner ON so.partner_id = partner.id
+                LEFT JOIN sale_order_close_reason close ON close.id=so.close_reason_id
+                JOIN rate_query r1 ON r1.rate_date=r1.max_rate_date
+                                  AND r1.currency_id=log.currency_id
+                JOIN rate_query r2 ON r2.rate_date=r2.max_rate_date
+                                  AND r2.currency_id={currency_id}
         """
 
     def _where(self):
@@ -157,33 +171,29 @@ class SaleOrderLogReport(models.Model):
             so.health,
             so.campaign_id,
             so.pricelist_id,
-            c.rate,
+            so.currency_rate,
+            r1.rate,
+            r2.rate,
             so.team_id,
             so.country_id,
             so.industry_id,
             partner.commercial_partner_id,
-            log.company_id
+            log.company_id,
+            so.close_reason_id
         """
 
-    def init(self):
-        tools.drop_view_if_exists(self.env.cr, self._table)
-        self.env.cr.execute(self._query())
+    @property
+    def _table_query(self):
+        return self._query()
 
     def _query(self):
-        return """
-            CREATE or REPLACE VIEW %s AS (
-                            WITH %s
-                            SELECT %s
-                              FROM ( %s )
-                             WHERE %s
-                          GROUP BY %s )
-                        """ % (self._table,
-                               self._with(),
-                               self._select(),
-                               self._from(),
-                               self._where(),
-                               self._group_by()
-                               )
+        return f"""
+              WITH {self._with()}
+            SELECT {self._select()}
+              FROM {self._from()}
+             WHERE {self._where()}
+          GROUP BY {self._group_by()} 
+        """
 
     def action_open_sale_order(self):
         self.ensure_one()
@@ -248,14 +258,12 @@ class SaleOrderLogReport(models.Model):
         res[0]['contract_number'] = res[0].get('contract_number', 0) + cumulative_contract
         res[0]['recurring_monthly'] = currency_id.round(res[0].get('recurring_monthly_graph', 0) + cumulative_monthly)
         res[0]['recurring_yearly'] = currency_id.round(res[0].get('recurring_yearly_graph', 0) + cumulative_yearly)
-        from_currency = self.env['res.currency.rate'].search([], order='company_id DESC', limit=1).currency_id
         for val in res:
             # Prevent False value to be returned
             contract_number = val.get('contract_number', 0) or 0
             amount_signed = val.get('amount_signed_graph', 0) or 0
             recurring_monthly = val.get('amount_signed_graph', 0) or 0
             recurring_yearly = val.get('amount_signed_graph', 0) or 0
-            amount_signed = from_currency._convert(amount_signed, to_currency=currency_id, company=self.env.company, date=date.today(), round=False)
             cumulative_contract += contract_number
             cumulative_monthly += recurring_monthly
             cumulative_yearly += (recurring_yearly * 12)

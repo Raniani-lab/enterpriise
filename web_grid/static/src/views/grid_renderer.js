@@ -343,14 +343,17 @@ export class GridRenderer extends Component {
             });
         } else {
             const noActivitiesFound = this.env._t("No activities found");
+            // retrieve form and list view ids from the action
+            const { views = [] } = this.env.config;
+            const openRecordsViews = ["list", "form"].map((viewType) => {
+                const view = views.find((view) => view[1] === viewType);
+                return [view ? view[0] : false, viewType];
+            });
             this.actionService.doAction({
                 type: "ir.actions.act_window",
                 name: actionTitle,
                 res_model: resModel,
-                views: [
-                    [false, "list"],
-                    [false, "form"],
-                ],
+                views: openRecordsViews,
                 domain,
                 context,
                 help: markup(

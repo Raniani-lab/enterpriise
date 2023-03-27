@@ -450,7 +450,11 @@
     }
 }
 
-@media screen and (max-width: 1024px) {
+div.o_knowledge_behavior_anchor {
+    container-type: inline-size;
+}
+
+@container (max-width: 400px) {
     .o_knowledge_toolbar_button_text {
         display: none;
     }

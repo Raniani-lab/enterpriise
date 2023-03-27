@@ -2,9 +2,9 @@
 <templates>
     <!-- /template template -->
     <t t-name="knowledge.TemplateBehavior" owl="1">
-        <div class="d-flex">
-            <div class="o_knowledge_template_label align-middle">Template</div>
-            <div class="o_knowledge_template_toolbar o_knowledge_toolbar ms-auto o_knowledge_clean_for_save">
+        <div>
+            <div class="o_knowledge_template_label pe-3">Template</div>
+            <div class="o_knowledge_template_toolbar o_knowledge_toolbar o_knowledge_clean_for_save">
                 <div class="btn-group">
                     <button t-if="targetRecordInfo and targetRecordInfo.withChatter" t-on-click="onClickSendAsMessage" title="Send as Message" class="btn btn-primary btn-link btn-sm border-0">
                         <i class="fa fa-envelope" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Send as Message</span>

@@ -18,6 +18,11 @@
         text-transform: uppercase;
         font-size: $font-size-sm !important;
     }
+    .o_knowledge_toolbar {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+    }
 }
 
 .o_knowledge_behavior_type_template {
@@ -37,6 +42,9 @@
     }
     .o_knowledge_template_toolbar {
         min-height: 5px;
+        position: fixed;
+        top: 0;
+        right: 0;
     }
     .o_knowledge_template_label {
         font-family: $font-family-base !important;

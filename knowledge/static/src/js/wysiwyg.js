@@ -99,7 +99,7 @@ Wysiwyg.include({
                 priority: 20,
                 description: _t('Upload a file'),
                 fontawesome: 'fa-file',
-                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                isDisabled: () => this._filterCommandInBehavior(),
                 callback: () => {
                     this.openMediaDialog({
                         noVideos: true,
@@ -115,7 +115,7 @@ Wysiwyg.include({
                 priority: 10,
                 description: _t('Add a template section'),
                 fontawesome: 'fa-pencil-square',
-                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                isDisabled: () => this._filterCommandInBehavior(),
                 callback: () => {
                     this._insertTemplate();
                 },

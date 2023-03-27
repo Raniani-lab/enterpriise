@@ -39,14 +39,6 @@
 
     <!-- **** Employees **** -->
     <menuitem
-        id="menu_hr_payroll_contracts_configuration"
-        name="Employees"
-        action="hr_contract.hr_contract_history_view_list_action"
-        parent="menu_hr_payroll_employees_root"
-        groups="hr_payroll.group_hr_payroll_manager"
-        sequence="20"/>
-
-    <menuitem
         id="hr_menu_all_contracts"
         name="Contracts"
         action="hr_contract.action_hr_contract"

@@ -32,6 +32,10 @@
                         attrs="{'invisible': ['|', ('payslips_count', '=', 0), ('state', '=', 'draft')]}">
                     <field name="payslips_count" string="Payslips" widget="statinfo"/>
                 </button>
+                <button class="oe_stat_button" string="Salary Attachments" name="action_open_salary_attachments"
+                        type="object" icon="fa-book" attrs="{'invisible': [('salary_attachments_count', '=', 0)]}">
+                    <field name="salary_attachments_count" string="Salary Attachments" widget="statinfo"/>
+                </button>
             </div>
             <page name="information" position="after">
                 <page string="Part Time" name="part_time">
@@ -56,9 +60,9 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_search"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='not_running']" position="after">
+            <xpath expr="//filter[@name='end_date']" position="after">
                 <separator/>
-                <filter string="Change of Occupation" name="calendar_change" domain="[('calendar_changed', '=', True)]"/>
+                <filter string="Part Time" name="part_time" domain="[('time_credit', '=', True)]"/>
             </xpath>
         </field>
     </record>
@@ -72,13 +76,13 @@
                 <field name="wage_type"/>
                 <field name="currency_id"/>
             </field>
-            <div name="div_job_id" position="after">
+            <div name="div_date_id" position="after">
                 <div class="text-muted o_kanban_record_subtitle o_hr_contract_job_id" name="div_job_id">
                     <t t-if="record.wage_type.raw_value == 'monthly'">
-                        <field name="contract_wage"/> / Month
+                        Wage : <field name="contract_wage"/> / Month
                     </t>
                     <t t-if="record.wage_type.raw_value == 'hourly'">
-                        <field name="hourly_wage"/> / Hour
+                        Wage : <field name="hourly_wage"/> / Hour
                     </t>
                 </div>
             </div>
@@ -94,6 +98,9 @@
                 <header>
                    <button name="%(hr_payroll.action_hr_payroll_index)d" type="action" string="Index Contracts" groups="hr_contract.group_hr_contract_manager" display="always"/>
                 </header>
+            </xpath>
+            <xpath expr="//field[@name='structure_type_id']" position="after">
+                <field name="payslips_count" optional="hidden"/>
             </xpath>
         </field>
     </record>

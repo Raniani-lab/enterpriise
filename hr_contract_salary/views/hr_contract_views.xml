@@ -116,14 +116,18 @@
     <record id="hr_contract_view_tree_contract_templates" model="ir.ui.view">
         <field name="name">hr.contract.tree</field>
         <field name="model">hr.contract</field>
-        <field name="mode">primary</field>
+        <field name="mode">extension</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_tree"/>
         <field name="arch" type="xml">
-            <field name="employee_id" position="replace">
-                <field name="department_id" readonly="1"/>
+            <field name="wage" position="after">
+                <field name="monthly_yearly_costs" widget="monetary" optional="hidden"/>
+                <field name="final_yearly_costs" widget="monetary" optional="show"/>
             </field>
-            <field name="date_start" position="replace"/>
-            <field name="date_end" position="replace"/>
+
+            <field name="contract_type_id" position="after">
+                <field name="wage_on_signature" widget="monetary" optional="show"/>
+            </field>
+
         </field>
     </record>
 

@@ -46,7 +46,7 @@
 
     <menuitem
             id="hr_menu_contract"
-            name="All Contracts"
+            name="Contracts"
             action="hr_contract.action_hr_contract"
             parent="hr.menu_hr_employee_payroll"
             sequence="6"

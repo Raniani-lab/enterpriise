@@ -35,6 +35,7 @@ class HrContract(models.Model):
         'hr.work.entry.type', string='Part Time Work Entry Type',
         domain=[('is_leave', '=', True)],
         help="The work entry type used when generating work entries to fit full time working schedule.")
+    salary_attachments_count = fields.Integer(related='employee_id.salary_attachment_count')
 
     @api.depends('time_credit', 'resource_calendar_id.hours_per_week', 'standard_calendar_id.hours_per_week')
     def _compute_work_time_rate(self):
@@ -386,3 +387,10 @@ class HrContract(models.Model):
             'target': 'new',
             'context': {'default_employee_id': self.employee_id.id}
         }
+
+    def action_open_salary_attachments(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("hr_payroll.hr_salary_attachment_action")
+        action.update({'domain': [('employee_id', '=', self.employee_id.id)],
+                       'context': {'default_employee_id': self.employee_id.id}})
+        return action

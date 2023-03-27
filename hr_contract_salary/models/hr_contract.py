@@ -287,3 +287,9 @@ class HrContract(models.Model):
             }
         else:
             raise ValidationError(_("No private address defined on the employee!"))
+
+    def action_archive(self):
+        res = super().action_archive()
+        job_positions = self.env['hr.job'].search([('default_contract_id', 'in', self.ids)])
+        job_positions.default_contract_id = False
+        return res

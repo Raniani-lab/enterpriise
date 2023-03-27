@@ -8,16 +8,18 @@
     'description': 'Documents Spreadsheet',
     'depends': ['documents', 'spreadsheet_edition'],
     'data': [
-        'data/documents_data.xml',
+        'data/documents_folder_data.xml',
+        'data/res_company_data.xml',
         'security/ir.model.access.csv',
         'security/security.xml',
-        'views/documents_views.xml',
-        'views/documents_templates.xml',
+        'views/documents_document_views.xml',
+        'views/spreadsheet_template_views.xml',
+        'views/documents_templates_share.xml',
         'views/res_config_settings_views.xml',
         'wizard/save_spreadsheet_template.xml',
     ],
     'demo': [
-        'demo/documents_demo_data.xml'
+        'demo/documents_document_demo.xml'
     ],
 
     'installable': True,

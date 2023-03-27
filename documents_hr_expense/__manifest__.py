@@ -11,11 +11,11 @@
     """,
     'depends': ['documents', 'hr_expense_extract'],
     'data': [
-        'data/workflow_data.xml',
+        'data/documents_workflow_rule_data.xml',
         'views/hr_expense_views.xml',
     ],
     'demo': [
-        'demo/demo.xml',
+        'demo/documents_document_demo.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

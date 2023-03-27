@@ -94,7 +94,8 @@ class SaleOrder(models.Model):
     subscription_child_ids = fields.One2many('sale.order', 'subscription_id')
     history_count = fields.Integer(compute='_compute_history_count')
     payment_exception = fields.Boolean("Contract in exception",
-                                       help="Automatic payment with token failed. The payment provider configuration and token should be checked")
+                                       help="Automatic payment with token failed. The payment provider configuration and token should be checked",
+                                       copy=False)
     show_rec_invoice_button = fields.Boolean(compute='_compute_show_rec_invoice_button')
     is_upselling = fields.Boolean(compute='_compute_is_upselling')
     renew_state = fields.Selection(

@@ -1718,4 +1718,60 @@ QUnit.module("Views", (hooks) => {
             "The GridCell should no longer be visible and so no cell is in edit mode."
         );
     });
+
+    QUnit.test(
+        "display no content helper when no data and sample data is used (with display_empty='1')",
+        async function (assert) {
+            const arch = serverData.views["analytic.line,false,grid"].replace(
+                "<grid>",
+                `<grid create_inline="1"
+                    form_view_id="%(timesheet_grid.my_timesheet_form_view)d"
+                    editable="1"
+                    display_empty="1"
+                    sample="1"
+                >`
+            );
+
+            await makeView({
+                type: "grid",
+                resModel: "analytic.line",
+                serverData,
+                arch,
+                async mockRPC(route, args) {
+                    if (args.method === "grid_unavailability") {
+                        return {};
+                    }
+                },
+                domain: Domain.FALSE.toList({}),
+            });
+
+            assert.containsOnce(
+                target,
+                ".o_view_sample_data",
+                "The sample data should be displayed since no records is found."
+            );
+            assert.containsOnce(
+                target,
+                ".o_view_nocontent",
+                "The action helper should also be displayed since the sample data is displayed even if display_empty='1'."
+            );
+
+            await click(target, ".o_grid_buttons span.fa-arrow-right");
+            assert.containsNone(
+                target,
+                ".o_view_sample_data",
+                "The sample data should no longer be displayed since display_empty is true in the grid view"
+            );
+            assert.containsNone(
+                target,
+                ".o_view_nocontent",
+                "The no content helper should no longer be displayed since display_empty is true in the grid view."
+            );
+            assert.containsOnce(
+                target,
+                ".o_grid_grid .o_grid_row.o_grid_add_line.position-sticky",
+                "The `Add a Line` button should be displayed in the grid view since create_inline='1'"
+            );
+        }
+    );
 });

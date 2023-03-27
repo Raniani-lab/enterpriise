@@ -96,8 +96,7 @@ export class GridController extends Component {
 
     get displayNoContent() {
         return (
-            !this.props.archInfo.displayEmpty &&
-            (!this.model.hasData() || this.model.useSampleModel)
+            !(this.props.archInfo.displayEmpty || this.model.hasData()) || this.model.useSampleModel
         );
     }
 

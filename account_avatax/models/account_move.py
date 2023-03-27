@@ -44,7 +44,7 @@ class AccountMove(models.Model):
     def unlink(self):
         for record in self.filtered(lambda m: m._send_to_avatax()):
             record._void_avatax_transaction()
-        super().unlink()
+        return super().unlink()
 
     def _compute_avalara_taxes(self, commit):
         """

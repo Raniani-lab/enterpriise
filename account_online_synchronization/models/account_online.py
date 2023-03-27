@@ -400,8 +400,7 @@ class AccountOnlineLink(models.Model):
                     to_unlink += link
             except UserError:
                 continue
-        if to_unlink:
-            return super(AccountOnlineLink, to_unlink).unlink()
+        return super(AccountOnlineLink, to_unlink).unlink()
 
     def _fetch_accounts(self, online_identifier=False):
         self.ensure_one()

@@ -68,10 +68,12 @@ class ResCompany(models.Model):
                 if need_tax_closing_update:
                     to_update += company
 
-        super(ResCompany, self).write(values)
+        res = super().write(values)
 
         for update_company in to_update:
             update_company._update_tax_closing_after_periodicity_change()
+
+        return res
 
     def _update_tax_closing_after_periodicity_change(self):
         self.ensure_one()

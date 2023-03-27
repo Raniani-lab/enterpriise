@@ -227,7 +227,7 @@ class DataCleaningModel(models.Model):
     def write(self, vals):
         if 'active' in vals and not vals['active']:
             self.env['data_cleaning.record'].search([('cleaning_model_id', 'in', self.ids)]).unlink()
-        super(DataCleaningModel, self).write(vals)
+        return super().write(vals)
 
     ##########
     # Actions

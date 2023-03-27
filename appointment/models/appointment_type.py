@@ -26,11 +26,11 @@ class AppointmentType(models.Model):
     def default_get(self, default_fields):
         result = super().default_get(default_fields)
         if 'category' not in default_fields or result.get('category') == 'custom':
-            if not result.get('name'):
+            if 'name' in default_fields and not result.get('name'):
                 result['name'] = _("%s - Let's meet", self.env.user.name)
-            if (not default_fields or 'staff_user_ids' in default_fields) and not result.get('staff_user_ids'):
+            if 'staff_user_ids' in default_fields and not result.get('staff_user_ids'):
                 result['staff_user_ids'] = [Command.set(self.env.user.ids)]
-        if result.get('category') == 'website':
+        if 'slot_ids' in default_fields and result.get('category') == 'website':
             result['slot_ids'] = self._get_default_slots(result.get('category'))
         return result
 

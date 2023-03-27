@@ -109,7 +109,7 @@ class AccountMove(models.Model):
         # Auto extract if comes from email alias, unless attachment is not pdf and pdf filter is set on journal
         if self._context.get('from_alias'):
             return not self.journal_id.alias_auto_extract_pdfs_only \
-                or self.message_main_attachment_id.mimetype.endswith('pdf')
+                or (self.message_main_attachment_id and self.message_main_attachment_id.mimetype.endswith('pdf'))
 
         # If not from email alias, only auto extract for purchase moves
         return self.is_purchase_document()

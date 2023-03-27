@@ -15,6 +15,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         cls.attachment = cls.env['ir.attachment'].create({
             'name': "an attachment",
             'raw': b'My attachment',
+            'mimetype': 'plain/text'
         })
 
     def get_result_success_response(self):

@@ -2434,3 +2434,103 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(sub_progress.state, 'done')
         with self.assertRaises(ValidationError):
             sub_progress._action_cancel()
+
+    def test_renew_different_currency(self):
+        with freeze_time("2023-03-28"):
+            self.product.product_pricing_ids.unlink()
+            default_pricelist = self.company_data['default_pricelist']
+            other_currency = self.env.ref('base.EUR')
+            other_currency.action_unarchive()
+            other_pricelist = self.env['product.pricelist'].create({
+                'name': 'Test Pricelist (EUR)',
+                'currency_id': other_currency.id,
+            })
+            other_currency.write({
+                'rate_ids': [(0, 0, {
+                    'rate': 20,
+                })]
+            })
+            pricing_month_1 = self.env['product.pricing'].create({
+                'recurrence_id': self.recurrence_month.id,
+                'price': 10,
+                'pricelist_id': default_pricelist.id,
+            })
+            pricing_month_2 = self.env['product.pricing'].create({
+                'recurrence_id': self.recurrence_month.id,
+                'price': 200,
+                'pricelist_id': other_pricelist.id,
+            })
+            sub_product_tmpl = self.env['product.template'].create({
+                'name': 'BaseTestProduct',
+                'type': 'service',
+                'recurring_invoice': True,
+                'uom_id': self.env.ref('uom.product_uom_unit').id,
+                'product_pricing_ids': [(6, 0, (pricing_month_1 | pricing_month_2).ids)]
+            })
+            subscription_tmpl = self.env['sale.order.template'].create({
+                'name': 'Subscription template without discount',
+                'recurring_rule_type': 'year',
+                'recurring_rule_boundary': 'limited',
+                'recurring_rule_count': 2,
+                'note': "This is the template description",
+                'auto_close_limit': 5,
+                'recurrence_id': self.recurrence_month.id,
+                'sale_order_template_line_ids': [Command.create({
+                    'name': "Product 1",
+                    'product_id': sub_product_tmpl.product_variant_id.id,
+                    'product_uom_qty': 1,
+                    'product_uom_id': sub_product_tmpl.product_variant_id.uom_id.id,
+                })]
+            })
+            sub = self.subscription.create({
+                'name': 'Company1 - Currency1',
+                'sale_order_template_id': subscription_tmpl.id,
+                'partner_id': self.user_portal.partner_id.id,
+                'currency_id': self.company.currency_id.id,
+                'recurrence_id': self.recurrence_month.id,
+                'order_line': [(0, 0, {
+                    'name': "Product 1",
+                    'product_id': sub_product_tmpl.product_variant_id.id,
+                    'product_uom_qty': 1,
+                    'product_uom': sub_product_tmpl.uom_id.id
+                })]
+            })
+            sub.pricelist_id = default_pricelist.id
+            sub._onchange_sale_order_template_id() # recompute the pricings
+            self.flush_tracking()
+            sub.action_confirm()
+            self.assertEqual(sub.recurring_monthly, 10)
+            self.flush_tracking()
+            self.env['sale.order']._cron_recurring_create_invoice()
+            self.flush_tracking()
+
+        with freeze_time("2023-04-29"):
+            action = sub.prepare_renewal_order()
+            renewal_so = self.env['sale.order'].browse(action['res_id'])
+            renewal_so.write({
+                'pricelist_id': other_pricelist.id,
+            })
+            renewal_so._onchange_sale_order_template_id()
+            renewal_so.order_line.product_uom_qty = 3
+            self.flush_tracking()
+            renewal_so.action_confirm()
+            self.flush_tracking()
+            self.env['sale.order']._cron_recurring_create_invoice()
+            self.flush_tracking()
+            renewal_so.action_confirm()
+            self.flush_tracking()
+            order_log_ids = sub.order_log_ids.sorted('event_date')
+            sub_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
+                        for log in order_log_ids]
+            self.assertEqual(sub_data,
+                             [('0_creation', datetime.date(2023, 3, 28), 10, 10, default_pricelist.currency_id),
+                              ('3_transfer', datetime.date(2023, 4, 29), -10, 0, default_pricelist.currency_id)
+                              ])
+
+            renew_logs = renewal_so.order_log_ids.sorted('id')
+            renew_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
+                          for log in renew_logs]
+            self.assertEqual(renew_data,
+                             [('3_transfer', datetime.date(2023, 4, 29), 200, 200, other_currency),
+                              ('1_expansion', datetime.date(2023, 4, 29), 400, 600, other_currency)
+                              ])

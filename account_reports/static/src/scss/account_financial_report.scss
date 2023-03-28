@@ -60,6 +60,7 @@
         margin: 24px 12px 48px;
         padding: 24px;
         max-width: calc(100% - 12px); // Prevents the sheet to take horizontal space that is not available
+        width: calc(100% - 12px);
 
         .table-responsive {
             min-height: 470px;

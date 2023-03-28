@@ -416,7 +416,11 @@ class SaleOrder(models.Model):
             if new_stage_id.category in ['progress', 'paused']:
                 if confirmed_renewal:
                     # Transfer for the renewed value and MRR change for the rest
-                    parent_mrr = self.subscription_id.recurring_monthly
+                    new_currency = self.currency_id
+                    parent_curency = self.subscription_id.currency_id
+                    parent_mrr = parent_curency._convert(self.subscription_id.recurring_monthly, to_currency=new_currency,
+                                                         company=self.env.company,
+                                                         date=fields.Date.today(), round=False)
                     # Creation of renewal: transfer and MRR change
                     event_type = '3_transfer'
                     amount_signed = parent_mrr

@@ -47,7 +47,7 @@
                 <div class="col">
                     <button class="button_inventory btn btn-block btn-primary mb-4 w-100"
                             t-on-click="() => this.actionService.doAction('stock_barcode.stock_barcode_inventory_client_action')">
-                        Inventory Adjustments
+                        Inventory Adjustments (<t t-out="this.quantCount"/>)
                     </button>
                 </div>
             </div>

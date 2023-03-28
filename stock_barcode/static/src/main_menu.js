@@ -5,6 +5,8 @@ import { bus } from 'web.core';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { session } from "@web/session";
+import { date_to_str } from "web.time";
 
 const { Component, onMounted, onWillUnmount, onWillStart, useState } = owl;
 
@@ -18,12 +20,19 @@ export class MainMenu extends Component {
         this.notificationService = useService("notification");
         this.rpc = useService('rpc');
         this.state = useState({ displayDemoMessage });
+        const orm = useService('orm');
 
         this.mobileScanner = BarcodeScanner.isBarcodeScannerSupported();
 
         onWillStart(async () => {
             this.locationsEnabled = await user.hasGroup('stock.group_stock_multi_locations');
             this.packagesEnabled = await user.hasGroup('stock.group_tracking_lot');
+            const args = [
+                ["user_id", "=?", session.uid],
+                ["location_id.usage", "in", ["internal", "transit"]],
+                ["inventory_date", "<=", date_to_str(new Date())],
+            ]
+            this.quantCount = await orm.searchCount("stock.quant", args);
         });
         onMounted(() => {
             bus.on('barcode_scanned', this, this._onBarcodeScanned);

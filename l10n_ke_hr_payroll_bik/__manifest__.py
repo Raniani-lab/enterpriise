@@ -17,9 +17,6 @@ This module is only temporary for its purpose is to add new fields in a stable v
         'views/hr_contract_views.xml',
         'views/hr_employee_views.xml',
     ],
-    'demo': [
-        'data/l10n_ke_hr_payroll_bik_demo.xml',
-    ],
     'license': 'OEEL-1',
     'auto_install': True,
 }

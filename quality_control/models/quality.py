@@ -229,19 +229,6 @@ class QualityCheck(models.Model):
         else:
             return self.do_pass()
 
-    def correct_measure(self):
-        self.ensure_one()
-        return {
-            'name': _('Quality Checks'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'quality.check',
-            'view_mode': 'form',
-            'view_id': self.env.ref('quality_control.quality_check_view_form_small').id,
-            'target': 'new',
-            'res_id': self.id,
-            'context': self.env.context,
-        }
-
     def do_alert(self):
         self.ensure_one()
         alert = self.env['quality.alert'].create({

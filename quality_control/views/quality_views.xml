@@ -138,7 +138,7 @@
                 <field name="activity_exception_decoration" widget="activity_exception"/>
             </field>
             <field name="date_assign" position="after">
-                <field name="company_id" groups="base.main_company"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </field>
         </field>
     </record>
@@ -351,7 +351,7 @@
                 <field name="point_id" optional="hide"/>
                 <field name="team_id" optional="show"/>
                 <field name="quality_state" optional="show" widget='badge' decoration-success="quality_state == 'pass'" decoration-info="quality_state == 'none'" decoration-danger="quality_state == 'fail'"/>
-                <field name="company_id" groups="base.main_company"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

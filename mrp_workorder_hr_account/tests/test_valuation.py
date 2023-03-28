@@ -21,7 +21,6 @@ class TestMrpWorkorderHrValuation(TestMrpValuationCommon):
         cls.employee_center = cls.env['mrp.workcenter'].create({
             'name': 'Jean Michel\'s Center',
             'costs_hour': 10,
-            'allow_employee': True,
             'employee_ids': [(4, cls.employee.id)],
         })
 

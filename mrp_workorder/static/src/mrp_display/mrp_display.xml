@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp_workorder.MrpDisplay" owl="1">
+        <div class="o_action o_mrp_display">
+            <Layout display="display" className="'d-flex' + showEmployeesPanel ? 'o_component_with_search_panel' : ''">
+                <t t-if="group_mrp_routings" t-set-slot="control-panel-top-middle">
+                    <t t-call="{{ constructor.buttonTemplate }}"/>
+                </t>
+                <t t-set-slot="control-panel-always-buttons">
+                    <button class="btn fa fa-bars" t-on-click="toggleEmployeesPanel"/>
+                    <!-- <button class="btn d-none d-xl-block fa fa-refresh" t-on-click="reload"/> -->
+                    <button class="btn fa fa-refresh" t-on-click="reload"/>
+                </t>
+                <t t-if="group_mrp_routings" t-set-slot="layout-actions">
+                    <ControlPanelButtons
+                        productions="productions"
+                        workorders="workorders"
+                        workcenters="state.workcenters"
+                        toggleWorkcenter="toggleWorkcenterDialog.bind(this)"
+                        selectWorkcenter="selectWorkcenter.bind(this)"
+                        activeWorkcenter="state.activeWorkcenter"
+                        employeeWorkorderCount="adminWorkorderIds.length"/>
+                </t>
+                <t t-set-slot="control-panel-navigation-additional">
+                    <div style="min-width: 600px;display: flex">
+                        <SearchBar/>
+                        <button class="btn w-md-25 border-start o_home_menu" t-on-click="close">
+                            <i class="fa fa-lg fa-sign-out me-md-1"/><span class="d-none d-md-inline">Close</span>
+                        </button>
+                    </div>
+                </t>
+                <MrpDisplayEmployeesPanel t-if="showEmployeesPanel" employees="useEmployee.employees"
+                    setSessionOwner.bind="useEmployee.setSessionOwner"
+                    popupAddEmployee.bind="useEmployee.popupAddEmployee"
+                    logout.bind="useEmployee.logout"/>
+                <div class="o_mrp_display_records flex-grow-1 m-4">
+                    <t t-foreach="relevantRecords" t-as="record" t-key="record.id">
+                        <MrpDisplayRecord
+                            addToValidationStack.bind="addToValidationStack"
+                            groups="groups"
+                            record="record"
+                            production="getproduction(record)"
+                            subRecords="getSubRecords(record)"
+                            workcenters="workcenters"
+                            selectWorkcenter.bind="selectWorkcenter"
+                            selectUser.bind="useEmployee.openEmployeeSelection"
+                            updateEmployees.bind="useEmployee.getConnectedEmployees"
+                            sessionOwner="useEmployee.employees.admin"
+                            recordUpdated.bind="recordUpdated"
+                            removeFromValidationStack.bind="removeFromValidationStack"
+                            reload.bind="reload"
+                            onlyRecord="relevantRecords.length == 1"
+                            />
+                    </t>
+                </div>
+            </Layout>
+        </div>
+    </t>
+</templates>

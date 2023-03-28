@@ -27,6 +27,8 @@ class MrpRouting(models.Model):
     quality_point_ids = fields.One2many('quality.point', 'operation_id', copy=True)
     quality_point_count = fields.Integer('Instructions', compute='_compute_quality_point_count')
 
+    employee_ratio = fields.Float("Employee Capacity", default=1, help="Number of employees needed to complete operation.")
+
     @api.depends('quality_point_ids')
     def _compute_quality_point_count(self):
         read_group_res = self.env['quality.point'].sudo()._read_group(
@@ -189,6 +191,7 @@ class QualityCheck(models.Model):
     workcenter_id = fields.Many2one('mrp.workcenter', related='workorder_id.workcenter_id', store=True, readonly=True)  # TDE: necessary ?
     production_id = fields.Many2one(
         'mrp.production', 'Production Order', check_company=True)
+    product_tracking = fields.Selection(related='production_id.product_tracking')
 
     # doubly linked chain for tablet view navigation
     next_check_id = fields.Many2one('quality.check')
@@ -224,7 +227,12 @@ class QualityCheck(models.Model):
     # We use a float because it is actually filled in by the produced quantity at the step creation.
     finished_product_sequence = fields.Float('Finished Product Sequence Number')
     worksheet_document = fields.Binary('Image/PDF')
+    worksheet_url = fields.Char(related='point_id.worksheet_url')
     worksheet_page = fields.Integer(related='point_id.worksheet_page')
+    source_document = fields.Selection(related='point_id.source_document')
+
+    # Employees
+    employee_id = fields.Many2one('hr.employee', string="Employee")
 
     @api.model_create_multi
     def create(self, values):
@@ -430,6 +438,13 @@ class QualityCheck(models.Model):
             vals_list.append(vals)
         return vals_list
 
+    def action_generate_serial_number_and_pass(self):
+        self.ensure_one()
+        self.production_id.action_generate_serial()
+        self.lot_id = self.production_id.lot_producing_id
+        self.qty_done = 1
+        return self._next()
+
     def _next(self, continue_production=False):
         """ This function:
 
@@ -441,6 +456,14 @@ class QualityCheck(models.Model):
         rounding = self.workorder_id.product_uom_id.rounding
         if float_compare(self.workorder_id.qty_producing, 0, precision_rounding=rounding) <= 0:
             raise UserError(_('Please ensure the quantity to produce is greater than 0.'))
+        elif self.test_type == 'register_production':
+            if self.product_tracking != 'none':
+                if not self.lot_id and self.qty_done != 0:
+                    raise UserError(_('Please enter a Lot/SN.'))
+                self.production_id.lot_producing_id = self.lot_id
+            if float_compare(self.qty_done, 0, precision_rounding=rounding) <= 0:
+                raise UserError(_('Please enter a positive quantity.'))
+            self.workorder_id.production_id.qty_producing = self.qty_done
         elif self.test_type in ('register_byproducts', 'register_consumed_materials'):
             # Form validation
             # in case we use continue production instead of validate button.
@@ -572,3 +595,9 @@ class QualityCheck(models.Model):
         for check in self:
             if check.component_tracking and check.move_id.picking_type_id.prefill_lot_tablet:
                 check.lot_id = check.move_line_id.lot_id
+
+    def do_pass(self):
+        res = super().do_pass()
+        if self.workorder_id and self.workorder_id.employee_id:
+            self.employee_id = self.workorder_id.employee_id
+        return res

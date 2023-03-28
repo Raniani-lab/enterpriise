@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp_workorder.QualityCheck" owl="1">
+        <li class="o_mrp_record_line list-group-item d-flex justify-content-between align-items-center"
+            t-att-class="cssClass"
+            t-on-click="onClick"
+            t-on-animationend="onAnimationEnd">
+            <span t-att-class="isComplete ? 'text-decoration-line-through' : ''" t-esc="name"/>
+            <span t-if="props.record.data.duration" t-att-class="active ? '' : 'text-muted'">
+                <MrpTimer value="props.record.data.duration" ongoing="active"/>
+            </span>
+            <span t-if="props.quantityToProduce" t-on-click.stop="pass">
+                <t t-if="props.record.data.product_tracking == 'serial'">
+                    <button t-if="!props.record.data.lot_id" class="btn">
+                        <i class="fa fa-2x fa-plus-square text-info"/>
+                    </button>
+                    <t t-else="" t-out="props.record.data.lot_id[1]"/>
+                </t>
+                <t t-else="">
+                    <t t-if="props.record.data.qty_done &amp;&amp; props.record.data.qty_done != props.quantityToProduce">
+                        <t t-esc="props.record.data.qty_done"/> /
+                    </t>
+                    <t t-esc="props.quantityToProduce"/>
+                    <span class="ms-1">
+                        <t t-if="props.uom" t-esc="props.uom[1]"/>
+                        <t t-else="">Unit(s)</t>
+                    </span>
+                </t>
+            </span>
+            <div t-else="" class="btn o_mrp_check_icon" t-on-click.stop="pass">
+                <i t-if="props.record.data.quality_state == 'none'" class="fa-lg" t-att-class="icon"/>
+                <i t-elif="props.record.data.quality_state == 'pass'" class="state_label pass fa fa-check fa-lg"/>
+                <i t-else="" class="state_label fail fa fa-times fa-lg"/>
+            </div>
+        </li>
+        <FileUploader t-if="props.record.data.test_type === 'picture'"
+                          acceptedFileExtensions="'image/*'"
+                          t-key="props.record.resId"
+                          onUploaded.bind="onFileUploaded">
+                <t t-set-slot="toggler">
+                    <span t-ref="fileUploaderToggle" class="d-none"/>
+                </t>
+            </FileUploader>
+    </t>
+</templates>

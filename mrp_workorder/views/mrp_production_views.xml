@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <!-- Manufacturing Order for Planing view -->
-        <record id="mrp_production_tree_view_planning" model="ir.ui.view">
-            <field name="name">mrp.production.tree.inherit.planning</field>
-            <field name="model">mrp.production</field>
-            <field name="arch" type="xml">
-                <tree default_order="date_start asc" decoration-info="state=='confirmed'" decoration-danger="date_start&lt;current_date and state not in ('done','cancel')" decoration-muted="state in ('done','cancel')" string="Manufacturing Orders" name="Production">
-                    <field name="message_needaction" invisible="1"/>
-                    <field name="name"/>
-                    <field name="date_start"/>
-                    <field name="product_id"/>
-                    <field name="product_qty" sum="Total Qty" string="Quantity"/>
-                    <field name="product_uom_id" string="Unit of Measure" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
-                    <field name="reservation_state" string="Availability"/>
-                    <field name="origin"/>
-                    <field name="state"/>
-                </tree>
-            </field>
-        </record>
+    <!-- Manufacturing Order -->
+    <record model="ir.actions.server" id="action_view_mrp_overview"> <!-- Menu + python -->
+        <field name="name">Overview</field>
+        <field name="model_id" ref="model_stock_picking_type"/>
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]"/>
+        <field name="code">
+            action = model.action_mrp_overview()
+        </field>
+    </record>
+
+    <record id="action_mrp_display" model="ir.actions.client">
+        <field name="name">Shop Floor</field>
+        <field name="tag">mrp_display</field>
+        <field name="target">fullscreen</field>
+        <field name="res_model">mrp.production</field>
+        <field name="context">{'search_default_filter_ready':True}</field>
+    </record>
+
+    <!-- Manufacturing Order for Planing view -->
+    <record id="mrp_production_tree_view_planning" model="ir.ui.view">
+        <field name="name">mrp.production.tree.inherit.planning</field>
+        <field name="model">mrp.production</field>
+        <field name="arch" type="xml">
+            <tree default_order="date_start asc" decoration-info="state=='confirmed'" decoration-danger="date_start&lt;current_date and state not in ('done','cancel')" decoration-muted="state in ('done','cancel')" string="Manufacturing Orders" name="Production">
+                <field name="message_needaction" invisible="1"/>
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="product_id"/>
+                <field name="product_qty" sum="Total Qty" string="Quantity"/>
+                <field name="product_uom_id" string="Unit of Measure" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
+                <field name="reservation_state" string="Availability"/>
+                <field name="origin"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
 
     <record id="mrp_production_view_search_inherit_planning" model="ir.ui.view">
         <field name="name">mrp.production.search.view.inherit.planning</field>
@@ -57,6 +76,6 @@
     <menuitem id="menu_mrp_workorder_workcenter"
         name="Planning by Workcenter"
         sequence="2"
-        action="mrp_workorder.action_mrp_workorder_dependencies_workcenter"
+        action="action_mrp_workorder_dependencies_workcenter"
         parent="mrp_workorder_menu_planning"/>
 </odoo>

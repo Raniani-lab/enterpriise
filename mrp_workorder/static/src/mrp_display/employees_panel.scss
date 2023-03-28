@@ -1,0 +1,19 @@
+.o_mrp_employees_panel {
+    width: var(--SearchPanel-width, 300px);
+
+    .o_admin_user {
+        background-color: $list-group-active-bg !important;
+    }
+
+    .o_no_action {
+        filter: brightness(85%);
+    }
+
+    .o_grey_avatar {
+        height: 25px;
+        width: 25px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+    }
+}

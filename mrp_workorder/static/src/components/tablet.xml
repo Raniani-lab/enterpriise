@@ -32,5 +32,20 @@
         <div t-if="popup['menu'].isShown" class="o_tablet_popups" >
             <MenuPopup popupData="popup['menu'].data" onClosePopup.bind="closePopup" onClose.bind="onCloseRerender"/>
         </div>
+        <div t-if="popup['SelectionPopup'].isShown" class="o_tablet_popups o_unblock">
+                <SelectionPopup popupData="popup['SelectionPopup'].data" onClosePopup.bind="closePopup" onSelectEmployee.bind="connectEmployee"/>
+            </div>
+            <div t-if="popup['PinPopup'].isShown" class="o_tablet_popups o_unblock">
+                <PinPopup popupData="popup['PinPopup'].data" onClosePopup.bind="closePopup" onPinValidate.bind="connectEmployee"/>
+            </div>
+            <div t-if="popup['WorkingEmployeePopup'].isShown" class="o_tablet_popups o_unblock">
+                <WorkingEmployeePopup
+                    popupData="popup['WorkingEmployeePopup'].data"
+                    onClosePopup.bind="closePopup"
+                    onAddEmployee.bind="popupAddEmployee"
+                    onSetAdmin.bind="connectEmployee"
+                    onStopEmployee.bind="stopEmployee"
+                    onStartEmployee.bind="startEmployee"/>
+            </div>
     </div>
 </templates>

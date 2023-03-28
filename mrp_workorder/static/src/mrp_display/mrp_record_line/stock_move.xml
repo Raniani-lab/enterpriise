@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp_workorder.StockMove" owl="1">
+        <li class="o_mrp_record_line list-group-item d-flex justify-content-between align-items-center"
+            t-att-class="cssClass"
+            t-on-click="onClick"
+            t-on-animationend="onAnimationEnd">
+            <span t-att-class="isComplete ? 'text-decoration-line-through' : ''"
+                  t-esc="props.label || props.record.data.product_id[1]"/>
+            <span t-on-click.stop="openMoveDetails">
+                <span t-if="quantityDone &amp;&amp; quantityDone != toConsumeQuantity">
+                    <t t-out="quantityDone"/> /
+                </span>
+                <t t-esc="toConsumeQuantity"/>
+                <span class="ms-1">
+                    <t t-if="props.displayUOM" t-esc="props.record.data.product_uom[1]"/>
+                    <t t-else="">Unit(s)</t>
+                </span>
+            </span>
+        </li>
+    </t>
+</templates>

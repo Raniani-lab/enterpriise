@@ -12,7 +12,6 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
     def setUpClass(cls):
         super().setUpClass()
         cls.workcenter.write({
-            'allow_employee': True,
             'employee_ids': [
                 Command.create({
                     'name': 'Arthur Fu',
@@ -51,7 +50,6 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         with freeze_time('2027-10-01 11:00:00'):
             mo.workorder_ids.stop_employee([self.employee1.id, self.employee2.id])
             self.env.flush_all()   # need flush to trigger compute
-
         employee1_aa_line = mo.workorder_ids.employee_analytic_account_line_ids.filtered(lambda l: l.employee_id == self.employee1)
         employee2_aa_line = mo.workorder_ids.employee_analytic_account_line_ids.filtered(lambda l: l.employee_id == self.employee2)
         self.assertEqual(employee1_aa_line.amount, -100.0)
@@ -121,9 +119,6 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         mo.action_confirm()
         self.assertEqual(mo.state, 'confirmed')
 
-        # set the workcenter to not "Requires Log In" to start the timer in WO and create "mrp.workcenter.productivity"
-        self.workcenter.allow_employee = False
-
         # start the workorders
         mo.workorder_ids[0].button_start()
         mo.workorder_ids[1].button_start()
@@ -162,7 +157,6 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
             'default_capacity': 1,
             'time_efficiency': 100,
             'costs_hour': 10,
-            'allow_employee': True,
         })
         # add a workorder to the BoM
         self.bom.write({

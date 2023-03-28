@@ -58,6 +58,16 @@
         <field name="sequence">8</field>
     </record>
 
+    <record id="mrp.mrp_routing_workcenter_1" model="mrp.routing.workcenter">
+        <field name="active">True</field>
+    </record>
+    <record id="mrp.mrp_routing_workcenter_3" model="mrp.routing.workcenter">
+        <field name="active">True</field>
+    </record>
+    <record id="mrp.mrp_routing_workcenter_4" model="mrp.routing.workcenter">
+        <field name="active">True</field>
+    </record>
+
     <!-- Split the pdf added in mrp demo data-->
     <record id="base.group_user" model="res.groups">
         <field name="implied_ids" eval="[(4, ref('mrp.group_mrp_routings')), (4, ref('mrp_workorder.group_mrp_wo_tablet_timer'))]"/>

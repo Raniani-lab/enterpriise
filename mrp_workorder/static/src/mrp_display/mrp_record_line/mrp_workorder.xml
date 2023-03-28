@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp_workorder.WorkOrder" owl="1">
+        <li class="o_mrp_record_line list-group-item py-3 d-flex justify-content-between align-items-center"
+            t-att-class="cssClass"
+            t-on-click="onClick"
+            t-on-animationend="onAnimationEnd">
+            <span>
+                <span class="me-2" t-esc="name"/>
+                <span> <t t-esc="checksInfo"/></span>
+            </span>
+
+            <span t-if="!isComplete" class="badge o_workcenter_item" t-esc="workcenter[1]"
+                t-on-click.stop="() => props.selectWorkcenter(workcenter[0])"
+                t-attf-class="o_workcenter_item_color_{{workcenter[0] % 11}}"/>
+             <div t-else="" class="btn o_mrp_check_icon">
+                <i class="state_label pass fa fa-check fa-lg"/>
+            </div>
+        </li>
+    </t>
+</templates>

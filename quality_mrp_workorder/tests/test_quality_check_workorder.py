@@ -46,17 +46,10 @@ class TestQualityCheckWorkorder(TestMrpCommon):
         production.qty_producing = 3.0
 
         # Check that the Quality Check were created and has correct values
-        self.assertEqual(len(production.move_raw_ids[0].move_line_ids.check_ids), 2)
+        self.assertEqual(len(production.move_raw_ids[0].move_line_ids.check_ids), 1)
         self.assertEqual(len(production.move_raw_ids[1].move_line_ids.check_ids), 0)
         self.assertEqual(len(production.check_ids.filtered(lambda qc: qc.product_id == production.product_id)), 1)
         self.assertEqual(len(production.check_ids), 2)
-
-        # Registering consumption in tablet view
-        wo = production.workorder_ids[0]
-        wo.open_tablet_view()
-        wo.qty_done = 10.0
-        wo.current_quality_check_id.action_next()
-        self.assertEqual(len(production.move_raw_ids[0].move_line_ids.check_ids), 2)
 
     def test_register_consumed_materials(self):
         """
@@ -230,92 +223,6 @@ class TestPickingWorkorderClientActionQuality(test_tablet_client_action.TestWork
         self.assertEqual(len(mo.check_ids), 0)
         self.assertEqual(len(mo.workorder_ids), 1)
         self.assertEqual(len(mo.workorder_ids.check_ids), 1)
-
-    def test_register_consumed_materials_01(self):
-        """
-        Process a MO based on a BoM with one operation. That operation has one
-        step: register the used component. Both finished product and component
-        are tracked by serial. Changing both the finished product and the
-        component serial at the same time should record both values.
-
-        Also ensure if there is an overlapping quality.point for MOs (i.e. not
-        a WO step), the SNs are as expected between:
-        WO step <-> MO QC <-> move_line.lot_id
-        regardless of which one is changed. All 3 use case occurring at the same
-        time is unlikely, but helps tests expected behavior for the possible
-        combinations of these use cases within 1 test
-        """
-
-        warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
-
-        finished = self.potion
-        component = self.ingredient_1
-        (finished | component).write({
-            'type': 'product',
-            'tracking': 'serial',
-        })
-
-        finished_sn, component_sn = self.env['stock.lot'].create([{
-            'name': p.name + "_1",
-            'product_id': p.id,
-            'company_id': self.env.company.id,
-        } for p in (finished, component)])
-        finished_sn2, component_sn2 = self.env['stock.lot'].create([{
-            'name': p.name + "_2",
-            'product_id': p.id,
-            'company_id': self.env.company.id,
-        } for p in (finished, component)])
-        component_sn3 = self.env['stock.lot'].create({
-            'name': component.name + "_3",
-            'product_id': component.id,
-            'company_id': self.env.company.id,
-        })
-        self.env['stock.quant']._update_available_quantity(component, warehouse.lot_stock_id, 1, lot_id=component_sn)
-        self.env['stock.quant']._update_available_quantity(component, warehouse.lot_stock_id, 1, lot_id=component_sn2)
-        self.env['stock.quant']._update_available_quantity(component, warehouse.lot_stock_id, 1, lot_id=component_sn3)
-
-        type_register_materials = self.env.ref('mrp_workorder.test_type_register_consumed_materials')
-        self.wizarding_step_1.test_type_id = type_register_materials
-        self.wizarding_step_2.unlink()
-
-        self.env['quality.point'].create({
-            'product_ids': [component.id],
-            'picking_type_ids': [(4, warehouse.manu_type_id.id)],
-            'measure_on': 'move_line',
-        })
-
-        mo_form = Form(self.env['mrp.production'])
-        mo_form.bom_id = self.bom_potion
-        mo = mo_form.save()
-        mo.action_confirm()
-
-        self.assertEqual(mo.move_raw_ids.move_line_ids.lot_id, component_sn, "Unexpected reserved SN for MO component")
-        self.assertEqual(mo.check_ids.lot_line_id, component_sn, "MO level QC should have been created with reserved SN")
-        self.assertEqual(len(mo.workorder_ids.check_ids), 1, "WO and its step should have been created")
-        self.assertEqual(mo.workorder_ids.check_ids.lot_id, component_sn, "WO's component lot should match reserved SN")
-
-        mo.move_raw_ids.move_line_ids.lot_id = component_sn2
-        mo.lot_producing_id = finished_sn
-
-        self.assertEqual(mo.move_raw_ids.move_line_ids.lot_id, component_sn2, "Changing final product sn shouldn't affect component sn")
-        self.assertEqual(mo.check_ids.lot_line_id, component_sn2, "MO level QC should update to match ml.lot_id")
-        self.assertEqual(mo.workorder_ids.check_ids.lot_id, component_sn2, "WO's component lot should update to match ml.lot_id")
-        wo = mo.workorder_ids[0]
-        url = self._get_client_action_url(wo.id)
-
-        self.start_tour(url, 'test_serial_tracked_and_register', login='admin', timeout=120)
-
-        self.assertEqual(mo.workorder_ids.finished_lot_id, finished_sn2)
-        self.assertEqual(mo.workorder_ids.check_ids.lot_id, component_sn, "WO level QC should be using newly selected SN")
-        self.assertEqual(mo.check_ids.lot_line_id, component_sn, "MO level QC should update to match completed WO sn")
-        self.assertEqual(mo.move_raw_ids.move_line_ids.lot_id, component_sn, "MO component SN should update to match completed WO sn")
-        mo.check_ids.do_pass()
-        mo.button_mark_done()
-
-        self.assertRecordValues(mo.move_raw_ids.move_line_ids + mo.move_finished_ids.move_line_ids, [
-            {'qty_done': 1, 'lot_id': component_sn.id},
-            {'qty_done': 1, 'lot_id': finished_sn2.id},
-        ])
 
     def test_measure_quality_check(self):
         self.env['quality.point'].create({

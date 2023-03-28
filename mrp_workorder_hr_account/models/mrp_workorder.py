@@ -51,7 +51,7 @@ class MrpWorkorder(models.Model):
     employee_analytic_account_line_ids = fields.Many2many('account.analytic.line', copy=False)
 
     def _compute_duration(self):
-        self.filtered(lambda wo: wo.workcenter_id.allow_employee)._create_or_update_analytic_entry()
+        self._create_or_update_analytic_entry()
         super()._compute_duration()
 
     def action_cancel(self):

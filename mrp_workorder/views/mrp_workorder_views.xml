@@ -27,6 +27,28 @@
                     </field>
                 </page>
             </page>
+            <field name="production_state" position="after">
+                <field name="allowed_employees" invisible="1"/>
+                <field name="all_employees_allowed" invisible="1"/>
+            </field>
+            <xpath expr="//field[@name='time_ids']/tree/field[@name='user_id']" position="after">
+                <field name="employee_id" domain="['|',(parent.all_employees_allowed , '=', True),('id', 'in', parent.allowed_employees)]"/>
+            </xpath>
+            <xpath expr="//field[@name='time_ids']/tree/field[@name='user_id']" position="attributes">
+                <attribute name="attrs">{'column_invisible': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='check_ids']/tree/field[@name='user_id']" position="after">
+                <field name="employee_id" />
+            </xpath>
+            <xpath expr="//field[@name='check_ids']/tree/field[@name='user_id']" position="attributes">
+                <attribute name="attrs">{'column_invisible': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='workcenter_id']" position="after">
+                <field name="employee_assigned_ids" widget="many2many_avatar_employee"/>
+            </xpath>
+            <xpath expr="//button[@name='action_see_move_scrap']" position="after">
+                <button class="oe_stat_button" name="action_open_mes" type="object" icon="oi-view-kanban" string="Open Shop Floor"/>
+            </xpath>
         </field>
     </record>
 
@@ -38,8 +60,16 @@
             <xpath expr="//field[@name='state']" position="after">
                 <field name="production_state" invisible="1"/>
             </xpath>
-            <xpath expr="//button[@name='action_open_wizard']" position="after">
-                <button name="open_tablet_view" type="object" icon="fa-tablet" title="Open Tablet View" context="{'from_production_order': True}" attrs="{'invisible': ['|', ('production_state', 'in', ('draft', 'cancel', 'done')), ('state', '=', 'done')]}"/>
+            <xpath expr="//button[@name='button_unblock']" position="after">
+                <field name="employee_ids" widget="many2many_avatar_employee" readonly="1" nolabel="1"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                    <field name="allowed_employees" invisible="1"/>
+                    <field name="all_employees_allowed" invisible="1"/>
+                    <field name="employee_assigned_ids" widget="many2many_avatar_user" domain="not all_employees_allowed and [('id','in',allowed_employees)] or []" optional="hidden"/>
+            </xpath>
+            <xpath expr="//tree" position='attributes'>
+                <attribute name="js_class">tablet_list_view</attribute>
             </xpath>
         </field>
     </record>
@@ -124,14 +154,21 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                         </div>
                     </div>
                     <div class="o_workorder_bar_right o_workorder_bar_content">
+                        <span style="width:auto; display:block;">
+                        <button class="btn-secondary btn-link o_unblock" type="workorder_event" name="popupEmployeeManagement">
+                            <span attrs="{'invisible': [('employee_name', '!=', False)]}">Log In </span>
+                            <field name="employee_name" attrs="{'invisible': [('employee_name', '=', False)]}" readonly="1" class="me-2"/>
+                            <field name="employee_ids" widget="kanban.many2many_avatar_employee" readonly="1" attrs="{'invisible': [('employee_name', '=', False)]}" options="{'no_create': True}"/>
+                        </button>
+                        </span>
                     </div>
                 </div>
                 <div class="o_workorder_bar">
                     <div class="o_workorder_bar_left o_workorder_action o_workorder_bar_content">
                         <button name="openMenuPopup" class="btn btn-secondary o_workorder_icon_btn fa fa-bars" type="workorder_event" title="menu"/>
                         <span groups="mrp_workorder.group_mrp_wo_tablet_timer">
-                            <button name="button_pending" type="object" class="btn btn-secondary" attrs="{'invisible': ['|', ('is_user_working', '=', False), ('working_state', '=', 'blocked')]}" barcode_trigger="pause" string="PAUSE"/>
-                            <button name="button_start" type="object" class="btn btn-warning" attrs="{'invisible': ['|', '|', ('is_user_working', '=', True), ('working_state', '=', 'blocked'), ('state', 'in', ('done', 'cancel'))]}" barcode_trigger="pause" string="CONTINUE"/>
+                            <button name="button_pending" type="object" class="btn btn-secondary" attrs="{'invisible': True}" barcode_trigger="pause" string="PAUSE"/>
+                            <button name="button_start" type="object" class="btn btn-warning" attrs="{'invisible': True}" barcode_trigger="pause" string="CONTINUE"/>
                             <button name="button_unblock" type="object" class="btn btn-secondary btn-danger o_unblock" attrs="{'invisible': [('working_state', '!=', 'blocked')]}">Unblock</button>
                             <field name="duration" widget="mrp_timer" class="ms-1" readonly="1"/>
                         </span>
@@ -193,6 +230,7 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
             launch a maintenance request, perform quality tests, etc.
           </p>
         </field>
+        <field name="context">{'search_default_my_work_order': 0, 'search_default_ready': 1, 'search_default_waiting': True, 'search_default_progress': True, 'search_default_pending': True}</field>
     </record>
 
     <!-- override to change the no content image -->
@@ -252,6 +290,12 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
             <kanban position="attributes">
                 <attribute name="js_class">tablet_kanban_view</attribute>
             </kanban>
+            <xpath expr="//t[@name='user_avatar']" position="after">
+                <t t-if="record.employee_ids.raw_value"><field name="employee_ids" widget="list.many2many_avatar_user"/></t>
+            </xpath>
+            <xpath expr="//t[@name='user_avatar']" position='attributes'>
+                <attribute name="t-if">false</attribute>
+            </xpath>
         </field>
     </record>
     <record id="view_routing_steps_search" model="ir.ui.view">
@@ -278,6 +322,31 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
           </p><p>
             Use steps to show instructions on a worksheet to operators, or trigger quality checks at specific steps of the work order.
           </p>
+        </field>
+    </record>
+
+    <record id="view_mrp_production_workorder_form_view_filter_my_work_orders" model="ir.ui.view">
+        <field name="name">mrp.production.work.order.filter</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_workorder_form_view_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='progress']" position="before">
+                <field name="connected_employee_ids"/>
+                <filter string="My Work Orders" name="my_work_order" domain="[('connected_employee_ids','in',[1])]"/>
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_mrp_production_workorder_form_view_search_my_work_orders" model="ir.ui.view">
+        <field name="name">mrp.production.work.order.search</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_work_order_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='progress']" position="after">
+                <field name="connected_employee_ids"/>
+                <filter string="My Work Orders" name="my_work_order" domain="[('connected_employee_ids','in',[1])]"/>
+            </xpath>
         </field>
     </record>
 </odoo>

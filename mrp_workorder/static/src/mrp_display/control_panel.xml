@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp_workorder.ControlPanelButtons" owl="1">
+        <t t-foreach="workcenterButtons" t-as="workcenter" t-key="workcenter[0]">
+            <t t-set="id" t-value="workcenter[0]"/>
+            <t t-set="name" t-value="workcenter[1].name"/>
+            <t t-set="count" t-value="workcenter[1].count"/>
+            <button class="btn" t-att-class="this.props.activeWorkcenter == id ? 'o_selected' : ''"
+                    t-on-click="() => this.props.selectWorkcenter(id)">
+                <t t-esc="name"/>
+                <span class="o_workcenter_item ms-1" t-out="count"
+                      t-attf-class="o_workcenter_item_color_{{id > 0 ? id % 11 : 0}}"/>
+            </button>
+            <span t-if="id == 0">|</span>
+        </t>
+        <button class="btn fa fa-plus" t-on-click="this.props.toggleWorkcenter"/>
+    </t>
+</templates>

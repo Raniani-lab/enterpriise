@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp_workorder.MrpWorksheetDialog" owl="1">
+        <div class="o_tablet_popups">
+            <Dialog size="'lg'" title="Worksheet" modalRef="modalRef" footer="false">
+                <t t-set-slot="header" owl="1">
+                    <div class="d-flex w-100">
+                        <div class="h4 align-self-end">Worksheet</div>
+                        <div t-on-click="_cancel" class="btn ms-auto fa fa-times"/>
+                    </div>
+                </t>
+                <div class="o_tablet_instruction_note" t-out="props.worksheetText"/>
+                <DocumentViewer t-if="props.worksheetData" t-props="props.worksheetData"/>
+            </Dialog>
+        </div>
+    </t>
+</templates>

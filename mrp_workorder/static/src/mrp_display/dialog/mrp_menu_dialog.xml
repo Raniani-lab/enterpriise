@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp_workorder.MrpDisplayMenuDialog" owl="1">
+        <Dialog size="'lg'" title="props.title" modalRef="modalRef" footer="false" withBodyPadding="false">
+            <div class="button_list o_mrp_menu_dialog">
+                <button class="btn btn-primary" name="action_scrap"
+                        t-on-click="() => this.callAction('button_scrap')">
+                    Scrap
+                </button>
+                <button t-if="props.record.resModel == 'mrp.workorder'" class="btn btn-danger text-uppercase"
+                        t-on-click="block">
+                    Block
+                </button>
+                <button t-if="props.record.resModel == 'mrp.production' &amp;&amp; props.groups.workorders"
+                        class="btn btn-primary" t-on-click="() => this.callAction('action_add_workorder')">
+                    Add Work Order
+                </button>
+                <button class="btn btn-primary" t-on-click="() => this.callAction('action_add_component')">
+                    Add Component
+                </button>
+                <button t-if="props.groups.byproducts" class="btn btn-primary"
+                        t-on-click="() => this.callAction('action_add_byproduct')">
+                    Add By-product
+                </button>
+                <button t-if="props.record.resModel == 'mrp.production'" class="btn btn-primary"
+                        t-on-click="openMO" name="openMO">
+                    Open backend MO
+                </button>
+                <button t-if="props.record.resModel == 'mrp.workorder'" class="btn btn-primary"
+                        t-on-click="moveToWorkcenter" name="moveToWorkCenter">
+                    Move to work center
+                </button>
+            </div>
+            <div class="button_list o_mrp_menu_dialog" t-if="props.record.resModel == 'mrp.workorder'">
+                <span class="h2">Suggest a Worksheet improvement</span>
+                <button class="btn btn-primary" t-on-click="updateStep">Update Instructions</button>
+                <button class="btn btn-primary" t-on-click="removeStep">Delete a Step</button>
+                <button class="btn btn-primary" t-on-click="addStep">Add a Step</button>
+                <button class="btn btn-primary" t-on-click="setPicture">Set a New picture</button>
+            </div>
+        </Dialog>
+    </t>
+</templates>

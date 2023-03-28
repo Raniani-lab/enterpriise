@@ -422,8 +422,6 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
         wo = mo.workorder_ids[0]
         wo.button_start()
         wo.action_generate_serial()
-        wo.current_quality_check_id.action_next()
-        wo.current_quality_check_id.action_next()
         result = wo.do_finish()
         wo_backorder = self.env['mrp.workorder'].browse(result['res_id'])
         self.assertEqual(len(wo_backorder.check_ids), len(wo.check_ids))
@@ -511,6 +509,7 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
 
         workorder = production_table.workorder_ids[0]
         self.assertEqual(workorder.state, 'waiting', "workorder state should be waiting.")
+        production_table.action_assign()
 
         # --------------------------------------------------------------
         # Process assembly line
@@ -519,16 +518,13 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         workorder.write({'finished_lot_id': finished_lot.id})
         workorder.button_start()
         workorder.qty_producing = 1.0
-        for quality_check in workorder.check_ids:
-            if quality_check.component_id.id == product_bolt.id:
-                quality_check.write({'lot_id': lot_bolt.id, 'qty_done': 1})
-                workorder.current_quality_check_id._next()
-            if quality_check.component_id.id == product_table_sheet.id:
-                quality_check.write({'lot_id': lot_sheet.id, 'qty_done': 1})
-                workorder.current_quality_check_id._next()
-            if quality_check.component_id.id == product_table_leg.id:
-                quality_check.write({'lot_id': lot_leg.id, 'qty_done': 1})
-                workorder.current_quality_check_id._next()
+        for stock_move in workorder.move_raw_ids:
+            if stock_move.product_id.id == product_bolt.id:
+                stock_move.move_line_ids.write({'lot_id': lot_bolt.id, 'qty_done': 1})
+            if stock_move.product_id.id == product_table_sheet.id:
+                stock_move.move_line_ids.write({'lot_id': lot_sheet.id, 'qty_done': 1})
+            if stock_move.product_id.id == product_table_leg.id:
+                stock_move.move_line_ids.write({'lot_id': lot_leg.id, 'qty_done': 1})
         self.assertEqual(workorder.state, 'progress')
 
         workorder.record_production()
@@ -638,26 +634,26 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         # --------------------------------------------------------------
         # Process cutting operation...
         # ---------------------------------------------------------
+        production_table.action_assign()
+
         finished_lot = self.env['stock.lot'].create({'product_id': production_table.product_id.id, 'company_id': self.env.company.id})
         workorders[0].write({'finished_lot_id': finished_lot.id, 'qty_producing': 1.0})
         workorders[0].button_start()
-        workorders[0].write({'lot_id': lot_sheet.id, 'qty_done': 1})
-        workorders[0].current_quality_check_id._next()
+        move_table_sheet = production_table.move_raw_ids.filtered(lambda p: p.product_id == product_table_sheet)
+        move_table_sheet.move_line_ids.write({'lot_id': lot_sheet.id, 'qty_done': 1})
         self.assertEqual(workorders[0].state, 'progress')
 
         workorders[0].record_production()
 
-        move_table_sheet = production_table.move_raw_ids.filtered(lambda p: p.product_id == product_table_sheet)
         self.assertEqual(move_table_sheet.quantity_done, 1)
 
         # --------------------------------------------------------------
         # Process drilling operation ...
         # ---------------------------------------------------------
         workorders[1].button_start()
-        workorders[1].write({'lot_id': lot_leg.id, 'qty_done': 4})
-        workorders[1].current_quality_check_id._next()
-        workorders[1].record_production()
         move_leg = production_table.move_raw_ids.filtered(lambda p: p.product_id == product_table_leg)
+        move_leg.move_line_ids.write({'lot_id': lot_leg.id, 'qty_done': 4})
+        workorders[1].record_production()
         self.assertEqual(workorders[1].state, 'done')
         self.assertEqual(move_leg.quantity_done, 4)
 
@@ -666,9 +662,8 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
         # ---------------------------------------------------------
         workorders[2].button_start()
         workorders[2].qty_producing = 1.0
-        workorders[2].write({'lot_id': lot_bolt.id, 'qty_done': 4})
-        workorders[2].current_quality_check_id._next()
         move_table_bolt = production_table.move_raw_ids.filtered(lambda p: p.product_id.id == product_bolt.id)
+        move_table_bolt.move_line_ids.write({'lot_id': lot_bolt.id, 'qty_done': 4})
         workorders[2].record_production()
         self.assertEqual(move_table_bolt.quantity_done, 4)
 

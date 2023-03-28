@@ -23,4 +23,13 @@ class ReportBomStructure(models.AbstractModel):
                 operation_item['quantity'] = workcenter_time + product_specific_setup_cleanup_time
             product_specific_setup_cleanup_time = 0
 
+        for operation, line in zip(bom.operation_ids, operations_list):
+            if operation._skip_operation_line(product):
+                continue
+            capacity = operation.workcenter_id._get_capacity(product)
+            operation_cycle = float_round(qty / capacity, precision_rounding=1, rounding_method='UP')
+            duration_expected = (operation_cycle * operation.time_cycle * 100.0 / operation.workcenter_id.time_efficiency) + \
+                                operation.workcenter_id._get_expected_duration(product)
+            total = ((duration_expected / 60.0) * operation.workcenter_id.employee_costs_hour * operation.employee_ratio)
+            line['bom_cost'] += total
         return operations_list

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp_workorder.MrpDisplayRecord" owl="1">
+        <div class="o_mrp_display_record border card rounded"
+             t-att-class="cssClass"
+             t-on-animationend="onAnimationEnd">
+            <div class="card-header" t-att-class="props.record.resModel=='mrp.workorder' ? 'cursor-pointer' : ''"
+                 t-on-click="onClickHeader" t-att-barcode_trigger="props.onlyRecord ? 'pause' : false">
+                <div class="card-title d-flex justify-content-between">
+                    <t t-if="props.record.resModel=='mrp.production'" t-call="mrp_workorder.MrpDisplayProductionHeader"/>
+                    <t t-if="props.record.resModel=='mrp.workorder'" t-call="mrp_workorder.MrpDisplayWorkorderHeader"/>
+                </div>
+                <div class="d-flex justify-content-between" style="min-height:25px;">
+                    <div class="o_finished_product mt-auto mb-0">
+                        <span><t t-esc="record.product_id[1]"/> - </span>
+                        <span class="text-nowrap">
+                            <t t-if="quantityProducing">
+                                <t t-esc="quantityProducing"/> /
+                            </t>
+                            <t t-esc="quantityToProduce"/>
+                            <span class="ms-1">
+                                <t t-if="displayUOM" t-esc="uom"/>
+                                <t t-else="">Unit(s)</t>
+                            </span>
+                        </span>
+                    </div>
+                    <div>
+                        <t t-foreach="this.props.record.data.employee_ids.records" t-as="employee" t-key="employee.resId">
+                            <img t-attf-src="/web/image/hr.employee/{{employee.resId}}/avatar_128" class="rounded-circle o_avatar_connected"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+            <ul class="list-group list-group-flush">
+                <MrpWorksheet t-if="showWorksheetCheck" record="props.record" clickable="true"/>
+                <t t-foreach="subRecords" t-as="subRecord" t-key="subRecord.id">
+                    <t t-component="getComponent(subRecord)" t-props="subRecordProps(subRecord)"/>
+                </t>
+                <li t-if="this.displayRegisterProduction" t-on-click="registerProduction"
+                    class="o_mrp_record_line list-group-item d-flex justify-content-between align-items-center"
+                    t-attf-class="{{productionComplete ? 'text-muted' : ''}}">
+                    <span t-attf-class="{{productionComplete ? 'text-decoration-line-through' : ''}}">
+                        Register Production
+                    </span>
+                    <span t-if="['lot', 'serial', 'mass_produce'].includes(trackingMode)">
+                        <button t-if="!props.production.data.lot_producing_id" class="btn"
+                                t-on-click.stop="generateSerialNumber">
+                            <i class="fa fa-2x fa-plus-square text-info"/>
+                        </button>
+                        <t t-else="" t-out="props.production.data.lot_producing_id[1]"/>
+                    </span>
+                    <span t-else="" t-on-click.stop="quickRegisterProduction">
+                            <span t-if="record.qty_producing &amp;&amp; record.qty_producing != record.product_qty">
+                                <t t-esc="record.qty_producing"/> /
+                            </span>
+                        <t t-out="quantityToProduce"/>
+                        <span class="ms-1">
+                            <t t-if="displayUOM" t-esc="uom"/>
+                            <t t-else="">Unit(s)</t>
+                        </span>
+                    </span>
+                </li>
+                <!-- Display a line to register each byproduct who isn't linked to a workorder.
+                Only displayed in the production card. -->
+                <t t-if="props.record.resModel == 'mrp.production'" t-foreach="byproductMoves" t-as="byproductMove" t-key="byproductMove.id">
+                    <t t-component="getComponent(byproductMove)" t-props="subRecordProps(byproductMove)" label="getByproductLabel(byproductMove)"/>
+                </t>
+            </ul>
+            <div class="card-footer d-flex p-0">
+                <t t-if="props.record.resModel=='mrp.production'" t-call="mrp_workorder.MrpDisplayProductionFooter"/>
+                <t t-if="props.record.resModel=='mrp.workorder'" t-call="mrp_workorder.MrpDisplayWorkorderFooter"/>
+                <button t-if="!state.underValidation" class="btn btn-secondary p-3 flex-grow-1 fa fa-bars" t-on-click="onClickOpenMenu"/>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="mrp_workorder.MrpDisplayProductionHeader" owl="1">
+        <t t-set="displayTrackingNumber" t-value="!['none', 'mass_produce'].includes(this.trackingMode)"/>
+        <span class="h5" t-esc="record.display_name"/>
+        <div>
+            <SelectionField name="'state'" record="props.record" readonly="true"/>
+        </div>
+    </t>
+    <t t-name="mrp_workorder.MrpDisplayWorkorderHeader" owl="1">
+        <span class="h5" t-esc="record.display_name"/>
+        <span class="text-capitalize d-flex flex-column ms-1">
+            <t t-if="record.state === 'confirmed'">Not started</t>
+            <t t-elif="record.state === 'to_close'">To close</t>
+            <MrpTimerField t-else="" name="'duration'" record="props.record" readonly="true"/>
+        </span>
+    </t>
+    <t t-name="mrp_workorder.MrpDisplayProductionFooter" owl="1">
+        <button t-if="displayDoneButton" class="btn btn-primary p-3 flex-grow-1"
+                t-on-click="onClickValidateButton" barcode_trigger="cloMO">
+            <t t-if="state.underValidation">Undo validation</t>
+            <t t-elif="trackingMode === 'mass_produce'">Mass Produce</t>
+            <t t-else="">Manufacturing Done</t>
+        </button>
+    </t>
+    <t t-name="mrp_workorder.MrpDisplayWorkorderFooter" owl="1">
+        <button t-if="displayDoneButton" class="btn btn-primary p-3 flex-grow-1"
+                t-on-click="onClickValidateButton" barcode_trigger="cloWO">
+            <t t-if="state.underValidation">Undo validation</t>
+            <t t-elif="record.is_last_unfinished_wo">Manufacturing Done</t>
+            <t t-else="">Done</t>
+        </button>
+    </t>
+</templates>

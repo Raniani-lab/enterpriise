@@ -2,7 +2,7 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class SendHmrcButton extends Component {
 
@@ -38,5 +38,9 @@ export class SendHmrcButton extends Component {
 
 }
 
+export const sendHmrcButton = {
+    component: SendHmrcButton,
+}
+
 SendHmrcButton.template = "l10n_uk_reports.SendHmrcButton";
-registry.category('view_widgets').add('send_hmrc_button', SendHmrcButton);
+registry.category('view_widgets').add('send_hmrc_button', sendHmrcButton);

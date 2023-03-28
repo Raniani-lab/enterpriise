@@ -129,7 +129,7 @@ class HmrcService(models.AbstractModel):
             if remote_needed: #no need when on a private network
                 gov_dict['Gov-Client-Public-IP'] = urls.url_quote(remote_address)
                 gov_dict['Gov-Client-Public-Port'] = urls.url_quote(str(environ.get('REMOTE_PORT')))
-            if self.env.user.totp_enabled:
+            if 'totp_enabled' in self.env.user._fields and self.env.user.totp_enabled:
                 # We can not percent encode the separator, so we have to split the string as such to percent encode each key and value
                 gov_dict['Gov-Client-Multi-Factor'] = "{}={type}&{}={time}&{}={unique}".format(
                     urls.url_quote('type'),
@@ -137,7 +137,7 @@ class HmrcService(models.AbstractModel):
                     urls.url_quote('unique-reference'),
                     type=urls.url_quote('TOTP'),
                     time=urls.url_quote(datetime.utcnow().isoformat(timespec='milliseconds')+'Z', unsafe=':'),  # We need to specify to percent encode ':'
-                    unique=urls.url_quote(self.env.user.l10n_uk_hmrc_unique_reference))
+                    unique=urls.url_quote(self.env.user._l10n_uk_hmrc_unique_reference()))
             gov_dict['Gov-Client-Timezone'] = utc_offset
             gov_dict['Gov-Client-Browser-JS-User-Agent'] = (environ.get('HTTP_USER_AGENT'))
             gov_dict['Gov-Vendor-Version'] = '&'.join([urls.url_quote("Odoo") + "=" + urls.url_quote(gov_vendor_version)]*2) # We can not percent encode the separator and we need to do it for the key and the value. Client and Server sides are the same
@@ -147,7 +147,7 @@ class HmrcService(models.AbstractModel):
             gov_dict['Gov-Client-Window-Size'] = f"width={client_data['window_width']}&height={client_data['window_height']}" if client_data else ''
             gov_dict['Gov-Client-Public-Ip-Timestamp'] = datetime.utcnow().isoformat(timespec='milliseconds')+'Z'
             gov_dict['Gov-Vendor-Product-Name'] = urls.url_quote("Odoo")
-            gov_dict['Gov-Client-Device-Id'] = client_data.get('hmrc_gov_client_device_id', '')
+            gov_dict['Gov-Client-Device-Id'] = client_data['hmrc_gov_client_device_id'] if client_data else ''
             gov_dict['Gov-Vendor-Forwarded'] = f"by={server_public_ip}&for={remote_address}"
             if public_ip_needed: # No need when on a private network
                 gov_dict['Gov-Vendor-Public-IP'] = server_public_ip

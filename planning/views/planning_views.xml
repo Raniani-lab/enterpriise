@@ -68,7 +68,7 @@
                 <field name="is_users_role" invisible="1"/>
                 <field name="request_to_switch" invisible="1"/>
                 <field name="repeat" invisible="1"/>
-                <div class="alert alert-info oe_edit_only mb-0" role="status" attrs="{'invisible': [('repeat', '=', False)]}">
+                <div class="alert alert-info oe_edit_only mb-0" role="status" attrs="{'invisible': ['|', ('id', '=', False), ('repeat', '=', False)]}">
                     <span class="ms-2 me-4">Edit</span>
                     <field name="recurrence_update" widget="radio" class="mb-0" options="{'horizontal': true}"/>
                 </div>
@@ -366,7 +366,7 @@
         <field name="name">planning.slot.calendar</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form_inherit)d" event_open_popup="true" quick_add="False" js_class="planning_calendar" mode="month" show_unusual_days="True">
+            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form_in_gantt)d" event_open_popup="true" quick_add="False" js_class="planning_calendar" mode="month" show_unusual_days="True">
                 <field name="resource_id" avatar_field="avatar_128" widget="many2one_avatar_resource"/>
                 <field name="resource_type" invisible="1"/>
                 <field name="is_hatched" invisible="1" />
@@ -409,7 +409,7 @@
         <field name="model">planning.slot</field>
         <field name="priority">25</field>
         <field name="arch" type="xml">
-            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form_inherit)d" event_open_popup="true" show_unusual_days="True" quick_add="False" js_class="planning_calendar" mode="month">
+            <calendar string="Planning" date_start="start_datetime" date_stop="end_datetime" color="color" form_view_id="%(planning_view_form_in_gantt)d" event_open_popup="true" show_unusual_days="True" quick_add="False" js_class="planning_calendar" mode="month">
                 <field name="name"/>
                 <field name="resource_id" avatar_field="avatar_128" widget="many2one_avatar_resource"/>
                 <field name="resource_type" invisible="1"/>

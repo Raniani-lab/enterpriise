@@ -1964,6 +1964,13 @@ QUnit.module("Views", (hooks) => {
             type: "map",
             resModel: "project.task",
             arch: `<map res_partner="partner_id" routing="1" />`,
+            searchViewArch: `
+                <search>
+                    <filter name="f_1" string="Filter 1" domain="[('name', '=', 'FooProject')]"/>
+                    <filter name="f_2" string="Filter 2" domain="[('name', '=', 'Foofezfezf')]"/>
+                    <filter name="f_3" string="Filter 3" domain="[('name', 'like', 'Project')]"/>
+                </search>
+            `,
             async mockRPC(route) {
                 switch (route) {
                     case "/web/dataset/call_kw/res.partner/search_read":
@@ -1984,12 +1991,8 @@ QUnit.module("Views", (hooks) => {
             "There should be a marker for two records"
         );
 
-        map.env.searchModel.setDomainParts({
-            test: {
-                domain: [["name", "=", "FooProject"]],
-            },
-        });
-        await nextTick();
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "Filter 1");
 
         assert.strictEqual(map.model.data.records.length, 1, "There should be 1 record");
         assert.containsNone(
@@ -2003,12 +2006,8 @@ QUnit.module("Views", (hooks) => {
             "There should be 1 marker on the map"
         );
 
-        map.env.searchModel.setDomainParts({
-            test: {
-                domain: [["name", "=", "Foofezfezf"]],
-            },
-        });
-        await nextTick();
+        await toggleMenuItem(target, "Filter 1");
+        await toggleMenuItem(target, "Filter 2");
 
         assert.strictEqual(map.model.data.records.length, 0, "There should be no record");
         assert.containsNone(
@@ -2022,12 +2021,8 @@ QUnit.module("Views", (hooks) => {
             "There should be 0 marker on the map"
         );
 
-        map.env.searchModel.setDomainParts({
-            test: {
-                domain: [["name", "like", "Project"]],
-            },
-        });
-        await nextTick();
+        await toggleMenuItem(target, "Filter 2");
+        await toggleMenuItem(target, "Filter 3");
 
         assert.strictEqual(map.model.data.records.length, 2, "There should be 2 record");
         assert.containsOnce(

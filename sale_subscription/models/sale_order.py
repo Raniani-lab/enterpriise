@@ -86,7 +86,8 @@ class SaleOrder(models.Model):
     is_batch = fields.Boolean(default=False, copy=False) # technical, batch of invoice processed at the same time
     is_invoice_cron = fields.Boolean(string='Is a Subscription invoiced in cron', default=False, copy=False)
     payment_exception = fields.Boolean("Contract in exception",
-                                       help="Automatic payment with token failed. The payment provider configuration and token should be checked")
+                                       help="Automatic payment with token failed. The payment provider configuration and token should be checked",
+                                       copy=False)
     payment_term_id = fields.Many2one(tracking=True)
 
     ###################

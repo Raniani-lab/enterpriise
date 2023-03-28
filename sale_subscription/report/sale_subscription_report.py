@@ -92,10 +92,10 @@ class SaleSubscriptionReport(models.Model):
 
     def action_open_subscription_order(self):
         self.ensure_one()
-        if self.order_id:
-            action = self.order_id._get_associated_so_action()
+        if self.order_reference._name == 'sale.order':
+            action = self.order_reference._get_associated_so_action()
             action['views'] = [(self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, 'form')]
-            action['res_id'] = self.order_id.id
+            action['res_id'] = self.order_reference.id
             return action
         return {
             'res_model': self._name,

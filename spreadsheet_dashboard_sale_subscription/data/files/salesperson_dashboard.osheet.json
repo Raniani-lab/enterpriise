@@ -354,48 +354,48 @@
         "C48": {
           "style": 8,
           "format": 2,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",1)",
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",1)",
           "border": 2
         },
         "C49": {
           "format": 2,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",2)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",2)"
         },
         "C50": {
           "style": 8,
           "format": 1,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",3)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",3)"
         },
         "C51": {
           "format": 1,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",4)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",4)"
         },
         "C52": {
           "style": 8,
           "format": 1,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",5)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",5)"
         },
         "C53": {
           "format": 1,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",6)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",6)"
         },
         "C54": {
           "style": 8,
           "format": 1,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",7)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",7)"
         },
         "C55": {
           "format": 1,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",8)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",8)"
         },
         "C56": {
           "style": 8,
           "format": 1,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",9)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",9)"
         },
         "C57": {
           "format": 1,
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",10)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",10)"
         },
         "D19": {
           "style": 7
@@ -1059,7 +1059,7 @@
           "content": "=ODOO.PIVOT(9,\"recurring_monthly\")"
         },
         "B7": {
-          "content": "=ODOO.PIVOT(9,\"order_id\")"
+          "content": "=ODOO.PIVOT(9,\"order_reference\")"
         },
         "C1": {
           "style": 9,
@@ -1239,40 +1239,40 @@
         },
         "C2": {
           "style": 11,
-          "content": "=ODOO.PIVOT.HEADER(10,\"measure\",\"order_id\")",
+          "content": "=ODOO.PIVOT.HEADER(10,\"measure\",\"order_reference\")",
           "border": 7
         },
         "C3": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",1)",
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",1)",
           "border": 6
         },
         "C4": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",2)",
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",2)",
           "border": 8
         },
         "C5": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",3)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",3)"
         },
         "C6": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",4)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",4)"
         },
         "C7": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",5)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",5)"
         },
         "C8": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",6)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",6)"
         },
         "C9": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",7)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",7)"
         },
         "C10": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",8)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",8)"
         },
         "C11": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",9)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",9)"
         },
         "C12": {
-          "content": "=ODOO.PIVOT(10,\"order_id\",\"#template_id\",10)"
+          "content": "=ODOO.PIVOT(10,\"order_reference\",\"#template_id\",10)"
         },
         "D1": {
           "border": 5
@@ -1865,7 +1865,7 @@
           "field": "recurring_monthly"
         },
         {
-          "field": "order_id"
+          "field": "order_reference"
         }
       ],
       "model": "sale.subscription.report",
@@ -1933,7 +1933,7 @@
           "field": "recurring_monthly"
         },
         {
-          "field": "order_id"
+          "field": "order_reference"
         }
       ],
       "model": "sale.subscription.report",

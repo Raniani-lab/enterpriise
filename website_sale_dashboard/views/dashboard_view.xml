@@ -19,7 +19,7 @@
             <field name="arch" type="xml">
                 <pivot string="Sales Analysis" display_quantity="1" sample="1">
                     <field name="categ_id" type="row"/>
-                    <field name="order_id" type="measure"/>
+                    <field name="order_reference" type="measure"/>
                     <field name="price_subtotal" type="measure"/>
                     <field name="price_total" type="measure"/>
                 </pivot>
@@ -32,7 +32,7 @@
             <field name="inherit_id" ref="website_sale.sale_report_view_search_website"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='product_id']" position="before">
-                    <field name="order_id"/>
+                    <field name="order_reference"/>
                 </xpath>
 
                 <xpath expr="//filter[@name='confirmed']" position="after">

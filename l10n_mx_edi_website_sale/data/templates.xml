@@ -67,6 +67,9 @@
                                         <h2 class="o_page_header mt8">Required additional fields</h2>
                                         <div class="card">
                                             <div class="card-body">
+                                                <t t-if="errors" t-foreach="errors.values()" t-as="err">
+                                                    <h5 class="text-danger" t-esc="err" />
+                                                </t>
                                                 <div class="row">
                                                     <div class="mb-3 col-12 col-xl-6">
                                                         <p class="mb-3">Do you need an invoice?</p>
@@ -99,6 +102,17 @@
                                                 <!-- Hide the additional fields by default, unless need_invoice: 'yes' is checked -->
                                                 <div class="row div_l10n_mx_edi_additional_fields"
                                                      t-att-style="default_vals.get('need_invoice') or 'display: none'">
+                                                    <div t-attf-class="mb-3 #{errors.get('vat') and 'o_has_error' or ''} col-12 col-xl-7">
+                                                        <label class="col-form-label" for="vat">RFC</label>
+                                                        <input type="text" name="vat"
+                                                               t-attf-class="form-control #{errors.get('vat') and 'is-invalid' or ''}"
+                                                               t-att-value="default_vals.get('vat')"
+                                                               t-att-readonly="not can_edit_vat"/>
+                                                        <small t-if="not can_edit_vat" class="form-text text-muted">
+                                                            Changing VAT number is not allowed once document(s) have been
+                                                            issued for your account. Please contact us directly for this operation.
+                                                        </small>
+                                                    </div>
                                                     <t t-foreach="l10n_mx_edi_fields" t-as="field">
                                                         <t t-value="default_vals.get(field.name)" t-set="val"/>
                                                         <div class="mb-3 col-12 col-xl-7">

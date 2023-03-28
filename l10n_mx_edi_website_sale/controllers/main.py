@@ -1,15 +1,14 @@
 # coding: utf-8
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 from odoo.http import request
-from odoo import http
+from odoo import http, _
 
 
 class WebsiteSaleL10nMX(WebsiteSale):
 
     def _l10n_mx_edi_is_extra_info_needed(self):
         order = request.website.sale_get_order()
-        return order.company_id.country_code == 'MX' \
-               and request.env['ir.config_parameter'].sudo().get_param('sale.automatic_invoice') == 'True'
+        return order.company_id.country_code == 'MX'
 
     def _cart_values(self, **kw):
         # OVERRIDE: Add flag in cart template (step 10)
@@ -67,6 +66,8 @@ class WebsiteSaleL10nMX(WebsiteSale):
         if redirection:
             return redirection
 
+        partner = order.partner_id
+
         l10n_mx_edi_fields = [
             request.env['ir.model.fields']._get('res.partner', 'l10n_mx_edi_fiscal_regime'),
             request.env['ir.model.fields']._get('account.move', 'l10n_mx_edi_usage'),
@@ -76,27 +77,42 @@ class WebsiteSaleL10nMX(WebsiteSale):
         # === GET ===
         default_vals = {}
         if request.httprequest.method == 'GET':
+            default_vals['vat'] = partner.vat
             default_vals['need_invoice'] = not order.l10n_mx_edi_cfdi_to_public
-            default_vals['l10n_mx_edi_fiscal_regime'] = order.partner_id.l10n_mx_edi_fiscal_regime
+            default_vals['l10n_mx_edi_fiscal_regime'] = partner.l10n_mx_edi_fiscal_regime
             default_vals['l10n_mx_edi_usage'] = order.l10n_mx_edi_usage
-            default_vals['l10n_mx_edi_no_tax_breakdown'] = order.partner_id.l10n_mx_edi_no_tax_breakdown
+            default_vals['l10n_mx_edi_no_tax_breakdown'] = partner.l10n_mx_edi_no_tax_breakdown
 
         # === POST & possibly redirect ===
+        can_edit_vat = partner.can_edit_vat()
+        errors = {}
         if request.httprequest.method == 'POST':
             order.l10n_mx_edi_cfdi_to_public = kw.get('need_invoice') != '1'
             if kw.get('need_invoice') == '1':
                 default_vals = {
+                    'vat': kw.get('vat'),
                     'need_invoice': True,
                     'l10n_mx_edi_fiscal_regime': kw.get('l10n_mx_edi_fiscal_regime'),
                     'l10n_mx_edi_usage': kw.get('l10n_mx_edi_usage'),
                     'l10n_mx_edi_no_tax_breakdown': kw.get('l10n_mx_edi_no_tax_breakdown') == 'on',
                 }
-                if default_vals['l10n_mx_edi_fiscal_regime']:
-                    order.partner_id.l10n_mx_edi_fiscal_regime = default_vals['l10n_mx_edi_fiscal_regime']
-                if default_vals['l10n_mx_edi_usage']:
-                    order.l10n_mx_edi_usage = default_vals['l10n_mx_edi_usage']
-                order.partner_id.l10n_mx_edi_no_tax_breakdown = default_vals['l10n_mx_edi_no_tax_breakdown']
-                if default_vals['l10n_mx_edi_fiscal_regime'] and default_vals['l10n_mx_edi_usage']:
+                partner_vals = {}
+                # VAT field
+                if not default_vals['vat']:
+                    errors['vat'] = _("The VAT number is required")
+                elif can_edit_vat:
+                    if request.env['res.partner']._run_vat_test(default_vals['vat'], partner.country_id, partner.is_company) is False:
+                        errors['vat'] = partner._build_vat_error_message(partner.country_id.code.lower(), default_vals['vat'], partner.name)
+                    else:
+                        partner_vals['vat'] = default_vals['vat']
+                # Other fields
+                order.l10n_mx_edi_usage = default_vals['l10n_mx_edi_usage']
+                partner_vals.update({
+                    'l10n_mx_edi_fiscal_regime': default_vals['l10n_mx_edi_fiscal_regime'],
+                    'l10n_mx_edi_no_tax_breakdown': default_vals['l10n_mx_edi_no_tax_breakdown'],
+                })
+                partner.write(partner_vals)
+                if not errors:
                     return request.redirect("/shop/confirm_order")
             else:
                 return request.redirect("/shop/confirm_order")
@@ -106,12 +122,14 @@ class WebsiteSaleL10nMX(WebsiteSale):
             'request': request,
             'website_sale_order': order,
             'post': kw,
-            'partner': order.partner_id.id,
+            'partner': partner.id,
             'order': order,
             'l10n_mx_edi_fields': l10n_mx_edi_fields,
             'company_country_code': order.company_id.country_id.code,
             'default_vals': default_vals,
+            'errors': errors,
             # flag for rendering the 'Extra Info' dot in the wizard_checkout
             'l10n_mx_show_extra_info': True,
+            'can_edit_vat': can_edit_vat,
         }
         return request.render("l10n_mx_edi_website_sale.l10n_mx_edi_invoicing_info", values)

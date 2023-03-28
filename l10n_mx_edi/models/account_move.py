@@ -4,7 +4,7 @@ from odoo import api, fields, models, tools, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_repr
 from odoo.tools.sql import column_exists, create_column
-from .extra_timezones import TIEMPO_DEL_CENTRO_ZIPCODES, TIEMPO_DEL_NOROESTE_ZIPCODES, TIEMPO_DEL_CENTRO_EN_FRONTIERA_ZIPCODES
+from .extra_timezones import TIEMPO_DEL_CENTRO_ZIPCODES, TIEMPO_DEL_CENTRO_EN_FRONTIERA_ZIPCODES
 
 import base64
 import requests
@@ -308,24 +308,24 @@ class AccountMove(models.Model):
 
         # northwest area
         if code == 'BCN':
-            return timezone('America/Tijuana')
+            return timezone('America/Tijuana') # UTC-8 (-7 DST)
         # Southeast area
         elif code == 'ROO':
-            return timezone('America/Cancun')
-        # Tiempo del noroeste areas
-        elif code == 'CHH' and zipcode in TIEMPO_DEL_NOROESTE_ZIPCODES:
-            return timezone('America/Ojinaga')
+            return timezone('America/Bogota') # UTC-5
+        # East Chihuahua
+        elif code == 'CHH' and zipcode in TIEMPO_DEL_CENTRO_EN_FRONTIERA_ZIPCODES:
+            return timezone('America/Boise') # UTC-7 (-6 DST)
         # Tiempo del centro areas
         elif code == 'NAY' and zipcode in TIEMPO_DEL_CENTRO_ZIPCODES:
-            return timezone('America/Bahia_Banderas')
+            return timezone('America/Guatemala') # UTC-6
         # Tiempo del centro en frontiera areas
         elif code in ('TAM', 'NLE', 'COA') and zipcode in TIEMPO_DEL_CENTRO_EN_FRONTIERA_ZIPCODES:
-            return timezone('America/Matamoros')
+            return timezone('America/Matamoros') # UTC-6 (-5 DST)
         # Pacific area
         elif code in ('SON', 'BCS', 'SIN', 'NAY'):
-            return timezone('America/Mazatlan')
+            return timezone('America/Hermosillo') # UTC-7
         # By default, takes the central area timezone
-        return timezone('America/Mexico_City')
+        return timezone('America/Guatemala') # UTC-6
 
     @api.model
     def _l10n_mx_edi_is_managing_invoice_negative_lines_allowed(self):

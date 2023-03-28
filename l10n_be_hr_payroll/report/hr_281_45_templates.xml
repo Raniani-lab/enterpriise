@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-6 border">
                                 <div class="fw-bold">2a. Income recipient</div>
-                                <div class="ms-4" t-esc="data['f2013_naam']"/>
+                                <div class="ms-4" t-esc="data['employee'].name"/>
                                 <div class="ms-4" t-esc="data['f2015_adres']"/>
                                 <div class="ms-4" >
                                     <span t-esc="data['employee_city']"/>

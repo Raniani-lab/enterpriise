@@ -6,8 +6,8 @@
                 <i class="fa fa-circle-o-notch fa-2x fa-spin" title="loader" role="img"/>
             </div>
         </t>
-        <t t-else="">
-            <div t-if="!state.is_sync &amp;&amp; state.parent_name" class="o_knowledge_permission_panel d-flex align-items-center px-3 py-1 my-1 bg-light">
+        <div t-else="" class="o_knowledge_permission_panel">
+            <div t-if="!state.is_sync and state.parent_name" class="d-flex align-items-center px-3 py-1 my-1 bg-light">
                 <div class="o_knowledge_share_panel_icon d-flex justify-content-center align-items-center flex-shrink-0">
                     <i class="fa fa-shield fa-2x"/>
                 </div>
@@ -143,6 +143,6 @@
             <div t-if="state.show_admin_tip" class="d-flex align-items-center px-3 py-1 my-1 bg-light text-muted">
                 <i><i class="fa fa-cog me-2"/>As an administrator, you can always modify this article and its members.</i>
             </div>
-        </t>
+        </div>
     </t>
 </templates>

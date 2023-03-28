@@ -83,9 +83,8 @@
                             <i class="fa fa-share-alt me-1"/>Share
                         </a>
                         <div role="menu" t-on-click.stop="" aria-labelledby="dropdown_share_panel" t-attf-class="o_knowledge_share_panel dropdown-menu user-select-none">
-                            <div t-if="state.displaySharePanel and props.record.data.id and props.record.data.active">
-                                <PermissionPanel record="props.record" article_id="props.record.data.id" user_permission="props.record.data.user_permission" renderTree="this.env._renderTree" />
-                            </div>
+                            <PermissionPanel t-if="state.displaySharePanel and props.record.data.id and props.record.data.active"
+                                record="props.record" article_id="props.record.data.id" user_permission="props.record.data.user_permission" renderTree="this.env._renderTree" />
                         </div>
                     </div>
                     <a role="button" class="btn btn-light o_toggle_favorite me-1" t-on-click="env.toggleFavorite" t-if="props.record.data.id" data-hotkey="t">

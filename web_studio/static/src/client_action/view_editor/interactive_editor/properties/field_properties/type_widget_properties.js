@@ -1,130 +1,11 @@
 /** @odoo-module */
 
 import { Component } from "@odoo/owl";
+import { registry } from "@web/core/registry";
+import { memoize } from "@web/core/utils/functions";
 import { Property } from "@web_studio/client_action/view_editor/property/property";
-import { FIELD_PROPERTIES } from "./field_properties_data";
-import { _lt } from "@web/core/l10n/translation";
 import { getWowlFieldWidgets } from "@web_studio/client_action/view_editor/editors/utils";
-
-const imageSizes = {
-    small: { label: _lt("Small"), value: "[0,90]" },
-    medium: { label: _lt("Medium"), value: "[0,180]" },
-    large: { label: _lt("Large"), value: "[0,270]" },
-};
-
-const FIELD_TYPE_PROPERTIES = {
-    many2many: {
-        common: [FIELD_PROPERTIES.no_create, FIELD_PROPERTIES.domain, FIELD_PROPERTIES.context],
-    },
-    many2one: {
-        common: [
-            FIELD_PROPERTIES.no_create,
-            FIELD_PROPERTIES.no_open,
-            FIELD_PROPERTIES.domain,
-            FIELD_PROPERTIES.context,
-        ],
-    },
-    monetary: {
-        list: [FIELD_PROPERTIES.aggregate],
-    },
-    integer: {
-        list: [FIELD_PROPERTIES.aggregate],
-    },
-};
-
-// By default, any widget inherit the properties of its field type
-const FIELD_WIDGET_PROPERTIES = {
-    boolean_icon: {
-        common: [
-            {
-                name: "icon",
-                string: _lt("Icon"),
-                type: "string",
-            },
-        ],
-    },
-    product_configurator: {
-        common: [FIELD_PROPERTIES.no_create, FIELD_PROPERTIES.no_open],
-    },
-    many2many_tags: {
-        common: [
-            {
-                name: "color_field",
-                string: _lt("Use colors"),
-                type: "boolean",
-            },
-        ],
-    },
-    radio: {
-        common: [
-            {
-                name: "horizontal",
-                string: _lt("Display horizontally"),
-                type: "boolean",
-            },
-        ],
-    },
-    signature: {
-        common: [
-            {
-                name: "full_name",
-                string: _lt("Auto-complete with"),
-                type: "selection",
-            },
-        ],
-    },
-    daterange: {
-        common: [
-            {
-                name: "related_start_date",
-                string: _lt("Related Start Date"),
-                type: "selection",
-            },
-            {
-                name: "related_end_date",
-                string: _lt("Related End Date"),
-                type: "selection",
-            },
-        ],
-    },
-    phone: {
-        common: [
-            {
-                name: "enable_sms",
-                string: _lt("Enable SMS"),
-                type: "boolean",
-                getValue(node) {
-                    const attrs = node.attrs;
-                    return attrs.options && "enable_sms" in attrs.options
-                        ? attrs.options.enable_sms
-                        : true;
-                },
-            },
-        ],
-    },
-    image: {
-        common: [
-            {
-                name: "size",
-                string: _lt("Size"),
-                type: "selection",
-                getChoices() {
-                    return Object.values(imageSizes);
-                },
-                getValue(node) {
-                    const size = node.attrs.options?.size;
-                    if (size) {
-                        const stringSize = JSON.stringify(size);
-                        const choice = Object.entries(imageSizes).find(([s, def]) => {
-                            return def.value === stringSize;
-                        });
-                        return choice ? choice[1].value : "";
-                    }
-                },
-            },
-        ],
-    },
-};
+import { EDITABLE_ATTRIBUTES, FIELD_TYPE_ATTRIBUTES } from "./field_type_properties";
 
 export class TypeWidgetProperties extends Component {
     static template =
@@ -135,8 +16,32 @@ export class TypeWidgetProperties extends Component {
         onChangeAttribute: { type: Function },
     };
 
+    setup() {
+        this._getAvailableFields = memoize(() => {
+            const fields = this.env.viewEditorModel.fields;
+            const activeFields = this.env.viewEditorModel.controllerProps.archInfo.activeFields;
+            return Object.keys(activeFields).map((fName) => {
+                const field = fields[fName];
+                field.name = field.name || fName;
+                return field;
+            });
+        });
+    }
+
     get attributesOfTypeSelection() {
         return this.getWidgetAttributes("selection");
+    }
+
+    get attributesOfTypeField() {
+        const fieldAttributes = this.getWidgetAttributes("field");
+        if (fieldAttributes.length) {
+            const fields = this._getAvailableFields();
+            fieldAttributes.forEach((attribute) => {
+                attribute.choices = this.getFieldChoices(attribute, fields);
+            });
+            return fieldAttributes;
+        }
+        return [];
     }
 
     get attributesOfTypeBoolean() {
@@ -149,6 +54,15 @@ export class TypeWidgetProperties extends Component {
 
     get attributesOfTypeString() {
         return this.getWidgetAttributes("string");
+    }
+
+    get supportedOptions() {
+        const widgetName = this.props.node.attrs?.widget || this.props.node.field.type;
+        const fieldRegistry = registry.category("fields").content;
+        const widgetDescription =
+            fieldRegistry[this.env.viewEditorModel.viewType + "." + widgetName] ||
+            fieldRegistry[widgetName];
+        return widgetDescription?.[1].supportedOptions || [];
     }
 
     /**
@@ -179,20 +93,15 @@ export class TypeWidgetProperties extends Component {
     get _attributesForCurrentTypeAndWidget() {
         const node = this.props.node;
         const fieldType = node.field.type;
-        const widget = node.attrs.widget;
         const { viewType } = this.env.viewEditorModel;
 
-        const fieldCommonViewsProperties = FIELD_TYPE_PROPERTIES[fieldType]?.common || [];
-        const fieldSpecificViewProperties = FIELD_TYPE_PROPERTIES[fieldType]?.[viewType] || [];
-
-        const widgetCommonViewsProperties = FIELD_WIDGET_PROPERTIES[widget]?.common || [];
-        const widgetSpecificViewProperties = FIELD_WIDGET_PROPERTIES[widget]?.[viewType] || [];
+        const fieldCommonViewsProperties = FIELD_TYPE_ATTRIBUTES[fieldType]?.common || [];
+        const fieldSpecificViewProperties = FIELD_TYPE_ATTRIBUTES[fieldType]?.[viewType] || [];
 
         return [
             ...fieldCommonViewsProperties,
             ...fieldSpecificViewProperties,
-            ...widgetCommonViewsProperties,
-            ...widgetSpecificViewProperties,
+            ...this.supportedOptions,
         ];
     }
 
@@ -202,47 +111,69 @@ export class TypeWidgetProperties extends Component {
      */
     getWidgetAttributes(type) {
         return this._attributesForCurrentTypeAndWidget
-            .filter((o) => o.type === type)
-            .map((o) => this.getProperty(o));
+            .filter((attribute) => attribute.type === type)
+            .map((attribute) => {
+                if (EDITABLE_ATTRIBUTES[attribute.name]) {
+                    return this.getPropertyFromAttributes(attribute);
+                }
+                return this.getPropertyFromOptions(attribute);
+            });
     }
 
-    getSelectionChoices(attribute) {
-        if (attribute.name === "full_name") {
-            return this.getFullNameChoices(attribute);
-        } else {
-            return attribute.getChoices();
+    getFieldChoices(attribute, fields) {
+        if (attribute.availableTypes) {
+            return fields
+                .filter((f) => attribute.availableTypes.includes(f.type))
+                .map((f) => {
+                    return {
+                        label: this.env.debug ? `${f.string} (${f.name})` : f.string,
+                        value: f.name,
+                    };
+                });
         }
+        return fields;
     }
 
-    getProperty(attribute) {
+    /**
+     * Compute the property and its value from one or more attributes on the node
+     */
+    getPropertyFromAttributes(property) {
         let value;
-        if (attribute.getValue) {
-            value = attribute.getValue(this.props.node);
-        } else if (!attribute.isNodeAttribute) {
-            value = this.props.node.attrs.options?.[attribute.name];
-        } else {
-            value = this.props.node.attrs[attribute.name];
+        value = this.props.node.attrs[property.name];
+        if (property.getValue) {
+            const attrs = this.props.node.attrs || {};
+            const field = this.props.node.field || {};
+            value = property.getValue({ attrs, field });
+        }
+        if (value === undefined && property.default) {
+            value = property.default;
         }
         return {
-            ...attribute,
+            ...property,
             value,
         };
     }
 
-    getFullNameChoices() {
-        const vem = this.env.viewEditorModel;
-        const fields = vem.fields;
-        return Object.entries(vem.controllerProps.archInfo.activeFields)
-            .filter(([fname]) => {
-                return ["char", "many2one"].includes(fields[fname].type);
-            })
-            .map(([fname, activeField]) => {
-                const fstring = activeField.string || fields[fname].string;
-                return {
-                    value: fname,
-                    label: odoo.debug ? `${fstring} (${fname})` : fstring,
-                };
-            });
+    /**
+     * Compute the property and its value from the `options` attribute on the node
+     */
+    getPropertyFromOptions(property) {
+        let value;
+        value = this.props.node.attrs.options?.[property.name];
+        if (property.type === "string") {
+            value = JSON.stringify(value);
+        }
+        if (value === undefined && property.default) {
+            value = property.default;
+        }
+        return {
+            ...property,
+            value,
+        };
+    }
+
+    getSelectValue(value) {
+        return typeof value === "object" ? JSON.stringify(value) : value;
     }
 
     onChangeWidget(value) {
@@ -253,17 +184,18 @@ export class TypeWidgetProperties extends Component {
         const currentProperty = this._attributesForCurrentTypeAndWidget.find(
             (e) => e.name === name
         );
-        if (currentProperty.isNodeAttribute) {
+        if (EDITABLE_ATTRIBUTES[name]) {
             return this.props.onChangeAttribute(value, name);
         }
         const options = { ...this.props.node.attrs.options };
         if (value || currentProperty.type === "boolean") {
-            options[name] = ["[", "{"].includes(value[0]) ? JSON.parse(value) : value;
+            if (["[", "{"].includes(value[0]) || !isNaN(value)) {
+                options[name] = JSON.parse(value);
+            } else {
+                options[name] = value;
+            }
         } else {
             delete options[name];
-        }
-        if (name === "color_field" && !value) {
-            delete options.color_field;
         }
         this.props.onChangeAttribute(JSON.stringify(options), "options");
     }

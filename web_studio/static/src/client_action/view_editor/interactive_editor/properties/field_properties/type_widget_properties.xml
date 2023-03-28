@@ -11,15 +11,28 @@
         Widget
     </Property>
 
+    <t t-foreach="attributesOfTypeField" t-as="attribute" t-key="attribute.name">
+        <Property
+            name="attribute.name"
+            type="'selection'"
+            value="getSelectValue(attribute.value)"
+            childProps="{choices:attribute.choices}"
+            onChange.bind="onChangeProperty"
+            tooltip="attribute.help"
+        >
+            <t t-esc="attribute.label"/>
+        </Property>
+    </t>
     <t t-foreach="attributesOfTypeSelection" t-as="attribute" t-key="attribute.name">
         <Property
             name="attribute.name"
             type="attribute.type"
-            value="attribute.value"
-            childProps="{choices:getSelectionChoices(attribute)}"
+            value="getSelectValue(attribute.value)"
+            childProps="{choices:attribute.choices}"
             onChange.bind="onChangeProperty"
+            tooltip="attribute.help"
         >
-            <t t-esc="attribute.string"/>
+            <t t-esc="attribute.label"/>
         </Property>
     </t>
     <t t-foreach="attributesOfTypeBoolean" t-as="attribute" t-key="attribute.name">
@@ -28,8 +41,9 @@
             type="attribute.type"
             value="attribute.value"
             onChange.bind="onChangeProperty"
+            tooltip="attribute.help"
         >
-            <t t-esc="attribute.string"/>
+            <t t-esc="attribute.label"/>
         </Property>
     </t>
     <t t-foreach="attributesOfTypeDomain" t-as="attribute" t-key="attribute.name">
@@ -39,8 +53,9 @@
             value="attribute.value.domain"
             onChange.bind="onChangeProperty"
             childProps="{relation: attribute.value.relation}"
+            tooltip="attribute.help"
         >
-            <t t-esc="attribute.string"/>
+            <t t-esc="attribute.label"/>
         </Property>
     </t>
     <t t-foreach="attributesOfTypeString" t-as="attribute" t-key="attribute.name">
@@ -49,8 +64,9 @@
             type="attribute.type"
             value="attribute.value"
             onChange.bind="onChangeProperty"
+            tooltip="attribute.help"
         >
-            <t t-esc="attribute.string"/>
+            <t t-esc="attribute.label"/>
         </Property>
     </t>
 </t>

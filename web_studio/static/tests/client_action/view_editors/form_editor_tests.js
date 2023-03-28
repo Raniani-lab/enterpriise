@@ -278,7 +278,7 @@ QUnit.module("View Editors", (hooks) => {
     });
 
     QUnit.test("image field edition (change size)", async function (assert) {
-        assert.expect(9);
+        assert.expect(10);
 
         const arch = `
                 <form>
@@ -359,6 +359,11 @@ QUnit.module("View Editors", (hooks) => {
         assert.verifySteps(
             ["edit_view", "image, width: undefined, height: 270, previewImage: coucou"],
             "the image should have been fetched again"
+        );
+        assert.strictEqual(
+            target.querySelector(".o_web_studio_property_size .text-start").textContent,
+            "Large",
+            "The image size should be correctly selected"
         );
     });
 
@@ -1444,7 +1449,7 @@ QUnit.module("View Editors", (hooks) => {
         assert.containsN(
             target,
             ".o_web_studio_property",
-            7,
+            8,
             "the sidebar should now display the field properties"
         );
 

@@ -5,6 +5,7 @@
         <div t-if="props.type === 'selection'" class="o_web_studio_property o_web_studio_sidebar_select mt-2 mb-2" t-att-class="className" t-att-name="props.name">
             <label t-att-for="props.name">
                 <t t-slot="default" />
+                <sup t-if="props.tooltip" class="text-info p-1" t-att-data-tooltip="props.tooltip" t-esc="'?'"/>
             </label>
             <t t-set="choices" t-value="props.childProps.choices" />
             <SelectMenu t-if="choices"
@@ -28,6 +29,7 @@
                     onChange="(value) => this.props.onChange(value, this.props.name)"
                 >
                     <t t-slot="default" />
+                    <sup t-if="props.tooltip" class="text-info p-1" t-att-data-tooltip="props.tooltip" t-esc="'?'"/>
                 </CheckBox>
                 <a t-if="props.isConditional" t-on-click.prevent.stop="onConditionalButtonClicked" role="button" href="#" data-type="invisible" class="btn btn-link o_web_studio_attrs ms-auto">
                     Conditional
@@ -37,6 +39,7 @@
         <div t-elif="props.type === 'domain'" class="o_web_studio_property o_web_studio_sidebar_text mt-3 d-flex flex-column" t-att-class="props.class">
             <label t-att-for="props.name">
                 <t t-slot="default" />
+                <sup t-if="props.tooltip" class="text-info p-1" t-att-data-tooltip="props.tooltip" t-esc="'?'"/>
             </label>
             <span t-if="props.isReadonly" t-att-name="props.name" t-esc="props.value" />
             <input
@@ -53,6 +56,7 @@
         <div t-else="" class="o_web_studio_property o_web_studio_sidebar_text mt-3 d-flex flex-column" t-att-class="props.class">
             <label t-att-for="props.name">
                 <t t-slot="default" />
+                <sup t-if="props.tooltip" class="text-info p-1" t-att-data-tooltip="props.tooltip" t-esc="'?'"/>
             </label>
             <span t-if="props.isReadonly" t-att-name="props.name" t-esc="props.value" class="text-white mb-1 ps-1" />
             <input

@@ -34,7 +34,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         batch.print_batch_payment()
         self.assertRecordValues(batch, [{'state': 'sent'}])
 
-        st_line = self._create_st_line(1000.0, payment_ref=f"turlututu{batch.name}tsointsoin", partner_id=self.partner_a.id)
+        st_line = self._create_st_line(1000.0, payment_ref=f"turlututu {batch.name} tsointsoin", partner_id=self.partner_a.id)
 
         # Create a rule matching the batch payment.
         self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()

@@ -471,14 +471,14 @@
                             <a t-att-href="subscription.get_portal_url()"><t t-esc="subscription.display_name"/></a>
                         </td>
                         <td class="text-center">
-                            <t t-esc="subscription.next_invoice_date" t-if="subscription.subscription_state == '3_progress' and subscription.next_invoice_date &lt;= datetime.date.today()"
+                            <t t-esc="subscription.next_invoice_date" t-if="subscription.subscription_state == '3_progress' and subscription.next_invoice_date &lt; datetime.date.today()"
                                class="text-danger"/>
                             <t t-esc="subscription.next_invoice_date" t-else=""/>
                         </td>
                         <td class="text-center"><t t-esc="subscription.recurrence_id.name"/></td>
                         <td class="text-end"><span t-esc="subscription.amount_total" t-options="{'widget': 'monetary', 'display_currency': subscription.currency_id}"/></td>
                         <td class="text-center" id="subscription_state">
-                            <t t-if="subscription.subscription_state in ['3_progress', '4_paused'] and subscription.next_invoice_date &lt;= datetime.date.today()">
+                            <t t-if="subscription.subscription_state in ['3_progress', '4_paused'] and subscription.next_invoice_date &lt; datetime.date.today()">
                                 <span class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-repeat"/> To Renew</span>
                             </t>
                             <t t-elif="subscription.subscription_state in ['3_progress', '4_paused']">

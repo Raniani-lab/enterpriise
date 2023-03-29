@@ -17,16 +17,14 @@ export default class AppointmentOnboardingAppointmentTypeFormController extends 
      */
     async saveButtonClicked() {
         await super.saveButtonClicked();
-        const validationResponse = await this.orm.call(
+        await this.orm.call(
             'onboarding.onboarding.step',
             'action_validate_step',
             ['appointment.appointment_onboarding_create_appointment_type_step']
         );
         this.env.dialogData.close();
-        //refresh the view below the onboarding panel
-        if (["JUST_DONE", "NOT_FOUND"].includes(validationResponse)) {
-            this.actionService.restore(this.actionService.currentController.jsId);
-        }
+        // refresh the view below the onboarding panel as we may have created a record
+        this.actionService.restore(this.actionService.currentController.jsId);
     }
     /**
      * Close modal on discard.

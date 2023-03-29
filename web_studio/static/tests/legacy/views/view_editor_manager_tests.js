@@ -3628,6 +3628,42 @@ QUnit.module('ViewEditorManager', {
             "there should be no node");
     });
 
+    QUnit.test('empty search editor: drag a groupby', async function (assert) {
+        assert.expect(3);
+        this.data.coucou.fields.write_date.store = true;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `<search/>`,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.deepEqual(_.pick(args.operations[0].node.attrs, ["context", "create_group", "string"]),
+                        {
+                            string: "Last Modified on",
+                            context: "{'group_by': 'write_date'}",
+                            create_group: true,
+                        });
+                    return getCurrentMockServer()._mockReturnView(`
+                        <search>
+                            <group name="studio_group_by">
+                                <filter name="studio_group_by_abcdef" string="Last Updated on" context="{'group_by': 'write_date'}" />
+                            </group>
+                        </search>`, "coucou");
+                }
+            },
+        });
+
+        await testUtils.nextTick();
+        await testUtils.dom.dragAndDrop(
+            vem.$('.o_web_studio_existing_fields > .ui-draggable[title="Last Modified on"]'),
+            vem.$('.o_web_studio_search_group_by')
+        );
+        await testUtils.nextTick();
+
+        assert.containsOnce(vem, ".o_web_studio_search_group_by.table [data-node-id]");
+        assert.strictEqual(vem.$(".o_web_studio_search_group_by.table [data-node-id]").text().trim(), "Last Updated on");
+    });
+
     QUnit.test('search editor', async function (assert) {
         assert.expect(14);
 

@@ -719,6 +719,35 @@ class Payslip(models.Model):
                     'action': self._dashboard_default_action(invalid_address_str, 'res.partner', invalid_addresses.ids),
                 })
 
+            # SICK MORE THAN 30 DAYS
+            sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
+            partial_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_part_sick')
+            long_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_long_sick')
+            sick_work_entry_types = sick_work_entry_type + partial_sick_work_entry_type + long_sick_work_entry_type
+
+            sick_more_than_30days_leave = self.env['hr.leave'].search([
+                ('employee_company_id', '=', self.env.company.id),
+                ('date_from', '<=', date.today() + relativedelta(days=-31)),
+                ('holiday_status_id.work_entry_type_id', 'in', sick_work_entry_types.ids),
+                ('state', '=', 'validate'),
+            ])
+
+            employees_on_long_sick_leave = []
+            employee_ids = sick_more_than_30days_leave.mapped('employee_id').ids
+            for employee_id in employee_ids:
+                employee_leaves = sick_more_than_30days_leave.filtered(lambda l: l.employee_id.id == employee_id)
+                total_duration = sum([(leave.date_to - leave.date_from).days for leave in employee_leaves])
+                if total_duration > 30:
+                    employees_on_long_sick_leave.append(employee_id)
+
+            sick_more_than_30days_str = _('Employee on Mutual Health (> 30 days Illness)')
+            if employees_on_long_sick_leave:
+                res.append({
+                    'string': sick_more_than_30days_str,
+                    'count': len(employees_on_long_sick_leave),
+                    'action': self._dashboard_default_action(sick_more_than_30days_str, 'hr.employee', employees_on_long_sick_leave),
+                })
+
         return res
 
     def _get_ffe_contribution_rate(self, worker_count):

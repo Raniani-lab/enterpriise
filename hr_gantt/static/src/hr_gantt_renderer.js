@@ -21,7 +21,8 @@ export class HrGanttRenderer extends GanttRenderer {
         const { groupedByField, name, resId } = row;
         if (groupedByField === "employee_id" && Boolean(resId)) {
             const { fields } = this.model.metaData;
-            const resModel = fields.employee_id.relation;
+            const relation = fields.employee_id.relation;
+            const resModel = relation === 'hr.employee' ? 'hr.employee.public' : relation;
             this.rowsWithAvatar[row.id] = { resModel, resId, displayName: name };
         }
         return super.processRow(...arguments);

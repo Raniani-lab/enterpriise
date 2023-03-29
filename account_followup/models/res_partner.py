@@ -89,12 +89,7 @@ class ResPartner(models.Model):
         elif isinstance(value, (int, list, tuple)):
             domain = [('id', operator, value)]
 
-        first_followup_line = self.env['account_followup.followup.line'].search(company_domain, order="delay asc", limit=1)
         line_ids = set(self.env['account_followup.followup.line'].search(domain+company_domain).ids)
-        if first_followup_line.id in line_ids:
-            # If we are searching for the 1st followup line, we also have to include None (aka no followup level at all)
-            # The result from the query is None when a partner is not yet at a followup level
-            line_ids.add(None)
 
         followup_data = self._query_followup_data(all_partners=True)
 
@@ -123,33 +118,11 @@ class ResPartner(models.Model):
     @api.depends('unreconciled_aml_ids', 'followup_next_action_date')
     @api.depends_context('company', 'allowed_company_ids')
     def _compute_followup_status(self):
-        followup_lines_info = self._get_followup_lines_info()
-        today = fields.Date.context_today(self)
+        all_data = self._query_followup_data()
         for partner in self:
-            max_followup = partner._included_unreconciled_aml_max_followup()
-            max_aml_delay = max_followup.get('max_delay') or 0
-            next_followup_delay = max_followup.get('next_followup_delay') or 0
-            has_overdue_invoices = max_followup.get('has_overdue_invoices')
-            most_delayed_aml = max_followup.get('most_delayed_aml')
-            highest_followup_line = max_followup.get('highest_followup_line')
-            has_level_0_lines_needing_action = max_followup.get('has_level_0_lines_needing_action')
-
-            # computation of followup_status
-            new_status = 'no_action_needed'
-            if has_overdue_invoices and most_delayed_aml:
-                new_status = 'with_overdue_invoices'
-            next_followup_date_exceeded = today >= partner.followup_next_action_date if partner.followup_next_action_date else True
-            if has_level_0_lines_needing_action or (max_aml_delay > next_followup_delay and next_followup_date_exceeded and followup_lines_info):
-                new_status = 'in_need_of_action'
-            partner.followup_status = new_status
-
-            # computation of followup_line_id
-            new_line = highest_followup_line
-            if most_delayed_aml and (most_delayed_aml.last_followup_date or max_aml_delay >= next_followup_delay) and followup_lines_info:
-                index = highest_followup_line.id if highest_followup_line else None
-                next_line_id = followup_lines_info[index].get('next_followup_line_id')
-                new_line = self.env['account_followup.followup.line'].browse(next_line_id)
-            partner.followup_line_id = new_line
+            partner_data = all_data.get(partner.id, {'followup_status': 'no_action_needed', 'followup_line_id': False})
+            partner.followup_status = partner_data['followup_status']
+            partner.followup_line_id = partner_data['followup_line_id']
 
     def _compute_unpaid_invoices(self):
         for partner in self:
@@ -253,15 +226,12 @@ class ResPartner(models.Model):
         # Minimum value for delay, will always be smaller than any other delay
         max_delay = first_followup_line.delay - 1
         has_overdue_invoices = False
-        has_level_0_lines_needing_action = False
         for aml in self.unreconciled_aml_ids:
             aml_delay = (today - (aml.date_maturity or aml.date)).days
 
             is_overdue = aml_delay > 0
             if is_overdue:
                 has_overdue_invoices = True
-                if not aml.followup_line_id and aml_delay >= first_followup_line.delay:
-                    has_level_0_lines_needing_action = True
 
             if aml.company_id == self.env.company and not aml.blocked:
                 if aml.followup_line_id and aml.followup_line_id.delay >= (highest_followup_line or first_followup_line).delay:
@@ -281,7 +251,6 @@ class ResPartner(models.Model):
             'highest_followup_line': highest_followup_line,
             'next_followup_delay': next_followup_delay,
             'has_overdue_invoices': has_overdue_invoices,
-            'has_level_0_lines_needing_action': has_level_0_lines_needing_action,
         }
 
     def _get_invoices_to_print(self, options):
@@ -386,13 +355,36 @@ class ResPartner(models.Model):
         return followup_lines_info
 
     def _query_followup_data(self, all_partners=False):
-        # Allow mocking the current day for testing purpose.
-        today = fields.Date.context_today(self)
-        if not self.ids and not all_partners:
-            return {}
         self.env['account.move.line'].check_access_rights('read')
+        self.env['account.move.line'].flush_model()
+        self.env['res.partner'].flush_model()
+        self.env['account_followup.followup.line'].flush_model()
 
-        sql = """
+        # Put the data in a cache in the database to avoid running costly query multiple times in same transaction.
+        # Only do it if the table doesn't exist yet.
+        self.env.cr.execute("SELECT 1 FROM information_schema.tables WHERE table_name='followup_data_cache'")
+        is_cached = self.env.cr.fetchone()
+        if all_partners:
+            if not is_cached:
+                query, params = self._get_followup_data_query()
+                self.env.cr.execute(f"""
+                    CREATE TEMP TABLE followup_data_cache (partner_id int4, followup_line_id int4, followup_status varchar) ON COMMIT DROP;
+                    INSERT INTO followup_data_cache {query}
+                """, params)
+            self.env.cr.execute('SELECT * FROM followup_data_cache')
+        else:
+            if not self.ids:
+                return {}
+            elif is_cached:
+                query, params = "SELECT * FROM followup_data_cache WHERE partner_id IN %s", [tuple(self.ids)]
+            else:
+                query, params = self._get_followup_data_query(self.ids)
+            self.env.cr.execute(query, params)
+        result = {r['partner_id']: r for r in self.env.cr.dictfetchall()}
+        return result
+
+    def _get_followup_data_query(self, partner_ids=None):
+        return f"""
             SELECT partner.id as partner_id,
                    ful.id as followup_line_id,
                    CASE WHEN partner.balance <= 0 THEN 'no_action_needed'
@@ -401,36 +393,28 @@ class ResPartner(models.Model):
                         ELSE 'no_action_needed' END as followup_status
             FROM (
           SELECT partner.id,
-                 max(current_followup_line.delay) as followup_delay,
+                 MAX(COALESCE(next_ful.delay, ful.delay)) as followup_delay,
                  SUM(aml.balance) as balance
             FROM res_partner partner
             JOIN account_move_line aml ON aml.partner_id = partner.id
             JOIN account_account account ON account.id = aml.account_id
-            JOIN account_move move ON move.id = aml.move_id
-            -- Get the followup line
-       LEFT JOIN LATERAL (
-                         SELECT COALESCE(next_ful.id, ful.id) as id, COALESCE(next_ful.delay, ful.delay) as delay
-                           FROM account_move_line line
-                LEFT OUTER JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
-                LEFT OUTER JOIN account_followup_followup_line next_ful ON next_ful.id = (
-                    SELECT next_ful.id FROM account_followup_followup_line next_ful
-                    WHERE next_ful.delay > COALESCE(ful.delay, -999)
-                      AND COALESCE(aml.date_maturity, aml.date) + next_ful.delay < %(current_date)s
-                      AND next_ful.company_id = %(company_id)s
-                    ORDER BY next_ful.delay ASC
-                    LIMIT 1
-                )
-                          WHERE line.id = aml.id
-                            AND aml.partner_id = partner.id
-                            AND aml.balance > 0
-            ) current_followup_line ON true
+       LEFT JOIN account_followup_followup_line ful ON ful.id = aml.followup_line_id
+       LEFT JOIN account_followup_followup_line next_ful ON next_ful.id = (
+                    SELECT next_ful.id
+                      FROM account_followup_followup_line next_ful
+                     WHERE next_ful.delay > COALESCE(ful.delay, %(min_delay)s - 1)
+                       AND next_ful.company_id = %(company_id)s
+                  ORDER BY next_ful.delay ASC
+                     LIMIT 1
+                 )
            WHERE account.deprecated IS NOT TRUE
              AND account.account_type = 'asset_receivable'
-             AND move.state = 'posted'
+             AND aml.parent_state = 'posted'
              AND aml.reconciled IS NOT TRUE
              AND aml.blocked IS FALSE
+             AND aml.balance > 0
              AND aml.company_id = %(company_id)s
-             {where}
+             {"" if partner_ids is None else "AND aml.partner_id IN %(partner_ids)s"}
         GROUP BY partner.id
             ) partner
             LEFT JOIN account_followup_followup_line ful ON ful.delay = partner.followup_delay AND ful.company_id = %(company_id)s
@@ -439,31 +423,30 @@ class ResPartner(models.Model):
                 SELECT line.id
                   FROM account_move_line line
                   JOIN account_account account ON line.account_id = account.id
-                  JOIN account_move move ON line.move_id = move.id
              LEFT JOIN account_followup_followup_line ful ON ful.id = line.followup_line_id
                  WHERE line.partner_id = partner.id
                    AND account.account_type = 'asset_receivable'
                    AND account.deprecated IS NOT TRUE
-                   AND move.state = 'posted'
+                   AND line.parent_state = 'posted'
                    AND line.reconciled IS NOT TRUE
                    AND line.balance > 0
                    AND line.blocked IS FALSE
                    AND line.company_id = %(company_id)s
-                   AND COALESCE(ful.delay, -999) <= partner.followup_delay
-                   AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, %(first_ful_delay)s) < %(current_date)s
+                   AND COALESCE(ful.delay, %(min_delay)s - 1) <= partner.followup_delay
+                   AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, %(min_delay)s - 1) < %(current_date)s
                  LIMIT 1
             ) in_need_of_action_aml ON true
             LEFT OUTER JOIN LATERAL (
                 SELECT line.id
                   FROM account_move_line line
                   JOIN account_account account ON line.account_id = account.id
-                  JOIN account_move move ON line.move_id = move.id
                  WHERE line.partner_id = partner.id
                    AND account.account_type = 'asset_receivable'
                    AND account.deprecated IS NOT TRUE
-                   AND move.state = 'posted'
+                   AND line.parent_state = 'posted'
                    AND line.reconciled IS NOT TRUE
                    AND line.balance > 0
+                   AND line.blocked IS FALSE
                    AND line.company_id = %(company_id)s
                    AND COALESCE(line.date_maturity, line.date) < %(current_date)s
                  LIMIT 1
@@ -471,22 +454,12 @@ class ResPartner(models.Model):
             LEFT OUTER JOIN ir_property prop_date ON prop_date.res_id = CONCAT('res.partner,', partner.id)
                                                  AND prop_date.name = 'followup_next_action_date'
                                                  AND prop_date.company_id = %(company_id)s
-        """.format(
-            where="" if all_partners else "AND aml.partner_id in %(partner_ids)s",
-        )
-        params = {
+        """, {
             'company_id': self.env.company.id,
-            'partner_ids': tuple(self.ids),
-            'current_date': today,
-            'first_ful_delay': self._get_first_followup_level().delay or 0,
+            'partner_ids': tuple(partner_ids or []),
+            'current_date': fields.Date.context_today(self),  # Allow mocking the current day for testing purpose.
+            'min_delay': self._get_first_followup_level().delay or 0,
         }
-        self.env['account.move.line'].flush_model()
-        self.env['res.partner'].flush_model()
-        self.env['account_followup.followup.line'].flush_model()
-        self.env.cr.execute(sql, params)
-        result = self.env.cr.dictfetchall()
-        result = {r['partner_id']: r for r in result}
-        return result
 
     def _send_followup(self, options):
         """ Send the follow-up to the partner, depending on selected options.

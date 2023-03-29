@@ -41,6 +41,7 @@
                 'allow_billable': True,
                 'privacy_visibility': 'portal',
                 'documents_tag_ids': [Command.link(ref('documents_folder_facet_1_tag_1'))],
+                'type_ids': [Command.set([ref('project.project_stage_0'), ref('project.project_stage_1'), ref('project.project_stage_2'), ref('project.project_stage_3')])]
             }"/>
         </function>
         <record id="sale_order_1_project_follower_portal" model="mail.followers">
@@ -48,6 +49,20 @@
             <field name="res_id" model="project.project" search="[('sale_line_id', '=', ref('sale_order_1_sale_line_1'))]"/>
             <field name="partner_id" ref="base.partner_demo_portal"/>
         </record>
+
+        <!-- Remove the automatically created stages for the generated project -->
+        <function model="project.task.type" name="unlink">
+            <value model="project.task.type" eval="obj().search([('name', '=', 'To do')], order='id desc', limit=1).id"/>
+        </function>
+        <function model="project.task.type" name="unlink">
+            <value model="project.task.type" eval="obj().search([('name', '=', 'In Progress')], order='id desc', limit=1).id"/>
+        </function>
+        <function model="project.task.type" name="unlink">
+            <value model="project.task.type" eval="obj().search([('name', '=', 'Done')], order='id desc', limit=1).id"/>
+        </function>
+        <function model="project.task.type" name="unlink">
+            <value model="project.task.type" eval="obj().search([('name', '=', 'Canceled')], order='id desc', limit=1).id"/>
+        </function>
 
         <record id="sale_order_1_project_document_1" model="documents.document">
             <field name="name">plan.jpg</field>

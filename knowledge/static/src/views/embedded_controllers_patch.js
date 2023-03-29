@@ -30,9 +30,7 @@ export const EmbeddedControllersPatch = (T) => class EmbeddedControllersPatch ex
             is_private: false,
             parent_id: this.props.context.active_id || false
         });
-        this.actionService.doAction(
-            await this.orm.call('knowledge.article', 'action_home_page', [articleId]),
-            {}
-        );
+
+        this.props.selectRecord(articleId);
     }
 };

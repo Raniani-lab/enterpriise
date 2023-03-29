@@ -53,6 +53,7 @@ export class EmbeddedViewManager extends Component {
         this.actionService = useService('action');
         this.dialogService = useService('dialog');
         this.notification = useService("notification");
+        this.embedViewsFilterService = useService('knowledgeEmbedViewsFilters');
 
         useOwnDebugContext(); // define a debug context when the developer mode is enable
         const config = {
@@ -208,6 +209,7 @@ export class EmbeddedViewManager extends Component {
                 const [formViewId] = this.action.views.find((view) => {
                     return view[1] === 'form';
                 }) || [false];
+                this.saveEmbedViewFilters();
                 this.actionService.doAction({
                     type: 'ir.actions.act_window',
                     res_model: action.res_model,
@@ -219,6 +221,7 @@ export class EmbeddedViewManager extends Component {
                 const [formViewId] = this.action.views.find((view) => {
                     return view[1] === 'form';
                 }) || [false];
+                this.saveEmbedViewFilters();
                 this.actionService.doAction({
                     type: 'ir.actions.act_window',
                     res_model: action.res_model,
@@ -242,6 +245,11 @@ export class EmbeddedViewManager extends Component {
         viewProps.onDeleteKnowledgeFavorite = this.onDeleteKnowledgeFavorite.bind(this);
 
         this.EmbeddedView = EmbeddedView;
+        this.embedViewsFilterService.applyFilter(
+            this.actionService.currentController,
+            this.props.context.knowledgeEmbeddedViewId,
+            viewProps
+        );
         this.embeddedViewProps = viewProps;
         this.action = action;
     }
@@ -287,12 +295,29 @@ export class EmbeddedViewManager extends Component {
                 props.orderBy = JSON.parse(this.action.context.orderBy);
             } catch {};
         }
+        this.saveEmbedViewFilters();
         this.action.globalState = this.getEmbeddedViewGlobalState();
         this.actionService.doAction(this.action, {
             viewType: this.props.viewType,
             props,
             additionalContext: { knowledgeEmbeddedViewId: this.props.context.knowledgeEmbeddedViewId }
         });
+    }
+
+    /**
+     * This function is called when opening a record from an embedded list or kanban view or when creating
+     * a new record in the said view.
+     * This function calls the correct function of the filter service in order to save the searchModel of the
+     * view.
+     * By saving the searchModel we allow filters applied to a view to be reassigned to it when coming back
+     * via the breadcrumbs created by opening/creating a record.
+     */
+    saveEmbedViewFilters() {
+        this.embedViewsFilterService.saveFilters(
+            this.actionService.currentController,
+            this.props.context.knowledgeEmbeddedViewId,
+            this.getEmbeddedViewGlobalState().searchModel
+        );
     }
 
     /**

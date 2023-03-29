@@ -92,3 +92,18 @@ class TestKnowledgeEditorCommands(HttpCase):
         article = self.env['knowledge.article'].search([('name', '=', 'EditorCommandsArticle')])[0]
         article.message_subscribe(partner_ids)
         self.start_tour('/web', 'knowledge_template_command_tour', login='admin', step_delay=100)
+
+    def test_knowledge_embedded_view_filters_tour(self):
+        """Test the filter management inside the article items embedded views"""
+        article = self.env['knowledge.article'].search([('name', '=', 'EditorCommandsArticle')])[0]
+        self.env['knowledge.article'].create([
+            {
+                'name': 'Child 1',
+                'parent_id': article.id,
+                'is_article_item': True,
+            }, {
+                'name': 'Child 2',
+                'parent_id': article.id,
+                'is_article_item': True,
+            }])
+        self.start_tour('/web', 'knowledge_embedded_view_filters_tour', login='admin')

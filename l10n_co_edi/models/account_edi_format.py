@@ -91,7 +91,7 @@ class AccountEdiFormat(models.Model):
                 }
                 if rec.tax_line_id.amount_type == 'fixed':
                     imp.update({
-                        'IMP_6': '',
+                        'IMP_6': 0,
                         'IMP_7': 1,
                         'IMP_8': 'BO' if rec.tax_line_id.l10n_co_edi_type.code == '22' else '94',
                         'IMP_9': rec.tax_line_id.amount,

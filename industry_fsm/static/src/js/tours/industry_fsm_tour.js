@@ -25,13 +25,10 @@ registry.category("web_tour.tours").add('industry_fsm_tour', {
     position: 'right',
     width: 200,
 }, {
-    trigger: ".o_form_view .o_task_customer_field",
-    extra_trigger: '.o_form_project_tasks.o_form_editable',
+    trigger: ".o_field_widget[name=partner_id] .o_field_many2one_selection .o_input",
     content: markup(_t('Select the <b>customer</b> for your task.')),
     position: "right",
-    run: function (actions) {
-        actions.text("Brandon Freeman", this.$anchor.find("input"));
-    },
+    run: "click"
 }, {
     trigger: ".ui-autocomplete > li > a:not(:has(i.fa))",
     auto: true,

@@ -31,7 +31,7 @@ patch(PosStore.prototype, "pos_settle_due.PosStore", {
         partnerInfos.creditLimit = partner.credit_limit;
         partnerInfos.overDue = partnerInfos.totalWithCart > partnerInfos.creditLimit ? true : false;
         partnerInfos.useLimit =
-            partner.total_due || partner.use_partner_credit_limit ? true : false;
+            this.globalState.company.account_use_credit_limit && partner.credit_limit > 0 && partnerInfos.overDue ? true : false;
 
         return partnerInfos;
     },

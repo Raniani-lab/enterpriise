@@ -4,11 +4,5 @@
         <xpath expr="//div[hasclass('summary')]/div[hasclass('line')]" position="attributes">
             <attribute name="class">credit-summary-line line</attribute>
         </xpath>
-        <xpath expr="//div[hasclass('summary')]/div[hasclass('line')]" position="inside">
-            <div class="entry total credit-limit-summary" t-if="this.partnerInfos.useLimit">
-                <span class="badge">Credit: </span>
-                <span class="value" t-esc="env.pos.format_currency(this.partnerInfos.totalDue)" />
-            </div>
-        </xpath>
     </t>
  </templates>

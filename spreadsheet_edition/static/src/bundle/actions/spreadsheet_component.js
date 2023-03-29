@@ -4,6 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import Dialog from "web.OwlDialog";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { useService } from "@web/core/utils/hooks";
+import { downloadFile } from "@web/core/network/download";
 
 import { DEFAULT_LINES_NUMBER } from "@spreadsheet/helpers/constants";
 
@@ -33,6 +34,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
             newSpreadsheet: this.newSpreadsheet.bind(this),
             makeCopy: this.makeCopy.bind(this),
             download: this._download.bind(this),
+            downloadAsJson: this._downloadAsJson.bind(this),
             getLinesNumber: this._getLinesNumber.bind(this),
             notifyUser: this.notifyUser.bind(this),
             raiseError: this.raiseError.bind(this),
@@ -294,6 +296,19 @@ export default class SpreadsheetComponent extends LegacyComponent {
                     stateUpdateMessages: [],
                 },
             });
+        } finally {
+            this.ui.unblock();
+        }
+    }
+
+    /**
+     * Downloads the spreadsheet in json format
+     */
+    async _downloadAsJson() {
+        this.ui.block();
+        try {
+            const data = JSON.stringify(this.model.exportData());
+            await downloadFile(data, `${this.props.name}.osheet.json`, "application/json");
         } finally {
             this.ui.unblock();
         }

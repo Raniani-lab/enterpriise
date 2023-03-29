@@ -47,6 +47,14 @@ topbarMenuRegistry.addChild("clear_history", ["file"], {
     },
 });
 
+topbarMenuRegistry.addChild("download_as_json", ["file"], {
+    name: _lt("Download as JSON"),
+    sequence: 70,
+    isVisible: (env) => env.debug,
+    action: (env) => env.downloadAsJson(),
+    isReadonlyAllowed: true,
+});
+
 topbarMenuRegistry.addChild("data_sources_data", ["data"], (env) => {
     const pivots = env.model.getters.getPivotIds();
     const children = pivots.map((pivotId, index) =>

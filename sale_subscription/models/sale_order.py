@@ -855,7 +855,7 @@ class SaleOrder(models.Model):
         res = super().read_group(domain, fields, groupby, offset=offset, limit=limit, orderby=orderby, lazy=lazy)
         if groupby and groupby[0] == 'subscription_state':
             # Sort because group expand force progress and paused as first
-            res = sorted(res, key=lambda r: r['subscription_state'])
+            res = sorted(res, key=lambda r: r.get('subscription_state') or '')
         return res
 
     @api.model

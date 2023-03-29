@@ -37,21 +37,16 @@
                     <field name="salary_attachments_count" string="Salary Attachments" widget="statinfo"/>
                 </button>
             </div>
-            <page name="information" position="after">
-                <page string="Part Time" name="part_time">
-                    <group>
-                        <group>
-                            <label for="time_credit"/>
-                            <div class="o_row">
-                                <field name="time_credit" class="oe_inline"/>
-                                <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
-                            </div>
-                            <field name="standard_calendar_id" attrs="{'invisible': [('time_credit', '=', False)]}" help="The Standard Calendar is the calendar used by the people working at a 100% rate. It's used here to compute your part-time percentage."/>
-                            <field name="time_credit_type_id" attrs="{'invisible': [('time_credit', '=', False)], 'required': [('time_credit', '=', True)]}"/>
-                        </group>
-                    </group>
-                </page>
-            </page>
+            <group name="contract_details_2" position="inside">
+                <separator string="Part time"/>
+                    <label for="time_credit"/>
+                    <div class="o_row">
+                        <field name="time_credit" class="oe_inline"/>
+                        <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
+                    </div>
+                    <field name="standard_calendar_id" attrs="{'invisible': [('time_credit', '=', False)]}" help="The Standard Calendar is the calendar used by the people working at a 100% rate. It's used here to compute your part-time percentage."/>
+                    <field name="time_credit_type_id" attrs="{'invisible': [('time_credit', '=', False)], 'required': [('time_credit', '=', True)]}"/>
+            </group>
         </field>
     </record>
 

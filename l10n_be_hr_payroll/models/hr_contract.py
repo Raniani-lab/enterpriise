@@ -121,10 +121,10 @@ class HrContract(models.Model):
         string="Has Ambulatory Insurance",
         groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
     l10n_be_ambulatory_insured_children = fields.Integer(
-        string="Ambulatory: # Insured Children < 19",
+        string="Ambulatory: # Insured Children < 19 y/o",
         groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
     l10n_be_ambulatory_insured_adults = fields.Integer(
-        string="Ambulatory: # Insured Children >= 19",
+        string="Ambulatory: # Insured Children >= 19 y/o",
         groups="hr_contract.group_hr_contract_employee_manager", tracking=True)
     l10n_be_ambulatory_insured_spouse = fields.Boolean(
         string="Ambulatory: Insured Spouse",
@@ -226,6 +226,21 @@ class HrContract(models.Model):
             'meal_voucher_paid_monthly_by_employer',
         ]
 
+    @api.onchange('has_hospital_insurance')
+    def _onchange_has_hospital_insurance(self):
+        if not self.has_hospital_insurance:
+            self.insured_relative_spouse = False
+            self.insured_relative_adults = 0
+            self.insured_relative_children = 0
+
+    @api.onchange('l10n_be_has_ambulatory_insurance')
+    def _onchange_l10n_be_has_ambulatory_insurance(self):
+        if not self.l10n_be_has_ambulatory_insurance:
+            self.l10n_be_ambulatory_insured_spouse = False
+            self.l10n_be_ambulatory_insured_adults = 0
+            self.l10n_be_ambulatory_insured_children = 0
+
+
     @api.depends('has_hospital_insurance', 'insured_relative_adults', 'insured_relative_spouse')
     def _compute_insured_relative_adults_total(self):
         for contract in self:
@@ -321,7 +336,7 @@ class HrContract(models.Model):
                 amount = 0.0
             contract.private_car_reimbursed_amount = amount
 
-    @api.onchange('transport_mode_car', 'transport_mode_train', 'transport_mode_public')
+    @api.onchange('transport_mode_car', 'new_car', 'transport_mode_train', 'transport_mode_public')
     def _onchange_transport_mode(self):
         if not self.transport_mode_car:
             self.fuel_card = 0
@@ -330,6 +345,16 @@ class HrContract(models.Model):
             self.train_transport_reimbursed_amount = 0
         if not self.transport_mode_public:
             self.public_transport_reimbursed_amount = 0
+        if self.transport_mode_car or self.car_id or self.new_car or self.new_car_model_id:
+            self.transport_mode_private_car = False
+
+    @api.onchange('transport_mode_private_car')
+    def _onchange_transport_mode_private_car(self):
+        if self.transport_mode_private_car:
+            self.transport_mode_car = False
+            self.new_car = False
+            self.fuel_card = 0
+            self.car_atn = 0
 
     @api.depends('holidays', 'wage', 'final_yearly_costs', 'l10n_be_group_insurance_rate')
     def _compute_wage_with_holidays(self):
@@ -758,3 +783,11 @@ class HrContract(models.Model):
             'no_onss',
             'no_withholding_taxes',
         ]
+
+    def action_work_schedule_change_wizard(self):
+        self.ensure_one()
+        if self.state not in ('draft', 'open'):
+            return False
+        action = self.env['ir.actions.actions']._for_xml_id('l10n_be_hr_payroll.schedule_change_wizard_action')
+        action['context'] = {'active_id': self.id}
+        return action

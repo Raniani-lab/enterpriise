@@ -80,7 +80,7 @@ class HrContract(models.Model):
         'fleet.vehicle.model', string="New Company Bike",
         domain=lambda self: self._get_possible_model_domain(vehicle_type='bike'),
         compute='_compute_new_bike_model_id', store=True, readonly=False)
-    transport_mode_private_car = fields.Boolean(compute='_compute_transport_mode_private_car', store=True, readonly=False)
+    transport_mode_private_car = fields.Boolean(store=True, readonly=False)
 
     @api.depends('new_bike', 'new_bike_model_id')
     def _compute_bike_id(self):
@@ -111,12 +111,6 @@ class HrContract(models.Model):
                     'new_car_model_id': False,
                     'new_car': False,
                 })
-
-    @api.depends('transport_mode_car', 'car_id', 'new_car_model_id', 'new_car')
-    def _compute_transport_mode_private_car(self):
-        for contract in self:
-            if contract.transport_mode_car or contract.car_id or contract.new_car or contract.new_car_model_id:
-                contract.transport_mode_private_car = False
 
     @api.depends('car_id', 'new_car_model_id')
     def _compute_car_model_name(self):
@@ -222,6 +216,7 @@ class HrContract(models.Model):
         if self.new_car:
             self.transport_mode_car = False
             self.car_id = False
+            self.transport_mode_private_car = False
 
     @api.onchange('new_bike')
     def _onchange_new_bike(self):

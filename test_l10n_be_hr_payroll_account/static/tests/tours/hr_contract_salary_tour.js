@@ -990,6 +990,11 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
             auto: true,
         },
         {
+            content: "Select Contract Details Tab",
+            trigger: '.o_notebook ul > li > a:contains(Contract)',
+            run: 'click',
+        },
+        {
             content: "HR Responsible",
             trigger: 'div.o_field_widget.o_required_modifier.o_field_many2one_avatar_user.o_field_many2one_avatar[name=hr_responsible_id]',
             run: function (actions) {
@@ -1023,9 +1028,9 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
             auto: true,
         },
         {
-            content: "Contract Information",
-            trigger: ".o_content .o_notebook li.nav-item:eq(1) a",
-            run: "click",
+            content: "Select Salary Information Tab",
+            trigger: '.o_notebook ul > li > a:contains(Salary)',
+            run: 'click',
         },
         {
             content: "Contract Information",

@@ -49,5 +49,9 @@
             'hr_contract_salary/static/src/js/hr_contract_salary.js',
             'hr_contract_salary/static/src/xml/resume_sidebar.xml',
         ],
+        'web.assets_backend': [
+            'hr_contract_salary/static/src/js/binary_field_contract.js',
+            'hr_contract_salary/static/src/xml/binary_field_contract.xml'
+        ],
     }
 }

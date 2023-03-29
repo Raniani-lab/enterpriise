@@ -30,6 +30,11 @@ registry.category("web_tour.tours").add('payroll_dashboard_ui_tour', {
         run: 'text Laurie\'s Contract',
     },
     {
+        content: "Select Contract Details Tab",
+        trigger: '.o_notebook ul > li > a:contains(Contract)',
+        run: 'click',
+    },
+    {
         content: "Set HR Responsible",
         trigger: 'div[name="hr_responsible_id"] div input',
         run: 'text Laurie',

@@ -28,9 +28,6 @@
             </xpath>
             <xpath expr="//header" position="inside">
                 <field name="time_credit" invisible="1"/>
-                <button name="%(schedule_change_wizard_action)d" string="Working Schedule Change"
-                        type="action" groups="hr_contract.group_hr_contract_manager"
-                        attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
             </xpath>
             <xpath expr="//group[@name='yearly_advantages']" position="attributes">
                 <attribute name="string">Yearly Advantages</attribute>
@@ -91,10 +88,10 @@
             <xpath expr="//group[@name='yearly_advantages']" position="before">
                 <group string="Ambulatory Insurance" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
                     <field name="l10n_be_has_ambulatory_insurance"/>
-                    <field name="l10n_be_ambulatory_insured_spouse" string="Insured Spouse"/>
-                    <field name="l10n_be_ambulatory_insured_adults" string="# Insured Children &gt;= 19"/>
-                    <field name="l10n_be_ambulatory_insured_children" string="# Insured Children &lt; 19"/>
-                    <label for="l10n_be_ambulatory_insurance_amount" attrs="{'invisible': [('l10n_be_has_ambulatory_insurance', '=', False)]}">Insurance Amount</label>
+                    <field name="l10n_be_ambulatory_insured_spouse" string="Insured Spouse" attrs="{'invisible': [('l10n_be_has_ambulatory_insurance', '=', False)]}"/>
+                    <field name="l10n_be_ambulatory_insured_adults" string="# Insured Children &gt;= 19 y/o" attrs="{'invisible': [('l10n_be_has_ambulatory_insurance', '=', False)]}"/>
+                    <field name="l10n_be_ambulatory_insured_children" string="# Insured Children &lt; 19 y/o" attrs="{'invisible': [('l10n_be_has_ambulatory_insurance', '=', False)]}"/>
+                    <label for="l10n_be_ambulatory_insurance_amount" string="Insurance Amount" attrs="{'invisible': [('l10n_be_has_ambulatory_insurance', '=', False)]}"/>
                     <div class="o_row o_hr_narrow_field" attrs="{'invisible': [('l10n_be_has_ambulatory_insurance', '=', False)]}">
                         <field name="l10n_be_ambulatory_insurance_amount" nolabel="1"/>
                         <span>€ / month</span>
@@ -210,6 +207,16 @@
                     <field name="l10n_be_is_below_scale" invisible="1"/>
                 </div>
             </xpath>
+        </field>
+    </record>
+
+    <record id="action_working_schedule_change_request" model="ir.actions.server">
+        <field name="name">Working Schedule Change</field>
+        <field name="model_id" ref="l10n_be_hr_payroll.model_hr_contract"/>
+        <field name="binding_model_id" ref="l10n_be_hr_payroll.model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_work_schedule_change_wizard()
         </field>
     </record>
 </odoo>

@@ -48,20 +48,26 @@
             <xpath expr="//field[@name='state']" position="before">
                 <button name="%(hr_contract_salary.generate_simulation_link_action)d" type="action" string="Generate Offer" attrs="{'invisible': [('employee_id', '=', False)]}" groups="hr_contract.group_hr_contract_manager"/>
             </xpath>
-            <field name="job_id" position="after">
+            <field name="contract_type_id" position="after">
                 <label for="wage_on_signature"/>
                 <div class="o_row" name="wage">
                     <field class="o_hr_narrow_field" name="wage_on_signature" nolabel="1"/>
                     <span>/ month</span>
                 </div>
             </field>
-            <xpath expr="//group[@name='contract_details']" position="inside">
+            <group name="contract_details_0" position="inside">
                 <field name="default_contract_id" context="{'form_view_ref': 'hr_contract_salary.hr_contract_view_form_contract_templates'}"/>
-                <field name="sign_template_id" options="{'no_create': True}" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s" required="1"/>
-                <field name="contract_update_template_id" options="{'no_create': True}" required="1"/>
-                <field name="signatures_count" invisible="1"/>
-            </xpath>
-            <page name="information" position="after">
+            </group>
+            <group name="contract_details" position="inside">
+                <group>
+                    <separator string="Sign"/>
+                    <field name="hr_responsible_id" widget="many2one_avatar_user" required="1"/>
+                    <field name="sign_template_id" options="{'no_create': True}" context="{'kanban_view_ref': 'sign.sign_template_view_kanban_mobile'}"/>
+                    <field name="contract_update_template_id" options="{'no_create': True}"/>
+                    <field name="signatures_count" invisible="1"/>
+                </group>
+            </group>
+            <page name="other" position="after">
                 <page string="Personal Documents" name="personal_documents" groups="hr.group_hr_manager" attrs="{'invisible': [('employee_id', '=', False)]}">
                     <group>
                         <field name="image_1920"/>
@@ -100,13 +106,13 @@
         <field name="inherit_id" ref="hr_contract_view_form"/>
         <field name="arch" type="xml">
             <page name="other" position="replace"/>
+            <field name="hr_responsible_id" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </field>
             <field name="hr_responsible_id" position="after">
                 <field name="sign_template_id" context="{'kanban_view_ref': 'sign.sign_template_view_kanban_mobile'}"/>
                 <field name="contract_update_template_id"/>
             </field>
-            <header position="attributes">
-                <attribute name="invisible">1</attribute>
-            </header>
             <field name="date_start" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>

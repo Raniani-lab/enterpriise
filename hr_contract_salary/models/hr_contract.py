@@ -28,7 +28,7 @@ class HrContract(models.Model):
         compute="_compute_default_contract", store=True, readonly=False,
         domain="[('company_id', '=', company_id), ('employee_id', '=', False)]",
         help="Default contract used when making an offer to an applicant.")
-    sign_template_id = fields.Many2one('sign.template', string="New Contract Document Template",
+    sign_template_id = fields.Many2one('sign.template', compute='_compute_sign_template_id', readonly=False, store=True, string="New Contract Document Template",
         help="Default document that the applicant will have to sign to accept a contract offer.")
     contract_update_template_id = fields.Many2one(
         'sign.template', string="Contract Update Document Template",
@@ -36,7 +36,8 @@ class HrContract(models.Model):
         help="Default document that the employee will have to sign to update his contract.")
     signatures_count = fields.Integer(compute='_compute_signatures_count', string='# Signatures',
         help="The number of signatures on the pdf contract with the most signatures.")
-    image_1920 = fields.Image(related='employee_id.image_1920', groups="hr_contract.group_hr_contract_manager")
+    image_1920_filename = fields.Char()
+    image_1920 = fields.Image(related='employee_id.image_1920', groups="hr_contract.group_hr_contract_manager", readonly=False)
     # YTI FIXME: holidays and wage_with_holidays are defined twice...
     holidays = fields.Float(string='Extra Time Off',
         help="Number of days of paid leaves the employee gets per year.")
@@ -85,6 +86,11 @@ class HrContract(models.Model):
             if not contract.job_id or not contract.job_id.default_contract_id:
                 continue
             contract.default_contract_id = contract.job_id.default_contract_id
+
+    @api.onchange('default_contract_id')
+    def _onchange_default_contract_id(self):
+        if self.default_contract_id.hr_responsible_id:
+            self.hr_responsible_id = self.default_contract_id.hr_responsible_id
 
     def _compute_salary_offers_count(self):
         offers_data = self.env['hr.contract.salary.offer']._read_group(
@@ -235,11 +241,17 @@ class HrContract(models.Model):
             contract.contract_reviews_count = self.with_context(active_test=False).search_count(
                 [('origin_contract_id', '=', contract.id)])
 
-    @api.depends('sign_template_id')
+    @api.depends('default_contract_id')
+    def _compute_sign_template_id(self):
+        for contract in self:
+            if contract.default_contract_id:
+                contract.sign_template_id = contract.default_contract_id.sign_template_id
+
+    @api.depends('default_contract_id')
     def _compute_contract_update_template_id(self):
         for contract in self:
-            if contract.sign_template_id and not contract.contract_update_template_id:
-                contract.contract_update_template_id = contract.sign_template_id
+            if contract.default_contract_id and contract.id != contract.default_contract_id.id:
+                contract.contract_update_template_id = contract.default_contract_id.contract_update_template_id
 
     def _get_redundant_salary_data(self):
         employees = self.mapped('employee_id').filtered(lambda employee: not employee.active)

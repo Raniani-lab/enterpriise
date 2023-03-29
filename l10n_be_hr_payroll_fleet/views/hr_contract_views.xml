@@ -54,7 +54,7 @@
                     class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager">
                     <field name="transport_mode_bike" nolabel="1"/>
-                    <field name="bike_id" nolabel="1" attrs="{'invisible': [('transport_mode_bike', '=', False)]}"/>
+                    <field name="bike_id" nolabel="1" attrs="{'invisible': [('transport_mode_bike', '=', False)], 'required': [('transport_mode_bike', '=', True)]}"/>
                 </div>
                 <label for="new_bike" string="New Company Bike"
                     groups="fleet.fleet_group_manager"
@@ -64,7 +64,7 @@
                     groups="fleet.fleet_group_manager"
                     attrs="{'invisible': [('country_code', '!=', 'BE')]}">
                     <field name="new_bike" attrs="{'invisible': [('wage_type', '=', 'hourly')]}" nolabel="1"/>
-                    <field name="new_bike_model_id" attrs="{'invisible': [('new_bike', '=', False)]}" nolabel="1"/>
+                    <field name="new_bike_model_id" attrs="{'invisible': [('new_bike', '=', False)], 'required': [('new_bike', '=', True)]}" nolabel="1"/>
                 </div>
             </field>
         </field>

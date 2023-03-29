@@ -31,6 +31,11 @@ class CrmLead(models.Model):
             lead.rental_order_count = len(sale_orders)
             lead.rental_amount_total = total
 
+    def _get_action_view_sale_quotation_domain(self):
+        # over-ride to exclude rental quotations linked to lead
+        action_lead_quotation_domain = super()._get_action_view_sale_quotation_domain()
+        return expression.AND([action_lead_quotation_domain, [("is_rental_order", "=", False)]])
+
     def _get_lead_quotation_domain(self):
         # over-ride to exclude rental quotations linked to lead
         lead_quotation_domain = super()._get_lead_quotation_domain()

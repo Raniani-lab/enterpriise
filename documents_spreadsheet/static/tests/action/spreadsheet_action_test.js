@@ -1,14 +1,20 @@
 /** @odoo-module */
 
+import * as spreadsheet from "@odoo/o-spreadsheet";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
+import { downloadFile } from "@web/core/network/download";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { getFixture, nextTick, click, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
-import { getCellContent } from "@spreadsheet/../tests/utils/getters";
+import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
+import { getCellContent, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import MockSpreadsheetCollaborativeChannel from "@spreadsheet_edition/../tests/utils/mock_spreadsheet_collaborative_channel";
 
+const { topbarMenuRegistry } = spreadsheet.registries;
+const { Model } = spreadsheet;
+/** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 let target;
 
 QUnit.module(
@@ -256,6 +262,39 @@ QUnit.module(
             );
             await nextTick();
             assert.verifySteps(["snapshot"]);
+        });
+
+        QUnit.test("menu > download as json", async function (assert) {
+            assert.expect(6);
+
+            let downloadedData = null;
+            patchWithCleanup(downloadFile, {
+                _download: (data) => {
+                    assert.step("download");
+                    assert.ok(data.includes("Hello World"));
+                    assert.ok(data.includes("A3"));
+                    downloadedData = data;
+                },
+            });
+
+            const serverData = getBasicServerData();
+            const spreadsheet = serverData.models["documents.document"].records[1];
+            spreadsheet.spreadsheet_data = JSON.stringify({
+                sheets: [{ cells: { A3: { content: "Hello World" } } }],
+            });
+
+            const { env, model } = await createSpreadsheet({
+                spreadsheetId: spreadsheet.id,
+                serverData,
+            });
+
+            assert.strictEqual(getCellValue(model, "A3"), "Hello World");
+
+            await doMenuAction(topbarMenuRegistry, ["file", "download_as_json"], env);
+            assert.verifySteps(["download"]);
+
+            const modelFromLoadedJSON = new Model(JSON.parse(downloadedData));
+            assert.strictEqual(getCellValue(modelFromLoadedJSON, "A3"), "Hello World");
         });
     }
 );

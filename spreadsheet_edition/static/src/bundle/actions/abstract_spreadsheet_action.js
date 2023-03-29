@@ -3,6 +3,7 @@ import { onMounted, onWillStart, useState, Component, useSubEnv, onWillUnmount }
 import { useService } from "@web/core/utils/hooks";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { _t } from "@web/core/l10n/translation";
+import { downloadFile } from "@web/core/network/download";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import * as spreadsheet from "@odoo/o-spreadsheet";
@@ -59,6 +60,7 @@ export class AbstractSpreadsheetAction extends Component {
             newSpreadsheet: this.createNewSpreadsheet.bind(this),
             makeCopy: this._makeCopy.bind(this),
             download: this.download.bind(this),
+            downloadAsJson: this.downloadAsJson.bind(this),
         });
         this.state = useState({
             spreadsheetName: UNTITLED_SPREADSHEET_NAME,
@@ -269,6 +271,19 @@ export class AbstractSpreadsheetAction extends Component {
                     data: this.model.exportData(),
                 },
             });
+        } finally {
+            this.ui.unblock();
+        }
+    }
+
+    /**
+     * Downloads the spreadsheet in json format
+     */
+    async downloadAsJson() {
+        this.ui.block();
+        try {
+            const data = JSON.stringify(this.model.exportData());
+            await downloadFile(data, `${this.props.name}.osheet.json`, "application/json");
         } finally {
             this.ui.unblock();
         }

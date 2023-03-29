@@ -98,15 +98,9 @@
 
 .o_bank_rec_right_div {
     .o_content{
-        overflow: hidden !important;
-
         .o_form_nosheet{
             padding-left: 0 !important;
             padding-right: 0 !important;
-
-            .nav-tabs{
-                margin-left: 10px;
-            }
 
             .o_inner_group {
                 padding: 0 50px;
@@ -125,7 +119,10 @@
                     border-left: none !important;
                 }
             }
+        }
 
+        .o_notebook {
+            --notebook-margin-x: 0 !important;
         }
     }
 }

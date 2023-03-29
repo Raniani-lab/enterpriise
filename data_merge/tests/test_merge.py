@@ -38,3 +38,24 @@ class TestMerge(test_common.TestCommon):
         self.assertEqual(len(groups), 1, 'Should have found 1 group')
         self.assertEqual(len(groups.record_ids), 3, 'First group must contains three records: ("accentuée", "accentue", "Accentuée")')
         self.assertNotIn('Accentué', groups[0].record_ids.mapped('display_name'), 'Group must not contains "Accentué"')
+
+    def test_cleanup_deleted_records(self):
+        self._create_rule('x_name', 'exact')
+
+        self._create_record('x_dm_test_model', x_name='toto')
+        rec2 = self._create_record('x_dm_test_model', x_name='toto')
+        rec3 = self._create_record('x_dm_test_model', x_name='toto')
+
+        self.MyModel.find_duplicates()
+
+        group = self.env['data_merge.group'].search([('model_id', '=', self.MyModel.id)])
+
+        rec2.unlink()
+        self.assertEqual(len(group.record_ids), 3, 'The group must contains 3 records')
+
+        group._cleanup()
+        self.assertEqual(len(group.record_ids), 2, 'The group must contains 2 records')
+
+        rec3.unlink()
+        group._cleanup()
+        self.assertFalse(group.record_ids, 'The group should not contains any records')

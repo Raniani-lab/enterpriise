@@ -76,7 +76,7 @@
             <a t-if="props.type === 'base64'" href="#" t-on-click.prevent.stop="onDesignIconClick">
                 Design your Icon
             </a>
-            <span class="text-muted"> or </span>
+            <span> or </span>
             <t t-component="FileInput" t-props="fileInputProps" onUpload.bind="onFileUploaded">
                 <a href="#">
                     <t t-if="props.type === 'base64'">upload one</t>

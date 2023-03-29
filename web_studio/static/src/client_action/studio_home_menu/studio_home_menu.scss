@@ -1,5 +1,7 @@
 // Home menu in studio mode
 .o_studio_home_menu {
+  --homeMenuCaption-color: #fff;
+  
   @include o-web-studio-app-creator-background;
 
   .database_expiration_panel {

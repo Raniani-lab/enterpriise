@@ -258,6 +258,8 @@ class SignTemplate(models.Model):
         self.ensure_one()
         shared_sign_request = self.sign_request_ids.filtered(lambda sr: sr.state == 'shared' and sr.create_uid == self.env.user)
         if not shared_sign_request:
+            if len(self.sign_item_ids.mapped('responsible_id')) > 1:
+                raise ValidationError(_("You cannot share this document by link, because it has fields to be filled by different roles. Use Send button instead."))
             shared_sign_request = self.env['sign.request'].with_context(no_sign_mail=True).create({
                 'template_id': self.id,
                 'request_item_ids': [Command.create({'role_id': self.sign_item_ids.responsible_id.id or self.env.ref('sign.sign_item_role_default').id})],

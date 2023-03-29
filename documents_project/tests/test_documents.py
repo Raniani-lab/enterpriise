@@ -299,3 +299,18 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
         ]
         for domain, result in zip(search_domains, expected_results):
             self.assertEqual(self.env['documents.document'].search(domain), result, "The result of the search on the field project_id/task_id is incorrect (domain used: %s)" % domain)
+
+    def test_project_folder_creation(self):
+        project = self.env['project.project'].create({
+            'name': 'Project',
+            'use_documents': False,
+        })
+        self.assertFalse(project.documents_folder_id, "A project created with the documents feature disabled should have no workspace")
+        project.use_documents = True
+        self.assertTrue(project.documents_folder_id, "A workspace should be created for the project when enabling the documents feature")
+
+        documents_folder = project.documents_folder_id
+        project.use_documents = False
+        self.assertTrue(project.documents_folder_id, "The project should keep its workspace when disabling the feature")
+        project.use_documents = True
+        self.assertEqual(documents_folder, project.documents_folder_id, "No workspace should be created when enablind the documents feature if the project already has a workspace")

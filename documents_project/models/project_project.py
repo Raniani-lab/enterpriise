@@ -150,8 +150,8 @@ class ProjectProject(models.Model):
             for project in self:
                 if project.documents_folder_id and project.documents_folder_id.company_id:
                     project.documents_folder_id.company_id = project.company_id
-        if vals.get('use_documents'):
-            self._create_missing_folders()
+        if not self.env.context.get('no_create_folder'):
+            self.filtered('use_documents')._create_missing_folders()
         return res
 
     @api.returns('self', lambda value: value.id)

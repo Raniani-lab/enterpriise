@@ -20,7 +20,7 @@
                                 <field name="company_id" invisible="1"/>
                             </div>
                             <div class="col-9">
-                                <field name="documents_folder_id" class="ps-2 w-75" attrs="{'required': [('use_documents', '=', True), ('id', '!=', False)]}" context="{'documents_project': True, 'default_company_id': company_id}"/>
+                                <field name="documents_folder_id" class="ps-2 w-75" context="{'documents_project': True, 'default_company_id': company_id}"/>
                             </div>
                         </div>
                         <div class="row" attrs="{'invisible': [('documents_folder_id', '=', False)]}">

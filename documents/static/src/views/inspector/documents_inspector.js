@@ -512,6 +512,9 @@ export class DocumentsInspector extends Component {
             return;
         }
         const documents = this.props.selection.filter(rec => rec.isViewable());
+        if (!documents.length) {
+            return;
+        }
         this.env.documentsView.bus.trigger("documents-open-preview", {
             documents: documents,
             mainDocument: mainDocument || documents[0],

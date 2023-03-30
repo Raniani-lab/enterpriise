@@ -206,6 +206,12 @@ class HrContractSalary(http.Controller):
                      'status_message': _('The employee is not linked to an existing user, please contact the administrator..')})
             if contract.employee_id and contract.employee_id.user_id != request.env.user:
                 raise NotFound()
+            if contract.employee_id and \
+                    contract.employee_id.salary_simulator_link_end_validity < fields.Date.today():
+                return request.render(
+                    'http_routing.http_error',
+                    {'status_code': _('Oops'),
+                    'status_message': _('This link is invalid. Please contact the HR Responsible to get a new one...')})
 
         if kw.get('employee_contract_id'):
             employee_contract = request.env['hr.contract'].sudo().browse(int(kw.get('employee_contract_id')))

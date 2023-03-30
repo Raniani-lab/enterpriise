@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import uuid
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.fields import Date
@@ -12,6 +13,15 @@ from werkzeug.urls import url_encode
 class GenerateSimulationLink(models.TransientModel):
     _name = 'generate.simulation.link'
     _description = 'Generate Simulation Link'
+
+    def _default_validity(self):
+        validity = 30
+        active_model = self.env.context.get('active_model')
+        if active_model == 'hr.applicant':
+            validity = self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.access_token_validity', default=30)
+        elif active_model == 'hr.contract':
+            validity = self.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.employee_salary_simulator_link_validity', default=30)
+        return validity
 
     contract_id = fields.Many2one(
         'hr.contract', string="Offer Template", required=True,
@@ -34,17 +44,7 @@ class GenerateSimulationLink(models.TransientModel):
     email_to = fields.Char('Email To', compute='_compute_email_to', store=True, readonly=False)
     url = fields.Char('Offer link', compute='_compute_url')
     display_warning_message = fields.Boolean(compute='_compute_warning_message', compute_sudo=True)
-
-    @api.model
-    def default_get(self, fields):
-        result = super(GenerateSimulationLink, self).default_get(fields)
-        applicant_id = result.get('applicant_id')
-        if applicant_id:
-            applicant = self.env['hr.applicant'].sudo().browse(applicant_id)
-            if not applicant.access_token or applicant.access_token_end_date < Date.today():
-                applicant.access_token = uuid.uuid4().hex
-                applicant.access_token_end_date = self.env['hr.applicant']._get_access_token_end_date()
-        return result
+    validity = fields.Integer("Link Expiration Date", default=_default_validity)
 
     @api.depends('contract_id.final_yearly_costs')
     def _compute_final_yearly_costs(self):
@@ -132,14 +132,19 @@ class GenerateSimulationLink(models.TransientModel):
                 })
                 self.applicant_id.partner_id = partner_to
 
+        validity_end = (fields.Date.context_today(self) + relativedelta(days=self.validity))
         if self.applicant_id:
             default_model = 'hr.applicant'
             default_res_ids = self.applicant_id.ids
             default_template_id = template_applicant_id
+            if not self.applicant_id.access_token or self.applicant_id.access_token_end_date < Date.today():
+                self.applicant_id.access_token = uuid.uuid4().hex
+                self.applicant_id.access_token_end_date = validity_end
         elif self.employee_contract_id:
             default_model = 'hr.contract'
             default_res_ids = self.employee_contract_id.ids
             default_template_id = template_id
+            self.employee_id.salary_simulator_link_end_validity = validity_end
         else:
             default_model = 'hr.contract'
             default_res_ids = self.contract_id.ids
@@ -153,6 +158,7 @@ class GenerateSimulationLink(models.TransientModel):
             'default_template_id': default_template_id,
             'salary_package_url': self.url,
             'partner_to': partner_to and partner_to.id or False,
+            'validity_end': validity_end,
             'email_to': email_to or False,
             'mail_post_autofollow': False,
         }

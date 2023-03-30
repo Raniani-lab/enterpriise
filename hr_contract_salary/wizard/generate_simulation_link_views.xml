@@ -24,8 +24,13 @@
                     <field name="currency_id" invisible="1"/>
                     <label for="final_yearly_costs"/>
                     <div class="o_row">
-                        <field name="final_yearly_costs" nolabel="1"/>
+                        <field name="final_yearly_costs" class="o_hr_narrow_field" nolabel="1"/>
                         <span> /year</span>
+                    </div>
+                    <label for="validity"/>
+                    <div class="o_row">
+                        <field name="validity" class="o_hr_narrow_field" nolabel="1"/>
+                        <span> days</span>
                     </div>
                 </group>
                 <group>

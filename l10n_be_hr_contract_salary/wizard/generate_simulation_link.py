@@ -52,7 +52,7 @@ class GenerateSimulationLink(models.TransientModel):
             else:
                 wizard.show_new_car = wizard.contract_id.available_cars_amount >= wizard.contract_id.max_unused_cars
 
+    @api.depends('contract_id.l10n_be_canteen_cost')
     def _compute_from_contract_id(self):
-        super()._compute_from_contract_id()
         for wizard in self:
             wizard.l10n_be_canteen_cost = wizard.contract_id.l10n_be_canteen_cost

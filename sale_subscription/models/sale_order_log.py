@@ -23,20 +23,22 @@ class SaleOrderLog(models.Model):
                    ('2_churn', 'Churn'),
                    ('3_transfer', 'Transfer')],
         required=True,
-        readonly=True
+        readonly=True,
+        index=True,
     )
     recurring_monthly = fields.Monetary(string='New MRR', required=True,
                                         help="MRR, after applying the changes of that particular event", readonly=True)
     subscription_state = fields.Selection(selection=SUBSCRIPTION_STATES, required=True, help="Subscription stage category when the change occurred")
     user_id = fields.Many2one('res.users', string='Salesperson')
     team_id = fields.Many2one('crm.team', string='Sales Team', ondelete="set null")
-    amount_signed = fields.Monetary()
+    amount_signed = fields.Monetary(index=True)
     amount_contraction = fields.Monetary(compute='_compute_amount', store=True)
     amount_expansion = fields.Monetary(compute='_compute_amount', store=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True, readonly=True)
-    event_date = fields.Date(string='Event Date', required=True)
+    event_date = fields.Date(string='Event Date', required=True, index=True)
     company_id = fields.Many2one('res.company', string='Company', related='order_id.company_id', store=True, readonly=True)
-    origin_order_id = fields.Many2one('sale.order', string='Origin Contract', store=True, compute='_compute_origin_order_id')
+    origin_order_id = fields.Many2one('sale.order', string='Origin Contract', store=True, index=True,
+                                      compute='_compute_origin_order_id')
 
     @api.depends('order_id')
     def _compute_origin_order_id(self):

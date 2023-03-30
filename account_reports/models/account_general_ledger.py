@@ -25,6 +25,9 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 if column['expression_label'] != 'amount_currency'
             ]
 
+        # Automatically unfold the report when printing it, unless some specific lines have been unfolded
+        options['unfold_all'] = (self._context.get('print_mode') and not options.get('unfolded_lines')) or options['unfold_all']
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         lines = []
         date_from = fields.Date.from_string(options['date']['date_from'])

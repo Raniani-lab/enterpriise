@@ -7,7 +7,6 @@
         <field name="view_mode">graph,tree,pivot</field>
         <field name="domain">[('is_subscription', '=', True), ('subscription_state', 'not in', ['2_renewal', '5_renewed'] )]</field>
         <field name="context">{
-            'search_default_group_by_product': 1,
             'search_default_filter_progress': 1,
             'search_default_filter_paused': 1,
             'search_default_recurring': 1,

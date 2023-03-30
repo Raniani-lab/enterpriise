@@ -37,6 +37,7 @@
         <field name="arch" type="xml">
             <tree string="Subscription Log Analysis" create="0" delete="0"
                   decoration-muted="event_type == '3_transfer'"
+                  default_order="id desc"
                   action="action_open_sale_order" type="object">
                 <field name="order_id"/>
                 <field name="event_date" optional="show"/>
@@ -50,9 +51,10 @@
                        decoration-warning="event_type == '15_contraction'"
                        decoration-success="event_type == '1_expansion'"
                        decoration-danger="event_type == '2_churn'"
+                       sum="MRR"
                        optional="show"/>
                 <field name="recurring_monthly" string="New MRR" optional="show"/>
-                <field name="currency_id" optional="hide"/>
+                <field name="currency_id" optional="show"/>
                 <field name="subscription_state" optional="hide"/>
             </tree>
         </field>

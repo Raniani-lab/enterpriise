@@ -28,6 +28,7 @@ const ganttViewParams = {
     },
 };
 
+export const servicesToDefineInGantt = ["messaging", "mail.thread"];
 const serviceRegistry = registry.category("services");
 
 /** @type {TaskGanttRenderer} */
@@ -49,7 +50,9 @@ QUnit.module("Views > GanttView", (hooks) => {
 
         target = getFixture();
 
-        serviceRegistry.add("mail.thread", { start() {} });
+        for (const service of servicesToDefineInGantt) {
+            serviceRegistry.add(service, { start() {} });
+        }
 
         ganttViewParams.serverData = {
             models: {

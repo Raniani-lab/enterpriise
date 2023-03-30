@@ -2,16 +2,19 @@
 
 import { patch } from "@web/core/utils/patch";
 import { TaskGanttRenderer } from "@project_enterprise/task_gantt_renderer";
-import fieldUtils from "web.field_utils";
+import { useService } from "@web/core/utils/hooks";
 
 patch(TaskGanttRenderer.prototype, "task_gantt_renderer_patch_service", {
+    setup() {
+        this._super();
+        this.timesheetUOMService = useService("timesheet_uom");
+    },
     getPopoverProps(pill) {
         const props = this._super(...arguments);
         const ctx = props.context;
         const { record } = pill;
-        ctx.total_hours_spent_formatted = fieldUtils.format.timesheet_uom(
-            record.total_hours_spent
-        );
+        const formatter = this.timesheetUOMService.formatter;
+        ctx.total_hours_spent_formatted = formatter(record.total_hours_spent);
         ctx.progressFormatted = Math.round(record.progress);
         return props;
     },

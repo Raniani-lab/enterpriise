@@ -2,6 +2,11 @@
 
 import { getFixture, patchDate } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+import { registry } from "@web/core/registry";
+import { servicesToDefineInGantt } from "@project_enterprise/../tests/task_gantt_dependency_tests";
+
+servicesToDefineInGantt.push("timesheet_uom");
+const serviceRegistry = registry.category("services");
 
 let serverData;
 let target;
@@ -10,6 +15,9 @@ QUnit.module("Views > GanttView > TaskGantt", {
         patchDate(2020, 5, 22, 8, 0, 0);
         setupViewRegistries();
         target = getFixture();
+        for (const service of servicesToDefineInGantt) {
+            serviceRegistry.add(service, { start() {} });
+        }
         serverData = {
             models: {
                 task: {

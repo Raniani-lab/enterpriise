@@ -4,6 +4,7 @@ import { getFixture, patchDate } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
+import { servicesToDefineInGantt } from "@project_enterprise/../tests/task_gantt_dependency_tests";
 
 const serviceRegistry = registry.category("services");
 
@@ -28,7 +29,9 @@ QUnit.module("Views > TaskGanttView", {
 
         target = getFixture();
 
-        serviceRegistry.add("mail.thread", { start() {} });
+        for (const service of servicesToDefineInGantt) {
+            serviceRegistry.add(service, { start() {} });
+        }
 
         ganttViewParams.serverData = {
             models: {

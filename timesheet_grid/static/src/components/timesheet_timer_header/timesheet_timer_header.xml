@@ -34,7 +34,7 @@
                             A timer is running in another company.
                         </span>
                     </div>
-                    <div t-elif="props.timesheet" class="input_m2o d-flex flex-column flex-md-row flex-grow-1">
+                    <div t-elif="props.timesheet" class="input_m2o d-flex flex-column flex-md-row flex-grow-1" t-on-keydown="_onKeyDown">
                         <Field
                             name="'project_id'"
                             class="'flex-grow-1 mt-3 mt-md-0 px-md-2'"
@@ -67,13 +67,15 @@
                         <i class="fa fa-play me-2"></i> Start
                     </button>
                     <div class="ms-3">
-                        <span t-if="_addTimeMode"><span class="text-muted">Click on  </span><i class="fa fa-plus mx-2"></i><span class="text-muted">  to add </span><t t-esc="props.stepTimer"/> min</span>
-                        <span t-else="">
-                            <t t-if="!isMobile">
-                                <span class="text-muted">Press</span> <b>Enter</b> <span class="text-muted">or a letter to start the timer</span>
-                            </t>
-                            <t t-else=""> <span class="text-muted">Press </span><i class="fa fa-play mx-2"></i> <span class="text-muted">to start the timer</span></t>
-                        </span>
+                        <t t-if="!isMobile">
+                            <div>
+                                <span class="text-muted">Press</span> <b>Enter</b> <span class="text-muted">or [a] to launch the timer</span>
+                            </div>
+                            <div>
+                                <span class="text-muted">Press</span> <b>Shift</b> <span class="text-muted">+ [A] to add <t t-esc="props.stepTimer"/> min</span>
+                            </div>
+                        </t>
+                        <t t-else=""> <span class="text-muted">Press </span><i class="fa fa-play mx-2"></i> <span class="text-muted">to start the timer</span></t>
                     </div>
                 </div>
             </t>

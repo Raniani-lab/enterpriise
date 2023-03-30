@@ -601,15 +601,16 @@ QUnit.module("Views", (hooks) => {
         assert.strictEqual(
             // FIXME: can we assume the test are not translated?
             target.querySelector(".timesheet-timer > div > div").textContent,
-            "Press Enter or a letter to start the timer",
+            "Press Enter or [a] to launch the timerPress Shift + [A] to add 30 min",
             "The text displayed next to Start button should be the default one"
         );
         // activeElement should be the start button
         triggerEvent(document.activeElement, "", "keydown", { key: "Shift" });
         await nextTick();
-        assert.ok(
-            target.querySelector(".timesheet-timer > div > div").textContent.includes("30"),
-            "A message should be displayed instead of the default one to be able to quickly add 30 min"
+        assert.strictEqual(
+            target.querySelector(".timesheet-timer > div > div").textContent,
+            "Press Enter or [a] to launch the timerPress Shift + [A] to add 30 min",
+            "The text displayed next to Start button should be the default one"
         );
 
         const timerButtonsTextList = getNodesTextContent(
@@ -652,9 +653,9 @@ QUnit.module("Views", (hooks) => {
         }
         assert.strictEqual(firstTodayCellEl.textContent, "1:30");
         await triggerEvent(window, "", "keyup", { key: "Shift" });
-        assert.notOk(
-            target.querySelector(".timesheet-timer > div > div").textContent.includes("30"),
-            "A message should be displayed should no longer contain 30 min"
+        assert.strictEqual(
+            target.querySelector(".timesheet-timer > div > div").textContent,
+            "Press Enter or [a] to launch the timerPress Shift + [A] to add 30 min"
         );
         assert.containsN(
             target,

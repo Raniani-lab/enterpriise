@@ -90,4 +90,10 @@ export class TimesheetTimerHeader extends Component {
     async _onClickUnlinkTimer(ev) {
         await this.props.onTimerUnlinked();
     }
+
+    _onKeyDown(ev) {
+        if (ev.key === 'Enter') {
+            this._onClickStopTimer();
+        }
+    }
 }

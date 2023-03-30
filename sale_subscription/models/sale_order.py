@@ -1726,9 +1726,7 @@ class SaleOrder(models.Model):
         # attachment, so to render it successfully sudo() is not enough.
         if self.env.su:
             template = template.with_user(SUPERUSER_ID)
-        invoice.is_move_sent = True
-        return template.with_context(email_context).send_mail(invoice.id)
-
+        return invoice.with_context(email_context)._generate_pdf_and_send_invoice(template)
     @api.model
     def _process_invoices_to_send(self, account_moves):
         for invoice in account_moves:
@@ -1755,12 +1753,7 @@ class SaleOrder(models.Model):
             or self.env.ref('sale_subscription.mail_template_subscription_invoice', raise_if_not_found=False)
         if invoice_mail_template_id:
             _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
-            invoice.with_context(email_context).message_post_with_source(
-                invoice_mail_template_id,
-                force_send=False,
-                subtype_xmlid='mail.mt_comment',
-            )
-            invoice.is_move_sent = True
+            invoice.with_context(email_context)._generate_pdf_and_send_invoice(invoice_mail_template_id)
 
     def _reconcile_and_assign_token(self, tx):
         """ Callback method to make the reconciliation and assign the payment token.

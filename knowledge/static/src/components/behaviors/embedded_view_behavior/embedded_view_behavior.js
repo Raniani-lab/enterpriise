@@ -9,12 +9,14 @@ import {
     setIntersectionObserver
 } from "@knowledge/js/knowledge_utils";
 import { useService } from "@web/core/utils/hooks";
+import { uuid } from "@web/views/utils";
 
 const {
     onError,
     onMounted,
     onWillUnmount,
-    useState } = owl;
+    useState,
+    useSubEnv } = owl;
 
 /**
  * This component will have the responsibility to load the embedded view lazily
@@ -28,6 +30,20 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
         this.state = useState({
             waiting: true,
             error: false
+        });
+
+        let embeddedViewId = this.props.embedded_view_id;
+        if (!embeddedViewId) {
+            embeddedViewId = uuid();
+            const { anchor } = this.props;
+            anchor.dataset.behaviorProps = encodeDataBehaviorProps(Object.assign(
+                decodeDataBehaviorProps(anchor.dataset.behaviorProps),
+                { embedded_view_id: embeddedViewId }
+            ));
+        }
+
+        useSubEnv({
+            knowledgeEmbeddedViewId: embeddedViewId
         });
 
         onMounted(() => {
@@ -114,6 +130,7 @@ EmbeddedViewBehavior.components = {
 };
 EmbeddedViewBehavior.props = {
     ...AbstractBehavior.props,
+    embedded_view_id: { type: String, optional: true },
     act_window: { type: Object },
     context: { type: Object },
     view_type: { type: String },

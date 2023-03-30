@@ -432,11 +432,14 @@ class AccountEdiFormat(models.Model):
                 error_message = result['message']
             return {'error': error_message, 'blocking_level': 'error'}
 
+        xml_document = result.get('signed') and self._l10n_pe_edi_unzip_edi_document(base64.b64decode(result['signed']))
+
         soap_response = result.get('cdr') and base64.b64decode(result['cdr'])
         soap_response_decoded = self._l10n_pe_edi_decode_soap_response(soap_response) if soap_response else {}
 
         if soap_response_decoded.get('error'):
-            return {'error': soap_response_decoded['error'], 'blocking_level': 'error', 'code': soap_response_decoded.get('code')}
+            return {'error': soap_response_decoded['error'], 'blocking_level': 'error',
+                    'code': soap_response_decoded.get('code'), 'xml_document': xml_document}
 
         cdr = soap_response_decoded['cdr']
         cdr_status = self._l10n_pe_edi_extract_cdr_status(cdr)
@@ -446,9 +449,9 @@ class AccountEdiFormat(models.Model):
                 cdr_status['description'],
                 _('This document number is now registered by SUNAT as invalid.')
             )
-            return {'error': error_message, 'blocking_level': 'error', 'code': cdr_status['code']}
+            return {'error': error_message, 'blocking_level': 'error',
+                    'code': cdr_status['code'], 'xml_document': xml_document}
 
-        xml_document = result.get('signed') and self._l10n_pe_edi_unzip_edi_document(base64.b64decode(result['signed']))
         return {'success': True, 'xml_document': xml_document, 'cdr': cdr}
 
     def _l10n_pe_edi_get_status_cdr_iap_service(self, company, serie_folio, latam_document_type):
@@ -606,7 +609,7 @@ class AccountEdiFormat(models.Model):
                     # Odoo hit an exception and rolled back the transaction after sending.
                     # In this case, we want to retrieve the CDR and continue as if sending succeeded.
                     invoice.message_post(body=_('The invoice already exists on SUNAT. CDR successfully retrieved.'))
-                    res = {'success': True, 'xml_document': edi_str, 'cdr': cdr}
+                    res = {'success': True, 'xml_document': res['xml_document'], 'cdr': cdr}
 
         if res.get('error'):
             return res
@@ -720,7 +723,8 @@ class AccountEdiFormat(models.Model):
         soap_response_decoded = self._l10n_pe_edi_decode_soap_response(soap_response) if soap_response else {}
 
         if soap_response_decoded.get('error'):
-            return {'error': soap_response_decoded['error'], 'blocking_level': 'error', 'code': soap_response_decoded.get('code')}
+            return {'error': soap_response_decoded['error'], 'blocking_level': 'error',
+                    'code': soap_response_decoded.get('code'), 'xml_document': edi_str}
 
         cdr = soap_response_decoded['cdr']
         cdr_status = self._l10n_pe_edi_extract_cdr_status(cdr)
@@ -730,7 +734,8 @@ class AccountEdiFormat(models.Model):
                 cdr_status['description'],
                 _('This document number is now registered by SUNAT as invalid.')
             )
-            return {'error': error_message, 'blocking_level': 'error', 'code': cdr_status['code']}
+            return {'error': error_message, 'blocking_level': 'error',
+                    'code': cdr_status['code'], 'xml_document': edi_str}
 
         return {'success': True, 'xml_document': edi_str, 'cdr': cdr}
 

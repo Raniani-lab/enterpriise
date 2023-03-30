@@ -81,7 +81,7 @@ class AccountMove(models.Model):
     l10n_ec_withhold_type = fields.Selection(related='journal_id.l10n_ec_withhold_type')
     l10n_ec_withhold_date = fields.Date(
         string="Withhold Date",
-        readonly=True, states={'draft': [('readonly', False)]},
+        readonly=True,
         copy=False,
     )
     # Technical field to show/hide "ADD WITHHOLD" button

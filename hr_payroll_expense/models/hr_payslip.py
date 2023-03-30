@@ -9,9 +9,8 @@ class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
     expense_sheet_ids = fields.One2many(
-        'hr.expense.sheet', 'payslip_id', string='Expenses', readonly=False,
-        help="Expenses to reimburse to employee.",
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+        'hr.expense.sheet', 'payslip_id', string='Expenses',
+        help="Expenses to reimburse to employee.")
     expenses_count = fields.Integer(compute='_compute_expenses_count')
 
     @api.depends('expense_sheet_ids.expense_line_ids', 'expense_sheet_ids.payslip_id')

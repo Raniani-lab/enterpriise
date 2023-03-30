@@ -22,7 +22,7 @@ class AccountMove(models.Model):
     _inherit = "account.move"
 
     l10n_ar_afip_auth_mode = fields.Selection([('CAE', 'CAE'), ('CAI', 'CAI'), ('CAEA', 'CAEA')],
-        string='AFIP Authorization Mode', copy=False, readonly=True, states={'draft': [('readonly', False)]},
+        string='AFIP Authorization Mode', copy=False,
         help="This is the type of AFIP Authorization, depending on the way that the invoice is created"
         " the mode will change:\n\n"
         " * CAE (Electronic Authorization Code): Means that is an electronic invoice. If you validate a customer invoice"
@@ -34,8 +34,8 @@ class AccountMove(models.Model):
         " are generated using a pre ganerated code by AFIP for companies that have a massive invoicing by month so they"
         " can pre process all the invoices of the fortnight in one operation with one unique CAEA. Select this option"
         " only when verifying in AFIP a vendor bill that have CAEA (invoices with CAEA will not have CAE)")
-    l10n_ar_afip_auth_code = fields.Char('Authorization Code', copy=False, readonly=True, size=24, states={'draft': [('readonly', False)]})
-    l10n_ar_afip_auth_code_due = fields.Date(' Authorization Due date', copy=False, readonly=True, states={'draft': [('readonly', False)]},
+    l10n_ar_afip_auth_code = fields.Char('Authorization Code', copy=False, size=24)
+    l10n_ar_afip_auth_code_due = fields.Date(' Authorization Due date', copy=False,
         help="The Due Date of the Invoice given by AFIP")
     l10n_ar_afip_qr_code = fields.Char(compute='_compute_l10n_ar_afip_qr_code', string='AFIP QR Code',
         help='This QR code is mandatory by the AFIP in the electronic invoices when this ones are printed.')
@@ -43,8 +43,8 @@ class AccountMove(models.Model):
     # electronic invoice fields
     l10n_ar_afip_xml_request = fields.Text(string='AFIP XML Request', copy=False, readonly=True, groups="base.group_system")
     l10n_ar_afip_xml_response = fields.Text(string='AFIP XML Response', copy=False, readonly=True, groups="base.group_system")
-    l10n_ar_afip_result = fields.Selection([('A', 'Accepted in AFIP'), ('O', 'Accepted in AFIP with Observations')], 'Result', readonly=True,
-        copy=False, states={'draft': [('readonly', False)]}, help="AFIP request result", tracking=True)
+    l10n_ar_afip_result = fields.Selection([('A', 'Accepted in AFIP'), ('O', 'Accepted in AFIP with Observations')], 'Result',
+        copy=False, help="AFIP request result", tracking=True)
     l10n_ar_afip_ws = fields.Selection(related="journal_id.l10n_ar_afip_ws")
 
     # fields used to check invoice is valid on AFIP
@@ -55,13 +55,13 @@ class AccountMove(models.Model):
         string='AFIP Verification result', copy=False, readonly=True)
 
     # FCE related fields
-    l10n_ar_afip_fce_is_cancellation = fields.Boolean(string='FCE: Is Cancellation?', readonly=True, states={'draft': [('readonly', False)]},
+    l10n_ar_afip_fce_is_cancellation = fields.Boolean(string='FCE: Is Cancellation?',
         copy=False, help='When informing a MiPyMEs (FCE) debit/credit notes in AFIP it is require to sent information about if the'
         ' original document has been explicitly rejected by the buyer. More information here'
         ' http://www.afip.gob.ar/facturadecreditoelectronica/preguntasFrecuentes/emisor-factura.asp')
     l10n_ar_fce_transmission_type = fields.Selection(
         [('SCA', 'SCA - TRANSFERENCIA AL SISTEMA DE CIRCULACION ABIERTA'), ('ADC', 'ADC - AGENTE DE DEPOSITO COLECTIVO')],
-        string='FCE: Transmission Option', compute="_compute_l10n_ar_fce_transmission_type", store=True, states={'draft': [('readonly', False)]},
+        string='FCE: Transmission Option', compute="_compute_l10n_ar_fce_transmission_type", store=True, readonly=False,
         help="This field only need to be set when you are reporting a MiPyME FCE documents. Default value can be set in the Accouting Settings")
 
     # Compute methods

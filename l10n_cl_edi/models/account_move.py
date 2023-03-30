@@ -78,11 +78,9 @@ class AccountMove(models.Model):
     l10n_cl_claim_description = fields.Char(string='Claim Detail', readonly=True, copy=False)
     l10n_cl_sii_send_file = fields.Many2one('ir.attachment', string='SII Send file', copy=False)
     l10n_cl_dte_file = fields.Many2one('ir.attachment', string='DTE file', copy=False)
-    l10n_cl_sii_send_ident = fields.Text(string='SII Send Identification(Track ID)', readonly=True,
-                                         states={'draft': [('readonly', False)]}, copy=False, tracking=True)
+    l10n_cl_sii_send_ident = fields.Text(string='SII Send Identification(Track ID)', copy=False, tracking=True)
     l10n_cl_journal_point_of_sale_type = fields.Selection(related='journal_id.l10n_cl_point_of_sale_type')
-    l10n_cl_reference_ids = fields.One2many('l10n_cl.account.invoice.reference', 'move_id', readonly=True,
-                                            states={'draft': [('readonly', False)]}, string='Reference Records')
+    l10n_cl_reference_ids = fields.One2many('l10n_cl.account.invoice.reference', 'move_id', string='Reference Records')
 
     def button_cancel(self):
         for record in self.filtered(lambda x: x.company_id.country_id.code == "CL"):

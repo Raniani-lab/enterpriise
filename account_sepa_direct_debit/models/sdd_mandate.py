@@ -35,13 +35,12 @@ class SDDMandate(models.Model):
                                     default=False,
                                     help="True if and only if this mandate can be used for only one transaction. It will automatically go from 'active' to 'closed' after its first use in payment if this option is set.\n")
 
-    name = fields.Char(string='Identifier', required=True, readonly=True, states={'draft':[('readonly',False)]}, help="The unique identifier of this mandate.", default=lambda self: datetime.now().strftime('%f%S%M%H%d%m%Y'), copy=False)
-    debtor_id_code = fields.Char(string='Debtor Identifier', readonly=True, states={'draft':[('readonly',False)]}, help="Free reference identifying the debtor in your company.")
+    name = fields.Char(string='Identifier', required=True, help="The unique identifier of this mandate.", default=lambda self: datetime.now().strftime('%f%S%M%H%d%m%Y'), copy=False)
+    debtor_id_code = fields.Char(string='Debtor Identifier', help="Free reference identifying the debtor in your company.")
     partner_id = fields.Many2one(
         comodel_name='res.partner',
         string='Customer',
         required=True,
-        readonly=True, states={'draft': [('readonly', False)]},
         check_company=True,
         help="Customer whose payments are to be managed by this mandate.",
     )
@@ -49,12 +48,11 @@ class SDDMandate(models.Model):
     partner_bank_id = fields.Many2one(
         comodel_name='res.partner.bank',
         string='IBAN',
-        readonly=True, states={'draft': [('readonly', False)]},
         check_company=True,
         help="Account of the customer to collect payments from.",
     )
-    start_date = fields.Date(string="Start Date", required=True, readonly=True, states={'draft':[('readonly',False)]}, help="Date from which the mandate can be used (inclusive).")
-    end_date = fields.Date(string="End Date", states={'closed':[('readonly',True)]}, help="Date until which the mandate can be used. It will automatically be closed after this date.")
+    start_date = fields.Date(string="Start Date", required=True, help="Date from which the mandate can be used (inclusive).")
+    end_date = fields.Date(string="End Date", help="Date until which the mandate can be used. It will automatically be closed after this date.")
     payment_journal_id = fields.Many2one(
         string='Journal',
         comodel_name='account.journal',

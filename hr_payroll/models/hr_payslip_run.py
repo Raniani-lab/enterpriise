@@ -14,19 +14,16 @@ class HrPayslipRun(models.Model):
     _description = 'Payslip Batches'
     _order = 'date_end desc'
 
-    name = fields.Char(required=True, readonly=True, states={'draft': [('readonly', False)]})
-    slip_ids = fields.One2many('hr.payslip', 'payslip_run_id', string='Payslips', readonly=True,
-        states={'draft': [('readonly', False)]})
+    name = fields.Char(required=True)
+    slip_ids = fields.One2many('hr.payslip', 'payslip_run_id', string='Payslips')
     state = fields.Selection([
         ('draft', 'New'),
         ('verify', 'Confirmed'),
         ('close', 'Done'),
         ('paid', 'Paid'),
     ], string='Status', index=True, readonly=True, copy=False, default='draft', store=True, compute='_compute_state_change')
-    date_start = fields.Date(string='Date From', required=True, readonly=True,
-        states={'draft': [('readonly', False)]}, default=lambda self: fields.Date.to_string(date.today().replace(day=1)))
-    date_end = fields.Date(string='Date To', required=True, readonly=True,
-        states={'draft': [('readonly', False)]},
+    date_start = fields.Date(string='Date From', required=True, default=lambda self: fields.Date.to_string(date.today().replace(day=1)))
+    date_end = fields.Date(string='Date To', required=True,
         default=lambda self: fields.Date.to_string((datetime.now() + relativedelta(months=+1, day=1, days=-1)).date()))
     payslip_count = fields.Integer(compute='_compute_payslip_count')
     company_id = fields.Many2one('res.company', string='Company', readonly=True, required=True,

@@ -17,31 +17,31 @@ class L10nLuYearlyTaxReportManual(models.Model):
     # 1.Purchases of goods (within the territory of Luxembourg or abroad and subsequently brought to Luxembourg) which give rise to a chargeable event for the supplier or for the taxable person acquiring the goods
     # a) Purchases within the country (13)
     # 1) Purchases other than manufactured tobacco rate of
-    report_section_971 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_972 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_973 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
+    report_section_971 = fields.Float(tracking=True)
+    report_section_972 = fields.Float(tracking=True)
+    report_section_973 = fields.Float(tracking=True)
     # b) Intra-Community acquisitions
     # 1) Acquisitions other than manufactured tobacco
     # rate of
-    report_section_976 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_977 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_978 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
+    report_section_976 = fields.Float(tracking=True)
+    report_section_977 = fields.Float(tracking=True)
+    report_section_978 = fields.Float(tracking=True)
     # c) Imports (16)
     # 1) Imports other than manufactured tobacco
     # rate of
-    report_section_981 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_982 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_983 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
+    report_section_981 = fields.Float(tracking=True)
+    report_section_982 = fields.Float(tracking=True)
+    report_section_983 = fields.Float(tracking=True)
     # E. Stock / Miscellaneous (amounts VAT excluded)
     # 1.Total stock and tobacco
     # a) Stock not falling within the scope of Art. 56ter-1 and 56ter-2 and manufactured tobacco referred to in b) excluded
     # rate of
-    report_section_991 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_992 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_993 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_994 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_995 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
-    report_section_996 = fields.Float(states={'exported': [('readonly', True)]}, tracking=True)
+    report_section_991 = fields.Float(tracking=True)
+    report_section_992 = fields.Float(tracking=True)
+    report_section_993 = fields.Float(tracking=True)
+    report_section_994 = fields.Float(tracking=True)
+    report_section_995 = fields.Float(tracking=True)
+    report_section_996 = fields.Float(tracking=True)
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS

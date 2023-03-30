@@ -25,7 +25,7 @@ class AccountAsset(models.Model):
     total_depreciation_entries_count = fields.Integer(compute='_compute_counts', string='# Depreciation Entries', help="Number of depreciation entries (posted or not)")
 
     name = fields.Char(string='Asset Name', compute='_compute_name', store=True, required=True, readonly=False, tracking=True)
-    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={'draft': [('readonly', False)]}, default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', store=True)
     state = fields.Selection(
         selection=[('model', 'Model'),
@@ -53,17 +53,16 @@ class AccountAsset(models.Model):
             ('degressive_then_linear', 'Declining then Straight Line')
         ],
         string='Method',
-        readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
         default='linear',
         help="Choose the method to use to compute the amount of depreciation lines.\n"
              "  * Straight Line: Calculated on basis of: Gross Value / Duration\n"
              "  * Declining: Calculated on basis of: Residual Value * Declining Factor\n"
              "  * Declining then Straight Line: Like Declining but with a minimum depreciation value equal to the straight line value."
     )
-    method_number = fields.Integer(string='Duration', readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, default=5, help="The number of depreciations needed to depreciate your asset")
-    method_period = fields.Selection([('1', 'Months'), ('12', 'Years')], string='Number of Months in a Period', readonly=True, default='12', states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
+    method_number = fields.Integer(string='Duration', default=5, help="The number of depreciations needed to depreciate your asset")
+    method_period = fields.Selection([('1', 'Months'), ('12', 'Years')], string='Number of Months in a Period', default='12',
         help="The amount of time between two depreciations")
-    method_progress_factor = fields.Float(string='Declining Factor', readonly=True, default=0.3, states={'draft': [('readonly', False)], 'model': [('readonly', False)]})
+    method_progress_factor = fields.Float(string='Declining Factor', default=0.3)
     prorata_computation_type = fields.Selection(
         selection=[
             ('none', 'No Prorata'),
@@ -71,7 +70,6 @@ class AccountAsset(models.Model):
             ('daily_computation', 'Based on days per period'),
         ],
         string="Computation",
-        readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
         required=True, default='constant_periods',
     )
     prorata_date = fields.Date(  # the starting date of the depreciations
@@ -86,14 +84,13 @@ class AccountAsset(models.Model):
         string='Fixed Asset Account',
         compute='_compute_account_asset_id',
         help="Account used to record the purchase of the asset at its original price.",
-        store=True, readonly=False, states={'close': [('readonly', True)]},
+        store=True, readonly=False,
         check_company=True,
         domain="[('account_type', '!=', 'off_balance')]",
     )
     account_depreciation_id = fields.Many2one(
         comodel_name='account.account',
         string='Depreciation Account',
-        states={'close': [('readonly', True)]},
         check_company=True,
         domain="[('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance')), ('deprecated', '=', False)]",
         help="Account used in the depreciation entries, to decrease the asset value."
@@ -101,7 +98,6 @@ class AccountAsset(models.Model):
     account_depreciation_expense_id = fields.Many2one(
         comodel_name='account.account',
         string='Expense Account',
-        states={'close': [('readonly', True)]},
         check_company=True,
         domain="[('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance')), ('deprecated', '=', False)]",
         help="Account used in the periodical entries, to record a part of the asset as expense.",
@@ -113,14 +109,13 @@ class AccountAsset(models.Model):
         check_company=True,
         domain="[('type', '=', 'general')]",
         compute='_compute_journal_id', store=True, readonly=True,
-        states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
     )
 
     # Values
-    original_value = fields.Monetary(string="Original Value", compute='_compute_value', store=True, states={'draft': [('readonly', False)]})
+    original_value = fields.Monetary(string="Original Value", compute='_compute_value', store=True, readonly=False)
     book_value = fields.Monetary(string='Book Value', readonly=True, compute='_compute_book_value', recursive=True, store=True, help="Sum of the depreciable value, the salvage value and the book value of all value increase items")
     value_residual = fields.Monetary(string='Depreciable Value', compute='_compute_value_residual')
-    salvage_value = fields.Monetary(string='Not Depreciable Value', readonly=True, states={'draft': [('readonly', False)]},
+    salvage_value = fields.Monetary(string='Not Depreciable Value',
                                     help="It is the amount you plan to have that you cannot depreciate.")
     total_depreciable_value = fields.Monetary(compute='_compute_total_depreciable_value')
     gross_increase_value = fields.Monetary(string="Gross Increase Value", compute="_compute_book_value", compute_sudo=True)
@@ -128,19 +123,19 @@ class AccountAsset(models.Model):
     related_purchase_value = fields.Monetary(compute='_compute_related_purchase_value')
 
     # Links with entries
-    depreciation_move_ids = fields.One2many('account.move', 'asset_id', string='Depreciation Lines', readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)], 'paused': [('readonly', False)]})
-    original_move_line_ids = fields.Many2many('account.move.line', 'asset_move_line_rel', 'asset_id', 'line_id', string='Journal Items', readonly=True, states={'draft': [('readonly', False)]}, copy=False)
+    depreciation_move_ids = fields.One2many('account.move', 'asset_id', string='Depreciation Lines')
+    original_move_line_ids = fields.Many2many('account.move.line', 'asset_move_line_rel', 'asset_id', 'line_id', string='Journal Items', copy=False)
 
     # Dates
     acquisition_date = fields.Date(
         compute='_compute_acquisition_date', store=True, precompute=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
         copy=False,
     )
-    disposal_date = fields.Date(readonly=True, states={'draft': [('readonly', False)]}, compute="_compute_disposal_date", store=True)
+    disposal_date = fields.Date(readonly=False, compute="_compute_disposal_date", store=True)
 
     # model-related fields
-    model_id = fields.Many2one('account.asset', string='Model', change_default=True, readonly=True, states={'draft': [('readonly', False)]}, domain="[('company_id', '=', company_id)]")
+    model_id = fields.Many2one('account.asset', string='Model', change_default=True, domain="[('company_id', '=', company_id)]")
     account_type = fields.Selection(string="Type of the account", related='account_asset_id.account_type')
     display_account_asset_id = fields.Boolean(compute="_compute_display_account_asset_id")
 
@@ -150,7 +145,6 @@ class AccountAsset(models.Model):
 
     # Adapt for import fields
     already_depreciated_amount_import = fields.Monetary(
-        readonly=True, states={'draft': [('readonly', False)]},
         help="In case of an import from another software, you might need to use this field to have the right "
              "depreciation table report. This is the value that was already depreciated with entries not computed from this model",
     )

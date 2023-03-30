@@ -12,9 +12,9 @@ class HrPayrollAdvice(models.Model):
     def _get_default_date(self):
         return fields.Date.from_string(fields.Date.today())
 
-    name = fields.Char(readonly=True, required=True, states={'draft': [('readonly', False)]})
+    name = fields.Char(required=True)
     note = fields.Text(string='Description', default='Please make the payroll transfer from above account number to the below mentioned account numbers towards employee salaries:')
-    date = fields.Date(readonly=True, required=True, states={'draft': [('readonly', False)]}, default=_get_default_date,
+    date = fields.Date(required=True, default=_get_default_date,
         help='Advice Date is used to search Payslips')
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -22,13 +22,11 @@ class HrPayrollAdvice(models.Model):
         ('cancel', 'Cancelled'),
     ], string='Status', default='draft', index=True, readonly=True)
     number = fields.Char(string='Reference', readonly=True)
-    line_ids = fields.One2many('hr.payroll.advice.line', 'advice_id', string='Employee Salary',
-        states={'draft': [('readonly', False)]}, readonly=True, copy=True)
+    line_ids = fields.One2many('hr.payroll.advice.line', 'advice_id', string='Employee Salary', copy=True)
     chaque_nos = fields.Char(string='Cheque Numbers')
     neft = fields.Boolean(string='NEFT Transaction', help='Check this box if your company use online transfer for salary')
-    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
-        states={'draft': [('readonly', False)]}, default=lambda self: self.env.company)
-    bank_id = fields.Many2one('res.bank', string='Bank', readonly=True, states={'draft': [('readonly', False)]},
+    company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
+    bank_id = fields.Many2one('res.bank', string='Bank',
         help='Select the Bank from which the salary is going to be paid')
     batch_id = fields.Many2one('hr.payslip.run', string='Batch', readonly=True)
 

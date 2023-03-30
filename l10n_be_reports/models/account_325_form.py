@@ -54,7 +54,6 @@ class Form325(models.Model):
         string='Sender',
         required=True,
         ondelete='restrict',
-        states={'generated': [('readonly', True)]},
     )
     sender_name = fields.Char(
         string='Sender Name',
@@ -146,7 +145,6 @@ class Form325(models.Model):
         help="Indicates if the 325 is a test",
         required=True,
         default=False,
-        states={'generated': [('readonly', True)]},
         tracking=True,
     )
     sending_type = fields.Selection(
@@ -159,7 +157,6 @@ class Form325(models.Model):
         required=True,
         help="This field allows to make an original sending(correspond to first send) "
              "or a grouped corrections(if you have made some mistakes before).",
-        states={'generated': [('readonly', True)]},
         tracking=True,
     )
     treatment_type = fields.Selection([
@@ -172,7 +169,6 @@ class Form325(models.Model):
         default='0',
         required=True,
         help="This field represents the nature of the form.",
-        states={'generated': [('readonly', True)]},
         tracking=True,
     )
     currency_id = fields.Many2one(

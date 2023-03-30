@@ -32,7 +32,6 @@ class HrPayslip(models.Model):
     struct_id = fields.Many2one(
         'hr.payroll.structure', string='Structure', precompute=True,
         compute='_compute_struct_id', store=True, readonly=False,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]},
         help='Defines the rules that have to be applied to this payslip, according '
              'to the contract chosen. If the contract is empty, this field isn\'t '
              'mandatory anymore and all the valid rules of the structures '
@@ -41,14 +40,11 @@ class HrPayslip(models.Model):
     wage_type = fields.Selection(related='contract_id.wage_type')
     name = fields.Char(
         string='Payslip Name', required=True,
-        compute='_compute_name', store=True, readonly=False,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
+        compute='_compute_name', store=True, readonly=False)
     number = fields.Char(
-        string='Reference', readonly=True, copy=False,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+        string='Reference', copy=False)
     employee_id = fields.Many2one(
-        'hr.employee', string='Employee', required=True, readonly=True,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
+        'hr.employee', string='Employee', required=True,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), '|', ('active', '=', True), ('active', '=', False)]")
     image_128 = fields.Image(related='employee_id.image_128')
     image_1920 = fields.Image(related='employee_id.image_1920')
@@ -58,12 +54,10 @@ class HrPayslip(models.Model):
     job_id = fields.Many2one('hr.job', string='Job Position', related='employee_id.job_id', readonly=True, store=True)
     date_from = fields.Date(
         string='From', readonly=False, required=True,
-        compute="_compute_date_from", store=True, precompute=True,
-        states={'done': [('readonly', True)], 'paid': [('readonly', True)], 'cancel': [('readonly', True)]})
+        compute="_compute_date_from", store=True, precompute=True)
     date_to = fields.Date(
         string='To', readonly=False, required=True,
-        compute="_compute_date_to", store=True, precompute=True,
-        states={'done': [('readonly', True)], 'paid': [('readonly', True)], 'cancel': [('readonly', True)]})
+        compute="_compute_date_to", store=True, precompute=True)
     state = fields.Selection([
         ('draft', 'Draft'),
         ('verify', 'Waiting'),
@@ -78,13 +72,11 @@ class HrPayslip(models.Model):
                 \n* When user cancel payslip the status is \'Rejected\'.""")
     line_ids = fields.One2many(
         'hr.payslip.line', 'slip_id', string='Payslip Lines',
-        compute='_compute_line_ids', store=True, readonly=True, copy=True,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+        compute='_compute_line_ids', store=True, readonly=False, copy=True)
     company_id = fields.Many2one(
         'res.company', string='Company', copy=False, required=True,
         compute='_compute_company_id', store=True, readonly=False,
-        default=lambda self: self.env.company,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+        default=lambda self: self.env.company)
     country_id = fields.Many2one(
         'res.country', string='Country',
         related='company_id.country_id', readonly=True
@@ -92,30 +84,26 @@ class HrPayslip(models.Model):
     country_code = fields.Char(related='country_id.code', depends=['country_id'], readonly=True)
     worked_days_line_ids = fields.One2many(
         'hr.payslip.worked_days', 'payslip_id', string='Payslip Worked Days', copy=True,
-        compute='_compute_worked_days_line_ids', store=True, readonly=False,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
+        compute='_compute_worked_days_line_ids', store=True, readonly=False)
     input_line_ids = fields.One2many(
         'hr.payslip.input', 'payslip_id', string='Payslip Inputs',
         compute='_compute_input_line_ids', store=True,
-        readonly=False, states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
+        readonly=False)
     paid = fields.Boolean(
-        string='Made Payment Order? ', readonly=True, copy=False,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
-    note = fields.Text(string='Internal Note', readonly=True, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]})
+        string='Made Payment Order? ', copy=False)
+    note = fields.Text(string='Internal Note')
     contract_domain_ids = fields.Many2many('hr.contract', compute='_compute_contract_domain_ids')
     contract_id = fields.Many2one(
         'hr.contract', string='Contract', precompute=True,
         domain="[('id', 'in', contract_domain_ids)]",
-        compute='_compute_contract_id', store=True, readonly=False,
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)], 'paid': [('readonly', True)]})
+        compute='_compute_contract_id', store=True, readonly=False)
     credit_note = fields.Boolean(
-        string='Credit Note', readonly=True,
-        states={'draft': [('readonly', False)], 'verify': [('readonly', False)]},
+        string='Credit Note',
         help="Indicates this payslip has a refund of another")
     has_refund_slip = fields.Boolean(compute='_compute_has_refund_slip')
     payslip_run_id = fields.Many2one(
-        'hr.payslip.run', string='Batch Name', readonly=True,
-        copy=False, states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, ondelete='cascade',
+        'hr.payslip.run', string='Batch Name',
+        copy=False, ondelete='cascade',
         domain="[('company_id', '=', company_id)]")
     sum_worked_hours = fields.Float(compute='_compute_worked_hours', store=True, help='Total hours of attendance and time off (paid or not)')
     # YTI TODO: normal_wage to be removed

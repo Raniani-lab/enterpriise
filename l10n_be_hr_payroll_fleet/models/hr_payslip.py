@@ -10,8 +10,7 @@ class HrPayslip(models.Model):
     vehicle_id = fields.Many2one(
         'fleet.vehicle', string='Company Car',
         compute='_compute_vehicle_id', store=True, readonly=False,
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
-        states={'done': [('readonly', True)], 'cancel': [('readonly', True)]})
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     @api.depends('contract_id.car_id.future_driver_id')
     def _compute_vehicle_id(self):

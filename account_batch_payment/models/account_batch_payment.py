@@ -12,8 +12,8 @@ class AccountBatchPayment(models.Model):
     _order = "date desc, id desc"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(required=True, copy=False, string='Reference', readonly=True, states={'draft': [('readonly', False)]})
-    date = fields.Date(required=True, copy=False, default=fields.Date.context_today, readonly=True, states={'draft': [('readonly', False)]}, tracking=True)
+    name = fields.Char(required=True, copy=False, string='Reference')
+    date = fields.Date(required=True, copy=False, default=fields.Date.context_today, tracking=True)
     state = fields.Selection([
         ('draft', 'New'),
         ('sent', 'Sent'),
@@ -24,7 +24,6 @@ class AccountBatchPayment(models.Model):
         string='Bank',
         check_company=True,
         domain=[('type', '=', 'bank')],
-        required=True, readonly=True, states={'draft': [('readonly', False)]},
         tracking=True,
     )
     payment_ids = fields.One2many('account.payment', 'batch_payment_id', string="Payments", required=True)
@@ -49,7 +48,7 @@ class AccountBatchPayment(models.Model):
         compute='_compute_from_payment_ids',
         store=True,
     )
-    batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, readonly=True, states={'draft': [('readonly', False)]}, default='inbound', tracking=True)
+    batch_type = fields.Selection(selection=[('inbound', 'Inbound'), ('outbound', 'Outbound')], required=True, default='inbound', tracking=True)
     payment_method_id = fields.Many2one(
         comodel_name='account.payment.method',
         string='Payment Method', store=True, readonly=False,

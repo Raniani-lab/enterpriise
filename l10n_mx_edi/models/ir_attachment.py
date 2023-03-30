@@ -78,7 +78,8 @@ class IrAttachment(models.Model):
         if xsd_name == 'cfdv33.xsd':
             modify_xsd_content = self._load_xsd_complements
         attachment = tools.load_xsd_files_from_url(self.env, url, xsd_name, modify_xsd_content=modify_xsd_content, xsd_name_prefix='l10n_mx_edi')
-
+        if not attachment:
+            return
         raw_object = objectify.fromstring(attachment.raw)
         sub_urls = raw_object.xpath('//xs:import', namespaces={'xs': 'http://www.w3.org/2001/XMLSchema'})
         for s_url in sub_urls:

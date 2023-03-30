@@ -24,9 +24,7 @@
                 <div class="oe_button_box" name="button_box">
                     <button class="oe_stat_button" name="action_open_goals" icon="fa-bullseye" type="object">
                         <div class="o_field_widget o_stat_info">
-                            <span class="o_stat_value">
-                                <field name="uncomplete_goals_count"/>
-                            </span>
+                            <span class="o_stat_value"><field name="uncomplete_goals_count"/></span>
                             <span class="o_stat_text">Goals</span>
                         </div>
                     </button>
@@ -38,8 +36,8 @@
                     </button>
                     <button class="oe_stat_button" name="action_calendar_event" icon="fa-calendar" type="object">
                         <div class="o_field_widget o_stat_info">
-                            <span class="o_stat_value"><field name="date_final_interview" readonly="1"/></span>
-                            <span class="o_stat_text"><field name="meeting_count_display"/></span>
+                            <span class="o_stat_value"><field name="meeting_count_display"/></span>
+                            <span class="o_stat_text"><field name="date_final_interview" readonly="1"/></span>
                         </div>
                     </button>
                 </div>
@@ -169,8 +167,9 @@
                 <field name="employee_id" string="Name" readonly="1" widget="many2one_avatar_user"/>
                 <field name="date_close" widget="remaining_days"/>
                 <field name="date_final_interview" widget="remaining_days"/>
+                <field name="assessment_note" optional="hide"/>
                 <field name="state" widget="badge" readonly="1" decoration-info="state in ('new','pending')" decoration-success="state == 'done'"/>
-                <field name="company_id" readonly="1" groups="base.group_multi_company"/>
+                <field name="company_id" readonly="1" optional="hide"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
         </field>
@@ -246,13 +245,13 @@
                             <field name="avatar_128" class="o_kanban_image_fill_left" widget="background_image"/>
 
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('state', '!=', 'done')]}">
-                                <span class="text-bg-success">Done</span>
+                                <span class="bg-success">Done</span>
                             </div>
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('state', '!=', 'pending'), ('waiting_feedback', '=', True)]}">
-                                <span class="text-bg-info">Ready</span>
+                                <span class="bg-info">Ready</span>
                             </div>
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('state', '!=', 'cancel')]}">
-                                <span class="text-bg-secondary">Canceled</span>
+                                <span class="bg-secondary">Canceled</span>
                             </div>
                             <div class="oe_kanban_details d-flex justify-content-between flex-column">
                                 <div>

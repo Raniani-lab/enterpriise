@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, _
+from odoo import fields, models, _, api
 
 
 class HrAppraisal(models.Model):
@@ -9,6 +9,36 @@ class HrAppraisal(models.Model):
 
     employee_feedback_ids = fields.Many2many('hr.employee', string="Asked Feedback")
     survey_ids = fields.Many2many('survey.survey', help="Sent out surveys")
+    completed_survey_count = fields.Integer(compute="_compute_completed_survey_count")
+    total_survey_count = fields.Integer(compute="_compute_total_survey_count")
+    completed_over_total_survey_count_display = fields.Char(string="Feedback Requests", compute='_compute_completed_over_total_survey_count_display')
+
+    @api.depends('completed_survey_count', 'total_survey_count')
+    def _compute_completed_over_total_survey_count_display(self):
+        for appraisal in self:
+            appraisal.completed_over_total_survey_count_display = f'{appraisal.completed_survey_count} / {appraisal.total_survey_count}'
+
+    @api.depends('survey_ids', 'survey_ids.user_input_ids.state')
+    def _compute_completed_survey_count(self):
+        grouped_data = self.env['survey.user_input']._read_group(
+            domain=[('state', '=', 'done'), ('appraisal_id', 'in', self.ids)],
+            groupby=['appraisal_id'],
+            aggregates=['__count'])
+        mapped_data = dict(grouped_data)
+
+        for appraisal in self:
+            appraisal.completed_survey_count = mapped_data.get(appraisal, 0)
+
+    @api.depends('survey_ids')
+    def _compute_total_survey_count(self):
+        grouped_data = self.env['survey.user_input']._read_group(
+            domain=[('appraisal_id', 'in', self.ids)],
+            groupby=['appraisal_id'],
+            aggregates=['__count'])
+        mapped_data = dict(grouped_data)
+
+        for appraisal in self:
+            appraisal.total_survey_count = mapped_data.get(appraisal, 0)
 
     def action_ask_feedback(self):
         self.ensure_one()
@@ -17,20 +47,21 @@ class HrAppraisal(models.Model):
             'view_mode': 'form',
             'res_model': 'appraisal.ask.feedback',
             'target': 'new',
-            'name': 'Ask Feedback',
+            'name': _('Ask Feedback'),
         }
 
     def action_open_survey_inputs(self):
         self.ensure_one()
-        if (self.user_has_groups('hr_appraisal.group_hr_appraisal_manager') or self.env.user.employee_id in self.manager_ids) and len(self.survey_ids) > 1:
-            return {
-                'name': _("Survey Feedback"),
-                'type': 'ir.actions.act_window',
-                "views": [[self.env.ref('hr_appraisal_survey.survey_user_input_view_tree').id, 'tree']],
-                'view_mode': 'tree',
-                'res_model': 'survey.user_input',
-                'domain': [('appraisal_id', 'in', self.ids)],
-            }
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree',
+            'res_model': 'survey.user_input',
+            'target': 'current',
+            'name': _('Feedback Surveys'),
+            'domain': [('appraisal_id', '=', self.id)]
+        }
+
+    def action_open_all_survey_inputs(self):
         return {
             'type': 'ir.actions.act_url',
             'name': _("Survey Feedback"),

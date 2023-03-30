@@ -3,42 +3,25 @@
     <data noupdate="1">
         <record id="mail_template_appraisal_ask_feedback" model="mail.template">
             <field name="name">Appraisal: Ask Feedback</field>
-            <field name="model_id" ref="model_survey_user_input"/>
+            <field name="model_id" ref="model_hr_appraisal"/>
             <field name="subject">Take part in {{ object.employee_id.name or 'this' }} appraisal</field>
             <field name="description">Sent to employees to gather appraisal feedback</field>
             <field name="body_html" type="html">
                 <div style="margin: 0px; padding: 0px;">
                     <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                        Dear <t t-out="object.partner_id.name or ''">Brandon Freeman</t>,
+                        <span style="margin-left:5px">Dear {{ ctx.get('recipients', '[Recipients]') }},</span>
                         <br/><br/>
-                        An appraisal feedback was requested about <t t-out="object.appraisal_id.employee_id.name or 'this'" >this</t>.
+                        <span>
+                            {{ ctx.get('logged_user', '[Logged user]')}} asked you to give your feedback about {{ object.employee_id.name }} in a dedicated survey.
+                            Can you please fill it before the {{ ctx.get('deadline') }}.
+                        </span>
                         <br/>
-                        Please take time to fill the survey.
-                        <br/><br/>
                         Thank you!
                         <br/><br/>
-                        <t t-if="ctx.get('recipient_users')">
-                            <p style="margin: 16px 0px 16px 0px;">
-                                <a t-att-href="ctx.get('url')"
-                                    style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
-                                    View Appraisal
-                                </a>
-                            </p>
-                        </t>
-                        <t t-if="ctx.get('user_body')">
-                            <div style="background-color:#F8F8F8;">
-                                <t t-out="ctx.get('user_body')">Annual appraisal.</t>
-                            </div>
-                        </t>
                         <div style="margin: 16px 0px 16px 0px; text-align: center;">
                             <a t-att-href="object.get_start_url()"
                                 style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
-                                <t t-if="object.survey_id.certification">
-                                    Start Certification
-                                </t>
-                                <t t-else="">
-                                    Start Survey
-                                </t>
+                                Give your feedback
                             </a>
                         </div>
                     </p>

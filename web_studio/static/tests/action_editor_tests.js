@@ -286,4 +286,47 @@ QUnit.module("ActionEditor", (hooks) => {
             "<p>test help</p>"
         );
     });
+
+    QUnit.test("active_id and active_ids present in context at reload", async function (assert) {
+        const actions = {
+            1: {
+                id: 1,
+                name: "",
+                help: "",
+                xml_id: "some.xml_id",
+                type: "ir.actions.act_window",
+                res_model: "kikou",
+                view_mode: "list",
+                views: [
+                    [1, "list"],
+                    [2, "form"],
+                ],
+                context: {
+                    active_id: 90,
+                    active_ids: [90, 91],
+                },
+            },
+        };
+        Object.assign(serverData, { actions });
+
+        const mockRPC = (route, args) => {
+            if (route === "/web/action/load") {
+                assert.step(`action load: ${JSON.stringify(args)}`);
+            }
+            if (route === "/web_studio/edit_action") {
+                assert.step("edit_action");
+                return Promise.resolve(true);
+            }
+        };
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
+        await doAction(webClient, 1, { clearBreadcrumbs: true });
+        assert.verifySteps([`action load: {"action_id":1,"additional_context":{}}`]);
+        await openStudio(target, { noEdit: true });
+
+        await editInput(target, ".o_web_studio_sidebar #name", "new name");
+        assert.verifySteps([
+            "edit_action",
+            `action load: {"action_id":1,"additional_context":{"active_id":90,"active_ids":[90,91]}}`,
+        ]);
+    });
 });

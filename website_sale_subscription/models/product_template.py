@@ -95,6 +95,10 @@ class ProductTemplate(models.Model):
             parent_combination=parent_combination, only_template=only_template
         )
 
+        if not pricelist and self.env.context.get('website_id'):
+            current_website = self.env['website'].get_current_website()
+            pricelist = current_website.get_current_pricelist()
+
         pricelist = pricelist or self.product_pricing_ids[:1].pricelist_id
         if self.recurring_invoice:
             product = self.env['product.product'].browse(combination_info['product_id'])

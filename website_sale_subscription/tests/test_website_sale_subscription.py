@@ -63,3 +63,14 @@ class TestWebsiteSaleSubscription(TestWebsiteSaleSubscriptionCommon):
             self.assertTrue(combination_info_variant_2['is_subscription'])
             self.assertEqual(combination_info_variant_2['subscription_duration'], 1)
             self.assertEqual(combination_info_variant_2['subscription_unit'], 'month')
+
+    def test_combination_info_multi_pricelist(self):
+        product = self.sub_product_3.with_context(website_id=self.current_website.id)
+
+        with MockRequest(self.env, website=self.current_website, website_sale_current_pl=self.pricelist_111.id):
+            combination_info = product._get_combination_info()
+            self.assertEqual(combination_info['price'], 111)
+
+        with MockRequest(self.env, website=self.current_website, website_sale_current_pl=self.pricelist_222.id):
+            combination_info = product._get_combination_info()
+            self.assertEqual(combination_info['price'], 222)

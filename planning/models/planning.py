@@ -192,10 +192,7 @@ class Planning(models.Model):
     def _compute_role_id(self):
         for slot in self:
             if not slot.role_id:
-                if slot.employee_id.default_planning_role_id:
-                    slot.role_id = slot.employee_id.default_planning_role_id
-                else:
-                    slot.role_id = False
+                slot.role_id = slot.employee_id.default_planning_role_id or (slot.resource_id.resource_type == 'material' and slot.resource_id.role_ids[:1])
 
             if slot.template_id:
                 slot.previous_template_id = slot.template_id

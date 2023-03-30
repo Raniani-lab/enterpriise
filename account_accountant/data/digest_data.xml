@@ -4,7 +4,8 @@
         <record id="digest.digest_digest_default" model="digest.digest">
             <field name="kpi_account_bank_cash">True</field>
         </record>
-
+    </data>
+    <data noupdate="0">
         <record id="digest_tip_account_accountant_0" model="digest.tip">
             <field name="name">Tip: Bulk update journal items</field>
             <field name="sequence">900</field>

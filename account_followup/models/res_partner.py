@@ -556,7 +556,7 @@ class ResPartner(models.Model):
             except UserError as e:
                 # followup may raise exception due to configuration issues
                 # i.e. partner missing email
-                _logger.exception(e)
+                _logger.warning(e, exc_info=True)
 
     def _cron_execute_followup(self):
         for company in self.env["res.company"].search([]):

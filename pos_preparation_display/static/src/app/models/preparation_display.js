@@ -5,6 +5,8 @@ import { Orderline } from "@pos_preparation_display/app/models/orderline";
 import { Stage } from "@pos_preparation_display/app/models/stage";
 import { Category } from "@pos_preparation_display/app/models/category";
 import { deserializeDateTime } from "@web/core/l10n/dates";
+import { Product } from "@pos_preparation_display/app/models/product";
+
 
 // in the furur, maybe just set "filterOrders" as a getter and directly call the function.
 export class PreparationDisplay extends Reactive {
@@ -20,6 +22,7 @@ export class PreparationDisplay extends Reactive {
         this.orders = {};
         this.orderlines = {};
         this.categories = {};
+        this.products = {};
         this.stages = new Map(); // We need a Map() and not an object because the order of the elements is important
         this.selectedStageId = 0;
         this.selectedCategories = new Set();
@@ -223,7 +226,13 @@ export class PreparationDisplay extends Reactive {
 
             orderObj.orderlines = order.orderlines.reduce((orderlines, value) => {
                 const orderline = new Orderline(value, orderObj);
+                const product = new Product([
+                    orderline.productId,
+                    orderline.productCategoryId,
+                    orderline.productName,
+                ]);
 
+                this.products[product.id] = product;
                 this.orderlines[orderline.id] = orderline;
                 this.categories[orderline.productCategoryId]?.orderlines?.push(orderline);
                 this.categories[orderline.productCategoryId]?.productIds?.add(orderline.productId);
@@ -267,22 +276,35 @@ export class PreparationDisplay extends Reactive {
         this.filterOrders();
     }
 
-    toggleCategory(categoryId) {
+    toggleCategory(category) {
+        const categoryId = category.id;
+
         if (this.selectedCategories.has(categoryId)) {
             this.selectedCategories.delete(categoryId);
         } else {
             this.selectedCategories.add(categoryId);
+
+            if (category) {
+                category.productIds.forEach((productId) => this.selectedProducts.delete(productId));
+            }
         }
 
         this.filterOrders();
         this.saveFilterToLocalStorage();
     }
 
-    toggleProduct(productId) {
+    toggleProduct(product) {
+        const productId = product.id;
+        const category = this.categories[product.categoryId];
+
         if (this.selectedProducts.has(productId)) {
             this.selectedProducts.delete(productId);
         } else {
             this.selectedProducts.add(productId);
+
+            if (category) {
+                this.selectedCategories.delete(category.id);
+            }
         }
 
         this.filterOrders();

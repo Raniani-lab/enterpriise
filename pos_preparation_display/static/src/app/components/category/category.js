@@ -45,6 +45,7 @@ export class Category extends Component {
                     products[orderline.productId] = {
                         id: orderline.productId,
                         name: orderline.productName,
+                        categoryId: orderline.productCategoryId,
                         quantity: quantity,
                         cancelled: cancelled,
                     };

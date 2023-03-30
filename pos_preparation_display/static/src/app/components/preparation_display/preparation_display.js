@@ -46,9 +46,15 @@ export class PreparationDisplay extends Component {
     toggleCategoryFilter() {
         this.preparationDisplay.showCategoryFilter = !this.preparationDisplay.showCategoryFilter;
     }
-    onPatched(cb) {
-        this.onNextPatch.add(cb);
-        return () => this.onNextPatch.delete(cb);
+    getFilters() {
+        const productFilters = Object.values(this.preparationDisplay.products).filter((product) =>
+            this.preparationDisplay.selectedProducts.has(product.id)
+        );
+        const categoryFilters = Object.values(this.preparationDisplay.categories).filter(
+            (category) => this.preparationDisplay.selectedCategories.has(category.id)
+        );
+
+        return { categoryFilters, productFilters };
     }
 }
 

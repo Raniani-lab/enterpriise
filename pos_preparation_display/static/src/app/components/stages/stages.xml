@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="pos_preparation_display.Stages" owl="1">
-        <section class="d-flex justify-content-center">
-            <div class="d-flex align-items-center justify-content-center py-2 fw-bolder text-800">
+        <section class="d-flex justify-content-center flex-grow-1 border-bottom overflow-hidden">
+            <div class="d-flex align-items-center justify-content-start py-2 overflow-auto">
                 <div
-                    class="d-flex align-items-center py-3 px-4 mx-2 rounded cursor-pointer"
+                    class="d-flex align-items-center py-2 px-3 mx-2 rounded cursor-pointer"
                     t-att-class="{ 'bg-200': this.preparationDisplay.selectedStageId === 0 }"
                     t-on-click="() => this.preparationDisplay.selectStage(0)"
                 >
@@ -14,12 +14,12 @@
                     t-foreach="[...this.props.stages.values()]"
                     t-as="stage"
                     t-key="stage.id"
-                    class="o_pdis_navbar_stage d-flex align-items-center py-3 px-4 mx-2 rounded cursor-pointer bg-opacity-50"
+                    class="o_pdis_navbar_stage d-flex align-items-center py-2 px-3 mx-2 rounded cursor-pointer bg-opacity-50"
                     t-on-click="() => this.preparationDisplay.selectStage(stage.id)"
-                    t-attf-style="{{ this.preparationDisplay.selectedStageId === stage.id ? 'background-color:' + stage.color + '33' + ';' : '' }}"
+                    t-attf-style="{{ this.preparationDisplay.selectedStageId === stage.id ? 'background-color:' + (stage.color ? (stage.color === '#ffffff' ? '#00000010' : stage.color + '50') : '#00000010') + ';' : '' }}"
                 >
-                    <span t-esc="stage.name"/>
-                    <div t-att-style="'background-color:' + stage.color + 80" class="ms-2 px-2 rounded" t-esc="stage.orderCount"/>
+                    <span class="fw-bold" t-esc="stage.name"/>
+                    <div t-att-style="`background-color: ${stage.color} !important; color: ${this.getFontColor(stage.color)}`" class="ms-2 px-2 fw-bold rounded" t-esc="stage.orderCount"/>
                 </div>
             </div>
         </section>

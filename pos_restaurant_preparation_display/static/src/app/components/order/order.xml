@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-     <t t-name="pos_preparation_display.Order" t-inherit="pos_preparation_display.Order" t-inherit-mode="extension" owl="1">
-        <xpath expr="//div[hasclass('o_pdis_stage')]" position="before">
-            <div class="d-flex flex-wrap" t-if="this.props.order.table">
-                <div class="o_pdis_table pe-1" t-esc="this.props.order.table.name" t-if="this.props.order.table.name" />
-                <div class="o_pdis_seats ps-2" t-if="this.props.order.table.seats">
+    <t t-name="pos_preparation_display.Order" t-inherit="pos_preparation_display.Order" t-inherit-mode="extension" owl="1">
+        <xpath expr="section" position="attributes">
+            <attribute name="class" separator=" " remove="o_pdis_card_nocolor"/>
+            <attribute name="t-attf-class" separator=" " add="{{this.cardColor}}"/>
+        </xpath>
+        <xpath expr="//div[hasclass('o_pdis_order_card_header_middle')]" position="before">
+            <div 
+                class="o_pdis_order_card_header_top d-flex flex-nowrap align-items-center justify-content-between px-2 pb-1 fw-bold"
+                t-att-class="this.cardColor"
+                t-if="this.props.order.table.id">
+                <div class="o_pdis_table flex-shrink-0 pe-2" t-if="this.props.order.table.name">
+                    <span t-esc="this.props.order.table.name" />
+                </div>
+                <div class="o_pdis_seats flex-shrink-0 ps-2 text-end" t-if="this.props.order.table.seats">
                     <i class="fa fa-users pe-1" aria-hidden="true"></i>
                     <span t-esc="this.props.order.table.seats" />
                 </div>
             </div>
         </xpath>
     </t>
- </templates>
+</templates>

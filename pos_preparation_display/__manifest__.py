@@ -19,18 +19,28 @@
     'auto_install': True,
     'assets': {
         'pos_preparation_display.assets': [
+
+            # 'preparation_display' bootstrap customization layer
+            'web/static/src/scss/functions.scss',
+            'pos_preparation_display/static/src/scss/primary_variables.scss',
+
+            # 'webclient' bootstrap customization layer
             ('include', 'web._assets_helpers'),
             ('include', 'web._assets_backend_helpers'),
-            ('include', 'web._assets_primary_variables'),
+
             'web/static/src/scss/pre_variables.scss',
-            'web/static/lib/bootstrap/scss/_functions.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
-            ('include', 'web._assets_bootstrap'),
 
+            # Import Bootstrap
+            ('include', 'web._assets_bootstrap_backend'),
 
-            'web/static/src/legacy/js/promise_extension.js',  # Legacy FIXME
+            # Icons
             'web/static/src/libs/fontawesome/css/font-awesome.css',
             'web/static/lib/odoo_ui_icons/*',
+            'web/static/src/webclient/icons.scss',
+
+            'web/static/src/legacy/js/promise_extension.js',  # Legacy FIXME
+
             'web/static/src/boot.js',
             'web/static/src/env.js',
             'web/static/src/session.js',

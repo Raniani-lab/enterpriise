@@ -1,14 +1,13 @@
 /** @odoo-module **/
-import { Component, useState, onWillUnmount, useRef, useEffect } from "@odoo/owl";
+import { Component, useState, onWillUnmount, useRef } from "@odoo/owl";
 import { usePreparationDisplay } from "@pos_preparation_display/app/preparation_display_service";
 import { Orderline } from "@pos_preparation_display/app/components/orderline/orderline";
 import { deserializeDateTime } from "@web/core/l10n/dates";
-import { shallowEqual } from "@web/core/utils/arrays";
+import { computeFontColor } from "@pos_preparation_display/app/utils";
 
 export class Order extends Component {
     static props = {
         order: Object,
-        onPatched: Function,
     };
 
     setup() {
@@ -24,11 +23,6 @@ export class Order extends Component {
             this.state.duration = this._computeDuration();
         }, 1000);
 
-        useEffect(
-            () => this.props.onPatched(() => this.productBubbleHighlight()),
-            () => []
-        );
-
         onWillUnmount(() => {
             clearInterval(this.interval);
         });
@@ -37,9 +31,11 @@ export class Order extends Component {
         const order = this.props.order;
         return this.preparationDisplay.stages.get(order.stageId);
     }
-    get headerColor() {
-        return "#E0E2E6";
+
+    get fondColor() {
+        return computeFontColor(this.stage.color);
     }
+
     _computeDuration() {
         const timeDiff = (
             (luxon.DateTime.now().ts - deserializeDateTime(this.props.order.lastStageChange).ts) /
@@ -62,46 +58,6 @@ export class Order extends Component {
 
         this.props.order.displayed = false;
         this.preparationDisplay.doneOrders([this.props.order]);
-    }
-
-    productBubbleHighlight() {
-        const { selectedProducts, selectedCategories } = this.preparationDisplay;
-        const { el } = this.orderlinesContainer;
-        const orderlinesContainerHeight = el?.offsetHeight + el?.scrollTop + 10;
-        const orderlineToHighlight = [];
-
-        let productIdsTohighlight = [];
-        let currentHeight = 0;
-
-        if ((!selectedCategories && !selectedProducts) || !el) {
-            return false;
-        }
-
-        if (selectedCategories) {
-            for (const categoryId in this.preparationDisplay.categories) {
-                if (selectedCategories.has(categoryId)) {
-                    productIdsTohighlight.push(...selectedCategories.productIds);
-                }
-            }
-        }
-        productIdsTohighlight = [...selectedProducts];
-
-        for (const orderlineEl of el.children) {
-            const orderlineId = parseInt(orderlineEl.attributes.orderlineId?.value);
-            const orderline = this.preparationDisplay.orderlines[orderlineId];
-            currentHeight += orderlineEl.offsetHeight;
-
-            if (
-                currentHeight > orderlinesContainerHeight &&
-                productIdsTohighlight.includes(orderline?.productId)
-            ) {
-                orderlineToHighlight.push(orderline.productName);
-            }
-        }
-
-        if (!shallowEqual(this.state.productHighlighted, orderlineToHighlight)) {
-            this.state.productHighlighted = orderlineToHighlight;
-        }
     }
 }
 

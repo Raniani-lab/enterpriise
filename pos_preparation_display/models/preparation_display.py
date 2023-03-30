@@ -13,9 +13,9 @@ class PosPreparationDisplay(models.Model):
     order_count = fields.Integer("Order count", compute='_compute_order_count')
     average_time = fields.Integer("Order average time", compute='_compute_order_count', help="Average time of all order that not in a done stage.")
     stage_ids = fields.One2many('pos_preparation_display.stage', 'preparation_display_id', string="Stages", default=[
-        {'name': 'Cooking', 'color': '#F6F7FA', 'alert_timer': 10},
-        {'name': 'Ready', 'color': '#60A8FF', 'alert_timer': 5},
-        {'name': 'Completed', 'color': '#59C629', 'alert_timer': 0}
+        {'name': 'Cooking', 'color': '#6C757D', 'alert_timer': 10},
+        {'name': 'Ready', 'color': '#4D89D1', 'alert_timer': 5},
+        {'name': 'Completed', 'color': '#4ea82a', 'alert_timer': 0}
     ])
 
     # getter for pos_category_ids and pos_config_ids, in case of no one selected, return all of each.

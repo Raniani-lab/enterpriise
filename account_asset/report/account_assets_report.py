@@ -157,8 +157,8 @@ class AssetReportCustomHandler(models.AbstractModel):
         if prefix_groups_threshold:
             options['groupby_prefix_groups_threshold'] = prefix_groups_threshold
 
-        # Unfold all by default, unless prefix groups are used
-        options['unfold_all'] = (previous_options or {}).get('unfold_all', not prefix_groups_threshold)
+        # Automatically unfold the report when printing it or not using prefix groups, unless some specific lines have been unfolded
+        options['unfold_all'] = (self._context.get('print_mode') and not options.get('unfolded_lines')) or (report.filter_unfold_all and (previous_options or {}).get('unfold_all', not prefix_groups_threshold))
 
     def _with_context_company2code2account(self, report):
         if self.env.context.get('company2code2account') is not None:

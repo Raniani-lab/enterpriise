@@ -1158,12 +1158,7 @@ class AccountReport(models.Model):
     # OPTIONS: UNFOLD ALL
     ####################################################
     def _init_options_unfold_all(self, options, previous_options=None):
-        unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
-
-        if not unfold_all and self.filter_unfold_all and previous_options:
-            unfold_all = (previous_options or {}).get('unfold_all', False)
-
-        options['unfold_all'] = unfold_all
+        options['unfold_all'] = self.filter_unfold_all and (previous_options or {}).get('unfold_all', False)
 
     ####################################################
     # OPTIONS: HORIZONTAL GROUP

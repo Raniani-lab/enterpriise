@@ -14,6 +14,16 @@ export class KnowledgeArticleFormController extends FormController {
     }
 
     /**
+     * Check that the title is set or not before closing the tab and
+     * save the whole article.
+     * @override 
+     */
+    async beforeUnload(ev) {
+        this.ensureArticleName();
+        await super.beforeUnload(ev); 
+    }
+
+    /**
      * If the article has no name set, tries to rename it.
      */
     ensureArticleName() {

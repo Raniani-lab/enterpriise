@@ -38,12 +38,14 @@
                     <filter string="Type" name="filter_type" domain="[]" context="{'group_by': 'type'}"/>
                     <filter string="Model" name="filter_res_model" domain="[]" context="{'group_by': 'res_model'}"/>
                     <filter string="Creation Date" name="filter_create_date" domain="[]" context="{'group_by':'create_date'}"/>
+                    <filter string="File Extension" name="filter_file_extension" domain="[]" context="{'group_by': 'file_extension'}"/>
                 </group>
                 <searchpanel class="o_documents_search_panel">
                     <field name="folder_id"/>
                     <field name="tag_ids" select="multi" groupby="facet_id" icon="fa-tag" enable_counters="1"/>
                     <field name="res_model" select="multi" string="Attached To" icon="fa-file-text" color="#338FFC" enable_counters="1"/>
                 </searchpanel>
+                <field name="file_extension"/>
             </search>
         </field>
     </record>
@@ -256,6 +258,7 @@
                 <field name="type" optional="show"/>
                 <field name="create_date" widget="date" optional="show"/>
                 <field name="activity_exception_decoration" widget="activity_exception" nolabel="True"/>
+                <field name="file_extension" optional="hide"/>
             </tree>
         </field>
     </record>

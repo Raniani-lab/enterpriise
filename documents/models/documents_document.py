@@ -14,7 +14,13 @@ from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError
 from odoo.osv import expression
 from odoo.tools import image_process
+from odoo.tools.mimetypes import get_extension
 from odoo.tools.misc import clean_context
+
+
+def _sanitize_file_extension(extension):
+    """ Remove leading and trailing spacing + Remove leading "." """
+    return re.sub(r'^[\s.]+|\s+$', '', extension)
 
 
 class Document(models.Model):
@@ -31,6 +37,8 @@ class Document(models.Model):
     is_multipage = fields.Boolean('Is considered multipage', compute='_compute_is_multipage', store=True)
     datas = fields.Binary(related='attachment_id.datas', related_sudo=True, readonly=False, prefetch=False)
     raw = fields.Binary(related='attachment_id.raw', related_sudo=True, readonly=False, prefetch=False)
+    file_extension = fields.Char('File Extension', copy=True, store=True, readonly=False,
+                                 compute='_compute_file_extension', inverse='_inverse_file_extension')
     file_size = fields.Integer(related='attachment_id.file_size', store=True)
     checksum = fields.Char(related='attachment_id.checksum')
     mimetype = fields.Char(related='attachment_id.mimetype')
@@ -85,6 +93,18 @@ class Document(models.Model):
     _sql_constraints = [
         ('attachment_unique', 'unique (attachment_id)', "This attachment is already a document"),
     ]
+
+    @api.depends('name', 'type')
+    def _compute_file_extension(self):
+        for record in self:
+            if record.type != 'binary':
+                record.file_extension = False
+            elif not record.file_extension and record.name:
+                record.file_extension = _sanitize_file_extension(get_extension(record.name.strip())) or False
+
+    def _inverse_file_extension(self):
+        for record in self:
+            record.file_extension = _sanitize_file_extension(record.file_extension) if record.file_extension else False
 
     @api.depends('attachment_id.name')
     def _compute_name(self):

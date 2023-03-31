@@ -10,7 +10,7 @@ patch(ProductScreen.prototype, "l10n_de_pos_cert.ProductScreen", {
         try {
             await this._super(...arguments);
         } catch (error) {
-            if (this.env.pos.isCountryGermanyAndFiskaly() && error instanceof TaxError) {
+            if (this.pos.globalState.isCountryGermanyAndFiskaly() && error instanceof TaxError) {
                 await this.pos._showTaxError();
             } else {
                 throw error;

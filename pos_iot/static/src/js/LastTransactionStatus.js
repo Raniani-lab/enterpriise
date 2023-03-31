@@ -1,10 +1,10 @@
 /** @odoo-module */
-import core from "web.core";
 import { AbstractAwaitablePopup } from "@point_of_sale/js/Popups/AbstractAwaitablePopup";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 import { useService } from "@web/core/utils/hooks";
 import { useState, Component } from "@odoo/owl";
-const _t = core._t;
+import { _t } from "@web/core/l10n/translation";
+import { usePos } from "@point_of_sale/app/pos_hook";
 
 /**
  * Last Transaction Status Button
@@ -16,9 +16,9 @@ export class LastTransactionStatusButton extends Component {
     static template = "LastTransactionStatusButton";
 
     setup() {
-        super.setup();
         this.popup = useService("popup");
         this.state = useState({ pending: false });
+        this.pos = usePos();
     }
 
     sendLastTransactionStatus() {
@@ -26,13 +26,8 @@ export class LastTransactionStatusButton extends Component {
             return;
         }
 
-        if (
-            this.env.pos.get_order() &&
-            this.env.pos.get_order().selected_paymentline &&
-            ["waiting", "waitingCard", "waitingCancel"].includes(
-                this.env.pos.get_order().selected_paymentline.payment_status
-            )
-        ) {
+        const status = this.pos.globalState.get_order()?.selected_paymentline?.payment_status;
+        if (status && ["waiting", "waitingCard", "waitingCancel"].includes(status)) {
             this.popup.add(ErrorPopup, {
                 title: _t("Electronic payment in progress"),
                 body: _t(
@@ -43,7 +38,7 @@ export class LastTransactionStatusButton extends Component {
         }
 
         this.state.pending = true;
-        this.env.pos.payment_methods.map((pm) => {
+        this.pos.globalState.payment_methods.map((pm) => {
             if (pm.use_payment_terminal == "worldline") {
                 var terminal = pm.payment_terminal.get_terminal();
                 terminal.add_listener(this._onLastTransactionStatus.bind(this));

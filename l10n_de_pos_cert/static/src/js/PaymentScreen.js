@@ -7,7 +7,7 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
     //@Override
     setup() {
         this._super(...arguments);
-        if (this.env.pos.isCountryGermanyAndFiskaly()) {
+        if (this.pos.globalState.isCountryGermanyAndFiskaly()) {
             const _super_handlePushOrderError = this._handlePushOrderError.bind(this);
             this._handlePushOrderError = async (error) => {
                 if (error.code === "fiskaly") {
@@ -27,7 +27,7 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
     },
     //@override
     async validateOrder(isForceValidate) {
-        if (this.env.pos.isCountryGermanyAndFiskaly()) {
+        if (this.pos.globalState.isCountryGermanyAndFiskaly()) {
             if (this.validateOrderFree) {
                 this.validateOrderFree = false;
                 try {
@@ -43,7 +43,7 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
     //@override
     async _finalizeValidation() {
         const _super = this._super;
-        if (this.env.pos.isCountryGermanyAndFiskaly()) {
+        if (this.pos.globalState.isCountryGermanyAndFiskaly()) {
             if (this.currentOrder.isTransactionInactive()) {
                 try {
                     await this.currentOrder.createTransaction();

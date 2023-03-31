@@ -2,7 +2,6 @@
 
 import { PaymentScreen } from "@point_of_sale/../tests/tours/helpers/PaymentScreenTourMethods";
 import { ReceiptScreen } from "@point_of_sale/../tests/tours/helpers/ReceiptScreenTourMethods";
-import { Chrome } from "@pos_restaurant/../tests/tours/helpers/ChromeTourMethods";
 import { FloorScreen } from "@pos_restaurant/../tests/tours/helpers/FloorScreenTourMethods";
 import { ProductScreen } from "@pos_restaurant/../tests/tours/helpers/ProductScreenTourMethods";
 import { getSteps, startSteps } from "@point_of_sale/../tests/tours/helpers/utils";
@@ -25,9 +24,10 @@ ProductScreen.do.clickPayButton();
 PaymentScreen.do.clickPaymentMethod("Cash");
 PaymentScreen.do.clickValidate();
 ReceiptScreen.check.isShown();
-Chrome.do.backToFloor();
+ReceiptScreen.do.clickNextOrder();
 
 // Create second order
+FloorScreen.check.isShown();
 FloorScreen.do.clickTable("4");
 ProductScreen.check.orderBtnIsPresent();
 ProductScreen.do.clickDisplayedProduct("Coca-Cola");
@@ -38,9 +38,10 @@ ProductScreen.do.clickPayButton();
 PaymentScreen.do.clickPaymentMethod("Cash");
 PaymentScreen.do.clickValidate();
 ReceiptScreen.check.isShown();
-Chrome.do.backToFloor();
+ReceiptScreen.do.clickNextOrder();
 
 // Create third order
+FloorScreen.check.isShown();
 FloorScreen.do.clickTable("4");
 ProductScreen.check.orderBtnIsPresent();
 ProductScreen.do.clickDisplayedProduct("Coca-Cola");
@@ -58,7 +59,7 @@ ProductScreen.do.clickPayButton();
 PaymentScreen.do.clickPaymentMethod("Cash");
 PaymentScreen.do.clickValidate();
 ReceiptScreen.check.isShown();
-Chrome.do.backToFloor();
+ReceiptScreen.do.clickNextOrder();
 
 registry
     .category("web_tour.tours")

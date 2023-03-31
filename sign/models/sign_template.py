@@ -395,6 +395,11 @@ class SignItemType(models.Model):
     auto_field = fields.Char(string="Auto-fill Partner Field", groups='base.group_system',
         help="Technical name of the field on the partner model to auto-complete this signature field at the time of signature.")
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        self.check_field_access_rights("create", set().union(*vals_list))
+        return super().create(vals_list)
+
     @api.constrains('auto_field')
     def _check_auto_field_exists(self):
         Partner = self.env['res.partner']

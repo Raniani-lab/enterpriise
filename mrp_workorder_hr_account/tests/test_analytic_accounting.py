@@ -42,6 +42,7 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         mo_form.product_qty = 1.0
         mo_form.analytic_account_id = self.analytic_account
         mo = mo_form.save()
+        mo.action_confirm()
         with freeze_time('2027-10-01 10:00:00'):
             mo.workorder_ids.start_employee(self.employee1.id)
             mo.workorder_ids.start_employee(self.employee2.id)
@@ -56,3 +57,12 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         self.assertEqual(employee1_aa_line.amount, -100.0)
         self.assertEqual(employee2_aa_line.amount, -200.0)
         self.assertEqual(mo.workorder_ids.mo_analytic_account_line_id.amount, -10.0)
+        self.assertEqual(employee1_aa_line.account_id, self.analytic_account)
+        self.assertEqual(employee2_aa_line.account_id, self.analytic_account)
+        new_account = self.env['account.analytic.account'].create({
+            'name': 'test_analytic_account_change',
+            'plan_id': self.analytic_plan.id,
+        })
+        mo.analytic_account_id = new_account
+        self.assertEqual(employee2_aa_line.account_id, new_account)
+        self.assertEqual(employee1_aa_line.account_id, new_account)

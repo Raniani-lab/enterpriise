@@ -7,26 +7,12 @@ from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_T
 
 
 class AnalyticLine(models.Model):
-
     _inherit = 'account.analytic.line'
-
-    has_so_access = fields.Boolean(compute="_compute_has_so_access", help="Check that user has a sales access right or not.")
 
     def _compute_display_timer(self):
         invoiced_timesheets = self.filtered('timesheet_invoice_id')
         invoiced_timesheets.display_timer = False
         super(AnalyticLine, self - invoiced_timesheets)._compute_display_timer()
-
-    @api.depends_context('uid')
-    @api.depends('order_id')
-    def _compute_has_so_access(self):
-        sale_leads_group = self.user_has_groups('sales_team.group_sale_salesman_all_leads')
-        if sale_leads_group:
-            self.has_so_access = True
-            return
-        sale_man_group = self.user_has_groups('sales_team.group_sale_salesman')
-        for timesheet in self:
-            timesheet.has_so_access = sale_man_group and timesheet.order_id.sudo().user_id == self.env.user
 
     @api.model
     def grid_update_cell(self, domain, measure_field_name, value):
@@ -64,25 +50,3 @@ class AnalyticLine(models.Model):
         self -= invoice_validated_timesheets
         # Errors are handled in the parent if there are no lines left
         return super(AnalyticLine, self).action_invalidate_timesheet()
-
-    def action_sale_order_from_timesheet(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Sale Order'),
-            'res_model': 'sale.order',
-            'views': [[False, 'form']],
-            'context': {'create': False, 'show_sale': True},
-            'res_id': self.order_id.id,
-        }
-
-    def action_invoice_from_timesheet(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Invoice'),
-            'res_model': 'account.move',
-            'views': [[False, 'form']],
-            'context': {'create': False},
-            'res_id': self.timesheet_invoice_id.id,
-        }

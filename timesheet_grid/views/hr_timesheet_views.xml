@@ -160,57 +160,23 @@
             </field>
         </record>
 
-        <!-- Line edition and creation from grid -->
-        <record id="timesheet_view_form" model="ir.ui.view">
-            <field name="name">account.analytic.line.form</field>
+        <record id="hr_timesheet_line_form_grid" model="ir.ui.view">
+            <field name="name">account.analytic.line.form.grid</field>
             <field name="model">account.analytic.line</field>
-            <field name="priority">4567</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+            <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <form string="Add a Task">
-                    <header invisible="context.get('view_grid_add_line', False)">
-                        <button string="Validate" name="action_validate_timesheet" type="object" class="btn btn-primary"
-                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="v"/>
-                        <button string="Reset to draft" name="action_invalidate_timesheet" type="object" class="btn btn-secondary"
-                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="q"/>
-                        <field name="validated_status" widget="statusbar"/>
-                    </header>
-                    <sheet>
-                        <group>
-                            <group>
-                                <field name="readonly_timesheet" invisible="1"/>
-                                <field name="user_can_validate" invisible="1"/>
-                                <field name="company_id" invisible="1"/>
-                                <field name="validated" invisible="1"/>
-                                <field name="timer_start" invisible="1"/>
-                                <field name="project_id" required="1" options="{'no_create_edit': True, 'no_open': True}" class="o_timesheet_tour_project_name" attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}"/>
-                                <field name="task_id" options="{'no_create_edit': True}" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name" attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}" widget="task_with_hours"/>
-                                <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
-                            </group>
-                            <group>
-                                <field name="employee_id" required="1" groups="hr_timesheet.group_hr_timesheet_approver" context="{'active_test': True}"
-                                    attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}" widget="many2one_avatar_employee"/>
-                                <field name="date" attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}"/>
-                                <field name="unit_amount" widget="timesheet_uom" adecoration-danger="unit_amount &gt; 24" decoration-muted="unit_amount == 0"
-                                    attrs="{'readonly': [('id', '!=', False), '|', ('readonly_timesheet', '=', True), ('timer_start', '!=', False)]}"/>
-                            </group>
-                        </group>
-                        <group col="2">
-                            <field name="name" placeholder="Describe your activity" widget="text" required="0" nolabel="1" attrs="{'readonly':[('readonly_timesheet', '=', True)]}" colspan="2"/>
-                        </group>
-                    </sheet>
-                </form>
+                <header position="replace"/>
             </field>
         </record>
 
-        <record id="my_timesheet_form_view" model="ir.ui.view">
-            <field name="name">account.analytic.line.form.inherit</field>
+        <record id="timesheet_view_form_user_grid" model="ir.ui.view">
+            <field name="name">account.analytic.line.form.user.grid</field>
             <field name="model">account.analytic.line</field>
-            <field name="inherit_id" ref="timesheet_grid.timesheet_view_form"/>
+            <field name="inherit_id" ref="hr_timesheet.timesheet_view_form_user"/>
             <field name="mode">primary</field>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='employee_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
+                <header position="replace"/>
             </field>
         </record>
 
@@ -222,7 +188,7 @@
                       js_class="timer_timesheet_grid"
                       barchart_total="1"
                       create_inline="1"
-                      form_view_id="%(timesheet_grid.my_timesheet_form_view)d"
+                      form_view_id="%(timesheet_grid.hr_timesheet_line_form_grid)d"
                       editable="1"
                       display_empty="1"
                       sample="1">
@@ -248,7 +214,7 @@
                       js_class="timesheet_grid"
                       barchart_total="1"
                       create_inline="1"
-                      form_view_id="%(timesheet_grid.timesheet_view_form)d"
+                      form_view_id="%(timesheet_grid.timesheet_view_form_user_grid)d"
                       display_empty="1">
                     <field name="project_id" type="row"/>
                     <field name="task_id" type="row"/>
@@ -273,7 +239,7 @@
                       js_class="timesheet_grid"
                       barchart_total="1"
                       create_inline="1"
-                      form_view_id="%(timesheet_grid.timesheet_view_form)d"
+                      form_view_id="%(timesheet_grid.timesheet_view_form_user_grid)d"
                       display_empty="1"
                       sample="1">
                     <field name="employee_id" type="row" widget="timesheet_many2one_avatar_employee"/>
@@ -496,7 +462,7 @@
         </record>
 
         <record id="hr_timesheet.act_hr_timesheet_line_view_form" model="ir.actions.act_window.view">
-            <field name="view_id" ref="timesheet_grid.my_timesheet_form_view"/>
+            <field name="view_id" ref="hr_timesheet.hr_timesheet_line_form"/>
         </record>
 
 
@@ -526,7 +492,7 @@
         </record>
 
         <record id="hr_timesheet.timesheet_action_view_all_form" model="ir.actions.act_window.view">
-            <field name="view_id" ref="timesheet_grid.timesheet_view_form"/>
+            <field name="view_id" ref="hr_timesheet.timesheet_view_form_user"/>
         </record>
 
         <record id="hr_timesheet.timesheet_action_from_employee" model="ir.actions.act_window">
@@ -557,7 +523,7 @@
         </record>
 
         <record id="hr_timesheet.timesheet_action_view_from_employee_form" model="ir.actions.act_window.view">
-            <field name="view_id" ref="timesheet_grid.timesheet_view_form"/>
+            <field name="view_id" ref="hr_timesheet.timesheet_view_form_user"/>
         </record>
 
         <record id="action_timesheet_previous_week" model="ir.actions.act_window">
@@ -600,7 +566,7 @@
         <record id="timesheet_action_view_previous_week_form" model="ir.actions.act_window.view">
             <field name="sequence" eval="5"/>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="timesheet_grid.timesheet_view_form"/>
+            <field name="view_id" ref="hr_timesheet.timesheet_view_form_user"/>
             <field name="act_window_id" ref="action_timesheet_previous_week"/>
         </record>
 
@@ -644,7 +610,7 @@
         <record id="timesheet_action_view_previous_month_form" model="ir.actions.act_window.view">
             <field name="sequence" eval="5"/>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="timesheet_grid.timesheet_view_form"/>
+            <field name="view_id" ref="hr_timesheet.timesheet_view_form_user"/>
             <field name="act_window_id" ref="action_timesheet_previous_month"/>
         </record>
 
@@ -766,7 +732,7 @@ action = model._action_open_to_validate_timesheet_view()
 
         <record id="hr_timesheet_to_validate_action_form" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
-            <field name="view_id" ref="timesheet_grid.timesheet_view_form" />
+            <field name="view_id" ref="hr_timesheet.timesheet_view_form_user" />
             <field name="act_window_id" ref="timesheet_grid_to_validate_action" />
             <field name="sequence">60</field>
         </record>

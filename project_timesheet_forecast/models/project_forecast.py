@@ -123,7 +123,7 @@ class Forecast(models.Model):
                 [self.env.ref('hr_timesheet.view_kanban_account_analytic_line').id, 'kanban'],
                 [self.env.ref('hr_timesheet.view_hr_timesheet_line_pivot').id, 'pivot'],
                 [self.env.ref('hr_timesheet.view_hr_timesheet_line_graph_all').id, 'graph'],
-                [self.env.ref('timesheet_grid.timesheet_view_form').id, 'form'],
+                [self.env.ref('hr_timesheet.hr_timesheet_line_form').id, 'form'],
             ],
         })
         action['context'] = {

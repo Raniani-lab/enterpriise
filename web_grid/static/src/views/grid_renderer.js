@@ -224,7 +224,6 @@ export class GridRenderer extends Component {
     onCreateInlineClick(section) {
         const context = {
             ...(section?.context || {}),
-            view_grid_add_line: true,
         };
         const title = this.env._t("Add a Line");
         this.props.createRecord({ context, title });

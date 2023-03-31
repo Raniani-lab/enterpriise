@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
-    l10n_ke_mortgage = fields.Monetary(string="Mortgage Interest", currency_field='currency_id')
+    l10n_ke_mortgage = fields.Monetary(string="Mortgage Interest", currency_field='currency_id', groups="hr.group_hr_user")
 
     @api.constrains('l10n_ke_mortgage')
     def _check_l10n_ke_mortgage(self):

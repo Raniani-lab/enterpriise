@@ -364,7 +364,7 @@
                     <span>There are <a action="open_unposted_moves">unposted Journal Entries</a> prior or included in this period</span>
                 </div>
                 <div class="alert alert-warning text-center mb-0 no_print" t-if="options.get('contains_archived_tag')">
-                    <span>Some journal items appear to point to obsolete report lines. <a action="action_archived_tag_move">Check them</a> and correct their tax tags if necessary.</span>
+                    <span>Some journal items appear to point to obsolete report lines. <a action="action_open_amls_with_archived_tags">Check them</a> and correct their tax tags if necessary.</span>
                 </div>
             </div>
             <div class="o_account_reports_page o_account_reports_no_print">

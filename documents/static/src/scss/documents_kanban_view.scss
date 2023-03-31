@@ -115,6 +115,13 @@
                 .o_kanban_details_wrapper {
                     height: 100%;
 
+                    .o_field_document_url a {
+                        display: block;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
                     .o_field_many2manytags {
                         margin-top: 5px;
                         white-space: normal;

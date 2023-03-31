@@ -6,6 +6,7 @@ import re
 from ast import literal_eval
 from collections import OrderedDict
 
+import requests
 from PyPDF2 import PdfFileReader
 try:
     from PyPDF2.errors import PdfReadError
@@ -19,6 +20,7 @@ from odoo.osv import expression
 from odoo.tools import image_process
 from odoo.tools.mimetypes import get_extension
 from odoo.tools.misc import clean_context
+from odoo.addons.mail.tools import link_preview
 
 
 def _sanitize_file_extension(extension):
@@ -55,7 +57,7 @@ class Document(models.Model):
     previous_attachment_ids = fields.Many2many('ir.attachment', string="History")
 
     # Document
-    name = fields.Char('Name', copy=True, store=True, compute='_compute_name', inverse='_inverse_name')
+    name = fields.Char('Name', copy=True, store=True, compute='_compute_name_and_preview', inverse='_inverse_name')
     active = fields.Boolean(default=True, string="Active")
     thumbnail = fields.Binary(readonly=False, store=True, attachment=True, compute='_compute_thumbnail')
     thumbnail_status = fields.Selection([
@@ -64,6 +66,7 @@ class Document(models.Model):
         ], compute="_compute_thumbnail_status", store=True, readonly=False,
     )
     url = fields.Char('URL', index=True, size=1024, tracking=True)
+    url_preview_image = fields.Char('URL Preview Image', store=True, compute='_compute_name_and_preview')
     res_model_name = fields.Char(compute='_compute_res_model_name', index=True)
     type = fields.Selection([('url', 'URL'), ('binary', 'File'), ('empty', 'Request')],
                             string='Type', required=True, store=True, default='empty', change_default=True,
@@ -109,11 +112,21 @@ class Document(models.Model):
         for record in self:
             record.file_extension = _sanitize_file_extension(record.file_extension) if record.file_extension else False
 
-    @api.depends('attachment_id.name')
-    def _compute_name(self):
+    @api.depends('attachment_id', 'attachment_id.name', 'url')
+    def _compute_name_and_preview(self):
+        request_session = requests.Session()
         for record in self:
-            if record.attachment_name:
-                record.name = record.attachment_name
+            if record.attachment_id:
+                record.name = record.attachment_id.name
+                record.url_preview_image = False
+            elif record.url:
+                preview = link_preview.get_link_preview_from_url(record.url, request_session)
+                if not preview:
+                    continue
+                if preview.get('og_title'):
+                    record.name = preview['og_title']
+                if preview.get('og_image'):
+                    record.url_preview_image = preview['og_image']
 
     def _inverse_name(self):
         for record in self:
@@ -152,13 +165,6 @@ class Document(models.Model):
                 # In case a check_access is done between res_id and res_model modification,
                 # an access error can be received. (Mail causes this check_access)
                 attachment.sudo().write({'res_model': record.res_model, 'res_id': record.res_id})
-
-    @api.onchange('url')
-    def _onchange_url(self):
-        if self.url:
-            is_youtube = re.match(r"^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$", self.url)
-            if not self.name and not is_youtube:
-                self.name = self.url.rsplit('/')[-1]
 
     @api.depends('checksum')
     def _compute_thumbnail(self):

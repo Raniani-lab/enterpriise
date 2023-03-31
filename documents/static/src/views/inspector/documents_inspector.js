@@ -53,6 +53,7 @@ export const inspectorFields = [
     "tag_ids",
     "type",
     "url",
+    "url_preview_image",
     "file_size",
 ];
 
@@ -234,6 +235,7 @@ export class DocumentsInspector extends Component {
             isImage: new RegExp("image.*(jpeg|jpg|png)").test(record.data.mimetype),
             isYoutubeVideo: false,
             youtubeToken: undefined,
+            url_preview_image: record.data.url_preview_image,
         };
         if (record.data.url && record.data.url.length) {
             const youtubeUrlMatch = record.data.url.match(
@@ -259,7 +261,7 @@ export class DocumentsInspector extends Component {
         if (nbPreviews === 1) {
             classes.push("o_documents_single_preview");
         }
-        if (additionalData.isImage || additionalData.isYoutubeVideo || (record.isPdf() && record.hasThumbnail())) {
+        if (additionalData.isImage || additionalData.isYoutubeVideo || record.data.url_preview_image || (record.isPdf() && record.hasThumbnail())) {
             classes.push("o_documents_preview_image");
         } else {
             classes.push("o_documents_preview_mimetype");

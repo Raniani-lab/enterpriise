@@ -64,6 +64,7 @@
                 <field name="type"/>
                 <field name="create_uid"/>
                 <field name="url"/>
+                <field name="url_preview_image"/>
                 <field name="create_date"/>
                 <field name="active"/>
                 <field name="checksum"/>
@@ -90,7 +91,13 @@
                                 <div name="document_preview" class="o_kanban_image_wrapper" t-att-title="fileRequest ? 'Upload file' : ''">
                                     <img t-if="youtubeVideoToken" width="100" height="100" alt="Document" class="o_attachment_image"
                                          t-attf-src="https://img.youtube.com/vi/{{youtubeVideoToken}}/0.jpg"/>
-                                    <div t-elif="record.type.raw_value == 'url'" class="o_url_image fa fa-link fa-3x text-muted"/>
+                                    <a t-elif="record.type.raw_value =='url'" target="_blank" t-att-href="record.url.raw_value" class="o_kanban_image_wrapper">
+                                        <img t-if="record.url_preview_image.raw_value" class="w-100 h-100"
+                                            t-att-src="record.url_preview_image.raw_value" t-att-alt="record.name.raw_value"/>
+                                        <t t-else="">
+                                            <span class="o_url_image fa fa-link fa-3x text-muted"/>
+                                        </t>
+                                    </a>
                                     <t t-elif="hasThumbnail">
                                         <t t-set="unique" t-value="record.checksum.value ? record.checksum.value.slice(-8) : ''"/>
                                         <div class="o_documents_image">
@@ -121,14 +128,14 @@
                                                  <span><b> Request</b></span>
                                             </t>
                                         </t>
-                                        <t t-elif="record.type.raw_value == 'url'">
-                                            <span class="o_document_url"><i class="fa fa-globe" title="Document url"/> <field name="url" widget="url"/></span>
+                                        <t t-elif="record.type.raw_value == 'url'" class="d-block">
+                                            <field name="url" class="d-block o_field_document_url" widget="url"/>
                                         </t>
                                         <t t-elif="fileRequest">
                                             <span><b>Requested Document</b></span>
                                         </t>
                                         <samp t-else="" class="text-muted"> </samp>
-                                        <field name="tag_ids" class="d-block" widget="documents_many2many_tags"/>
+                                        <field name="tag_ids" class="d-block text-wrap" widget="documents_many2many_tags"/>
                                     </div>
                                     <div class="o_kanban_record_bottom flex-wrap">
                                         <time class="oe_kanban_bottom_left">
@@ -229,6 +236,7 @@
                     <group>
                         <field name="url" string="URL" widget="url" required="1" placeholder="e.g. https://www.youtube.com/watch?v=CP96yVnXNrY"/>
                         <field name="name" required="True"/>
+                        <field name="url_preview_image" invisible="1" force_save="1"/>
                         <field name="folder_id" invisible="1"/>
                         <field name="tag_ids" invisible="1"/>
                     </group>

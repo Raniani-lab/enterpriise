@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
-import { getDefaultConfig, View } from "@web/views/view";
+import { getDefaultConfig } from "@web/views/view";
+import { EmbeddedView } from "@knowledge/views/embedded_view";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { useOwnDebugContext } from "@web/core/debug/debug_context";
 import { useService } from "@web/core/utils/hooks";
@@ -9,6 +10,7 @@ import {
     Component,
     onWillStart,
     useSubEnv } from "@odoo/owl";
+import { decodeDataBehaviorProps, encodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 
 const EMBEDDED_VIEW_LIMITS = {
     kanban: 20,
@@ -25,6 +27,7 @@ export class EmbeddedViewManager extends Component {
 
         this.actionService = useService('action');
         this.dialogService = useService('dialog');
+        this.notification = useService("notification");
 
         useOwnDebugContext(); // define a debug context when the developer mode is enable
         const config = {
@@ -79,6 +82,42 @@ export class EmbeddedViewManager extends Component {
     }
 
     /**
+     * Save the search favorite in the view arch.
+     */
+    async onSaveKnowledgeFavorite(favorite) {
+        if (this.props.readonly) {
+            this.notification.add(this.env._t("You can not save favorite on this article"), {
+                type: "danger",
+            });
+            return;
+        }
+        const data = decodeDataBehaviorProps(this.props.el.getAttribute("data-behavior-props"));
+        const favorites = data.favorites || [];
+        favorites.push(favorite);
+        data.favorites = favorites;
+        this.props.el.setAttribute("data-behavior-props", encodeDataBehaviorProps(data));
+        await this.props.record.askChanges();
+    }
+
+    /**
+     * Delete the search favorite from the view arch.
+     */
+    async onDeleteKnowledgeFavorite(searchItem) {
+        if (this.props.readonly) {
+            this.notification.add(this.env._t("You can not delete favorite from this article"), {
+                type: "danger",
+            });
+            return;
+        }
+
+        const data = decodeDataBehaviorProps(this.props.el.getAttribute("data-behavior-props"));
+        const favorites = data.favorites || [];
+        data.favorites = favorites.filter((favorite) => favorite.name != searchItem.description);
+        this.props.el.setAttribute("data-behavior-props", encodeDataBehaviorProps(data));
+        await this.props.record.askChanges();
+    }
+
+    /**
      * Recover the action from its parsed state (attrs of the Behavior block)
      * and setup the embedded view props
      */
@@ -130,7 +169,11 @@ export class EmbeddedViewManager extends Component {
         if (this.props.viewType in EMBEDDED_VIEW_LIMITS) {
             ViewProps.limit = EMBEDDED_VIEW_LIMITS[this.props.viewType];
         }
-        this.EmbeddedView = View;
+        ViewProps.irFilters = this._loadKnowledgeFavorites();
+        ViewProps.onSaveKnowledgeFavorite = this.onSaveKnowledgeFavorite.bind(this);
+        ViewProps.onDeleteKnowledgeFavorite = this.onDeleteKnowledgeFavorite.bind(this);
+
+        this.EmbeddedView = EmbeddedView;
         this.EmbeddedViewProps = ViewProps;
         this.action = action;
     }
@@ -169,6 +212,20 @@ export class EmbeddedViewManager extends Component {
             props
         });
     }
+
+    /**
+     * Load search favorites from the view arch.
+     */
+    _loadKnowledgeFavorites() {
+        const data = decodeDataBehaviorProps(this.props.el.getAttribute("data-behavior-props"));
+        const favorites = data.favorites || [];
+
+        return favorites.map((favorite) => {
+            favorite.isActive = favorite.isActive || false;
+            favorite.context = JSON.stringify(favorite.context);
+            return favorite;
+        });
+    }
 }
 
 EmbeddedViewManager.template = 'knowledge.EmbeddedViewManager';
@@ -180,4 +237,5 @@ EmbeddedViewManager.props = {
     setTitle: { type: Function },
     getTitle: { type: Function },
     readonly: { type: Boolean },
+    record: { type: Object },
 };

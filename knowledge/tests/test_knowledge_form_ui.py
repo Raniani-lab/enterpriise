@@ -198,6 +198,12 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         })
         self.start_tour('/web', 'knowledge_properties_tour', login='admin')
 
+    def test_knowledge_search_favorites_tour(self):
+        """Test search favorites """
+        self.env['knowledge.article'].create([{'name': 'Article 1'}])
+        self.start_tour('/web', 'knowledge_search_favorites_tour', login='admin', step_delay=100)
+
+
 @tagged('external', 'post_install', '-at_install')
 @skipIf(not os.getenv("UNSPLASH_APP_ID") or not os.getenv("UNSPLASH_ACCESS_KEY"), "no unsplash credentials")
 class TestKnowledgeUIWithUnsplash(TestKnowledgeUICommon):

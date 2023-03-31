@@ -28,6 +28,7 @@
                 setTitle.bind="setTitle"
                 getTitle.bind="getTitle"
                 readonly="props.readonly"
+                record="props.record"
             />
         </t>
         <div t-if="props.action_help" class="o_knowledge_content d-none" data-prop-name="action_help" data-oe-protected="false"

@@ -46,6 +46,7 @@
             'knowledge/static/src/xml/**/*',
             'knowledge/static/src/components/**/*',
             'knowledge/static/src/emoji_picker/**/*',
+            'knowledge/static/src/search_model/**/*',
             'knowledge/static/src/web/**/*',
             'knowledge/static/src/js/knowledge_controller.js',
             'knowledge/static/src/js/knowledge_utils.js',

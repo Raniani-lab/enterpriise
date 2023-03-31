@@ -28,8 +28,8 @@ class SwedishTaxReportTest(AccountSalesReportCommon):
 
     @freeze_time('2019-12-31')
     def test_generate_xml(self):
-        first_tax = self.env['account.tax'].search([('name', '=', 'Beskattningsunderlag vid import 25%'), ('company_id', '=', self.company_data['company'].id)], limit=1)
-        second_tax = self.env['account.tax'].search([('name', '=', 'Ingående moms 6%'), ('company_id', '=', self.company_data['company'].id)], limit=1)
+        first_tax = self.env.ref("account.%s_purchase_goods_tax_25_NEC" % self.company_data['company'].id)
+        second_tax = self.env.ref("account.%s_purchase_tax_6_goods" % self.company_data['company'].id)
 
         # Create and post a move with two move lines to get some data in the report
         move = self.env['account.move'].create({

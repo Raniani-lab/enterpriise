@@ -54,7 +54,7 @@
             <!-- Buttons -->
             <div class="d-lg-flex align-items-center pe-2">
                 <!-- Icon and Cover buttons -->
-                <div class="o_knowledge_add_buttons" t-if="props.record.data.active">
+                <div class="o_knowledge_add_buttons" t-if="props.record.data.active and !props.record.data.is_locked and props.record.data.user_can_write">
                     <button class="btn btn-light o_knowledge_add_icon" t-if="!props.record.data.icon"
                         t-on-mousedown.prevent="env.addIcon">
                         <i class="fa fa-fw fa-lg fa-smile-o" title="Add icon"/> Add icon

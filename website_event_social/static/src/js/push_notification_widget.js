@@ -1,9 +1,8 @@
-odoo.define('website_event_social.NotificationManager', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var core = require('web.core');
+import core from "web.core";
 var _t = core._t;
-var NotificationWidget = require('social_push_notifications.NotificationManager');
+import NotificationWidget from "social_push_notifications.NotificationManager";
 
 NotificationWidget.include({
     /**
@@ -44,6 +43,4 @@ NotificationWidget.include({
 
         return this._super(popupConfig, pushConfig);
     },
-});
-
 });

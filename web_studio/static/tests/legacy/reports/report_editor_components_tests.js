@@ -1,13 +1,11 @@
-odoo.define('web_studio.ReportEditorComponents_tests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var testUtils = require('web.test_utils');
-var studioTestUtils = require('web_studio.testUtils');
-var Widget = require('web.Widget');
+import testUtils from "web.test_utils";
+import studioTestUtils from "web_studio.testUtils";
+import Widget from "web.Widget";
 
-var studioTestUtils = require('web_studio.testUtils');
-var editComponentsRegistry = require('web_studio.reportEditComponentsRegistry');
-var reportNewComponentsRegistry = require('web_studio.reportNewComponentsRegistry');
+import editComponentsRegistry from "web_studio.reportEditComponentsRegistry";
+import reportNewComponentsRegistry from "web_studio.reportNewComponentsRegistry";
 
 
 QUnit.module('Studio', {}, function () {
@@ -793,8 +791,6 @@ QUnit.module('ReportComponents', {
 
         parent.destroy();
     });
-});
-
 });
 
 });

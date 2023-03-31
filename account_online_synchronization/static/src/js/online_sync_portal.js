@@ -1,8 +1,7 @@
-odoo.define('account_online_synchronization.online_sync_portal', function (require) {
-    'use strict';
-
-    const publicWidget = require('web.public.widget');
-    const { loadJS } = require('@web/core/assets');
+/** @odoo-module **/
+    
+    import publicWidget from "web.public.widget";
+    import { loadJS } from "@web/core/assets";
     /* global OdooFin */
 
     publicWidget.registry.OnlineSyncPortal = publicWidget.Widget.extend({
@@ -53,8 +52,6 @@ odoo.define('account_online_synchronization.online_sync_portal', function (requi
         },
     });
 
-    return {
+    export default {
         OnlineSyncPortal: publicWidget.registry.OnlineSyncPortal,
     };
-
-});

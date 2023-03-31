@@ -1,13 +1,8 @@
-odoo.define("web_enterprise.Dialog", function(require) {
-    "use strict";
+/** @odoo-module **/
 
-    const config = require("web.config");
-    if (!config.device.isMobile) {
-        return;
-    }
-
-    const Dialog = require("web.Dialog");
-
+import config from "web.config";
+import Dialog from "web.Dialog";
+if (config.device.isMobile) {
     Dialog.include({
         /**
          * @override
@@ -72,4 +67,4 @@ odoo.define("web_enterprise.Dialog", function(require) {
             this._super(...arguments);
         },
     });
-});
+}

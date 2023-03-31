@@ -1,20 +1,19 @@
-odoo.define('web_studio.reportEditComponents', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.reportEditComponents **/
 
-var {ColorpickerDialog} = require('web.Colorpicker');
-var config = require('web.config');
-var core = require('web.core');
-var utils = require('web.utils');
-var fieldRegistry = require('web.field_registry');
-var ModelFieldSelector = require('web.ModelFieldSelector');
-var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
-const { WidgetAdapterMixin } = require('web.OwlCompatibility');
+import {ColorpickerDialog} from "web.Colorpicker";
+import config from "web.config";
+import core from "web.core";
+import utils from "web.utils";
+import fieldRegistry from "web.field_registry";
+import ModelFieldSelector from "web.ModelFieldSelector";
+import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
+import { WidgetAdapterMixin } from "web.OwlCompatibility";
 
-const Wysiwyg = require('web_editor.wysiwyg');
+import Wysiwyg from "web_editor.wysiwyg";
 
-var Abstract = require('web_studio.AbstractReportComponent');
-var DomainSelectorDialog = require('web.DomainSelectorDialog');
-var Domain = require("web.Domain");
+import Abstract from "web_studio.AbstractReportComponent";
+import DomainSelectorDialog from "web.DomainSelectorDialog";
+import Domain from "web.Domain";
 
 var py = window.py; // look py.js
 var qweb = core.qweb;
@@ -1514,7 +1513,7 @@ var TOptions = AbstractEditComponent.extend( {
     },
 });
 
-return {
+export default {
     BlockTotal: BlockTotal,
     Column: Column,
     Groups: Groups,
@@ -1530,5 +1529,3 @@ return {
     TOptions: TOptions,
     TSet: TSet,
 };
-
-});

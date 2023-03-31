@@ -1,12 +1,12 @@
+/** @odoo-module alias=pos_blackbox_be.pos_blackbox_be **/
 /* global Sha1 */
-odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
-    var models = require('point_of_sale.models');
-    const { Gui } = require('point_of_sale.Gui');
-    var core    = require('web.core');
-    var Class = require('web.Class');
-    var devices = require('point_of_sale.devices');
+    import models from "point_of_sale.models";
+    import { Gui } from "point_of_sale.Gui";
+    import core    from "web.core";
+    import Class from "web.Class";
+    import devices from "point_of_sale.devices";
     var _t      = core._t;
-    const utils = require('web.utils');
+    import utils from "web.utils";
     const round_pr = utils.round_precision;
 
     var orderline_super = models.Orderline.prototype;
@@ -1195,4 +1195,3 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
     models.load_fields("account.tax", "identification_letter");
     models.load_fields("res.company", "street");
     models.load_fields("pos.session", "users_clocked_ids");
-});

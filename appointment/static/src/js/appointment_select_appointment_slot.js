@@ -1,8 +1,7 @@
-odoo.define('appointment.select_appointment_slot', function (require) {
-'use strict';
+/** @odoo-module **/
 
-var core = require('web.core');
-var publicWidget = require('web.public.widget');
+import core from "web.core";
+import publicWidget from "web.public.widget";
 var qweb = core.qweb;
 
 publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
@@ -195,5 +194,4 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         this.$('.o_appointment_slots_loading').remove();
         this.$('#slots_availabilities').removeClass('d-none');
     },
-});
 });

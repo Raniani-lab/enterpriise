@@ -1,8 +1,7 @@
-odoo.define('pos_blackbox_be.OrderReceipt', function(require) {
-    'use strict';
-
-    const OrderReceipt = require('point_of_sale.OrderReceipt');
-    const Registries = require('point_of_sale.Registries');
+/** @odoo-module alias=pos_blackbox_be.OrderReceipt **/
+    
+    import OrderReceipt from "point_of_sale.OrderReceipt";
+    import Registries from "point_of_sale.Registries";
 
     const PosBlackBoxBeOrderReceipt = OrderReceipt =>
         class extends OrderReceipt {
@@ -31,5 +30,4 @@ odoo.define('pos_blackbox_be.OrderReceipt', function(require) {
 
     Registries.Component.extend(OrderReceipt, PosBlackBoxBeOrderReceipt);
 
-    return OrderReceipt;
-});
+    export default OrderReceipt;

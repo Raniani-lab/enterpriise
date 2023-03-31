@@ -1,9 +1,8 @@
-odoo.define('sign_widgets_tour', function (require) {
-    "use strict";
-
-    var core = require('web.core');
-    const { registry } = require("@web/core/registry");
-    const { stepUtils } = require('@web_tour/tour_service/tour_utils');
+/** @odoo-module **/
+    
+    import core from "web.core";
+    import { registry } from "@web/core/registry";
+    import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
     var _t = core._t;
 
@@ -79,4 +78,3 @@ odoo.define('sign_widgets_tour', function (require) {
             ...stepUtils.saveForm(),
         ]
     });
-});

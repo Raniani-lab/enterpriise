@@ -1,11 +1,8 @@
-odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
-    ("use strict");
+/** @odoo-module alias=documents_spreadsheet.PivotTemplatePlugin **/
 
-    const spreadsheet = require("@odoo/o-spreadsheet");
-    const CommandResult = require("@spreadsheet/o_spreadsheet/cancelled_reason")[
-        Symbol.for("default")
-    ];
-    const { pivotFormulaRegex } = require("@spreadsheet/pivot/pivot_helpers");
+    import * as spreadsheet from "@odoo/o-spreadsheet";
+    import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
+    import { pivotFormulaRegex } from "@spreadsheet/pivot/pivot_helpers";
     const { parse, astToFormula } = spreadsheet;
     const { featurePluginRegistry } = spreadsheet.registries;
 
@@ -338,5 +335,4 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
 
     featurePluginRegistry.add("PivotTemplate", PivotTemplatePlugin);
 
-    return PivotTemplatePlugin;
-});
+    export default PivotTemplatePlugin;

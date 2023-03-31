@@ -1,9 +1,8 @@
-odoo.define('account_accountant.dashboard.setup.tour', function (require) {
-"use strict";
+/** @odoo-module **/
 
-require('account.dashboard.setup.tour');
-const { _t } = require('web.core');
-const { registry } = require("@web/core/registry");
+import "account.dashboard.setup.tour";
+import { _t } from "web.core";
+import { registry } from "@web/core/registry";
 
 const { steps } = registry.category("web_tour.tours").get("account_render_report");
 const accountMenuClickIndex = steps.findIndex(step => step.id === 'account_menu_click');
@@ -13,6 +12,4 @@ steps.splice(accountMenuClickIndex, 1, {
     position: 'bottom',
 }, {
     trigger: `a:contains(${_t("Customer Invoices")})`,
-});
-
 });

@@ -8,7 +8,7 @@ import { _t } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
 import { url } from '@web/core/utils/urls';
 import { useService } from "@web/core/utils/hooks";
-import { FNC1_CHAR } from "barcodes_gs1_nomenclature/static/src/js/barcode_parser.js";
+import { FNC1_CHAR } from "barcodes_gs1_nomenclature.barcode_parser";
 
 const { EventBus } = owl;
 

@@ -1,7 +1,6 @@
-odoo.define('web_studio.bus', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.bus **/
 
-var Bus = require('web.Bus');
+import Bus from "web.Bus";
 
 var bus = new Bus();
 
@@ -39,6 +38,4 @@ var bus = new Bus();
  *
  */
 
-return bus;
-
-});
+export default bus;

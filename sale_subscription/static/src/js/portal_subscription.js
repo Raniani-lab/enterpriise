@@ -1,7 +1,6 @@
-odoo.define('sale_subscription.portal_subscription', function (require) {
-    'use strict';
-
-    var publicWidget = require('web.public.widget');
+/** @odoo-module **/
+    
+    import publicWidget from "web.public.widget";
 
     publicWidget.registry.SubscriptionCloseSelect = publicWidget.Widget.extend({
         selector: '#subscription-close-select',
@@ -54,4 +53,3 @@ odoo.define('sale_subscription.portal_subscription', function (require) {
             $('#wc-modal-close-init form').submit();
         },
     });
-});

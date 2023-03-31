@@ -1,7 +1,6 @@
-odoo.define('account_avatax_sale.tour_account_avatax_sale_optional_products', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const { registry } = require("@web/core/registry");
+import { registry } from "@web/core/registry";
 
 // This tour relies on data created on the Python test.
 registry.category("web_tour.tours").add('account_avatax_sale_optional_products', {
@@ -34,4 +33,3 @@ registry.category("web_tour.tours").add('account_avatax_sale_optional_products',
         run() {}, // it should not click
     },
 ]});
-});

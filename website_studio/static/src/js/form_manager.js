@@ -1,5 +1,4 @@
-odoo.define('website_studio.FormManager', function (require) {
-"use strict";
+/** @odoo-module alias=website_studio.FormManager **/
 
 /**
  * This is the widget used by studio to render the website forms linked to
@@ -9,9 +8,9 @@ odoo.define('website_studio.FormManager', function (require) {
  * @module website_studio.FormManager
  */
 
-var AbstractAction = require('web.AbstractAction');
-var core = require('web.core');
-var framework = require('web.framework');
+import AbstractAction from "web.AbstractAction";
+import core from "web.core";
+import framework from "web.framework";
 
 var _t = core._t;
 
@@ -129,6 +128,4 @@ var FormManager = AbstractAction.extend({
     },
 });
 
-return FormManager;
-
-});
+export default FormManager;

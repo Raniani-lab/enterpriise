@@ -1,10 +1,9 @@
-odoo.define('website_twitter_wall.views', function (require) {
-'use strict';
+/** @odoo-module **/
 
-var core = require('web.core');
-const {Markup} = require('web.utils');
-var Widget = require('web.Widget');
-var publicWidget = require('web.public.widget');
+import core from "web.core";
+import {Markup} from "web.utils";
+import Widget from "web.Widget";
+import publicWidget from "web.public.widget";
 
 var qweb = core.qweb;
 
@@ -357,5 +356,4 @@ publicWidget.registry.websiteTwitterWall = publicWidget.Widget.extend({
         var step = $(ev.currentTarget).data('operation') === 'plus' ? 0.05 : -0.05;
         this.twitterWall._zoom(this.twitterWall.zoomLevel + step);
     },
-});
 });

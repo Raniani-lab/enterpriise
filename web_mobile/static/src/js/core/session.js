@@ -1,10 +1,9 @@
-odoo.define('web_mobile.Session', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const core = require('web.core');
-const Session = require('web.Session');
+import core from "web.core";
+import Session from "web.Session";
 
-const mobile = require('web_mobile.core');
+import mobile from "web_mobile.core";
 
 const DEFAULT_AVATAR_SIZE = 128;
 
@@ -84,6 +83,4 @@ Session.include({
             image.src = url;
         });
     },
-});
-
 });

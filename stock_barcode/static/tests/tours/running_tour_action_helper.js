@@ -1,8 +1,7 @@
-odoo.define('stock_barcode.RunningTourActionHelper', function(require) {
-"use strict";
+/** @odoo-module **/
 
-const { RunningTourActionHelper } = require('@web_tour/tour_service/tour_utils');
-const { patch } = require("@web/core/utils/patch");
+import { RunningTourActionHelper } from "@web_tour/tour_service/tour_utils";
+import { patch } from "@web/core/utils/patch";
 
 patch(RunningTourActionHelper.prototype, 'stock_barcode.RunningTourActionHelper', {
     _scan(element, barcode) {
@@ -11,6 +10,4 @@ patch(RunningTourActionHelper.prototype, 'stock_barcode.RunningTourActionHelper'
     scan(barcode, element) {
         this._scan(this._get_action_values(element), barcode);
     },
-});
-
 });

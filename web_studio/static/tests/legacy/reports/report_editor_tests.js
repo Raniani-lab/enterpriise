@@ -1,7 +1,6 @@
-odoo.define('web_studio.ReportEditor_tests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var studioTestUtils = require('web_studio.testUtils');
+import studioTestUtils from "web_studio.testUtils";
 
 QUnit.module('Studio', {}, function () {
 
@@ -39,8 +38,6 @@ QUnit.module('ReportEditor', {
 
         editor.destroy();
     });
-});
-
 });
 
 });

@@ -1,7 +1,6 @@
-odoo.define("website_helpdesk.menu", function (require) {
-"use strict";
+/** @odoo-module **/
 
-var publicWidget = require('web.public.widget');
+import publicWidget from "web.public.widget";
 
 publicWidget.registry.HelpdeskMenu = publicWidget.Widget.extend({
     selector: '.team_menu',
@@ -19,5 +18,4 @@ publicWidget.registry.HelpdeskMenu = publicWidget.Widget.extend({
 
         return this._super.apply(this, arguments);
     },
-});
 });

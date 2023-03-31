@@ -1,16 +1,15 @@
-odoo.define('web_studio.ReportEditorManager', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.ReportEditorManager **/
 
-var Dialog = require('web.Dialog');
-var Pager = require('web.Pager');
-var utils = require('web.utils');
-var core = require('web.core');
-var session = require('web.session');
+import Dialog from "web.Dialog";
+import Pager from "web.Pager";
+import utils from "web.utils";
+import core from "web.core";
+import session from "web.session";
 
-var ReportEditorSidebar = require('web_studio.ReportEditorSidebar');
-var ReportEditor = require('web_studio.ReportEditor');
-var AbstractEditorManager = require('web_studio.AbstractEditorManager');
-const { ComponentWrapper, WidgetAdapterMixin } = require('web.OwlCompatibility');
+import ReportEditorSidebar from "web_studio.ReportEditorSidebar";
+import ReportEditor from "web_studio.ReportEditor";
+import AbstractEditorManager from "web_studio.AbstractEditorManager";
+import { ComponentWrapper, WidgetAdapterMixin } from "web.OwlCompatibility";
 
 var qweb = core.qweb;
 var _t = core._t;
@@ -530,6 +529,4 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
     },
 });
 
-return ReportEditorManager;
-
-});
+export default ReportEditorManager;

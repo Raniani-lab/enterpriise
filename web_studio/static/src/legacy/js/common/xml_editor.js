@@ -1,13 +1,12 @@
-odoo.define('web_studio.XMLEditor', function (require) {
-'use strict';
+/** @odoo-module alias=web_studio.XMLEditor **/
 
-var AceEditor = require('web_editor.ace');
+import AceEditor from "web_editor.ace";
 
 /**
  * Extend the default view editor so that views are saved thanks to web studio and not
  * default RPC. Also notifies studio when the editor is closed.
  */
-return AceEditor.extend({
+export default AceEditor.extend({
 
     //--------------------------------------------------------------------------
     // Public
@@ -58,6 +57,4 @@ return AceEditor.extend({
             });
         });
     },
-});
-
 });

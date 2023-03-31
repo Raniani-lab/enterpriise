@@ -1,10 +1,9 @@
-odoo.define('web_enterprise.PromoteStudioDialog', function (require) {
-    "use strict";
-
-    const core = require('web.core');
-    const Dialog = require('web.Dialog');
-    const framework = require('web.framework');
-    const localStorage = require('web.local_storage');
+/** @odoo-module alias=web_enterprise.PromoteStudioDialog **/
+    
+    import core from "web.core";
+    import Dialog from "web.Dialog";
+    import framework from "web.framework";
+    import localStorage from "web.local_storage";
     const qweb = core.qweb;
 
     const PromoteStudioDialog = Dialog.extend({
@@ -91,6 +90,4 @@ odoo.define('web_enterprise.PromoteStudioDialog', function (require) {
         },
     });
 
-    return PromoteStudioDialog;
-
-});
+    export default PromoteStudioDialog;

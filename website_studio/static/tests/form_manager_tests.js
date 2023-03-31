@@ -1,8 +1,7 @@
-odoo.define('website_studio.formManager_tests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var testUtils = require('web.test_utils');
-var FormManager = require('website_studio.FormManager');
+import testUtils from "web.test_utils";
+import FormManager from "website_studio.FormManager";
 
 QUnit.module('FormManager', {
     beforeEach: function () {
@@ -48,5 +47,4 @@ QUnit.module('FormManager', {
         clientAction.destroy();
     });
 
-});
 });

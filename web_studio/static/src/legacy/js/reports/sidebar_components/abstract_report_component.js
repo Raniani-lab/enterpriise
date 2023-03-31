@@ -1,7 +1,6 @@
-odoo.define('web_studio.AbstractReportComponent', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.AbstractReportComponent **/
 
-var Widget = require('web.Widget');
+import Widget from "web.Widget";
 
 var AbstractReportComponent = Widget.extend({
     /**
@@ -63,6 +62,4 @@ var AbstractReportComponent = Widget.extend({
     },
 });
 
-return AbstractReportComponent;
-
-});
+export default AbstractReportComponent;

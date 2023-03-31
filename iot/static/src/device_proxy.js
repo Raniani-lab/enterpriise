@@ -1,9 +1,8 @@
-odoo.define('iot.DeviceProxy', function (require) {
-'use strict';
+/** @odoo-module alias=iot.DeviceProxy **/
 
-var core = require('web.core');
-const ServicesMixin = require('web.ServicesMixin');
-const { EventDispatcherMixin } = require('web.mixins');
+import core from "web.core";
+import ServicesMixin from "web.ServicesMixin";
+import { EventDispatcherMixin } from "web.mixins";
 
 
 /**
@@ -50,6 +49,4 @@ var DeviceProxy = core.Class.extend(EventDispatcherMixin, ServicesMixin, {
     },
 });
 
-return DeviceProxy;
-
-});
+export default DeviceProxy;

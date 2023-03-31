@@ -1,10 +1,9 @@
-odoo.define('test_barcode_subcontract_flows.tour', function (require) {
-'use strict';
+/** @odoo-module **/
 
-var core = require('web.core');
-const { registry } = require("@web/core/registry");
-var helper = require('stock_barcode.tourHelper');
-const { stepUtils } = require('@stock_barcode/../tests/tours/tour_step_utils');
+import core from "web.core";
+import { registry } from "@web/core/registry";
+import helper from "stock_barcode.tourHelper";
+import { stepUtils } from "@stock_barcode/../tests/tours/tour_step_utils";
 
 
 var _t = core._t;
@@ -126,5 +125,3 @@ registry.category("web_tour.tours").add('test_receipt_flexible_subcontracted_pro
     },
     ...stepUtils.validateBarcodeOperation(),
 ]});
-
-});

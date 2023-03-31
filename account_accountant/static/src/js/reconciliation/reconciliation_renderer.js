@@ -1,18 +1,17 @@
-odoo.define('account.ReconciliationRenderer', function (require) {
-"use strict";
+/** @odoo-module alias=account.ReconciliationRenderer **/
 
-var Widget = require('web.Widget');
-var FieldManagerMixin = require('web.FieldManagerMixin');
-var relational_fields = require('web.relational_fields');
-var basic_fields = require('web.basic_fields');
-var core = require('web.core');
-var time = require('web.time');
-var session = require('web.session');
+import Widget from "web.Widget";
+import FieldManagerMixin from "web.FieldManagerMixin";
+import relational_fields from "web.relational_fields";
+import basic_fields from "web.basic_fields";
+import core from "web.core";
+import time from "web.time";
+import session from "web.session";
 var qweb = core.qweb;
 var _t = core._t;
 
-const { sprintf } = require("@web/core/utils/strings")
-const { ReconciliationRainbowManComponent } = require("@account_accountant/js/reconciliation/reconciliation_rainbowman_component")
+import { sprintf } from "@web/core/utils/strings";
+import { ReconciliationRainbowManComponent } from "@account_accountant/js/reconciliation/reconciliation_rainbowman_component";
 
 /**
  * rendering of the manual reconciliation action contains progress bar, title
@@ -868,8 +867,7 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
 });
 
 
-return {
+export default {
     ManualRenderer: ManualRenderer,
     ManualLineRenderer: ManualLineRenderer,
 };
-});

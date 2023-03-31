@@ -1,12 +1,10 @@
-odoo.define('account.ReconciliationClientAction', function (require) {
-"use strict";
+/** @odoo-module alias=account.ReconciliationClientAction **/
 
-var AbstractAction = require('web.AbstractAction');
-var ReconciliationModel = require('account.ReconciliationModel');
-var ReconciliationRenderer = require('account.ReconciliationRenderer');
-var core = require('web.core');
-var QWeb = core.qweb;
-const { _t } = require('web.core');
+import AbstractAction from "web.AbstractAction";
+import ReconciliationModel from "account.ReconciliationModel";
+import ReconciliationRenderer from "account.ReconciliationRenderer";
+import * as core from "web.core";
+var { qweb: QWeb, _t } = core;
 
 /**
  * Widget used as action for 'account.move.line' and 'res.partner' for the
@@ -378,7 +376,6 @@ var ManualAction = AbstractAction.extend({
 
 core.action_registry.add('manual_reconciliation_view', ManualAction);
 
-return {
+export default {
     ManualAction: ManualAction,
 };
-});

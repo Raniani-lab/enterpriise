@@ -1,7 +1,6 @@
-odoo.define('web_studio.EditorMixin', function() {
-"use strict";
+/** @odoo-module alias=web_studio.EditorMixin **/
 
-return {
+export default {
     /**
      * Find and return the first node found in the view arch
      * satifying the given node description.
@@ -132,5 +131,3 @@ return {
         return arch;
     },
 };
-
-});

@@ -1,9 +1,8 @@
-odoo.define('industry_fsm.tour', function (require) {
-"use strict";
+/** @odoo-module alias=industry_fsm.tour **/
 
-var core = require('web.core');
-const { registry } = require("@web/core/registry");
-const { markup } = require("@odoo/owl");
+import core from "web.core";
+import { registry } from "@web/core/registry";
+import { markup } from "@odoo/owl";
 
 var _t = core._t;
 
@@ -117,5 +116,3 @@ registry.category("web_tour.tours").add('industry_fsm_tour', {
     position: 'bottom',
     id: 'fsm_invoice_create',
 }]});
-
-});

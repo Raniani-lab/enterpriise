@@ -1,8 +1,7 @@
-odoo.define('web_studio.report_fields', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.report_fields **/
 
-var fieldRegistry = require('web.field_registry');
-var relationalFields = require('web.relational_fields');
+import fieldRegistry from "web.field_registry";
+import relationalFields from "web.relational_fields";
 
 /**
  * This widget is used only for rendering by the report editor (the widget options)
@@ -122,9 +121,6 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
 
 fieldRegistry.add('many2many_select', FieldMany2ManySelection);
 
-return {
+export default {
     FieldMany2ManySelection: FieldMany2ManySelection,
 };
-
-});
-

@@ -1,10 +1,9 @@
+/** @odoo-module alias=planning.calendar_frontend **/
 /* eslint-disable no-undef */
-odoo.define('planning.calendar_frontend', function (require) {
-"use strict";
 
-const publicWidget = require('web.public.widget');
-const time = require('web.time');
-const translation = require('web.translation');
+import publicWidget from "web.public.widget";
+import time from "web.time";
+import translation from "web.translation";
 const _t = translation._t;
 
 publicWidget.registry.PlanningView = publicWidget.Widget.extend({
@@ -209,5 +208,4 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
 });
 
 // Add client actions
-return publicWidget.registry.PlanningView;
-});
+export default publicWidget.registry.PlanningView;

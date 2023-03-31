@@ -1,11 +1,10 @@
+/** @odoo-module alias=social_push_notifications.NotificationManager **/
 /* global firebase */
-odoo.define('social_push_notifications.NotificationManager', function (require) {
-"use strict";
 
-var core = require('web.core');
-var publicWidget = require('web.public.widget');
-var localStorage = require('web.local_storage');
-var NotificationRequestPopup = require('social_push_notifications.NotificationRequestPopup');
+import core from "web.core";
+import publicWidget from "web.public.widget";
+import localStorage from "web.local_storage";
+import NotificationRequestPopup from "social_push_notifications.NotificationRequestPopup";
 
 publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
     selector: '#wrapwrap',
@@ -343,6 +342,4 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
     },
 });
 
-return publicWidget.registry.NotificationWidget;
-
-});
+export default publicWidget.registry.NotificationWidget;

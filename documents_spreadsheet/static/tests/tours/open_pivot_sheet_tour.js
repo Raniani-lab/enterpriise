@@ -1,8 +1,7 @@
-odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
-    "use strict";
+/** @odoo-module **/
 
-    const { registry } = require("@web/core/registry");
-    const { TourError } = require("@web_tour/tour_service/tour_utils");
+    import { registry } from "@web/core/registry";
+    import { TourError } from "@web_tour/tour_service/tour_utils";
 
     function assert(current, expected, info) {
         if (current !== expected) {
@@ -104,4 +103,3 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
             },
         ]
     });
-});

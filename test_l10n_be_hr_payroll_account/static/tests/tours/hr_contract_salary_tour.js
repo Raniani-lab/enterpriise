@@ -1,7 +1,6 @@
-odoo.define('hr_contract_salary.tour', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const { registry } = require("@web/core/registry");
+import { registry } from "@web/core/registry";
 
 
 registry.category("web_tour.tours").add('hr_contract_salary_tour', {
@@ -1251,6 +1250,4 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
             run: function() {},
         },
     ]
-});
-
 });

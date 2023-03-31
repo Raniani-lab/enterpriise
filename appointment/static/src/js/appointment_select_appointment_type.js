@@ -1,8 +1,7 @@
-odoo.define('appointment.select_appointment_type', function (require) {
-'use strict';
+/** @odoo-module **/
 
-var core = require('web.core');
-var publicWidget = require('web.public.widget');
+import core from "web.core";
+import publicWidget from "web.public.widget";
 var qweb = core.qweb;
 
 publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
@@ -62,5 +61,4 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
             self.$('.o_appointment_intro').empty().append(message_intro);
         });
     },
-});
 });

@@ -1,11 +1,10 @@
-odoo.define('account_reports/static/tests/account_reports_tests', function (require) {
-    "use strict";
-
-    const LegacyControlPanel = require('web.ControlPanel');
-    const { ControlPanel } = require("@web/search/control_panel/control_panel");
-    const testUtils = require("web.test_utils");
-    const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
-    const { legacyExtraNextTick, getFixture, patchWithCleanup, destroy } = require("@web/../tests/helpers/utils");
+/** @odoo-module **/
+    
+    import LegacyControlPanel from "web.ControlPanel";
+    import { ControlPanel } from "@web/search/control_panel/control_panel";
+    import testUtils from "web.test_utils";
+    import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
+    import { legacyExtraNextTick, getFixture, patchWithCleanup, destroy } from "@web/../tests/helpers/utils";
 
     const { dom } = testUtils;
     const { onMounted, onWillUnmount } = owl;
@@ -138,5 +137,3 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
             assert.ok(true);
         });
     });
-
-});

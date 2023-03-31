@@ -1,8 +1,8 @@
-odoo.define('sale_subscription.tour', function(require) {
+/** @odoo-module **/
 "use_strict";
 
-var core = require('web.core');
-const { registry } = require("@web/core/registry");
+import core from "web.core";
+import { registry } from "@web/core/registry";
 
 var _t = core._t;
 const { markup } = owl;
@@ -91,5 +91,3 @@ registry.category("web_tour.tours").add('sale_subscription_tour', {
 },
 
 ]});
-
-});

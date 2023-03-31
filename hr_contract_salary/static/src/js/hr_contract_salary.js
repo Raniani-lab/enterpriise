@@ -1,11 +1,10 @@
-odoo.define('hr_contract_salary', function (require) {
-"use strict";
+/** @odoo-module alias=hr_contract_salary **/
 
-const concurrency = require('web.concurrency');
-const publicWidget = require('web.public.widget');
-const utils = require('web.utils');
-const {qweb, _t} = require('web.core');
-const { sprintf } = require("@web/core/utils/strings");
+import concurrency from "web.concurrency";
+import publicWidget from "web.public.widget";
+import utils from "web.utils";
+import {qweb, _t} from "web.core";
+import { sprintf } from "@web/core/utils/strings";
 
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',
@@ -635,5 +634,4 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 });
 
-return publicWidget.registry.SalaryPackageWidget;
-});
+export default publicWidget.registry.SalaryPackageWidget;

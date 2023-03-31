@@ -1,17 +1,16 @@
-odoo.define('account_reports.account_report', function (require) {
-'use strict';
+/** @odoo-module alias=account_reports.account_report **/
 
-var core = require('web.core');
-var Context = require('web.Context');
-var AbstractAction = require('web.AbstractAction');
-var Dialog = require('web.Dialog');
-var datepicker = require('web.datepicker');
-var session = require('web.session');
-var field_utils = require('web.field_utils');
-var RelationalFields = require('web.relational_fields');
-var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
-var { WarningDialog } = require("@web/legacy/js/_deprecated/crash_manager_warning_dialog");
-var Widget = require('web.Widget');
+import core from "web.core";
+import Context from "web.Context";
+import AbstractAction from "web.AbstractAction";
+import Dialog from "web.Dialog";
+import datepicker from "web.datepicker";
+import session from "web.session";
+import field_utils from "web.field_utils";
+import RelationalFields from "web.relational_fields";
+import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
+import { WarningDialog } from "@web/legacy/js/_deprecated/crash_manager_warning_dialog";
+import Widget from "web.Widget";
 
 var QWeb = core.qweb;
 var _t = core._t;
@@ -1222,6 +1221,4 @@ var accountReportsWidget = AbstractAction.extend({
 
 core.action_registry.add('account_report', accountReportsWidget);
 
-return accountReportsWidget;
-
-});
+export default accountReportsWidget;

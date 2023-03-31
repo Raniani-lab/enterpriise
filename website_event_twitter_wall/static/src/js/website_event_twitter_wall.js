@@ -1,7 +1,6 @@
-odoo.define('website_event_social.website_twitter_wall', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var publicWidget = require('web.public.widget');
+import publicWidget from "web.public.widget";
 
 /**
  * The default behavior of the Twitter Wall is to 'zoom' the browser.
@@ -65,6 +64,4 @@ publicWidget.registry.websiteTwitterWall.include({
             this.twitterWall.prependTweetsTo = newColumns[0];
         }
     }
-});
-
 });

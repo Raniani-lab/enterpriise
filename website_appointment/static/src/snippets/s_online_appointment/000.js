@@ -1,7 +1,6 @@
-odoo.define('website_appointment.s_online_appointment', function (require) {
-'use strict';
+/** @odoo-module alias=website_appointment.s_online_appointment **/
 
-const publicWidget = require('web.public.widget');
+import publicWidget from "web.public.widget";
 
 
 const OnlineAppointmentCtaWidget = publicWidget.Widget.extend({
@@ -30,5 +29,4 @@ const OnlineAppointmentCtaWidget = publicWidget.Widget.extend({
 
 publicWidget.registry.online_appointment = OnlineAppointmentCtaWidget;
 
-return OnlineAppointmentCtaWidget;
-});
+export default OnlineAppointmentCtaWidget;

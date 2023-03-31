@@ -1,7 +1,7 @@
-odoo.define('pos_blackbox_be.ProductScreen', function(require) {
+/** @odoo-module alias=pos_blackbox_be.ProductScreen **/
 
-    const ProductScreen = require('point_of_sale.ProductScreen');
-    const Registries = require('point_of_sale.Registries');
+    import ProductScreen from "point_of_sale.ProductScreen";
+    import Registries from "point_of_sale.Registries";
 
     const PosBlackBoxBeProductScreen = ProductScreen => class extends ProductScreen {
         disallowLineQuantityChange() {
@@ -12,5 +12,4 @@ odoo.define('pos_blackbox_be.ProductScreen', function(require) {
 
     Registries.Component.extend(ProductScreen, PosBlackBoxBeProductScreen);
 
-    return ProductScreen;
-});
+    export default ProductScreen;

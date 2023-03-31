@@ -1,7 +1,6 @@
-odoo.define('l10n_be_hr_contract_salary', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const hrContractSalary = require('hr_contract_salary');
+import hrContractSalary from "hr_contract_salary";
 
 hrContractSalary.include({
     events: _.extend({}, hrContractSalary.prototype.events, {
@@ -145,6 +144,4 @@ hrContractSalary.include({
             disabledChildren.parent().removeClass('d-none');
         }
     },
-});
-
 });

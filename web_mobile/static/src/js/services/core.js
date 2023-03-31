@@ -1,6 +1,5 @@
+/** @odoo-module alias=web_mobile.core **/
 /* global OdooDeviceUtility */
-odoo.define('web_mobile.core', function () {
-"use strict";
 
 var available = typeof OdooDeviceUtility !== 'undefined';
 var DeviceUtility;
@@ -148,11 +147,9 @@ class BackButtonManager {
 
 const backButtonManager = new BackButtonManager();
 
-return {
+export default {
     BackButtonManager,
     BackButtonListenerError,
     backButtonManager,
     methods,
 };
-
-});

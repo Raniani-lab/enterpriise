@@ -1,71 +1,66 @@
-odoo.define('web_enterprise.relational_fields', function (require) {
-"use strict";
-
-var config = require('web.config');
-if (!config.device.isMobile) {
-    return;
-}
+/** @odoo-module **/
 
 /**
  * In this file, we override some relational fields to improve the UX in mobile.
  */
 
-var relational_fields = require('web.relational_fields');
+import config from "web.config";
+import relational_fields from "web.relational_fields";
 
-var FieldMany2One = relational_fields.FieldMany2One;
-
-/**
- * Override the Many2One to prevent autocomplete and open kanban view in mobile for search.
- */
-
-FieldMany2One.include({
-
-    start: function () {
-        var superRes = this._super.apply(this, arguments);
-        this.$input.prop('readonly', true);
-        return superRes;
-    },
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
+if (config.device.isMobile) {
+    var FieldMany2One = relational_fields.FieldMany2One;
 
     /**
-     * Don't bind autocomplete in the mobile as it uses a different mechanism
-     * On clicking Many2One will directly open popup with kanban view
-     *
-     * @private
-     * @override
+     * Override the Many2One to prevent autocomplete and open kanban view in mobile for search.
      */
-    _bindAutoComplete: function () {},
 
-    /**
-     * override to add selectionMode option to search create popup option
-     *
-     * @private
-     * @override
-     */
-    _getSearchCreatePopupOptions: function () {
-        var self = this;
-        var searchCreatePopupOptions = this._super.apply(this, arguments);
-        _.extend(searchCreatePopupOptions, {
-            selectionMode: true,
-            on_clear: function () {
-                self.reinitialize(false);
-            },
-        });
-        return searchCreatePopupOptions;
-    },
+    FieldMany2One.include({
 
-    /**
-     * We always open Many2One search dialog for select/update field value
-     * instead of autocomplete
-     *
-     * @private
-     * @override
-     */
-    _toggleAutoComplete: function () {
-        this._searchCreatePopup("search");
-    },
-});
+        start: function () {
+            var superRes = this._super.apply(this, arguments);
+            this.$input.prop('readonly', true);
+            return superRes;
+        },
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
 
-});
+        /**
+         * Don't bind autocomplete in the mobile as it uses a different mechanism
+         * On clicking Many2One will directly open popup with kanban view
+         *
+         * @private
+         * @override
+         */
+        _bindAutoComplete: function () {},
+
+        /**
+         * override to add selectionMode option to search create popup option
+         *
+         * @private
+         * @override
+         */
+        _getSearchCreatePopupOptions: function () {
+            var self = this;
+            var searchCreatePopupOptions = this._super.apply(this, arguments);
+            _.extend(searchCreatePopupOptions, {
+                selectionMode: true,
+                on_clear: function () {
+                    self.reinitialize(false);
+                },
+            });
+            return searchCreatePopupOptions;
+        },
+
+        /**
+         * We always open Many2One search dialog for select/update field value
+         * instead of autocomplete
+         *
+         * @private
+         * @override
+         */
+        _toggleAutoComplete: function () {
+            this._searchCreatePopup("search");
+        },
+    });
+}

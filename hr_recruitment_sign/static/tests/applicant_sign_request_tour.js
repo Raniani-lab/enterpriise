@@ -1,7 +1,6 @@
-odoo.define('hr_recruitment_sign.tour', function (require) {
-    'use strict';
-
-    const { registry } = require("@web/core/registry");
+/** @odoo-module **/
+    
+    import { registry } from "@web/core/registry";
 
     registry.category("web_tour.tours").add('applicant_sign_request_tour', {
             test: true,
@@ -46,4 +45,3 @@ odoo.define('hr_recruitment_sign.tour', function (require) {
             },
         ]
     });
-});

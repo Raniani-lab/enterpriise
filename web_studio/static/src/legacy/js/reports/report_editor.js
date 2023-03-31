@@ -1,10 +1,9 @@
-odoo.define('web_studio.ReportEditor', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.ReportEditor **/
 
-var core = require('web.core');
-var Widget = require('web.Widget');
+import core from "web.core";
+import Widget from "web.Widget";
 
-var EditorMixin = require('web_studio.EditorMixin');
+import EditorMixin from "web_studio.EditorMixin";
 
 var _t = core._t;
 
@@ -781,6 +780,4 @@ var ReportEditor = Widget.extend(EditorMixin, {
     },
 });
 
-return ReportEditor;
-
-});
+export default ReportEditor;

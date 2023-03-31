@@ -1,12 +1,11 @@
-odoo.define('web_studio.NewFieldDialog', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.NewFieldDialog **/
 
-var config = require('web.config');
-var core = require('web.core');
-var Dialog = require('web.Dialog');
-var relational_fields = require('web.relational_fields');
-var ModelFieldSelector = require('web.ModelFieldSelector');
-var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
+import config from "web.config";
+import core from "web.core";
+import Dialog from "web.Dialog";
+import relational_fields from "web.relational_fields";
+import ModelFieldSelector from "web.ModelFieldSelector";
+import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
 
 var _t = core._t;
 var qweb = core.qweb;
@@ -321,6 +320,4 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
     },
 });
 
-return NewFieldDialog;
-
-});
+export default NewFieldDialog;

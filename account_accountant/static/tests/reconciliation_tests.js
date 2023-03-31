@@ -1,8 +1,7 @@
-odoo.define('account_accountant.ReconciliationTests', function (require) {
-    "use strict";
-
-    var testUtils = require('web.test_utils');
-    var ManualAction = require('account.ReconciliationClientAction').ManualAction;
+/** @odoo-module **/
+    
+    import testUtils from "web.test_utils";
+    import { ManualAction } from "account.ReconciliationClientAction";
 
     var options = {
         context: {
@@ -47,4 +46,3 @@ odoo.define('account_accountant.ReconciliationTests', function (require) {
             clientAction.destroy();
         });
     });
-});

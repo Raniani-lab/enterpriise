@@ -1,16 +1,15 @@
-odoo.define('web_studio.ReportEditorSidebar', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.ReportEditorSidebar **/
 
-var config = require('web.config');
-var core = require('web.core');
-var relational_fields = require('web.relational_fields');
-var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
-var utils = require('web.utils');
-var Widget = require('web.Widget');
+import config from "web.config";
+import core from "web.core";
+import relational_fields from "web.relational_fields";
+import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
+import utils from "web.utils";
+import Widget from "web.Widget";
 
-var editComponentsRegistry = require('web_studio.reportEditComponentsRegistry');
-var newComponentsRegistry = require('web_studio.reportNewComponentsRegistry');
-var studioUtils = require('web_studio.utils');
+import editComponentsRegistry from "web_studio.reportEditComponentsRegistry";
+import newComponentsRegistry from "web_studio.reportNewComponentsRegistry";
+import studioUtils from "web_studio.utils";
 
 var Many2ManyTags = relational_fields.FieldMany2ManyTags;
 var Many2One = relational_fields.FieldMany2One;
@@ -588,6 +587,4 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
     },
 });
 
-return ReportEditorSidebar;
-
-});
+export default ReportEditorSidebar;

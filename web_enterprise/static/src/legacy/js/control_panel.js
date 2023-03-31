@@ -1,18 +1,14 @@
-odoo.define('web_enterprise.ControlPanel', function (require) {
-    "use strict";
+/** @odoo-module **/
 
-    const ControlPanel = require('web.ControlPanel');
-    const { device } = require('web.config');
-    const { patch } = require('web.utils');
-    const { usePosition } = require("@web/core/position_hook");
+import ControlPanel from "web.ControlPanel";
+import { device } from "web.config";
+import { patch } from "web.utils";
+import { usePosition } from "@web/core/position_hook";
 
-    const { onMounted, useExternalListener, useRef, useState, useEffect } = owl;
-    const STICKY_CLASS = 'o_mobile_sticky';
+const { onMounted, useExternalListener, useRef, useState, useEffect } = owl;
+const STICKY_CLASS = 'o_mobile_sticky';
 
-    if (!device.isMobile) {
-        return;
-    }
-
+if (device.isMobile) {
     /**
      * Control panel: mobile layout
      *
@@ -150,4 +146,4 @@ odoo.define('web_enterprise.ControlPanel', function (require) {
     patch(ControlPanel, 'web_enterprise.ControlPanel', {
         template: 'web_enterprise._ControlPanel',
     });
-});
+}

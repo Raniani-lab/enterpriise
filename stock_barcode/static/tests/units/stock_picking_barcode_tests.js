@@ -1,8 +1,7 @@
-odoo.define('stock_barcode.stock_picking_barcode_tests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
-const { getFixture } = require("@web/../tests/helpers/utils");
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
+import { getFixture } from "@web/../tests/helpers/utils";
 
 QUnit.module('stock_barcode', {}, function () {
 
@@ -61,5 +60,4 @@ QUnit.test('exclamation-triangle when picking is done', async function (assert) 
     assert.containsOnce(target, '.fa-5x.fa-exclamation-triangle:not(.d-none)', "Should have warning icon");
 });
 
-});
 });

@@ -1,7 +1,6 @@
-odoo.define('social_push_notifications.NotificationRequestPopup', function (require) {
-"use strict";
+/** @odoo-module alias=social_push_notifications.NotificationRequestPopup **/
 
-var Widget = require('web.Widget');
+import Widget from "web.Widget";
 
 /**
  * Simple widget that shows a small popup to request the notifications permission.
@@ -83,6 +82,4 @@ var NotificationRequestPopup = Widget.extend({
     }
 });
 
-return NotificationRequestPopup;
-
-});
+export default NotificationRequestPopup;

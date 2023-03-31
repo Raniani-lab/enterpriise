@@ -1,8 +1,7 @@
-odoo.define('hr_contract_salary_payroll', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var SalaryPackageWidget = require("hr_contract_salary");
-var core = require('web.core');
+import SalaryPackageWidget from "hr_contract_salary";
+import core from "web.core";
 
 var qweb = core.qweb;
 
@@ -12,5 +11,4 @@ SalaryPackageWidget.include({
         this.$("main.modal-body").html(modal_body);
         this._super.apply(this, arguments);
     },
-});
 });

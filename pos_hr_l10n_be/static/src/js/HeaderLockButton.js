@@ -1,8 +1,7 @@
-odoo.define('pos_hr_l10n_be.HeaderLockButton', function(require) {
-    'use strict';
-
-    const HeaderLockButton = require('point_of_sale.HeaderLockButton');
-    const Registries = require('point_of_sale.Registries');
+/** @odoo-module alias=pos_hr_l10n_be.HeaderLockButton **/
+    
+    import HeaderLockButton from "point_of_sale.HeaderLockButton";
+    import Registries from "point_of_sale.Registries";
 
     const PosHrHeaderLockButton = HeaderLockButton =>
         class extends HeaderLockButton {
@@ -29,5 +28,4 @@ odoo.define('pos_hr_l10n_be.HeaderLockButton', function(require) {
 
     Registries.Component.extend(HeaderLockButton, PosHrHeaderLockButton);
 
-    return HeaderLockButton;
-});
+    export default HeaderLockButton;

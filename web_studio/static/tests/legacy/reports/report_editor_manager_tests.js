@@ -1,16 +1,15 @@
-odoo.define('web_studio.ReportEditorManager_tests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var ace = require('web_editor.ace');
-var config = require('web.config');
-const { Markup } = require('web.utils');
-const { MediaDialogWrapper } = require('@web_editor/components/media_dialog/media_dialog');
-var testUtils = require('web.test_utils');
-var studioTestUtils = require('web_studio.testUtils');
-var session = require('web.session');
-const { patchWithCleanup } = require("@web/../tests/helpers/utils");
+import ace from "web_editor.ace";
+import config from "web.config";
+import { Markup } from "web.utils";
+import { MediaDialogWrapper } from "@web_editor/components/media_dialog/media_dialog";
+import testUtils from "web.test_utils";
+import studioTestUtils from "web_studio.testUtils";
+import session from "web.session";
+import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
-const { useEffect } = require("@odoo/owl");
+import { useEffect } from "@odoo/owl";
 
 function getFloatSizeFromPropertyInPixels($element, propertyName) {
     var size = $element.css(propertyName);
@@ -2686,8 +2685,6 @@ QUnit.module('ReportEditorManager', {
         assert.verifySteps([], "Shouldn't have changed the view");
         rem.destroy();
     });
-
-});
 
 });
 

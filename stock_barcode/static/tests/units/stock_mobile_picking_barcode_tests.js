@@ -1,10 +1,9 @@
-odoo.define('stock_mobile_barcode.stock_picking_barcode_tests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const { mock } = require('web.test_utils');
-const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
-const BarcodeScanner = require('@web/webclient/barcode/barcode_scanner');
-const { destroy, getFixture } = require("@web/../tests/helpers/utils");
+import { mock } from "web.test_utils";
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
+import * as BarcodeScanner from "@web/webclient/barcode/barcode_scanner";
+import { destroy, getFixture } from "@web/../tests/helpers/utils";
 
 QUnit.module('stock_mobile_barcode', {}, function () {
 
@@ -73,5 +72,4 @@ QUnit.test('scan barcode button in mobile device', async function (assert) {
     mock.unpatch(BarcodeScanner);
 });
 
-});
 });

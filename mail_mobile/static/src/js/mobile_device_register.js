@@ -1,9 +1,8 @@
-odoo.define('mail_mobile.ocn', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const mobile = require('web_mobile.core');
-var ajax = require('web.ajax');
-const { session } = require('@web/session');
+import mobile from "web_mobile.core";
+import ajax from "web.ajax";
+import { session } from "@web/session";
 
 //Send info only if client is mobile
 if (mobile.methods.getFCMKey) {
@@ -41,5 +40,3 @@ if (mobile.methods.getFCMKey) {
         });
     }
 }
-
-});

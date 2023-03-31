@@ -1,7 +1,6 @@
-odoo.define('shared_sign_request_tour', function (require) {
-    'use strict';
-
-    const { registry } = require("@web/core/registry");
+/** @odoo-module **/
+    
+    import { registry } from "@web/core/registry";
 
     registry.category("web_tour.tours").add('shared_sign_request_tour', {
         test: true,
@@ -79,4 +78,3 @@ odoo.define('shared_sign_request_tour', function (require) {
             run(){},
         },
     ]})
-})

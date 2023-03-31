@@ -1,8 +1,7 @@
-odoo.define('web_studio.reportEditComponentsRegistry', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.reportEditComponentsRegistry **/
 
-var Registry = require('web.Registry');
-var reportEditComponents = require('web_studio.reportEditComponents');
+import Registry from "web.Registry";
+import reportEditComponents from "web_studio.reportEditComponents";
 
 var registry = new Registry();
 
@@ -22,6 +21,4 @@ registry
     .add('tOptions', reportEditComponents.TOptions)
     .add('tSet', reportEditComponents.TSet);
 
-return registry;
-
-});
+export default registry;

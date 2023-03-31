@@ -1,11 +1,10 @@
-odoo.define('account.ReconciliationModel', function (require) {
-"use strict";
+/** @odoo-module alias=account.ReconciliationModel **/
 
-var BasicModel = require('web.BasicModel');
-var field_utils = require('web.field_utils');
-var utils = require('web.utils');
-var session = require('web.session');
-var core = require('web.core');
+import BasicModel from "web.BasicModel";
+import field_utils from "web.field_utils";
+import utils from "web.utils";
+import session from "web.session";
+import core from "web.core";
 var _t = core._t;
 
 /**
@@ -1212,7 +1211,6 @@ var ManualModel = BasicModel.extend({
     },
 });
 
-return {
+export default {
     ManualModel: ManualModel,
 };
-});

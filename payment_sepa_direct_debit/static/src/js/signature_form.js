@@ -1,8 +1,7 @@
-odoo.define('payment_sepa_direct_debit.signature_form', function(require) {
-'use strict';
+/** @odoo-module alias=payment_sepa_direct_debit.signature_form **/
 
-var SignatureForm = require('portal.signature_form').SignatureForm;
-var NameAndSignature = require('web.name_and_signature').NameAndSignature;
+import { SignatureForm } from "portal.signature_form";
+import { NameAndSignature } from "web.name_and_signature";
 
 /*
     I just wanted an extended template \o/
@@ -83,5 +82,4 @@ var SepaSignatureForm = SignatureForm.extend({
     },
 });
 
-return SepaSignatureForm;
-});
+export default SepaSignatureForm;

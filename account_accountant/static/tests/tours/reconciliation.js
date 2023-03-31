@@ -1,7 +1,6 @@
-odoo.define('account.tour_bank_statement_reconciliation', function(require) {
-'use strict';
+/** @odoo-module **/
 
-const { registry } = require("@web/core/registry");
+import { registry } from "@web/core/registry";
 
 registry.category("web_tour.tours").add('bank_statement_reconciliation', {
         test: true,
@@ -89,6 +88,4 @@ registry.category("web_tour.tours").add('bank_statement_reconciliation', {
             trigger: '.o_reconciliation_line:nth-child(1) .o_reconcile:visible',
         },
     ]
-});
-
 });

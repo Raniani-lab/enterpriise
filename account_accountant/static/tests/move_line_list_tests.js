@@ -1,11 +1,10 @@
-odoo.define('account_accountant.MoveLineListViewTests', function (require) {
-    "use strict";
+/** @odoo-module **/
+    
+    import testUtils from "web.test_utils";
 
-    const testUtils = require('web.test_utils');
-
-    const { start, startServer } = require('@mail/../tests/helpers/test_utils');
-    const { patchUiSize, SIZES } = require('@mail/../tests/helpers/patch_ui_size');
-    const { ROUTES_TO_IGNORE: MAIL_ROUTES_TO_IGNORE } = require('@mail/../tests/helpers/webclient_setup');
+    import { start, startServer } from "@mail/../tests/helpers/test_utils";
+    import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
+    import { ROUTES_TO_IGNORE as MAIL_ROUTES_TO_IGNORE } from "@mail/../tests/helpers/webclient_setup";
 
     const ROUTES_TO_IGNORE = [
         '/bus/im_status',
@@ -170,4 +169,3 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
             assert.containsOnce(document.body, '.o_attachment_preview p', "The explanation message should come back");
         });
     });
-});

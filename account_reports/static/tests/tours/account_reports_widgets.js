@@ -1,7 +1,6 @@
-odoo.define('account_reports_widgets.tour', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const { registry } = require("@web/core/registry");
+import { registry } from "@web/core/registry";
 
 registry.category("web_tour.tours").add('account_reports_widgets', {
     test: true,
@@ -96,6 +95,4 @@ registry.category("web_tour.tours").add('account_reports_widgets', {
             run: 'click'
         },
     ]
-});
-
 });

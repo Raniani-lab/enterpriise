@@ -1,10 +1,9 @@
-odoo.define('sale_subscription.manage_form', require => {
-    'use strict';
+/** @odoo-module **/
+    
+    import core from "web.core";
+    import Dialog from "web.Dialog";
 
-    const core = require('web.core');
-    const Dialog = require('web.Dialog');
-
-    const manageForm = require('payment.manage_form');
+    import manageForm from "payment.manage_form";
 
     const _t = core._t;
 
@@ -60,4 +59,3 @@ odoo.define('sale_subscription.manage_form', require => {
             });
         },
     });
-});

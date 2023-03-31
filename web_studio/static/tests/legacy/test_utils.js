@@ -1,17 +1,16 @@
-odoo.define('web_studio.testUtils', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.testUtils **/
 
-var dom = require('web.dom');
-var QWeb = require('web.QWeb');
-var testUtils = require('web.test_utils');
-var utils = require('web.utils');
-var Widget = require('web.Widget');
+import dom from "web.dom";
+import QWeb from "web.QWeb";
+import testUtils from "web.test_utils";
+import utils from "web.utils";
+import Widget from "web.Widget";
 
-var ReportEditor = require('web_studio.ReportEditor');
-var ReportEditorManager = require('web_studio.ReportEditorManager');
-var ReportEditorSidebar = require('web_studio.ReportEditorSidebar');
+import ReportEditor from "web_studio.ReportEditor";
+import ReportEditorManager from "web_studio.ReportEditorManager";
+import ReportEditorSidebar from "web_studio.ReportEditorSidebar";
 
-var weTestUtils = require('web_editor.test_utils');
+import weTestUtils from "web_editor.test_utils";
 
 /**
  * Create a ReportEditorManager widget.
@@ -239,7 +238,7 @@ var StudioEnvironment = Widget.extend({
     },
 });
 
-return {
+export default {
     createReportEditor: createReportEditor,
     createReportEditorManager: createReportEditorManager,
     createSidebar: createSidebar,
@@ -249,5 +248,3 @@ return {
     patch: weTestUtils.patch,
     unpatch: weTestUtils.unpatch,
 };
-
-});

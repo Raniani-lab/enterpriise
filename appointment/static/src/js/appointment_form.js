@@ -1,7 +1,6 @@
-odoo.define('appointment.appointment_form', function (require) {
-'use strict';
+/** @odoo-module **/
 
-var publicWidget = require('web.public.widget');
+import publicWidget from "web.public.widget";
 
 publicWidget.registry.appointmentForm = publicWidget.Widget.extend({
     selector: '.o_appointment_attendee_form',
@@ -18,5 +17,4 @@ publicWidget.registry.appointmentForm = publicWidget.Widget.extend({
             return new Promise((resolve, reject) => {});
         }
     },
-});
 });

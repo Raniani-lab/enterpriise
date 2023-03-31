@@ -7,7 +7,7 @@ import config from "web.config";
 import Dialog from "web.Dialog";
 import { PDFIframe } from "@sign/js/common/PDFIframe";
 import { sign_utils } from "@sign/js/backend/utils";
-import SmoothScrollOnDrag from "web/static/src/js/core/smooth_scroll_on_drag.js";
+import SmoothScrollOnDrag from "web.smooth_scroll_on_drag";
 
 const { _t } = core;
 

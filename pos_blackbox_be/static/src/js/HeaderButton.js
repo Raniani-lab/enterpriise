@@ -1,8 +1,7 @@
-odoo.define('pos_blackbox_be.HeaderButton', function(require) {
-    'use strict';
-
-    const HeaderButton = require('point_of_sale.HeaderButton');
-    const Registries = require('point_of_sale.Registries');
+/** @odoo-module alias=pos_blackbox_be.HeaderButton **/
+    
+    import HeaderButton from "point_of_sale.HeaderButton";
+    import Registries from "point_of_sale.Registries";
 
     const PosBlackBoxBeHeaderButton = HeaderButton =>
         class extends HeaderButton {
@@ -30,5 +29,4 @@ odoo.define('pos_blackbox_be.HeaderButton', function(require) {
 
     Registries.Component.extend(HeaderButton, PosBlackBoxBeHeaderButton);
 
-    return HeaderButton;
-});
+    export default HeaderButton;

@@ -1,10 +1,9 @@
-odoo.define('account_reports.account_reports_tests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var testUtils = require('web.test_utils');
-const { getFixture, mockDownload } = require('@web/../tests/helpers/utils');
+import testUtils from "web.test_utils";
+import { getFixture, mockDownload } from "@web/../tests/helpers/utils";
 
-const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 
 let serverData;
 let target;
@@ -161,6 +160,4 @@ QUnit.module('Account Reports', {
         await testUtils.fields.many2one.clickItem('partner_categories', 'Brigadier suryadev singh');
         await testUtils.nextTick();
     });
-});
-
 });

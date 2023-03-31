@@ -1,7 +1,6 @@
-odoo.define('mrp_workorder.tourHelper', function (require) {
-'use strict';
+/** @odoo-module alias=mrp_workorder.tourHelper **/
 
-const { TourError } = require("@web_tour/tour_service/tour_utils");
+import { TourError } from "@web_tour/tour_service/tour_utils";
 
 function fail(errorMessage) {
     throw new TourError(errorMessage);
@@ -78,7 +77,7 @@ function assertValidatedCheckLength(length) {
     assert(marks.length, length, `There should be "${length}" validated steps`);
 }
 
-return {
+export default {
     assert: assert,
     assertCurrentCheck: assertCurrentCheck,
     assertCheckLength: assertCheckLength,
@@ -89,5 +88,3 @@ return {
     assertDoneButton: assertDoneButton,
     fail: fail,
 };
-
-});

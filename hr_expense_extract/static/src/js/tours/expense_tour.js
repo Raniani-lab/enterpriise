@@ -1,9 +1,8 @@
-odoo.define('hr_expense_extract.tour', function(require) {
-    "use strict";
-    
-    var core = require('web.core');
-    const { registry } = require("@web/core/registry");
-    const { stepUtils } = require('@web_tour/tour_service/tour_utils');
+/** @odoo-module **/
+        
+    import core from "web.core";
+    import { registry } from "@web/core/registry";
+    import { stepUtils } from "@web_tour/tour_service/tour_utils";
     
     var _t = core._t;
     const { markup } = owl;
@@ -40,6 +39,4 @@ odoo.define('hr_expense_extract.tour', function(require) {
         content: _t("Your manager will have to approve (or refuse) your expense reports."),
         position: 'bottom',
     }]});
-    
-    });
     

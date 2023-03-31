@@ -1,9 +1,8 @@
-odoo.define('web.action_menus_mobile_tests', function (require) {
-    "use strict";
-
-    const ActionMenus = require('web.ActionMenus');
-    const Registry = require('web.Registry');
-    const testUtils = require('web.test_utils');
+/** @odoo-module **/
+    
+    import ActionMenus from "web.ActionMenus";
+    import Registry from "web.Registry";
+    import testUtils from "web.test_utils";
 
     const { createComponent } = testUtils;
 
@@ -79,4 +78,3 @@ odoo.define('web.action_menus_mobile_tests', function (require) {
             assert.verifySteps(['load-action', 'do-action']);
         });
     });
-});

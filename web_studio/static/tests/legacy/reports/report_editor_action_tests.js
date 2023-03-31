@@ -1,13 +1,12 @@
-odoo.define('web_studio.ReportEditorAction_tests', function (require) {
-    "use strict";
-
-    const { controlPanel } = require('web.test_utils');
+/** @odoo-module **/
+    
+    import { controlPanel } from "web.test_utils";
     const { getPagerValue, pagerNext } = controlPanel;
 
-    const { getFixture } = require("@web/../tests/helpers/utils");
-    const { doAction } = require("@web/../tests/webclient/helpers");
-    const { openStudio, registerStudioDependencies,getReportServerData } = require("@web_studio/../tests/helpers");
-    const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers");
+    import { getFixture } from "@web/../tests/helpers/utils";
+    import { doAction } from "@web/../tests/webclient/helpers";
+    import { openStudio, registerStudioDependencies,getReportServerData } from "@web_studio/../tests/helpers";
+    import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 
     let serverData;
     let target;
@@ -84,4 +83,3 @@ odoo.define('web_studio.ReportEditorAction_tests', function (require) {
             assert.strictEqual(getPagerValue(target), "2");
         });
     });
-});

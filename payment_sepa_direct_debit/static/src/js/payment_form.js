@@ -1,10 +1,9 @@
-odoo.define('payment_sepa_direct_debit.payment_form', require => {
-    'use strict';
-
-    const core = require('web.core');
-    const checkoutForm = require('payment.checkout_form');
-    const manageForm = require('payment.manage_form');
-    const sepaSignatureForm = require('payment_sepa_direct_debit.signature_form');
+/** @odoo-module **/
+    
+    import core from "web.core";
+    import checkoutForm from "payment.checkout_form";
+    import manageForm from "payment.manage_form";
+    import sepaSignatureForm from "payment_sepa_direct_debit.signature_form";
 
     const _t = core._t;
 
@@ -268,4 +267,3 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
 
     checkoutForm.include(sepaDirectDebitMixin);
     manageForm.include(sepaDirectDebitMixin);
-});

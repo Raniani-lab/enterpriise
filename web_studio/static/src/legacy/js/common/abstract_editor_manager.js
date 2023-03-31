@@ -1,13 +1,12 @@
-odoo.define('web_studio.AbstractEditorManager', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.AbstractEditorManager **/
 
-var concurrency = require('web.concurrency');
-var core = require('web.core');
-var Widget = require('web.Widget');
+import concurrency from "web.concurrency";
+import core from "web.core";
+import Widget from "web.Widget";
 
-var bus = require('web_studio.bus');
-var XMLEditor = require('web_studio.XMLEditor');
-const { ComponentWrapper } = require("web.OwlCompatibility");
+import bus from "web_studio.bus";
+import XMLEditor from "web_studio.XMLEditor";
+import { ComponentWrapper } from "web.OwlCompatibility";
 
 var _lt = core._lt;
 var _t = core._t;
@@ -482,6 +481,4 @@ var AbstractEditorManager = Widget.extend({
     },
 });
 
-return AbstractEditorManager;
-
-});
+export default AbstractEditorManager;

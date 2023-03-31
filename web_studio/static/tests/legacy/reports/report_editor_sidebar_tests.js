@@ -1,11 +1,10 @@
-odoo.define('web_studio.ReportEditorSidebar_tests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const { nextTick } = require("@web/../tests/helpers/utils");
+import { nextTick } from "@web/../tests/helpers/utils";
 
-var testUtils = require('web.test_utils');
+import testUtils from "web.test_utils";
 
-var studioTestUtils = require('web_studio.testUtils');
+import studioTestUtils from "web_studio.testUtils";
 
 QUnit.module('Studio', {}, function () {
 
@@ -908,7 +907,5 @@ QUnit.module('Studio', {}, function () {
 
         });
     });
-
-});
 
 });

@@ -1,9 +1,8 @@
-odoo.define('test_barcode_batch_flows.tour', function(require) {
-'use strict';
+/** @odoo-module **/
 
-const { registry } = require("@web/core/registry");
-const helper = require('stock_barcode_picking_batch.tourHelper');
-const { stepUtils } = require('@stock_barcode/../tests/tours/tour_step_utils');
+import { registry } from "@web/core/registry";
+import helper from "stock_barcode_picking_batch.tourHelper";
+import { stepUtils } from "@stock_barcode/../tests/tours/tour_step_utils";
 
 function checkState(state) {
     helper.assertLinesCount(state.linesCount);
@@ -865,5 +864,3 @@ registry.category("web_tour.tours").add('test_pack_and_same_product_several_sml'
     },
     ...stepUtils.validateBarcodeOperation(),
 ]});
-
-});

@@ -1,6 +1,5 @@
-odoo.define('web_mobile.testUtils', function () {
-    'use strict';
-
+/** @odoo-module alias=web_mobile.testUtils **/
+    
     /**
      * Transforms base64 encoded data to a Blob object
      *
@@ -25,7 +24,6 @@ odoo.define('web_mobile.testUtils', function () {
         return new Blob(byteArrays, { type: contentType });
     }
 
-    return {
+    export default {
         base64ToBlob,
     };
-});

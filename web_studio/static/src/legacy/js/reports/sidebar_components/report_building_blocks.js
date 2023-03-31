@@ -1,15 +1,14 @@
-odoo.define('web_studio.reportNewComponents', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.reportNewComponents **/
 
-var config = require('web.config');
-var core = require('web.core');
-var Dialog = require('web.Dialog');
+import config from "web.config";
+import core from "web.core";
+import Dialog from "web.Dialog";
 
-var Abstract = require('web_studio.AbstractReportComponent');
-var NewFieldDialog = require('web_studio.NewFieldDialog');
+import Abstract from "web_studio.AbstractReportComponent";
+import NewFieldDialog from "web_studio.NewFieldDialog";
 
-const { MediaDialogWrapper } = require('@web_editor/components/media_dialog/media_dialog');
-const { ComponentWrapper } = require('web.OwlCompatibility');
+import { MediaDialogWrapper } from "@web_editor/components/media_dialog/media_dialog";
+import { ComponentWrapper } from "web.OwlCompatibility";
 
 var _t = core._t;
 var _lt = core._lt;
@@ -906,7 +905,7 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
 });
 
 
-return {
+export default {
     BlockText: BlockText,
     InlineText: InlineText,
     ColumnHalfText: ColumnHalfText,
@@ -923,5 +922,3 @@ return {
     BlockTable: BlockTable,
     TableBlockTotal: TableBlockTotal,
 };
-
-});

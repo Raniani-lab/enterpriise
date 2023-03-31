@@ -1,8 +1,8 @@
-odoo.define('pos_hr_l10n_be.pos_hr_l10n_be', function (require) {
-    var core = require('web.core');
-    var { Gui } = require('point_of_sale.Gui');
-    var models = require('point_of_sale.models');
-    var devices = require('point_of_sale.devices');
+/** @odoo-module **/
+    import core from "web.core";
+    import { Gui } from "point_of_sale.Gui";
+    import models from "point_of_sale.models";
+    import devices from "point_of_sale.devices";
 
     var _t = core._t;
 
@@ -107,4 +107,3 @@ odoo.define('pos_hr_l10n_be.pos_hr_l10n_be', function (require) {
 
     models.load_fields("hr.employee", "insz_or_bis_number");
     models.load_fields("pos.session", "employees_clocked_ids");
-});

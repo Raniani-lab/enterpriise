@@ -1,10 +1,9 @@
-odoo.define('pos_blackbox_be.WorkInButton', function(require) {
-    'use strict';
-
-    const PosComponent = require('point_of_sale.PosComponent');
-    const ProductScreen = require('point_of_sale.ProductScreen');
-    const { useListener } = require("@web/core/utils/hooks");
-    const Registries = require('point_of_sale.Registries');
+/** @odoo-module alias=pos_blackbox_be.WorkInButton **/
+    
+    import PosComponent from "point_of_sale.PosComponent";
+    import ProductScreen from "point_of_sale.ProductScreen";
+    import { useListener } from "@web/core/utils/hooks";
+    import Registries from "point_of_sale.Registries";
 
     const { onWillStart, useState } = owl;
 
@@ -75,5 +74,4 @@ odoo.define('pos_blackbox_be.WorkInButton', function(require) {
 
     Registries.Component.add(WorkInButton);
 
-    return WorkInButton;
-});
+    export default WorkInButton;

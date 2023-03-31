@@ -1,9 +1,8 @@
-odoo.define('web_studio.reportNewComponentsRegistry', function (require) {
-"use strict";
+/** @odoo-module alias=web_studio.reportNewComponentsRegistry **/
 
-var core = require('web.core');
-var Registry = require('web.Registry');
-var reportNewComponents = require('web_studio.reportNewComponents');
+import core from "web.core";
+import Registry from "web.Registry";
+import reportNewComponents from "web_studio.reportNewComponents";
 
 var _lt = core._lt;
 
@@ -34,6 +33,4 @@ registry
         reportNewComponents.ColumnThirdText,
     ]);
 
-return registry;
-
-});
+    export default registry;

@@ -1,7 +1,6 @@
-odoo.define('website_sale_ups.delivery_ups', function (require) {
-"use strict";
+/** @odoo-module **/
 
-    var ajax = require('web.ajax');
+    import ajax from "web.ajax";
 
     $(document).ready(function () {
 
@@ -27,4 +26,3 @@ odoo.define('website_sale_ups.delivery_ups', function (require) {
           }
         });
     });
-});

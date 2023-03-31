@@ -1,9 +1,8 @@
-odoo.define('documents_account.tour', function(require) {
-"use strict";
+/** @odoo-module **/
 
-const { _t } = require('web.core');
-const {Markup} = require('web.utils');
-const { registry } = require("@web/core/registry");
+import { _t } from "web.core";
+import {Markup} from "web.utils";
+import { registry } from "@web/core/registry";
 
 const { markup } = owl;
 
@@ -71,4 +70,3 @@ registry.category("web_tour.tours").add('documents_account_tour', {
     content: _t("Send this letter to the legal department, by assigning the right tags."),
     position: 'bottom',
 }]});
-});

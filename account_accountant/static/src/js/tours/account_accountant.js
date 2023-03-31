@@ -1,10 +1,9 @@
-odoo.define('account_accountant.tour', function (require) {
-    "use strict";
-
-    const core = require('web.core');
-    const {Markup} = require('web.utils');
-    const { registry } = require("@web/core/registry");
-    const { stepUtils } = require('@web_tour/tour_service/tour_utils');
+/** @odoo-module **/
+    
+    import core from "web.core";
+    import {Markup} from "web.utils";
+    import { registry } from "@web/core/registry";
+    import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
     const _t = core._t;
     const { markup } = owl;
@@ -94,4 +93,3 @@ odoo.define('account_accountant.tour', function (require) {
             }
         ]
     })
-});

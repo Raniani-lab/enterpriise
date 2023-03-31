@@ -1,7 +1,6 @@
-odoo.define("approvals_tour", function (require) {
-    "use strict";
-
-    const { registry } = require("@web/core/registry");
+/** @odoo-module **/
+    
+    import { registry } from "@web/core/registry";
 
     registry.category("web_tour.tours").add("approvals_tour", {
         test: true,
@@ -120,4 +119,3 @@ odoo.define("approvals_tour", function (require) {
             },
         ],
     });
-});

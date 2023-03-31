@@ -6,8 +6,8 @@ from odoo.tools import html2plaintext
 from odoo import fields, Command
 
 from freezegun import freeze_time
+from unittest.mock import patch
 import re
-
 
 @tagged('post_install', '-at_install')
 class TestBankRecWidget(TestBankRecWidgetCommon):
@@ -1723,3 +1723,70 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'new_aml',         'amount_currency': 1200.0,  'balance': 400.0},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,     'balance': 200.0},
         ])
+
+    def test_auto_reconcile_cron_with_time_limit(self):
+        self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()
+        cron = self.env.ref('account_accountant.auto_reconcile_bank_statement_line')
+        self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)]).unlink()
+
+        st_line1 = self._create_st_line(1234.0, partner_id=self.partner_a.id, date='2017-01-01')
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 1)
+        st_line2 = self._create_st_line(5678.0, partner_id=self.partner_a.id, date='2017-01-02')
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 2)
+
+        self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-01',
+            invoice_line_ids=[{'price_unit': 1234.0}],
+        )
+        self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-01',
+            invoice_line_ids=[{'price_unit': 5678.0}],
+        )
+        self.env['account.reconcile.model'].create({
+            'name': "test_auto_reconcile_cron_with_time_limit",
+            'rule_type': 'writeoff_suggestion',
+            'auto_reconcile': True,
+            'line_ids': [Command.create({'account_id': self.account_revenue1.id})],
+        })
+
+        with freeze_time('2017-01-01 00:00:00') as frozen_time:
+            def datetime_now_override():
+                frozen_time.tick()
+                return frozen_time()
+            with patch('odoo.fields.Datetime.now', side_effect=datetime_now_override):
+                # we simulate that the time limit is reached after first loop
+                self.env['account.bank.statement.line']._cron_try_auto_reconcile_statement_lines(limit_time=1)
+        # after first loop, only one statement should be reconciled
+        self.assertRecordValues(st_line1, [{'is_reconciled': True, 'cron_last_check': fields.Datetime.from_string('2017-01-01 00:00:01')}])
+        # the other one should be in queue for regular cron tigger
+        self.assertRecordValues(st_line2, [{'is_reconciled': False, 'cron_last_check': False}])
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 3)
+
+    def test_auto_reconcile_cron_with_provided_statements_lines(self):
+        self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()
+
+        st_line1 = self._create_st_line(1234.0, partner_id=self.partner_a.id, date='2017-01-01')
+        st_line2 = self._create_st_line(5678.0, partner_id=self.partner_a.id, date='2017-01-02')
+        self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-01',
+            invoice_line_ids=[{'price_unit': 1234.0}],
+        )
+        self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-01',
+            invoice_line_ids=[{'price_unit': 5678.0}],
+        )
+        self.env['account.reconcile.model'].create({
+            'name': "test_auto_reconcile_cron_with_time_limit",
+            'rule_type': 'writeoff_suggestion',
+            'auto_reconcile': True,
+            'line_ids': [Command.create({'account_id': self.account_revenue1.id})],
+        })
+        with freeze_time('2017-01-01 00:00:00'):
+            # we call auto reconcile on st_lines1 **only**
+            st_line1._cron_try_auto_reconcile_statement_lines()
+        self.assertRecordValues(st_line1, [{'is_reconciled': True, 'cron_last_check': fields.Datetime.from_string('2017-01-01 00:00:00')}])
+        self.assertRecordValues(st_line2, [{'is_reconciled': False, 'cron_last_check': False}])

@@ -75,6 +75,13 @@ msgid "<i class=\"fa fa-check\"/> Matched"
 msgstr ""
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_form_inherit
+msgid ""
+"<i title=\"Run manually\" role=\"img\" aria-label=\"Run manually\" class=\"fa fa-refresh\"/>\n"
+"                                Run manually"
+msgstr ""
+
+#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "<i>Lock all journal entries</i>"
 msgstr ""

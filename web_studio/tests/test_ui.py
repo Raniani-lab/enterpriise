@@ -1,12 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 # -*- coding: utf-8 -*-
 from lxml import etree
+import json
 
 import odoo.tests
 from odoo import Command, api, http
 from odoo.tools import mute_logger
 from odoo.addons.web_studio.controllers.main import WebStudioController
-from lxml import etree
 
 
 @odoo.tests.tagged('post_install', '-at_install')
@@ -662,3 +662,60 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                 <field name="display_name" type="measure"/>
             </pivot>
         '''.format(field_id=field_id))
+
+    def test_field_with_groups_in_tree_node_has_groups_too(self):
+        # The field has a group in python in which the user is
+        # The node has also a group in which the user is not
+        hasGroup = self.env["res.groups"].create({
+            "name": "studio has group",
+            "users": [Command.link(self.env.user.id)]
+        })
+        hasGroupXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_hasgroup",
+            "model": "res.groups",
+            "module": "web_studio",
+            "res_id": hasGroup.id,
+        })
+
+        doesNotHaveGroup = self.env["res.groups"].create({
+            "name": "studio does not have"
+        })
+        doesNotHaveGroupXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_doesnothavegroup",
+            "model": "res.groups",
+            "module": "web_studio",
+            "res_id": doesNotHaveGroup.id,
+        })
+
+        self.patch(type(self.env["res.partner"]).title, "groups", hasGroupXmlId.complete_name)
+
+        view = self.env["ir.ui.view"].create({
+            "name": "simple view",
+            "model": "res.partner",
+            "type": "tree",
+            "arch": '''
+                <tree>
+                    <field name="display_name"/>
+                    <field name="title" groups="{doesnothavegroup}" />
+                </tree>
+            '''.format(doesnothavegroup=doesNotHaveGroupXmlId.complete_name)
+        })
+        arch = self.env[view.model].with_context(studio=True).get_view(view.id, view.type)["arch"]
+
+        studio_groups = json.dumps([{
+            "id": doesNotHaveGroup.id,
+            "name": doesNotHaveGroup.name,
+            "display_name": doesNotHaveGroup.display_name,
+        }])
+
+        modifiers = json.dumps({"column_invisible": True})
+        xml_temp = etree.Element("field", dict(name="title", modifiers=modifiers, groups=doesNotHaveGroupXmlId.complete_name, studio_groups=studio_groups))
+
+        expected = '''
+            <tree>
+               <field name="display_name" on_change="1" modifiers="{modifiers}"/>
+               {xml_stringified}
+             </tree>
+        '''.format(modifiers="{&quot;readonly&quot;: true}", xml_stringified=etree.tostring(xml_temp).decode("utf-8"))
+
+        assertViewArchEqual(self, arch, expected)

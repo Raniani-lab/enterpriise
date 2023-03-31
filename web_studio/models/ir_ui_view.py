@@ -123,9 +123,16 @@ class View(models.Model):
                     if field and field.groups and not self.user_has_groups(field.groups):
                         node.set('studio_no_fetch', '1')
 
+            def is_in_tree(node):
+                parent = node.getparent()
+                if parent is None:
+                    return False
+                parent = parent if not (parent.tag == "t" and "postprocess_added" in parent.attrib) else parent.getparent()
+                return parent is not None and parent.tag == "tree"
+
             for node in set_invisible_nodes:
                 modifiers = json.loads(node.attrib.pop('modifiers', '{}'))
-                if node.getparent() is not None and node.getparent().tag == 'tree':
+                if is_in_tree(node):
                     modifiers['column_invisible'] = True
                 else:
                     modifiers['invisible'] = True

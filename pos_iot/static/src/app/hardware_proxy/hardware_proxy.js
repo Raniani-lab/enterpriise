@@ -81,14 +81,4 @@ patch(HardwareProxy.prototype, "pos_iot.HardwareProxy", {
         this.setConnectionInfo({ drivers });
         setTimeout(() => this.statusLoop(), 5000);
     },
-
-    updateCustomerDisplay(html) {
-        if (this.deviceProxies.display) {
-            return this.deviceProxies.display.action({ action: "customer_facing_display", html });
-        }
-    },
-
-    takeControlOfCustomerDisplay(html) {
-        return this.deviceProxies.display.action({ action: "take_control", html });
-    },
 });

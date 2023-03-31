@@ -86,7 +86,7 @@ class MrpProductionWorkcenterLine(models.Model):
         for wo in self:
             wo.is_first_started_wo = all(wo.state != 'done' for wo in (wo.production_id.workorder_ids - wo))
             other_wos = wo.production_id.workorder_ids - wo
-            other_states = other_wos.mapped(lambda w: w.state == 'done')
+            other_states = other_wos.mapped(lambda w: w.state in ['done', 'cancel'])
             wo.is_last_unfinished_wo = all(other_states)
 
     @api.depends('check_ids')
@@ -451,7 +451,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 else:
                     index = list(self.production_id.workorder_ids).index(self)
                     return backorder.workorder_ids[index].open_tablet_view()
-        return True
+        return self.action_back()
 
     def _defaults_from_move(self, move):
         self.ensure_one()

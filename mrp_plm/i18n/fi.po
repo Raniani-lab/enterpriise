@@ -949,7 +949,7 @@ msgstr "Kuva 128"
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "In #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:0

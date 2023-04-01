@@ -277,19 +277,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
 msgid "Service"
-msgstr ""
+msgstr "സേവനം"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_role__product_ids
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__role_product_ids
 msgid "Services"
-msgstr ""
+msgstr "സേവനങ്ങള്"
 
 #. module: sale_planning
 #: code:addons/sale_planning/controllers/main.py:0
 #, python-format
 msgid "Shift"
-msgstr ""
+msgstr "ഷിഫ്റ്റ്"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__start_datetime

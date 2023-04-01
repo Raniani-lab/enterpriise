@@ -132,7 +132,7 @@ msgstr "Entwicklung"
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill_report__evolution_sequence
 msgid "Evolution Sequence"
-msgstr ""
+msgstr "Entwicklungsreihenfolge"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__id
@@ -144,12 +144,12 @@ msgstr "ID"
 #: model:ir.model.fields.selection,name:hr_appraisal_skills.selection__hr_appraisal_skill_report__evolution__improvement
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_skills.hr_appraisal_skill_report_view_search
 msgid "Improvement"
-msgstr ""
+msgstr "Verbesserung"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields.selection,name:hr_appraisal_skills.selection__hr_appraisal_skill_report__evolution__just_added
 msgid "Just added"
-msgstr ""
+msgstr "Gerade hinzugefügt"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__justification
@@ -180,7 +180,7 @@ msgstr "Manager"
 #. module: hr_appraisal_skills
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_skills.hr_appraisal_skill_report_view_search
 msgid "No Change"
-msgstr ""
+msgstr "Keine Veränderung"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__previous_skill_level_id
@@ -208,12 +208,12 @@ msgstr ""
 #. module: hr_appraisal_skills
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_skills.hr_appraisal_skill_report_view_search
 msgid "Regression"
-msgstr ""
+msgstr "Rückläufige Entwicklung"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields.selection,name:hr_appraisal_skills.selection__hr_appraisal_skill_report__evolution__same
 msgid "Same"
-msgstr ""
+msgstr "Gleichbleibend"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__skill_id
@@ -243,7 +243,7 @@ msgstr "Fähigkeiten"
 #: model:ir.ui.menu,name:hr_appraisal_skills.menu_appraisal_skills_report
 #: model_terms:ir.actions.act_window,help:hr_appraisal_skills.hr_appraisal_skill_report_action
 msgid "Skills Evolution"
-msgstr ""
+msgstr "Kompetenzenentwicklung"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.constraint,message:hr_appraisal_skills.constraint_hr_appraisal_skill__unique_skill

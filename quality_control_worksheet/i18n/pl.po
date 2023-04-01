@@ -80,7 +80,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Punkt kontroli jakości"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_x_custom_worksheet_x_quality_check_worksheet_template_1

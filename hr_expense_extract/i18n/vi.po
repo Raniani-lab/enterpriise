@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Thi Huong Nguyen, 2023
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2023\n"
+"Last-Translator: Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,6 +34,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Buy credits"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Mua credits"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -40,6 +43,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Refresh"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Làm mới"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -47,6 +52,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Resend For Digitization"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Gửi lại để số hóa"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -154,12 +161,12 @@ msgstr "Tiền tệ"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "Số hóa tự động"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "Số hóa theo yêu cầu"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__display_name
@@ -171,7 +178,7 @@ msgstr "Tên hiển thị"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "Không số hóa"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_error_message
@@ -410,7 +417,7 @@ msgstr "Hóa đơn mẫu: %s"
 #: model:ir.actions.server,name:hr_expense_extract.hr_expense_parse_action_server
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Gửi để số hóa"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection
@@ -447,6 +454,8 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
+"Quá trình trích xuất dữ liệu vẫn chưa kết thúc. Quá trình trích xuất thường "
+"mất từ 5 đến 10 giây."
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -493,7 +502,7 @@ msgstr "Waiting extraction"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "Đang chờ tải lên"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_validation

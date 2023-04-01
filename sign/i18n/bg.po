@@ -1594,6 +1594,13 @@ msgid "Inalterability Hash"
 msgstr ""
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_modal.xml:0
+#, python-format
+msgid "Include a visual security frame around your signature"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Information"
 msgstr "Информация"

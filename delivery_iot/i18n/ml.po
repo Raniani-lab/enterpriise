@@ -45,7 +45,7 @@ msgstr ""
 #. module: delivery_iot
 #: model:ir.model,name:delivery_iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "IOT ഉപകരണം"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__iot_device_identifier

@@ -121,12 +121,12 @@ msgstr "ഓർഡർ "
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_graph
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_pivot
 msgid "Sales Analysis"
-msgstr ""
+msgstr "സെയിൽസ് അനാലിസിസ്"
 
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_sale_report
 msgid "Sales Analysis Report"
-msgstr ""
+msgstr "സെയിൽ അനാലിസിസ് റിപ്പോർട്ട്"
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_res_company__website_sale_dashboard_onboarding_state

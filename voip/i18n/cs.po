@@ -8,7 +8,7 @@
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # David Kliment <daklime@gmail.com>, 2022
 # Michal Veselý <michal@veselyberanek.net>, 2022
-# trendspotter <jirka.p@volny.cz>, 2022
+# Jiří Podhorecký, 2022
 # Martin Trigaux, 2022
 # 
 msgid ""
@@ -95,6 +95,15 @@ msgstr "Přidat do fronty hovorů"
 msgid ""
 "An error occured involving the audio recording device "
 "(%(errorName)s):</br>%(errorMessage)s"
+msgstr ""
+
+#. module: voip
+#. odoo-javascript
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"An error occurred during the instantiation of the User Agent:</br></br> "
+"%(error message)s"
 msgstr ""
 
 #. module: voip

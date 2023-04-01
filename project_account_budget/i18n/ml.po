@@ -31,7 +31,7 @@ msgstr ""
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Add Budget"
-msgstr ""
+msgstr "ബജറ്റ് ചേർക്കുക"
 
 #. module: project_account_budget
 #: model:ir.model.fields,field_description:project_account_budget.field_crossovered_budget_lines__analytic_account_id
@@ -41,19 +41,19 @@ msgstr "അനലിറ്റിക് അക്കൗണ്ട്"
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_crossovered_budget
 msgid "Budget"
-msgstr ""
+msgstr "ബജറ്റ്"
 
 #. module: project_account_budget
 #. odoo-python
 #: code:addons/project_account_budget/models/project.py:0
 #, python-format
 msgid "Budget Items"
-msgstr ""
+msgstr "ബജറ്റ് ഇനങ്ങൾ"
 
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_crossovered_budget_lines
 msgid "Budget Line"
-msgstr ""
+msgstr "ബജറ്റ് ലൈൻ"
 
 #. module: project_account_budget
 #. odoo-javascript
@@ -67,7 +67,7 @@ msgstr ""
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Budgets"
-msgstr ""
+msgstr "ബജറ്റുകൾ"
 
 #. module: project_account_budget
 #. odoo-javascript
@@ -93,7 +93,7 @@ msgstr ""
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.js:0
 #, python-format
 msgid "New Budget"
-msgstr ""
+msgstr "പുതിയ ബജറ്റ്"
 
 #. module: project_account_budget
 #. odoo-javascript
@@ -112,7 +112,7 @@ msgstr "പ്രൊജക്റ്റ് "
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "ആകെ"
 
 #. module: project_account_budget
 #: model:ir.model.fields,field_description:project_account_budget.field_project_project__total_planned_amount

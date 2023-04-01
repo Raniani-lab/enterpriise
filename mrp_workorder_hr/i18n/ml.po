@@ -144,7 +144,7 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "ഉൽപ്പാദനത്തിൽ ഒരു മാറ്റം നിർദ്ദേശിക്കുക"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_quality_check
@@ -163,7 +163,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Select Employee"
-msgstr ""
+msgstr "ജീവനക്കാരനെ തിരഞ്ഞെടുക്കുക"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -178,7 +178,7 @@ msgstr "നിർത്തുക"
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "This employee is not allowed on this workcenter"
-msgstr ""
+msgstr "ഈ വർക്ക് സെന്ററിൽ ഈ ജീവനക്കാരനെ അനുവദിക്കില്ല"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter

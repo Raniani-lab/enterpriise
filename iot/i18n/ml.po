@@ -225,7 +225,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__device
 msgid "Device"
-msgstr ""
+msgstr "ഉപകരണം"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__device_count
@@ -318,12 +318,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__id
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "IOT ഉപകരണം"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__identifier
@@ -437,7 +437,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__layout
 msgid "Layout"
-msgstr ""
+msgstr "ലേഔട്ട്"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manual_measurement

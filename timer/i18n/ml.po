@@ -57,7 +57,7 @@ msgstr ""
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__is_timer_running

@@ -39,12 +39,12 @@ msgstr "# Linie"
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__avg_days_to_confirm
 msgid "Average Days To Confirm"
-msgstr ""
+msgstr "Średnia ilość dni do potwierdzenia"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Average Days to Confirm"
-msgstr ""
+msgstr "Średnia ilość dni do potwierdzenia"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
@@ -59,6 +59,10 @@ msgid ""
 "average value, therefore only use this as an aggregated value with "
 "group_operator=avg"
 msgstr ""
+"Średnia dni do potwierdzenia zamówienia sprzedaży po jego utworzeniu. Ze "
+"względu na hack potrzebny do obliczenia tego, każdy rekord pokaże tę samą "
+"średnią wartość, dlatego używaj tego tylko jako wartości zagregowanej z "
+"group_operator=avg"
 
 #. module: sale_enterprise
 #: model_terms:ir.actions.act_window,help:sale_enterprise.sale_report_action_dashboard

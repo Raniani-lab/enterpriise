@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
 # Thi Huong Nguyen, 2023
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2023\n"
+"Last-Translator: Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,12 +33,12 @@ msgstr "%s (sao chép)"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "%s Payment Reminder - %s"
-msgstr ""
+msgstr "%s Nhắc nhở thanh toán - %s"
 
 #. module: account_followup
 #: model:ir.actions.report,print_report_name:account_followup.action_report_followup
 msgid "'Follow-up ' + object.display_name"
-msgstr ""
+msgstr "'Theo dõi ' + object.display_name"
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_res_partner__type
@@ -50,11 +50,11 @@ msgid ""
 "- Private: Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...).\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
-"- Liên hệ: Sử dụng mục này để tổ chức các chi tiết liên hệ của nhân viên của một công ty nhất định (ví dụ: Giám đốc điều hành, Giám đốc tài chính, ...).\n"
-"- Địa chỉ hóa đơn : Địa chỉ ưa thích cho tất cả các hóa đơn. Được chọn theo mặc định khi bạn lập hóa đơn cho một đơn đặt hàng thuộc về công ty này.\n"
-"- Địa chỉ giao hàng : Địa chỉ ưu tiên cho tất cả các giao hàng. Được chọn theo mặc định khi bạn giao một đơn đặt hàng thuộc về công ty này.\n"
-"- Riêng tư: Địa chỉ riêng tư chỉ được hiển thị bởi người dùng được ủy quyền và chứa dữ liệu nhạy cảm (địa chỉ nhà riêng của nhân viên, ...).\n"
-"- Khác: Địa chỉ khác của công ty (ví dụ: công ty con,...)"
+"- Liên hệ: Sử dụng tùy chọn này để sắp xếp chi tiết liên hệ của nhân viên của một công ty nhất định (ví dụ: Giám đốc điều hành, Giám đốc tài chính, ...).\n"
+"- Địa chỉ hóa đơn : Địa chỉ thương dùng cho tất cả các hóa đơn. Được chọn theo mặc định khi bạn lập hóa đơn cho một đơn đặt hàng thuộc về công ty này.\n"
+"- Địa chỉ giao hàng: Địa chỉ thương dùng cho tất cả các giao hàng. Được chọn theo mặc định khi bạn giao đơn đặt hàng thuộc về công ty này.\n"
+"- Riêng tư: Địa chỉ riêng tư chỉ hiển thị bởi người dùng được ủy quyền và chứa dữ liệu nhạy cảm (địa chỉ nhà riêng của nhân viên, ...).\n"
+"- Khác: Địa chỉ khác của công ty (ví dụ: công ty con, ...)"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
@@ -69,17 +69,17 @@ msgstr "30 Ngày"
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line3
 msgid "40 Days"
-msgstr ""
+msgstr "40 ngày"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line4
 msgid "50 Days"
-msgstr ""
+msgstr "50 ngày"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line5
 msgid "60 Days"
-msgstr ""
+msgstr "60 ngày"
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.email_template_followup_1
@@ -114,6 +114,34 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                     <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                         <t t-if=\"object.id != object.commercial_partner_id.id\">Kính gửi <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
+"                         <t t-else=\"\">Kính gửi <t t-out=\"object.name hoặc ''\"/>,</t>\n"
+"                         <br/>\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Ngoại lệ được thực hiện nếu có lỗi của chúng tôi, có vẻ như một lượng <t t-out=\"format_amount(object.total_overdue, object.currency_id) hoặc ''\"/>\n"
+"                         vẫn chưa được thanh toán. Vui lòng thực hiện các biện pháp thích hợp để thực hiện khoản thanh toán này trong 8 ngày tới.\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Thanh toán của bạn có được thực hiện sau khi thư này được gửi đi không, vui lòng bỏ qua thông báo này.\n"
+"                         Đừng ngần ngại liên hệ với bộ phận kế toán của chúng tôi.\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Trân trọng,\n"
+"                         <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                             <br/>\n"
+"                             <t t-out=\"object._get_followup_responsible().signature\"/>\n"
+"                         </t>\n"
+"                         <t t-else=\"\">\n"
+"                             <br/>\n"
+"                             --\n"
+"                             <br/>\n"
+"                             <t t-out=\"object._get_followup_responsible().name\"/>\n"
+"                         </t>\n"
+"                     </p>\n"
+"                 </div>"
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.demo_followup_email_template_4
@@ -146,6 +174,32 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                     <p>\n"
+"                         <t t-if=\"object.id != object.commercial_partner_id.id\">Kính gửi <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
+"                         <t t-else=\"\">Kính gửi <t t-out=\"object.name hoặc ''\"/>,</t>\n"
+"                         <br/>\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Dù đã nhắc nhở nhiều lần nhưng tài khoản của bạn vẫn chưa được xử lý.\n"
+"                         Trừ khi thanh toán đầy đủ được thực hiện trong 8 ngày tới, thì hành động pháp lý để thu hồi khoản nợ sẽ được thực hiện mà không cần thông báo thêm.\n"
+"                         Tôi tin rằng hành động này sẽ được chứng minh là không cần thiết và chi tiết về các khoản thanh toán đến hạn được in bên dưới.\n"
+"                         Trong trường hợp có bất kỳ câu hỏi nào liên quan đến vấn đề này, đừng ngần ngại liên hệ với bộ phận kế toán của chúng tôi.\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Trân trọng,\n"
+"                         <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                             <br/>\n"
+"                             <t t-out=\"object._get_followup_responsible().signature\"/>\n"
+"                         </t>\n"
+"                         <t t-else=\"\">\n"
+"                             <br/>\n"
+"                             --\n"
+"                             <br/>\n"
+"                             <t t-out=\"object._get_followup_responsible().name\"/>\n"
+"                         </t>\n"
+"                     </p>\n"
+"                 </div>"
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.demo_followup_email_template_2
@@ -185,6 +239,39 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                     <p>\n"
+"                         <t t-if=\"object.id != object.commercial_partner_id.id\">Kính gửi <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
+"                         <t t-else=\"\">Kính gửi <t t-out=\"object.name hoặc ''\"/>,</t>\n"
+"                         <br/>\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Chúng tôi rất thất vọng khi thấy rằng mặc dù đã gửi lời nhắc nhưng tài khoản của bạn hiện đã quá hạn nghiêm trọng.\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Điều cần thiết là thanh toán ngay lập tức được thực hiện, nếu không chúng tôi sẽ phải xem xét việc dừng tài khoản của bạn, điều đó có nghĩa là chúng tôi sẽ không thể cung cấp (hàng hóa/dịch vụ) cho công ty của bạn nữa.\n"
+"                         Vui lòng thực hiện các biện pháp thích hợp để thực hiện khoản thanh toán này trong 8 ngày tới.\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Nếu có vấn đề gì về việc thanh toán hóa đơn mà chúng tôi không biết, đừng ngần ngại liên hệ với bộ phận kế toán của chúng tôi để chúng tôi có thể giải quyết vấn đề một cách nhanh chóng.\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Chi tiết các khoản thanh toán đến hạn được in bên dưới.\n"
+"                     </p>\n"
+"                     <p>\n"
+"                         Trân trọng,\n"
+"                         <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                             <br/>\n"
+"                             <t t-out=\"object._get_followup_responsible().signature\"/>\n"
+"                         </t>\n"
+"                         <t t-else=\"\">\n"
+"                             <br/>\n"
+"                             --\n"
+"                             <br/>\n"
+"                             <t t-out=\"object._get_followup_responsible().name\"/>\n"
+"                         </t>\n"
+"                     </p>\n"
+"                 </div>"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.followup_search_template
@@ -202,6 +289,8 @@ msgid ""
 "A follow-up action name must be unique. This name is already set to another "
 "action."
 msgstr ""
+"Tên hành động tiếp theo phải là duy nhất. Tên này đã được đặt cho một hành "
+"động khác."
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_chart_template
@@ -211,7 +300,7 @@ msgstr "Bảng hệ thống tài khoản"
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__account_followup_followup_line__activity_default_responsible_type__account_manager
 msgid "Account Manager"
-msgstr ""
+msgstr "Người quản lý tài khoản"
 
 #. module: account_followup
 #: model:ir.actions.server,name:account_followup.ir_cron_auto_post_draft_entry_ir_actions_server
@@ -234,7 +323,7 @@ msgstr "Hoạt động"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Activity Notes"
-msgstr ""
+msgstr "Ghi chú hoạt động"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__activity_type_id
@@ -260,7 +349,7 @@ msgstr "Kiểu Địa chỉ"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
 msgid "Assigned to me"
-msgstr ""
+msgstr "Giao cho tôi"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__join_invoices
@@ -284,7 +373,7 @@ msgstr "Tự động"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__body_html
 msgid "Body Html"
-msgstr ""
+msgstr "Nội dung Html"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__can_edit_body
@@ -317,7 +406,7 @@ msgstr "Danh bạ"
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Content Template"
-msgstr ""
+msgstr "Mẫu nội dung"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__body
@@ -382,7 +471,7 @@ msgstr "Ngày:"
 #. module: account_followup
 #: model:ir.model.constraint,message:account_followup.constraint_account_followup_followup_line_days_uniq
 msgid "Days of the follow-up lines must be different per company"
-msgstr ""
+msgstr "Ngày của các dòng theo dõi phải khác nhau đối với mỗi công ty"
 
 #. module: account_followup
 #. odoo-python
@@ -408,6 +497,8 @@ msgid ""
 "Dear client, we kindly remind you that you still have unpaid invoices. "
 "Please check them and take appropriate action. %s"
 msgstr ""
+"Kính gửi khách hàng, chúng tôi vui lòng nhắc bạn rằng bạn vẫn còn hóa đơn "
+"chưa thanh toán. Vui lòng kiểm tra chúng và thực hiện hành động thích hợp.%s"
 
 #. module: account_followup
 #: model_terms:ir.actions.act_window,help:account_followup.action_account_followup_line_definition_form
@@ -428,6 +519,10 @@ msgid ""
 "- Salesperson: Sales Person defined on the invoice\n"
 "- Account Manager: Sales Person defined on the customer"
 msgstr ""
+"Xác định ai sẽ được chỉ định cho hoạt động:\n"
+"- Chịu trách nhiệm theo dõi (mặc định)\n"
+"- Nhân viên bán hàng: Nhân viên bán hàng được xác định trên hóa đơn\n"
+"- Quản lý tài khoản: Nhân viên kinh doanh được xác định trên khách hàng"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__display_name
@@ -455,27 +550,27 @@ msgstr "Email"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__email_add_signature
 msgid "Email Add Signature"
-msgstr "Email Thêm Chữ ký"
+msgstr "Email Thêm chữ ký"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Email Recipients"
-msgstr ""
+msgstr "Người nhận email"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Email Subject"
-msgstr ""
+msgstr "Chủ đề email"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Exclude from Follow-ups"
-msgstr ""
+msgstr "Loại trừ khỏi các lần theo dõi"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__email_recipient_ids
 msgid "Extra Recipients"
-msgstr ""
+msgstr "Người nhận thêm"
 
 #. module: account_followup
 #. odoo-python
@@ -487,19 +582,19 @@ msgstr "First Reminder"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Follow up"
-msgstr ""
+msgstr "Theo sát"
 
 #. module: account_followup
 #. odoo-python
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Follow-up %s - %s"
-msgstr ""
+msgstr "Theo sát %s - %s"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__type__followup
 msgid "Follow-up Address"
-msgstr ""
+msgstr "Địa chỉ theo dõi"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_followup_line
@@ -557,7 +652,7 @@ msgstr "Các bước theo dõi"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Follow-up letter generated"
-msgstr ""
+msgstr "Thư theo dõi được tạo"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.account_followup_journal_dashboard_kanban_view
@@ -571,11 +666,14 @@ msgid ""
 "            possible to use print and e-mail templates to send specific messages to\n"
 "            the customer."
 msgstr ""
+"Đối với mỗi bước, chỉ định các hành động được thực hiện và trì hoãn theo ngày. Nó là\n"
+"             có thể sử dụng các mẫu in và e-mail để gửi các tin nhắn cụ thể tới\n"
+"             khách hàng."
 
 #. module: account_followup
 #: model:mail.template,name:account_followup.demo_followup_email_template_4
 msgid "Fourth reminder followup"
-msgstr ""
+msgstr "Theo dõi lời nhắc thứ tư"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
@@ -603,7 +701,7 @@ msgstr "Có nhu cầu thực hiện"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Invoice No."
-msgstr ""
+msgstr "Số hóa đơn."
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__invoice_date
@@ -628,7 +726,7 @@ msgstr "Bút toán"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Kind reminder!"
-msgstr ""
+msgstr "Tử tế nhắc nhở!"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__lang
@@ -645,7 +743,7 @@ msgstr "Sửa lần cuối vào"
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__write_uid
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__write_uid
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__write_date
@@ -661,7 +759,7 @@ msgstr "Theo dõi gần đây"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Letter/Email Content"
-msgstr ""
+msgstr "Nội dung thư/email"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__mail_template_id
@@ -692,7 +790,7 @@ msgstr "Next Reminder Date set to %s"
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_next_action_date
 #: model:ir.model.fields,field_description:account_followup.field_res_users__followup_next_action_date
 msgid "Next reminder"
-msgstr ""
+msgstr "Lời nhắc tiếp theo"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_status__no_action_needed
@@ -733,6 +831,9 @@ msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the activities. If empty, we will find someone responsible."
 msgstr ""
+"Theo tùy chọn, bạn có thể chỉ định người dùng cho trường này, điều này sẽ "
+"khiến anh ta chịu trách nhiệm về các hoạt động. Nếu trống, chúng tôi sẽ tìm "
+"người chịu trách nhiệm."
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
@@ -770,7 +871,7 @@ msgstr "Đối tác"
 #: model:mail.template,name:account_followup.email_template_followup_1
 #, python-format
 msgid "Payment Reminder"
-msgstr ""
+msgstr "Nhắc nhở thanh toán"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__print
@@ -786,7 +887,7 @@ msgstr "In Thư  Follow-up"
 #. module: account_followup
 #: model:ir.actions.server,name:account_followup.action_account_reports_customer_statements_do_followup
 msgid "Process Automatic Follow-ups"
-msgstr ""
+msgstr "Quy trình theo dõi tự động"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
@@ -796,7 +897,7 @@ msgstr "Đối soát"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Remind"
-msgstr ""
+msgstr "Nhắc nhở"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_reminder_type
@@ -845,7 +946,7 @@ msgstr "Tìm theo dõi"
 #. module: account_followup
 #: model:mail.template,name:account_followup.demo_followup_email_template_2
 msgid "Second reminder followup"
-msgstr ""
+msgstr "Theo dõi lời nhắc thứ hai"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -865,27 +966,27 @@ msgstr "Gửi email"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__send_sms
 msgid "Send SMS Message"
-msgstr ""
+msgstr "Gửi tin nhắn SMS"
 
 #. module: account_followup
 #: model:ir.actions.act_window,name:account_followup.manual_reminder_action
 msgid "Send and Print"
-msgstr ""
+msgstr "Gửi và in"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms
 msgid "Sms"
-msgstr ""
+msgstr "Sms"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms_body
 msgid "Sms Body"
-msgstr ""
+msgstr "Nội dung tin nhắn SMS"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Sms Content"
-msgstr ""
+msgstr "Nội dung tin nhắn"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__sms_template_id
@@ -907,7 +1008,7 @@ msgstr "Tổng kết"
 #: model:ir.model.fields,help:account_followup.field_res_partner__followup_next_action_date
 #: model:ir.model.fields,help:account_followup.field_res_users__followup_next_action_date
 msgid "The date before which no follow-up action should be taken."
-msgstr ""
+msgstr "Ngày trước đó không nên thực hiện hành động tiếp theo."
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_account_move_line__invoice_origin
@@ -921,6 +1022,8 @@ msgid ""
 "the reminder. Can be negative if you want to send the reminder before the "
 "invoice due date."
 msgstr ""
+"Số ngày sau ngày đến hạn của hóa đơn phải đợi trước khi gửi lời nhắc. Có thể"
+" là số âm nếu bạn muốn gửi lời nhắc trước ngày đến hạn của hóa đơn."
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_tree_view
@@ -955,13 +1058,13 @@ msgstr "Tổng quá hạn"
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoice_ids
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoice_ids
 msgid "Unpaid Invoice"
-msgstr ""
+msgstr "Hóa đơn chưa thanh toán"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoices_count
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoices_count
 msgid "Unpaid Invoices Count"
-msgstr ""
+msgstr "Đếm hóa đơn chưa thanh toán"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unreconciled_aml_ids
@@ -983,7 +1086,7 @@ msgstr "Với các hóa đơn quá hạn"
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_manual_reminder
 msgid "Wizard for sending manual reminders to clients"
-msgstr ""
+msgstr "Trình hướng dẫn gửi lời nhắc thủ công cho khách hàng"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -998,6 +1101,8 @@ msgid ""
 "You are trying to send an Email, but no follow-up contact has any email "
 "address set"
 msgstr ""
+"Bạn đang cố gắng gửi Email, nhưng không có địa chỉ liên hệ tiếp theo nào "
+"được đặt địa chỉ email"
 
 #. module: account_followup
 #. odoo-python
@@ -1007,16 +1112,18 @@ msgid ""
 "You are trying to send an SMS, but no follow-up contact has any mobile/phone"
 " number set"
 msgstr ""
+"Bạn đang cố gắng gửi một tin nhắn SMS, nhưng không có liên hệ tiếp theo nào "
+"được đặt bất kỳ số điện thoại/di động nào"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "days after due date"
-msgstr ""
+msgstr "ngày sau ngày đáo hạn"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "e.g. First Reminder Email"
-msgstr ""
+msgstr "ví dụ. Email nhắc nhở đầu tiên"
 
 #. module: account_followup
 #. odoo-python
@@ -1033,3 +1140,5 @@ msgid ""
 "{{ (object.company_id or object._get_followup_responsible().company_id).name"
 " }} Payment Reminder - {{ object.commercial_company_name }}"
 msgstr ""
+"{{ (object.company_id or object._get_followup_responsible().company_id).name"
+" }} Nhắc nhở thanh toán - {{ object.commercial_company_name }}"

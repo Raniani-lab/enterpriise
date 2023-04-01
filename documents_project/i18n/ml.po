@@ -109,7 +109,7 @@ msgstr ""
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_draft
 msgid "Draft"
-msgstr ""
+msgstr "ഡ്രാഫ്റ്റ്"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_document__is_shared

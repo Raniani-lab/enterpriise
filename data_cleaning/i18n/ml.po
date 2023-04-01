@@ -258,7 +258,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__id
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model____last_update

@@ -24,7 +24,7 @@ msgstr ""
 #: code:addons/pos_settle_due/static/src/xml/templates.xml:0
 #, python-format
 msgid "Credit"
-msgstr ""
+msgstr "ക്രെഡിറ്റ്"
 
 #. module: pos_settle_due
 #. odoo-javascript

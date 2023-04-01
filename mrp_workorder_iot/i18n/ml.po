@@ -57,7 +57,7 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__device_id
 msgid "Device"
-msgstr ""
+msgstr "ഉപകരണം"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__display_name
@@ -72,12 +72,12 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "IOT ഉപകരണം"
 
 #. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_iot_trigger

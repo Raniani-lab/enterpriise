@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 17:09+0000\n"
+"POT-Creation-Date: 2023-03-09 11:44+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
 "Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
@@ -1271,6 +1271,13 @@ msgstr "Entwurf"
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__sender_lang_code__1
 msgid "Dutch"
+msgstr ""
+
+#. module: l10n_be_reports
+#. odoo-python
+#: code:addons/l10n_be_reports/models/account_sales_report.py:0
+#, python-format
+msgid "EC Sales List Audit"
 msgstr ""
 
 #. module: l10n_be_reports

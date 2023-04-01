@@ -22,7 +22,7 @@ msgstr ""
 #. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_view_form
 msgid "Accounting"
-msgstr ""
+msgstr "അക്കൌണ്ടിംഗ്"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip__move_id
@@ -90,7 +90,7 @@ msgstr ""
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_account_journal
 msgid "Journal"
-msgstr ""
+msgstr "ജേണൽ"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_payslip__date

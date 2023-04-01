@@ -3645,6 +3645,13 @@ msgstr "此追加销售订单是从订阅创建的"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid ""
+"This will trigger the action on all linked subscriptions, regardless of "
+"possible timed conditions. Are you sure you want to proceed?"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid ""
 "This will trigger the action on all linked subsccriptions, regardless of "
 "possible timed conditions. Are you sure you want to proceed?"
 msgstr "这将触发对所有链接订阅的操作，而不考虑可能的定时条件。您确定要继续吗？"

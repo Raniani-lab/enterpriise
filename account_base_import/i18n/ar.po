@@ -35,12 +35,12 @@ msgstr "<span class=\"text-muted\">(أرصدة نهاية العام)</span>"
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"text-muted\">(for full history)</span>"
-msgstr "<span class=\"text-muted\">(للتاريخ الكامل)</span>"
+msgstr "<span class=\"text-muted\">(للسجل الكامل)</span> "
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_account
 msgid "Account"
-msgstr "حساب"
+msgstr "الحساب "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -60,14 +60,14 @@ msgstr "استيراد المحاسبة "
 #: model:ir.actions.client,name:account_base_import.action_open_import_guide
 #, python-format
 msgid "Accounting Import Guide"
-msgstr "محاسبة دليل الاستيراد"
+msgstr "دليل استيراد المحاسبة "
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Accounting Import Options"
-msgstr "محاسبة خيارات الاستيراد"
+msgstr "خيارات استيراد المحاسبة "
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_base_import_import
@@ -111,7 +111,7 @@ msgstr "تنزيل "
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Excel Import"
-msgstr "اكسل استيراد"
+msgstr "استيراد ملف Excel "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -141,7 +141,7 @@ msgstr "استيراد"
 #: model:ir.actions.client,name:account_base_import.action_account_import
 #, python-format
 msgid "Import Chart of Accounts"
-msgstr "يستورد الدليل المحاسبي"
+msgstr "استيراد شجرة الحسابات "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -169,7 +169,7 @@ msgstr "استيراد عناصر دفتر اليومية"
 #. module: account_base_import
 #: model:ir.actions.client,name:account_base_import.action_partner_import
 msgid "Import Partners"
-msgstr "شركاء الاستيراد"
+msgstr "استيراد الشركاء "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -197,7 +197,7 @@ msgstr "استيراد شجرة الحسابات والأرصدة المبدئي
 #: code:addons/account_base_import/static/src/js/account_import_guide.js:0
 #, python-format
 msgid "Install a module"
-msgstr "قم بتثبيت وحدة نمطية"
+msgstr "تثبيت تطبيق "
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_move_line
@@ -235,7 +235,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 #, python-format
 msgid "Review Manually"
-msgstr "مراجعة يدويا"
+msgstr "المراجعة يدوياً "
 
 #. module: account_base_import
 #. odoo-python

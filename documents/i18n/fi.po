@@ -2742,6 +2742,8 @@ msgid ""
 "You can either upload a file from your computer or copy/paste an internet "
 "link to your file."
 msgstr ""
+"Voit joko ladata tiedoston tietokoneeltasi tai kopioida/liimata Internet-"
+"linkin tiedostoon."
 
 #. module: documents
 #. odoo-python

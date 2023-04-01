@@ -47,7 +47,7 @@ msgstr "കമ്പനി"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__creation_date
 msgid "Creation Date"
-msgstr ""
+msgstr "സൃഷ്ടിച്ച തീയതി"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__outgoing
@@ -136,7 +136,7 @@ msgstr ""
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__internal
@@ -186,7 +186,7 @@ msgstr ""
 #. module: stock_enterprise
 #: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
 msgid "Performance"
-msgstr ""
+msgstr "പ്രകടനം"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_name
@@ -206,7 +206,7 @@ msgstr "പ്രോഡക്റ്റ് കാറ്റഗറി"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__product_qty
 msgid "Product Quantity"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ് അളവ്"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_enterprise_move_tree_view

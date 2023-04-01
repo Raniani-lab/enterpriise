@@ -267,7 +267,7 @@ msgstr "Suosikit"
 #: model:product.product,name:industry_fsm_sale.field_service_product
 #: model:product.template,name:industry_fsm_sale.field_service_product_product_template
 msgid "Field Service"
-msgstr ""
+msgstr "Kenttähuollon varastot"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price_currency_id

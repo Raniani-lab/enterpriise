@@ -5,9 +5,9 @@
 # Translators:
 # Mads Søndergaard, 2022
 # lhmflexerp <lhm@flexerp.dk>, 2022
-# Sanne Kristensen <sanne@vkdata.dk>, 2022
 # Martin Trigaux, 2022
 # Lucas Holm, 2023
+# Sanne Kristensen <sanne@vkdata.dk>, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Lucas Holm, 2023\n"
+"Last-Translator: Sanne Kristensen <sanne@vkdata.dk>, 2023\n"
 "Language-Team: Danish (https://www.transifex.com/odoo/teams/41243/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -242,7 +242,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_sale_order__ticket_count
 msgid "Ticket Count"
-msgstr ""
+msgstr "Sagstæller"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.sale_order_form_inherit_helpdesk_sale

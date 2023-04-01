@@ -481,7 +481,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Dissatisfied"
-msgstr ""
+msgstr "Tyytymätön"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project_task.py:0
@@ -531,7 +531,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
 #, python-format
 msgid "Field Service"
-msgstr ""
+msgstr "Kenttähuollon varastot"
 
 #. module: industry_fsm
 #: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
@@ -842,7 +842,7 @@ msgstr "Toiminnallista tai teknistä tukea tarvitaan"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "No Rating"
-msgstr ""
+msgstr "Arvostelu"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
@@ -880,7 +880,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Okay"
-msgstr ""
+msgstr "OK"
 
 #. module: industry_fsm
 #. openerp-web
@@ -1041,7 +1041,7 @@ msgstr "Raportointi"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Satisfied"
-msgstr ""
+msgstr "Tyytyväinen"
 
 #. module: industry_fsm
 #. openerp-web
@@ -1087,6 +1087,8 @@ msgid ""
 "Set this template on a project's stage to automate email when tasks reach "
 "stages"
 msgstr ""
+"Aseta tämä malli projektin vaiheeseen, jotta voit automatisoida sähköpostin,"
+" kun tehtävät saavuttavat vaiheet"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
@@ -1402,12 +1404,12 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_hours_open
 msgid "Working Hours to Assign"
-msgstr ""
+msgstr "Määritettävät työtunnit"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_hours_close
 msgid "Working Hours to Close"
-msgstr ""
+msgstr "Työtunteja sulkemiseen"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task
@@ -1425,7 +1427,7 @@ msgstr ""
 #: model:mail.template,report_name:industry_fsm.mail_template_data_task_report
 msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
-"object.partner_id else '' }}.pdf"
+"object.partner_id.name else '' }}.pdf"
 msgstr ""
 
 #. module: industry_fsm

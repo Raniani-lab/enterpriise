@@ -1435,6 +1435,15 @@ msgstr "Nu puteți accesa fișele de pontaj care nu sunt ale dvs."
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
+"You cannot adjust the time of the timesheet for a project with timesheets "
+"disabled."
+msgstr ""
+
+#. module: timesheet_grid
+#. odoo-python
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid ""
 "You cannot delete a validated entry. Please, contact your manager or your "
 "timesheet approver."
 msgstr ""

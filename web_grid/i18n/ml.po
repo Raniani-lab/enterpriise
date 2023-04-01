@@ -131,12 +131,12 @@ msgstr "ഇന്ന്"
 #: code:addons/web_grid/static/src/js/grid_renderer.js:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "ആകെ"
 
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "വ്യൂ"
 
 #. module: web_grid
 #: model:ir.model.fields,field_description:web_grid.field_ir_actions_act_window_view__view_mode

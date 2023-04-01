@@ -76,6 +76,8 @@ msgid ""
 ")\n"
 "            has refused the document"
 msgstr ""
+")\n"
+"            hat das Dokument verweigert"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -237,6 +239,8 @@ msgid ""
 "<small>SMS: The signatory has confirmed their control of the phone number "
 "using a unique code sent by SMS</small>"
 msgstr ""
+"<small>SMS: Der Unterzeichner hat die Kontrolle über die Telefonnummer mit "
+"einem eindeutigen Code per SMS bestätigt</small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -319,6 +323,8 @@ msgstr "<strong>Nachrichten- und Kommunikationsverlauf</strong>"
 msgid ""
 "<strong>Warning</strong> do not forward this email to other people!<br/>"
 msgstr ""
+"<strong>Achtung</strong>: Leiten Sie diese E-Mail nicht an andere Personen "
+"weiter!<br/>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -349,6 +355,8 @@ msgstr ""
 msgid ""
 "A non-shared sign request's should not have any signer with an empty partner"
 msgstr ""
+"Eine nichtgeteilte Unterschriftsanfrage sollte keinen Unterzeichner mit "
+"einem leeren Partner haben"
 
 #. module: sign
 #. odoo-python
@@ -357,6 +365,8 @@ msgstr ""
 msgid ""
 "A shared sign request should only have one signer with an empty partner"
 msgstr ""
+"Eine geteilte Unterschriftsanfrage sollte nur einen Unterzeichner mit einem "
+"leeren Partner haben"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -369,6 +379,7 @@ msgstr "Eine Dusche verbraucht etwa 65 l Wasser"
 #, python-format
 msgid "A valid sign request needs at least one sign request item"
 msgstr ""
+"Eine gültige Signaturanfrage benötigt mindestens ein Signaturanfrageelement"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -518,7 +529,7 @@ msgstr "Alle Dokumente"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "All signers must have valid email addresses"
-msgstr ""
+msgstr "Alle Unterzeichner müssen eine gültige E-Mail-Adresse haben"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -708,7 +719,7 @@ msgstr "Zentriert"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Certificate <i class=\"fa fa-download\"/>"
-msgstr ""
+msgstr "Zertifikat <i class=\"fa fa-download\"/>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -719,7 +730,7 @@ msgstr "Übergabeprotokoll<br/>"
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__change_authorized
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__change_authorized
 msgid "Change Authorized"
-msgstr ""
+msgstr "Änderung autorisiert"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__checkbox
@@ -785,7 +796,7 @@ msgstr "Unternehmen"
 #: model:ir.model.fields,field_description:sign.field_sign_request__communication_company_id
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__communication_company_id
 msgid "Company used for communication"
-msgstr ""
+msgstr "Für die Kommunikation verwendetes Unternehmen"
 
 #. module: sign
 #. odoo-python
@@ -803,7 +814,7 @@ msgstr "Vollständiges Dokument"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completed_document_attachment_ids
 msgid "Completed Documents"
-msgstr ""
+msgstr "Vervollständigte Dokumente"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_closed
@@ -1004,7 +1015,7 @@ msgstr "Signatur löschen"
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Delete sign item"
-msgstr ""
+msgstr "Signaturelemente löschen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -1029,7 +1040,7 @@ msgstr "Digitale Signatur"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_signature_frame
 msgid "Digital Signature Frame"
-msgstr ""
+msgstr "Signaturrahmen löschen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_users_view_form
@@ -1044,7 +1055,7 @@ msgstr "Digitale Initialien"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_initials_frame
 msgid "Digitial Initials Frame"
-msgstr ""
+msgstr "Initialienrahmen löschen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
@@ -1277,7 +1288,7 @@ msgstr "Fehler 404"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Existing sign items are not allowed to be changed"
-msgstr ""
+msgstr "Bestehende Signaturelemente dürfen nicht geändert werden"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1394,6 +1405,8 @@ msgstr ""
 #: model:ir.model.fields,help:sign.field_sign_item_role__auth_method
 msgid "Force the signatory to identify using a second authentication method"
 msgstr ""
+"Zwingen Sie den Unterzeichner, sich mit einer zweiten "
+"Authentifizierungsmethode zu identifizieren"
 
 #. module: sign
 #. odoo-javascript
@@ -1607,6 +1620,11 @@ msgid ""
 "                        </code> \n"
 "                        menu."
 msgstr ""
+"Wenn Sie diese Benachrichtigungen nicht mehr erhalten möchten, können Sie sie im Schritt für Extra-Authentifizierung im Menü für \n"
+"                        <code>\n"
+"                            E-Signatur &gt; Konfiguration &gt; Rollen\n"
+"                        </code> \n"
+"                        deaktivieren."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
@@ -1632,6 +1650,13 @@ msgstr "Entfernen Sie es in Favoriten"
 #: model:ir.model.fields,field_description:sign.field_sign_log__log_hash
 msgid "Inalterability Hash"
 msgstr "Unveränderlichkeits-Hash"
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_modal.xml:0
+#, python-format
+msgid "Include a visual security frame around your signature"
+msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
@@ -2355,13 +2380,13 @@ msgstr "Verworfen"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__refused
 msgid "Refused Signature"
-msgstr ""
+msgstr "Verweigerte Signatur"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "Refused on"
-msgstr ""
+msgstr "Verweigert am"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_reports
@@ -2701,7 +2726,7 @@ msgstr "Dokument unterschreiben"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_duplicate_template_pdf
 msgid "Sign Duplicate Template with new PDF"
-msgstr ""
+msgstr "Duplikatvorlage mit neuem PDF unterzeichenen"
 
 #. module: sign
 #. odoo-javascript
@@ -2906,7 +2931,7 @@ msgstr "Signaturanfrage - %s"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_item
 msgid "Signature Request Item"
-msgstr ""
+msgstr "Signaturanfrageelement"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_item_action
@@ -3347,7 +3372,7 @@ msgstr "Das Dokument"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The document (%s) has been rejected by one of the signers"
-msgstr ""
+msgstr "Das Dokument (%s) wurde von einem der Unterzeichner abgelehnt"
 
 #. module: sign
 #. odoo-javascript
@@ -3496,7 +3521,7 @@ msgstr ""
 #: code:addons/sign/static/src/components/template_alert_dialog/template_alert_dialog.xml:0
 #, python-format
 msgid "They will be removed from the uploaded files"
-msgstr ""
+msgstr "Sie werden aus den hochgeladenen Dateien entfernt"
 
 #. module: sign
 #. odoo-python
@@ -3867,7 +3892,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "Why am I seeing this?"
-msgstr ""
+msgstr "Warum wird mir das angezeigt?"
 
 #. module: sign
 #. odoo-javascript
@@ -3899,6 +3924,8 @@ msgid ""
 "You can contact the person who invited you to sign the document by email for"
 " help."
 msgstr ""
+"Sie können die Person, die Sie zur Unterzeichnung des Dokuments eingeladen "
+"hat, per E-Mail um Hilfe bitten."
 
 #. module: sign
 #. odoo-python
@@ -3923,17 +3950,17 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "You cannot reassign this signatory"
-msgstr ""
+msgstr "Sie können diesen Unterzeichner nicht neu zuordnen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "You have less than 20 credits remaining for"
-msgstr ""
+msgstr "Sie haben weniger als 20 Guthaben übrig für"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 msgid "You have refused the document"
-msgstr ""
+msgstr "Sie haben das Dokument verweigert"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
@@ -3954,7 +3981,7 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "You need to define a signatory"
-msgstr ""
+msgstr "Sie müssen einen Unterzeichner festlegen"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_my_requests_action

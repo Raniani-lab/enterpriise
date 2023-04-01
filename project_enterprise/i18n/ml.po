@@ -79,7 +79,7 @@ msgstr ""
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<strong>Milestone — </strong>"
-msgstr ""
+msgstr "<strong>മൈൽസ്റ്റോൺ — </strong>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
@@ -178,7 +178,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__id
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: project_enterprise
 #. openerp-web
@@ -214,12 +214,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view_no_title
 msgid "Milestone"
-msgstr ""
+msgstr "മൈൽസ്റ്റോൺ"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_mobile
 msgid "Mobile"
-msgstr ""
+msgstr "മൊബൈൽ"
 
 #. module: project_enterprise
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
@@ -272,7 +272,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "Planning"
-msgstr ""
+msgstr "ആസൂത്രണം"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planning_overlap
@@ -298,7 +298,7 @@ msgstr ""
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form_in_gantt
 msgid "Save"
-msgstr ""
+msgstr "സേവ്"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__schedule_task
@@ -342,7 +342,7 @@ msgstr ""
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_street
 msgid "Street"
-msgstr ""
+msgstr "സ്ട്രീറ്റ്"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task

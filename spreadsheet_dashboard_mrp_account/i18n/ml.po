@@ -174,7 +174,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Responsible"
-msgstr ""
+msgstr "ഉത്തരവാദിയായ"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web

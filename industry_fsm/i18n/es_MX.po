@@ -1483,10 +1483,10 @@ msgstr "Hoja de trabajo completa"
 #: model:mail.template,report_name:industry_fsm.mail_template_data_task_report
 msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
-"object.partner_id else '' }}.pdf"
+"object.partner_id.name else '' }}.pdf"
 msgstr ""
-"La hoja de trabajo {{ object.name }}{{ (' - ' + object.partner_id.name) if "
-"object.partner_id else '' }}.pdf"
+"Hoja de trabajo {{ object.name }}{{ (' - ' + object.partner_id.name) if "
+"object.partner_id.name else '' }}.pdf"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_worksheets

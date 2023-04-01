@@ -1168,6 +1168,13 @@ msgstr "No puede aprobarla antes del aprobador anterior."
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
+msgid ""
+"You cannot assign the same approver multiple times on the same request."
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
 msgid "You have to add at least %s approvers to confirm your request."
 msgstr ""
 "Debes agregar al menos %s responsables de aprobación para confirmar tu "

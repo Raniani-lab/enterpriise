@@ -1023,7 +1023,7 @@ msgstr "Báo cáo"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_template_form_view_rental
 msgid "Reservations"
-msgstr "Đặt trước"
+msgstr "Dự trữ"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__qty_reserved
@@ -1032,7 +1032,7 @@ msgstr "Đặt trước"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "Reserved"
-msgstr "Đã đặt trước"
+msgstr "Đã dự trữ"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__return_date

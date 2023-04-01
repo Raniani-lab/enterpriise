@@ -135,7 +135,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>Edit Survey"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>Umfrage bearbeiten"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,description:hr_appraisal_survey.appraisal_2

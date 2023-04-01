@@ -133,7 +133,7 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Remove from Trash"
+msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Restore from Trash"
 msgstr ""
 
 #. module: knowledge
@@ -1383,7 +1383,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Hello there"
-msgstr ""
+msgstr "Halo"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1394,6 +1394,11 @@ msgid ""
 "            <br/>\n"
 "            No more time wasted!"
 msgstr ""
+"Halo, saya adalah templat\n"
+"            <br/>\n"
+"            Gunakan tombol-tombol di bagian kanan atas kotak ini untuk menggunakan ulang konten saya.\n"
+"            <br/>\n"
+"            Tidak ada lagi waktu yang terbuang!"
 
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_home
@@ -1441,7 +1446,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Index"
-msgstr ""
+msgstr "Indeks"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission
@@ -2032,6 +2037,7 @@ msgstr "Tanggung-jawab"
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #, python-format
 msgid "Restore"
 msgstr "Pulihkan"

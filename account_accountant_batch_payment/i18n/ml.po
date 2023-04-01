@@ -94,7 +94,7 @@ msgstr ""
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__in_reconcile_payment_ids
@@ -190,7 +190,7 @@ msgstr ""
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget
 msgid "View"
-msgstr ""
+msgstr "വ്യൂ"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_rejection_form

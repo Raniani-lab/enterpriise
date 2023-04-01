@@ -1299,7 +1299,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.menu,name:hr_contract_salary.salary_package_menu
 msgid "Salary Package Configurator"
-msgstr ""
+msgstr "Palkkapaketin konfiguraattori"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_personal_info
@@ -1558,6 +1558,13 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_advantages
 msgid "There is no available option to customize your salary"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
+msgid ""
+"They will review your contract.<br/> Feel free to contact them if you have "
+"any questions."
 msgstr ""
 
 #. module: hr_contract_salary

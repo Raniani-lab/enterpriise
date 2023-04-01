@@ -243,7 +243,7 @@ msgstr ""
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #, python-format
 msgid "Subject"
-msgstr ""
+msgstr "വിഷയം"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -298,17 +298,17 @@ msgstr ""
 #: model:ir.model,name:website_helpdesk.model_website
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_id
 msgid "Website"
-msgstr "വെബ്സൈറ്റ്"
+msgstr "വെബ്‌സൈറ്റ് "
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_menu_id
 msgid "Website Menu"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് മെനു"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_url
 msgid "Website URL"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് URL"
 
 #. module: website_helpdesk
 #. openerp-web

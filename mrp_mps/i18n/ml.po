@@ -327,7 +327,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__id
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: mrp_mps
 #. openerp-web
@@ -546,7 +546,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_production_schedule_form_view
 msgid "Save"
-msgstr ""
+msgstr "സേവ്"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_production_schedule

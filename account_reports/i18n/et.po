@@ -15,7 +15,7 @@
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
-# Jana Jaakson, 2023
+# JanaAvalah, 2023
 # Anna, 2023
 # Andre Roomet <andreroomet@gmail.com>, 2023
 # Leaanika Randmets, 2023
@@ -117,10 +117,24 @@ msgstr "(+) Laekumata arved"
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(%s lines)"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
 msgstr "(-) Sidumata maksed"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(1 line)"
+msgstr ""
 
 #. module: account_reports
 #. odoo-python
@@ -3113,6 +3127,13 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "This account is reported in multiple lines of the report"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported multiple times on the same line of the report"
 msgstr ""
 
 #. module: account_reports

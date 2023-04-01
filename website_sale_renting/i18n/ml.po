@@ -353,7 +353,7 @@ msgstr "ടൈമിംഗ്"
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_product
 msgid "Total"
-msgstr ""
+msgstr "ആകെ"
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_tue

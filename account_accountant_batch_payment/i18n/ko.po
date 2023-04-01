@@ -122,7 +122,7 @@ msgstr "최근 갱신 일자"
 #. module: account_accountant_batch_payment
 #: model:ir.model,name:account_accountant_batch_payment.model_bank_rec_widget_line
 msgid "Line of the lines_widget"
-msgstr ""
+msgstr "Line of the lines_widget"
 
 #. module: account_accountant_batch_payment
 #: model:ir.model,name:account_accountant_batch_payment.model_account_batch_payment_rejection
@@ -132,12 +132,12 @@ msgstr "일괄 결제에서 결제 거부 관리"
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__nb_batch_payment_ids
 msgid "Nb Batch Payment"
-msgstr ""
+msgstr "Nb 일괄 결제"
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__nb_rejected_payment_ids
 msgid "Nb Rejected Payment"
-msgstr ""
+msgstr "Nb 결제 거부됨"
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__next_action_todo
@@ -147,12 +147,12 @@ msgstr "다음 해야 할 작업"
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget
 msgid "Open Amount"
-msgstr ""
+msgstr "미결제 금액"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget
 msgid "Open Amount (in Currency)"
-msgstr ""
+msgstr "미결제 금액 (통화)"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_search_bank_rec_widget
@@ -173,22 +173,22 @@ msgstr "수령함"
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__rejected_payment_ids
 msgid "Rejected Payment"
-msgstr ""
+msgstr "결제 거부됨"
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_bank_rec_widget__selected_batch_payment_ids
 msgid "Selected Batch Payment"
-msgstr ""
+msgstr "선택한 일괄 결제 항목"
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_bank_rec_widget_line__source_batch_payment_id
 msgid "Source Batch Payment"
-msgstr ""
+msgstr "원본 일괄 결제"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget
 msgid "Suggestions"
-msgstr ""
+msgstr "제안"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget
@@ -198,12 +198,12 @@ msgstr "화면"
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_rejection_form
 msgid "batches have been removed."
-msgstr ""
+msgstr "일괄 항목이 삭제되었습니다."
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_rejection_form
 msgid "payments from"
-msgstr ""
+msgstr "다음에서 지급함"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_rejection_form

@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/working_employee_popup.xml:0
 #, python-format
 msgid "+ New Operator"
-msgstr ""
+msgstr "+ Neuer Arbeiter"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workorder_view_tablet_form_inherit_workorder_hr
@@ -92,12 +92,12 @@ msgstr "Mitarbeiter"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Employee Capacity"
-msgstr ""
+msgstr "Mitarbeiterkapazität"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_costs_hour
 msgid "Employee Hourly Cost"
-msgstr ""
+msgstr "Stündliche Kosten ke Mitarbeiter"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_name
@@ -117,12 +117,12 @@ msgstr "Anmelden"
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Logged in!"
-msgstr ""
+msgstr "Angemeldet!"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Number of employees needed to complete operation."
-msgstr ""
+msgstr "Erforderliche Anzahl Mitarbeiter für den Vorgang"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -146,7 +146,7 @@ msgstr "Passwort ?"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "Änderung in Produktion vorschlagen"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_quality_check
@@ -157,7 +157,7 @@ msgstr "Qualitätskontrolle"
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__allow_employee
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__allow_employee
 msgid "Requires Log In"
-msgstr ""
+msgstr "Erfordert Anmeldung"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -181,6 +181,7 @@ msgstr "Stopp"
 #, python-format
 msgid "This employee is not allowed on this workcenter"
 msgstr ""
+"Dieser Mitarbeiter ist nicht für diesen Arbeitsplatz nicht zugelassen."
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter
@@ -205,7 +206,7 @@ msgstr "Arbeitsplatzproduktivitätsprotokoll"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_ids
 msgid "Working Employees"
-msgstr ""
+msgstr "Arbeitende Mitarbeiter"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -213,7 +214,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Wrong password !"
-msgstr ""
+msgstr "Falsches Passwort!"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_id
@@ -228,7 +229,7 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "employees with access"
-msgstr ""
+msgstr "Mitarbeiter mit Zugang"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter__employee_ids

@@ -68,7 +68,7 @@ msgstr "അക്കൗണ്ട്"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Account Name"
-msgstr ""
+msgstr "അക്കൗണ്ട് പേര്"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__active
@@ -476,7 +476,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__id
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__active

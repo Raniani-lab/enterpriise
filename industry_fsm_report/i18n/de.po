@@ -43,7 +43,7 @@ msgstr "<strong>Vorlage — </strong>"
 #. module: industry_fsm_report
 #: model:ir.ui.menu,name:industry_fsm_report.project_task_menu_planning_by_project_fsm
 msgid "By Worksheet Template"
-msgstr ""
+msgstr "Nach Arbeitsblattvorlage"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_color
@@ -59,6 +59,7 @@ msgstr "Kommentare"
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_project_form_inherit_industry_fsm_report
 msgid "Create reports to be signed off by your customers"
 msgstr ""
+"Erstellen Sie Berichte, die von Ihren Kunden unterzeichnet werden müssen"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,help:industry_fsm_report.field_project_task__worksheet_template_id
@@ -142,7 +143,7 @@ msgstr "Keine Arbeitsblattvorlagen gefunden. Erstellen Sie eine!"
 #. module: industry_fsm_report
 #: model:ir.actions.act_window,name:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
 msgid "Planning by Worksheet Template"
-msgstr ""
+msgstr "Planung nach Arbeitsblattvorlage"
 
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_project_project

@@ -67,6 +67,7 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be fully "
 "reconciled by the transaction."
 msgstr ""
+"미결제 금액이 %(open_amount)s인 %(display_name_html)s항목이 거래에 의해 완전히 조정될 예정입니다."
 
 #. module: account_accountant
 #. odoo-python
@@ -76,6 +77,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be reduced"
 " by %(amount)s."
 msgstr ""
+"미결제 금액이 %(open_amount)s인 %(display_name_html)s 항목이 %(amount)s 만큼 하향 조정될 "
+"예정입니다. "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -154,7 +157,7 @@ msgstr "<span class=\"ml4 mr4\">-</span>"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "<span class=\"ml4 mr4\">in</span>"
-msgstr ""
+msgstr "<span class=\"ml4 mr4\">에서</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -600,7 +603,7 @@ msgstr "대변"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_bank_statement_line__cron_last_check
 msgid "Cron Last Check"
-msgstr ""
+msgstr "마지막 확인한 예약 작업"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -640,7 +643,7 @@ msgstr "1년 이상의 회계연도 정의"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Deposits"
-msgstr ""
+msgstr "예금"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
@@ -663,12 +666,12 @@ msgstr "표시명"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_amount_currency
 msgid "Display Stroked Amount Currency"
-msgstr ""
+msgstr "취소 표시한 금액 통화 표시"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_balance
 msgid "Display Stroked Balance"
-msgstr ""
+msgstr "취소 표시한 잔액 표시"
 
 #. module: account_accountant
 #. odoo-python
@@ -764,7 +767,7 @@ msgstr "신고하기"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__force_price_included_taxes
 msgid "Force Price Included Taxes"
-msgstr ""
+msgstr "가격에 세금 포함 조치"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
@@ -874,6 +877,8 @@ msgid ""
 "feature to update multiple journal entries from the General Ledger, or any "
 "Journal view."
 msgstr ""
+"목록 보기에서 여러 레코드를 선택하면 목록을 편집할 수 있습니다. 셀을 변경하면 선택한 레코드 전체가 한번에 변경됩니다. 이 기능을 "
+"통하여 총계정원장이나 다른 전표 보기 메뉴에서 여러 개의 전표를 한꺼번에 변경할 수 있습니다. "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -915,7 +920,7 @@ msgstr "좋습니다! 진행을 계속합니다."
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__group_tax_id
 msgid "Group Tax"
-msgstr ""
+msgstr "세금 그룹"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -963,17 +968,17 @@ msgstr "잘못된 회계연도 날짜 : 날짜가 해당 월의 범위를 벗어
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__index
 msgid "Index"
-msgstr ""
+msgstr "색인"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__invalid
 msgid "Invalid"
-msgstr ""
+msgstr "유효하지 않음"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Invalid statements"
-msgstr ""
+msgstr "유효하지 않은 명세서"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__state
@@ -982,6 +987,9 @@ msgid ""
 "Valid: The bank transaction can be validated.\n"
 "Reconciled: The bank transaction has already been processed. Nothing left to do."
 msgstr ""
+"유효하지 않음: 가계정 항목과 관련되어 있어 은행 거래를 승인할 수 없습니다.\n"
+"유효함: 은행 거래를 승인할 수 있습니다.\n"
+"조정됨: 은행 거래가 이미 처리되었습니다. 더 이상 처리할 내용이 없습니다."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1124,7 +1132,7 @@ msgstr "최근 갱신 일자"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Learn how blazing fast bank matching works"
-msgstr ""
+msgstr "은행 매칭을 엄청나게 빠른 속도로 끝낼 수 있는 방법을 알아봅니다"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1172,12 +1180,12 @@ msgstr "선"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget_line
 msgid "Line of the lines_widget"
-msgstr ""
+msgstr "Line of the lines_widget"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__lines_widget
 msgid "Lines Widget"
-msgstr ""
+msgstr "내역용 위젯"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1204,7 +1212,7 @@ msgstr "잠금일"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Management Closing"
-msgstr ""
+msgstr "관리 마감"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1229,14 +1237,14 @@ msgstr "일치"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Match Existing Entries"
-msgstr ""
+msgstr "기존 항목에 일치"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Match payments and invoices"
-msgstr ""
+msgstr "결제 및 청구서 매치"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1248,7 +1256,7 @@ msgstr "미수금/미지급 계정이 아닌 항목과 일치"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Matched"
-msgstr ""
+msgstr "일치함"
 
 #. module: account_accountant
 #. odoo-python
@@ -1260,7 +1268,7 @@ msgstr "일치하는 거래"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
 msgid "Matching Rules Allow Auto Reconcile"
-msgstr ""
+msgstr "매치 규칙에서 자동 조정 허용"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1317,7 +1325,7 @@ msgstr "연결된 첨부파일이 없습니다."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "No statement"
-msgstr ""
+msgstr "명세서 없음"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
@@ -1336,7 +1344,7 @@ msgstr "자문을 포함하여 모든 사용자는 이 날짜 이전까지 편�
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Not Matched"
-msgstr ""
+msgstr "일치하지 않음"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1349,7 +1357,7 @@ msgstr "메모"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Odoo Bank Reconciliation"
-msgstr ""
+msgstr "Odoo 은행 조정"
 
 #. module: account_accountant
 #. odoo-python
@@ -1372,12 +1380,12 @@ msgstr "'자문' 역할의 사용자만 이 날짜까지 계정을 편집할 수
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 #, python-format
 msgid "Open Amount"
-msgstr ""
+msgstr "미결제 금액"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Open Amount in Currency"
-msgstr ""
+msgstr "해당 통화 미결제 금액"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1391,7 +1399,7 @@ msgstr "대차대조표 열기"
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Open balance: %s"
-msgstr ""
+msgstr "기초 잔액: %s"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1540,7 +1548,7 @@ msgstr "수령함"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
 msgid "Reco Models Widget"
-msgstr ""
+msgstr "조정 모델 위젯"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1558,7 +1566,7 @@ msgstr "조정"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr ""
+msgstr "조정 모델"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
@@ -1680,17 +1688,17 @@ msgstr "자료 Aml"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_id
 msgid "Source Aml Move"
-msgstr ""
+msgstr "원본 Aml 작업"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_name
 msgid "Source Aml Move Name"
-msgstr ""
+msgstr "원본 Aml 작업명"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_amount_currency
 msgid "Source Amount Currency"
-msgstr ""
+msgstr "원본 통화 금액"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_balance
@@ -1742,7 +1750,7 @@ msgstr "명세서 라인"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Suggestions"
-msgstr ""
+msgstr "제안"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_ids
@@ -1752,7 +1760,7 @@ msgstr "세금"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
 msgid "Tax Base Amount Currency"
-msgstr ""
+msgstr "과세 기준 통화 금액"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1860,7 +1868,7 @@ msgstr "조정할 항목이 없습니다."
 msgid ""
 "This bank transaction has been automatically validated using the "
 "reconciliation model '%s'."
-msgstr ""
+msgstr "이 은행 거래는 조정 모델 '%s'을 사용하여 자동으로 승인되었습니다."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1899,21 +1907,21 @@ msgstr "확인하기"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "To check"
-msgstr ""
+msgstr "확인"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
-msgstr ""
+msgstr "청구서 및 결제 항목을 조정하고 새로운 전표를 발행하려면"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr ""
+msgstr "미결 항목과 조정하려면"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1925,7 +1933,7 @@ msgstr "조정 속도를 높이려면 정의합니다"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__todo_command
 msgid "Todo Command"
-msgstr ""
+msgstr "작업 관리 명령"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1935,20 +1943,20 @@ msgstr "거래"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
-msgstr ""
+msgstr "거래 통화"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/account_move.py:0
 #, python-format
 msgid "Transfer Accounts"
-msgstr ""
+msgstr "계좌 이체"
 
 #. module: account_accountant
 #: model:ir.actions.server,name:account_accountant.auto_reconcile_bank_statement_line_ir_actions_server
 #: model:ir.cron,cron_name:account_accountant.auto_reconcile_bank_statement_line
 msgid "Try to reconcile automatically your statement lines"
-msgstr ""
+msgstr "명세서 내역을 자동으로 조정하십시오"
 
 #. module: account_accountant
 #. odoo-python
@@ -1964,7 +1972,7 @@ msgstr "조정되지 않은 명세서 항목"
 msgid ""
 "Use the <strong>Manual Operations</strong> tab to register the difference, "
 "or create expenses on the fly"
-msgstr ""
+msgstr "<strong>수동 작업</strong> 탭을 이용하여 차액을 등록하거나 바로 비용 항목을 생성할 수 있습니다"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid

@@ -108,10 +108,24 @@ msgstr "(+)優れた収入"
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(%s lines)"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
 msgstr "(-)の未払い料金"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(1 line)"
+msgstr ""
 
 #. module: account_reports
 #. odoo-python
@@ -3092,6 +3106,13 @@ msgstr "この勘定科目はレポート明細に関連されているが、勘
 #, python-format
 msgid "This account is reported in multiple lines of the report"
 msgstr "この勘定科目はレポートの複数の明細に報告されました"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported multiple times on the same line of the report"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form

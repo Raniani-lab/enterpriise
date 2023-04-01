@@ -638,7 +638,7 @@ msgstr "備註"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 msgid "OK"
-msgstr "OK"
+msgstr "確定"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_on__operation

@@ -231,7 +231,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__model_id
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__model_id
 msgid "Deduplication Model"
-msgstr ""
+msgstr "Model deduplikacji"
 
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_data_merge_record

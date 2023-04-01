@@ -82,7 +82,7 @@ msgstr ""
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead_rental__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead_rental____last_update

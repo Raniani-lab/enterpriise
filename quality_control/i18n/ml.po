@@ -210,7 +210,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__average
 msgid "Average"
-msgstr ""
+msgstr "ആവറേജ്"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
@@ -436,7 +436,7 @@ msgstr "ഗ്രൂപ്പ് ബൈ"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -458,7 +458,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Instructions"
-msgstr ""
+msgstr "നിർദ്ദേശങ്ങൾ"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__is_last_check
@@ -631,12 +631,12 @@ msgstr "നോട്ട്"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Notes"
-msgstr ""
+msgstr "നോട്ട്സ്"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 msgid "OK"
-msgstr ""
+msgstr "ശരി"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_on__operation
@@ -657,7 +657,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
 msgid "Overview"
-msgstr ""
+msgstr "അവലോകനം"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -1008,7 +1008,7 @@ msgstr "റിപ്പോർട്ടിങ്"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Responsible"
-msgstr ""
+msgstr "ഉത്തരവാദിയായ"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__show_lot_text

@@ -9,8 +9,8 @@
 # 715cd7e95e9ee8a7f9785bf3e53bc76f, 2022
 # Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Camille Dantinne <cmd@odoo.com>, 2023
 # Braulio D. López Vázquez <bdl@odoo.com>, 2023
+# Camille Dantinne <cmd@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2023\n"
+"Last-Translator: Camille Dantinne <cmd@odoo.com>, 2023\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -782,7 +782,7 @@ msgstr "Configurar"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Confirm Appointment"
-msgstr ""
+msgstr "Confirmar cita"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_confirmation
@@ -1508,6 +1508,13 @@ msgstr "Opciones"
 
 #. module: appointment
 #. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Our Appointment Types"
+msgstr ""
+
+#. module: appointment
+#. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Our first availability is"
@@ -1643,7 +1650,10 @@ msgid "Schedule"
 msgstr "Planificacion"
 
 #. module: appointment
+#. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
+#, python-format
 msgid "Schedule an Appointment"
 msgstr "Concertar una cita"
 
@@ -2126,7 +2136,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Email*"
-msgstr "Su Correo Electrónico*"
+msgstr "Tu Correo Electrónico*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form

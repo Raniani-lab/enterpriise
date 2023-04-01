@@ -1534,7 +1534,7 @@ msgstr "Websiteberichten"
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__website_message_ids
 msgid "Website communication history"
-msgstr "Website communicatie geschiedenis"
+msgstr "Website communicatiegeschiedenis"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_onboarding

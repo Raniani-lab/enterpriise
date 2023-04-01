@@ -113,7 +113,7 @@ msgstr "ഗ്രൂപ്പ് ബൈ"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__is_published
@@ -183,7 +183,7 @@ msgstr ""
 #. module: project_timesheet_forecast
 #: model:ir.model.fields.selection,name:project_timesheet_forecast.selection__project_timesheet_forecast_report_analysis__line_type__forecast
 msgid "Planning"
-msgstr ""
+msgstr "ആസൂത്രണം"
 
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_planning_analysis_report

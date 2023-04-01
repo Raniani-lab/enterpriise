@@ -507,7 +507,7 @@ msgstr "아바타"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__avatar_128
 msgid "Avatar 128"
-msgstr ""
+msgstr "아바타 128"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_employee_base
@@ -1655,6 +1655,13 @@ msgstr ""
 #, python-format
 msgid "You cannot delete appraisal which is not in draft or canceled state"
 msgstr "초안 또는 취소 상태가 아닌 업무 평가를 삭제할 수 없습니다"
+
+#. module: hr_appraisal
+#. odoo-python
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "Your Appraisal has been completed"
+msgstr ""
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/res_company.py:0

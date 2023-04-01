@@ -16,7 +16,7 @@
 # jabelchi, 2022
 # Martin Trigaux, 2022
 # Quim - eccit <quim@eccit.com>, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Ivan Espinola, 2022
 # Guspy12, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
@@ -159,8 +159,8 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Remove from Trash"
-msgstr "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Elimina de la paperera"
+msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Restore from Trash"
+msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2341,6 +2341,7 @@ msgstr "Usuari responsable"
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #, python-format
 msgid "Restore"
 msgstr "Restaurar"

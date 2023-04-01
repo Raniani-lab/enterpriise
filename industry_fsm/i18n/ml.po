@@ -593,7 +593,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__id
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: industry_fsm
 #: model:project.task,legend_normal:industry_fsm.planning_task_0
@@ -751,7 +751,7 @@ msgstr "മെനു"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_id
 msgid "Milestone"
-msgstr ""
+msgstr "മൈൽസ്റ്റോൺ"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_deadline
@@ -914,7 +914,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_planning
 msgid "Planning"
-msgstr ""
+msgstr "ആസൂത്രണം"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__planning_overlap
@@ -994,7 +994,7 @@ msgstr ""
 #: model:project.task,legend_done:industry_fsm.planning_task_9
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_1
 msgid "Ready"
-msgstr ""
+msgstr "റെഡി"
 
 #. module: industry_fsm
 #. openerp-web
@@ -1409,7 +1409,7 @@ msgstr ""
 #: model:mail.template,report_name:industry_fsm.mail_template_data_task_report
 msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
-"object.partner_id else '' }}.pdf"
+"object.partner_id.name else '' }}.pdf"
 msgstr ""
 
 #. module: industry_fsm

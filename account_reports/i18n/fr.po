@@ -121,10 +121,24 @@ msgstr "(+) Reçus en suspens"
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(%s lines)"
+msgstr "(%s lignes)"
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
 msgstr "(-) Paiements en suspens"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(1 line)"
+msgstr "(1 ligne)"
 
 #. module: account_reports
 #. odoo-python
@@ -3194,6 +3208,13 @@ msgstr ""
 #, python-format
 msgid "This account is reported in multiple lines of the report"
 msgstr "Ce compte est signalé sur plusieurs lignes du rapport"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported multiple times on the same line of the report"
+msgstr "Ce compte est repris plusieurs fois sur la même ligne du rapport"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form

@@ -341,7 +341,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__id
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_list
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_ir_model__is_merge_enabled

@@ -1142,6 +1142,13 @@ msgstr ""
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
+msgid ""
+"You cannot assign the same approver multiple times on the same request."
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
 msgid "You have to add at least %s approvers to confirm your request."
 msgstr "귀하의 요청을 승인하기 위해 최소%s명의 결재권자를 추가해야 합니다."
 

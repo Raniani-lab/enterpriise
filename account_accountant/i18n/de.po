@@ -50,7 +50,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ -2,678.00"
-msgstr ""
+msgstr "-2.678,00 $"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -58,7 +58,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ 2,678.00"
-msgstr ""
+msgstr "2.678,00 $"
 
 #. module: account_accountant
 #. odoo-python
@@ -87,7 +87,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "-1,134.50"
-msgstr ""
+msgstr "-1.134,50"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -581,7 +581,7 @@ msgstr "Erstellen Sie eine neue Kontengruppe"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Create additional entries"
-msgstr ""
+msgstr "Zusätzliche Einträge erstellen"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -970,7 +970,7 @@ msgstr "ID"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0003"
-msgstr ""
+msgstr "INV/2032/0003"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -978,7 +978,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0012"
-msgstr ""
+msgstr "INV/2032/0012"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
@@ -1132,7 +1132,7 @@ msgstr "Label"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Larry Smith"
-msgstr ""
+msgstr "Larry Smith"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1227,7 +1227,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__lines_widget
 msgid "Lines Widget"
-msgstr ""
+msgstr "Zeilen-Widget"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1405,7 +1405,7 @@ msgstr "Notizen"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Odoo Bank Reconciliation"
-msgstr ""
+msgstr "Odoo Bankabstimmung"
 
 #. module: account_accountant
 #. odoo-python
@@ -1693,7 +1693,7 @@ msgstr "Speichern und Neu"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "Kunde suchen"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1898,6 +1898,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be reduced by %(amount)s."
 msgstr ""
+"Die Rechnung %(display_name_html)s mit einem offenen Betrag von "
+"%(open_amount)s wird um %(amount)s reduziert."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1932,6 +1934,8 @@ msgid ""
 "This bank transaction has been automatically validated using the "
 "reconciliation model '%s'."
 msgstr ""
+"Diese Banktransaktion wurde anhand des Abstimmungsmodells „%s“ automatisch "
+"validiert."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1972,7 +1976,7 @@ msgstr "Zu überprüfen"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "To check"
-msgstr ""
+msgstr "Zu überoprüfen"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1980,6 +1984,8 @@ msgstr ""
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
 msgstr ""
+"Zum Abstimmen von Rechnungen & Zahlungen und zum Buchen von neuen "
+"Journalposten"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2161,7 +2167,7 @@ msgstr ""
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "You cannot set a lock date in the future."
-msgstr ""
+msgstr "Sie können ein Sperrdatum in der Zukunft festlegen."
 
 #. module: account_accountant
 #. odoo-python

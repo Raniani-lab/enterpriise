@@ -106,7 +106,7 @@ msgstr "Kontrole jakości"
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Punkt kontroli jakości"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_stock_move

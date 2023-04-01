@@ -261,7 +261,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__id
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_remote_id
@@ -271,7 +271,7 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__journal_id
 msgid "Journal"
-msgstr ""
+msgstr "ജേണൽ"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__expense_sample_register__partial_mode__open

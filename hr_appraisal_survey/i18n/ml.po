@@ -485,7 +485,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_5
@@ -500,7 +500,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__lang
 msgid "Language"
-msgstr ""
+msgstr "ഭാഷ"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback____last_update
@@ -537,7 +537,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__template_id
 msgid "Mail Template"
-msgstr ""
+msgstr "മെയിൽ ടെംപ്ലേറ്റ്"
 
 #. module: hr_appraisal_survey
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
@@ -680,7 +680,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__subject
 #: model:survey.question,title:hr_appraisal_survey.appraisal_3_1
 msgid "Subject"
-msgstr ""
+msgstr "വിഷയം"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
@@ -697,7 +697,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_appraisal__survey_ids
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_survey_question_answer__survey_id
 msgid "Survey"
-msgstr ""
+msgstr "സർവേ"
 
 #. module: hr_appraisal_survey
 #: code:addons/hr_appraisal_survey/models/hr_appraisal.py:0
@@ -726,7 +726,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:hr_appraisal_survey.survey_survey_action_appraisal
 #: model:ir.ui.menu,name:hr_appraisal_survey.menu_hr_appraisal_surveys
 msgid "Surveys"
-msgstr ""
+msgstr "സർവേകൾ"
 
 #. module: hr_appraisal_survey
 #: model:mail.template,subject:hr_appraisal_survey.mail_template_appraisal_ask_feedback

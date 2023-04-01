@@ -252,7 +252,7 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report____last_update

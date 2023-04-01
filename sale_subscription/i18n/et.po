@@ -20,8 +20,8 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Anna, 2023
-# Jana Jaakson, 2023
 # Leaanika Randmets, 2023
+# JanaAvalah, 2023
 # 
 msgid ""
 msgstr ""
@@ -29,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Leaanika Randmets, 2023\n"
+"Last-Translator: JanaAvalah, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1583,8 +1583,8 @@ msgid ""
 "                one month from the end date."
 msgstr ""
 "Korduvate arvelduste ja maksete haldamiseks looge tellimusi. Tellimused võivad\n"
-"                 olla ajaliselt piiratud või mitte. Piiratud perioodi korral märgitakse need uuendamisena\n"
-"                 üks kuu alates lõppkuupäevast."
+"                 olla tähtajatud või tähtajalised. Tähtajalise perioodi korral märgitakse need uuendamisena\n"
+"                 üks kuu enne lõppkuupäeva."
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -2116,7 +2116,7 @@ msgstr "Invoicing Journal"
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_stage__category__paused
 msgid "Invoicing Pause"
-msgstr "Invoicing Pause"
+msgstr "Maksepuhkus"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__is_subscription
@@ -2363,7 +2363,7 @@ msgstr "Vajab uuendamist"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__starred_user_ids
 msgid "Members"
-msgstr "Osalejaid"
+msgstr "Osalejad"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3641,7 +3641,7 @@ msgstr "Alguskuupäev näitab, millal algab tellimisperiood."
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_renew
 msgid "The subscription was renewed with a new plan."
-msgstr "Tellimust uuendati uue paketiga."
+msgstr "Tellimust uuendati uue paketiga"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3719,6 +3719,13 @@ msgstr "See tellimus on tellimuse värskendamine"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "This upsell order has been created from the subscription"
 msgstr "See lisamüügitellimus on loodud tellimuse põhjal"
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid ""
+"This will trigger the action on all linked subscriptions, regardless of "
+"possible timed conditions. Are you sure you want to proceed?"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form

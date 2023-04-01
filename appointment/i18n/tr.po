@@ -11,7 +11,6 @@
 # Murat Durmuş <muratd@projetgrup.com>, 2022
 # Halil, 2022
 # Ozlem Cikrikci <ozlemc@eskayazilim.com.tr>, 2022
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022
 # İmat Yahya Çataklı <yahyacatakli@gmail.com>, 2022
 # Buket Şeker <buket_skr@hotmail.com>, 2022
 # Martin Trigaux, 2022
@@ -22,6 +21,7 @@
 # Levent Karakaş <levent@mektup.at>, 2022
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # İlknur Gözütok, 2023
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -29,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: İlknur Gözütok, 2023\n"
+"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1369,7 +1369,7 @@ msgstr "Adı"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Navigation"
-msgstr ""
+msgstr "Navigasyon"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_alarm__default_for_new_appointment_type
@@ -1452,7 +1452,7 @@ msgstr "İşe Alım"
 #. module: appointment
 #: model:ir.model,name:appointment.model_onboarding_onboarding_step
 msgid "Onboarding Step"
-msgstr ""
+msgstr "Katılım Adımı"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__slot_type__unique
@@ -1511,6 +1511,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Options"
 msgstr "Seçenekler"
+
+#. module: appointment
+#. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Our Appointment Types"
+msgstr ""
 
 #. module: appointment
 #. odoo-javascript
@@ -1649,7 +1656,10 @@ msgid "Schedule"
 msgstr "Çalışma Saatleri"
 
 #. module: appointment
+#. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
+#, python-format
 msgid "Schedule an Appointment"
 msgstr "Bir Randevu Planlayın"
 
@@ -1870,7 +1880,7 @@ msgstr "Başlangıç ​​Saati"
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_configure_calendar_provider_step
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_preview_invite_step
 msgid "Step Completed! - Click to review"
-msgstr ""
+msgstr "Adım Tamamlandı! - İncelemek için tıklayınız"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__answer_input_ids

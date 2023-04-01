@@ -32,7 +32,7 @@ msgstr ""
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__code
 msgid "Code"
-msgstr ""
+msgstr "കോഡ്"
 
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__create_uid
@@ -52,7 +52,7 @@ msgstr "ഡിസ്പ്ലേ നെയിം"
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_unspsc_code__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: product_unspsc
 #: model:ir.model.fields,help:product_unspsc.field_product_unspsc_code__applies_to

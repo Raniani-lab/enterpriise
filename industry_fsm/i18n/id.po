@@ -1413,7 +1413,7 @@ msgstr ""
 #: model:mail.template,report_name:industry_fsm.mail_template_data_task_report
 msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
-"object.partner_id else '' }}.pdf"
+"object.partner_id.name else '' }}.pdf"
 msgstr ""
 
 #. module: industry_fsm

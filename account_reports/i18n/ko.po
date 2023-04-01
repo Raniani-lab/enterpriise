@@ -107,10 +107,24 @@ msgstr "(+) 미수금"
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(%s lines)"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
 msgstr "(-) 미지급금"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(1 line)"
+msgstr ""
 
 #. module: account_reports
 #. odoo-python
@@ -2561,12 +2575,12 @@ msgstr "전기된 항목만"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid "Posted Entries only"
-msgstr ""
+msgstr "발행된 항목만"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid "Posted and Draft Entries"
-msgstr ""
+msgstr "발행 및 미결 전표"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_prepayements0
@@ -3026,6 +3040,7 @@ msgid ""
 "The current balance in the General Ledger %s doesn't match the balance of "
 "your last bank statement %s leading to an unexplained difference of %s."
 msgstr ""
+"총계정원장 %s의 현재 잔액이 최근의 은행거래명세서 %s 상의 잔액과 일치하지 않으며 %s 금액 만큼 알 수 없는 차액이 발생했습니다."
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__vat
@@ -3100,6 +3115,13 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "This account is reported in multiple lines of the report"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported multiple times on the same line of the report"
 msgstr ""
 
 #. module: account_reports

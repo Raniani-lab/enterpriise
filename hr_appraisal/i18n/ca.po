@@ -22,7 +22,7 @@
 # Jonatan Gk, 2022
 # Cristian Cruz, 2022
 # Ivan Espinola, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
@@ -1753,6 +1753,13 @@ msgstr ""
 msgid "You cannot delete appraisal which is not in draft or canceled state"
 msgstr ""
 "No podeu suprimir l'avaluació que no està en estat esborrany o cancel·lat"
+
+#. module: hr_appraisal
+#. odoo-python
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "Your Appraisal has been completed"
+msgstr ""
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/res_company.py:0

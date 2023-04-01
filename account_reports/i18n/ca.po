@@ -17,7 +17,7 @@
 # Martin Trigaux, 2022
 # marcescu, 2022
 # jabelchi, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Ivan Espinola, 2023
 # Susanna Pujol, 2023
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
@@ -129,10 +129,24 @@ msgstr "(+) Recepcions pendents"
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(%s lines)"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
 msgstr "(-) Pagaments pendents"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(1 line)"
+msgstr ""
 
 #. module: account_reports
 #. odoo-python
@@ -3185,6 +3199,13 @@ msgstr ""
 #, python-format
 msgid "This account is reported in multiple lines of the report"
 msgstr "Aquest compte s'informa en múltiples línies de l'informe"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported multiple times on the same line of the report"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form

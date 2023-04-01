@@ -730,7 +730,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
 msgid "Average"
-msgstr ""
+msgstr "ആവറേജ്"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__avg_response_hours
@@ -1087,7 +1087,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_tree
 msgid "Creation Date"
-msgstr ""
+msgstr "സൃഷ്ടിച്ച തീയതി"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -1180,7 +1180,7 @@ msgstr ""
 #: code:addons/helpdesk/static/src/views/helpdesk_team_kanban/helpdesk_team_kanban_view.js:0
 #, python-format
 msgid "Dashboard"
-msgstr ""
+msgstr "ഡാഷ്ബോർഡ്"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla_status__reached_datetime
@@ -1734,7 +1734,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_type__id
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_tree
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_parent_thread_id
@@ -2058,7 +2058,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__medium_id
 msgid "Medium"
-msgstr ""
+msgstr "മീഡിയം"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -2084,7 +2084,7 @@ msgstr "മെനു"
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_mail_message
 msgid "Message"
-msgstr ""
+msgstr "സന്ദേശം"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_has_error
@@ -2326,19 +2326,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_has_error_counter
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "പിശകുകളുടെ എണ്ണം"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_needaction_counter
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "ഒരു പ്രവർത്തനം ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error_counter
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "ഡെലിവറി പിശകുള്ള സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -2348,12 +2348,12 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_open_ticket_count
 msgid "Number of other open tickets from the same partner"
-msgstr ""
+msgstr "ഒരേ ഉപഭോക്താവിൽ നിന്നുള്ള മറ്റ് തുറന്ന ടിക്കറ്റുകളുടെ എണ്ണം"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_ticket_count
 msgid "Number of other tickets from the same partner"
-msgstr ""
+msgstr "അതേ ഉപഭോക്താവിൽ നിന്നുള്ള മറ്റ് ടിക്കറ്റുകളുടെ എണ്ണം"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -2414,7 +2414,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_page
 msgid "Our Customer Satisfaction"
-msgstr ""
+msgstr "ഞങ്ങളുടെ ഉപഭോക്തൃ സംതൃപ്തി"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_my_home_menu_helpdesk
@@ -2424,7 +2424,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.ui.menu,name:helpdesk.helpdesk_menu_team_dashboard
 msgid "Overview"
-msgstr ""
+msgstr "അവലോകനം"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_user_id
@@ -2482,7 +2482,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 msgid "Percentage of happy ratings"
-msgstr ""
+msgstr "സന്തോഷകരമായ റേറ്റിംഗുകളുടെ ശതമാനം"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -2495,14 +2495,14 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Performance"
-msgstr ""
+msgstr "പെർഫോമൻസ്"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_ticket_action_team_performance
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_graph_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_pivot_analysis
 msgid "Performance Analysis"
-msgstr ""
+msgstr "പെർഫോമൻസ് അനാലിസിസ്"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__auto_close_day
@@ -2693,7 +2693,7 @@ msgstr ""
 #: model:helpdesk.stage,legend_done:helpdesk.stage_solved
 #, python-format
 msgid "Ready"
-msgstr ""
+msgstr "റെഡി"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2723,7 +2723,7 @@ msgstr ""
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Reference"
-msgstr ""
+msgstr "റഫറൻസ്"
 
 #. module: helpdesk
 #: model:mail.message.subtype,description:helpdesk.mt_team_ticket_refund_cancel
@@ -2781,7 +2781,7 @@ msgstr "റിപ്പോർട്ടിങ്"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "ഉത്തരവാദിത്തമുള്ള യൂസർ"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
@@ -3058,7 +3058,7 @@ msgstr "സീക്വൻസ് "
 #. module: helpdesk
 #: model:helpdesk.tag,name:helpdesk.tag_service
 msgid "Service"
-msgstr ""
+msgstr "സേവനം"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -3200,7 +3200,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__name
 #, python-format
 msgid "Subject"
-msgstr ""
+msgstr "വിഷയം"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -3756,7 +3756,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #, python-format
 msgid "Urgent"
-msgstr ""
+msgstr "അടിയന്തിരം"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -3840,7 +3840,7 @@ msgstr ""
 #. module: helpdesk
 #: model:helpdesk.tag,name:helpdesk.tag_website
 msgid "Website"
-msgstr "വെബ്സൈറ്റ്"
+msgstr "വെബ്‌സൈറ്റ് "
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_form
@@ -3851,7 +3851,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__website_message_ids
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__website_message_ids
@@ -3953,7 +3953,7 @@ msgstr "ഇ-ലേണിംഗ്"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "email"
-msgstr ""
+msgstr "ഇമെയിൽ"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0

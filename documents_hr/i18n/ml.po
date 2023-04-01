@@ -68,7 +68,7 @@ msgstr ""
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_Cerification
 msgid "Certifications"
-msgstr ""
+msgstr "സർട്ടിഫിക്കേഷനുകൾ"
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_company
@@ -118,7 +118,7 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_hr_employee
 msgid "Employee"
-msgstr ""
+msgstr "എംപ്ലോയീ "
 
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0

@@ -1164,6 +1164,13 @@ msgstr "Bạn không thể phê duyệt trước người phê duyệt trước 
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
+msgid ""
+"You cannot assign the same approver multiple times on the same request."
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
 msgid "You have to add at least %s approvers to confirm your request."
 msgstr "Bạn phải thêm ít nhất %s người phê duyệt để xác nhận yêu cầu của bạn."
 

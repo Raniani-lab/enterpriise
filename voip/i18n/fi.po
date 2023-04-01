@@ -101,6 +101,15 @@ msgid ""
 msgstr ""
 
 #. module: voip
+#. odoo-javascript
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"An error occurred during the instantiation of the User Agent:</br></br> "
+"%(error message)s"
+msgstr ""
+
+#. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
@@ -1084,7 +1093,7 @@ msgstr "Käyttäjä"
 #. module: voip
 #: model:ir.model,name:voip.model_res_users_settings
 msgid "User Settings"
-msgstr ""
+msgstr "Käyttäjäasetukset"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall

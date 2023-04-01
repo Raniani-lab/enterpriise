@@ -221,7 +221,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__id
 #: model:ir.model.fields,field_description:delivery_easypost.field_easypost_service__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,help:delivery_easypost.field_delivery_carrier__easypost_default_service_id

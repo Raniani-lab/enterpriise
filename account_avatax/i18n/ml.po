@@ -241,7 +241,7 @@ msgstr "സിറ്റി"
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__code
 #: model:ir.model.fields,field_description:account_avatax.field_product_avatax_category__code
 msgid "Code"
-msgstr ""
+msgstr "കോഡ്"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
@@ -349,7 +349,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__id
 #: model:ir.model.fields,field_description:account_avatax.field_product_avatax_category__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__is_already_valid
@@ -511,7 +511,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__street
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
 msgid "Street"
-msgstr ""
+msgstr "സ്ട്രീറ്റ്"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__street2

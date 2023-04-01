@@ -29,7 +29,7 @@ msgstr "Anzahl Klicks"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_count
 msgid "# Favorite Filters"
-msgstr ""
+msgstr "# Bevorzugte Filter"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
@@ -233,7 +233,7 @@ msgstr "Eine neue Aktivität hinzufügen"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Add to Templates"
-msgstr ""
+msgstr "Zu Vorlagen hinzufügen"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__allowed_parent_ids
@@ -1180,7 +1180,7 @@ msgstr "Favoritenfilter neu laden"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Remove from Templates"
-msgstr ""
+msgstr "Aus Vorlagen entfernen"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__unlinked

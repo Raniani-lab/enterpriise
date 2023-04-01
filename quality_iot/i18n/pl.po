@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
 #, python-format
 msgid "Capture image..."
-msgstr ""
+msgstr "Przechwyć obraz..."
 
 #. module: quality_iot
 #. openerp-web
@@ -44,7 +44,7 @@ msgstr "Urządzenie"
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_quality_check__device_name
 msgid "Device Name: "
-msgstr ""
+msgstr "Nazwa urządzenia:"
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_quality_check__ip
@@ -71,7 +71,7 @@ msgstr "Proszę sprawdzić czy urządzenie jest wciąż połączone"
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_iot_device__qcp_test_type
 msgid "Qcp Test Type"
-msgstr ""
+msgstr "Test typu Qcp"
 
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_check
@@ -81,14 +81,14 @@ msgstr "Kontrola jakości"
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Punkt kontroli jakości"
 
 #. module: quality_iot
 #: model_terms:ir.ui.view,arch_db:quality_iot.iot_device_view_form_inherit
 msgid "Quality Control Points"
-msgstr ""
+msgstr "Punkty kontroli jakości"
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_iot_device__quality_point_ids
 msgid "Quality Point"
-msgstr ""
+msgstr "Punkt jakości"

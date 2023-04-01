@@ -197,7 +197,7 @@ msgstr "അടയ്ക്കുക"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__payment_method_code
 msgid "Code"
-msgstr ""
+msgstr "കോഡ്"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__company_currency_id
@@ -357,7 +357,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard_line__id
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__activity_exception_icon
@@ -404,7 +404,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_journal
 msgid "Journal"
-msgstr ""
+msgstr "ജേണൽ"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard____last_update
@@ -515,17 +515,17 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "പിശകുകളുടെ എണ്ണം"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "ഒരു പ്രവർത്തനം ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "ഡെലിവറി പിശകുള്ള സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: account_batch_payment
 #: model:ir.model.fields.selection,name:account_batch_payment.selection__account_batch_payment__batch_type__outbound
@@ -616,7 +616,7 @@ msgstr "റഫറൻസ്"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "ഉത്തരവാദിത്തമുള്ള യൂസർ"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__message_has_sms_error
@@ -740,7 +740,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Total"
-msgstr ""
+msgstr "ആകെ"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_error_wizard__show_remove_options
@@ -782,7 +782,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__website_message_ids

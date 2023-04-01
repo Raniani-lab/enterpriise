@@ -41,7 +41,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_operation_form_view
 msgid "<span class=\"o_stat_text\">Instructions</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">നിർദ്ദേശങ്ങൾ</span>"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_bom__activity_ids
@@ -391,7 +391,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__id
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_bom__activity_exception_icon
@@ -432,7 +432,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
 msgid "Instructions"
-msgstr ""
+msgstr "നിർദ്ദേശങ്ങൾ"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder__move_line_ids
@@ -621,7 +621,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.ui.menu,name:mrp_workorder.menu_mrp_dashboard
 msgid "Overview"
-msgstr ""
+msgstr "അവലോകനം"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -721,7 +721,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_alert__production_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__production_id
 msgid "Production Order"
-msgstr ""
+msgstr "പ്രൊഡക്ഷൻ ഓർഡർ"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -742,7 +742,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "ഉൽപ്പാദനത്തിൽ ഒരു മാറ്റം നിർദ്ദേശിക്കുക"
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -853,17 +853,17 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__test_report_type
 msgid "Report Type"
-msgstr ""
+msgstr "റിപ്പോർട്ട് ഇനം"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__user_id
 msgid "Responsible"
-msgstr ""
+msgstr "ഉത്തരവാദിയായ"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_bom__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "ഉത്തരവാദിത്തമുള്ള യൂസർ"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__result

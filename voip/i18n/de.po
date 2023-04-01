@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Friederike Fasterling-Nesselbosch, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,21 +31,21 @@ msgstr "Fälle"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "%(number of missed calls)s missed calls"
-msgstr ""
+msgstr "%(number of missed calls)s verpasster Anrufe"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "1 missed call"
-msgstr ""
+msgstr "1 verpasster Anruf"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "2 missed calls"
-msgstr ""
+msgstr "2 verpasste Anrufe"
 
 #. module: voip
 #. openerp-web
@@ -96,6 +97,15 @@ msgid ""
 msgstr ""
 "Es ist ein Fehler im Zusammenhang mit dem Audioaufnahmegerät aufgetreten "
 "(%(errorName)s):</br>%(errorMessage)s"
+
+#. module: voip
+#. odoo-javascript
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"An error occurred during the instantiation of the User Agent:</br></br> "
+"%(error message)s"
+msgstr ""
 
 #. module: voip
 #. openerp-web
@@ -156,13 +166,13 @@ msgstr "Anrufname"
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Call duration: %(min)smin %(sec)ssec"
-msgstr ""
+msgstr "Anrufdauer: %(min)s Min. %(sec)s Sek."
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__should_call_from_another_device
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_call_from_another_device
 msgid "Call from another device"
-msgstr ""
+msgstr "Anruf von einem anderen Gerät"
 
 #. module: voip
 #. openerp-web
@@ -239,6 +249,11 @@ msgid ""
 "            • Ask: Always ask whether the softphone or the device's phone must be used\n"
 "        "
 msgstr ""
+"Wählen Sie die Methode, mit der Sie einen Anruf über die mobile Anwendung tätigen möchten::\n"
+"            • VoIP: Immer das Odoo-Softphone verwenden\n"
+"            • Telefon des Geräts: Immer das Telefon des Geräts verwenden\n"
+"            • Fragen: Immer fragen, ob das Softphone oder das Telefon des Geräts verwendet werden muss.\n"
+"        "
 
 #. module: voip
 #. openerp-web
@@ -320,7 +335,7 @@ msgstr "Demo"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__phone
 msgid "Device's phone"
-msgstr ""
+msgstr "Telefon des Geräts"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__direction
@@ -404,7 +419,7 @@ msgstr "Nummer eingeben..."
 #: model:ir.model.fields,field_description:voip.field_res_users__external_device_number
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__external_device_number
 msgid "External device number"
-msgstr ""
+msgstr "Externe Gerätnummer"
 
 #. module: voip
 #. openerp-web
@@ -461,6 +476,8 @@ msgstr "ID"
 #: model:ir.model.fields,help:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "If enabled, incoming calls will be automatically declined in Odoo."
 msgstr ""
+"Wenn diese Option aktiviert ist, werden eingehende Anrufe in Odoo "
+"automatisch abgelehnt."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__should_call_from_another_device
@@ -470,6 +487,10 @@ msgid ""
 "device number\". Use this option to place the call in Odoo but handle it "
 "from another device - e.g. your desk phone."
 msgstr ""
+"Wenn diese Option aktiviert ist, wird bei einem Anruf in Odoo der Anruf an "
+"die „Externe Gerätenummer“ weitergeleitet. Verwenden Sie diese Option, um "
+"den Anruf in Odoo zu tätigen, ihn aber von einem anderen Gerät aus zu "
+"bearbeiten - z. B. von Ihrem Tischtelefon aus."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__external_device_number
@@ -478,6 +499,8 @@ msgid ""
 "If the \"Call from another device\" option is enabled, calls placed in Odoo "
 "will be transfered to this phone number."
 msgstr ""
+"Wenn die Option „Von einem anderen Gerät anrufen“ aktiviert ist, werden in "
+"Odoo getätigte Anrufe an diese Rufnummer weitergeleitet."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__7d
@@ -504,7 +527,7 @@ msgstr "In Ruf-Warteschlange"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "In call for:"
-msgstr ""
+msgstr "Im Anruf für:"
 
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
@@ -672,7 +695,7 @@ msgstr "Meine Anrufe"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Next activities"
-msgstr ""
+msgstr "Nächste Aktivitäten"
 
 #. module: voip
 #. openerp-web
@@ -724,6 +747,7 @@ msgstr "PBX-Server-IP"
 #, python-format
 msgid "PBX or Websocket address is missing. Please check your settings."
 msgstr ""
+"PBX- oder Websocket-Adresse fehlt. Bitte prüfen Sie Ihre Einstellungen."
 
 #. module: voip
 #. openerp-web
@@ -816,7 +840,7 @@ msgstr "Das Panel auffrischen"
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid "Registration rejected: %(statusCode)s %(reasonPhrase)s."
-msgstr ""
+msgstr "Registrierung abgelehnt: %(statusCode)s %(reasonPhrase)s."
 
 #. module: voip
 #. openerp-web
@@ -836,7 +860,7 @@ msgstr "Anruf ablehnen"
 #: model:ir.model.fields,field_description:voip.field_res_users__should_auto_reject_incoming_calls
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "Reject incoming calls"
-msgstr ""
+msgstr "Eingehende Anrufe ablehnen"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__rejected
@@ -941,6 +965,8 @@ msgid ""
 "Some documents cannot be added to the call queue as they do not have a phone"
 " number set: %(record_names)s"
 msgstr ""
+"Einige Dokumente können nicht in die Warteschlange aufgenommen werden, da "
+"für sie keine Telefonnummer festgelegt ist: %(record_names)s"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
@@ -979,7 +1005,7 @@ msgstr "Anruf annehmen"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP address of your PBX Server"
-msgstr ""
+msgstr "Die IP-Adresse Ihres PBX-Server"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
@@ -1014,12 +1040,16 @@ msgid ""
 "connection cannot be made. Please check your configuration.</br> (Reason "
 "received: %(reasonPhrase)s)"
 msgstr ""
+"Die Nummer ist falsch, die Benutzeranmeldeinformationen könnten falsch sein "
+"oder die Verbindung kann nicht hergestellt werden. Bitte überprüfen Sie Ihre"
+" Konfiguration.</br> (ermittelter Grund: %(reasonPhrase)s)"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__voip_secret
 #: model:ir.model.fields,help:voip.field_res_users_settings__voip_secret
 msgid "The password that will be used to register with the PBX server."
 msgstr ""
+"Das Passwort, das für die Registrierung beim PBX-Server verwendet wird."
 
 #. module: voip
 #. openerp-web
@@ -1045,6 +1075,10 @@ msgid ""
 "that you are reaching the right server (PBX server IP in the General "
 "Settings) and that the credentials in your user preferences are correct."
 msgstr ""
+"Der Server konnte Sie nicht authentifizieren. Bitte lassen Sie einen "
+"Administrator überprüfen, ob Sie den richtigen Server erreichen (PBX-Server-"
+"IP in den Allgemeinen Einstellungen) und ob die Anmeldedaten in Ihren "
+"Benutzereinstellungen korrekt sind."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__state
@@ -1073,6 +1107,8 @@ msgid ""
 "The websocket connection with the server has been lost. Please try to "
 "refresh the page."
 msgstr ""
+"Die Websocket-Verbindung mit dem Server ist unterbrochen worden. Bitte "
+"versuchen Sie, die Seite zu aktualisieren."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__open
@@ -1127,7 +1163,7 @@ msgstr "Bericht VOIP-Anrufe pro Benutzer"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "VOIP Queue support"
-msgstr ""
+msgstr "VOIP-Warteschlangensupport"
 
 #. module: voip
 #. openerp-web
@@ -1137,12 +1173,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.res_users_view_form_preferences
 #, python-format
 msgid "VoIP"
-msgstr ""
+msgstr "VoIP"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.voip_res_users_settings_view_form
 msgid "VoIP Configuration"
-msgstr ""
+msgstr "VoIP-Konfiguration"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
@@ -1159,7 +1195,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_username
 msgid "VoIP username / Extension number"
-msgstr ""
+msgstr "VoIP-Benutzername/-Durchwahlnummer"
 
 #. module: voip
 #. openerp-web

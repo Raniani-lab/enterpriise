@@ -801,7 +801,7 @@ msgstr "Kontrola jakości"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Punkt kontroli jakości"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point_test_type

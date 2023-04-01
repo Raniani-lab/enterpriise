@@ -3,7 +3,7 @@
 # 	* web_studio
 # 
 # Translators:
-# Martin Trigaux, 2022
+# Martin Trigaux, 2023
 # Tony Ng, 2023
 # 
 msgid ""
@@ -375,7 +375,7 @@ msgstr "其他欄位"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Address Block"
-msgstr ""
+msgstr "地址區塊"
 
 #. module: web_studio
 #. odoo-javascript
@@ -676,7 +676,7 @@ msgstr "空白"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Block"
-msgstr "阻塞"
+msgstr "區塊"
 
 #. module: web_studio
 #. odoo-python
@@ -925,7 +925,7 @@ msgstr "配色"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Column"
-msgstr "列"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -1536,7 +1536,7 @@ msgstr "將選單向右拖曳，以建立子選單"
 #: code:addons/web_studio/static/src/legacy/js/reports/report_editor.js:0
 #, python-format
 msgid "Drag building block here"
-msgstr ""
+msgstr "拖曳內容區塊至此處"
 
 #. module: web_studio
 #. odoo-python
@@ -3537,7 +3537,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Show Invisible Elements"
-msgstr ""
+msgstr "顯示隱藏項目"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4115,7 +4115,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Title Block"
-msgstr ""
+msgstr "標題區塊"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4263,7 +4263,7 @@ msgstr "視圖"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Visible for"
-msgstr "Visible for"
+msgstr "以下所選情況可見"
 
 #. module: web_studio
 #. odoo-javascript

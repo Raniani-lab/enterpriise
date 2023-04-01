@@ -82,7 +82,7 @@ msgstr ""
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_rental_sign_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_rental_sign_wizard____last_update

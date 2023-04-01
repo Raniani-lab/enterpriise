@@ -836,7 +836,7 @@ msgstr "Website-berichten"
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__website_message_ids
 msgid "Website communication history"
-msgstr "Geschiedenis van websitecommunicatie"
+msgstr "Website communicatiegeschiedenis"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/wizard/account_link_journal_wizard.py:0

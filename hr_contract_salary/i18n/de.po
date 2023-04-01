@@ -60,16 +60,19 @@ msgid ""
 "                            Before accessing the simulation link, you first need to set up an offer template.\n"
 "                    </span>"
 msgstr ""
+"<span class=\"alert alert-warning\" role=\"alert\" colspan=\"2\" attrs=\"{'invisible':[('contract_id', '!=', False)]}\">\n"
+"                            Um den Simulationslink zu erzeugen, müssen Sie zuerst eine Angebotsvorlage einrichten.\n"
+"                    </span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"ms-3\">/ month</span>"
-msgstr ""
+msgstr "<span class=\"ms-3\">/Monat"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"ms-3\">/ year</span>"
-msgstr ""
+msgstr "<span class=\"ms-3\">/Jahr</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
@@ -577,7 +580,7 @@ msgstr "Anzeigetyp"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__display_warning_message
 msgid "Display Warning Message"
-msgstr ""
+msgstr "Warnmeldung anzeigen"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_doctor
@@ -951,7 +954,7 @@ msgstr "Männlich"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__manual_field
 msgid "Manual Field Name"
-msgstr ""
+msgstr "Manueller Feldname"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__manual
@@ -1553,6 +1556,8 @@ msgid ""
 "The employee does not have a valid email set in the private information. The"
 " Simulation Link won't be able to be completed."
 msgstr ""
+"Der Mitarbeiter hat keine gültige E-Mail in den privaten Informationen "
+"angegeben. Der Simulationslink kann nicht vervollständigt werden."
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1597,6 +1602,13 @@ msgid "There is no available option to customize your salary"
 msgstr "Es gibt keine Möglichkeit, Ihr Gehalt individuell zu gestalten"
 
 #. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
+msgid ""
+"They will review your contract.<br/> Feel free to contact them if you have "
+"any questions."
+msgstr ""
+
+#. module: hr_contract_salary
 #. odoo-python
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
@@ -1611,6 +1623,8 @@ msgid ""
 "advantages will be related to the current employee contract instead of the "
 "new job position."
 msgstr ""
+"Für diese Stelle gibt es keine Vertragsvorlage und die Vorteile beziehen "
+"sich auf den aktuellen Mitarbeitervertrag und nicht auf die neue Stelle."
 
 #. module: hr_contract_salary
 #. odoo-python

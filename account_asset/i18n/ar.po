@@ -563,7 +563,7 @@ msgstr "الأصول المسودة والجارية"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_attachment_count
 msgid "Attachment Count"
-msgstr "تعداد المرفقات"
+msgstr "عدد المرفقات"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -616,12 +616,12 @@ msgstr "إلغاء"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Cancel Asset"
-msgstr "ألغى أصل"
+msgstr "إلغاء الأصل "
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__cancelled
 msgid "Cancelled"
-msgstr "ملغي"
+msgstr "تم الإلغاء "
 
 #. module: account_asset
 #. odoo-python
@@ -673,17 +673,17 @@ msgstr "احتساب"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Compute Depreciation"
-msgstr "حساب الإهلاك"
+msgstr "احتساب الإهلاك "
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Compute Expense"
-msgstr "حساب النفقات "
+msgstr "احتساب النفقات "
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Compute Revenue"
-msgstr "حساب الإيرادات "
+msgstr "احتساب الإيرادات "
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1899,7 +1899,7 @@ msgstr "التعيين كجارٍ "
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
-"عرض كافة السجلات التي يسبق تاريخ الإجراء التالي فها تاريخ اليوم الجاري "
+"عرض كافة السجلات التي يسبق تاريخ الإجراء التالي فيها تاريخ اليوم الجاري "
 
 #. module: account_asset
 #. odoo-python
@@ -2174,6 +2174,8 @@ msgid ""
 "You cannot delete an asset linked to posted entries.\n"
 "You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
 msgstr ""
+"لا يمكنك حذف أصل مرتبط بقيود مُرحّلة. \n"
+"عليك إما تأكيد الأصل ثم بيعه أو التخلص منه أو إلغاء قيود اليومية المرتبطة. "
 
 #. module: account_asset
 #. odoo-python

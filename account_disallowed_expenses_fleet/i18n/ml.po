@@ -63,7 +63,7 @@ msgstr "ഡിസ്പ്ലേ നെയിം"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_move_line

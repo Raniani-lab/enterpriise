@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Jolien De Paepe, 2022
+# Jolien De Paepe, 2023
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
@@ -1724,7 +1724,7 @@ msgstr "Website berichten"
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__website_message_ids
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__website_message_ids
 msgid "Website communication history"
-msgstr "Website communicatie geschiedenis"
+msgstr "Website communicatiegeschiedenis"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/res_company.py:0
@@ -1744,6 +1744,13 @@ msgid "You cannot delete appraisal which is not in draft or canceled state"
 msgstr ""
 "Je kunt een beoordeling enkel verwijderen indien in fase concept of "
 "geannuleerd"
+
+#. module: hr_appraisal
+#. odoo-python
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "Your Appraisal has been completed"
+msgstr "Je beoordeling is voltooid"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/res_company.py:0

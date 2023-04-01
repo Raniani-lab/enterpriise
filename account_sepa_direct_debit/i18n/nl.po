@@ -1137,7 +1137,7 @@ msgstr "Websiteberichten"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__website_message_ids
 msgid "Website communication history"
-msgstr "Website communicatie geschiedenis"
+msgstr "Website communicatiegeschiedenis"
 
 #. module: account_sepa_direct_debit
 #: code:addons/account_sepa_direct_debit/models/res_partner_bank.py:0

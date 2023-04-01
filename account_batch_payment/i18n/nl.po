@@ -814,7 +814,7 @@ msgstr "Website-berichten"
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__website_message_ids
 msgid "Website communication history"
-msgstr "Geschiedenis van websitecommunicatie"
+msgstr "Website communicatiegeschiedenis"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__file_generation_enabled

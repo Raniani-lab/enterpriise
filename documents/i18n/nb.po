@@ -2108,7 +2108,7 @@ msgstr "Lagre"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
 msgid "Schedule Activity"
-msgstr ""
+msgstr "Planlegg aktivitet"
 
 #. module: documents
 #. odoo-javascript

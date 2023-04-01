@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1669,6 +1669,13 @@ msgstr "Опції"
 
 #. module: appointment
 #. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Our Appointment Types"
+msgstr "Наші типи зустрічей"
+
+#. module: appointment
+#. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Our first availability is"
@@ -1804,7 +1811,10 @@ msgid "Schedule"
 msgstr "Запланувати"
 
 #. module: appointment
+#. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
+#, python-format
 msgid "Schedule an Appointment"
 msgstr "Запланувати зустріч"
 

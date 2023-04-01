@@ -1257,7 +1257,7 @@ msgstr "Virhe"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid "Error 404"
-msgstr ""
+msgstr "Virhe 404"
 
 #. module: sign
 #. odoo-python
@@ -1615,6 +1615,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_log__log_hash
 msgid "Inalterability Hash"
 msgstr "Tietojen muuttumattomuuden lukitus"
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_modal.xml:0
+#, python-format
+msgid "Include a visual security frame around your signature"
+msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
@@ -2439,7 +2446,7 @@ msgstr "Rooli"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_role_view_tree
 msgid "Role Name"
-msgstr ""
+msgstr "Roolin nimi"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_item_role_menu
@@ -4083,7 +4090,7 @@ msgstr "seuraava"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 msgid "sign"
-msgstr ""
+msgstr "kirjaudu"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_signature

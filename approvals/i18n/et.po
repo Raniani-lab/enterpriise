@@ -12,7 +12,7 @@
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
-# Jana Jaakson, 2022
+# JanaAvalah, 2022
 # Triine Aavik <triine@avalah.ee>, 2023
 # Leaanika Randmets, 2023
 # 
@@ -1172,6 +1172,13 @@ msgstr "Võta tagasi"
 #, python-format
 msgid "You cannot approve before the previous approver."
 msgstr "Ei saa kinnitada enne eelmisi kinnitajaid."
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid ""
+"You cannot assign the same approver multiple times on the same request."
+msgstr ""
 
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0

@@ -1603,6 +1603,11 @@ msgid ""
 "                        </code> \n"
 "                        menu."
 msgstr ""
+"إذا كنت ترغب في عدم تلقي تلك الإشعارات بعد الآن، يمكنك تعطيل خطوة المصادقة الإضافية في قائمة\n"
+"                        <code>\n"
+"                            التوقيع > التهيئة > الأدوار\n"
+"                        </code> \n"
+"                        "
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
@@ -1626,6 +1631,13 @@ msgstr "في المفضلة، قم بإزالته"
 #: model:ir.model.fields,field_description:sign.field_sign_log__log_hash
 msgid "Inalterability Hash"
 msgstr "تشفير عدم قابلية التعديل "
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_modal.xml:0
+#, python-format
+msgid "Include a visual security frame around your signature"
+msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form

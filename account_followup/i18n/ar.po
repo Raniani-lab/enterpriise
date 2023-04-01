@@ -393,7 +393,7 @@ msgstr "إلغاء "
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Communication"
-msgstr "اتصالات"
+msgstr "التواصل "
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__company_id

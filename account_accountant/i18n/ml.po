@@ -201,7 +201,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Account"
-msgstr ""
+msgstr "അക്കൗണ്ട്"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_account_group_tree
@@ -230,7 +230,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
-msgstr ""
+msgstr "അക്കൌണ്ടിംഗ്"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -326,7 +326,7 @@ msgstr "അനലിറ്റിക് അക്കൗണ്ട്"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "അനലിറ്റിക് പ്രിസിഷൻ"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -350,7 +350,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Bank"
-msgstr ""
+msgstr "ബാങ്ക്"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash
@@ -402,7 +402,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Bills"
-msgstr ""
+msgstr "ബില്ലുകൾ"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -576,7 +576,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__credit
 #, python-format
 msgid "Credit"
-msgstr ""
+msgstr "ക്രെഡിറ്റ്"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_bank_statement_line__cron_last_check
@@ -902,7 +902,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1001,7 +1001,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "Journal"
-msgstr ""
+msgstr "ജേണൽ"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__journal_currency_id
@@ -1318,7 +1318,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "Notes"
-msgstr ""
+msgstr "നോട്ട്സ്"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1429,7 +1429,7 @@ msgstr ""
 #: model:ir.model,name:account_accountant.model_account_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Payments"
-msgstr ""
+msgstr "പേയ്മെന്റ്സ്"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1511,7 +1511,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 msgid "Received"
-msgstr ""
+msgstr "ലഭിച്ചു"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
@@ -1577,7 +1577,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Save"
-msgstr ""
+msgstr "സേവ്"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
@@ -1601,7 +1601,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "സെർച്ച് കസ്റ്റമർ"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1723,7 +1723,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_ids
 msgid "Tax"
-msgstr ""
+msgstr "നികുതി"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
@@ -1764,7 +1764,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Taxes"
-msgstr ""
+msgstr "നികുതികൾ"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1967,7 +1967,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 #, python-format
 msgid "View"
-msgstr ""
+msgstr "വ്യൂ"
 
 #. module: account_accountant
 #. odoo-javascript

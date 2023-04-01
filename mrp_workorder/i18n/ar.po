@@ -3,7 +3,7 @@
 # 	* mrp_workorder
 # 
 # Translators:
-# Niyas Raphy, 2023
+# Niyas Raphy, 2022
 # Martin Trigaux, 2023
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
@@ -970,12 +970,12 @@ msgstr "بند حركة المخزون "
 #. module: mrp_workorder
 #: model:product.template,name:mrp_workorder.product_template_stool
 msgid "Stool"
-msgstr "براز"
+msgstr "مقعد "
 
 #. module: mrp_workorder
 #: model:product.template,name:mrp_workorder.product_template_stool_foot
 msgid "Stool Foot"
-msgstr "قدم البراز"
+msgstr "قدم المقعد "
 
 #. module: mrp_workorder
 #: model:product.template,name:mrp_workorder.product_template_stool_top

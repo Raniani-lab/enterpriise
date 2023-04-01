@@ -130,6 +130,26 @@ msgid ""
 "            </ul>\n"
 "        "
 msgstr ""
+"<h2>직원 평가의 전체 목표</h2>\n"
+"            <ul>\n"
+"                <li>직원 성과에 대해 기대하는 내용을 명확하고 공개적으로 전달하기 위함</li>\n"
+"                <li>,강점에 대해 명확히 알도록 하고 약점에 대해서는 발전시킬 수 있도록 하여, 직원의 전문성 향상을 위한 성장을 지원</li>\n"
+"            </ul>\n"
+"\n"
+"            <h2>평가 기간 착수 시</h2>\n"
+"            <ul>\n"
+"                <li>다음 연도에 실현 가능한 작업 계획을 수립하는 것은 직원과 감독관 (평가자)가 함께 책임지고 실행해야 하며, 이는 직원의 주요 책임 및 평가할 결과에 해당되는 기준 항목을 포함합니다.</li>\n"
+"                <li>성과나 전문성 개발에 대한 필요성 (필요한 경우)에 대해서 중요하거나 핵심적인 요소 역시 이 시점에서 논의되어야 합니다</li>\n"
+"            </ul>\n"
+"\n"
+"            <h2>평가 기간 종료 시</h2>\n"
+"            <ul>\n"
+"                <li>자기 평가를 위한 도구로서 또한 감독관의 평가를 시작하기 위하여 평가 양식 초안을 작성할 책임은 직원에게 있습니다. 직원은 각 기준 항목에 대해서 성과 내용의 예시를 추가할 수 있습니다. 양식 작성을 완료하면 직원이 이를 감독관에게 송부합니다.</li>\n"
+"                <li>적절한 피드백을 받을 수 있는 대상 (내부 및/또는 외부 고객, 동료)으로부터 필요한 정보를 수집하는 기본적인 책임을 감독관에게 있습니다.</li>\n"
+"                <li>감독관은 모든 내용을 수집 및 통합하여 종합 평가를 만들어냅니다. 평가의 이유에 대해서는 관련 항목으로 설명을 기재합니다.</li>\n"
+"                <li>검토가 완료되면 직원에게 의견이나 설명을 하도록 할 수 있습니다.</li>\n"
+"            </ul>\n"
+"        "
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
@@ -143,7 +163,7 @@ msgstr ""
 #: model:survey.question,description:hr_appraisal_survey.appraisal_360_9
 #: model:survey.survey,description:hr_appraisal_survey.opinion_form
 msgid "<p> </p>"
-msgstr ""
+msgstr "<p> </p>"
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,description:hr_appraisal_survey.appraisal_360_feedback_template
@@ -228,7 +248,7 @@ msgstr "새로운 설문 조사 추가하기"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
 msgid "Add employees..."
-msgstr ""
+msgstr "직원 추가"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2_3
@@ -238,7 +258,7 @@ msgstr "추가 의견"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_6
 msgid "Admit my mistakes"
-msgstr ""
+msgstr "실수를 인정합니다"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_5

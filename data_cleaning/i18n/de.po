@@ -5,6 +5,7 @@
 # Translators:
 # Friederike Fasterling-Nesselbosch, 2022
 # Martin Trigaux, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -113,12 +114,12 @@ msgstr "Bereinigungsmodus"
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__cleaning_model_id
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__cleaning_model_id
 msgid "Cleaning Model"
-msgstr ""
+msgstr "Bereinigungsmodell"
 
 #. module: data_cleaning
 #: model:ir.model,name:data_cleaning.model_data_cleaning_record
 msgid "Cleaning Record"
-msgstr ""
+msgstr "Bereinigungseintrag"
 
 #. module: data_cleaning
 #: model:ir.model,name:data_cleaning.model_data_cleaning_rule
@@ -212,12 +213,12 @@ msgstr "Feldreinigung"
 #: model:ir.actions.act_window,name:data_cleaning.action_data_cleaning_record
 #: model:ir.actions.act_window,name:data_cleaning.action_data_cleaning_record_notification
 msgid "Field Cleaning Records"
-msgstr ""
+msgstr "Feldbereinigungseinträge"
 
 #. module: data_cleaning
 #: model:ir.actions.act_window,name:data_cleaning.action_data_cleaning_config
 msgid "Field Cleaning Rules"
-msgstr ""
+msgstr "Feldbereinigungsregeln"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__field_name

@@ -107,7 +107,7 @@ msgstr ""
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_sale_coupon_generate__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_sale_coupon_generate____last_update

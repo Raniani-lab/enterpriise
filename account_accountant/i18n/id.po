@@ -783,7 +783,7 @@ msgstr "Flag"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__force_price_included_taxes
 msgid "Force Price Included Taxes"
-msgstr ""
+msgstr "Paksakan Harga Termasuk Pajak"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
@@ -808,7 +808,7 @@ msgstr "Buat Mata Uang"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_date
 msgid "Form Date"
-msgstr ""
+msgstr "Tanggal Buat"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_extra_text
@@ -893,6 +893,10 @@ msgid ""
 "feature to update multiple journal entries from the General Ledger, or any "
 "Journal view."
 msgstr ""
+"Dari tampilan daftar manapun, pilih lebih dari satu record dan daftar akan "
+"dapat diedit. Bila Anda mengupdate sebuah cell, record yang dipilih akan "
+"semuanya diperbarui bersamaan. Gunakan fitur ini untuk mengupdate lebih dari"
+" satu entri jurnal dari Buku Besar, atau dari tampilan Jurnal apapun."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -929,12 +933,12 @@ msgstr "Kerja Bagus!"
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Great! Let’s continue."
-msgstr ""
+msgstr "Bagus! Ayo lanjutkan."
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__group_tax_id
 msgid "Group Tax"
-msgstr ""
+msgstr "Pajak Kelompok"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -950,7 +954,7 @@ msgstr "ID"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0003"
-msgstr ""
+msgstr "INV/2032/0003"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -958,7 +962,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0012"
-msgstr ""
+msgstr "INV/2032/0012"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
@@ -967,6 +971,9 @@ msgid ""
 "related information at the time of the creation of the move and that the "
 "move needs to be checked again."
 msgstr ""
+"Apabila kotak centang ini ditandai, itu berarti user tidak yakin dengan "
+"semua informasi terkait saat membuat pergerakan dan pergerakan tersebut "
+"perlu diperiksa lagi."
 
 #. module: account_accountant
 #. odoo-python
@@ -982,17 +989,17 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__index
 msgid "Index"
-msgstr ""
+msgstr "Indeks"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__invalid
 msgid "Invalid"
-msgstr ""
+msgstr "Tidak valid"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Invalid statements"
-msgstr ""
+msgstr "Laporan tidak valid"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__state
@@ -1001,6 +1008,9 @@ msgid ""
 "Valid: The bank transaction can be validated.\n"
 "Reconciled: The bank transaction has already been processed. Nothing left to do."
 msgstr ""
+"Tidak valid: Transaksi bank tidak dapat divalidasi karena akun yang ditangguhkan masih termasuk\n"
+"Valid: Transaksi bank dapat divalidasi.\n"
+"Rekonsiliasi: Transaksi bank sudah diproses. Tidak ada lagi yang perlu dilakukan."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1014,12 +1024,12 @@ msgstr "Faktur"
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__invoicing_switch_threshold
 msgid "Invoicing Switch Threshold"
-msgstr ""
+msgstr "Invoicing Switch Threshold"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_is_reconciled
 msgid "Is Reconciled"
-msgstr ""
+msgstr "Direkonsiliasi"
 
 #. module: account_accountant
 #. odoo-python
@@ -1053,7 +1063,7 @@ msgstr "Mata Uang Jurnal"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
 msgid "Journal Entries Lock Date"
-msgstr ""
+msgstr "Tanggal Tutup Entri Jurnal"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_move
@@ -1104,7 +1114,7 @@ msgstr "Label"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Larry Smith"
-msgstr ""
+msgstr "Larry Smith"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1143,35 +1153,35 @@ msgstr "Terakhir diperbarui pada"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Learn how blazing fast bank matching works"
-msgstr ""
+msgstr "Pelajari betapa cepatnya bank matching bekerja"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s automate your bills, bank transactions and accounting processes."
-msgstr ""
+msgstr "Ayo otomatiskan tagihan, transaksi bank dan proses akuntansi Anda."
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s go back to the dashboard."
-msgstr ""
+msgstr "Mari kembali ke dashboard."
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s reconcile the fetched bank transactions."
-msgstr ""
+msgstr "Ayo rekonsiliasi transaksi bank."
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s see how a bill looks like in form view."
-msgstr ""
+msgstr "Ayo periksa tampilan tagihan dalam form view. "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1181,6 +1191,8 @@ msgid ""
 "Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done "
 "yet, wait a few more seconds and try again.</i>"
 msgstr ""
+"Ayo gunakan AI untuk mengisi formulir<br/><br/><i>Tip: Bila OCR belum "
+"selesai, tunggu beberapa detik sebelum mencoba lagi.</i>"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__line_ids
@@ -1190,12 +1202,12 @@ msgstr "Baris"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget_line
 msgid "Line of the lines_widget"
-msgstr ""
+msgstr "Line dari lines_widget"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__lines_widget
 msgid "Lines Widget"
-msgstr ""
+msgstr "Lines Widget"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1222,7 +1234,7 @@ msgstr "Kunci Tanggal"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Management Closing"
-msgstr ""
+msgstr "Manajemen Penutupan"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1247,14 +1259,14 @@ msgstr "Cocokkan"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Match Existing Entries"
-msgstr ""
+msgstr "Cocokkan Entri yang Tersedia"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Match payments and invoices"
-msgstr ""
+msgstr "Cocokkan pembayaran dan faktur"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1266,19 +1278,19 @@ msgstr "Match with entries that are not from receivable/payable accounts"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Matched"
-msgstr ""
+msgstr "Cocok"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr ""
+msgstr "Transaksi-Transaksi Cocok"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
 msgid "Matching Rules Allow Auto Reconcile"
-msgstr ""
+msgstr "Peraturan Pencocokkan Memungkinkan Rekonsiliasi Otomatis"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1323,19 +1335,19 @@ msgstr "Baru"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__next_action_todo
 msgid "Next Action Todo"
-msgstr ""
+msgstr "Tindakan Berikutnya untuk Dilakukan"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid "No attachments linked."
-msgstr ""
+msgstr "Tidak ada lampiran yang di-link."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "No statement"
-msgstr ""
+msgstr "Tidak ada laporan"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
@@ -1358,7 +1370,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Not Matched"
-msgstr ""
+msgstr "Tidak Cocok"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1371,7 +1383,7 @@ msgstr "Catatan"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Odoo Bank Reconciliation"
-msgstr ""
+msgstr "Rekonsiliasi Bank Odoo"
 
 #. module: account_accountant
 #. odoo-python
@@ -1379,6 +1391,8 @@ msgstr ""
 #, python-format
 msgid "Only Billing Administrators are allowed to change lock dates!"
 msgstr ""
+"Hanya Administrator Tagihan yang diperbolehkan untuk mengganti tanggal "
+"tutup!"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__period_lock_date
@@ -1396,12 +1410,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 #, python-format
 msgid "Open Amount"
-msgstr ""
+msgstr "Jumlah Awal"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Open Amount in Currency"
-msgstr ""
+msgstr "Jumlah Awal dalam Mata Uang"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1415,7 +1429,7 @@ msgstr "Saldo Awal"
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Open balance: %s"
-msgstr ""
+msgstr "Saldo Awal: %s"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1501,7 +1515,7 @@ msgstr ""
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Please install the 'Accounting Reports' module."
-msgstr ""
+msgstr "Mohon instal modul 'Laporan Akuntansi'."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1917,12 +1931,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "To Check"
-msgstr "To Check"
+msgstr "Untuk Diperiksa"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "To check"
-msgstr ""
+msgstr "Untuk diperiksa"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2234,7 +2248,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
 msgid "to check"
-msgstr "to check"
+msgstr "untuk diperiksa"
 
 #. module: account_accountant
 #. odoo-javascript

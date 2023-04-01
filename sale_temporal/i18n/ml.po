@@ -81,6 +81,7 @@ msgstr ""
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Day"
 msgstr "ദിവസം"
@@ -115,6 +116,7 @@ msgstr ""
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Hour"
 msgstr ""
@@ -123,7 +125,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__id
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order__internal_note
@@ -175,6 +177,7 @@ msgstr ""
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Month"
 msgstr "മാസം"
@@ -193,7 +196,7 @@ msgstr "പേര്"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
 msgid "Notes"
-msgstr ""
+msgstr "നോട്ട്സ്"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
@@ -346,9 +349,10 @@ msgstr ""
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "ആഴ്ച"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__week
@@ -358,9 +362,10 @@ msgstr "ആഴ്ചകൾ"
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "വർഷം"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__year

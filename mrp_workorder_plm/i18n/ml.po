@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* mrp_workorder_plm
 # 
+# Translators:
+# Niyas Raphy, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:29+0000\n"
+"POT-Creation-Date: 2023-02-02 10:52+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,6 +30,14 @@ msgstr ""
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_progress
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_validated
 msgid "Blocked"
+msgstr ""
+
+#. module: mrp_workorder_plm
+#. odoo-python
+#: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
+#: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
+#, python-format
+msgid "BoM feedback for not found step: %s (%s)"
 msgstr ""
 
 #. module: mrp_workorder_plm
@@ -72,7 +84,7 @@ msgstr ""
 #. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "ഉൽപ്പാദനത്തിൽ ഒരു മാറ്റം നിർദ്ദേശിക്കുക"
 
 #. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_quality_check
@@ -90,7 +102,7 @@ msgstr ""
 #: model:mrp.eco.stage,legend_done:mrp_workorder_plm.ecostage_progress
 #: model:mrp.eco.stage,legend_done:mrp_workorder_plm.ecostage_validated
 msgid "Ready"
-msgstr ""
+msgstr "റെഡി"
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,field_description:mrp_workorder_plm.field_mrp_eco_routing_change__step

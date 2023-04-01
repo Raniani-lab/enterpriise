@@ -1749,6 +1749,13 @@ msgstr ""
 "No puede eliminar una valoración que no está en estado borrador o cancelado"
 
 #. module: hr_appraisal
+#. odoo-python
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "Your Appraisal has been completed"
+msgstr ""
+
+#. module: hr_appraisal
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""

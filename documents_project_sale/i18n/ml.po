@@ -66,7 +66,7 @@ msgstr ""
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_2
 msgid "Photos"
-msgstr ""
+msgstr "ഫോട്ടോകൾ"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_1
@@ -81,7 +81,7 @@ msgstr "പ്രോഡക്റ്റ്"
 #. module: documents_project_sale
 #: model:project.task,legend_done:documents_project_sale.sale_order_1_task_1
 msgid "Ready"
-msgstr ""
+msgstr "റെഡി"
 
 #. module: documents_project_sale
 #: model:product.template,name:documents_project_sale.product_1

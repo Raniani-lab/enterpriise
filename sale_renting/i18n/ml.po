@@ -313,7 +313,7 @@ msgstr "കസ്റ്റമർ"
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__country_id
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Customer Country"
-msgstr ""
+msgstr "കസ്റ്റമർ രാജ്യം"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__commercial_partner_id
@@ -519,7 +519,7 @@ msgstr "മണിക്കൂറുകൾ"
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__id
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
@@ -681,7 +681,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__order_date
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Order Date"
-msgstr ""
+msgstr "ഓർഡർ തീയതി"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__order_line_id
@@ -691,7 +691,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__name
 msgid "Order Reference"
-msgstr ""
+msgstr "ഓർഡർ റഫറൻസ്"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__order_line_id

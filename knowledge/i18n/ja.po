@@ -139,8 +139,8 @@ msgstr "<i class=\"fa fa-fw fa-lg fa-trash-o\" title=\"Remove cover\"/> カバ�
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Remove from Trash"
-msgstr "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> ゴミ箱から削除"
+msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Restore from Trash"
+msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2056,6 +2056,7 @@ msgstr "担当者"
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #, python-format
 msgid "Restore"
 msgstr "リストア"

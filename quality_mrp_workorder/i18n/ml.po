@@ -104,7 +104,7 @@ msgstr ""
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_mrp_production
 msgid "Production Order"
-msgstr ""
+msgstr "പ്രൊഡക്ഷൻ ഓർഡർ"
 
 #. module: quality_mrp_workorder
 #. openerp-web
@@ -143,7 +143,7 @@ msgstr ""
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
 msgid "Save"
-msgstr ""
+msgstr "സേവ്"
 
 #. module: quality_mrp_workorder
 #: code:addons/quality_mrp_workorder/models/quality.py:0

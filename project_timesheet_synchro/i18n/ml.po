@@ -161,7 +161,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Database"
-msgstr ""
+msgstr "ഡാറ്റാബേസ്"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -447,7 +447,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Save"
-msgstr ""
+msgstr "സേവ്"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -476,7 +476,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Sign In"
-msgstr ""
+msgstr "സൈൻ ഇൻ"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -520,7 +520,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Synchronize"
-msgstr ""
+msgstr "സമന്വയിപ്പിക്കുക"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -664,14 +664,14 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "ആഴ്ച"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Work Summary"
-msgstr ""
+msgstr "ജോലി സംഗ്രഹം"
 
 #. module: project_timesheet_synchro
 #. openerp-web

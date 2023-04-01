@@ -1604,6 +1604,15 @@ msgid "There is no available option to customize your salary"
 msgstr "Il n'y a pas d'option disponible pour personnaliser votre salaire"
 
 #. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
+msgid ""
+"They will review your contract.<br/> Feel free to contact them if you have "
+"any questions."
+msgstr ""
+"Ils examineront votre contrat.<br/> N'hésitez pas à les contacter si vous "
+"avez d'autres questions."
+
+#. module: hr_contract_salary
 #. odoo-python
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format

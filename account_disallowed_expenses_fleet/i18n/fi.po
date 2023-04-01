@@ -25,7 +25,7 @@ msgstr ""
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_account_disallowed_expenses_category__car_category
 msgid "Car Category"
-msgstr ""
+msgstr "Autoluokka"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__company_id
@@ -51,6 +51,7 @@ msgstr "Hyväksymättömien kulujuen luokka"
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_disallowed_expenses_fleet_report_handler
 msgid "Disallowed Expenses Fleet Custom Handler"
 msgstr ""
+"Kielletyt menot Fleet Custom Handler -kulkuneuvojen mukautettu käsittelijä"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_vehicle__rate_ids
@@ -97,6 +98,8 @@ msgstr "Alkupäivä"
 #: model:ir.model.fields,help:account_disallowed_expenses_fleet.field_account_disallowed_expenses_category__car_category
 msgid "This checkbox makes the vehicle mandatory while booking a vendor bill."
 msgstr ""
+"Tämä valinta asettaa ajoneuvon pakolliseksi myyjän laskun kirjaamisen "
+"yhteydessä."
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_fleet_vehicle
@@ -107,9 +110,9 @@ msgstr "Ajoneuvo"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_fleet_disallowed_expenses_rate
 msgid "Vehicle Disallowed Expenses Rate"
-msgstr ""
+msgstr "Ajoneuvo Hylätyt kulut prosenttia"
 
 #. module: account_disallowed_expenses_fleet
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses_fleet.disallowed_expenses_fleet_search_template_extra_options
 msgid "Vehicle Split"
-msgstr ""
+msgstr "Ajoneuvon jako"

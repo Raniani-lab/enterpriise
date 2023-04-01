@@ -8,8 +8,8 @@
 # Maja Stawicka <mjstwck@wp.pl>, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2022
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
-# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # danielkowalczyk007, 2023
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: danielkowalczyk007, 2023\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +33,7 @@ msgstr "(Rachunek na moje konto)"
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/>"
 
 #. module: website_delivery_ups
 #: model_terms:payment.provider,pending_msg:website_delivery_ups.payment_provider_ups_cod
@@ -47,7 +47,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "<span>(UPS Billing will remain to the customer)</span>"
-msgstr ""
+msgstr "<span>(billing UPS pozostaje dla klienta)</span>"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
@@ -67,7 +67,7 @@ msgstr "Anuluj"
 #. module: website_delivery_ups
 #: model:ir.model.fields.selection,name:website_delivery_ups.selection__payment_provider__custom_mode__cash_on_delivery
 msgid "Cash On Delivery"
-msgstr ""
+msgstr "Za pobraniem"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
@@ -77,7 +77,7 @@ msgstr "Zamknij"
 #. module: website_delivery_ups
 #: model:ir.model.fields,field_description:website_delivery_ups.field_payment_provider__custom_mode
 msgid "Custom Mode"
-msgstr ""
+msgstr "Tryb własny"
 
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_payment_provider
@@ -97,12 +97,12 @@ msgstr "UPS Wystaw rachunek na moje konto"
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.property_ups_carrier_account_inherit_portal_details
 msgid "UPS Number Account"
-msgstr ""
+msgstr "Numer konta UPS"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.res_config_settings_view_form_inherit_website_delivery_ups
 msgid "UPS Shipping Methods"
-msgstr ""
+msgstr "Metody wysyłki UPS"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
@@ -112,7 +112,7 @@ msgstr "Korzystanie z konta"
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Your UPS Account Number"
-msgstr ""
+msgstr "Twój numer konta UPS"
 
 #. module: website_delivery_ups
 #: model_terms:payment.provider,auth_msg:website_delivery_ups.payment_provider_ups_cod

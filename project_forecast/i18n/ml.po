@@ -71,7 +71,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__allow_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_kanban_inherit_project_forecast
 msgid "Planning"
-msgstr ""
+msgstr "ആസൂത്രണം"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_analysis_report
@@ -117,7 +117,7 @@ msgstr ""
 #: code:addons/project_forecast/controllers/main.py:0
 #, python-format
 msgid "Shift"
-msgstr ""
+msgstr "ഷിഫ്റ്റ്"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_slot_template

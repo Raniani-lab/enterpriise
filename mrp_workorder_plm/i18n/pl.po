@@ -99,7 +99,7 @@ msgstr "Kontrola jakości"
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,field_description:mrp_workorder_plm.field_mrp_eco_routing_change__quality_point_id
 msgid "Quality Point"
-msgstr ""
+msgstr "Punkt jakości"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,legend_done:mrp_workorder_plm.ecostage_effective

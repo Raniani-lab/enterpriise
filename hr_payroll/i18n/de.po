@@ -197,7 +197,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_rule_parameter_view_form
 msgid "<span>Versions</span>"
-msgstr ""
+msgstr "<span>Versionen</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -217,7 +217,7 @@ msgstr "<strong>Vertragsbeginn</strong/>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Contract Type</strong>"
-msgstr ""
+msgstr "<strong>Vertragsart</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -345,7 +345,7 @@ msgstr "Aktivitäts-Typ-Icon"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Add a <strong>name</strong> to the contract."
-msgstr ""
+msgstr "Fügen Sie dem Vertrag einen <strong>Namen</strong> hinzu."
 
 #. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.action_view_hr_payroll_structure_from_type
@@ -647,6 +647,8 @@ msgid ""
 "Careful, the Code is used in many references, changing it could lead to "
 "unwanted changes."
 msgstr ""
+"Vorsicht, der Code wird in vielen Referenzen verwendet, eine Änderung könnte"
+" zu unerwünschten Ergebnissen führen."
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__category_id
@@ -676,13 +678,15 @@ msgid ""
 "Check the <strong>Work Entries</strong> linked to your newly created "
 "Contract."
 msgstr ""
+"Prüfen Sie die <strong>Arbeitseinträge</strong>, die mit Ihrem kürzlich "
+"angelegten Vertrag verknüpft sind."
 
 #. module: hr_payroll
 #. odoo-javascript
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Check the <strong>Working Schedule</strong>."
-msgstr ""
+msgstr "Prüfen Sie den <strong>Arbeitsplan</strong>."
 
 #. module: hr_payroll
 #. odoo-python
@@ -709,6 +713,7 @@ msgstr "Wählen Sie eine Lohnabrechnungslokalisierung"
 #, python-format
 msgid "Click here to create a new <strong>Contract</strong>."
 msgstr ""
+"Klicken Sie hier, um einen neuen <strong>Vertrag</strong> zu erstellen."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -724,6 +729,8 @@ msgstr ""
 #, python-format
 msgid "Click here to go back to the <strong>Employee's profile</strong>."
 msgstr ""
+"Klicken Sie hier, um zurück zum <strong>Mitarbeiterprofil</strong> zu "
+"gelangen."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -732,6 +739,8 @@ msgstr ""
 msgid ""
 "Click on <strong>Salary Information</strong> to access additional fields."
 msgstr ""
+"Klicken Sie auf <strong>Gehaltsinformationen</strong>, um auf weitere Felder"
+" zuzugreifen."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -739,6 +748,8 @@ msgstr ""
 #, python-format
 msgid "Click on Employees to pick one of your <strong>Employees</strong>."
 msgstr ""
+"Klicken Sie auf Mitarbeiter, um einen Ihrer <strong>Mitarbeiter</strong> "
+"auszuwählen."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -748,20 +759,23 @@ msgid ""
 "Click on Payroll to manage your employee's <strong>Work Entries</strong>, "
 "<strong>Contracts</strong> and <strong>Payslips</strong>."
 msgstr ""
+"Klicken Sie auf Personalabrechnung, um die <strong>Arbeitseinträge</strong>,"
+" <strong>Verträge</strong> und <strong>Gehaltsabrechnung</strong> Ihrer "
+"Mitarbeiter zu verwalten."
 
 #. module: hr_payroll
 #. odoo-javascript
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Click on the <strong>Payslip</strong>."
-msgstr ""
+msgstr "Klicken Sie auf <strong>Gehaltsabrechnung</strong>."
 
 #. module: hr_payroll
 #. odoo-javascript
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Click on the <strong>Work Entries</strong> menu."
-msgstr ""
+msgstr "Klicken Sie auf das Arbeitseinträgemenü."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -777,7 +791,7 @@ msgstr "Abschließen"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Close the window."
-msgstr ""
+msgstr "Schließen Sie das Fenster,"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_type__round_days_type__half-up
@@ -877,7 +891,7 @@ msgstr "Bestätigen"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Confirm the <strong>Payslip</strong>."
-msgstr ""
+msgstr "Bestätigen Sie die <strong>Gehaltsabrechnung</strong>."
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payslip_run__state__verify
@@ -904,6 +918,8 @@ msgid ""
 "Congratulations! You created your first contract and generated your first "
 "payslip!"
 msgstr ""
+"Herzlichen Glückwunsch! Sie haben Ihren ersten Vertrag und Ihre erste "
+"Gehaltsabrechnung erstellt."
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__contract_id
@@ -1010,7 +1026,7 @@ msgstr "Einen neuen Vertrag anlegen"
 #: code:addons/hr_payroll/static/src/components/dashboard/todo_list/todo_list.xml:0
 #, python-format
 msgid "Create new todo note"
-msgstr ""
+msgstr "Eine neue To-do-Notiz anlegen"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__create_uid
@@ -1896,7 +1912,7 @@ msgstr "Gehaltsabrechnung der letzten 365 Tage"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Last Departures"
-msgstr ""
+msgstr "Letzte Austritte"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line____last_update
@@ -1991,7 +2007,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Links :"
-msgstr ""
+msgstr "Links:"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__paid
@@ -2337,7 +2353,7 @@ msgstr "Anzahl der Nachrichten mit einem Fehler beim Senden."
 #. module: hr_payroll
 #: model:res.groups,name:hr_payroll.group_hr_payroll_user
 msgid "Officer : Manage all contracts"
-msgstr ""
+msgstr "Büroangestellter: Alle Anträge verwalten"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
@@ -2352,6 +2368,8 @@ msgid ""
 "On the first tab is the amount of worked time giving you a <strong>gross "
 "amount</strong>."
 msgstr ""
+"Im erster Reiter finden Sie die geleistete Arbeitszeit, die als Bruttobetrag"
+" angegeben ist."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -2437,7 +2455,7 @@ msgstr "Übergeordnet"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__time_credit
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_contract_form_inherit
 msgid "Part Time"
-msgstr ""
+msgstr "Teilzeit"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__time_credit_type_id
@@ -2505,7 +2523,7 @@ msgstr "Bericht zur Gehaltsabrechnung"
 #: model:ir.actions.client,name:hr_payroll.hr_payroll_dashboard_open
 #: model:note.tag,name:hr_payroll.payroll_note_tag
 msgid "Payroll Dashboard"
-msgstr ""
+msgstr "Personalabrechnungsdashboard"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -2751,6 +2769,8 @@ msgstr "Periode"
 #, python-format
 msgid "Pick an Employee to see his <strong>Contract's History</strong>."
 msgstr ""
+"Wählen Sie einen Mitarbeiter aus, um seine <strong>Vertragshistorie</strong>"
+" zu sehen."
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_report__work_entry_source__planning
@@ -3254,7 +3274,7 @@ msgstr ""
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Set the Contract as <strong><q>Running</q></strong>."
-msgstr ""
+msgstr "Stellen Sie den Vertrag auf <strong><q>Laufend</q></strong>."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
@@ -3801,7 +3821,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:res.groups,comment:hr_payroll.group_hr_payroll_manager
 msgid "User have full access on the application."
-msgstr ""
+msgstr "Benutzer hat uneingeschränkten Zugriff auf die Anwendung."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
@@ -3970,7 +3990,7 @@ msgstr "Analyse Arbeitseinträge"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__work_entry_source
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_report__work_entry_source
 msgid "Work Entry Source"
-msgstr ""
+msgstr "Quelle des Arbeitseintrags"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_worked_days_line__work_entry_type_id
@@ -4159,6 +4179,8 @@ msgstr ""
 #, python-format
 msgid "You cannot validate a payslip on which the contract is cancelled"
 msgstr ""
+"Eine Gehaltsabrechnung, für die der Vertrag gekündigt wurde, kann nicht "
+"validiert werden."
 
 #. module: hr_payroll
 #. odoo-python

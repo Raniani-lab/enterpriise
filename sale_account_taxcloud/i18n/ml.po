@@ -53,7 +53,7 @@ msgstr ""
 #. module: sale_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit
 msgid "Tax"
-msgstr ""
+msgstr "നികുതി"
 
 #. module: sale_account_taxcloud
 #: code:addons/sale_account_taxcloud/models/sale_order.py:0

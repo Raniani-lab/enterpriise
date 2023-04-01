@@ -172,12 +172,12 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__image
 msgid "Image"
-msgstr ""
+msgstr "ചിത്രം"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__is_twitter_post_limit_exceed
@@ -210,7 +210,7 @@ msgstr "അവസാനം അപ്ഡേറ്റ് ചെയ്തത്"
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Likes"
-msgstr ""
+msgstr "ലൈക്സ്"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -343,7 +343,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_media
 msgid "Social Media"
-msgstr ""
+msgstr "സോഷ്യൽ മീഡിയ"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_post

@@ -363,7 +363,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "New Quotation"
-msgstr ""
+msgstr "പുതിയ ക്വോറ്റേഷൻ"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.product_action_fsm
@@ -492,7 +492,7 @@ msgstr "ക്വട്ടേഷൻസ് "
 #. module: industry_fsm_sale
 #: model:project.task.type,legend_done:industry_fsm_sale.field_service_project_stage_0
 msgid "Ready"
-msgstr ""
+msgstr "റെഡി"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_order_form_inherit_sale_project
@@ -558,12 +558,12 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__timesheet_product_id
 msgid "Service"
-msgstr ""
+msgstr "സേവനം"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Services"
-msgstr ""
+msgstr "സേവനങ്ങള്"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_task

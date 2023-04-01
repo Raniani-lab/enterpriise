@@ -47,7 +47,7 @@ msgstr ""
 #. module: helpdesk_repair
 #: model:helpdesk.ticket,legend_done:helpdesk_repair.helpdesk_repair_ticket_1
 msgid "Ready"
-msgstr ""
+msgstr "റെഡി"
 
 #. module: helpdesk_repair
 #: model:ir.model.fields,help:helpdesk_repair.field_repair_order__ticket_id

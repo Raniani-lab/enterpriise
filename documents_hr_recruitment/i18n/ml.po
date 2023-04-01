@@ -95,7 +95,7 @@ msgstr ""
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_hr_job
 msgid "Job Position"
-msgstr ""
+msgstr "ഉദ്യോഗ സ്ഥാനം"
 
 #. module: documents_hr_recruitment
 #: model:documents.folder,name:documents_hr_recruitment.documents_recruitment_folder

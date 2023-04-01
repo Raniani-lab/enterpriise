@@ -1673,6 +1673,13 @@ msgstr "Opties"
 
 #. module: appointment
 #. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Our Appointment Types"
+msgstr "Onze afspraaksoorten"
+
+#. module: appointment
+#. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Our first availability is"
@@ -1808,7 +1815,10 @@ msgid "Schedule"
 msgstr "Inplannen"
 
 #. module: appointment
+#. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
+#, python-format
 msgid "Schedule an Appointment"
 msgstr "Plan een afspraak"
 
@@ -2285,7 +2295,7 @@ msgstr "Website-berichten"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__website_message_ids
 msgid "Website communication history"
-msgstr "Geschiedenis van websitecommunicatie"
+msgstr "Website communicatiegeschiedenis"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__3

@@ -534,7 +534,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
-msgstr ""
+msgstr "In #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_barcode
@@ -1548,7 +1548,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "package"
-msgstr ""
+msgstr "paketti"
 
 #. module: stock_barcode
 #. openerp-web

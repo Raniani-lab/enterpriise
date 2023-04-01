@@ -104,9 +104,23 @@ msgstr ""
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(%s lines)"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(1 line)"
 msgstr ""
 
 #. module: account_reports
@@ -1348,7 +1362,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Download the Data Inalterability Check Report"
-msgstr ""
+msgstr "Unduh Laporan Pemeriksaan Data INalterability"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_due_date
@@ -2327,6 +2341,8 @@ msgstr ""
 #, python-format
 msgid "Only Billing Administrators are allowed to change lock dates!"
 msgstr ""
+"Hanya Administrator Tagihan yang diperbolehkan untuk mengganti tanggal "
+"tutup!"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -3058,6 +3074,13 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "This account is reported in multiple lines of the report"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported multiple times on the same line of the report"
 msgstr ""
 
 #. module: account_reports

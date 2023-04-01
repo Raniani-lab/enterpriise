@@ -24,19 +24,19 @@ msgstr ""
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
 msgid " and"
-msgstr ""
+msgstr "및"
 
 #. module: hr_holidays_gantt
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
 msgid "%(employee)s %(time_off_type)s%(period_leaves)s. \n"
-msgstr ""
+msgstr "%(employee)s %(time_off_type)s%(period_leaves)s. \n"
 
 #. module: hr_holidays_gantt
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
 msgid "%(prefix)s from the %(dfrom)s to the %(dto)s"
-msgstr ""
+msgstr "%(dfrom)s에서 %(dto)s으로 %(prefix)s"
 
 #. module: hr_holidays_gantt
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
@@ -44,7 +44,7 @@ msgstr ""
 msgid ""
 "%(prefix)s from the %(dfrom_date)s at %(dfrom)s to the %(dto_date)s at "
 "%(dto)s"
-msgstr ""
+msgstr "%(dfrom)s의 %(dfrom_date)s에서 %(dto)s의 %(dto_date)s로 %(prefix)s"
 
 #. module: hr_holidays_gantt
 #: model_terms:ir.ui.view,arch_db:hr_holidays_gantt.hr_leave_report_calendar_view_gantt
@@ -72,7 +72,7 @@ msgstr "휴가 일정표"
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
 msgid "has requested time off"
-msgstr ""
+msgstr "휴가를 신청했습니다"
 
 #. module: hr_holidays_gantt
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0

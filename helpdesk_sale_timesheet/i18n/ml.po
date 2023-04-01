@@ -144,7 +144,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:helpdesk.ticket,legend_done:helpdesk_sale_timesheet.helpdesk_ticket_24
 msgid "Ready"
-msgstr ""
+msgstr "റെഡി"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
@@ -258,4 +258,4 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Total"
-msgstr ""
+msgstr "ആകെ"

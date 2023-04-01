@@ -112,7 +112,7 @@ msgstr "허용되지 않는 비용 카테고리"
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_report_handler
 msgid "Disallowed Expenses Custom Handler"
-msgstr ""
+msgstr "허용되지 않는 경비 사용자지정 처리기"
 
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_rate
@@ -123,12 +123,12 @@ msgstr "허용되지 않는 비용 비율"
 #: model:account.report,name:account_disallowed_expenses.disallowed_expenses_report
 #: model:ir.actions.client,name:account_disallowed_expenses.action_account_report_de
 msgid "Disallowed Expenses Report"
-msgstr ""
+msgstr "허용되지 않는 경비 보고서"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.constraint,message:account_disallowed_expenses.constraint_account_disallowed_expenses_category_unique_code_in_country
 msgid "Disallowed expenses category code should be unique in each company."
-msgstr ""
+msgstr "허용되지 않는 비용에 대한 범주 코드는 각 회사별로 고유한 코드여야 합니다."
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_category__display_name
@@ -200,7 +200,7 @@ msgstr "비율"
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_form
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_tree
 msgid "Related Account(s)"
-msgstr ""
+msgstr "관련 계정"
 
 #. module: account_disallowed_expenses
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_tree
@@ -210,7 +210,7 @@ msgstr ""
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,help:account_disallowed_expenses.field_account_disallowed_expenses_category__active
 msgid "Set active to false to hide the category without removing it."
-msgstr ""
+msgstr "범주를 삭제하지 않고 숨기려면 활성화 선택을 False로 설정합니다."
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_rate__date_from
@@ -225,7 +225,7 @@ msgstr "합계 금액"
 #. module: account_disallowed_expenses
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_form
 msgid "e.g. 1201"
-msgstr ""
+msgstr "예: 1201"
 
 #. module: account_disallowed_expenses
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_disallowed_expenses_category_form

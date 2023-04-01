@@ -181,7 +181,7 @@ msgstr "Personalwesen"
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
 msgid "Send Access Link"
-msgstr ""
+msgstr "Zugangslink senden"
 
 #. module: documents_hr
 #: model:ir.actions.server,name:documents_hr.ir_actions_server_send_access_link
@@ -203,7 +203,7 @@ msgstr "Manueller Versand, wenn ein Mitarbeiter das Unternehmen verlässt"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid "The access link has been sent to the employee."
-msgstr ""
+msgstr "Der Zugangslink wurde an den Mitarbeiter gesendet."
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_users
@@ -222,6 +222,8 @@ msgid ""
 "You must set a private address on the Employee in order to use Document's "
 "features."
 msgstr ""
+"Sie müssen dem Mitarbeiter eine Privatadresse zuweisen, um die "
+"Dokumentenfunktionen nutzen zu können."
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_folder

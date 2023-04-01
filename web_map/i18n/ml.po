@@ -54,7 +54,7 @@ msgstr ""
 #: code:addons/web_map/static/src/map_view/map_renderer.js:0
 #, python-format
 msgid "Address"
-msgstr ""
+msgstr "വിലാസം"
 
 #. module: web_map
 #: model:ir.model,name:web_map.model_base
@@ -289,7 +289,7 @@ msgstr ""
 #. module: web_map
 #: model:ir.model,name:web_map.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "വ്യൂ"
 
 #. module: web_map
 #: model:ir.model.fields,field_description:web_map.field_ir_actions_act_window_view__view_mode

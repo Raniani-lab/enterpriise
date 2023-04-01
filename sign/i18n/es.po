@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2023
 # 
 msgid ""
@@ -1598,6 +1598,13 @@ msgstr "En favoritos, eliminarlo"
 #: model:ir.model.fields,field_description:sign.field_sign_log__log_hash
 msgid "Inalterability Hash"
 msgstr "Hash de inalterabilidad"
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_modal.xml:0
+#, python-format
+msgid "Include a visual security frame around your signature"
+msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form

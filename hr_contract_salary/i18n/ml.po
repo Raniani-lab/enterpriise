@@ -154,7 +154,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__advantage_ids
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "Advantage"
-msgstr ""
+msgstr "പ്രയോജനം"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__res_field_id
@@ -176,7 +176,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_advantage_action
 #: model:ir.ui.menu,name:hr_contract_salary.salary_package_advantage
 msgid "Advantages"
-msgstr ""
+msgstr "പ്രയോജനങ്ങൾ"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__always
@@ -242,12 +242,12 @@ msgstr "ബാങ്ക് അക്കൗണ്ട്"
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_acc_number
 msgid "Bank account"
-msgstr ""
+msgstr "ബാങ്ക് അക്കൗണ്ട്"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_birthdate
 msgid "Birthdate"
-msgstr ""
+msgstr "ജനനത്തീയതി"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -294,7 +294,7 @@ msgstr "സിറ്റി"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__code
 msgid "Code"
-msgstr ""
+msgstr "കോഡ്"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__color
@@ -429,7 +429,7 @@ msgstr "രാജ്യം"
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_country_of_birth
 msgid "Country of Birth"
-msgstr ""
+msgstr "ജനിച്ച രാജ്യം"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__hash_token
@@ -660,7 +660,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_gender_female
 msgid "Female"
-msgstr ""
+msgstr "സ്ത്രീ"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__field
@@ -702,7 +702,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_gender
 msgid "Gender"
-msgstr ""
+msgstr "ലിംഗഭേദം"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_applicant_view_form
@@ -790,7 +790,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__icon
@@ -800,7 +800,7 @@ msgstr "ഐക്കൺ"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__image_1920
 msgid "Image"
-msgstr ""
+msgstr "ചിത്രം"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__impacts_monthly_total
@@ -846,7 +846,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_job_id
 #, python-format
 msgid "Job Position"
-msgstr ""
+msgstr "ഉദ്യോഗ സ്ഥാനം"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -854,7 +854,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__job_title
 #, python-format
 msgid "Job Title"
-msgstr ""
+msgstr "ഉദ്യോഗ സ്ഥാനം"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__lang
@@ -1458,7 +1458,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_street
 msgid "Street"
-msgstr ""
+msgstr "സ്ട്രീറ്റ്"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_street2
@@ -1543,6 +1543,13 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_advantages
 msgid "There is no available option to customize your salary"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
+msgid ""
+"They will review your contract.<br/> Feel free to contact them if you have "
+"any questions."
 msgstr ""
 
 #. module: hr_contract_salary

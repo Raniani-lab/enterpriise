@@ -469,7 +469,7 @@ msgstr "ജീവനക്കാർ"
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_report_view_tree
 msgid "Employees Analysis"
-msgstr ""
+msgstr "എംപ്ലോയീ അനാലിസിസ് "
 
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.employee_referral_report_action
@@ -634,7 +634,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_exception_icon
@@ -663,7 +663,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__image
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__image
 msgid "Image"
-msgstr ""
+msgstr "ചിത്രം"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_applicant__referral_state__progress
@@ -688,7 +688,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_job
 msgid "Job Position"
-msgstr ""
+msgstr "ഉദ്യോഗ സ്ഥാനം"
 
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.action_hr_job_employee_referral
@@ -798,7 +798,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_link_to_share__channel__direct
 msgid "Link"
-msgstr ""
+msgstr "ലിങ്ക്"
 
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.hr_referral_link_to_share_action
@@ -916,17 +916,17 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "പിശകുകളുടെ എണ്ണം"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "ഒരു പ്രവർത്തനം ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "ഡെലിവറി പിശകുള്ള സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert__onclick
@@ -968,7 +968,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_backend_kanban
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
 msgid "Points"
-msgstr ""
+msgstr "പോയിന്റ്"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__points_not_hired
@@ -1019,7 +1019,7 @@ msgstr "പ്രോഡക്റ്റ്"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__name
 msgid "Product Name"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ് പേര്"
 
 #. module: hr_referral
 #: model_terms:ir.actions.act_window,help:hr_referral.action_hr_applicant_employee_referral
@@ -1147,7 +1147,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "ഉത്തരവാദിത്തമുള്ള യൂസർ"
 
 #. module: hr_referral
 #. openerp-web
@@ -1332,7 +1332,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert_mail_wizard__subject
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_send_mail__subject
 msgid "Subject"
-msgstr ""
+msgstr "വിഷയം"
 
 #. module: hr_referral
 #. openerp-web
@@ -1405,7 +1405,7 @@ msgstr ""
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "ആകെ"
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_link_to_share__channel__twitter
@@ -1482,7 +1482,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__website_message_ids

@@ -67,7 +67,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube__account_id
 msgid "Account"
-msgstr ""
+msgstr "അക്കൗണ്ട്"
 
 #. module: social_youtube
 #: code:addons/social_youtube/models/social_live_post.py:0
@@ -191,22 +191,22 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_access_token
 msgid "Google Access Token"
-msgstr ""
+msgstr "ഗൂഗിൾ ആക്സസ് ടോക്കൺ"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
 msgid "Google Privacy Policy"
-msgstr ""
+msgstr "ഗൂഗിൾ സ്വകാര്യതാ നയം"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_refresh_token
 msgid "Google Refresh Token"
-msgstr ""
+msgstr "ഗൂഗിൾ ടോക്കൺ പുതുക്കുക"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube____last_update
@@ -228,7 +228,7 @@ msgstr "അവസാനം അപ്ഡേറ്റ് ചെയ്തത്"
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
 msgid "Likes"
-msgstr ""
+msgstr "ലൈക്സ്"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_media__media_type
@@ -274,7 +274,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__private
 msgid "Private"
-msgstr ""
+msgstr "പ്രൈവറ്റ്"
 
 #. module: social_youtube
 #. openerp-web
@@ -286,13 +286,13 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__public
 msgid "Public"
-msgstr ""
+msgstr "പബ്ലിക് "
 
 #. module: social_youtube
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "Reason:"
-msgstr ""
+msgstr "കാരണം:"
 
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_account__youtube_refresh_token
@@ -367,7 +367,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_media
 msgid "Social Media"
-msgstr ""
+msgstr "സോഷ്യൽ മീഡിയ"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post
@@ -556,7 +556,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_media__media_type__youtube
 #: model:social.media,name:social_youtube.social_media_youtube
 msgid "YouTube"
-msgstr ""
+msgstr "യൂട്യൂബ്"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_access_token
@@ -662,7 +662,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video
 msgid "YouTube Video"
-msgstr ""
+msgstr "യൂട്യൂബ് വീഡിയോ"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_description

@@ -2136,7 +2136,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "High Priority"
-msgstr ""
+msgstr "Korkea prioriteetti"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2331,7 +2331,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Italic"
-msgstr ""
+msgstr "Kursiivi"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2951,7 +2951,7 @@ msgstr "PDF-tiedosto"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_report_paperformat
 msgid "Paper Format Config"
-msgstr ""
+msgstr "Paperin formaatin määrittäminen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4200,7 +4200,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Underline"
-msgstr ""
+msgstr "Alleviivaus"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4526,7 +4526,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "left"
-msgstr ""
+msgstr "vasen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4564,7 +4564,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "right"
-msgstr ""
+msgstr "oikea"
 
 #. module: web_studio
 #. odoo-python
@@ -4585,7 +4585,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "top"
-msgstr ""
+msgstr "ylös"
 
 #. module: web_studio
 #. odoo-javascript

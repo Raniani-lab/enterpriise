@@ -140,7 +140,7 @@ msgstr "Kontrole jakości"
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Punkt kontroli jakości"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_point_view_search_inherit_mrp_workorder

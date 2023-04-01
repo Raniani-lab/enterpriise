@@ -605,7 +605,7 @@ msgstr "عدد الإجراءات"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_has_error_counter
 msgid "Number of errors"
-msgstr "عدد الاخطاء"
+msgstr "عدد الأخطاء "
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_needaction_counter
@@ -806,7 +806,7 @@ msgstr "المعاملات "
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "نوع النشاط الاستثنائي المسجل."
+msgstr "نوع النشاط المستثنى في السجل. "
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_online_link_view_form

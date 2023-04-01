@@ -266,7 +266,7 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "Clicks"
-msgstr ""
+msgstr "ക്ലിക്കുകൾ"
 
 #. module: social
 #. odoo-javascript
@@ -302,7 +302,7 @@ msgstr "കോൺഫിഗറേഷൻ"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Connecting Problem"
-msgstr ""
+msgstr "കണക്ഷൻ പ്രശ്നം"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__social_account_handle
@@ -431,7 +431,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__draft
 msgid "Draft"
-msgstr ""
+msgstr "ഡ്രാഫ്റ്റ്"
 
 #. module: social
 #. odoo-python
@@ -601,7 +601,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_stream_post_image__id
 #: model:ir.model.fields,field_description:social.field_social_stream_type__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_exception_icon
@@ -631,7 +631,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_account__image
 #: model:ir.model.fields,field_description:social.field_social_media__image
 msgid "Image"
-msgstr ""
+msgstr "ചിത്രം"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post_image__image_url
@@ -750,14 +750,14 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Like"
-msgstr ""
+msgstr "ലൈക്"
 
 #. module: social
 #. odoo-javascript
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Likes"
-msgstr ""
+msgstr "ലൈക്സ്"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__link_description
@@ -888,7 +888,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_post_template__message
 #: model:ir.model.fields,field_description:social.field_social_stream_post__message
 msgid "Message"
-msgstr ""
+msgstr "സന്ദേശം"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_has_error
@@ -1048,7 +1048,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_has_error_counter
 #: model:ir.model.fields,field_description:social.field_social_post__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "പിശകുകളുടെ എണ്ണം"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_engagement
@@ -1060,13 +1060,13 @@ msgstr ""
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "ഒരു പ്രവർത്തനം ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter
 #: model:ir.model.fields,help:social.field_social_post__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "ഡെലിവറി പിശകുള്ള സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__engagement
@@ -1260,7 +1260,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__ready
 msgid "Ready"
-msgstr ""
+msgstr "റെഡി"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__media_type
@@ -1287,7 +1287,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "ഉത്തരവാദിത്തമുള്ള യൂസർ"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_live_post_view_form
@@ -1402,7 +1402,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
 #, python-format
 msgid "Social Media"
-msgstr ""
+msgstr "സോഷ്യൽ മീഡിയ"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_posts_count
@@ -1571,7 +1571,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Synchronize"
-msgstr ""
+msgstr "സമന്വയിപ്പിക്കുക"
 
 #. module: social
 #. odoo-python
@@ -1707,13 +1707,13 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "View"
-msgstr ""
+msgstr "വ്യൂ"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__website_message_ids
 #: model:ir.model.fields,field_description:social.field_social_post__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__website_message_ids

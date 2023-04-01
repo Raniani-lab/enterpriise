@@ -28,11 +28,14 @@ msgid ""
 "<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\"The letter will be sent using the IAP service from Odoo.&#10;Make sure you have enough credits on your account or proceed to a recharge.\"/>\n"
 "                        <br/>"
 msgstr ""
+"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Varoitus\" title=\"Kirje lähetetään Odoosta IAP-palvelua käyttäen.\n"
+"Varmista, että tililläsi on tarpeeksi krediittejä, tai lataa niitä tilillesi etukäteen.\"/>\n"
+"                        <br/>"
 
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "By post"
-msgstr ""
+msgstr "Postitse"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_res_partner
@@ -52,7 +55,7 @@ msgstr "Maksuhuomatusraportti"
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "Print/Letter"
-msgstr ""
+msgstr "Tulosta/Kirje"
 
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_followup_line__send_letter
@@ -62,7 +65,7 @@ msgstr "Lähetä kirje"
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "Sending this document by post will cost"
-msgstr ""
+msgstr "Tämän asiakirjan lähettäminen postitse maksaa"
 
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail
@@ -72,7 +75,7 @@ msgstr "Kirjeposti"
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail_cost
 msgid "Stamps"
-msgstr ""
+msgstr "Postimerkit"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_account_followup_manual_reminder
@@ -86,3 +89,5 @@ msgid ""
 "You are trying to send a letter by post, but no follow-up contact has any "
 "address set"
 msgstr ""
+"Yrität lähettää kirjeen postitse, mutta yhdellekään jatkoyhteyshenkilölle ei"
+" ole asetettu osoitetta"

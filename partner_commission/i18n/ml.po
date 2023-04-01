@@ -166,7 +166,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__id
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: partner_commission
 #: model:ir.model.fields,help:partner_commission.field_commission_rule__product_id

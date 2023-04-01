@@ -630,7 +630,7 @@ msgstr "Websiteberichten"
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__website_message_ids
 msgid "Website communication history"
-msgstr "Website communicatie geschiedenis"
+msgstr "Website communicatiegeschiedenis"
 
 #. module: account_budget
 #: code:addons/account_budget/models/account_budget.py:0

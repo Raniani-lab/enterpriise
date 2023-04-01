@@ -201,12 +201,12 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__journal_id
 msgid "Journal"
-msgstr ""
+msgstr "ജേണൽ"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_move

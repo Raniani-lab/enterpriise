@@ -826,7 +826,7 @@ msgstr "Selger"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__create_activity
 msgid "Schedule Activity"
-msgstr ""
+msgstr "Planlegg aktivitet"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_line_filter

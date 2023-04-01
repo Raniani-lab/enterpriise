@@ -83,9 +83,9 @@ msgstr ""
 #. module: website_knowledge
 #: model:ir.model,name:website_knowledge.model_website
 msgid "Website"
-msgstr "വെബ്സൈറ്റ്"
+msgstr "വെബ്‌സൈറ്റ് "
 
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__website_url
 msgid "Website URL"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് URL"

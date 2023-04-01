@@ -1616,6 +1616,13 @@ msgid "Inalterability Hash"
 msgstr "Değiştirilemez Şifre"
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_modal.xml:0
+#, python-format
+msgid "Include a visual security frame around your signature"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Information"
 msgstr "Bilgi"
@@ -2362,7 +2369,7 @@ msgstr "Gerekli Öğe Bilgileri"
 #: model:mail.activity.type,name:sign.mail_activity_data_signature_request
 #, python-format
 msgid "Request Signature"
-msgstr ""
+msgstr "İmza İste"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_total

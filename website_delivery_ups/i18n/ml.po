@@ -74,7 +74,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_payment_provider
 msgid "Payment Provider"
-msgstr ""
+msgstr "പേയ്മെന്റ് ദാതാവ്"
 
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_sale_order

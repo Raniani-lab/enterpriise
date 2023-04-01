@@ -14,7 +14,7 @@
 # Quim - eccit <quim@eccit.com>, 2022
 # Martin Trigaux, 2022
 # CristianCruzParra, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Ivan Espinola, 2023
 # 
 msgid ""
@@ -1591,6 +1591,15 @@ msgstr ""
 #, python-format
 msgid "You cannot access timesheets that are not yours."
 msgstr "No podeu accedir fulls d'hores que no són vostres."
+
+#. module: timesheet_grid
+#. odoo-python
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid ""
+"You cannot adjust the time of the timesheet for a project with timesheets "
+"disabled."
+msgstr ""
 
 #. module: timesheet_grid
 #. odoo-python

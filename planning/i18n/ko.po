@@ -684,7 +684,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_resource_resource__avatar_128
 msgid "Avatar 128"
-msgstr ""
+msgstr "아바타 128"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -1102,7 +1102,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.view_employee_filter_inherit_hr
 #: model_terms:ir.ui.view,arch_db:planning.view_resource_resource_search_inherit
 msgid "Flexible Hours"
-msgstr ""
+msgstr "유연 근무 시간"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__allocation_type__forecast

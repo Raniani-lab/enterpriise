@@ -60,5 +60,5 @@ msgstr "Борлуулалтын захиалгын мөр"
 #: code:addons/website_sale_subscription/models/product_template.py:0
 #, python-format
 msgid ""
-"You cannot have a optional product that has a different default pricing."
+"You cannot have an optional product that has a different default pricing."
 msgstr ""

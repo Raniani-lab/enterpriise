@@ -361,7 +361,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_tree
 msgid "Clicks"
-msgstr ""
+msgstr "ക്ലിക്കുകൾ"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__color
@@ -386,7 +386,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 msgid "Completed"
-msgstr ""
+msgstr "പൂർത്തിയാക്കി"
 
 #. module: marketing_automation
 #: model:ir.ui.menu,name:marketing_automation.marketing_automation_menu_configuration
@@ -617,7 +617,7 @@ msgstr "മണിക്കൂറുകൾ"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__is_mailing_campaign_activated
@@ -711,7 +711,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Mail Template"
-msgstr ""
+msgstr "മെയിൽ ടെംപ്ലേറ്റ്"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_bounce
@@ -1197,7 +1197,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__user_id
 msgid "Responsible"
-msgstr ""
+msgstr "ഉത്തരവാദിയായ"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -1349,7 +1349,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Subject"
-msgstr ""
+msgstr "വിഷയം"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_activity.py:0

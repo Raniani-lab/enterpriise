@@ -240,14 +240,13 @@ msgstr "Số lượng hàng tồn kho có sẵn trong một khoảng thời gian
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__rented_qty_during_period
 msgid "Quantity reserved"
-msgstr "Số lượng đặt trước"
+msgstr "Số lượng được dự trữ"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_rental_wizard__rented_qty_during_period
 msgid "Quantity reserved by other Rental lines during the given period"
 msgstr ""
-"Số lượng mà các chi tiết cho thuê khác đã đặt trước trong một khoảng thời "
-"gian "
+"Số lượng mà các chi tiết cho thuê khác đã dự trữ trong một khoảng thời gian "
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_sale_rental_report

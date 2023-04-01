@@ -457,12 +457,12 @@ msgstr "Układ"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manual_measurement
 msgid "Manual Measurement"
-msgstr ""
+msgstr "Pomiar manualny"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__manual_measurement
 msgid "Manually read the measurement from the device"
-msgstr ""
+msgstr "Manualnie odczytaj pomiar z urządzenia"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__is_scanner

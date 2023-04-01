@@ -923,7 +923,7 @@ msgstr "ما هو اسمك "
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2
 msgid "Work Plan"
-msgstr "خطة عمل"
+msgstr "خطة العمل "
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.actions.act_window,help:hr_appraisal_survey.survey_survey_action_appraisal

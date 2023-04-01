@@ -93,7 +93,7 @@ msgstr ""
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template____last_update

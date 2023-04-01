@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # Mustafa Rawi <mustafa@cubexco.com>, 2022
-# Malaz Abuidris <msea@odoo.com>, 2022
 # Niyas Raphy, 2022
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Niyas Raphy, 2022\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -789,7 +789,7 @@ msgstr "الموعد: تم إلغاء الموعد "
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_home_appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_home_menu_appointment
 msgid "Appointments"
-msgstr "التعيينات "
+msgstr "المواعيد  "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
@@ -1661,6 +1661,13 @@ msgstr "الخيارات "
 
 #. module: appointment
 #. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Our Appointment Types"
+msgstr ""
+
+#. module: appointment
+#. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Our first availability is"
@@ -1796,7 +1803,10 @@ msgid "Schedule"
 msgstr "جدولة "
 
 #. module: appointment
+#. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
+#, python-format
 msgid "Schedule an Appointment"
 msgstr "جدولة موعد"
 

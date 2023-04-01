@@ -28,12 +28,12 @@ msgstr "<i class=\"fa fa-globe fa-2x\" title=\"Share to web\"/>"
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Anyone can view"
-msgstr ""
+msgstr "Kann jeder sehen"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Article published"
-msgstr ""
+msgstr "Artikel veröffentlicht"
 
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__can_publish
@@ -54,12 +54,12 @@ msgstr "Wissensdatenbank-Artikel"
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.website_knowledge_article_tree_frontend
 msgid "Public articles"
-msgstr ""
+msgstr "Öffentliche Artikel"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Publish and share with anyone"
-msgstr ""
+msgstr "Veröffentlichen und mit allen teilen"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form

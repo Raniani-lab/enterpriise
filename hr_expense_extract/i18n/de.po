@@ -6,6 +6,7 @@
 # Friederike Fasterling-Nesselbosch, 2022
 # Martin Trigaux, 2022
 # Michael Hofer, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Michael Hofer, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +28,8 @@ msgstr ""
 #, python-format
 msgid "<b>Congratulations</b>, you are now an expert of Expenses."
 msgstr ""
+"<b>Herzlichen Glückwunsch!</b> Sie sind jetzt ein Meister der "
+"Spesenabrechnung."
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -34,6 +37,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Buy credits"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Guthaben kaufen"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -41,6 +46,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Refresh"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Aktualisieren"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -48,6 +55,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Resend For Digitization"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Zur Digitalisierung erneut senden"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -155,12 +164,12 @@ msgstr "Währung"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "Automatisch digitalisieren"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "Nur auf Anfrage digitalisieren"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__display_name
@@ -172,7 +181,7 @@ msgstr "Anzeigename"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "Nicht digitalisieren"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_error_message
@@ -202,7 +211,7 @@ msgstr "Auslagen OCR: Alle aktualisieren"
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_validate
 msgid "Expense OCR: Validate Expenses"
-msgstr ""
+msgstr "OCR-Spesen: Spesen validieren"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_sheet
@@ -231,12 +240,12 @@ msgstr "Auslagen gesendet"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_word_ids
 msgid "Extract Word"
-msgstr ""
+msgstr "Wort entnehmen"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_state
 msgid "Extract state"
-msgstr ""
+msgstr "Auszugstatus"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_extract_words
@@ -415,7 +424,7 @@ msgstr "Beispielbeleg: %s"
 #: model:ir.actions.server,name:hr_expense_extract.hr_expense_parse_action_server
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Für Digitalisierung versenden"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection
@@ -520,12 +529,12 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_page
 msgid "Word Page"
-msgstr ""
+msgstr "Wortseite"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_text
 msgid "Word Text"
-msgstr ""
+msgstr "Worttext"
 
 #. module: hr_expense_extract
 #. odoo-python

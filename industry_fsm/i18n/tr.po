@@ -14,10 +14,10 @@
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2022
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # Martin Trigaux, 2022
-# Tugay Hatıl <tugayh@projetgrup.com>, 2022
 # Ediz Duman <neps1192@gmail.com>, 2023
 # Halil, 2023
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
+# Tugay Hatıl <tugayh@projetgrup.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -25,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023\n"
+"Last-Translator: Tugay Hatıl <tugayh@projetgrup.com>, 2023\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -372,6 +372,8 @@ msgid ""
 "Create projects to organize your tasks and define a different workflow for "
 "each project."
 msgstr ""
+"Görevlerinizi organize etmek için projeler oluşturun ve her proje için "
+"farklı bir iş akışı tanımlayın."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
@@ -588,7 +590,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__is_closed
 msgid "Folded in Kanban stages are closing stages."
-msgstr ""
+msgstr "Katlanmış Kanban aşamaları kapanış aşamalarıdır."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -691,7 +693,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_reached
 msgid "Is Milestone Reached"
-msgstr ""
+msgstr "Dönüm Noktası Aşıldı mı?"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_is_sent
@@ -800,7 +802,7 @@ msgstr "Dönüm Noktası"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_deadline
 msgid "Milestone Deadline"
-msgstr ""
+msgstr "Kilometre Taşı Son Tarihi"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_milestones
@@ -870,7 +872,7 @@ msgstr "Fonksiyonel veya teknik yardıma gerek"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "No Rating"
-msgstr ""
+msgstr "Derecelendirme Yok"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
@@ -1009,7 +1011,7 @@ msgstr "İlgili Görevler"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_last_text
 msgid "Rating Last Text"
-msgstr ""
+msgstr "Son Metni Derecelendirme"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_last_value
@@ -1461,10 +1463,8 @@ msgstr ""
 #: model:mail.template,report_name:industry_fsm.mail_template_data_task_report
 msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
-"object.partner_id else '' }}.pdf"
+"object.partner_id.name else '' }}.pdf"
 msgstr ""
-"Çalışma sayfası {{ object.name }}{{ (' - ' + object.partner_id.name) if "
-"object.partner_id else '' }}.pdf"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_worksheets

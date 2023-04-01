@@ -629,7 +629,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.hr_employee_view_form_simplified
 msgid "Chat"
-msgstr ""
+msgstr "ചാറ്റ്"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_role__color
@@ -868,7 +868,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 #, python-format
 msgid "Draft"
-msgstr ""
+msgstr "ഡ്രാഫ്റ്റ്"
 
 #. module: planning
 #: model_terms:digest.tip,tip_description:planning.digest_tip_planning_0
@@ -1100,7 +1100,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__id
 #: model:ir.model.fields,field_description:planning.field_slot_planning_select_send__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_analysis_report__publication_warning
@@ -1164,7 +1164,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_slot__job_title
 #: model_terms:ir.ui.view,arch_db:planning.hr_employee_view_form_simplified
 msgid "Job Title"
-msgstr ""
+msgstr "ഉദ്യോഗ സ്ഥാനം"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_recurrency__last_generated_end_datetime
@@ -1267,13 +1267,13 @@ msgstr "മാനേജർ"
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Material"
-msgstr ""
+msgstr "മെറ്റീരിയൽ"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_resources
 #: model:ir.ui.menu,name:planning.planning_menu_settings_resource
 msgid "Materials"
-msgstr ""
+msgstr "മെറ്റീരിയലുകൾ"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__repeat
@@ -1477,7 +1477,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.slot_report
 #, python-format
 msgid "Planning"
-msgstr ""
+msgstr "ആസൂത്രണം"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_report_action_analysis
@@ -1692,7 +1692,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 #: model_terms:ir.ui.view,arch_db:planning.resource_planning
 msgid "Role"
-msgstr ""
+msgstr "റോൾ"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_hr_employee__default_planning_role_id
@@ -1721,7 +1721,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "Save"
-msgstr ""
+msgstr "സേവ്"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.employee_no_email_list_wizard
@@ -1820,7 +1820,7 @@ msgstr "സെറ്റിങ്ങ്സ് "
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 #, python-format
 msgid "Shift"
-msgstr ""
+msgstr "ഷിഫ്റ്റ്"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_tree
@@ -1999,7 +1999,7 @@ msgstr ""
 #: code:addons/planning/wizard/planning_send.py:0
 #, python-format
 msgid "The schedule was successfully sent to your employees."
-msgstr ""
+msgstr "ഷെഡ്യൂൾ നിങ്ങളുടെ ജീവനക്കാർക്ക് അയച്ചു."
 
 #. module: planning
 #. odoo-python
@@ -2013,7 +2013,7 @@ msgstr ""
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "The shift has successfully been sent."
-msgstr ""
+msgstr "ഷിഫ്റ്റ് വിജയകരമായി അയച്ചു."
 
 #. module: planning
 #. odoo-javascript
@@ -2054,7 +2054,7 @@ msgstr ""
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "The shifts have successfully been published."
-msgstr ""
+msgstr "ഷിഫ്റ്റുകൾ വിജയകരമായി പ്രസിദ്ധീകരിച്ചു."
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_template_check_start_time_lower_than_24
@@ -2114,7 +2114,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__was_copied
 msgid "This Shift Was Copied From Previous Week"
-msgstr ""
+msgstr "ഈ ഷിഫ്റ്റ് കഴിഞ്ഞ ആഴ്‌ചയിൽ നിന്ന് പകർത്തിയതാണ്"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
@@ -2127,6 +2127,8 @@ msgid ""
 "This open shift is no longer available, or the planning has been updated in "
 "the meantime. Please contact your manager for further information."
 msgstr ""
+"ഈ ഓപ്പൺ ഷിഫ്റ്റ് ഇനി ലഭ്യമല്ല, അല്ലെങ്കിൽ അതിനിടയിൽ പ്ലാനിംഗ് അപ്‌ഡേറ്റ് "
+"ചെയ്തിട്ടുണ്ട്. കൂടുതൽ വിവരങ്ങൾക്ക് നിങ്ങളുടെ മാനേജരെ ബന്ധപ്പെടുക."
 
 #. module: planning
 #. odoo-javascript
@@ -2159,12 +2161,12 @@ msgstr "ഇന്ന്"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Tomorrow"
-msgstr ""
+msgstr "നാളെ"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Total"
-msgstr ""
+msgstr "ആകെ"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -2262,7 +2264,7 @@ msgstr "വർഷങ്ങൾ"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Yesterday"
-msgstr ""
+msgstr "ഇന്നലെ"
 
 #. module: planning
 #. odoo-python

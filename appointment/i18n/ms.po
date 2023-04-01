@@ -1475,6 +1475,13 @@ msgstr "Pilihan"
 
 #. module: appointment
 #. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Our Appointment Types"
+msgstr ""
+
+#. module: appointment
+#. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Our first availability is"
@@ -1610,7 +1617,10 @@ msgid "Schedule"
 msgstr "Jadual"
 
 #. module: appointment
+#. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
+#, python-format
 msgid "Schedule an Appointment"
 msgstr ""
 

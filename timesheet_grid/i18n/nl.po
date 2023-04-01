@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
-# Jolien De Paepe, 2023
 # Martin Trigaux, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -147,7 +147,7 @@ msgstr ""
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate; \">\n"
 "                <tr><td valign=\"middle\">\n"
 "                    <span style=\"font-size: 10px;\">Je urenstaten</span><br/>\n"
-"                    <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"object.name of ''\">Abigail Peterson</span>\n"
+"                    <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"object.name or ''\">Abigail Peterson</span>\n"
 "                </td><td valign=\"middle\" align=\"right\">\n"
 "                    <img t-attf-src=\"/logo.png?company={{ object.company_id.id }}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" t-att-alt=\"object.company_id.name\"/>\n"
 "                </td></tr>\n"
@@ -165,8 +165,8 @@ msgstr ""
 "                    <t t-set=\"timesheet_hours\" t-value=\"ctx.get('timesheet_hours', 0)\"/>\n"
 "                    <t t-set=\"werkuren\" t-value=\"ctx.get('werkuren', 0)\"/>\n"
 "                    <div>\n"
-"                        Hallo <t t-out=\"object.name of ''\">Abigail Peterson</t>,<br/><br/>\n"
-"                        Dit is een vriendelijke herinnering om je uren te registreren voor de volgende periode: <t t-out=\"ctx.get('date_start') of ''\">05/05/2021</t> <i class=\"fa fa -long-arrow-right\"/> <t t-out=\"ctx.get('date_stop') of ''\">05/06/2021</t>.\n"
+"                        Hallo <t t-out=\"object.name or ''\">Abigail Peterson</t>,<br/><br/>\n"
+"                        Dit is een vriendelijke herinnering om je uren te registreren voor de volgende periode: <t t-out=\"ctx.get('date_start') or ''\">05/05/2021</t> <i class=\"fa fa -long-arrow-right\"/> <t t-out=\"ctx.get('date_stop') or ''\">05/06/2021</t>.\n"
 "                        Voorlopig heb je <t t-if=\"timesheet_hours != 0\">alleen</t> <t t-out=\"'%d' %int(timesheet_hours)\">2</t><t t-if=\"timesheet_hours % 1 != 0\" t-out=\"':%02d' % (round(timesheet_hours % 1 * 60))\">:30</t> uur op de <t t-out= \"'%d' %int(working_hours)\">8</t><t t-if=\"working_hours % 1 != 0\" t-out=\"':%02d' % (round(working_hours % 1 * 60 ))\">:30</t> aangevraagd.<br/>\n"
 "                        <div t-if=\"ctx.get('action_url')\" style=\"marge: 16px 0px 16px 0px;\">\n"
 "                            <a t-att-href=\"ctx.get('action_url')\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">Vul je urenstaat in</a>\n"
@@ -1582,6 +1582,17 @@ msgstr ""
 #, python-format
 msgid "You cannot access timesheets that are not yours."
 msgstr "Je kunt geen urenstaten bekijken die niet van jezelf zijn."
+
+#. module: timesheet_grid
+#. odoo-python
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid ""
+"You cannot adjust the time of the timesheet for a project with timesheets "
+"disabled."
+msgstr ""
+"Je kan de tijd van een urenstaat voor een project met uitgeschakelde "
+"urenstaten niet aanpassen."
 
 #. module: timesheet_grid
 #. odoo-python

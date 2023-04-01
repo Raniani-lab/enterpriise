@@ -352,7 +352,7 @@ msgstr "الأيقونة"
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr "الأيقونة للإشارة إلى استثناء النشاط"
+msgstr "الأيقونة للإشارة إلى النشاط المستثنى "
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_needaction
@@ -593,7 +593,7 @@ msgstr "للموافقة على الميزانية "
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Today Activities"
-msgstr "نشاطات اليوم"
+msgstr "أنشطة اليوم "
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_analytic_account__total_planned_amount

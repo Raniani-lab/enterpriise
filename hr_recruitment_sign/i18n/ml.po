@@ -124,7 +124,7 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard____last_update
@@ -149,7 +149,7 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__message
 msgid "Message"
-msgstr ""
+msgstr "സന്ദേശം"
 
 #. module: hr_recruitment_sign
 #: code:addons/hr_recruitment_sign/wizard/hr_recruitment_sign_document_wizard.py:0
@@ -188,7 +188,7 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__responsible_id
 msgid "Responsible"
-msgstr ""
+msgstr "ഉത്തരവാദിയായ"
 
 #. module: hr_recruitment_sign
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_sign.hr_recruitment_sign_view
@@ -230,7 +230,7 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__subject
 msgid "Subject"
-msgstr ""
+msgstr "വിഷയം"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__template_warning

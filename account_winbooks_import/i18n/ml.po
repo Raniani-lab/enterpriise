@@ -90,7 +90,7 @@ msgstr "ഫയൽ"
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: account_winbooks_import
 #: model_terms:ir.ui.view,arch_db:account_winbooks_import.winbooks_import_form

@@ -1991,7 +1991,7 @@ msgstr "Utilisateurs internes invités"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__privacy_visibility__portal
 msgid "Invited portal users and all internal users"
-msgstr "Tous les utilisateurs internes et les utilateurs portail invités"
+msgstr "Tous les utilisateurs internes et les utilisateurs portail invités"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_is_follower

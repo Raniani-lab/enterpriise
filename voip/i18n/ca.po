@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Carles Antoli <carlesantoli@hotmail.com>, 2022
-# Josep Anton Belchi, 2022
+# jabelchi, 2022
 # RGB Consulting <odoo@rgbconsulting.com>, 2022
 # Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
@@ -107,6 +107,15 @@ msgid ""
 msgstr ""
 "S'ha produït un error en el dispositiu d'enregistrament d'àudio "
 "(%(errorName)s):</br>%(errorMessage)s"
+
+#. module: voip
+#. odoo-javascript
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"An error occurred during the instantiation of the User Agent:</br></br> "
+"%(error message)s"
+msgstr ""
 
 #. module: voip
 #. openerp-web

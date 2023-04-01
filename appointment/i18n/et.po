@@ -18,7 +18,7 @@
 # Triine Aavik <triine@avalah.ee>, 2022
 # Patrick-Jordan Kiudorv, 2022
 # Leaanika Randmets, 2022
-# Jana Jaakson, 2023
+# JanaAvalah, 2023
 # Anna, 2023
 # 
 msgid ""
@@ -1681,6 +1681,13 @@ msgstr "Seaded"
 
 #. module: appointment
 #. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Our Appointment Types"
+msgstr ""
+
+#. module: appointment
+#. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Our first availability is"
@@ -1816,7 +1823,10 @@ msgid "Schedule"
 msgstr "Graafik"
 
 #. module: appointment
+#. odoo-javascript
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
+#, python-format
 msgid "Schedule an Appointment"
 msgstr "Planeerige kohtumine"
 

@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Mehjabin Farsana, 2022
 # Niyas Raphy, 2023
 # Malaz Abuidris <msea@odoo.com>, 2023
 # 
@@ -190,7 +189,7 @@ msgstr "وضع الرقمنة في فواتير الموردين "
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__auto_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__auto_send
 msgid "Digitize automatically"
-msgstr "التحويل الرقمي تلقائيًا"
+msgstr "الرقمنة تلقائياً "
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__manual_send
@@ -460,7 +459,7 @@ msgstr "بانتظار الاستخلاص "
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr "منتظر رفع"
+msgstr "بانتظار الرفع "
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_validation

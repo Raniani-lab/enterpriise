@@ -2986,7 +2986,7 @@ msgstr "Lagre denne saken og endringene du har gjort i den."
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Schedule your <b>activity</b>."
-msgstr ""
+msgstr "Planlegg din <b>aktivitet </b>."
 
 #. module: helpdesk
 #. odoo-python

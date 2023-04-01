@@ -1168,6 +1168,13 @@ msgstr "Sie können nicht vor dem vorherigen Genehmigenden genehmigen."
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
+msgid ""
+"You cannot assign the same approver multiple times on the same request."
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
 msgid "You have to add at least %s approvers to confirm your request."
 msgstr ""
 "Sie müssen mindestens %s Genehmigende hinzufügen, um Ihre Anfrage zu "

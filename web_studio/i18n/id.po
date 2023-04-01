@@ -704,7 +704,7 @@ msgstr "Base"
 #: code:addons/web_studio/static/src/legacy/js/reports/report_kanban_view.js:0
 #, python-format
 msgid "Blank"
-msgstr "Blank"
+msgstr "Kosong"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1373,7 +1373,7 @@ msgstr "Mode Tampilan Default"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default Group by"
-msgstr "Kelompokkan Default Berdasarkan"
+msgstr "Kelompokkan Berdasarkan"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2455,7 +2455,7 @@ msgstr "Batasi pemberi persetujuan ke peraturan ini"
 #: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "Limit visibility to groups"
-msgstr "Batasi visibilitas ke kelompok-kelompok"
+msgstr "Batasi visibilitas ke kelompok"
 
 #. module: web_studio
 #. odoo-javascript

@@ -1389,7 +1389,7 @@ msgstr "Toon nulsaldo-regels"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__sign
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__sign
 msgid "Sign"
-msgstr "E-sign"
+msgstr "Ondertekenen"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__date_company_begin
@@ -1584,7 +1584,7 @@ msgstr "Websiteberichten"
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__website_message_ids
 msgid "Website communication history"
-msgstr "Website communicatie geschiedenis"
+msgstr "Website communicatiegeschiedenis"
 
 #. module: account_consolidation
 #. odoo-python

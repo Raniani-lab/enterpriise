@@ -114,7 +114,7 @@ msgstr ""
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead____last_update

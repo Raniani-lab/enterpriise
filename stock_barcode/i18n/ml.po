@@ -507,7 +507,7 @@ msgstr "ജനറൽ"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0

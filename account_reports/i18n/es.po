@@ -5,10 +5,11 @@
 # Translators:
 # Sebastian Brandt <brs@odoo.com>, 2022
 # Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # Martin Trigaux, 2023
 # Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2023
+# Hamza Islam, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:51+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2023\n"
+"Last-Translator: Hamza Islam, 2023\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,10 +116,24 @@ msgstr "(+) Recibos pendientes "
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(%s lines)"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
 msgstr "(-) Pagos pendientes "
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(1 line)"
+msgstr ""
 
 #. module: account_reports
 #. odoo-python
@@ -135,12 +150,12 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Sorted by date"
-msgstr ""
+msgstr ", ordenar por fecha"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Sorted by number"
-msgstr ""
+msgstr ", ordenar por número"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
@@ -1760,7 +1775,7 @@ msgstr "Agrupar por"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group By Months"
-msgstr ""
+msgstr "Agrupar por meses"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_horizontal_group_form
@@ -1770,7 +1785,7 @@ msgstr "Nombre del grupo"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group by months"
-msgstr ""
+msgstr "Agrupar por meses"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1780,7 +1795,7 @@ msgstr "Agrupar por "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Grouped by month"
-msgstr ""
+msgstr "Agrupar por mes"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1856,7 +1871,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include Payments"
-msgstr ""
+msgstr "Incluir pagos"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -2018,7 +2033,7 @@ msgstr "Apuntes contables para la auditoría de impuestos"
 #: model:ir.actions.client,name:account_reports.action_account_report_ja
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_ja
 msgid "Journal Report"
-msgstr ""
+msgstr "Reporte de diario"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_journal_report_handler
@@ -2827,22 +2842,22 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort By Date"
-msgstr ""
+msgstr "Ordenar por fecha"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort by date"
-msgstr ""
+msgstr "Ordenar por fecha"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sorted by date"
-msgstr ""
+msgstr "Ordenado por fecha"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sorted by number"
-msgstr ""
+msgstr "Ordenado por número"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_representative_id
@@ -3127,6 +3142,13 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "This account is reported in multiple lines of the report"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported multiple times on the same line of the report"
 msgstr ""
 
 #. module: account_reports

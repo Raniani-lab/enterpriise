@@ -803,7 +803,7 @@ msgstr "Kontrola jakości do zrobienia"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Punkt kontroli jakości"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point_test_type
@@ -814,7 +814,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_ids
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_point_ids
 msgid "Quality Point"
-msgstr ""
+msgstr "Punkt jakości"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search

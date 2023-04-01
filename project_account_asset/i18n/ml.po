@@ -22,13 +22,13 @@ msgstr ""
 #. module: project_account_asset
 #: model:ir.model.fields,field_description:project_account_asset.field_project_project__assets_count
 msgid "# Assets"
-msgstr ""
+msgstr "# അസ്സറ്സ്"
 
 #. module: project_account_asset
 #: code:addons/project_account_asset/models/project.py:0
 #, python-format
 msgid "Assets"
-msgstr ""
+msgstr "അസ്സറ്സ്"
 
 #. module: project_account_asset
 #: model:ir.model,name:project_account_asset.model_project_project

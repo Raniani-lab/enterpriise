@@ -215,12 +215,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__id
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
 msgid "Journal"
-msgstr ""
+msgstr "ജേണൽ"
 
 #. module: account_auto_transfer
 #: model:ir.model,name:account_auto_transfer.model_account_move

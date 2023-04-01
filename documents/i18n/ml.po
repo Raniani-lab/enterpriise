@@ -615,7 +615,7 @@ msgstr ""
 #. module: documents
 #: model:documents.facet,name:documents.documents_marketing_assets
 msgid "Assets"
-msgstr ""
+msgstr "അസ്സറ്സ്"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -866,7 +866,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Creation Date"
-msgstr ""
+msgstr "സൃഷ്ടിച്ച തീയതി"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__condition_type__criteria
@@ -1313,7 +1313,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_thread_id
@@ -1515,7 +1515,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
 msgid "Link"
-msgstr ""
+msgstr "ലിങ്ക്"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
@@ -1784,19 +1784,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "പിശകുകളുടെ എണ്ണം"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "ഒരു പ്രവർത്തനം ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "ഡെലിവറി പിശകുള്ള സന്ദേശങ്ങളുടെ എണ്ണം"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -2065,12 +2065,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_user_id
 msgid "Responsible"
-msgstr ""
+msgstr "ഉത്തരവാദിയായ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "ഉത്തരവാദിത്തമുള്ള യൂസർ"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -2092,7 +2092,7 @@ msgstr "സെയിൽസ്"
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "Save"
-msgstr ""
+msgstr "സേവ്"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
@@ -2257,7 +2257,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Size"
-msgstr ""
+msgstr "വലിപ്പം"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__link_model
@@ -2331,7 +2331,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "Tag Name"
-msgstr ""
+msgstr "ടാഗ് പേര്"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_tag_facet_name_unique
@@ -2612,7 +2612,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__website_message_ids

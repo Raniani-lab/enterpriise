@@ -1251,7 +1251,7 @@ msgstr "총 증가"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_id
 msgid "Gross Increase Account"
-msgstr ""
+msgstr "총 증가 계정"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_value
@@ -2050,7 +2050,7 @@ msgstr "레코드에 있는 예외 활동의 유형입니다."
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Value at Import"
-msgstr ""
+msgstr "가져오기할 때의 값"
 
 #. module: account_asset
 #. odoo-python

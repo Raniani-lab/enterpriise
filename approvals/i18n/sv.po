@@ -14,7 +14,7 @@
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # Martin Trigaux, 2022
 # Simon S, 2022
-# Lasse Larsson, 2022
+# Lasse L, 2022
 # Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2023
 # 
 msgid ""
@@ -1148,6 +1148,13 @@ msgstr ""
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You cannot approve before the previous approver."
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
+msgid ""
+"You cannot assign the same approver multiple times on the same request."
 msgstr ""
 
 #. module: approvals

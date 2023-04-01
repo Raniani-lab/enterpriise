@@ -19,7 +19,7 @@
 # marcescu, 2022
 # Martin Trigaux, 2022
 # Arnau Ros, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Ivan Espinola, 2023
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
@@ -1670,6 +1670,13 @@ msgid "Inalterability Hash"
 msgstr "Hash d'inalterabilitat"
 
 #. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/xml/sign_modal.xml:0
+#, python-format
+msgid "Include a visual security frame around your signature"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Information"
 msgstr "Informació"
@@ -2853,6 +2860,8 @@ msgstr "Resum del senyalador:"
 
 #. module: sign
 #. odoo-javascript
+#. odoo-python
+#: code:addons/sign/models/sign_request.py:0
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #: code:addons/sign/static/src/xml/sign_common.xml:0

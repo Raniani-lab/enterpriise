@@ -155,7 +155,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__is_signature_request
@@ -185,7 +185,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__message
 msgid "Message"
-msgstr ""
+msgstr "സന്ദേശം"
 
 #. module: hr_contract_sign
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
@@ -241,7 +241,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__responsible_id
 msgid "Responsible"
-msgstr ""
+msgstr "ഉത്തരവാദിയായ"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__responsible_count
@@ -295,7 +295,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__subject
 msgid "Subject"
-msgstr ""
+msgstr "വിഷയം"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__template_warning

@@ -78,7 +78,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__id
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking____last_update

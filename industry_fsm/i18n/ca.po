@@ -15,7 +15,7 @@
 # Quim - eccit <quim@eccit.com>, 2022
 # Cristian Cruz, 2022
 # Ivan Espinola, 2022
-# Farouk Jabiri, 2022
+# jabiri7, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
@@ -1493,10 +1493,8 @@ msgstr "Full de treball completat"
 #: model:mail.template,report_name:industry_fsm.mail_template_data_task_report
 msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
-"object.partner_id else '' }}.pdf"
+"object.partner_id.name else '' }}.pdf"
 msgstr ""
-"Full de treball {{ object.name }}{{ (' - ' + object.partnerid.name) if "
-"object.partnerid else '' }}.pdf"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_worksheets

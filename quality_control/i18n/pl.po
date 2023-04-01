@@ -913,7 +913,7 @@ msgstr "Kontrola jakości"
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Punkt kontroli jakości"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_product_product__quality_control_point_qty
@@ -924,7 +924,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_point_action
 msgid "Quality Control Points"
-msgstr ""
+msgstr "Punkty kontroli jakości"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_product_product__quality_fail_qty

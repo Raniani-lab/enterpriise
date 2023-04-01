@@ -187,7 +187,7 @@ msgstr "ഓപ്പൺ"
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Plan"
-msgstr ""
+msgstr "പ്ലാൻ"
 
 #. module: web_gantt
 #. openerp-web
@@ -242,21 +242,21 @@ msgstr ""
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "വ്യൂ"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "ആഴ്ച"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "വർഷം"
 
 #. module: web_gantt
 #: code:addons/web_gantt/models/models.py:0

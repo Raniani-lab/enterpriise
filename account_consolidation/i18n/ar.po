@@ -216,21 +216,21 @@ msgstr "مجموعات الحساب "
 #: model:ir.actions.act_window,name:account_consolidation.account_mapping_action
 #: model:ir.actions.act_window,name:account_consolidation.account_mapping_from_period_action
 msgid "Account Mapping"
-msgstr "تعيين الحسابات "
+msgstr "تخطيط الحسابات "
 
 #. module: account_consolidation
 #. odoo-python
 #: code:addons/account_consolidation/models/consolidation_coa.py:0
 #, python-format
 msgid "Account Mapping: %(chart)s"
-msgstr "تعيين الحساب: %(chart)s"
+msgstr "تخطيط الحساب: %(chart)s"
 
 #. module: account_consolidation
 #. odoo-python
 #: code:addons/account_consolidation/models/res_company.py:0
 #, python-format
 msgid "Account Mapping: %(company)s"
-msgstr "تعيين الحساب: %(company)s"
+msgstr "تخطيط الحساب: %(company)s"
 
 #. module: account_consolidation
 #. odoo-python
@@ -415,17 +415,17 @@ msgstr "رسم البياني"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
 msgid "Chart of Accounts"
-msgstr "مخطط الحسابات "
+msgstr "شجرة الحسابات "
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
 msgid "Chart of account set !"
-msgstr "تم ضبط مخطط الحسابات! "
+msgstr "تم ضبط شجرة الحسابات! "
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "Chart of accounts"
-msgstr "مخطط الحسابات "
+msgstr "شجرة الحسابات "
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_tree
@@ -473,7 +473,7 @@ msgstr "اللون"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__color
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__color
 msgid "Color Index"
-msgstr "معرف اللون"
+msgstr "مؤشر اللون "
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_res_company
@@ -519,7 +519,7 @@ msgstr "فترات الشركة "
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__company_unmapped_accounts_counts
 msgid "Company Unmapped Accounts Counts"
-msgstr "عدد حسابات الشركة غير المعينة "
+msgstr "عدد حسابات الشركة غير المخططة "
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__composed_period_id

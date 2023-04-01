@@ -14,7 +14,7 @@
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
-# Jana Jaakson, 2023
+# JanaAvalah, 2023
 # Anna, 2023
 # Leaanika Randmets, 2023
 # 
@@ -107,6 +107,15 @@ msgid ""
 msgstr ""
 "Seoses helisalvestusseadmega ilmnes viga "
 "(%(errorName)s):</br>%(errorMessage)s"
+
+#. module: voip
+#. odoo-javascript
+#: code:addons/voip/static/src/js/user_agent.js:0
+#, python-format
+msgid ""
+"An error occurred during the instantiation of the User Agent:</br></br> "
+"%(error message)s"
+msgstr ""
 
 #. module: voip
 #. openerp-web

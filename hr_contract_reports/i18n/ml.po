@@ -100,7 +100,7 @@ msgstr "എംപ്ലോയീ "
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.hr_contract_employee_report_view_tree
 msgid "Employees Analysis"
-msgstr ""
+msgstr "എംപ്ലോയീ അനാലിസിസ് "
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
@@ -110,12 +110,12 @@ msgstr "ഗ്രൂപ്പ് ബൈ"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 msgid "Last 365 Days"
-msgstr ""
+msgstr "കഴിഞ്ഞ 365 ദിവസം"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard

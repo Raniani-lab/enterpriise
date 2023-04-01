@@ -133,7 +133,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__id
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill_report__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields.selection,name:hr_appraisal_skills.selection__hr_appraisal_skill_report__evolution__improvement

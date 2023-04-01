@@ -823,7 +823,7 @@ msgstr "Automatisoitu toiminto"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__auto_close_limit
 msgid "Automatic Closing"
-msgstr ""
+msgstr "Automaattinen sulkeminen"
 
 #. module: sale_subscription
 #. odoo-python
@@ -1484,7 +1484,7 @@ msgstr "Ryhmät"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Happy face"
-msgstr ""
+msgstr "Iloiset kasvot"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__health
@@ -2006,7 +2006,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Neutral face"
-msgstr ""
+msgstr "Neutraali naama"
 
 #. module: sale_subscription
 #. odoo-python
@@ -2498,7 +2498,7 @@ msgstr "SMS Malli"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Sad face"
-msgstr ""
+msgstr "Surulliset kasvot"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__order_id
@@ -3253,6 +3253,13 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "This upsell order has been created from the subscription"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid ""
+"This will trigger the action on all linked subscriptions, regardless of "
+"possible timed conditions. Are you sure you want to proceed?"
 msgstr ""
 
 #. module: sale_subscription

@@ -6,8 +6,8 @@
 # keecome <7017511@qq.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # Martin Trigaux, 2023
-# Emily Jia <eji@odoo.com>, 2023
 # Jeffery CHEN Fan <jeffery9@gmail.com>, 2023
+# Emily Jia <eji@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:51+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2023\n"
+"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -107,10 +107,24 @@ msgstr "(+) 未完成收据"
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(%s lines)"
+msgstr "（%s行）"
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
 msgstr "(-)未完成付款"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "(1 line)"
+msgstr "（1行）"
 
 #. module: account_reports
 #. odoo-python
@@ -3106,6 +3120,13 @@ msgstr "此科目在报表的某一行中报告，但在会计科目表中不存
 #, python-format
 msgid "This account is reported in multiple lines of the report"
 msgstr "此帐户在报告的多行中报告"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported multiple times on the same line of the report"
+msgstr "该科目在报告的同一行多次报告"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form

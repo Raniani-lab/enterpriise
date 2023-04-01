@@ -199,7 +199,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_chart_template
 msgid "Account Chart Template"
-msgstr ""
+msgstr "അക്കൗണ്ട് ചാർട്ട് ടെംപ്ലേറ്റ്"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__account_followup_followup_line__activity_default_responsible_type__account_manager
@@ -575,7 +575,7 @@ msgstr "ഗ്രൂപ്പ് ബൈ"
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__id
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__id
 msgid "ID"
-msgstr ""
+msgstr "ഐഡി"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.followup_search_template
@@ -622,7 +622,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__lang
 msgid "Language"
-msgstr ""
+msgstr "ഭാഷ"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line____last_update
@@ -656,7 +656,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__mail_template_id
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__template_id
 msgid "Mail Template"
-msgstr ""
+msgstr "മെയിൽ ടെംപ്ലേറ്റ്"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_reminder_type__manual
@@ -805,12 +805,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_responsible_id
 #: model:ir.model.fields,field_description:account_followup.field_res_users__followup_responsible_id
 msgid "Responsible"
-msgstr ""
+msgstr "ഉത്തരവാദിയായ"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "SMS"
-msgstr ""
+msgstr "എസ്എംഎസ്"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__account_followup_followup_line__activity_default_responsible_type__salesperson
@@ -882,7 +882,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__subject
 msgid "Subject"
-msgstr ""
+msgstr "വിഷയം"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__activity_summary
@@ -911,12 +911,12 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_tree_view
 msgid "Total"
-msgstr ""
+msgstr "ആകെ"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Total Amount"
-msgstr ""
+msgstr "മൊത്തം തുക"
 
 #. module: account_followup
 #. odoo-python

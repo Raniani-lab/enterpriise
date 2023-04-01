@@ -59,7 +59,7 @@ msgstr "Vertraging"
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Deny"
-msgstr "Weiger"
+msgstr "Weigeren"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__display_name

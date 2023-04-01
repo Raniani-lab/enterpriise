@@ -52,7 +52,7 @@ msgstr "There are"
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order
 msgid "matching the communication of the bank statement line."
-msgstr ""
+msgstr "은행거래명세서 내역의 항목과 일치합니다."
 
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order

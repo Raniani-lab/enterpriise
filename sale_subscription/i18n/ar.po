@@ -3699,6 +3699,13 @@ msgstr "لقد تم إنشاء أمر الارتقاء بالصفقة هذا م�
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid ""
+"This will trigger the action on all linked subscriptions, regardless of "
+"possible timed conditions. Are you sure you want to proceed?"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
+msgid ""
 "This will trigger the action on all linked subsccriptions, regardless of "
 "possible timed conditions. Are you sure you want to proceed?"
 msgstr ""
@@ -3983,7 +3990,7 @@ msgid ""
 "                If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
 "متى يتم تفعيل الشرط.\n"
-"                إذا كان موجوداً، سيتم التحقق منع من قِبَل المجدوِل. إذا كان فارغاً، سيتم التحقق منه عند الإنشاء والتحديث. "
+"                إذا كان موجوداً، سيتم التحقق منه من قِبَل المجدوِل. إذا كان فارغاً، سيتم التحقق منه عند الإنشاء والتحديث. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active

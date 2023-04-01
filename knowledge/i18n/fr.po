@@ -148,8 +148,8 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Remove from Trash"
-msgstr "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Retirer de la corbeille"
+msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Restore from Trash"
+msgstr "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Restaurer depuis la corbeille"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2338,6 +2338,7 @@ msgstr "Utilisateur responsable"
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #, python-format
 msgid "Restore"
 msgstr "Restaurer"

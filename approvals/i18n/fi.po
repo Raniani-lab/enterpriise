@@ -1179,6 +1179,13 @@ msgstr "Et voi hyväksyä ennen edellistä hyväksyjää."
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
+msgid ""
+"You cannot assign the same approver multiple times on the same request."
+msgstr ""
+
+#. module: approvals
+#: code:addons/approvals/models/approval_request.py:0
+#, python-format
 msgid "You have to add at least %s approvers to confirm your request."
 msgstr "Sinun on lisättävä vähintään %s hyväksyjää vahvistamaan pyyntösi."
 

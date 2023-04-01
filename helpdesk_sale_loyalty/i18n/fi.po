@@ -60,7 +60,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_loyalty.helpdesk_ticket_view_form_inherit_helpdesk_sale_coupon
 #, python-format
 msgid "Coupons"
-msgstr ""
+msgstr "Kupongit"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_ticket__coupons_count

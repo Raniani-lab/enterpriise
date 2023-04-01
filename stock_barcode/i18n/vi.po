@@ -3,10 +3,9 @@
 # 	* stock_barcode
 # 
 # Translators:
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
 # Duy BQ <duybq86@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Thi Huong Nguyen, 2022
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2022\n"
+"Last-Translator: Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,16 +27,18 @@ msgstr ""
 #, python-format
 msgid "%s can't be inventoried. Only storable products can be inventoried."
 msgstr ""
+"%s không thể kiểm kê được. Chỉ những sản phẩm có thể lưu trữ mới có thể được"
+" kiểm kê."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-archive me-3\" title=\"Package\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-archive me-3\" title=\"Gói hàng\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-archive me-3\" title=\"Source Package\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-archive me-3\" title=\"Gói gốc\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -45,45 +46,47 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\" "
 "attrs=\"{'invisible': [('tracking', 'not in', ['serial', 'lot'])]}\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Số sê-ri/số lô\" "
+"attrs=\"{'invisible': [('tracking', 'not in', ['serial', 'lot'])]}\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Số sê-ri/số lô\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Counted Quantity\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Số lượng đã đếm\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Quantity\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Số lượng\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-cubes me-3\" title=\"Locations\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-cubes me-3\" title=\"Địa điểm\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid ""
 "<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Destination "
 "Location\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Điểm đến\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid ""
 "<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Destination "
 "Package\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Gói đến\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-map-marker me-3\" title=\"Location\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-map-marker me-3\" title=\"Location\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -91,32 +94,34 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-map-marker text-center me-3\" title=\"Source "
 "Location\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-map-marker text-center me-3\" title=\"Điểm "
+"đi\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-tags me-3\" title=\"Product\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-tags me-3\" title=\"Sản phẩm\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-user-o me-3\" title=\"Owner\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-user-o me-3\" title=\"Chủ sở hữu\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-user-o text-center me-3\" title=\"Owner\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-user-o text-center me-3\" title=\"Chủ sở hữu\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
 msgid "<i class=\"fa fa-lg fa-archive\" title=\"Package\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-lg fa-archive\" title=\"Gói\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
 msgid "<i class=\"fa fa-lg fa-user-o\" title=\"Owner\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-lg fa-user-o\" title=\"Chủ sở hữu\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
@@ -131,7 +136,7 @@ msgstr "<i class=\"fa fa-print\"/> In thử một trang Mã vạch"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-trash-o\"/> Delete"
-msgstr ""
+msgstr "<i class=\"fa fa-trash-o\"/> Xóa"
 
 #. module: stock_barcode
 #. openerp-web
@@ -141,6 +146,8 @@ msgid ""
 "A product tracked by serial numbers can't have multiple quantities for the "
 "same serial number."
 msgstr ""
+"Một sản phẩm được theo dõi bằng số sê-ri không thể có số lượng nhiều cho "
+"cùng một số sê-ri."
 
 #. module: stock_barcode
 #. openerp-web
@@ -154,26 +161,26 @@ msgstr "Thêm sản phẩm"
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #, python-format
 msgid "Add extra product?"
-msgstr ""
+msgstr "Thêm sản phẩm bổ sung?"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_put_in_pack__mandatory
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_scan_dest_location__mandatory
 msgid "After each product"
-msgstr ""
+msgstr "Sau mỗi sản phẩm"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_put_in_pack__optional
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_scan_dest_location__optional
 msgid "After group of Products"
-msgstr ""
+msgstr "Sau nhóm sản phẩm"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "All products need to be packed"
-msgstr ""
+msgstr "Tất cả các sản phẩm cần phải được đóng gói"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_barcode
@@ -183,7 +190,7 @@ msgstr "Cấp phát"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__barcode_validation_full
 msgid "Allow full picking validation"
-msgstr ""
+msgstr "Cho phép xác nhận chọn đầy đủ"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__barcode_validation_full
@@ -191,6 +198,8 @@ msgid ""
 "Allow to validate a picking even if nothing was scanned yet (and so, do an "
 "immediate transfert)"
 msgstr ""
+"Cho phép xác thực việc lấy hàng ngay cả khi chưa có gì được quét (và do đó, "
+"thực hiện chuyển ngay lập tức)"
 
 #. module: stock_barcode
 #. openerp-web
@@ -200,6 +209,8 @@ msgid ""
 "An unexisting package type was scanned. This part of the barcode can't be "
 "processed."
 msgstr ""
+"Một loại gói không tồn tại đã được quét. Không thể xử lý phần này của mã "
+"vạch."
 
 #. module: stock_barcode
 #. openerp-web
@@ -211,7 +222,7 @@ msgstr "Áp dụng"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
 msgid "Are you sure you want to cancel this operation ?"
-msgstr ""
+msgstr "Bạn có chắc chắn muốn hủy thao tác này không?"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_backorder_confirmation
@@ -233,12 +244,12 @@ msgstr "Mã vạch"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 msgid "Barcode App"
-msgstr ""
+msgstr "Ứng dụng mã vạch"
 
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
 msgid "Barcode Inventory Client Action"
-msgstr ""
+msgstr "Hành động khách kiểm kê mã vạch"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
@@ -268,6 +279,7 @@ msgstr "Quét mã vạch"
 #, python-format
 msgid "Barcode scan is ambiguous with several model: %s. Use the most likely."
 msgstr ""
+"Quét mã vạch không rõ ràng với một số đối tượng: %s. Sử dụng khả năng nhất."
 
 #. module: stock_barcode
 #: model:product.product,name:stock_barcode.product_cable_management_box_2
@@ -286,23 +298,23 @@ msgstr "Hủy"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_barcode_cancel_operation
 msgid "Cancel Operation"
-msgstr ""
+msgstr "Hủy hoạt động"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
 msgid "Cancel operation"
-msgstr ""
+msgstr "Hủy hoạt động"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Cancel this operation ?"
-msgstr ""
+msgstr "Hủy thao tác này?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__is_completed
 msgid "Check if the quantity done matches the demand"
-msgstr ""
+msgstr "Kiểm tra xem số lượng thực hiện có phù hợp với nhu cầu không"
 
 #. module: stock_barcode
 #. openerp-web
@@ -359,13 +371,13 @@ msgstr "Được tạo vào"
 #: model:product.product,name:stock_barcode.product_custom_cabinet_metric
 #: model:product.template,name:stock_barcode.product_custom_cabinet_metric_product_template
 msgid "Customized Cabinet (Metric)"
-msgstr ""
+msgstr "Tủ theo yêu cầu (Metric)"
 
 #. module: stock_barcode
 #: model:product.product,name:stock_barcode.product_custom_cabinet_usa
 #: model:product.template,name:stock_barcode.product_custom_cabinet_usa_product_template
 msgid "Customized Cabinet (USA)"
-msgstr ""
+msgstr "Tủ theo yêu cầu (USA)"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -396,7 +408,7 @@ msgstr "Gói đích"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Destination location must be scanned"
-msgstr ""
+msgstr "Vị trí đến phải được quét"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -418,6 +430,8 @@ msgid ""
 "Do you want to permanently remove this message ?\n"
 "                    It won't appear anymore, so make sure you don't need the barcodes sheet or you have a copy."
 msgstr ""
+"Bạn có muốn xóa vĩnh viễn tin nhắn này không ?\n"
+"                    Nó sẽ không xuất hiện nữa, vì vậy hãy đảm bảo rằng bạn không cần tờ mã vạch hoặc bạn có một bản sao."
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_put_in_pack
@@ -425,16 +439,18 @@ msgid ""
 "Does the picker have to put in a package the scanned products? If yes, at "
 "which rate?"
 msgstr ""
+"Người lấy hàng có phải cho sản phẩm đã quét vào kiện hàng không? Nếu có, ở "
+"mức nào?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_dest_location
 msgid "Does the picker have to scan the destination? If yes, at which rate?"
-msgstr ""
+msgstr "Người lấy hàng có phải quét điểm đến không? Nếu có, ở mức nào?"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
 msgid "Don't cancel"
-msgstr ""
+msgstr "Đừng hủy bỏ"
 
 #. module: stock_barcode
 #. openerp-web
@@ -460,47 +476,47 @@ msgstr "Vật giả"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__empty_move_count
 msgid "Empty Move Count"
-msgstr ""
+msgstr "Số lần chuyển trống"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 msgid "Final Validation"
-msgstr ""
+msgstr "Xác thực cuối cùng"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__restrict_scan_dest_location
 msgid "Force Destination Location scan?"
-msgstr ""
+msgstr "Buộc quét vị trí đến?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__restrict_scan_tracking_number
 msgid "Force Lot/Serial scan?"
-msgstr ""
+msgstr "Buộc quét Lô/Seri?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__restrict_scan_product
 msgid "Force Product scan?"
-msgstr ""
+msgstr "Buộc quét sản phẩm?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__restrict_scan_source_location
 msgid "Force Source Location scan?"
-msgstr ""
+msgstr "Buộc quét vị trí đi?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__barcode_validation_after_dest_location
 msgid "Force a destination on all products"
-msgstr ""
+msgstr "Buộc một điểm đến trên tất cả các sản phẩm"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__barcode_validation_all_product_packed
 msgid "Force all products to be packed"
-msgstr ""
+msgstr "Buộc tất cả các sản phẩm phải được đóng gói"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__restrict_put_in_pack
 msgid "Force put in pack?"
-msgstr ""
+msgstr "Buộc đưa vào gói?"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
@@ -519,6 +535,8 @@ msgid ""
 "If the source location must be scanned, then the destination location must "
 "either be scanned after each product or not scanned at all."
 msgstr ""
+"Nếu vị trí đi phải được quét, thì vị trí đến phải được quét sau mỗi sản phẩm"
+" hoặc không được quét gì cả."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -563,7 +581,7 @@ msgstr "Sửa lần cuối vào"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__write_uid
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__write_date
@@ -580,7 +598,7 @@ msgstr "Thoát ra"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_product
 msgid "Line's product must be scanned before the line can be edited"
-msgstr ""
+msgstr "Sản phẩm của dòng phải được quét trước khi có thể chỉnh sửa dòng"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -603,21 +621,21 @@ msgstr "Lô/Số serial"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Mandatory Destination Location"
-msgstr ""
+msgstr "Vị trí điểm đến bắt buộc"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_scan_source_location__mandatory
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_scan_tracking_number__mandatory
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 msgid "Mandatory Scan"
-msgstr ""
+msgstr "Quét bắt buộc"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Mandatory Source Location"
-msgstr ""
+msgstr "Vị trí đi bắt buộc"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_put_in_pack__no
@@ -629,12 +647,12 @@ msgstr "Không"
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "No %(picking_type)s ready for this %(barcode_type)s"
-msgstr ""
+msgstr "Không %(picking_type)s sẵn nào cho %(barcode_type)s"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_scan_source_location__no
 msgid "No Scan"
-msgstr ""
+msgstr "Không Quét"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/controllers/stock_barcode.py:0
@@ -648,18 +666,19 @@ msgstr "Chưa có giao nhận nội bộ. Hãy cấu hình một trong các cài
 #, python-format
 msgid "No picking or location or product corresponding to barcode %(barcode)s"
 msgstr ""
+"Không chọn hoặc vị trí hoặc sản phẩm tương ứng với mã vạch %(barcode)s"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/controllers/stock_barcode.py:0
 #, python-format
 msgid "No picking or product corresponding to barcode %(barcode)s"
-msgstr ""
+msgstr "Không chọn hoặc sản phẩm tương ứng với mã vạch %(barcode)s"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "No product or package found for barcode %s"
-msgstr ""
+msgstr "Không tìm thấy sản phẩm hoặc gói hàng nào có mã vạch %s"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
@@ -671,7 +690,7 @@ msgstr "Định nghĩa"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Not the expected scan"
-msgstr ""
+msgstr "Không phải là lần quét dự kiến"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.picking_view_kanban_inherit_barcode
@@ -697,7 +716,7 @@ msgstr "Hoạt động"
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_scan_tracking_number__optional
 msgid "Optional Scan"
-msgstr ""
+msgstr "Quét tùy chọn"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -716,7 +735,7 @@ msgstr "Gói bưu kiện"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Package type %s was correctly applied to the package %s"
-msgstr ""
+msgstr "Gói loại %s đã được áp dụng chính xác cho gói %s"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant_package
@@ -736,7 +755,7 @@ msgstr "Số lượng đóng gói"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__partial_move_count
 msgid "Partial Move Count"
-msgstr ""
+msgstr "Số lần di chuyển một phần"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
@@ -758,7 +777,7 @@ msgstr "Loại giao nhận"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Please scan destination location for %s before scanning other product"
-msgstr ""
+msgstr "Vui lòng quét vị trí đi cho %s trước khi quét sản phẩm khác"
 
 #. module: stock_barcode
 #. openerp-web
@@ -766,14 +785,14 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.js:0
 #, python-format
 msgid "Please, Scan again !"
-msgstr "Vui lòng quét lại!"
+msgstr "Vui lòng, Quét lại!"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Press Validate or scan another product"
-msgstr ""
+msgstr "Nhấn Xác thực hoặc quét sản phẩm khác"
 
 #. module: stock_barcode
 #. openerp-web
@@ -801,7 +820,7 @@ msgstr "In kho"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Print Packages"
-msgstr ""
+msgstr "In gói"
 
 #. module: stock_barcode
 #. openerp-web
@@ -836,7 +855,7 @@ msgstr "Đóng gói sản phẩm"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_stock_quant_ids
 msgid "Product Stock Quant"
-msgstr ""
+msgstr "Số lượng sản phẩm kho"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_uom_uom
@@ -873,7 +892,7 @@ msgstr "Số lượng hoàn tất"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_packaging_uom_qty
 msgid "Quantity of the Packaging in the UoM of the Stock Move Line."
-msgstr ""
+msgstr "Số lượng của Gói trong UoM của Dòng di chuyển hàng trong kho."
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant
@@ -902,7 +921,7 @@ msgstr "Quét một"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan a location"
-msgstr ""
+msgstr "Quét địa điểm"
 
 #. module: stock_barcode
 #. openerp-web
@@ -910,49 +929,49 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a lot number"
-msgstr ""
+msgstr "Quét số lô"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a lot number or a packages then the destination location"
-msgstr ""
+msgstr "Quét một số lô hoặc một gói sau đó là vị trí đích"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a lot number then the destination location"
-msgstr ""
+msgstr "Quét rất nhiều số sau đó là vị trí đích"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package"
-msgstr ""
+msgstr "Quét một gói"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package or put in pack"
-msgstr ""
+msgstr "Quét một gói hoặc đặt trong gói"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package or the destination location"
-msgstr ""
+msgstr "Quét gói hàng hoặc vị trí đến"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package, the destination location or another product"
-msgstr ""
+msgstr "Quét gói hàng, vị trí đến hoặc sản phẩm khác"
 
 #. module: stock_barcode
 #. openerp-web
@@ -960,118 +979,118 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan a product"
-msgstr ""
+msgstr "Quét một sản phẩm"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product before scanning a tracking number"
-msgstr ""
+msgstr "Quét sản phẩm trước khi quét số theo dõi"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product from %s"
-msgstr ""
+msgstr "Quét một sản phẩm từ %s"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan a product in %s or scan another location"
-msgstr ""
+msgstr "Quét một sản phẩm trong %s hoặc quét vị trí khác"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product or a package"
-msgstr ""
+msgstr "Quét một sản phẩm hoặc một gói"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Scan a product or a package to filter the transfers."
-msgstr ""
+msgstr "Quét một sản phẩm hoặc một gói hàng để lọc các lần chuyển."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product or another package"
-msgstr ""
+msgstr "Quét sản phẩm hoặc gói hàng khác"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product or the destination location."
-msgstr ""
+msgstr "Quét một sản phẩm hoặc vị trí đích."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product then the destination location"
-msgstr ""
+msgstr "Quét một sản phẩm sau đó là vị trí đến"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product, a package or the destination location"
-msgstr ""
+msgstr "Quét sản phẩm, gói hàng hoặc vị trí đến"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product, a package or the destination location."
-msgstr ""
+msgstr "Quét sản phẩm, gói hàng hoặc vị trí đến."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number"
-msgstr ""
+msgstr "Quét một số sê-ri"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number or a package"
-msgstr ""
+msgstr "Quét một số sê-ri hoặc một gói"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number or a package then the destination location"
-msgstr ""
+msgstr "Quét số sê-ri hoặc gói hàng rồi đến vị trí đến"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number then the destination location"
-msgstr ""
+msgstr "Quét một số sê-ri sau đó là vị trí đến"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/kanban/stock_barcode_kanban_renderer.xml:0
 #, python-format
 msgid "Scan a transfer or a product to filter your records"
-msgstr ""
+msgstr "Quét chuyển kho hoặc sản phẩm để lọc dữ liệu của bạn"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/kanban/stock_barcode_kanban_renderer.xml:0
 #, python-format
 msgid "Scan a transfer, a product or a package to filter your records"
-msgstr ""
+msgstr "Quét phiếu kho, sản phẩm hoặc gói hàng để lọc dữ liệu của bạn"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1085,7 +1104,7 @@ msgstr "Quét một"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan another serial number"
-msgstr ""
+msgstr "Quét một số sê-ri khác"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1093,35 +1112,35 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan lot numbers for product %s to change their quantity"
-msgstr ""
+msgstr "Quét số lô cho sản phẩm %s để thay đổi số lượng của họ"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan more lot numbers"
-msgstr ""
+msgstr "Quét thêm số lô"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan more lot numbers or a package"
-msgstr ""
+msgstr "Quét nhiều số lô hoặc một gói"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan more products in %s or scan another location"
-msgstr ""
+msgstr "Quét thêm sản phẩm trong %s hoặc quét vị trí khác"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan more products or a package"
-msgstr ""
+msgstr "Quét thêm sản phẩm hoặc gói hàng"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1144,21 +1163,21 @@ msgstr "Quét sản phẩm, hoặc quét mã địa điểm đến"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan serial numbers for product %s to change their quantity"
-msgstr ""
+msgstr "Quét số sê-ri cho sản phẩm %s để thay đổi số lượng của chúng"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the destination location"
-msgstr ""
+msgstr "Quét vị trí đến"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the package %s"
-msgstr ""
+msgstr "Quét gói hàng %s"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1172,14 +1191,14 @@ msgstr "Quét điểm đi"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the source location or a package"
-msgstr ""
+msgstr "Quét vị trí đi hoặc một gói"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #, python-format
 msgid "Scan the source location, or scan a product"
-msgstr ""
+msgstr "Quét vị trí đi hoặc quét sản phẩm"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1189,6 +1208,8 @@ msgid ""
 "Scanned product %s is not reserved for this transfer. Are you sure you want "
 "to add it?"
 msgstr ""
+"Sản phẩm quét được %s không nằm trong phiếu kho này. Bạn có chắc muốn thêm "
+"nó?"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1198,6 +1219,8 @@ msgid ""
 "Scanned product [%s] %s is not reserved for this transfer. Are you sure you "
 "want to add it?"
 msgstr ""
+"Sản phẩm quét được [%s] %s vốn không nằm trong phiếu kho này. Bạn có chắc "
+"muốn thêm nó vào không?"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1207,6 +1230,8 @@ msgid ""
 "Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible "
 "with the line's one (%s)."
 msgstr ""
+"Số lượng quét được đang dùng %s là Đơn vị tính, nhưng UoM này không tương "
+"thích với UoM của dòng (%s)."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1217,6 +1242,8 @@ msgid ""
 "Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible "
 "with the product's one (%s)."
 msgstr ""
+"Số lượng quét được dùng %s như Đơn vị tính, nhưng UoM này không tương thích "
+"với UoM của sản phẩm (%s)."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1240,12 +1267,12 @@ msgstr "Số Lô/Sê-ri"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__show_barcode_nomenclature
 msgid "Show Barcode Nomenclature"
-msgstr ""
+msgstr "Hiển thị quy tắc mã vạch"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__show_barcode_validation
 msgid "Show Barcode Validation"
-msgstr ""
+msgstr "Hiển thị xác thực mã vạch"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1280,6 +1307,8 @@ msgid ""
 "Technical field used to compute whether the \"Final Validation\" group "
 "should be displayed, solving combined groups/invisible complexity."
 msgstr ""
+"Trường kỹ thuật được sử dụng để tính toán xem có nên hiển thị nhóm \"Xác "
+"thực cuối cùng\" hay không, giải quyết các nhóm kết hợp/độ phức tạp vô hình."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1315,14 +1344,14 @@ msgstr "Dịch chuyển này đã được xác nhận"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "There is nothing to apply in this page."
-msgstr ""
+msgstr "Không có gì để áp dụng trong trang này."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "There is nothing to print in this page."
-msgstr ""
+msgstr "Không có gì để in trong trang này."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1345,14 +1374,14 @@ msgstr "Phiếu kho này đã làm xong"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "This picking is cancelled"
-msgstr ""
+msgstr "Phiếu kho này đã bị hủy"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #, python-format
 msgid "This serial number is already used."
-msgstr ""
+msgstr "Số sê-ri này đã được sử dụng."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -1364,7 +1393,7 @@ msgstr "Cần xử lý"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "To use packages, enable 'Packages' in the settings"
-msgstr ""
+msgstr "Để sử dụng các gói, hãy bật 'Gói' trong cài đặt"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking
@@ -1375,7 +1404,7 @@ msgstr "Điều chuyển"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__picking_name
 msgid "Transfer Name"
-msgstr ""
+msgstr "Tên chuyển"
 
 #. module: stock_barcode
 #: model_terms:ir.actions.act_window,help:stock_barcode.stock_picking_action_kanban
@@ -1435,7 +1464,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Wrong Unit of Measure"
-msgstr ""
+msgstr "Sai Đơn Vị Đo Lường"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1445,6 +1474,8 @@ msgid ""
 "You are expected to scan one or more products or a package available at the "
 "picking location"
 msgstr ""
+"Bạn phải quét một hoặc nhiều sản phẩm hoặc gói hàng có sẵn tại địa điểm lấy "
+"hàng"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1458,7 +1489,7 @@ msgstr "Bạn sẽ quét một hoặc nhiều sản phẩm."
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You are supposed to scan %s or another source location"
-msgstr ""
+msgstr "Bạn phải quét %s hoặc một vị trí nguồn khác"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1466,25 +1497,27 @@ msgstr ""
 #, python-format
 msgid "You can't apply a package type. First, scan product or select a line"
 msgstr ""
+"Bạn không thể áp dụng một loại gói. Đầu tiên, quét sản phẩm hoặc chọn một "
+"dòng"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "You have processed less products than the initial demand:"
-msgstr ""
+msgstr "Bạn đã xử lý ít sản phẩm hơn nhu cầu ban đầu:"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You must scan a package or put in pack"
-msgstr ""
+msgstr "Bạn phải quét một gói hoặc đặt trong gói"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You must scan a product"
-msgstr ""
+msgstr "Bạn phải quét một sản phẩm"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1527,6 +1560,8 @@ msgid ""
 "o_digipad_button btn d-flex justify-content-center align-items-center border"
 " w-100 py-2"
 msgstr ""
+"o_digipad_button btn d-flex justify-content-center align-items-center border"
+" w-100 py-2"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1540,7 +1575,7 @@ msgstr "loại hoạt động"
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "package"
-msgstr ""
+msgstr "gói"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1552,12 +1587,12 @@ msgstr "sản phẩm"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "products were not processed at all."
-msgstr ""
+msgstr "sản phẩm không được xử lý ở tất cả."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "products were partially processed."
-msgstr ""
+msgstr "sản phẩm đã được xử lý một phần."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1594,7 +1629,7 @@ msgstr "để tạo phiếu chuyển kho mới."
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to know its content."
-msgstr ""
+msgstr "để biết nội dung của nó."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1608,4 +1643,4 @@ msgstr "để mở nó."
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to show its location and quantity."
-msgstr ""
+msgstr "để hiển thị vị trí và số lượng của nó."

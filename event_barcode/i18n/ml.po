@@ -156,7 +156,7 @@ msgstr "പ്രിന്റ് "
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Registration"
-msgstr ""
+msgstr "രജിസ്ട്രേഷൻ"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:0
@@ -227,7 +227,7 @@ msgstr "ടിക്കറ്റ് "
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "View"
-msgstr ""
+msgstr "വ്യൂ"
 
 #. module: event_barcode
 #. openerp-web

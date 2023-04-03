@@ -600,3 +600,10 @@ class Document(models.Model):
             return int(self.env['ir.config_parameter'].sudo().get_param('document.max_fileupload_size', default=0))
         except Exception:
             return False
+
+    def unlink(self):
+        removable_attachments = self.filtered(lambda self: self.res_model != self._name).attachment_id
+        res = super().unlink()
+        if removable_attachments:
+            removable_attachments.unlink()
+        return res

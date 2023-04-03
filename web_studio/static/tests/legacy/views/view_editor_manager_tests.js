@@ -2475,6 +2475,27 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(buttonBoxFieldEl.textContent, 'jean', 'there should be a button_box');
     });
 
+    QUnit.test("supports multiple occurences of field", async (assert) => {
+        await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `<form><group>
+                <field name="display_name" widget="phone" options="{'enable_sms': false}" />
+                <field name="display_name" invisible="1" />
+            </group></form>`
+        });
+
+        assert.containsN(target, ".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable", 1);
+        await click(target, ".o_web_studio_sidebar_header div[name='view']");
+        await click(target, ".o_web_studio_sidebar #show_invisible");
+        assert.containsN(target, ".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable", 2);
+
+        await click(target.querySelectorAll(".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable")[0]);
+        assert.strictEqual(target.querySelector(".o_web_studio_sidebar input[name='enable_sms']").checked, false); // Would be true if not present in node's options
+
+        await click(target.querySelectorAll(".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable")[1]);
+        assert.strictEqual(target.querySelector(".o_web_studio_sidebar input[name='invisible']").checked, true);
+    });
+
     QUnit.module('Kanban');
 
     QUnit.test('empty kanban editor', async function (assert) {

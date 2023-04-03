@@ -1022,7 +1022,12 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
                 var node = params.node;
                 if (node.tag === 'field' && this.view_type !== 'search') {
                     var viewType = this.editor.state.viewType;
-                    attrs = this.editor.state.fieldsInfo[viewType][node.attrs.name];
+                    if (["form", "list", "kanban"].includes(this.view_type)) {
+                        attrs = {...node.attrs };
+                        attrs.options = evaluateExpr(attrs.options || "{}");
+                    } else {
+                        attrs = this.editor.state.fieldsInfo[viewType][node.attrs.name];
+                    }
                 } else {
                     attrs = node.attrs;
                 }

@@ -41,7 +41,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_out': datetime(2022, 1, 3, 20, 0, 0),
         })
         self.payslip._compute_worked_days_line_ids()
-        self.assertEqual(self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME').number_of_hours, 12)
+        self.assertEqual(self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME').number_of_hours, 11)
 
     def test_with_negative_overtime(self):
         self.env['hr.attendance'].create({

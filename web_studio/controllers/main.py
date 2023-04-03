@@ -304,7 +304,7 @@ class WebStudioController(http.Controller):
         # If the model is backed by a sql view
         # it doesn't make sense to add field, and won't work
         table_kind = sql.table_kind(request.env.cr, Model._table)
-        if not table_kind or table_kind == 'v':
+        if table_kind != sql.TableKind.Regular:
             raise UserError(_('The model %s doesn\'t support adding fields.', Model._name))
 
         values['model_id'] = request.env['ir.model']._get_id(model_name)

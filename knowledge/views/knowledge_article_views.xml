@@ -34,96 +34,86 @@
                 <field name="create_uid" invisible="1"/>
                 <field name="is_article_visible_by_everyone" invisible="1"/>
                 <field name="is_article_visible" invisible="1"/>
-                <div class="o_knowledge_form_view d-flex h-100 border-top">
-                    <aside class="o_knowledge_aside d-print-none user-select-none bg-view">
-                        <widget name="knowledge_sidebar" />
-                    </aside>
-                    <div class="o_knowledge_main flex-grow-1 position-relative min-w-0">
-                        <div class="d-flex flex-column h-100">
-                            <!-- Article header -->
-                            <widget name="knowledge_topbar"/>
-                            <!-- Invisible Article Warning Banner-->
-                            <div class="alert alert-info text-center mb-0" role="alert" groups="base.group_user"
-                                 attrs="{'invisible': ['|', '|', '|', ('id', '=', False), ('internal_permission', '=', 'none'), ('is_article_visible_by_everyone', '=', True), ('is_article_visible', '=', True)]}">
-                                <field name="user_has_access_parent_path" invisible="1"/>
-                                This article is only displayed to its members.
-                                <a attrs="{'invisible': [('user_has_access_parent_path', '!=', True)]}" role="button" type="object" name="action_join" class="text-decoration-underline oe_link alert-link">
-                                    Join
-                                </a>
-                            </div>
-                            <!-- Archived Article Warning Banner-->
-                            <div class="alert alert-warning text-center mb-0" role="alert"
-                                 attrs="{'invisible': ['|', ('active', '=', True), ('to_delete', '=', True)]}">
-                                This article is archived.
-                                <a role="button" class="text-decoration-underline oe_link alert-link" type="object" name="action_unarchive"
-                                attrs="{'invisible': [('user_can_write', '=', False)]}" >Unarchive</a>
-                            </div>
-                            <!-- Trashed Article Warning Banner-->
-                            <div class="alert alert-warning text-center mb-0" role="alert" attrs="{'invisible': [('to_delete', '=', False)]}">
-                                This Article is in Trash and will be deleted on the <field class="mb-0" name="deletion_date"/>.
-                                <a role="button" type="object" name="action_unarchive_article"
-                                        class="text-decoration-underline oe_link alert-link"
-                                        attrs="{'invisible': [('user_can_write', '=', False)]}" >
-                                    Restore
-                                </a>
-                            </div>
-                            <div class="flex-grow-1 position-relative">
-                                <div class="o_scroll_view o_knowledge_main_view">
-                                    <div class="row p-0 m-0" style="min-height: 100%">
-                                        <div class="d-flex col-12 col-lg position-relative p-0">
-                                            <div class="o_scroll_view_lg">
-                                                <!-- Article body -->
-                                                <div class="o_knowledge_body d-flex flex-column"
-                                                     attrs="{'invisible': [('id', '=', False)]}">
-                                                     <!-- Full Width handling -->
-                                                     <span class="o_knowledge_article_view_form_dynamic_width d-none"
-                                                           attrs="{'invisible': [('full_width', '=', True)]}"/>
-                                                    <!-- Article Cover -->
-                                                    <field name="cover_image_url" invisible="1" />
-                                                    <field name="cover_image_position" invisible="1" />
-                                                    <widget name="knowledge_cover" attrs="{'invisible': [('cover_image_id', '=', False)]}"/>
-                                                    <!-- Article Icon -->
-                                                    <field name="icon" widget="knowledge_icon" attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)], 'invisible': [('icon', '=', False)]}" class="o_knowledge_icon o_large mt-n3 mb-n4"/>
-                                                    <!-- Article body -->
-                                                    <div class="o_knowledge_editor mt-3">
-                                                        <field name="body" widget="knowledge_article_html_field" class="o_field_html" no_label="1" groups="base.group_user"
-                                                            options="{'collaborative': false, 'collaborative_trigger': 'start', 'resizable': False, 'knowledge_commands': true}"
-                                                            attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
-                                                        <!-- Portal users get some commands disabled, notably /image and /file, as they don't have access to ir.attachment -->
-                                                        <field name="body" widget="html" no_label="1" groups="base.group_portal"
-                                                            options="{'resizable': False, 'knowledge_commands': true, 'allowCommandImage': false, 'allowCommandVideo': false, 'allowCommandFile': false}"
-                                                            attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
-                                                    </div>
-                                                </div>
-                                                <!-- No Content Helper -->
-                                                <div class="o_view_nocontent" attrs="{'invisible': [('id', '!=', False)]}">
-                                                    <div class="o_nocontent_help">
-                                                        <p class="o_view_nocontent_smiling_face">
-                                                             No article yet.
-                                                        </p>
-                                                        <p>
-                                                            <a href="#" role="button"
-                                                               t-on-click="() => this.createArticle('private')">
-                                                                Create an article
-                                                            </a>
-                                                            to unleash the power of Knowledge!
-                                                        </p>
-                                                    </div>
-                                                </div>
+                    <!-- Article header -->
+                    <widget name="knowledge_topbar"/>
+                    <!-- Invisible Article Warning Banner-->
+                    <div class="alert alert-info text-center mb-0" role="alert" groups="base.group_user"
+                         attrs="{'invisible': ['|', '|', '|', ('id', '=', False), ('internal_permission', '=', 'none'), ('is_article_visible_by_everyone', '=', True), ('is_article_visible', '=', True)]}">
+                        <field name="user_has_access_parent_path" invisible="1"/>
+                        This article is only displayed to its members.
+                        <a attrs="{'invisible': [('user_has_access_parent_path', '!=', True)]}" role="button" type="object" name="action_join" class="text-decoration-underline oe_link alert-link">
+                            Join
+                        </a>
+                    </div>
+                    <!-- Archived Article Warning Banner-->
+                    <div class="alert alert-warning text-center mb-0" role="alert"
+                         attrs="{'invisible': ['|', ('active', '=', True), ('to_delete', '=', True)]}">
+                        This article is archived.
+                        <a role="button" class="text-decoration-underline oe_link alert-link" type="object" name="action_unarchive"
+                        attrs="{'invisible': [('user_can_write', '=', False)]}" >Unarchive</a>
+                    </div>
+                    <!-- Trashed Article Warning Banner-->
+                    <div class="alert alert-warning text-center mb-0" role="alert" attrs="{'invisible': [('to_delete', '=', False)]}">
+                        This Article is in Trash and will be deleted on the <field class="mb-0" name="deletion_date"/>.
+                        <a role="button" type="object" name="action_unarchive_article"
+                                class="text-decoration-underline oe_link alert-link"
+                                attrs="{'invisible': [('user_can_write', '=', False)]}" >
+                            Restore
+                        </a>
+                    </div>
+                    <div class="flex-grow-1 position-relative">
+                        <div class="o_scroll_view o_knowledge_main_view">
+                            <div class="row p-0 m-0" style="min-height: 100%">
+                                <div class="d-flex col-12 col-lg position-relative p-0">
+                                    <div class="o_scroll_view_lg">
+                                        <!-- Article body -->
+                                        <div class="o_knowledge_body d-flex flex-column"
+                                             attrs="{'invisible': [('id', '=', False)]}">
+                                             <!-- Full Width handling -->
+                                             <span class="o_knowledge_article_view_form_dynamic_width d-none"
+                                                   attrs="{'invisible': [('full_width', '=', True)]}"/>
+                                            <!-- Article Cover -->
+                                            <field name="cover_image_url" invisible="1" />
+                                            <field name="cover_image_position" invisible="1" />
+                                            <widget name="knowledge_cover" attrs="{'invisible': [('cover_image_id', '=', False)]}"/>
+                                            <!-- Article Icon -->
+                                            <field name="icon" widget="knowledge_icon" attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)], 'invisible': [('icon', '=', False)]}" class="o_knowledge_icon o_large mt-n3 mb-n4"/>
+                                            <!-- Article body -->
+                                            <div class="o_knowledge_editor mt-3">
+                                                <field name="body" widget="knowledge_article_html_field" class="o_field_html" no_label="1" groups="base.group_user"
+                                                    options="{'collaborative': false, 'collaborative_trigger': 'start', 'resizable': False, 'knowledge_commands': true}"
+                                                    attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
+                                                <!-- Portal users get some commands disabled, notably /image and /file, as they don't have access to ir.attachment -->
+                                                <field name="body" widget="html" no_label="1" groups="base.group_portal"
+                                                    options="{'resizable': False, 'knowledge_commands': true, 'allowCommandImage': false, 'allowCommandVideo': false, 'allowCommandFile': false}"
+                                                    attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
                                             </div>
                                         </div>
-                                        <!-- Properties -->
-                                        <widget name="knowledge_properties_panel"/>
-                                        <!-- Chatter -->
-                                        <widget name="knowledge_chatter_panel" groups="base.group_user"/>
+                                        <!-- No Content Helper -->
+                                        <div class="o_view_nocontent" attrs="{'invisible': [('id', '!=', False)]}">
+                                            <div class="o_nocontent_help">
+                                                <p class="o_view_nocontent_smiling_face">
+                                                     No article yet.
+                                                </p>
+                                                <p>
+                                                    <a href="#" role="button"
+                                                       t-on-click="() => this.createArticle('private')">
+                                                        Create an article
+                                                    </a>
+                                                    to unleash the power of Knowledge!
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Properties -->
+                                <widget name="knowledge_properties_panel"/>
+                                <!-- Chatter -->
+                                <widget name="knowledge_chatter_panel" groups="base.group_user"/>
                             </div>
                         </div>
                     </div>
-                    <div class="o_knowledge_backdrop cursor-pointer"/>
-                    <field name="icon" invisible="1" attrs="{'readonly': ['|', ('is_locked', '=', True), ('user_can_write', '=', False)] }"/>
-                </div>
+                <field name="icon" invisible="1" attrs="{'readonly': ['|', ('is_locked', '=', True), ('user_can_write', '=', False)] }"/>
             </form>
         </field>
     </record>

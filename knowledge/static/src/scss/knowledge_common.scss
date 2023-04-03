@@ -9,7 +9,7 @@
     }
 }
 
-.o_knowledge_article_view_form_view .o_form_renderer {
+.o_knowledge_form_view, .o_knowledge_article_view_form_view {
     height: 100% !important;
     padding: 0 !important;
 }
@@ -20,7 +20,7 @@ $knowledge-bg--hover: $gray-300;
 .o_knowledge_form_view {
 
     background-color: var(--knowledge-view-bg, $o-white);
-    .o_knowledge_aside {
+    .o_knowledge_sidebar {
         .o_article:not(.o_article_has_children) {
             .o_article_caret {
                 // Make caret invisible if article has no child

@@ -24,33 +24,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this.root = useRef('compiled_view_root');
 
         this.device = config.device;
-        /**
-         * Adds an event listener on the elements matching the given css selector.
-         * @param {string} name - name of the event (e.g: 'click', 'drag', etc).
-         * @param {string} selector - css selector
-         * @param {function} handler - callback function
-         */
-        const useListener = (name, selector, handler) => {
-            useEffect(() => {
-                const elements = this.root.el.querySelectorAll(selector);
-                for (const element of elements) {
-                    element.addEventListener(name, handler);
-                }
-                return () => {
-                    for (const element of elements) {
-                        element.removeEventListener(name, handler);
-                    }
-                };
-            }, () => []);
-        };
-
-        useListener('click', '.o_knowledge_backdrop', () => {
-            this.env.toggleAside();
-        });
 
         useChildSubEnv({
-            createArticle: this.createArticle.bind(this),
-            openArticle: this.openArticle.bind(this),
             openCoverSelector: this.openCoverSelector.bind(this),
             config: this.env.config,
             _resizeNameInput: this._resizeNameInput.bind(this),

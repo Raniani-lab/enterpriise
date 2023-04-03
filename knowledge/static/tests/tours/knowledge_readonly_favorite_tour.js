@@ -19,7 +19,7 @@ registry.category("web_tour.tours").add('knowledge_readonly_favorite_tour', {
     run: () => {},
 }, {
     // Open the other readonly article
-    trigger: '.o_knowledge_aside .o_article_name:contains("Readonly Article 2")',
+    trigger: '.o_knowledge_sidebar .o_article_name:contains("Readonly Article 2")',
 }, {
     // Make sure we are on the readonly article 1, that is not favorited, and
     // click on the toggle favorite button.

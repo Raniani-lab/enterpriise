@@ -10,9 +10,7 @@ import {
     KnowledgeSidebarSharedSection,
     KnowledgeSidebarWorkspaceSection
 } from "./sidebar_section";
-import { registry } from "@web/core/registry";
 import { sprintf } from "@web/core/utils/strings";
-import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { throttleForAnimation } from "@web/core/utils/timing";
 import { useService } from "@web/core/utils/hooks";
 import { useSortableList } from "@knowledge/js/sortableList";
@@ -37,8 +35,10 @@ export const SORTABLE_TOLERANCE = 10;
  * - {boolean} user_can_write,
  * - {boolean} has_article_children,
  */
-class KnowledgeSidebar extends Component {
-    static props = standardWidgetProps;
+export class KnowledgeSidebar extends Component {
+    static props = {
+        record: Object,
+    };
     static template = "knowledge.Sidebar";
     static components = {
         KnowledgeSidebarFavoriteSection,
@@ -79,6 +79,7 @@ class KnowledgeSidebar extends Component {
         useChildSubEnv({
             fold: this.fold.bind(this),
             getArticle: this.getArticle.bind(this),
+            model: this.props.record.model,
             unfold: this.unfold.bind(this),
         });
 
@@ -824,9 +825,3 @@ class KnowledgeSidebar extends Component {
         }
     }
 }
-
-export const knowledgeSidebar = {
-    component: KnowledgeSidebar,
-};
-
-registry.category("view_widgets").add("knowledge_sidebar", knowledgeSidebar);

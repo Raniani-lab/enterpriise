@@ -52,7 +52,7 @@
 
     // Sidebar
     // --------------------------------------------------------------------------
-    .o_knowledge_aside {
+    .o_knowledge_sidebar {
         width: clamp(200px, var(--knowledge-article-sidebar-size), 576px);
         transition: width 0.15s linear;
 
@@ -96,7 +96,7 @@
 
 @include media-breakpoint-down(sm) {
     .o_knowledge_form_view {
-        .o_knowledge_aside {
+        .o_knowledge_sidebar {
             width: 100%;
         }
     }

@@ -1,14 +1,21 @@
 /** @odoo-module */
 
 import { FormController } from '@web/views/form/form_controller';
+import { KnowledgeSidebar } from '@knowledge/components/sidebar/sidebar';
+import { useService } from "@web/core/utils/hooks";
+
 const { useChildSubEnv, useRef } = owl;
 
 export class KnowledgeArticleFormController extends FormController {
     setup() {
         super.setup();
         this.root = useRef('root');
+        this.orm = useService('orm');
+
         useChildSubEnv({
+            createArticle: this.createArticle.bind(this),
             ensureArticleName: this.ensureArticleName.bind(this),
+            openArticle: this.openArticle.bind(this),
             renameArticle: this.renameArticle.bind(this),
             toggleAside: this.toggleAside.bind(this),
         });
@@ -32,6 +39,28 @@ export class KnowledgeArticleFormController extends FormController {
             this.renameArticle();
         }
     }
+
+    get resId() {
+        return this.model.root.resId;
+    }
+
+    /**
+     * Create a new article and open it.
+     * @param {String} category - Category of the new article
+     * @param {integer} targetParentId - Id of the parent of the new article (optional)
+     */
+    async createArticle(category, targetParentId) {
+        const articleId = await this.orm.call(
+            "knowledge.article",
+            "article_create",
+            [],
+            {
+                is_private: category === 'private',
+                parent_id: targetParentId ? targetParentId : false
+            }
+        );
+        this.openArticle(articleId);
+    }
     
     /**
      * Callback executed before the record save (if the record is valid).
@@ -44,6 +73,60 @@ export class KnowledgeArticleFormController extends FormController {
     }
 
     /**
+     * @param {integer} - resId: id of the article to open
+     */
+    async openArticle(resId) {
+
+        if (!resId || resId === this.resId) {
+            return;
+        }
+
+        // Usually in a form view, an input field is added to the list of dirty
+        // fields of a record when the input loses the focus.
+        // In this case, the focus could still be on the name input or in the
+        // body when clicking on an article name. Since the blur event is not
+        // asynchronous, the focused field is not yet added in the record's 
+        // list of dirty fields when saving before opening another article.
+        // askChanges() allows to make sure that these fields are added to the
+        // record's list of dirty fields if they have been modified.
+        await this.model.root.askChanges();
+        // blur to remove focus on the active element
+        document.activeElement.blur();
+        
+        await this.beforeLeave();
+
+        const scrollView = document.querySelector('.o_scroll_view_lg');
+        if (scrollView) {
+            // hide the flicker
+            scrollView.style.visibility = 'hidden';
+            // Scroll up if we have a desktop screen
+            scrollView.scrollTop = 0;
+        }
+
+        const mobileScrollView = document.querySelector('.o_knowledge_main_view');
+        if (mobileScrollView) {
+            // Scroll up if we have a mobile screen
+            mobileScrollView.scrollTop = 0;
+        }
+        // load the new record
+        try {
+            await this.model.load({
+                resId: resId,
+            });
+        } catch {
+            this.actionService.doAction(
+                await this.orm.call('knowledge.article', 'action_home_page', [false]),
+                {stackPosition: 'replaceCurrentAction'}
+            );
+        }
+
+        if (scrollView) {
+            // Show loaded document
+            scrollView.style.visibility = 'visible';
+        }
+    }
+
+    /*
      * Rename the article using the given name, or using the article title if
      * no name is given (first h1 in the body). If no title is found, the
      * article is kept untitled.
@@ -75,4 +158,10 @@ export class KnowledgeArticleFormController extends FormController {
 KnowledgeArticleFormController.defaultProps = {
     ...FormController.defaultProps,
     mode: 'edit',
+};
+
+KnowledgeArticleFormController.template = "knowledge.ArticleFormView";
+KnowledgeArticleFormController.components = {
+    ...FormController.components,
+    KnowledgeSidebar,
 };

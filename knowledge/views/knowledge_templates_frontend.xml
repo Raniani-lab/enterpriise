@@ -14,7 +14,7 @@
         <t t-call="knowledge.layout">
             <div class="container-fluid h-100 o_knowledge_form_view p-0" t-att-data-article-id="article.id if article else False">
                 <div class="d-sm-flex h-100">
-                    <aside t-att-class="'o_knowledge_aside' + (' flex-shrink-0 p-0' if show_sidebar else ' d-none')">
+                    <aside t-att-class="'o_knowledge_sidebar' + (' flex-shrink-0 p-0' if show_sidebar else ' d-none')">
                         <div class="d-flex flex-column h-100">
                             <div class="p-3">
                                 <input type="text" class="form-control knowledge_search_bar" placeholder="Search an article..."/>

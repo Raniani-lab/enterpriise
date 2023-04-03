@@ -1,4 +1,4 @@
-.o_knowledge_form_view {
+.o_knowledge_article_view_form_view {
 
     --editor-gutter-size: 2rem;
 
@@ -60,21 +60,15 @@
 
     // = Sidebar
     // --------------------------------------------------------------------------
-    .o_section .o_tree {
-        min-height: 2rem;
-    }
-
-    .o_knowledge_aside {
-        .o_widget_knowledge_sidebar {
-            height: 100%;
-        }
-
-        .o_knowledge_sidebar {
-            transition: width 0.15s linear;
-        }
+    .o_knowledge_sidebar {
+        transition: width 0.15s linear;
 
         .o_scroll_view {
             max-height: 100%;
+        }
+
+        .o_section .o_tree {
+            min-height: 2rem;
         }
 
         .o_knowledge_tree {
@@ -382,15 +376,15 @@
             .o_knowledge_backdrop {
                 display: none;
             }
-            .o_knowledge_aside {
+            .o_knowledge_sidebar {
                 transform: translateX(-100%);
             }
         }
-        .o_knowledge_aside,
+        .o_knowledge_sidebar,
         .o_knowledge_main {
             transition: transform .2s ease;
         }
-        .o_knowledge_aside {
+        .o_knowledge_sidebar {
             @include o-position-absolute(0, 50px, 0, 0);
             width: auto;
             z-index: 1;
@@ -406,7 +400,7 @@
 }
 
 @media (hover: hover) { // Devices supporting hover
-    .o_knowledge_form_view {
+    .o_knowledge_article_view_form_view {
         .o_knowledge_edit_cover_buttons,
         .o_knowledge_add_buttons {
             transition: opacity 0.3s ease-in-out;

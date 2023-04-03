@@ -78,7 +78,12 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
                         id: 1,
                         display_name: "My Article",
                         body: '<p class="test_target"><br/></p>',
-                    }]
+                    }],
+                    methods: {
+                        get_sidebar_articles() {
+                            return {articles: [], favorite_ids: []};
+                        }
+                    }
                 }
             }
         };
@@ -207,7 +212,12 @@ QUnit.module("Knowledge - External View Insertion", (hooks) => {
                         id: 1,
                         display_name: "Insertion Article",
                         body: '\n<p>\n<br/>\n</p>\n',
-                    }]
+                    }],
+                    methods: {
+                        get_sidebar_articles() {
+                            return {articles: [], favorite_ids: []};
+                        }
+                    }
                 }
             }
         };
@@ -341,8 +351,13 @@ QUnit.module("Knowledge Table of Content", (hooks) => {
                         body: `<p class="test_target"><br/></p>
                         <h3>Main 1</h3>
                         <h2>Main 2</h2>`,
-                    }]
-                }
+                    }],
+                    methods: {
+                        get_sidebar_articles() {
+                            return {articles: [], favorite_ids: []};
+                        }
+                    },
+                },
             }
         };
         arch = '<form js_class="knowledge_article_view_form">' +

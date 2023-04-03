@@ -602,7 +602,7 @@ class PlanningSlot(models.Model):
             # So, the difference between the two values must be checked, if remaining_hours is less than the
             # allocated hours, than update the end_datetime.
             if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], allocated_hours, precision_digits=2) < 0:
-                remaining_hours = remaining_hours_to_plan[self.sale_line_id] * 100.0 / self.allocated_percentage
+                remaining_hours = remaining_hours_to_plan[self.sale_line_id] * self.allocated_percentage / 100.0
                 values['end_datetime'] = values['start_datetime'] + timedelta(hours=remaining_hours)
                 remaining_hours_to_plan[self.sale_line_id] -= remaining_hours
             else:

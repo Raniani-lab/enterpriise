@@ -39,7 +39,7 @@ class AccountAnalyticLine(models.Model):
         planning_domain = [
             ('employee_id', '=', employee_id),
             ('state', '=', 'published'),
-            ('project_id', '!=', False),
+            ('project_id.allow_timesheets', '=', True),
             ('start_datetime', '<', period_end),
             ('end_datetime', '>', period_start),
         ]

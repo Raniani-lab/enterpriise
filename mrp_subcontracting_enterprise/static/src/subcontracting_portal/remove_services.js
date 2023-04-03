@@ -3,7 +3,9 @@
 import { registry } from "@web/core/registry";
 
 const servicesToRemove = [
-    'enterprise_legacy_service_provider',
+    'studio',
+    'studio_legacy',
+    'spreadsheet',
 ];
 
 const servicesRegistry = registry.category('services');

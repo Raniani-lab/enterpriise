@@ -3,9 +3,10 @@
     flex-flow: row nowrap;
     margin-bottom: 5px;
     margin-top: -$o-sheet-vpadding;
-    height: $o-statbutton-height;
     white-space: nowrap;
     border-bottom: 1px solid $border-color;
+    height: fit-content;
+    min-height: $o-statbutton-height;
 
     .o_bank_rec_stats_buttons_aside_left{
         flex-grow: 0;
@@ -35,7 +36,7 @@
 
             .o_bank_rec_reco_models_widget_div{
                 display: flex;
-                flex-flow: row nowrap;
+                flex-wrap: wrap;
                 height: 100%;
                 width: 100%;
                 flex: 1 0;
@@ -43,7 +44,6 @@
 
                 .recon_model_button {
                     flex: 0 1 auto;
-                    max-width: 15%;
                 }
             }
             .bank_rec_reco_model_dropdown {

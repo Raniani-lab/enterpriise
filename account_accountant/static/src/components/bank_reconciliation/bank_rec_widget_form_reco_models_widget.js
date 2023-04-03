@@ -36,6 +36,31 @@ export class BankRecWidgetFormRecoModelsWidget extends Component {
 
     /** The user clicked to quickly create a new reco model. **/
     async _onClickCreateReconciliationModel(ev) {
+        const propositions_for_model = [];
+        const lines = this.record.data.lines_widget.lines;
+
+        const total = lines.filter(line => line.flag.value === 'liquidity')[0].balance.value;
+        let rest = total;
+        for (const line of lines) {
+            let base_amount;
+            if (line.flag.value !== 'manual') continue;
+            if (line.tax_ids && line.tax_ids.length > 0)
+            {
+                base_amount = -line.tax_base_amount_currency;
+            } else {
+                base_amount = -line.balance.value;
+            }
+            propositions_for_model.push([0, 0, {
+                label: line.name.value,
+                amount: line.balance.value,
+                account_id: line.account_id.id,
+                tax_ids: [[6, 0, line.tax_ids.ids]],
+                amount_type: 'percentage',
+                amount_string: ((base_amount/rest) * 100).toFixed(5)
+            }]);
+            rest -= base_amount;
+        }
+
         return this.actionService.doAction({
             type: "ir.actions.act_window",
             res_model: "account.reconcile.model",
@@ -43,6 +68,8 @@ export class BankRecWidgetFormRecoModelsWidget extends Component {
             target: "current",
             context: {
                 default_match_journal_ids: this.record.data.journal_id,
+                default_line_ids: propositions_for_model,
+                default_to_check: this.record.data.to_check,
             },
         });
     }

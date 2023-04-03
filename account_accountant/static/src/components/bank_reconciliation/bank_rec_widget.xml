@@ -93,7 +93,7 @@
                 <t t-if="reco_model_index &lt; 5 or is_selected">
                     <button
                         t-on-click="() => this.selectRecoModel(reco_model.id, is_selected)"
-                        class="btn text-truncate recon_model_button"
+                        class="btn recon_model_button"
                         t-att-class="{'btn-secondary': !is_selected, 'bg-odoo text-uppercase text-white': is_selected}"
                         t-out="reco_model.display_name"/>
                     <t t-set="nb_rendered_buttons" t-value="nb_rendered_buttons + 1"/>

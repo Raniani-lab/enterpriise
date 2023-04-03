@@ -489,3 +489,41 @@ tour.register(
         }
     ]
 )
+
+tour.register("web_studio_test_studio_view_is_last",
+    {
+        test: true,
+    },
+    [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
+        },
+        {
+            extra_trigger: ".o_web_studio_existing_fields_section:not(.d-none)",
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Website Link)",
+            run() {
+                $(
+                    ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Website Link)"
+                )[0].scrollIntoView();
+            },
+        },
+        {
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Website Link)",
+            run: "drag_and_drop_native (.o_web_studio_form_view_editor .o_inner_group .o_web_studio_hook:last)",
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='website']",
+            allowInvisible: true,
+            run() {},
+        },
+    ],
+);

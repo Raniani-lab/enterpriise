@@ -1615,6 +1615,9 @@ class BankRecWidget(models.Model):
         line_ids_create_command_list = []
 
         for i, line in enumerate(self.line_ids):
+            tax_tag_invert = bool(line.tax_repartition_line_id.refund_tax_id)\
+                             or (line.tax_ids[:1].type_tax_use == 'purchase' and line.amount_currency < 0.0)\
+                             or (line.tax_ids[:1].type_tax_use == 'sale' and line.amount_currency > 0.0)
             line_ids_create_command_list.append(Command.create({
                 'name': line.name,
                 'sequence': i,
@@ -1629,6 +1632,7 @@ class BankRecWidget(models.Model):
                 'tax_ids': [Command.set(line.tax_ids.ids)],
                 'tax_tag_ids': [Command.set(line.tax_tag_ids.ids)],
                 'group_tax_id': line.group_tax_id.id,
+                'tax_tag_invert': tax_tag_invert,
             }))
 
             if line.flag == 'new_aml':

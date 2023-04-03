@@ -716,7 +716,7 @@ class AppointmentType(models.Model):
         """
         # the user can be a public/portal user that doesn't have read access to the appointment_type.
         self_sudo = self.sudo()
-        end_dt = start_dt + relativedelta(hours=self_sudo.appointment_duration)
+        end_dt = start_dt + relativedelta(hours=duration)
         slots = self_sudo._slots_generate(start_dt, end_dt, timezone)
         slots[:] = [slot for slot in slots if slot['UTC'] == (start_dt.replace(tzinfo=None), end_dt.replace(tzinfo=None))]
         if slots and (not staff_user or staff_user in self_sudo.staff_user_ids):

@@ -4,6 +4,8 @@
 from odoo import api, models, _
 from odoo.exceptions import ValidationError
 
+from odoo.addons.account.models.chart_template import template
+
 
 class AccountChartTemplate(models.AbstractModel):
     _inherit = "account.chart.template"
@@ -39,28 +41,14 @@ class AccountChartTemplate(models.AbstractModel):
                     raise ValidationError(_('No existing account for code %s', code))
                 accounts[code] = account
 
-            journal = self.env['account.journal'].search([
-                ('code', '=', 'SLR'),
-                ('name', '=', 'Salaries'),
-                ('company_id', '=', company.id)])
-
-            if journal:
-                if not journal.default_account_id and default_account:
-                    journal.default_account_id = accounts[default_account].id
-            else:
-                journal = self.env['account.journal'].create({
-                    'name': 'Salaries',
-                    'code': 'SLR',
-                    'type': 'general',
-                    'company_id': company.id,
-                    'default_account_id': accounts.get(default_account, AccountAccount).id,
-                })
-
-                self.env['ir.property']._set_multi(
-                    "journal_id",
-                    "hr.payroll.structure",
-                    {structure.id: journal for structure in structures},
-                )
+            journal = self.ref('hr_payroll_account_journal')
+            if not journal.default_account_id and default_account:
+                journal.default_account_id = accounts[default_account].id
+            self.env['ir.property']._set_multi(
+                "journal_id",
+                "hr.payroll.structure",
+                {structure.id: journal for structure in structures},
+            )
 
             for rule, rule_mapping in rules_mapping.items():
                 vals = {}
@@ -70,3 +58,48 @@ class AccountChartTemplate(models.AbstractModel):
                     vals['account_debit'] = accounts.get(rule_mapping['debit'], AccountAccount).id
                 if vals:
                     rule.write(vals)
+
+    @template(model='account.journal')
+    def _get_payroll_account_journal(self, template_code):
+        return {
+            'hr_payroll_account_journal': {
+                'name': _("Salaries"),
+                'code': _("SLR"),
+                'type': 'general',
+                'sequence': 99,
+            },
+        }
+
+    @template(model='hr.payroll.structure')
+    def _get_payroll_structure(self, template_code):
+        return {
+            'hr_payroll.structure_002': {
+                'journal_id': 'hr_payroll_account_journal',
+            },
+            'hr_payroll.structure_worker_001': {
+                'journal_id': 'hr_payroll_account_journal',
+            },
+        }
+
+    def _get_demo_data(self, company):
+        demo_data = super()._get_demo_data(company)
+        account_data = demo_data.setdefault('account.account', {})
+        account_data['hr_payslip_account'] = {
+            'name':_("Account Payslip Houserental"),
+            'code': "123456",
+            'account_type': 'liability_payable',
+            'reconcile': True,
+        }
+        demo_data['hr.salary.rule'] = {
+            'hr_payroll.hr_salary_rule_houserentallowance1': {
+                'account_debit': 'hr_payslip_account',
+                'account_credit': 'hr_payslip_account',
+            }
+        }
+        demo_data['hr.payroll.structure'] = {
+            'hr_payroll.structure_003': {
+                'journal_id': 'hr_payroll_account_journal',
+            }
+        }
+
+        return demo_data

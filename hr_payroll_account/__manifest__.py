@@ -13,7 +13,6 @@ Generic Payroll system Integrated with Accounting.
     """,
     'depends': ['hr_payroll', 'account_accountant'],
     'data': [
-        'data/hr_payroll_account_data.xml',
         'views/hr_payroll_account_views.xml',
         'report/hr_contract_history_report_views.xml',
     ],
@@ -21,5 +20,6 @@ Generic Payroll system Integrated with Accounting.
         'data/hr_payroll_account_demo.xml',
     ],
     'auto_install': True,
+    'post_init_hook': '_hr_payroll_account_post_init',
     'license': 'OEEL-1',
 }

@@ -38,11 +38,16 @@ class WorkflowActionRuleAccount(models.Model):
             rule.move_type = move_type
 
     @api.depends('move_type')
+    @api.depends_context('company')
     def _compute_suitable_journal_ids(self):
         for rule in self:
-            move = self.env["account.move"].new({'move_type': rule.move_type})
-            rule.suitable_journal_ids = rule.move_type and move.suitable_journal_ids._origin
-            rule.display_journal_id = bool(rule.move_type)
+            if self.env['account.journal'].search([('company_id', '=', self.env.company.id)]):
+                move = self.env["account.move"].new({'move_type': rule.move_type})
+                rule.suitable_journal_ids = rule.move_type and move.suitable_journal_ids._origin
+                rule.display_journal_id = bool(rule.move_type)
+            else:
+                rule.suitable_journal_ids = False
+                rule.display_journal_id = False
 
     def create_record(self, documents=None):
         rv = super(WorkflowActionRuleAccount, self).create_record(documents=documents)

@@ -630,19 +630,21 @@ class WebStudioController(http.Controller):
                 filename_field_id.write({'name': new_name + '_filename'})
 
     def _create_studio_view(self, view, arch):
-        # We have to play with priorities. Consider the following:
-        # View Base: <field name="x"/><field name="y"/>
-        # View Standard inherits Base: <field name="x" position="after"><field name="z"/></field>
-        # View Custo inherits Base: <field name="x" position="after"><field name="x2"/></field>
-        # We want x,x2,z,y, because that's what we did in studio, but the order of xpath
-        # resolution is sequence,name, not sequence,id. Because "Custo" < "Standard", it
-        # would first resolve in x,x2,y, then resolve "Standard" with x,z,x2,y as result.
+        # We have to play with priorities in order for our customization to be the last
+        # to be applied.
+        # In studio, what the user sees is the resulting view from all the inheritance.
+        # Hence if the user does something it is on that result. To apply what they wanted, we need
+        # to set the customization as last.
+        priority = max(view.inherit_children_ids.mapped("priority"), default=0) * 10
+        default_prio = view._fields["priority"].default(view)
+        if priority <= default_prio:
+            priority = 99
         return request.env['ir.ui.view'].create({
             'type': view.type,
             'model': view.model,
             'inherit_id': view.id,
             'mode': 'extension',
-            'priority': 99,
+            'priority': priority,
             'arch': arch,
             'name': self._generate_studio_view_name(view),
         })

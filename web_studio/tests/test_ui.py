@@ -720,3 +720,41 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         '''.format(modifiers="{&quot;readonly&quot;: true}", xml_stringified=etree.tostring(xml_temp).decode("utf-8"))
 
         assertViewArchEqual(self, arch, expected)
+
+    def test_studio_view_is_last(self):
+        # The studio view created should have, in all cases, a priority greater than all views
+        # that are part of the inheritance
+        self.testView.arch = '''
+            <form><sheet>
+                <group><field name="name" /></group>
+            </sheet></form>
+        '''
+
+        self.env["ir.ui.view"].create({
+            "name": "simple view inherit",
+            "inherit_id": self.testView.id,
+            "mode": "extension",
+            "priority": 123,
+            "model": "res.partner",
+            "type": "form",
+            "arch": '''
+                <data>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="title" />
+                </xpath>
+                </data>
+            '''
+        })
+
+        self.start_tour("/web?debug=tests", 'web_studio_test_studio_view_is_last', login="admin", timeout=200)
+        studioView = _get_studio_view(self.testView)
+        self.assertEqual(studioView.priority, 1230)
+
+        self.maxDiff = None
+        assertViewArchEqual(self, studioView["arch"], '''
+            <data>
+                <xpath expr="//field[@name='title']" position="after">
+                  <field name="website"/>
+                </xpath>
+            </data>
+        ''')

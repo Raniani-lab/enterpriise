@@ -26,6 +26,7 @@ class ResConfigSettings(models.TransientModel):
     )
 
     def l10n_in_gstr_gst_send_otp(self):
+        self.l10n_in_check_gst_number()
         response = self.env["l10n_in.gst.return.period"]._otp_request(self.company_id)
         if response.get('error'):
             error_message = "\n".join(["[%s] %s"%(error.get('code'), error.get('message')) for error in response.get("error", {})])

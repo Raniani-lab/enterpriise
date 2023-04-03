@@ -153,7 +153,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'default_token_id': order_sudo.payment_token_id.id,
             'amount': None,  # Determined by the generated invoice
             'partner_id': order_sudo.partner_id.id,
-            'transaction_route': f'/my/subscription/transaction/{order_sudo.id}',
+            'transaction_route': f'/my/subscription/{order_sudo.id}/transaction/',
             'display_payment_message': display_payment_message,
             # Operation-dependent values are defined in the view
         }
@@ -180,7 +180,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
 
 class PaymentPortal(payment_portal.PaymentPortal):
 
-    @http.route('/my/subscription/transaction/<int:order_id>', type='json', auth='public')
+    @http.route('/my/subscription/<int:order_id>/transaction', type='json', auth='public')
     def subscription_transaction(
         self, order_id, access_token, is_validation=False, **kwargs
     ):

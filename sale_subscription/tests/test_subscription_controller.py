@@ -213,7 +213,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         # test transaction flow when paying from the portal
         self.assertEqual(len(subscription.transaction_ids), 1, "Only one transaction should be created")
         first_transaction_id = subscription.transaction_ids
-        url = self._build_url("/my/subscription/transaction/%s" % subscription.id)
+        url = self._build_url("/my/subscription/%s/transaction" % subscription.id)
         data = {'access_token': subscription.access_token,
                 'reference_prefix': 'test_automatic_invoice_token',
                 'landing_route': subscription.get_portal_url(),
@@ -276,7 +276,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         refund_move._post()
         self.assertEqual(refund_move.amount_total, 23, "The refund is half the invoice")
 
-        url = self._build_url("/my/subscription/transaction/%s" % subscription.id)
+        url = self._build_url("/my/subscription/%s/transaction/" % subscription.id)
         data = {'access_token': subscription.access_token,
                 'reference_prefix': 'test_automatic_invoice_token',
                 'landing_route': subscription.get_portal_url(),

@@ -70,6 +70,13 @@ class HrContractSignDocumentWizard(models.TransientModel):
     message = fields.Html("Message")
     cc_partner_ids = fields.Many2many('res.partner', string="Copy to")
     attachment_ids = fields.Many2many('ir.attachment')
+    mail_to = fields.Selection([
+        ('public', 'Public'),
+        ('private', 'Private'),
+    ], string='Email', help="""Email used to send the signature request.
+                - Public takes the email defined in "work email"
+                - Private takes the email defined in Private Information
+                - If the selected email is not defined, the available one will be used.""", default='public')
 
     @api.depends('sign_template_responsible_ids')
     def _compute_employee_role_id(self):
@@ -122,21 +129,26 @@ class HrContractSignDocumentWizard(models.TransientModel):
         # Partner by employee
         partner_by_employee = dict()
         for employee in self.employee_ids:
-            if employee.user_id.partner_id:
-                partner_by_employee[employee] = employee.user_id.partner_id
+            if self.mail_to == "private":
+                email_choice = employee.address_home_id.email
             else:
-                if not employee.work_email:
-                    return {
-                        'type': 'ir.actions.client',
-                        'tag': 'display_notification',
-                        'params': {
-                            'message': _("%s does not have a work email set.", employee.name),
-                            'sticky': False,
-                            'type': 'danger',
-                        }
+                email_choice = employee.work_email
+
+            if email_choice:
+                email_used = email_choice
+            else:
+                message_display = _("%s does not have a private email set.", employee.name) if self.mail_to == "private" else _("%s does not have a work email set.", employee.name)
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'message': message_display,
+                        'sticky': False,
+                        'type': 'danger',
                     }
-                partner_by_employee[employee] = self.env['mail.thread']._mail_find_partner_from_emails(
-                    [employee.work_email], records=self, force_create=True)[0]
+                }
+            partner_by_employee[employee] = self.env['mail.thread']._mail_find_partner_from_emails([email_used], records=self, force_create=True)[0]
+
 
         sign_request = self.env['sign.request']
         if not self.check_access_rights('create', raise_exception=False):

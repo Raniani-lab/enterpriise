@@ -18,6 +18,7 @@
                     <field name="sign_template_ids" options="{'no_create': True}" context="{'kanban_view_ref': 'sign.sign_template_view_kanban_mobile'}"
                         widget="many2many_tags" force_save="1"/>
                     <field name="employee_ids" widget="many2many_avatar_employee" required="1"/>
+                    <field name="mail_to" widget="radio" options="{'horizontal': True}"/>
                 </group>
                 <group attrs="{'invisible': [('sign_template_ids', '=', [])]}" string="Sign Request Options">
                     <field name="employee_role_id" options="{'no_create': True}"/>

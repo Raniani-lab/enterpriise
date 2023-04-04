@@ -13,6 +13,9 @@ export class AbstractBehavior extends Component {
         this.knowledgeCommandsService = useService('knowledgeCommandsService');
         if (!this.props.readonly) {
             onMounted(() => {
+                // hook for extra rendering steps for Behavior (not done by
+                // OWL templating system).
+                this.extraRender();
                 if (this.props.blueprint) {
                     // copy OIDs from the blueprint in case those OIDs
                     // are used in collaboration.
@@ -72,6 +75,16 @@ export class AbstractBehavior extends Component {
     get editor () {
         return this.props.wysiwyg ? this.props.wysiwyg.odooEditor : undefined;
     }
+    /**
+     * @abstract
+     * This method is is a hook executed during the onMounted hook, but
+     * before the rendered Behavior is inserted in the editor (in edit mode).
+     * It can be useful to manually insert nodes that can not be managed by OWL
+     * templating system (i.e. because they will be altered by the editor),
+     * before being observed by the editor and/or assigned an oid.
+     * @see ArticlesStructureBehavior for an example.
+     */
+    extraRender() {}
 }
 
 AbstractBehavior.props = {

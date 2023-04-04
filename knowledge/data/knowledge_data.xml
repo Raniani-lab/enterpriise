@@ -148,8 +148,8 @@
                 <p>We decided to gather all relevant documentation here to make sure all resources were easy to access.</p>
                 <p><br /></p>
                 <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure o_knowledge_articles_structure_children_only" data-oe-protected="true">
-                    <div class="o_knowledge_articles_structure_content" data-prop-name="content">
-                        <ol class="mb-0">
+                    <div class="o_knowledge_articles_structure_content" data-prop-name="content" data-oe-protected="false">
+                        <ol class="mb-0 o_knowledge_articles_structure_children_only">
                             <li>
                                 <a href="/knowledge/article/3" data-oe-nodeid="3"
                                     class="d-block w-100 ps-1 border-0 o_knowledge_article_structure_link">

@@ -22,7 +22,10 @@ patch(ViewButton.prototype, "web_studio.ViewButtonApproval", {
     setup() {
         this._super(...arguments);
         if (this.props.studioApproval) {
-            const { type, name } = this.props.clickParams;
+            let { type, name } = this.props.clickParams;
+            if (type && type.endsWith("=")) {
+                type = type.slice(0, -1);
+            }
             const action = type === "action" && name;
             const method = type === "object" && name;
             this.approval = useApproval({
@@ -34,11 +37,20 @@ patch(ViewButton.prototype, "web_studio.ViewButtonApproval", {
             const onClickViewButton = this.env.onClickViewButton;
             owl.useSubEnv({
                 onClickViewButton: (params) => {
-                    params.beforeExecute = async () => this.approval.checkApproval();
+                    params.beforeExecute = this.checkBeforeExecute.bind(this);
                     onClickViewButton(params);
                 },
             });
         }
+    },
+    async checkBeforeExecute() {
+        if (!this.approval.resId) {
+            const model = this.props.record.model;
+            const rec = "resId" in model.root ? model.root : this.props.record;
+            await rec.save({ stayInEdition: true, useSaveErrorDialog: !this.env.inDialog });
+            this.approval.resId = rec.resId;
+        }
+        return this.approval.checkApproval();
     },
 });
 

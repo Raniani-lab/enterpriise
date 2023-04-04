@@ -33,6 +33,12 @@ class ShareRoute(http.Controller):
         if not record or not record.exists():
             raise request.not_found()
 
+        if record.type == 'url':
+            if isinstance(record.url, str):
+                url = record.url if record.url.startswith(('http://', 'https://', 'ftp://')) else 'http://' + record.url
+            else:
+                url = record.url
+            return request.redirect(url, code=307, local=False)
         return request.env['ir.binary']._get_stream_from(record, field).get_response()
 
     def _get_downloadable_documents(self, documents):
@@ -50,6 +56,7 @@ class ShareRoute(http.Controller):
         #       entire zip in memory and sending it all at once.
 
         stream = io.BytesIO()
+        documents.check_access_rule('read')
         try:
             with zipfile.ZipFile(stream, 'w') as doc_zip:
                 for document in self._get_downloadable_documents(documents):

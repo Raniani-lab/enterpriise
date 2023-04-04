@@ -113,6 +113,10 @@
                     <t t-set="download_URL" t-value="base_url + '/document/download/' + share_id + '/' + token + '/' + str(document.id)"/>
                     <t t-set="document_request" t-value="document.type == 'empty'"/>
                     <t t-set="document_is_url" t-value="document.type == 'url'"/>
+                    <t t-set="redirect_URL" t-value="document.url"/>
+                    <t t-if="document_is_url and isinstance(document.url, str)">
+                        <t t-set="redirect_URL" t-value="document.url if document.url.startswith(('http://', 'https://', 'ftp://')) else 'http://' + document.url"/>
+                    </t>
                     <div class="col-sm-6 col-lg-3">
                         <article t-attf-class="o_card d-flex mb16 #{document_request and 'o_request_card' or ''}">
                             <figure class="o_card_left d-flex position-relative flex-column flex-nowrap justify-content-between m-0">
@@ -129,7 +133,7 @@
                                 <header>
                                     <h6 class="o_card_title mt0 mb4">
                                         <span t-if="document_request" t-esc="document.name"/>
-                                        <a t-else="" t-att-href="document_is_url and document.url or download_URL" target="new" t-attf-title="#{document_is_url and 'Link to ' or 'Download '}#{document.name}" t-esc="document.name"/>
+                                        <a t-else="" t-att-href="document_is_url and redirect_URL or download_URL" target="new" t-attf-title="#{document_is_url and 'Link to ' or 'Download '}#{document.name}" t-esc="document.name"/>
                                     </h6>
                                 </header>
                                 <div class="o_card_footer">
@@ -145,7 +149,7 @@
                             </div>
                             <div class="o_card_right d-flex flex-column flex-nowrap justify-content-between text-end">
                                 <img t-attf-title="Owner: #{document.owner_id.name}" t-att-alt="document.owner_id.name" class="o_object_fit_cover rounded-circle" width="15" height="15" t-attf-src="/document/avatar/#{share_id}/#{token}/#{document.id}"/>
-                                <a t-if="not document_request" t-att-href="document_is_url and document.url or download_URL" target="new" t-attf-title="#{document_is_url and 'Link to ' or 'Download '}#{document.name}"><i t-attf-class="fa #{'url' not in document.type and 'fa-download' or 'fa-link'}"/></a>
+                                <a t-if="not document_request" t-att-href="document_is_url and redirect_URL or download_URL" target="new" t-attf-title="#{document_is_url and 'Link to ' or 'Download '}#{document.name}"><i t-attf-class="fa #{'url' not in document.type and 'fa-download' or 'fa-link'}"/></a>
                             </div>
                         </article>
                     </div>

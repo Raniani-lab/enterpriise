@@ -11,7 +11,7 @@ from odoo.tools import is_html_empty
 import time
 
 
-OCR_VERSION = 131
+OCR_VERSION = 132
 
 
 class HrExpense(models.Model):

@@ -6,7 +6,7 @@ from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import UserError
 
 
-OCR_VERSION = 101
+OCR_VERSION = 102
 
 class HrApplicant(models.Model):
     _name = 'hr.applicant'

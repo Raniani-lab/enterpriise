@@ -28,11 +28,11 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         return {
             'status': 'success',
             'results': [{
-                'description': {'selected_value': {'content': 'food', 'words': []}},
-                'total': {'selected_value': {'content': 99.99, 'words': []}},
-                'date': {'selected_value': {'content': '2022-02-22', 'words': []}},
-                'currency': {'selected_value': {'content': 'euro', 'words': []}},
-                'bill_reference': {'selected_value': {'content': 'bill-ref007', 'words': []}},
+                'description': {'selected_value': {'content': 'food', 'candidates': []}},
+                'total': {'selected_value': {'content': 99.99, 'candidates': []}},
+                'date': {'selected_value': {'content': '2022-02-22', 'candidates': []}},
+                'currency': {'selected_value': {'content': 'euro', 'candidates': []}},
+                'bill_reference': {'selected_value': {'content': 'bill-ref007', 'candidates': []}},
             }],
         }
 

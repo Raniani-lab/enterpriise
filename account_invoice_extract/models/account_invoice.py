@@ -13,7 +13,7 @@ import json
 _logger = logging.getLogger(__name__)
 
 PARTNER_AUTOCOMPLETE_ENDPOINT = 'https://partner-autocomplete.odoo.com'
-OCR_VERSION = 121
+OCR_VERSION = 122
 
 
 class AccountInvoiceExtractionWords(models.Model):
@@ -127,7 +127,7 @@ class AccountMove(models.Model):
 
     def _get_validation_fields(self):
         return [
-            'total', 'subtotal', 'global_taxes', 'global_taxes_amount', 'date', 'due_date', 'invoice_id', 'partner',
+            'total', 'subtotal', 'date', 'due_date', 'invoice_id', 'partner',
             'VAT_Number', 'currency', 'payment_ref', 'iban', 'SWIFT_code', 'merged_lines', 'invoice_lines',
         ]
 
@@ -191,14 +191,6 @@ class AccountMove(models.Model):
             text_to_send["content"] = self.amount_total
         elif field == "subtotal":
             text_to_send["content"] = self.amount_untaxed
-        elif field == "global_taxes_amount":
-            text_to_send["content"] = self.amount_tax
-        elif field == "global_taxes":
-            text_to_send["content"] = [{
-                'amount': line.debit,
-                'tax_amount': line.tax_line_id.amount,
-                'tax_amount_type': line.tax_line_id.amount_type,
-                'tax_price_include': line.tax_line_id.price_include} for line in self.line_ids.filtered('tax_repartition_line_id')]
         elif field == "date":
             text_to_send["content"] = str(self.invoice_date) if self.invoice_date else False
         elif field == "due_date":
@@ -620,13 +612,14 @@ class AccountMove(models.Model):
                     for field in fields_with_boxes:
                         if field in ocr_results:
                             value = ocr_results[field]
+                            selected_value = value.get('selected_value')
                             data = []
 
-                            # We need to make sure that only one word is selected.
-                            # Once this flag is set, the next words can't be set as selected.
+                            # We need to make sure that only one candidate is selected.
+                            # Once this flag is set, the next candidates can't be set as selected.
                             ocr_chosen_found = False
-                            for word in value["words"]:
-                                ocr_chosen = value["selected_value"] == word and not ocr_chosen_found
+                            for word in value.get('candidates', []):
+                                ocr_chosen = selected_value == word and not ocr_chosen_found
                                 if ocr_chosen:
                                     ocr_chosen_found = True
                                 data.append((0, 0, {

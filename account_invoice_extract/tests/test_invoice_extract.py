@@ -45,21 +45,19 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
     def get_result_success_response(self):
         return {
             'results': [{
-                'client': {'selected_value': {'content': "Test"}, 'words': []},
-                'supplier': {'selected_value': {'content': "Test"}, 'words': []},
-                'total': {'selected_value': {'content': 330}, 'words': []},
-                'subtotal': {'selected_value': {'content': 300}, 'words': []},
-                'invoice_id': {'selected_value': {'content': 'INV0001'}, 'words': []},
-                'currency': {'selected_value': {'content': 'EUR'}, 'words': []},
-                'VAT_Number': {'selected_value': {'content': 'BE0477472701'}, 'words': []},
-                'date': {'selected_value': {'content': '2019-04-12 00:00:00'}, 'words': []},
-                'due_date': {'selected_value': {'content': '2019-04-19 00:00:00'}, 'words': []},
-                'global_taxes_amount': {'selected_value': {'content': 30.0}, 'words': []},
-                'global_taxes': [{'selected_value': {'content': 15.0, 'amount_type': 'percent'}, 'words': []}],
-                'email': {'selected_value': {'content': 'test@email.com'}, 'words': []},
-                'website': {'selected_value': {'content': 'www.test.com'}, 'words': []},
-                'payment_ref': {'selected_value': {'content': '+++123/1234/12345+++'}, 'words': []},
-                'iban': {'selected_value': {'content': 'BE01234567890123'}, 'words': []},
+                'client': {'selected_value': {'content': "Test"}, 'candidates': []},
+                'supplier': {'selected_value': {'content': "Test"}, 'candidates': []},
+                'total': {'selected_value': {'content': 330}, 'candidates': []},
+                'subtotal': {'selected_value': {'content': 300}, 'candidates': []},
+                'invoice_id': {'selected_value': {'content': 'INV0001'}, 'candidates': []},
+                'currency': {'selected_value': {'content': 'EUR'}, 'candidates': []},
+                'VAT_Number': {'selected_value': {'content': 'BE0477472701'}, 'candidates': []},
+                'date': {'selected_value': {'content': '2019-04-12 00:00:00'}, 'candidates': []},
+                'due_date': {'selected_value': {'content': '2019-04-19 00:00:00'}, 'candidates': []},
+                'email': {'selected_value': {'content': 'test@email.com'}, 'candidates': []},
+                'website': {'selected_value': {'content': 'www.test.com'}, 'candidates': []},
+                'payment_ref': {'selected_value': {'content': '+++123/1234/12345+++'}, 'candidates': []},
+                'iban': {'selected_value': {'content': 'BE01234567890123'}, 'candidates': []},
                 'invoice_lines': [
                     {
                         'description': {'selected_value': {'content': 'Test 1'}},
@@ -168,8 +166,6 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_result_success_response()
         extract_response['results'][0]['total']['selected_value']['content'] = 300
-        extract_response['results'][0]['global_taxes'][0]['selected_value']['content'] = 0
-        extract_response['results'][0]['global_taxes_amount']['selected_value']['content'] = 0
         for line in extract_response['results'][0]['invoice_lines']:
             line['total'] = line['subtotal']
             line['taxes']['selected_values'] = []
@@ -514,15 +510,6 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
         self.assertEqual(invoice.extract_state, 'done')
         self.assertEqual(invoice.get_validation('total')['content'], invoice.amount_total)
         self.assertEqual(invoice.get_validation('subtotal')['content'], invoice.amount_untaxed)
-        self.assertEqual(invoice.get_validation('global_taxes_amount')['content'], invoice.amount_tax)
-        validation_global_taxes = invoice.get_validation('global_taxes')['content']
-        for i, line in enumerate(invoice.line_ids.filtered('tax_repartition_line_id')):
-            self.assertDictEqual(validation_global_taxes[i], {
-                'amount': line.debit,
-                'tax_amount': line.tax_line_id.amount,
-                'tax_amount_type': line.tax_line_id.amount_type,
-                'tax_price_include': line.tax_line_id.price_include,
-            })
         self.assertEqual(invoice.get_validation('date')['content'], str(invoice.invoice_date))
         self.assertEqual(invoice.get_validation('due_date')['content'], str(invoice.invoice_date_due))
         self.assertEqual(invoice.get_validation('invoice_id')['content'], invoice.ref)

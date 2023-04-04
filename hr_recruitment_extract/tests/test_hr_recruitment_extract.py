@@ -22,10 +22,10 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         return {
             'status': 'success',
             'results': [{
-                'name': {'selected_value': {'content': 'Johnny Doe'}, 'words': []},
-                'email': {'selected_value': {'content': 'john@doe.com'}, 'words': []},
-                'phone': {'selected_value': {'content': '+32488888888'}, 'words': []},
-                'mobile': {'selected_value': {'content': '+32499999999'}, 'words': []},
+                'name': {'selected_value': {'content': 'Johnny Doe'}, 'candidates': []},
+                'email': {'selected_value': {'content': 'john@doe.com'}, 'candidates': []},
+                'phone': {'selected_value': {'content': '+32488888888'}, 'candidates': []},
+                'mobile': {'selected_value': {'content': '+32499999999'}, 'candidates': []},
             }],
         }
 

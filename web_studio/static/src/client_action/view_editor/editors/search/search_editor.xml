@@ -115,6 +115,9 @@
         <Property t-if="node.type !== 'separator'" name="'label'" type="'char'" value="label" onChange.bind="onChangeLabel">
             Label
         </Property>
+        <label t-else="">
+            Separator
+        </label>
         <Property  t-if="node.type === 'filter'" name="'domain'" type="'domain'" value="domain" onChange.bind="onChangeDomain" childProps="{relation: viewEditorModel.resModel}">
             Domain
         </Property>

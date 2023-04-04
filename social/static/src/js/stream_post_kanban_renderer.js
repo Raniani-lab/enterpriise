@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { KanbanHeader } from '@web/views/kanban/kanban_header';
 import { KanbanRenderer } from '@web/views/kanban/kanban_renderer';
 import { useService } from '@web/core/utils/hooks';
 
@@ -7,6 +8,10 @@ import { StreamPostKanbanRecord } from './stream_post_kanban_record';
 import { ImagesCarouselDialog } from './images_carousel_dialog';
 
 const { useEffect, useRef } = owl;
+
+class StreamPostKanbanHeader extends KanbanHeader {
+    static template = "social.KanbanHeader";
+}
 
 export class StreamPostKanbanRenderer extends KanbanRenderer {
 
@@ -48,8 +53,8 @@ export class StreamPostKanbanRenderer extends KanbanRenderer {
 
 }
 
-StreamPostKanbanRenderer.template = 'social.KanbanRenderer';
 StreamPostKanbanRenderer.components = {
     ...KanbanRenderer.components,
     KanbanRecord: StreamPostKanbanRecord,
+    KanbanHeader: StreamPostKanbanHeader,
 };

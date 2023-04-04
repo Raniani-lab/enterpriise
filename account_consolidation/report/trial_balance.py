@@ -50,6 +50,11 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         options['unfold_all'] = previous_options.get('unfold_all') if previous_options else True
         options['consolidation_hierarchy'] = True
         options['consolidation_show_zero_balance_accounts'] = previous_options.get('consolidation_show_zero_balance_accounts') if previous_options else True
+        options['force_periods'] = (previous_options or {}).get('force_periods', False)
+
+        if not self.env.context.get('active_id') and (previous_options or {}).get('active_id'):
+            self = self.with_context(active_id=previous_options['active_id'])
+
         options['buttons'] = self._consolidated_balance_init_buttons(options)
 
         base_period = self._get_selected_period()

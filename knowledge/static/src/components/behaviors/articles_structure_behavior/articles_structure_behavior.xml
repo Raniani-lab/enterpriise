@@ -6,7 +6,7 @@
             <i class="fa fa-circle-o-notch fa-2x fa-spin" title="loader" role="img"/>
         </t>
         <t t-else="">
-            <div class="o_knowledge_toolbar o_knowledge_clean_for_save">
+            <div class="o_knowledge_toolbar" data-oe-transient-content="true">
                 <div class="btn-group">
                     <button t-if="!this.props.readonly"
                             t-on-click="_onSwitchMode"

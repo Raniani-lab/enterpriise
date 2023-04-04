@@ -8,7 +8,7 @@
             <div class="o_knowledge_file_name" t-out="props.fileName"/>
             <div class="o_knowledge_file_extension pe-3" t-out="props.fileExtension"/>
         </div>
-        <div class="o_knowledge_toolbar o_knowledge_clean_for_save">
+        <div class="o_knowledge_toolbar" data-oe-transient-content="true">
             <div class="btn-group">
                 <button t-if="targetRecordInfo and targetRecordInfo.withChatter" t-on-click="onClickAttachToMessage" title="Send as Message" class="btn btn-primary btn-link btn-sm border-0">
                     <i class="fa fa-envelope" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Send as Message</span>
@@ -23,7 +23,7 @@
         </div>
     </t>
     <t t-name="knowledge.WysiwygFileBehavior">
-        <div t-attf-class="o_knowledge_behavior_anchor #{behaviorType}" t-att-data-behavior-props="behaviorProps">
+        <div t-attf-class="o_knowledge_behavior_anchor #{behaviorType}" t-att-data-behavior-props="behaviorProps" data-oe-protected="true">
             <div class="o_knowledge_file_image"
                 data-prop-name="fileImage" t-out="fileImage"/>
             <div class="o_knowledge_file_description text-break">

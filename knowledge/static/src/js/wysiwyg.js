@@ -20,24 +20,6 @@ Wysiwyg.include({
         this.$editable[0].dispatchEvent(new Event('refresh_behaviors'));
     },
     /**
-     * @override
-     */
-    setValue: function () {
-        // Temporary hack that will be removed in 16.2 with the full
-        // implementation of oeProtected in the editor.
-        // purpose: ignore locks from Behavior components rendering
-        // when the content of the editor is reset (those components will also
-        // have to be reset anyway)
-        if (this.odooEditor._observerUnactiveLabels.size) {
-            [...this.odooEditor._observerUnactiveLabels].forEach(lock => {
-                if (lock.startsWith('knowledge_behavior_id_')) {
-                    this.odooEditor.observerActive(lock);
-                }
-            });
-        }
-        this._super(...arguments);
-    },
-    /**
      * Check if the selection starts inside a table. This function can be used
      * as the `isDisabled` property of a command of the PowerBox to disable
      * a command in a table.
@@ -140,8 +122,7 @@ Wysiwyg.include({
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'kanban';
                     this._openEmbeddedViewDialog(viewType, name => {
-                        restoreSelection();
-                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, {
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, restoreSelection, {
                             active_id: this.options.recordInfo.res_id,
                             default_parent_id: this.options.recordInfo.res_id,
                             default_icon: '📄',
@@ -160,8 +141,7 @@ Wysiwyg.include({
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'list';
                     this._openEmbeddedViewDialog(viewType, name => {
-                        restoreSelection();
-                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, {
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, restoreSelection, {
                             active_id: this.options.recordInfo.res_id,
                             default_parent_id: this.options.recordInfo.res_id,
                             default_icon: '📄',
@@ -187,29 +167,31 @@ Wysiwyg.include({
      * Notify @see FieldHtmlInjector that behaviors need to be injected
      * @see KnowledgeBehavior
      *
-     * @param {Element} anchor
+     * @param {Element} anchor blueprint for the behavior to be inserted
+     * @param {Function} restoreSelection Instructions on where to insert it
+     * @param {Function} insert Instructions on how to insert it if it needs
+     *                   custom handling
      */
-    _notifyNewBehavior(anchor) {
-        const behaviorsData = [];
+    _notifyNewBehavior(anchor, restoreSelection, insert = null) {
         const type = Array.from(anchor.classList).find(className => className.startsWith('o_knowledge_behavior_type_'));
-        if (type) {
-            behaviorsData.push({
-                anchor: anchor,
-                behaviorType: type,
-                setCursor: true,
-            });
-        }
-        this.$editable.trigger('refresh_behaviors', { behaviorsData: behaviorsData});
+        this.$editable[0].dispatchEvent(new CustomEvent('refresh_behaviors', { detail: { behaviorData: {
+            anchor,
+            behaviorType: type,
+            setCursor: true,
+            restoreSelection,
+            behaviorStatus: 'new',
+            insert,
+        }}}));
     },
     /**
      * Insert a /toc block (table of content)
      */
     _insertTableOfContent: function () {
+        const restoreSelection = preserveCursor(this.odooEditor.document);
         const tableOfContentBlock = $(QWeb.render('knowledge.abstract_behavior', {
             behaviorType: "o_knowledge_behavior_type_toc",
         }))[0];
-        const [container] = this.odooEditor.execCommand('insert', tableOfContentBlock);
-        this._notifyNewBehavior(container);
+        this._notifyNewBehavior(tableOfContentBlock, restoreSelection);
     },
     /**
      * Insert a /structure block.
@@ -217,19 +199,19 @@ Wysiwyg.include({
      * @param {boolean} childrenOnly
      */
     _insertArticlesStructure: function () {
+        const restoreSelection = preserveCursor(this.odooEditor.document);
         const articlesStructureBlock = $(QWeb.render('knowledge.articles_structure_wrapper'))[0];
-        const [container] = this.odooEditor.execCommand('insert', articlesStructureBlock);
-        this._notifyNewBehavior(container);
+        this._notifyNewBehavior(articlesStructureBlock, restoreSelection);
     },
     /**
      * Insert a /template block
      */
     _insertTemplate() {
+        const restoreSelection = preserveCursor(this.odooEditor.document);
         const templateBlock = $(QWeb.render('knowledge.abstract_behavior', {
             behaviorType: "o_knowledge_behavior_type_template",
         }))[0];
-        const [container] = this.odooEditor.execCommand('insert', templateBlock);
-        this._notifyNewBehavior(container);
+        this._notifyNewBehavior(templateBlock, restoreSelection);
     },
     /**
      * Insert a /article block (through a dialog)
@@ -244,11 +226,9 @@ Wysiwyg.include({
                     display_name: article.displayName,
                 })
             }))[0];
-            restoreSelection();
             const nameNode = document.createTextNode(article.display_name);
             articleLinkBlock.appendChild(nameNode);
-            const [anchor] = this.odooEditor.execCommand('insert', articleLinkBlock);
-            this._notifyNewBehavior(anchor);
+            this._notifyNewBehavior(articleLinkBlock, restoreSelection);
         }});
     },
     /**
@@ -256,19 +236,19 @@ Wysiwyg.include({
      * @param {String} actWindowId - Act window id of the action
      * @param {String} viewType - View type
      * @param {String} name - Name
+     * @param {Function} restoreSelection - function to restore the selection
+     *                   to insert the embedded view where the user typed the
+     *                   command.
      * @param {Object} context - Context
      */
-    _insertEmbeddedView: async function (actWindowId, viewType, name, context={}) {
-        const restoreSelection = preserveCursor(this.odooEditor.document);
-        restoreSelection();
+    _insertEmbeddedView: async function (actWindowId, viewType, name, restoreSelection, context={}) {
         context.knowledge_embedded_view_framework = 'owl';
         const embeddedViewBlock = $(await this._rpc({
             model: 'knowledge.article',
             method: 'render_embedded_view',
             args: [[this.options.recordInfo.res_id], actWindowId, viewType, name, context],
         }))[0];
-        const [container] = this.odooEditor.execCommand('insert', embeddedViewBlock);
-        this._notifyNewBehavior(container);
+        this._notifyNewBehavior(embeddedViewBlock, restoreSelection);
     },
     /**
      * Notify the @see FieldHtmlInjector when a /file block is inserted from a
@@ -279,7 +259,6 @@ Wysiwyg.include({
      */
     _onMediaDialogSave(params, element) {
         if (element.classList.contains('o_is_knowledge_file')) {
-            params.restoreSelection();
             element.classList.remove('o_is_knowledge_file');
             element.classList.add('o_image');
             const extension = (element.title && element.title.split('.').pop()) || element.dataset.mimetype;
@@ -293,8 +272,7 @@ Wysiwyg.include({
                 }),
                 fileExtension: extension,
             }))[0];
-            const [container] = this.odooEditor.execCommand('insert', fileBlock);
-            this._notifyNewBehavior(container);
+            this._notifyNewBehavior(fileBlock, params.restoreSelection);
             // need to set cursor (anchor.sibling)
         } else {
             return this._super(...arguments);

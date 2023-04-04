@@ -407,8 +407,8 @@
             <button  t-if="hasAccounts" type="button" class="btn btn-primary o_stream_post_kanban_new_post me-1" t-on-click.prevent="_onNewPost">
                 New Post
             </button>
-            <button type="button" class="btn btn-secondary o_stream_post_kanban_refresh_now" t-on-click.prevent="_onRefreshStats">
-                <span>Synchronize</span><i class="fa fa-circle-o-notch fa-spin d-none"/>
+            <button t-if="hasAccounts" type="button" class="btn btn-secondary o_stream_post_kanban_refresh_now" t-att-disabled="state.disableSyncButton" t-on-click.prevent="_onRefreshStats">
+                <span>Synchronize</span><i t-if="state.disableSyncButton" class="fa fa-circle-o-notch fa-spin"/>
             </button>
         </div>
     </div>

@@ -48,7 +48,7 @@
             <field name="name">account.view.coa</field>
             <field name="model">account.account</field>
             <field name="arch" type="xml">
-                <tree editable="top" create="1" delete="1">
+                <tree editable="top" create="1" delete="1" open_form_view="True">
                     <field name="code"/>
                     <field name="name"/>
                     <field name="company_id" column_invisible="True"/>
@@ -57,7 +57,6 @@
                     <field name="tax_ids" optional="hide" widget="many2many_tags"/>
                     <field name="tag_ids" optional="hide" widget="many2many_tags"/>
                     <field name="allowed_journal_ids" optional="hide" widget="many2many_tags"/>
-                    <button name="action_read_account" type="object" string="Setup" class="float-end btn-secondary"/>
                 </tree>
             </field>
         </record>

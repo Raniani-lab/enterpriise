@@ -18,6 +18,7 @@ from odoo.tools.misc import format_amount, format_date, get_lang
 
 _logger = logging.getLogger(__name__)
 pattern = re.compile("^[a-z0-9-_]+$")
+runbot_pattern = re.compile(r"^https:\/\/[a-z0-9-_]+\.[a-z0-9-_]+\.odoo\.com$")
 
 
 class AccountOnlineAccount(models.Model):
@@ -276,9 +277,11 @@ class AccountOnlineLink(models.Model):
 
         timeout = int(self.env['ir.config_parameter'].sudo().get_param('account_online_synchronization.request_timeout')) or 60
         proxy_mode = self.env['ir.config_parameter'].sudo().get_param('account_online_synchronization.proxy_mode') or 'production'
-        if not pattern.match(proxy_mode):
+        if not pattern.match(proxy_mode) and not runbot_pattern.match(proxy_mode):
             raise UserError(_('Invalid value for proxy_mode config parameter.'))
         endpoint_url = 'https://%s.odoofin.com%s' % (proxy_mode, url)
+        if runbot_pattern.match(proxy_mode):
+            endpoint_url = '%s%s' % (proxy_mode, url)
         data['utils'] = {
             'request_timeout': timeout,
             'lang': get_lang(self.env).code,

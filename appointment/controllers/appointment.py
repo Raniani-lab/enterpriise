@@ -433,7 +433,7 @@ class AppointmentController(http.Controller):
             return False
 
         try:
-            session_tz = request.session['timezone']
+            session_tz = request.session.get('timezone', appointment_type.appointment_tz)
             tz_info = pytz.timezone(session_tz)
             start_dt_utc = tz_info.localize(fields.Datetime.from_string(start_dt)).astimezone(pytz.utc)
         except (ValueError, UnknownTimeZoneError):

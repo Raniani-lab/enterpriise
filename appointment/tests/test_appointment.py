@@ -785,3 +785,19 @@ class AppointmentTest(AppointmentCommon, HttpCase):
             available_unique_slots[0]['datetime'],
             unique_slots[1]['start_datetime'].strftime('%Y-%m-%d %H:%M:%S'),
         )
+
+    def test_check_appointment_timezone(self):
+        session = self.authenticate(None, None)
+        odoo.http.root.session_store.save(session)
+        appointment = self.apt_type_bxls_2days
+        appointment_invite = self.env['appointment.invite'].create({'appointment_type_ids': appointment.ids})
+        appointment_url = url_join(appointment.get_base_url(), '/appointment/%s' % appointment.id)
+        appointment_info_url = "%s/info?" % appointment_url
+        url_inside_of_slot = appointment_info_url + url_encode({
+            'staff_user_id': self.staff_user_bxls.id,
+            'date_time': datetime(2023, 1, 9, 9, 0),  # 9/01/2023 is a Monday, there is a slot at 9:00
+            'duration': 1,
+            **appointment_invite._get_redirect_url_parameters(),
+        })
+        # User should be able open url without timezone session
+        self.url_open(url_inside_of_slot)

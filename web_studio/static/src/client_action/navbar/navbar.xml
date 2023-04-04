@@ -29,11 +29,6 @@
 
   <t t-name="web_studio.masterButtons" owl="1">
     <div class="o_studio_buttons">
-      <div ref="studioNotes" class="o_web_studio_notes">
-          <a href="#" t-on-click.prevent="_onNotesClicked">
-              Notes
-          </a>
-      </div>
       <div class="o_web_studio_leave" t-on-click="closeStudio">
           <a class="btn btn-primary">Close</a>
       </div>

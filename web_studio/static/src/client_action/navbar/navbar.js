@@ -54,17 +54,6 @@ export class StudioNavbar extends EnterpriseNavBar {
     get isInApp() {
         return this.studio.mode === this.studio.MODES.EDITOR;
     }
-    _onNotesClicked() {
-        // LPE fixme: dbuuid should be injected into session_info python side
-        const action = {
-            type: "ir.actions.act_url",
-            url: `http://pad.odoo.com/p/customization-${this.user.db.uuid}`,
-        };
-        // LPE Fixme: this could be either the local AM or the GlobalAM
-        // we don(t care i-here as we open an url anyway)
-        this.actionManager.doAction(action);
-    }
-
     get menuButtons() {
         return Object.fromEntries(menuButtonsRegistry.getEntries());
     }

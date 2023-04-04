@@ -358,8 +358,8 @@ class MarketingActivity(models.Model):
             rec_valid = self.env[self.model_name].search(rec_domain)
             rec_ids_domain = set(rec_valid.ids)
 
-            traces_allowed = traces.filtered(lambda trace: trace.res_id in rec_ids_domain or trace.is_test)
-            traces_rejected = traces.filtered(lambda trace: trace.res_id not in rec_ids_domain and not trace.is_test)  # either rejected, either deleted record
+            traces_allowed = traces.filtered(lambda trace: trace.res_id in rec_ids_domain)
+            traces_rejected = traces.filtered(lambda trace: trace.res_id not in rec_ids_domain)  # either rejected, either deleted record
         else:
             traces_allowed = traces
             traces_rejected = self.env['marketing.trace']

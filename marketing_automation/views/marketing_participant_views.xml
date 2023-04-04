@@ -41,6 +41,7 @@
                         </div>
                         <field name="trace_ids" widget="hierarchy_kanban" readonly="1" nolabel="1" class="o_ma_hierarchy_container o_ma_workitem_hierarchy">
                             <kanban default_order="schedule_date">
+                                <field name="id"/>
                                 <field name="state"/>
                                 <field name="activity_type"/>
                                 <field name="state_msg"/>
@@ -138,9 +139,9 @@
         <field name="arch" type="xml">
             <tree string="Participant" create="false">
                 <field name="resource_ref" string="Participant Name" readonly="True"/>
+                <field name="campaign_id" readonly="True" optional="hide"/>
                 <field name="model_id" string="Target Model"/>
-                <field name="state" readonly="True"/>
-                <field name="campaign_id" readonly="True"/>
+                <field name="state" readonly="True" widget="badge" decoration-info="state == 'running'" decoration-success="state == 'completed'" decoration-danger="state == 'unlinked'"/>
                 <field name="is_test" invisible="1"/>
             </tree>
         </field>

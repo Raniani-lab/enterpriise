@@ -13,7 +13,7 @@ import { uuid } from "@web/views/utils";
 import {
     onError,
     onMounted,
-    onWillUnmount,
+    onWillDestroy,    
     useState,
     useSubEnv } from "@odoo/owl";
 
@@ -46,11 +46,28 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
         });
 
         onMounted(() => {
-            const { anchor } = this.props;
-            this.observer = setIntersectionObserver(anchor, async () => {
-                await this.loadData();
-                this.state.waiting = false;
-            });
+            const { anchor, root } = this.props;
+            if (root.contains(anchor)) {
+                this.setupIntersectionObserver();
+            } else {
+                // If the anchor is not already in the editable, it means that
+                // it was pre-rendered in a d-none element and is waiting
+                // to be inserted. The intersectionObserver must wait for the
+                // anchor to be in the editable before being set up, because
+                // it will not detect that it is visible if the insertion
+                // moves the anchor from the d-none element to a visible
+                // sector of the editable.
+                this.insertionObserver = new MutationObserver(mutationList => {
+                    const isAdded = mutationList.find(mutation => {
+                        return Array.from(mutation.addedNodes).find(node => node === anchor);
+                    });
+                    if (isAdded) {
+                        this.insertionObserver.disconnect();
+                        this.setupIntersectionObserver();
+                    }
+                });
+                this.insertionObserver.observe(root, {childList: true});
+            }
             /**
              * Capturing the events occuring in the embedded view to prevent the
              * default behavior of the editor.
@@ -64,15 +81,25 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
             anchor.addEventListener('drop', stopEventPropagation);
         });
 
-        onWillUnmount(() => {
+        onWillDestroy(() => {
             if (this.observer) {
-                this.observer.unobserve(this.props.anchor);
+                this.observer.disconnect();
+            }
+            if (this.insertionObserver) {
+                this.insertionObserver.disconnect();
             }
         });
 
         onError(error => {
             console.error(error);
             this.state.error = true;
+        });
+    }
+
+    setupIntersectionObserver() {
+        this.observer = setIntersectionObserver(this.props.anchor, async () => {
+            await this.loadData();
+            this.state.waiting = false;
         });
     }
 

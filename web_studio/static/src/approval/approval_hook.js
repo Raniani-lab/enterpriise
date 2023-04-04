@@ -49,11 +49,11 @@ class StudioApproval {
      * does the update of every component using that state.
      */
     get state() {
-        if (!(this.dataKey in this._data)) {
-            this._data[this.dataKey] = { rules: null };
+        const state = this._getState();
+        if (state.rules === null && !state.syncing) {
             this.fetchApprovals();
         }
-        return this._data[this.dataKey];
+        return state;
     }
 
     get inStudio() {
@@ -84,14 +84,20 @@ class StudioApproval {
         const kwargs = {
             res_id: !this.studio.mode && this.resId,
         };
-        Object.assign(this.state, { syncing: true });
-        const spec = await this.orm.silent.call(
-            "studio.approval.rule",
-            "get_approval_spec",
-            args,
-            kwargs
-        );
-        Object.assign(this.state, spec, { syncing: false });
+
+        const state = this._getState();
+        state.syncing = true;
+        try {
+            const spec = await this.orm.silent.call(
+                "studio.approval.rule",
+                "get_approval_spec",
+                args,
+                kwargs
+            );
+            Object.assign(state, spec);
+        } finally {
+            state.syncing = false;
+        }
     }
 
     /**
@@ -122,6 +128,13 @@ class StudioApproval {
         } finally {
             await this.fetchApprovals();
         }
+    }
+
+    _getState() {
+        if (!(this.dataKey in this._data)) {
+            this._data[this.dataKey] = { rules: null };
+        }
+        return this._data[this.dataKey];
     }
 }
 

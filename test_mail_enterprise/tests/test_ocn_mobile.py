@@ -5,14 +5,14 @@ import socket
 import urllib.parse
 
 from odoo.addons.mail.tests.common import mail_new_test_user
-from odoo.addons.test_mail_sms.tests.common import TestSMSCommon
+from odoo.addons.sms.tests.common import SMSCommon
 from odoo.addons.test_mail.data.test_mail_data import MAIL_TEMPLATE
 from odoo.tests import tagged
 from unittest.mock import patch
 
 
 @tagged('mail_enterprise_mobile')
-class TestMailMobile(TestSMSCommon):
+class TestMailMobile(SMSCommon):
 
     @classmethod
     def setUpClass(cls):
@@ -40,7 +40,7 @@ class TestMailMobile(TestSMSCommon):
 
 
 @tagged('post_install', '-at_install')
-class TestPushNotification(TestSMSCommon):
+class TestPushNotification(SMSCommon):
 
     @classmethod
     def setUpClass(cls):

@@ -5,14 +5,15 @@ from datetime import timedelta
 from markupsafe import Markup
 
 from odoo import fields
-from odoo.addons.test_mail_sms.tests.common import TestSMSCommon, TestSMSRecipients
+from odoo.addons.sms.tests.common import SMSCommon
+from odoo.addons.test_mail_sms.tests.common import TestSMSRecipients
 from odoo.tests.common import users
 from odoo.tests import tagged
 from odoo.tools import mute_logger
 
 
 @tagged('mail_activity')
-class TestActivity(TestSMSCommon, TestSMSRecipients):
+class TestActivity(SMSCommon, TestSMSRecipients):
 
     @classmethod
     def setUpClass(cls):

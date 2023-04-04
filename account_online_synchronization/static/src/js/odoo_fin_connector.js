@@ -14,10 +14,14 @@ function OdooFinConnector(parent, action) {
     let mode = action.params.mode || 'link';
     // Ensure that the proxyMode is valid
     const modeRegexp = /^[a-z0-9-_]+$/i;
-    if (!modeRegexp.test(action.params.proxyMode)) {
+    const runbotRegexp = /^https:\/\/[a-z0-9-_]+\.[a-z0-9-_]+\.odoo\.com$/i;
+    if (!modeRegexp.test(action.params.proxyMode) && !runbotRegexp.test(action.params.proxyMode)) {
         return;
     }
     let url = 'https://' + action.params.proxyMode + '.odoofin.com/proxy/v1/odoofin_link';
+    if (runbotRegexp.test(action.params.proxyMode)) {
+        url = action.params.proxyMode + '/proxy/v1/odoofin_link';
+    }
 
     loadJS(url)
         .then(function () {

@@ -31,7 +31,7 @@ class MrpWorkorder(models.Model):
             wo.duration = duration
             wo.duration_unit = round(wo.duration / max(wo.qty_produced, 1), 2)
             if wo.duration_expected:
-                wo.duration_percent = 100 * (wo.duration_expected - wo.duration) / wo.duration_expected
+                wo.duration_percent = max(-2147483648, min(2147483647, 100 * (wo.duration_expected - wo.duration) / wo.duration_expected))
             else:
                 wo.duration_percent = 0
         return super(MrpWorkorder, self.env['mrp.workorder'].browse(wo_ids_without_employees))._compute_duration()

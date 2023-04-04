@@ -225,7 +225,7 @@
         <field name="view_mode">gantt,calendar,tree,form,kanban,pivot,graph</field>
         <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
         <field name="context">{
-            'planning_groupby_sale_order': True,
+            'planning_groupby_sale_order': True, 'with_price_unit': True,
             'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_sale_line_id': 1,
         }</field>
         <field name="groups_id" eval="[(4, ref('planning.group_planning_manager'))]"/>

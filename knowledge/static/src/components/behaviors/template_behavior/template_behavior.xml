@@ -20,8 +20,7 @@
         </div>
         <div class="o_knowledge_content" data-prop-name="content" t-ref="templateContent" data-oe-protected="false"
             t-att-contenteditable="!props.readonly ? 'true' : 'false'">
-            <t t-if="props.content" t-out="props.content"/>
-            <p t-else=""><br/></p>
+            <t t-out="content"/>
         </div>
     </t>
 </templates>

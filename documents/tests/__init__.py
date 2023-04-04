@@ -7,4 +7,5 @@ from . import test_documents_folder
 from . import test_documents_multipage
 from . import test_documents_tag
 from . import test_mail_activity
+from . import test_mail_gateway
 from . import test_security

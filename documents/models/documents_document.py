@@ -313,15 +313,16 @@ class Document(models.Model):
         share = self.create_share_id
         if share:
             attachments = self.env['ir.attachment'].browse([x[1] for x in m2m_commands])
-            for attachment in attachments:
-                document = self.env['documents.document'].create({
-                    'name': attachment.name,
-                    'attachment_id': attachment.id,
-                    'folder_id': share.folder_id.id,
-                    'owner_id': share.owner_id.id if share.owner_id else share.create_uid.id,
-                    'partner_id': share.partner_id.id if share.partner_id else False,
-                    'tag_ids': [(6, 0, share.tag_ids.ids if share.tag_ids else [])],
-                })
+            partner = share.partner_id.id or self.env['res.partner'].find_or_create(msg_vals['email_from']).id
+            documents = self.env['documents.document'].create([{
+                'name': attachment.name,
+                'attachment_id': attachment.id,
+                'folder_id': share.folder_id.id,
+                'owner_id': share.owner_id.id or share.create_uid.id,
+                'partner_id': partner,
+                'tag_ids': [(6, 0, share.tag_ids.ids or [])],
+            } for attachment in attachments])
+            for (attachment, document) in zip(attachments, documents):
                 attachment.write({
                     'res_model': 'documents.document',
                     'res_id': document.id,

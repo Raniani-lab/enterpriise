@@ -291,10 +291,23 @@ export class DocumentsInspector extends Component {
     }
 
     onDownload() {
-        if (!this.props.selection.length) {
+        const documents = this.props.selection;
+        if (!documents.length) {
             return;
         }
-        this.download(this.props.selection);
+        const linkDocuments = documents.filter(el => el.data.type === 'url');
+        const noLinkDocuments = documents.filter(el => el.data.type !== 'url');
+        // Manage link documents
+        if (documents.length === 1 && linkDocuments.length) {
+            // Redirect to the link
+            let url = linkDocuments[0].data.url;
+            url = /^(https?|ftp):\/\//.test(url) ? url : "http://" + url;
+            window.open(url, "_blank");
+        }
+        else if (noLinkDocuments.length) {
+            // Download all documents which are not links
+            this.download(noLinkDocuments);
+        }
     }
 
     // Override during tests.

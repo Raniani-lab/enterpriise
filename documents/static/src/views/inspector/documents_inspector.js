@@ -301,7 +301,7 @@ export class DocumentsInspector extends Component {
     }
 
     onDownload() {
-        const documents = this.props.documents;
+        const documents = this.props.documents.filter((rec) => rec.data.type !== "empty");
         if (!documents.length) {
             return;
         }
@@ -367,11 +367,13 @@ export class DocumentsInspector extends Component {
         if (!ev.target.files.length) {
             return;
         }
-        const record = this.props.documents[0];
+        const index = Number(ev.target.getAttribute("data-index"));
+        const record = this.props.documents[index];
+
         await this.env.documentsView.bus.trigger("documents-upload-files", {
             files: ev.target.files,
             folderId: this.env.searchModel.getSelectedFolderId() || (record.data.folder_id && record.data.folder_id[0]),
-            recordId: this.props.documents[0].resId,
+            recordId: record.resId,
             tagIds: this.env.searchModel.getSelectedTagIds(),
         });
         ev.target.value = "";

@@ -1511,6 +1511,83 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'early_payment',   'amount_currency': 144.0,       'balance': 36.0,        'account_id': early_pay_acc.id},
         ])
 
+    def test_early_payment_included_intracomm_bill(self):
+        tax_tags = self.env['account.account.tag'].create({
+            'name': f'tax_tag_{i}',
+            'applicability': 'taxes',
+            'country_id': self.env.company.account_fiscal_country_id.id,
+        } for i in range(6))
+
+        intracomm_tax = self.env['account.tax'].create({
+            'name': 'tax20',
+            'amount_type': 'percent',
+            'amount': 20,
+            'type_tax_use': 'purchase',
+            'invoice_repartition_line_ids': [
+                # pylint: disable=bad-whitespace
+                Command.create({'repartition_type': 'base', 'factor_percent': 100.0,    'tag_ids': [Command.set(tax_tags[0].ids)]}),
+                Command.create({'repartition_type': 'tax',  'factor_percent': 100.0,    'tag_ids': [Command.set(tax_tags[1].ids)]}),
+                Command.create({'repartition_type': 'tax',  'factor_percent': -100.0,   'tag_ids': [Command.set(tax_tags[2].ids)]}),
+            ],
+            'refund_repartition_line_ids': [
+                # pylint: disable=bad-whitespace
+                Command.create({'repartition_type': 'base', 'factor_percent': 100.0,    'tag_ids': [Command.set(tax_tags[3].ids)]}),
+                Command.create({'repartition_type': 'tax',  'factor_percent': 100.0,    'tag_ids': [Command.set(tax_tags[4].ids)]}),
+                Command.create({'repartition_type': 'tax',  'factor_percent': -100.0,   'tag_ids': [Command.set(tax_tags[5].ids)]}),
+            ],
+        })
+
+        early_payment_term = self.env['account.payment.term'].create({
+            'name': "early_payment_term",
+            'company_id': self.company_data['company'].id,
+            'early_pay_discount_computation': 'included',
+            'early_discount': True,
+            'discount_percentage': 2,
+            'discount_days': 7,
+            'line_ids': [
+                Command.create({
+                    'value': 'percent',
+                    'value_amount': 100.0,
+                    'nb_days': 30,
+                }),
+            ],
+        })
+
+        bill = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_payment_term_id': early_payment_term.id,
+            'invoice_date': '2019-01-01',
+            'date': '2019-01-01',
+            'invoice_line_ids': [
+                Command.create({
+                    'name': 'line',
+                    'price_unit': 1000.0,
+                    'tax_ids': [Command.set(intracomm_tax.ids)],
+                }),
+            ],
+        })
+        bill.action_post()
+
+        st_line = self._create_st_line(
+            -980.0,
+            date='2017-01-01',
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_amls(bill.line_ids.filtered(lambda x: x.account_type == 'liability_payable'))
+        wizard.button_validate()
+
+        self.assertRecordValues(st_line.line_ids.sorted('balance'), [
+            # pylint: disable=bad-whitespace
+            {'amount_currency': -980.0, 'tax_ids': [],                  'tax_tag_ids': [],              'tax_tag_invert': False},
+            {'amount_currency': -20.0,  'tax_ids': intracomm_tax.ids,   'tax_tag_ids': tax_tags[3].ids, 'tax_tag_invert': True},
+            {'amount_currency': -4.0,   'tax_ids': [],                  'tax_tag_ids': tax_tags[4].ids, 'tax_tag_invert': True},
+            {'amount_currency': 4.0,    'tax_ids': [],                  'tax_tag_ids': tax_tags[5].ids, 'tax_tag_invert': True},
+            {'amount_currency': 1000.0, 'tax_ids': [],                  'tax_tag_ids': [],              'tax_tag_invert': False},
+        ])
+
+
     def test_multi_currencies_with_custom_rate(self):
         self.company_data['default_journal_bank'].currency_id = self.currency_data['currency']
         st_line = self._create_st_line(1200.0) # rate 1:2

@@ -31,6 +31,7 @@ class TestDashboardUi(HttpCase):
             'user_id': user.id,
             'company_id': company.id,
             'department_id': department.id,
+            'resource_calendar_id': company.resource_calendar_id.id,
         })
         self.start_tour("/", "payroll_dashboard_ui_tour", login='dashboarder', timeout=300)
 

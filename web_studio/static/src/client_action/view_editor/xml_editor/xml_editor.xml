@@ -24,7 +24,7 @@
                         <button type="button" class="btn-close ms-2" aria-label="Close" t-on-click="() => this.hideAlert(alert)" />
                     </div>
                 </div>
-                <CodeEditor type="'qweb'" value="arch" onChange.bind="onCodeChange" theme="'monokai'" loadLibs="false" />
+                <CodeEditor mode="'qweb'" value="arch" onChange.bind="onCodeChange" theme="'monokai'" class="'o_web_studio_code_editor'"/>
             </ResizablePanel>
         </div>
         <t t-slot="default" />

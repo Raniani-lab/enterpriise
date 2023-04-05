@@ -2,7 +2,7 @@
 import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
 import { _lt } from "@web/core/l10n/translation";
 import { ResizablePanel } from "./resizable_panel/resizable_panel";
-import { CodeEditor } from "./code_editor/code_editor";
+import { CodeEditor } from "@web/core/code_editor/code_editor";
 import { SelectMenu } from "@web/core/select_menu/select_menu";
 import { useBus, useService } from "@web/core/utils/hooks";
 
@@ -25,12 +25,7 @@ export class XmlEditor extends Component {
         });
 
         useBus(this.viewEditorModel.bus, "error", () => this.render(true));
-        onWillStart(() => {
-            return Promise.all([
-                CodeEditor.loadJSLibs("main", "themes", "qweb"),
-                this.loadResources(),
-            ]);
-        });
+        onWillStart(() => this.loadResources());
 
         onWillUpdateProps((nextProps) => {
             this.state.studioViewArch = nextProps.studioViewArch;

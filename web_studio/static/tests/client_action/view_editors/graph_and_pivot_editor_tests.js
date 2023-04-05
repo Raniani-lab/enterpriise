@@ -9,7 +9,7 @@ import {
     createMockViewResult,
     editAnySelect,
 } from "@web_studio/../tests/client_action/view_editors/view_editor_tests_utils";
-import { CodeEditor } from "@web_studio/client_action/view_editor/xml_editor/code_editor/code_editor";
+import { CodeEditor } from "@web/core/code_editor/code_editor";
 
 /** @type {Node} */
 let target;

@@ -17,8 +17,8 @@ import {
     selectorContains,
 } from "@web_studio/../tests/client_action/view_editors/view_editor_tests_utils";
 import { browser } from "@web/core/browser/browser";
-import { CodeEditor } from "@web_studio/client_action/view_editor/xml_editor/code_editor/code_editor";
 import { fieldService } from "@web/core/field_service";
+import { CodeEditor } from "@web/core/code_editor/code_editor";
 import { registry } from "@web/core/registry";
 
 /* global ace */
@@ -785,7 +785,7 @@ QUnit.module("View Editors", () => {
                 target,
                 ".o_web_studio_view_renderer .o_form_readonly:not(.o_web_studio_form_view_editor)"
             );
-            assert.containsOnce(target, ".o_web_studio_xml_editor #ace-editor");
+            assert.containsOnce(target, ".o_web_studio_xml_editor .ace_editor");
         });
 
         QUnit.test("XML editor: reset operations stack", async function (assert) {
@@ -887,7 +887,9 @@ QUnit.module("View Editors", () => {
             );
             await click(studioView);
 
-            ace.edit("ace-editor").setValue("<data/>");
+            ace.edit(target.querySelector(".o_web_studio_xml_editor .ace_editor")).setValue(
+                "<data/>"
+            );
             await click(target.querySelector(".o_web_studio_xml_editor button.btn-primary"));
             assert.verifySteps(["edit_view_arch"]);
             // close XML editor

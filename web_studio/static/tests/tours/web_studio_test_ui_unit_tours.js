@@ -62,7 +62,7 @@ registry.category("web_tour.tours").add("web_studio_test_edit_with_xml_editor", 
         {
             trigger: ".ace_content",
             run() {
-                ace.edit("ace-editor").setValue("<data/>");
+                ace.edit(document.querySelector(".ace_editor")).setValue("<data/>");
             },
         },
         {

@@ -332,7 +332,7 @@ class Task(models.Model):
     @api.model
     def _group_expand_user_ids(self, users, domain, order):
         """ Group expand by user_ids in gantt view :
-            all users which have and open task in this project
+            all users which have and open task in this project + the current user
         """
         start_date = self._context.get('gantt_start_date')
         scale = self._context.get('gantt_scale')
@@ -353,7 +353,7 @@ class Task(models.Model):
                 ('planned_date_begin', '=', False),
                 ('planned_date_end', '=', False),
             ], domain_expand])
-        return self.search(expression.AND([domain_expand, domain])).user_ids
+        return self.search(expression.AND([domain_expand, domain])).user_ids | self.env.user
 
     # -------------------------------------
     # Business Methods : Smart Scheduling

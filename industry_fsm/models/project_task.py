@@ -69,7 +69,6 @@ class Task(models.Model):
     fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True, copy=False)
     partner_id = fields.Many2one(group_expand='_read_group_partner_id')
     project_id = fields.Many2one(group_expand='_read_group_project_id')
-    user_ids = fields.Many2many(group_expand='_group_expand_user_ids')
     # Use to count conditions between : time, worksheet and materials
     # If 2 over 3 are enabled for the project, the required count = 2
     # If 1 over 3 is met (enabled + encoded), the satisfied count = 2

@@ -314,7 +314,7 @@ class UPSRequest():
             uom_type.Code = 'PC' if commodity.qty == 1 else 'PCS'
 
             unit_type = self.factory_ns4.UnitType()
-            unit_type.Number = commodity.qty
+            unit_type.Number = int(commodity.qty)
             unit_type.Value = commodity.monetary_value
             unit_type.UnitOfMeasurement = uom_type
 

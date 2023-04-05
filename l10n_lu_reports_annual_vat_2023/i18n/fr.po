@@ -3242,12 +3242,12 @@ msgstr ""
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.view_l10n_lu_yearly_tax_report_manual_updated
 msgid "rate of 13 %"
-msgstr ""
+msgstr "au taux de 13 %"
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.view_l10n_lu_yearly_tax_report_manual_updated
 msgid "rate of 13%"
-msgstr ""
+msgstr "au taux de 13%"
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
@@ -3262,12 +3262,12 @@ msgstr ""
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.view_l10n_lu_yearly_tax_report_manual_updated
 msgid "rate of 16 %"
-msgstr ""
+msgstr "au taux de 16 %"
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.view_l10n_lu_yearly_tax_report_manual_updated
 msgid "rate of 16%"
-msgstr ""
+msgstr "au taux de 16%"
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
@@ -3292,12 +3292,12 @@ msgstr ""
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.view_l10n_lu_yearly_tax_report_manual_updated
 msgid "rate of 7 %"
-msgstr ""
+msgstr "au taux de 7 %"
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.view_l10n_lu_yearly_tax_report_manual_updated
 msgid "rate of 7%"
-msgstr ""
+msgstr "au taux de 7%"
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template

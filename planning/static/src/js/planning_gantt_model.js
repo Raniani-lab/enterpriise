@@ -22,6 +22,49 @@ const GROUPBY_COMBINATIONS = [
     "project_id,role_id",
 ];
 
+/**
+ * DateTime Cache mapping luxon datetime to serialized luxon datetime
+ */
+
+class PlanningLuxonDateTimeCache {
+    /**
+     *
+     * @param {PlanningGanttModel} model Planning Model instantiating cache
+     */
+    constructor(model) {
+        this.model = model;
+        this.cache = {};
+    }
+    /**
+     * @param dt a Luxon DateTime
+     * @param utc True if dt has been forced to utc
+     * @returns {string} serialized DateTime
+     */
+    get(dt, utc = false) {
+        const dateTimeCache = this.cache[dt] || {};
+        if (utc) {
+            return dateTimeCache.serializedUTCDateTime;
+        }
+        return dateTimeCache.serializedDateTime;
+    }
+    /**
+     *
+     * @param dt a Luxon DateTime
+     * @param utc Force timezone to UTC
+     * @returns {PlanningLuxonDateTimeCache} this
+     */
+    update(dt, utc = false) {
+        this.cache[dt] = this.cache[dt] || {};
+        const serializedDT = this.get(dt, utc) || this.model._serializeDateTimeAccordingToScale(dt, utc);
+        if (utc) {
+            this.cache[dt].serializedUTCDateTime = serializedDT;
+        } else {
+            this.cache[dt].serializedDateTime = serializedDT;
+        }
+        return this;
+    }
+}
+
 const PlanningGanttModel = GanttModel.extend({
 
     /**
@@ -30,6 +73,13 @@ const PlanningGanttModel = GanttModel.extend({
      */
     getStartDate() {
         return this.convertToServerTime(this.get().startDate);
+    },
+    /**
+     * @public
+     * @returns {moment} endDate
+     */
+    getEndDate() {
+        return this.convertToServerTime(this.get().stopDate);
     },
     /**
      * @public
@@ -78,6 +128,7 @@ const PlanningGanttModel = GanttModel.extend({
      */
     _generateAndStoreWorkIntervals(workIntervals) {
         const data = {};
+        const intervalStep = this._getIntervalStepAccordingToScaleInterval();
         for (const resourceId of Object.keys(workIntervals)) {
             for (const [start, end] of workIntervals[resourceId]) {
                 // Calculate interval start, stop and step that will be used to compute the allocated hours' dict.
@@ -86,12 +137,11 @@ const PlanningGanttModel = GanttModel.extend({
                 if (!(resourceId in data)) {
                     data[resourceId] = {};
                 }
-                const intervalStep = this._getIntervalStepAccordingToScaleInterval();
                 const intervalStartDate = deserializeDateTime(
-                    this._serializeDateTimeAccordingToScale(startDate, true)
+                    this.luxonDateTimeCache.update(startDate, true).get(startDate, true)
                 );
                 const intervalStopDate = deserializeDateTime(
-                    this._serializeDateTimeAccordingToScale(endDate.plus(intervalStep), true)
+                    this.luxonDateTimeCache.update(endDate.plus(intervalStep), true).get(endDate.plus(intervalStep), true)
                 );
 
                 for (let currentDate = intervalStartDate; currentDate < intervalStopDate; currentDate = currentDate.plus(intervalStep)) {
@@ -107,7 +157,7 @@ const PlanningGanttModel = GanttModel.extend({
                     periodEnd = periodEnd > endDate ? endDate : periodEnd;
 
                     // Populate dict with associated work interval.
-                    const dateKey = this._serializeDateTimeAccordingToScale(periodStart);
+                    const dateKey = this.luxonDateTimeCache.update(periodStart).get(periodStart);
                     if (!(dateKey in data[resourceId])) {
                         data[resourceId][dateKey] = [];
                     }
@@ -142,7 +192,10 @@ const PlanningGanttModel = GanttModel.extend({
             args: [
                 this._getSlotIdsFromRows(this.ganttData.rows),
             ],
-            context: this.context,
+            context: Object.assign({}, this.context, {
+                'default_start_datetime': this.getStartDate(),
+                'default_end_datetime': this.getEndDate(),
+            }),
         }).then((result) => {
             this._generateAndStoreWorkIntervals(result[0]);
             this._generateAndStoreFlexibleHours(result[1]);
@@ -200,9 +253,9 @@ const PlanningGanttModel = GanttModel.extend({
 
         // Calculate interval start, stop and step that will be used to compute the allocated hours' dict.
         const intervalStep = this._getIntervalStepAccordingToScaleInterval();
-        const intervalStartDate = deserializeDateTime(this._serializeDateTimeAccordingToScale(startDate, true));
+        const intervalStartDate = deserializeDateTime(this.luxonDateTimeCache.update(startDate, true).get(startDate, true));
         const intervalStopDate = deserializeDateTime(
-            this._serializeDateTimeAccordingToScale(endDate.plus(intervalStep), true)
+            this.luxonDateTimeCache.update(endDate.plus(intervalStep), true).get(endDate.plus(intervalStep), true)
         );
 
         for (let currentDate = intervalStartDate; currentDate < intervalStopDate; currentDate = currentDate.plus(intervalStep)) {
@@ -218,7 +271,7 @@ const PlanningGanttModel = GanttModel.extend({
             periodEnd = periodEnd > endDate ? endDate : periodEnd;
 
             // Populate record with associated allocated hours.
-            const dateKey = this._serializeDateTimeAccordingToScale(periodStart);
+            const dateKey = this.luxonDateTimeCache.update(periodStart).get(periodStart);
             if (!record.resource_id ||
                 (this.ganttData.resourceFlexibleHoursDict &&
                 this.ganttData.resourceFlexibleHoursDict[record.resource_id[0]])) {
@@ -253,6 +306,7 @@ const PlanningGanttModel = GanttModel.extend({
      */
     _fetchData: function () {
         this.context.show_job_title = true;
+        this.luxonDateTimeCache = new PlanningLuxonDateTimeCache(this);
         return this._super.apply(this, arguments).then(result => {
             for (const record of Object.values(this.ganttData.records)) {
                 this._populateAllocatedHours(record);

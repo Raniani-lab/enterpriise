@@ -865,13 +865,17 @@ class Planning(models.Model):
         """
         # Get the oldest start date and latest end date from the slots.
         domain = [("id", "in", slot_ids)]
-        fields = ["start_datetime:min", "end_datetime:max", "resource_ids:array_agg(resource_id)"]
-        planning_slot_read_group = self.env["planning.slot"]._read_group(domain, fields, [])
+        read_group_fields = ["start_datetime:min", "end_datetime:max", "resource_ids:array_agg(resource_id)"]
+        planning_slot_read_group = self.env["planning.slot"]._read_group(domain, read_group_fields, [])
         if not planning_slot_read_group[0]['__count']:
             return [{}]
 
-        start_datetime = planning_slot_read_group[0]["start_datetime"].replace(tzinfo=pytz.utc)
-        end_datetime = planning_slot_read_group[0]["end_datetime"].replace(tzinfo=pytz.utc)
+        # Get default start/end datetime if any.
+        default_start_datetime = (fields.Datetime.to_datetime(self._context.get('default_start_datetime')) or datetime.min).replace(tzinfo=pytz.utc)
+        default_end_datetime = (fields.Datetime.to_datetime(self._context.get('default_end_datetime')) or datetime.max).replace(tzinfo=pytz.utc)
+
+        start_datetime = max(default_start_datetime, planning_slot_read_group[0]["start_datetime"].replace(tzinfo=pytz.utc))
+        end_datetime = min(default_end_datetime, planning_slot_read_group[0]["end_datetime"].replace(tzinfo=pytz.utc))
 
         # Get slots' resources and current company work intervals.
         fetched_resource_ids = [res_id for res_id in planning_slot_read_group[0]["resource_ids"] if res_id is not None]

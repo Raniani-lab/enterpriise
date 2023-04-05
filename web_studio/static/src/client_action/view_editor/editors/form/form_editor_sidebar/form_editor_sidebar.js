@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { InteractiveEditorSidebar } from "@web_studio/client_action/view_editor/interactive_editor/interactive_editor_sidebar";
 import {
@@ -16,6 +16,7 @@ import { PageProperties } from "@web_studio/client_action/view_editor/editors/fo
 import { _t } from "@web/core/l10n/translation";
 import { SidebarViewToolbox } from "@web_studio/client_action/view_editor/interactive_editor/sidebar_view_toolbox/sidebar_view_toolbox";
 import { ChatterProperties } from "@web_studio/client_action/view_editor/editors/form/form_editor_sidebar/properties/chatter_properties/chatter_properties";
+import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";
 
 class FormComponents extends Component {
     static template = "web_studio.FormEditor.Sidebar.Components";
@@ -54,6 +55,8 @@ export class FormEditorSidebar extends Component {
     setup() {
         this.rpc = useService("rpc");
         this.dialog = useService("dialog");
+        this.viewEditorModel = useState(this.env.viewEditorModel);
+        this.editArchAttributes = useEditNodeAttributes({ isRoot: true });
 
         this.propertiesComponents = {
             button: {
@@ -81,7 +84,7 @@ export class FormEditorSidebar extends Component {
     }
 
     get activeActions() {
-        return this.env.viewEditorModel.controllerProps.archInfo.activeActions;
+        return this.viewEditorModel.controllerProps.archInfo.activeActions;
     }
 
     getActiveAction(name) {
@@ -89,17 +92,6 @@ export class FormEditorSidebar extends Component {
     }
 
     onAttributeChanged(value, name) {
-        // this.env.viewEditorModel.activeActions[name] = value;
-        this.env.viewEditorModel.doOperation({
-            type: "attributes",
-            target: {
-                tag: "form",
-                isSubviewAttr: true,
-            },
-            position: "attributes",
-            new_attrs: {
-                [name]: value,
-            },
-        });
+        return this.editArchAttributes({ [name]: value });
     }
 }

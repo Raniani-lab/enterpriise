@@ -10,6 +10,7 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
         this.showBackOrderDialog = false;
         this.validateMessage = _t("The manufacturing order has been validated");
         this.validateMethod = 'button_mark_done';
+        this.validateContext = {};
     }
 
     get printButtons() {

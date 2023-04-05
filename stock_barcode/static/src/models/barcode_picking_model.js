@@ -14,6 +14,10 @@ export default class BarcodePickingModel extends BarcodeModel {
         this.showBackOrderDialog = true;
         this.validateMessage = _t("The transfer has been validated");
         this.validateMethod = 'button_validate';
+        this.validateContext = {
+            display_detailed_backorder: true,
+            skip_backorder: true,
+        };
         this.lastScanned.destLocation = false;
         this.shouldShortenLocationName = true;
     }

@@ -22,6 +22,7 @@ export default class BarcodeModel extends EventBus {
         this.resModel = resModel;
         this.unfoldLineKey = false;
         this.currentSortIndex = 0;
+        this.validateContext = {};
         // Keeps track of list scanned record(s) by type.
         this.lastScanned = { packageId: false, product: false, sourceLocation: false };
         this._currentLocation = false; // Reminds the current source when the scanned one is forgotten.
@@ -467,10 +468,7 @@ export default class BarcodeModel extends EventBus {
 
     async validate() {
         await this.save();
-        const context = {
-            display_detailed_backorder: true,
-            skip_backorder: true,
-        };
+        const context = this.validateContext;
         const action = await this.orm.call(
             this.resModel,
             this.validateMethod,

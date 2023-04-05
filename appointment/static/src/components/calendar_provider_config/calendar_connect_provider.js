@@ -13,7 +13,8 @@ patch(CalendarConnectProvider.prototype, 'calendar_connect_provider_appointment_
     async _beforeLeaveContext () {
         return this.orm.call(
             'onboarding.onboarding.step',
-            'action_save_appointment_onboarding_configure_calendar_provider_step',
+            'action_validate_step',
+            ['appointment.appointment_onboarding_configure_calendar_provider_step']
         );
     }
 });

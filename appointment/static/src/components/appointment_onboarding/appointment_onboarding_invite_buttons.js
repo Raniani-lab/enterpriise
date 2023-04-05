@@ -12,6 +12,7 @@ export class AppointmentOnboardingInviteButtons extends Component {
         super.setup();
         this.notification = useService("notification");
         this.orm = useService('orm');
+        this.actionService = useService('action');
     }
     /**
      *
@@ -20,18 +21,16 @@ export class AppointmentOnboardingInviteButtons extends Component {
     async onSaveAndCopy (ev) {
         ev.preventDefault();
         ev.stopImmediatePropagation();
-        const { bookUrl, wasFirstValidation } = await this._getInviteURL();
-        const self = this;
+        const { bookUrl } = await this._getInviteURL();
         setTimeout(async () => {
             await browser.navigator.clipboard.writeText(bookUrl);
-            self.notification.add(
-                self.env._t("Link copied to clipboard."),
-                {type: "success"}
+            this.notification.add(
+                this.env._t("Link copied to clipboard!"),
+                { type: "success" }
             );
-            self.env.dialogData.close();
-            if (wasFirstValidation){
-                window.location.reload();
-            }
+            this.env.dialogData.close();
+            // refresh the view below the onboarding panel as we may have created a record
+            this.actionService.restore(this.actionService.currentController.jsId);
         });
     }
     /**

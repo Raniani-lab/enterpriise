@@ -22,11 +22,12 @@ TimeOffToDeferWarning.template = xml`
 `;
 
 export function useTimeOffToDefer() {
+    const user = useService("user");
     const orm = useService("orm");
     const timeOff = {};
     onWillStart(async () => {
-        const result = await orm.search("hr.leave", [["payslip_state", "=", "blocked"]]);
-        timeOff.hasTimeOffToDefer = result.length !== 0;
+        const result = await orm.searchCount('hr.leave', [["payslip_state", "=", "blocked"], ["state", "=", "validate"], ["employee_company_id", "in", user.context.allowed_company_ids]]);
+        timeOff.hasTimeOffToDefer = result > 0;
     });
     return timeOff;
 }

@@ -35,6 +35,7 @@ class HrPayslip(models.Model):
         leaves_to_defer = self.env['hr.leave'].search_count([
             ('payslip_state', '=', 'blocked'),
             ('state', '=', 'validate'),
+            ('employee_company_id', 'in', self.env.companies.ids),
         ])
         if leaves_to_defer:
             res.append({

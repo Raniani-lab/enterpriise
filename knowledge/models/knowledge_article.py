@@ -917,7 +917,7 @@ class Article(models.Model):
         """
         return "📄"
 
-    def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None, name_get_uid=None):
+    def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None):
         """ This override is meant to make the 'name_search' symmetrical to the name_get.
         As we append the icon (emoji) before the article name, when searching based on that same
         syntax '[emoji] name' we need to return the appropriate results.
@@ -927,11 +927,11 @@ class Article(models.Model):
         parent record, without this override it will never match). """
 
         if operator not in ('=', 'ilike'):
-            return super()._name_search(name, domain, operator, limit, order, name_get_uid)
+            return super()._name_search(name, domain, operator, limit, order)
 
         article_name, icon = self._extract_icon_from_name(name)
         if not icon:
-            return super()._name_search(name, domain, operator, limit, order, name_get_uid)
+            return super()._name_search(name, domain, operator, limit, order)
 
         domain = domain or []
         if icon == self._get_no_icon_placeholder():
@@ -948,7 +948,7 @@ class Article(models.Model):
                 ('icon', '=', icon),
             ]])
 
-        return self._search(domain, limit=limit, order=order, access_rights_uid=name_get_uid)
+        return self._search(domain, limit=limit, order=order)
 
     def _get_common_copied_data(self):
         return {

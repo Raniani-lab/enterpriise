@@ -91,7 +91,7 @@ registry.category("web_tour.tours").add('test_add_component', {test: true, steps
             helper.assertCurrentCheck('Register Consumed Materials "Metal cylinder"');
         }
     }, {
-        trigger: 'input[id="qty_done"]',
+        trigger: 'input[id="qty_done_0"]',
         position: 'bottom',
         run: 'text 1',
     }, {
@@ -195,7 +195,7 @@ registry.category("web_tour.tours").add('test_add_component', {test: true, steps
         }
     },
     {
-        trigger: "input[id='finished_lot_id']",
+        trigger: "input[id='finished_lot_id_0']",
         position: 'bottom',
         run: 'text F0001',
     },
@@ -211,7 +211,7 @@ registry.category("web_tour.tours").add('test_add_component', {test: true, steps
 registry.category("web_tour.tours").add('test_add_step', {test: true, steps: [
     { trigger: '.o_tablet_client_action' },
     {
-        trigger: 'input[id="qty_producing"]',
+        trigger: 'input[id="qty_producing_0"]',
         position: 'bottom',
         run: 'text 1',
     },
@@ -304,7 +304,7 @@ registry.category("web_tour.tours").add('test_add_step', {test: true, steps: [
 registry.category("web_tour.tours").add('test_remove_step', {test: true, steps: [
     { trigger: '.o_tablet_client_action' },
     {
-        trigger: 'input[id="qty_producing"]',
+        trigger: 'input[id="qty_producing_0"]',
         position: 'bottom',
         run: 'text 1',
     },
@@ -445,7 +445,7 @@ registry.category("web_tour.tours").add('test_remove_step', {test: true, steps: 
 registry.category("web_tour.tours").add('test_update_step', {test: true, steps: [
     { trigger: '.o_tablet_client_action' },
     {
-        trigger: 'input[id="qty_producing"]',
+        trigger: 'input[id="qty_producing_0"]',
         position: 'bottom',
         run: 'text 1',
     },

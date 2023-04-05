@@ -1063,9 +1063,9 @@ registry.category("web_tour.tours").add('test_receipt_from_scratch_with_lots_2',
     { trigger: '.o_barcode_line .o_edit' },
 
     {
-        trigger: '.o_input[id=lot_id]',
+        trigger: '.o_input[id=lot_id_0]',
         run: function () {
-            const $lot_name = $('#lot_name');
+            const $lot_name = $('#lot_name_0');
             // Check if the lot_name is invisible
             helper.assert($lot_name.length, 0);
         }
@@ -1083,9 +1083,9 @@ registry.category("web_tour.tours").add('test_receipt_from_scratch_with_lots_2',
     { trigger: '.o_barcode_line .o_edit' },
 
     {
-        trigger: '.o_input[id="lot_name"]',
+        trigger: '.o_input[id="lot_name_0"]',
         run: function () {
-            const $lot_id = $('#lot_id');
+            const $lot_id = $('#lot_id_0');
             // check that the lot_id is invisible
             helper.assert($lot_id.length, 0);
          }

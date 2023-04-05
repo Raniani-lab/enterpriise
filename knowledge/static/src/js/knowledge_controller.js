@@ -40,7 +40,7 @@ export class KnowledgeArticleFormController extends FormController {
      */
     renameArticle(name) {
         if (!name) {
-            const title = this.root.el.querySelector('#body h1');
+            const title = this.root.el.querySelector('#body_0 h1');
             if (title) {
                 name = title.textContent.trim();
                 if (!name) {

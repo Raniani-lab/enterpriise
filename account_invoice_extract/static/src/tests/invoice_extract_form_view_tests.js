@@ -234,7 +234,7 @@ QUnit.module(
             });
             // Check that a modal opened to create a res.partner with the VAT number pre-filled
             assert.strictEqual(
-                document.querySelector(".o_dialog input#vat").value,
+                document.querySelector(".o_dialog input#vat_0").value,
                 "BE0477472701",
                 "a modal to create a new partner should be opened with the content of the box clicked as the partner VAT number"
             );
@@ -249,7 +249,7 @@ QUnit.module(
             });
             // Check that a modal opened to create a res.partner with the name pre-filled
             assert.strictEqual(
-                document.querySelector(".o_dialog input#name").value,
+                document.querySelector(".o_dialog input#name_0").value,
                 "Some partner",
                 "a modal to create a new partner should be opened with the content of the box clicked as the partner name"
             );

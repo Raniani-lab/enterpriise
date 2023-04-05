@@ -267,7 +267,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "add manual entry 1",
-            trigger: "input#form_balance",
+            trigger: "input#form_balance_0",
             run: "text -600.0"
         },
         {
@@ -276,7 +276,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "Remove the manual entry",
-            extra_trigger: "input#form_balance:text('-400.00'):focus",
+            extra_trigger: "input#form_balance_0:text('-400.00'):focus",
             trigger: ".o_list_record_remove .fa-trash-o",
         },
         {
@@ -417,7 +417,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "model name",
-            trigger: "input#name",
+            trigger: "input#name_0",
             run: "text Bank Fees",
         },
         {
@@ -574,8 +574,8 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "Modify the liquidity line amount",
-            extra_trigger: "div.tab-pane.active input[id='form_balance']:focus",
-            trigger: "div.tab-pane.active input[id='form_balance']",
+            extra_trigger: "div.tab-pane.active input[id='form_balance_0']:focus",
+            trigger: "div.tab-pane.active input[id='form_balance_0']",
             run: "text -333.33",
         },
         {
@@ -586,7 +586,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "Modify the label",
-            trigger: "div.tab-pane.active input[id='form_name']",
+            trigger: "div.tab-pane.active input[id='form_name_0']",
             run: "text Spontaneous Combustion",
         },
         {

@@ -82,7 +82,7 @@ registry.category("web_tour.tours").add('test_production_with_employee', {test: 
     //     run: 'text my new instruction',
     // }, {
     {
-        trigger: "input#comment",
+        trigger: "input#comment_0",
         position: 'bottom',
         run: 'text my reason',
     },

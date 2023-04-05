@@ -80,7 +80,7 @@ registry.category("web_tour.tours").add('knowledge_kanban_command_tour', {
             throw new Error('Help field was not rendered in the DOM');
         }
         // focus the body otherwise change will not be saved
-        document.querySelector("#body").focus();
+        document.querySelector("#body_0").focus();
         // remove the help field from the dom for testing
         helpField.remove();
     },

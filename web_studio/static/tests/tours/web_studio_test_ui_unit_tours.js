@@ -569,7 +569,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_model_with_click
         },
         {
             extra_trigger: ".o_form_view",
-            trigger: "input#x_name",
+            trigger: "input#x_name_0",
             run: "text new record",
         },
         {

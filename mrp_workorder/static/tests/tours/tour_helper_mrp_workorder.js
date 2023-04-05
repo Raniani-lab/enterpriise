@@ -29,7 +29,7 @@ function assertDoneButton(present = false) {
 }
 
 function assertQtyToProduce(qty_producing, qty_remaining) {
-    let $qty_producing = $('input[id="qty_producing"]');
+    let $qty_producing = $('input[id="qty_producing_0"]');
     if ($qty_producing.length === 0) {
         $qty_producing = $('div[name="qty_producing"]');
         assert(Number($qty_producing[0].textContent), qty_producing, `wrong quantity done`);
@@ -53,7 +53,7 @@ function assertComponent(name, style, qty_done, qty_remaining) {
         assert($qty_done.length, 1, `no qty_done`);
         assert(Number($qty_done[0].textContent), qty_done, `wrong quantity done`);
     } else {
-        const $qty_done = $('input[id="qty_done"]');
+        const $qty_done = $('input[id="qty_done_0"]');
         assert($qty_done.length, 1, `no qty_done`);
         assert(Number($qty_done[0].value), qty_done, `wrong quantity done`);
     }

@@ -58,7 +58,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget',
         },
         {
             content: "The 'form_name' field should be focus automatically",
-            trigger: "div.tab-pane.active input[id='form_name']:focus",
+            trigger: "div.tab-pane.active input[id='form_name_0']:focus",
             run: function() {},
         },
         {
@@ -73,7 +73,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget',
         },
         {
             content: "The 'form_balance' field should be focus now",
-            trigger: "div.tab-pane.active input[id='form_balance']:focus",
+            trigger: "div.tab-pane.active input[id='form_balance_0']:focus",
             run: function() {},
         },
 

@@ -98,7 +98,7 @@
                             </div>
                         </setting>
                         <div class="col-lg-6">
-                            <setting>
+                            <setting class="col-lg-12">
                                 <label for="message_partner_ids"/>
                                 <div class="text-muted">
                                     Receive notifications whenever tickets are created, rated or discussed on in this team
@@ -108,7 +108,7 @@
                                     <field name="message_partner_ids" string="Follow All Team's Tickets" widget="many2many_tags_email"/>
                                 </div>
                             </setting>
-                            <setting help="Automate the assignment of new tickets to the right people, and make sure all tickets are being handled">
+                            <setting class="col-lg-12" help="Automate the assignment of new tickets to the right people, and make sure all tickets are being handled">
                                 <field name="auto_assignment"/>
                                 <div invisible="not auto_assignment" class="mt16">
                                     <field name="assign_method" class="o_light_label w-100" widget="radio"/>

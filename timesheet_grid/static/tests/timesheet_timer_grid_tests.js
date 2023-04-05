@@ -980,8 +980,8 @@ QUnit.module("Views", (hooks) => {
 
             assert.strictEqual(
                 emptyColumnTotalCells.length,
-                3,
-                "3 column totals should not have any number since the employee has recorded nothing"
+                4,
+                "4 column totals should not have any number since the employee has recorded nothing"
             );
             assert.strictEqual(
                 columnTotalWithBarchartTotalTitle.total,

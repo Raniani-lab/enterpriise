@@ -1158,12 +1158,12 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.containsN(target, ".o_grid_row_title", 3);
-        assert.containsN(target, ".o_grid_row_total", 4, "Rows total should be displayed");
+        assert.containsN(target, ".o_grid_row_total", 5, "Rows total should be displayed");
         assert.containsN(
             target,
             ".o_grid_column_total:not(.o_grid_bar_chart_container)",
-            7,
-            "7 cells should be visible to display the total per colunm"
+            8,
+            "8 cells should be visible to display the total per colunm"
         );
         assert.containsN(
             target,

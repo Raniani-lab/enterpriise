@@ -110,5 +110,16 @@
                    title="Daily overtime"> <t t-esc="formatDailyOvertime(column)"/>
             </span>
         </xpath>
+        <xpath expr="//div[hasclass('o_grid_row_total') and hasclass('o_grid_column_total')]/div" position="inside">
+            <t t-set="weeklyOvertime" t-value="getWeeklyOvertime()"/>
+            <span t-if="weeklyOvertime !== 0"
+                  t-att-class="{
+                    'opacity-0' : !(highlightedState['row-total'] || highlightedState[`column-${props.columns.length}`])
+                  }"
+                   class="o_grid_bar_chart_overtime position-absolute top-50 start-50 translate-middle px-2 rounded-pill bg-white fw-bolder text-warning transition-base"
+                   title="Weekly overtime">
+                <t t-esc="formatWeeklyOvertime(weeklyOvertime)"/>
+            </span>
+        </xpath>
     </t>
 </templates>

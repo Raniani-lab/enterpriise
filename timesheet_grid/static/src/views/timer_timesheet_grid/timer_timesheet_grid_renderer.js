@@ -93,14 +93,42 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
      * @param {import("@web_grid/views/grid_model").DateGridColumn} column
      */
     formatDailyOvertime(column) {
+        const overtime = this.getDailyOvertime(column);
+        return overtime ? `${overtime > 0 ? "+" : ""}${this.formatValue(overtime)}` : "";
+    }
+
+    /**
+     * Compute the overtime for a particular column
+     *
+     * @param {import("@web_grid/views/grid_model").DateGridColumn} column
+     * @returns {number} overtime for that particular day
+     */
+    getDailyOvertime(column) {
+        let overtime = 0;
         if (this.props.model.workingHoursData.daily.hasOwnProperty(column.value)) {
             const workingHours = this.props.model.workingHoursData.daily[column.value];
-            const overtime = column.grandTotal - workingHours;
-            if (overtime != 0) {
-                return `${overtime > 0 ? "+" : ""}${this.formatValue(overtime)}`;
-            }
+            overtime = column.grandTotal - workingHours;
         }
-        return "";
+        return overtime;
+    }
+
+    /**
+     * Format the overtime to display it in the total of the weekly summary column
+     *
+     * @param {number} weeklyOvertime
+     * @returns {string|string}
+     */
+    formatWeeklyOvertime(weeklyOvertime) {
+        return weeklyOvertime ? `${weeklyOvertime > 0 ? "+" : ""}${this.formatValue(weeklyOvertime)}` : "";
+    }
+
+    /**
+     * Compute the overtime for the week
+     *
+     * @returns {number} overtime for the week
+     */
+    getWeeklyOvertime() {
+        return this.props.model.columnsArray.reduce((overtime, column) => overtime + this.getDailyOvertime(column), 0);
     }
 
     /**

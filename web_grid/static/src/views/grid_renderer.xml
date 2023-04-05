@@ -331,7 +331,14 @@
                     </div>
                 </div>
             </div>
-            <div/>
+            <div t-if="!props.options.hideLineTotal"
+                 class="o_grid_row o_grid_column_total o_grid_row_total o_grid_highlightable transition-base"
+                 t-att-data-state-highlight-triggers="`column-${props.columns.length}`"
+                 t-attf-style="grid-row: {{rowPosition + 1}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
+            >
+                <div class="h-100 position-relative"
+                     t-if="grandTotal !== 0"/>
+            </div>
         </t>
     </t>
 </templates>

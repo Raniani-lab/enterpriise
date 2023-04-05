@@ -959,14 +959,18 @@ class Planning(models.Model):
         """
         # Get the oldest start date and latest end date from the slots.
         domain = [("id", "in", slot_ids)]
-        fields = ["start_datetime:min", "end_datetime:max", "resource_id:recordset", "__count"]
-        planning_slot_read_group = self.env["planning.slot"]._read_group(domain, [], fields)
+        read_group_fields = ["start_datetime:min", "end_datetime:max", "resource_id:recordset", "__count"]
+        planning_slot_read_group = self.env["planning.slot"]._read_group(domain, [], read_group_fields)
         start_datetime, end_datetime, resources, count = planning_slot_read_group[0]
         if not count:
             return [{}]
 
-        start_datetime = start_datetime.replace(tzinfo=pytz.utc)
-        end_datetime = end_datetime.replace(tzinfo=pytz.utc)
+        # Get default start/end datetime if any.
+        default_start_datetime = (fields.Datetime.to_datetime(self._context.get('default_start_datetime')) or datetime.min).replace(tzinfo=pytz.utc)
+        default_end_datetime = (fields.Datetime.to_datetime(self._context.get('default_end_datetime')) or datetime.max).replace(tzinfo=pytz.utc)
+
+        start_datetime = max(default_start_datetime, start_datetime.replace(tzinfo=pytz.utc))
+        end_datetime = min(default_end_datetime, end_datetime.replace(tzinfo=pytz.utc))
 
         # Get slots' resources and current company work intervals.
         work_intervals_per_resource, dummy = resources._get_valid_work_intervals(start_datetime, end_datetime)

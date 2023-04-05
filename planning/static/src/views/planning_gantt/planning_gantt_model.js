@@ -157,7 +157,13 @@ export class PlanningGanttModel extends GanttModel {
             metaData.resModel,
             "gantt_resource_work_interval",
             [data.records.map((r) => r.id)],
-            { context: this.searchParams.context }
+            {
+                context: {
+                    ...this.searchParams.context,
+                    default_start_datetime: serializeDateTime(metaData.startDate),
+                    default_end_datetime: serializeDateTime(metaData.stopDate)
+                }
+            }
         );
         data.workIntervals = {};
         for (const resourceId in workIntervals) {

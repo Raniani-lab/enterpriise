@@ -4544,6 +4544,9 @@ class AccountReport(models.Model):
         if self.env.company.account_fiscal_country_id != self.country_id:
             raise UserError(_("The company's country does not match the report's country."))
 
+        if self.root_report_id not in (self.env.ref('account_reports.profit_and_loss'), self.env.ref('account_reports.balance_sheet')):
+            raise UserError(_("The Accounts Coverage Report is only available for the Profit and Loss and Balance Sheet reports."))
+
         all_reported_accounts = self.env["account.account"]  # All accounts mentioned in the report (including those reported without using the account code)
         accounts_by_expressions = {}    # {expression_id: account.account objects}
         reported_account_codes = []     # [{'prefix': ..., 'balance': ..., 'exclude': ..., 'line': ...}, ...]
@@ -4640,19 +4643,17 @@ class AccountReport(models.Model):
                 duplicate_codes[candidate_duplicate_code] |= candidate_duplicate_lines
 
         # Check that all codes in CoA are correctly reported
-        if self.root_report_id and self.root_report_id == self.env.ref('account_reports.profit_and_loss'):
+        if self.root_report_id == self.env.ref('account_reports.profit_and_loss'):
             accounts_in_coa = self.env["account.account"].search([
                 *common_account_domain,
                 ('account_type', 'in', ("income", "income_other", "expense", "expense_depreciation", "expense_direct_cost")),
                 ('account_type', '!=', "off_balance"),
             ])
-        elif self.root_report_id and self.root_report_id == self.env.ref('account_reports.balance_sheet'):
+        else:  # Balance sheet
             accounts_in_coa = self.env["account.account"].search([
                 *common_account_domain,
                 ('account_type', 'not in', ("off_balance", "income", "income_other", "expense", "expense_depreciation", "expense_direct_cost"))
             ])
-        else:
-            accounts_in_coa = self.env["account.account"].search(*[common_account_domain])
         for account_in_coa in accounts_in_coa:
             if account_in_coa not in all_reported_accounts:
                 non_reported_codes.add(account_in_coa.code)

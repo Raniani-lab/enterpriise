@@ -181,12 +181,22 @@ export class ViewEditorModel extends Reactive {
 
             const arch =
                 this.mode === "interactive" ? this.arch : removeStudioNoFetchFromArch(this.arch);
+
+            const rootArchNode = this.xmlDoc.firstElementChild;
+            const controllerClasses = Array.from(
+                new Set([
+                    "o_view_controller",
+                    `o_${this.viewType}_view`,
+                    ...(rootArchNode.getAttribute("class") || "").split(" "),
+                ])
+            ).filter((c) => c);
+
             let controllerProps = {
                 info: {},
                 relatedModels: this.viewDescriptions.relatedModels,
                 useSampleModel: ["graph", "pivot"].includes(this.viewType),
                 searchMenuTypes: [],
-                className: `o_view_controller o_${this.viewType}_view`,
+                className: controllerClasses.join(" "),
                 resId,
                 resIds,
                 resModel: this.resModel,

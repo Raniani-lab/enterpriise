@@ -994,5 +994,26 @@ QUnit.module("View Editors", () => {
 
             assert.verifySteps(["block", "/web_studio/edit_view", "unblock"]);
         });
+
+        QUnit.test("arch classes are reflected in the DOM", async (assert) => {
+            await createViewEditor({
+                type: "kanban",
+                resModel: "coucou",
+                serverData,
+                arch: `<kanban class="my_custom_class my_custom_class2">
+                    <templates>
+                        <t t-name='kanban-box'>
+                            <div class='oe_kanban_card'>
+                                <field name='display_name'/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+            });
+            assert.hasClass(
+                target.querySelector(".o_web_studio_view_renderer .o_view_controller"),
+                "o_kanban_view my_custom_class my_custom_class2"
+            );
+        });
     });
 });

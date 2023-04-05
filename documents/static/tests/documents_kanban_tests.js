@@ -1837,6 +1837,43 @@ QUnit.module('documents_kanban_tests.js', {
         );
     });
 
+    QUnit.test(
+        "document inspector: download button on selecting the requested document",
+        async function (assert) {
+            assert.expect(2);
+
+            pyEnv["documents.document"].create({
+                folder_id: 1,
+                name: "request",
+                type: "empty",
+            });
+
+            await createDocumentsView({
+                type: "kanban",
+                resModel: "documents.document",
+                arch: `
+                <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div draggable="true" class="oe_kanban_global_area">
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+            });
+
+            await click(target.querySelector(".o_kanban_record:nth-of-type(6) .o_record_selector"));
+            assert.ok(
+                target.querySelector(".fa-download").disabled,
+                "the download button should be disabled when a requested document is selected"
+            );
+
+            await click(target.querySelector(".o_kanban_record .o_record_selector"));
+            assert.ok(
+                target.querySelector(".fa-download"),
+                "the download button should be enabled when selecting requested document with another document"
+            );
+        }
+    );
+
     QUnit.module('DocumentChatter');
 
     QUnit.test('document chatter: open and close chatter', async function (assert) {
@@ -3661,5 +3698,58 @@ QUnit.module('documents_kanban_tests.js', {
         }
     );
 
+    QUnit.test(
+        "documents list : uploding the requested documents with multiple selection",
+        async function (assert) {
+            assert.expect(4);
+            pyEnv["documents.document"].unlink(pyEnv["documents.document"].search([]));
+            const documentIds = pyEnv["documents.document"].create([
+                {
+                    folder_id: 1,
+                    name: "request",
+                    type: "empty",
+                },
+                {
+                    folder_id: 1,
+                    name: "request1",
+                    type: "empty",
+                },
+                {
+                    folder_id: 1,
+                    name: "request2",
+                    type: "empty",
+                },
+            ]);
+            this.patchDocumentXHR([], (data) => {
+                const datas = Object.fromEntries(data.entries());
+                assert.strictEqual(
+                    Number(datas.document_id),
+                    documentIds[1],
+                    "The selected requsted document should be uploaded"
+                );
+                assert.strictEqual(datas.ufile.name, file.name);
+                assert.step("xhrSend");
+            });
+            const file = await testUtils.file.createFile({
+                name: "text.txt",
+                content: "hello, world",
+                contentType: "text/plain",
+            });
+            await createDocumentsView({
+                type: "list",
+                resModel: "documents.document",
+                arch: `<tree js_class="documents_list">
+                    <field name="name"/>
+                </tree>`,
+            });
+            // select 3 requested documents
+            await click(target, ".o_list_record_selector.o_list_controller");
+            const fileInput = target.querySelector(".o_inspector_replace_input");
+            // click on the 2nd document to upload
+            fileInput.setAttribute("data-index", 1);
+            testUtils.file.inputFiles(fileInput, [file]);
+            assert.verifySteps(["xhrSend"]);
+        }
+    );
 });
 });

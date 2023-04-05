@@ -89,11 +89,8 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
         };
         arch = '<form js_class="knowledge_article_view_form">' +
             '<sheet>' +
-                '<div t-ref="tree"/>' +
-                '<div t-ref="root">' +
-                    '<div class="o_knowledge_editor">' +
-                        '<field name="body" widget="html"/>' +
-                    '</div>' +
+                '<div class="o_knowledge_editor">' +
+                    '<field name="body" widget="html"/>' +
                 '</div>' +
             '</sheet>' +
         '</form>';
@@ -223,11 +220,8 @@ QUnit.module("Knowledge - External View Insertion", (hooks) => {
         };
         arch = '<form js_class="knowledge_article_view_form">' +
             '<sheet>' +
-                '<div t-ref="tree"/>' +
-                '<div t-ref="root">' +
-                    '<div class="o_knowledge_editor">' +
-                        '<field name="body" widget="html"/>' +
-                    '</div>' +
+                '<div class="o_knowledge_editor">' +
+                    '<field name="body" widget="html"/>' +
                 '</div>' +
             '</sheet>' +
         '</form>';
@@ -362,11 +356,8 @@ QUnit.module("Knowledge Table of Content", (hooks) => {
         };
         arch = '<form js_class="knowledge_article_view_form">' +
             '<sheet>' +
-                '<div t-ref="tree"/>' +
-                '<div t-ref="root">' +
-                    '<div class="o_knowledge_editor d-flex flex-grow-1">' +
-                        '<field name="body" widget="html"/>' +
-                    '</div>' +
+                '<div class="o_knowledge_editor d-flex flex-grow-1">' +
+                    '<field name="body" widget="html"/>' +
                 '</div>' +
             '</sheet>' +
         '</form>';

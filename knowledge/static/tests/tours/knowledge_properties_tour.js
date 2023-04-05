@@ -32,13 +32,11 @@ registry.category("web_tour.tours").add('knowledge_properties_tour', {
     run: 'click'
 }, { // modify property name
     trigger: '.o_field_property_definition_header input',
-    run: 'text myproperty',
-}, { // finish property edition
+    run: 'text_blur myproperty',
+}, { // verify property and finish property edition
     trigger: '.o_knowledge_editor .odoo-editor-editable',
+    extra_trigger: '.o_field_property_label:contains("myproperty")',
     run: 'click',
-}, { // verify property
-    trigger: '.o_field_property_label:contains("myproperty")',
-    run: () => {},
 }, { // go to InheritPropertiesArticle
     trigger: '.o_article .o_article_name:contains("InheritPropertiesArticle")',
     run: 'click',

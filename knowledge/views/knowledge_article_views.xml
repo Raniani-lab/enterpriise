@@ -89,20 +89,19 @@
                                                     attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
                                             </div>
                                         </div>
-                                        <!-- No Content Helper -->
-                                        <div class="o_view_nocontent" attrs="{'invisible': [('id', '!=', False)]}">
-                                            <div class="o_nocontent_help">
-                                                <p class="o_view_nocontent_smiling_face">
-                                                     No article yet.
-                                                </p>
-                                                <p>
-                                                    <a href="#" role="button"
-                                                       t-on-click="() => this.createArticle('private')">
-                                                        Create an article
-                                                    </a>
-                                                    to unleash the power of Knowledge!
-                                                </p>
-                                            </div>
+                                    </div>
+                                    <!-- No Content Helper -->
+                                    <div class="o_view_nocontent" attrs="{'invisible': [('id', '!=', False)]}">
+                                        <div class="o_nocontent_help">
+                                            <p class="o_view_nocontent_smiling_face">
+                                                 No article yet.
+                                            </p>
+                                            <p>
+                                                <a role="button" class="o_nocontent_create_btn">
+                                                    Create an article
+                                                </a>
+                                                to unleash the power of Knowledge !
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

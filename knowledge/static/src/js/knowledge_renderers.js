@@ -3,9 +3,8 @@
 import config from "web.config";
 import { FormRenderer } from '@web/views/form/form_renderer';
 import { KnowledgeCoverDialog } from '@knowledge/components/knowledge_cover/knowledge_cover_dialog';
-import "@mail/views/form/form_renderer"; // Chatter
 import { useService } from "@web/core/utils/hooks";
-import { useChildSubEnv, useEffect, useRef, xml } from "@odoo/owl";
+import { useChildSubEnv, useRef } from "@odoo/owl";
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -38,100 +37,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
-
-    /**
-     * FIXME: the knowledge arch uses a lot of implementation details. It shouldn't. We here extend
-     * the rendering context to keep those details available, but the long term strategy must be
-     * to stop using them in the arch.
-     *
-     * @override
-     */
-    get renderingContext() {
-        return {
-            __comp__: this, // used by the compiler
-        };
-    }
-
-    /**
-     * Create a new article and open it.
-     * @param {String} category - Category of the new article
-     * @param {integer} targetParentId - Id of the parent of the new article (optional)
-     */
-    async createArticle(category, targetParentId) {
-        const articleId = await this.orm.call(
-            "knowledge.article",
-            "article_create",
-            [],
-            {
-                is_private: category === 'private',
-                parent_id: targetParentId ? targetParentId : false
-            }
-        );
-        this.openArticle(articleId);
-    }
-
-    /**
-     * @param {integer} - resId: id of the article to open
-     */
-    async openArticle(resId) {
-
-        if (!resId || resId === this.resId) {
-            return;
-        }
-
-        // Usually in a form view, an input field is added to the list of dirty
-        // fields of a record when the input loses the focus.
-        // In this case, the focus could still be on the name input or in the
-        // body when clicking on an article name. Since the blur event is not
-        // asynchronous, the focused field is not yet added in the record's 
-        // list of dirty fields when saving before opening another article.
-        // askChanges() allows to make sure that these fields are added to the
-        // record's list of dirty fields if they have been modified.
-        if (this.resId && this.props.record.data.user_can_write) {
-            if (document.activeElement.id === "name") {
-                // blur to remove focus on input
-                document.activeElement.blur();
-                await this.props.record.askChanges();
-            } else if (this.root.el.querySelector('div[name="body"]').contains(document.activeElement)) {
-                await this.props.record.askChanges();
-            }
-        }
-        // Force save if changes have been made before loading the new record
-        await this._saveIfDirty();
-
-        const scrollView = document.querySelector('.o_scroll_view_lg');
-        if (scrollView) {
-            // hide the flicker
-            scrollView.style.visibility = 'hidden';
-            // Scroll up if we have a desktop screen
-            scrollView.scrollTop = 0;
-        }
-
-        const mobileScrollView = document.querySelector('.o_knowledge_main_view');
-        if (mobileScrollView) {
-            // Scroll up if we have a mobile screen
-            mobileScrollView.scrollTop = 0;
-        }
-        // load the new record
-        try {
-            await this.props.record.model.load({
-                resId: resId,
-            });
-        } catch {
-            this.actionService.doAction(
-                await this.orm.call('knowledge.article', 'action_home_page', [false]),
-                {stackPosition: 'replaceCurrentAction'}
-            );
-        }
-
-        if (scrollView) {
-            // Show loaded document
-            scrollView.style.visibility = 'visible';
-        }
-        if (this.device.isMobile) {
-            this.env.toggleAside(false);
-        }
-    }
 
     openCoverSelector() {
         this.dialog.add(KnowledgeCoverDialog, {
@@ -184,6 +89,3 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         container.scrollTo(rect.left, rect.top);
     }
 }
-
-// FIXME: this should be removed, the rendering context of the form view should not be overridden
-KnowledgeArticleFormRenderer.template = xml`<t t-call="{{ templates.FormRenderer }}" t-call-context="renderingContext" />`;

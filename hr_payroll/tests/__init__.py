@@ -11,3 +11,4 @@ from . import test_payslip_computation
 from . import test_performance
 from . import test_work_entry
 from . import test_resource
+from . import test_browsable_object

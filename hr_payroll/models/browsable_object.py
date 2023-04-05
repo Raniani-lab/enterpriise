@@ -1,10 +1,23 @@
 #-*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import date
+from datetime import date, datetime, time
 from dateutil.relativedelta import relativedelta
+from json import JSONEncoder
 
-from odoo import fields
+from odoo import fields, models
 
+BROWSABLE_OBJECT_SAFE_CLASSES = (models.BaseModel, set, datetime, date, time)
+
+class ValueChecker(JSONEncoder):
+    def default(self, value):
+        if isinstance(value, BROWSABLE_OBJECT_SAFE_CLASSES):
+            return repr(value)
+        return super().default(value)
+
+    def check(self, value):
+        self.encode(value)
+
+valueChecker = ValueChecker()
 
 class BrowsableObject(object):
     def __init__(self, employee_id, dict, env):
@@ -13,7 +26,11 @@ class BrowsableObject(object):
         self.env = env
 
     def __getattr__(self, attr):
-        return attr in self.dict and self.dict.__getitem__(attr) or 0.0
+        value = None
+        if attr in self.dict:
+            value = self.dict.__getitem__(attr)
+            valueChecker.check(value)
+        return value or 0.0
 
     def __getitem__(self, key):
         return self.dict[key] or 0.0

@@ -94,9 +94,9 @@ class SaleOrderLogReport(models.Model):
             log.currency_id AS currency_id,
             so.user_id AS user_id,
             so.team_id AS team_id,
-            so.country_id AS country_id,
-            so.industry_id AS industry_id,
             so.partner_id AS partner_id,
+            partner.country_id AS country_id,
+            partner.industry_id AS industry_id,
             so.sale_order_template_id AS template_id,
             so.recurrence_id AS recurrence_id,
             so.health AS health,
@@ -134,14 +134,15 @@ class SaleOrderLogReport(models.Model):
         # To avoid looking at the res_currency table for all records, we build a small table with one line per
         # activated currency. Joining on these values will be faster.
         currency_id = self.env.context.get('mrr_order_currency', self.env.company.currency_id.id)
-        return f"""sale_order_log log
-                JOIN sale_order so ON so.id=log.order_id
-                JOIN res_partner partner ON so.partner_id = partner.id
-                LEFT JOIN sale_order_close_reason close ON close.id=so.close_reason_id
-                JOIN rate_query r1 ON r1.rate_date=r1.max_rate_date
-                                  AND r1.currency_id=log.currency_id
-                JOIN rate_query r2 ON r2.rate_date=r2.max_rate_date
-                                  AND r2.currency_id={currency_id}
+        return f"""
+            sale_order_log log
+            JOIN sale_order so ON so.id = log.order_id
+            JOIN res_partner partner ON so.partner_id = partner.id
+            LEFT JOIN sale_order_close_reason close ON close.id=so.close_reason_id
+            JOIN rate_query r1 ON r1.rate_date=r1.max_rate_date
+                            AND r1.currency_id=log.currency_id
+            JOIN rate_query r2 ON r2.rate_date=r2.max_rate_date
+                            AND r2.currency_id={currency_id}
         """
 
     def _where(self):
@@ -175,8 +176,8 @@ class SaleOrderLogReport(models.Model):
             r1.rate,
             r2.rate,
             so.team_id,
-            so.country_id,
-            so.industry_id,
+            partner.country_id,
+            partner.industry_id,
             partner.commercial_partner_id,
             log.company_id,
             so.close_reason_id

@@ -100,10 +100,6 @@ class SaleOrder(models.Model):
     kpi_3months_mrr_percentage = fields.Float('KPI 3 Months MRR Percentage')
 
     team_user_id = fields.Many2one('res.users', string="Team Leader", related="team_id.user_id", readonly=False)
-    country_id = fields.Many2one('res.country', related='partner_id.country_id', store=True,
-                                 compute_sudo=True)  # TODO master: move to sale module
-    industry_id = fields.Many2one('res.partner.industry', related='partner_id.industry_id',
-                                  store=True)  # TODO master: move to module
     commercial_partner_id = fields.Many2one('res.partner', related='partner_id.commercial_partner_id')
 
     recurring_total = fields.Monetary(compute='_compute_recurring_total', string="Total Recurring", store=True)

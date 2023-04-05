@@ -489,7 +489,7 @@
                                             <record id="account_financial_report_line_ch_290_b_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">CH_290_A.balance - CH_290_B.domain</field>
+                                                <field name="formula">CH_290_B.domain - CH_299.balance</field>
                                             </record>
                                         </field>
                                     </record>
@@ -504,7 +504,7 @@
                                         <field name="label">balance</field>
                                         <field name="engine">domain</field>
                                         <field name="formula" eval="[('account_id.internal_group', 'in', ['income','expense'])]"/>
-                                        <field name="date_scope">from_beginning</field>
+                                        <field name="date_scope">from_fiscalyear</field>
                                         <field name="subformula">-sum</field>
                                     </record>
                                 </field>

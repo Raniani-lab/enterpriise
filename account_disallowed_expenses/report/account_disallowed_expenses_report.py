@@ -253,7 +253,12 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
                 column_values.append({})
             else:
                 column_values.append({
-                    'name': self.env['account.report'].format_value(col_val, figure_type=column['figure_type'], blank_if_zero=blank_totals),
+                    'name': self.env['account.report'].format_value(
+                        col_val,
+                        blank_if_zero=blank_totals,
+                        figure_type=column['figure_type'],
+                        digits=2 if column['figure_type'] == 'percentage' else None
+                    ),
                     'no_format': col_val,
                     'class': 'number',
                 })

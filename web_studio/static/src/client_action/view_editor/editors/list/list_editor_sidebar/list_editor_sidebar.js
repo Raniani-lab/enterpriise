@@ -12,6 +12,7 @@ import { _lt, _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 import { FieldProperties } from "@web_studio/client_action/view_editor/interactive_editor/properties/field_properties/field_properties";
 import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";
+import { fieldsToChoices } from "@web_studio/client_action/view_editor/editors/utils";
 
 class ListFieldNodeProperties extends FieldProperties {
     onChangeAttribute(value, name) {
@@ -88,10 +89,7 @@ export class ListEditorSidebar extends Component {
     }
 
     get sortChoices() {
-        return Object.values(this.archInfo.activeFields).map((field) => ({
-            value: field.name,
-            label: `${field.string} (${field.name})`,
-        }));
+        return fieldsToChoices(this.archInfo.activeFields);
     }
 
     get orderChoices() {
@@ -99,6 +97,13 @@ export class ListEditorSidebar extends Component {
             { value: "asc", label: _lt("Ascending") },
             { value: "desc", label: _lt("Descending") },
         ];
+    }
+
+    get defaultGroupbyChoices() {
+        return fieldsToChoices(
+            this.viewEditorModel.fields,
+            (field) => field.store && this.viewEditorModel.GROUPABLE_TYPES.includes(field.type)
+        );
     }
 
     setSortBy(value) {

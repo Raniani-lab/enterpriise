@@ -829,8 +829,8 @@ QUnit.module(
                 target
                     .querySelector(".o_web_studio_property_sort_by .o_select_menu .text-start")
                     .innerText.toUpperCase(),
-                "A CHAR (CHAR_FIELD)",
-                "First field shoud be selected from multiple fields when multiple sorting fields applied on view."
+                "A CHAR",
+                "First field should be selected from multiple fields when multiple sorting fields applied on view."
             );
 
             assert.strictEqual(
@@ -841,11 +841,7 @@ QUnit.module(
                 "Default order mustbe as per first field selected."
             );
 
-            await editAnySelect(
-                target,
-                ".o_web_studio_property_sort_by .o_select_menu",
-                "Name (display_name)"
-            );
+            await editAnySelect(target, ".o_web_studio_property_sort_by .o_select_menu", "Name");
 
             assert.strictEqual(
                 target
@@ -875,14 +871,12 @@ QUnit.module(
                 "Default order should be in ascending order"
             );
 
-            await click(
-                target.querySelector(".o_web_studio_property_sort_by .o_select_menu_toggler_clear")
-            );
+            await click(target, ".o_web_studio_property_sort_by .o_select_menu_toggler_clear");
 
             assert.containsNone(
                 target,
                 ".o_web_studio_property_sort_order",
-                "Orderby field must be visible."
+                "Orderby field must not be visible."
             );
         });
 
@@ -2233,6 +2227,94 @@ QUnit.module(
             await click(target.querySelector(".o_web_studio_sidebar .o_web_studio_remove"));
             await click(target.querySelector(".modal-dialog .btn-primary"));
             assert.verifySteps(["edit_view"]);
+        });
+
+        QUnit.test("Default group by field in sidebar", async function (assert) {
+            const changeArch = makeArchChanger();
+
+            let editViewCount = 0;
+            serverData.models.coucou.fields.display_name.store = true;
+            serverData.models.coucou.fields.char_field.store = true;
+
+            const arch = `
+                <tree>
+                    <field name='display_name'/>
+                    <field name='char_field'/>
+                </tree>`;
+
+            await createViewEditor({
+                serverData,
+                type: "list",
+                resModel: "coucou",
+                arch: arch,
+                mockRPC(route, args) {
+                    if (route === "/web/dataset/call_kw/coucou/web_search_read") {
+                        return { records: [], length: 0 };
+                    }
+                    if (route === "/web_studio/edit_view") {
+                        let newArch = arch;
+                        editViewCount++;
+                        if (editViewCount === 1) {
+                            newArch = `
+                                <tree default_group_by='display_name'>
+                                    <field name='display_name'/>
+                                    <field name='char_field'/>
+                                </tree>
+                            `;
+                        }
+                        changeArch(args.view_id, newArch);
+                    }
+                },
+            });
+
+            await click(target.querySelector(".nav-tabs > li:nth-child(2) a"));
+            assert.containsOnce(
+                target,
+                ".o_web_studio_property_default_group_by .o_select_menu",
+                "Default group by select box should exist in sidebar."
+            );
+
+            assert.containsNone(
+                target,
+                ".o_web_studio_property_default_group_by .o_select_menu_toggler_clear",
+                "No value should be set."
+            );
+
+            await click(target, ".o_web_studio_property_default_group_by .o_select_menu button");
+            const choices = [...target.querySelectorAll(".o_select_menu_item")].map((el) =>
+                el.innerText.toUpperCase()
+            );
+
+            assert.deepEqual(choices, ["A CHAR", "NAME"]);
+
+            await click(target, ".o_select_menu_item:nth-child(2)");
+
+            assert.strictEqual(
+                target
+                    .querySelector(
+                        ".o_web_studio_property_default_group_by .o_select_menu .text-start"
+                    )
+                    .innerText.toUpperCase(),
+                "NAME",
+                "Default group by should be equal to 'Name'."
+            );
+
+            assert.containsOnce(
+                target,
+                ".o_web_studio_property_default_group_by + .alert",
+                "There should be an alert stating that a default group by is set but not visible in studio."
+            );
+
+            await click(
+                target,
+                ".o_web_studio_property_default_group_by .o_select_menu_toggler_clear"
+            );
+
+            assert.containsNone(
+                target,
+                ".o_web_studio_property_default_group_by + .alert",
+                "The alert should not be visible anymore."
+            );
         });
     }
 );

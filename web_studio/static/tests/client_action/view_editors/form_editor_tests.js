@@ -31,6 +31,7 @@ import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { RPCError } from "@web/core/network/rpc_service";
 import { setupMessagingServiceRegistries } from "@mail/../tests/helpers/webclient_setup";
 import { EventBus } from "@odoo/owl";
+import { fieldService } from "@web/core/field_service";
 
 /** @type {Node} */
 let target;
@@ -3112,6 +3113,8 @@ QUnit.module("View Editors", (hooks) => {
             });
 
             serverData.views["coucou,false,search"] = `<search></search>`;
+
+            registry.category("services").add("field", fieldService);
 
             const webClient = await createEnterpriseWebClient({ serverData });
             await doAction(webClient, "studio.coucou_action");

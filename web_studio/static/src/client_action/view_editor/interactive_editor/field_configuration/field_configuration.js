@@ -118,7 +118,7 @@ export class RelationalFieldConfigurator extends Component {
 }
 
 class RelatedChainBuilderModel {
-    static services = ["view", "dialog"];
+    static services = ["field", "dialog"];
 
     constructor({ services, props }) {
         this.services = services;
@@ -193,7 +193,7 @@ class RelatedChainBuilderModel {
     }
 
     async getRelatedCurrencyField(resModel) {
-        const fields = await this.services.view.loadFields(resModel);
+        const fields = await this.services.field.loadFields(resModel);
         const currencyField = getCurrencyField(fields);
         if (!currencyField) {
             return null;

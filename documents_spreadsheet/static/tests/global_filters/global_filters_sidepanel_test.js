@@ -19,6 +19,7 @@ import { assertDateDomainEqual } from "@spreadsheet/../tests/utils/date_domain";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { createSpreadsheetFromListView } from "../utils/list_helpers";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
+import { fieldService } from "@web/core/field_service";
 
 let target;
 
@@ -85,6 +86,7 @@ QUnit.module(
     {
         beforeEach: function () {
             target = getFixture();
+            registry.category("services").add("field", fieldService);
         },
     },
     () => {

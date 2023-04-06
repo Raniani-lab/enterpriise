@@ -16,6 +16,8 @@ import {
 } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { SpreadsheetAction } from "../../src/bundle/actions/spreadsheet_action";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
+import { registry } from "@web/core/registry";
+import { fieldService } from "@web/core/field_service";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
@@ -81,6 +83,7 @@ export async function createSpreadsheetFromListView(params = {}) {
             });
         },
     });
+    registry.category("services").add("field", fieldService, { force: true });
     const webClient = await spawnListViewForSpreadsheet({
         model: params.model,
         serverData: params.serverData,

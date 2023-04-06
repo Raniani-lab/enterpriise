@@ -18,6 +18,7 @@ import {
 } from "@web_studio/../tests/client_action/view_editors/view_editor_tests_utils";
 import { browser } from "@web/core/browser/browser";
 import { CodeEditor } from "@web_studio/client_action/view_editor/xml_editor/code_editor/code_editor";
+import { fieldService } from "@web/core/field_service";
 import { registry } from "@web/core/registry";
 
 /* global ace */
@@ -65,6 +66,7 @@ QUnit.module("View Editors", () => {
             };
 
             registerViewEditorDependencies();
+            registry.category("services").add("field", fieldService);
             patchWithCleanup(browser, {
                 setTimeout: (fn) => fn(),
             });

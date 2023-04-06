@@ -198,9 +198,7 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
         return {'lines': lines}
 
     def _report_expand_unfoldable_line_vehicle_line(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
-        primary_fields = ['category_id', 'vehicle_id', 'fleet_rate']
-        secondary_fields = ['category_id', 'vehicle_id', 'account_id']
-        results = self._get_query_results(options, line_dict_id, primary_fields, secondary_fields, 'fleet_rate')
+        results = self._get_query_results(options, line_dict_id, ['category_id', 'vehicle_id', 'account_id'])
         lines = []
 
         for group_key, result in results.items():
@@ -208,12 +206,10 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
             level = len(self._parse_line_id(options, line_dict_id)) + 1
 
             if options.get('vehicle_split') and current.get('fleet_rate'):
-                current = self._filter_current(current, primary_fields)
                 base_line_values = list(result.values())[0]
                 account_id = self._get_single_value(base_line_values, 'account_id')
                 lines.append(self._get_rate_line(options, result, current, level, account_id))
             else:
-                current = self._filter_current(current, secondary_fields)
                 lines.append(self._get_account_line(options, result, current, level))
 
         return {'lines': lines}

@@ -2033,7 +2033,7 @@ class Planning(models.Model):
     def _gantt_progress_bar_resource_id(self, res_ids, start, stop):
         start_naive, stop_naive = start.replace(tzinfo=None), stop.replace(tzinfo=None)
 
-        resources = self.env['resource.resource'].search([('id', 'in', res_ids)])
+        resources = self.env['resource.resource'].with_context(active_test=False).search([('id', 'in', res_ids)])
         planning_slots = self.env['planning.slot'].search([
             ('resource_id', 'in', res_ids),
             ('start_datetime', '<=', stop_naive),

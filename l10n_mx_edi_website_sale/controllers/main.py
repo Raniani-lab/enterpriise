@@ -13,7 +13,9 @@ class WebsiteSaleL10nMX(WebsiteSale):
 
     def _cart_values(self, **kw):
         # OVERRIDE: Add flag in cart template (step 10)
-        return {'l10n_mx_show_extra_info': self._l10n_mx_edi_is_extra_info_needed()}
+        vals = super()._cart_values(**kw)
+        vals['l10n_mx_show_extra_info'] = self._l10n_mx_edi_is_extra_info_needed()
+        return vals
 
     def _get_country_related_render_values(self, kw, render_values):
         # OVERRIDE: Add flag in address template (step 20)
@@ -29,7 +31,9 @@ class WebsiteSaleL10nMX(WebsiteSale):
 
     def _extra_info_values(self, **kw):
         # OVERRIDE: Add flag in extra info template (step 30)
-        return {'l10n_mx_show_extra_info': self._l10n_mx_edi_is_extra_info_needed()}
+        vals = super()._extra_info_values(**kw)
+        vals['l10n_mx_show_extra_info'] = self._l10n_mx_edi_is_extra_info_needed()
+        return vals
 
     def _get_shop_payment_values(self, order, **kwargs):
         # OVERRIDE: Add flag in payment template (step 40)

@@ -39,13 +39,28 @@ class SaleOrder(models.Model):
         """Add corresponding pickup and return date to rental line"""
         values = super()._prepare_order_line_values(product_id, quantity, **kwargs)
         product = self.env['product.product'].browse(product_id)
-        if product.rent_ok and start_date and end_date:
-            values.update({
-                'start_date': start_date,
-                'return_date': end_date,
-                'is_rental': True,
-            })
-            self.is_rental_order = True
+        if product.rent_ok:
+            if not start_date and not end_date:
+                # If we can add the rentable accessory product to the cart and the period is not defined,
+                # we will apply the same time period as the product that triggered this accessory product.
+                rented_order_line = self.order_line.filtered(
+                    lambda line: line.is_product_rentable
+                        and product in line.product_id.accessory_product_ids
+                )[:1]
+                if (
+                    rented_order_line
+                    and rented_order_line.start_date
+                    and rented_order_line.return_date
+                ):
+                    start_date = rented_order_line.start_date
+                    end_date = rented_order_line.return_date
+            if start_date and end_date:
+                values.update({
+                    'start_date': start_date,
+                    'return_date': end_date,
+                    'is_rental': True,
+                })
+                self.is_rental_order = True
         return values
 
     def _build_warning_renting(self, product, start_date, end_date):

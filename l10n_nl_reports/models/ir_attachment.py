@@ -9,34 +9,29 @@ from odoo import api, models, tools
 
 _logger = logging.getLogger(__name__)
 
-XSD_NAME = 'XmlAuditfileFinancieel3.2.xsd'
+XSD_INFO = {
+    'name': 'XmlAuditfileFinancieel3.2.xsd',
+    'url': 'https://www.softwarepakketten.nl/upload/auditfiles/xaf/20140402_AuditfileFinancieelVersie_3_2.zip',
+    'prefix': 'l10n_nl_reports',
+}
 
 class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
 
     @api.model
-    def _l10n_nl_reports_load_xsd_files(self, force_reload=False):
-        url = 'https://www.softwarepakketten.nl/upload/auditfiles/xaf/20140402_AuditfileFinancieelVersie_3_2.zip'
-        tools.load_xsd_files_from_url(self.env, url, 'xsd_nl_xaf_3.2.zip', force_reload=force_reload, xsd_names_filter=XSD_NAME)
-        return
+    def action_download_xsd_files(self):
+        # EXTENDS account/models/ir_attachment.py
+        tools.load_xsd_files_from_url(self.env, XSD_INFO['url'], xsd_name_prefix=XSD_INFO['prefix'])
+        super().action_download_xsd_files()
 
     @api.model
     def l10n_nl_reports_validate_xml_from_attachment(self, xml_content):
-        return tools.validate_xml_from_attachment(self.env, xml_content, XSD_NAME, self._l10n_nl_reports_load_xsd_files)
+        return tools.validate_xml_from_attachment(self.env, xml_content, XSD_INFO['name'], prefix=XSD_INFO['prefix'])
 
     @api.model
     def l10n_nl_reports_load_iso_country_codes(self):
-        if self.env.context.get('skip_xsd', False):
-            return set()
+        attachment = self.search([('name', '=', XSD_INFO['name'])], limit=1)
 
-        def load_xsd():
-            attachment = self.search([('name', '=', XSD_NAME)])
-            if attachment:
-                return attachment
-            self._l10n_nl_reports_load_xsd_files()
-            return self.search([('name', '=', XSD_NAME)])
-
-        attachment = load_xsd()
         if not attachment:
             return set()
 

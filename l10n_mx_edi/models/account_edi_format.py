@@ -391,7 +391,7 @@ class AccountEdiFormat(models.Model):
         return cfdi_values
 
     def _l10n_mx_edi_get_invoice_templates(self):
-        return 'l10n_mx_edi.cfdiv33', 'xsd_cached_cfdv33_xsd'
+        return 'l10n_mx_edi.cfdiv33', 'cfdv33.xsd'
 
     def _l10n_mx_edi_export_invoice_cfdi(self, invoice):
         ''' Create the CFDI attachment for the invoice passed as parameter.
@@ -416,11 +416,8 @@ class AccountEdiFormat(models.Model):
         res = {
             'cfdi_str': etree.tostring(decoded_cfdi_values['cfdi_node'], pretty_print=True, xml_declaration=True, encoding='UTF-8'),
         }
-
         try:
             self.env['ir.attachment'].l10n_mx_edi_validate_xml_from_attachment(decoded_cfdi_values['cfdi_node'], xsd_attachment_name)
-        except FileNotFoundError:
-            _logger.warning(_('The XSD file to validate the XML structure was not found.'))
         except UserError as error:
             res['errors'] = str(error).split('\\n')
 

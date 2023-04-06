@@ -8,7 +8,7 @@ from markupsafe import Markup
 
 from odoo import _, models
 from odoo.addons.l10n_ec_edi.models.account_move import L10N_EC_VAT_SUBTAXES
-from odoo.addons.l10n_ec_edi.models.ir_attachment import L10N_EC_XSD_URLS
+from odoo.addons.l10n_ec_edi.models.ir_attachment import L10N_EC_XSD_INFOS
 from odoo.exceptions import UserError
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as DTF
 from odoo.tools import float_repr, float_round, html_escape
@@ -455,8 +455,8 @@ class AccountEdiFormat(models.Model):
 
     def _l10n_ec_validate_with_xsd(self, xml_doc, doc_type):
         try:
-            xsd = L10N_EC_XSD_URLS[doc_type][0]
-            validate_xml_from_attachment(self.env, xml_doc, xsd, prefix='l10n_ec_edi')
+            xsd_name = L10N_EC_XSD_INFOS[doc_type]['name']
+            validate_xml_from_attachment(self.env, xml_doc, xsd_name, prefix='l10n_ec_edi')
             return []
         except UserError as e:
             return [str(e)]

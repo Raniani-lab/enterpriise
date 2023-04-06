@@ -156,11 +156,7 @@ class AccountGeneralLedger(models.AbstractModel):
         report = self.env['account.report'].browse(options['report_id'])
         template_vals = self._l10n_lu_prepare_saft_report_values(report, options)
         content = self.env['ir.qweb']._render('l10n_lu_reports.saft_template_inherit_l10n_lu_saft', template_vals)
-
-        xsd_attachment = self.env['ir.attachment'].search([('name', '=', 'xsd_cached_FAIA_v_2_01_reduced_version_A_xsd')])
-        if xsd_attachment:
-            with io.BytesIO(base64.b64decode(xsd_attachment.with_context(bin_size=False).datas)) as xsd:
-                tools.xml_utils._check_with_xsd(content, xsd)
+        self.env['ir.attachment'].l10n_lu_reports_validate_xml_from_attachment(content, 'saft')
 
         return {
             'file_name': report.get_default_report_filename('xml'),

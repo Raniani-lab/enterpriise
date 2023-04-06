@@ -23,7 +23,6 @@
     "data": [
         "data/account_report_diot.xml",
         "data/country_data.xml",
-        "data/ir_cron_data.xml",
         "data/templates/cfdicoa.xml",
         "data/templates/cfdibalance.xml",
         "views/res_country_view.xml",

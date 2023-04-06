@@ -20,7 +20,6 @@ Necessary master data is also included.
         'data/account_financial_html_report_bs_abr.xml',
         'data/account.report.line.csv',
         'data/tax_report.xml',
-        'data/ir_cron_data.xml',
         'data/saft_report.xml',
         'data/ec_sales_list_report.xml',
         'views/account_ec_sales_xml_template.xml',

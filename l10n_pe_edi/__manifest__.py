@@ -50,7 +50,6 @@ We support sending and cancelling of customer invoices.
         'views/report_invoice.xml',
         'views/account_menuitem.xml',
         'views/product_views.xml',
-        'data/ir_cron.xml',
         'data/account_edi_data.xml',
     ],
     'demo': [

@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { Component, useState, useSubEnv } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
@@ -80,7 +80,7 @@ export class RelationalFieldConfigurator extends Component {
                 ["relation", "=", this.props.resModel],
                 ["ttype", "=", "many2one"],
                 ["model_id.abstract", "=", false],
-                ['store', '=', true],
+                ["store", "=", true],
             ];
         } else {
             relationId.relation = "ir.model";
@@ -249,7 +249,6 @@ export class FieldConfigurationDialog extends Component {
         confirm: { type: Function },
         cancel: { type: Function },
         close: { type: Function },
-        env: { type: Object },
         Component: { type: Function },
         componentProps: { type: Object, optional: true },
         fieldType: { type: String, optional: true },
@@ -261,8 +260,6 @@ export class FieldConfigurationDialog extends Component {
     static components = { Dialog };
 
     setup() {
-        useSubEnv(this.props.env);
-        useSubEnv({ services: this.props.env.services, bus: this.props.env.bus });
         const { confirm, cancel } = useDialogConfirmation({
             confirm: async () => {
                 let confirmValues = false;

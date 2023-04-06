@@ -361,7 +361,6 @@ export class InteractiveEditor extends Component {
             // For search editor
             const filterData = await new Promise((resolve) => {
                 this.addDialog(FieldConfigurationDialog, {
-                    env: this.env,
                     title: _t("New Filter"),
                     size: "md",
                     confirm: (data) => resolve(data),
@@ -463,7 +462,8 @@ export class InteractiveEditor extends Component {
             if (fieldType === "one2many") {
                 const count = await this.orm.searchCount("ir.model.fields", [
                     ["relation", "=", this.viewEditorModel.resModel],
-                    ["ttype", "=", "many2one"], ['store', '=', true]
+                    ["ttype", "=", "many2one"],
+                    ["store", "=", true],
                 ]);
                 if (!count) {
                     this.addDialog(ConfirmationDialog, {
@@ -531,7 +531,6 @@ export class InteractiveEditor extends Component {
 
         const fieldParams = new Promise((resolve, reject) => {
             this.addDialog(FieldConfigurationDialog, {
-                env: this.env,
                 fieldType,
                 confirm: async (params) => {
                     resolve(params);

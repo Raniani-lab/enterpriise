@@ -1,30 +1,14 @@
 /** @odoo-module */
-import { Component, useEffect, useRef, useState, useSubEnv } from "@odoo/owl";
+import { Component, useEffect, useRef, useState } from "@odoo/owl";
 import { useBus, useService, useOwnedDialogs } from "@web/core/utils/hooks";
 import { Dialog } from "@web/core/dialog/dialog";
 import { localization } from "@web/core/l10n/localization";
 import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { MenuCreatorDialog } from "@web_studio/client_action/menu_creator/menu_creator";
-import { useDialogConfirmation } from "@web_studio/client_action/utils";
+import { useDialogConfirmation, useSubEnvAndServices } from "@web_studio/client_action/utils";
 import { _t } from "@web/core/l10n/translation";
 
-function useSubEnvAndServices(env) {
-    const services = env.services;
-    const bus = env.bus;
-    useSubEnv(env);
-    useSubEnv({ services, bus });
-}
-
-class FormViewDialogWithEnv extends FormViewDialog {
-    static props = { ...FormViewDialog.props, env: { type: Object } };
-    setup() {
-        useSubEnvAndServices(this.props.env);
-        super.setup();
-    }
-}
-
 const EditMenuDialogProps = { ...Dialog.props };
-EditMenuDialogProps.env = { type: Object };
 EditMenuDialogProps.close = { type: Function };
 delete EditMenuDialogProps.slots;
 class EditMenuDialog extends Component {
@@ -37,8 +21,6 @@ class EditMenuDialog extends Component {
         const originalBus = this.env.bus;
         useBus(originalBus, "MENUS:APP-CHANGED", () => (this.state.tree = this.getTree()));
 
-        // We receive the env from the editor in Props
-        useSubEnvAndServices(this.props.env);
         this.menus = useService("menu");
         this.addDialog = useOwnedDialogs();
         this.orm = useService("orm");
@@ -189,10 +171,9 @@ class EditMenuDialog extends Component {
     }
 
     editItem(menu) {
-        this.addDialog(FormViewDialogWithEnv, {
+        this.addDialog(FormViewDialog, {
             resModel: "ir.ui.menu",
             resId: menu.id,
-            env: this.props.env,
             onRecordSaved: async () => {
                 await this.saveChanges(true);
             },
@@ -238,12 +219,17 @@ export class AppMenuEditor extends Component {
 
     setup() {
         this.menus = useService("menu");
+        // original bus from webClient
+        const bus = this.env.bus;
+        // ovverride the whole env coming from within studio
+        // contains an override of dialog and an override of action
+        useSubEnvAndServices(this.props.env);
         this.addDialog = useOwnedDialogs();
-        useBus(this.env.bus, "MENUS:APP-CHANGED", () => this.render());
+        useBus(bus, "MENUS:APP-CHANGED", () => this.render());
     }
 
     onClick(ev) {
         ev.preventDefault();
-        this.addDialog(EditMenuDialog, { env: this.props.env });
+        this.addDialog(EditMenuDialog);
     }
 }

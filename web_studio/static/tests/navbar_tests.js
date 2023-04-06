@@ -60,15 +60,6 @@ QUnit.module("Studio > Navbar", (hooks) => {
 
         const menuButtonsRegistry = registry.category("studio_navbar_menubuttons");
         // Force Navbar to contain those elements
-        menuButtonsRegistry.add(
-            "app_menu_editor",
-            {
-                Component: AppMenuEditor,
-                props: { env: {} },
-            },
-            { force: true }
-        );
-        menuButtonsRegistry.add("new_model_item", { Component: NewModelItem }, { force: true });
         registerCleanup(() => {
             menuButtonsRegistry.remove("app_menu_editor");
             menuButtonsRegistry.remove("new_model_item");
@@ -91,6 +82,15 @@ QUnit.module("Studio > Navbar", (hooks) => {
                 return "editor";
             },
         });
+        menuButtonsRegistry.add(
+            "app_menu_editor",
+            {
+                Component: AppMenuEditor,
+                props: { env },
+            },
+            { force: true }
+        );
+        menuButtonsRegistry.add("new_model_item", { Component: NewModelItem }, { force: true });
         // Force the parent width, to make this test independent of screen size
         target.style.width = "100%";
 

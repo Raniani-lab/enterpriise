@@ -1,0 +1,11 @@
+<templates>
+
+<t t-name="web_studio.ReportEditor.SnackBar" owl="1" >
+    <div class="d-flex flex-row">
+        <button class="btn text-uppercase rounded-0 o-web-studio-save-report" t-on-click="props.onSave" t-attf-class="{{ props.state.isDirty ? 'btn-primary' : '' }}" >
+            <i class="fa fa-light fa-save me-2"/>Save
+        </button>
+    </div>
+</t>
+
+</templates>

@@ -1,0 +1,17 @@
+<templates>
+
+<t t-name="web_studio.ReportEditorXml" owl="1">
+    <XmlResourceEditor mainResourceId="reportEditorModel.reportData.report_name" onClose.bind="onCloseXmlEditor" onCodeChange.bind="onXmlChanged" canSave="false" minWidth="minWidth">
+        <t t-set-slot="additionalControlButtons" t-slot-scope="xmlEditor">
+            <TranslationButton resourceId="xmlEditor.currentResourceId" />
+        </t>
+    </XmlResourceEditor>
+    <div class="h-100 w-100 position-relative overflow-hidden">
+        <div class="position-absolute top-0 end-0 me-5 mt-4" style="z-index: 1050;" >
+            <ReportRecordNavigation />
+        </div>
+        <ReportEditorIframe iframeKey="reportEditorModel.reportHtml" iframeSource="reportEditorModel.reportHtml" onIframeLoaded.bind="onIframeLoaded" />
+    </div>
+</t>
+
+</templates>

@@ -745,129 +745,54 @@ registry.category("web_tour.tours").add("web_studio_new_report_tour", {
             trigger: '.o_web_studio_report_layout_dialog div[data-layout="web.external_layout"]',
         },
         {
-            // sidebar should display add tab
-            extra_trigger:
-                '.o_web_studio_report_editor_manager .o_web_studio_sidebar_header div.active[name="new"]',
-            // switch to 'Report' tab
-            trigger:
-                '.o_web_studio_report_editor_manager .o_web_studio_sidebar_header div[name="report"]',
-        },
-        {
             // edit report name
-            trigger: '.o_web_studio_sidebar_legacy input[name="name"]',
+            trigger: '.o_web_studio_sidebar input[id="name"]',
             run: "text My Awesome Report",
         },
         {
-            // switch to 'Add' in Sidebar
-            trigger: '.o_web_studio_sidebar_legacy div[name="new"]',
-        },
-        {
-            // wait for the iframe to be loaded
-            extra_trigger: ".o_web_studio_report_editor iframe #wrapwrap",
-            // add a 'title' building block
-            trigger: ".o_web_studio_sidebar_legacy .o_web_studio_component:contains(Title Block)",
-            run: "drag_and_drop .o_web_studio_report_editor iframe .article > .page",
-            auto: true,
-        },
-        {
-            // click on the newly added field
-            trigger: ".o_web_studio_report_editor iframe .h2 > span:contains(New Title)",
-        },
-        {
-            // change the text of the H2 to 'test'
-            trigger: ".o_web_studio_sidebar_legacy .o_web_studio_text .note-editable",
-            run: function () {
-                this.$anchor.focusIn();
-                this.$anchor[0].firstChild.textContent = "Test";
-                this.$anchor.keydown();
-                this.$anchor.blur();
-            },
-        },
-        {
-            // click outside to blur the field
-            trigger: ".o_web_studio_report_editor",
-            extra_trigger:
-                ".o_web_studio_sidebar_legacy .o_web_studio_text .note-editable:contains(Test)",
-        },
-        {
-            extra_trigger: ".o_web_studio_report_editor iframe .h2:contains(Test)",
             // add a new group on the node
-            trigger: '.o_web_studio_sidebar_legacy .o_field_many2manytags[name="groups"] input',
+            trigger: '.o_web_studio_sidebar .o_field_many2many_tags[name="groups_id"] input',
             run: function () {
                 this.$anchor.click();
             },
         },
         {
-            trigger: ".ui-autocomplete:visible li:contains(Access Rights)",
+            trigger: ".o-autocomplete--dropdown-menu li:contains(Access Rights)",
         },
         {
             // wait for the group to appear
-            extra_trigger:
-                '.o_web_studio_sidebar_legacy .o_field_many2manytags[name="groups"] .o_badge_text:contains(Access Rights)',
-            // switch to 'Add' in Sidebar
-            trigger: '.o_web_studio_sidebar_legacy div[name="new"]',
+            trigger:
+                '.o_web_studio_sidebar .o_field_many2many_tags[name="groups_id"] .o_tag_badge_text:contains(Access Rights)',
+            run() {},
         },
         {
-            // add a 'title' building block Data Table
-            trigger: ".o_web_studio_sidebar_legacy .o_web_studio_component:contains(Data table)",
-            run: "drag_and_drop .o_web_studio_report_editor iframe .article > .page",
-        },
-        {
-            // expand the model selector in the popup
-            trigger: "div.o_field_selector_value",
-            run: function () {
-                $("div.o_field_selector_value").focusin();
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe .odoo-editor-editable div.page",
+            run($anchor) {
+                const element = this.$anchor[0];
+                element.ownerDocument.getSelection().setPosition(element);
+                assertEqual(element.innerHTML, "<br>");
             },
         },
         {
-            // select the second element of the model (followers)
-            trigger: ".o_field_selector_popover_body > ul > li:contains(Followers)",
-        },
-        {
-            trigger: ".modal-content button>span:contains(Confirm)", // button
-            extra_trigger: ".o_field_selector_chain_part:contains(Followers)", //content of the field is set
-        },
-        {
-            // select the content of the first field of the newly added table
-            trigger: '.o_web_studio_report_editor iframe span[t-field="table_line.display_name"]',
-        },
-        {
-            // change the bound field
-            trigger: ".o_web_studio_sidebar_legacy .card:last() div.o_field_selector_value",
-            run: function () {
-                $(".o_web_studio_sidebar_legacy .card:last() div.o_field_selector_value").focusin();
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe .odoo-editor-editable div.page",
+            run() {
+                const element = this.$anchor[0];
+                assertEqual(element.classList.contains("oe-command-temporary-hint"), true);
             },
         },
         {
-            trigger: "ul.o_field_selector_page li:contains(ID)",
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe .odoo-editor-editable div.page",
+            run: "text some new text",
         },
         {
-            // update the title of the column
-            extra_trigger: '.o_web_studio_report_editor iframe span[t-field="table_line.id"]',
-            trigger: ".o_web_studio_report_editor iframe table thead span:contains(Name) ", // the name title
-            //extra_trigger: '.o_web_studio_report_editor iframe span[t-field="table_line.display_name"]:not(:contains(YourCompany, Administrator))', // the id has been updated in the iframe
+            trigger: ".o_web_studio_menu .o-web-studio-save-report.btn-primary",
         },
         {
-            // update column title 'name' into another title
-            trigger: ".o_web_studio_sidebar_legacy .o_web_studio_text .note-editable",
-            run: function () {
-                this.$anchor.focusIn();
-                this.$anchor[0].firstChild.textContent = "new column title";
-                this.$anchor.keydown();
-                this.$anchor.blur();
-            },
+            // The report has been saved
+            trigger: ".o_web_studio_menu .o-web-studio-save-report:not(.btn-primary)",
+            run() {},
         },
         {
-            // click outside to blur the field
-            trigger: ".o_web_studio_report_editor",
-            extra_trigger:
-                ".o_web_studio_sidebar_legacy .o_web_studio_text .note-editable:contains(new column title)",
-        },
-        {
-            // wait to be sure the modification has been correctly applied
-            extra_trigger:
-                ".o_web_studio_report_editor iframe table thead span:contains(new column title) ",
-            // leave the report
             trigger: ".o_web_studio_breadcrumb .o_back_button:contains(Reports)",
         },
         {
@@ -896,14 +821,23 @@ registry.category("web_tour.tours").add("web_studio_new_report_tour", {
         },
         {
             // switch to 'Report' tab
-            trigger:
-                '.o_web_studio_report_editor_manager .o_web_studio_sidebar_header div[name="report"]',
+            trigger: ".o_web_studio_sidebar input[id='name']",
+            run() {
+                assertEqual(this.$anchor[0].value, "My Awesome Report copy(1)");
+            },
         },
         {
-            // wait for the duplicated report to be correctly loaded
-            extra_trigger:
-                '.o_web_studio_sidebar_legacy input[name="name"][value="My Awesome Report copy(1)"]',
-            // leave Studio
+            trigger: ".o-web-studio-report-editor-wysiwyg iframe div.page",
+            run() {
+                assertEqual(this.$anchor[0].textContent, "some new text");
+            },
+        },
+        {
+            trigger:
+                '.o_web_studio_sidebar .o_field_many2many_tags[name="groups_id"] .o_tag_badge_text:contains(Access Rights)',
+            run() {},
+        },
+        {
             trigger: ".o_web_studio_leave > a.btn",
         },
         stepNotInStudio(),
@@ -937,127 +871,35 @@ registry.category("web_tour.tours").add("web_studio_new_report_basic_layout_tour
             trigger: '.o_web_studio_report_layout_dialog div[data-layout="web.basic_layout"]',
         },
         {
-            // sidebar should display add tab
-            extra_trigger:
-                '.o_web_studio_report_editor_manager .o_web_studio_sidebar_header div.active[name="new"]',
-            // switch to 'Report' tab
-            trigger:
-                '.o_web_studio_report_editor_manager .o_web_studio_sidebar_header div[name="report"]',
-        },
-        {
             // edit report name
-            trigger: '.o_web_studio_sidebar_legacy input[name="name"]',
+            trigger: '.o_web_studio_sidebar input[id="name"]',
             run: "text My Awesome basic layout Report",
         },
         {
-            // switch to 'Add' in Sidebar
-            trigger: '.o_web_studio_sidebar_legacy div[name="new"]',
-        },
-        {
-            // wait for the iframe to be loaded
-            extra_trigger: ".o_web_studio_report_editor iframe #wrapwrap",
-            // add a 'title' building block
-            trigger: ".o_web_studio_sidebar_legacy .o_web_studio_component:contains(Title Block)",
-            run: "drag_and_drop .o_web_studio_report_editor iframe .article > .page",
-            auto: true,
-        },
-        {
-            // click on the newly added field
-            trigger: ".o_web_studio_report_editor iframe .h2 > span:contains(New Title)",
-        },
-        {
-            // change the text of the H2 to 'test'
-            trigger: ".o_web_studio_sidebar_legacy .o_web_studio_text .note-editable",
-            run: function () {
-                this.$anchor.focusIn();
-                this.$anchor[0].firstChild.textContent = "Test";
-                this.$anchor.keydown();
-                this.$anchor.blur();
-            },
-        },
-        {
-            // click outside to blur the field
-            trigger: ".o_web_studio_report_editor",
-            extra_trigger:
-                ".o_web_studio_sidebar_legacy .o_web_studio_text .note-editable:contains(Test)",
-        },
-        {
-            extra_trigger: ".o_web_studio_report_editor iframe .h2:contains(Test)",
             // add a new group on the node
-            trigger: '.o_web_studio_sidebar_legacy .o_field_many2manytags[name="groups"] input',
+            trigger: '.o_web_studio_sidebar .o_field_many2many_tags[name="groups_id"] input',
             run: function () {
                 this.$anchor.click();
             },
         },
         {
-            trigger: ".ui-autocomplete:visible li:contains(Access Rights)",
+            trigger: ".o-autocomplete--dropdown-menu li:contains(Access Rights)",
         },
         {
             // wait for the group to appear
-            extra_trigger:
-                '.o_web_studio_sidebar_legacy .o_field_many2manytags[name="groups"] .o_badge_text:contains(Access Rights)',
-            // switch to 'Add' in Sidebar
-            trigger: '.o_web_studio_sidebar_legacy div[name="new"]',
+            trigger:
+                '.o_web_studio_sidebar .o_field_many2many_tags[name="groups_id"] .o_tag_badge_text:contains(Access Rights)',
+            run() {},
         },
         {
-            // add a 'title' building block Data Table
-            trigger: ".o_web_studio_sidebar_legacy .o_web_studio_component:contains(Data table)",
-            run: "drag_and_drop .o_web_studio_report_editor iframe .article > .page",
+            trigger: ".o_web_studio_menu .o-web-studio-save-report.btn-primary",
         },
         {
-            // expand the model selector in the popup
-            trigger: "div.o_field_selector_value",
-            run: function () {
-                $("div.o_field_selector_value").focusin();
-            },
+            // The report has been saved
+            trigger: ".o_web_studio_menu .o-web-studio-save-report:not(.btn-primary)",
+            run() {},
         },
         {
-            // select the second element of the model (followers)
-            trigger: ".o_field_selector_popover_body > ul > li:contains(Followers)",
-        },
-        {
-            trigger: ".modal-content button>span:contains(Confirm)", // button
-            extra_trigger: ".o_field_selector_chain_part:contains(Followers)", //content of the field is set
-        },
-        {
-            // select the content of the first field of the newly added table
-            trigger: '.o_web_studio_report_editor iframe span[t-field="table_line.display_name"]',
-        },
-        {
-            // change the bound field
-            trigger: ".o_web_studio_sidebar_legacy .card:last() div.o_field_selector_value",
-            run: function () {
-                $(".o_web_studio_sidebar_legacy .card:last() div.o_field_selector_value").focusin();
-            },
-        },
-        {
-            trigger: "ul.o_field_selector_page li:contains(ID)",
-        },
-        {
-            // update the title of the column
-            trigger: ".o_web_studio_report_editor iframe table thead span:contains(Name) ", // the name title
-            //extra_trigger: '.o_web_studio_report_editor iframe span[t-field="table_line.display_name"]:not(:contains(YourCompany, Administrator))', // the id has been updated in the iframe
-        },
-        {
-            // update column title 'name' into another title
-            trigger: ".o_web_studio_sidebar_legacy .o_web_studio_text .note-editable",
-            run: function () {
-                this.$anchor.focusIn();
-                this.$anchor[0].firstChild.textContent = "new column title";
-                this.$anchor.keydown();
-                this.$anchor.blur();
-            },
-        },
-        {
-            // click outside to blur the field
-            trigger: ".o_web_studio_report_editor",
-            extra_trigger:
-                ".o_web_studio_sidebar_legacy .o_web_studio_text .note-editable:contains(new column title)",
-        },
-        {
-            // wait to be sure the modification has been correctly applied
-            extra_trigger:
-                ".o_web_studio_report_editor iframe table thead span:contains(new column title) ",
             // leave the report
             trigger: ".o_web_studio_breadcrumb .o_back_button:contains(Reports)",
         },
@@ -1086,15 +928,12 @@ registry.category("web_tour.tours").add("web_studio_new_report_basic_layout_tour
             trigger: ".o_kanban_record:contains(My Awesome basic layout Report copy(1))",
         },
         {
-            // switch to 'Report' tab
-            trigger:
-                '.o_web_studio_report_editor_manager .o_web_studio_sidebar_header div[name="report"]',
+            trigger: '.o_web_studio_sidebar input[id="name"]',
+            run() {
+                assertEqual(this.$anchor[0].value, "My Awesome basic layout Report copy(1)");
+            },
         },
         {
-            // wait for the duplicated report to be correctly loaded
-            extra_trigger:
-                '.o_web_studio_sidebar_legacy input[name="name"][value="My Awesome basic layout Report copy(1)"]',
-            // leave Studio
             trigger: ".o_web_studio_leave > a.btn",
         },
         stepNotInStudio(),

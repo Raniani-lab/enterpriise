@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { reactive, useComponent, useEnv } from "@odoo/owl";
+import { reactive, useComponent, useEnv, useSubEnv } from "@odoo/owl";
 
 export function useDialogConfirmation({ confirm, cancel, before, close }) {
     before = before || (() => {});
@@ -80,4 +80,11 @@ export function memoizeOnce(callback) {
         value = callback.call(this, ...args);
         return value;
     };
+}
+
+export function useSubEnvAndServices(env) {
+    const services = env.services;
+    const bus = env.bus;
+    useSubEnv(env);
+    useSubEnv({ services, bus });
 }

@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { Component, EventBus, onWillDestroy, useSubEnv } from "@odoo/owl";
+import { Component, EventBus, onWillDestroy, useSubEnv, xml } from "@odoo/owl";
 
 import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";
@@ -13,6 +13,31 @@ import { AppMenuEditor } from "./app_menu_editor/app_menu_editor";
 import { NewModelItem } from "./new_model_item/new_model_item";
 import { EditionFlow } from "./edition_flow";
 import { useStudioServiceAsReactive } from "@web_studio/studio_service";
+import { useSubEnvAndServices } from "@web_studio/client_action/utils";
+import { omit } from "@web/core/utils/objects";
+
+class DialogWithEnv extends Component {
+    static template = xml`<t t-component="props.Component" t-props="componentProps" />`;
+    static props = ["*"];
+
+    setup() {
+        useSubEnvAndServices(this.props.env);
+    }
+
+    get componentProps() {
+        const additionalProps = omit(this.props, "Component", "env", "componentProps");
+        return { ...this.props.componentProps, ...additionalProps };
+    }
+}
+const dialogService = {
+    start(env, { dialog }) {
+        function addDialog(Component, _props, options) {
+            const props = { env, Component, componentProps: _props };
+            return dialog.add(DialogWithEnv, props, options);
+        }
+        return { add: addDialog };
+    },
+};
 
 const actionServiceStudio = {
     dependencies: ["studio"],
@@ -55,6 +80,8 @@ export class Editor extends Component {
         };
         this.studio = useService("studio");
 
+        const originalDialog = services.dialog;
+        services.dialog = dialogService.start(this.env, { dialog: originalDialog });
         services.action = actionServiceStudio.start(this.env, { studio: this.studio });
 
         const editionFlow = new EditionFlow(this.env, {

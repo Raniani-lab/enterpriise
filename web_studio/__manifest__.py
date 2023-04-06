@@ -53,7 +53,6 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/utils.js',
             'web_studio/static/src/tours/**/*.js',
 
-            'web_studio/static/src/legacy/js/bus.js',
             'web_studio/static/src/home_menu/**/*.js',
             'web_studio/static/src/views/**/*.js',
             ('remove', 'web_studio/static/src/views/kanban_report/**/*'),
@@ -71,11 +70,6 @@ Note: Only the admin user is allowed to make those customizations.
             ('remove', 'web_studio/static/src/client_action/studio_action_loader.js'),
             ('remove', 'web_studio/static/src/client_action/app_creator/app_creator_shortcut.js'),
 
-            'web_studio/static/src/legacy/js/py.js',
-            'web_studio/static/src/legacy/js/common/**/*.js',
-            'web_studio/static/src/legacy/js/reports/**/*.js',
-            'web_studio/static/src/legacy/js/views/view_editors/**/*.js',
-
             ('include', 'web._assets_helpers'),
             'web_studio/static/src/scss/bootstrap_overridden.scss',
             'web/static/src/scss/pre_variables.scss',
@@ -83,15 +77,8 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/client_action/variables.scss',
             'web_studio/static/src/client_action/mixins.scss',
             'web_studio/static/src/client_action/**/*.scss',
+            ("remove", "web_studio/static/src/client_action/report_editor/report_iframe.scss"),
             'web_studio/static/src/views/kanban_report/**/*.scss',
-
-            'web_studio/static/src/legacy/scss/icons.scss',
-            'web_studio/static/src/legacy/scss/new_field_dialog.scss',
-            'web_studio/static/src/legacy/scss/report_editor.scss',
-            'web_studio/static/src/legacy/scss/report_editor_manager.scss',
-            'web_studio/static/src/legacy/scss/report_editor_sidebar.scss',
-            'web_studio/static/src/legacy/scss/sidebar.scss',
-            'web_studio/static/src/legacy/scss/xml_editor.scss',
         ],
         'web.assets_tests': [
             'web_studio/static/tests/tours/**/*',
@@ -100,7 +87,11 @@ Note: Only the admin user is allowed to make those customizations.
             ('include', 'web._assets_helpers'),
             'web/static/src/scss/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
-            'web_studio/static/src/legacy/scss/report_iframe.scss',
+            "web/static/src/webclient/actions/reports/report.scss",
+            'web_studio/static/src/client_action/report_editor/report_iframe.scss',
+            "web/static/src/boot.js",
+            "web_editor/static/src/js/editor/odoo-editor/src/**/*",
+            ("remove", "web_editor/static/src/js/editor/odoo-editor/src/qweb_sample.js")
         ],
         'web.qunit_suite_tests': [
             # In tests we don't want to lazy load this

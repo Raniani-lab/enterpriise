@@ -18,6 +18,7 @@
                     <div class="d-flex justify-content-between">
                         <p t-if="props.title" class="mb-0 text-light" t-out="props.title" />
                         <button class="btn btn-sm btn-link p-0" type="button" t-on-click="onFormat">Format</button>
+                        <t t-if="props.slots and props.slots.additionalControlButtons" t-slot="additionalControlButtons" currentResourceId="this.state.currentResourceId"/>
                     </div>
                     <div t-foreach="alerts" t-as="alert" t-key="alert.message" t-if="shouldShowAlert(alert)" class="alert alert-warning d-flex justify-content-between mt-3" role="alert">
                         <p class="mb-0" t-out="alert.message" />

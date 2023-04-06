@@ -12,7 +12,6 @@ import random
 
 from odoo import api, models, _
 from odoo.exceptions import UserError
-from odoo.osv import expression
 
 
 CONTAINER_TYPES = (
@@ -955,20 +954,20 @@ class View(models.Model):
         return None
 
     def _add_xpath_to_arch(self, arch, xpath):
-            """
-            Appends the xpath to the arch if the xpath's position != 'replace'
-            (deletion), otherwise it is prepended to the arch.
+        """
+        Appends the xpath to the arch if the xpath's position != 'replace'
+        (deletion), otherwise it is prepended to the arch.
 
-            This is done because when moving an existing field somewhere before
-            its original position it will append a replace xpath and then
-            append the existing field xpath, effictively removing the one just
-            added and showing the one that existed before.
-            """
-            # TODO: Only add attributes if the xpath has children
-            if xpath.get('position') == 'replace':
-                arch.insert(0, xpath)
-            else:
-                arch.append(xpath)
+        This is done because when moving an existing field somewhere before
+        its original position it will append a replace xpath and then
+        append the existing field xpath, effictively removing the one just
+        added and showing the one that existed before.
+        """
+        # TODO: Only add attributes if the xpath has children
+        if xpath.get('position') == 'replace':
+            arch.insert(0, xpath)
+        else:
+            arch.append(xpath)
 
     def _clone_and_append_to(self, node, parent_node):
         """
@@ -1291,3 +1290,39 @@ class View(models.Model):
             self._raise_view_error(_("studio_approval attribute can only be set in form views"), node)
         if studio_approval and studio_approval not in ['True', 'False']:
             self._raise_view_error(_("Invalid studio_approval %s in button", studio_approval), node)
+
+    # REPORT STUFF
+    def _render_template(self, template, values=None):
+        if self._context.get("studio"):
+            # Force inherit branding from report rendering
+            self = self.with_context(inherit_branding=True)
+        return super(View, self)._render_template(template, values)
+
+    def _contains_branded(self, node):
+        if not self._context.get("studio"):
+            return super()._contains_branded(node)
+        if node.tag == "t" and ('t-raw' in node.attrib or 't-call' in node.attrib):
+            return True
+        return any(self.is_node_branded(child) for child in node.iterdescendants())
+
+    def is_node_branded(self, node):
+        if self._context.get("studio"):
+            if "data-oe-model" in node.attrib:
+                return True
+            if node.tag is etree.ProcessingInstruction and node.target == 'apply-inheritance-specs-node-removal':
+                return True
+            if any([att in ("t-out", "t-raw", "t-esc") and node.get(att) == "0" for att in node.attrib]):
+                return True
+            if node.tag == 't' and "t-set" in node.attrib and len(node) > 0:
+                return True
+            if node.tag == "t" and "t-call" in node.attrib:
+                return True
+            return False
+        return super().is_node_branded(node)
+
+    @api.model
+    def save_embedded_field(self, el):
+        # never save the content of a t-field as the DB's column value
+        if self.env.context.get("studio"):
+            return
+        return super().save_embedded_field(el)

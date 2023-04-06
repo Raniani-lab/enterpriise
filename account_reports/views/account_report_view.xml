@@ -54,7 +54,8 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button class="btn btn-secondary float-end" attrs="{'invisible': [('country_id', '=', False)]}"
+                        <field name="is_account_coverage_report_available" invisible="1"/>
+                        <button class="btn btn-secondary float-end" attrs="{'invisible': [('is_account_coverage_report_available', '=', False)]}"
                                 name="action_download_xlsx_accounts_coverage_report" type="object" string="Accounts Coverage Report"/>
                     </header>
                     <sheet>

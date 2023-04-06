@@ -78,6 +78,9 @@ class AccountReport(models.Model):
     custom_handler_model_id = fields.Many2one(string='Custom Handler Model', comodel_name='ir.model')
     custom_handler_model_name = fields.Char(string='Custom Handler Model Name', related='custom_handler_model_id.model')
 
+    # Account Coverage Report
+    is_account_coverage_report_available = fields.Boolean(compute='_compute_is_account_coverage_report_available')
+
     @api.constrains('custom_handler_model_id')
     def _validate_custom_handler_model(self):
         for report in self:
@@ -4509,6 +4512,15 @@ class AccountReport(models.Model):
                 raise UserError(_("Field %s of account.move.line is not stored, and hence cannot be used in a groupby expression", field_name))
 
     # ============ Accounts Coverage Debugging Tool - START ================
+    @api.depends('country_id', 'root_report_id')
+    def _compute_is_account_coverage_report_available(self):
+        for report in self:
+            report.is_account_coverage_report_available = (
+                self.env.company.account_fiscal_country_id == self.country_id
+                and
+                self.root_report_id in (self.env.ref('account_reports.profit_and_loss'), self.env.ref('account_reports.balance_sheet'))
+            )
+
     def action_download_xlsx_accounts_coverage_report(self):
         """
         Generate an XLSX file that can be used to debug the
@@ -4518,6 +4530,9 @@ class AccountReport(models.Model):
         - an account is reported in a line of the report but does not exist in the Chart of Accounts (yellow)
         """
         self.ensure_one()
+        if not self.is_account_coverage_report_available:
+            raise UserError(_("The Accounts Coverage Report is not available for this report."))
+
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         worksheet = workbook.add_worksheet(_('Accounts coverage'))
@@ -4551,9 +4566,6 @@ class AccountReport(models.Model):
         - an account is reported in a line of the report but does not exist in the Chart of Accounts (yellow)
         """
         self.ensure_one()
-
-        if self.env.company.account_fiscal_country_id != self.country_id:
-            raise UserError(_("The company's country does not match the report's country."))
 
         all_reported_accounts = self.env["account.account"]  # All accounts mentioned in the report (including those reported without using the account code)
         accounts_by_expressions = {}    # {expression_id: account.account objects}
@@ -4651,19 +4663,17 @@ class AccountReport(models.Model):
                 duplicate_codes[candidate_duplicate_code] |= candidate_duplicate_lines
 
         # Check that all codes in CoA are correctly reported
-        if self.root_report_id and self.root_report_id == self.env.ref('account_reports.profit_and_loss'):
+        if self.root_report_id == self.env.ref('account_reports.profit_and_loss'):
             accounts_in_coa = self.env["account.account"].search([
                 *common_account_domain,
                 ('account_type', 'in', ("income", "income_other", "expense", "expense_depreciation", "expense_direct_cost")),
                 ('account_type', '!=', "off_balance"),
             ])
-        elif self.root_report_id and self.root_report_id == self.env.ref('account_reports.balance_sheet'):
+        else:  # Balance Sheet
             accounts_in_coa = self.env["account.account"].search([
                 *common_account_domain,
                 ('account_type', 'not in', ("off_balance", "income", "income_other", "expense", "expense_depreciation", "expense_direct_cost"))
             ])
-        else:
-            accounts_in_coa = self.env["account.account"].search(*[common_account_domain])
         for account_in_coa in accounts_in_coa:
             if account_in_coa not in all_reported_accounts:
                 non_reported_codes.add(account_in_coa.code)

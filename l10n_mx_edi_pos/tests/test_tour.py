@@ -22,6 +22,7 @@ class TestUi(AccountTestInvoicingHttpCommon):
 
         cls.env['pos.config'].create({
             'name': "MX Pos config",
+            'module_pos_restaurant': False,
             'payment_method_ids': payment_method.ids,
             'module_pos_restaurant': False,
         })

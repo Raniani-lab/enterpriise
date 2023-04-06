@@ -13,10 +13,10 @@
         'views/preparation_display_assets_index.xml',
         'views/preparation_display_view.xml',
         'wizard/preparation_display_reset_wizard.xml',
-        'data/preparation_display_data.xml',
     ],
     'installable': True,
     'auto_install': True,
+    'post_init_hook': '_pos_preparation_display_post_init',
     'assets': {
         'pos_preparation_display.assets': [
 

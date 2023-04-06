@@ -39,6 +39,15 @@ patch(PosStore.prototype, "pos_preparation_display.PosStore", {
         this._initializePreparationDisplay();
     },
 
+    // @override
+    async updateModelsData(models_data) {
+        await this._super(...arguments);
+        if ("pos_preparation_display.display" in models_data) {
+            this.preparationDisplays = models_data["pos_preparation_display.display"];
+            this._initializePreparationDisplay();
+        }
+    },
+
     async sendOrderInPreparation(order, cancelled = false) {
         const _super = this._super;
         let result = true;

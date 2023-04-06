@@ -31,3 +31,8 @@ class PosSession(models.Model):
                 'domain': ['|', ('pos_config_ids', '=', self.config_id.id), ('pos_config_ids', '=', False)]
             }
         }
+
+    def get_onboarding_data(self):
+        result = super().get_onboarding_data()
+        result.update({'pos_preparation_display.display' : self._load_model('pos_preparation_display.display')})
+        return result

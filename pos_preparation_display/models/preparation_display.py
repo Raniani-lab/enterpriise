@@ -14,10 +14,11 @@ class PosPreparationDisplay(models.Model):
     order_count = fields.Integer("Order count", compute='_compute_order_count')
     average_time = fields.Integer("Order average time", compute='_compute_order_count', help="Average time of all order that not in a done stage.")
     stage_ids = fields.One2many('pos_preparation_display.stage', 'preparation_display_id', string="Stages", default=[
-        {'name': 'Cooking', 'color': '#6C757D', 'alert_timer': 10},
+        {'name': 'To prepare', 'color': '#6C757D', 'alert_timer': 10},
         {'name': 'Ready', 'color': '#4D89D1', 'alert_timer': 5},
         {'name': 'Completed', 'color': '#4ea82a', 'alert_timer': 0}
     ])
+    contains_bar_restaurant = fields.Boolean("Is a Bar/Restaurant", compute='_compute_contains_bar_restaurant', store=True)
 
     # getter for pos_category_ids and pos_config_ids, in case of no one selected, return all of each.
     def _get_pos_category_ids(self):
@@ -130,3 +131,8 @@ class PosPreparationDisplay(models.Model):
         for preparation_display in self:
             if len(preparation_display.stage_ids) == 0:
                 raise ValidationError(_("A preparation display must have a minimum of one step."))
+
+    @api.depends('pos_config_ids')
+    def _compute_contains_bar_restaurant(self):
+        for preparation_display in self:
+            preparation_display.contains_bar_restaurant = any(pos_config_id.module_pos_restaurant for pos_config_id in preparation_display.get_pos_config_ids())

@@ -83,10 +83,9 @@
                 t-on-click="cancel" t-out="env.model.cancelLabel"
                 class="o_cancel_operation btn-lg btn btn-light text-uppercase"/>
         </div>
-        <div t-if="state.view === 'barcodeLines' &amp;&amp; env.model.canBeProcessed"
-             class="o_barcode_control o_action_buttons d-flex"> <!-- Footer -->
+        <div t-if="displayActionButtons" class="o_barcode_control o_action_buttons d-flex"> <!-- Footer -->
             <button class="o_add_line btn btn-secondary" t-on-click="onOpenProductPage">
-                <i class="fa fa-plus me-1"/> Add Product
+                <i class="fa fa-plus me-1"/> <t t-out="addLineBtnName" />
             </button>
             <button t-if="env.model.displayPutInPackButton" t-on-click="putInPack"
                     t-att-disabled="!env.model.canPutInPack"

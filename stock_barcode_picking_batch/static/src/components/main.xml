@@ -14,10 +14,6 @@
                 </t>
             </t>
         </xpath>
-        <!-- Override footer to display "Confirm" button and hide other buttons if needed -->
-        <xpath expr="//div[hasclass('o_action_buttons')]" position="attributes">
-            <attribute name="t-if">state.view === 'barcodeLines' &amp;&amp; env.model.canBeProcessed &amp;&amp; !isConfiguring</attribute>
-        </xpath>
         <xpath expr="//div[hasclass('o_barcode_control')]" position="after">
             <div t-if="isConfiguring" class="o_barcode_control d-flex">
                 <button class="o_confirm btn btn-secondary text-uppercase"

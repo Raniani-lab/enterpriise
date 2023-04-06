@@ -9,12 +9,30 @@ class StockMoveLine(models.Model):
     product_barcode = fields.Char(related='product_id.barcode')
     location_processed = fields.Boolean()
     dummy_id = fields.Char(compute='_compute_dummy_id', inverse='_inverse_dummy_id')
-    picking_location_id = fields.Many2one(related='picking_id.location_id')
-    picking_location_dest_id = fields.Many2one(related='picking_id.location_dest_id')
+    parent_location_id = fields.Many2one('stock.location', compute='_compute_parent_location_id')
+    parent_location_dest_id = fields.Many2one('stock.location', compute='_compute_parent_location_id')
     product_stock_quant_ids = fields.One2many('stock.quant', compute='_compute_product_stock_quant_ids')
     product_packaging_id = fields.Many2one(related='move_id.product_packaging_id')
     product_packaging_uom_qty = fields.Float('Packaging Quantity', compute='_compute_product_packaging_uom_qty', help="Quantity of the Packaging in the UoM of the Stock Move Line.")
     is_completed = fields.Boolean(compute='_compute_is_completed', help="Check if the quantity done matches the demand")
+    hide_lot_name = fields.Boolean(compute='_compute_hide_lot_name')
+    hide_lot = fields.Boolean(compute='_compute_hide_lot_name')
+
+    @api.depends('tracking', 'picking_type_use_existing_lots', 'picking_type_use_create_lots', 'lot_name')
+    def _compute_hide_lot_name(self):
+        for line in self:
+            if line.tracking == 'none':
+                line.hide_lot_name = True
+                line.hide_lot = True
+                continue
+            line.hide_lot_name = not line.picking_type_use_create_lots or (line.picking_type_use_existing_lots and not line.lot_name)
+            line.hide_lot = not line.picking_type_use_existing_lots or (line.picking_type_use_create_lots and line.lot_name)
+
+    @api.depends('picking_id')
+    def _compute_parent_location_id(self):
+        for line in self:
+            line.parent_location_id = line.picking_id.location_id
+            line.parent_location_dest_id = line.picking_id.location_dest_id
 
     def _compute_product_stock_quant_ids(self):
         for line in self:

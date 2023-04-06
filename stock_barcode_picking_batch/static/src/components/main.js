@@ -29,6 +29,10 @@ patch(MainComponent.prototype, 'stock_barcode_picking_batch', {
         return this.env.model.needPickingType || this.env.model.needPickings;
     },
 
+    get displayActionButtons() {
+        return this._super() && !this.isConfiguring;
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------

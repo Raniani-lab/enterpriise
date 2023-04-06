@@ -580,6 +580,10 @@ export default class BarcodeModel extends EventBus {
         return newLine;
     }
 
+    _shouldCreateLineOnExceed(line) {
+        return true;
+    }
+
     _defaultLocation() {
         return Object.values(this.cache.dbIdCache['stock.location'])[0];
     }
@@ -1092,7 +1096,7 @@ export default class BarcodeModel extends EventBus {
             // Checks the quantity doesn't exceed the line's remaining quantity.
             if (currentLine.reserved_uom_qty && product.tracking === 'none') {
                 const remainingQty = currentLine.reserved_uom_qty - currentLine.qty_done;
-                if (barcodeData.quantity > remainingQty) {
+                if (barcodeData.quantity > remainingQty && this._shouldCreateLineOnExceed(currentLine)) {
                     // In this case, lowers the increment quantity and keeps
                     // the excess quantity to create a new line.
                     exceedingQuantity = barcodeData.quantity - remainingQty;

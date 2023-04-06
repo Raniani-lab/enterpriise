@@ -136,6 +136,14 @@ class MainComponent extends Component {
         return this.env.model.packageLines;
     }
 
+    get addLineBtnName() {
+        return this.env._t('Add Product');
+    }
+
+    get displayActionButtons() {
+        return this.state.view === 'barcodeLines' && this.env.model.canBeProcessed;
+    }
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------

@@ -225,7 +225,7 @@ class StockPicking(models.Model):
             if barcode_type:
                 return {
                     'warning': {
-                        'title': _("No %(picking_type)s ready for this %(barcode_type)s", picking_type=picking_type.name, barcode_type=barcode_type),
+                        'message': _("No %(picking_type)s ready for this %(barcode_type)s", picking_type=picking_type.name, barcode_type=barcode_type),
                     }
                 }
             return {

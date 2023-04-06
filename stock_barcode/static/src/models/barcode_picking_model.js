@@ -11,6 +11,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     constructor(resModel, resId, services) {
         super(resModel, resId, services);
         this.lineModel = 'stock.move.line';
+        this.showBackOrderDialog = true;
         this.validateMessage = _t("The transfer has been validated");
         this.validateMethod = 'button_validate';
         this.lastScanned.destLocation = false;
@@ -703,7 +704,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 }
                 atLeastOneLinePartiallyProcessed = atLeastOneLinePartiallyProcessed || (qtyDone > 0);
             }
-            if (atLeastOneLinePartiallyProcessed && uncompletedLines.length) {
+            if (this.showBackOrderDialog && atLeastOneLinePartiallyProcessed && uncompletedLines.length) {
                 return this.dialogService.add(BackorderDialog, {
                     displayUoM: this.groups.group_uom,
                     uncompletedLines,
@@ -889,31 +890,36 @@ export default class BarcodePickingModel extends BarcodeModel {
         return values;
     }
 
+    _getMoveLineData(id){
+        const smlData = this.cache.getRecord('stock.move.line', id);
+        // Checks if this line is already in the picking's state to get back
+        // its `virtual_id` (and so, avoid to set a new `virtual_id`).
+        const prevLine = this.currentState && this.currentState.lines.find(l => l.id === id);
+        const previousVirtualId = prevLine && prevLine.virtual_id;
+        smlData.dummy_id = smlData.dummy_id && Number(smlData.dummy_id);
+        smlData.virtual_id = smlData.dummy_id || previousVirtualId || this._uniqueVirtualId;
+        smlData.product_id = this.cache.getRecord('product.product', smlData.product_id);
+        smlData.product_uom_id = this.cache.getRecord('uom.uom', smlData.product_uom_id);
+        smlData.location_id = this.cache.getRecord('stock.location', smlData.location_id);
+        smlData.location_dest_id = this.cache.getRecord('stock.location', smlData.location_dest_id);
+        smlData.lot_id = smlData.lot_id && this.cache.getRecord('stock.lot', smlData.lot_id);
+        smlData.owner_id = smlData.owner_id && this.cache.getRecord('res.partner', smlData.owner_id);
+        smlData.package_id = smlData.package_id && this.cache.getRecord('stock.quant.package', smlData.package_id);
+        smlData.product_packaging_id = smlData.product_packaging_id && this.cache.getRecord('product.packaging', smlData.product_packaging_id);
+        const resultPackage = smlData.result_package_id && this.cache.getRecord('stock.quant.package', smlData.result_package_id);
+        if (resultPackage) { // Fetch the package type if needed.
+            smlData.result_package_id = resultPackage;
+            const packageType = resultPackage && resultPackage.package_type_id;
+            resultPackage.package_type_id = packageType && this.cache.getRecord('stock.package.type', packageType);
+        }
+        return smlData;
+    }
+
     _createLinesState() {
         const lines = [];
         const picking = this.cache.getRecord(this.resModel, this.resId);
         for (const id of picking.move_line_ids) {
-            const smlData = this.cache.getRecord('stock.move.line', id);
-            // Checks if this line is already in the picking's state to get back
-            // its `virtual_id` (and so, avoid to set a new `virtual_id`).
-            const prevLine = this.currentState && this.currentState.lines.find(l => l.id === id);
-            const previousVirtualId = prevLine && prevLine.virtual_id;
-            smlData.dummy_id = smlData.dummy_id && Number(smlData.dummy_id);
-            smlData.virtual_id = smlData.dummy_id || previousVirtualId || this._uniqueVirtualId;
-            smlData.product_id = this.cache.getRecord('product.product', smlData.product_id);
-            smlData.product_uom_id = this.cache.getRecord('uom.uom', smlData.product_uom_id);
-            smlData.location_id = this.cache.getRecord('stock.location', smlData.location_id);
-            smlData.location_dest_id = this.cache.getRecord('stock.location', smlData.location_dest_id);
-            smlData.lot_id = smlData.lot_id && this.cache.getRecord('stock.lot', smlData.lot_id);
-            smlData.owner_id = smlData.owner_id && this.cache.getRecord('res.partner', smlData.owner_id);
-            smlData.package_id = smlData.package_id && this.cache.getRecord('stock.quant.package', smlData.package_id);
-            smlData.product_packaging_id = smlData.product_packaging_id && this.cache.getRecord('product.packaging', smlData.product_packaging_id);
-            const resultPackage = smlData.result_package_id && this.cache.getRecord('stock.quant.package', smlData.result_package_id);
-            if (resultPackage) { // Fetch the package type if needed.
-                smlData.result_package_id = resultPackage;
-                const packageType = resultPackage && resultPackage.package_type_id;
-                resultPackage.package_type_id = packageType && this.cache.getRecord('stock.package.type', packageType);
-            }
+            const smlData = this._getMoveLineData(id);
             lines.push(smlData);
         }
         return lines;
@@ -1293,7 +1299,7 @@ export default class BarcodePickingModel extends BarcodeModel {
      * Set the pickings's responsible if not assigned to active user.
      */
     async _setUser() {
-        if (this.record.user_id != session.uid) {
+        if (this.record.id && this.record.user_id != session.uid) {
             this.record.user_id = session.uid;
             await this.orm.write(this.resModel, [this.record.id], { user_id: session.uid });
         }

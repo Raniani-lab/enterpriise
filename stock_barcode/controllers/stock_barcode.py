@@ -14,7 +14,7 @@ from odoo.tools.misc import file_open
 class StockBarcodeController(http.Controller):
 
     @http.route('/stock_barcode/scan_from_main_menu', type='json', auth='user')
-    def main_menu(self, barcode, **kw):
+    def main_menu(self, barcode):
         """ Receive a barcode scanned from the main menu and return the appropriate
             action (open an existing / new picking) or warning.
         """

@@ -34,7 +34,7 @@
                         t-esc="env.model.IsNotSet(line) ? '?' : qtyDone"/>
                 <span t-if="qtyDemand" t-esc="'/ ' + qtyDemand"/>
             </span>
-            <span t-if="props.displayUOM" class="o_line_uom" t-esc="line.product_uom_id.name"/>
+            <span t-if="props.displayUOM" class="o_line_uom" t-esc="props.line.product_uom_id.name"/>
         </div>
     </t>
 
@@ -42,6 +42,13 @@
         <div t-if="line.owner_id">
             <i class="fa fa-fw fa-user-o"/>
             <span class="o_line_owner" t-esc="line.owner_id.display_name"/>
+        </div>
+    </t>
+
+    <t t-name="stock_barcode.LineLot" owl="1">
+        <div t-if="isTracked" name="lot">
+            <i class="fa fa-fw fa-barcode" t-attf-class="{{nextExpected === 'lot' ? 'o_next_expected' : ''}}"/>
+            <span class="o_line_lot_name" t-esc="lotName"/>
         </div>
     </t>
 
@@ -83,10 +90,7 @@
                 <t t-call="stock_barcode.LineSourceLocation"/>
                 <!-- Hides product's name if it's a subline, as it is already on the parent line. -->
                 <t t-if="!props.subline" t-call="stock_barcode.LineTitle"/>
-                <div t-if="isTracked" name="lot">
-                    <i class="fa fa-fw fa-barcode" t-attf-class="{{nextExpected === 'lot' ? 'o_next_expected' : ''}}"/>
-                    <span class="o_line_lot_name" t-esc="lotName"/>
-                </div>
+                <t t-call="stock_barcode.LineLot"/>
                 <t t-call="stock_barcode.LineQuantity"/>
                 <div t-if="line.package_id || line.result_package_id" name="package">
                     <i class="fa fa-fw fa-archive"/>

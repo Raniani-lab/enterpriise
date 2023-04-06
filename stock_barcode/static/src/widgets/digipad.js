@@ -20,6 +20,10 @@ export class Digipad extends Component {
         });
     }
 
+    get changes() {
+        return { [this.props.quantityField]: Number(this.value) };
+    }
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -47,16 +51,7 @@ export class Digipad extends Component {
         this._checkInputValue();
         const numberValue = Number(this.value || 0);
         this.value = String(numberValue + interval);
-        await this._notifyChanges();
-    }
-
-    /**
-     * Notifies changes on the field to mark the record as dirty.
-     * @private
-     */
-    async _notifyChanges() {
-        const changes = { [this.props.quantityField]: Number(this.value) };
-        await this.props.record.update(changes);
+        await this.props.record.update(this.changes);
     }
 
     /**
@@ -99,7 +94,7 @@ export class Digipad extends Component {
             }
             this.value += button;
         }
-        this._notifyChanges();
+        this.props.record.update(this.changes);
     }
 }
 Digipad.template = 'stock_barcode.DigipadTemplate';

@@ -310,6 +310,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         queries = []
         params = []
         report = self.env.ref('account_reports.partner_ledger_report')
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             tables, where_clause, where_params = report._query_get(column_group_options, 'normal')
             params += [
@@ -321,15 +322,19 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                 SELECT
                     %s                                                                                                    AS column_group_key,
                     aml_with_partner.partner_id                                                                           AS groupby,
-                    COALESCE(SUM(CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE partial.amount END), 0)               AS debit,
-                    COALESCE(SUM(CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE partial.amount END), 0)               AS credit,
-                    COALESCE(SUM(CASE WHEN aml_with_partner.balance > 0 THEN -partial.amount ELSE partial.amount END), 0) AS balance
+                    COALESCE(SUM(CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE ROUND(
+                            partial.amount * currency_table.rate, currency_table.precision) END), 0)                      AS debit, 
+                    COALESCE(SUM(CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE ROUND(
+                            partial.amount * currency_table.rate, currency_table.precision) END), 0)                      AS credit, 
+                    COALESCE(SUM(- sign(aml_with_partner.balance) * ROUND(
+                            partial.amount * currency_table.rate, currency_table.precision)), 0)                          AS balance 
                 FROM {tables}
                 JOIN account_partial_reconcile partial
                     ON account_move_line.id = partial.debit_move_id OR account_move_line.id = partial.credit_move_id
                 JOIN account_move_line aml_with_partner ON
                     (aml_with_partner.id = partial.debit_move_id OR aml_with_partner.id = partial.credit_move_id)
                     AND aml_with_partner.partner_id IS NOT NULL
+                LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
                 WHERE partial.max_date <= %s AND {where_clause}
                     AND account_move_line.partner_id IS NULL
                 GROUP BY aml_with_partner.partner_id
@@ -492,9 +497,15 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     account_move_line.currency_id,
                     account_move_line.amount_currency,
                     account_move_line.matching_number,
-                    CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE partial.amount END               AS debit,
-                    CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE partial.amount END               AS credit,
-                    CASE WHEN aml_with_partner.balance > 0 THEN -partial.amount ELSE partial.amount END AS balance,
+                    CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE ROUND(
+                        partial.amount * currency_table.rate, currency_table.precision
+                    ) END                                                                               AS debit, 
+                    CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE ROUND(
+                        partial.amount * currency_table.rate, currency_table.precision
+                    ) END                                                                               AS credit, 
+                    - sign(aml_with_partner.balance) * ROUND(
+                        partial.amount * currency_table.rate, currency_table.precision
+                    )                                                                                   AS balance, 
                     account_move.name                                                                   AS move_name,
                     account_move.move_type                                                              AS move_type,
                     account.code                                                                        AS account_code,
@@ -503,7 +514,8 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     {journal_name}                                                                      AS journal_name,
                     %s                                                                                  AS column_group_key,
                     'indirectly_linked_aml'                                                             AS key
-                FROM {tables},
+                FROM {tables}
+                    LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id,
                     account_partial_reconcile partial,
                     account_move,
                     account_move_line aml_with_partner,

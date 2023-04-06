@@ -23,7 +23,7 @@
   <div class="o_web_studio_view_renderer overflow-auto h-100" t-ref="viewRenderer">
     <StudioView
       t-props="viewEditorModel.studioViewProps"
-      t-key="viewEditorModel.arch"
+      t-key="viewEditorModel.studioViewKey"
       autoClick="scope and scope.autoClick"
     />
   </div>

@@ -48,16 +48,6 @@ registry.category("web_tour.tours").add("web_studio_main_and_rename", {
             trigger: 'input[name="use_mail"]',
         },
         {
-            // disable company if visible, otherwise it might make the test uncertain
-            trigger: "body",
-            run: () => {
-                const $input = $('input[name="use_company"]');
-                if ($input) {
-                    $input.click();
-                }
-            },
-        },
-        {
             trigger: ".o_web_studio_model_configurator_next",
         },
         {
@@ -274,21 +264,6 @@ registry.category("web_tour.tours").add("web_studio_main_and_rename", {
             trigger:
                 ".o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_monetary",
             run: "drag_and_drop_native .o_web_studio_form_view_editor .o_inner_group",
-        },
-        {
-            trigger: ".modal-footer .btn.btn-primary",
-        },
-        {
-            // verify that the currency field is in the view
-            extra_trigger:
-                '.o_web_studio_form_view_editor .o_wrap_label label:contains("Currency")',
-            trigger: ".o_web_studio_sidebar .o_web_studio_new",
-        },
-        {
-            // add a monetary field
-            trigger:
-                ".o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_monetary",
-            run: "drag_and_drop_native (.o_web_studio_form_view_editor .o_inner_group:first .o_web_studio_hook:eq(1))",
         },
         {
             // verify that the monetary field is in the view
@@ -1512,3 +1487,284 @@ registry.category("web_tour.tours").add("web_studio_alter_field_existing_in_mult
         },
     ],
 });
+
+registry.category("web_tour.tours").add("web_studio_monetary_create", {
+    url: "/web",
+    test: true,
+    steps: [
+        // This tour drag&drop a monetary field and verify that a currency is created
+        {
+            // open studio
+            trigger: ".o_main_navbar .o_web_studio_navbar_item",
+            extra_trigger: ".o_home_menu_background",
+        },
+        {
+            trigger: ".o_web_studio_new_app",
+            run: () => {},
+        },
+        {
+            trigger: ".o_app[data-menu-xmlid='web_studio.studio_app_menu']",
+        },
+        // drag&drop a monetary and verify that the currency is in the view
+        {
+            // add a new monetary field
+            trigger: ".o_web_studio_sidebar .o_web_studio_field_monetary",
+            run: "drag_and_drop_native .o_web_studio_form_view_editor .o_inner_group",
+        },
+        {
+            // verify that the currency is set
+            trigger: ".o_web_studio_sidebar .o_web_studio_property_currency_field .text-start",
+            run() {
+                assertEqual(this.$anchor[0].textContent, "Currency (x_studio_currency_id)");
+            },
+        },
+        {
+            // currency field is in the view
+            trigger: ".o_web_studio_view_renderer div[data-field-name='x_studio_currency_id']",
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_monetary_change_currency_name", {
+    url: "/web",
+    test: true,
+    steps: [
+        // Changing currency name also change the currency name in the monetary currency selection
+        {
+            // open studio
+            trigger: ".o_main_navbar .o_web_studio_navbar_item",
+            extra_trigger: ".o_home_menu_background",
+        },
+        {
+            trigger: ".o_web_studio_new_app",
+            run: () => {},
+        },
+        {
+            trigger: ".o_app[data-menu-xmlid='web_studio.studio_app_menu']",
+        },
+        {
+            // currency field is in the view and click on it
+            trigger: ".o_web_studio_view_renderer [data-field-name='x_studio_currency_test']",
+        },
+        {
+            // change the currency name
+            trigger: "input[name='string']",
+            run(helper) {
+                helper.text("NewCurrency");
+            },
+        },
+        {
+            // click on monetary
+            trigger: "div[data-field-name^='x_studio_monetary_test']",
+        },
+        {
+            // verify that the currency name changed in the monetary field
+            trigger: ".o_web_studio_sidebar .o_web_studio_property_currency_field .text-start",
+            run() {
+                assertEqual(this.$anchor[0].textContent, "NewCurrency (x_studio_currency_test)");
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_monetary_change_currency_field", {
+    url: "/web",
+    test: true,
+    steps: [
+        // Change currency and verify that the view take the changes into account (the dollar appears)
+        {
+            // open the custom app form view
+            trigger: "a[data-menu-xmlid='web_studio.studio_app_menu']",
+        },
+        {
+            // fill the required char input
+            trigger: ".o_field_char input",
+            run: "text title",
+        },
+        {
+            // fill the new currency (many2one) input #1
+            trigger: "div [name='x_studio_currency_test2'] input",
+            run: "text USD",
+        },
+        {
+            // add a new currency field step #2
+            trigger: '.ui-menu-item a:contains("USD")',
+        },
+        {
+            // save the view form
+            trigger: "button.o_form_button_save",
+        },
+        {
+            // open studio with the record
+            trigger: ".o_main_navbar .o_web_studio_navbar_item a",
+            extra_trigger: ".o_form_saved",
+        },
+        {
+            // check that there is no currency symbol in renderer
+            trigger: "div[name='x_studio_monetary_test'] span",
+            run() {
+                assertEqual(this.$anchor[0].textContent, "0.00");
+            },
+        },
+        {
+            // click on the monetary field
+            trigger: "div[data-field-name='x_studio_monetary_test']",
+        },
+        {
+            // change the currency_field in the monetary
+            trigger: ".o_web_studio_sidebar .o_web_studio_property_currency_field button",
+        },
+        {
+            // click on the second currency, which is "X Studio Currency Test2"
+            trigger: ".o_web_studio_property_currency_field .o_select_menu_item:nth-child(2)",
+        },
+        {
+            //wait until the currency has been set (also test the reactivity)
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_property_currency_field span.text-start:contains('X Studio Currency Test2')",
+            run() {},
+        },
+        {
+            // by changing the currency, we should have a $ symbol in the renderer
+            trigger: "div[name^='x_studio_monetary'] span",
+            run() {
+                assertEqual(this.$anchor[0].textContent, "$ 0.00");
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_monetary_change_currency_not_in_view", {
+    url: "/web",
+    test: true,
+    steps: [
+        // Change a currency that is not present in the view insert it in the view
+        {
+            // open studio
+            trigger: ".o_main_navbar .o_web_studio_navbar_item",
+            extra_trigger: ".o_home_menu_background",
+        },
+        {
+            trigger: ".o_web_studio_new_app",
+            run: () => {},
+        },
+        {
+            trigger: ".o_app[data-menu-xmlid='web_studio.studio_app_menu']",
+        },
+        {
+            // click on the monetary field
+            trigger: "div[data-field-name='x_studio_monetary_test']",
+        },
+        {
+            // change the currency_field in the monetary
+            trigger: ".o_web_studio_sidebar .o_web_studio_property_currency_field button",
+        },
+        {
+            // click on the second currency, which is "X Studio Currency Test2"
+            trigger: ".o_web_studio_property_currency_field .o_select_menu_item:nth-child(2)",
+        },
+        {
+            // wait until the currency has been set
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_property_currency_field span.text-start:contains('X Studio Currency Test2')",
+            run() {},
+        },
+        {
+            // go to view tab
+            trigger: ".o_web_studio_view",
+        },
+        {
+            // currency field is in the view and click on it
+            trigger: ".o_web_studio_view_renderer div[data-field-name='x_studio_currency_test2']",
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_monetary_add_existing_monetary", {
+    url: "/web",
+    test: true,
+    steps: [
+        // Add an existing monetary trough the "existing fields" and verify that the currency
+        // is added to the view
+        {
+            // open studio
+            trigger: ".o_main_navbar .o_web_studio_navbar_item",
+            extra_trigger: ".o_home_menu_background",
+        },
+        {
+            trigger: ".o_web_studio_new_app",
+            run: () => {},
+        },
+        {
+            trigger: ".o_app[data-menu-xmlid='web_studio.studio_app_menu']",
+        },
+        {
+            // click on "existing fields"
+            trigger: ".o_web_studio_existing_fields_header",
+        },
+        {
+            // add the existing monetary field
+            trigger: ".o_web_studio_existing_fields_section .o_web_studio_field_monetary",
+            run: "drag_and_drop_native .o_form_renderer .o_web_studio_hook",
+        },
+        {
+            // monetary exist and click on monetary
+            trigger: "div[data-field-name='x_studio_monetary_test']",
+        },
+        {
+            // verify that the currency name changed in the monetary field
+            trigger: ".o_web_studio_sidebar .o_web_studio_property_currency_field .text-start",
+            run() {
+                assertEqual(
+                    this.$anchor[0].textContent,
+                    "X Studio Currency Test (x_studio_currency_test)"
+                );
+            },
+        },
+        {
+            // currency field is in the view
+            trigger: "div[data-field-name='x_studio_currency_test']",
+            run() {},
+        },
+    ],
+});
+
+registry
+    .category("web_tour.tours")
+    .add("web_studio_monetary_create_monetary_with_existing_currency", {
+        url: "/web",
+        test: true,
+        steps: [
+            // Add a new monetary field, since a currency already exists, it should take it instead
+            // of creating a new one
+            {
+                // open studio
+                trigger: ".o_main_navbar .o_web_studio_navbar_item",
+                extra_trigger: ".o_home_menu_background",
+            },
+            {
+                trigger: ".o_web_studio_new_app",
+                run: () => {},
+            },
+            {
+                trigger: ".o_app[data-menu-xmlid='web_studio.studio_app_menu']",
+            },
+            {
+                // go to Add tab
+                trigger: ".o_web_studio_new",
+            },
+            {
+                // add a new monetary field
+                trigger: ".o_web_studio_sidebar .o_web_studio_field_monetary",
+                run: "drag_and_drop_native .o_web_studio_form_view_editor .o_inner_group",
+            },
+            {
+                // there is only one occurence of the currency field in the view
+                trigger: ".o_form_renderer div[data-field-name^='x_studio_monetary']",
+                run() {
+                    const o2mNumber = document.querySelectorAll("div.o_field_many2one");
+                    assertEqual(o2mNumber.length, 1);
+                },
+            },
+        ],
+    });

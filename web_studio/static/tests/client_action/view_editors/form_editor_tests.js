@@ -3606,7 +3606,7 @@ QUnit.module("View Editors", (hooks) => {
                 target.querySelector(".o_web_studio_new_fields .o_web_studio_field_char"),
                 target.querySelector(".o_inner_group .o_web_studio_hook")
             );
-            assert.verifySteps(["/web_studio/edit_view"]);
+            assert.verifySteps(["/web_studio/edit_view", "/web/dataset/call_kw/partner/read"]);
 
             // add a new button
             await click(

@@ -15,11 +15,7 @@ import { SelectionContentDialog } from "@web_studio/client_action/view_editor/in
 
 export function getCurrencyField(fieldsGet) {
     const field = Object.entries(fieldsGet).find(([fName, fInfo]) => {
-        return (
-            fInfo.type === "many2one" &&
-            fInfo.relation === "res.currency" &&
-            (fName === "currency_id" || fName === "x_currency_id")
-        );
+        return fInfo.type === "many2one" && fInfo.relation === "res.currency";
     });
     if (field) {
         return field[0];

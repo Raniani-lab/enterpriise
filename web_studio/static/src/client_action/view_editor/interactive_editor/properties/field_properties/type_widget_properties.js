@@ -6,6 +6,7 @@ import { memoize } from "@web/core/utils/functions";
 import { Property } from "@web_studio/client_action/view_editor/property/property";
 import { getWowlFieldWidgets } from "@web_studio/client_action/view_editor/editors/utils";
 import { EDITABLE_ATTRIBUTES, FIELD_TYPE_ATTRIBUTES } from "./field_type_properties";
+import { useService } from "@web/core/utils/hooks";
 
 export class TypeWidgetProperties extends Component {
     static template =
@@ -26,6 +27,7 @@ export class TypeWidgetProperties extends Component {
                 return field;
             });
         });
+        this.rpc = useService("rpc");
     }
 
     get attributesOfTypeSelection() {
@@ -122,14 +124,20 @@ export class TypeWidgetProperties extends Component {
 
     getFieldChoices(attribute, fields) {
         if (attribute.availableTypes) {
-            return fields
-                .filter((f) => attribute.availableTypes.includes(f.type))
-                .map((f) => {
-                    return {
-                        label: this.env.debug ? `${f.string} (${f.name})` : f.string,
-                        value: f.name,
-                    };
-                });
+            let availableFields = fields.filter((f) => attribute.availableTypes.includes(f.type));
+            if (attribute.name === "currency_field") {
+                if (this.props.node.field.type === "monetary") {
+                    const fields = this.env.viewEditorModel.fields;
+                    availableFields = Object.values(fields);
+                }
+                availableFields = availableFields.filter((f) => f.relation === "res.currency");
+            }
+            return availableFields.map((f) => {
+                return {
+                    label: this.env.debug ? `${f.string} (${f.name})` : f.string,
+                    value: f.name,
+                };
+            });
         }
         return fields;
     }
@@ -166,6 +174,9 @@ export class TypeWidgetProperties extends Component {
         if (value === undefined && property.default) {
             value = property.default;
         }
+        if (property.name === "currency_field" && !value) {
+            value = this.props.node.field.currency_field;
+        }
         return {
             ...property,
             value,
@@ -176,14 +187,66 @@ export class TypeWidgetProperties extends Component {
         return typeof value === "object" ? JSON.stringify(value) : value;
     }
 
+    async onChangeCurrency(value) {
+        const proms = [];
+        proms.push(
+            this.rpc("/web_studio/set_currency", {
+                model_name: this.env.viewEditorModel.resModel,
+                field_name: this.props.node.field.name,
+                value,
+            })
+        );
+        this.env.viewEditorModel.fields[this.props.node.field.name]["currency_field"] = value;
+
+        if (this.env.viewEditorModel.fieldsInArch.includes(value)) {
+            // is the new currency in the view ?
+            await Promise.all(proms).then((results) => {
+                if (results[0] === true) {
+                    this.env.viewEditorModel.fields[this.props.node.field.name]["currency_field"] =
+                        value;
+                }
+            });
+            return;
+        }
+
+        const currencyNode = {
+            tag: "field",
+            attrs: { name: value },
+        };
+
+        const operation = {
+            node: currencyNode,
+            target: this.env.viewEditorModel.getFullTarget(
+                this.env.viewEditorModel.activeNodeXpath
+            ),
+            position: "after",
+            type: "add",
+        };
+
+        proms.push(this.env.viewEditorModel.doOperation(operation));
+        await Promise.all(proms).then((results) => {
+            if (results[0] === true) {
+                this.env.viewEditorModel.fields[this.props.node.field.name]["currency_field"] =
+                    value;
+            }
+        });
+    }
+
     onChangeWidget(value) {
         return this.props.onChangeAttribute(value, "widget");
     }
 
-    onChangeProperty(value, name) {
+    async onChangeProperty(value, name) {
         const currentProperty = this._attributesForCurrentTypeAndWidget.find(
             (e) => e.name === name
         );
+        if (name === "currency_field" && this.props.node.field.type === "monetary") {
+            await this.onChangeCurrency(value);
+            if (!this.props.node.attrs.options?.[name]) {
+                return;
+            }
+            value = ""; // the currency_field arch option will be deleted
+        }
         if (EDITABLE_ATTRIBUTES[name]) {
             return this.props.onChangeAttribute(value, name);
         }

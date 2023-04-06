@@ -160,7 +160,8 @@ def generate_module(module, data):
                     record_deps[record] |= rel_records
             if record._name == 'ir.model.fields' and record.ttype == 'monetary':
                 # add a dependency on the currency field
-                rel_record = record._get(record.model, 'currency_id') or record._get(record.model, 'x_currency_id')
+                if record.currency_field:
+                    rel_record = record._get(record.model, record.currency_field)
                 rel_xmlid = get_xmlid(rel_record, check=False)
                 if rel_xmlid and rel_xmlid.split('.')[0] != module.name:
                     # data depends on a record from another module

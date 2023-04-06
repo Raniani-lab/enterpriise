@@ -15,7 +15,6 @@ from odoo.addons.web_studio.controllers import export
 from odoo.osv import expression
 from odoo.tools import ustr, sql
 
-
 _logger = logging.getLogger(__name__)
 
 # contains all valid operations
@@ -522,6 +521,13 @@ class WebStudioController(http.Controller):
                 return ttype == 'binary' and not is_image and not is_signature and not is_related
             return False
 
+        def is_monetary(op):
+            node = op.get('node')
+            if node and node.get('tag') and node.get('field_description'):
+                ttype = node['field_description'].get('type')
+                return ttype == 'monetary'
+            return node and node.get('attrs') and ('currency_field' in node.get('attrs'))
+
         # Every time the creation of a binary field is requested,
         # we also create an invisible char field meant to contain the filename.
         # The char field is then associated with the binary field
@@ -556,6 +562,42 @@ class WebStudioController(http.Controller):
 
             op['node']['attrs']['filename'] = filename
 
+        # CREATE CURRENCY FIELD
+        operations = _operations
+        _operations = []
+
+        for op in operations:
+            if not is_monetary(op):
+                _operations.append(op)
+                continue
+            values = op['node'].get('field_description') or op['node']['attrs']
+            currency_op = deepcopy(op)
+
+            if not values.get('currency_field'):
+                # There is no currencies in the model, create one with the operation
+                currency_op['node']['field_description'].update({
+                    'name': 'x_studio_currency_id',
+                    'type': 'many2one',
+                    'relation': 'res.currency',
+                    'field_description': 'Currency',
+                })
+                values['currency_field'] = 'x_studio_currency_id'
+                op['target']['attrs'] = {'name': 'x_studio_currency_id'}
+            else:
+                # There is a currency in the model, set it up to eventually add it to the arch
+                currency_op['node'].pop('field_description', {})
+                currency_op['node']['attrs'] = {'name': values['currency_field']}
+
+            if not values.get('currency_in_view'):
+                # The currency field is not in the arch, add it
+                _operations.append(currency_op)
+
+            if op['node'].get('attrs', {}).get('currency_field'):
+                # When monetary field already exist, the client put the currency infos in attrs
+                del op['node']['attrs']['currency_field']
+                del op['node']['attrs']['currency_in_view']
+            _operations.append(op)
+
         operations = _operations
         for op in operations:
             # create a new field if it does not exist
@@ -577,6 +619,7 @@ class WebStudioController(http.Controller):
                         else:
                             field = self.create_new_field(op['node']['field_description'])
                     op['node']['attrs']['name'] = field.name
+
                 if op['node'].get('tag') == 'filter' and op['target']['tag'] == 'group' and op['node']['attrs'].get('create_group'):
                     op['node']['attrs'].pop('create_group')
                     create_group_op = {
@@ -1524,6 +1567,11 @@ Are you sure you want to remove the selection values of those records?""") % len
     def set_default_value(self, model_name, field_name, value):
         """ Set the default value associated to the given field. """
         request.env['ir.default'].with_context(studio=True).set(model_name, field_name, value, company_id=True)
+
+    @http.route('/web_studio/set_currency', type='json', auth='user')
+    def set_currency(self, model_name, field_name, value):
+        """ Set the currency value associated to the given monetary field. """
+        return request.env['ir.model.fields'].with_context(studio=True).search([["model", "=", model_name], ["name", "=", field_name]]).write({'currency_field': value})
 
     @http.route('/web_studio/create_inline_view', type='json', auth='user')
     def create_inline_view(self, model, view_id, field_name, subview_type, subview_xpath, context=None):

@@ -8,7 +8,7 @@ import {
     parseStringToXml,
     serializeXmlToString,
 } from "@web_studio/client_action/view_editor/editors/xml_utils";
-import { EventBus, markRaw, useEnv } from "@odoo/owl";
+import { EventBus, markRaw, useEnv, reactive, toRaw } from "@odoo/owl";
 import { sprintf } from "@web/core/utils/strings";
 import { viewTypeToString } from "@web_studio/studio_service";
 import {
@@ -30,12 +30,13 @@ const viewRegistry = registry.category("views");
 // Second, the keys we use usually involve archs themselves that could be heavy in the long run.
 function memoizeOnce(callback) {
     let key, value;
-    return (...args) => {
+
+    return function (...args) {
         if (key === args[0]) {
             return value;
         }
         key = args[0];
-        value = callback(...args);
+        value = callback.call(this, ...args);
         return value;
     };
 }
@@ -173,7 +174,7 @@ export class ViewEditorModel extends Reactive {
             };
         });
 
-        this._getControllerProps = memoizeOnce(() => {
+        this._getControllerProps = memoizeOnce(function () {
             let { resId, resIds } = this.isEditingSubview
                 ? this._subviewInfo
                 : this._studio.editedControllerState || {};
@@ -194,7 +195,7 @@ export class ViewEditorModel extends Reactive {
 
             let controllerProps = {
                 info: {},
-                relatedModels: this.viewDescriptions.relatedModels,
+                relatedModels: { ...toRaw(this.viewDescriptions.relatedModels) },
                 useSampleModel: ["graph", "pivot"].includes(this.viewType),
                 searchMenuTypes: [],
                 className: controllerClasses.join(" "),
@@ -202,7 +203,7 @@ export class ViewEditorModel extends Reactive {
                 resIds,
                 resModel: this.resModel,
                 arch,
-                fields: this.fields,
+                fields: { ...toRaw(this.fields) },
             };
 
             if (
@@ -222,7 +223,7 @@ export class ViewEditorModel extends Reactive {
                 ? getProps(controllerProps, editor, this.env.config)
                 : controllerProps;
 
-            return controllerProps;
+            return markRaw(controllerProps);
         });
 
         this.__getDefaultStudioViewProps = memoizeOnce(() => {
@@ -258,19 +259,22 @@ export class ViewEditorModel extends Reactive {
             const isField = node.tagName === "field";
             const attrs = getNodeAttributes(node);
 
-            const field = isField
-                ? {
-                      ...this.fields[attrs.name],
-                      label: this.fields[attrs.name].string,
-                  }
-                : undefined;
-
-            return {
+            let field;
+            if (isField) {
+                field = reactive(this.fields[attrs.name]);
+                Object.defineProperty(field, "label", {
+                    get() {
+                        return field.string;
+                    },
+                    configurable: true,
+                });
+            }
+            return reactive({
                 arch: node,
                 attrs,
                 xpath: this.activeNodeXpath,
                 field,
-            };
+            });
         });
 
         this._getUnprocessedXmlDoc = memoizeOnce((arch) => parseStringToXml(arch));
@@ -386,6 +390,10 @@ export class ViewEditorModel extends Reactive {
 
     get activeNode() {
         return this._getActiveNode(buildKey(this.activeNodeXpath, this.arch));
+    }
+
+    get studioViewKey() {
+        return buildKey(this.arch, JSON.stringify(this.fields));
     }
 
     get fieldsInArch() {

@@ -227,7 +227,7 @@ class View(models.Model):
             fields.append(E.field(name='x_studio_company_id', groups='base.group_multi_company'))
         if 'x_studio_currency_id' in model._fields and 'x_studio_value' in model._fields:
             fields.append(E.field(name='x_studio_currency_id', invisible='1'))
-            fields.append(E.field(name='x_studio_value', widget='monetary', options="{'currency_field': 'x_studio_currency_id'}", sum=_("Total")))
+            fields.append(E.field(name='x_studio_value', sum=_("Total")))
         if 'x_studio_tag_ids' in model._fields:
             fields.append(E.field(name='x_studio_tag_ids', widget='many2many_tags', options="{'color_field': 'x_color'}"))
         if 'x_color' in model._fields:
@@ -278,7 +278,7 @@ class View(models.Model):
             left_group_content.append(E.field(name='x_studio_partner_email', widget='email'))
         if 'x_studio_currency_id' in model._fields and 'x_studio_value' in model._fields:
             right_group_content.append(E.field(name='x_studio_currency_id', invisible='1'))
-            right_group_content.append(E.field(name='x_studio_value', widget='monetary', options="{'currency_field': 'x_studio_currency_id'}"))
+            right_group_content.append(E.field(name='x_studio_value'))
         if 'x_studio_tag_ids' in model._fields:
             right_group_content.append(E.field(name='x_studio_tag_ids', widget='many2many_tags', options="{'color_field': 'x_color'}"))
         if 'x_studio_company_id' in model._fields:
@@ -498,7 +498,7 @@ class View(models.Model):
         card_div = E.div({'t-attf-class': "#{!selection_mode ? kanban_color(record.x_color.raw_value) : ''} oe_kanban_global_click"})
         if 'x_studio_value' and 'x_studio_currency_id' in model._fields:
             pre_fields.append(E.field(name='x_studio_currency_id'))
-            bottom_left_div.append(E.field(name='x_studio_value', widget='monetary', options="{'currency_field': 'x_studio_currency_id'}"))
+            bottom_left_div.append(E.field(name='x_studio_value'))
         if 'x_studio_tag_ids' in model._fields:
             body_div.append(E.field(name='x_studio_tag_ids', options="{'color_field': 'x_color'}"))
         if 'x_studio_image' in model._fields:

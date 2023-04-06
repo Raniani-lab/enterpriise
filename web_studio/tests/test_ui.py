@@ -144,6 +144,56 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             "res_id": cls.testMenu.id,
         })
 
+
+    def create_empty_app(self):
+
+        self.newModel = self.env['ir.model'].create({
+            'name': 'Test Model',
+            'model': 'x_test_model',
+            'field_id': [
+                (0, 0, {'name': 'x_name', 'ttype': 'char', 'field_description': 'Name'}),
+            ]
+        })
+        self.newModel._setup_access_rights()
+
+        self.newView = self.env["ir.ui.view"].create({
+            "name": "simpleView",
+            "model": "x_test_model",
+            "type": "form",
+            "arch": '''
+                <form>
+                    <group>
+                        <field name="x_name" />
+                    </group>
+                </form>
+            '''
+        })
+
+        self.newAction = self.env["ir.actions.act_window"].create({
+            "name": "simple model",
+            "res_model": "x_test_model",
+            "view_ids": [Command.create({"view_id": self.newView.id, "view_mode": "form"})]
+        })
+
+        self.newActionXmlId = self.env["ir.model.data"].create({
+            "name": "studio_app_action",
+            "model": "ir.actions.act_window",
+            "module": "web_studio",
+            "res_id": self.newAction.id,
+        })
+
+        self.newMenu = self.env["ir.ui.menu"].create({
+            "name": "StudioApp",
+            "action": "ir.actions.act_window,%s" % self.newAction.id
+        })
+
+        self.newMenuXmlId = self.env["ir.model.data"].create({
+            "name": "studio_app_menu",
+            "model": "ir.ui.menu",
+            "module": "web_studio",
+            "res_id": self.newMenu.id,
+        })
+
     def test_form_view_not_altered_by_studio_xml_edition(self):
         self.start_tour("/web?debug=tests", 'web_studio_test_form_view_not_altered_by_studio_xml_edition', login="admin", timeout=200)
 
@@ -849,3 +899,205 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             ]
         })
         self.start_tour("/web?debug=tests", 'web_studio_field_group_studio_no_fetch', login="admin", timeout=200)
+
+
+    def test_monetary_create(self):
+        self.create_empty_app()
+        self.newView.arch = '''<form>
+            <group>
+                <field name="x_name"/>
+            </group>
+        </form>'''
+        self.start_tour("/web?debug=tests", 'web_studio_monetary_create', login="admin")
+
+        # There is a new currency and there is a new monetary
+        fields = self.env[self.newModel.model]._fields
+        currency_name_list = list(filter(lambda key: fields[key]._description_type == 'many2one' and fields[key]._description_relation == 'res.currency', fields.keys()))
+        monetary_name_list = list(filter(lambda key: fields[key].type == 'monetary', fields.keys()))
+        self.assertEqual(len(currency_name_list), 1)
+        self.assertEqual(len(monetary_name_list), 1)
+
+        # The studio arch contains the new monetary and the new currency
+        studioView = _get_studio_view(self.newView)
+        assertViewArchEqual(self, studioView.arch, f"""
+            <data>
+                <xpath expr="//field[@name='x_name']" position="before">
+                    <field name="{monetary_name_list[0]}"/>
+                    <field name="{currency_name_list[0]}"/>
+                </xpath>
+            </data>
+            """)
+
+    def test_monetary_change_currency_name(self):
+        self.create_empty_app()
+        currency = self.env["ir.model.fields"].create({
+            "name": "x_studio_currency_test",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "many2one",
+            "relation": "res.currency",
+        })
+        self.env["ir.model.fields"].create({
+            "name": "x_studio_monetary_test",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "monetary",
+            "currency_field": "x_studio_currency_test",
+        })
+        self.newView.arch = '''<form>
+            <group>
+                <field name="x_name"/>
+                <field name="x_studio_currency_test"/>
+                <field name="x_studio_monetary_test"/>
+            </group>
+        </form>'''
+        self.start_tour("/web?debug=tests", 'web_studio_monetary_change_currency_name', login="admin")
+        self.assertEqual(currency.field_description, "NewCurrency")
+
+    def test_monetary_change_currency_field(self):
+        self.create_empty_app()
+        self.env["ir.model.fields"].create({
+            "name": "x_studio_currency_test",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "many2one",
+            "relation": "res.currency",
+        })
+        self.env["ir.model.fields"].create({
+            "name": "x_studio_currency_test2",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "many2one",
+            "relation": "res.currency",
+        })
+        monetary = self.env["ir.model.fields"].create({
+            "name": "x_studio_monetary_test",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "monetary",
+            "currency_field": "x_studio_currency_test",
+        })
+        self.newView.arch = '''<form>
+            <group>
+                <field name="x_name"/>
+                <field name="x_studio_currency_test"/>
+                <field name="x_studio_currency_test2"/>
+                <field name="x_studio_monetary_test"/>
+            </group>
+        </form>'''
+        self.start_tour("/web?debug=tests", 'web_studio_monetary_change_currency_field', login="admin")
+
+        # The currency_field in the monetary field changed
+        self.assertEqual(monetary.currency_field, 'x_studio_currency_test2')
+
+    def test_monetary_change_currency_not_in_view(self):
+        self.create_empty_app()
+        self.env["ir.model.fields"].create({
+            "name": "x_studio_currency_test",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "many2one",
+            "relation": "res.currency",
+        })
+        self.env["ir.model.fields"].create({
+            "name": "x_studio_currency_test2",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "many2one",
+            "relation": "res.currency",
+        })
+        monetary = self.env["ir.model.fields"].create({
+            "name": "x_studio_monetary_test",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "monetary",
+            "currency_field": "x_studio_currency_test",
+        })
+        self.newView.arch = '''<form>
+            <group>
+                <field name="x_name"/>
+                <field name="x_studio_currency_test"/>
+                <field name="x_studio_monetary_test"/>
+            </group>
+        </form>'''
+        self.start_tour("/web?debug=tests", 'web_studio_monetary_change_currency_not_in_view', login="admin")
+
+        # The currency_field in the monetary field changed
+        self.assertEqual(monetary.currency_field, 'x_studio_currency_test2')
+
+        studioView = _get_studio_view(self.newView)
+        assertViewArchEqual(self, studioView.arch, """
+            <data>
+                <xpath expr="//field[@name='x_studio_monetary_test']" position="after">
+                    <field name="x_studio_currency_test2"/>
+                </xpath>
+            </data>
+            """)
+
+    def test_monetary_add_existing_monetary(self):
+        self.create_empty_app()
+        self.env["ir.model.fields"].create({
+            "name": "x_studio_currency_test",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "many2one",
+            "relation": "res.currency",
+        })
+        self.env["ir.model.fields"].create({
+            "name": "x_studio_monetary_test",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "monetary",
+            "currency_field": "x_studio_currency_test",
+        })
+        self.newView.arch = '''<form>
+            <group>
+                <field name="x_name"/>
+            </group>
+        </form>'''
+        self.start_tour("/web?debug=tests", 'web_studio_monetary_add_existing_monetary', login="admin")
+
+        # The studio arch contains the monetary and the associated currency
+        studioView = _get_studio_view(self.newView)
+        assertViewArchEqual(self, studioView.arch, """
+            <data>
+                <xpath expr="//field[@name=\'x_name\']" position="before">
+                    <field name="x_studio_monetary_test"/>
+                    <field name="x_studio_currency_test"/>
+                </xpath>
+            </data>
+            """)
+
+    def test_monetary_create_monetary_with_existing_currency(self):
+        self.create_empty_app()
+        self.env["ir.model.fields"].create({
+            "name": "x_studio_currency_test",
+            "model": "x_test_model",
+            "model_id": self.newModel.id,
+            "ttype": "many2one",
+            "relation": "res.currency",
+        })
+        self.newView.arch = '''<form>
+            <group>
+                <field name="x_name"/>
+                <field name="x_studio_currency_test"/>
+            </group>
+        </form>'''
+        self.start_tour("/web?debug=tests", 'web_studio_monetary_create_monetary_with_existing_currency', login="admin")
+
+        # There is only one currency and there is a new monetary
+        fields = self.env[self.newModel.model]._fields
+        currency_name_list = list(filter(lambda key: fields[key]._description_type == 'many2one' and fields[key]._description_relation == 'res.currency', fields.keys()))
+        monetary_name_list = list(filter(lambda key: fields[key].type == 'monetary', fields.keys()))
+        self.assertEqual(len(currency_name_list), 1)
+        self.assertEqual(len(monetary_name_list), 1)
+
+        # The studio arch contains the new monetary but no currency as it exist in the original arch
+        studioView = _get_studio_view(self.newView)
+        assertViewArchEqual(self, studioView.arch, f"""
+            <data>
+                <xpath expr="//field[@name=\'x_name\']" position="after">
+                    <field name="{monetary_name_list[0]}"/>
+                </xpath>
+            </data>
+            """)

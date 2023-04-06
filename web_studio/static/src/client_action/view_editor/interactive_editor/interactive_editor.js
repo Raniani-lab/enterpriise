@@ -21,7 +21,6 @@ import {
     RelationalFieldConfigurator,
     RelatedChainBuilder,
     getCurrencyField,
-    openCurrencyConfirmDialog,
     FilterConfiguration,
 } from "@web_studio/client_action/view_editor/interactive_editor/field_configuration/field_configuration";
 import {
@@ -304,6 +303,11 @@ export class InteractiveEditor extends Component {
                 tag: "field",
                 attrs: { name: data.fieldName },
             };
+
+            const field = this.viewEditorModel.fields[data.fieldName];
+            if (field.type === "monetary") {
+                this.setCurrencyInfos(newNode.attrs);
+            }
         }
         if (!newNode) {
             return;
@@ -493,16 +497,7 @@ export class InteractiveEditor extends Component {
         }
 
         if (fieldType === "monetary") {
-            if (!this.hasCurrencyField()) {
-                const currencyDescription = await openCurrencyConfirmDialog(
-                    this.addDialog,
-                    this.viewEditorModel.resModel
-                );
-                if (!currencyDescription) {
-                    return;
-                }
-                Object.assign(newNode.field_description, currencyDescription);
-            }
+            this.setCurrencyInfos(newNode.field_description);
         }
 
         if (fieldType === "integer") {
@@ -586,5 +581,13 @@ export class InteractiveEditor extends Component {
 
     hasCurrencyField() {
         return getCurrencyField(this.viewEditorModel.fields);
+    }
+
+    setCurrencyInfos(object) {
+        const currencyField = getCurrencyField(this.viewEditorModel.fields);
+        if (currencyField) {
+            object.currency_field = currencyField;
+            object.currency_in_view = this.viewEditorModel.fieldsInArch.includes(currencyField);
+        }
     }
 }

@@ -15,6 +15,7 @@ import {
     makeArchChanger,
     registerViewEditorDependencies,
     selectorContains,
+    editAnySelect,
 } from "@web_studio/../tests/client_action/view_editors/view_editor_tests_utils";
 import { browser } from "@web/core/browser/browser";
 import { CodeEditor } from "@web/core/code_editor/code_editor";
@@ -61,6 +62,11 @@ QUnit.module("View Editors", () => {
                         fields: {},
                         records: [],
                     },
+                    "res.currency": {
+                        fields: {
+                            display_name: { type: "char", string: "display name" },
+                        },
+                    },
                 },
             };
 
@@ -70,15 +76,9 @@ QUnit.module("View Editors", () => {
             });
         });
 
-        QUnit.test("add a monetary field without currency_id", async function (assert) {
-            assert.expect(4);
-
-            serverData.models.product.fields.monetary_field = {
-                string: "Monetary",
-                type: "monetary",
-                store: true,
-            };
+        QUnit.test("add a monetary field without currency in the model", async function (assert) {
             const arch = "<tree><field name='display_name'/></tree>";
+            const changeArch = makeArchChanger();
             await createViewEditor({
                 type: "list",
                 serverData,
@@ -86,69 +86,54 @@ QUnit.module("View Editors", () => {
                 arch,
                 mockRPC: function (route, args) {
                     if (route === "/web_studio/edit_view") {
+                        assert.step("edit_view");
+                        // the server will notice that there is no currency and will create one
                         assert.deepEqual(args.operations[0].node.field_description, {
-                            field_description: "Currency",
+                            field_description: "New Monetary",
                             model_name: "coucou",
-                            name: "x_currency_id",
-                            relation: "res.currency",
-                            type: "many2one",
+                            name: args.operations[0].node.field_description.name,
+                            type: "monetary",
                         });
+
+                        serverData.models.coucou.fields.x_currency_id = {
+                            string: "Currency",
+                            type: "many2one",
+                            relation: "res.currency",
+                            store: true,
+                        };
+
+                        serverData.models.coucou.fields.monetary_field = {
+                            string: "Monetary",
+                            type: "monetary",
+                            store: true,
+                            currency_field: "x_currency_id",
+                        };
+
+                        const newArch =
+                            "<tree><field name='display_name'/><field name='x_currency_id'/><field name='monetary_field'/></tree>";
+                        changeArch(args.view_id, newArch);
                     }
                 },
             });
-
-            const currencyCreationText =
-                "In order to use a monetary field, you need a currency field on the model. Do you want to create a currency field first? You can make this field invisible afterwards.";
 
             // add a monetary field
             await dragAndDrop(
                 target.querySelector(".o_web_studio_new_fields .o_web_studio_field_monetary"),
                 target.querySelector("th.o_web_studio_hook")
             );
-            assert.strictEqual(
-                target.querySelector(".modal-body").textContent,
-                currencyCreationText,
-                "this should trigger an alert"
-            );
-            await click(selectorContains(target, ".modal-footer .btn", "Cancel"));
+            assert.verifySteps(["edit_view"]);
 
-            // add a related monetary field
-            await dragAndDrop(
-                target.querySelector(".o_web_studio_new_fields .o_web_studio_field_related"),
-                target.querySelector("th.o_web_studio_hook")
-            );
-            assert.containsOnce(target, ".modal .o_model_field_selector");
-            await click(target.querySelector(".modal .o_model_field_selector")); // open the selector popover
-            await click(
-                target.querySelector(
-                    ".o_model_field_selector_popover li[data-name=product_id] button.o_model_field_selector_popover_item_relation"
-                )
-            );
-            await click(
-                target.querySelector(
-                    ".o_model_field_selector_popover li[data-name=monetary_field] button"
-                )
-            );
-            await click(target.querySelector(".modal-footer .btn-primary"));
+            await click(target.querySelector("th[data-name='monetary_field']"));
+            // the currency choice of monetary is "Currency"
             assert.strictEqual(
-                target.querySelector(".o_dialog:not(.o_inactive_modal) .modal-body").textContent,
-                currencyCreationText,
-                "this should trigger an alert"
-            );
-            await click(
-                target.querySelector(".o_dialog:not(.o_inactive_modal) .modal-footer .btn-primary")
+                target.querySelector(".o_web_studio_property_currency_field .text-start")
+                    .textContent,
+                "Currency"
             );
         });
 
-        QUnit.test("add a monetary field with currency_id", async function (assert) {
-            assert.expect(5);
-
-            serverData.models.product.fields.monetary_field = {
-                string: "Monetary",
-                type: "monetary",
-                store: true,
-            };
-
+        QUnit.test("add a monetary field with currency in the model", async function (assert) {
+            const arch = "<tree><field name='display_name'/></tree>";
             serverData.models.coucou.fields.x_currency_id = {
                 string: "Currency",
                 type: "many2one",
@@ -156,53 +141,122 @@ QUnit.module("View Editors", () => {
                 store: true,
             };
 
-            const arch = "<tree><field name='display_name'/></tree>";
-            let nbEdit = 0;
+            await createViewEditor({
+                serverData,
+                type: "list",
+                resModel: "coucou",
+                arch,
+                mockRPC: function (route, args) {
+                    if (route === "/web_studio/edit_view") {
+                        assert.step("edit_view");
+                        assert.deepEqual(args.operations[0].node.field_description, {
+                            field_description: "New Monetary",
+                            model_name: "coucou",
+                            name: args.operations[0].node.field_description.name,
+                            type: "monetary",
+                            currency_field: "x_currency_id",
+                            currency_in_view: false,
+                        });
+                    }
+                },
+            });
+
+            // add a monetary field
+            await dragAndDrop(
+                target.querySelector(".o_web_studio_new_fields .o_web_studio_field_monetary"),
+                target.querySelector("th.o_web_studio_hook")
+            );
+            assert.verifySteps(["edit_view"]);
+        });
+
+        QUnit.test("add a monetary field with currency in the view", async function (assert) {
+            const arch = "<tree><field name='display_name'/><field name='x_currency_id'/></tree>";
+            serverData.models.coucou.fields.x_currency_id = {
+                string: "Currency",
+                type: "many2one",
+                relation: "res.currency",
+                store: true,
+            };
 
             await createViewEditor({
                 serverData,
                 type: "list",
                 resModel: "coucou",
                 arch,
-                mockRPC: function (route) {
+                mockRPC: function (route, args) {
                     if (route === "/web_studio/edit_view") {
-                        nbEdit++;
+                        assert.step("edit_view");
+                        assert.deepEqual(args.operations[0].node.field_description, {
+                            field_description: "New Monetary",
+                            model_name: "coucou",
+                            name: args.operations[0].node.field_description.name,
+                            type: "monetary",
+                            currency_field: "x_currency_id",
+                            currency_in_view: true,
+                        });
                     }
                 },
             });
 
             // add a monetary field
-            assert.containsOnce(
-                target,
-                ".o_web_studio_list_view_editor [data-studio-xpath]",
-                "there should be one node"
-            );
             await dragAndDrop(
                 target.querySelector(".o_web_studio_new_fields .o_web_studio_field_monetary"),
-                target.querySelector(".o_web_studio_hook")
-            );
-            assert.strictEqual(nbEdit, 1, "the view should have been updated");
-            assert.containsNone(target, ".modal");
-
-            // add a related monetary field
-            await dragAndDrop(
-                target.querySelector(".o_web_studio_new_fields .o_web_studio_field_related"),
                 target.querySelector("th.o_web_studio_hook")
             );
-            assert.containsOnce(target, ".o_model_field_selector");
-            await click(target.querySelector(".modal .o_model_field_selector"));
-            await click(
-                target.querySelector(
-                    ".o_model_field_selector_popover li[data-name=product_id] button.o_model_field_selector_popover_item_relation"
-                )
+            assert.verifySteps(["edit_view"]);
+        });
+
+        QUnit.test("edit the currency of a monetary field", async function (assert) {
+            const arch =
+                "<tree><field name='display_name'/><field name='monetary_field'/><field name='x_currency_id'/></tree>";
+            serverData.models.coucou.fields.x_currency_id = {
+                string: "Currency",
+                type: "many2one",
+                relation: "res.currency",
+                store: true,
+            };
+            serverData.models.coucou.fields.x_currency_id2 = {
+                string: "Currency2",
+                type: "many2one",
+                relation: "res.currency",
+                store: true,
+            };
+            serverData.models.coucou.fields.monetary_field = {
+                string: "Monetary",
+                type: "monetary",
+                store: true,
+                currency_field: "x_currency_id",
+            };
+
+            await createViewEditor({
+                serverData,
+                type: "list",
+                resModel: "coucou",
+                arch,
+                mockRPC: function (route, args) {
+                    if (route === "/web_studio/edit_view") {
+                        assert.step("edit_view");
+                        assert.deepEqual(args.operations[0].node.attrs, {
+                            name: "x_currency_id2",
+                        });
+                    } else if (route === "/web_studio/set_currency") {
+                        assert.step("set_currency");
+                        assert.deepEqual(args, {
+                            model_name: "coucou",
+                            field_name: "monetary_field",
+                            value: "x_currency_id2",
+                        });
+                        return true;
+                    }
+                },
+            });
+            await click(target.querySelector("th[data-name='monetary_field']"));
+            await editAnySelect(
+                target,
+                ".o_web_studio_sidebar .o_web_studio_property_currency_field .o_select_menu",
+                "Currency2"
             );
-            await click(
-                target.querySelector(
-                    ".o_model_field_selector_popover li[data-name=monetary_field] button"
-                )
-            );
-            await click(target.querySelector(".modal-footer .btn-primary"));
-            assert.strictEqual(nbEdit, 2, "the view should have been updated");
+            assert.verifySteps(["set_currency", "edit_view"]);
         });
 
         QUnit.test("add a related field", async function (assert) {

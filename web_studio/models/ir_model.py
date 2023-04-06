@@ -384,7 +384,8 @@ class IrModel(models.Model):
         model_vals['field_id'].append(
             Command.create({
                 'name': 'x_studio_value',
-                'ttype': 'float',
+                'ttype': 'monetary',
+                'currency_field': 'x_studio_currency_id',
                 'field_description': _('Value'),
                 'copied': True,
                 'tracking': model_vals.get('is_mail_thread'),

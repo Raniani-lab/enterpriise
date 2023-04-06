@@ -41,6 +41,7 @@
                             record="props.timesheet"
                             attrs="props.fields['project_id'].attrs"
                             placeholder="props.fields['project_id'].placeholder"
+                            canCreateEdit="false"
                         />
                         <Field
                             name="'task_id'"
@@ -48,6 +49,7 @@
                             record="props.timesheet"
                             attrs="props.fields['task_id'].attrs"
                             placeholder="props.fields['task_id'].placeholder"
+                            canCreateEdit="false"
                         />
                         <Field
                             name="'name'"

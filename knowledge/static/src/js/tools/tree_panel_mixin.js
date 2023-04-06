@@ -117,7 +117,14 @@ export default {
                // Show children content stored in sibling
                $li.append($ul.detach().show());
            } else {
-               const children = await this._fetchChildrenArticles($li.data('articleId')); 
+               let children;
+               try {
+                   children = await this._fetchChildrenArticles($li.data('articleId'));
+               } catch (error) {
+                   // Article is not accessible anymore, remove it from the sidebar
+                   $li.remove();
+                   throw error;
+               }
                const $newUl = $('<ul/>').append(children);
                $li.append($newUl);
            }

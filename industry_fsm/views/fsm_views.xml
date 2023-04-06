@@ -120,8 +120,8 @@
                 <field name="is_fsm"/>
                 <field name="fsm_done" />
             </xpath>
-            <xpath expr="//templates//t[@t-if='record.partner_id.value']" position="inside">
-                <span t-if="record.is_fsm.raw_value and record.partner_city.value" style="display: block; margin-top: 4px;">
+            <xpath expr="//templates//span[@t-if='record.partner_id.value']" position="inside">
+                <span t-if="record.is_fsm.raw_value and record.partner_city.value">
                     • <field name="partner_city"/>
                 </span>
             </xpath>

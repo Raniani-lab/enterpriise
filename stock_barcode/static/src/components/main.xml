@@ -108,6 +108,11 @@
                 </span>
             </button>
         </div>
+        <div t-if="env.model.isDone" class="o_barcode_control o_action_buttons d-flex mt-auto"> <!-- Footer -->
+            <button t-on-click="returnProducts" class="o_create_return btn btn-secondary">
+                <i class="fa fa-rotate-left me-1"/> Return Products
+            </button>
+        </div>
     </div>
 
 </templates>

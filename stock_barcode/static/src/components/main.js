@@ -239,6 +239,11 @@ class MainComponent extends Component {
         this.env.model._putInPack();
     }
 
+    returnProducts(ev){
+        ev.stopPropagation();
+        this.env.model._returnProducts();
+    }
+
     saveFormView(lineRecord) {
         const lineId = (lineRecord && lineRecord.data.id) || (this._editedLineParams && this._editedLineParams.currentId);
         const recordId = (lineRecord.resModel === this.resModel) ? lineId : undefined;

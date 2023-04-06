@@ -956,6 +956,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             'O-BTN.print-slip': this.print.bind(this, false, 'action_print_delivery_slip'),
             'O-BTN.print-op': this.print.bind(this, false, 'do_print_picking'),
             "O-BTN.scrap": this._scrap.bind(this),
+            'O-BTN.return': this._returnProducts.bind(this)
         });
     }
 
@@ -1310,6 +1311,21 @@ export default class BarcodePickingModel extends BarcodeModel {
         } else {
             this.trigger('refresh');
         }
+    }
+
+    async _returnProducts() {
+         if (!this.isDone) {
+            return this.notification(
+                _t("Returns can only be created for pickings that are done, please validate first."),
+                { type: 'danger'}
+            );
+        }
+         const action = await this.orm.call(
+             this.resModel,
+             'action_create_return_picking',
+            [[this.resId]]
+         )
+        return this.trigger('do-action', { action, options: {stackPosition: "replaceCurrentAction"} });
     }
 
     async _scrap() {

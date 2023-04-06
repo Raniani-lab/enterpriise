@@ -63,6 +63,18 @@ class StockPicking(models.Model):
         action['context'] = {'active_id': self.id}
         return action
 
+    def action_create_return_picking(self):
+        """
+        Create a return picking for the current picking and open it in the barcode app
+        """
+        self.ensure_one()
+        return_picking = self.with_context(active_model='stock.picking', active_id=self.id).env['stock.return.picking'].create({})
+        if sum(return_picking.product_return_moves.mapped('quantity')) <= 0:
+            raise UserError(_("All products have been returned already"))
+        picking_id, _pt = return_picking._create_returns()
+        new_picking = self.env['stock.picking'].browse(picking_id)
+        return new_picking._get_client_action()['action']
+
     def action_print_barcode_pdf(self):
         return self.action_open_label_type()
 

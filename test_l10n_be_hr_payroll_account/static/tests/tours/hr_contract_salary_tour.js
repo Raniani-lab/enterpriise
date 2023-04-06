@@ -43,7 +43,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         },
         {
             content: "Job\'s Name",
-            trigger: ".o_field_widget[name='name'] input",
+            trigger: ".o_field_widget[name='name'] textarea",
             run: 'text Experienced Developer (BE)',
         },
         {
@@ -82,7 +82,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         // Test Applicant
         {
             content: "Applicant Name",
-            trigger: '.oe_title [name="name"] input',
+            trigger: '.oe_title [name="name"] textarea',
             run: "text Jojo Zeboss' Application",
         },
         {
@@ -822,7 +822,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "Application Name",
-            trigger: '.oe_title [name="name"] input',
+            trigger: '.oe_title [name="name"] textarea',
             run: "text Mitchell's Application",
         },
         {

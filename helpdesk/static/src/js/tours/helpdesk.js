@@ -27,7 +27,7 @@ registry.category("web_tour.tours").add('helpdesk_tour', {
     position: 'bottom',
     width: 200,
 }, {
-    trigger: '.field_name input',
+    trigger: '.field_name textarea',
     extra_trigger: '.o_form_editable',
     content: markup(_t('Enter the <b>subject</b> of your ticket <br/><i>(e.g. Problem with my installation, Wrong order, etc.).</i>')),
     position: 'right',

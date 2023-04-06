@@ -19,7 +19,7 @@ registry.category("web_tour.tours").get("industry_fsm_tour").steps.splice(fsmSta
     content: _t('Let\'s create a new <b>product</b>.'),
     position: 'right',
 }, {
-    trigger: '.o_field_char input',
+    trigger: '.o_field_text textarea',
     content: Markup(_t('Choose a <b>name</b> for your product <i>(e.g. Bolts, Screws, Boiler, etc.).</i>')),
     position: 'right',
 }, {

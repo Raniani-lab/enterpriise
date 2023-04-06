@@ -25,7 +25,7 @@ registry.category("web_tour.tours").add('rental_tour', {
     content: _t("Click here to set up your first rental product."),
     position: 'bottom',
 }, {
-    trigger: ".o_field_widget[name='name'] input",
+    trigger: ".o_field_widget[name='name'] textarea",
     content: _t("Enter the product name."),
     position: 'bottom',
 }, {

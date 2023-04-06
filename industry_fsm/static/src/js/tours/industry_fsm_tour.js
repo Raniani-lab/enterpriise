@@ -19,7 +19,7 @@ registry.category("web_tour.tours").add('industry_fsm_tour', {
     content: markup(_t('Let\'s create your first <b>task</b>.')),
     position: 'bottom',
 }, {
-    trigger: 'h1 div[name="name"] > input',
+    trigger: 'h1 div[name="name"] > div > textarea',
     extra_trigger: '.o_form_editable',
     content: markup(_t('Give it a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning installation, etc.).</i>')),
     position: 'right',

@@ -227,7 +227,7 @@ class KnowledgeController(http.Controller):
     def get_tree_panel_children(self, parent_id):
         parent = request.env['knowledge.article'].search([('id', '=', parent_id)])
         if not parent:
-            return werkzeug.exceptions.NotFound()
+            raise AccessError(_("This Article cannot be unfolded. Either you lost access to it or it has been deleted."))
 
         articles = parent.child_ids.filtered(
             lambda a: not a.is_article_item

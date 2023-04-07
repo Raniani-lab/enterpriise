@@ -497,7 +497,7 @@ class View(models.Model):
             bottom_right_div.append(unassigned_var)
             bottom_right_div.append(img)
         content_div.extend([top_div, body_div, bottom_div])
-        card_div = E.div({'class': "o_kanban_record oe_kanban_global_click o_kanban_record_has_image_fill", 'color': 'x_color'})
+        card_div = E.div({'t-attf-class': "#{!selection_mode ? kanban_color(record.x_color.raw_value) : ''} oe_kanban_global_click"})
         if 'x_studio_value' and 'x_studio_currency_id' in model._fields:
             pre_fields.append(E.field(name='x_studio_currency_id'))
             bottom_left_div.append(E.field(name='x_studio_value', widget='monetary', options="{'currency_field': 'x_studio_currency_id'}"))
@@ -505,7 +505,7 @@ class View(models.Model):
             body_div.append(E.field(name='x_studio_tag_ids', options="{'color_field': 'x_color'}"))
         if 'x_studio_image' in model._fields:
             image_field = E.field({
-                'class': 'o_kanban_image_fill_left',
+                'class': 'o_kanban_image',
                 'name': 'x_studio_image',
                 'widget': 'image',
                 'options': '{"zoom": true, "background": true, "preventClicks": false}'

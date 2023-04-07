@@ -3423,18 +3423,24 @@ class AccountReport(models.Model):
                 continue
 
             audit_or_domains = audit_or_domains_per_date_scope.setdefault(expression_to_audit.date_scope, [])
-            audit_or_domains.append(osv.expression.AND([
-                expression_domain,
-                groupby_domain,
-            ]))
+            audit_or_domains.append(expression_domain)
 
-        domain = osv.expression.OR([
-            osv.expression.AND([
-                osv.expression.OR(audit_or_domain),
-                self._get_options_domain(column_group_options, date_scope)
+        if audit_or_domains_per_date_scope:
+            domain = osv.expression.OR([
+                osv.expression.AND([
+                    osv.expression.OR(audit_or_domains),
+                    self._get_options_domain(column_group_options, date_scope),
+                    groupby_domain,
+                ])
+                for date_scope, audit_or_domains in audit_or_domains_per_date_scope.items()
             ])
-            for date_scope, audit_or_domain in audit_or_domains_per_date_scope.items()
-        ])
+        else:
+            # Happens when no expression was provided (empty recordset), or if none of the expressions had a standard engine
+            domain = osv.expression.AND([
+                self._get_options_domain(column_group_options, 'strict_range'),
+                groupby_domain,
+            ])
+
         return domain
 
     def _get_expression_audit_aml_domain(self, expression_to_audit, options):

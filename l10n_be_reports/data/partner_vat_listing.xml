@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="l10n_be_partner_vat_listing" model="account.report">
-        <field name="name">VAT Listing Audit</field>
+        <field name="name">Partner VAT Listing</field>
         <field name="filter_show_draft" eval="False"/>
         <field name="filter_period_comparison" eval="False"/>
         <field name="default_opening_date_filter">last_year</field>

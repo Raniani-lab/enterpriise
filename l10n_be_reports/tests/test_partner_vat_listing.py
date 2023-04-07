@@ -27,6 +27,12 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
             'vat': 'BE0766998497',
         })
 
+        cls.partner_c_be = cls.env['res.partner'].create({
+            'name': 'Partner C (BE)',
+            'country_id': cls.env.ref('base.be').id,
+            'vat': 'BE0477472701',
+        })
+
         cls.report = cls.env.ref('l10n_be_reports.l10n_be_partner_vat_listing')
 
     @classmethod
@@ -167,6 +173,62 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
             ],
             options,
         )
+
+    def test_turnover_custom_groupby(self):
+        def get_base_line_name(invoice):
+            return invoice.line_ids.filtered(lambda x: x.account_id.internal_group == 'income').display_name
+
+        def get_tax_line_name(invoice):
+            return invoice.line_ids.filtered('tax_line_id').display_name
+
+        self.report.filter_unfold_all = True
+        self.env.ref('l10n_be_reports.l10n_be_partner_vat_listing_line').groupby = 'account_id, partner_id, id'
+        options = self._generate_options(self.report, '2022-06-01', '2022-06-30', default_options={'unfold_all': True})
+
+        invoice_1 = self.init_invoice('out_invoice', partner=self.partner_a_be, post=True, amounts=[100], taxes=[self.tax_sale_a], invoice_date='2022-06-29')
+        invoice_2 = self.init_invoice('out_invoice', partner=self.partner_c_be, post=True, amounts=[1000], taxes=[self.tax_sale_a], invoice_date='2022-06-29')
+
+        new_income_account = self.env['account.account'].create({
+            'name': 'NEW.INCOME',
+            'code': 'NEW.INCOME',
+            'account_type': 'income',
+            'company_id': self.env.company.id,
+        })
+        invoice_3 = self.init_invoice('out_invoice', partner=self.partner_a_be, amounts=[200], taxes=[self.tax_sale_a], invoice_date='2022-06-29')
+        income_line = invoice_3.line_ids.filtered(lambda x: x.account_id.internal_group == 'income')
+        income_line.account_id = new_income_account
+        invoice_3.action_post()
+
+        # Create one additional invoice that does not reach the threshold
+        self.init_invoice('out_invoice', partner=self.partner_b_be, post=True, amounts=[10], taxes=[self.tax_sale_a], invoice_date='2022-06-29')
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                                                             VAT number          Turnover         VAT amount
+            [   0,                                                                       1,                  2,              3],
+            [
+                ('Partner VAT Listing',                                                 '',             1300.0,          273.0),
+
+                (self.company_data['default_account_tax_sale'].display_name,            '',                0.0,          273.0),
+                ('Partner A (BE)',                                          'BE0246697724',                0.0,           63.0),
+                (get_tax_line_name(invoice_3),                                          '',                0.0,           42.0),
+                (get_tax_line_name(invoice_1),                                          '',                0.0,           21.0),
+                ('Partner C (BE)',                                          'BE0477472701',                0.0,          210.0),
+                (get_tax_line_name(invoice_2),                                          '',                0.0,          210.0),
+
+                (self.company_data['default_account_revenue'].display_name,             '',             1100.0,            0.0),
+                ('Partner A (BE)',                                          'BE0246697724',              100.0,            0.0),
+                (get_base_line_name(invoice_1),                                         '',              100.0,            0.0),
+                ('Partner C (BE)',                                          'BE0477472701',             1000.0,            0.0),
+                (get_base_line_name(invoice_2),                                         '',             1000.0,            0.0),
+
+                (new_income_account.display_name,                                       '',              200.0,            0.0),
+                ('Partner A (BE)',                                          'BE0246697724',              200.0,            0.0),
+                (get_base_line_name(invoice_3),                                         '',              200.0,            0.0),
+            ],
+            options,
+        )
+
 
     @freeze_time('2019-12-31')
     def test_generate_xml_minimal(self):

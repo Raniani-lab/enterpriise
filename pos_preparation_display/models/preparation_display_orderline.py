@@ -17,7 +17,7 @@ class PosPreparationDisplayOrderline(models.Model):
         orderlines_status = []
 
         categories = self.mapped('product_id.pos_categ_id')
-        preparation_displays = self.env['pos_preparation_display.display'].search(['|', ('category_ids', 'in', categories), ('category_ids', '=', False)])
+        preparation_displays = self.env['pos_preparation_display.display'].search(['|', ('category_ids', 'in', categories.ids), ('category_ids', '=', False)])
 
         for orderline in self:
             orderline.todo = status[str(orderline.id)]

@@ -958,3 +958,63 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('main_report_line_6',               27.0),
             ],
         )
+
+    def test_engine_aggregation_expansion(self):
+        report = self._create_report([
+            self._prepare_test_report_line(
+                self._prepare_test_expression_tax_tags('42'),
+                code='TAG_1',
+            ),
+            self._prepare_test_report_line(
+                self._prepare_test_expression_tax_tags('221292'),
+                code='TAG_2',
+            ),
+            self._prepare_test_report_line(
+                self._prepare_test_expression_tax_tags('777'),
+                code='TAG_3',
+            ),
+            self._prepare_test_report_line(
+                self._prepare_test_expression_aggregation('TAG_1.balance + TAG_2.balance'),
+                code='SIMPLE_AGG',
+            ),
+            self._prepare_test_report_line(
+                self._prepare_test_expression_aggregation('SIMPLE_AGG.balance + TAG_3.balance'),
+                code='COMPLEX_AGG',
+            ),
+            self._prepare_test_report_line(
+                self._prepare_test_expression_aggregation('TAG_1.balance + TAG_2.balance', subformula='if_other_expr_above(TAG_3.balance, EUR(13))'),
+                code='BOUNDED_AGG',
+            ),
+            self._prepare_test_report_line(
+                self._prepare_test_expression_tax_tags('3333'),
+            ),
+        ])
+
+        other_report = self._create_report([
+            self._prepare_test_report_line(
+                self._prepare_test_expression_aggregation('SIMPLE_AGG.balance + BOUNDED_AGG.balance', subformula='cross_report'),
+                code='CROSS_REPORT_AGG',
+            ),
+        ])
+
+        expr_map = {expression.report_line_id.code: expression for expression in (report + other_report).line_ids.expression_ids}
+
+        self.assertEqual(
+            expr_map['SIMPLE_AGG']._expand_aggregations(),
+            expr_map['SIMPLE_AGG'] + expr_map['TAG_1'] + expr_map['TAG_2'],
+        )
+
+        self.assertEqual(
+            expr_map['COMPLEX_AGG']._expand_aggregations(),
+            expr_map['COMPLEX_AGG'] + expr_map['SIMPLE_AGG'] + expr_map['TAG_1'] + expr_map['TAG_2'] + expr_map['TAG_3'],
+        )
+
+        self.assertEqual(
+            expr_map['BOUNDED_AGG']._expand_aggregations(),
+            expr_map['BOUNDED_AGG'] + expr_map['TAG_1'] + expr_map['TAG_2'] + expr_map['TAG_3'],
+        )
+
+        self.assertEqual(
+            expr_map['CROSS_REPORT_AGG']._expand_aggregations(),
+            expr_map['CROSS_REPORT_AGG'] + expr_map['SIMPLE_AGG'] + expr_map['BOUNDED_AGG'] + expr_map['TAG_1'] + expr_map['TAG_2'] + expr_map['TAG_3'],
+        )

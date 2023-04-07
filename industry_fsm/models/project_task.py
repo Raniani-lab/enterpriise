@@ -412,6 +412,7 @@ class Task(models.Model):
                 'default_template_id': template_id,
                 'fsm_mark_as_sent': True,
                 'active_ids': tasks_with_report.ids,
+                'mailing_document_based': True,
             },
         }
 

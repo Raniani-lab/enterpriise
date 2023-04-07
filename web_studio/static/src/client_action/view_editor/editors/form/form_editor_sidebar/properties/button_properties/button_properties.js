@@ -102,10 +102,9 @@ export class ButtonProperties extends Component {
         const domain = this.state.approvalSpec.rules.find((r) => r.id === id).domain;
         this.dialog.add(DomainSelectorDialog, {
             resModel: this.env.viewEditorModel.resModel,
-            initialValue: JSON.stringify(domain || []),
-            readonly: false,
+            domain: JSON.stringify(domain || []),
             isDebugMode: !!this.env.debug,
-            onSelected: async (domain) => {
+            onConfirm: async (domain) => {
                 await this.orm.write("studio.approval.rule", [id], {
                     domain,
                 });

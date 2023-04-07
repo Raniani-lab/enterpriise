@@ -65,10 +65,9 @@ export class ListingDetailsSidePanel extends Component {
     openDomainEdition() {
         this.dialog.add(DomainSelectorDialog, {
             resModel: this.listDefinition.model,
-            initialValue: this.listDefinition.domain,
-            readonly: false,
+            domain: this.listDefinition.domain,
             isDebugMode: !!this.env.debug,
-            onSelected: (domain) =>
+            onConfirm: (domain) =>
                 this.env.model.dispatch("UPDATE_ODOO_LIST_DOMAIN", {
                     listId: this.props.listId,
                     domain: new Domain(domain).toList(),

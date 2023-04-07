@@ -83,10 +83,9 @@ export default class PivotDetailsSidePanel extends Component {
         const definition = this.env.model.getters.getPivotDefinition(this.props.pivotId);
         this.dialog.add(DomainSelectorDialog, {
             resModel: definition.model,
-            initialValue: new Domain(definition.domain).toString(),
-            readonly: false,
+            domain: new Domain(definition.domain).toString(),
             isDebugMode: !!this.env.debug,
-            onSelected: (domain) =>
+            onConfirm: (domain) =>
                 this.env.model.dispatch("UPDATE_ODOO_PIVOT_DOMAIN", {
                     pivotId: this.props.pivotId,
                     domain: new Domain(domain).toList(),

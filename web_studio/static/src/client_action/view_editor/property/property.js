@@ -53,20 +53,18 @@ export class Property extends Component {
 
         this.dialog.add(DomainSelectorDialog, {
             resModel: this.env.viewEditorModel.resModel,
-            initialValue: value,
-            readonly: false,
+            domain: value,
             isDebugMode: !!this.env.debug,
-            onSelected: (domain) => this.props.onChange(domain, this.props.name),
+            onConfirm: (domain) => this.props.onChange(domain, this.props.name),
         });
     }
 
     onDomainClicked() {
         this.dialog.add(DomainSelectorDialog, {
             resModel: this.props.childProps.relation,
-            initialValue: this.props.value || "[]",
-            readonly: false,
+            domain: this.props.value || "[]",
             isDebugMode: !!this.env.debug,
-            onSelected: (domain) => this.props.onChange(domain, this.props.name),
+            onConfirm: (domain) => this.props.onChange(domain, this.props.name),
         });
     }
 

@@ -206,13 +206,13 @@ const HtmlFieldPatch = {
         this.updateBehaviors("behaviorsData" in data ? data.behaviorsData : []);
     },
     _removeRefreshBehaviorsListeners() {
-        if (this.wysiwyg.odooEditor) {
+        if (this.wysiwyg && this.wysiwyg.odooEditor) {
             this.wysiwyg.odooEditor.removeEventListener('historyUndo', this.bindedDelayedRefreshBehaviors);
             this.wysiwyg.odooEditor.removeEventListener('historyRedo', this.bindedDelayedRefreshBehaviors);
             this.wysiwyg.odooEditor.removeEventListener('historyResetFromSteps', this.bindedDelayedRefreshBehaviors);
             this.wysiwyg.odooEditor.removeEventListener('onExternalHistorySteps', this.bindedDelayedRefreshBehaviors);
         }
-        if (this.wysiwyg.$editable.length) {
+        if (this.wysiwyg && this.wysiwyg.$editable && this.wysiwyg.$editable.length) {
             this.wysiwyg.$editable[0].removeEventListener('paste', this.bindedDelayedRefreshBehaviors);
             this.wysiwyg.$editable[0].removeEventListener('drop', this.bindedDelayedRefreshBehaviors);
             this.wysiwyg.$editable.off('refresh_behaviors');

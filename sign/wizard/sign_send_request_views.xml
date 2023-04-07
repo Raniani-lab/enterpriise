@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form>
                 <field name="set_sign_order" invisible="1"/>
-                <field name="template_id" kanban_view_ref="%(sign.sign_template_view_kanban_mobile)s" attrs="{'invisible': [('has_default_template', '=', True)]}" options="{'no_create_edit': True}"/>
+                <field name="template_id" context="{'kanban_view_ref': 'sign.sign_template_view_kanban_mobile'}" attrs="{'invisible': [('has_default_template', '=', True)]}" options="{'no_create_edit': True}"/>
                 <field colspan="2" name="signer_ids" placeholder="Write email or search contact..." attrs="{'invisible': [('signers_count', '=', 0)]}" class="o_sign_flat_o2m pe-none">
                     <tree editable="bottom" create="false" delete="false">
                         <field name="role_id" force_save="1" options="{'no_open': True}" nolabel="1" class="pe-auto"/>

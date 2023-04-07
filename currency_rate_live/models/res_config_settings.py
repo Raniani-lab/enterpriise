@@ -16,7 +16,7 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 BANXICO_DATE_FORMAT = '%d/%m/%Y'
 CBUAE_URL = "https://centralbank.ae/umbraco/Surface/Exchange/GetExchangeRateAllCurrency"
-CBEGY_URL = "https://www.cbe.org.eg/en/EconomicResearch/Statistics/Pages/OfficialRatesListing.aspx"
+CBEGY_URL = "https://www.cbe.org.eg/en/economic-research/statistics/cbe-exchange-rates"
 MAP_CURRENCIES = {
     'US Dollar': 'USD',
     'UAE Dirham': 'AED',
@@ -349,20 +349,23 @@ class ResCompany(models.Model):
         ''' This method is used to update the currencies by using the Central Bank of Egypt service provider.
             Exchange rates are expressed as 1 unit of the foreign currency converted into EGP
         '''
-        fetched_data = requests.get(CBEGY_URL, timeout=30)
+        headers = {
+            'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36',
+        }
+        fetched_data = requests.get(CBEGY_URL, headers=headers, timeout=30)
         fetched_data.raise_for_status()
 
         htmlelem = etree.fromstring(fetched_data.content, etree.HTMLParser())
         rates_entries = htmlelem.xpath("//table/tbody/tr")
-        date_elem = htmlelem.xpath("//h2[contains(text(),'Rates for Date')]")[0]
-        date_rate = datetime.datetime.strptime(date_elem.text, '\r\n\r\nRates for Date: %d/%m/%Y').date()
+        date_text = htmlelem.xpath("//p[contains(.,'Rates for Date')]/text()")[1]
+        date_rate = datetime.datetime.strptime(date_text.strip(), 'Rates for Date: %d/%m/%Y').date()
         available_currency_names = set(available_currencies.mapped('name'))
         rslt = {}
         for rate_entry in rates_entries:
-            currency_code = MAP_CURRENCIES.get(rate_entry[0].text)
-            # line structure is <td>Currency Description</td><td><span>BUY RATE</span></td><td><span>SELL RATE</span></td>
+            currency_code = MAP_CURRENCIES.get(rate_entry[0].text.strip())
+            # line structure is <td>Currency Description</td><td>BUY RATE</td><td>SELL RATE</td>
             # we use the average of SELL and BUY rates
-            rate = (float(rate_entry[1][0].text) + float(rate_entry[2][0].text)) / 2
+            rate = (float(rate_entry[1].text) + float(rate_entry[2].text)) / 2
             if currency_code in available_currency_names:
                 rslt[currency_code] = (1.0/rate, date_rate)
 

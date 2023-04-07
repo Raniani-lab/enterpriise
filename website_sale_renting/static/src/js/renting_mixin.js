@@ -2,6 +2,7 @@
 
 import { _t, _lt } from 'web.core';
 import { sprintf } from "@web/core/utils/strings";
+import {serializeDate, serializeDateTime, momentToLuxon} from '@web/core/l10n/dates';
 
 export const msecPerUnit = {
     hour: 3600 * 1000,
@@ -77,7 +78,10 @@ export const RentingMixin = {
             const $defaultDate = this.el.querySelector('input[name="default_' + inputName + '"]');
             date = $defaultDate && $defaultDate.value;
         } else {
-            date = date.toISOString();
+            // serializeDate(Time) requires a luxon object.
+            const luxonDate = momentToLuxon(date);
+            // if the duration unit is not in hours, the server will receive a Date, not a DateTime.
+            date = this._isDurationWithHours() ? serializeDateTime(luxonDate) : serializeDate(luxonDate);
         }
         return date;
     },

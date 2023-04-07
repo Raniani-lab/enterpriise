@@ -2,15 +2,34 @@
 <odoo>
     <template id="knowledge_base_slides_card" inherit_id="website_helpdesk.knowledge_base">
         <xpath expr="//div[@id='o_knowledge_base_sections']" position="inside">
-            <div class="col-lg-4 pt32 pb32 text-center o_colored_level" t-if="team.show_knowledge_base_slide_channel">
-                <i class="fa fa-3x rounded bg-o-color-5 m-3 fa-mortar-board fa-3x rounded bg-o-color-5 m-3">​</i>
-                <h3>
-                    <span style="font-weight: bolder; font-size: 18px;">Courses</span>
-                </h3>
-                <p>
-                    <span style="font-size: 18px;">Level up your skills with training videos and tutorials</span>
-                </p>
-                <a t-attf-href="/helpdesk/{{ slug(team) }}/slides" class="btn btn-outline-primary" data-bs-original-title="" title="">Take Courses</a>
+            <div class="col" style="display: grid;" t-if="team.show_knowledge_base_slide_channel">
+                <div class="pt16 pb16 text-center o_colored_level help-section">
+                    <i class="fa fa-3x rounded bg-o-color-5 m-3 fa-mortar-board fa-3x rounded bg-o-color-5 m-3 help-icon">​</i>
+                    <h3 class="help-title">
+                        <span style="font-weight: bolder; font-size: 18px;">Courses</span>
+                    </h3>
+                    <p class="help-description">
+                        <span style="font-size: 18px;">Level up your skills with training videos and tutorials</span>
+                    </p>
+                    <div t-if="team.website_top_channels" class="top-item-list-container">
+                        <h3 class="item-list-title">
+                            <t t-if="len(team.website_top_channels) &gt; 4">
+                                Most Popular
+                            </t>
+                            <t t-else="">
+                                Quick Links
+                            </t>
+                        </h3>
+                        <div class="item-list">
+                            <t t-foreach="team.website_top_channels" t-as="course">
+                                <a t-attf-href="/slides/#{slug(course)}" t-attf-title="{{course.name}}" target="_blank" class="list-item">
+                                    <t t-out="course.name"/>
+                                </a>
+                            </t>
+                        </div>
+                    </div>
+                    <a t-attf-href="/helpdesk/{{ slug(team) }}/slides" class="btn btn-outline-primary item-button" target="_blank" data-bs-original-title="" title="">Take Courses</a>
+                </div>
             </div>
         </xpath>
     </template>

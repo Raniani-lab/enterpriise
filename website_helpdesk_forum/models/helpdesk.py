@@ -10,6 +10,7 @@ class HelpdeskTeam(models.Model):
 
     show_knowledge_base_forum = fields.Boolean(compute="_compute_show_knowledge_base_forum")
     website_forum_ids = fields.Many2many('forum.forum', string='Forums', help="In the help center, customers will only be able to see posts from the selected forums.")
+    top_forum_posts = fields.Many2many('forum.post', string='Top Posts', help="These are the top posts in the forums associated with this helpdesk team", compute="_compute_top_forum_posts")
 
     @api.depends('website_forum_ids')
     def _compute_show_knowledge_base_forum(self):
@@ -56,6 +57,14 @@ class HelpdeskTeam(models.Model):
             ('posts_count', '>', 0),
         ], order='posts_count desc', limit=20)
         return res + tags.mapped(lambda t: t.name and t.name.lower())
+
+    def _compute_top_forum_posts(self):
+        for team in self:
+            search_domain = [('parent_id', '=', False)]
+            if team.website_forum_ids:
+                search_domain.append(('forum_id', 'in', team.website_forum_ids.ids))
+
+            team.top_forum_posts = self.env['forum.post'].search(search_domain, order='vote_count desc, last_activity_date desc', limit=5)
 
 class HelpdeskTicket(models.Model):
     _inherit = "helpdesk.ticket"

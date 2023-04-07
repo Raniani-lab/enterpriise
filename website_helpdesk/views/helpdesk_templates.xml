@@ -279,7 +279,7 @@
                 <div class="oe_structure" id="o_structure_website_helpdesk_kb_1"/>
                 <section class="s_features pb32 o_colored_level" data-snippet="s_features" data-name="Features">
                     <div class="container">
-                        <div id="o_knowledge_base_sections" class="row justify-content-center" />
+                        <div id="o_knowledge_base_sections" class="row justify-content-center gx-3"/>
                     </div>
                 </section>
                 <div class="oe_structure" id="o_structure_website_helpdesk_kb_2"/>

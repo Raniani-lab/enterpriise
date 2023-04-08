@@ -12,8 +12,8 @@
 # Ediz Duman <neps1192@gmail.com>, 2022
 # cagri erarslan <cagri.erarslan@mechsoft.com.tr>, 2022
 # Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2022
-# Tugay Hatıl <tugayh@projetgrup.com>, 2023
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
+# Tugay Hatıl <tugayh@projetgrup.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -21,8 +21,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023\n"
-"Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
+"Last-Translator: Tugay Hatıl <tugayh@projetgrup.com>, 2023\n"
+"Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -34,7 +34,7 @@ msgstr ""
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "%s - %s"
-msgstr ""
+msgstr "%s - %s"
 
 #. module: industry_fsm_sale
 #. openerp-web
@@ -57,6 +57,13 @@ msgid ""
 "                            in your profile from where to draw stock.\n"
 "                        </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"Ürün bulunamadı. Hadi bir tane oluşturalım!\n"
+"</p><p>Görevlerinizi tamamlamak için kullandığınız ürünleri takip edin ve müşterilerinize mallar için fatura verin.\n"
+"İpucu: kitleri kullanarak aynı anda birden fazla ürün ekleyebilirsiniz.\n"
+"</p><p>\n"
+"Göreviniz tamamlandı olarak işaretlendiğinde stokunuz otomatik olarak güncellenecektir. Profilinizde stok çekeceğiniz bir depo seçmeniz yeterlidir.\n"
+"</p>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit_sale_timesheet
@@ -66,6 +73,10 @@ msgid ""
 "updated.\" attrs=\"{'invisible': ['|', ('partner_id', '=', False), "
 "('is_task_phone_update', '=', False)]}\"/>"
 msgstr ""
+"<span class=\"fa fa-exclamation-triangle text-warning oe_edit_only\" "
+"title=\"By saving this change, the customer phone number will also be "
+"updated.\" attrs=\"{'invisible': ['|', ('partner_id', '=', False), "
+"('is_task_phone_update', '=', False)]}\"/>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -75,7 +86,7 @@ msgstr "<span>İnd.%</span>"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "<span>Products</span>"
-msgstr ""
+msgstr "<span>Ürünler</span>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -126,7 +137,7 @@ msgstr ""
 #: code:addons/industry_fsm_sale/wizard/sale_make_invoice_advance.py:0
 #, python-format
 msgid "An invoice has been created: %s"
-msgstr ""
+msgstr "Bir fatura oluşturuldu: %s"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_account_analytic_line
@@ -279,7 +290,7 @@ msgstr "Saha Servisi"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price_currency_id
 msgid "Fsm Partner Price Currency"
-msgstr ""
+msgstr "Fsm İş Ortağı Fiyat Para Birimi"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__invoiced
@@ -350,7 +361,7 @@ msgstr "Faturalar"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__is_task_phone_update
 msgid "Is Task Phone Update"
-msgstr ""
+msgstr "Görev Telefon Güncellemesi mi"
 
 #. module: industry_fsm_sale
 #. openerp-web
@@ -409,12 +420,12 @@ msgstr "Fatura sayısı"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price
 msgid "Partner Price"
-msgstr ""
+msgstr "İş Ortağı Fiyatı"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_quotation_count
 msgid "Portal Quotation Count"
-msgstr ""
+msgstr "Portal Teklif Sayısı"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
@@ -500,7 +511,7 @@ msgstr "Teklif Sayısı"
 #: code:addons/industry_fsm_sale/models/sale_order.py:0
 #, python-format
 msgid "Quotation created: %s"
-msgstr ""
+msgstr "Teklif oluşturuldu:%s"
 
 #. module: industry_fsm_sale
 #: code:addons/industry_fsm_sale/controllers/portal.py:0
@@ -607,7 +618,7 @@ msgstr "Görev Tekrarı"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id
 msgid "Task from which this quotation have been created"
-msgstr ""
+msgstr "Bu teklifin oluşturulduğu görev"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
@@ -682,21 +693,21 @@ msgstr "Arttırılmış Satış Fırsatı"
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to navigate to your <b>list of products</b>."
-msgstr ""
+msgstr "<b>Ürün listenizde</b> gezinmek için içerik haritalarını kullanın."
 
 #. module: industry_fsm_sale
 #. openerp-web
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to return to your <b>task</b>."
-msgstr ""
+msgstr "<b>Görevinize</b> geri dönmek için ekmek kırıntılarını kullanın."
 
 #. module: industry_fsm_sale
 #. openerp-web
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Wait for the invoice to show up"
-msgstr ""
+msgstr "Faturanın görünmesini bekleyin"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__warning_message

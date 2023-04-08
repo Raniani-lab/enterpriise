@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
-"Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
+"Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -112,7 +112,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "കോൺഫിഗറേഷൻ സെറ്റിങ്‌സ്"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
@@ -132,7 +132,7 @@ msgstr "ഉണ്ടാക്കിയത്"
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__create_date
 msgid "Created on"
-msgstr ""
+msgstr "സൃഷ്ടിച്ചത്"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__description
@@ -198,7 +198,7 @@ msgstr "അവസാനം അപ്ഡേറ്റ് ചെയ്ത സമയ
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "അവസാനം അപ്ഡേറ്റ് ചെയ്തത്"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__write_date
@@ -231,7 +231,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "മീഡിയ ടൈപ്പ്"
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_user_mentions
@@ -301,7 +301,7 @@ msgstr ""
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "Retweet"
-msgstr ""
+msgstr "റീട്വീറ്റ്"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -313,7 +313,7 @@ msgstr ""
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Retweets"
-msgstr ""
+msgstr "റീട്വീറ്റ്"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword
@@ -333,12 +333,12 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "സോഷ്യൽ അക്കൗണ്ട്"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_live_post
 msgid "Social Live Post"
-msgstr ""
+msgstr "സോഷ്യൽ ലൈവ് പോസ്റ്റ്"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_media
@@ -353,22 +353,22 @@ msgstr "സോഷ്യൽ പോസ്റ്റ്"
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "സോഷ്യൽ പോസ്റ്റ് ടെംപ്ലേറ്റ്"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream
 msgid "Social Stream"
-msgstr ""
+msgstr "സോഷ്യൽ സ്ട്രീം"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream_post
 msgid "Social Stream Post"
-msgstr ""
+msgstr "സോഷ്യൽ സ്ട്രീം പോസ്റ്റ്"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_twitter_account
 msgid "Social Twitter Account"
-msgstr ""
+msgstr "സോഷ്യൽ ട്വിറ്റർ അക്കൗണ്ട്"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
@@ -377,12 +377,15 @@ msgid ""
 "The keyword you've typed in does not look valid. Please try again with other"
 " words."
 msgstr ""
+"നിങ്ങൾ ടൈപ്പ് ചെയ്ത കീവേഡ് സാധുതയുള്ളതായി തോന്നുന്നില്ല. ദയവായി മറ്റ് "
+"വാക്കുകൾ ഉപയോഗിച്ച് വീണ്ടും ശ്രമിക്കുക."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "The tweet is empty. Add a message and try posting again."
 msgstr ""
+"ട്വീറ്റ് ശൂന്യമാണ്. ഒരു സന്ദേശം ചേർത്ത് വീണ്ടും പോസ്റ്റുചെയ്യാൻ ശ്രമിക്കുക."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_media.py:0
@@ -391,6 +394,7 @@ msgid ""
 "The url that this service requested returned an error. Please contact the "
 "author of the app."
 msgstr ""
+"ഈ സേവനം അഭ്യർത്ഥിച്ച url ഒരു പിശക് നൽകി. ആപ്പിന്റെ രചയിതാവിനെ ബന്ധപ്പെടുക."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
@@ -419,37 +423,37 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_comments_count
 #, python-format
 msgid "Twitter Comments"
-msgstr ""
+msgstr "ട്വിറ്റർ കമ്മെന്റ്സ്‌"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_consumer_key
 msgid "Twitter Consumer Key"
-msgstr ""
+msgstr "ട്വിറ്റർ ഉപഭോക്തൃ കീ"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_consumer_secret_key
 msgid "Twitter Consumer Secret Key"
-msgstr ""
+msgstr "ട്വിറ്റർ ഉപഭോക്തൃ രഹസ്യ കീ"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
 msgid "Twitter Developer Account"
-msgstr ""
+msgstr "ട്വിറ്റർ ഡെവലപ്പർ അക്കൗണ്ട്"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_followed_account_id
 msgid "Twitter Followed Account"
-msgstr ""
+msgstr "ട്വിറ്റർ പിന്തുടരുന്ന അക്കൗണ്ട്"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__twitter_id
 msgid "Twitter ID"
-msgstr ""
+msgstr "ട്വിറ്റർ ഐഡി"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_likes_count
 msgid "Twitter Likes"
-msgstr ""
+msgstr "ട്വിറ്റർ ലൈക്കുകൾ"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_account__twitter_oauth_token
@@ -478,12 +482,12 @@ msgstr ""
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Twitter Profile Image"
-msgstr ""
+msgstr "ട്വിറ്റർ പ്രൊഫൈൽ ചിത്രം"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_profile_image_url
 msgid "Twitter Profile Image URL"
-msgstr ""
+msgstr "ട്വിറ്റർ പ്രൊഫൈൽ ഇമേജ് URL"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_id_str
@@ -498,17 +502,17 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_screen_name
 msgid "Twitter Screen Name"
-msgstr ""
+msgstr "ട്വിറ്റർ സ്ക്രീൻ നാമം"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_tweet_id
 msgid "Twitter Tweet ID"
-msgstr ""
+msgstr "ട്വിറ്റർ ട്വീറ്റ് ഐഡി"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_account__twitter_user_id
 msgid "Twitter User ID"
-msgstr ""
+msgstr "ട്വിറ്റർ ഉപയോക്തൃ ഐഡി"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_user_likes
@@ -587,11 +591,14 @@ msgid ""
 "You can comment only three times a tweet as it may be considered as spamming"
 " by Twitter"
 msgstr ""
+"ട്വിറ്റർ സ്പാമിംഗ് ആയി കണക്കാക്കുന്നതിനാൽ നിങ്ങൾക്ക് ഒരു ട്വീറ്റിന് മൂന്ന് "
+"തവണ മാത്രമേ കമന്റ് ചെയ്യാൻ കഴിയൂ"
 
 #. module: social_twitter
 #: model:ir.model.constraint,message:social_twitter.constraint_social_stream_post_tweet_uniq
 msgid "You can not store two times the same tweet on the same stream!"
 msgstr ""
+"ഒരേ സ്ട്രീമിൽ നിങ്ങൾക്ക് ഒരേ ട്വീറ്റിന്റെ രണ്ട് മടങ്ങ് സംഭരിക്കാൻ കഴിയില്ല!"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0

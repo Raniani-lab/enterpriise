@@ -14,7 +14,7 @@ msgstr ""
 "POT-Creation-Date: 2022-09-27 15:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -203,6 +203,8 @@ msgid ""
 "The \"%s\" workspace should either be in the \"%s\" company like this "
 "project or be open to all companies."
 msgstr ""
+"Der Arbeitsbereich „%s\" sollte sich entweder im Unternehmen „%s“ befinden, "
+"wie dieses Projekt, oder für alle Unternehmen zugänglich sein."
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -238,7 +240,7 @@ msgstr ""
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__project_use_documents
 msgid "Use Documents"
-msgstr ""
+msgstr "Dokumente verwenden"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_validate

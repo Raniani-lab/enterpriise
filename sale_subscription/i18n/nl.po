@@ -4,9 +4,9 @@
 # 
 # Translators:
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # Martin Trigaux, 2023
 # Jolien De Paepe, 2023
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,8 +14,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
-"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -1313,7 +1313,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_search_view_inherit_sale_subscription
 msgid "Can be Recurring"
-msgstr "Kan terugkerend zijn"
+msgstr "Kan herhalend zijn"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -1572,7 +1572,7 @@ msgid ""
 "                be time-bounded or not. In case of a limited period, they are flagged as to be renewed\n"
 "                one month from the end date."
 msgstr ""
-"Maak abonnementen aan om terugkerende facturering en betalingen te beheren. Abonnementen kunnen\n"
+"Maak abonnementen aan om herhalende facturering en betalingen te beheren. Abonnementen kunnen\n"
 "                tijdgebonden zijn of niet. In het geval van een beperkte periode, worden ze gemarkeerd als te worden verlengd\n"
 "                één maand vanaf de einddatum."
 
@@ -2374,7 +2374,7 @@ msgid ""
 "Mix of negative recurring lines and non-recurring line. The contract should "
 "be fixed manually"
 msgstr ""
-"Mix van negatieve terugkerende regels en een eenmalige regel. Het contract "
+"Mix van negatieve herhalende regels en een eenmalige regel. Het contract "
 "moet handmatig worden vastgelegd"
 
 #. module: sale_subscription
@@ -2412,7 +2412,7 @@ msgstr "Wijziging"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__recurring_monthly
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_monthly
 msgid "Monthly Recurring Revenue"
-msgstr "Maandelijks terugkerende inkomsten"
+msgstr "Maandelijkse herhalende omzet"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_type__month
@@ -2479,7 +2479,7 @@ msgstr "Geen"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sales_order_filter_subscription
 msgid "Not Recurring"
-msgstr "Niet terugkerend"
+msgstr "Niet herhalend"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -2840,7 +2840,7 @@ msgstr "Herhalend"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
 msgid "Recurring Amount"
-msgstr "Terugkerend bedrag"
+msgstr "Herhalend bedrag"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_type
@@ -2855,8 +2855,8 @@ msgid ""
 "Recurring product are discounted according to the prorated period from %s to"
 " %s"
 msgstr ""
-"Terugkerende producten worden verdisconteerd volgens de pro rata periode van"
-" %s tot %s"
+"Herhalende producten worden verdisconteerd volgens de pro rata periode van "
+"%s tot %s"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3051,7 +3051,7 @@ msgstr "Selecteer een herhaling"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Select a recurring product"
-msgstr "Selecteer een terugkerend product"
+msgstr "Selecteer een herhalend product"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__user_closable
@@ -3496,12 +3496,12 @@ msgstr "Te verlengen abonnementen"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_view_tree
 msgid "Sum of Monthly Recurring Revenue"
-msgstr "Som van Maandelijks terugkerende inkomsten"
+msgstr "Som van maandelijks herhalende omzet"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_view_tree
 msgid "Sum of Yearly Recurring Revenue"
-msgstr "Som van jaarlijks terugkerende inkomsten"
+msgstr "Som van jaarlijks herhalende omzet"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_summary
@@ -4066,7 +4066,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_yearly
 msgid "Yearly Recurring Revenue"
-msgstr "Jaarlijks terugkerende inkomsten"
+msgstr "Jaarlijks herhalend omzet"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_type__year
@@ -4113,8 +4113,8 @@ msgstr ""
 msgid ""
 "You cannot save a sale order with a recurrence and no recurring product."
 msgstr ""
-"Je kunt een verkooporder met een terugkerend en geen terugkerend product "
-"niet opslaan."
+"Je kunt een verkooporder met een herhalend en een normaal product niet "
+"opslaan, zonder een herhaling in te stellen op de order."
 
 #. module: sale_subscription
 #. odoo-python
@@ -4122,7 +4122,7 @@ msgstr ""
 #, python-format
 msgid "You cannot save a sale order with recurring product and no recurrence."
 msgstr ""
-"Je kunt een verkooporder met herhalend product en zonder herhaling niet "
+"Je kunt een verkooporder met herhalend product en normaal product niet "
 "opslaan."
 
 #. module: sale_subscription

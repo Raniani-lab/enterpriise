@@ -17,7 +17,7 @@ msgstr ""
 "POT-Creation-Date: 2022-04-21 08:56+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
-"Language-Team: Finnish (https://www.transifex.com/odoo/teams/41243/fi/)\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -42,22 +42,22 @@ msgstr "Näyttönimi"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_pause
 msgid "Display Timer Pause"
-msgstr ""
+msgstr "Näytä ajastimen tauko"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_resume
 msgid "Display Timer Resume"
-msgstr ""
+msgstr "Näytön ajastimen jatko"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_start_primary
 msgid "Display Timer Start Primary"
-msgstr ""
+msgstr "Näyttö Ajastimen käynnistys Ensimmäinen kello"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_stop
 msgid "Display Timer Stop"
-msgstr ""
+msgstr "Näyttö Ajastin Stop"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__id
@@ -68,7 +68,7 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__is_timer_running
 #: model:ir.model.fields,field_description:timer.field_timer_timer__is_timer_running
 msgid "Is Timer Running"
-msgstr ""
+msgstr "Onko ajastin käynnissä"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer____last_update
@@ -101,7 +101,7 @@ msgstr "Toiminto ei ole tuettu"
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Play"
-msgstr ""
+msgstr "Toista"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_id
@@ -132,7 +132,7 @@ msgstr "Lopeta"
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__timer_pause
 #: model:ir.model.fields,field_description:timer.field_timer_timer__timer_pause
 msgid "Timer Last Pause"
-msgstr ""
+msgstr "Viimeisin ajastimen tauko"
 
 #. module: timer
 #: model:ir.model,name:timer.model_timer_mixin
@@ -148,7 +148,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__timer_start
 #: model:ir.model.fields,field_description:timer.field_timer_timer__timer_start
 msgid "Timer Start"
-msgstr ""
+msgstr "Ajastimen käynnistys"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__user_id
@@ -158,4 +158,4 @@ msgstr "Käyttäjä"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__user_timer_id
 msgid "User Timer"
-msgstr ""
+msgstr "Käyttäjän ajastin"

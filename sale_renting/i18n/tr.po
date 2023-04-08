@@ -16,9 +16,9 @@
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # Ediz Duman <neps1192@gmail.com>, 2022
 # Ozlem Cikrikci <ozlemc@eskayazilim.com.tr>, 2022
-# Halil, 2022
 # Murat Durmuş <muratd@projetgrup.com>, 2022
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022
+# Halil, 2023
 # 
 msgid ""
 msgstr ""
@@ -26,8 +26,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022\n"
-"Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
+"Last-Translator: Halil, 2023\n"
+"Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -39,7 +39,7 @@ msgstr ""
 #: code:addons/sale_renting/models/product_template.py:0
 #, python-format
 msgid "%s (Rental)"
-msgstr ""
+msgstr "%s (Kiralık)"
 
 #. module: sale_renting
 #: model:ir.actions.report,print_report_name:sale_renting.action_report_rental_saleorder
@@ -48,7 +48,7 @@ msgid ""
 "Receipt - %s' %(object.name)) or 'Order - %s' % (object.name)"
 msgstr ""
 "(object.rental_status not in ('draft', 'sent') ve 'Teslimat veya İade "
-"Makbuzu - %s' %(object.name)) or 'Order - %s' % (object.name)"
+"Makbuzu - %s' %(object.name)) or 'Sipariş - %s' % (object.name)"
 
 #. module: sale_renting
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
@@ -69,6 +69,9 @@ msgid ""
 "                                    Default Delay Costs\n"
 "                                </span>"
 msgstr ""
+"<span class=\"o_form_label\">\n"
+"                                    Varsayılan Gecikme Maliyetleri\n"
+"                                </span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_product_form_view_rental_gantt
@@ -84,17 +87,17 @@ msgstr "<span> -></span>"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Order # — </strong>"
-msgstr ""
+msgstr "<strong>Sipariş # — </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Pickup  — </strong>"
-msgstr ""
+msgstr "<strong>Alış  — </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Return — </strong>"
-msgstr ""
+msgstr "<strong>Dönüş — </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
@@ -109,7 +112,7 @@ msgstr "<strong>Sevkiyat Adresi:</strong>"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Status — </strong>"
-msgstr ""
+msgstr "<strong>Durum — </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
@@ -1013,7 +1016,7 @@ msgstr "Kiralık Sihirbaz Hattı"
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_sale_renting_periods
 msgid "Rental periods"
-msgstr ""
+msgstr "Kiralama süreleri"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard_line
@@ -1083,7 +1086,7 @@ msgstr "İade"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "Satış Zamansal Tekrarlama"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__done
@@ -1191,22 +1194,22 @@ msgstr "Durumu"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.sale_rental_report_view_tree
 msgid "Sum of Daily Amount"
-msgstr ""
+msgstr "Günlük Tutarın Toplamı"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.sale_rental_report_view_tree
 msgid "Sum of Daily Ordered Qty"
-msgstr ""
+msgstr "Günlük sipariş edilen miktarın toplamı"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.sale_rental_report_view_tree
 msgid "Sum of Daily Picked-Up Qty"
-msgstr ""
+msgstr "Günlük Toplanan Miktarın Toplamı"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__temporal_type
 msgid "Temporal Type"
-msgstr ""
+msgstr "Zamansal Tür"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__duration
@@ -1290,7 +1293,7 @@ msgstr "Bugün Yapılacak"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search_without_searchpanel
 msgid "To Pickup"
-msgstr "Kaldir"
+msgstr "Alış"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search_without_searchpanel
@@ -1390,6 +1393,9 @@ msgid ""
 "                <br>\n"
 "                or create a new rental order."
 msgstr ""
+"Yukarıdaki filtreleri kullanarak daha büyük bir dönemde arama yapabilirsiniz\n"
+"                <br>\n"
+"                veya yeni bir kiralama siparişi oluşturun."
 
 #. module: sale_renting
 #: code:addons/sale_renting/wizard/rental_processing.py:0
@@ -1407,7 +1413,7 @@ msgstr "Alınandan daha fazla geri dönemezsiniz."
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "You're done with your fist rental. Congratulations !"
-msgstr ""
+msgstr "İlk kiralamanız bitti. Tebrikler!"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form

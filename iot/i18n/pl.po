@@ -23,7 +23,7 @@ msgstr ""
 "POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
-"Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
+"Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -39,16 +39,21 @@ msgid ""
 "                    1. Read the pairing code from a display or thermal printer connected to the IoT Box.<br/>\n"
 "                    2. Enter the code below and click on \"Pair\".<br/>"
 msgstr ""
+"0. Włączenie zasilania IoT Box<br/><br/>\n"
+"\n"
+"<strong>A. Połączenie Ethernetowe</strong><br/>\n"
+"1. Odczytaj kod parowania z wyświetlacza lub drukarki termicznej podłączonej do IoT Box<br/>.\n"
+"2. Wprowadź poniższy kod i kliknij na \"Pair\".<br/>"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "<span class=\"badge text-bg-secondary\">Disconnected</span>"
-msgstr ""
+msgstr "<span class=\"badge text-bg-secondary\">Rozłączony</span>"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "<span class=\"badge text-bg-success\">Connected</span>"
-msgstr ""
+msgstr "<span class=\"badge text-bg-success\">Połączony</span>"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -60,6 +65,12 @@ msgid ""
 "                    4. You will be redirected to the IoT Box Homepage<br/>\n"
 "                    5. Paste the token in token field and follow the steps described on the IoT Box Homepage<br/>"
 msgstr ""
+"<strong>B. Połączenie WiFi (lub połączenie Ethernet nie działa)</strong><br/>\n"
+"1. Upewnij się, że kabel ethernetowy nie jest podłączony do IoT Box.<br/>\n"
+"2. Skopiuj token, który znajduje się poniżej<br/>\n"
+"3. Połącz się z siecią WiFi IoT Box (powinieneś widzieć go w dostępnych sieciach WiFi)<br/>\n"
+"4. Zostaniesz przekierowany na stronę główną IoT Box<br/>\n"
+"5. Wklej token w pole token i wykonaj czynności opisane na stronie głównej IoT Box<br/>"
 
 #. module: iot
 #: model:ir.model,name:iot.model_add_iot_box
@@ -71,14 +82,14 @@ msgstr "Dodaj do kreatora IoT Box"
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Are you sure you want to reboot the IoT box?"
-msgstr ""
+msgstr "Czy na pewno chcesz zrestartować IoT box?"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Are you sure you want to restart Odoo on the IoT box?"
-msgstr ""
+msgstr "Czy na pewno chcesz zrestartować Odoo na IoT box?"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__drivers_auto_update
@@ -106,7 +117,7 @@ msgstr "Bluetooth"
 #: code:addons/iot/static/src/views/box_list_view.xml:0
 #, python-format
 msgid "CONNECT"
-msgstr ""
+msgstr "POŁĄCZ"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__camera
@@ -118,14 +129,14 @@ msgstr "Kamera"
 #: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Check if the device is still connected"
-msgstr ""
+msgstr "Sprawdź, czy urządzenie jest nadal podłączone"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Check if the printer is still connected"
-msgstr ""
+msgstr "Sprawdź, czy drukarka jest nadal podłączona"
 
 #. module: iot
 #. openerp-web
@@ -216,7 +227,7 @@ msgstr "Połączenie z urządzeniem nie powiodło się"
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Connection to printer failed"
-msgstr ""
+msgstr "Połączenie z drukarką nie powiodło się"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_uid
@@ -253,7 +264,7 @@ msgstr "Typ urządzenia"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "Device type is #{record.type.raw_value}"
-msgstr ""
+msgstr "Typ urządzenia to #{record.type.raw_value}"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_device_action
@@ -280,7 +291,7 @@ msgstr "Nazwa wyświetlana"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__display_url
 msgid "Display URL"
-msgstr ""
+msgstr "Wyświetl URL"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
@@ -293,7 +304,7 @@ msgstr "Adres domeny"
 #: code:addons/iot/static/src/view_widgets/iot_download_logs.xml:0
 #, python-format
 msgid "Download Logs"
-msgstr ""
+msgstr "Pobierz logi"
 
 #. module: iot
 #. openerp-web
@@ -400,7 +411,7 @@ msgstr "Urządzenia IoT"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__is_scanner
 msgid "Is Scanner"
-msgstr ""
+msgstr "Jest skanerem"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__keyboard
@@ -447,7 +458,7 @@ msgstr "Data ostatniej aktualizacji"
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Last restarting process hasn't finished yet"
-msgstr ""
+msgstr "Ostatni proces restartu jeszcze się nie zakończył"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__layout
@@ -467,7 +478,7 @@ msgstr "Manualnie odczytaj pomiar z urządzenia"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__is_scanner
 msgid "Manually switch the device type between keyboard and scanner"
-msgstr ""
+msgstr "Ręczne przełączanie typu urządzenia między klawiaturą a skanerem"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manufacturer
@@ -549,7 +560,7 @@ msgstr "Drukarka"
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Printer "
-msgstr ""
+msgstr "Drukarka"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
@@ -583,21 +594,21 @@ msgstr "Raporty"
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Restart Failed"
-msgstr ""
+msgstr "Restart nie powiódł się"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Restart finished"
-msgstr ""
+msgstr "Restart zakończony"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Restarting"
-msgstr ""
+msgstr "Restartowanie"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__scale
@@ -653,7 +664,7 @@ msgstr "Żadne urządzenie nie jest połączone z Twoim IoT Box"
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Timed out"
-msgstr ""
+msgstr "Czas przekroczony"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token

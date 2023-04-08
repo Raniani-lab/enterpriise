@@ -12,9 +12,9 @@
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # Levent Karakaş <levent@mektup.at>, 2022
 # Martin Trigaux, 2022
-# Tugay Hatıl <tugayh@projetgrup.com>, 2022
 # Ediz Duman <neps1192@gmail.com>, 2022
 # Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2022
+# Tugay Hatıl <tugayh@projetgrup.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,8 +22,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2022\n"
-"Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
+"Last-Translator: Tugay Hatıl <tugayh@projetgrup.com>, 2023\n"
+"Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -48,12 +48,12 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "<span class=\"badge text-bg-secondary\">Disconnected</span>"
-msgstr ""
+msgstr "<span class=\"badge text-bg-secondary\">Bağlantı kesildi</span>"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "<span class=\"badge text-bg-success\">Connected</span>"
-msgstr ""
+msgstr "<span class=\"badge text-bg-success\">Bağlandı</span>"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -82,14 +82,14 @@ msgstr "IoT Kutusu sihirbazı ekle"
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Are you sure you want to reboot the IoT box?"
-msgstr ""
+msgstr "IoT kutusunu yeniden başlatmak istediğinizden emin misiniz?"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Are you sure you want to restart Odoo on the IoT box?"
-msgstr ""
+msgstr "IoT kutusunda Odoo'yu yeniden başlatmak istediğinizden emin misiniz?"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__drivers_auto_update
@@ -459,7 +459,7 @@ msgstr "Son Güncelleme"
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Last restarting process hasn't finished yet"
-msgstr ""
+msgstr "Son yeniden başlatma işlemi henüz bitmedi"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__layout
@@ -595,21 +595,21 @@ msgstr "Raporlar"
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Restart Failed"
-msgstr ""
+msgstr "Yeniden Başlatma Başarısız"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Restart finished"
-msgstr ""
+msgstr "Yeniden başlatma tamamlandı"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Restarting"
-msgstr ""
+msgstr "Yeniden başlatılıyor"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__scale
@@ -665,7 +665,7 @@ msgstr "IoT kutularınıza bağlı bir cihaz yok"
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Timed out"
-msgstr ""
+msgstr "Zaman aşımına uğradı"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__token

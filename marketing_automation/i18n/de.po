@@ -14,7 +14,7 @@ msgstr ""
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -476,6 +476,8 @@ msgid ""
 "Deleting this activity will delete ALL its children activities. Are you "
 "sure?"
 msgstr ""
+"Wenn Sie diese Aktivität löschen, werden ALLE ihre untergeordneten "
+"Aktivitäten gelöscht. Sind Sie sicher?"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__child_ids
@@ -952,7 +954,7 @@ msgstr "Keine Aktivität"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "No activity for this campaign."
-msgstr ""
+msgstr "Keine Aktivität für diese Kampagne"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.link_tracker_action_marketing_campaign
@@ -1105,12 +1107,12 @@ msgstr "Teilnehmer von %s (%s)"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Pick a Server Action"
-msgstr ""
+msgstr "Eine Servceraktion auswählen"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Pick a Template"
-msgstr ""
+msgstr "Eine Vorlage auswählen"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
@@ -1454,6 +1456,8 @@ msgid ""
 "The saved filter targets different model and is incompatible with this "
 "campaign."
 msgstr ""
+"Der gespeicherte Filter richtet sich an andere Modelle und ist mit dieser "
+"Kampagne nicht kompatibel."
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_activity.py:0
@@ -1628,6 +1632,8 @@ msgid ""
 "You cannot delete these UTM Campaigns as they are linked to the following marketing campaigns in Marketing Automation:\n"
 "%(campaign_names)s"
 msgstr ""
+"Sie können diese UTM-Kampagnen nicht löschen, da sie mit den folgenden Marketingkampagnen in Marketing-Automatisierung verknüpft sind:\n"
+"%(campaign_names)s"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/utm_source.py:0
@@ -1636,6 +1642,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to the following marketing activities in Marketing Automation:\n"
 "%(activities_names)s"
 msgstr ""
+"Sie können diese UTM-Quellen nicht löschen, da sie mit den folgenden Marketingaktivitäten in Marketing-Automatisierungd verknüpft sind:\n"
+"%(activities_names)s"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:0

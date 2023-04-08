@@ -8,6 +8,7 @@
 # Martin Trigaux, 2022
 # Michael Hofer, 2022
 # Jolien De Paepe, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,8 +16,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:53+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -85,6 +86,7 @@ msgstr "Individuelle Preisgestaltung"
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Day"
 msgstr "Tag"
@@ -119,6 +121,7 @@ msgstr "Erste Leasingpreise für das Produkt"
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Hour"
 msgstr "Stunde"
@@ -181,6 +184,7 @@ msgstr ""
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Month"
 msgstr "Monat"
@@ -354,6 +358,7 @@ msgstr "Varianten"
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Week"
 msgstr "Woche"
@@ -366,6 +371,7 @@ msgstr "Wochen"
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Year"
 msgstr "Jahr"
@@ -406,35 +412,35 @@ msgstr "alle Varianten"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s days"
-msgstr ""
+msgstr "pro %s Tage"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s months"
-msgstr ""
+msgstr "pro %s Monate"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s weeks"
-msgstr ""
+msgstr "pro %s Wochen"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s years"
-msgstr ""
+msgstr "pro %s Jahre"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per day"
-msgstr ""
+msgstr "pro Tag"
 
 #. module: sale_temporal
 #. odoo-python
@@ -448,11 +454,11 @@ msgstr "pro Monat"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per week"
-msgstr ""
+msgstr "pro Woche"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per year"
-msgstr ""
+msgstr "pro Jahr"

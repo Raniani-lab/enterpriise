@@ -15,7 +15,7 @@ msgstr ""
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -47,7 +47,7 @@ msgstr "<b>Verantwortlich:</b>"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "<i class=\"fa fa-check me-2\" title=\"Hired\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-check me-2\" title=\"Hired\"/>"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
@@ -87,6 +87,8 @@ msgid ""
 "<span title=\"Buy\"><i class=\"fa fa-shopping-basket me-3\" role=\"img\" "
 "aria-label=\"Buy\"/>Buy</span>"
 msgstr ""
+"<span title=\"Buy\"><i class=\"fa fa-shopping-basket me-3\" role=\"img\" "
+"aria-label=\"Buy\"/>Kaufen</span>"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_job_employee_referral_kanban
@@ -1069,7 +1071,7 @@ msgstr "Rekrutierungsstufen"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_report_view_tree
 msgid "Referer"
-msgstr ""
+msgstr "Empfehler"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
@@ -1085,7 +1087,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_referral.field_res_company__hr_referral_background
 #: model:ir.model.fields,field_description:hr_referral.field_res_config_settings__hr_referral_background
 msgid "Referral Background"
-msgstr ""
+msgstr "Hintergrund von Personalempfehlungen"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_link_to_share
@@ -1386,6 +1388,8 @@ msgid ""
 "The % is based on the total of applicant that have been referred by someone "
 "else divided by the total of applicant."
 msgstr ""
+"Der % basiert auf der Gesamtzahl der Bewerber, die von einer anderen Person "
+"empfohlen wurden, geteilt durch die Gesamtzahl der Bewerber."
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_friend__image
@@ -1500,7 +1504,7 @@ msgstr "Benutzer"
 #. module: hr_referral
 #: model:res.groups,name:hr_referral.group_hr_recruitment_referral_user
 msgid "User : Referral only"
-msgstr ""
+msgstr "Benutzer: nur Empfehlung"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__gift_manager_id
@@ -1553,6 +1557,8 @@ msgid ""
 "You cannot delete these UTM Campaigns as they are linked to the following jobs in Referral:\n"
 "%(job_names)s"
 msgstr ""
+"Sie können diese UTM-Kampagnen nicht löschen, da sie mit den folgenden Jobs in Personalempfehlungen verknüpft sind:\n"
+"%(job_names)s"
 
 #. module: hr_referral
 #: code:addons/hr_referral/models/utm_source.py:0
@@ -1561,6 +1567,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to the following users in Referral:\n"
 "%(employee_names)s"
 msgstr ""
+"Sie können diese UTM-Quellen nicht löschen, da sie mit den folgenden Benutzern in Personalempfehlungen verknüpft sind:\n"
+"%(employee_names)s"
 
 #. module: hr_referral
 #: code:addons/hr_referral/models/hr_referral_reward.py:0

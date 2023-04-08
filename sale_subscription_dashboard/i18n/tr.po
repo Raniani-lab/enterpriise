@@ -10,9 +10,10 @@
 # Martin Trigaux, 2022
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2022
 # Levent Karakaş <levent@mektup.at>, 2022
-# Murat Kaplan <muratk@projetgrup.com>, 2022
 # Umur Akın <umura@projetgrup.com>, 2022
+# Murat Kaplan <muratk@projetgrup.com>, 2022
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022
+# Halil, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,8 +21,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022\n"
-"Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
+"Last-Translator: Halil, 2023\n"
+"Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -72,12 +73,12 @@ msgstr "30 gün önce"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no invoice during this period.</i>"
-msgstr ""
+msgstr "<i>Bu süre zarfında fatura yoktur.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no subscription modification during this period.</i>"
-msgstr ""
+msgstr "<i>Bu süre zarfında abonelik değişikliği yapılmaz.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
@@ -104,6 +105,8 @@ msgid ""
 "Average revenue of a subscription, obtained by dividing the MRR by the "
 "number of subscriptions"
 msgstr ""
+"Bir aboneliğin ortalama geliri, MRR'nin abonelik sayısına bölünmesiyle elde "
+"edilir"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -153,7 +156,7 @@ msgstr "Mevcut MRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Current MRR ("
-msgstr ""
+msgstr "Mevcut MRR ("
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -161,7 +164,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Current Value: "
-msgstr "Geçerli Değer:"
+msgstr "Geçerli Değer: "
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -174,7 +177,7 @@ msgstr "Özel"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Customer Churn"
-msgstr ""
+msgstr "Müşteri Karmaşası"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -259,6 +262,9 @@ msgid ""
 "the average MRR of a subscription by the churn rate (e.g. if your average "
 "MRR is $ 100 and your churn rate is 5%, the LTV will be $ 100/5% = $ 2,000)"
 msgstr ""
+"Ortalama bir aboneliğin beklenen yaşam boyu geliri; Bir aboneliğin ortalama "
+"MRR'sini dalgalanma oranına bölerek elde edilir (örneğin, ortalama MRR'niz "
+"100 $ ve dalgalanma oranınız% 5 ise, LTV 100 $ / 5% = 2.000 $ olacaktır)"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -380,6 +386,8 @@ msgid ""
 "List all invoices containing non-recurring sales and the amount of\n"
 "                        non-recurring revenues in these invoices for this particular salesperson."
 msgstr ""
+"Tekrarlanmayan satışları içeren tüm faturaları ve\n"
+"                        Bu belirli satış elemanı için bu faturalarda tekrarlanmayan gelirler."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -389,6 +397,8 @@ msgid ""
 "List all invoices containing non-recurring sales and the amount of non-recurring\n"
 "                    revenues in these invoices for this particular salesperson."
 msgstr ""
+"Tekrarlanmayan satışları ve yinelenmeyen satışların miktarını içeren tüm faturaları listeleme\n"
+"                    Bu belirli satış elemanı için bu faturalardaki gelirler."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -418,6 +428,8 @@ msgid ""
 "MRR for short; total subscription revenue per month (e.g. for an annual "
 "subscription of $ 1,200, the MRR is $ 100)"
 msgstr ""
+"Kısaca MRR; aylık toplam abonelik geliri (ör. yıllık 1.200 ABD doları "
+"abonelik için MRR 100 ABD dolarıdır)"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -431,7 +443,7 @@ msgstr "Aylık Tekrarlanan Ciro"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Monthly Recurring Revenue :"
-msgstr ""
+msgstr "Aylık Tekrarlanan Ciro :"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -459,7 +471,7 @@ msgstr "NRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "NRR ("
-msgstr ""
+msgstr "NRR ("
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -495,7 +507,7 @@ msgstr "Hiçbir şirket seçilmedi."
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non Recurring invoices"
-msgstr ""
+msgstr "Tekrarlanmayan faturalar"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -509,19 +521,19 @@ msgstr "Tekrarlayan Olmayan Gelir"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non-Recurring Revenue :"
-msgstr ""
+msgstr "Tekrarlanmayan Gelir :"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Number of contracts"
-msgstr ""
+msgstr "Sözleşme sayısı"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Number of subscriptions that gets closed during a period"
-msgstr ""
+msgstr "Bir dönem boyunca kapatılan abonelik sayısı"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
@@ -539,14 +551,14 @@ msgstr "Odoo Uyarısı"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "One-shot revenue that is not part of a subscription"
-msgstr ""
+msgstr "Aboneliğin parçası olmayan tek seferde gelir"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "PRINT PREVIEW"
-msgstr ""
+msgstr "BASKI ÖNIZLEME"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -581,7 +593,7 @@ msgstr "Önceki MRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Previous MRR ("
-msgstr ""
+msgstr "Önceki MRR ("
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -602,7 +614,7 @@ msgstr "Yinelenme"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Reduction in total MRR over the period"
-msgstr ""
+msgstr "Dönem boyunca toplam MRR'de azalma"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -658,7 +670,7 @@ msgstr "Satış Personeli Panosu"
 #: code:addons/sale_subscription_dashboard/models/sale_order.py:0
 #, python-format
 msgid "Salesperson report"
-msgstr ""
+msgstr "Satış temsilcisi raporu"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -710,7 +722,7 @@ msgstr "Abonelik"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Subscription Modifications"
-msgstr ""
+msgstr "Abonelik Değişiklikleri"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -720,6 +732,10 @@ msgid ""
 "                        (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened\n"
 "                        on the same day)."
 msgstr ""
+"Abonelik değişiklikleri, aşağıdaki durumlarda gerçekleşen tüm değişiklikleri toplar:\n"
+"                        seçilen dönem. Aynı gün gerçekleşen değişikliklerin birlikte gruplandırılabileceğini unutmayın\n"
+"                        (örneğin, aynı gün gerçekleşen iki yukarı satış veya bir aboneliğin kapatılıp yeniden açılması)\n"
+"                        aynı gün)."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -731,6 +747,10 @@ msgid ""
 "                    (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened on the\n"
 "                    same day)."
 msgstr ""
+"Abonelik değişiklikleri, seçilen sürümde gerçekleşen tüm değişiklikleri toplar\n"
+"                    dönem. Aynı gün gerçekleşen değişikliklerin birlikte gruplandırılabileceğini unutmayın\n"
+"                    (örneğin, aynı gün gerçekleşen iki yukarı satış veya bir aboneliğin kapatılıp yeniden açılması\n"
+"                    aynı gün)."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -759,7 +779,7 @@ msgstr "Abonelik Büyümesi:"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions plans"
-msgstr ""
+msgstr "Abonelik planları"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -777,6 +797,8 @@ msgid ""
 "The current value is measured at the end of the selected period and "
 "historical data are relative to this last value."
 msgstr ""
+"Geçerli değer, seçilen dönemin sonunda ölçülür ve geçmiş veriler bu son "
+"değere göredir."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -786,20 +808,22 @@ msgid ""
 "The following report relies on a previous calculation method. Results may "
 "differ from the new method."
 msgstr ""
+"Aşağıdaki rapor önceki bir hesaplama yöntemine dayanır. Sonuçlar yeni "
+"yöntemden farklı olabilir."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "The following values are measured at the end of the selected period."
-msgstr ""
+msgstr "Aşağıdaki değerler seçilen dönemin sonunda ölçülür."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "There is no invoice during this period."
-msgstr ""
+msgstr "Bu süre zarfında fatura yoktur."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -836,7 +860,7 @@ msgstr "Bu Çeyrek"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Total net revenue (all invoices emitted during the period)"
-msgstr ""
+msgstr "Toplam net gelir (dönem boyunca yayımlanan tüm faturalar)"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -846,6 +870,8 @@ msgid ""
 "Total subscription revenue per month (e.g. for an annual subscription of $ "
 "1,200, the MRR is $ 100)"
 msgstr ""
+"Aylık toplam abonelik geliri (örneğin, yıllık 1.200 ABD doları abonelik için"
+" MRR 100 ABD dolarıdır)"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
@@ -873,14 +899,14 @@ msgstr "Uyarı"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Yearly version of the MRR, obtained by multiplying the MRR by 12"
-msgstr ""
+msgstr "MRR'nin yıllık versiyonu, MRR'nin 12 ile çarpılmasıyla elde edilir"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "churn, your MRR will be"
-msgstr "MRR ınız kaybolacak"
+msgstr "çalkantılı, MRR'niz olacak"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -892,7 +918,7 @@ msgstr "karmaşası, abonelik tabanınız"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "graphic"
-msgstr ""
+msgstr "grafik"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -914,7 +940,7 @@ msgstr "ay ile"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "subscription growth and"
-msgstr "Abonelik büyümesi ve"
+msgstr "abonelik büyümesi ve"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

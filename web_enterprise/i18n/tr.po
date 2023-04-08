@@ -15,6 +15,7 @@
 # Murat Kaplan <muratk@projetgrup.com>, 2022
 # Murat Durmuş <muratd@projetgrup.com>, 2022
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
+# Halil, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,8 +23,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023\n"
-"Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
+"Last-Translator: Halil, 2023\n"
+"Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -35,7 +36,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "%s days"
-msgstr ""
+msgstr "%s gün"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -130,6 +131,8 @@ msgid ""
 "Contact your sales representative to help you to unlink your previous "
 "database"
 msgstr ""
+"Önceki veritabanınızın bağlantısını kaldırmanıza yardımcı olması için satış "
+"temsilcinizle iletişime geçin"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -143,7 +146,7 @@ msgstr "Kontrol paneli araç çubuğu"
 #: code:addons/web_enterprise/static/src/webclient/color_scheme/color_scheme_menu_items.js:0
 #, python-format
 msgid "Dark Mode"
-msgstr ""
+msgstr "Karanlık Mod"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -189,7 +192,7 @@ msgstr "HTTP Yönlendirme"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Home menu"
-msgstr ""
+msgstr "Ana Menü"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -212,6 +215,8 @@ msgstr "Bu sorunu düzeltmek için yönetici olarak giriş yapın"
 #, python-format
 msgid "Login to your Odoo.com dashboard then unlink your previous database:"
 msgstr ""
+"Odoo.com panonuza giriş yapın ve ardından önceki veritabanınızın "
+"bağlantısını kaldırın:"
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
@@ -274,7 +279,7 @@ msgstr "Kodu buraya yapıştır"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Previous view"
-msgstr ""
+msgstr "Önceki görünüm"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -335,7 +340,7 @@ msgstr "Barkodu tara"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Sending the instructions by email ..."
-msgstr "Talimatları e-postayla gönderme ..."
+msgstr "Talimatları e-posta ile gönderiyoruz..."
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -379,6 +384,7 @@ msgid ""
 "Thank you, your registration was successful! Your database is valid until "
 "%s."
 msgstr ""
+"Teşekkürler, kaydınız başarılı oldu! Veritabanınız %s'ye kadar geçerlidir."
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -396,21 +402,21 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database has expired. "
-msgstr ""
+msgstr "Veritabanının süresi doldu."
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database will expire in %s. "
-msgstr ""
+msgstr "Bu veritabanı süresi %starihinde sona erecek. "
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This demo database will expire in %s. "
-msgstr ""
+msgstr "Bu demo veritabanı süresi %starihinde sona erecek. "
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -432,7 +438,7 @@ msgstr "Bugün"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Unable to send the instructions by email, please contact the"
-msgstr "Talimatlar e-posta ile gönderilemiyor, lütfen"
+msgstr "Talimatlar e-posta ile gönderilemiyor, lütfen iletişime geçin"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -514,4 +520,4 @@ msgstr "abonelik sahibine (e-posta:"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "— open me anywhere with"
-msgstr ""
+msgstr "— beni her yerde aç"

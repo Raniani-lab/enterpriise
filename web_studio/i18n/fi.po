@@ -34,7 +34,7 @@ msgstr ""
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
-"Language-Team: Finnish (https://www.transifex.com/odoo/teams/41243/fi/)\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -59,6 +59,18 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    Tämä on uusi toimintasi.\n"
+"                </p>\n"
+"                <p>Oletusarvoisesti se sisältää luettelon ja lomakkeenäkymän sekä mahdollisesti myös\n"
+"                    muita näkymätyyppejä mallisi valittujen vaihtoehtojen mukaan.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Voit aloittaa näiden näyttöjen mukauttamisen napsauttamalla Studio-kuvaketta ikkunan\n"
+"                    oikeassa yläkulmassa (voit myös muokata tätä ohjeviestiä siellä).\n"
+"                </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-python
@@ -70,6 +82,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_empty_report\">\n"
+"                Lisää uusi raportti\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-python
@@ -81,6 +97,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Lisää uusi automaattinen toiminto\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-python
@@ -92,34 +112,38 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Lisää uusi suodatin\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid " to "
-msgstr ""
+msgstr " -> "
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/report.py:0
 #, python-format
 msgid "%s Report"
-msgstr ""
+msgstr "%s Raportti"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "(id)"
-msgstr ""
+msgstr "(id)"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "(t-if=\""
-msgstr ""
+msgstr "(t-if=\""
 
 #. module: web_studio
 #. odoo-javascript
@@ -129,6 +153,8 @@ msgid ""
 "<div><p>The <strong>%s</strong> property is only applied to records matching"
 " this filter.</p></div>"
 msgstr ""
+"<div><p>Tätä <strong>%s</strong> ominaisuutta sovelletaan vain tietueisiin, "
+"jotka vastaavat tätä suodatinta.</p></div>"
 
 #. module: web_studio
 #. odoo-python
@@ -140,47 +166,53 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                Uuden pääsynvalvontaluettelon lisääminen\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "A field with the same name already exists."
-msgstr ""
+msgstr "Samanniminen kenttä on jo olemassa."
 
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_entry_uniq_combination
 msgid "A rule can only be approved/rejected once per record."
-msgstr ""
+msgstr "Sääntö voidaan hyväksyä/hylätä vain kerran tietuetta kohden."
 
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_rule_method_or_action_together
 msgid "A rule must apply to an action or a method (but not both)."
 msgstr ""
+"Sääntöä on sovellettava joko toimintaan tai menetelmään (mutta ei "
+"molempiin)."
 
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_rule_method_or_action_not_null
 msgid "A rule must apply to an action or a method."
-msgstr ""
+msgstr "Sääntöä on sovellettava johonkin toimeen tai menetelmään."
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_model__abstract
 msgid "Abstract"
-msgstr ""
+msgstr "Abstrakti"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Access Control"
-msgstr ""
+msgstr "Käyttöoikeudet"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "Access Control Lists"
-msgstr ""
+msgstr "Pääsynvalvontaluettelot"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_groups
@@ -192,14 +224,14 @@ msgstr "Käyttöoikeusryhmät"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from cell"
-msgstr ""
+msgstr "Pääsy tietueisiin solusta"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from graph"
-msgstr ""
+msgstr "Pääsy tietueisiin kuvaajasta"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_mail_activity_type__category
@@ -226,14 +258,14 @@ msgstr "Action Window View"
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Action to approve:"
-msgstr ""
+msgstr "Hyväksyttävä toiminta:"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/action_editor_sidebar.xml:0
 #, python-format
 msgid "Action's title"
-msgstr ""
+msgstr "Toiminnan nimi"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_mail_activity_type__category
@@ -251,7 +283,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Activate View"
-msgstr ""
+msgstr "Aktivoi näkymä"
 
 #. module: web_studio
 #. odoo-python
@@ -280,7 +312,7 @@ msgstr "Toimenpiteiden tyyppi"
 #: code:addons/web_studio/static/src/client_action/editor/editor_adapter.js:0
 #, python-format
 msgid "Activity view unavailable on this model"
-msgstr ""
+msgstr "Aktiviteettinäkymä ei ole käytettävissä tässä mallissa"
 
 #. module: web_studio
 #. odoo-javascript
@@ -295,21 +327,21 @@ msgstr "Lisää"
 #: code:addons/web_studio/static/src/client_action/view_editors/form/chatter_container.xml:0
 #, python-format
 msgid "Add Chatter Widget"
-msgstr ""
+msgstr "Lisää Chatter Widget"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editors/form/form_editor_renderer/form_editor_renderer_components.xml:0
 #, python-format
 msgid "Add Picture"
-msgstr ""
+msgstr "Lisää kuva"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editors/new_buttonbox_dialog.js:0
 #, python-format
 msgid "Add a Button"
-msgstr ""
+msgstr "Lisää painike"
 
 #. module: web_studio
 #. odoo-javascript
@@ -323,42 +355,42 @@ msgstr "Lisää kuvaus..."
 #: code:addons/web_studio/static/src/client_action/view_editors/form/form_editor_renderer/form_editor_renderer_components.xml:0
 #, python-format
 msgid "Add a pipeline status bar"
-msgstr ""
+msgstr "Lisää ketjun tilapalkki"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_compiler.js:0
 #, python-format
 msgid "Add a priority"
-msgstr ""
+msgstr "Lisää prioriteetti"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Add an approval rule"
-msgstr ""
+msgstr "Lisää hyväksymissääntö"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_compiler.js:0
 #, python-format
 msgid "Add an avatar"
-msgstr ""
+msgstr "Lisää avatar"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Add details to your records with an embedded list view"
-msgstr ""
+msgstr "Lisää yksityiskohtia tietueisiin upotetun luettelonäkymän avulla"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Add in the print menu"
-msgstr ""
+msgstr "Lisää tulostusvalikkoon"
 
 #. module: web_studio
 #. odoo-javascript
@@ -373,14 +405,14 @@ msgstr "Lisää uusi arvo"
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Add selection"
-msgstr ""
+msgstr "Lisää valinta"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_compiler.js:0
 #, python-format
 msgid "Add tags"
-msgstr ""
+msgstr "Lisää tunnisteita"
 
 #. module: web_studio
 #. odoo-javascript
@@ -394,14 +426,14 @@ msgstr "Lisäkentät"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Address Block"
-msgstr ""
+msgstr "Osoitelohko"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Aggregate"
-msgstr ""
+msgstr "Yhdistelmä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -424,6 +456,8 @@ msgstr "Koko päivä"
 msgid ""
 "All set? You are just one click away from <b>generating your first app</b>."
 msgstr ""
+"Kaikki valmiina? Olet vain yhden napsautuksen päässä <b>ensimmäisen "
+"sovelluksesi luomisesta</b>."
 
 #. module: web_studio
 #. odoo-javascript
@@ -437,7 +471,7 @@ msgstr "Summa yhteensä"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Amount untaxed"
-msgstr ""
+msgstr "Veroton määrä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -449,25 +483,25 @@ msgstr "Hyväksyntä"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "Approval Entries"
-msgstr ""
+msgstr "Hyväksymiskohteet"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Approval Group"
-msgstr ""
+msgstr "Hyväksymisryhmä"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__rule_id
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__rule_id
 msgid "Approval Rule"
-msgstr ""
+msgstr "Hyväksymissääntö"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 msgid "Approval Rules"
-msgstr ""
+msgstr "Hyväksymissäännöt"
 
 #. module: web_studio
 #. odoo-javascript
@@ -483,6 +517,7 @@ msgstr "Hyväksynnät"
 #, python-format
 msgid "Approvals can only be done on a method or an action, not both."
 msgstr ""
+"Hyväksyntä voidaan tehdä vain menetelmälle tai toiminnolle, ei molemmille."
 
 #. module: web_studio
 #. odoo-javascript
@@ -501,7 +536,7 @@ msgstr "Hyväksytty"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.notify_approval
 msgid "Approved as"
-msgstr ""
+msgstr "Hyväksytty nimellä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -509,19 +544,19 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Approved on"
-msgstr ""
+msgstr "Hyväksytty"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__user_id
 msgid "Approved/rejected by"
-msgstr ""
+msgstr "Hyväksynyt tai hylätty"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Archive deprecated records"
-msgstr ""
+msgstr "Arkistoi vanhentuneet tietueet"
 
 #. module: web_studio
 #. odoo-python
@@ -538,28 +573,28 @@ msgstr "Arkistoitu"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Archiving"
-msgstr ""
+msgstr "Arkistointi"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_manager.js:0
 #, python-format
 msgid "Are you sure you want to remove the selection values?"
-msgstr ""
+msgstr "Oletko varma, että haluat poistaa valitut arvot?"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Are you sure you want to remove this %s from the view?"
-msgstr ""
+msgstr "Haluatko varmasti poistaa kohteen %s näkymästä?"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.js:0
 #, python-format
 msgid "Are you sure you want to reset the background image?"
-msgstr ""
+msgstr "Oletko varma, että haluat nollata taustakuvan?"
 
 #. module: web_studio
 #. odoo-javascript
@@ -569,6 +604,8 @@ msgid ""
 "Are you sure you want to restore the default view?\r\n"
 "All customization done with Studio on this view will be lost."
 msgstr ""
+"Oletko varma, että haluat palauttaa oletusnäkymän?\r\n"
+"Kaikki Studiossa tähän näkymään tehdyt mukautukset menetetään."
 
 #. module: web_studio
 #. odoo-javascript
@@ -579,13 +616,15 @@ msgid ""
 "Are you sure you want to restore the default view?\r\n"
 "All customization done with studio on this view will be lost."
 msgstr ""
+"Oletko varma, että haluat palauttaa oletusnäkymän?\r\n"
+"Kaikki studiolla tähän näkymään tehdyt mukautukset menetetään."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "As expression"
-msgstr ""
+msgstr "Ilmaisuna"
 
 #. module: web_studio
 #. odoo-javascript
@@ -600,35 +639,35 @@ msgstr "Nouseva"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Assign a responsible to each record"
-msgstr ""
+msgstr "Määritä jokaiselle tietueelle vastuuhenkilö"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Assign dates and visualize records in a calendar"
-msgstr ""
+msgstr "Määritä päivämääriä ja visualisoi tietueet kalenterissa"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Attach a picture to a record"
-msgstr ""
+msgstr "Liitä kuva tietueeseen"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Auto-complete with"
-msgstr ""
+msgstr "Automaattinen täydentäminen"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/search_renderer.xml:0
 #, python-format
 msgid "Autocompletion Fields"
-msgstr ""
+msgstr "Automaattiset täydennyskentät"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base_automation
@@ -647,7 +686,7 @@ msgstr "Automatisoidut Toiminnot"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Automations"
-msgstr ""
+msgstr "Automaatiot"
 
 #. module: web_studio
 #. odoo-javascript
@@ -662,14 +701,14 @@ msgstr "Keskinkertainen"
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Awaiting approval"
-msgstr ""
+msgstr "Odottaa hyväksyntää"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Backward"
-msgstr ""
+msgstr "Takaisin"
 
 #. module: web_studio
 #. odoo-javascript
@@ -724,21 +763,21 @@ msgstr "Reunustettu"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Borderless"
-msgstr ""
+msgstr "Rajaton"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/report_kanban_view.js:0
 #, python-format
 msgid "Business header/footer"
-msgstr ""
+msgstr "Yrityksen otsikko/alusta"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/report_editor_sidebar.js:0
 #, python-format
 msgid "By default: "
-msgstr ""
+msgstr "Oletusarvoisesti:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -752,14 +791,14 @@ msgstr "Kalenteri"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Can Create"
-msgstr ""
+msgstr "Voi luoda"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Can Delete"
-msgstr ""
+msgstr "Voidaan poistaa"
 
 #. module: web_studio
 #. odoo-javascript
@@ -771,7 +810,7 @@ msgstr "Voi muokata"
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__can_validate
 msgid "Can be approved"
-msgstr ""
+msgstr "Voidaan hyväksyä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -796,7 +835,7 @@ msgstr "Peruuta"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Categorize records with custom tags"
-msgstr ""
+msgstr "Luokittele tietueet mukautetuilla tunnisteilla"
 
 #. module: web_studio
 #. odoo-javascript
@@ -810,21 +849,21 @@ msgstr "Vaihda tausta"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Change Image"
-msgstr ""
+msgstr "Vaihda kuva"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Change the <b>background</b>, make it yours."
-msgstr ""
+msgstr "Muuta <b>taustaa</b>, tee siitä oma."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Chatter"
-msgstr ""
+msgstr "Chatter"
 
 #. module: web_studio
 #. odoo-javascript
@@ -836,28 +875,28 @@ msgstr "Valintaruutu"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model_data__studio
 msgid "Checked if it has been edited with Studio."
-msgstr ""
+msgstr "Jos valittu, muokattu Studiolla."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Choose an app name"
-msgstr ""
+msgstr "Valitse sovelluksen nimi"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Choose your first object name"
-msgstr ""
+msgstr "Valitse ensimmäinen objektin nimi"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Churn"
-msgstr ""
+msgstr "Menetetty liikevaihto"
 
 #. module: web_studio
 #. odoo-javascript
@@ -879,14 +918,14 @@ msgstr "Pyyhi"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Click here."
-msgstr ""
+msgstr "Klikkaa tästä."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Click to edit messaging features on your model."
-msgstr ""
+msgstr "Napsauta muokataksesi mallisi viestiominaisuuksia."
 
 #. module: web_studio
 #. odoo-javascript
@@ -894,7 +933,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Click to see all approval rules."
-msgstr ""
+msgstr "Klikkaa nähdäksesi kaikki hyväksymissäännöt."
 
 #. module: web_studio
 #. odoo-javascript
@@ -919,7 +958,7 @@ msgstr "Kohortti"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Collapse First Level"
-msgstr ""
+msgstr "Supista ensimmäinen taso"
 
 #. module: web_studio
 #. odoo-javascript
@@ -958,7 +997,7 @@ msgstr "Sarakkeen otsikko"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Column grouping"
-msgstr ""
+msgstr "Sarakkeiden ryhmittely"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1009,12 +1048,12 @@ msgstr "Ehto"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Conditional"
-msgstr ""
+msgstr "Ehdollinen"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__conditional
 msgid "Conditional Rule"
-msgstr ""
+msgstr "Ehdollinen sääntö"
 
 #. module: web_studio
 #. odoo-python
@@ -1030,7 +1069,7 @@ msgstr "Asetukset"
 #: code:addons/web_studio/static/src/legacy/js/new_model.js:0
 #, python-format
 msgid "Configure Model"
-msgstr ""
+msgstr "Määritä malli"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1067,21 +1106,21 @@ msgstr "Kontakti"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Contact Field"
-msgstr ""
+msgstr "Yhteystietojen kenttä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/new_view_dialogs/map_new_view_dialog.js:0
 #, python-format
 msgid "Contact Field Required"
-msgstr ""
+msgstr "Yhteyskenttä vaaditaan"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Contact details"
-msgstr ""
+msgstr "Yhteystietojen yksityiskohdat"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1097,13 +1136,15 @@ msgstr "Konteksti"
 msgid ""
 "Continue to configure some typical behaviors for your new type of object."
 msgstr ""
+"Jatka tyypillisten käyttäytymistapojen määrittämistä uudelle "
+"objektityypille."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.js:0
 #, python-format
 msgid "Could not change the background"
-msgstr ""
+msgstr "Taustaa ei voinut muuttaa"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1117,21 +1158,21 @@ msgstr "Luo valikko"
 #: code:addons/web_studio/static/src/legacy/js/new_model.js:0
 #, python-format
 msgid "Create Model"
-msgstr ""
+msgstr "Luo malli"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/edit_menu.js:0
 #, python-format
 msgid "Create a new Menu"
-msgstr ""
+msgstr "Luo uusi valikko"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/new_model.js:0
 #, python-format
 msgid "Create a new Model"
-msgstr ""
+msgstr "Luo uusi malli"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1139,28 +1180,28 @@ msgstr ""
 #, python-format
 msgid ""
 "Create your <b>selection values</b> (e.g.: Romance, Polar, Fantasy, etc.)"
-msgstr ""
+msgstr "Luo <b>valinta-arvot</b> (esim. Romanssi, Pakkanen, Fantasia jne.)"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Create your App"
-msgstr ""
+msgstr "Luo sovellus"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Create your app"
-msgstr ""
+msgstr "Luo sovellus"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Create your first Menu"
-msgstr ""
+msgstr "Luo ensimmäinen valikko"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__create_uid
@@ -1182,6 +1223,7 @@ msgstr "Luotu"
 #, python-format
 msgid "Creating this type of view is not currently supported in Studio."
 msgstr ""
+"Tämäntyyppisen näkymän luominen ei ole tällä hetkellä tuettu Studiossa."
 
 #. module: web_studio
 #. odoo-javascript
@@ -1197,34 +1239,34 @@ msgstr "Valuutta"
 #: code:addons/web_studio/models/ir_ui_menu.py:0
 #, python-format
 msgid "Custom Configuration"
-msgstr ""
+msgstr "Mukautettu määritys"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_fields
 msgid "Custom Fields"
-msgstr ""
+msgstr "Mukautetut kentät"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_models
 msgid "Custom Models"
-msgstr ""
+msgstr "Mukautetut mallit"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_reports
 msgid "Custom Reports"
-msgstr ""
+msgstr "Mukautetut raportit"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Custom Sorting"
-msgstr ""
+msgstr "Mukautettu lajittelu"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_views
 msgid "Custom Views"
-msgstr ""
+msgstr "Mukautetut näkymät"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1232,53 +1274,53 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Custom color"
-msgstr ""
+msgstr "Mukautettu väri"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Custom field names cannot contain double underscores."
-msgstr ""
+msgstr "Mukautettujen kenttien nimet eivät voi sisältää tupla-alleviivausta."
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Custom fields:"
-msgstr ""
+msgstr "Mukautetut kentät:"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Custom models:"
-msgstr ""
+msgstr "Mukautetut mallit:"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Custom reports:"
-msgstr ""
+msgstr "Mukautetut raportit:"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Custom views:"
-msgstr ""
+msgstr "Mukautetut näkymät:"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Customization made with Studio will be permanently lost"
-msgstr ""
+msgstr "Studiossa tehty mukautus menetetään pysyvästi"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.xml:0
 #, python-format
 msgid "Customizations"
-msgstr ""
+msgstr "Mukautukset"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Data table"
-msgstr ""
+msgstr "Tietotaulukko"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1295,7 +1337,7 @@ msgstr "Päivämäärä"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Date & Calendar"
-msgstr ""
+msgstr "Päivämäärä ja kalenteri"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1309,7 +1351,7 @@ msgstr "Päiväys ja aika"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Date range & Gantt"
-msgstr ""
+msgstr "Päivämääräalue ja Gantt"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1325,7 +1367,7 @@ msgstr "Päivä"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Day Precision"
-msgstr ""
+msgstr "Päivän tarkkuus"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1354,14 +1396,14 @@ msgstr "Oletusarvoinen näyttötila"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default Group by"
-msgstr ""
+msgstr "Oletusarvo ryhmittelylle"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default Scale"
-msgstr ""
+msgstr "Oletusasteikko"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1385,21 +1427,21 @@ msgstr "Oletusarvo"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Default view"
-msgstr ""
+msgstr "Oletusnäkymä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Define start/end dates and visualize records in a Gantt chart"
-msgstr ""
+msgstr "Määritä alku-/loppupäivämäärät ja visualisoi tietueet Gantt-kaaviossa"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Delay Field"
-msgstr ""
+msgstr "Viivästyskenttä"
 
 #. module: web_studio
 #. odoo-python
@@ -1441,7 +1483,7 @@ msgstr "Kuvaus"
 #: code:addons/web_studio/static/src/client_action/icon_creator/icon_creator.xml:0
 #, python-format
 msgid "Design your Icon"
-msgstr ""
+msgstr "Suunnittele kuvakkeesi"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1460,7 +1502,7 @@ msgstr "Poista käytöstä"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Disable creation"
-msgstr ""
+msgstr "Luomisen poistaminen käytöstä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1468,7 +1510,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Disable opening"
-msgstr ""
+msgstr "Poista avaaminen käytöstä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1489,35 +1531,35 @@ msgstr "Näyttönimi"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Display Total row"
-msgstr ""
+msgstr "Näytä Yhteensä rivi"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Display Unavailability"
-msgstr ""
+msgstr "Näytä Ei käytettävissä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Display count"
-msgstr ""
+msgstr "Näytä määrä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Display horizontally"
-msgstr ""
+msgstr "Näytä vaakasuunnassa"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_record.js:0
 #, python-format
 msgid "Do you want to add a dropdown with colors?"
-msgstr ""
+msgstr "Haluatko lisätä pudotusvalikon, jossa on värejä?"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1542,6 +1584,7 @@ msgstr "Valmis"
 msgid ""
 "Drag & drop <b>another field</b>. Let’s try with a <i>selection field</i>."
 msgstr ""
+"Vedä ja pudota <b>toinen kenttä</b>. Kokeillaan <i>valintakenttää</i>."
 
 #. module: web_studio
 #. odoo-javascript
@@ -1555,7 +1598,7 @@ msgstr "Raahaa valikko oikealle tehdäksesi alavalikon"
 #: code:addons/web_studio/static/src/legacy/js/reports/report_editor.js:0
 #, python-format
 msgid "Drag building block here"
-msgstr ""
+msgstr "Vedä rakennuslohko tänne"
 
 #. module: web_studio
 #. odoo-python
@@ -1563,7 +1606,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Dropdown Menu"
-msgstr ""
+msgstr "Alasvetovalikko"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1591,21 +1634,21 @@ msgstr "Muokkaa"
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/icon_creator_dialog/icon_creator_dialog.js:0
 #, python-format
 msgid "Edit Application Icon"
-msgstr ""
+msgstr "Muokkaa sovelluksen kuvaketta"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_manager.xml:0
 #, python-format
 msgid "Edit Form View"
-msgstr ""
+msgstr "Muokkaa lomakkeen näkymää"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_manager.xml:0
 #, python-format
 msgid "Edit List View"
-msgstr ""
+msgstr "Muokkaa luettelonäkymää"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1628,14 +1671,14 @@ msgstr "Muokkaa valikkoelementtiä"
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "Edit Value"
-msgstr ""
+msgstr "Muokkaa arvoa"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Edit Values"
-msgstr ""
+msgstr "Muokkaa arvoja"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1643,21 +1686,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Edit selection"
-msgstr ""
+msgstr "Muokkaa valintaa"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Editable"
-msgstr ""
+msgstr "Muokattava"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Else"
-msgstr ""
+msgstr "Else"
 
 #. module: web_studio
 #. odoo-python
@@ -1688,28 +1731,28 @@ msgstr "Sähköpostiviestiketju"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor_sidebar.xml:0
 #, python-format
 msgid "Empty List Message"
-msgstr ""
+msgstr "Tyhjän luettelon viesti"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Enable Mass Editing"
-msgstr ""
+msgstr "Ota massamuokkaus käyttöön"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Enable Routing"
-msgstr ""
+msgstr "Ota reititys käyttöön"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Enable SMS"
-msgstr ""
+msgstr "Ota tekstiviesti käyttöön"
 
 #. module: web_studio
 #. odoo-python
@@ -1737,14 +1780,14 @@ msgstr "Virhe"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Esc expression"
-msgstr ""
+msgstr "Esc-ilmaisu"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Existing Fields"
-msgstr ""
+msgstr "Olemassa olevat kentät"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1752,7 +1795,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/edit_menu.js:0
 #, python-format
 msgid "Existing Model"
-msgstr ""
+msgstr "Nykyinen malli"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1766,14 +1809,14 @@ msgstr "Vienti"
 #: code:addons/web_studio/static/src/legacy/js/reports/report_kanban_view.js:0
 #, python-format
 msgid "External"
-msgstr ""
+msgstr "Ulkoinen"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Fadeout Speed"
-msgstr ""
+msgstr "Fadeout-nopeus"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1787,7 +1830,7 @@ msgstr "Nopea"
 #: code:addons/web_studio/static/src/legacy/xml/search_renderer.xml:0
 #, python-format
 msgid "Favourites"
-msgstr ""
+msgstr "Suosikit"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1804,35 +1847,35 @@ msgstr "Kenttä"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Field & Label"
-msgstr ""
+msgstr "Kenttä ja etiketti"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Field Column"
-msgstr ""
+msgstr "Kentän sarake"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "Field Properties"
-msgstr ""
+msgstr "Kentän ominaisuudet"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Field expression"
-msgstr ""
+msgstr "Kentän lauseke"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Field in Cell"
-msgstr ""
+msgstr "Solun kenttä"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_fields
@@ -1852,7 +1895,7 @@ msgstr "Tiedosto"
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "Filename for %s"
-msgstr ""
+msgstr "Tiedostonimi %s"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1868,7 +1911,7 @@ msgstr "Suodatin"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Filter Rules"
-msgstr ""
+msgstr "Suodatussäännöt"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1883,28 +1926,28 @@ msgstr "Suotimet"
 #: code:addons/web_studio/static/src/client_action/view_editors/form/form_editor_renderer/form_editor_renderer_components.js:0
 #, python-format
 msgid "First Status"
-msgstr ""
+msgstr "Ensimmäinen tila"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "First dimension"
-msgstr ""
+msgstr "Ensimmäinen ulottuvuus"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Font style"
-msgstr ""
+msgstr "Fontin tyyli"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Foreach expression"
-msgstr ""
+msgstr "Foreach-ilmaus"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1919,7 +1962,7 @@ msgstr "Lomake"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Forward"
-msgstr ""
+msgstr "Välitä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1933,28 +1976,28 @@ msgstr "Gantt"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "General Views"
-msgstr ""
+msgstr "Yleiset näkymät"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/new_view_dialogs/new_view_dialog.js:0
 #, python-format
 msgid "Generate %s View"
-msgstr ""
+msgstr "Luo %s Näkymä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Get contact, phone and email fields on records"
-msgstr ""
+msgstr "Hae tietueiden yhteys-, puhelin- ja sähköpostikentät"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Go on, you are almost done!"
-msgstr ""
+msgstr "Olemme melkein valmiita!"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1962,6 +2005,8 @@ msgstr ""
 #, python-format
 msgid "Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>."
 msgstr ""
+"Hyvää työtä! Jos haluat lisätä lisää <b>kenttiä</b>, palaa <i>Lisää-"
+"välilehdelle</i>."
 
 #. module: web_studio
 #. odoo-python
@@ -1970,7 +2015,7 @@ msgstr ""
 #: model:mail.activity.type,name:web_studio.mail_activity_data_approve
 #, python-format
 msgid "Grant Approval"
-msgstr ""
+msgstr "Myönnön hyväksyminen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1985,14 +2030,14 @@ msgstr "Kaavio"
 #: code:addons/web_studio/static/src/legacy/xml/search_renderer.xml:0
 #, python-format
 msgid "Graph View"
-msgstr ""
+msgstr "Kaavionäkymä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Great !"
-msgstr ""
+msgstr "Hienoa !"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2031,6 +2076,7 @@ msgstr "Ryhmittele"
 #, python-format
 msgid "Groups used in approval rules must have an external identifier."
 msgstr ""
+"Hyväksymissäännöissä käytettävillä ryhmillä on oltava ulkoinen tunniste."
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_http
@@ -2050,56 +2096,56 @@ msgstr "Puolipäivää"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Half Hour"
-msgstr ""
+msgstr "Puoli tuntia"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading1"
-msgstr ""
+msgstr "Otsikko1"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading2"
-msgstr ""
+msgstr "Otsikko2"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading3"
-msgstr ""
+msgstr "Otsikko3"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading4"
-msgstr ""
+msgstr "Otsikko4"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading5"
-msgstr ""
+msgstr "Otsikko5"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Heading6"
-msgstr ""
+msgstr "Otsikko6"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Help Tooltip"
-msgstr ""
+msgstr "Ohje Tooltip"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2109,27 +2155,29 @@ msgid ""
 "Here, you can <b>name</b> your field (e.g. Book reference, ISBN, Internal "
 "Note, etc.)."
 msgstr ""
+"Tässä voit <b>nimetä</b> kentän (esim. Kirjan viite, ISBN, sisäinen "
+"huomautus jne.)."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Hide Address"
-msgstr ""
+msgstr "Piilota osoite"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Hide Name"
-msgstr ""
+msgstr "Piilota nimi"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Hide by default"
-msgstr ""
+msgstr "Piilota oletusarvoisesti"
 
 #. module: web_studio
 #. odoo-python
@@ -2149,21 +2197,21 @@ msgstr "Etusivu"
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_res_company__background_image
 msgid "Home Menu Background Image"
-msgstr ""
+msgstr "Kotivalikon taustakuva"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Hour"
-msgstr ""
+msgstr "Tunti"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "How do you want to <b>name</b> your app? Library, Academy, …?"
-msgstr ""
+msgstr "Miten haluat <b>nimetä</b> sovelluksesi? Kirjasto, Akatemia, ...?"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2171,6 +2219,7 @@ msgstr ""
 #, python-format
 msgid "How do you want to name your first <b>menu</b>? My books, My courses?"
 msgstr ""
+"Miten haluat nimetä ensimmäisen <b>ruokalistasi</b>? Kirjani, kurssini?"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2186,6 +2235,8 @@ msgstr "Html"
 msgid ""
 "I bet you can <b>build an app</b> in 5 minutes. Ready for the challenge?"
 msgstr ""
+"Voit <b>rakentaa sovelluksen</b> viidessä minuutissa. Oletko valmis "
+"haasteeseen?"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2209,6 +2260,8 @@ msgstr "Kuvake"
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__domain
 msgid "If set, the rule will only apply on records that match the domain."
 msgstr ""
+"Jos sääntö on asetettu, sitä sovelletaan vain tietueisiin, jotka vastaavat "
+"toimialuetta."
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__exclusive_user
@@ -2216,6 +2269,8 @@ msgid ""
 "If set, the user who approves this rule will not be able to approve other "
 "rules for the same record"
 msgstr ""
+"Jos tämä asetus on asetettu, tämän säännön hyväksynyt käyttäjä ei voi "
+"hyväksyä muita samaa tietuetta koskevia sääntöjä"
 
 #. module: web_studio
 #. odoo-python
@@ -2225,7 +2280,7 @@ msgstr ""
 msgid ""
 "If you don't want to create a new model, an existing model should be "
 "selected."
-msgstr ""
+msgstr "Jos et halua luoda uutta mallia, on valittava olemassa oleva malli."
 
 #. module: web_studio
 #. odoo-javascript
@@ -2262,6 +2317,8 @@ msgid ""
 " you want to create a currency field first? You can make this field "
 "invisible afterwards."
 msgstr ""
+"Rahakentän käyttäminen edellyttää, että mallissa on valuuttakenttä. Haluatko"
+" luoda valuuttakentän ensin? Voit tehdä kentän näkymättömäksi jälkikäteen."
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_ui_menu__is_studio_configuration
@@ -2269,6 +2326,8 @@ msgid ""
 "Indicates that this menu was created by Studio to hold configuration sub-"
 "menus"
 msgstr ""
+"Osoittaa, että Studio on luonut tämän valikon konfiguraatioalivalikoita "
+"varten"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2304,7 +2363,7 @@ msgstr "Aikaväli"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Invalid studio_approval %s in button"
-msgstr ""
+msgstr "Virheellinen studio_approval %s painikkeessa"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2316,7 +2375,7 @@ msgstr "Näkymättömissä"
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__is_studio
 msgid "Is Studio"
-msgstr ""
+msgstr "On Studio"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2324,7 +2383,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Is default view"
-msgstr ""
+msgstr "On oletusnäkymä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2398,6 +2457,8 @@ msgid ""
 "Let’s check the result. Close Odoo Studio to get an <b>overview of your "
 "app</b>."
 msgstr ""
+"Tarkistetaan tulos. Sulje Odoo Studio saadaksesi <b>yleiskuvan "
+"sovelluksestasi</b>."
 
 #. module: web_studio
 #. odoo-javascript
@@ -2405,14 +2466,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__exclusive_user
 #, python-format
 msgid "Limit approver to this rule"
-msgstr ""
+msgstr "Rajoita hyväksyjä tähän sääntöön"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "Limit visibility to groups"
-msgstr ""
+msgstr "Rajoita näkyvyyttä ryhmille"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2432,7 +2493,7 @@ msgstr "Rivit"
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__mail_activity_id
 msgid "Linked Activity"
-msgstr ""
+msgstr "Linkitetty toiminta"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2448,7 +2509,7 @@ msgstr "Lista"
 #: code:addons/web_studio/static/src/legacy/xml/search_renderer.xml:0
 #, python-format
 msgid "List View"
-msgstr ""
+msgstr "Listanäkymä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2463,7 +2524,7 @@ msgstr "Lataa..."
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Manually sort records in the list view"
-msgstr ""
+msgstr "Lajittele tietueet luettelonäkymässä manuaalisesti"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2484,7 +2545,7 @@ msgstr "Many2one"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Map"
-msgstr ""
+msgstr "Kartta"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2505,7 +2566,7 @@ msgstr "Määre"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Measure Field"
-msgstr ""
+msgstr "Mittauskenttä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2548,7 +2609,7 @@ msgstr "Maksutapa"
 #: code:addons/web_studio/static/src/legacy/js/reports/report_kanban_view.js:0
 #, python-format
 msgid "Minimal header/footer"
-msgstr ""
+msgstr "Minimaalinen ylä- tai alatunniste"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2602,7 +2663,7 @@ msgstr "Moduulin poisto"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 msgid "Module file (.zip)"
-msgstr ""
+msgstr "Moduulitiedosto (.zip)"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2616,7 +2677,7 @@ msgstr "Rahallinen"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Monetary value"
-msgstr ""
+msgstr "Rahallinen arvo"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2630,7 +2691,7 @@ msgstr "Kuukausi"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Month Precision"
-msgstr ""
+msgstr "Kuukauden tarkkuus"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2651,40 +2712,40 @@ msgstr "Monirivinen teksti"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Multiple Records Views"
-msgstr ""
+msgstr "Useiden tietueiden näkymät"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "My %s"
-msgstr ""
+msgstr "Oma %s"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/new_buttonbox_dialog.xml:0
 #, python-format
 msgid "My Button"
-msgstr ""
+msgstr "Oma nappi"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "My Menu"
-msgstr ""
+msgstr "Oma menu"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/new_model.xml:0
 #, python-format
 msgid "My Model"
-msgstr ""
+msgstr "Oma malli"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "My entries"
-msgstr ""
+msgstr "Omat merkinnät"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2712,7 +2773,7 @@ msgstr "Uusi"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "New Approval Entry"
-msgstr ""
+msgstr "Uusi hyväksyntämerkintä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2727,28 +2788,28 @@ msgstr "Uusi kenttä"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "New Fields"
-msgstr ""
+msgstr "Uudet kentät"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editors/search_editor.js:0
 #, python-format
 msgid "New Filter"
-msgstr ""
+msgstr "Uusi suodatin"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "New Lines"
-msgstr ""
+msgstr "Uudet linjat"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/edit_menu.js:0
 #, python-format
 msgid "New Menu"
-msgstr ""
+msgstr "Lisää uusi valikko"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2757,21 +2818,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/new_model.xml:0
 #, python-format
 msgid "New Model"
-msgstr ""
+msgstr "Uusi malli"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "New record at the bottom"
-msgstr ""
+msgstr "Uusi tietue alas"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "New record on top"
-msgstr ""
+msgstr "Uusi tietue ylös"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2792,6 +2853,8 @@ msgid ""
 "Nicely done! Let’s build your screen now; <b>drag</b> a <i>text field</i> "
 "and <b>drop</b> it in your view, on the right."
 msgstr ""
+"Hienosti tehty! Rakennetaan nyt näyttö; <b>vedä</b> <i>tekstikenttä</i> ja "
+"<b>pudota</b> se oikealla olevaan näkymään."
 
 #. module: web_studio
 #. odoo-javascript
@@ -2806,27 +2869,28 @@ msgstr "Ei"
 #, python-format
 msgid "No approval found for this rule, record and user combination."
 msgstr ""
+"Tälle säännön, tietueen ja käyttäjän yhdistelmälle ei löytynyt hyväksyntää."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/report_kanban_view.js:0
 #, python-format
 msgid "No header/footer"
-msgstr ""
+msgstr "Ei ylä- tai alatunnistetta"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_manager.js:0
 #, python-format
 msgid "No related many2one fields found"
-msgstr ""
+msgstr "Liittyviä many2one-kenttiä ei löytynyt"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/report.py:0
 #, python-format
 msgid "No view found for the given report!"
-msgstr ""
+msgstr "Annettua raporttia varten ei löytynyt näkymää!"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2850,19 +2914,19 @@ msgstr "Muistiinpanot"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Now you’re on your own. Enjoy your <b>super power</b>."
-msgstr ""
+msgstr "Nyt olet omillasi. Nauti <b>supervoimastasi</b>."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Now, customize your icon. Make it yours."
-msgstr ""
+msgstr "Muokkaa nyt kuvaketta. Tee siitä omasi."
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__entries_count
 msgid "Number of Entries"
-msgstr ""
+msgstr "Merkintöjen määrä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2876,14 +2940,14 @@ msgstr "Odoo Studio"
 #: code:addons/web_studio/static/src/systray_item/systray_item.xml:0
 #, python-format
 msgid "Odoo Studio Icon"
-msgstr ""
+msgstr "Odoo Studio -kuvake"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Offset"
-msgstr ""
+msgstr "Etäisyys"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2897,7 +2961,7 @@ msgstr "One2many"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Only %s members can approve this rule."
-msgstr ""
+msgstr "Vain %s jäsenet voivat hyväksyä tämän säännön."
 
 #. module: web_studio
 #. odoo-python
@@ -2907,13 +2971,15 @@ msgid ""
 "Only groups with an external ID can be used here. Please choose another "
 "group or assign manually an external ID to this group."
 msgstr ""
+"Tässä voidaan käyttää vain ryhmiä, joilla on ulkoinen tunnus. Valitse toinen"
+" ryhmä tai määritä tälle ryhmälle ulkoinen tunnus manuaalisesti."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Only members of this group will be able to approve or reject the rule."
-msgstr ""
+msgstr "Vain tämän ryhmän jäsenet voivat hyväksyä tai hylätä säännön."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3001,7 +3067,7 @@ msgstr "Piirakka"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Pipeline stages"
-msgstr ""
+msgstr "Ketjun vaiheet"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3022,28 +3088,28 @@ msgstr "Paikanpitäjä"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Placeholder Text"
-msgstr ""
+msgstr "Paikanvaraajateksti"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Please specify a field name for the selected model."
-msgstr ""
+msgstr "Määritä valitun mallin kentän nimi."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "Please specify a field."
-msgstr ""
+msgstr "Määritä kenttä."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_record.xml:0
 #, python-format
 msgid "Preview is not available"
-msgstr ""
+msgstr "Esikatselu ei ole käytettävissä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3067,7 +3133,7 @@ msgstr "Tulosta"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Printed Report Name"
-msgstr ""
+msgstr "Tulostettu raportin nimi"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3084,6 +3150,8 @@ msgid ""
 "Private methods cannot be restricted (since they cannot be called remotely, "
 "this would be useless)."
 msgstr ""
+"Yksityisiä metodeja ei voi rajoittaa (koska niitä ei voi kutsua etäältä, "
+"tämä olisi hyödytöntä)."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3097,14 +3165,14 @@ msgstr "Ominaisuudet"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Pull Right"
-msgstr ""
+msgstr "Vedä oikealle"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Quarter Hour"
-msgstr ""
+msgstr "Varttitunti"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3112,14 +3180,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Quick Create"
-msgstr ""
+msgstr "Nopea luominen"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Quick Create Field"
-msgstr ""
+msgstr "Kentän nopea luonti"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_qweb
@@ -3131,21 +3199,21 @@ msgstr "Qweb"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Rainbow Effect"
-msgstr ""
+msgstr "Sateenkaariefekti"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Rainbow Man"
-msgstr ""
+msgstr "Sateenkaarimies"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Read only"
-msgstr ""
+msgstr "Vain luku"
 
 #. module: web_studio
 #. odoo-python
@@ -3170,7 +3238,7 @@ msgstr "Tietue ID"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.xml:0
 #, python-format
 msgid "Redo"
-msgstr ""
+msgstr "Tee uudelleen"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__reference
@@ -3193,7 +3261,7 @@ msgstr "Rechazado"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.notify_approval
 msgid "Rejected as"
-msgstr ""
+msgstr "Hylätty nimellä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3201,14 +3269,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Rejected on"
-msgstr ""
+msgstr "Hylätty"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Related End Date"
-msgstr ""
+msgstr "Liittyvä päättymispäivä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3223,14 +3291,14 @@ msgstr "Liittyvä kenttä"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Related Start Date"
-msgstr ""
+msgstr "Liittyvä aloituspäivä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Related expression"
-msgstr ""
+msgstr "Liittyvä ilmaisu"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3244,21 +3312,21 @@ msgstr "Suhde:"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Reload from attachment"
-msgstr ""
+msgstr "Lataa uudelleen liitteestä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "Remove from View"
-msgstr ""
+msgstr "Poista näkymästä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Remove rule"
-msgstr ""
+msgstr "Poista sääntö"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3266,7 +3334,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Remove selection"
-msgstr ""
+msgstr "Poista valinta"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3285,7 +3353,7 @@ msgstr "Raporttin"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Reporting Views"
-msgstr ""
+msgstr "Raportointinäkymät"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3308,7 +3376,7 @@ msgstr "Vaadittu"
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.xml:0
 #, python-format
 msgid "Reset Default Background"
-msgstr ""
+msgstr "Nollaa oletustaustakuva"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3334,21 +3402,21 @@ msgstr "Vastuuhenkilö"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Restore Default View"
-msgstr ""
+msgstr "Palauta oletusnäkymä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Restrict a record to a specific company"
-msgstr ""
+msgstr "Rajoita tietue tiettyyn yritykseen"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Retention"
-msgstr ""
+msgstr "Säilyttäminen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3363,14 +3431,14 @@ msgstr "Peruuta valtuutus"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Row grouping - First level"
-msgstr ""
+msgstr "Rivien ryhmittely - Ensimmäinen taso"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Row grouping - Second level"
-msgstr ""
+msgstr "Rivien ryhmittely - Toinen taso"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_rule
@@ -3385,6 +3453,9 @@ msgid ""
 "Rules with existing entries cannot be deleted since it would delete existing"
 " approval entries. You should archive the rule instead."
 msgstr ""
+"Sääntöjä, joissa on olemassa olevia merkintöjä, ei voi poistaa, koska se "
+"poistaisi olemassa olevat hyväksymismerkinnät. Sääntö kannattaa sen sijaan "
+"arkistoida."
 
 #. module: web_studio
 #. odoo-python
@@ -3394,6 +3465,9 @@ msgid ""
 "Rules with existing entries cannot be modified since it would break existing"
 " approval entries. You should archive the rule and create a new one instead."
 msgstr ""
+"Sääntöjä, joissa on olemassa olevia merkintöjä, ei voi muuttaa, koska se "
+"rikkoisi olemassa olevat hyväksymismerkinnät. Sääntö kannattaa arkistoida ja"
+" luoda sen sijaan uusi sääntö."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3421,42 +3495,42 @@ msgstr "Hae..."
 #: code:addons/web_studio/static/src/client_action/view_editors/form/form_editor_renderer/form_editor_renderer_components.js:0
 #, python-format
 msgid "Second Status"
-msgstr ""
+msgstr "Toinen tila"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Second dimension"
-msgstr ""
+msgstr "Toinen ulottuvuus"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/common/field_selector_dialog.js:0
 #, python-format
 msgid "Select a Field"
-msgstr ""
+msgstr "Valitse kenttä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/new_buttonbox_dialog.xml:0
 #, python-format
 msgid "Select a related field"
-msgstr ""
+msgstr "Valitse liittyvä kenttä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editors/new_buttonbox_dialog.js:0
 #, python-format
 msgid "Select a related field."
-msgstr ""
+msgstr "Valitse liittyvä kenttä."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Select a related field:"
-msgstr ""
+msgstr "Valitse liittyvä kenttä:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3464,7 +3538,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Select the contact field to use to get the coordinates of your records."
-msgstr ""
+msgstr "Valitse yhteystietokenttä, jonka avulla saa tietueiden koordinaatit."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3478,14 +3552,14 @@ msgstr "Valinta"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Send a"
-msgstr ""
+msgstr "Lähetä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Send messages, log notes and schedule activities"
-msgstr ""
+msgstr "Lähetä viestejä, kirjaa muistiinpanoja ja aikatauluta toimintoja"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3519,7 +3593,7 @@ msgstr "Aseta kansikuva"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Set a price or cost on records"
-msgstr ""
+msgstr "Aseta hinta tai kustannus tietueille"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3529,41 +3603,44 @@ msgid ""
 "Set an <b>email alias</b>. Then, try to send an email to this address; it "
 "will create a document automatically for you. Pretty cool, huh?"
 msgstr ""
+"Määritä <b>sähköpostin alias</b>. Yritä sitten lähettää sähköpostia tähän "
+"osoitteeseen; se luo asiakirjan automaattisesti puolestasi. Aika siistiä, "
+"vai mitä?"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Set approval rules"
-msgstr ""
+msgstr "Aseta hyväksymissäännöt"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Set as Default"
-msgstr ""
+msgstr "Aseta oletukseksi"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Set expression"
-msgstr ""
+msgstr "Aseta lauseke"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Show Invisible Elements"
-msgstr ""
+msgstr "Näytä näkymättömät elementit"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Show by default"
-msgstr ""
+msgstr "Näytä oletusarvoisesti"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3614,7 +3691,7 @@ msgstr "Järjestä"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Sorting"
-msgstr ""
+msgstr "Lajittelu"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3628,14 +3705,14 @@ msgstr "Lähde"
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Specify all possible values"
-msgstr ""
+msgstr "Määritä kaikki mahdolliset arvot"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Stacked graph"
-msgstr ""
+msgstr "Pinottu kuvaaja"
 
 #. module: web_studio
 #. odoo-python
@@ -3657,7 +3734,7 @@ msgstr "Vaiheen nimi"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Stage and visualize records in a custom pipeline"
-msgstr ""
+msgstr "Vaiheistaa ja visualisoida tietueita mukautetussa ketjussa"
 
 #. module: web_studio
 #. odoo-python
@@ -3675,7 +3752,7 @@ msgstr "Alkupäivä"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Start Date Field"
-msgstr ""
+msgstr "Aloituspäiväkenttä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3685,7 +3762,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Stop Date Field"
-msgstr ""
+msgstr "Lopetuspäiväkenttä"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3705,55 +3782,55 @@ msgstr "Studio"
 #. module: web_studio
 #: model:ir.actions.client,name:web_studio.action_web_studio_app_creator
 msgid "Studio App Creator"
-msgstr ""
+msgstr "Studio Sovellusten luontiohjelma"
 
 #. module: web_studio
 #: model:ir.actions.act_window,name:web_studio.studio_approval_entry_action
 #: model:ir.ui.menu,name:web_studio.menu_studio_approval_entry
 msgid "Studio Approval Entries"
-msgstr ""
+msgstr "Studio hyväksyntämerkinnät"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_entry
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_form_view
 msgid "Studio Approval Entry"
-msgstr ""
+msgstr "Studio hyväksyntämerkintä"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_request
 msgid "Studio Approval Request"
-msgstr ""
+msgstr "Studio hyväksymispyyntö"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_rule
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_form_view
 msgid "Studio Approval Rule"
-msgstr ""
+msgstr "Studio hyväksyntäsääntö"
 
 #. module: web_studio
 #: model:ir.actions.act_window,name:web_studio.studio_approval_rule_action
 msgid "Studio Approvals"
-msgstr ""
+msgstr "Studio hyväksynnät"
 
 #. module: web_studio
 #: model:ir.ui.menu,name:web_studio.menu_studio_approval_rule
 msgid "Studio Approvals Rules"
-msgstr ""
+msgstr "Studio hyväksyntäsäännöt"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_ui_menu__is_studio_configuration
 msgid "Studio Configuration Menu"
-msgstr ""
+msgstr "Studio asetusvalikko"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_customizations_filter
 msgid "Studio Customizations"
-msgstr ""
+msgstr "Studio mukautukset"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_mixin
 msgid "Studio Mixin"
-msgstr ""
+msgstr "Studio Mixin"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3761,28 +3838,28 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Submenu label"
-msgstr ""
+msgstr "Alivalikon otsikko"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Subtotal & Total"
-msgstr ""
+msgstr "Välisumma ja kokonaismäärä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Subtotal & Total can only be used in these models: "
-msgstr ""
+msgstr "Välisummaa ja kokonaissummaa voidaan käyttää vain näissä malleissa:"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Subview %s"
-msgstr ""
+msgstr "Alanäkymä %s"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3790,7 +3867,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #, python-format
 msgid "Suggested features for your new model"
-msgstr ""
+msgstr "Ehdotetut ominaisuudet uuteen malliin"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3811,7 +3888,7 @@ msgstr "Pöytä"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Table style"
-msgstr ""
+msgstr "Taulukon tyyli"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3835,7 +3912,7 @@ msgstr "Tunnisteet"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Taxes amount by groups"
-msgstr ""
+msgstr "Verojen määrä ryhmittäin"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3849,7 +3926,7 @@ msgstr "Tekninen nimi"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Template '%s' not found"
-msgstr ""
+msgstr "Mallia '%s' ei löydy"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3865,14 +3942,14 @@ msgstr "Teksti"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Text decoration"
-msgstr ""
+msgstr "Tekstin tyyli"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Text in Cell"
-msgstr ""
+msgstr "Teksti solussa"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3882,6 +3959,8 @@ msgid ""
 "The approval rule is only applied to records matching the following "
 "condition:"
 msgstr ""
+"Hyväksymissääntöä sovelletaan vain tietueisiin, jotka täyttävät seuraavan "
+"ehdon:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3891,13 +3970,15 @@ msgid ""
 "The description will be shown to users to understand why they must ask for "
 "approval."
 msgstr ""
+"Kuvaus näytetään käyttäjille, jotta he ymmärtävät, miksi heidän on "
+"pyydettävä hyväksyntää."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "The fastest way to create a web application."
-msgstr ""
+msgstr "Nopein tapa luoda verkkosovellus."
 
 #. module: web_studio
 #. odoo-python
@@ -3907,7 +3988,7 @@ msgstr ""
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The field %s does not exist."
-msgstr ""
+msgstr "Kenttää %s ei ole olemassa."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3915,28 +3996,28 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/controllers/form_controller.js:0
 #, python-format
 msgid "The following approvals are missing:"
-msgstr ""
+msgstr "Seuraavat hyväksynnät puuttuvat:"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "The following fields are currently not in the view."
-msgstr ""
+msgstr "Seuraavat kentät eivät tällä hetkellä ole näkymässä."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The icon has not a correct format"
-msgstr ""
+msgstr "Kuvakkeella ei ole oikeaa muotoa"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The icon is not linked to an attachment"
-msgstr ""
+msgstr "Kuvaketta ei ole linkitetty liitetiedostoon"
 
 #. module: web_studio
 #. odoo-python
@@ -3946,14 +4027,14 @@ msgstr ""
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The model %s does not exist."
-msgstr ""
+msgstr "Mallia %s ei ole olemassa."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The model %s doesn't support adding fields."
-msgstr ""
+msgstr "Malli %s ei tue kenttien lisäämistä."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3963,27 +4044,29 @@ msgid ""
 "The new name can contain only a to z lower letters, numbers and _, with a "
 "maximum of 53 characters."
 msgstr ""
+"Uusi nimi voi sisältää vain a-z-alkuisia kirjaimia, numeroita ja _-merkkejä,"
+" mutta enintään 53 merkkiä."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The operation  type \"%s\" is not supported"
-msgstr ""
+msgstr "Toimintatyyppiä \"%s\" ei tueta"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "The record field name is missing"
-msgstr ""
+msgstr "Tietueen kentän nimi puuttuu"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The related field of a button has to be a many2one to %s."
-msgstr ""
+msgstr "Painikkeen liittyvän kentän on oltava many2one - %s."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3993,6 +4076,8 @@ msgid ""
 "The requested change caused an error in the view. It could be because a "
 "field was deleted, but still used somewhere else."
 msgstr ""
+"Pyydetty muutos aiheutti virheen näkymässä. Se voi johtua siitä, että kenttä"
+" on poistettu, mutta sitä käytetään edelleen jossain muualla."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4002,6 +4087,8 @@ msgid ""
 "The user who approves this rule will not be able to approve other rules for "
 "the same record."
 msgstr ""
+"Tämän säännön hyväksynyt käyttäjä ei voi hyväksyä muita samaa tietuetta "
+"koskevia sääntöjä."
 
 #. module: web_studio
 #. odoo-python
@@ -4011,27 +4098,29 @@ msgid ""
 "There are %s records using selection values not listed in those you are trying to save.\n"
 "Are you sure you want to remove the selection values of those records?"
 msgstr ""
+"On %s tietuetta, joissa käytetään valinta-arvoja, joita ei ole lueteltu niissä tietueissa, joita yrität tallentaa.\n"
+"Oletko varma, että haluat poistaa näiden tietueiden valinta-arvot?"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_manager.xml:0
 #, python-format
 msgid "There are no many2one fields related to the current model."
-msgstr ""
+msgstr "Nykyiseen malliin ei liity many2one-kenttiä."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "There is no method %s on the model %s (%s)"
-msgstr ""
+msgstr "Mallissa %s (%s) ei ole metodia %s"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editors/form/form_editor_renderer/form_editor_renderer_components.js:0
 #, python-format
 msgid "Third Status"
-msgstr ""
+msgstr "Kolmas tila"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4039,7 +4128,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/studio_home_menu.js:0
 #, python-format
 msgid "This action is not editable by Studio"
-msgstr ""
+msgstr "Studio ei voi muokata tätä toimintoa"
 
 #. module: web_studio
 #. odoo-python
@@ -4049,6 +4138,8 @@ msgid ""
 "This approval or the one you already submitted limits you to a single approval on this action.\n"
 "Another user is required to further approve this action."
 msgstr ""
+"Tämä hyväksyntä tai jo antamasi hyväksyntä rajoittaa sinut vain yhteen hyväksyntään tässä toimessa.\n"
+"Toisen käyttäjän on hyväksyttävä tämä toiminto edelleen."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4058,6 +4149,8 @@ msgid ""
 "This field is placed after another element that is only displayed under "
 "certain conditions."
 msgstr ""
+"Tämä kenttä sijoitetaan toisen elementin jälkeen, joka näytetään vain "
+"tietyissä olosuhteissa."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4067,13 +4160,14 @@ msgid ""
 "This field will be used when creating records directly from the calendar "
 "view."
 msgstr ""
+"Tätä kenttää käytetään luotaessa tietueita suoraan kalenterinäkymästä."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/common/abstract_editor_manager.js:0
 #, python-format
 msgid "This operation caused an error, probably because a xpath was broken"
-msgstr ""
+msgstr "Tämä toiminto aiheutti virheen, luultavasti koska xpath oli rikki"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4085,13 +4179,17 @@ msgid ""
 "custom report type that needs custom data to be rendered and so is not "
 "editable by studio."
 msgstr ""
+"Tätä raporttia ei voitu esikatsella tai muokata, koska sitä ei voitu "
+"renderöidä tämän viestin kanssa: %s. Tämä voi johtua siitä, että kyseessä on"
+" mukautettu raporttityyppi, jonka renderöinti edellyttää mukautettuja "
+"tietoja, joten studio ei voi muokata sitä."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "This rule has already been approved/rejected."
-msgstr ""
+msgstr "Tämä sääntö on jo hyväksytty/hylätty."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4100,6 +4198,7 @@ msgstr ""
 #, python-format
 msgid "This rule limits this user to a single approval for this action."
 msgstr ""
+"Tämä sääntö rajoittaa tämän käyttäjän yhteen hyväksyntään tälle toiminnolle."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4107,13 +4206,14 @@ msgstr ""
 #, python-format
 msgid "This user will be assigned a next activity when approval is requested."
 msgstr ""
+"Tälle käyttäjälle osoitetaan seuraava toiminto, kun hyväksyntää pyydetään."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Three Columns"
-msgstr ""
+msgstr "Kolme saraketta"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4127,21 +4227,21 @@ msgstr "Aikajana"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Timeline Views"
-msgstr ""
+msgstr "Aikajananäkymät"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Title Block"
-msgstr ""
+msgstr "Otsikkolohko"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "To <b>customize a field</b>, click on its <i>label</i>."
-msgstr ""
+msgstr "Voit <b>muokata kenttää</b> napsauttamalla sen <i>nimikettä</i>."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4151,13 +4251,15 @@ msgid ""
 "To create a one2many field on the current model, you must first create its "
 "many2one counterpart on the model you want to relate to."
 msgstr ""
+"Jos haluat luoda one2many-kentän nykyiseen malliin, sinun on ensin luotava "
+"sen many2one-vastine siihen malliin, johon haluat luoda yhteyden."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/report.py:0
 #, python-format
 msgid "To edit this document please create a record first"
-msgstr ""
+msgstr "Jos haluat muokata tätä asiakirjaa, luo ensin tietue"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4165,7 +4267,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/systray_item/systray_item.xml:0
 #, python-format
 msgid "Toggle Studio"
-msgstr ""
+msgstr "Kytke Studio päälle tai pois"
 
 #. module: web_studio
 #. odoo-python
@@ -4179,7 +4281,7 @@ msgstr "Yhteensä"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Two Columns"
-msgstr ""
+msgstr "Kaksi saraketta"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4193,7 +4295,7 @@ msgstr "Tyyppi"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Type down your notes here..."
-msgstr ""
+msgstr "Kirjoita muistiinpanosi tähän..."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4214,7 +4316,7 @@ msgstr "Peru"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Use colors"
-msgstr ""
+msgstr "Käytä värejä"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
@@ -4226,7 +4328,7 @@ msgstr "Käyttäjä"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "User assignment"
-msgstr ""
+msgstr "Käyttäjän määritys"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4234,14 +4336,14 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "User avatar placeholder"
-msgstr ""
+msgstr "Käyttäjän avatarin haltija"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "User is not a member of the selected group."
-msgstr ""
+msgstr "Käyttäjä ei ole valitun ryhmän jäsen."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4260,7 +4362,7 @@ msgstr "Arvo"
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Value of list"
-msgstr ""
+msgstr "Luettelon arvo"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4289,7 +4391,7 @@ msgstr "Näkyvissä"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Visible if"
-msgstr ""
+msgstr "On näkyvä, jos"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4297,21 +4399,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Waiting for approval"
-msgstr ""
+msgstr "Odotetaan hyväksyntää"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Want more fun? Let’s create more <b>views</b>."
-msgstr ""
+msgstr "Haluatko pitää lisää hauskaa? Luodaan lisää <b>näkymiä</b>."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Want to customize the background? Let’s activate <b>Odoo Studio</b>."
-msgstr ""
+msgstr "Haluatko muokata taustaa? Aktivoidaan <b>Odoo Studio</b>."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4325,7 +4427,7 @@ msgstr "Viikko"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Week Precision"
-msgstr ""
+msgstr "Viikkotarkkuus"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4339,24 +4441,24 @@ msgstr "Tervetuloa"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "What about a <b>Kanban view</b>?"
-msgstr ""
+msgstr "Entä <b>Kanban-näkymä</b>?"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__can_validate
 msgid "Whether the rule can be approved by the current user"
-msgstr ""
+msgstr "Voiko nykyinen käyttäjä hyväksyä säännön?"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
 msgid "Whether this model is abstract"
-msgstr ""
+msgstr "Onko tämä malli abstrakti"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/reports/report_kanban_view.js:0
 #, python-format
 msgid "Which type of report do you want to create?"
-msgstr ""
+msgstr "Minkä tyyppisen raportin haluat luoda?"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4381,20 +4483,23 @@ msgid ""
 "Wow, nice! And I’m sure you can make it even better! Use this icon to open "
 "<b>Odoo Studio</b> and customize any screen."
 msgstr ""
+"Vau, hienoa! Ja olen varma, että voit tehdä siitä vielä paremman! Käytä tätä"
+" kuvaketta <b>Odoo Studion</b> avaamiseen ja minkä tahansa näytön "
+"muokkaamiseen."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Write additional notes or comments"
-msgstr ""
+msgstr "Kirjoita lisähuomautuksia tai kommentteja"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "XML"
-msgstr ""
+msgstr "XML"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4408,14 +4513,14 @@ msgstr "Vuosi"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "You can only display a user or a partner"
-msgstr ""
+msgstr "Voit näyttää vain käyttäjän tai kumppanin"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "You cannot cancel an approval you didn't set yourself."
-msgstr ""
+msgstr "Et voi peruuttaa hyväksyntää, jota et ole itse asettanut."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4424,13 +4529,15 @@ msgstr ""
 #, python-format
 msgid "You cannot deactivate this view as it is the last one active."
 msgstr ""
+"Et voi poistaa tätä näkymää käytöstä, koska se on viimeinen aktiivinen "
+"näkymä."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/report.py:0
 #, python-format
 msgid "You cannot modify this view, it is part of the generic layout"
-msgstr ""
+msgstr "Tätä näkymää ei voi muokata, se on osa yleistä ulkoasua"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4440,27 +4547,29 @@ msgid ""
 "You cannot remove all the menu items of an app.\r\n"
 "Try uninstalling the app instead."
 msgstr ""
+"Et voi poistaa sovelluksen kaikkia valikkokohtia.\r\n"
+"Kokeile sen sijaan sovelluksen poistamista."
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_record.js:0
 #, python-format
 msgid "You first need to create a many2many field in the form view."
-msgstr ""
+msgstr "Sinun on ensin luotava many2many-kenttä lomakenäkymään."
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "You just like to break things, don't you?"
-msgstr ""
+msgstr "Sinä vain tykkäät rikkoa asioita, etkö vain?"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "You must have at least one option set"
-msgstr ""
+msgstr "Sinulla on oltava vähintään yksi asetus"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4468,21 +4577,21 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "You must select a related field"
-msgstr ""
+msgstr "Sinun on valittava asiaan liittyvä ala"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "You must select a relation"
-msgstr ""
+msgstr "Sinun on valittava suhde"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "You need to be part of these groups to see this field:"
-msgstr ""
+msgstr "Sinun on kuuluttava näihin ryhmiin nähdäksesi tämän kentän:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4491,13 +4600,15 @@ msgstr ""
 msgid ""
 "You need to use a many2many or one2many field to display a list of items"
 msgstr ""
+"Sinun on käytettävä many2many- tai one2many-kenttää näyttääksesi luettelon "
+"kohteista"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "bottom"
-msgstr ""
+msgstr "ala"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4512,14 +4623,14 @@ msgstr "päivä"
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "e.g. Properties"
-msgstr ""
+msgstr "esim. Ominaisuudet"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "e.g. Real Estate"
-msgstr ""
+msgstr "esim. kiinteistöt"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4557,7 +4668,7 @@ msgstr "px"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "reset color"
-msgstr ""
+msgstr "nollaa väri"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4571,14 +4682,14 @@ msgstr "oikea"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "studio_approval attribute can only be set in form views"
-msgstr ""
+msgstr "studio_approval-attribuutin voi asettaa vain lomakkeenäkymissä"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "test email"
-msgstr ""
+msgstr "testisähköposti"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4592,14 +4703,14 @@ msgstr "ylös"
 #: code:addons/web_studio/static/src/client_action/icon_creator/icon_creator.xml:0
 #, python-format
 msgid "upload it"
-msgstr ""
+msgstr "lataa se"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/icon_creator/icon_creator.xml:0
 #, python-format
 msgid "upload one"
-msgstr ""
+msgstr "lataa yksi"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4614,7 +4725,7 @@ msgstr "viikko"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "x_studio_"
-msgstr ""
+msgstr "x_studio_"
 
 #. module: web_studio
 #. odoo-javascript

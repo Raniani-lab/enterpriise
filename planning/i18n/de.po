@@ -15,7 +15,7 @@ msgstr ""
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -759,7 +759,7 @@ msgstr "Avatar 128"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Bartender"
-msgstr ""
+msgstr "Barpersonal"
 
 #. module: planning
 #: model:ir.model,name:planning.model_hr_employee_base
@@ -946,6 +946,10 @@ msgid ""
 "Create open shifts for the roles you need to complete a mission. Then, "
 "assign those open shifts to the resources that are available."
 msgstr ""
+"Definieren Sie die Funktionen, die Ihre Ressourcen ausführen (z. B. Koch, "
+"Barpersonal, Kellner ...). Erstellen Sie offene Schichten für die "
+"Funktionen, die Sie zur Erfüllung einer Mission benötigen. Weisen Sie dann "
+"diese offenen Schichten den verfügbaren Ressourcen zu."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -954,6 +958,10 @@ msgid ""
 "Create open shifts for the roles you will be needing to complete a mission. "
 "Then, assign those open shifts to the resources that are available."
 msgstr ""
+"Definieren Sie die Funktionen, die Ihre Ressourcen ausführen (z. B. Koch, "
+"Barpersonal, Kellner ...). Erstellen Sie offene Schichten für die "
+"Funktionen, die Sie zur Erfüllung einer Mission benötigen. Weisen Sie dann "
+"diese offenen Schichten den verfügbaren Ressourcen zu."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
@@ -1003,6 +1011,7 @@ msgstr "Anzeigename"
 #: model_terms:ir.actions.act_window,help:planning.planning_action_resources
 msgid "Distribute your material resources across projects and sales orders."
 msgstr ""
+"Verteilen Sie Ihre materiellen Ressourcen auf Projekte und Verkaufsaufträge."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -1490,7 +1499,7 @@ msgstr "Mein Schichtplan"
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Roles"
-msgstr ""
+msgstr "Meine Funktionen"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -1535,7 +1544,7 @@ msgstr "Noch keine Daten vorhanden!"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_resources
 msgid "No material resources found. Let's create one!"
-msgstr ""
+msgstr "Keine materiellen Ressourcen gefunden. Erstellen Sie eine!"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -1627,6 +1636,8 @@ msgid ""
 "Plan all of your shifts in one click by <b>copying the previous week's "
 "schedule</b>."
 msgstr ""
+"Planen Sie alle Ihre Schichten mit einem Klick, <b>indem Sie den Plan der "
+"Vorwoche kopieren.</b>"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__start_time
@@ -1898,7 +1909,7 @@ msgstr "Speichern"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.employee_no_email_list_wizard
 msgid "Save & Send Schedule"
-msgstr ""
+msgstr "Plan speichern und senden"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__template_creation
@@ -1936,6 +1947,8 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
+"Organisieren Sie Ihr Personal und Ihre materiellen Ressourcen nach "
+"Funktionen, Projekten und Verkaufsaufträgen."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__employee_token
@@ -2043,7 +2056,7 @@ msgstr "Kollidierende Schichten"
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Shifts of Your Department Member"
-msgstr ""
+msgstr "Schichten Ihrer Abteilungsmitglieder"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -2128,7 +2141,7 @@ msgstr "Die Frist für die Aufhebung der Zuweisung ist abgelaufen."
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_slot_template_check_duration_positive
 msgid "The duration cannot be negative."
-msgstr ""
+msgstr "Die Dauer kann nicht negativ sein."
 
 #. module: planning
 #. odoo-python
@@ -2249,7 +2262,7 @@ msgstr "Die Anfangszeit kann nicht negativ sein."
 #: code:addons/planning/models/planning_template.py:0
 #, python-format
 msgid "The start hour must be greater or equal to 0 and lower than 24."
-msgstr ""
+msgstr "Die Startuhrzeit muss größer oder gleich 0 und kleiner als 24 sein."
 
 #. module: planning
 #. odoo-javascript

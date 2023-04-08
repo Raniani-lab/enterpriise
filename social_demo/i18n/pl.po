@@ -5,6 +5,7 @@
 # Translators:
 # Maksym <ms@myodoo.pl>, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2022
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,8 +13,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2022\n"
-"Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -23,56 +24,56 @@ msgstr ""
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_youtube_account
 msgid "Channel: My Company"
-msgstr ""
+msgstr "Kanał: moja firma"
 
 #. module: social_demo
 #: model:product.product,name:social_demo.product_product_4
 #: model:product.template,name:social_demo.product_product_4_product_template
 msgid "Desk"
-msgstr ""
+msgstr "Biurko"
 
 #. module: social_demo
 #: model:product.product,name:social_demo.product_product_4b
 #: model:product.template,name:social_demo.product_product_4b_product_template
 msgid "Desk Variant B"
-msgstr ""
+msgstr "Biurko wariant B"
 
 #. module: social_demo
 #: model:product.product,name:social_demo.product_product_4c
 #: model:product.template,name:social_demo.product_product_4c_product_template
 msgid "Desk Variant C"
-msgstr ""
+msgstr "Biurko wariant C"
 
 #. module: social_demo
 #: model:product.product,name:social_demo.product_product_4d
 #: model:product.template,name:social_demo.product_product_4d_product_template
 msgid "Desk Variant D"
-msgstr ""
+msgstr "Biurko wariant D"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_instagram_account
 msgid "Instagram Posts: My Company"
-msgstr ""
+msgstr "Posty na Instagramie: moja firma"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_twitter_search
 msgid "Keyword: #mycompany"
-msgstr ""
+msgstr "Słowo kluczowe: #mycompany"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_twitter_search_competitor
 msgid "Keyword: #mycompetitor"
-msgstr ""
+msgstr "Słowo kluczowe: #mycompetitor"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_facebook_page
 msgid "Page Posts: My Company"
-msgstr ""
+msgstr "Posty na stronie: moja firma"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_linkedin_page
 msgid "Posts: My Company"
-msgstr ""
+msgstr "Posty: moja firma"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_account
@@ -82,7 +83,7 @@ msgstr "Konto w mediach społecznościowych"
 #. module: social_demo
 #: model:utm.campaign,title:social_demo.social_utm_campaign
 msgid "Social Campaign"
-msgstr ""
+msgstr "Kampania społecznościowa"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_live_post
@@ -107,7 +108,7 @@ msgstr "Post w kanale społecznościowym"
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_twitter_account
 msgid "Tweets of: My Company"
-msgstr ""
+msgstr "Tweety: moja firma"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_utm_campaign
@@ -131,4 +132,4 @@ msgstr "Jednostki"
 #: code:addons/social_demo/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "You cannot upload videos in demo mode."
-msgstr ""
+msgstr "Nie możesz przesłać wideo w trybie demo"

@@ -14,7 +14,7 @@ msgstr ""
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -30,7 +30,7 @@ msgstr "<i class=\"fa fa-fw fa-lg fa-truck me-3\" title=\"Transférer\"/>"
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.picking_view_kanban_inherit_barcode_picking_batch
 msgid "<span class=\"fa fa-external-link-square ms-1\" title=\"Open Batch Picking\"/>"
 msgstr ""
-"<span class=\"fa fa-external-link-square ms-1\" title=\"Ouvrir le picking "
+"<span class=\"fa fa-external-link-square ms-1\" title=\"Ouvrir le transfert "
 "par lot\"/>"
 
 #. module: stock_barcode_picking_batch
@@ -41,7 +41,7 @@ msgstr "Allocation"
 #. module: stock_barcode_picking_batch
 #: model:ir.actions.client,name:stock_barcode_picking_batch.stock_barcode_picking_batch_client_action
 msgid "Barcode Batch Picking Client Action"
-msgstr "Barcode Batch Picking Client Action"
+msgstr "Code-barre Transfert par lot Client Action"
 
 #. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_picking_batch
@@ -114,7 +114,7 @@ msgstr "Pas de transferts prêts trouvés"
 #: code:addons/stock_barcode_picking_batch/models/stock_picking_batch.py:0
 #, python-format
 msgid "Open picking batch form"
-msgstr "Ouvrir le formulaire de picking par lot"
+msgstr "Ouvrir le formulaire de transfert par lot"
 
 #. module: stock_barcode_picking_batch
 #. openerp-web

@@ -16,7 +16,7 @@ msgstr ""
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Abe Manyo, 2023\n"
-"Language-Team: Indonesian (https://www.transifex.com/odoo/teams/41243/id/)\n"
+"Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -251,6 +251,16 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    Yth <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">Nyonya/Pak</t>,<br/><br/>\n"
+"    Pesan otomatis ini untuk memberitahu Anda bahwa kami telah menutup tiket Anda (referensi <t t-out=\"object.id or ''\">15</t>).\n"
+"    Kami berharap layanan yang kami sediakan sesuai ekspektasi Anda.\n"
+"    Bila Anda memiliki pertanyaan atau komentar apapun, jangan sungkan untuk membalas e-mail ini untuk membuka ulang tiket Anda.<br/><br/>\n"
+"    Terima kasih untuk kooperasi Anda. hank you for your cooperation.<br/>\n"
+"    Salam hangat,<br/><br/>\n"
+"    Tim <t t-out=\"object.team_id.name or 'Helpdesk'\">Meja Bantuan</t>.\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.new_ticket_request_email_template
@@ -280,6 +290,30 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    Yth <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">Ibu/Bapak</t>,<br/><br/>\n"
+"    Permintaan Anda\n"
+"    <t t-if=\"object.get_portal_url()\">\n"
+"        <a t-attf-href=\"/my/ticket/{{ object.id }}/{{ object.access_token }}\" t-out=\"object.name or ''\"/>\n"
+"    </t>\n"
+"    telah diterima dan sedang ditinjau oleh tim <t t-out=\"object.team_id.name or ''\">Table legs are unbalanced</t> team.\n"
+"    Referensi untuk tiket Anda adalah <t t-out=\"object.id or ''\">15</t>.<br/>\n"
+"\n"
+"    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
+"        <a style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\" t-att-href=\"object.get_portal_url()\" target=\"_blank\">Lihat tiket</a><br/>\n"
+"    </div>\n"
+"\n"
+"    Untuk menambahkan komentar tambahan, balas email ini.<br/><br/>\n"
+"\n"
+"    <t t-if=\"object.team_id.show_knowledge_base\">\n"
+"        Tolong, jangan sungkan untuk mengunjungi <a t-attf-href=\"{{ object.team_id.get_knowledge_base_url() }}\">Pusat Bantuan</a> kami. Anda mungkin menemukan jawaban untuk pertanyaan-pertanyaan Anda di sana.\n"
+"        <br/><br/>\n"
+"    </t>\n"
+"\n"
+"    Terima kasih,<br/><br/>\n"
+"    Tim <t t-out=\"object.team_id.name or 'Helpdesk'\">Meja Bantuan</t> .\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -1100,6 +1134,8 @@ msgid ""
 "Create teams to organize your tickets by expertise or geographical region, "
 "and define a different workflow for each team."
 msgstr ""
+"Buat tim untuk mengatur tiket-tiket Anda berdasarkan keahlian atau lokasi "
+"geografis, dan tetapkan workflow yang berbeda untuk setiap tim."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -3165,7 +3201,7 @@ msgstr "Bagikan"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Share presentations and videos, and organize them into courses"
-msgstr ""
+msgstr "Bagi presentasi dan video, dan atur mereka di dalam kursus"
 
 #. module: helpdesk
 #: model:res.groups,name:helpdesk.group_use_rating
@@ -3323,7 +3359,7 @@ msgstr "Label"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_tag_action
 msgid "Tags are perfect for organizing your tickets."
-msgstr ""
+msgstr "Tag merupakan cara terbaik untuk mengatur tiket-tiket Anda."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -3858,7 +3894,7 @@ msgstr "Mendesak"
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Use <b>activities</b> to organize your daily work."
-msgstr ""
+msgstr "Gunakan <b>aktivitas</b> untuk mengatur tugas sehari-hari Anda."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__use_coupons

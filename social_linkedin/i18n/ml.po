@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
-"Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
+"Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -67,7 +67,7 @@ msgstr ""
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "കോൺഫിഗറേഷൻ സെറ്റിങ്‌സ്"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_post__display_linkedin_preview
@@ -80,13 +80,13 @@ msgstr ""
 #: code:addons/social_linkedin/static/src/xml/social_linkedin_templates.xml:0
 #, python-format
 msgid "Likes"
-msgstr ""
+msgstr "ലൈക്സ്"
 
 #. module: social_linkedin
 #: model:ir.model.fields.selection,name:social_linkedin.selection__social_media__media_type__linkedin
 #: model:social.media,name:social_linkedin.social_media_linkedin
 msgid "LinkedIn"
-msgstr ""
+msgstr "ലിങ്ക്ഡ്ഇൻ"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_account__linkedin_account_id
@@ -162,7 +162,7 @@ msgstr ""
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "മീഡിയ ടൈപ്പ്"
 
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.linkedin_preview
@@ -177,17 +177,17 @@ msgstr ""
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "സോഷ്യൽ അക്കൗണ്ട്"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_live_post
 msgid "Social Live Post"
-msgstr ""
+msgstr "സോഷ്യൽ ലൈവ് പോസ്റ്റ്"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_media
 msgid "Social Media"
-msgstr ""
+msgstr "സോഷ്യൽ മീഡിയ"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_post
@@ -197,17 +197,17 @@ msgstr "സോഷ്യൽ പോസ്റ്റ്"
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "സോഷ്യൽ പോസ്റ്റ് ടെംപ്ലേറ്റ്"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_stream
 msgid "Social Stream"
-msgstr ""
+msgstr "സോഷ്യൽ സ്ട്രീം"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_stream_post
 msgid "Social Stream Post"
-msgstr ""
+msgstr "സോഷ്യൽ സ്ട്രീം പോസ്റ്റ്"
 
 #. module: social_linkedin
 #: model:ir.model.fields,help:social_linkedin.field_social_account__linkedin_access_token
@@ -221,6 +221,7 @@ msgid ""
 "The url that this service requested returned an error. Please contact the "
 "author of the app."
 msgstr ""
+"ഈ സേവനം അഭ്യർത്ഥിച്ച url ഒരു പിശക് നൽകി. ആപ്പിന്റെ രചയിതാവിനെ ബന്ധപ്പെടുക."
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/models/social_account.py:0

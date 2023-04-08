@@ -17,7 +17,7 @@ msgstr ""
 "POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
-"Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
+"Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -68,6 +68,8 @@ msgid ""
 "Check this if you want to use your personal LinkedIn Developer Account "
 "instead of the provided one."
 msgstr ""
+"Zaznacz to, jeśli chcesz użyć swojego osobistego konta deweloperskiego "
+"LinkedIn zamiast dostarczonego."
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_res_config_settings
@@ -96,13 +98,13 @@ msgstr "LinkedIn"
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_account__linkedin_account_id
 msgid "LinkedIn Account ID"
-msgstr ""
+msgstr "ID konta LinkedIn"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_account__linkedin_account_urn
 #: model:ir.model.fields,help:social_linkedin.field_social_account__linkedin_account_urn
 msgid "LinkedIn Account URN"
-msgstr ""
+msgstr "URN konta LinkedIn"
 
 #. module: social_linkedin
 #. openerp-web
@@ -110,12 +112,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_comments_count
 #, python-format
 msgid "LinkedIn Comments"
-msgstr ""
+msgstr "Komentarze LinkedIn"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_likes_count
 msgid "LinkedIn Likes"
-msgstr ""
+msgstr "Polubienia LinkedIn"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_post__linkedin_preview
@@ -136,17 +138,17 @@ msgstr "Token dostępu LinkedIn"
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_author_id
 msgid "LinkedIn author ID"
-msgstr ""
+msgstr "ID autora LinkedIn"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_author_urn
 msgid "LinkedIn author URN"
-msgstr ""
+msgstr "URN autora LinkedIn"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_author_image_url
 msgid "LinkedIn author image URL"
-msgstr ""
+msgstr "URL obrazu autora LinkedIn"
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/controllers/main.py:0
@@ -157,12 +159,12 @@ msgstr "LinkedIn nie dostarczył ważnego tokenu dostępu."
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_post_urn
 msgid "LinkedIn post URN"
-msgstr ""
+msgstr "URN posta LinkedIn"
 
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.res_config_settings_view_form
 msgid "Linkedin Developer Account"
-msgstr ""
+msgstr "Konto deweloperskie LinkedIn"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_media__media_type
@@ -273,6 +275,8 @@ msgid ""
 "We could not upload your image, try reducing its size and posting it again "
 "(error: Failed during upload registering)."
 msgstr ""
+"Nie mogliśmy przesłać Twojego obrazu, spróbuj zmniejszyć jego rozmiar i "
+"przesłać go ponownie (błąd: Failed during upload registering)."
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/models/social_live_post.py:0
@@ -280,12 +284,14 @@ msgstr ""
 msgid ""
 "We could not upload your image, try reducing its size and posting it again."
 msgstr ""
+"Nie mogliśmy załadować Twojego obrazu, spróbuj zmniejszyć jego rozmiar i "
+"zamieścić go ponownie."
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/models/social_stream.py:0
 #, python-format
 msgid "Wrong stream type for \"%s\""
-msgstr ""
+msgstr "Nieprawidłowy typ strumienia dla \"%s\""
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/models/social_media.py:0

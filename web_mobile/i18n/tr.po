@@ -3,10 +3,10 @@
 # 	* web_mobile
 # 
 # Translators:
-# Umur Akın <umura@projetgrup.com>, 2022
 # Levent Karakaş <levent@mektup.at>, 2022
 # Murat Durmuş <muratd@projetgrup.com>, 2022
 # cagri erarslan <cagri.erarslan@mechsoft.com.tr>, 2022
+# Halil, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,8 +14,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:25+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: cagri erarslan <cagri.erarslan@mechsoft.com.tr>, 2022\n"
-"Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
+"Last-Translator: Halil, 2023\n"
+"Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/web_mobile/static/src/js/user_menu_items.js:0
 #, python-format
 msgid "Add to Home Screen"
-msgstr "Ekrana Home Tuşu Ekleyin"
+msgstr "Ana Ekrana Ekle"
 
 #. module: web_mobile
 #: model:ir.model,name:web_mobile.model_res_partner

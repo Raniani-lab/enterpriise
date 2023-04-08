@@ -14,7 +14,7 @@ msgstr ""
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -204,8 +204,8 @@ msgid ""
 "Allow to validate a picking even if nothing was scanned yet (and so, do an "
 "immediate transfert)"
 msgstr ""
-"Autoriser la validation d'un picking même si rien n'a encore été scanné (et "
-"donc, faire un transfert immédiat)"
+"Autoriser la validation d'un transfert même si rien n'a encore été scanné "
+"(et donc, faire un transfert immédiat)"
 
 #. module: stock_barcode
 #. openerp-web
@@ -679,14 +679,14 @@ msgstr ""
 #, python-format
 msgid "No picking or location or product corresponding to barcode %(barcode)s"
 msgstr ""
-"Aucun picking, emplacement ou produit correspondant à ce code-barres "
+"Aucun transfert, emplacement ou produit correspondant à ce code-barres "
 "%(barcode)s"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/controllers/stock_barcode.py:0
 #, python-format
 msgid "No picking or product corresponding to barcode %(barcode)s"
-msgstr "Aucun picking ou produit correspondant à ce code-barres %(barcode)s"
+msgstr "Aucun transfert ou produit correspondant à ce code-barres %(barcode)s"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
@@ -709,14 +709,14 @@ msgstr "Pas le scan attendu"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.picking_view_kanban_inherit_barcode
 msgid "Open picking"
-msgstr "Ouvrir le picking"
+msgstr "Ouvrir le transfert"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #: model:ir.actions.act_window,name:stock_barcode.open_picking
 #, python-format
 msgid "Open picking form"
-msgstr "Ouvrir un formulaire de picking"
+msgstr "Ouvrir un formulaire de transfert"
 
 #. module: stock_barcode
 #. openerp-web
@@ -774,17 +774,17 @@ msgstr "Nombre de mouvements partiels"
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
 msgid "Picking"
-msgstr "Picking"
+msgstr "Transfert"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_barcode
 msgid "Picking Details"
-msgstr "Détails du picking"
+msgstr "Détails du transfert"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking_type
 msgid "Picking Type"
-msgstr "Type de picking"
+msgstr "Type de transfert"
 
 #. module: stock_barcode
 #. openerp-web
@@ -843,7 +843,7 @@ msgstr "Imprimer des colis"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Print Picking Operations"
-msgstr "Imprimer opérations de picking"
+msgstr "Imprimer opérations de transfert"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
@@ -1390,14 +1390,14 @@ msgstr "Ce colis est déjà scanné."
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "This picking is already done"
-msgstr "Ce picking est déjà effectué"
+msgstr "Ce transfert est déjà effectué"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "This picking is cancelled"
-msgstr "Ce picking est annulé"
+msgstr "Ce transfert est annulé"
 
 #. module: stock_barcode
 #. openerp-web

@@ -14,7 +14,7 @@ msgstr ""
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
-"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -254,10 +254,10 @@ msgid ""
 "the average MRR of a subscription by the churn rate (e.g. if your average "
 "MRR is $ 100 and your churn rate is 5%, the LTV will be $ 100/5% = $ 2,000)"
 msgstr ""
-"Verwachte levenslange inkomsten van een gemiddeld abonnement; verkregen door"
-" de gemiddelde MRR van een abonnement te delen door het verlooppercentage "
-"(bijv. als je gemiddelde MRR $ 100 is en je verlooppercentage 5%, is de LTV "
-"$ 100/5% = $ 2.000)"
+"Verwachte levenslange omzet van een gemiddeld abonnement; verkregen door de "
+"gemiddelde MRR van een abonnement te delen door het verlooppercentage (bijv."
+" als je gemiddelde MRR $ 100 is en je verlooppercentage 5%, is de LTV $ "
+"100/5% = $ 2.000)"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -382,7 +382,7 @@ msgid ""
 "                        non-recurring revenues in these invoices for this particular salesperson."
 msgstr ""
 "Maak een lijst van alle facturen met eenmalige verkopen en het bedrag van:\n"
-"eenmalige inkomsten in deze facturen voor deze specifieke verkoper."
+"eenmalige omzet in deze facturen voor deze specifieke verkoper."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -423,14 +423,14 @@ msgid ""
 "MRR for short; total subscription revenue per month (e.g. for an annual "
 "subscription of $ 1,200, the MRR is $ 100)"
 msgstr ""
-"MRR in het kort; totale abonnementsinkomsten per maand (bijv. voor een "
+"MRR in het kort; totale abonnementsomzet per maand (bijv. voor een "
 "jaarabonnement van $ 1.200 is de MRR $ 100)"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Monthly Recurring Revenue"
-msgstr "Maandelijks terugkerende inkomsten"
+msgstr "Maandelijks terugkerende omzet"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -438,14 +438,14 @@ msgstr "Maandelijks terugkerende inkomsten"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Monthly Recurring Revenue :"
-msgstr "Maandelijks terugkerende inkomsten:"
+msgstr "Maandelijks terugkerende omzet:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Monthly Recurring Revenue Growth"
-msgstr "Maandelijks terugkerende inkomsten groei"
+msgstr "Maandelijks terugkerende omzetgroei"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -546,7 +546,7 @@ msgstr "Odoo foutmelding"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "One-shot revenue that is not part of a subscription"
-msgstr "Eenmalige inkomsten die geen deel uitmaken van een abonnement."
+msgstr "Eenmalige omzet die geen deel uitmaken van een abonnement."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -858,8 +858,7 @@ msgstr "Dit kwartaal"
 #, python-format
 msgid "Total net revenue (all invoices emitted during the period)"
 msgstr ""
-"Totale netto-inkomsten (alle facturen die tijdens de periode zijn "
-"verzonden)."
+"Totale netto-omzet(alle facturen die tijdens de periode zijn verzonden)."
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -869,8 +868,8 @@ msgid ""
 "Total subscription revenue per month (e.g. for an annual subscription of $ "
 "1,200, the MRR is $ 100)"
 msgstr ""
-"Totale abonnementsinkomsten per maand (bijv. Voor een jaarabonnement van $ "
-"1.200 is de MRR $ 100)"
+"Totale abonnementsomzet per maand (bijv. Voor een jaarabonnement van $ 1.200"
+" is de MRR $ 100)"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0

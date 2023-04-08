@@ -13,7 +13,7 @@ msgstr ""
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -689,6 +689,8 @@ msgid ""
 "This is the minimum free stock you want to keep for that product at all "
 "times."
 msgstr ""
+"Dies ist der freie Mindestbestand, den Sie für dieses Produkt immer "
+"vorhalten wollen."
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
@@ -708,12 +710,14 @@ msgstr "Aufzufüllen"
 msgid ""
 "Unless the demand is 0, Odoo will always at least replenish this quantity."
 msgstr ""
+"Wenn der Bedarf nicht gleich 0 ist, wird Odoo diese Menge immer mindestens "
+"auffüllen."
 
 #. module: mrp_mps
 #: code:addons/mrp_mps/models/res_company.py:0
 #, python-format
 msgid "Week {week_num} ({start_date}-{end_date}/{month})"
-msgstr ""
+msgstr "Wochek {week_num} ({start_date}-{end_date}/{month})"
 
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__week

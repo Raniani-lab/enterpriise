@@ -7,6 +7,7 @@
 # Martin Trigaux, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2022
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,8 +15,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:25+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Tomasz Leppich <t.leppich@gmail.com>, 2022\n"
-"Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -31,13 +32,16 @@ msgid ""
 "            %(rental_period)s.\n"
 "            "
 msgstr ""
+"\n"
+"Pytałeś o %(desired_qty)s produkty, ale tylko %(new_qty)s są dostępne w\n"
+"%(rental_period)s."
 
 #. module: website_sale_stock_renting
 #. openerp-web
 #: code:addons/website_sale_stock_renting/static/src/js/renting_mixin.js:0
 #, python-format
 msgid "- From %s to %s.\n"
-msgstr ""
+msgstr "-  Od %s do %s.\n"
 
 #. module: website_sale_stock_renting
 #. openerp-web
@@ -71,7 +75,7 @@ msgstr "Pozycja zamówienia sprzedaży"
 #: code:addons/website_sale_stock_renting/static/src/js/renting_mixin.js:0
 #, python-format
 msgid "The product is not available for all the selected time period:\n"
-msgstr ""
+msgstr "Produkt nie jest dostępny dla całego zaznaczonego okresu:\n"
 
 #. module: website_sale_stock_renting
 #. openerp-web
@@ -87,7 +91,7 @@ msgstr "już dodałeś"
 msgid ""
 "You already added all the available product in your cart during the selected"
 " period."
-msgstr ""
+msgstr "W wybranym okresie dodałeś już wszystkie dostępne w koszyku produkty."
 
 #. module: website_sale_stock_renting
 #. openerp-web
@@ -95,23 +99,27 @@ msgstr ""
 #, python-format
 msgid "Your rental product cannot be prepared as fast, please rent later."
 msgstr ""
+"Twój produkt do wypożyczenia nie może być przygotowany tak szybko, prosimy o"
+" późniejsze wypożyczenie."
 
 #. module: website_sale_stock_renting
 #: code:addons/website_sale_stock_renting/models/sale_order.py:0
 #, python-format
 msgid "Your rental product cannot be prepared on time, please rent later."
 msgstr ""
+"Twój produkt do wypożyczenia nie może być przygotowany na czas, prosimy o "
+"wypożyczenie w późniejszym terminie."
 
 #. module: website_sale_stock_renting
 #. openerp-web
 #: code:addons/website_sale_stock_renting/static/src/xml/website_sale_stock_renting_product_availability.xml:0
 #, python-format
 msgid "in your cart for the selected period."
-msgstr ""
+msgstr "w koszyku dla zaznaczonego okresu."
 
 #. module: website_sale_stock_renting
 #. openerp-web
 #: code:addons/website_sale_stock_renting/static/src/xml/website_sale_stock_renting_product_availability.xml:0
 #, python-format
 msgid "still available during the selected period."
-msgstr ""
+msgstr "ciągle dostępne w ciągu zaznaczonego okresu."

@@ -15,7 +15,7 @@ msgstr ""
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -150,7 +150,7 @@ msgstr "<b>Unterzeichner:</b>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Solid Waste:</b> 1290 Pounds = 1290*0.4536 = 585.14 kg"
-msgstr ""
+msgstr "<b>Feststoffabfall:</b> 1290 Pfund = 1290*0,4536 = 585,14 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -214,7 +214,7 @@ msgstr "<i class=\"fa fa-globe\"/> Ansicht"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "<small><i> Canceled </i></small>"
-msgstr ""
+msgstr "<small><i> Abgebrochen </i></small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
@@ -232,6 +232,9 @@ msgid ""
 "<small>Email Verification: The signatory has confirmed control of their "
 "email inbox by clicking on a unique link</small>"
 msgstr ""
+"<small>E-Mail-Bestätigung: Der Unterzeichner hat die Kontrolle über sein "
+"E-Mail-Postfach bestätigt, indem er auf einen einmaligen Link geklickt "
+"hat.</small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -1859,7 +1862,7 @@ msgstr "Hauptanhänge"
 #: code:addons/sign/models/sign_template.py:0
 #, python-format
 msgid "Malformed expression: %(exp)s"
-msgstr ""
+msgstr "Fehlerhafter Ausdruck: %(exp)s"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__group_manage_template_access
@@ -1888,6 +1891,8 @@ msgstr "Error beim senden der Nachricht"
 #: model:ir.model.fields,help:sign.field_sign_send_request__message_cc
 msgid "Message to be sent to contacts in copy of the signed document"
 msgstr ""
+"Nachricht, die an die Kontakte im CC des unterzeichneten Dokuments gesendet "
+"werden soll"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_send_request__message
@@ -2078,7 +2083,7 @@ msgstr "Noch kein Dokument"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "No specified reason"
-msgstr ""
+msgstr "Kein angegebener Grund"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
@@ -2936,12 +2941,12 @@ msgstr "Signaturanfrageelement"
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_item_action
 msgid "Signature Request Items"
-msgstr ""
+msgstr "Signaturanfrageelemente"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__sign_request_item_id
 msgid "Signature Request item"
-msgstr ""
+msgstr "Signaturanfrageelement"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_request_ids
@@ -3000,6 +3005,8 @@ msgstr "Signaturen"
 #: model:ir.model.fields,help:sign.field_sign_send_request__set_sign_order
 msgid "Signatures will be requested from lowest order to highest order."
 msgstr ""
+"Die Signaturen werden in der Reihenfolge vom niedrigsten zum höchsten Rang "
+"verlangt."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -3346,11 +3353,13 @@ msgid ""
 "The completed document cannot be created because the sign request is not "
 "fully signed"
 msgstr ""
+"Das vervollständigte Dokument kann nicht erstellt werden, weil die "
+"Signaturanfrage nicht vollständig signiert ist."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "The computation is based on the website"
-msgstr ""
+msgstr "Die Berechnung stützt sich auf die Website"
 
 #. module: sign
 #. odoo-python
@@ -3360,6 +3369,8 @@ msgid ""
 "The contact of %(role)s has been changed from %(old_partner)s to "
 "%(new_partner)s."
 msgstr ""
+"Der Kontakt von %(role)s wurde von %(old_partner)s in %(new_partner)s "
+"geänder."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
@@ -3503,6 +3514,11 @@ msgid ""
 "number of contacts in copy if the sign request is signed) = total of pages. "
 "We assume that one page weights 0.005 kilograms."
 msgstr ""
+"Die Gesamtzahl der von Ihnen gesparten Blätter ergibt sich aus: Anzahl der "
+"gesendeten Signaturanfragen x Anzahl der Blätter im Dokument x (Anzahl der "
+"Kontakte, die unterschreiben müssen + Anzahl der Kontakte in Kopie, wenn die"
+" Signaturanfrage unterschrieben ist) = Gesamtzahl der Seiten. Wir gehen "
+"davon aus, dass eine Seite 0,005 Kilogramm wiegt."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
@@ -3515,6 +3531,8 @@ msgstr "Es gibt keine Signaturanfragen."
 #, python-format
 msgid "These files cannot be read, they may be corrupted or encrypted."
 msgstr ""
+"Diese Dateien können nicht gelesen werden, sie sind möglicherweise korrupt "
+"oder verschlüsselt."
 
 #. module: sign
 #. odoo-javascript
@@ -3581,6 +3599,8 @@ msgid ""
 "This will keep all the already completed signature of this request and "
 "disable every sent access, are you sure?"
 msgstr ""
+"Dadurch werden alle bereits vervollständigten Signaturen dieser Anfrage "
+"beibehalten und alle gesendeten Zugänge deaktiviert. Möchten Sie fortfahren?"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__tip
@@ -3674,7 +3694,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_role__auth_method__sms
 msgid "Unique Code via SMS"
-msgstr ""
+msgstr "Einmaliger Code über SMS"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__update
@@ -3862,6 +3882,8 @@ msgid ""
 "We'll send an email to warn other contacts in copy & signers with the reason"
 " you provided."
 msgstr ""
+"Wir senden eine E-Mail an andere Kontakte in Kopie & Unterzeichner mit dem "
+"von Ihnen angegebenen Grund."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__website_message_ids
@@ -3932,7 +3954,7 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "You can only add new items for the current role"
-msgstr ""
+msgstr "Sie können nur Elemente für die aktuelle Rolle hinzufügen"
 
 #. module: sign
 #. odoo-python
@@ -3968,6 +3990,8 @@ msgid ""
 "You have templates or requests using a role with an extra-authentication step with few credits remaining.<br/>\n"
 "                To remove this warning, disable the extra-authentication step in the <code>Configuration &gt; Roles</code> menu, or buy credits."
 msgstr ""
+"Sie haben Vorlagen oder Anfragen, die eine Rolle mit einem zusätzlichen Authentifizierungsschritt verwenden und nur noch wenig Guthaben haben.<br/>\n"
+"                Um diese Warnung zu entfernen, deaktivieren Sie den zusätzlichen Authentifizierungsschritt im Menü <code>Konfiguration &gt; Rollen</code> oder kaufen Sie Guthaben."
 
 #. module: sign
 #. odoo-python
@@ -3975,6 +3999,7 @@ msgstr ""
 #, python-format
 msgid "You must specify one signer for each role of your sign template"
 msgstr ""
+"Sie müssen für jede Rolle Ihrer Signaturvorlage einen Unterzeichner angeben"
 
 #. module: sign
 #. odoo-python
@@ -4080,17 +4105,19 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "and:"
-msgstr ""
+msgstr "und:"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "authentication step will be skipped if you are out of credits."
 msgstr ""
+"Authentifizierungsschritt wird übersprungen, wenn Sie kein Guthaben mehr "
+"haben."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "authentication. The"
-msgstr ""
+msgstr "Authentifizierung. Die"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
@@ -4098,6 +4125,8 @@ msgid ""
 "because you don't have enough credits for this operation. \n"
 "                    The signatory was able to finish signing, but was not asked to authenticate fully."
 msgstr ""
+", weil Sie nicht genug Guthaben für diesen Vorgang haben. \n"
+"                    Der Unterzeichner konnte seine Unterschrift beenden, wurde aber nicht aufgefordert, sich vollständig zu authentifizieren."
 
 #. module: sign
 #. odoo-javascript
@@ -4149,7 +4178,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
 msgid "has been signed by"
-msgstr ""
+msgstr "wurde unterzeichnet von"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -4226,7 +4255,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
 msgid "without the requested extra-authentification step ("
-msgstr ""
+msgstr "ohne den erforderlichen zusätzlichen Authentifizierungsschritt ("
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed

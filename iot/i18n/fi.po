@@ -24,7 +24,7 @@ msgstr ""
 "POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
-"Language-Team: Finnish (https://www.transifex.com/odoo/teams/41243/fi/)\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -198,7 +198,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__connection
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Connection"
-msgstr ""
+msgstr "Yhteys"
 
 #. module: iot
 #. openerp-web
@@ -289,7 +289,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
 #: model:ir.model.fields,field_description:iot.field_iot_device__iot_ip
 msgid "Domain Address"
-msgstr ""
+msgstr "Verkkotunnuksen osoite"
 
 #. module: iot
 #. openerp-web
@@ -338,7 +338,7 @@ msgstr "ID"
 #. module: iot
 #: model:ir.model,name:iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "IoT-laite"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__identifier
@@ -373,7 +373,7 @@ msgstr ""
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
 msgid "IoT"
-msgstr ""
+msgstr "Esineiden internet (IoT)"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_box
@@ -459,12 +459,12 @@ msgstr "Ulkoasu"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manual_measurement
 msgid "Manual Measurement"
-msgstr ""
+msgstr "Manuaalinen mittaus"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__manual_measurement
 msgid "Manually read the measurement from the device"
-msgstr ""
+msgstr "Mittauksen lukeminen laitteesta manuaalisesti"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__is_scanner

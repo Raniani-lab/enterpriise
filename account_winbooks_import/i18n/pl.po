@@ -13,6 +13,7 @@
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2022
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,8 +21,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2022\n"
-"Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -113,14 +114,14 @@ msgstr "Importuj"
 #. module: account_winbooks_import
 #: model_terms:ir.ui.view,arch_db:account_winbooks_import.winbooks_import_form
 msgid "Import (safe-mode)"
-msgstr ""
+msgstr "importuj (safe-mode)"
 
 #. module: account_winbooks_import
 #. openerp-web
 #: code:addons/account_winbooks_import/static/src/xml/account_winbooks_import.xml:0
 #, python-format
 msgid "Import WBK"
-msgstr ""
+msgstr "Importuj WBK"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__only_open
@@ -166,7 +167,7 @@ msgstr "Nie wykonano"
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "Please define the country on your company."
-msgstr ""
+msgstr "Proszę określić kraj na swojej firmie."
 
 #. module: account_winbooks_import
 #: model_terms:ir.ui.view,arch_db:account_winbooks_import.winbooks_import_form
@@ -197,6 +198,8 @@ msgid ""
 "The following banks were used for multiple partners in Winbooks, which is not allowed in Odoo. The bank number has been only set on one of each group:\n"
 "%s"
 msgstr ""
+"W Winbooks dla wielu partnerów użyto następujących banków, co jest niedopuszczalne w Odoo. Numer banku został ustawiony tylko na jednym z każdej grupy:\n"
+"%s"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,help:account_winbooks_import.field_account_winbooks_import_wizard__suspense_code
@@ -232,4 +235,4 @@ msgstr ""
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "You should install a Fiscal Localization first."
-msgstr ""
+msgstr "W pierwszej kolejności należy zainstalować lokalizację fiskalną."

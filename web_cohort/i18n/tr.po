@@ -12,6 +12,7 @@
 # Tugay Hatıl <tugayh@projetgrup.com>, 2022
 # abc Def <hdogan1974@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Halil, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,8 +20,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
-"Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
+"Last-Translator: Halil, 2023\n"
+"Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -53,12 +54,6 @@ msgid "Average"
 msgstr "Ortalama"
 
 #. module: web_cohort
-#: code:addons/web_cohort/controllers/main.py:0
-#, python-format
-msgid "Average Value"
-msgstr ""
-
-#. module: web_cohort
 #: model:ir.model,name:web_cohort.model_base
 msgid "Base"
 msgstr "Temel"
@@ -73,7 +68,7 @@ msgstr "Kohort"
 #: code:addons/web_cohort/controllers/main.py:0
 #, python-format
 msgid "Cohort %(title)s (%(model_name)s)"
-msgstr "Cohort %(title)s (%(model_name)s)"
+msgstr "Kohort %(title)s (%(model_name)s)"
 
 #. module: web_cohort
 #. openerp-web

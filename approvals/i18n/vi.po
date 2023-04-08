@@ -13,7 +13,7 @@ msgstr ""
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Thi Huong Nguyen, 2023\n"
-"Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
+"Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -58,7 +58,7 @@ msgstr "Hoạt động"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Hành động Ngoại lệ"
+msgstr "Hoạt động ngoại lệ"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_state
@@ -700,7 +700,7 @@ msgstr "Ghi nhận"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_main_attachment_id
 msgid "Main Attachment"
-msgstr "Tệp đính kèm Chính"
+msgstr "Tệp đính kèm chính"
 
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_manager
@@ -1167,6 +1167,7 @@ msgstr "Bạn không thể phê duyệt trước người phê duyệt trước 
 msgid ""
 "You cannot assign the same approver multiple times on the same request."
 msgstr ""
+"Bạn không thể giao cùng một yêu cầu cho cùng một người phê duyệt nhiều lần."
 
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0

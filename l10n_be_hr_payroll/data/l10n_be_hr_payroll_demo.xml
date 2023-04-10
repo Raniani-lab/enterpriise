@@ -43,8 +43,8 @@
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"/>
     </record>
 
-    <!-- Stress day -->
-    <record id="hr_leave_stress_day_be" model="hr.leave.stress.day">
+    <!-- Mandatory day -->
+    <record id="hr_leave_mandatory_day_be" model="hr.leave.mandatory.day">
         <field name="name">Annual Event</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="start_date" eval="(datetime.today() + relativedelta(days=+21)).strftime('%Y-%m-%d 07:00:00')"></field>

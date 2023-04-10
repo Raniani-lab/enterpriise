@@ -543,7 +543,7 @@ class Task(models.Model):
         return response
 
     def _get_hours_to_plan(self):
-        return self.planned_hours
+        return self.allocated_hours
 
     @api.model
     def _compute_schedule(self, user, calendar, date_start, date_end, company=None):
@@ -826,7 +826,7 @@ class Task(models.Model):
             :param search_forward: The search direction. Having search_forward truthy causes the search to be made
                                    chronologically.
                                    Having search_forward falsy causes the search to be made reverse chronologically.
-            :return: tuple ``(planned_hours, searched_date)``.
+            :return: tuple ``(allocated_hours, searched_date)``.
         """
         if not intervals:
             return hours_to_plan, searched_date
@@ -865,16 +865,16 @@ class Task(models.Model):
         )
 
         search_factor = 1 if search_forward else -1
-        if not self.planned_hours:
+        if not self.allocated_hours:
             # If there are no planned hours, keep the current duration
             duration = search_factor * (self[stop_date_field_name] - self[start_date_field_name])
             return sorted([first_datetime, first_datetime + duration])
 
         searched_date = current = first_datetime
-        planned_hours = timedelta(hours=self.planned_hours)
+        allocated_hours = timedelta(hours=self.allocated_hours)
 
         # Keeps track of the hours that have already been covered.
-        hours_to_plan = planned_hours
+        hours_to_plan = allocated_hours
         MIN_NUMB_OF_WEEKS = 1
         MAX_ELAPSED_TIME = timedelta(weeks=53)
         resource_entity = self._web_gantt_reschedule_get_resource_entity()
@@ -1043,7 +1043,7 @@ class Task(models.Model):
             ('planned_date_end', '>=', start_naive),
         ])
 
-        planned_hours_mapped = defaultdict(float)
+        allocated_hours_mapped = defaultdict(float)
         user_work_intervals, _dummy = users.sudo()._get_valid_work_intervals(start, stop)
         for task in project_tasks:
             # if the task goes over the gantt period, compute the duration only within
@@ -1058,10 +1058,10 @@ class Task(models.Model):
             nb_hours_per_user = (sum_intervals(interval) / (len(task.user_ids) or 1)) if duration < 24 else 0.0
             for user in task.user_ids:
                 if duration < 24:
-                    planned_hours_mapped[user.id] += nb_hours_per_user
+                    allocated_hours_mapped[user.id] += nb_hours_per_user
                 else:
                     work_intervals = interval & user_work_intervals[user.id]
-                    planned_hours_mapped[user.id] += sum_intervals(work_intervals)
+                    allocated_hours_mapped[user.id] += sum_intervals(work_intervals)
         # Compute employee work hours based on its work intervals.
         work_hours = {
             user_id: sum_intervals(work_intervals)
@@ -1069,7 +1069,7 @@ class Task(models.Model):
         }
         return {
             user.id: {
-                'value': planned_hours_mapped[user.id],
+                'value': allocated_hours_mapped[user.id],
                 'max_value': work_hours.get(user.id, 0.0),
             }
             for user in users

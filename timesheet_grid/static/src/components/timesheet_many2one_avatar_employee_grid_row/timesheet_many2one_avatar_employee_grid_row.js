@@ -55,7 +55,7 @@ export class TimesheetMany2OneAvatarEmployeeGridRow extends Component {
     get timesheetOvertimeProps() {
         const { units_to_work, uom, worked_hours } = this.employeeOvertimeProps.props;
         return {
-            planned_hours: units_to_work,
+            allocated_hours: units_to_work,
             uom,
             worked_hours,
         };

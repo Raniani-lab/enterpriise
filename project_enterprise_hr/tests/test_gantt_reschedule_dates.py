@@ -77,7 +77,7 @@ class TestGanttRescheduleOnTasks(AutoShiftDatesHRCommon):
         self.gantt_reschedule_forward(self.task_1, self.task_3)
         self.assertEqual(self.task_3.planned_date_begin,
                          new_task_1_begin_date + relativedelta(days=1, hour=13), failed_message)
-        failed_message = "The auto shift date feature should work for tasks landing on the edge of employee create_date or on the edge of departure_date, even when falling in the middle of the planned_hours."
+        failed_message = "The auto shift date feature should work for tasks landing on the edge of employee create_date or on the edge of departure_date, even when falling in the middle of the allocated_hours."
         new_task_3_begin_date = self.armande_employee_create_date + relativedelta(hour=15)
         self.armande_employee.write({
             'resource_calendar_id': self.calendar_morning.id,

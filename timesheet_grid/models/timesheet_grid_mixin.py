@@ -25,14 +25,14 @@ class TimesheetGridMixin(models.AbstractModel):
 
         records = self.search_read(
             self.get_planned_and_worked_hours_domain(ids),
-            ['id', self.get_planned_hours_field()] + self.get_worked_hours_fields(),
+            ['id', self.get_allocated_hours_field()] + self.get_worked_hours_fields(),
         )
 
         records_per_id = dict.fromkeys(ids, {})
         uom_name = uom.name.lower()
         for record in records:
             records_per_id[record['id']] = {
-                'planned_hours': convert_hours_to_company_uom(record[self.get_planned_hours_field()]),
+                'allocated_hours': convert_hours_to_company_uom(record[self.get_allocated_hours_field()]),
                 'uom': uom_name,
                 'worked_hours': convert_hours_to_company_uom(sum([record[field] for field in self.get_worked_hours_fields()])),
             }

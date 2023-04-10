@@ -12,7 +12,7 @@ patch(
             if (this.props.name === "project_id") {
                 return _t(
                     "Difference between the number of %s ordered on the sales order item and the number of %s delivered",
-                    this.props.planned_hours,
+                    this.props.allocated_hours,
                     this.props.worked_hours
                 );
             }

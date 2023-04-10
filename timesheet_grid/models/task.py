@@ -114,8 +114,8 @@ class Task(models.Model):
             },
         }
 
-    def get_planned_hours_field(self):
-        return 'planned_hours'
+    def get_allocated_hours_field(self):
+        return 'allocated_hours'
 
     def get_worked_hours_fields(self):
         return ['effective_hours', 'subtask_effective_hours']

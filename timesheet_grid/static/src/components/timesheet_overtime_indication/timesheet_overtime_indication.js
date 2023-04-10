@@ -14,7 +14,7 @@ export class TimesheetOvertimeIndication extends EmployeeOvertimeIndication {
         if (!this.shouldShowHours) {
             return "";
         }
-        const progression = this.props.worked_hours / this.props.planned_hours;
+        const progression = this.props.worked_hours / this.props.allocated_hours;
         return progression <= 0.8
             ? "text-success"
             : progression <= 0.99
@@ -23,20 +23,20 @@ export class TimesheetOvertimeIndication extends EmployeeOvertimeIndication {
     }
 
     get overtime() {
-        return this.props.planned_hours - this.props.worked_hours;
+        return this.props.allocated_hours - this.props.worked_hours;
     }
 
     get title() {
         if (this.props.name === "project_id") {
             return _t(
                 "Difference between the number of %s allocated to the project and the number of %s recorded",
-                this.props.planned_hours,
+                this.props.allocated_hours,
                 this.props.worked_hours
             );
         } else if (this.props.name === "task_id") {
             return _t(
                 "Difference between the number of %s allocated to the task and the number of %s recorded",
-                this.props.planned_hours,
+                this.props.allocated_hours,
                 this.props.worked_hours
             );
         } else {

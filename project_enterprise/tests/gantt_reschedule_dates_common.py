@@ -38,7 +38,7 @@ class ProjectEnterpriseGanttRescheduleCommon(TestProjectCommon):
         cls.task_1.write({
             'planned_date_begin': cls.task_1_planned_date_begin,
             'planned_date_end': cls.task_1_planned_date_end,
-            'planned_hours': 3.0,
+            'allocated_hours': 3.0,
         })
         cls.task_3_planned_date_begin = datetime(2021, 6, 24, 13, 0, 0)
         cls.task_3_planned_date_end = datetime(2021, 6, 24, 15, 0, 0)
@@ -49,7 +49,7 @@ class ProjectEnterpriseGanttRescheduleCommon(TestProjectCommon):
             'depend_on_ids': [Command.link(cls.task_1.id)],
             'planned_date_begin': cls.task_3_planned_date_begin,
             'planned_date_end': cls.task_3_planned_date_end,
-            'planned_hours': 2.0,
+            'allocated_hours': 2.0,
         })
         cls.task_4_planned_date_begin = datetime(2021, 6, 30, 15, 0, 0)
         cls.task_4_planned_date_end = datetime(2021, 6, 30, 17, 0, 0)
@@ -60,7 +60,7 @@ class ProjectEnterpriseGanttRescheduleCommon(TestProjectCommon):
             'depend_on_ids': [Command.link(cls.task_3.id)],
             'planned_date_begin': cls.task_4_planned_date_begin,
             'planned_date_end': cls.task_4_planned_date_end,
-            'planned_hours': 2.0,
+            'allocated_hours': 2.0,
         })
         cls.task_5_planned_date_begin = datetime(2021, 8, 2, 8, 0, 0)
         cls.task_5_planned_date_end = datetime(2021, 8, 3, 17, 0, 0)
@@ -71,7 +71,7 @@ class ProjectEnterpriseGanttRescheduleCommon(TestProjectCommon):
             'depend_on_ids': [Command.link(cls.task_4.id)],
             'planned_date_begin': cls.task_5_planned_date_begin,
             'planned_date_end': cls.task_5_planned_date_end,
-            'planned_hours': 16.0,
+            'allocated_hours': 16.0,
         })
         cls.task_6_planned_date_begin = datetime(2021, 8, 4, 8, 0, 0)
         cls.task_6_planned_date_end = datetime(2021, 8, 4, 17, 0, 0)
@@ -82,7 +82,7 @@ class ProjectEnterpriseGanttRescheduleCommon(TestProjectCommon):
             'depend_on_ids': [Command.link(cls.task_5.id)],
             'planned_date_begin': cls.task_6_planned_date_begin,
             'planned_date_end': cls.task_6_planned_date_end,
-            'planned_hours': 8.0,
+            'allocated_hours': 8.0,
         })
         overlapping_delta = cls.task_3_planned_date_begin - cls.task_1_planned_date_end + timedelta(hours=1)
         cls.task_1_date_gantt_reschedule_trigger = {

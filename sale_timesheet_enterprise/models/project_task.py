@@ -28,7 +28,7 @@ class ProjectTask(models.Model):
     def SELF_READABLE_FIELDS(self):
         return super().SELF_READABLE_FIELDS | set(PROJECT_TASK_READABLE_FIELDS_TO_MAP.values()) - set(PROJECT_TASK_READABLE_FIELDS_TO_MAP.keys())
 
-    @api.depends('planned_hours')
+    @api.depends('allocated_hours')
     def _compute_project_sharing_timesheets(self):
         is_portal_user = self.user_has_groups('base.group_portal')
         timesheets_per_task = None
@@ -61,9 +61,9 @@ class ProjectTask(models.Model):
                 effective_hours = timesheets_per_task.get(task.id, 0.0)
                 subtask_effective_hours = sum(timesheets_per_task.get(subtask_id, 0.0) for subtask_id in subtask_ids_per_task_id.get(task.id, []))
                 total_hours_spent = effective_hours + subtask_effective_hours
-                remaining_hours = task.planned_hours - total_hours_spent
-                if task.planned_hours > 0:
-                    progress = 100 if max(total_hours_spent - task.planned_hours, 0) else round(total_hours_spent / task.planned_hours * 100, 2)
+                remaining_hours = task.allocated_hours - total_hours_spent
+                if task.allocated_hours > 0:
+                    progress = 100 if max(total_hours_spent - task.allocated_hours, 0) else round(total_hours_spent / task.allocated_hours * 100, 2)
             task.portal_remaining_hours = remaining_hours
             task.portal_effective_hours = effective_hours
             task.portal_subtask_effective_hours = subtask_effective_hours

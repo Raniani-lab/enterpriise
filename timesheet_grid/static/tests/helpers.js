@@ -8,7 +8,7 @@ function get_planned_and_worked_hours(resIds) {
     const result = {};
     for (const id of resIds) {
         result[id] = {
-            planned_hours: 8,
+            allocated_hours: 8,
             uom: "hours",
             worked_hours: 7,
         };

@@ -2496,6 +2496,19 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(target.querySelector(".o_web_studio_sidebar input[name='invisible']").checked, true);
     });
 
+    QUnit.test("display placeholders when editing view without records", async (assert) => {
+        const vem = await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `
+                <form>
+                    <field name="display_name" />
+                </form>`
+        });
+
+        assert.hasClass(vem.$("[name=display_name]"), "o_web_studio_widget_empty");
+        assert.strictEqual(vem.$("[name=display_name]").text().trim(), "Display Name");
+    });
+
     QUnit.module('Kanban');
 
     QUnit.test('empty kanban editor', async function (assert) {
@@ -3002,7 +3015,7 @@ QUnit.module('ViewEditorManager', {
         $('.modal .modal-body select > option[value="priority"]').prop('selected', true);
         // Click 'Confirm' Button
         await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
-        assert.containsOnce(vem, '.o_priority', "there should be priority widget in kanban record");
+        assert.containsOnce(vem, '.o_field_priority', "there should be priority widget in kanban record");
         assert.containsNone(vem, '.o_kanban_record .o_web_studio_add_priority',
             "there should be no priority hook if priority widget exists on kanban");
 

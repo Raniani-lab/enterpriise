@@ -147,7 +147,8 @@ class AccountBankStatementLine(models.Model):
             ('date', '>', st_date_from_limit),
             ('company_id', 'in', configured_company_ids),
         ]
-        query_obj = self._search(domain, order='cron_last_check DESC, id', limit=limit)
+        query_obj = self._search(domain, limit=limit)
+        query_obj.order = '"account_bank_statement_line"."cron_last_check" ASC NULLS FIRST,"account_bank_statement_line"."id"'
         query_str, query_params = query_obj.select('account_bank_statement_line.id')
         self._cr.execute(query_str, query_params)
         st_line_ids = [r[0] for r in self._cr.fetchall()]

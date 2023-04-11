@@ -89,12 +89,12 @@ registry.category("web_tour.tours").add('project_enterprise_tour', {
         extra_trigger: '.o_field_many2many_tags_avatar .rounded-pill',
         content: 'Save task',
     }, {
-        trigger: ".o_gantt_progressbar",
+        trigger: ".o_gantt_progress_bar",
         content: "See user progress bar",
         run: function () {
-            const $progressbar = $(".o_gantt_progressbar:eq(0)");
+            const $progressbar = $(".o_gantt_progress_bar:eq(0)");
             if ($progressbar.length) {
-                if ($progressbar[0].style.width === '') {
+                if ($progressbar.find("span:eq(0)")[0].style.width === '') {
                     console.error("Progress bar should be displayed");
                 }
                 if (!$progressbar[0].classList.contains("o_gantt_group_danger")) {

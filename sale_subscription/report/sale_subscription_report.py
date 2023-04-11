@@ -54,7 +54,7 @@ class SaleSubscriptionReport(models.Model):
                           / nullif(rc.recurring_subtotal, 0), 0
                         )
                         * s.recurring_monthly
-                        * {self._case_value_or_one('s.currency_rate')}
+                        / {self._case_value_or_one('s.currency_rate')}
                         * {self._case_value_or_one('currency_table.rate')}
                     )
         """
@@ -65,13 +65,13 @@ class SaleSubscriptionReport(models.Model):
                   / nullif(rc.recurring_subtotal, 0), 0
                 )
                 * s.recurring_monthly * 12
-                * { self._case_value_or_one('s.currency_rate') }
+                / { self._case_value_or_one('s.currency_rate') }
                 * { self._case_value_or_one('currency_table.rate') }
             )
         """
         res['recurring_total'] = f"""
                 s.recurring_total
-                * {self._case_value_or_one('s.currency_rate') }
+                / {self._case_value_or_one('s.currency_rate') }
                 * {self._case_value_or_one('currency_table.rate') }  
         """
         return res

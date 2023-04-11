@@ -49,11 +49,11 @@ class TestSubscription(TestSubscriptionCommon):
         report_b = self.env['sale.subscription.report'].search([('name', '=', 'Company1 - Currency2')])
         self.assertEqual(len(report_a), 1, 'There should be on report for the given pair currency/company')
         self.assertEqual(len(report_b), 1, 'There should be on report for the given pair currency/company')
-        self.assertAlmostEqual(report_a.recurring_total * 2, report_b.recurring_total, delta=0.01,
+        self.assertAlmostEqual(report_a.recurring_total, report_b.recurring_total * 2, delta=0.01,
                          msg='Report B should have 2 time more recurring compared to A when converted in the same currency')
-        self.assertAlmostEqual(report_a.recurring_monthly * 2, report_b.recurring_monthly, delta=0.01,
+        self.assertAlmostEqual(report_a.recurring_monthly, report_b.recurring_monthly * 2, delta=0.01,
                          msg='Report B should have 2 time more recurring monthly compared to A when converted in the same currency')
-        self.assertAlmostEqual(report_a.recurring_yearly * 2, report_b.recurring_yearly, delta=0.1,
+        self.assertAlmostEqual(report_a.recurring_yearly, report_b.recurring_yearly *2, delta=0.1,
                          msg='Report B should have 2 time more recurring yearly compared to A when converted in the same currency')
 
     def test_report_multi_company(self):
@@ -124,9 +124,9 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertAlmostEqual(report_a.recurring_yearly, report_b.recurring_yearly, delta=0.01,
                                msg='Report B should have the same recurring yearly compared to A when converted in the same currency')
 
-        self.assertAlmostEqual(report_a.recurring_total * 2, report_c.recurring_total, delta=0.01,
+        self.assertAlmostEqual(report_a.recurring_total, report_c.recurring_total * 2, delta=0.01,
                          msg='Report C should have 2 time more recurring compared to A when converted in the same currency')
-        self.assertAlmostEqual(report_a.recurring_monthly * 2, report_c.recurring_monthly, delta=0.01,
+        self.assertAlmostEqual(report_a.recurring_monthly, report_c.recurring_monthly * 2, delta=0.01,
                          msg='Report C should have 2 time more recurring monthly compared to A when converted in the same currency')
-        self.assertAlmostEqual(report_a.recurring_yearly * 2, report_c.recurring_yearly, delta=0.1,
+        self.assertAlmostEqual(report_a.recurring_yearly, report_c.recurring_yearly * 2, delta=0.1,
                          msg='Report C should have 2 time more recurring yearly compared to A when converted in the same currency')

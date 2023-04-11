@@ -1149,6 +1149,32 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         ])
         self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 7)
 
+        # Make sure the statement lines are reconciled by the cron in the right order.
+        self.assertRecordValues(st_line3 + st_line4, [
+            {'is_reconciled': False, 'cron_last_check': fields.Datetime.from_string('2018-01-01 00:00:00')},
+            {'is_reconciled': False, 'cron_last_check': False},
+        ])
+
+        # st_line4 is processed because cron_last_check is null.
+        with freeze_time('2018-01-02'):
+            self.env['account.bank.statement.line']._cron_try_auto_reconcile_statement_lines(batch_size=1)
+
+        self.assertRecordValues(st_line3 + st_line4, [
+            {'is_reconciled': False, 'cron_last_check': fields.Datetime.from_string('2018-01-01 00:00:00')},
+            {'is_reconciled': False, 'cron_last_check': fields.Datetime.from_string('2018-01-02 00:00:00')},
+        ])
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 7)
+
+        # st_line3 is processed because it has the oldest cron_last_check.
+        with freeze_time('2018-01-03'):
+            self.env['account.bank.statement.line']._cron_try_auto_reconcile_statement_lines(batch_size=1)
+
+        self.assertRecordValues(st_line3 + st_line4, [
+            {'is_reconciled': False, 'cron_last_check': fields.Datetime.from_string('2018-01-03 00:00:00')},
+            {'is_reconciled': False, 'cron_last_check': fields.Datetime.from_string('2018-01-02 00:00:00')},
+        ])
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 7)
+
     def test_duplicate_amls_constraint(self):
         st_line = self._create_st_line(1000.0)
         inv_line = self._create_invoice_line(

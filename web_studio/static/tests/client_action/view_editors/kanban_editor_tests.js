@@ -1636,5 +1636,49 @@ QUnit.module(
                 true
             );
         });
+
+        QUnit.test("disallow using activeFields for the kanban priority", async function (assert) {
+            assert.expect(2);
+
+            serverData.models.coucou.fields.another_selection = {
+                string: "Another selection",
+                type: "selection",
+                manual: true,
+                selection: [
+                    ["1", "Low"],
+                    ["2", "Medium"],
+                    ["3", "High"],
+                ],
+            };
+
+            await createViewEditor({
+                type: "kanban",
+                serverData,
+                resModel: "coucou",
+                arch: `
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="o_kanban_record">
+                                <field name="display_name"/>
+                                <field name="another_selection"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+            });
+
+            await click(target, ".o_web_studio_add_priority");
+
+            assert.containsOnce(document.body, ".o_web_studio_kanban_helper");
+
+            assert.deepEqual(
+                Array.prototype.map.call(
+                    document.querySelectorAll(".o_web_studio_kanban_helper select option"),
+                    (e) => e.value
+                ),
+                ["", "priority"]
+            );
+        });
     }
 );

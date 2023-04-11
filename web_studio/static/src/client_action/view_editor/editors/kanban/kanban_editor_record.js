@@ -161,8 +161,9 @@ class _KanbanEditorRecord extends KanbanRecord {
 
     onAddPriority() {
         const fields = [];
+        const activeFields = Object.keys(this.props.record.activeFields);
         for (const [fName, field] of Object.entries(this.props.record.fields)) {
-            if (field.type === "selection") {
+            if (field.type === "selection" && !activeFields.includes(fName)) {
                 const _field = { ...field, name: fName };
                 fields.push(_field);
             }

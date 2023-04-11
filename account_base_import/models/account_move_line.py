@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models
+from odoo import api, models, _
+from odoo.exceptions import UserError
 
 class AccountMoveLine(models.Model):
     _inherit = ["account.move.line"]
@@ -25,6 +26,10 @@ class AccountMoveLine(models.Model):
             account_move_data = []
             processed_move_ids = set() # avoid creating several moves with the same name
             journal_data = set()
+            required_fields = ("journal_id", "move_id", "date")
+            if not all(field in fields for field in required_fields):
+                missing_fields = ", ".join(field for field in required_fields if field not in fields)
+                raise UserError(_("The import file is missing the following required columns: %s", missing_fields))
             journal_index = fields.index("journal_id")
             move_index = fields.index("move_id")
             date_index = fields.index("date")

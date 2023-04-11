@@ -33,6 +33,11 @@ $o-main-text-color: $o-gray-700 !default;
 $o-main-link-color: $o-enterprise-action-color !default;
 $o-main-color-muted: rgba($o-main-text-color, $o-opacity-muted) !default;
 
+// Components
+$o-component-active-color:  $o-gray-900 !default;
+$o-component-active-bg: mix($o-action, $o-white, 10%) !default;
+$o-component-active-border: $o-action !default;
+
 $o-list-group-header-color: $o-gray-900 !default;
 $o-list-footer-color: $o-gray-900 !default;
 $o-list-footer-bg-color: transparent !default;
@@ -79,9 +84,9 @@ $o-btns-bs-override: map-merge((
         hover-border: $o-gray-300,
         hover-color: $o-gray-800,
 
-        active-background: mix($o-enterprise-action-color, $o-white, 10%),
-        active-border:  $o-enterprise-action-color,
-        active-color: $o-gray-900,
+        active-background: $o-component-active-bg,
+        active-border:  $o-component-active-border,
+        active-color: $o-component-active-color,
     ),
 ), $o-btns-bs-override);
 

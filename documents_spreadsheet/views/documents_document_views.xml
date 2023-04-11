@@ -18,7 +18,9 @@
                 <attribute name="t-attf-class" separator=" " add="#{(isXlsx) ? 'o_document_xlsx' : ''}"/>
             </xpath>
             <xpath expr="(//div[@name='document_preview']/div)[last()]" position="before">
-                <div t-elif="isSpreadsheet" class="o_attachment_image o_spreadsheet_resize o_documents_image" t-attf-style="background-image: url('/documents/image/#{record.id.raw_value}?field=thumbnail&amp;unique=#{unique}');" alt="Spreadsheet Preview"/>
+                <div t-elif="isSpreadsheet" class="o_attachment_image o_documents_image">
+                    <img t-attf-src="/documents/image/#{record.id.raw_value}?field=thumbnail&amp;unique=#{unique}" alt="Spreadsheet Preview"/>
+                </div>
             </xpath>
         </field>
     </record>

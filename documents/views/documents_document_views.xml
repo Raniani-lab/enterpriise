@@ -89,7 +89,9 @@
                                     <div t-elif="record.type.raw_value == 'url'" class="o_url_image fa fa-link fa-3x text-muted"/>
                                     <t t-elif="hasThumbnail">
                                         <t t-set="unique" t-value="record.checksum.value ? record.checksum.value.slice(-8) : ''"/>
-                                        <div class="o_documents_image" t-attf-style="background-image: url('/documents/image/#{record.id.raw_value}?field=thumbnail&amp;unique=#{unique}');" />
+                                        <div class="o_documents_image">
+                                            <img t-attf-src="/documents/image/#{record.id.raw_value}?field=thumbnail&amp;unique=#{unique}" alt="Document preview"/>
+                                        </div>
                                     </t>
                                     <div t-elif="fileRequest" class="fa fa-upload fa-3x text-muted">
                                         <input type="file" class="o_input_file o_hidden o_kanban_replace_document"/>

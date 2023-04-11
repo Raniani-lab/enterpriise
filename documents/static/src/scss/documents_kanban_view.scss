@@ -51,11 +51,14 @@
                 height: 100%;
 
                 .o_documents_image {
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    background-size: cover;
                     width: 100%;
                     height: 100%;
+
+                    img {
+                        object-fit: cover;
+                        object-position: center;
+                        width: 100%;
+                    }
                 }
 
                 img {

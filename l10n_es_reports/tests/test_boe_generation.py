@@ -26,8 +26,19 @@ class TestBOEGeneration(TestAccountReportsCommon):
             'vat': "ESA12345674",
         })
 
-        base_tags = cls.env.ref('l10n_es.mod_111_02') + cls.env.ref('l10n_es.mod_115_02') + cls.env.ref('l10n_es.mod_303_01')
-        tax_tags = cls.env.ref('l10n_es.mod_111_03') + cls.env.ref('l10n_es.mod_115_03') + cls.env.ref('l10n_es.mod_303_03')
+        base_tags = (
+            cls.env.ref('l10n_es.mod_111_casilla_02_balance')
+            + cls.env.ref('l10n_es.mod_115_casilla_02_balance')
+            + cls.env.ref('l10n_es.mod_303_casilla_01_balance')
+        )._get_matching_tags('+')
+        base_refund_tags = cls.env.ref('l10n_es.mod_111_casilla_02_balance')._get_matching_tags('-') + cls.env.ref('l10n_es.mod_115_casilla_02_balance')._get_matching_tags('-') + cls.env.ref('l10n_es.mod_303_casilla_14_aeat_mod_303_14_sale_balance')._get_matching_tags('+')
+        tax_tags = cls.env.ref('l10n_es.mod_111_casilla_03_balance')._get_matching_tags('-') + cls.env.ref('l10n_es.mod_115_casilla_03_balance')._get_matching_tags('-') + cls.env.ref('l10n_es.mod_303_casilla_03_balance')._get_matching_tags('+')
+        tax_refund_tags = (
+            cls.env.ref('l10n_es.mod_111_casilla_03_balance')
+            + cls.env.ref('l10n_es.mod_115_casilla_03_balance')
+            + cls.env.ref('l10n_es.mod_303_casilla_15_balance')
+        )._get_matching_tags('+')
+
         cls.spanish_test_tax = cls.env['account.tax'].create({
             'name': "Test ES BOE tax",
             'amount_type': 'percent',
@@ -46,12 +57,12 @@ class TestBOEGeneration(TestAccountReportsCommon):
             'refund_repartition_line_ids': [
                 (0, 0, {
                     'repartition_type': 'base',
-                    'tag_ids': base_tags.ids,
+                    'tag_ids': base_refund_tags.ids,
                 }),
 
                 (0, 0, {
                     'repartition_type': 'tax',
-                    'tag_ids': tax_tags.ids,
+                    'tag_ids': tax_refund_tags.ids,
                 })
             ],
         })
@@ -66,7 +77,7 @@ class TestBOEGeneration(TestAccountReportsCommon):
 
     def _check_boe_111_to_303(self, modelo_number):
         self.init_invoice('out_invoice', partner=self.spanish_partner, amounts=[10000], invoice_date=fields.Date.today(), taxes=self.spanish_test_tax, post=True)
-        report = self.env.ref('l10n_es_reports.mod_%s' % modelo_number)
+        report = self.env.ref('l10n_es.mod_%s' % modelo_number)
         options = self._generate_options(report, fields.Date.from_string('2020-12-01'), fields.Date.from_string('2020-12-31'))
         if 'multi_company' in options:
             del options['multi_company']

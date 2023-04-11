@@ -677,23 +677,6 @@ class SpanishMod303TaxReportCustomHandler(models.AbstractModel):
 
         # Casillas
         to_treat = ['59', '60']
-        if options['date']['date_from'] < '2022-01-01':
-            to_treat.append('61')
-
-            if '61' not in casilla_lines_map:
-                # Casilla 61 isn't used anymore. If it's not in casilla_lines_map, it means the module has been updated, and the line isn't shown
-                # anymore. Though, if we're re-generating data from before it ceased to exist, we still want to report it in the file. As it's
-                # not displayed in the report anymore, it's not in get_lines's result, and we hence can't rely on it as usual.
-                # Therefore, we compute it manually.
-                tag_61 = self.env.ref('l10n_es.mod_303_61')
-                report = self.env['account.report'].browse(options['report_id'])
-                tables, where_clause, where_params = report._query_get(options, 'strict_range', domain=[('tax_tag_ids', 'in', tag_61.ids)])
-                query = """
-                    SELECT -COALESCE(sum(account_move_line.balance), 0)
-                    FROM """ + tables + """
-                    WHERE """ + where_clause
-                self._cr.execute(query, where_params)
-                casilla_lines_map['61'] = self._cr.fetchone()[0]
 
         for casilla in to_treat:
             rslt += self._l10n_es_boe_format_number(options, casilla_lines_map[casilla], length=17, decimal_places=2, signed=True, in_currency=True)

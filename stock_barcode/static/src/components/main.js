@@ -283,6 +283,13 @@ class MainComponent extends Component {
         }
     }
 
+    _getHeaderHeight() {
+        const header = document.querySelector('.o_barcode_header');
+        const navbar = document.querySelector('.o_main_navbar');
+        // Computes the real header's height (the navbar is present if the page was refreshed).
+        return navbar ? navbar.offsetHeight + header.offsetHeight : header.offsetHeight;
+    }
+
     _scrollToSelectedLine() {
         if (!this.state.view === "barcodeLines" && this.env.model.canBeProcessed) {
             this._scrollBehavior = 'auto';
@@ -302,12 +309,9 @@ class MainComponent extends Component {
         if (selectedLine) {
             // If a line is selected, checks if this line is on the top of the
             // page, and if it's not, scrolls until the line is on top.
-            const header = document.querySelector('.o_barcode_header');
             const lineRect = selectedLine.getBoundingClientRect();
-            const navbar = document.querySelector('.o_main_navbar');
             const page = document.querySelector('.o_barcode_lines');
-            // Computes the real header's height (the navbar is present if the page was refreshed).
-            const headerHeight = navbar ? navbar.offsetHeight + header.offsetHeight : header.offsetHeight;
+            const headerHeight = this._getHeaderHeight();
             if (lineRect.top < headerHeight || lineRect.bottom > (headerHeight + lineRect.height)) {
                 let top = lineRect.top - headerHeight + page.scrollTop;
                 if (isSubline) {

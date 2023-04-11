@@ -171,7 +171,13 @@ patch(MainComponent.prototype, 'stock_barcode_mrp', {
             return new BarcodeMRPModel(resModel, resId, { rpc, notification, orm });
         }
         return this._super(...arguments);
-    }
+    },
+
+    _getHeaderHeight() {
+        const headerHeight = this._super();
+        const mo_header = document.querySelector('.o_header');
+        return mo_header ? headerHeight + mo_header.offsetHeight: headerHeight;
+    },
 });
 
 MainComponent.components.Header = HeaderComponent;

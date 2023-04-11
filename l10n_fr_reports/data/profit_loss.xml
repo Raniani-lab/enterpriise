@@ -350,7 +350,7 @@
                             <record id="account_financial_report_line_fr_cdrp8_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">account_codes</field>
-                                <field name="formula">755</field>
+                                <field name="formula">-755</field>
                                 <field name="date_scope">normal</field>
                             </record>
                         </field>
@@ -709,7 +709,7 @@
                             <record id="p_n_l_charges_fiducie_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">account_codes</field>
-                                <field name="formula">-674</field>
+                                <field name="formula">674</field>
                                 <field name="date_scope">normal</field>
                                 <field name="green_on_positive" eval="False"/>
                             </record>

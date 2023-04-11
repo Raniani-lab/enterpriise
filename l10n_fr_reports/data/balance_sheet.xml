@@ -1122,17 +1122,23 @@
                                         <field name="name">Retained earnings</field>
                                         <field name="code">REPORT_NOUVEAU</field>
                                         <field name="expression_ids">
-                                            <record id="account_financial_report_line_02_0_6_fr_bilan_passif_balance_account_codes" model="account.report.expression">
-                                                <field name="label">net_account_codes</field>
-                                                <field name="engine">account_codes</field>
-                                                <field name="formula">-11 - 12 - 7 - 6</field>
-                                                <field name="date_scope">from_beginning</field>
+                                            <record id="account_financial_report_line_02_0_6_fr_bilan_passif_past_pnl" model="account.report.expression">
+                                                <field name="label">past_pnl</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="subformula">cross_report</field>
+                                                <field name="formula">total_all.balance</field>
+                                                <field name="date_scope">to_beginning_of_fiscalyear</field>
                                             </record>
-                                            <record id="account_financial_report_line_02_0_6_fr_bilan_passif_balance" model="account.report.expression">
+                                            <record id="account_financial_report_line_02_0_6_fr_bilan_passif_accounts" model="account.report.expression">
+                                                <field name="label">accounts</field>
+                                                <field name="engine">domain</field>
+                                                <field name="formula">['|', '|', ('account_id.code','=like','11%'), ('account_id.code','=like','12%'), ('account_id.account_type','=','equity_unaffected')]</field>
+                                                <field name="subformula">-sum</field>
+                                            </record>
+                                            <record id="account_financial_report_line_02_0_6_fr_bilan_passif_net" model="account.report.expression">
                                                 <field name="label">net</field>
                                                 <field name="engine">aggregation</field>
-                                                <field name="formula">REPORT_NOUVEAU.net_account_codes - RESULT_LEXERCICE.net</field>
-                                                <field name="date_scope">from_beginning</field>
+                                                <field name="formula">REPORT_NOUVEAU.past_pnl + REPORT_NOUVEAU.accounts</field>
                                             </record>
                                         </field>
                                     </record>

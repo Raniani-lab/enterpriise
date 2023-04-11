@@ -600,9 +600,10 @@ class L10nInGSTReturnPeriod(models.Model):
                         if line_tax_details['l10n_in_reverse_charge']:
                             is_reverse_charge = True
                         lines_json.setdefault(tax_rate, {
-                            "rt": tax_rate, "txval": line_tax_details['base_amount_currency'] * -1, "iamt": 0.00, "samt": 0.00, "camt": 0.00, "csamt": 0.00})
+                            "rt": tax_rate, "txval": 0.00, "iamt": 0.00, "samt": 0.00, "camt": 0.00, "csamt": 0.00})
                         if line_tax_details['igst']:
                             is_igst_amount = True
+                        lines_json[tax_rate]['txval'] += line_tax_details['base_amount_currency'] * -1
                         lines_json[tax_rate]['iamt'] += line_tax_details['igst'] * -1
                         lines_json[tax_rate]['camt'] += line_tax_details['cgst'] * -1
                         lines_json[tax_rate]['samt'] += line_tax_details['sgst'] * -1
@@ -1190,7 +1191,7 @@ class L10nInGSTReturnPeriod(models.Model):
             ("date", "<=", self.end_date),
             ("move_id.state", "=", "posted"),
             ("company_id", "in", self.company_ids.ids or self.company_id.ids),
-            ("display_type", "!=", 'rounding')
+            ("display_type", "not in", ('rounding', 'line_note', 'line_section'))
         ]
         if section_code == "b2b":
             return (

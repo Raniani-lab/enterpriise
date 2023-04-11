@@ -414,9 +414,8 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_so = self.env['sale.order'].browse(action['res_id'])
             self.assertEqual(upsell_so.order_line.mapped('product_uom_qty'), [0, 0, 0], 'The upsell order has 0 quantity')
             note = upsell_so.order_line.filtered('display_type')
-            self.assertEqual(note.name, 'Recurring product are discounted according to the prorated period from 01/15/2021 to 01/31/2021')
+            self.assertEqual(note.name, 'Recurring products are discounted according to the prorated period from 01/15/2021 to 01/31/2021 based on a recurrence of one month')
             self.assertEqual(upsell_so.order_line.product_id, self.subscription.order_line.product_id)
-
             upsell_so.order_line.filtered(lambda l: not l.display_type).product_uom_qty = 1
             # When the upsell order is created, all quantities are equal to 0
             # add line to quote manually, it must be taken into account in the subscription after validation

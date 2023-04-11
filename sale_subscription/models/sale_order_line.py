@@ -318,13 +318,22 @@ class SaleOrderLine(models.Model):
             format_start = format_date(self.env, fields.Date.today())
             end_period = period_end - relativedelta(days=1)  # the period ends the day before the next invoice
             format_next_invoice = format_date(self.env, end_period)
+            # Add recurrence temporal information in order line description when received as parameter
+            if line.order_id.recurrence_id:
+                rec = line.order_id.recurrence_id
+                if rec.duration > 1:
+                    order_line_name = _('Recurring products are discounted according to the prorated period from %s to %s based on a recurrence of %s %ss', format_start, format_next_invoice, rec.duration, rec.unit)
+                else:
+                    order_line_name = _('Recurring products are discounted according to the prorated period from %s to %s based on a recurrence of one %s', format_start, format_next_invoice, rec.unit)
+            else:
+                order_line_name = _('Recurring products are discounted according to the prorated period from %s to %s', format_start, format_next_invoice)
             order_lines.append((
                 0,
                 0,
                 {
                     'display_type': 'line_note',
                     'sequence': 999,
-                    'name': _('Recurring product are discounted according to the prorated period from %s to %s', format_start, format_next_invoice)
+                    'name': order_line_name
                 }
             ))
 

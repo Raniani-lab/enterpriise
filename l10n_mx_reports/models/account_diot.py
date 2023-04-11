@@ -102,7 +102,7 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
                    END AS withheld,
                    CASE
                         WHEN tag.id != %s
-                        THEN account_move_line.credit
+                        THEN account_move_line.credit * tax.amount / 100
                         ELSE 0
                    END AS refunds
                 FROM {tables}

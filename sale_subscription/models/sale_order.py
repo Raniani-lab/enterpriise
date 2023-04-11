@@ -481,36 +481,47 @@ class SaleOrder(models.Model):
         old_mrr = initial_values.get('recurring_monthly', self.recurring_monthly)
         transfer_mrr = 0
         mrr_difference = self.recurring_monthly - old_mrr
+        event_date = fields.Date.today()
         if self.origin_order_id: # Is a confirmed renewal ( origin_order_id and category in progress)
             existing_transfer_log = self.order_log_ids.filtered(lambda ev: ev.event_type == '3_transfer')
+            transfer_date = existing_transfer_log and existing_transfer_log.sorted('event_date')[-1].event_date or event_date
             if not existing_transfer_log:
                 # We transfer from the current MRR to the latest known MRR.
-                # The parent contrat is now done and its MRR is 0
+                # The parent contrat is now done
+                # TODO: remove this block in master. It should not be useful anymore as the transfer logs are created
+                # elsewhere. It should only be called for free renewal ans therefore no transfer log should be created.
                 parent_progress_logs = self.subscription_id.order_log_ids.filtered(
                     lambda l: l.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
-                parent_mrr = parent_progress_logs and parent_progress_logs.sorted('event_date')[
-                    -1].recurring_monthly or 0
+                parent_log = parent_progress_logs.sorted('event_date')[-1]
+                parent_mrr = parent_progress_logs and parent_log.recurring_monthly or 0
                 transfer_mrr = min([self.recurring_monthly, parent_mrr])
-        if not float_is_zero(transfer_mrr, precision_rounding=cur_round):
-            transfer_values = template_value.copy()
-            transfer_values.update({
-                'event_type': '3_transfer',
-                'amount_signed': transfer_mrr,
-                'recurring_monthly': transfer_mrr,
-                'event_date': self.start_date,
-            })
-            self.env['sale.order.log'].sudo().create(transfer_values)
-            mrr_difference = self.recurring_monthly - transfer_mrr
+                transfer_date = parent_progress_logs and parent_log.event_date or transfer_date
+            if not float_is_zero(transfer_mrr, precision_rounding=cur_round):
+                transfer_values = template_value.copy()
+                transfer_values.update({
+                    'event_type': '3_transfer',
+                    'amount_signed': transfer_mrr,
+                    'recurring_monthly': transfer_mrr,
+                    'event_date': transfer_date,
+                })
+                self.env['sale.order.log'].sudo().create(transfer_values)
+                mrr_difference = self.recurring_monthly - transfer_mrr
 
         if not float_is_zero(mrr_difference, precision_rounding=cur_round):
             mrr_value = template_value.copy()
             if self.order_log_ids:
+                # Simple contraction or extension
                 event_type = self._get_change_event_type(mrr_difference)
             elif self.subscription_state == '5_renewed':
+                # The parent is transferring to the children.
                 event_type = '3_transfer'
             else:
                 event_type = '0_creation'
-            mrr_value.update({'event_type': event_type, 'amount_signed': mrr_difference,
+                order_start_date = self.start_date or fields.Date.context_today(self)
+                event_date = max(event_date, order_start_date)
+            mrr_value.update({'event_date': event_date,
+                              'event_type': event_type,
+                              'amount_signed': mrr_difference,
                               'recurring_monthly': self.recurring_monthly})
             self.env['sale.order.log'].sudo().create(mrr_value)
 
@@ -523,27 +534,33 @@ class SaleOrder(models.Model):
         confirmed_renewal = self.origin_order_id and self.subscription_state in SUBSCRIPTION_PROGRESS_STATE
         alive_renewed = self.subscription_child_ids.filtered(lambda s: s.subscription_state == '3_progress')
         reopened_order = old_state == '6_churn' and new_state in SUBSCRIPTION_PROGRESS_STATE
-        event_date = values['event_date']
+        event_date = fields.Date.today()
         if new_state in SUBSCRIPTION_PROGRESS_STATE + SUBSCRIPTION_CLOSED_STATE and old_state != new_state:
             # subscription started, churned or transferred to renew
             if new_state in SUBSCRIPTION_PROGRESS_STATE:
                 if confirmed_renewal:
                     # Transfer for the renewed value and MRR change for the rest
                     new_currency = self.currency_id
-                    parent_curency = self.subscription_id.currency_id
-                    parent_mrr = parent_curency._convert(self.subscription_id.recurring_monthly, to_currency=new_currency,
-                                                         company=self.env.company,
-                                                         date=fields.Date.today(), round=False)
+                    parent_currency = self.subscription_id.currency_id
+                    parent_mrr = parent_currency._convert(self.subscription_id.recurring_monthly,
+                                                          to_currency=new_currency,
+                                                          company=self.env.company,
+                                                          date=event_date, round=False)
+                    parent_transfer_log = self.subscription_id.order_log_ids.filtered(
+                        lambda l: l.subscription_state == '5_renewed')
+                    transfer_date = parent_transfer_log and parent_transfer_log.sorted('event_date')[-1].event_date or event_date
                     # Creation of renewal: transfer and MRR change
                     event_type = '3_transfer'
                     amount_signed = parent_mrr
                     recurring_monthly = parent_mrr
+                    event_date = transfer_date
                     if not float_is_zero(self.recurring_monthly - parent_mrr, precision_rounding=cur_round):
                         mrr_change_value = values.copy()
                         mrr_change_value.update({
                             'event_type': self._get_change_event_type(self.recurring_monthly - parent_mrr),
                             'recurring_monthly': self.recurring_monthly,
-                            'amount_signed': self.recurring_monthly - parent_mrr
+                            'amount_signed': self.recurring_monthly - parent_mrr,
+                            'event_date': transfer_date
                         })
                 elif reopened_order:
                     # We reopened a churned contract. We delete the churn log to keep the formal MRR.
@@ -560,6 +577,7 @@ class SaleOrder(models.Model):
                             'event_type': self._get_change_event_type(mrr_difference),
                             'amount_signed': mrr_difference,
                             'recurring_monthly': self.recurring_monthly,
+                            'event_date': event_date
                         })
                         self.env['sale.order.log'].sudo().create(reopen_values)
                     # Return True will prevent to create another MRR LOG
@@ -578,6 +596,7 @@ class SaleOrder(models.Model):
                 else:
                     event_type = '2_churn'
                     event_date = fields.Date.today()
+                    # All logs are stacked today. In the future, there should not be any log in the future
                     self.order_log_ids.filtered(lambda l: l.event_date > event_date).event_date = event_date
             if event_type == '3_transfer' and \
                     float_is_zero(recurring_monthly, precision_rounding=cur_round) and \
@@ -611,9 +630,7 @@ class SaleOrder(models.Model):
         if not self.is_subscription:
             return res
         updated_fields, dummy = res
-        order_start_date = self.start_date or fields.Date.context_today(self)
-        values = {'event_date': max(fields.Date.context_today(self), order_start_date),
-                  'order_id': self.id,
+        values = {'order_id': self.id,
                   'currency_id': self.currency_id.id,
                   'subscription_state': self.subscription_state,
                   'user_id': self.user_id.id,

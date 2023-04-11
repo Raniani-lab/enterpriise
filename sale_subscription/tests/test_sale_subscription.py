@@ -1149,13 +1149,19 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(sub.kpi_3months_mrr_percentage, 0)
             self.assertEqual(sub.subscription_state, '5_renewed')
 
+        with freeze_time("2021-04-20"):
+            # We upsell the renewal after it's confirmation but before its start_date The event date must be "today"
+            self.flush_tracking()
+            renewal_so.order_line[1].product_uom_qty += 1
+            self.flush_tracking()
+
         with freeze_time("2021-05-05"): # We switch the cron the X of may to make sure the day of the cron does not affect the numbers
             # Renewal period is from 2021-05 to 2021-06
             self.env['sale.order']._cron_recurring_create_invoice()
             self.assertEqual(sub.recurring_monthly, 21)
             self.assertEqual(sub.subscription_state, '5_renewed')
             self.assertEqual(renewal_so.next_invoice_date, datetime.date(2021, 6, 1))
-            self.assertEqual(renewal_so.recurring_monthly, 63)
+            self.assertEqual(renewal_so.recurring_monthly, 83)
             self.flush_tracking()
 
         with freeze_time("2021-05-15"):
@@ -1167,7 +1173,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.subscription._cron_update_kpi()
             self.env['sale.order']._cron_recurring_create_invoice()
             self.assertEqual(sub.recurring_monthly, 21)
-            self.assertEqual(renewal_so.recurring_monthly, 63)
+            self.assertEqual(renewal_so.recurring_monthly, 83)
             self.flush_tracking()
 
         with freeze_time("2021-07-01"), patch.object(type(SaleOrder), '_get_unpaid_subscriptions', lambda x: []):
@@ -1177,7 +1183,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.env['sale.order']._cron_subscription_expiration()
             # we trigger the compute because it depends on today value.
             self.assertEqual(sub.recurring_monthly, 21)
-            self.assertEqual(renewal_so.recurring_monthly, 63)
+            self.assertEqual(renewal_so.recurring_monthly, 83)
             self.flush_tracking()
 
         with freeze_time("2021-08-03"), patch.object(type(SaleOrder), '_get_unpaid_subscriptions', lambda x: []):
@@ -1188,28 +1194,27 @@ class TestSubscription(TestSubscriptionCommon):
             self.env['sale.order']._cron_recurring_create_invoice()
             self.env['sale.order'].sudo()._cron_subscription_expiration()
             self.assertEqual(sub.recurring_monthly, 21)
-            self.assertEqual(renewal_so.recurring_monthly, 63)
+            self.assertEqual(renewal_so.recurring_monthly, 83)
             self.assertEqual(sub.subscription_state, '5_renewed')
             self.flush_tracking()
         with freeze_time("2021-09-01"), patch.object(type(SaleOrder), '_get_unpaid_subscriptions', lambda x: []):
-            renewal_so.order_line.product_uom_qty = 4
+            renewal_so.order_line.product_uom_qty = 5
             # We update the MRR of the renewed
             self.env['sale.order']._cron_recurring_create_invoice()
             self.env['sale.order']._cron_subscription_expiration()
-            self.assertEqual(renewal_so.recurring_monthly, 84)
+            self.assertEqual(renewal_so.recurring_monthly, 105)
             # free subscription is not free anymore
             free_renewal_so.order_line.price_unit = 10
             self.flush_tracking()
-            # arj todo here
             self.subscription._cron_update_kpi()
             self.assertEqual(sub.kpi_1month_mrr_delta, 0)
             self.assertEqual(sub.kpi_1month_mrr_percentage, 0)
             self.assertEqual(sub.kpi_3months_mrr_delta, 0)
             self.assertEqual(sub.kpi_3months_mrr_percentage, 0)
-            self.assertEqual(renewal_so.kpi_1month_mrr_delta, 21)
-            self.assertEqual(round(renewal_so.kpi_1month_mrr_percentage, 2), 0.33)
-            self.assertEqual(renewal_so.kpi_3months_mrr_delta, 21)
-            self.assertEqual(round(renewal_so.kpi_3months_mrr_percentage, 2), 0.33)
+            self.assertEqual(renewal_so.kpi_1month_mrr_delta, 22)
+            self.assertEqual(round(renewal_so.kpi_1month_mrr_percentage, 2), 0.27)
+            self.assertEqual(renewal_so.kpi_3months_mrr_delta, 22)
+            self.assertEqual(round(renewal_so.kpi_3months_mrr_percentage, 2), 0.27)
 
         order_log_ids = sub.order_log_ids.sorted('event_date')
         sub_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log in order_log_ids]
@@ -1217,9 +1222,11 @@ class TestSubscription(TestSubscriptionCommon):
                                     ('3_transfer', datetime.date(2021, 4, 1), '5_renewed', -21, 0)])
         renew_logs = renewal_so.order_log_ids.sorted('event_date')
         renew_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log in renew_logs]
-        self.assertEqual(renew_data, [('3_transfer', datetime.date(2021, 5, 1), '3_progress', 21.0, 21.0),
-                                      ('1_expansion', datetime.date(2021, 5, 1), '3_progress', 42.0, 63.0),
-                                      ('1_expansion', datetime.date(2021, 9, 1), '3_progress', 21.0, 84.0)])
+        self.assertEqual(renew_data, [('3_transfer', datetime.date(2021, 4, 1), '3_progress', 21.0, 21.0),
+                                      ('1_expansion', datetime.date(2021, 4, 1), '3_progress', 42.0, 63.0),
+                                      ('1_expansion', datetime.date(2021, 4, 20), '3_progress', 20.0, 83.0),
+                                      ('1_expansion', datetime.date(2021, 9, 1), '3_progress', 22, 105.0)])
+        self.assertEqual(renewal_so.start_date, datetime.date(2021, 5, 1), "the renewal starts on the firsts of May even if transfer occurs on first of April")
         free_log_ids = free_sub.order_log_ids.sorted('event_date')
         sub_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log in
                     free_log_ids]
@@ -1232,9 +1239,9 @@ class TestSubscription(TestSubscriptionCommon):
         future_data = future_sub.order_log_ids.sorted('event_type') # several events aggregated on the same date
         simple_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log
                        in future_data]
-
-        self.assertEqual(simple_data, [('0_creation', datetime.date(2021, 6, 1), '3_progress', 1.0, 1.0),
-                                       ('1_expansion', datetime.date(2021, 6, 1), '3_progress', 3.0, 4.0)])
+        self.assertEqual(simple_data, [('0_creation', datetime.date(2021, 1, 1), '3_progress', 1.0, 1.0),
+                                       ('1_expansion', datetime.date(2021, 4, 1), '3_progress', 3.0, 4.0)])
+        self.assertEqual(future_sub.start_date, datetime.date(2021, 6, 1), "the start date is in june but the events are recorded as today")
 
     def test_option_template(self):
         self.product.product_tmpl_id.product_pricing_ids = [(6, 0, 0)]
@@ -2529,8 +2536,8 @@ class TestSubscription(TestSubscriptionCommon):
             renew_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
                           for log in renew_logs]
             self.assertEqual(renew_data,
-                             [('3_transfer', datetime.date(2023, 4, 29), 200, 200, other_currency),
-                              ('1_expansion', datetime.date(2023, 4, 29), 400, 600, other_currency)
+                             [('3_transfer', datetime.date(2023, 4, 28), 200, 200, other_currency),
+                              ('1_expansion', datetime.date(2023, 4, 28), 400, 600, other_currency)
                               ])
     def test_protected_close_reason(self):
         close_reason = self.env['sale.order.close.reason'].create({

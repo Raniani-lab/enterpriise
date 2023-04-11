@@ -169,11 +169,13 @@ class HrContractSalary(http.Controller):
 
     @http.route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True, sitemap=False)
     def salary_package(self, contract_id=None, **kw):
-
-        # Used to flatten the response after the rollback.
-        # Otherwise assets are generated and rollbacked before the page loading.
-        # Leading to crashes (assets not found) when loading the page.
         response = False
+
+        debug = request.session.debug
+        for bundle_name in ["web.assets_frontend", "web.assets_frontend_lazy"]:
+            request.env["ir.qweb"]._get_asset_nodes(bundle_name, debug=debug, js=True, css=True)
+        request.env.cr.commit()
+
         request.env.cr.execute('SAVEPOINT salary')
 
         contract = request.env['hr.contract'].sudo().browse(contract_id)

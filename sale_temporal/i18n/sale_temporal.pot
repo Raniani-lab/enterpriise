@@ -324,12 +324,12 @@ msgstr ""
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
-msgid "Time based pricing"
+msgid "Time-based pricing"
 msgstr ""
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
-msgid "Time based rules"
+msgid "Time-based rules"
 msgstr ""
 
 #. module: sale_temporal

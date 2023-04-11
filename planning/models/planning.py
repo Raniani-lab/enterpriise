@@ -380,11 +380,15 @@ class Planning(models.Model):
         query = """
             SELECT S1.id
             FROM planning_slot S1
-            INNER JOIN planning_slot S2 ON S1.resource_id = S2.resource_id AND S1.id <> S2.id
-            WHERE
-                S1.start_datetime < S2.end_datetime
-                AND S1.end_datetime > S2.start_datetime
-                AND S1.allocated_percentage + S2.allocated_percentage > 100
+            WHERE EXISTS (
+                SELECT 1
+                  FROM planning_slot S2
+                 WHERE S1.id <> S2.id
+                   AND S1.resource_id = S2.resource_id
+                   AND S1.start_datetime < S2.end_datetime
+                   AND S1.end_datetime > S2.start_datetime
+                   AND S1.allocated_percentage + S2.allocated_percentage > 100
+            )
         """
         operator_new = (operator == ">") and "inselect" or "not inselect"
         return [('id', operator_new, (query, ()))]

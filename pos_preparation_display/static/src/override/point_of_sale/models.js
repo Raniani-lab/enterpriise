@@ -93,7 +93,7 @@ patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
         const posPreparationDisplayOrder = {
             preparation_display_order_line_ids: preparationDisplayOrderLineIds,
             displayed: true,
-            pos_order_id: currentOrder.server_id,
+            pos_order_id: currentOrder.server_id || false,
         };
 
         await this.env.services.orm.call("pos_preparation_display.order", "process_order", [

@@ -120,7 +120,7 @@ class PosPreparationDisplayOrder(models.Model):
 
     def get_preparation_display_order(self, preparation_display_id):
         preparation_display = self.env['pos_preparation_display.display'].browse(preparation_display_id)
-        orders = self.env['pos_preparation_display.order'].search([('pos_config_id', 'in', preparation_display.get_pos_config_ids().ids)])
+        orders = self.env['pos_preparation_display.order'].search(['|', ('pos_config_id', 'in', preparation_display.get_pos_config_ids().ids), ('pos_order_id', '=', False)])
         first_stage = preparation_display.stage_ids[0]
         last_stage = preparation_display.stage_ids[-1]
 

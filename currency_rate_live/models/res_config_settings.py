@@ -241,7 +241,12 @@ class ResCompany(models.Model):
             rate_info = parsed_data.get(company.currency_id.name, None)
 
             if not rate_info:
-                raise UserError(_("Your main currency (%s) is not supported by this exchange rate provider. Please choose another one.", company.currency_id.name))
+                msg = _("Your main currency (%s) is not supported by this exchange rate provider. Please choose another one.", company.currency_id.name)
+                if self._context.get('suppress_errors'):
+                    _logger.warning(msg)
+                    continue
+                else:
+                    raise UserError(msg)
 
             base_currency_rate = rate_info[0]
 
@@ -698,7 +703,7 @@ class ResCompany(models.Model):
                     continue
                 record.currency_next_execution_date = datetime.date.today() + next_update
                 to_update += record
-            to_update.update_currency_rates()
+            to_update.with_context(suppress_errors=True).update_currency_rates()
 
 
 class ResConfigSettings(models.TransientModel):

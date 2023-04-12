@@ -909,12 +909,12 @@ QUnit.module(
             assert.equal(globalFilter.rangeType, "relative");
             assert.equal(globalFilter.type, "date");
             const pivotDomain = model.getters.getPivotComputedDomain("1");
-            assertDateDomainEqual(assert, "date", "2022-06-14", "2022-07-13", pivotDomain);
+            assertDateDomainEqual(assert, "date", "2022-06-15", "2022-07-14", pivotDomain);
             const listDomain = model.getters.getListComputedDomain("1");
-            assertDateDomainEqual(assert, "date", "2022-06-14", "2022-07-13", listDomain);
+            assertDateDomainEqual(assert, "date", "2022-06-15", "2022-07-14", listDomain);
             const chartId = model.getters.getOdooChartIds()[0];
             const chartDomain = model.getters.getChartDataSource(chartId).getComputedDomain();
-            assertDateDomainEqual(assert, "date", "2022-04-15", "2022-05-14", chartDomain);
+            assertDateDomainEqual(assert, "date", "2022-04-16", "2022-05-15", chartDomain);
         });
 
         QUnit.test("Edit the value of a relative date filter", async function (assert) {
@@ -948,7 +948,7 @@ QUnit.module(
 
             assert.equal(model.getters.getGlobalFilterValue("42"), "last_year");
             const pivotDomain = model.getters.getPivotComputedDomain("1");
-            assertDateDomainEqual(assert, "date", "2021-07-14", "2022-07-13", pivotDomain);
+            assertDateDomainEqual(assert, "date", "2021-07-15", "2022-07-14", pivotDomain);
         });
 
         QUnit.test("Edit the value to empty of a relative date filter", async (assert) => {

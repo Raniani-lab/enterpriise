@@ -2536,8 +2536,8 @@ class TestSubscription(TestSubscriptionCommon):
             renew_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
                           for log in renew_logs]
             self.assertEqual(renew_data,
-                             [('3_transfer', datetime.date(2023, 4, 28), 200, 200, other_currency),
-                              ('1_expansion', datetime.date(2023, 4, 28), 400, 600, other_currency)
+                             [('3_transfer', datetime.date(2023, 4, 29), 200, 200, other_currency),
+                              ('1_expansion', datetime.date(2023, 4, 29), 400, 600, other_currency)
                               ])
     def test_protected_close_reason(self):
         close_reason = self.env['sale.order.close.reason'].create({

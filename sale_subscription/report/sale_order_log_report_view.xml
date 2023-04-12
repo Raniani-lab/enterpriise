@@ -64,7 +64,6 @@
         <field name="name">MRR Growth</field>
         <field name="res_model">sale.order.log.report</field>
         <field name="view_mode">graph,tree,pivot</field>
-        <field name="domain">[('event_type', '!=', '3_transfer')]</field>
         <field name="context">{
             'search_default_group_by_event_date': 1,
             'search_default_group_by_event_type': 1,
@@ -96,7 +95,6 @@
         <field name="name">MRR Analysis</field>
         <field name="res_model">sale.order.log.report</field>
         <field name="view_mode">graph,tree,pivot</field>
-        <field name="domain">[('event_type', '!=', '3_transfer')]</field>
         <field name="context">{
             'search_default_group_by_event_date': 1,
             'pivot_measures': ['recurring_monthly'],

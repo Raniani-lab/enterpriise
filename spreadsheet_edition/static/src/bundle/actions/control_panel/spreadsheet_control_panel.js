@@ -22,7 +22,7 @@ export class SpreadsheetControlPanel extends Component {
             connectedUsers: [{ name: session.username, id: session.id }],
         });
         const model = this.props.model;
-        if (this.props.displayCollaborativeInfo && model) {
+        if (model) {
             model.on("update", this, this.syncState.bind(this));
             onWillUnmount(() => model.off("update", this));
         }
@@ -84,10 +84,6 @@ SpreadsheetControlPanel.props = {
         type: Object,
         optional: true,
     },
-    displayCollaborativeInfo: {
-        type: Boolean,
-        optional: true,
-    },
     isReadonly: {
         type: Boolean,
         optional: true,
@@ -96,7 +92,4 @@ SpreadsheetControlPanel.props = {
         type: Function,
         optional: true,
     },
-};
-SpreadsheetControlPanel.defaultProps = {
-    displayCollaborativeInfo: true,
 };

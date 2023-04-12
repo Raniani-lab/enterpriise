@@ -54,4 +54,8 @@ registry
             name: record.name,
             isReadonly: false,
         };
-    });
+    })
+    .add(
+        "spreadsheet.template/join_spreadsheet_session",
+        mockJoinSpreadsheetSession("spreadsheet.template")
+    );

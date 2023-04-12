@@ -3,9 +3,9 @@
 
 <div t-name="documents_spreadsheet.SpreadsheetTemplateAction" class="o_spreadsheet_action" style="height: 100%;" owl="1">
     <DocumentsSpreadsheetControlPanel
+        model="model"
         spreadsheetName="state.spreadsheetName"
         isReadonly="isReadonly"
-        displayCollaborativeInfo="false"
         onSpreadsheetNameChanged.bind="_onSpreadSheetNameChanged"
     />
     <SpreadsheetComponent model="model"/>

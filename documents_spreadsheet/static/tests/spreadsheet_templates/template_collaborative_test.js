@@ -2,7 +2,7 @@
 
 import { getFixture, nextTick } from "@web/../tests/helpers/utils";
 import {
-    createSpreadsheet,
+    createSpreadsheetTemplate,
     displayedConnectedUsers,
     getConnectedUsersElImage,
     getSynchedStatus,
@@ -19,7 +19,7 @@ import {
 let target;
 
 QUnit.module(
-    "documents_spreadsheet > Collaborative Control Panel",
+    "documents_spreadsheet > Template Collaborative Control Panel",
     {
         beforeEach: function () {
             target = getFixture();
@@ -27,8 +27,7 @@ QUnit.module(
     },
     function () {
         QUnit.test("Number of connected users is correctly rendered", async function (assert) {
-            assert.expect(7);
-            const { transportService } = await createSpreadsheet();
+            const { transportService } = await createSpreadsheetTemplate();
             assert.equal(
                 displayedConnectedUsers(target),
                 1,
@@ -79,7 +78,7 @@ QUnit.module(
         });
 
         QUnit.test("collaborative session client has the user id", async function (assert) {
-            const { model } = await createSpreadsheet();
+            const { model } = await createSpreadsheetTemplate();
             const clients = [...model.getters.getConnectedClients()];
             assert.strictEqual(clients.length, 1);
             const localClient = clients[0];
@@ -88,8 +87,7 @@ QUnit.module(
         });
 
         QUnit.test("Sync status is correctly rendered", async function (assert) {
-            assert.expect(3);
-            const { model, transportService } = await createSpreadsheet();
+            const { model, transportService } = await createSpreadsheetTemplate();
             await nextTick();
             assert.strictEqual(getSynchedStatus(target), " Saved");
             await transportService.concurrent(async () => {
@@ -102,7 +100,6 @@ QUnit.module(
         });
 
         QUnit.test("receiving bad revision reload", async function (assert) {
-            assert.expect(2);
             const serviceRegistry = registry.category("services");
             serviceRegistry.add("actionMain", actionService);
             const fakeActionService = {
@@ -120,7 +117,7 @@ QUnit.module(
                 },
             };
             serviceRegistry.add("action", fakeActionService, { force: true });
-            const { transportService } = await createSpreadsheet();
+            const { transportService } = await createSpreadsheetTemplate();
             transportService.broadcast({
                 type: "REMOTE_REVISION",
                 serverRevisionId: "an invalid revision id",

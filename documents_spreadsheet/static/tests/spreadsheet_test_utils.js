@@ -110,7 +110,7 @@ export async function createSpreadsheetTemplate(params = {}) {
         templates.push({
             id: spreadsheetId,
             name: "test template",
-            spreadsheet_data: {},
+            spreadsheet_data: "{}",
         });
         params = { ...params, spreadsheetId };
     }
@@ -126,4 +126,39 @@ export function mockActionService(env, mockDoAction) {
             mockDoAction(action);
         },
     });
+}
+
+/**
+ * @param {HTMLElement} target
+ * @returns {HTMLElement}
+ */
+export function getConnectedUsersEl(target) {
+    return target.querySelector(".o_spreadsheet_number_users");
+}
+
+/**
+ * @param {HTMLElement} target
+ * @returns {HTMLElement}
+ */
+export function getConnectedUsersElImage(target) {
+    return target.querySelector(".o_spreadsheet_number_users i");
+}
+
+/**
+ *
+ * @param {HTMLElement} target
+ * @returns {string}
+ */
+export function getSynchedStatus(target) {
+    /** @type {HTMLElement} */
+    const content = target.querySelector(".o_spreadsheet_sync_status");
+    return content.innerText;
+}
+
+/**
+ * @param {HTMLElement} target
+ * @returns {number}
+ */
+export function displayedConnectedUsers(target) {
+    return parseInt(getConnectedUsersEl(target).innerText);
 }

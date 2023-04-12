@@ -78,11 +78,6 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
                         JSON.stringify(model.exportData()),
                         "It should copy the data"
                     );
-                    assert.equal(
-                        args.kwargs.default.spreadsheet_snapshot,
-                        false,
-                        "It should reset the snapshot"
-                    );
                     return 1;
                 }
             },

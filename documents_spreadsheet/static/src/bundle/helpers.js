@@ -11,10 +11,12 @@ import { migrate } from "@spreadsheet/o_spreadsheet/migration";
  * @param {object} data
  * @returns {Promise<object>} spreadsheetData
  */
-export async function convertFromSpreadsheetTemplate(env, data) {
-    const model = new Model(migrate(data), {
-        custom: { dataSources: new DataSources(env) },
-    });
+export async function convertFromSpreadsheetTemplate(env, data, revisions) {
+    const model = new Model(
+        migrate(data),
+        { custom: { dataSources: new DataSources(env) } },
+        revisions
+    );
     await model.config.custom.dataSources.waitForAllLoaded();
     const proms = [];
     for (const pivotId of model.getters.getPivotIds()) {

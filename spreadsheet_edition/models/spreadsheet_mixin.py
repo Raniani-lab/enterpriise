@@ -30,6 +30,12 @@ class SpreadsheetMixin(models.AbstractModel):
         groups="base.group_system",
     )
 
+    def copy(self, default=None):
+        self.ensure_one()
+        new_spreadsheet = super().copy(default)
+        self.sudo()._copy_revisions_to(new_spreadsheet.sudo())
+        return new_spreadsheet
+
     def join_spreadsheet_session(self, share_id=None, access_token=None):
         """Join a spreadsheet session.
         Returns the following data::
@@ -108,6 +114,15 @@ class SpreadsheetMixin(models.AbstractModel):
             self._broadcast_spreadsheet_message(message)
             return True
         return False
+
+    def _copy_revisions_to(self, spreadsheet):
+        revisions = self.env["spreadsheet.revision"]
+        for revision in self.spreadsheet_revision_ids:
+            revisions |= revision.copy({
+                "res_model": spreadsheet._name,
+                "res_id": spreadsheet.id,
+            })
+        spreadsheet.spreadsheet_revision_ids = revisions
 
     def _snapshot_spreadsheet(
         self, revision_id: str, snapshot_revision_id, spreadsheet_snapshot: dict

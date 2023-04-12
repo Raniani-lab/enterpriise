@@ -106,7 +106,6 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
             "It should have been assigned the default Spreadsheet Folder"
         )
 
-
     def test_normal_doc_default_folder(self):
         """Default spreadsheet folder is not assigned to normal documents"""
         with self.assertRaises(IntegrityError), mute_logger('odoo.sql_db'):
@@ -227,7 +226,6 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         spreadsheets = self.env["documents.document"].with_user(user).get_spreadsheets_to_display([("name", "ilike", "SP ")])
         spreadsheet_ids = [s["id"] for s in spreadsheets]
         self.assertEqual(spreadsheet_ids, [spreadsheet4.id, spreadsheet6.id, spreadsheet5.id])
-
 
     def test_spreadsheet_to_display(self):
         self.archive_existing_spreadsheet()
@@ -565,6 +563,48 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         document.spreadsheet_data = data
         self.assertEqual(document.datas, base64.b64encode(data))
 
+    def test_copy_spreadsheet_revisions(self):
+        spreadsheet = self.create_spreadsheet()
+        user = new_test_user(
+            self.env, login="Jean", groups="documents.group_documents_user"
+        )
+        spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
+
+        #########
+        # ADMIN #
+        #########
+        copy_admin = spreadsheet.copy()
+        self.assertEqual(
+            len(copy_admin.spreadsheet_revision_ids),
+            1,
+            "The revision should be copied with admin access right",
+        )
+
+        ########
+        # NON-ADMIN #
+        ########
+        spreadsheet.invalidate_recordset()
+        copy_non_admin = spreadsheet.with_user(user).copy()
+        self.assertEqual(
+            len(copy_non_admin.spreadsheet_revision_ids),
+            1,
+            "The revision should be copied with non-admin access right",
+        )
+
+    def test_copy_spreadsheet_snapshot(self):
+        spreadsheet = self.create_spreadsheet()
+        spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
+        self.snapshot(
+            spreadsheet,
+            self.get_revision(spreadsheet), "snapshot-revision-id", {"sheets": []},
+        )
+        copy = spreadsheet.copy()
+        self.assertEqual(
+            copy.spreadsheet_snapshot,
+            spreadsheet.spreadsheet_snapshot,
+            "Copy should have the same snapshot data",
+        )
+
     def test_autovacuum_remove_old_empty_spreadsheet(self):
         self.env["documents.document"].search([('handler', '=', 'spreadsheet')]).unlink()
 
@@ -596,7 +636,6 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
             "create_date": datetime(2023, 5, 15, 18)
         })
         commands = self.new_revision_data(spreadsheet)
-        spreadsheet.join_spreadsheet_session()
         spreadsheet.dispatch_spreadsheet_message(commands)
 
         self.assertEqual(len(self.env["documents.document"].search([('handler', '=', 'spreadsheet')])), 1)

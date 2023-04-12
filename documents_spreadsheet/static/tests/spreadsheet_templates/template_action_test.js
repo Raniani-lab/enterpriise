@@ -1,54 +1,12 @@
 /** @odoo-module */
 
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
-import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { getFixture } from "@web/../tests/helpers/utils";
 import { createSpreadsheetTemplate } from "../spreadsheet_test_utils";
 import { Model } from "@odoo/o-spreadsheet";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 
-
 QUnit.module("documents_spreadsheet > template action", {}, () => {
-    QUnit.test(
-        "open template client action without collaborative indicators",
-        async function (assert) {
-            assert.expect(2);
-            const webClient = await createWebClient({
-                serverData: getBasicServerData(),
-            });
-            await doAction(webClient, {
-                type: "ir.actions.client",
-                tag: "action_open_template",
-                params: { spreadsheet_id: 1 },
-            });
-            const target = getFixture();
-            assert.containsNone(target, ".o_spreadsheet_sync_status");
-            assert.containsNone(target, ".o_spreadsheet_number_users");
-        }
-    );
-
-    QUnit.test("collaboration communication is disabled", async function (assert) {
-        assert.expect(1);
-        const webClient = await createWebClient({
-            serverData: getBasicServerData(),
-            mockRPC: async function (route) {
-                if (route.includes("join_spreadsheet_session")) {
-                    assert.ok(false, "it should not join a collaborative session");
-                }
-                if (route.includes("dispatch_spreadsheet_message")) {
-                    assert.ok(false, "it should not dispatch collaborative revisions");
-                }
-            },
-        });
-        await doAction(webClient, {
-            type: "ir.actions.client",
-            tag: "action_open_template",
-            params: { spreadsheet_id: 1 },
-        });
-        assert.ok(true);
-    });
-
     QUnit.test("open template with non Latin characters", async function (assert) {
         assert.expect(1);
         const model = new Model();
@@ -58,7 +16,7 @@ QUnit.module("documents_spreadsheet > template action", {}, () => {
             {
                 id: 99,
                 name: "template",
-                spreadsheet_data: model.exportData(),
+                spreadsheet_data: JSON.stringify(model.exportData()),
             },
         ];
         const { model: template } = await createSpreadsheetTemplate({
@@ -70,48 +28,5 @@ QUnit.module("documents_spreadsheet > template action", {}, () => {
             "😃",
             "It should show the smiley as a smiley 😉"
         );
-    });
-
-    QUnit.test("create and edit template and save it", async function (assert) {
-        const templateModel = new Model();
-        setCellContent(templateModel, "A1", "First name");
-        setCellContent(templateModel, "B1", "Last name");
-        const id = 101;
-        const serverData = getBasicServerData();
-        serverData.models["spreadsheet.template"].records = [
-            {
-                id,
-                name: "template",
-                spreadsheet_data: templateModel.exportData(),
-            },
-        ];
-        const { model, webClient } = await createSpreadsheetTemplate({
-            serverData,
-            spreadsheetId: id,
-            mockRPC: function (route, args) {
-                if (args.model == "spreadsheet.template") {
-                    if (args.method === "write") {
-                        assert.step("write");
-                        const model = JSON.parse(args.args[1].spreadsheet_data);
-                        assert.strictEqual(typeof model, "object", "Model type should be object");
-                        const { A1, B1 } = model.sheets[0].cells;
-                        assert.equal(
-                            `${A1.content} ${B1.content}`,
-                            `First name Name`,
-                            "A1 and B1 should be changed after update"
-                        );
-                    }
-                }
-            },
-        });
-
-        setCellContent(model, "B1", "Name");
-        // leaving the action by opening a new one will save the current spreadsheet
-        await doAction(webClient, {
-            type: "ir.actions.client",
-            tag: "action_open_template",
-            params: { active_id: id },
-        });
-        assert.verifySteps(["write"]);
     });
 });

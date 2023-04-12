@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import json
-
 from odoo import fields, models, _
-from odoo.exceptions import AccessError
 
 class SpreadsheetTemplate(models.Model):
     _name = "spreadsheet.template"
@@ -42,6 +39,9 @@ class SpreadsheetTemplate(models.Model):
             "spreadsheet_data": self.spreadsheet_data,
             **document_vals,
         })
+        spreadsheet.spreadsheet_snapshot = self.spreadsheet_snapshot
+        self.sudo()._copy_revisions_to(spreadsheet.sudo())
+
         return {
             "type": "ir.actions.client",
             "tag": "action_open_spreadsheet",
@@ -49,25 +49,4 @@ class SpreadsheetTemplate(models.Model):
                 "spreadsheet_id": spreadsheet.id,
                 "convert_from_template": True,
             },
-        }
-
-    def fetch_template_data(self):
-        """ Method called on template load
-        Returns the following data:
-        - the template name
-        - its raw data
-        - whether the user can edit the content of the template or not
-        """
-        self.ensure_one()
-        try:
-            self.check_access_rights("write")
-            self.check_access_rule("write")
-            can_write = True
-        except AccessError:
-            can_write = False
-
-        return {
-            "name": self.name,
-            "data": json.loads(self.spreadsheet_data),
-            "isReadonly": not can_write,
         }

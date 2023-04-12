@@ -7,17 +7,28 @@ import { useService } from "@web/core/utils/hooks";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { DocumentsSpreadsheetControlPanel } from "@documents_spreadsheet/bundle/components/control_panel/spreadsheet_control_panel";
 
+import { Component } from "@odoo/owl";
+
 export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
     setup() {
         super.setup();
         this.notificationMessage = this.env._t("New spreadsheet template created");
         this.orm = useService("orm");
+
+        this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
+        this.transportService = this.spreadsheetCollaborative.getCollaborativeChannel(
+            Component.env,
+            "spreadsheet.template",
+            this.resId
+        );
     }
 
     _initializeWith(record) {
         this.spreadsheetData = record.data;
         this.state.spreadsheetName = record.name;
         this.isReadonly = record.isReadonly;
+        this.stateUpdateMessages = record.revisions;
+        this.snapshotRequested = record.snapshot_requested;
     }
 
     createModel() {
@@ -30,7 +41,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
      * @returns {Object}
      */
     async _fetchData() {
-        return this.orm.call("spreadsheet.template", "fetch_template_data", [this.resId]);
+        return this.orm.call("spreadsheet.template", "join_spreadsheet_session", [this.resId]);
     }
 
     /**
@@ -53,11 +64,8 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
      * @param {Object} values.data exported spreadsheet data
      * @param {string} values.thumbnail spreadsheet thumbnail
      */
-    async onSpreadsheetLeft({ data, thumbnail }) {
-        await this.orm.write("spreadsheet.template", [this.resId], {
-            spreadsheet_data: JSON.stringify(data),
-            thumbnail,
-        });
+    async onSpreadsheetLeft({ thumbnail }) {
+        await this.orm.write("spreadsheet.template", [this.resId], { thumbnail });
     }
 
     /**

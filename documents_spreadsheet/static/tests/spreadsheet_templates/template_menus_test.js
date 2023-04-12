@@ -45,7 +45,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
                     models["spreadsheet.template"].records.push({
                         id: 111,
                         name: "test template",
-                        spreadsheet_data: {},
+                        spreadsheet_data: "{}",
                     });
                     return 111;
                 }
@@ -89,7 +89,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
                     models["spreadsheet.template"].records.push({
                         id: 111,
                         name: "template",
-                        spreadsheet_data: JSON.parse(spreadsheet_data),
+                        spreadsheet_data,
                         thumbnail,
                     });
                     return 111;

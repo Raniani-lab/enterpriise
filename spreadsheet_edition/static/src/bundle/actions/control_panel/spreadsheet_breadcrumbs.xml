@@ -7,7 +7,7 @@
             <SpreadsheetName name="props.spreadsheetName" isReadonly="props.isReadonly" onSpreadsheetNameChanged="props.onSpreadsheetNameChanged" />
         </div>
         <t t-set-slot="control-panel-status-indicator">
-            <div t-if="props.displayCollaborativeInfo" class=" user-select-none">
+            <div class="user-select-none">
                 <div class="o_spreadsheet_status o_spreadsheet_sync_status text-muted">
                     <t t-if="collaborative.isSynced">
                         <i class="fa fa-check"/>  Saved
@@ -38,7 +38,7 @@
             <SpreadsheetName name="props.spreadsheetName" isReadonly="props.isReadonly" onSpreadsheetNameChanged="props.onSpreadsheetNameChanged" />
         </div>
         <t t-set-slot="control-panel-status-indicator">
-            <div t-if="props.displayCollaborativeInfo" class=" user-select-none">
+            <div class="user-select-none">
                 <div class="o_spreadsheet_status o_spreadsheet_sync_status text-muted">
                     <t t-if="collaborative.isSynced">
                         <i class="fa fa-check"/>  Saved

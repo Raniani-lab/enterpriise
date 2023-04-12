@@ -51,8 +51,9 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         if (this.params.convert_from_template) {
             return {
                 ...record,
-                data: await convertFromSpreadsheetTemplate(this.env, record.data),
+                data: await convertFromSpreadsheetTemplate(this.env, record.data, record.revisions),
                 snapshot_requested: true,
+                revisions: [],
             };
         }
         return record;
@@ -88,7 +89,6 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
             mimetype: "application/o-spreadsheet",
             handler: "spreadsheet",
             spreadsheet_data: JSON.stringify(data),
-            spreadsheet_snapshot: false,
             thumbnail,
         };
         const id = await this.orm.call("documents.document", "copy", [this.resId], {

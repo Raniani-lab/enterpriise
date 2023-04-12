@@ -18,6 +18,7 @@ option to send products' attachments to the documents app.
         'data/documents_tag_data.xml',
         'data/res_company_data.xml',
         'views/res_config_settings_views.xml',
+        'views/documents_document_views.xml',
     ],
     'installable': True,
     'auto_install': True,

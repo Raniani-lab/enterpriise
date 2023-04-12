@@ -74,8 +74,11 @@ class SaleOrderLine(models.Model):
 
         for line in self:
             parent_so = line.order_id.subscription_id
-            if not parent_so.next_invoice_date or line.order_id.subscription_management != 'upsell' or not line.product_id.recurring_invoice:
-                other_lines += line # We don't apply discount
+            if not line.temporal_type == 'subscription':
+                other_lines += line # normal sale line are handled by super
+                continue
+            if not parent_so.next_invoice_date or line.order_id.subscription_management != 'upsell':
+                # We don't compute discount
                 continue
             start_date = max(line.order_id.start_date or today, line.order_id.origin_order_id.start_date)
             end_date = line.order_id.subscription_id.next_invoice_date

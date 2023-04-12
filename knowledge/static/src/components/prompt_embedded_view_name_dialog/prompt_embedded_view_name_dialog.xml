@@ -3,10 +3,10 @@
     <t t-name="knowledge.PromptEmbeddedViewNameDialog" owl="1">
         <Dialog title="title" size="'md'">
             <div class="mb-3 row">
-                <label for="label" class="col-sm-4 col-form-label">
-                    What do you want to manage?
+                <label for="label" class="col-sm-5 col-form-label p-0 ps-3">
+                    What items do you want to manage?
                 </label>
-                <div class="col-sm-8">
+                <div class="col-sm-7 ps-0">
                     <input id="label" type="text" class="form-control"
                         t-att-placeholder="placeholder"
                         t-att-value="this.props.defaultName or ''"

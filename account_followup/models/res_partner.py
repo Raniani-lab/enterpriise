@@ -443,7 +443,7 @@ class ResPartner(models.Model):
                    AND line.blocked IS FALSE
                    AND line.company_id = %(company_id)s
                    AND COALESCE(ful.delay, -999) <= partner.followup_delay
-                   AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, -999) < %(current_date)s
+                   AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, 0) < %(current_date)s
                  LIMIT 1
             ) in_need_of_action_aml ON true
             LEFT OUTER JOIN LATERAL (

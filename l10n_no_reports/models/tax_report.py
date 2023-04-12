@@ -28,6 +28,10 @@ class AccountGenericTaxReport(models.AbstractModel):
             'file_export_type': _('XML'),
         })
 
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        # Overridden to prevent having unnecessary lines from the generic tax report.
+        return []
+
     def _l10n_no_set_time_interval(self, options):
         """Set the correct time interval based on the dates of the report.
 

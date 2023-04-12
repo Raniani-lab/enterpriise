@@ -675,7 +675,7 @@ class AccountAsset(models.Model):
         self.ensure_one()
         new_wizard = self.env['asset.modify'].create({
             'asset_id': self.id,
-            'modify_action': 'resume' if self.env.context.get('resume_after_pause') else 'dispose',
+            'modify_action': 'resume' if self.env.context.get('resume_after_pause') else 'dispose' if self.asset_type == 'purchase' else 'modify',
         })
         return {
             'name': _('Modify Asset'),
@@ -977,6 +977,8 @@ class AccountAsset(models.Model):
         if abs(imported_amount) <= abs(amount):
             amount -= imported_amount
         if not float_is_zero(amount, precision_rounding=self.currency_id.rounding):
+            if self.asset_type == 'sale':
+                amount *= -1
             new_line = self._insert_depreciation_line(amount, beginning_depreciation_date, date, days_depreciated)
             new_line._post()
 

@@ -69,6 +69,8 @@ class AssetModify(models.TransientModel):
     def _get_selection_modify_options(self):
         if self.env.context.get('resume_after_pause'):
             return [('resume', _('Resume'))]
+        if self.env.context.get('asset_type') in ('sale', 'expense'):
+            return [('modify', _('Re-evaluate'))]
         return [
             ('dispose', _("Dispose")),
             ('sell', _("Sell")),

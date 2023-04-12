@@ -186,7 +186,7 @@ class L10nBeSocialBalanceSheet(models.TransientModel):
 
         cdi = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdi')
         cdd = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdd')
-        replacement = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdd')
+        replacement = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_replacement')
         defined_work = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_clearly_defined_work')
         mapped_types = {
             cdi: '110',

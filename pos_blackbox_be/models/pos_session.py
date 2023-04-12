@@ -98,6 +98,11 @@ class pos_session(models.Model):
             self.write({context: [(3, user_id)]})
         return self[context].ids
 
+    def _get_sequence_number(self):
+        if self.state == 'closed':
+            return self.env['ir.sequence'].next_by_code('report.point_of_sale.report_saledetails.sequenceZUser')
+        return self.env['ir.sequence'].next_by_code('report.point_of_sale.report_saledetails.sequenceXUser')
+
     def _get_user_report_data(self):
         def sorted_key_insz(order):
             order.ensure_one()
@@ -131,7 +136,7 @@ class pos_session(models.Model):
                             'first_ticket_time': order.date_order,
                             'last_ticket_time': False,
                             'fdmIdentifier': order.config_id.certified_blackbox_identifier,
-                            'cash_rounding_applied': 0
+                            'cash_rounding_applied': 0,
                         })
 
                 data[insz][i]['revenue'] += order.amount_paid

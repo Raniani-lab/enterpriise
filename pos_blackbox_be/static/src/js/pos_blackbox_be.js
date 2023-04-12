@@ -32,7 +32,7 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
             return this.useBlackBoxBe() || result;
         }
         async pushProFormaOrder(order) {
-            order.receipt_type = "PS";
+            order.receipt_type = order.get_total_with_tax() >= 0 ? "PS" : "PR";
             await this.env.pos.push_single_order(order);
             order.receipt_type = false;
         }
@@ -120,7 +120,9 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
             });
         }
         async _syncTableOrdersToServer() {
-            this.ordersToUpdateSet.forEach(order => this.pushProFormaOrder(order));
+            for (const order of this.ordersToUpdateSet) {
+                await this.pushProFormaOrder(order);
+            }
             super._syncTableOrdersToServer();
         }
     }

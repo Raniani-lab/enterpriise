@@ -1,30 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="sale_report_sequenceX" model="ir.sequence">
+        <field name="name">Sales report sequence</field>
+        <field name="code">report.point_of_sale.report_saledetails.sequenceX</field>
+        <field name="prefix">S</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="sale_report_sequenceZ" model="ir.sequence">
+        <field name="name">Sales report sequence</field>
+        <field name="code">report.point_of_sale.report_saledetails.sequenceZ</field>
+        <field name="prefix">S</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="sale_report_sequenceZUser" model="ir.sequence">
+        <field name="name">Sales report sequence</field>
+        <field name="code">report.point_of_sale.report_saledetails.sequenceZUser</field>
+        <field name="prefix">S</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="sale_report_sequenceXUser" model="ir.sequence">
+        <field name="name">Sales report sequence</field>
+        <field name="code">report.point_of_sale.report_saledetails.sequenceXUser</field>
+        <field name="prefix">S</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
     <template id="daily_report" inherit_id="point_of_sale.report_saledetails" name="Daily Report">
-        <xpath expr="//h2" position="after">
+        <xpath expr="//div[hasclass('text-center')]" position="after">
             <t t-if="isBelgium">
                 <h2>
                     <t t-if='state == "closed"'>Z</t>
                     <t t-else="">X</t>
-                    Financial
+                    FINANCIAL
                     (<t t-esc="sequence"/> )
                 </h2>
                 <h5>VAT: <t t-esc="CompanyVAT"/></h5>
                 <h5><t t-esc="cashRegisterID"/> (<t t-esc="fdmID"/>)- <t t-esc="cashier_name"/> (<t t-esc="insz_or_bis_number"/>)</h5>
                 <h5>
-                    <t t-esc="startAt"/>
-                    <t t-if="stopAt">
-                        to <t t-esc="stopAt"/>
+                    <t t-esc="date_start" t-options="{'widget': 'datetime'}"/>
+                    <t t-if="date_stop">
+                        to <t t-esc="date_stop" t-options="{'widget': 'datetime'}"/>
                     </t>
                 </h5>
+                <h5>Time of reporting: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y %H:%M:%S')"/></h5>
             </t>
         </xpath>
-        <xpath expr="//h2" position="replace">
+        <xpath expr="//div[hasclass('text-center')]" position="replace">
             <strong>THIS IS NOT A VALID VAT TICKET</strong>
-            <h2>Daily Report
-                <t t-if='state == "closed"'>Z</t>
+            <h2 t-if="state == 'closed' or state == 'opened'">Daily Report
+                <t t-if="state == 'closed'">Z</t>
                 <t t-else="">X</t>
             </h2>
+            <h2 t-else="">Multiple Report</h2>
         </xpath>
 
         <xpath expr="//t[@id='taxe_sales']" position="replace">
@@ -183,7 +217,13 @@
                             <h2>X USERS</h2>
                         </t>
                         <div class="row">
+                            Sequence: <t t-esc="o._get_sequence_number()"/>
+                        </div>
+                        <div class="row">
                             VAT: <t t-esc="o.company_id.vat"/>
+                        </div>
+                        <div class="row">
+                            Time of reporting: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y %H:%M:%S')"/>
                         </div>
                         <div class="row">
                             <t t-esc="context_timestamp(o.start_at).strftime('%m/%d/%Y %H:%M:%S')"/>
@@ -276,7 +316,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        Last ticket time (NS): <span t-esc="context_timestamp(user['last_ticket_time']).strftime('%m/%d/%Y %H:%M:%S')"/>
+                                        <t t-if="user['last_ticket_time']">
+                                            Last ticket time (NS): <span t-esc="context_timestamp(user['last_ticket_time']).strftime('%m/%d/%Y %H:%M:%S')"/>
+                                        </t>
+                                        <t t-else="">
+                                            Last ticket time (NS): In Progress
+                                        </t>
                                     </div>
                                 </div>
                                 <div class="row zero_min_height">

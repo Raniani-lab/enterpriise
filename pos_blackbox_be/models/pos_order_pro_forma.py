@@ -72,7 +72,7 @@ class PosOrderProFormaBe(models.Model):
                 for l in self.lines
             ])
         description = """
-        PRO FORMA SALES
+        {title}
         Date: {create_date}
         Ref: {pos_reference}
         Cashier: {cashier_name}
@@ -85,6 +85,7 @@ class PosOrderProFormaBe(models.Model):
         POS ID: {config_name}
         FDM Identifier: {fdmIdentifier}
         """.format(
+            title="PRO FORMA SALES" if self.amount_paid >= 0 else "PRO FORMA REFUNDS",
             create_date=self.create_date,
             cashier_name=self.employee_id.name or self.user_id.name,
             lines=lines,
@@ -139,5 +140,5 @@ class PosOrderProFormaBe(models.Model):
             values['name'] = session.config_id.sequence_id._next()
 
             order = self.create(values)
-            description = self._create_log_description()
+            description = order._create_log_description()
             self.env["pos_blackbox_be.log"].sudo().create(description, "create", self._name, order.pos_reference)

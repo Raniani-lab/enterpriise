@@ -19,7 +19,6 @@ class ReportSaleDetails(models.AbstractModel):
                     'isBelgium': session.config_id.iface_fiscal_data_module.id,
                     'cashier_name': session.user_id.name,
                     'insz_or_bis_number': session.user_id.insz_or_bis_number,
-                    'state': session.state,
                     'NS_number': len(
                         self.env['pos.order'].search([('session_id', "=", session.id), ("amount_total", ">=", 0)])),
                     'NR_number': len(
@@ -42,15 +41,11 @@ class ReportSaleDetails(models.AbstractModel):
                     'CashBoxStartAmount': session.cash_register_balance_start,
                     'CashBoxEndAmount': session.cash_register_balance_end_real,
                     'cashRegisterID': session.config_id.name,
-                    'startAt': session.start_at,
-                    'stopAt': session.stop_at,
                     'sequence': self.env['ir.sequence'].next_by_code(
                         'report.point_of_sale.report_saledetails.sequenceZ') if session.state == 'closed'
                     else self.env['ir.sequence'].next_by_code('report.point_of_sale.report_saledetails.sequenceX'),
                     'CompanyVAT': session.company_id.vat,
                     'fdmID': session.config_id.certified_blackbox_identifier,
-                    'invoiceList': session._get_invoice_total_list(),
-                    'invoiceTotal': session._get_total_invoice(),
                     'CashBoxOpening': session.cash_box_opening_number
                 }
                 data.update(report_update)

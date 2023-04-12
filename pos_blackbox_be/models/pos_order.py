@@ -47,7 +47,7 @@ class PosOrder(models.Model):
                 for l in self.lines
             ])
         description = """
-        NORMAL SALES
+        {title}
         Date: {create_date}
         Ref: {pos_reference}
         Cashier: {cashier_name}
@@ -61,6 +61,7 @@ class PosOrder(models.Model):
         POS ID: {config_name}
         FDM Identifier: {fdmIdentifier}
         """.format(
+            title="NORMAL SALES" if currency.round(self.amount_paid) >= 0 else "NORMAL REFUNDS",
             create_date=self.create_date,
             cashier_name=self.employee_id.name or self.user_id.name,
             lines=lines,
@@ -126,8 +127,8 @@ class PosOrder(models.Model):
 
     @api.model
     def create_from_ui(self, orders, draft=False):
-        pro_forma_orders = [order['data'] for order in orders if order['data'].get('receipt_type') == "PS"]
-        regular_orders = [order for order in orders if order['data'].get('receipt_type') != "PS"]
+        pro_forma_orders = [order['data'] for order in orders if order['data'].get('receipt_type') in ["PS", "PR"]]
+        regular_orders = [order for order in orders if order['data'].get('receipt_type') not in ["PS", "PR"]]
         self.env['pos.order_pro_forma_be']._create_from_ui(pro_forma_orders)
         return super(PosOrder, self).create_from_ui(regular_orders, draft)
 

@@ -5,9 +5,11 @@
             <t t-if="env.pos.useBlackBoxBe()">
                 <t t-if="receipt.receipt_type != 'NS' and receipt.receipt_type != 'NR'">
                     <div class="pos-receipt-header"><bold>THIS IS NOT A VALID TICKET</bold></div>
+                    <div class="pos-receipt-header"><bold>PRO FORMA</bold> <bold t-if="receipt.receipt_type == 'PR'">REFUND</bold></div>
                 </t>
                 <t t-else="">
                     <div class="pos-receipt-header"><bold>VAT TICKET</bold></div>
+                    <div class="pos-receipt-header"><bold t-if="receipt.receipt_type == 'NR'">REFUND</bold></div>
                 </t>
                 <br/>
             </t>

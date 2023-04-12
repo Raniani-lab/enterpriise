@@ -33,14 +33,4 @@
         </field>
     </record>
 
-    <record id="helpdesk_sla_view_search_inherit_sale_timesheet" model="ir.ui.view">
-        <field name='name'>helpdesk.sla.search.inherit.sale.timesheet</field>
-        <field name="model">helpdesk.sla</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_sla_view_search"/>
-        <field name="arch" type="xml">
-            <field name='partner_ids' position="after">
-                <field name="sale_line_ids" groups="sales_team.group_sale_salesman"/>
-            </field>
-        </field>
-    </record>
 </odoo>

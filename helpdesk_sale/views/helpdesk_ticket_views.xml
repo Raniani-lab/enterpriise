@@ -36,8 +36,11 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search_base"/>
         <field name="arch" type="xml">
             <field name="stage_id" position="after">
-                <field name="sale_order_id" string="Sales Order" groups="helpdesk_sale.group_use_helpdesk_sale_timesheet"/>
+                <field name="sale_order_id" string="Sales Order" filter_domain="['|', ('sale_line_id', 'ilike', self), ('sale_order_id', 'ilike', self)]" groups="helpdesk_sale.group_use_helpdesk_sale_timesheet"/>
             </field>
+            <xpath expr="//filter[@name='unassigned']" position="after">
+                <filter string="My Customers" domain="['|', ('partner_id.user_id', '=', uid), ('sale_order_id.user_id', '=', uid)]" name="my_customers"/>
+            </xpath>
         </field>
     </record>
 

@@ -119,24 +119,6 @@
         </field>
     </record>
 
-    <record id="helpdesk_ticket_view_search_inherit_helpdesk_timesheet" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.search.inherit.timesheet</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search_base"/>
-        <field name="arch" type="xml">
-            <filter name="my_ticket" position="after">
-                <filter string="My Team's Tickets" name="my_team_ticket" domain="[('user_id.employee_parent_id.user_id', '=', uid)]"/>
-                <filter string="My Department" name="department" domain="[('user_id.employee_id.member_of_department', '=', True)]" help="My Department"/>
-            </filter>
-            <field name="company_id" position="before">
-                <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
-            </field>
-            <filter name="company" position="after">
-                <filter name="analytic_account" context="{'group_by': 'analytic_account_id'}" groups="analytic.group_analytic_accounting"/>
-            </filter>
-        </field>
-    </record>
-
     <record id="helpdesk_ticket_view_tree_inherit_helpdesk_timesheet" model="ir.ui.view">
         <field name='name'>helpdesk.ticket.tree.inherit.timesheet</field>
         <field name="model">helpdesk.ticket</field>

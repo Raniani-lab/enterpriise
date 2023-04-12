@@ -255,10 +255,7 @@
         <field name="arch" type="xml">
             <search string="Helpdesk Team Search">
                 <field name="name"/>
-                <field name="member_ids"/>
                 <field name="company_id" groups="base.group_multi_company"/>
-                <filter string="My Teams" domain="[('member_ids', 'in', [uid]), ('auto_assignment', '=', True)]" name="my_team" groups="helpdesk.group_auto_assignment"/>
-                <filter string="Followed Teams" domain="[('message_is_follower', '=', True)]" name="my_follow_team"/>
                 <separator/>
                 <filter string="Archived" domain="[('active', '=', False)]" name="archived"/>
                 <group expand="0" string="Group By">

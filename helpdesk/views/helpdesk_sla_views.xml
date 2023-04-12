@@ -48,25 +48,10 @@
             <search string="Search SLA Policies">
                 <field name="name"/>
                 <field name="team_id"/>
-                <field name="ticket_type_ids"/>
-                <field name="tag_ids"/>
-                <field name="partner_ids"/>
-                <field name="stage_id" string="Reach Stage"/>
-                <field name="exclude_stage_ids"/>
-                <filter string="My Teams" domain="['|', ('team_id.member_ids', 'in', [uid]), ('team_id.member_ids', '=', False)]" name="my_team"/>
-                <filter string="Followed Teams" domain="[('team_id.message_is_follower', '=', True)]" name="my_follow_team"/>
-                <separator/>
-                <filter string="Urgent" domain="[('priority', '=', 3)]" name="urgent_priority"/>
-                <filter string="High Priority" domain="[('priority', '=', 2)]" name="high_priority"/>
-                <filter string="Medium Priority" domain="[('priority', '=', 1)]" name="low_priority"/>
-                <filter string="Low Priority" domain="[('priority', '=', 0)]" name="all_priority"/>
-                <separator/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter string="Helpdesk Team" name="team" context="{'group_by':'team_id'}"/>
-                    <filter string="Priority" name="priority" context="{'group_by': 'priority'}"/>
                     <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
-                    <filter string="Reach Stage" name="stage" context="{'group_by': 'stage_id'}"/>
                 </group>
             </search>
         </field>

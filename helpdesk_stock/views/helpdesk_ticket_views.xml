@@ -44,17 +44,6 @@
         </field>
     </record>
 
-    <record id="helpdesk_ticket_view_search_inherit_helpdesk_stock" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.search.inherit.stock</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search_base"/>
-        <field name="arch" type="xml">
-            <field name="sla_ids" position="before">
-                <field name="product_id"/>
-            </field>
-        </field>
-    </record>
-
     <record id="helpdesk_ticket_view_tree_inherit_helpdesk_stock" model="ir.ui.view">
         <field name='name'>helpdesk.ticket.tree.inherit.stock</field>
         <field name="model">helpdesk.ticket</field>

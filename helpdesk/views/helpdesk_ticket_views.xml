@@ -99,7 +99,6 @@
                 <filter name="rating_satisfied" string="Satisfied" domain="[('rating_avg', '&gt;', 3.66)]" groups="helpdesk.group_use_rating"/>
                 <filter name="rating_okay" string="Okay" domain="[('rating_avg', '&lt;', 3.66), ('rating_avg', '&gt;=', 2.33)]" groups="helpdesk.group_use_rating"/>
                 <filter name="dissatisfied" string="Dissatisfied" domain="[('rating_avg', '&lt;', 2.33), ('rating_last_value', '!=', 0.0)]" groups="helpdesk.group_use_rating"/>
-                <filter name="no_rating" string="No Rating" domain="[('rating_last_value', '=', 0)]" groups="helpdesk.group_use_rating"/>
                 <separator/>
                 <filter string="Creation Date" date="create_date" name="creation_date"/>
                 <separator/>
@@ -108,9 +107,10 @@
                     <filter string="Assigned to" name="assignee" context="{'group_by':'user_id'}"/>
                     <filter string="Helpdesk Team" name="team" context="{'group_by':'team_id'}" invisible="context.get('default_team_id', False)"/>
                     <filter string="Stage" name="stage" context="{'group_by':'stage_id'}"/>
-                    <filter string="Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
-                    <filter string="Priority" name="priority" context="{'group_by': 'priority'}"/>
                     <filter string="Status" name="state" context="{'group_by': 'kanban_state'}"/>
+                    <filter string="Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
+                    <filter string="Tags" name="tag" context="{'group_by': 'tag_ids'}"/>
+                    <filter string="Priority" name="priority" context="{'group_by': 'priority'}"/>
                     <filter string="Customer" name="partner" context="{'group_by': 'partner_id'}"/>
                     <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
                     <filter string="Create Date" name="created_by" context="{'group_by': 'create_date'}"/>

@@ -115,9 +115,6 @@
             <filter name="customer" position="after">
                 <filter string="Helpdesk Team" name="res_team" context="{'group_by':'parent_res_name'}"/>
             </filter>
-            <filter name="resource" position="attributes">
-                <attribute name="string">Ticket</attribute>
-            </filter>
             <xpath expr="//filter[@name='resource']" position="after">
                 <filter name="rating_text" position="move"/>
             </xpath>

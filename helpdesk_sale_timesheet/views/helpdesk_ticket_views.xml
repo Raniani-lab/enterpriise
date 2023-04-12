@@ -79,19 +79,4 @@
         </field>
     </record>
 
-    <record id="helpdesk_ticket_view_search_inherit_helpdesk_sale_timesheet" model="ir.ui.view">
-        <field name="name">helpdesk.ticket.search.inherit.sale.timesheet</field>
-        <field name="model">helpdesk.ticket</field>
-        <field name="inherit_id" ref="helpdesk_sale.helpdesk_ticket_view_search_inherit_helpdesk_sale"/>
-        <field name="arch" type="xml">
-            <field name="sale_order_id" position="after">
-                <field name="sale_line_id" string="Sales Order Item" groups="helpdesk_sale.group_use_helpdesk_sale_timesheet"/>
-            </field>
-            <filter name='sla_failed' position="after">
-                <separator/>
-                <filter string="Tickets in Overtime" domain="[('remaining_hours_so','&lt;',0)]" name="negative_remaining_hours" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
-            </filter>
-        </field>
-    </record>
-
 </odoo>

@@ -21,7 +21,8 @@ class Task(models.Model):
             fsm_project = self.env['project.project'].search([('is_fsm', '=', True), ('company_id', '=', company_id)], order='sequence', limit=1)
             if fsm_project:
                 result['stage_id'] = self.stage_find(fsm_project.id, [('fold', '=', False)])
-            result['project_id'] = fsm_project.id
+                result['project_id'] = fsm_project.id
+                result['company_id'] = company_id
 
         date_begin = result.get('planned_date_begin')
         date_end = result.get('planned_date_end')

@@ -55,10 +55,10 @@ class Project(models.Model):
         buttons.append({
             'icon': 'life-ring',
             'text': _lt('Tickets'),
-            'number': self.ticket_count,
+            'number': self.sudo().ticket_count,
             'action_type': 'object',
             'action': 'action_open_project_tickets',
-            'show': self.ticket_count > 0,
+            'show': self.sudo().ticket_count > 0,
             'sequence': 25,
         })
         return buttons

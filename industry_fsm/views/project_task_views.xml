@@ -133,7 +133,9 @@
                 </attribute>
                 <attribute name="domain">[
                     ('active', '=', True),
-                    ('company_id', '=', company_id),
+                    '|',
+                    ('company_id', '=', False),
+                    ('company_id', '=?', company_id),
                     ('is_fsm', '=?', context.get('fsm_mode')),
                     ('is_internal_project', '=', False),
                 ]</attribute>
@@ -145,7 +147,9 @@
                 </attribute>
                 <attribute name="domain">[
                     ('active', '=', True),
-                    ('company_id', '=', company_id),
+                    '|',
+                    ('company_id', '=', False),
+                    ('company_id', '=?', company_id),
                     ('is_fsm', '=?', context.get('fsm_mode')),
                     ('is_internal_project', '=', False),
                 ]</attribute>

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+from collections import defaultdict
 
 from odoo import api, fields, models, _lt
 from odoo.osv import expression
@@ -87,41 +88,57 @@ class Project(models.Model):
              ('subscription_state', 'not in', ['1_draft', '5_renewed']),
              ('is_subscription', '=', True),
             ],
-            ['sale_order_template_id', 'subscription_state'],
+            ['sale_order_template_id', 'subscription_state', 'currency_id'],
             ['recurring_monthly:sum', 'id:array_agg'],
         )
         if not subscription_read_group:
             return profitability_items
         all_subscription_ids = []
-        subscription_data_per_template_id = {}
         amount_to_invoice = 0.0
-        for sale_order_template, subscription_state, recurring_monthly_sum, ids in subscription_read_group:
+        set_currency_ids = {self.currency_id.id}
+        amount_to_invoice_per_currency = defaultdict(lambda: 0.0)
+        recurring_per_currency_per_template = defaultdict(lambda: defaultdict(lambda: 0.0))
+        for sale_order_template_id, subscription_state, currency, recurring_monthly, ids in subscription_read_group:
             all_subscription_ids.extend(ids)
+            set_currency_ids.add(currency.id)
             if subscription_state != '3_progress':  # then the subscriptions are closed and so nothing is to invoice.
                 continue
-            if not sale_order_template:  # then we will take the recurring monthly amount that we will invoice in the next invoice(s).
-                amount_to_invoice += recurring_monthly_sum
+            if not sale_order_template_id:  # then we will take the recurring monthly amount that we will invoice in the next invoice(s).
+                amount_to_invoice_per_currency[currency.id] += recurring_monthly
                 continue
-            subscription_data_per_template_id[sale_order_template.id] = recurring_monthly_sum
+            recurring_per_currency_per_template[sale_order_template_id.id][currency.id] += recurring_monthly
+        # fetch the data needed for the 'invoiced' section before handling the 'to invoice' one, in order to have all the currencies available and make only one fetch on the rates
+        aal_read_group = self.env['account.analytic.line'].sudo()._read_group(
+            [('move_line_id.subscription_id', 'in', all_subscription_ids),
+             ('account_id', 'in', self.analytic_account_id.ids)],
+            ['currency_id'],
+            ['amount:sum'],
+        )
+        set_currency_ids.union({currency.id for currency, dummy in aal_read_group})
+        rates_per_currency_id = self.env['res.currency'].browse(set_currency_ids)._get_rates(self.company_id or self.env.company, fields.Date.context_today(self))
+        project_currency_rate = rates_per_currency_id[self.currency_id.id]
 
+        for currency_id in amount_to_invoice_per_currency:
+            rate = project_currency_rate / rates_per_currency_id[currency_id]
+            amount_to_invoice += amount_to_invoice_per_currency[currency_id] * rate
         subscription_template_dict = {}
-        if subscription_data_per_template_id:
+        if recurring_per_currency_per_template.keys():
             subscription_template_dict = {
                 res['id']: res['recurring_rule_count']
                 for res in self.env['sale.order.template'].sudo().search_read(
-                    [('id', 'in', list(subscription_data_per_template_id.keys())), ('recurring_rule_boundary', '=', 'limited')],
+                    [('id', 'in', list(recurring_per_currency_per_template.keys())), ('recurring_rule_boundary', '=', 'limited')],
                     ['id', 'recurring_rule_count'],
                 )
             }
-        for subcription_template_id, recurring_monthly in subscription_data_per_template_id.items():
+        for subcription_template_id in recurring_per_currency_per_template:
             nb_period = subscription_template_dict.get(subcription_template_id, 1)
-            amount_to_invoice += recurring_monthly * nb_period
-
-        aal_read_group = self.env['account.analytic.line'].sudo()._read_group(
-            [('move_line_id.subscription_id', 'in', all_subscription_ids), ('account_id', 'in', self.analytic_account_id.ids)],
-            aggregates=['amount:sum'],
-        )
-        amount_invoiced = aal_read_group[0][0] or 0.0
+            for currency_id in recurring_per_currency_per_template[subcription_template_id]:
+                rate = project_currency_rate / rates_per_currency_id[currency_id]
+                amount_to_invoice += recurring_per_currency_per_template[subcription_template_id][currency_id] * nb_period * rate
+        amount_invoiced = 0.0
+        for currency, amount in aal_read_group:
+            rate = project_currency_rate / rates_per_currency_id[currency_id]
+            amount_invoiced += amount * rate
         revenues = profitability_items['revenues']
         section_id = 'subscriptions'
         subscription_revenue = {
@@ -130,6 +147,7 @@ class Project(models.Model):
             'invoiced': amount_invoiced,
             'to_invoice': amount_to_invoice,
         }
+
         if with_action and all_subscription_ids and self.user_has_groups('sales_team.group_sale_salesman'):
             args = [section_id, [('id', 'in', all_subscription_ids)]]
             if len(all_subscription_ids) == 1:

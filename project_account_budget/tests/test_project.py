@@ -58,6 +58,7 @@ class TestProject(TestProjectCommon):
             'data': [
                 {
                     'allocated': 500,
+                    'budgets': [],
                     'spent': 0.0,
                 },
             ],
@@ -87,7 +88,7 @@ class TestProject(TestProjectCommon):
             budgets += budget
 
         self.env.user.groups_id += self.env.ref('account.group_account_user')
-        budget_items = self.project_goats._get_budget_items(with_action=True)
+        budget_items = self.project_goats.with_context({'allowed_company_ids': [self.env.company.id]})._get_budget_items(with_action=True)
         del budget_items['data'][0]['name']  # remove the name because it is a lazy translation.
         del budget_items['data'][0]['budgets'][0]['name']
         del budget_items['data'][0]['budgets'][1]['name']
@@ -113,4 +114,5 @@ class TestProject(TestProjectCommon):
             'total': {'allocated': 1500.0, 'spent': 0.0, 'progress': -1.0},
             'form_view_id': self.env.ref('project_account_budget.crossovered_budget_view_form_dialog').id,
             'can_add_budget': True,
+            'company_id': self.env.company.id,
         })

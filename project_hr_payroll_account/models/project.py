@@ -45,10 +45,10 @@ class Project(models.Model):
             buttons.append({
                 'icon': 'book',
                 'text': _lt('Contracts'),
-                'number': self.contracts_count,
+                'number': self.sudo().contracts_count,
                 'action_type': 'object',
                 'action': 'action_open_project_contracts',
-                'show': self.contracts_count > 0,
+                'show': self.sudo().contracts_count > 0,
                 'sequence': 57,
             })
         return buttons

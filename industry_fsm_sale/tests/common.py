@@ -34,6 +34,7 @@ class TestFsmFlowCommon(TransactionCase):
             'is_fsm': True,
             'allow_billable': True,
             'allow_timesheets': True,
+            'company_id': cls.env.company.id,
         })
 
         cls.partner_1 = cls.env['res.partner'].create({'name': 'A Test Partner 1'})

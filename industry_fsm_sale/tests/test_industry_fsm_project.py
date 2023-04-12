@@ -154,9 +154,9 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
         Project = self.env['project.project']
         Task = self.env['project.task']
         dummy, project2, project3 = Project.create([
-            {'name': 'Project with partner', 'partner_id': self.partner_1.id, 'allow_billable': False, 'is_fsm': True},
-            {'name': 'Project without partner', 'allow_billable': False, 'is_fsm': True},
-            {'name': 'Project without partner 2', 'allow_billable': False, 'is_fsm': True},
+            {'name': 'Project with partner', 'partner_id': self.partner_1.id, 'allow_billable': False, 'is_fsm': True, 'company_id': self.env.company.id},
+            {'name': 'Project without partner', 'allow_billable': False, 'is_fsm': True, 'company_id': self.env.company.id},
+            {'name': 'Project without partner 2', 'allow_billable': False, 'is_fsm': True, 'company_id': self.env.company.id},
         ])
         Task.create([
             {'name': 'Task with partner in project 2', 'project_id': project2.id, 'partner_id': self.partner_1.id},

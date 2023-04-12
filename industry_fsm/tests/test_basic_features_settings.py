@@ -49,5 +49,6 @@ class TestBasicFeaturesSettings(TestProjectCommon):
         fsm_project = self.env['project.project'].create({
             'name': 'Test FSM Project',
             'is_fsm': True,
+            'company_id': self.env.company.id,
         })
         self.assertTrue(fsm_project.allow_worksheets, "By default, worksheet should be enable for Fsm project")

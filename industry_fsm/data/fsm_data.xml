@@ -36,6 +36,7 @@
             <field name="allow_timesheets" eval="True"/>
             <field name="type_ids" eval="[(4, ref('planning_project_stage_0')), (4, ref('planning_project_stage_1')), (4, ref('planning_project_stage_2')), (4, ref('planning_project_stage_3')), (4, ref('planning_project_stage_4'))]"/>
             <field name="allow_worksheets" eval="True"/>
+            <field name="company_id" ref="base.main_company"/>
         </record>
     </data>
 </odoo>

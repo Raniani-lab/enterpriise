@@ -17,7 +17,7 @@ class Task(models.Model):
     quotation_count = fields.Integer(compute='_compute_quotation_count')
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
-    currency_id = fields.Many2one('res.currency', compute='_compute_currency_id')
+    currency_id = fields.Many2one('res.currency', compute='_compute_currency_id', compute_sudo=True)
     display_create_invoice_primary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     display_create_invoice_secondary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
@@ -29,7 +29,6 @@ class Task(models.Model):
     portal_quotation_count = fields.Integer(compute='_compute_portal_quotation_count')
     portal_invoice_count = fields.Integer('Invoice Count', compute='_compute_portal_invoice_count')
     sale_line_id = fields.Many2one('sale.order.line', domain="""[
-        ('company_id', '=', company_id),
         '|', '|', ('order_partner_id', 'child_of', partner_id if partner_id else []), ('order_id.partner_shipping_id', 'child_of', partner_id if partner_id else []),
              '|', ('order_partner_id', '=?', partner_id), ('order_id.partner_shipping_id', '=?', partner_id),
         ('is_service', '=', True), ('is_expense', '=', False), ('state', '=', 'sale')

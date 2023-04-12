@@ -18,12 +18,14 @@ class TestWorksheet(TransactionCase):
         cls.fsm_project = cls.env['project.project'].create({
             'name': 'Field Service',
             'is_fsm': True,
+            'company_id': cls.env.company.id,
         })
         cls.second_fsm_project = cls.env['project.project'].create({
             'name': 'Field Service',
             'is_fsm': True,
             'allow_worksheets': True,
             'worksheet_template_id': cls.worksheet_template.id,
+            'company_id': cls.env.company.id,
         })
         cls.partner = cls.env['res.partner'].create({'name': 'Costumer A'})
         cls.task = cls.env['project.task'].create({

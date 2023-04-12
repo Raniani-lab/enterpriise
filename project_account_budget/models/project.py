@@ -79,11 +79,16 @@ class Project(models.Model):
                 ('crossovered_budget_id', '!=', False),
                 ('crossovered_budget_id.state', 'not in', ['draft', 'cancel']),
             ],
-            ['general_budget_id', 'crossovered_budget_id'],
+            ['general_budget_id', 'crossovered_budget_id', 'company_id'],
             ['planned_amount:sum', 'practical_amount:sum', 'id:array_agg'],
         )
+        has_company_access = False
+        for line in budget_lines:
+            if line[2].id in self.env.context.get('allowed_company_ids', []):
+                has_company_access = True
+                break
         total_allocated = total_spent = 0.0
-        can_see_budget_items = with_action and self.user_has_groups('account.group_account_readonly,analytic.group_analytic_accounting')
+        can_see_budget_items = with_action and has_company_access and self.user_has_groups('account.group_account_readonly,analytic.group_analytic_accounting')
         budget_data_per_budget = defaultdict(
             lambda: {
                 'allocated': 0,
@@ -95,7 +100,7 @@ class Project(models.Model):
             }
         )
 
-        for general_budget, crossovered_budget, allocated, spent, ids in budget_lines:
+        for general_budget, crossovered_budget, dummy, allocated, spent, ids in budget_lines:
             budget_data = budget_data_per_budget[general_budget]
             budget_data['id'] = general_budget.id
             budget_data['name'] = general_budget.display_name
@@ -114,6 +119,8 @@ class Project(models.Model):
                 }
                 budget_data['budgets'].append(budget_item)
                 budget_data['ids'] += ids
+            else:
+                budget_data['budgets'] = []
 
 
         budget_data_per_budget = list(budget_data_per_budget.values())
@@ -139,4 +146,5 @@ class Project(models.Model):
         }
         if can_add_budget:
             budget_items['form_view_id'] = self.env.ref('project_account_budget.crossovered_budget_view_form_dialog').id
+            budget_items['company_id'] = self.company_id.id or self.env.company.id
         return budget_items

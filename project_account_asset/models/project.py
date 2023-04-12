@@ -54,10 +54,10 @@ class Project(models.Model):
             buttons.append({
                 'icon': 'pencil-square-o',
                 'text': _lt('Assets'),
-                'number': self.assets_count,
+                'number': self.sudo().assets_count,
                 'action_type': 'object',
                 'action': 'action_open_project_assets',
-                'show': self.assets_count > 0,
+                'show': self.sudo().assets_count > 0,
                 'sequence': 40,
             })
         return buttons

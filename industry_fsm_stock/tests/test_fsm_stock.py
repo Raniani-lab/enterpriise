@@ -782,6 +782,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         other_project = self.env['project.project'].create({
             'name': 'Other Project',
             'is_fsm': False,
+            'company_id': self.env.company.id,
         })
         # create service products
         product_field_service, product_other_service = self.env['product.product'].create([

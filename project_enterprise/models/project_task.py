@@ -393,6 +393,9 @@ class Task(models.Model):
         user = self.env['res.users']
         calendar = self.project_id.resource_calendar_id
         company = self.company_id if len(self.company_id) == 1 else self.project_id.company_id
+        if not company:
+            company = self.env.company
+
         tz_info = calendar.tz
         sorted_tasks = self.sorted('priority', reverse=True)
         if (vals.get('user_ids') and len(vals['user_ids']) == 1) or ('user_ids' not in vals and len(self.user_ids) == 1):

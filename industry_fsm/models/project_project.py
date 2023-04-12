@@ -25,6 +25,10 @@ class Project(models.Model):
             if project.is_fsm and project.name == fsm_project_default_name and not project.is_internal_project:
                 project.display_name = f'{project.display_name} - {project.company_id.name}'
 
+    _sql_constraints = [
+        ('company_id_required_for_fsm_project', "CHECK((is_fsm = 't' AND company_id IS NOT NULL) OR is_fsm = 'f')", 'A fsm project must be company restricted'),
+    ]
+
     @api.depends('is_fsm')
     def _compute_allow_task_dependencies(self):
         has_group = self.user_has_groups('project.group_project_task_dependencies')
@@ -37,6 +41,13 @@ class Project(models.Model):
             project.allow_worksheets = project.is_fsm
 
     @api.depends('is_fsm')
+    def _compute_company_id(self):
+        #The super() call is done first in order to set the company of the fsm projects to the company of its account if a company is set on it.
+        super()._compute_company_id()
+        fsm_projects = self.filtered(lambda project: project.is_fsm and not project.company_id)
+        fsm_projects.company_id = self.env.company
+
+    @api.depends('is_fsm')
     def _compute_allow_milestones(self):
         has_group = self.user_has_groups('project.group_project_milestone')
         for project in self:
@@ -45,6 +56,8 @@ class Project(models.Model):
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
+        if defaults.get('is_fsm', False) and not defaults.get('company_id', False):
+            defaults['company_id'] = self.env.company.id
         if 'allow_task_dependencies' in fields_list:
             defaults['allow_task_dependencies'] = defaults.get('allow_task_dependencies', False) and not defaults.get('is_fsm')
         if 'allow_milestones' in fields_list:

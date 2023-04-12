@@ -20,6 +20,7 @@ patch(ProjectRightSidePanel.prototype, '@project_account_budget/components/proje
             ...this.context,
             project_update: true,
             default_project_id: this.projectId,
+            default_company_id:this.state.data.budget_items.company_id,
         };
         this.openFormViewDialog({
             context,

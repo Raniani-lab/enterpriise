@@ -45,6 +45,7 @@ class TestTimerButtons(TestFsmFlowSaleCommon):
             'allow_billable': True,
             'timesheet_product_id': cls.product_service.id,
             'is_fsm': True,
+            'company_id': cls.env.company.id,
         })
         cls.task = cls.env['project.task'].create({
             'name': 'My Task',

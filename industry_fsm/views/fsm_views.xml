@@ -800,6 +800,21 @@
         </field>
     </record>
 
+    <record id="edit_fsm_project_inherit" model="ir.ui.view">
+        <field name="name">project.project.fsm.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="priority">32</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <field name="is_fsm" invisible="1"/>
+            </xpath>
+            <xpath expr="//group/field[@name='company_id']" position="attributes">
+                <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_project_action_only_fsm" model="ir.actions.act_window" >
         <field name="name">Projects</field>
         <field name="res_model">project.project</field>
@@ -830,7 +845,6 @@
         <field name="view_id" ref="industry_fsm.view_project_kanban_fsm"/>
         <field name="act_window_id" ref="project_project_action_only_fsm"/>
     </record>
-
 
     <record id="project_project_view_form_simplified_inherit" model="ir.ui.view">
         <field name="name">project.project.view.form.simplified.inherit</field>

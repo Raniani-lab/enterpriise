@@ -90,6 +90,7 @@ class TestL10AccountMoveReversal(TestL10nClEdiCommon):
                 'quantity': 1,
                 'price_unit': 1000.0,
                 'discount': 20.0,
+                'tax_ids': [],
             })],
         })
         invoice.action_post()

@@ -9,7 +9,7 @@ import {
     useState,
     onMounted,
     onPatched,
- } from "@odoo/owl";
+} from "@odoo/owl";
 
 /**
  * It creates a listing of children of this article.
@@ -26,13 +26,14 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         this.childrenSelector = 'o_knowledge_articles_structure_children_only';
 
         this.state = useState({
+            content: this.props.content,
             loading: !this.props.content,
             refreshing: false,
             showAllChildren: !this.props.anchor.classList.contains(this.childrenSelector),
         });
         if (!this.props.content) {
             onMounted(async () => {
-                this.props.content = await this._renderArticlesStructure();
+                this.state.content = await this._renderArticlesStructure();
                 this.state.loading = false;
             });
         }
@@ -58,7 +59,7 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         });
         if (!this.props.readonly) {
             onPatched(() => {
-                this.props.record.save();
+                this.props.record.save({ stayInEdition: true, noReload: true });
             });
         }
     }
@@ -134,7 +135,7 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
     async _onRefreshBtnClick (event) {
         event.stopPropagation();
         this.state.refreshing = true;
-        this.props.content = await this._renderArticlesStructure();
+        this.state.content = await this._renderArticlesStructure();
         this.state.refreshing = false;
     }
 

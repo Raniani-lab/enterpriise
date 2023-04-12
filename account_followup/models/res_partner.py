@@ -308,8 +308,8 @@ class ResPartner(models.Model):
         self.ensure_one()
         return self.unreconciled_aml_ids.filtered(lambda aml: not aml.blocked)
 
+    @api.model
     def _get_first_followup_level(self):
-        self.ensure_one()
         return self.env['account_followup.followup.line'].search([('company_id', '=', self.env.company.id)], order='delay asc', limit=1)
 
     def _update_next_followup_action_date(self, followup_line):
@@ -458,7 +458,7 @@ class ResPartner(models.Model):
                    AND line.blocked IS FALSE
                    AND line.company_id = %(company_id)s
                    AND COALESCE(ful.delay, -999) <= partner.followup_delay
-                   AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, -999) < %(current_date)s
+                   AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, %(first_ful_delay)s) < %(current_date)s
                  LIMIT 1
             ) in_need_of_action_aml ON true
             LEFT OUTER JOIN LATERAL (
@@ -486,6 +486,7 @@ class ResPartner(models.Model):
             'company_id': self.env.company.id,
             'partner_ids': tuple(self.ids),
             'current_date': today,
+            'first_ful_delay': self._get_first_followup_level().delay or 0,
         }
         self.env['account.move.line'].flush_model()
         self.env['res.partner'].flush_model()

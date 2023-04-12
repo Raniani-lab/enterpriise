@@ -10,7 +10,7 @@ import { getBundle, loadBundle } from "@web/core/assets";
 
 import { csrf_token, _t } from 'web.core';
 
-const { Component, onMounted, onWillUnmount, onWillStart, useRef, useState } = owl;
+const { Component, onMounted, onWillUnmount, onWillStart, toRaw, useRef, useState } = owl;
 
 export class PdfManager extends Component {
 
@@ -456,6 +456,7 @@ export class PdfManager extends Component {
      * @return {DomElement} canvas
      */
     async _renderCanvas(page, { width, height }) {
+        page = toRaw(page);
         const viewPort = page.getViewport({ scale: 1 });
         const canvas = document.createElement("canvas");
         canvas.className = "o_documents_pdf_canvas";

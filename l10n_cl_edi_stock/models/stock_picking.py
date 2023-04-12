@@ -43,7 +43,8 @@ class Picking(models.Model):
     # Technical field making it possible to have a draft status for entering
     # the starting number for the guia in this company
     l10n_cl_draft_status = fields.Boolean()
-
+    # delivery guide is not mandatory for return case
+    l10n_cl_is_return = fields.Boolean(compute="_compute_l10n_cl_is_return")
     # Common fields that will go into l10n_cl.edi.util in master (check copy=False as this flag was not in edi util):
     l10n_latam_document_type_id = fields.Many2one('l10n_latam.document.type', string='Document Type',
                                                   readonly=True, copy=False)
@@ -135,6 +136,13 @@ class Picking(models.Model):
         self.l10n_cl_sii_send_file = attachment.id
         self.message_post(body=_('DTE has been created%s', msg_demo), attachment_ids=attachment.ids)
         return self.print_delivery_guide_pdf()
+
+    def _compute_l10n_cl_is_return(self):
+        for picking in self:
+            if picking.country_code == 'CL':
+                picking.l10n_cl_is_return = any(m.origin_returned_move_id for m in picking.move_ids_without_package)
+            else:
+                picking.l10n_cl_is_return = False
 
     def print_delivery_guide_pdf(self):
         return self.env.ref('l10n_cl_edi_stock.action_delivery_guide_report_pdf').report_action(self)

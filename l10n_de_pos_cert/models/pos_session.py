@@ -45,6 +45,12 @@ class PosSession(models.Model):
 
     def _validate_session(self, balancing_account=False, amount_to_balance=0, bank_payment_method_diffs=None):
         res = super()._validate_session(balancing_account, amount_to_balance, bank_payment_method_diffs)
+
+        # If the result is a dict, this means that there was a problem and the _validate_session was not completed.
+        # In this case, a wizard should show up which is represented by the returned dictionary.
+        # Return the dictionary to prevent running the remaining code.
+        if isinstance(res, dict):
+            return res
         orders = self.order_ids.filtered(lambda o: o.state in ['done', 'invoiced'])
         # We don't want to block the user that need to validate his session order in order to create his TSS
         if self.config_id.is_company_country_germany and self.config_id.l10n_de_fiskaly_tss_id and self.order_ids:

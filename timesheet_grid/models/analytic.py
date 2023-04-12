@@ -90,7 +90,10 @@ class AnalyticLine(models.Model):
             if not calendar_work_intervals:
                 unavailability_intervals_per_employee_id[False] = get_company_unavailable_dates()
                 return unavailability_intervals_per_employee_id
-            company_unavailable_days = get_unavailable_dates(calendar_work_intervals[self.env.company.resource_calendar_id.id])
+            if self.env.company.resource_calendar_id.id in calendar_work_intervals:
+                company_unavailable_days = get_unavailable_dates(calendar_work_intervals[self.env.company.resource_calendar_id.id])
+            else:
+                company_unavailable_days = get_company_unavailable_dates()
             unavailability_intervals_per_employee_id = {
                 employee_id:
                     get_unavailable_dates(availability_intervals_per_resource_id[resource_id])

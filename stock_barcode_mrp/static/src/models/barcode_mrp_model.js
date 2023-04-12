@@ -11,6 +11,8 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
         this.validateMessage = _t("The manufacturing order has been validated");
         this.validateMethod = 'button_mark_done';
         this.validateContext = {};
+        this.backorderModel = 'mrp.production';
+        this.actionName = 'stock_barcode_mrp.stock_barcode_mo_client_action';
     }
 
     get printButtons() {
@@ -108,6 +110,14 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
             return this._getFinalProductLine();
         }
         return super.selectedLine;
+    }
+
+    get backordersDomain() {
+        return [
+            ['id', 'not in', this.record.backorder_ids],
+            ['procurement_group_id', '=', this.record.procurement_group_id],
+            ['state', '=', 'confirmed'],
+        ];
     }
 
     /** Fetch data and set state */

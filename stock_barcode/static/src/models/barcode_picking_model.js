@@ -21,6 +21,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         this.lastScanned.destLocation = false;
         this.shouldShortenLocationName = true;
         this.actionName = "stock_barcode.stock_barcode_picking_client_action";
+        this.backorderModel = 'stock.picking';
     }
 
     setData(data) {
@@ -826,7 +827,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         if (record[0].state === 'done') {
             // Checks if the picking generated a backorder. Updates the picking's data if it's the case.
             const backorders = await this.orm.searchRead(
-                "stock.picking",
+                this.backorderModel,
                 this.backordersDomain,
                 ["display_name", "id"]);
             const buttons = backorders.map(bo => {

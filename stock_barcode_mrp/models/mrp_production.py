@@ -7,6 +7,7 @@ class ManufacturingOrder(models.Model):
     move_raw_line_ids = fields.One2many('stock.move.line', compute='_compute_move_raw_line_ids')
     move_byproduct_line_ids = fields.One2many('stock.move.line', compute='_compute_move_byproduct_line_ids')
     is_completed = fields.Boolean(compute='_compute_is_completed')
+    backorder_ids = fields.One2many(related='procurement_group_id.mrp_production_ids')
 
     @api.depends('move_raw_ids')
     def _compute_move_raw_line_ids(self):
@@ -54,6 +55,8 @@ class ManufacturingOrder(models.Model):
             'picking_type_id',
             'company_id',
             'user_id',
+            'procurement_group_id',
+            'backorder_ids',
         ]
 
     def _get_stock_barcode_data(self):

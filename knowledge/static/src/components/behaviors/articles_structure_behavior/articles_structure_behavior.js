@@ -4,13 +4,13 @@ import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behav
 import { useService } from "@web/core/utils/hooks";
 import { qweb as QWeb }  from "web.core";
 
-const {
+import {
     markup,
     useEffect,
     useState,
     onMounted,
     onPatched,
- } = owl;
+ } from "@odoo/owl";
 
 /**
  * It creates a listing of children of this article.
@@ -29,14 +29,16 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
             this.state = useState({
                 loading: false,
                 refreshing: false,
+                content: this.props.content,
             });
         } else {
             this.state = useState({
                 loading: true,
                 refreshing: false,
+                content: null,
             });
             onMounted(async () => {
-                this.props.content = await this._renderArticlesStructure();
+                this.state.content = await this._renderArticlesStructure();
                 this.state.loading = false;
             });
         }
@@ -62,7 +64,7 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         });
         if (!this.props.readonly) {
             onPatched(() => {
-                this.props.record.save();
+                this.props.record.save({ stayInEdition: true, noReload: true });
             });
         }
     }
@@ -139,7 +141,7 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
     async _onRefreshBtnClick (event) {
         event.stopPropagation();
         this.state.refreshing = true;
-        this.props.content = await this._renderArticlesStructure();
+        this.state.content = await this._renderArticlesStructure();
         this.state.refreshing = false;
     }
 }

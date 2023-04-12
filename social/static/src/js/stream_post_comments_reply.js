@@ -3,6 +3,7 @@
 import { FileUploader } from "@web/views/fields/file_handler";
 import { useAutofocus } from "@web/core/utils/hooks";
 import { useEmojiPicker } from "@mail/emoji_picker/emoji_picker";
+import { useRef } from "@odoo/owl";
 
 const { Component, useState } = owl;
 
@@ -15,7 +16,7 @@ export class StreamPostCommentsReply extends Component {
         });
         this.inputRef = useAutofocus();
         this._onAddEmoji = this._onAddEmoji.bind(this);
-        useEmojiPicker("emoji-picker", {
+        useEmojiPicker(useRef("emoji-picker"), {
             onSelect: (str) => this._onAddEmoji(str),
             onClose: () => this.state.autofocus++,
         });

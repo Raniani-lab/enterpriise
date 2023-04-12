@@ -86,7 +86,7 @@ class HrSalaryAttachment(models.Model):
     payslip_ids = fields.Many2many('hr.payslip', relation='hr_payslip_hr_salary_attachment_rel', string='Payslips', copy=False)
     payslip_count = fields.Integer('# Payslips', compute='_compute_payslip_count')
 
-    attachment = fields.Binary('Document', copy=False, tracking=True)
+    attachment = fields.Binary('Document', copy=False)
     attachment_name = fields.Char()
 
     has_similar_attachment = fields.Boolean(compute='_compute_has_similar_attachment')

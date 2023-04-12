@@ -3148,7 +3148,7 @@ QUnit.module("View Editors", (hooks) => {
             assert.containsOnce(target, ".modal");
             assert.strictEqual(
                 target.querySelector(".modal .modal-body").textContent,
-                "This domain is not supported."
+                " This domain is not supported. Reset domain"
             );
         }
     );

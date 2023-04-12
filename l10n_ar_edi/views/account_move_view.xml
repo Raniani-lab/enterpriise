@@ -36,8 +36,8 @@
                         </div>
                         <field name='l10n_ar_afip_auth_code_due'/>
                         <field name='l10n_ar_afip_result'/>
-                        <field name='l10n_ar_afip_xml_request' groups="base.group_no_one" widget="ace"/>
-                        <field name='l10n_ar_afip_xml_response' groups="base.group_no_one" widget="ace"/>
+                        <field name='l10n_ar_afip_xml_request' groups="base.group_no_one" widget="code"/>
+                        <field name='l10n_ar_afip_xml_response' groups="base.group_no_one" widget="code"/>
                     </group>
                 </page>
             </notebook>

@@ -60,7 +60,7 @@
                 <t t-call="web.conditional_assets_tests"/>
 
                 <script type="text/javascript">
-                    odoo.define("sign.document_custom_page", function (require) {
+                    odoo.define("sign.document_custom_page", ["@sign/js/common/document_signable", 'root.widget'], function (require) {
                         var { initDocumentToSign } = require("@sign/js/common/document_signable");
                         var rootWidget = require('root.widget');
                         initDocumentToSign(rootWidget);

@@ -51,6 +51,12 @@ class FetchmailServer(models.Model):
         for server in self.filtered(lambda s: s.l10n_cl_is_dte):
             _logger.info('Start checking for new emails on %s IMAP server %s', server.server_type, server.name)
 
+            # prevents the process from timing out when connecting for the first time
+            # to an edi email server with too many new emails to process
+            # e.g over 5k emails. We will only fetch the next 50 "new" emails
+            # based on their IMAP uid
+            default_batch_size = 50
+
             count, failed = 0, 0
             imap_server = None
             try:
@@ -59,7 +65,7 @@ class FetchmailServer(models.Model):
 
                 result, data = imap_server.uid('search', None, '(UID %s:*)' % server.l10n_cl_last_uid)
                 new_max_uid = server.l10n_cl_last_uid
-                for uid in data[0].split():
+                for uid in data[0].split()[:default_batch_size]:
                     if int(uid) <= server.l10n_cl_last_uid:
                         # We get always minimum 1 message.  If no new message, we receive the newest already managed.
                         continue
@@ -85,6 +91,7 @@ class FetchmailServer(models.Model):
                     try:
                         server._process_incoming_email(msg_txt)
                         new_max_uid = max(new_max_uid, int(uid))
+                        server.write({'l10n_cl_last_uid': new_max_uid})
                         self._cr.commit()
                     except Exception:
                         _logger.info('Failed to process mail from %s server %s.', server.server_type, server.name,

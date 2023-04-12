@@ -64,7 +64,8 @@ class AccountMove(models.Model):
                 )
                 # Special case of closing entry - only disposed assets of type 'purchase' should match this condition
                 if any(
-                    (line.account_id, -line.balance) == (asset.account_asset_id, asset.original_value)
+                    line.account_id == asset.account_asset_id
+                    and float_compare(-line.balance, asset.original_value, precision_rounding=asset.currency_id.rounding) == 0
                     for line in move.line_ids
                 ):
                     account = asset.account_depreciation_id

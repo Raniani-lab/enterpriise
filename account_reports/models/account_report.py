@@ -147,9 +147,9 @@ class AccountReport(models.Model):
 
         ret = self.env['account.journal.group']
         for journal_group in groups:
-            # Only display the group if the journals it could accept are all accepted by this report
+            # Only display the group if some journals it could accept are accepted by this report
             group_accepted_journals = all_journals_by_company[journal_group.company_id] - journal_group.excluded_journal_ids
-            if not group_accepted_journals - report_accepted_journals:
+            if report_accepted_journals & group_accepted_journals:
                 ret += journal_group
         return ret
 

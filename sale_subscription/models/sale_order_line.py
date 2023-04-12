@@ -67,8 +67,10 @@ class SaleOrderLine(models.Model):
         today = fields.Date.today()
         other_lines = self.env['sale.order.line']
         for line in self:
+            if not line.temporal_type == 'subscription':
+                other_lines += line  # normal sale line are handled by super
+                continue
             if not line.order_id.next_invoice_date or line.order_id.subscription_state != '7_upsell':
-                other_lines |= line
                 continue
             period_end = line.order_id.next_invoice_date
             current_period_start = line.order_id.start_date or today

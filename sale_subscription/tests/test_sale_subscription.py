@@ -2642,3 +2642,23 @@ class TestSubscription(TestSubscriptionCommon):
             order_log_ids = renewal_so.order_log_ids.sorted('id')
             renew_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly) for log in order_log_ids]
             self.assertEqual(renew_data, [('0_creation', datetime.date(2021, 1, 1), 63, 63)])
+
+    def test_subscription_pricelist_discount(self):
+        context_no_mail = {'no_reset_password': True, 'mail_create_nosubscribe': True, 'mail_create_nolog': True, }
+        pricelist = self.company_data['default_pricelist']
+        pricelist.discount_policy = 'without_discount'
+        sub = self.env["sale.order"].with_context(**context_no_mail).create({
+            'name': 'TestSubscription',
+            'is_subscription': True,
+            'recurrence_id': self.recurrence_month.id,
+            'note': "original subscription description",
+            'partner_id': self.user_portal.partner_id.id,
+            'pricelist_id': self.company_data['default_pricelist'].id,
+            'sale_order_template_id': self.subscription_tmpl.id,
+        })
+        sub._onchange_sale_order_template_id()
+        self.assertEqual(sub.order_line.mapped('discount'), [0, 0])
+        sub.order_line.discount = 20
+        self.assertEqual(sub.order_line.mapped('discount'), [20, 20])
+        sub.action_confirm()
+        self.assertEqual(sub.order_line.mapped('discount'), [20, 20], "The discount should not be reset on confirmation")

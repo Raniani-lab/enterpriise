@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     "name": """Mexico - Electronic Delivery Guide""",
-    'version': '1.0.',
+    'version': '1.0',
     'category': 'Accounting/Localizations/EDI',
     'description': """
     The delivery guide (Complemento XML Carta de Porte) is needed as a proof

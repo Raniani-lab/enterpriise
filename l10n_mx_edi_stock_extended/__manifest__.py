@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     "name": """Mexico - Electronic Delivery Guide Comex""",
-    'version': '1.0.',
+    'version': '1.0',
     'category': 'Accounting/Localizations/EDI',
     'description': """
     Bridge module to extend the delivery guide (Complemento XML Carta de Porte)

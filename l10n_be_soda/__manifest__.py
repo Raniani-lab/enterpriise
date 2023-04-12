@@ -3,7 +3,7 @@
 {
     'name': 'Belgium - Import SODA files',
     'icon': '/l10n_be/static/description/icon.png',
-    'version': '1',
+    'version': '1.0',
     'category': 'Accounting/Localizations',
     'description': '''
 Module to import SODA files.

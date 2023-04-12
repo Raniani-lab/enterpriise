@@ -29,4 +29,5 @@ delete TimesheetUOMTimer.components.FloatTimeField;
 registry.category("fields").add("timesheet_uom_timer", {
     ...timesheetUOM,
     component: TimesheetUOMTimer,
+    additionalClasses: ["o_field_timesheet_uom"],
 });

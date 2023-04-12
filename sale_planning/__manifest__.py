@@ -45,4 +45,5 @@
         ]
     },
     'license': 'OEEL-1',
+    'uninstall_hook': 'uninstall_hook',
 }

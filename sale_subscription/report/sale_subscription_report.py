@@ -47,27 +47,13 @@ class SaleSubscriptionReport(models.Model):
         res['origin_order_id'] = "s.origin_order_id"
         res['client_order_ref'] = "s.client_order_ref"
         res['margin'] = 0
-        res['recurring_monthly'] = f"""
-                    SUM(
-                        coalesce(
-                         CASE WHEN t.recurring_invoice THEN l.price_subtotal ELSE 0 END
-                          / nullif(rc.recurring_subtotal, 0), 0
-                        )
-                        * s.recurring_monthly
-                        / {self._case_value_or_one('s.currency_rate')}
-                        * {self._case_value_or_one('currency_table.rate')}
-                    )
+        res['recurring_monthly'] = f"""s.recurring_monthly
+            / {self._case_value_or_one('s.currency_rate') }
+            * {self._case_value_or_one('currency_table.rate') } 
         """
-        res['recurring_yearly'] = f"""
-            SUM(
-                coalesce(
-                 CASE WHEN t.recurring_invoice THEN l.price_subtotal ELSE 0 END
-                  / nullif(rc.recurring_subtotal, 0), 0
-                )
-                * s.recurring_monthly * 12
-                / { self._case_value_or_one('s.currency_rate') }
-                * { self._case_value_or_one('currency_table.rate') }
-            )
+        res['recurring_yearly'] = f"""s.recurring_monthly * 12
+            / {self._case_value_or_one('s.currency_rate') }
+            * {self._case_value_or_one('currency_table.rate') }
         """
         res['recurring_total'] = f"""
                 s.recurring_total
@@ -75,27 +61,6 @@ class SaleSubscriptionReport(models.Model):
                 * {self._case_value_or_one('currency_table.rate') }  
         """
         return res
-
-    def _from_sale(self):
-        from_str = super()._from_sale()
-        from_str = f"""{from_str}
-            LEFT OUTER JOIN account_analytic_account a on s.id=a.id
-            LEFT JOIN ( 
-                SELECT 
-                    s.id AS id,
-                    SUM(l.price_subtotal) AS recurring_subtotal
-                FROM 
-                            sale_order_line l
-                    JOIN    sale_order s ON (l.order_id=s.id)
-                    LEFT JOIN product_product p ON (l.product_id=p.id)
-                    LEFT JOIN product_template t ON (p.product_tmpl_id=t.id)
-                WHERE s.is_subscription
-                  AND t.recurring_invoice
-               GROUP BY
-                    s.id
-            ) rc ON rc.id = s.id
-        """
-        return from_str
 
     def _where_sale(self):
         where = super()._where_sale()

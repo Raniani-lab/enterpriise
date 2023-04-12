@@ -34,24 +34,28 @@ class DocumentFolder(models.Model):
         if project_folder in self:
             raise UserError(_('The "%s" workspace is required by the Project application and cannot be deleted.', project_folder.name))
 
-    def write(self, vals):
-        if 'company_id' in vals and vals['company_id']:
-            if self.env.ref('documents_project.documents_project_folder') in self:
-                raise UserError(_("You cannot set a company on the Projects workspace."))
+    @api.constrains('company_id')
+    def _check_no_company_on_projects_folder(self):
+        if not self.company_id:
+            return
+        projects_folder = self.env.ref('documents_project.documents_project_folder')
+        if projects_folder in self:
+            raise UserError(_("You cannot set a company on the %s workspace.", projects_folder.name))
 
-            for folder in self:
-                if folder.project_ids and folder.project_ids.company_id:
-                    different_company_projects = folder.project_ids.filtered(lambda project: project.company_id.id != vals['company_id'])
-                    if not different_company_projects:
-                        break
-                    if len(different_company_projects) == 1:
-                        project = different_company_projects[0]
-                        message = _('This workspace should remain in the same company as the "%s" project to which it is linked. Please update the company of the "%s" project, or leave the company of this workspace empty.', project.name, project.name),
-                    else:
-                        lines = [f"- {project.name}" for project in different_company_projects]
-                        message = _('This workspace should remain in the same company as the following projects to which it is linked:\n%s\n\nPlease update the company of those projects, or leave the company of this workspace empty.', '\n'.join(lines)),
-                    raise UserError(message)
-        return super().write(vals)
+    @api.constrains('company_id')
+    def _check_company_is_projects_company(self):
+        for folder in self:
+            if folder.project_ids and folder.project_ids.company_id:
+                different_company_projects = folder.project_ids.filtered(lambda project: project.company_id != self.company_id)
+                if not different_company_projects:
+                    continue
+                if len(different_company_projects) == 1:
+                    project = different_company_projects[0]
+                    message = _('This workspace should remain in the same company as the "%s" project to which it is linked. Please update the company of the "%s" project, or leave the company of this workspace empty.', project.name, project.name),
+                else:
+                    lines = [f"- {project.name}" for project in different_company_projects]
+                    message = _('This workspace should remain in the same company as the following projects to which it is linked:\n%s\n\nPlease update the company of those projects, or leave the company of this workspace empty.', '\n'.join(lines)),
+                raise UserError(message)
 
     def _copy_and_merge(self, vals=None):
         if not self:

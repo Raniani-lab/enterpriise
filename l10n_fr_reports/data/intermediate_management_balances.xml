@@ -42,6 +42,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">607 + 608 + 6097 + 6037</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -128,6 +129,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">60\(600,603,607,608,6097) + 6031 + 6032 + 61 + 62</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -171,6 +173,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">63</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -186,6 +189,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">64</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -259,6 +263,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">681</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -274,6 +279,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">65\(655)</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -332,6 +338,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">655</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -347,6 +354,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">66 + 686</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -390,6 +398,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">67 + 687</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -418,6 +427,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">691</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -433,6 +443,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">695 + 696 + 697 + 698</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>

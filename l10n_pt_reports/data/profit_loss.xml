@@ -114,6 +114,7 @@
                 <field name="engine">account_codes</field>
                 <field name="formula">61</field>
                 <field name="date_scope">normal</field>
+                <field name="green_on_positive" eval="False"/>
             </record>
         </field>
     </record>
@@ -128,6 +129,7 @@
                 <field name="engine">account_codes</field>
                 <field name="formula">62</field>
                 <field name="date_scope">normal</field>
+                <field name="green_on_positive" eval="False"/>
             </record>
         </field>
     </record>
@@ -142,6 +144,7 @@
                 <field name="engine">account_codes</field>
                 <field name="formula">63</field>
                 <field name="date_scope">normal</field>
+                <field name="green_on_positive" eval="False"/>
             </record>
         </field>
     </record>

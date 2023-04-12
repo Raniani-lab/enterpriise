@@ -47,7 +47,7 @@
                             64.13.01 - 65.05 - 66.01.01 - 66.02.01 - 66.03.01 - 66.04.01 - 66.05.01 - 66.06.01 -
                             66.07.01 - 66.08.01 - 68.02 - 68.03.01 - 68.05.01 - 68.06.01 - 76.02 - 76.03.01 -
                             76.05.01 - 76.09 - 80.01 - 80.02 - 80.03 - 80.04 - 80.05</field>
-                        <field name="green_on_positive" eval="False"/>
+                        <field name="green_on_positive" eval="True"/>
                     </record>
                 </field>
             </record>
@@ -104,7 +104,7 @@
                             64.05.02.02 - 64.06.02 - 64.07.02 - 64.08.02 - 64.09.02 - 64.10.02 - 64.11.02 -
                             64.12.02 - 64.13.02 - 66.01.02 - 66.02.02 - 66.03.02 - 66.04.02 - 66.05.02 -
                             66.06.02 - 66.07.02 - 66.08.02 - 68.04.01 - 68.06.02 - 76.05.02</field>
-                        <field name="green_on_positive" eval="False"/>
+                        <field name="green_on_positive" eval="True"/>
                     </record>
                 </field>
             </record>
@@ -123,7 +123,7 @@
                             64.05.02.03 - 64.06.03 - 64.07.03 - 64.08.03 - 64.09.03 - 64.10.03 - 64.11.03 -
                             64.12.03 - 64.13.03 - 66.01.03 - 66.02.03 - 66.03.03 - 66.04.03 - 66.05.03 -
                             66.06.03 - 66.07.03 - 66.08.03</field>
-                        <field name="green_on_positive" eval="False"/>
+                        <field name="green_on_positive" eval="True"/>
                     </record>
                 </field>
             </record>
@@ -138,7 +138,7 @@
                         <field name="label">balance</field>
                         <field name="engine">account_codes</field>
                         <field name="formula">-62 - 64.11.04 - 67 - 68.01 - 68.03.02 - 68.04.02 - 68.05.02 - 68.06.03 - 64.14</field>
-                        <field name="green_on_positive" eval="False"/>
+                        <field name="green_on_positive" eval="True"/>
                     </record>
                 </field>
             </record>
@@ -275,7 +275,7 @@
                         <field name="label">balance</field>
                         <field name="engine">account_codes</field>
                         <field name="formula">-65\(65.05)</field>
-                        <field name="green_on_positive" eval="False"/>
+                        <field name="green_on_positive" eval="True"/>
                     </record>
                 </field>
             </record>

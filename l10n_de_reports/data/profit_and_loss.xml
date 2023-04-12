@@ -126,6 +126,7 @@
                                         <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_05')])]"/>
                                         <field name="date_scope">normal</field>
                                         <field name="subformula">sum</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -155,6 +156,7 @@
                                         <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_06')])]"/>
                                         <field name="date_scope">normal</field>
                                         <field name="subformula">sum</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -170,6 +172,7 @@
                                         <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_07')])]"/>
                                         <field name="date_scope">normal</field>
                                         <field name="subformula">sum</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -182,6 +185,7 @@
                                         <field name="engine">aggregation</field>
                                         <field name="formula">SKR_8_1.balance + SKR_8_2.balance + SKR_8_3.balance + SKR_8_4.balance + SKR_8_5.balance + SKR_8_6.balance + SKR_8_7.balance</field>
                                         <field name="date_scope">normal</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                                 <field name="children_ids">
@@ -197,6 +201,7 @@
                                                 <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_08_1')])]"/>
                                                 <field name="date_scope">normal</field>
                                                 <field name="subformula">sum</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -212,6 +217,7 @@
                                                 <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_08_2')])]"/>
                                                 <field name="date_scope">normal</field>
                                                 <field name="subformula">sum</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -227,6 +233,7 @@
                                                 <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_08_3')])]"/>
                                                 <field name="date_scope">normal</field>
                                                 <field name="subformula">sum</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -242,6 +249,7 @@
                                                 <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_08_4')])]"/>
                                                 <field name="date_scope">normal</field>
                                                 <field name="subformula">sum</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -257,6 +265,7 @@
                                                 <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_08_5')])]"/>
                                                 <field name="date_scope">normal</field>
                                                 <field name="subformula">sum</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -272,6 +281,7 @@
                                                 <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_08_6')])]"/>
                                                 <field name="date_scope">normal</field>
                                                 <field name="subformula">sum</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -287,6 +297,7 @@
                                                 <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_08_7')])]"/>
                                                 <field name="date_scope">normal</field>
                                                 <field name="subformula">sum</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -378,6 +389,7 @@
                                         <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_13')])]"/>
                                         <field name="date_scope">normal</field>
                                         <field name="subformula">sum</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -419,6 +431,7 @@
                                         <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_14')])]"/>
                                         <field name="date_scope">normal</field>
                                         <field name="subformula">sum</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -434,6 +447,7 @@
                                         <field name="formula" eval="[('account_id.tag_ids', 'in', [ref('l10n_de.tag_de_pl_15')])]"/>
                                         <field name="date_scope">normal</field>
                                         <field name="subformula">sum</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>

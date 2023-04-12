@@ -107,6 +107,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">62</field>
+                                                <field name="green_on_positive" eval="False"/>
                                                 <field name="date_scope">normal</field>
                                             </record>
                                         </field>

@@ -35,14 +35,30 @@
                 <field name="code">RO_PNL_micro_3_03</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
-                <field name="account_codes_formula">602 + 601 + 609</field>
+                <field name="account_codes_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_ro_pnl_micro_3_03_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">account_codes</field>
+                        <field name="formula">602 + 601 + 609</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
             </record>
             <record id="account_financial_report_ro_pnl_micro_4_04" model="account.report.line">
                 <field name="name">4. Staff costs | 04</field>
                 <field name="code">RO_PNL_micro_4_04</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
-                <field name="account_codes_formula">642 + 643 + 641 + 644 + 645 + 646</field>
+                <field name="account_codes_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_ro_pnl_micro_4_04_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">account_codes</field>
+                        <field name="formula">642 + 643 + 641 + 644 + 645 + 646</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
             </record>
             <record id="account_financial_report_ro_pnl_micro_5_05" model="account.report.line">
                 <field name="name">5. Value adjustments | 05</field>
@@ -56,14 +72,30 @@
                 <field name="code">RO_PNL_micro_6_06</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
-                <field name="account_codes_formula">635 + 605 + 607 + 614 + 651 + 613 + 663 + 608 + 652 + 667 + 655 + 658 + 668 + 603 + 612 + 609\(6091) + 62\(620,629) + 611 + 664 + 606 + 604 + 666 + 615</field>
+                <field name="account_codes_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_ro_pnl_micro_6_06_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">account_codes</field>
+                        <field name="formula">635 + 605 + 607 + 614 + 651 + 613 + 663 + 608 + 652 + 667 + 655 + 658 + 668 + 603 + 612 + 609\(6091) + 62\(620,629) + 611 + 664 + 606 + 604 + 666 + 615</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
             </record>
             <record id="account_financial_report_ro_pnl_micro_7_07" model="account.report.line">
                 <field name="name">7. TAXES | 07</field>
                 <field name="code">RO_PNL_micro_7_07</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
-                <field name="account_codes_formula">691 + 695 + 698</field>
+                <field name="account_codes_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_ro_pnl_micro_7_07_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">account_codes</field>
+                        <field name="formula">691 + 695 + 698</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
             </record>
             <record id="account_financial_report_ro_pnl_micro_8" model="account.report.line">
                 <field name="name">8. NET PROFIT OR LOSS OF THE REPORTING PERIOD</field>

@@ -140,7 +140,15 @@
                 <field name="name">8. a) Expenditures on raw materials and consumables | 16</field>
                 <field name="code">RO_PNL_smle_08_16</field>
                 <field name="foldable" eval="True"/>
-                <field name="account_codes_formula">602 + 601</field>
+                <field name="account_codes_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_ro_pnl_smle_08_16_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">account_codes</field>
+                        <field name="formula">601 + 602</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
                 <field name="children_ids">
                     <record id="account_financial_report_ro_pnl_smle_08_17" model="account.report.line">
                         <field name="name">Other material expenses | 17</field>
@@ -148,7 +156,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">608 + 606 + 604 + 603</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_08_17_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">603 + 604 + 606 + 608</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_08_18" model="account.report.line">
                         <field name="name">b) Other external expenses (with energy and water) | 18</field>
@@ -156,7 +172,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">605</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_08_18_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">605</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_08_19" model="account.report.line">
                         <field name="name">c) Expenditure on goods | 19</field>
@@ -164,7 +188,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">607</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_08_19_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">607</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_08_20" model="account.report.line">
                         <field name="name">Trade discounts received | 20</field>
@@ -179,7 +211,15 @@
             <record id="account_financial_report_ro_pnl_smle_09_21" model="account.report.line">
                 <field name="name">9. Staff costs, of which: | 21</field>
                 <field name="code">RO_PNL_smle_09_21</field>
-                <field name="aggregation_formula">RO_PNL_smle_09_22.balance + RO_PNL_smle_09_23.balance</field>
+                <field name="aggregation_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_ro_pnl_smle_09_21_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">aggregation</field>
+                        <field name="formula">RO_PNL_smle_09_22.balance + RO_PNL_smle_09_23.balance</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
                 <field name="children_ids">
                     <record id="account_financial_report_ro_pnl_smle_09_22" model="account.report.line">
                         <field name="name">a) Salaries and allowances | 22</field>
@@ -187,7 +227,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">643 + 641 + 644 + 642</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_09_22_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">641 + 642 + 643 + 644</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_09_23" model="account.report.line">
                         <field name="name">b) Expenses on insurance and social protection | 23</field>
@@ -195,7 +243,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">643 + 641 + 644 + 642</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_09_23_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">641 + 642 + 643 + 644</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                 </field>
             </record>
@@ -210,7 +266,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">6818 + 6811 + 6813 + 6817</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_10_25_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">6811 + 6813 + 6817 + 6818</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_10_26" model="account.report.line">
                         <field name="name">a. 2) Incomes | 26</field>
@@ -232,7 +296,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hierarchy_level" eval="3"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">6818 + 6814 + 654</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_ro_pnl_smle_10_28_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">654 + 6814 + 6818</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="account_financial_report_ro_pnl_smle_10_29" model="account.report.line">
                                 <field name="name">b. 2) Incomes | 29</field>
@@ -249,7 +321,16 @@
             <record id="account_financial_report_ro_pnl_smle_11_30" model="account.report.line">
                 <field name="name">11. Other operating expenses | 30</field>
                 <field name="code">RO_PNL_smle_11_30</field>
-                <field name="aggregation_formula">RO_PNL_smle_11_31.balance + RO_PNL_smle_11_32.balance + RO_PNL_smle_11_33.balance + RO_PNL_smle_11_34.balance + RO_PNL_smle_11_35.balance + RO_PNL_smle_11_36.balance</field>
+                <field name="aggregation_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_ro_pnl_smle_11_30_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">aggregation</field>
+                        <field name="formula">RO_PNL_smle_11_31.balance + RO_PNL_smle_11_32.balance + RO_PNL_smle_11_33.balance +
+                            RO_PNL_smle_11_34.balance + RO_PNL_smle_11_35.balance + RO_PNL_smle_11_36.balance</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
                 <field name="children_ids">
                     <record id="account_financial_report_ro_pnl_smle_11_31" model="account.report.line">
                         <field name="name">11.1 Expenditure on external benefits | 31</field>
@@ -257,7 +338,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">623 + 614 + 624 + 611 + 626 + 613 + 621 + 627 + 628 + 622 + 612 + 625 + 615</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_11_31_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">611 + 612 + 613 + 614 + 615 + 621 + 622 + 623 + 624 + 625 + 626 + 627 + 628</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_11_32" model="account.report.line">
                         <field name="name">
@@ -268,7 +357,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">635 + 6586</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_11_32_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">635 + 6586</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_11_33" model="account.report.line">
                         <field name="name">11.3 Expenditure on environmental protection | 33</field>
@@ -276,7 +373,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">652</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_11_33_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">652</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_11_34" model="account.report.line">
                         <field name="name">11.4 Expenditures from revaluation of non-current assets | 34</field>
@@ -284,7 +389,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">655</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_11_34_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">655</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_11_35" model="account.report.line">
                         <field name="name">11.5 Disaster and other similar expenses | 35</field>
@@ -292,7 +405,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">6587</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_11_35_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">6587</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_11_36" model="account.report.line">
                         <field name="name">11.6 Other expenses | 36</field>
@@ -300,7 +421,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">6588 + 6581 + 6583 + 651 + 6582 + 6584</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_11_36_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">651 + 6581 + 6582 + 6583 + 6584 + 6588</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_11_37" model="account.report.line">
                         <field name="name">Adjustments regarding provisions | 37</field>
@@ -314,7 +443,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hierarchy_level" eval="3"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">6812</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_ro_pnl_smle_11_38_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">6812</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="account_financial_report_ro_pnl_smle_11_39" model="account.report.line">
                                 <field name="name">- Incomes | 39</field>
@@ -449,7 +586,15 @@
                         <field name="groupby">account_id</field>
                         <field name="hierarchy_level" eval="3"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">686</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_ro_pnl_smle_16_52_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">686</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_ro_pnl_smle_16_53" model="account.report.line">
                         <field name="name">- Incomes | 53</field>
@@ -587,14 +732,30 @@
                 <field name="code">RO_PNL_smle_20_64</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
-                <field name="account_codes_formula">691</field>
+                <field name="account_codes_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_ro_pnl_smle_20_64_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">account_codes</field>
+                        <field name="formula">691</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
             </record>
             <record id="account_financial_report_ro_pnl_smle_21_65" model="account.report.line">
                 <field name="name">21. Activity-specific taxes | 65</field>
                 <field name="code">RO_PNL_smle_21_65</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
-                <field name="account_codes_formula">695</field>
+                <field name="account_codes_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_ro_pnl_smle_21_65_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">account_codes</field>
+                        <field name="formula">695</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
             </record>
             <record id="account_financial_report_ro_pnl_smle_22_66" model="account.report.line">
                 <field name="name">22. Other taxes not shown in the above items | 66</field>
@@ -606,6 +767,7 @@
                         <field name="label">balance</field>
                         <field name="engine">account_codes</field>
                         <field name="formula">698</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>

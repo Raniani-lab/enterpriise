@@ -76,6 +76,7 @@
                                 <field name="label">balance</field>
                                 <field name="engine">account_codes</field>
                                 <field name="formula">69</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -118,6 +119,7 @@
                         <field name="label">balance</field>
                         <field name="engine">aggregation</field>
                         <field name="formula">PE_PNL_B_3.balance + PE_PNL_B_4.balance + PE_PNL_B_5.balance</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
                 <field name="children_ids">
@@ -131,6 +133,7 @@
                                 <field name="label">balance</field>
                                 <field name="engine">account_codes</field>
                                 <field name="formula">60 + 63</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -144,6 +147,7 @@
                                 <field name="label">balance</field>
                                 <field name="engine">account_codes</field>
                                 <field name="formula">62 + 65</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -172,6 +176,7 @@
                                               ('account_id.code', '=like', '99900%'),
                                  ]"/>
                                 <field name="subformula">-sum_if_neg</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -241,6 +246,7 @@
                         <field name="label">balance</field>
                         <field name="engine">account_codes</field>
                         <field name="formula">67\(676)</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -267,6 +273,7 @@
                         <field name="label">balance</field>
                         <field name="engine">account_codes</field>
                         <field name="formula">64</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>

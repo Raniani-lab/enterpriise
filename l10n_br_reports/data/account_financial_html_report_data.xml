@@ -313,6 +313,7 @@
                                         <field name="engine">account_codes</field>
                                         <field name="formula">3.01.05</field>
                                         <field name="date_scope">normal</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -329,6 +330,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">3.02</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -369,6 +371,7 @@
                                         <field name="engine">account_codes</field>
                                         <field name="formula">3.11.05</field>
                                         <field name="date_scope">normal</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -385,6 +388,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">3.12</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>

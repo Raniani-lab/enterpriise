@@ -238,7 +238,24 @@
                                     <record id="account_pnl_report_l10n_dk_1_1_1_4" model="account.report.line">
                                         <field name="name">4. Cost of raw materials, consumables and services</field>
                                         <field name="code">DK_cost_materials</field>
-                                        <field name="aggregation_formula">DK_purchase_goods.balance + DK_purchase_goods_eu.balance + DK_purchase_goods_non_eu.balance + DK_benefit_purchases.balance + DK_benefit_purchases_eu.balance + DK_benefit_purchases_non_eu.balance + DK_inventory_adjustment_stocks.balance + DK_write_down_inventories.balance</field>
+                                        <field name="aggregation_formula" eval="False"/>
+                                        <field name="expression_ids">
+                                            <record id="account_pnl_report_l10n_dk_1_1_1_4_balance" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">
+                                                    DK_purchase_goods.balance +
+                                                    DK_purchase_goods_eu.balance +
+                                                    DK_purchase_goods_non_eu.balance +
+                                                    DK_benefit_purchases.balance +
+                                                    DK_benefit_purchases_eu.balance +
+                                                    DK_benefit_purchases_non_eu.balance +
+                                                    DK_inventory_adjustment_stocks.balance +
+                                                    DK_write_down_inventories.balance
+                                                </field>
+                                                <field name="green_on_positive" eval="False"/>
+                                            </record>
+                                        </field>
                                         <field name="children_ids">
                                             <record id="account_pnl_report_l10n_dk_1_1_1_4_1" model="account.report.line">
                                                 <field name="name">a) Purchase of goods and services</field>
@@ -250,6 +267,7 @@
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
                                                         <field name="formula">1610 + 1611</field>
+                                                        <field name="green_on_positive" eval="False"/>
                                                     </record>
                                                 </field>
                                             </record>
@@ -263,6 +281,7 @@
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
                                                         <field name="formula">1630 + 1631</field>
+                                                        <field name="green_on_positive" eval="False"/>
                                                     </record>
                                                 </field>
                                             </record>
@@ -276,6 +295,7 @@
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
                                                         <field name="formula">1650 + 1651</field>
+                                                        <field name="green_on_positive" eval="False"/>
                                                     </record>
                                                 </field>
                                             </record>
@@ -289,6 +309,7 @@
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
                                                         <field name="formula">166</field>
+                                                        <field name="green_on_positive" eval="False"/>
                                                     </record>
                                                 </field>
                                             </record>
@@ -302,6 +323,7 @@
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
                                                         <field name="formula">171</field>
+                                                        <field name="green_on_positive" eval="False"/>
                                                     </record>
                                                 </field>
                                             </record>
@@ -315,6 +337,7 @@
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
                                                         <field name="formula">174</field>
+                                                        <field name="green_on_positive" eval="False"/>
                                                     </record>
                                                 </field>
                                             </record>
@@ -328,6 +351,7 @@
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
                                                         <field name="formula">177</field>
+                                                        <field name="green_on_positive" eval="False"/>
                                                     </record>
                                                 </field>
                                             </record>
@@ -341,6 +365,7 @@
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
                                                         <field name="formula">180</field>
+                                                        <field name="green_on_positive" eval="False"/>
                                                     </record>
                                                 </field>
                                             </record>
@@ -349,12 +374,37 @@
                                     <record id="account_pnl_report_l10n_dk_1_1_1_5" model="account.report.line">
                                         <field name="name">5. Other external costs</field>
                                         <field name="code">DK_other_external_costs</field>
-                                        <field name="aggregation_formula">DK_sales_costs.balance + DK_premises_costs.balance + DK_administrative_costs.balance</field>
+                                        <field name="aggregation_formula" eval="False"/>
+                                        <field name="expression_ids">
+                                            <record id="account_pnl_report_l10n_dk_1_1_1_5_balance" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">DK_sales_costs.balance + DK_premises_costs.balance + DK_administrative_costs.balance</field>
+                                                <field name="green_on_positive" eval="False"/>
+                                            </record>
+                                        </field>
                                         <field name="children_ids">
                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_1" model="account.report.line">
                                                 <field name="name">a) Sales costs</field>
                                                 <field name="code">DK_sales_costs</field>
-                                                <field name="aggregation_formula">DK_freight_costs.balance + DK_advertising_pub.balance + DK_exhibitions_decoration.balance + DK_restoration_visits.balance + DK_representation_expenses.balance + DK_representation_expenses_fully.balance + DK_other_selling_expenses.balance + DK_newspapers_magazines.balance + DK_gifts_flowers.balance</field>
+                                                <field name="aggregation_formula" eval="False"/>
+                                                <field name="expression_ids">
+                                                    <record id="account_pnl_report_l10n_dk_1_1_1_5_1_balance" model="account.report.expression">
+                                                        <field name="label">balance</field>
+                                                        <field name="engine">aggregation</field>
+                                                        <field name="formula">
+                                                            DK_freight_costs.balance +
+                                                            DK_advertising_pub.balance +
+                                                            DK_exhibitions_decoration.balance +
+                                                            DK_restoration_visits.balance +
+                                                            DK_representation_expenses.balance +
+                                                            DK_representation_expenses_fully.balance +
+                                                            DK_other_selling_expenses.balance +
+                                                            DK_newspapers_magazines.balance +
+                                                            DK_gifts_flowers.balance</field>
+                                                        <field name="green_on_positive" eval="False"/>
+                                                    </record>
+                                                </field>
                                                 <field name="children_ids">
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_5_1_1" model="account.report.line">
                                                         <field name="name">1. Freight costs</field>
@@ -366,6 +416,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">183</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -379,6 +430,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">185</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -392,6 +444,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">187</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -405,6 +458,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">189</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -418,6 +472,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">191</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -431,6 +486,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">193</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -444,6 +500,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">195</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -457,6 +514,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">197</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -470,6 +528,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">199</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -478,7 +537,20 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_2" model="account.report.line">
                                                 <field name="name">b) Premises costs</field>
                                                 <field name="code">DK_premises_costs</field>
-                                                <field name="aggregation_formula">DK_rent.balance + DK_el.balance + DK_electricity.balance + DK_water.balance + DK_heat.balance + DK_water_tax_pnl.balance + DK_oil_lpg_tax_pnl.balance + DK_coal_tax_pnl.balance + DK_natural_gas.balance + DK_co2_tax_pnl.balance + DK_other_taxes.balance + DK_cleaning_sanitation.balance + DK_repair_maintenance.balance + DK_repair_maintenance_tax.balance + DK_insurances.balance + DK_property_taxes.balance + DK_other_premises.balance</field>
+                                                <field name="aggregation_formula" eval="False"/>
+                                                <field name="expression_ids">
+                                                    <record id="account_pnl_report_l10n_dk_1_1_1_5_2_balance" model="account.report.expression">
+                                                        <field name="label">balance</field>
+                                                        <field name="engine">aggregation</field>
+                                                        <field name="formula">DK_rent.balance + DK_el.balance + DK_electricity.balance +
+                                                            DK_water.balance + DK_heat.balance + DK_water_tax_pnl.balance +
+                                                            DK_oil_lpg_tax_pnl.balance + DK_coal_tax_pnl.balance + DK_natural_gas.balance +
+                                                            DK_co2_tax_pnl.balance + DK_other_taxes.balance + DK_cleaning_sanitation.balance +
+                                                            DK_repair_maintenance.balance + DK_repair_maintenance_tax.balance +
+                                                            DK_insurances.balance + DK_property_taxes.balance + DK_other_premises.balance</field>
+                                                        <field name="green_on_positive" eval="False"/>
+                                                    </record>
+                                                </field>
                                                 <field name="children_ids">
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_5_2_1" model="account.report.line">
                                                         <field name="name">1. Rent, excluding electricity, water and heating</field>
@@ -490,6 +562,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">203</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -503,6 +576,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">205</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -516,6 +590,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">206</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -529,6 +604,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">207</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -542,6 +618,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">208</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -555,6 +632,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">209</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -568,6 +646,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">210</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -581,6 +660,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">211</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -594,6 +674,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">212</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -607,6 +688,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">213</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -620,6 +702,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">214</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -633,6 +716,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">215</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -646,6 +730,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">216</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -659,6 +744,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">217</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -672,6 +758,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">218</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -685,6 +772,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">219</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -698,6 +786,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">220</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -706,7 +795,33 @@
                                             <record id="account_pnl_report_l10n_dk_1_1_1_5_3" model="account.report.line">
                                                 <field name="name">c) Administrative costs</field>
                                                 <field name="code">DK_administrative_costs</field>
-                                                <field name="aggregation_formula">DK_acquisitions_below.balance + DK_acquisitions_above.balance + DK_subcontractors.balance + DK_research_and_dev.balance + DK_other_production_costs.balance + DK_recognized_losses.balance + DK_adjustment_impairment_loss.balance + DK_adjustment_receivables.balance + DK_it_equipment.balance + DK_tax_free_travel.balance + DK_canteen.balance + DK_contigents.balance + DK_non_fiction.balance + DK_postage_charges.balance + DK_telephone_internet_business.balance + DK_telephone_internet_private.balance + DK_office_supplies.balance + DK_rent_operating.balance + DK_travel_expenses.balance + DK_temporary_assistance.balance + DK_consulting_services.balance + DK_course_costs.balance + DK_leasing_costs_passenger.balance + DK_operating_costs.balance + DK_operating_costs_vans.balance + DK_parking_costs.balance + DK_car_expenses_gov.balance + DK_free_car.balance + DK_employment_injury_insurance.balance + DK_government_fees.balance + DK_audit_accounting.balance + DK_legal_assistance.balance + DK_other_consultancy.balance + DK_non_tax_deductible.balance + DK_administration_management.balance + DK_penny_rounding.balance + DK_other_external.balance</field>
+                                                <field name="aggregation_formula" eval="False"/>
+                                                <field name="expression_ids">
+                                                    <record id="account_pnl_report_l10n_dk_1_1_1_5_3_balance" model="account.report.expression">
+                                                        <field name="label">balance</field>
+                                                        <field name="engine">aggregation</field>
+                                                        <field name="formula">DK_acquisitions_below.balance + DK_acquisitions_above.balance +
+                                                            DK_subcontractors.balance + DK_research_and_dev.balance +
+                                                            DK_other_production_costs.balance + DK_recognized_losses.balance +
+                                                            DK_adjustment_impairment_loss.balance + DK_adjustment_receivables.balance +
+                                                            DK_it_equipment.balance + DK_tax_free_travel.balance +
+                                                            DK_canteen.balance + DK_contigents.balance + DK_non_fiction.balance +
+                                                            DK_postage_charges.balance + DK_telephone_internet_business.balance +
+                                                            DK_telephone_internet_private.balance + DK_office_supplies.balance +
+                                                            DK_rent_operating.balance + DK_travel_expenses.balance +
+                                                            DK_temporary_assistance.balance + DK_consulting_services.balance +
+                                                            DK_course_costs.balance + DK_leasing_costs_passenger.balance +
+                                                            DK_operating_costs.balance + DK_operating_costs_vans.balance +
+                                                            DK_parking_costs.balance + DK_car_expenses_gov.balance +
+                                                            DK_free_car.balance + DK_employment_injury_insurance.balance +
+                                                            DK_government_fees.balance + DK_audit_accounting.balance +
+                                                            DK_legal_assistance.balance + DK_other_consultancy.balance +
+                                                            DK_non_tax_deductible.balance + DK_administration_management.balance +
+                                                            DK_penny_rounding.balance + DK_other_external.balance
+                                                        </field>
+                                                        <field name="green_on_positive" eval="False"/>
+                                                    </record>
+                                                </field>
                                                 <field name="children_ids">
                                                     <record id="account_pnl_report_l10n_dk_1_1_1_5_3_1" model="account.report.line">
                                                         <field name="name">1. Small acquisitions below the tax threshold for small assets</field>
@@ -718,6 +833,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">223</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -731,6 +847,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">224</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -744,6 +861,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">225</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -757,6 +875,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">226</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -770,6 +889,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">227</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -783,6 +903,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">228</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -796,6 +917,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">229</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -809,6 +931,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">230</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -822,6 +945,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">231</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -835,6 +959,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">233</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -848,6 +973,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">235</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -861,6 +987,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">237</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -874,6 +1001,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">238</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -887,6 +1015,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">239</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -900,6 +1029,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">241</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -913,6 +1043,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">242</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -926,6 +1057,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">245</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -939,6 +1071,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">246</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -952,6 +1085,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">247</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -965,6 +1099,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">248</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -978,6 +1113,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">251</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -991,6 +1127,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">252</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1004,6 +1141,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">253</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1017,6 +1155,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">254</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1030,6 +1169,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">256</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1043,6 +1183,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">262</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1056,6 +1197,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">263</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1069,6 +1211,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">264</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1082,6 +1225,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">265</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1095,6 +1239,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">266</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1108,6 +1253,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">267</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1121,6 +1267,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">268</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1134,6 +1281,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">269</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1147,6 +1295,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">270</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1160,6 +1309,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">271</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1173,6 +1323,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">272</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1186,6 +1337,7 @@
                                                                 <field name="label">balance</field>
                                                                 <field name="engine">account_codes</field>
                                                                 <field name="formula">281</field>
+                                                                <field name="green_on_positive" eval="False"/>
                                                             </record>
                                                         </field>
                                                     </record>
@@ -1198,7 +1350,21 @@
                             <record id="account_pnl_report_l10n_dk_1_1_2" model="account.report.line">
                                 <field name="name">2. Personnel costs</field>
                                 <field name="code">DK_personnel_costs</field>
-                                <field name="aggregation_formula">DK_wages_salaries.balance + DK_holiday_obligation.balance + DK_long_service_bonuses.balance + DK_directors_fees.balance + DK_am_contributory.balance + DK_am_non_contributory.balance + DK_pensions.balance + DK_remuneration_pension.balance + DK_social_security.balance + DK_aer.balance +DK_atp.balance + DK_other_staff_costs.balance + DK_employee_benefits.balance + DK_salary_reinbursements.balance + DK_tax_free.balance + DK_payroll_tax.balance </field>
+                                <field name="aggregation_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_pnl_report_l10n_dk_1_1_2_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">aggregation</field>
+                                        <field name="formula">
+                                            DK_wages_salaries.balance + DK_holiday_obligation.balance + DK_long_service_bonuses.balance +
+                                            DK_directors_fees.balance + DK_am_contributory.balance + DK_am_non_contributory.balance +
+                                            DK_pensions.balance + DK_remuneration_pension.balance + DK_social_security.balance +
+                                            DK_aer.balance +DK_atp.balance + DK_other_staff_costs.balance + DK_employee_benefits.balance +
+                                            DK_salary_reinbursements.balance + DK_tax_free.balance + DK_payroll_tax.balance
+                                        </field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                                 <field name="children_ids">
                                     <record id="account_pnl_report_l10n_dk_1_1_2_1" model="account.report.line">
                                         <field name="name">a) Wages and salaries</field>
@@ -1210,6 +1376,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">285</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1223,6 +1390,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">286</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1236,6 +1404,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">287</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1249,6 +1418,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">288</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1262,6 +1432,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">289</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1275,6 +1446,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">290</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1288,6 +1460,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">291</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1301,6 +1474,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">292</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1314,6 +1488,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">293</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1327,6 +1502,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">294</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1340,6 +1516,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">295</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1353,6 +1530,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">296</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1366,6 +1544,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">2965</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1379,6 +1558,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">2968</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1392,6 +1572,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">297</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1405,6 +1586,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">298</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1413,7 +1595,21 @@
                             <record id="account_pnl_report_l10n_dk_1_1_3" model="account.report.line">
                                 <field name="name">3. Depreciation, amortization and impairment of tangible and intangible fixed assets</field>
                                 <field name="code">DK_depreciation</field>
-                                <field name="aggregation_formula">DK_amort_intangible.balance + DK_amort_goodwill.balance + DK_depreciation_land_build.balance + DK_depreciation_plant_machinery.balance + DK_depreciation_lease.balance + DK_depreciation_write_downs.balance + DK_depreciation_software.balance + DK_depreciation_impairment_land.balance + DK_depreciation_amort_plant.balance + DK_depreciation_amort_other.balance</field>
+                                <field name="aggregation_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_pnl_report_l10n_dk_1_1_3_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">aggregation</field>
+                                        <field name="formula">
+                                            DK_amort_intangible.balance + DK_amort_goodwill.balance + DK_depreciation_land_build.balance +
+                                            DK_depreciation_plant_machinery.balance + DK_depreciation_lease.balance +
+                                            DK_depreciation_write_downs.balance + DK_depreciation_software.balance +
+                                            DK_depreciation_impairment_land.balance + DK_depreciation_amort_plant.balance +
+                                            DK_depreciation_amort_other.balance
+                                        </field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                                 <field name="children_ids">
                                     <record id="account_pnl_report_l10n_dk_1_1_3_1" model="account.report.line">
                                         <field name="name">a) Amortization and impairment of acquired intangible assets</field>
@@ -1425,6 +1621,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">300</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1438,6 +1635,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">301</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1451,6 +1649,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">302</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1464,6 +1663,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">303</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1477,6 +1677,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">304</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1490,6 +1691,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">305</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1503,6 +1705,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">306</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1516,6 +1719,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">307</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1529,6 +1733,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">308</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1542,6 +1747,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">309</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1557,13 +1763,26 @@
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
                                         <field name="formula">313</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
                             <record id="account_pnl_report_l10n_dk_1_1_5" model="account.report.line">
                                 <field name="name">5. Other operating costs</field>
                                 <field name="code">DK_other_operating_costs</field>
-                                <field name="aggregation_formula">DK_loss_disposal_intangible.balance + DK_loss_disposal_tangible.balance +DK_other_operating_costs_b.balance</field>
+                                <field name="aggregation_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_pnl_report_l10n_dk_1_1_5_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">aggregation</field>
+                                        <field name="formula">
+                                            DK_loss_disposal_intangible.balance +
+                                            DK_loss_disposal_tangible.balance +
+                                            DK_other_operating_costs_b.balance
+                                        </field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                                 <field name="children_ids">
                                     <record id="account_pnl_report_l10n_dk_1_1_5_1" model="account.report.line">
                                         <field name="name">a) Loss on disposal of intangible assets</field>
@@ -1575,6 +1794,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">316</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1588,6 +1808,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">317</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1601,6 +1822,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">3180 + 3770 + 3790</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1767,13 +1989,27 @@
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
                                         <field name="formula">359</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
                             <record id="account_pnl_report_l10n_dk_1_1_12" model="account.report.line">
                                 <field name="name">12. Other financial costs</field>
                                 <field name="code">DK_other_financial_costs</field>
-                                <field name="aggregation_formula">DK_exchange_rate.balance + DK_exchange_rate_foreign.balance + DK_exchange_losses.balance + DK_interest_finance.balance + DK_interest_suppliers.balance + DK_interest_payable.balance + DK_interest_government.balance + DK_value_adjustments.balance + DK_other_charges.balance</field>
+                                <field name="aggregation_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_pnl_report_l10n_dk_1_1_12_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">aggregation</field>
+                                        <field name="formula">
+                                            DK_exchange_rate.balance + DK_exchange_rate_foreign.balance +
+                                            DK_exchange_losses.balance + DK_interest_finance.balance + DK_interest_suppliers.balance +
+                                            DK_interest_payable.balance + DK_interest_government.balance +
+                                            DK_value_adjustments.balance + DK_other_charges.balance
+                                        </field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                                 <field name="children_ids">
                                     <record id="account_pnl_report_l10n_dk_1_1_12_1" model="account.report.line">
                                         <field name="name">a) Exchange rate adjustments</field>
@@ -1785,6 +2021,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">361</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1798,6 +2035,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">362</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1811,6 +2049,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">363</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1824,6 +2063,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">364</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1837,6 +2077,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">365</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1850,6 +2091,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">367</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1863,6 +2105,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">3675</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1876,6 +2119,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">368</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1889,6 +2133,7 @@
                                                 <field name="label">balance</field>
                                                 <field name="engine">account_codes</field>
                                                 <field name="formula">369</field>
+                                                <field name="green_on_positive" eval="False"/>
                                             </record>
                                         </field>
                                     </record>
@@ -1899,7 +2144,15 @@
                     <record id="account_pnl_report_l10n_dk_1_2" model="account.report.line">
                         <field name="name">b) Tax on profit for the year</field>
                         <field name="code">DK_tax_profit</field>
-                        <field name="aggregation_formula">DK_current_tax.balance + DK_change_deffered.balance + DK_adjustment.balance</field>
+                        <field name="aggregation_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_pnl_report_l10n_dk_1_2_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">aggregation</field>
+                                <field name="formula">DK_current_tax.balance + DK_change_deffered.balance + DK_adjustment.balance</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                         <field name="children_ids">
                             <record id="account_pnl_report_l10n_dk_1_2_1" model="account.report.line">
                                 <field name="name">a) Current tax</field>
@@ -1911,6 +2164,7 @@
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
                                         <field name="formula">374</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -1924,6 +2178,7 @@
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
                                         <field name="formula">376</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -1937,6 +2192,7 @@
                                         <field name="label">balance</field>
                                         <field name="engine">account_codes</field>
                                         <field name="formula">378</field>
+                                        <field name="green_on_positive" eval="False"/>
                                     </record>
                                 </field>
                             </record>
@@ -1952,6 +2208,7 @@
                                 <field name="label">balance</field>
                                 <field name="engine">account_codes</field>
                                 <field name="formula">381</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>

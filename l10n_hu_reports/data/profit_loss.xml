@@ -46,70 +46,150 @@
                     <record id="l10n_hu_profit_loss_IV" model="account.report.line">
                         <field name="name">IV. Material expenses</field>
                         <field name="code">hu_pl_IV</field>
-                        <field name="aggregation_formula">hu_pl_IV_1.balance + hu_pl_IV_2.balance + hu_pl_IV_3.balance + hu_pl_IV_4.balance + hu_pl_IV_5.balance</field>
+                        <field name="aggregation_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="l10n_hu_profit_loss_IV_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">aggregation</field>
+                                <field name="formula">hu_pl_IV_1.balance + hu_pl_IV_2.balance + hu_pl_IV_3.balance + hu_pl_IV_4.balance + hu_pl_IV_5.balance</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                         <field name="children_ids">
                             <record id="l10n_hu_profit_loss_5" model="account.report.line">
                                 <field name="name">Cost of materials</field>
                                 <field name="code">hu_pl_IV_1</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">811 + 51</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="l10n_hu_profit_loss_5_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">811 + 51</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="l10n_hu_profit_loss_6" model="account.report.line">
                                 <field name="name">Value of services used</field>
                                 <field name="code">hu_pl_IV_2</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">812 + 52</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="l10n_hu_profit_loss_6_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">812 + 52</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="l10n_hu_profit_loss_7" model="account.report.line">
                                 <field name="name">Value of other services</field>
                                 <field name="code">hu_pl_IV_3</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">53 + 813</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="l10n_hu_profit_loss_7_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">53 + 813</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="l10n_hu_profit_loss_8" model="account.report.line">
                                 <field name="name">Purchase value of goods sold</field>
                                 <field name="code">hu_pl_IV_4</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">814</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="l10n_hu_profit_loss_8_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">814</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="l10n_hu_profit_loss_9" model="account.report.line">
                                 <field name="name">Value of other services</field>
                                 <field name="code">hu_pl_IV_5</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">815</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="l10n_hu_profit_loss_9_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">815</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                         </field>
                     </record>
                     <record id="l10n_hu_profit_loss_V" model="account.report.line">
                         <field name="name">V. Personnel expenses</field>
                         <field name="code">hu_pl_V</field>
-                        <field name="aggregation_formula">hu_pl_V_1.balance + hu_pl_V_2.balance + hu_pl_V_3.balance</field>
+                        <field name="aggregation_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="l10n_hu_profit_loss_V_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">aggregation</field>
+                                <field name="formula">hu_pl_V_1.balance + hu_pl_V_2.balance + hu_pl_V_3.balance</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                         <field name="children_ids">
                             <record id="l10n_hu_profit_loss_10" model="account.report.line">
                                 <field name="name">Wage cost</field>
                                 <field name="code">hu_pl_V_1</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">54 + 821</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="l10n_hu_profit_loss_10_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">54 + 821</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="l10n_hu_profit_loss_11" model="account.report.line">
                                 <field name="name">Other payments of a personal nature</field>
                                 <field name="code">hu_pl_V_2</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">55 + 822</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="l10n_hu_profit_loss_11_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">55 + 822</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="l10n_hu_profit_loss_12" model="account.report.line">
                                 <field name="name">Wage contributions</field>
                                 <field name="code">hu_pl_V_3</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">56 + 823</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="l10n_hu_profit_loss_12_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">56 + 823</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                         </field>
                     </record>
@@ -118,14 +198,30 @@
                         <field name="code">hu_pl_VI</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">57 + 83</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="l10n_hu_profit_loss_VI_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">57 + 83</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="l10n_hu_profit_loss_VII" model="account.report.line">
                         <field name="name">VII. Other expenses</field>
                         <field name="code">hu_pl_VII</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">86 + 85 + 999001 + 999997</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="l10n_hu_profit_loss_VII_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">86 + 85 + 999001 + 999997</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                 </field>
             </record>
@@ -147,7 +243,15 @@
                         <field name="code">hu_pl_IX</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">87</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="l10n_hu_profit_loss_IX_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">87</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                 </field>
             </record>
@@ -178,7 +282,15 @@
                     <record id="l10n_hu_profit_loss_X" model="account.report.line">
                         <field name="name">X. Tax liability</field>
                         <field name="code">hu_pl_X</field>
-                        <field name="account_codes_formula">891</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="l10n_hu_profit_loss_X_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">891</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                 </field>
             </record>

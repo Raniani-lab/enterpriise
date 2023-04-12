@@ -636,6 +636,7 @@
                         <field name="engine">aggregation</field>
                         <field name="formula">BE_60_61.balance + BE_62.balance + BE_630.balance + BE_631_4.balance + BE_635_8.balance + BE_640_8.balance + BE_649.balance</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
                 <field name="children_ids">
@@ -650,6 +651,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">61 + 60</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -664,6 +666,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">62</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -678,6 +681,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">630</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -692,6 +696,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">633 + 634 + 632 + 631</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -706,6 +711,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">637 + 635 + 636 + 638</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -720,6 +726,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">645 + 641 + 640 + 647 + 644 + 642 + 643 + 646 + 648</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -734,6 +741,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">649</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -806,7 +814,15 @@
                 <field name="name">65 - Financial charges</field>
                 <field name="hierarchy_level">0</field>
                 <field name="code">BE_65</field>
-                <field name="aggregation_formula">BE_650.balance + BE_651.balance + BE_652_9.balance</field>
+                <field name="aggregation_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_be_charges_financieres0_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">aggregation</field>
+                        <field name="formula">BE_650.balance + BE_651.balance + BE_652_9.balance</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
                 <field name="children_ids">
                     <record id="account_financial_report_be_650" model="account.report.line">
                         <field name="name">650 - Debt charges</field>
@@ -819,6 +835,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">650</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -833,6 +850,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">651</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -847,6 +865,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">654 + 659 + 655 + 657 + 658 + 653 + 652 + 656</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -947,7 +966,15 @@
                 <field name="name">66 - Extraordinary charges</field>
                 <field name="hierarchy_level">0</field>
                 <field name="code">BE_66</field>
-                <field name="aggregation_formula">BE_660.balance + BE_661.balance + BE_662.balance + BE_663.balance + BE_664_8.balance + BE_669.balance</field>
+                <field name="aggregation_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_be_charges_exceptionnelles0_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">aggregation</field>
+                        <field name="formula">BE_660.balance + BE_661.balance + BE_662.balance + BE_663.balance + BE_664_8.balance + BE_669.balance</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
                 <field name="children_ids">
                     <record id="account_financial_report_be_660" model="account.report.line">
                         <field name="name">660 - Extraordinary depreciation of and extraordinary amounts written off formation expenses, intangible and tangible fixed assets</field>
@@ -960,6 +987,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">660</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -974,6 +1002,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">661</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -988,6 +1017,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">662</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1002,6 +1032,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">663</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1016,6 +1047,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">664 + 665 + 668 + 667 + 666</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1030,6 +1062,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">669</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1075,6 +1108,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">680</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -1102,6 +1136,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">672 + 673 + 670 + 671</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1161,6 +1196,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">689</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
             </record>
@@ -1249,6 +1285,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">692 + 691</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
                 <field name="children_ids">
@@ -1261,6 +1298,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">691</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1273,6 +1311,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">6920</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1285,6 +1324,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">6921</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1328,6 +1368,7 @@
                         <field name="engine">account_codes</field>
                         <field name="formula">694 + 695 + 696</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
                 <field name="children_ids">
@@ -1342,6 +1383,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">694</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1356,6 +1398,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">695</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>
@@ -1370,6 +1413,7 @@
                                 <field name="engine">account_codes</field>
                                 <field name="formula">696</field>
                                 <field name="date_scope">normal</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                         </field>
                     </record>

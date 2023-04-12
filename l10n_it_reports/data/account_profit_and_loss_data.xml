@@ -117,6 +117,7 @@
                         <field name="engine">aggregation</field>
                         <field name="formula">IT_CEB_6.balance + IT_CEB_7.balance + IT_CEB_8.balance + IT_CEB_9.balance + IT_CEB_10.balance + IT_CEB_11.balance + IT_CEB_12.balance + IT_CEB_13.balance + IT_CEB_14.balance</field>
                         <field name="date_scope">normal</field>
+                        <field name="green_on_positive" eval="False"/>
                     </record>
                 </field>
                 <field name="children_ids">
@@ -128,6 +129,7 @@
                                 <field name="label">balance</field>
                                 <field name="engine">aggregation</field>
                                 <field name="formula">IT_CEB_6.b_6_v_balance + IT_CEB_6.b_6_r_balance</field>
+                                <field name="green_on_positive" eval="False"/>
                             </record>
                             <record id="account_financial_report_line_it_ce_B_6_b_6_v_balance" model="account.report.expression">
                                 <field name="label">b_6_v_balance</field>
@@ -146,19 +148,43 @@
                         <field name="code">IT_CEB_7</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">42</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_line_it_ce_B_7_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">42</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_line_it_ce_B_8" model="account.report.line">
                         <field name="name">8. For use of third party assets</field>
                         <field name="code">IT_CEB_8</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">43</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_line_it_ce_B_8_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">43</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_line_it_ce_B_9" model="account.report.line">
                         <field name="name">9. For the staff</field>
                         <field name="code">IT_CEB_9</field>
-                        <field name="aggregation_formula">IT_CEB_9_a.balance + IT_CEB_9_b.balance + IT_CEB_9_c.balance + IT_CEB_9_d.balance + IT_CEB_9_e.balance</field>
+                        <field name="aggregation_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_line_it_ce_B_9_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">aggregation</field>
+                                <field name="formula">IT_CEB_9_a.balance + IT_CEB_9_b.balance + IT_CEB_9_c.balance + IT_CEB_9_d.balance + IT_CEB_9_e.balance</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                         <field name="children_ids">
                             <record id="account_financial_report_line_it_ce_B_9_a" model="account.report.line">
                                 <field name="name">a. Wages and salaries</field>
@@ -166,7 +192,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hide_if_zero" eval="True"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">4401</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_line_it_ce_B_9_a_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">4401</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="account_financial_report_line_it_ce_B_9_b" model="account.report.line">
                                 <field name="name">b. Social charges</field>
@@ -174,7 +208,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hide_if_zero" eval="True"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">4402</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_line_it_ce_B_9_b_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">4402</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="account_financial_report_line_it_ce_B_9_c" model="account.report.line">
                                 <field name="name">c. Severance pay</field>
@@ -182,7 +224,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hide_if_zero" eval="True"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">4403</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_line_it_ce_B_9_c_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">4403</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="account_financial_report_line_it_ce_B_9_d" model="account.report.line">
                                 <field name="name">d. Retirement benefits and the like</field>
@@ -190,7 +240,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hide_if_zero" eval="True"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">4405</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_line_it_ce_B_9_d_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">4405</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="account_financial_report_line_it_ce_B_9_e" model="account.report.line">
                                 <field name="name">e. Other costs</field>
@@ -198,14 +256,30 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hide_if_zero" eval="True"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">4404</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_line_it_ce_B_9_e_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">4404</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                         </field>
                     </record>
                     <record id="account_financial_report_line_it_ce_B_10" model="account.report.line">
                         <field name="name">10. Depreciation and amortization</field>
                         <field name="code">IT_CEB_10</field>
-                        <field name="aggregation_formula">IT_CEB_10_a.balance + IT_CEB_10_b.balance + IT_CEB_10_c.balance + IT_CEB_10_d.balance</field>
+                        <field name="aggregation_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_line_it_ce_B_10_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">aggregation</field>
+                                <field name="formula">IT_CEB_10_a.balance + IT_CEB_10_b.balance + IT_CEB_10_c.balance + IT_CEB_10_d.balance</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                         <field name="children_ids">
                             <record id="account_financial_report_line_it_ce_B_10_a" model="account.report.line">
                                 <field name="name">a. Amortization of intangible assets</field>
@@ -213,7 +287,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hide_if_zero" eval="True"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">45</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_line_it_ce_B_10_a_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">45</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="account_financial_report_line_it_ce_B_10_b" model="account.report.line">
                                 <field name="name">b. Depreciation of tangible assets</field>
@@ -221,7 +303,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hide_if_zero" eval="True"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">46</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_line_it_ce_B_10_b_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">46</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="account_financial_report_line_it_ce_B_10_c" model="account.report.line">
                                 <field name="name">c. Other write-downs of fixed assets</field>
@@ -229,7 +319,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hide_if_zero" eval="True"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">4701 + 4703 + 4704 + 4702 + 4705 + 4706</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_line_it_ce_B_10_c_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">4701 + 4702 + 4703 + 4704 + 4705 + 4706</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                             <record id="account_financial_report_line_it_ce_B_10_d" model="account.report.line">
                                 <field name="name">d. Impairment of receivables included in current assets and cash and cash equivalents</field>
@@ -237,7 +335,15 @@
                                 <field name="groupby">account_id</field>
                                 <field name="hide_if_zero" eval="True"/>
                                 <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">4707 + 4708</field>
+                                <field name="account_codes_formula" eval="False"/>
+                                <field name="expression_ids">
+                                    <record id="account_financial_report_line_it_ce_B_10_d_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">account_codes</field>
+                                        <field name="formula">4707 + 4708</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
                             </record>
                         </field>
                     </record>
@@ -246,28 +352,60 @@
                         <field name="code">IT_CEB_11</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">480</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_line_it_ce_B_11_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">480</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_line_it_ce_B_12" model="account.report.line">
                         <field name="name">12. Provisions for risks</field>
                         <field name="code">IT_CEB_12</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">481</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_line_it_ce_B_12_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">481</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_line_it_ce_B_13" model="account.report.line">
                         <field name="name">13. Other provisions</field>
                         <field name="code">IT_CEB_13</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">482</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_line_it_ce_B_13_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">482</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_financial_report_line_it_ce_B_14" model="account.report.line">
                         <field name="name">14. Miscellaneous operating expenses</field>
                         <field name="code">IT_CEB_14</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">49</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="account_financial_report_line_it_ce_B_14_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">49</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                 </field>
             </record>

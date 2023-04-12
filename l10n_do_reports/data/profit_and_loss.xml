@@ -33,7 +33,15 @@
                         <field name="code">l10n_do_pl_cogs</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">51</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="l10n_do_pl_cogs_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">51</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                 </field>
             </record>
@@ -48,7 +56,15 @@
                         <field name="code">l10n_do_pl_expenses_commercial</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">61</field>
+                        <field name="account_codes_formula" eval="False"/>
+                        <field name="expression_ids">
+                            <record id="l10n_do_pl_expenses_commercial_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">account_codes</field>
+                                <field name="formula">61</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
                     </record>
                 </field>
             </record>
@@ -72,8 +88,16 @@
                 <field name="code">l10n_do_pl_corporate_tax</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
-                <field name="account_codes_formula">7102</field>
                 <field name="hierarchy_level">0</field>
+                <field name="account_codes_formula" eval="False"/>
+                <field name="expression_ids">
+                    <record id="l10n_do_pl_corporate_tax_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">account_codes</field>
+                        <field name="formula">7102</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
             </record>
             <record id="l10n_do_pl_net_profit" model="account.report.line">
                 <field name="name">Income for the year</field>

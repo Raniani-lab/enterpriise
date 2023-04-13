@@ -149,13 +149,14 @@ class ResPartner(models.Model):
             has_overdue_invoices = max_followup.get('has_overdue_invoices')
             most_delayed_aml = max_followup.get('most_delayed_aml')
             highest_followup_line = max_followup.get('highest_followup_line')
+            has_level_0_lines_needing_action = max_followup.get('has_level_0_lines_needing_action')
 
             # computation of followup_status
             new_status = 'no_action_needed'
             if has_overdue_invoices and most_delayed_aml:
                 new_status = 'with_overdue_invoices'
             next_followup_date_exceeded = today >= partner.followup_next_action_date if partner.followup_next_action_date else True
-            if max_aml_delay > next_followup_delay and next_followup_date_exceeded and followup_lines_info:
+            if has_level_0_lines_needing_action or (max_aml_delay > next_followup_delay and next_followup_date_exceeded and followup_lines_info):
                 new_status = 'in_need_of_action'
             partner.followup_status = new_status
 
@@ -269,11 +270,16 @@ class ResPartner(models.Model):
         # Minimum value for delay, will always be smaller than any other delay
         max_delay = first_followup_line.delay - 1
         has_overdue_invoices = False
+        has_level_0_lines_needing_action = False
         for aml in self.unreconciled_aml_ids:
             aml_delay = (today - (aml.date_maturity or aml.date)).days
+
             is_overdue = aml_delay > 0
             if is_overdue:
                 has_overdue_invoices = True
+                if not aml.followup_line_id and aml_delay >= first_followup_line.delay:
+                    has_level_0_lines_needing_action = True
+
             if aml.company_id == self.env.company and not aml.blocked:
                 if aml.followup_line_id and aml.followup_line_id.delay >= (highest_followup_line or first_followup_line).delay:
                     highest_followup_line = aml.followup_line_id
@@ -292,6 +298,7 @@ class ResPartner(models.Model):
             'highest_followup_line': highest_followup_line,
             'next_followup_delay': next_followup_delay,
             'has_overdue_invoices': has_overdue_invoices,
+            'has_level_0_lines_needing_action': has_level_0_lines_needing_action,
         }
 
     def _get_invoices_to_print(self, options):

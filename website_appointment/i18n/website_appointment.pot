@@ -179,6 +179,11 @@ msgid "Online"
 msgstr ""
 
 #. module: website_appointment
+#: model_terms:ir.ui.view,arch_db:website_appointment.website_online_appointment_snippet
+msgid "Online Appointment"
+msgstr ""
+
+#. module: website_appointment
 #: model:ir.ui.menu,name:website_appointment.website_appointment_type_menu
 msgid "Online Appointments"
 msgstr ""

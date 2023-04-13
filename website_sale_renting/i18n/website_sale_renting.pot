@@ -298,6 +298,11 @@ msgid "Rent Online"
 msgstr ""
 
 #. module: website_sale_renting
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.snippets
+msgid "Rental Search"
+msgstr ""
+
+#. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_sale_order
 msgid "Sales Order"
 msgstr ""

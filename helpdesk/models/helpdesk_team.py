@@ -258,7 +258,7 @@ class HelpdeskTeam(models.Model):
     def _onchange_use_alias(self):
         if not self.use_alias:
             self.alias_name = False
-        if self._origin.id and self.use_alias:
+        if self._origin.id and self.use_alias and not self.alias_name:
             self.alias_name = self._alias_get_creation_values()['alias_name'].lower()
 
     @api.depends('use_website_helpdesk_knowledge', 'use_website_helpdesk_slides', 'use_website_helpdesk_forum')

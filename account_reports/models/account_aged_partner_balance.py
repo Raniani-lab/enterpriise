@@ -290,14 +290,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                         partner_expression_totals = rslt.setdefault(f"[{report_line_id}]=>partner_id", {})\
                                                         .setdefault(column_group_key, {expression: {'value': []} for expression in expressions_to_evaluate})
                         for partner_id, aml_data_list in aml_data_by_partner.items():
-                            partner_values = {
-                                'due_date': None,
-                                'amount_currency': None,
-                                'currency': None,
-                                'account_name': None,
-                                'expected_date': None,
-                                'total': 0,
-                            }
+                            partner_values = self._prepare_partner_values()
                             for i in range(report_periods):
                                 partner_values[f'period{i}'] = 0
 
@@ -322,6 +315,17 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
         return rslt
 
+    def _prepare_partner_values(self):
+        partner_values = {
+            'due_date': None,
+            'amount_currency': None,
+            'currency': None,
+            'account_name': None,
+            'expected_date': None,
+            'total': 0,
+        }
+
+        return partner_values
 
 class AgedPayableCustomHandler(models.AbstractModel):
     _name = 'account.aged.payable.report.handler'

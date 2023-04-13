@@ -357,7 +357,7 @@ Best Regards,
                 )
                 sent_at_least_once = True
         if not sent_at_least_once:
-            raise UserError(_('You are trying to send an SMS, but no follow-up contact has any mobile/phone number set'))
+            raise UserError(_("You are trying to send an SMS, but no follow-up contact has any mobile/phone number set for customer '%s'", partner.name))
 
     @api.model
     def _send_email(self, options):
@@ -387,7 +387,7 @@ Best Regards,
                 )
                 sent_at_least_once = True
         if not sent_at_least_once:
-            raise UserError(_('You are trying to send an Email, but no follow-up contact has any email address set'))
+            raise UserError(_("You are trying to send an Email, but no follow-up contact has any email address set for customer '%s'", partner.name))
 
     @api.model
     def _print_followup_letter(self, partner, options=None):

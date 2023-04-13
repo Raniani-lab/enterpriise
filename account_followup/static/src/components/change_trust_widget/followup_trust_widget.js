@@ -12,7 +12,8 @@ FollowupTrustPopOver.template = "account_followup.FollowupTrustPopOver";
 class FollowupTrustWidget extends Component {
     setup() {
         super.setup();
-        this.popover = usePopover();
+        const position = localization.direction === "rtl" ? "bottom" : "right";
+        this.popover = usePopover(FollowupTrustPopOver, { position });
     }
 
     displayTrust() {
@@ -26,31 +27,15 @@ class FollowupTrustWidget extends Component {
     }
 
     onTrustClick(ev) {
-        if (this.popoverCloseFn) {
-            this.closePopover();
-        }
-        this.popoverCloseFn = this.popover.add(
-            ev.currentTarget,
-            FollowupTrustPopOver,
-            {
-                record: this.props.record,
-                widget: this,
-                onClose: this.closePopover,
-            },
-            {
-                position: localization.direction === "rtl" ? "bottom" : "right",
-            },
-        );
+        this.popover.open(ev.currentTarget, {
+            record: this.props.record,
+            widget: this,
+        });
     }
 
     async setTrust(trust) {
         this.props.record.update({ [this.props.name]: trust });
-        this.closePopover();
-    }
-
-    closePopover() {
-        this.popoverCloseFn();
-        this.popoverCloseFn = null;
+        this.popover.close();
     }
 }
 

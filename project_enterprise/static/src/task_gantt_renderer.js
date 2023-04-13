@@ -3,6 +3,7 @@
 import { Avatar } from "@mail/web/fields/avatar/avatar";
 import { markup, useEffect } from "@odoo/owl";
 import { localization } from "@web/core/l10n/localization";
+import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
 import { MilestonesPopover } from "./milestones_popover";
@@ -15,6 +16,8 @@ export class TaskGanttRenderer extends GanttRenderer {
             (el) => el.classList.add("o_project_gantt"),
             () => [this.rootRef.el]
         );
+        const position = localization.direction === "rtl" ? "bottom" : "right";
+        this.milestonePopover = usePopover(MilestonesPopover, { position });
     }
 
     computeColumns() {
@@ -125,31 +128,21 @@ export class TaskGanttRenderer extends GanttRenderer {
     //--------------------------------------------------------------------------
 
     onMilestoneMouseEnter(ev, milestones) {
-        this.milestonePopoverClose = this.popover.add(
-            ev.target,
-            MilestonesPopover,
-            {
-                milestones,
-                displayMilestoneDates: this.model.metaData.scale.id === "year",
-                displayProjectName: !!this.model.searchParams.context.search_default_my_tasks,
-            },
-            {
-                onClose: () => {
-                    delete this.milestonePopoverClose;
-                },
-                position: localization.direction === "rtl" ? "bottom" : "right",
-            }
-        );
+        this.milestonePopover.open(ev.target, {
+            milestones,
+            displayMilestoneDates: this.model.metaData.scale.id === "year",
+            displayProjectName: !!this.model.searchParams.context.search_default_my_tasks,
+        });
     }
 
     onMilestoneMouseLeave() {
-        if (this.milestonePopoverClose) {
-            this.milestonePopoverClose();
-            delete this.milestonePopoverClose;
-        }
+        this.milestonePopover.close();
     }
 }
-TaskGanttRenderer.components = { ...GanttRenderer.components, Avatar };
+TaskGanttRenderer.components = {
+    ...GanttRenderer.components,
+    Avatar,
+};
 TaskGanttRenderer.headerTemplate = "project_enterprise.TaskGanttRenderer.Header";
 TaskGanttRenderer.rowHeaderTemplate = "project_enterprise.TaskGanttRenderer.RowHeader";
 TaskGanttRenderer.rowContentTemplate = "project_enterprise.TaskGanttRenderer.RowContent";

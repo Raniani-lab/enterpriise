@@ -244,8 +244,8 @@ export class GanttRenderer extends Component {
         /** @type {SubColumn[]} */
         this.subColumns = [];
 
-        this.popover = usePopover();
-        this.popoverClose = () => {};
+        const position = localization.direction === "rtl" ? "bottom" : "right";
+        this.popover = usePopover(this.constructor.components.Popover, { position });
 
         const { popoverTemplate } = this.model.metaData;
         if (popoverTemplate) {
@@ -284,7 +284,7 @@ export class GanttRenderer extends Component {
             ghostClassName: "o_dragged_pill_ghost",
             // Handlers
             onDragStart: () => {
-                this.popoverClose();
+                this.popover.close();
                 this.setStickyRowFromCell(this.cellForDrag.el);
                 this.interaction.mode = "drag";
             },
@@ -331,7 +331,7 @@ export class GanttRenderer extends Component {
             precision: () => this.model.metaData.scale.cellPart,
             // Handlers
             onDragStart: ({ pill, addClass }) => {
-                this.popoverClose();
+                this.popover.close();
                 addClass(pill, "o_resized");
                 this.interaction.mode = "resize";
             },
@@ -367,7 +367,7 @@ export class GanttRenderer extends Component {
             elements: ".o_connector_creator_bullet",
             parentWrapper: ".o_gantt_cells .o_gantt_pill_wrapper",
             onDragStart: ({ sourcePill, x, y, addClass }) => {
-                this.popoverClose();
+                this.popover.close();
                 initialPillId = sourcePill.dataset.pillId;
                 addClass(sourcePill, "o_connector_creator_show");
                 this.setConnector({
@@ -1878,21 +1878,11 @@ export class GanttRenderer extends Component {
      * @param {Pill} pill
      */
     onPillClicked(ev, pill) {
-        if (this.popoverIsOpen) {
+        if (this.popover.isOpen) {
             return;
         }
         const popoverTarget = ev.target.closest(".o_gantt_pill_wrapper");
-        this.popoverClose = this.popover.add(
-            popoverTarget,
-            this.constructor.components.Popover,
-            this.getPopoverProps(pill),
-            {
-                onClose: () => (this.popoverIsOpen = false),
-                position: localization.direction === "rtl" ? "bottom" : "right",
-            }
-        );
-
-        this.popoverIsOpen = true;
+        this.popover.open(popoverTarget, this.getPopoverProps(pill));
     }
 
     /**

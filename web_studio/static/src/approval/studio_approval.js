@@ -1,8 +1,8 @@
 /** @odoo-module */
 
+import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { StudioApprovalInfos } from "@web_studio/approval/approval_infos";
-
 import { useState, Component, onWillUnmount, useRef } from "@odoo/owl";
 
 function useOpenExternal() {
@@ -22,7 +22,7 @@ function useOpenExternal() {
 export class StudioApproval extends Component {
     setup() {
         this.dialog = useService("dialog");
-        this.popover = useService("popover");
+        this.popover = usePopover(StudioApprovalInfos);
         this.rootRef = useRef("root");
         this.openExternal = useOpenExternal();
 
@@ -32,27 +32,20 @@ export class StudioApproval extends Component {
     }
 
     toggleApprovalInfo() {
-        if (this.isOpened) {
-            this.closeInfos();
-            this.closeInfos = null;
-            return;
-        }
-        const onClose = () => {
-            this.isOpened = false;
-        };
         if (this.env.isSmall) {
+            if (this.isOpened) {
+                this.closeInfos();
+                this.closeInfos = null;
+                return;
+            }
+            const onClose = () => {
+                this.isOpened = false;
+            };
             this.closeInfos = this.openExternal(() =>
                 this.dialog.add(StudioApprovalInfos, { approval: this.approval }, { onClose })
             );
         } else {
-            this.closeInfos = this.openExternal(() =>
-                this.popover.add(
-                    this.rootRef.el,
-                    StudioApprovalInfos,
-                    { approval: this.approval, isPopover: true },
-                    { onClose }
-                )
-            );
+            this.popover.open(this.rootRef.el, { approval: this.approval, isPopover: true });
         }
     }
 

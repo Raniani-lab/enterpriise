@@ -5,6 +5,7 @@ import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behav
 import { browser } from "@web/core/browser/browser";
 import { SendAsMessageMacro, UseAsDescriptionMacro } from "@knowledge/macros/template_macros";
 import { Tooltip } from "@web/core/tooltip/tooltip";
+import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import {
     useRef,
@@ -16,7 +17,7 @@ export class TemplateBehavior extends AbstractBehavior {
     setup() {
         super.setup();
         this.dialogService = useService("dialog");
-        this.popoverService = useService("popover");
+        this.popover = usePopover(Tooltip);
         this.uiService = useService("ui");
         this.copyToClipboardButton = useRef("copyToClipboardButton");
         this.templateContent = useRef("templateContent");
@@ -41,12 +42,10 @@ export class TemplateBehavior extends AbstractBehavior {
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
     }
     showTooltip() {
-        const closeTooltip = this.popoverService.add(this.copyToClipboardButton.el, Tooltip, {
+        this.popover.open(this.copyToClipboardButton.el, {
             tooltip: _t("Template copied to clipboard."),
         });
-        browser.setTimeout(() => {
-            closeTooltip();
-        }, 800);
+        browser.setTimeout(this.popover.close, 800);
     }
     /**
      * @param {Event} ev

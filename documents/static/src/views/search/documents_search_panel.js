@@ -2,7 +2,7 @@
 
 import { browser } from "@web/core/browser/browser";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
-
+import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { device } from "web.config";
 import { sprintf } from "web.utils";
@@ -38,7 +38,10 @@ export class DocumentsSearchPanel extends SearchPanel {
         this.orm = useService("orm");
         this.user = useService("user");
         this.action = useService("action");
-        this.popover = useService("popover");
+        this.popover = usePopover(DocumentsSearchPanelItemSettingsPopover, {
+            onClose: () => this.onPopoverClose?.(),
+            popoverClass: "o_search_panel_item_settings_popover",
+        });
         this.dialog = useService("dialog");
 
         onWillStart(async () => {
@@ -138,33 +141,29 @@ export class DocumentsSearchPanel extends SearchPanel {
         const target = ev.currentTarget || ev.target;
         const label = target.closest(".o_search_panel_label");
         const counter = label && label.querySelector(".o_search_panel_counter");
-        if (this.popoverClose) {
-            this.popoverClose();
-        }
-        this.popoverClose = this.popover.add(ev.target, DocumentsSearchPanelItemSettingsPopover, {
+        this.popover.open(ev.target, {
             onEdit: () => {
-                this.popoverClose();
+                this.popover.close();
                 this.state.showMobileSearch = false;
                 this.editSectionValue(resModel, resId);
             },
             onCreateChild: () => {
-                this.popoverClose();
+                this.popover.close();
                 this.addNewSectionValue(section, value || group);
             },
             createChildEnabled: this.supportedNewChildModels.includes(resModel),
-        }, {
-            onClose: () => {
-                target.classList.remove("d-block");
-                if (counter) {
-                    counter.classList.remove("d-none");
-                }
-            },
-            popoverClass: "o_search_panel_item_settings_popover",
         });
         target.classList.add("d-block");
         if (counter) {
             counter.classList.add("d-none");
         }
+        this.onPopoverClose = () => {
+            this.onPopoverClose = null;
+            target.classList.remove("d-block");
+            if (counter) {
+                counter.classList.remove("d-none");
+            }
+        };
     }
 
     async addNewSectionValue(section, parentValue) {

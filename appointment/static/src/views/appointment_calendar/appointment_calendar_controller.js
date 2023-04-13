@@ -2,6 +2,7 @@
 
 import { AttendeeCalendarController } from "@calendar/views/attendee_calendar/attendee_calendar_controller";
 import { patch } from "@web/core/utils/patch";
+import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { Tooltip } from "@web/core/tooltip/tooltip";
 import { browser } from "@web/core/browser/browser";
@@ -13,7 +14,7 @@ patch(AttendeeCalendarController.prototype, "appointment_calendar_controller", {
     setup() {
         this._super(...arguments);
         this.rpc = useService("rpc");
-        this.popover = useService("popover");
+        this.popover = usePopover(Tooltip, { position: "left" });
         this.copyLinkRef = useRef("copyLinkRef");
 
         this.appointmentState = useState({
@@ -76,14 +77,8 @@ patch(AttendeeCalendarController.prototype, "appointment_calendar_controller", {
         if (!this.copyLinkRef.el) {
             return;
         }
-        const closeTooltip = this.popover.add(this.copyLinkRef.el, Tooltip, {
-            tooltip: this.env._t("Copied!"),
-        }, {
-            position: "left",
-        });
-        browser.setTimeout(() => {
-            closeTooltip();
-        }, 800);
+        this.popover.open(this.copyLinkRef.el, { tooltip: this.env._t("Copied!") });
+        browser.setTimeout(this.popover.close, 800);
     },
 
     onClickDiscard() {

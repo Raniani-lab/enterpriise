@@ -81,7 +81,7 @@ export class DocumentsSearchPanel extends SearchPanel {
     getResModelResIdFromValueGroup(section, value, group) {
         if (value) {
             return [
-                this.env.model.root.activeFields[section.fieldName].relation,
+                this.env.model.root.fields[section.fieldName].relation,
                 section.values.get(value).id,
             ];
         } else if (group) {

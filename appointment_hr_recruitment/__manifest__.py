@@ -17,4 +17,8 @@ Keeps track of all appointments related to applicants.
             'appointment_hr_recruitment/static/tests/tours/**/*',
         ],
     },
+    'demo': [
+        'data/appointment_hr_recruitment_demo.xml',
+        'data/mail_template_demo.xml',
+    ],
 }

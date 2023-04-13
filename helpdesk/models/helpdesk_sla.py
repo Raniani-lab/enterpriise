@@ -40,7 +40,7 @@ class HelpdeskSLA(models.Model):
     partner_ids = fields.Many2many(
         'res.partner', string="Customers")
     company_id = fields.Many2one('res.company', 'Company', related='team_id.company_id', readonly=True, store=True)
-    time = fields.Float('In', default=0, required=True,
+    time = fields.Float('Within', default=0, required=True,
         help='Maximum number of working hours a ticket should take to reach the target stage, starting from the date it was created.')
     ticket_count = fields.Integer(compute='_compute_ticket_count')
 

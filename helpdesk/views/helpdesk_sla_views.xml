@@ -5,7 +5,7 @@
         <field name="name">helpdesk.sla.tree</field>
         <field name="model">helpdesk.sla</field>
         <field name="arch" type="xml">
-            <tree string="SLA Policies" multi_edit="1" sample="1">
+            <tree string="SLA Policies" multi_edit="1" sample="1" default_order="team_id">
                 <field name="company_id" invisible="1"/>
                 <field name="name"/>
                 <field name="team_id" optional="show" readonly="1"/>
@@ -24,7 +24,7 @@
         <field name="name">helpdesk.sla.kanban</field>
         <field name="model">helpdesk.sla</field>
         <field name="arch" type="xml">
-            <kanban sample="1">
+            <kanban sample="1" default_order="team_id">
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click oe_kanban_content">
@@ -112,7 +112,7 @@
 
                             <separator colspan="2" string="Target" class="mt32"/>
                             <field name="stage_id" string="Reach Stage" domain="[('team_ids', '=', team_id), ('id', 'not in', exclude_stage_ids)]" required="1" context="{'default_team_ids': team_id and [(6, 0, [team_id])]}"/>
-                            <label for="time" string="In"/>
+                            <label for="time"/>
                             <div class="o_row">
                                 <field name="time" widget="float_time" class="oe_inline"/><span class="o_field_widget o_readonly_modifier">Working Hours</span>
                             </div>

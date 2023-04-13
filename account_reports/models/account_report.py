@@ -3396,7 +3396,16 @@ class AccountReport(models.Model):
             existing_value_to_modify = existing_external_values[-1] if existing_external_values and str(existing_external_values[-1].date) == date_to  else None
             value_to_adjust = sum(existing_external_values.filtered(lambda x: x != existing_value_to_modify).mapped('value'))
 
-        value_to_set = float_round(float(new_value_str) - value_to_adjust, precision_digits=rounding)
+        if not new_value_str:
+            new_value = 0
+        else:
+            new_value_str = new_value_str.replace(',', '').replace('+', '', 1)
+            if new_value_str.replace('.', '', 1).replace('-', '', 1).isnumeric():
+                new_value = float(new_value_str)
+            else:
+                raise UserError(_("%s is not a numeric value", new_value_str))
+
+        value_to_set = float_round(new_value - value_to_adjust, precision_digits=rounding)
         if existing_value_to_modify:
             existing_value_to_modify.value = value_to_set
             existing_value_to_modify.flush_recordset()

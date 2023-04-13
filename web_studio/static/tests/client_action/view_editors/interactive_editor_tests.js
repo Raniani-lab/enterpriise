@@ -119,11 +119,17 @@ QUnit.module("View Editors", () => {
                 target.querySelector(".o_web_studio_new_fields .o_web_studio_field_related"),
                 target.querySelector("th.o_web_studio_hook")
             );
-            assert.containsOnce(target, ".modal .o_field_selector");
-            await click(target.querySelector(".modal .o_field_selector")); // open the selector popover
-            await click(target.querySelector(".o_field_selector_popover li[data-name=product_id]"));
+            assert.containsOnce(target, ".modal .o_model_field_selector");
+            await click(target.querySelector(".modal .o_model_field_selector")); // open the selector popover
             await click(
-                target.querySelector(".o_field_selector_popover li[data-name=monetary_field]")
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=product_id] button.o_model_field_selector_popover_item_relation"
+                )
+            );
+            await click(
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=monetary_field] button"
+                )
             );
             await click(target.querySelector(".modal-footer .btn-primary"));
             assert.strictEqual(
@@ -185,11 +191,17 @@ QUnit.module("View Editors", () => {
                 target.querySelector(".o_web_studio_new_fields .o_web_studio_field_related"),
                 target.querySelector("th.o_web_studio_hook")
             );
-            assert.containsOnce(target, ".o_field_selector");
-            await click(target.querySelector(".modal .o_field_selector"));
-            await click(target.querySelector(".o_field_selector_popover li[data-name=product_id]"));
+            assert.containsOnce(target, ".o_model_field_selector");
+            await click(target.querySelector(".modal .o_model_field_selector"));
             await click(
-                target.querySelector(".o_field_selector_popover li[data-name=monetary_field]")
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=product_id] button.o_model_field_selector_popover_item_relation"
+                )
+            );
+            await click(
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=monetary_field] button"
+                )
             );
             await click(target.querySelector(".modal-footer .btn-primary"));
             assert.strictEqual(nbEdit, 2, "the view should have been updated");
@@ -328,17 +340,23 @@ QUnit.module("View Editors", () => {
 
             assert.containsOnce(target, ".modal");
 
-            await click(target.querySelector(".modal .o_field_selector"));
+            await click(target.querySelector(".modal .o_model_field_selector"));
 
             assert.containsOnce(
                 target,
-                ".o_field_selector_popover li",
+                ".o_model_field_selector_popover li",
                 "there should only be one available field (the many2one)"
             );
 
-            await click(target.querySelector(".o_field_selector_popover li[data-name=product_id]"));
             await click(
-                target.querySelector(".o_field_selector_popover li[data-name=display_name]")
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=product_id] button.o_model_field_selector_popover_item_relation"
+                )
+            );
+            await click(
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=display_name] button"
+                )
             );
             await click(target.querySelector(".modal-footer .btn-primary"));
             assert.verifySteps(["edit_view"]);
@@ -351,10 +369,22 @@ QUnit.module("View Editors", () => {
             );
             assert.containsOnce(target, ".modal");
 
-            await click(target.querySelector(".modal .o_field_selector"));
-            await click(target.querySelector(".o_field_selector_popover li[data-name=product_id]"));
-            await click(target.querySelector(".o_field_selector_popover li[data-name=m2o]"));
-            await click(target.querySelector(".o_field_selector_popover .o_field_selector_close"));
+            await click(target.querySelector(".modal .o_model_field_selector"));
+            await click(
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=product_id] button.o_model_field_selector_popover_item_relation"
+                )
+            );
+            await click(
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=m2o] button.o_model_field_selector_popover_item_relation"
+                )
+            );
+            await click(
+                target.querySelector(
+                    ".o_model_field_selector_popover .o_model_field_selector_popover_close"
+                )
+            );
             await click(target.querySelector(".modal-footer .btn-primary"));
             assert.verifySteps(["edit_view"]);
 
@@ -365,12 +395,22 @@ QUnit.module("View Editors", () => {
                 target.querySelector(".o_web_studio_hook")
             );
             assert.containsOnce(target, ".modal");
-            await click(target.querySelector(".modal .o_field_selector"));
-            await click(target.querySelector(".o_field_selector_popover li[data-name=product_id]"));
+            await click(target.querySelector(".modal .o_model_field_selector"));
             await click(
-                target.querySelector(".o_field_selector_popover li[data-name=partner_ids]")
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=product_id] button.o_model_field_selector_popover_item_relation"
+                )
             );
-            await click(target.querySelector(".o_field_selector_popover .o_field_selector_close"));
+            await click(
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=partner_ids] button.o_model_field_selector_popover_item_relation"
+                )
+            );
+            await click(
+                target.querySelector(
+                    ".o_model_field_selector_popover .o_model_field_selector_popover_close"
+                )
+            );
             await click(target.querySelector(".modal-footer .btn-primary"));
             assert.verifySteps(["edit_view"]);
 
@@ -379,11 +419,17 @@ QUnit.module("View Editors", () => {
                 target.querySelector(".o_web_studio_new_fields .o_web_studio_field_related"),
                 target.querySelector(".o_web_studio_hook")
             );
+
             assert.containsOnce(target, ".modal");
-            await click(target.querySelector(".modal .o_field_selector"));
-            await click(target.querySelector(".o_field_selector_popover li[data-name=product_id]"));
-            await click(target.querySelector(".o_field_selector_popover li[data-name=m2m]"));
-            await click(target.querySelector(".o_field_selector_popover .o_field_selector_close"));
+            await click(target.querySelector(".modal .o_model_field_selector"));
+            await click(
+                target.querySelector(
+                    ".o_model_field_selector_popover li[data-name=product_id] button.o_model_field_selector_popover_item_relation"
+                )
+            );
+            await click(
+                target.querySelector(".o_model_field_selector_popover li[data-name=m2m] button")
+            );
             await click(target.querySelector(".modal-footer .btn-primary")); // confirm
             assert.verifySteps(["edit_view"]);
         });

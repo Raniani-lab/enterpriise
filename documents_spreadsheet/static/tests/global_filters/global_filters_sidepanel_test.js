@@ -55,9 +55,9 @@ async function selectModelForRelation(relation) {
 }
 
 async function selectFieldMatching(fieldName, fieldMatching = target) {
-    await click(fieldMatching, ".o_field_selector");
+    await click(fieldMatching, ".o_model_field_selector");
     // We use `target` here because the popover is not in fieldMatching
-    await click(target, `.o_field_selector_item[data-name='${fieldName}']`);
+    await click(target, `.o_model_field_selector_popover_item[data-name='${fieldName}'] button`);
 }
 
 async function saveGlobalFilter() {
@@ -245,7 +245,7 @@ QUnit.module(
             await clickCreateFilter("relation");
             await selectModelForRelation("vehicle");
             assert.strictEqual(
-                target.querySelector(".o_field_selector_value").innerText,
+                target.querySelector(".o_model_field_selector_value").innerText,
                 "Vehicle"
             );
             await saveGlobalFilter();
@@ -419,7 +419,7 @@ QUnit.module(
                 "Product"
             );
             const fieldsMatchingElements = target.querySelectorAll(
-                "span.o_field_selector_chain_part"
+                "span.o_model_field_selector_chain_part"
             );
             assert.equal(fieldsMatchingElements.length, 2);
             assert.equal(fieldsMatchingElements[0].innerText, "Product");
@@ -1427,12 +1427,16 @@ QUnit.module(
                 assert.equal(panel.querySelectorAll(".o_input")[1].value, "month");
 
                 const pivotField = panel.querySelectorAll(".o_spreadsheet_field_matching ")[0];
-                const pivotFieldValue = pivotField.querySelector(".o_field_selector_value span");
+                const pivotFieldValue = pivotField.querySelector(
+                    ".o_model_field_selector_value span"
+                );
                 assert.equal(pivotFieldValue.textContent.trim(), "Date");
                 assert.equal(pivotField.querySelector("select").value, "0");
 
                 const listField = panel.querySelectorAll(".o_spreadsheet_field_matching ")[1];
-                const listFieldValue = listField.querySelector(".o_field_selector_value span");
+                const listFieldValue = listField.querySelector(
+                    ".o_model_field_selector_value span"
+                );
                 assert.equal(listFieldValue.textContent.trim(), "Date");
                 assert.equal(listField.querySelector("select").value, "1");
             }

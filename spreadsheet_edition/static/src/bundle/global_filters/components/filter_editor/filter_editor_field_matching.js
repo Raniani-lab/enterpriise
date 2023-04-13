@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { SpreadsheetModelFieldSelector } from "../model_field_selector/spreadsheet_model_field_selector";
+import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
 
 import { Component } from "@odoo/owl";
 
@@ -21,23 +21,11 @@ export default class FilterEditorFieldMatching extends Component {
         }
         return fieldMatch.chain;
     }
-
-    /**
-     * @param {{resModel:string, field: Field}[]} [fieldChain]
-     * @return {Field | undefined}
-     */
-    extractField(fieldChain) {
-        if (!fieldChain) {
-            return undefined;
-        }
-        const candidate = [...fieldChain].reverse().find((chain) => chain.field);
-        return candidate ? candidate.field : undefined;
-    }
 }
 FilterEditorFieldMatching.template = "spreadsheet_edition.FilterEditorFieldMatching";
 
 FilterEditorFieldMatching.components = {
-    SpreadsheetModelFieldSelector,
+    ModelFieldSelector,
 };
 
 FilterEditorFieldMatching.props = {

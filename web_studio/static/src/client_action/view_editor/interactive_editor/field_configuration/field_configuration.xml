@@ -8,12 +8,6 @@
     />
 </t>
 
-<t t-name="web_studio.ModelFieldSelectorPopover" t-inherit="web.ModelFieldSelectorPopover" >
-    <xpath expr="//div[contains(@class, 'o_field_selector_popover_body')]//t[@t-if]" position="attributes">
-        <attribute name="t-if">true</attribute>
-    </xpath>
-</t>
-
 <t t-name="web_studio.RelationalFieldConfigurator" owl="1" >
     <span t-if="fieldType === 'one2many'" >Select the reciprocal ManyToOne field</span>
     <span t-else="">Select the model in relation to this one</span>

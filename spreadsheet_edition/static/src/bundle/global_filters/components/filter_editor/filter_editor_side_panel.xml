@@ -40,12 +40,12 @@
                     class="d-flex flex-column justify-content-end w-50 flex-grow-1"
                     name="field-match"
                 >
-                    <SpreadsheetModelFieldSelector
-                            fieldName="getModelField(object.fieldMatch)"
+                    <ModelFieldSelector
+                            path="getModelField(object.fieldMatch)"
                             resModel="object.model()"
                             readonly="false"
                             isDebugMode="!!env.debug"
-                            update="(chainString, chain) => props.selectField(object_index, chainString, extractField(chain))"
+                            update="(path, fieldInfo) => props.selectField(object_index, path, fieldInfo.fieldDef)"
                             filter.bind="props.filterModelFieldSelectorField"
                             t-key="object_index"/>
                 </div>

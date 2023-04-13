@@ -5,7 +5,6 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 import { Record } from "@web/views/record";
 import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
-import { useModelField } from "@web/core/model_field_selector/model_field_hook";
 import { useDialogConfirmation } from "@web_studio/client_action/utils";
 import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { session } from "@web/session";
@@ -13,7 +12,6 @@ import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 import { DomainSelector } from "@web/core/domain_selector/domain_selector";
 import { SelectionContentDialog } from "@web_studio/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog";
-import { ModelFieldSelectorPopover } from "@web/core/model_field_selector/model_field_selector_popover";
 
 export function getCurrencyField(fieldsGet) {
     const field = Object.entries(fieldsGet).find(([fName, fInfo]) => {
@@ -123,22 +121,13 @@ class RelatedChainBuilderModel {
     constructor({ services, props }) {
         this.services = services;
         this.relatedParams = {};
-        this.rawChain = [];
+        this.fieldInfo = { resModel: props.resModel, fieldDef: null };
         this.shouldOpenCurrencyDialog = props.shouldOpenCurrencyDialog;
         this.resModel = props.resModel;
     }
 
     get isValid() {
         return !!this.relatedParams.related;
-    }
-
-    getLastInChain(rawFieldChain) {
-        for (let i = rawFieldChain.length - 1; i >= 0; i--) {
-            const node = rawFieldChain[i];
-            if (node.field) {
-                return node;
-            }
-        }
     }
 
     getRelatedFieldDescription(resModel, lastField) {
@@ -164,10 +153,9 @@ class RelatedChainBuilderModel {
     }
 
     async confirm() {
-        const lastInChain = this.getLastInChain(this.rawChain);
         const relatedDescription = this.getRelatedFieldDescription(
-            lastInChain.resModel,
-            lastInChain.field
+            this.fieldInfo.resModel,
+            this.fieldInfo.fieldDef
         );
         if (this.shouldOpenCurrencyDialog && relatedDescription.type === "monetary") {
             const currencyDescription = await openCurrencyConfirmDialog(
@@ -177,7 +165,9 @@ class RelatedChainBuilderModel {
             if (!currencyDescription) {
                 return false;
             }
-            const relatedCurrencyField = await this.getRelatedCurrencyField(lastInChain.resModel);
+            const relatedCurrencyField = await this.getRelatedCurrencyField(
+                this.fieldInfo.resModel
+            );
             if (relatedCurrencyField) {
                 currencyDescription.related = relatedCurrencyField;
             } else {
@@ -204,34 +194,9 @@ class RelatedChainBuilderModel {
     }
 }
 
-class ModelFieldSelectorPopoverRelated extends ModelFieldSelectorPopover {
-    static template = "web_studio.ModelFieldSelectorPopover";
-    async loadFields() {
-        await super.loadFields(...arguments);
-
-        if (!this.fullFieldName) {
-            this.fields = Object.fromEntries(
-                Object.entries(this.unfilteredFields).filter(([name, f]) => {
-                    return f.type === "many2one";
-                })
-            );
-        } else {
-            this.fields = { ...this.unfilteredFields };
-        }
-        this.fieldKeys = this.sortedKeys(this.fields);
-    }
-}
-
-class ModelFieldSelectorRelated extends ModelFieldSelector {
-    static components = {
-        ...ModelFieldSelector.components,
-        Popover: ModelFieldSelectorPopoverRelated,
-    };
-}
-
 export class RelatedChainBuilder extends Component {
-    static template = owl.xml`<ModelFieldSelector resModel="props.resModel" fieldName="fieldChain" readonly="false" update.bind="updateChain" />`;
-    static components = { ModelFieldSelector: ModelFieldSelectorRelated };
+    static template = owl.xml`<ModelFieldSelector resModel="props.resModel" path="fieldChain" readonly="false" filter.bind="filter" update.bind="updateChain" />`;
+    static components = { ModelFieldSelector };
     static props = {
         resModel: { type: String },
         configurationModel: { type: Object },
@@ -241,9 +206,7 @@ export class RelatedChainBuilder extends Component {
 
     setup() {
         this.state = useState(this.props.configurationModel);
-        this.modelField = useModelField();
         this.relatedParams.related = "";
-        this.chainProm = null;
     }
 
     get relatedParams() {
@@ -254,9 +217,16 @@ export class RelatedChainBuilder extends Component {
         return this.relatedParams.related;
     }
 
-    updateChain(chainString, rawChain) {
-        this.relatedParams.related = chainString;
-        this.state.rawChain = rawChain;
+    filter(fieldDef, path) {
+        if (!path) {
+            return fieldDef.type === "many2one";
+        }
+        return true;
+    }
+
+    async updateChain(path, fieldInfo) {
+        this.relatedParams.related = path;
+        this.state.fieldInfo = fieldInfo;
     }
 }
 

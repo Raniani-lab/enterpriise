@@ -147,6 +147,9 @@ export default class AbstractFilterEditorSidePanel extends Component {
      * @returns {boolean}
      */
     filterModelFieldSelectorField(field) {
+        if (!field.searchable) {
+            return false;
+        }
         if (this.env.debug) {
             // Debug users are allowed to go through relational fields a target multi-depth
             // relations e.g. product_id.categ_id.name
@@ -158,18 +161,6 @@ export default class AbstractFilterEditorSidePanel extends Component {
             }
         }
         return false;
-    }
-
-    /**
-     * @param {{resModel:string, field: Object}[] | undefined} fieldChain
-     * @return {Object | undefined}
-     */
-    extractField(fieldChain) {
-        if (!fieldChain) {
-            return undefined;
-        }
-        const candidate = [...fieldChain].reverse().find((chain) => chain.field);
-        return candidate ? candidate.field : candidate;
     }
 
     /**

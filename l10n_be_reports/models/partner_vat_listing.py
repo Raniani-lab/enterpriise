@@ -99,6 +99,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             return [] if current_groupby else {'vat_number': None, 'turnover': 0, 'vat_amount': 0, 'has_sublines': False}
 
         tables, where_clause, where_params = report._query_get(options, 'strict_range')
+        tail_query, tail_params = report._get_engine_query_tail(offset, limit)
 
         if excluded_tax_ids:
             where_params = [tuple(excluded_tax_ids), *where_params]
@@ -213,14 +214,13 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             {'AND turnover_sub.grouping_key = refund_base_sub.grouping_key' if current_groupby  else ''}
 
             WHERE turnover > 250 OR refund_base > 0 OR refund_vat_amount > 0
-            ORDER BY turnover_sub.vat, turnover_sub.turnover DESC
-        '''
+        ''' + tail_query
 
         params = [
             tuple(options['partner_vat_listing_operations_tag_ids']), tuple(partner_ids), *where_params,
             tuple(options['partner_vat_listing_operations_tag_ids']), tuple(partner_ids), *where_params,
             tuple(options['partner_vat_listing_taxes_tag_ids']), tuple(partner_ids), *where_params,
-        ]
+        ] + tail_params
 
         self._cr.execute(query, params)
 

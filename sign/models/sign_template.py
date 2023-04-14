@@ -135,7 +135,13 @@ class SignTemplate(models.Model):
         self.ensure_one()
         default = default or {}
         default['name'] = default.get('name', self._get_copy_name(self.name))
-        return super().copy(default)
+        new_template = super().copy(default)
+        for sign_item in new_template.sign_item_ids:
+            if sign_item.type_id.item_type == 'selection':
+                archived_options = sign_item.option_ids.filtered(lambda option: not option.available).ids
+                if archived_options:
+                    sign_item.option_ids = [Command.unlink(option) for option in archived_options]
+        return new_template
 
     @api.model
     def create_with_attachment_data(self, name, data, active=True):
@@ -345,11 +351,20 @@ class SignItemSelectionOption(models.Model):
     _description = "Option of a selection Field"
     _rec_name = "value"
 
-    value = fields.Text(string="Option")
+    value = fields.Text(string="Option", readonly=True)
+    available = fields.Boolean(string="Available in new templates", default=True)
 
     _sql_constraints = [
         ('value_uniq', 'unique (value)', "Value already exists!"),
     ]
+
+    @api.model
+    def name_create(self, name):
+        existing_option = self.search([('value', '=ilike', name.strip())], limit=1)
+        if existing_option:
+            existing_option.available = True
+            return existing_option.id, existing_option.display_name
+        return super().name_create(name)
 
 
 class SignItem(models.Model):

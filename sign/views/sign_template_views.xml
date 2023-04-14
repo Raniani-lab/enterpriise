@@ -332,6 +332,23 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record id="sign_item_option_view_tree" model="ir.ui.view">
+        <field name="name">sign.item.option.tree</field>
+        <field name="model">sign.item.option</field>
+        <field name="arch" type="xml">
+            <tree create="0" decoration-muted="available == False" default_order="available desc, id">
+                <field name="value" readonly="1"/>
+                <field name="available" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sign_item_option_action" model="ir.actions.act_window">
+        <field name="name">Signature Item Options</field>
+        <field name="res_model">sign.item.option</field>
+        <field name="view_mode">tree</field>
+    </record>
+
     <!-- Signature Item Party Views -->
     <record id="sign_item_role_view_tree" model="ir.ui.view">
         <field name="name">sign.item.role.tree</field>

@@ -89,6 +89,15 @@ export class SignItemCustomPopover extends Component {
             record,
             readonly: false,
             canCreateEdit: false,
+            canQuickCreate: true,
+        };
+    }
+
+    getOptionsProps(record, fieldName) {
+        return {
+            ...this.getMany2XProps(record, fieldName),
+            domain: [["available", "=", true]],
+            noViewAll: true,
         };
     }
 

@@ -8,10 +8,20 @@
             <page name="job_description_page" position="after">
                 <page string="Payroll" groups="hr_payroll.group_hr_payroll_user"
                     attrs="{'invisible': [('display_l10n_be_scale', '=', False)]}">
-                    <group>
-                        <field name="display_l10n_be_scale" invisible="1"/>
-                        <field name="l10n_be_contract_ip"/>
-                        <field name="l10n_be_contract_withholding_taxes_exemption"/>
+                    <group col="2">
+                        <group col="1" >
+                            <field name="display_l10n_be_scale" invisible="1"/>
+                            <field name="l10n_be_contract_ip"/>
+                            <field name="l10n_be_contract_withholding_taxes_exemption"/>
+                        </group>
+                        <group col="2">
+                            <field name="l10n_be_custom_representation_fees"/>
+                            <separator string="Representation Fees" attrs="{'invisible': [('l10n_be_custom_representation_fees', '=', False)]}"/>
+                            <field name="l10n_be_custom_representation_fees_homeworking" attrs="{'invisible': [('l10n_be_custom_representation_fees', '=', False)]}"/>
+                            <field name="l10n_be_custom_representation_fees_phone" attrs="{'invisible': [('l10n_be_custom_representation_fees', '=', False)]}"/>
+                            <field name="l10n_be_custom_representation_fees_internet" attrs="{'invisible': [('l10n_be_custom_representation_fees', '=', False)]}"/>
+                            <field name="l10n_be_custom_representation_fees_car_management" attrs="{'invisible': [('l10n_be_custom_representation_fees', '=', False)]}"/>
+                        </group>
                     </group>
                 </page>
             </page>

@@ -392,6 +392,7 @@ class Payslip(models.Model):
             'compute_representation_fees': compute_representation_fees,
             'compute_serious_representation_fees': compute_serious_representation_fees,
             'compute_volatile_representation_fees': compute_volatile_representation_fees,
+            'compute_representation_fees_threshold': compute_representation_fees_threshold,
             'compute_holiday_pay_recovery_n': compute_holiday_pay_recovery_n,
             'compute_holiday_pay_recovery_n1': compute_holiday_pay_recovery_n1,
             'compute_termination_n_basic_double': compute_termination_n_basic_double,
@@ -1216,6 +1217,17 @@ def compute_onss_restructuring(payslip, categories, worked_days, inputs):
         return amount * ratio
     return 0
 
+def compute_representation_fees_threshold(payslip, categories, worked_days, inputs):
+    contract = payslip.contract_id
+    result = 0
+    if contract.job_id.l10n_be_custom_representation_fees:
+        for fee in ['homeworking', 'phone', 'internet', 'car_management']:
+            result += payslip.rule_parameter('cp200_representation_fees_%s' % fee) if contract.job_id['l10n_be_custom_representation_fees_%s' % fee] else 0
+    else:
+        result = payslip.rule_parameter('cp200_representation_fees_threshold')
+
+    return result
+
 def compute_representation_fees(payslip, categories, worked_days, inputs):
     contract = payslip.contract_id
     if not categories.BASIC:
@@ -1232,7 +1244,7 @@ def compute_representation_fees(payslip, categories, worked_days, inputs):
         else:
             work_time_rate = contract.resource_calendar_id.work_time_rate
 
-        threshold = 0 if (worked_days.OUT and worked_days.OUT.number_of_hours) else payslip.rule_parameter('cp200_representation_fees_threshold')
+        threshold = 0 if (worked_days.OUT and worked_days.OUT.number_of_hours) else compute_representation_fees_threshold(payslip, categories, worked_days, inputs)
         if days_per_week and contract.representation_fees > threshold:
             # Only part of the representation costs are pro-rated because certain costs are fully
             # covered for the company (teleworking costs, mobile phone, internet, etc., namely (for 2021):
@@ -1266,10 +1278,10 @@ def compute_representation_fees(payslip, categories, worked_days, inputs):
     return result
 
 def compute_serious_representation_fees(payslip, categories, worked_days, inputs):
-    return min(compute_representation_fees(payslip, categories, worked_days, inputs), payslip.rule_parameter('cp200_representation_fees_threshold'))
+    return min(compute_representation_fees(payslip, categories, worked_days, inputs), compute_representation_fees_threshold(payslip, categories, worked_days, inputs))
 
 def compute_volatile_representation_fees(payslip, categories, worked_days, inputs):
-    return max(compute_representation_fees(payslip, categories, worked_days, inputs) - payslip.rule_parameter('cp200_representation_fees_threshold'), 0)
+    return max(compute_representation_fees(payslip, categories, worked_days, inputs) - compute_representation_fees_threshold(payslip, categories, worked_days, inputs), 0)
 
 def compute_holiday_pay_recovery_n(payslip, categories, worked_days, inputs):
     """

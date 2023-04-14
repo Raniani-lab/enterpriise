@@ -582,7 +582,7 @@ result = min(amount_max, amount_per_km * contract.employee_id.km_home_work * 2)
         <field name="amount_select">code</field>
         <field name="sequence">171</field>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = contract.representation_fees and compute_representation_fees(payslip, categories, worked_days, inputs) &gt; payslip.rule_parameter('cp200_representation_fees_threshold')</field>
+        <field name="condition_python">result = contract.representation_fees and compute_representation_fees(payslip, categories, worked_days, inputs) &gt; compute_representation_fees_threshold(payslip, categories, worked_days, inputs)</field>
         <field name="amount_python_compute">
 result = compute_volatile_representation_fees(payslip, categories, worked_days, inputs)
 if inputs.REPFEESREGUL:

@@ -515,20 +515,9 @@ class Article(models.Model):
             article.user_favorite_sequence = favorite.sequence if favorite else -1
 
     def _inverse_is_user_favorite(self):
-        """ Read access is sufficient for toggling its own favorite status.
-        Articles 'to favorite' are based on the flag set to True and the related favorite record not
-        existing yet.
-        Articles 'to unfavorite' are based on the flag set to False and the related favorite record
-        existing. """
-        to_fav = self.filtered(lambda article:
-                               article.is_user_favorite and self.env.user not in article.favorite_ids.user_id)
-        to_unfav = self.filtered(lambda article:
-                                 not article.is_user_favorite and self.env.user in article.favorite_ids.user_id)
-
-        if to_fav:
-            to_fav.favorite_ids = [(0, 0, {'user_id': self.env.uid})]
-        if to_unfav:
-            to_unfav.favorite_ids.filtered(lambda u: u.user_id == self.env.user).sudo().unlink()
+        """ Deprecated. Not used anywhere because of access rights concerns and
+        because not working anyway"""
+        raise NotImplementedError("'_inverse_is_user_favorite' is deprecated. Please use 'action_toggle_favorite' instead.")
 
     def _search_is_user_favorite(self, operator, value):
         if operator not in ('=', '!='):
@@ -1065,10 +1054,13 @@ class Article(models.Model):
 
         # need to sudo to be able to write on the article model even with read access
         to_favorite_sudo = self.sudo().filtered(lambda article: not article.is_user_favorite)
-        to_unfavorite_sudo = self.sudo() - to_favorite_sudo
-        to_favorite_sudo.is_user_favorite = True
-        to_unfavorite_sudo.is_user_favorite = False
-        # manually invalidate cache as inverse writes on a separate model
+        to_unfavorite = self - to_favorite_sudo
+        to_favorite_sudo.write({'favorite_ids': [(0, 0, {'user_id': self.env.user.id})]})
+        if to_unfavorite:
+            self.env['knowledge.article.favorite'].sudo().search([
+                ('article_id', 'in', to_unfavorite.ids), ('user_id', '=', self.env.user.id)
+            ]).unlink()
+        # manually invalidate cache to recompute the favorites related fields
         self.invalidate_recordset(fnames=["is_user_favorite", "favorite_ids"])
         return self[0].is_user_favorite if self else False
 

@@ -446,7 +446,7 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
              'name': 'Article'}
         )
         self.assertFalse(article.is_user_favorite)
-        article.write({'favorite_ids': [(0, 0, {'user_id': self.env.user.id})]})
+        article.action_toggle_favorite()
         self.assertTrue(article.is_user_favorite)
         with self.assertRaises(IntegrityError,
                                msg='Multiple favorite entries are not accepted'):

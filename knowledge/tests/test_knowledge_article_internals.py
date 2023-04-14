@@ -23,20 +23,12 @@ class TestKnowledgeArticleFields(KnowledgeCommonWData):
         first_playground_article = playground_articles[0]
         self.assertFalse(first_playground_article.is_user_favorite)
 
-        # write False a second time does not inverse again
-        first_playground_article.write({'is_user_favorite': False})
-        self.assertFalse(first_playground_article.is_user_favorite)
-
         first_playground_article.write({'favorite_ids': [(0, 0, {'user_id': self.env.uid})]})
         self.assertEqual(playground_articles.mapped('is_user_favorite'), [True, False, False])
         self.assertEqual(playground_articles.mapped('user_favorite_sequence'), [1, -1, -1])
         favorites = self.env['knowledge.article.favorite'].sudo().search([('user_id', '=', self.env.uid)])
         self.assertEqual(favorites.article_id, first_playground_article)
         self.assertEqual(favorites.sequence, 1)
-
-        # write True a second time does not inverse again
-        first_playground_article.write({'is_user_favorite': True})
-        self.assertTrue(first_playground_article.is_user_favorite)
 
         playground_articles[1].action_toggle_favorite()
         self.assertEqual(playground_articles.mapped('is_user_favorite'), [True, True, False])

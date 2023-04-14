@@ -428,11 +428,6 @@ export class ViewEditorModel extends Reactive {
         if (currentFullXpath) {
             const xpathWithoutView = xpath.split("/").slice(2);
             xpathToField = `${currentFullXpath}/${xpathWithoutView.join("/")}`;
-
-            // replace the xpath's view tag for that field to the one in function of the full arch
-            const tempXpath = currentFullXpath.split("/").slice(-1);
-            tempXpath.push(...xpathWithoutView);
-            xpath = tempXpath.join("/");
         }
 
         const { hasArch, position } = getSubarchPosition(this.mainArch, xpathToField, archTag);
@@ -513,10 +508,12 @@ export class ViewEditorModel extends Reactive {
         if (!this.isEditingSubview) {
             return null;
         }
-        return this.breadcrumbs
-            .slice(1)
-            .map((bc) => bc.xpath)
-            .join("/");
+        const temp = [`/${this.mainViewType === "list" ? "tree" : this.mainViewType}[1]`];
+        this.breadcrumbs.slice(1).forEach((bc) => {
+            const withoutView = bc.xpath.split("/").slice(2);
+            temp.push(...withoutView);
+        });
+        return temp.join("/");
     }
 
     getFullTarget(xpath, { isXpathFullAbsolute = true } = {}) {

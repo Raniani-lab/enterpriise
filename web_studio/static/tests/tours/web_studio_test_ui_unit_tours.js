@@ -725,3 +725,51 @@ registry.category("web_tour.tours").add("web_studio_test_edit_form_subview_attri
         },
     ],
 });
+
+registry.category("web_tour.tours").add("web_studio_x2many_two_levels_edition", {
+    test: true,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='user_ids']",
+        },
+        {
+            extra_trigger: ".o-web-studio-edit-x2manys-buttons",
+            trigger: ".o_web_studio_editX2Many[data-type='form']",
+        },
+        {
+            extra_trigger:
+                ".o_web_studio_breadcrumb .breadcrumb-item:nth-child(3):contains('Subview Form')",
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='log_ids']",
+        },
+        {
+            trigger: ".o_web_studio_editX2Many[data-type='form']",
+        },
+        {
+            trigger:
+                ".o_web_studio_breadcrumb .breadcrumb-item:nth-child(4):contains('Subview Form')",
+            run() {},
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
+        },
+        {
+            extra_trigger: ".o_web_studio_existing_fields",
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Created on)",
+            run: "drag_and_drop_native .o_web_studio_hook",
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor [data-field-name='create_date']",
+            run() {},
+        },
+    ],
+});

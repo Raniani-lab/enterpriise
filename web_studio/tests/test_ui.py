@@ -779,3 +779,33 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                     <attribute name="create">False</attribute>
                 </xpath>
             </data>""")
+
+    def test_x2many_two_levels_edition(self):
+        self.testView.arch = '''
+        <form>
+            <field name="display_name"/>
+            <field name="user_ids">
+                <form>
+                    <group>
+                        <field name="display_name"/>
+                        <field name="log_ids">
+                            <form invisible="1" />
+                            <form>
+                                <group><field name="display_name"/></group>
+                            </form>
+                        </field>
+                    </group>
+                </form>
+            </field>
+        </form>'''
+
+        self.start_tour("/web?debug=tests", 'web_studio_x2many_two_levels_edition', login="admin", timeout=200)
+
+        studioView = _get_studio_view(self.testView)
+        assertViewArchEqual(self, studioView.arch, '''
+            <data>
+            <xpath expr="//form[1]/field[@name='user_ids']/form[1]/group[1]/field[@name='log_ids']/form[2]/group[1]/field[@name='display_name']" position="before">
+             <field name="create_date"/>
+            </xpath>
+            </data>
+        ''')

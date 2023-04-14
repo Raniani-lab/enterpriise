@@ -535,7 +535,7 @@ class SaleOrder(models.Model):
         if new_state in SUBSCRIPTION_PROGRESS_STATE + SUBSCRIPTION_CLOSED_STATE and old_state != new_state:
             # subscription started, churned or transferred to renew
             if new_state in SUBSCRIPTION_PROGRESS_STATE:
-                if confirmed_renewal:
+                if confirmed_renewal and self.subscription_id.subscription_state != '6_churn':
                     # Transfer for the renewed value and MRR change for the rest
                     new_currency = self.currency_id
                     parent_currency = self.subscription_id.currency_id
@@ -586,9 +586,13 @@ class SaleOrder(models.Model):
                 else:
                     return
             else:
+                # Closing a subscription: transfer or churn
                 amount_signed = - initial_values['recurring_monthly']
                 recurring_monthly = 0
                 if alive_renewed:
+                    if self.subscription_state == '6_churn':
+                        # The subscription was already churned. We don't transfer anything
+                        return
                     event_type = '3_transfer'
                 else:
                     event_type = '2_churn'
@@ -844,8 +848,16 @@ class SaleOrder(models.Model):
 
             renew_msg_body = escape(_("This subscription is renewed in %s with a change of plan.")) % renew._get_html_link()
             parent.message_post(body=renew_msg_body)
-            parent.end_date = parent.next_invoice_date
-            parent.set_close()
+            subscription_state = '5_renewed' if parent.subscription_state != '6_churn' else parent.subscription_state
+            renew_close_reason_id = self.env.ref('sale_subscription.close_reason_renew')
+            end_of_contract_reason_id = self.env.ref('sale_subscription.close_reason_end_of_contract')
+            close_reason_id = renew_close_reason_id if subscription_state == "5_renewed" else end_of_contract_reason_id
+            parent.update({
+                'state': 'done',
+                'end_date': parent.next_invoice_date,
+                'subscription_state': subscription_state
+            })
+            parent.set_close(close_reason_id=close_reason_id.id)
             # TODO fix : This can create hole that are not taken into account by progress_sub upselling
             start_date = renew.start_date or parent.next_invoice_date
             renew.write({'date_order': today, 'start_date': start_date})
@@ -1062,19 +1074,23 @@ class SaleOrder(models.Model):
             order.subscription_id.with_context(skip_next_invoice_update=True).write({'order_line': create_values + update_values})
         return create_values, update_values
 
-    def _set_closed_state(self):
-        renewed_orders = self.env['sale.order']
-        closed_orders = self.env['sale.order']
+    def _set_closed_state(self, renew=False):
         for order in self:
-            if order.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE):
-                renewed_orders += order
+            renewal_order = order.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
+            progress_renewed = order.subscription_state in SUBSCRIPTION_PROGRESS_STATE
+            if renew and renewal_order and progress_renewed:
+                order.subscription_state = '5_renewed'
+                order.state = 'done'
             else:
-                closed_orders += order
-        closed_orders.write({'subscription_state': '6_churn'})
-        renewed_orders.write({'subscription_state': '5_renewed', 'state': 'done'})
+                order.subscription_state = '6_churn'
 
-    def set_close(self, close_reason_id=None):
-        self._set_closed_state()
+    def set_close(self, close_reason_id=None, renew=False):
+        """
+        Close subscriptions
+        :param int close_reason_id:  id of the sale.order.close.reason
+        :return: True
+        """
+        self._set_closed_state(renew)
         today = fields.Date.context_today(self)
         values = {'end_date': today}
         if close_reason_id:
@@ -1085,13 +1101,13 @@ class SaleOrder(models.Model):
             end_of_contract_reason_id = self.env.ref('sale_subscription.close_reason_end_of_contract').id
             close_reason_unknown_id = self.env.ref('sale_subscription.close_reason_unknown').id
             for sub in self:
-                if sub.subscription_state == "5_renewed":
+                if renew:
                     close_reason_id = renew_close_reason_id
                 elif sub.end_date and sub.end_date <= today:
                     close_reason_id = end_of_contract_reason_id
                 else:
                     close_reason_id = close_reason_unknown_id
-                sub.write({'close_reason_id': close_reason_id})
+                sub.update({'close_reason_id': close_reason_id})
         return True
 
     def set_open(self):
@@ -1363,8 +1379,10 @@ class SaleOrder(models.Model):
     def _create_recurring_invoice(self, batch_size=30):
         today = fields.Date.today()
         auto_commit = not bool(config['test_enable'] or config['test_file'])
-
-        all_subscriptions = self or self.search(self._recurring_invoice_domain(), limit=batch_size + 1)
+        if self:
+            all_subscriptions = self.filtered(lambda so: so.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
+        else:
+            all_subscriptions = self.search(self._recurring_invoice_domain(), limit=batch_size + 1)
         need_cron_trigger = not self and len(all_subscriptions) > batch_size
         if need_cron_trigger:
             all_subscriptions = all_subscriptions[:batch_size]
@@ -1662,8 +1680,8 @@ class SaleOrder(models.Model):
                 elif so.id in expired_ids:
                     expired_so |= so
 
-            unpaid_so.set_close(close_reason_id=unpaid_close_reason)
-            expired_so.set_close(close_reason_id=expired_close_reason)
+            unpaid_so.set_close(close_reason_id=unpaid_close_reason.id)
+            expired_so.set_close(close_reason_id=expired_close_reason.id)
             (batched_to_close - unpaid_so - expired_so).set_close()
             if auto_commit:
                 self.env.cr.commit()

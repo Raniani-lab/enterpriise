@@ -2435,10 +2435,19 @@ class TestSubscription(TestSubscriptionCommon):
         action = sub_progress.prepare_renewal_order()
         renewal_so = self.env['sale.order'].browse(action['res_id'])
         renewal_so.action_confirm()
-        self.assertEqual(sub_progress.subscription_state, '5_renewed')
+        self.assertEqual(sub_progress.subscription_state, '6_churn')
         self.assertEqual(sub_progress.state, 'done')
+        inv = renewal_so._create_invoices()
+        inv._post()
+        self.assertEqual(renewal_so.subscription_state, '3_progress')
+        action = renewal_so.prepare_renewal_order()
+        renewal_so2 = self.env['sale.order'].browse(action['res_id'])
+        renewal_so2.action_confirm()
+        self.assertEqual(renewal_so2.subscription_state, '3_progress')
+        self.assertEqual(renewal_so.subscription_state, '5_renewed')
+        self.assertEqual(renewal_so.state, 'done')
         with self.assertRaises(ValidationError):
-            sub_progress._action_cancel()
+            renewal_so._action_cancel()
 
     def test_renew_different_currency(self):
         with freeze_time("2023-03-28"):
@@ -2524,7 +2533,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.flush_tracking()
             renewal_so.action_confirm()
             self.flush_tracking()
-            order_log_ids = sub.order_log_ids.sorted('id')
+            order_log_ids = sub.order_log_ids.sorted('event_date')
             sub_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
                         for log in order_log_ids]
             self.assertEqual(sub_data,
@@ -2532,13 +2541,14 @@ class TestSubscription(TestSubscriptionCommon):
                               ('3_transfer', datetime.date(2023, 4, 29), -10, 0, default_pricelist.currency_id)
                               ])
 
-            renew_logs = renewal_so.order_log_ids.sorted('id')
+            renew_logs = renewal_so.order_log_ids.sorted('event_date')
             renew_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
                           for log in renew_logs]
             self.assertEqual(renew_data,
                              [('3_transfer', datetime.date(2023, 4, 29), 200, 200, other_currency),
                               ('1_expansion', datetime.date(2023, 4, 29), 400, 600, other_currency)
                               ])
+            
     def test_protected_close_reason(self):
         close_reason = self.env['sale.order.close.reason'].create({
             'name': 'Super close reason',
@@ -2568,3 +2578,47 @@ class TestSubscription(TestSubscriptionCommon):
             with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=self._mock_subscription_do_payment_rejected):
                 sub._create_recurring_invoice()
         self.assertEqual(sub.close_reason_id.id, self.env.ref('sale_subscription.close_reason_auto_close_limit_reached').id)
+
+    def test_renewal_churn(self):
+        # Test what we expect when we
+        # 1) create a renewal quote
+        # 2) close the parebt
+        # 3) confirm the renewal
+        SaleOrder = self.env["sale.order"]
+        with freeze_time("2021-01-01"), patch.object(type(SaleOrder), '_get_unpaid_subscriptions', lambda x: []):
+            # so creation with mail tracking
+            context_mail = {'tracking_disable': False}
+            sub = self.env['sale.order'].with_context(context_mail).create({
+                'name': 'Parent Sub',
+                'is_subscription': True,
+                'note': "original subscription description",
+                'partner_id': self.user_portal.partner_id.id,
+                'sale_order_template_id': self.subscription_tmpl.id,
+            })
+            sub._onchange_sale_order_template_id()
+            # Same product for both lines
+            sub.order_line.product_uom_qty = 1
+            self.flush_tracking()
+            sub.action_confirm()
+            sub._create_recurring_invoice()
+            self.flush_tracking()
+            action = sub.with_context(tracking_disable=False).prepare_renewal_order()
+            renewal_so = self.env['sale.order'].browse(action['res_id'])
+            renewal_so = renewal_so.with_context(tracking_disable=False)
+            renewal_so.order_line.product_uom_qty = 3
+            renewal_so.name = "Renewal"
+            self.flush_tracking()
+            sub.set_close()
+            self.flush_tracking()
+            renewal_so.action_confirm()
+            self.flush_tracking()
+
+            order_log_ids = sub.order_log_ids.sorted('id')
+            sub_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly)
+                        for log in order_log_ids]
+            self.assertEqual(sub_data,
+                             [('0_creation', datetime.date(2021, 1, 1), 21.0, 21.0),
+                              ('2_churn', datetime.date(2021, 1, 1), -21.0, 0.0)])
+            order_log_ids = renewal_so.order_log_ids.sorted('id')
+            renew_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly) for log in order_log_ids]
+            self.assertEqual(renew_data, [('0_creation', datetime.date(2021, 1, 1), 63, 63)])

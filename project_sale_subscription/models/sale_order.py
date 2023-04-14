@@ -40,6 +40,6 @@ class SaleOrder(models.Model):
                     })
         self.write({'end_date': end_date})
 
-    def _set_closed_state(self):
-        super()._set_closed_state()
+    def _set_closed_state(self, renew=False):
+        super()._set_closed_state(renew)
         self.filtered('is_subscription').order_line.task_id.action_unlink_recurrence()

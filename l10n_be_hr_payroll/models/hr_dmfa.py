@@ -277,19 +277,19 @@ class DMFAWorker(DMFANode):
             return []
 
         contributions = [
-            DMFAWorkerContribution(contribution_payslips, basis)
+            DMFAWorkerContribution(contribution_payslips, basis, self.quarter_start)
         ] + [
-            DMFAWorkerContributionFFE(contribution_payslips, basis, self.worker_count)
+            DMFAWorkerContributionFFE(contribution_payslips, basis, self.worker_count, self.quarter_start)
         ] + [
-            DMFAWorkerContributionSpecialFFE(contribution_payslips, basis)
+            DMFAWorkerContributionSpecialFFE(contribution_payslips, basis, self.quarter_start)
         ] + [
-            DMFAWorkerContributionCPAE(contribution_payslips, basis)
+            DMFAWorkerContributionCPAE(contribution_payslips, basis, self.quarter_start)
         ] + ([
-            DMFAWorkerContributionWageRestraint(contribution_payslips, basis)
+            DMFAWorkerContributionWageRestraint(contribution_payslips, basis, self.quarter_start)
         ] if self.worker_count >= 10 else []) + [
-            DMFAWorkerContributionSpecialSocialCotisation(contribution_payslips, basis)
+            DMFAWorkerContributionSpecialSocialCotisation(contribution_payslips, basis, self.quarter_start)
         ] + [
-            DMFAWorkerContributionTemporaryUnemployment(contribution_payslips, basis)
+            DMFAWorkerContributionTemporaryUnemployment(contribution_payslips, basis, self.quarter_start)
         ]
 
         # Check if special cotisations on termination fees are needed
@@ -493,23 +493,27 @@ class DMFAWorkerContribution(DMFANode):
     Represents the paid amounts on the employee payslips
     """
 
-    def __init__(self, payslips, basis, sequence=None):
+    def __init__(self, payslips, basis, quarter_start, sequence=None):
         super().__init__(payslips.env, sequence=sequence)
         self.worker_code = WORKER_CODE
+        self.quarter_start = quarter_start
         # Though 2 is the only code for worker 495; see annexe 3
         # the correct value is 0 for 4xx numbers.
         self.contribution_type = 0
         self.calculation_basis = format_amount(basis)
-        self.amount = format_amount(round(basis * 0.3809, 2))
+        rate = payslips.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
+            'l10n_be_global_rate', date=self.quarter_start, raise_if_not_found=False)
+        self.amount = format_amount(round(basis * rate / 100, 2))
         self.first_hiring_date = -1
 
 class DMFAWorkerContributionFFE(DMFANode):
     """
     Represents the paid amounts on the employee payslips - FFE Fond fermeture Entreprise
     """
-    def __init__(self, payslips, basis, worker_count, sequence=None):
+    def __init__(self, payslips, basis, worker_count, quarter_start, sequence=None):
         super().__init__(payslips.env, sequence=sequence)
         self.worker_code = 809
+        self.quarter_start = quarter_start
         self.contribution_type = 5
         self.calculation_basis = format_amount(basis)
         self.worker_count = worker_count
@@ -523,9 +527,10 @@ class DMFAWorkerContributionSpecialFFE(DMFANode):
     """
     Represents the paid amounts on the employee payslips - Special FFE Fond fermeture Entreprise
     """
-    def __init__(self, payslips, basis, sequence=None):
+    def __init__(self, payslips, basis, quarter_start, sequence=None):
         super().__init__(payslips.env, sequence=sequence)
         self.worker_code = 810
+        self.quarter_start = quarter_start
         self.contribution_type = 0
         self.calculation_basis = format_amount(basis)
         # Cotisations de base FFE
@@ -533,7 +538,9 @@ class DMFAWorkerContributionSpecialFFE(DMFANode):
         # Pour tous les travailleurs soumis à la réglementation sur le chômage
         # 0,13% (0,14%)
         # Source: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/basiccontributions_closingcompanyfunds.html
-        self.amount = format_amount(round(basis * 0.0010, 2))
+        rate = payslips.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
+            'l10n_be_special_ffe_rate', date=self.quarter_start, raise_if_not_found=False)
+        self.amount = format_amount(round(basis * rate / 100, 2))
         self.first_hiring_date = -1
 
 
@@ -541,9 +548,10 @@ class DMFAWorkerContributionCPAE(DMFANode):
     """
     Represents the paid amounts on the employee payslips - CPAE
     """
-    def __init__(self, payslips, basis, sequence=None):
+    def __init__(self, payslips, basis, quarter_start, sequence=None):
         super().__init__(payslips.env, sequence=sequence)
         self.worker_code = 831
+        self.quarter_start = quarter_start
         self.contribution_type = 0
         self.calculation_basis = format_amount(basis)
         # Le Fonds social est financé par la contribution trimestrielle que versent à son profit
@@ -552,7 +560,9 @@ class DMFAWorkerContributionCPAE(DMFANode):
         # Les cotisations sont fixées comme suit:
         # Chaque trimestre : 0,23 % de la masse salariale brute
         # Source: https://www.sfonds200.be/fonds-social/qui-sommes-nous
-        self.amount = format_amount(round(basis * 0.0023, 2))
+        rate = payslips.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
+            'l10n_be_cpae_rate', date=self.quarter_start, raise_if_not_found=False)
+        self.amount = format_amount(round(basis * rate / 100, 2))
         self.first_hiring_date = -1
 
 
@@ -560,25 +570,29 @@ class DMFAWorkerContributionWageRestraint(DMFANode):
     """
     Represents the paid amounts on the employee payslips - Wage Restreint (modération salariale)
     """
-    def __init__(self, payslips, basis, sequence=None):
+    def __init__(self, payslips, basis, quarter_start, sequence=None):
         super().__init__(payslips.env, sequence=sequence)
         self.worker_code = 855
+        self.quarter_start = quarter_start
         self.contribution_type = 0
         self.calculation_basis = format_amount(basis)
         # La cotisation de 1,60 % (portée à 1,69 % par l'effet de la cotisation de modération
         # salariale) n'est pas due par tous les employeurs. Elle n'est due que par les employeurs
         # qui, pendant la période de référence, occupaient en moyenne au moins 10 travailleurs.
         # Source: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/socialsecuritycontributions/contributions.html
-        self.amount = format_amount(round(basis * 0.0169, 2))
+        rate = payslips.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
+            'l10n_be_wage_restreint', date=self.quarter_start, raise_if_not_found=False)
+        self.amount = format_amount(round(basis * rate / 100, 2))
         self.first_hiring_date = -1
 
 class DMFAWorkerContributionSpecialSocialCotisation(DMFANode):
     """
     Represents the paid amounts on the employee payslips - Special Social Cotisation
     """
-    def __init__(self, payslips, basis, sequence=None):
+    def __init__(self, payslips, basis, quarter_start, sequence=None):
         super().__init__(payslips.env, sequence=sequence)
         self.worker_code = 856
+        self.quarter_start = quarter_start
         self.contribution_type = 0
         self.calculation_basis = -1
         self.amount = format_amount(round(-payslips._get_line_values(['M.ONSS'], compute_sum=True)['M.ONSS']['sum']['total'], 2))
@@ -588,13 +602,16 @@ class DMFAWorkerContributionTemporaryUnemployment(DMFANode):
     """
     Represents the paid amounts on the employee payslips - Temporary Unemployment
     """
-    def __init__(self, payslips, basis, sequence=None):
+    def __init__(self, payslips, basis, quarter_start, sequence=None):
         super().__init__(payslips.env, sequence=sequence)
         # Source: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/special_contributions/other_specialcontributions/temporary_oldunemployed.html
         self.worker_code = 859
+        self.quarter_start = quarter_start
         self.contribution_type = 0
         self.calculation_basis = format_amount(basis)
-        self.amount = format_amount(round(basis * 0.0010, 2))
+        rate = payslips.env['hr.rule.parameter'].sudo()._get_parameter_from_code(
+            'l10n_be_temporary_unemployment_rate', date=self.quarter_start, raise_if_not_found=False)
+        self.amount = format_amount(round(basis * rate / 100, 2))
         self.first_hiring_date = -1
 
 

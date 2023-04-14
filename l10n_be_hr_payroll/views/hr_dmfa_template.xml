@@ -314,6 +314,14 @@
                         -->
                         <UnrelatedAmount t-esc="double_holiday_pay_contribution"/>
                     </ContributionUnrelatedToNP>
+
+                    <t t-if="employer_compensation">
+                        <EmployerCompensation>
+                            <CompensationCode>1</CompensationCode>
+                            <CompensationAmount t-esc="employer_compensation"/>
+                        </EmployerCompensation>
+                    </t>
+
                 </EmployerDeclaration>
             </Form>
         </DmfAOriginal>

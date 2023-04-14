@@ -146,7 +146,7 @@
                     <field name="timer_start" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='unit_amount']" position="attributes">
-                    <attribute name="attrs">{'readonly': ['|', ('id', '!=', False), ('readonly_timesheet', '=', True) ('timer_start', '!=', False)]}</attribute>
+                    <attribute name="attrs">{'readonly': ['|', ('id', '!=', False), ('readonly_timesheet', '=', True), ('timer_start', '!=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//sheet" position="before">
                     <header>

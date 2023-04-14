@@ -401,6 +401,8 @@ class DMFAWorker(DMFANode):
                 employee = termination_payslips.employee_id
                 if not employee.start_notice_period or not employee.end_notice_period:
                     raise UserError(_('No start/end notice period defined for %s', termination_payslips.employee_id.name))
+                if employee.start_notice_period > employee.end_notice_period:
+                    raise UserError(_('Start notice period is defined after end notice period for %s', termination_payslips.employee_id.name))
                 # YTI Check Termination fees
                 # Les indemnités considérées comme de la rémunération sont déclarées
                 # en DmfA, avec le code rémunération 3 et en mentionnant, pour la période correspondante
@@ -1089,8 +1091,9 @@ class HrDMFAReport(models.Model):
         work_addresses = employees.mapped('address_id')
         location_units = self.env['l10n_be.dmfa.location.unit'].search([('partner_id', 'in', work_addresses.ids)])
         invalid_addresses = work_addresses - location_units.mapped('partner_id')
+        invalid_employees = employees.filtered(lambda e: e.address_id in invalid_addresses)
         if invalid_addresses:
-            raise UserError(_('The following work addesses do not have any ONSS identification code:\n %s', '\n'.join(invalid_addresses.mapped('name'))))
+            raise UserError(_('The following employees are linked to work addresses without any ONSS identification code:\n %s', '\n'.join(invalid_employees.mapped('name'))))
         # Check valid work entry types
         work_entry_types = payslips.mapped('worked_days_line_ids.work_entry_type_id')
         invalid_types = work_entry_types.filtered(lambda t: not t.dmfa_code)

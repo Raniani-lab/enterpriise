@@ -506,6 +506,9 @@ class Document(models.Model):
         if attachment_dict:
             self.mapped('attachment_id').write(attachment_dict)
 
+        if 'attachment_id' in vals:
+            self.attachment_id.check('read')
+
         return write_result
 
     def _process_activities(self, attachment_id):

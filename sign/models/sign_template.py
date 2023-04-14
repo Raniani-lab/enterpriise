@@ -122,7 +122,14 @@ class SignTemplate(models.Model):
                 'res_model': self._name,
                 'res_id': template.id
             })
+        templates.attachment_id.check('read')
         return templates
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'attachment_id' in vals:
+            self.attachment_id.check('read')
+        return res
 
     def copy(self, default=None):
         self.ensure_one()

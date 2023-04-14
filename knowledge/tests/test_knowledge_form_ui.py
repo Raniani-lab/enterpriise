@@ -198,7 +198,7 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             'name': 'ChildArticle',
             'parent_id': parent_article.id
         })
-        self.start_tour('/web', 'knowledge_properties_tour', login='admin')
+        self.start_tour('/web', 'knowledge_properties_tour', login='admin', step_delay=100)
 
     def test_knowledge_search_favorites_tour(self):
         """Test search favorites """

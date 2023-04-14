@@ -41,7 +41,7 @@ async function openMenuSelector(params = {}) {
         mockRPC: params.mockRPC,
     });
     const insertLinkMenu = cellMenuRegistry.getAll().find((item) => item.id === "insert_link");
-    await insertLinkMenu.action(env);
+    await insertLinkMenu.execute(env);
     await nextTick();
     await click(target, ".o-special-link");
     await click(target, ".o-menu-item[data-name='odooMenu']");

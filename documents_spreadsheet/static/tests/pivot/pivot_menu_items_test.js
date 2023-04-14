@@ -336,7 +336,7 @@ QUnit.module(
                 const root = cellMenuRegistry
                     .getAll()
                     .find((item) => item.id === "pivot_see_records");
-                await root.action(env);
+                await root.execute(env);
                 assert.verifySteps(["partner", `[["foo","=",2],["bar","=",false]]`]);
             }
         );

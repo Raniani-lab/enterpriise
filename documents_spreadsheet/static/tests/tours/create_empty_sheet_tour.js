@@ -23,7 +23,7 @@
                 run: "click",
             },
             {
-                trigger: 'div[title="Fill Color"]',
+                trigger: 'span[title="Fill Color"]',
                 content: "Choose a color",
                 run: "click",
             },

@@ -37,7 +37,7 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
         const { env } = await createSpreadsheet();
         const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
         const download = file.children.find((item) => item.id === "download");
-        await download.action(env);
+        await download.execute(env);
         assert.verifySteps(["/spreadsheet/xlsx"]);
     });
 
@@ -66,7 +66,7 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
         });
         const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
         const makeCopy = file.children.find((item) => item.id === "make_copy");
-        makeCopy.action(env);
+        makeCopy.execute(env);
         assert.verifySteps(["copy"]);
     });
 

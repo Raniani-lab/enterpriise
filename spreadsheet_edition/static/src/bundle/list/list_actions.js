@@ -6,7 +6,7 @@ export const REINSERT_LIST_CHILDREN = (env) =>
             id: `reinsert_list_${listId}`,
             name: env.model.getters.getListDisplayName(listId),
             sequence: index,
-            action: async (env) => {
+            execute: async (env) => {
                 const zone = env.model.getters.getSelectedZone();
                 const dataSource = await env.model.getters.getAsyncListDataSource(listId);
                 const list = env.model.getters.getListDefinition(listId);

@@ -45,7 +45,7 @@ initCallbackRegistry.add("insertLink", insertLink);
 linkMenuRegistry.add("odooMenu", {
     name: _lt("Link an Odoo menu"),
     sequence: 20,
-    action: async (env) => {
+    execute: async (env) => {
         return new Promise((resolve) => {
             const closeDialog = env.services.dialog.add(IrMenuSelectorDialog, {
                 onMenuSelected: (menuId) => {

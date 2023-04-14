@@ -26,7 +26,7 @@ initCallbackRegistry.add("insertList", insertList);
 cellMenuRegistry.add("listing_properties", {
     name: _lt("See list properties"),
     sequence: 190,
-    action(env) {
+    execute(env) {
         const position = env.model.getters.getActivePosition();
         const listId = env.model.getters.getListIdFromPosition(position);
         env.model.dispatch("SELECT_ODOO_LIST", { listId });

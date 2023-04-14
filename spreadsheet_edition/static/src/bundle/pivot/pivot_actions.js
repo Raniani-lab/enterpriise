@@ -8,7 +8,7 @@ export const REINSERT_PIVOT_CHILDREN = (env) =>
         id: `reinsert_pivot_${pivotId}`,
         name: env.model.getters.getPivotDisplayName(pivotId),
         sequence: index,
-        action: async (env) => {
+        execute: async (env) => {
             const dataSource = env.model.getters.getPivotDataSource(pivotId);
             const model = await dataSource.copyModelWithOriginalDomain();
             const table = model.getTableStructure().export();
@@ -29,7 +29,7 @@ export const INSERT_PIVOT_CELL_CHILDREN = (env) =>
         id: `insert_pivot_cell_${pivotId}`,
         name: env.model.getters.getPivotDisplayName(pivotId),
         sequence: index,
-        action: async (env) => {
+        execute: async (env) => {
             env.model.dispatch("REFRESH_PIVOT", { id: pivotId });
             const { sheetId, col, row } = env.model.getters.getActivePosition();
             await env.model.getters.getAsyncPivotDataSource(pivotId);

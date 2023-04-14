@@ -11,7 +11,7 @@ topbarMenuRegistry.addChild("add_document_to_dashboard", ["file"], {
     name: _lt("Add to dashboard"),
     sequence: 200,
     isVisible: (env) => env.canAddDocumentAsDashboard,
-    action: (env) => env.createDashboardFromDocument(env.model),
+    execute: (env) => env.createDashboardFromDocument(env.model),
 });
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */

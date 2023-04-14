@@ -173,7 +173,7 @@ QUnit.module(
 
             selectCell(model, "L1"); //target empty cell
             const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_properties");
-            root.action(env);
+            root.execute(env);
             assert.notOk(model.getters.getSelectedPivotId(), "No pivot should be selected");
             await nextTick();
             assert.containsN(target, ".o_side_panel_select", 2);

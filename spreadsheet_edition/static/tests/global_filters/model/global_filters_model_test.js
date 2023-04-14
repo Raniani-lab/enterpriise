@@ -40,11 +40,11 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             .getMenuItems()
             .find((item) => item.id === "use_global_filter");
         assert.strictEqual(root.isVisible(env), true);
-        await root.action(env);
+        await root.execute(env);
         await nextTick();
         assert.strictEqual(getCellValue(model, "B3"), 10);
         assert.strictEqual(getCellValue(model, "B4"), "");
-        await root.action(env);
+        await root.execute(env);
         await nextTick();
         assert.strictEqual(getCellValue(model, "B3"), 10);
         assert.strictEqual(getCellValue(model, "B4"), 121);

@@ -44,7 +44,7 @@ topbarComponentRegistry.add("filter_component", {
 cellMenuRegistry.add("use_global_filter", {
     name: _lt("Set as filter"),
     sequence: 175,
-    action(env) {
+    execute(env){
         const position = env.model.getters.getActivePosition();
         const cell = env.model.getters.getCell(position);
         const filters = env.model.getters.getFiltersMatchingPivot(cell.content);

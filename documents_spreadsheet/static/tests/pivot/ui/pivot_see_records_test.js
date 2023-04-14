@@ -36,7 +36,7 @@ QUnit.test("Can see records and go back after a pivot insertion", async function
     // Go the the list view and go back, a third pivot should not be opened
     selectCell(model, "B3");
     const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
-    await root.action(env);
+    await root.execute(env);
     await nextTick();
     assert.containsNone(getFixture(), ".o-spreadsheet");
     await click(document.body.querySelector(".o_back_button"));

@@ -215,11 +215,11 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         };
         selectCell(model, "A2");
         const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
-        await root.action(env);
+        await root.execute(env);
         assert.verifySteps(["partner", dataSource.getIdFromPosition(0).toString()]);
 
         selectCell(model, "A3");
-        await root.action(env);
+        await root.execute(env);
         assert.verifySteps(["partner", dataSource.getIdFromPosition(1).toString()]);
 
         // From a cell inside a merge
@@ -229,7 +229,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             force: true, // there are data in B3
         });
         selectCell(model, "B3");
-        await root.action(env);
+        await root.execute(env);
         assert.verifySteps(["partner", dataSource.getIdFromPosition(1).toString()]);
     });
 

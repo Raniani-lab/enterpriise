@@ -14,6 +14,12 @@
                     <t t-esc="variant.name"/>
                 </DropdownItem>
             </t>
+            <t t-if="controller.options.has_inactive_variants">
+                <div role="separator" class="dropdown-divider"/>
+                <DropdownItem onSelected="(ev) => controller.reportAction(ev, 'action_view_all_variants', {})">
+                    Enable more ...
+                </DropdownItem>
+            </t>
         </Dropdown>
     </t>
 </templates>

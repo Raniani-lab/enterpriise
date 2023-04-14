@@ -1436,17 +1436,20 @@ class AccountReport(models.Model):
         if 'variants_source_id' not in options:
             options['variants_source_id'] = (self.root_report_id or self).id
 
-        source_report = self.env['account.report'].browse(options['variants_source_id'])
         available_variants = self.env['account.report']
+        options['has_inactive_variants'] = False
         allowed_country_variant_ids = {}
-        all_variants = source_report + source_report.variant_report_ids
+        all_variants = self._get_variants(options['variants_source_id'])
         for variant in all_variants.filtered(lambda x: x._is_available_for(options)):
             if not self.root_report_id and variant != self: # Non-route reports don't reroute the variant when computing their options
                 allowed_variant_ids.add(variant.id)
                 if variant.country_id:
                     allowed_country_variant_ids.setdefault(variant.country_id.id, []).append(variant.id)
 
-            available_variants += variant
+            if variant.active:
+                available_variants += variant
+            else:
+                options['has_inactive_variants'] = True
 
         options['available_variants'] = [
             {
@@ -1466,6 +1469,13 @@ class AccountReport(models.Model):
             options['selected_variant_id'] = report_id
         else:
             options['selected_variant_id'] = self.id
+
+    def _get_variants(self, report_id):
+        source_report = self.env['account.report'].browse(report_id)
+        if source_report.root_report_id:
+            # We need to get the root report in order to get all variants
+            source_report = source_report.root_report_id
+        return source_report + source_report.with_context(active_test=False).variant_report_ids
 
     ####################################################
     # OPTIONS: SECTIONS
@@ -3571,6 +3581,21 @@ class AccountReport(models.Model):
         action = clean_action(action_dict, env=self.env)
         action['domain'] = self._get_audit_line_domain(column_group_options, expression, params)
         return action
+
+    def action_view_all_variants(self, options, params):
+        return {
+            'name': _('All Report Variants'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.report',
+            'view_mode': 'list',
+            'views': [(False, 'list'), (False, 'form')],
+            'context': {
+                'active_test': False,
+            },
+            'domain': [('id', 'in', self._get_variants(options['variants_source_id']).filtered(
+                lambda x: x._is_available_for(options)
+            ).mapped('id'))],
+        }
 
     def _get_audit_line_domain(self, column_group_options, expression, params):
         calling_line_dict_id = params['calling_line_dict_id']

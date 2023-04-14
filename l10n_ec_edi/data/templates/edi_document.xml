@@ -135,7 +135,7 @@
             <!-- All docs -->
             <fechaEmision t-out="strftime(move.invoice_date or move.l10n_ec_withhold_date)"/>
             <dirEstablecimiento t-out="address"/>
-            <contribuyenteEspecial t-out="company.l10n_ec_special_taxpayer_number"/>
+            <contribuyenteEspecial t-out="company.l10n_ec_special_taxpayer_number" t-if="not is_cnote and not is_dnote"/>
 
             <obligadoContabilidad t-if="is_invoice or is_liquidation" t-out="'SI' if company.l10n_ec_forced_accounting else 'NO'"/>
 
@@ -152,6 +152,8 @@
             <direccionProveedor t-if="is_liquidation" t-out="clean_str(partner.street or '')"/>
 
             <!-- Credit and debit notes -->
+            <contribuyenteEspecial t-if="is_cnote or is_dnote" t-out="company.l10n_ec_special_taxpayer_number"/>
+            <obligadoContabilidad t-if="is_cnote or is_dnote" t-out="'SI' if company.l10n_ec_forced_accounting else 'NO'"/>
             <codDocModificado t-if="is_cnote or is_dnote" t-out="'01'"/>
             <numDocModificado t-if="is_cnote or is_dnote" t-out="modified_doc.l10n_latam_document_number"/>
             <fechaEmisionDocSustento t-if="is_cnote or is_dnote" t-out="strftime(modified_doc.invoice_date)"/>

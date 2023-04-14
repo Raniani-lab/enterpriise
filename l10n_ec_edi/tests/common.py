@@ -249,6 +249,7 @@ L10N_EC_EDI_XML_DEBIT_NOTE = """
         <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
         <razonSocialComprador>EC Test Partner AàÁ³$£€èêÈÊöÔÇç¡⅛&amp;@™</razonSocialComprador>
         <identificacionComprador>0453661050152</identificacionComprador>
+        <obligadoContabilidad>SI</obligadoContabilidad>
         <codDocModificado>01</codDocModificado>
         <numDocModificado>001-001-000000001</numDocModificado>
         <fechaEmisionDocSustento>25/01/2022</fechaEmisionDocSustento>
@@ -297,6 +298,7 @@ L10N_EC_EDI_XML_CREDIT_NOTE = """
         <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
         <razonSocialComprador>EC Test Partner AàÁ³$£€èêÈÊöÔÇç¡⅛&amp;@™</razonSocialComprador>
         <identificacionComprador>0453661050152</identificacionComprador>
+        <obligadoContabilidad>SI</obligadoContabilidad>
         <codDocModificado>01</codDocModificado>
         <numDocModificado>001-001-000000001</numDocModificado>
         <fechaEmisionDocSustento>25/01/2022</fechaEmisionDocSustento>

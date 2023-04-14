@@ -918,7 +918,7 @@ class HrDMFAReport(models.Model):
         dmfa_schema_file_path = get_resource_path(
             'l10n_be_hr_payroll',
             'data',
-            'DmfAOriginal_20214.xsd',
+            'DmfAOriginal_20231.xsd',
         )
         xsd_root = etree.parse(dmfa_schema_file_path)
         schema = etree.XMLSchema(xsd_root)

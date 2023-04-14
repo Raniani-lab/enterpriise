@@ -424,21 +424,6 @@
     }
 }
 
-@media print {
-    html,
-    body,
-    html .o_web_client {
-        height: auto;
-    }
-    .o_knowledge_form_view {
-        .o_scroll_view,
-        .o_scroll_view_lg {
-            position: static;
-            overflow-y: visible;
-        }
-    }
-}
-
 // Knowledge Toolbars
 
 .o_knowledge_toolbar {

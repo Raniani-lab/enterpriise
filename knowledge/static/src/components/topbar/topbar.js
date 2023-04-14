@@ -1,5 +1,6 @@
 /** @odoo-module **/
 import config from "web.config";
+import { getBundle, loadBundle } from "@web/core/assets";
 import { formatDateTime } from '@web/core/l10n/dates';
 import { loadEmoji } from '@web/core/emoji_picker/emoji_picker';
 import { registry } from '@web/core/registry';
@@ -158,6 +159,24 @@ class KnowledgeTopbar extends Component {
             [this.props.record.data.id]
         );
         this.env.openArticle(articleId, true);
+    }
+
+    /**
+     * Use the browser print as wkhtmltopdf sadly does not handle emojis / embed views / ...
+     * (Investigation shows that it would be complicated to add that support).
+     * 
+     * We load the printing assets of knowledge before asking the window to "print".
+     * These assets are loaded dynamically and not included in the base backend assets because they
+     * alter some generic parts of the layout, which other apps may not want.
+     * 
+     * (Note that those assets are never "unloaded", meaning it requires a reload of the webclient
+     * to remove them, which is considered acceptable as very niche).
+     *
+     */
+    async exportToPdf() {
+        const assets = await getBundle("knowledge.assets_knowledge_print");
+        await loadBundle(assets);
+        window.print();
     }
 
     async setLockStatus(newLockStatus) {

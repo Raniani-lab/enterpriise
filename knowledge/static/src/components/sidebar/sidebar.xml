@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="knowledge.Sidebar" owl="1">
-        <aside class="o_knowledge_sidebar d-flex h-100 bg-view"
+        <aside class="o_knowledge_sidebar d-flex d-print-none h-100 bg-view"
             t-attf-style="width: #{env.isSmall ? 'auto' : state.sidebarSize + 'px' };">
             <div class="d-flex flex-column h-100 w-100 min-w-0">
                 <!-- Search bar -->

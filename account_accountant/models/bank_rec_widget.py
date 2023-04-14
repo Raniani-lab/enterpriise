@@ -116,6 +116,7 @@ class BankRecWidget(models.Model):
     form_date = fields.Date()
     form_ref = fields.Char()
     form_notes = fields.Html()
+    form_transaction_details = fields.Html(readonly=True)
     form_account_id = fields.Many2one(
         comodel_name='account.account',
         domain="[('account_type', '!=', 'asset_cash'), ('company_id', '=', company_id), ('deprecated', '=', False)]",
@@ -1540,6 +1541,7 @@ class BankRecWidget(models.Model):
         self.form_balance = balance_sign * line.balance
         self.form_ref = self.st_line_id.ref
         self.form_notes = self.st_line_id.narration
+        self.form_transaction_details = self.st_line_id.transaction_details
 
     def _action_remove_line(self, line_index):
         self.ensure_one()

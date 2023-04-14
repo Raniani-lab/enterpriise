@@ -498,6 +498,15 @@
                                        string="Notes"
                                        attrs="{'invisible': ['|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False)]}"/>
                             </group>
+                            <group groups="base.group_no_one"
+                                   attrs="{'invisible': ['|', '|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False), ('form_transaction_details', '=', False)]}">
+                                <group colspan="2">
+                                    <label for="form_transaction_details" string="Transaction Details"/>
+                                    <pre>
+                                        <field name="form_transaction_details"/>
+                                    </pre>
+                                </group>
+                            </group>
                         </page>
                         <page name="discuss_tab" string="Discuss">
                             <div class="bank_rec_widget_form_discuss_anchor">

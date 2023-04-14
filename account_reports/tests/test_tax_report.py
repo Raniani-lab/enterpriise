@@ -2016,6 +2016,7 @@ class TestTaxReport(TestAccountReportsCommon):
 
             # Create a third account.move.line for balance.
             with move_form.line_ids.new() as line:
+                line.account_id = account
                 if tax.type_tax_use == 'sale':
                     line.debit = 1200
                 else:

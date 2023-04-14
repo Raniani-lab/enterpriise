@@ -97,7 +97,7 @@ class TestSmartSchedule(TestProjectCommon):
         expected_planned_date_begin, expected_planned_date_end = expected_planned_dates_per_task_id[task_no_planned_hours_with_uid.id]
         self.assertEqual(expected_planned_date_begin, task_no_planned_hours_with_uid.planned_date_begin, 'wrong date begin')
         self.assertEqual(expected_planned_date_end, task_no_planned_hours_with_uid.planned_date_end, 'wrong date end')
-        self.assertEqual(self.user_projectmanager, task_no_planned_hours_with_uid.user_ids, 'wrong user id')
+        self.assertEqual(self.user_projectmanager | self.user_projectuser, task_no_planned_hours_with_uid.user_ids, 'wrong user id')
         # task_no_planned_hours_without_uid
         expected_planned_date_begin, expected_planned_date_end = expected_planned_dates_per_task_id[task_no_planned_hours_without_uid.id]
         self.assertEqual(expected_planned_date_begin, task_no_planned_hours_without_uid.planned_date_begin, 'wrong date begin')

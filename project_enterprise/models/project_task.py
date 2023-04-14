@@ -487,6 +487,16 @@ class Task(models.Model):
                     warnings['company_schedule'] = _lt('This employee does not have a running contract during the selected period.\nThe working hours of the company were used as a reference instead.')
                 discarded_task_vals.append((task.id, start_no_utc, end_no_utc, company_schedule))
 
+        task_ids_per_user_id = defaultdict(list)
+        if vals.get('user_ids'):
+            for task in self:
+                old_user_ids = task.user_ids.ids
+                new_user_id = vals.get('user_ids')[0]
+                if new_user_id not in old_user_ids:
+                    task_ids_per_user_id[new_user_id].append(task.id)
+            vals.pop('user_ids', None)
+            for user_id, task_ids in task_ids_per_user_id.items():
+                self.env['project.task'].sudo().browse(task_ids).write({'user_ids': [user_id]})
         self.write(vals)
         for task in tasks_to_write:
             task_vals = {

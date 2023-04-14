@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import pytz
 
 from odoo import _, api, fields, models
+from odoo.addons.resource.models.utils import filter_domain_leaf
 from odoo.osv import expression
 from odoo.tools import float_utils, DEFAULT_SERVER_DATETIME_FORMAT
 
@@ -532,6 +533,9 @@ class PlanningSlot(models.Model):
         domain = expression.AND([new_view_domain, [('sale_line_id', '!=', False)]])
         if self.env.context.get('planning_gantt_active_sale_order_id'):
             domain = expression.AND([domain, [('sale_order_id', '=', self.env.context.get('planning_gantt_active_sale_order_id'))]])
+        elif self.env.context.get('default_project_id'):
+            domain = filter_domain_leaf(domain, lambda field: field != "project_id")
+            domain = expression.AND([new_view_domain, [('sale_order_id', 'in', self.env['project.project'].browse(self.env.context.get('default_project_id'))._fetch_sale_order_items({'project.task': [('is_closed', '=', False)]}).order_id.ids)]])
         slots_to_assign = self._get_ordered_slots_to_assign(domain)
         start_datetime = max(datetime.strptime(self.env.context.get('default_start_datetime'), DEFAULT_SERVER_DATETIME_FORMAT), fields.Datetime.now().replace(hour=0, minute=0, second=0))
         employee_per_sol = self._get_employee_per_sol_within_period(slots_to_assign, start_datetime, self.env.context.get('default_end_datetime'))

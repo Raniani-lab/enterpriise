@@ -140,6 +140,12 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
             employee.double_pay_line_ids.filtered(lambda d: d.id in to_be_deleted.ids).unlink()
             employee.double_pay_line_ids |= employee.double_pay_line_n1_ids
 
+    @api.constrains('start_notice_period', 'end_notice_period')
+    def _check_notice_period(self):
+        for employee in self:
+            if employee.start_notice_period and employee.end_notice_period and employee.start_notice_period > employee.end_notice_period:
+                raise ValidationError(_('The employee start notice period should be set before the end notice period'))
+
     def _compute_l10n_be_holiday_pay_recovered(self):
         payslips = self.env['hr.payslip'].search([
             ('employee_id', 'in', self.ids),

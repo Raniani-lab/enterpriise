@@ -260,7 +260,7 @@
                         <t t-call="l10n_be_hr_payroll.NaturalPerson"/>
                     </t>
 
-                    <ContributionUnrelatedToNP>
+                    <ContributionUnrelatedToNP t-if="group_insurance_basis != '00000000000'">
                         <UnrelatedEmployerClass t-esc="employer_class"/>
                         <UnrelatedWorkerCode>865</UnrelatedWorkerCode>
                         <UnrelatedCalculationBasis t-esc="group_insurance_basis"/>

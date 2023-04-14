@@ -165,9 +165,10 @@ class AccountReport(models.Model):
         all_journal_groups = self._get_filter_journal_groups(options, all_journals)
         all_journal_ids = set(all_journals.ids)
 
+        report_company_ids = self.get_report_company_ids(options)
         per_company_map = {}
-        for company in self.env.companies:
-            per_company_map[company] = ({
+        for company_id in report_company_ids:
+            per_company_map[company_id] = ({
                 'available_journals': self.env['account.journal'],
                 'available_journal_groups': self.env['account.journal.group'],
                 'selected_journals': self.env['account.journal'],
@@ -175,13 +176,14 @@ class AccountReport(models.Model):
             })
 
         for journal in all_journals:
-            per_company_map[journal.company_id]['available_journals'] |= journal
+            per_company_map[journal.company_id.id]['available_journals'] |= journal
         for journal_group in all_journal_groups:
-            per_company_map[journal_group.company_id]['available_journal_groups'] |= journal_group
+            per_company_map[journal_group.company_id.id]['available_journal_groups'] |= journal_group
 
         # Adapt the code from previous options.
         journal_group_action = None
-        if previous_options:
+        previous_journals = previous_options.get('journals') if previous_options else []
+        if previous_options and (not previous_journals or any(journal_opt['id'] in all_journal_ids for journal_opt in previous_journals)):
             # Reload from previous options.
             if previous_options.get('journals'):
                 for journal_opt in previous_options['journals']:
@@ -189,21 +191,21 @@ class AccountReport(models.Model):
                         journal_id = int(journal_opt['id'])
                         if journal_id in all_journal_ids:
                             journal = self.env['account.journal'].browse(journal_id)
-                            per_company_map[journal.company_id]['selected_journals'] |= journal
+                            per_company_map[journal.company_id.id]['selected_journals'] |= journal
 
             # Process the action performed by the user js-side.
             journal_group_action = previous_options.get('__journal_group_action', None)
             if journal_group_action:
                 action = journal_group_action['action']
                 group = self.env['account.journal.group'].browse(journal_group_action['id'])
-                company_vals = per_company_map[group.company_id]
+                company_vals = per_company_map[group.company_id.id]
                 if action == 'add':
                     remaining_journals = company_vals['available_journals'] - group.excluded_journal_ids
                     company_vals['selected_journals'] = remaining_journals
                 elif action == 'remove':
                     has_selected_journal_in_other_company = False
-                    for company, other_company_vals in per_company_map.items():
-                        if company == group.company_id:
+                    for company_id, other_company_vals in per_company_map.items():
+                        if company_id == group.company_id.id:
                             continue
 
                         if other_company_vals['selected_journals']:
@@ -224,8 +226,8 @@ class AccountReport(models.Model):
         else:
             # Select the first available group if nothing selected.
             has_selected_at_least_one_group = False
-            for company in self.env.companies:
-                company_vals = per_company_map[company]
+            for company_id in report_company_ids:
+                company_vals = per_company_map[company_id]
                 if not company_vals['selected_journals'] and company_vals['available_journal_groups']:
                     first_group = company_vals['available_journal_groups'][0]
                     remaining_journals = company_vals['available_journals'] - first_group.excluded_journal_ids
@@ -234,15 +236,15 @@ class AccountReport(models.Model):
 
             # Select all journals in others groups.
             if has_selected_at_least_one_group:
-                for company, company_vals in per_company_map.items():
+                for company_id, company_vals in per_company_map.items():
                     if not company_vals['selected_journals']:
                         company_vals['selected_journals'] = company_vals['available_journals']
 
         # Build the options.
         journal_groups_options = []
         journal_options_per_company = defaultdict(list)
-        for company, company_vals in per_company_map.items():
-            company_vals = per_company_map[company]
+        for company_id, company_vals in per_company_map.items():
+            company_vals = per_company_map[company_id]
 
             # Groups.
             for group in company_vals['available_journal_groups']:
@@ -292,14 +294,14 @@ class AccountReport(models.Model):
 
         has_globally_selected_groups = False
         has_selected_all_journals = True
-        for company, journal_options in per_company_map.items():
+        for company_id, journal_options in per_company_map.items():
             for journal_group in journal_options['selected_journal_groups']:
                 names_to_display.append(journal_group.display_name)
                 has_globally_selected_groups = True
             if journal_options['selected_journals'] != journal_options['available_journals']:
                 has_selected_all_journals = False
 
-        for company, journal_options in per_company_map.items():
+        for company_id, journal_options in per_company_map.items():
             has_selected_groups = bool(journal_options['selected_journal_groups'])
             if not has_selected_groups and (not has_selected_all_journals or has_globally_selected_groups):
                 for journal in journal_options['selected_journals']:

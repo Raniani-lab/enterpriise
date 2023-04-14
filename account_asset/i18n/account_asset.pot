@@ -1729,6 +1729,13 @@ msgid "You cannot resume at a date equal to or before the pause date"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You cannot select the same account as the Depreciation Account"
+msgstr ""
+
+#. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance
 msgid "book_value"
 msgstr ""

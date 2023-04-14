@@ -334,8 +334,9 @@ class AssetModify(models.TransientModel):
 
     def sell_dispose(self):
         self.ensure_one()
+        if self.gain_account_id == self.asset_id.account_depreciation_id or self.loss_account_id == self.asset_id.account_depreciation_id:
+            raise UserError(_("You cannot select the same account as the Depreciation Account"))
         invoice_lines = self.env['account.move.line'] if self.modify_action == 'dispose' else self.invoice_line_ids
-        #TODO to check with TSB
         return self.asset_id.set_to_close(invoice_line_ids=invoice_lines, date=self.date, message=self.name)
 
     @api.depends('asset_id', 'value_residual', 'salvage_value')

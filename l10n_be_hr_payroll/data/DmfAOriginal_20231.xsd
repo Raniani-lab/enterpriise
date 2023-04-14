@@ -601,6 +601,7 @@
          <xs:restriction base="xs:integer">
             <xs:enumeration value="10"/>
             <xs:enumeration value="12"/>
+            <xs:enumeration value="20"/>
             <xs:totalDigits value="2"/>
          </xs:restriction>
       </xs:simpleType>
@@ -1019,6 +1020,21 @@
          </xs:restriction>
       </xs:simpleType>
    </xs:element>
+   <xs:element name="UsingEmployerCompanyID">
+      <xs:annotation>
+         <xs:documentation>00131</xs:documentation>
+         <xs:appinfo source="ConversionID">CompanyID_conversion1</xs:appinfo>
+         <xs:appinfo source="TDOType">xs:companyId</xs:appinfo>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:pattern value="0|\d{9}|\d{10}"/>
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1999999943"/>
+            <xs:totalDigits value="10"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
    <xs:element name="DeductionDetailSequenceNbr">
       <xs:annotation>
          <xs:documentation>00138</xs:documentation>
@@ -1119,6 +1135,16 @@
             <xs:minInclusive value="1"/>
             <xs:maxInclusive value="4800"/>
             <xs:totalDigits value="4"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="UsingEmployerName">
+      <xs:annotation>
+         <xs:documentation>00153</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:maxLength value="96"/>
          </xs:restriction>
       </xs:simpleType>
    </xs:element>
@@ -1254,6 +1280,68 @@
       <xs:simpleType>
          <xs:restriction base="xs:time">
             <xs:pattern value="\d{2}:\d{2}:\d{2}.\d{3}"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="Street">
+      <xs:annotation>
+         <xs:documentation>00517</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:maxLength value="42"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="HouseNbr">
+      <xs:annotation>
+         <xs:documentation>00518</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:maxLength value="10"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="PostBox">
+      <xs:annotation>
+         <xs:documentation>00519</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:maxLength value="4"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="ZIPCode">
+      <xs:annotation>
+         <xs:documentation>00520</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:maxLength value="9"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="City">
+      <xs:annotation>
+         <xs:documentation>00522</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:maxLength value="40"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="Country">
+      <xs:annotation>
+         <xs:documentation>00523</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="99999"/>
+            <xs:totalDigits value="5"/>
          </xs:restriction>
       </xs:simpleType>
    </xs:element>
@@ -2021,6 +2109,7 @@
       <xs:simpleType>
          <xs:restriction base="xs:string">
             <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
             <xs:maxLength value="1"/>
          </xs:restriction>
       </xs:simpleType>
@@ -2101,6 +2190,17 @@
             <xs:enumeration value="1"/>
             <xs:enumeration value="2"/>
             <xs:maxLength value="1"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="VATNbr">
+      <xs:annotation>
+         <xs:documentation>01185</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z]{2}[A-Za-z0-9]{0,28}"/>
+            <xs:maxLength value="30"/>
          </xs:restriction>
       </xs:simpleType>
    </xs:element>
@@ -2290,6 +2390,76 @@
          </xs:restriction>
       </xs:simpleType>
    </xs:element>
+   <xs:element name="EmployabilityMeasure">
+      <xs:annotation>
+         <xs:documentation>01243</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="99999999999"/>
+            <xs:totalDigits value="11"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="ActivationPercentageStatus">
+      <xs:annotation>
+         <xs:documentation>01244</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1"/>
+            <xs:totalDigits value="2"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="CompensationCode">
+      <xs:annotation>
+         <xs:documentation>01250</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:enumeration value="01"/>
+            <xs:totalDigits value="2"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="CompensationAmount">
+      <xs:annotation>
+         <xs:documentation>01251</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="999999999999999"/>
+            <xs:totalDigits value="15"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="CompensationException">
+      <xs:annotation>
+         <xs:documentation>01252</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:enumeration value="01"/>
+            <xs:totalDigits value="2"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
+   <xs:element name="DailyContractNbr">
+      <xs:annotation>
+         <xs:documentation>01254</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="999"/>
+            <xs:totalDigits value="3"/>
+         </xs:restriction>
+      </xs:simpleType>
+   </xs:element>
    <xs:complexType name="WorkerContributionType">
       <xs:sequence>
          <xs:element ref="ContributionWorkerCode"/>
@@ -2425,6 +2595,16 @@
          <xs:element ref="RemunAmount"/>
       </xs:sequence>
    </xs:complexType>
+   <xs:complexType name="AddressType">
+      <xs:sequence>
+         <xs:element minOccurs="0" ref="Street"/>
+         <xs:element minOccurs="0" ref="HouseNbr"/>
+         <xs:element minOccurs="0" ref="PostBox"/>
+         <xs:element minOccurs="0" ref="ZIPCode"/>
+         <xs:element minOccurs="0" ref="City"/>
+         <xs:element minOccurs="0" ref="Country"/>
+      </xs:sequence>
+   </xs:complexType>
    <xs:complexType name="EarlyRetirementContributionType">
       <xs:sequence>
          <xs:element ref="EarlyRetirementCode"/>
@@ -2446,6 +2626,16 @@
          <xs:element ref="ReferenceType"/>
          <xs:element ref="ReferenceOrigin"/>
          <xs:element ref="ReferenceNbr"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="UsingEmployerType">
+      <xs:sequence>
+         <xs:element ref="JointCommissionNbr" minOccurs="0" maxOccurs="0"/>
+         <xs:element minOccurs="0" ref="UsingEmployerName"/>
+         <xs:element minOccurs="0" ref="UsingEmployerCompanyID"/>
+         <xs:element minOccurs="0" ref="VATNbr"/>
+         <xs:element ref="INSS" minOccurs="0"/>
+         <xs:element minOccurs="0" ref="DailyContractNbr"/>
       </xs:sequence>
    </xs:complexType>
    <xs:complexType name="DeductionDetailType">
@@ -2520,7 +2710,7 @@
          <xs:element minOccurs="0" ref="PSDDclExemption"/>
          <xs:element minOccurs="0" ref="SupplPensionContributionExemption"/>
          <xs:element minOccurs="0" ref="ObligationControlInformation"/>
-         <xs:element minOccurs="0" ref="DefinitiveNominationDate"/>
+         <xs:element maxOccurs="0" minOccurs="0" ref="DefinitiveNominationDate"/>
          <xs:element minOccurs="0" ref="NewMaribelEmploymentDate"/>
          <xs:element minOccurs="0" ref="PSPContribCalcBasisDerogation"/>
          <xs:element minOccurs="0" ref="CareerMeasure"/>
@@ -2530,6 +2720,7 @@
          <xs:element minOccurs="0" ref="MobilityBudget"/>
          <xs:element minOccurs="0" ref="FlemishTrainingHolidayHoursNbr"/>
          <xs:element minOccurs="0" ref="RegionalAidMeasure"/>
+         <xs:element minOccurs="0" ref="EmployabilityMeasure"/>
       </xs:sequence>
    </xs:complexType>
    <xs:complexType name="ComplementaryIndemnityType">
@@ -2617,6 +2808,14 @@
          <xs:element ref="ServiceExemptionStartDate"/>
          <xs:element ref="TrainingSituationStartDate"/>
          <xs:element ref="TrainingSituation"/>
+         <xs:element minOccurs="0" ref="ActivationPercentageStatus"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="EmployerCompensationType">
+      <xs:sequence>
+         <xs:element ref="CompensationCode"/>
+         <xs:element minOccurs="0" ref="CompensationAmount"/>
+         <xs:element minOccurs="0" ref="CompensationException"/>
       </xs:sequence>
    </xs:complexType>
    <xs:element name="DmfAOriginal">
@@ -2628,6 +2827,11 @@
             <xs:element ref="Form" maxOccurs="unbounded"/>
          </xs:sequence>
       </xs:complexType>
+   </xs:element>
+   <xs:element name="EmployerCompensation" type="EmployerCompensationType">
+      <xs:annotation>
+         <xs:documentation>90595</xs:documentation>
+      </xs:annotation>
    </xs:element>
    <xs:element name="ContributionUnrelatedToNP" type="ContributionUnrelatedToNPType">
       <xs:annotation>
@@ -2671,10 +2875,19 @@
          <xs:documentation>90042</xs:documentation>
       </xs:annotation>
    </xs:element>
-   <xs:element name="StudentContribution" type="StudentContributionType">
+   <xs:element name="StudentContribution">
       <xs:annotation>
          <xs:documentation>90003</xs:documentation>
       </xs:annotation>
+      <xs:complexType>
+         <xs:complexContent>
+            <xs:extension base="StudentContributionType">
+               <xs:sequence>
+                  <xs:element ref="UsingEmployer" minOccurs="0" maxOccurs="unbounded"/>
+               </xs:sequence>
+            </xs:extension>
+         </xs:complexContent>
+      </xs:complexType>
    </xs:element>
    <xs:element name="DismissedStatutoryWorkerContribution"
                type="DismissedStatutoryWorkerContributionType">
@@ -2725,6 +2938,25 @@
             <xs:extension base="OccupationDeductionType">
                <xs:sequence>
                   <xs:element ref="OccupationDeductionDetail" minOccurs="0"/>
+               </xs:sequence>
+            </xs:extension>
+         </xs:complexContent>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="Address" type="AddressType">
+      <xs:annotation>
+         <xs:documentation>90022</xs:documentation>
+      </xs:annotation>
+   </xs:element>
+   <xs:element name="UsingEmployer">
+      <xs:annotation>
+         <xs:documentation>90107</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:complexContent>
+            <xs:extension base="UsingEmployerType">
+               <xs:sequence>
+                  <xs:element ref="Address" minOccurs="0"/>
                </xs:sequence>
             </xs:extension>
          </xs:complexContent>
@@ -2802,6 +3034,7 @@
                   <xs:element ref="Remun" minOccurs="0" maxOccurs="unbounded"/>
                   <xs:element ref="OccupationPublicServiceData" minOccurs="0" maxOccurs="99"/>
                   <xs:element ref="ReorgMeasureInformation" minOccurs="0" maxOccurs="2"/>
+                  <xs:element ref="UsingEmployer" minOccurs="0" maxOccurs="1"/>
                   <xs:element ref="OccupationDeduction" minOccurs="0" maxOccurs="unbounded"/>
                </xs:sequence>
             </xs:extension>
@@ -2865,11 +3098,13 @@
                      <xs:sequence minOccurs="0">
                         <xs:element ref="CompanyVehicle" minOccurs="0" maxOccurs="unbounded"/>
                         <xs:element ref="ContributionUnrelatedToNP" maxOccurs="unbounded" minOccurs="0"/>
+                        <xs:element ref="EmployerCompensation" minOccurs="0"/>
                      </xs:sequence>
                   </xs:sequence>
                   <xs:sequence>
                      <xs:element ref="CompanyVehicle" minOccurs="0" maxOccurs="unbounded"/>
                      <xs:element ref="ContributionUnrelatedToNP" maxOccurs="unbounded"/>
+                     <xs:element ref="EmployerCompensation" minOccurs="0"/>
                   </xs:sequence>
                </xs:choice>
             </xs:extension>

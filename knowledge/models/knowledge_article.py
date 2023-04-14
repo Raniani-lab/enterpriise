@@ -124,7 +124,6 @@ class Article(models.Model):
     is_user_favorite = fields.Boolean(
         string="Is Favorited",
         compute="_compute_is_user_favorite",
-        inverse="_inverse_is_user_favorite",
         search="_search_is_user_favorite")
     user_favorite_sequence = fields.Integer(string="User Favorite Sequence", compute="_compute_is_user_favorite")
     favorite_ids = fields.One2many(
@@ -509,11 +508,6 @@ class Article(models.Model):
             favorite = article.favorite_ids.filtered(lambda f: f.user_id == self.env.user)
             article.is_user_favorite = bool(favorite)
             article.user_favorite_sequence = favorite.sequence if favorite else -1
-
-    def _inverse_is_user_favorite(self):
-        """ Deprecated. Not used anywhere because of access rights concerns and
-        because not working anyway"""
-        raise NotImplementedError("'_inverse_is_user_favorite' is deprecated. Please use 'action_toggle_favorite' instead.")
 
     def _search_is_user_favorite(self, operator, value):
         if operator not in ('=', '!='):

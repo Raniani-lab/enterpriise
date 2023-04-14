@@ -3,7 +3,7 @@
 import KnowledgeIcon from "@knowledge/components/knowledge_icon/knowledge_icon";
 import { useService } from "@web/core/utils/hooks";
 
-import { Component} from "@odoo/owl";
+import { Component, onWillUpdateProps, useState } from "@odoo/owl";
 
 /**
  * The SidebarRow component is responsible of displaying an article (and its
@@ -56,6 +56,18 @@ export class KnowledgeSidebarRow extends Component {
     setup() {
         super.setup();
         this.orm = useService("orm");
+
+        this.state = useState({
+            unfolded: false,
+        });
+
+        onWillUpdateProps(nextProps => {
+            // Remove the loading spinner when the article is rendered as
+            // being unfolded
+            if (this.state.loading && nextProps.unfolded === true) {
+                this.state.loading = false;
+            }
+        });
     }
 
     get hasChildren() {
@@ -91,7 +103,17 @@ export class KnowledgeSidebarRow extends Component {
         if (this.props.unfolded) {
             this.env.fold(this.props.article.id);
         } else {
-            this.env.unfold(this.props.article.id);
+            this.state.loading = true;
+            // If there are a lot of articles, make sure the rendering caused
+            // by the state change and the one cause by the prop update are not
+            // done at once, because otherwise the loader will not be shown.
+            // If there are not too much articles, the renderings can be done
+            // at once so that there is no flickering.
+            if (this.props.article.child_ids.length > 500) {
+                setTimeout(() => this.env.unfold(this.props.article.id), 0);
+            } else {
+                this.env.unfold(this.props.article.id);
+            }
         }
     }
 

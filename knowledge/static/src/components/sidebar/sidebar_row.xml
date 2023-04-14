@@ -24,6 +24,9 @@
                     <KnowledgeSidebarRow article="env.getArticle(childId)" unfolded="props.unfoldedIds.has(childId)" unfoldedIds="props.unfoldedIds"/>
                 </t>
             </ul>
+            <div t-elif="state.loading" class="p-1 text-center">
+                <i class="fa fa-circle-o-notch fa-spin" title="loader" role="img"/>
+            </div>
         </li>
     </t>
 </templates>

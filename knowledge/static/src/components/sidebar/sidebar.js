@@ -88,6 +88,8 @@ export class KnowledgeSidebar extends Component {
             sidebarSize: localStorage.getItem(this.storageKeys.size) || 300,
         });
 
+        this.loadArticles();
+
         // Resequencing of the favorite articles
         useSortableList({
             ref: this.favoriteTree,
@@ -188,7 +190,6 @@ export class KnowledgeSidebar extends Component {
 
         onWillStart(async () => {
             this.isInternalUser = await this.userService.hasGroup('base.group_user');
-            await this.loadArticles();
         });
 
         // Update the state of the current article using its record data
@@ -244,7 +245,7 @@ export class KnowledgeSidebar extends Component {
                     is_article_item: nextData.is_article_item,
                     is_user_favorite: nextData.is_user_favorite,
                 });
-            } else {  // New article, add it in the state and sidebar
+            } else if (!this.state.loading) {  // New article, add it in the state and sidebar
                 if (nextData.is_user_favorite) {
                     // Favoriting an article that is not shown in the main
                     // tree (hidden child, item, or child of restricted)
@@ -433,6 +434,7 @@ export class KnowledgeSidebar extends Component {
      * articles would not be sorted correctly.
      */
     async loadArticles() {
+        this.state.loading = true;
         // Remove already loaded articles
         Object.assign(this.state, {
             articles: {},
@@ -479,6 +481,7 @@ export class KnowledgeSidebar extends Component {
         }
         this.state.favoriteIds = res.favorite_ids;
         this.showArticle(this.getArticle(this.props.record.resId));
+        this.state.loading = false;
         this.resetUnfoldedArticles();
     }
 

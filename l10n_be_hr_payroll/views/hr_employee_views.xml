@@ -54,7 +54,7 @@
                 <field name="l10n_be_scale_seniority" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
             </field>
             <group name="application_group" position="before">
-                <notebook groups="hr_payroll.group_hr_payroll_user">
+                <notebook groups="hr_payroll.group_hr_payroll_user" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
                     <page name="Attestation (N-1)">
                         <strong class="o_horizontal_separator o_row" colspan="2" id="previous_employer_title" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
                             Holiday Attest <span style="width: 30px !important;"><field name="first_contract_year_n1"/></span> - Simple Holiday Pay from previous employer to recover in <span style="width: 30px !important;"><field name="first_contract_year_n"/></span>

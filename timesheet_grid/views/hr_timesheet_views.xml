@@ -32,6 +32,17 @@
             </field>
         </record>
 
+        <record id="timesheet_view_tree_user_grid_inherited" model="ir.ui.view">
+            <field name="name">account.analytic.line.tree.grid.timesheet_grid</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.timesheet_view_tree_user"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="js_class"></attribute>
+                </xpath>
+            </field>
+        </record>
+
         <record id="timesheet_view_tree_user_inherited" model="ir.ui.view">
             <field name="name">account.analytic.line.tree.timesheet_grid</field>
             <field name="model">account.analytic.line</field>

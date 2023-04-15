@@ -6,17 +6,17 @@
 # Martin Trigaux, 2022
 # Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2022
 # 江口和志 <sandwhale1010@gmail.com>, 2022
-# Ryoko Tsuda <ryoko@quartile.co>, 2022
 # Noma Yuki, 2022
+# Ryoko Tsuda <ryoko@quartile.co>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Noma Yuki, 2022\n"
-"Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
+"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
+"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -666,8 +666,8 @@ msgstr "<b>タイマー</b>を起動して、新しいアクティビティを�
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
-msgid "Lock Dates"
-msgstr "ロック日"
+msgid "Lock Timesheets"
+msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow
@@ -829,7 +829,7 @@ msgstr "Escキーを押して破棄します"
 msgid ""
 "Prevent employees from creating, modifying, or deleting timesheets prior to "
 "their most recent validated timesheet"
-msgstr ""
+msgstr "従業員が直近の検証済タイムシートより前のタイムシートを作成、修正、削除することを許可しない"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1432,7 +1432,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "letter shortcut"
-msgstr ""
+msgstr "ショートカットの文字を押す"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1467,7 +1467,7 @@ msgstr "　"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press Shift + a letter shortcut"
-msgstr ""
+msgstr "シフト + 文字のショートカットを押す"
 
 #. module: timesheet_grid
 #. odoo-javascript

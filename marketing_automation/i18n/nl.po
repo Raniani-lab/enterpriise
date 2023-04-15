@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
@@ -390,7 +390,6 @@ msgstr ""
 "deelnemers."
 
 #. module: marketing_automation
-#: model:marketing.campaign,title:marketing_automation.marketing_campaign_1
 #: model:utm.campaign,title:marketing_automation.marketing_campaign_1_utm_campaign
 msgid "Commercial prospection"
 msgstr "Commercieel voorstel"
@@ -468,7 +467,7 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #. module: marketing_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
 msgid ""
@@ -528,6 +527,7 @@ msgid "Email"
 msgstr "E-mail"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Email canceled"
@@ -539,6 +539,7 @@ msgid "Email composition wizard"
 msgstr "Wizard e-mail opstellen"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Email failed"
@@ -555,6 +556,7 @@ msgid "Error message"
 msgstr "Foutmelding"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
@@ -563,12 +565,14 @@ msgstr ""
 "activiteit."
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr "Fout bij bulkmailing: %s"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in server action: %s"
@@ -688,6 +692,7 @@ msgid "Last activities synchronization"
 msgstr "Meest recente synchronisatie van activiteiten"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/wizard/marketing_campaign_test.py:0
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #, python-format
@@ -802,12 +807,14 @@ msgid "Mails sent and not bounced"
 msgstr "Mail verstuurt en niet gebounced"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Manually"
 msgstr "Handmatig"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Marked as completed"
@@ -839,14 +846,12 @@ msgstr "Marketing automatisering mailings"
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_execute_activities_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_execute_activities
-#: model:ir.cron,name:marketing_automation.ir_cron_campaign_execute_activities
 msgid "Marketing Automation: execute activities"
 msgstr "Marketing Automatisering: activiteiten uitvoeren"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_sync_participants_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_sync_participants
-#: model:ir.cron,name:marketing_automation.ir_cron_campaign_sync_participants
 msgid "Marketing Automation: sync participants"
 msgstr "Marketing Automatisering: deelnemers synchroniseren"
 
@@ -1045,24 +1050,28 @@ msgid "Parent"
 msgstr "Bovenliggend"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail bounced"
 msgstr "E-mail bovenliggende activiteit teruggekaatst"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail clicked"
 msgstr "E-mail bovenliggende activiteit aangeklikt"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail opened"
 msgstr "E-mail bovenliggende activiteit geopend"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail replied"
@@ -1101,6 +1110,7 @@ msgid "Participants"
 msgstr "Deelnemers"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Participants of %s (%s)"
@@ -1150,6 +1160,7 @@ msgid "Record ID"
 msgstr "Record-ID"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Record deleted"
@@ -1162,6 +1173,7 @@ msgid "Record model"
 msgstr "Recordmodel"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
@@ -1171,6 +1183,7 @@ msgid "Rejected"
 msgstr "Afgewezen"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
@@ -1388,6 +1401,7 @@ msgid "Subject"
 msgstr "Onderwerp"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
@@ -1395,6 +1409,7 @@ msgid "Success"
 msgstr "Succes"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid ""
@@ -1453,6 +1468,7 @@ msgid "Tests"
 msgstr "Testen"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid ""
@@ -1463,6 +1479,7 @@ msgstr ""
 "met deze campagne."
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid ""
@@ -1592,6 +1609,7 @@ msgid "Validity Duration Type"
 msgstr "Soort geldigheidsduur"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Warning"
@@ -1620,6 +1638,7 @@ msgid "Workflow Started On"
 msgstr "Workflow gestart op"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid ""
@@ -1630,6 +1649,7 @@ msgstr ""
 "Wijzig een van deze activiteiten voordat je opslaat."
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/utm_campaign.py:0
 #, python-format
 msgid ""
@@ -1640,6 +1660,7 @@ msgstr ""
 "volgende marketingcampagnes in Marketing Automation: %(campaign_names)s"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/utm_source.py:0
 #, python-format
 msgid ""
@@ -1650,6 +1671,7 @@ msgstr ""
 "volgende marketingactiviteiten in Marketing Automation: %(activities_names)s"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "You must set up at least one activity to start this campaign."

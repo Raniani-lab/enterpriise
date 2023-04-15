@@ -118,7 +118,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_template/template_dialog.xml:0
 #, python-format
 msgid "Create"
-msgstr ""
+msgstr "ക്രീയേറ്റ്‌"
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -314,7 +314,7 @@ msgstr "സീക്വൻസ് "
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.document_view_search_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_revision_view_search
 msgid "Spreadsheet"
-msgstr ""
+msgstr "സ്പ്രെഡ്ഷീറ്റ്"
 
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_spreadsheet_contributor
@@ -416,7 +416,7 @@ msgstr "യൂസർ"
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
 msgid "Workspace"
-msgstr ""
+msgstr "വർക്സ്പേസ്"
 
 #. module: documents_spreadsheet
 #. odoo-javascript

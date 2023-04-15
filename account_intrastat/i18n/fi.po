@@ -14,17 +14,17 @@
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
 # Tuomas Lyyra <tuomas.lyyra@legenda.fi>, 2022
 # Konsta Aavaranta, 2023
-# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # Martin Trigaux, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
-"Language-Team: Finnish (https://www.transifex.com/odoo/teams/41243/fi/)\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -87,6 +87,7 @@ msgid "All"
 msgstr "Kaikki"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Arrival"
@@ -181,6 +182,7 @@ msgid "Default transport mode"
 msgstr "Oletusarvoinen kuljetuksen tapa"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Dispatch"
@@ -276,12 +278,14 @@ msgid "Intrastat transaction code"
 msgstr "Intrastat-tapahtuman koodi"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid commodity intrastat code products."
 msgstr "Hyödykkeen intrastat-koodilla varustetut tuotteet ovat virheellisiä."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid transaction intrastat code entries."
@@ -303,10 +307,14 @@ msgid "Only with VAT numbers"
 msgstr "Ainoastaan alv-numeroiden kanssa"
 
 #. module: account_intrastat
-#: model:account.report.column,name:account_intrastat.intrastat_report_column_product_origin_country
 #: model_terms:ir.ui.view,arch_db:account_intrastat.report_invoice_document_intrastat_2019
 msgid "Origin"
 msgstr "Lähde"
+
+#. module: account_intrastat
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_product_origin_country
+msgid "Origin Country"
+msgstr "Alkuperämaa"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_partner_vat
@@ -402,6 +410,7 @@ msgid "The number of supplementary units per product quantity."
 msgstr "Lisäyksiköiden määrä tuotemäärää kohti."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Total"
@@ -434,12 +443,14 @@ msgid "Triplet code/type/country_id must be unique."
 msgstr "Tripletin koodi/tyyppi/country_id on oltava yksilöllinen."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined supplementary unit products."
 msgstr "Määrittelemättömät lisäyksikkötuotteet."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined weight products."
@@ -451,6 +462,7 @@ msgid "Value"
 msgstr "Arvo"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "View Journal Entry"

@@ -13,9 +13,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 09:53+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
@@ -73,13 +73,7 @@ msgid "Department"
 msgstr "Dział"
 
 #. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Departure Employees"
-msgstr "Pracownicy wyjazdowi"
-
-#. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__departure_reason_id
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Departure Reason"
 msgstr "Powód odejścia"
 
@@ -124,29 +118,9 @@ msgid "Last 365 Days"
 msgstr "Ostatnie 365 dni"
 
 #. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Last Contract Ended"
-msgstr "Ostatnia umowa zakończona"
-
-#. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report____last_update
 msgid "Last Modified on"
 msgstr "Data ostatniej modyfikacji"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Max Date in Months"
-msgstr "Maksymalna data w miesiącach"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Mean Contract Duration"
-msgstr "Średni czas trwania umowy"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Min Date in Months"
-msgstr "Min. data w miesiącach"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__start_date_months
@@ -159,41 +133,11 @@ msgid "Months of last date of this month since 01/01/1970"
 msgstr ""
 
 #. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "New Employees"
-msgstr "Nowi pracownicy"
-
-#. module: hr_contract_reports
 #: model_terms:ir.actions.act_window,help:hr_contract_reports.contract_employee_report_action
 msgid "This report performs analysis on your contracts."
 msgstr "Raport ten wykonuje analizy dotyczące posiadanych umów."
 
 #. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Total Contract Length"
-msgstr "Całkowita długość umowy"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Total Contracts"
-msgstr "Całkowita liczba umów"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Total Employees"
-msgstr "Całkowita liczba pracowników"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Turnover Rate"
-msgstr "Stopa obrotu"
-
-#. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__wage
 msgid "Wage"
 msgstr "Płaca"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "months"
-msgstr "miesięcy"

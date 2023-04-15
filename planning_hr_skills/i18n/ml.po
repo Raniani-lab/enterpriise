@@ -22,7 +22,7 @@ msgstr ""
 #. module: planning_hr_skills
 #: model:ir.model,name:planning_hr_skills.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "പ്ലാനിംഗ് അനാലിസിസ് റിപ്പോർട്ട്"
 
 #. module: planning_hr_skills
 #: model:ir.model,name:planning_hr_skills.model_planning_slot

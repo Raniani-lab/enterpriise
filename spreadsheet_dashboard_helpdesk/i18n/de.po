@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
 "Last-Translator: Friederike Fasterling-Nesselbosch, 2022\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
@@ -29,7 +29,7 @@ msgid "Agent"
 msgstr "Mitarbeiter"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
@@ -37,7 +37,7 @@ msgid "Current"
 msgstr "Aktuell"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
@@ -45,42 +45,42 @@ msgid "Customer"
 msgstr "Kunde"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to assign"
 msgstr "Zuzuweisende Stunden"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to close"
 msgstr "Stunden bis Abschluss"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to respond"
 msgstr "Stundes bis Antwort"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "KPI"
 msgstr "KPI"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Period"
 msgstr "Zeitraum"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
@@ -88,7 +88,7 @@ msgid "Previous"
 msgstr "Zurück"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
@@ -96,7 +96,7 @@ msgid "Rating"
 msgstr "Bewertung"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
@@ -104,35 +104,35 @@ msgid "Team"
 msgstr "Team"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Assigned To"
 msgstr "Ticketanalyse nach Zuweisung"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Customer"
 msgstr "Ticketanalyse nach Kunden"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Team"
 msgstr "Ticketanalyse nach Team"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Ticket Type"
 msgstr "Ticketanalyse nach Ticketart"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
@@ -140,7 +140,7 @@ msgid "Ticket Type"
 msgstr "Ticketart"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
@@ -152,70 +152,70 @@ msgid "Tickets"
 msgstr "Tickets"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Stage"
 msgstr "Tickets nach Stufe"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Type"
 msgstr "Tickets nach Art"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Assign"
 msgstr "Zuzuordnende Zeit"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
 msgstr "Zeit bis Abschluss"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Respond"
 msgstr "Zeit bis Antwort"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Agents"
 msgstr "Top-Mitarbeiter"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Customers"
 msgstr "Top-Kunden"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Teams"
 msgstr "Top-Teams"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Ticket Types"
 msgstr "Top-Ticketarten"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
@@ -224,7 +224,7 @@ msgid "last period"
 msgstr "letzter Zeitraum"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
@@ -232,14 +232,14 @@ msgid "since last period"
 msgstr "seit dem letzten Zeitraum"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - current"
 msgstr "stats - aktuell"
 
 #. module: spreadsheet_dashboard_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - previous"

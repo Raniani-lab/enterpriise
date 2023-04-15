@@ -25,14 +25,14 @@ msgstr ""
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "%(user_name)s suggests to delete this instruction"
-msgstr ""
+msgstr "%(user_name)s schlägt vor, diese Anweisung zu löschen"
 
 #. module: mrp_workorder
 #. odoo-python
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "%(user_name)s suggests to use this document as instruction"
-msgstr ""
+msgstr "%(user_name)s schlägt vor, dieses Dokument als Anweisung zu verwenden"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
@@ -567,7 +567,7 @@ msgstr "Neuer Schritt vorgeschlagen von %(user_name)s"
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "New Title suggested:"
-msgstr ""
+msgstr "Neuer Titel vorgeschlagen:"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet

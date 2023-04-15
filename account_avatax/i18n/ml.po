@@ -449,7 +449,7 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "പാർട്ണർ"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0

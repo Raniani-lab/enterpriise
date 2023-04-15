@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
-"Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
+"Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -42,7 +42,7 @@ msgstr "തീയതി"
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
 msgid "Length"
-msgstr ""
+msgstr "നീളം"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_model_name
@@ -63,7 +63,7 @@ msgstr "പ്രോഡക്റ്റ്"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "ഗുണനിലവാര പരിശോധന"
 
 #. module: quality_control_worksheet
 #: code:addons/quality_control_worksheet/models/quality.py:0
@@ -75,7 +75,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "ക്വാളിറ്റി കോൺട്രോൾ പോയിന്റ് "
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_x_custom_worksheet_x_quality_check_worksheet_template_1
@@ -86,7 +86,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_template_id
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check_wizard__worksheet_template_id
 msgid "Quality Template"
-msgstr ""
+msgstr "ക്വാളിറ്റി ടെംപ്ലേറ്റ് "
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_report_quality_control_quality_worksheet
@@ -112,7 +112,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_template_id
 msgid "Template"
-msgstr ""
+msgstr "ടെംപ്ലേറ്റ്"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check_wizard
@@ -129,7 +129,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.view_quality_check_wizard_inherit_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.worksheet_custom_page
 msgid "Worksheet"
-msgstr ""
+msgstr "വർക്ക്ഷീറ്റ്"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
@@ -149,4 +149,4 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.actions.act_window,name:quality_control_worksheet.template_action_Quality_Issues
 msgid "Worksheets"
-msgstr ""
+msgstr "വർക്ക്ഷീറ്റുകൾ"

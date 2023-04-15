@@ -398,7 +398,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__thumbnail
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__thumbnail
 msgid "Thumbnail"
-msgstr ""
+msgstr "Pikkukuva"
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -422,7 +422,7 @@ msgstr "Käyttäjä"
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
 msgid "Workspace"
-msgstr ""
+msgstr "Työtila"
 
 #. module: documents_spreadsheet
 #. odoo-javascript

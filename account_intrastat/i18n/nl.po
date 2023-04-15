@@ -10,12 +10,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Martin Trigaux, 2023\n"
-"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -78,6 +78,7 @@ msgid "All"
 msgstr "Alle"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Arrival"
@@ -172,6 +173,7 @@ msgid "Default transport mode"
 msgstr "Standaard transportmodus"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Dispatch"
@@ -267,12 +269,14 @@ msgid "Intrastat transaction code"
 msgstr "Intrastat-transactiecode"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid commodity intrastat code products."
 msgstr "Ongeldige producten met intrastat-code voor goederen."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid transaction intrastat code entries."
@@ -294,10 +298,14 @@ msgid "Only with VAT numbers"
 msgstr "Enkel met BTW nummers"
 
 #. module: account_intrastat
-#: model:account.report.column,name:account_intrastat.intrastat_report_column_product_origin_country
 #: model_terms:ir.ui.view,arch_db:account_intrastat.report_invoice_document_intrastat_2019
 msgid "Origin"
 msgstr "Bron"
+
+#. module: account_intrastat
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_product_origin_country
+msgid "Origin Country"
+msgstr "Oorsprong land"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_partner_vat
@@ -394,6 +402,7 @@ msgid "The number of supplementary units per product quantity."
 msgstr "Het aantal aanvullende eenheden per producthoeveelheid."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Total"
@@ -426,12 +435,14 @@ msgid "Triplet code/type/country_id must be unique."
 msgstr "Triplet code/type/land_id moeten uniek zijn."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined supplementary unit products."
 msgstr "Onbepaalde aanvullende eenheidsproducten."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined weight products."
@@ -443,6 +454,7 @@ msgid "Value"
 msgstr "Waarde"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "View Journal Entry"

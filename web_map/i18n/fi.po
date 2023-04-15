@@ -15,9 +15,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: web_map
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
@@ -59,9 +59,7 @@ msgid "Action Window View"
 msgstr "Action Window View"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_renderer.js:0
-#: code:addons/web_map/static/src/legacy/js/map_renderer.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.js:0
 #: code:addons/web_map/static/src/map_view/map_renderer.js:0
 #, python-format
@@ -74,9 +72,7 @@ msgid "Base"
 msgstr "Pohja"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
@@ -105,23 +101,21 @@ msgid "HTTP Routing"
 msgstr "HTTP-reititys"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_view.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_view.js:0
 #, python-format
 msgid "Items"
 msgstr "Viennit"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Locating new addresses..."
 msgstr "Paikannetaan uusia osoitteita..."
 
 #. module: web_map
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_view.js:0
 #: model:ir.model.fields.selection,name:web_map.selection__ir_actions_act_window_view__view_mode__map
 #: model:ir.model.fields.selection,name:web_map.selection__ir_ui_view__type__map
@@ -130,16 +124,14 @@ msgid "Map"
 msgstr "Kartta"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_model.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "MapBox servers unreachable"
 msgstr "MapBox-palvelimia ei tavoiteta"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_renderer.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.js:0
 #, python-format
 msgid "Name"
@@ -151,21 +143,21 @@ msgid "Necessary for some functionalities in the map view"
 msgstr "Välttämätön joidenkin karttanäkymän toiminnallisuuksien kannalta"
 
 #. module: web_map
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "No"
 msgstr "Ei"
 
 #. module: web_map
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "None"
 msgstr "Ei mitään"
 
 #. module: web_map
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "OpenStreetMap's request limit exceeded, try again later."
@@ -177,38 +169,35 @@ msgid "Set a MapBox account to activate routes and style"
 msgstr "Aseta MapBox-tili reittien ja tyylin aktivoimiseksi"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Set up token"
 msgstr "Aseta pääsytunniste"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_model.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "Some routing points are too far apart"
 msgstr "Jotkin reitityspisteet ovat liian kaukana toisistaan"
 
 #. module: web_map
+#. odoo-python
 #: code:addons/web_map/models/res_config_settings.py:0
 #, python-format
 msgid "The MapBox server is unreachable"
 msgstr "MapBox-palvelinta ei tavoiteta"
 
 #. module: web_map
+#. odoo-python
 #: code:addons/web_map/models/res_config_settings.py:0
 #, python-format
 msgid "The token input is not valid"
 msgstr "Pääsytunnisteen syöttö ei ole kelvollinen"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_model.js:0
-#: code:addons/web_map/static/src/legacy/js/map_model.js:0
-#: code:addons/web_map/static/src/legacy/js/map_model.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #: code:addons/web_map/static/src/map_view/map_model.js:0
@@ -220,14 +209,14 @@ msgstr ""
 "Näkymä on vaihtunut toiseen palveluntarjoajaan. Toiminnot ovat rajoitettuja"
 
 #. module: web_map
+#. odoo-python
 #: code:addons/web_map/models/res_config_settings.py:0
 #, python-format
 msgid "This referer is not authorized"
 msgstr "Tämä lähettäjä ei ole valtuutettu"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "To get routing on your map, you first need to setup your Mapbox token."
@@ -246,56 +235,49 @@ msgid "Token Map Box"
 msgstr "Map Boxin pääsytunniste"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_model.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "Token invalid"
 msgstr "Pääsytunniste on virheellinen."
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_model.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "Too many requests, try again in a few minutes"
 msgstr "Liian monta pyyntöä, yritä uudelleen hetken kuluttua uudelleen"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_model.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "Too many routing points (maximum 25)"
 msgstr "Liian monta reitityspistettä (enintään 25)"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_model.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "Unauthorized connection"
 msgstr "Luvaton yhteys"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Undefined"
 msgstr "Ei määritelty"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "Unsuccessful routing request:"
 msgstr "Reitityspyyntö ei onnistunut:"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/js/map_view.js:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_controller.js:0
 #, python-format
 msgid "Untitled"
@@ -313,21 +295,21 @@ msgid "View Type"
 msgstr "Näkymän tyyppi"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_controller.xml:0
 #, python-format
 msgid "View in Google Maps"
 msgstr "Näytä Google Mapsissa"
 
 #. module: web_map
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "Yes"
 msgstr "Kyllä"
 
 #. module: web_map
+#. odoo-python
 #: code:addons/web_map/models/models.py:0
 #, python-format
 msgid "You need to set a Contact field on this model to use the Map View"
@@ -336,16 +318,14 @@ msgstr ""
 "Karttanäkymää"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "navigate to"
 msgstr "navigoi osoitteeseen"
 
 #. module: web_map
-#. openerp-web
-#: code:addons/web_map/static/src/legacy/xml/map.xml:0
+#. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "open"

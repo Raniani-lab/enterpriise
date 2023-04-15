@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Tony Ng, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Tony Ng, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,18 +21,21 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid " This channel is private. People must be invited to join it."
 msgstr "這個頻道是私有的. 只有被邀請的人才可以參與."
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/chatbot_script_step.py:0
 #, python-format
 msgid "%(name)s's Ticket"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -78,13 +82,14 @@ msgid "Create Ticket"
 msgstr ""
 
 #. module: website_helpdesk_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Create a new helpdesk ticket"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "Created a new ticket: %s"
@@ -162,6 +167,7 @@ msgid "No canned reponses found. Let's create one!"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -188,13 +194,14 @@ msgid "Please write below your customer reference."
 msgstr ""
 
 #. module: website_helpdesk_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Search for a helpdesk ticket"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
@@ -234,6 +241,7 @@ msgid "View Channels"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "We found some matched ticket(s) related to the search query: %s"
@@ -251,6 +259,8 @@ msgid ""
 "responses into your messages. These shortcuts are replaced directly in your "
 "messages so that you can still make changes before sending them."
 msgstr ""
+"使用「預設回應」，你可以輸入 <b>:shortcuts</b> "
+"把預先寫好的回應範本插入訊息中。這些回應捷徑以文字形式直接貼上訊息內，你可以修改好內容才向外發送。"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.answer,name:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_answer_yes
@@ -258,18 +268,21 @@ msgid "Yes"
 msgstr "是"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "You are in a private conversation with <b>%(mentions)s</b>."
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "You are in channel <b>#%s</b>."
 msgstr "您在頻道 <b>#%s</b>。"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""

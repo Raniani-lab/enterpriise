@@ -15,9 +15,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Anna, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
@@ -28,6 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: partner_commission
+#. odoo-python
 #: code:addons/partner_commission/models/account_move.py:0
 #, python-format
 msgid ""
@@ -38,6 +39,7 @@ msgstr ""
 "%s: alates %s kuni %s"
 
 #. module: partner_commission
+#. odoo-python
 #: code:addons/partner_commission/models/account_move.py:0
 #, python-format
 msgid " (%d month(s))"
@@ -83,7 +85,6 @@ msgstr "Kaetud"
 
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__purchase_order__purchase_type__commission
-#: model:product.product,name:partner_commission.product_commission
 #: model:product.template,name:partner_commission.product_commission_product_template
 msgid "Commission"
 msgstr "Komisjonitasu"
@@ -267,7 +268,6 @@ msgstr "Ainult enda dokumendid"
 #. module: partner_commission
 #: model:ir.actions.server,name:partner_commission.cron_confirm_purchase_orders_ir_actions_server
 #: model:ir.cron,cron_name:partner_commission.cron_confirm_purchase_orders
-#: model:ir.cron,name:partner_commission.cron_confirm_purchase_orders
 msgid "Partner Commission: confirm purchase orders"
 msgstr ""
 
@@ -297,6 +297,7 @@ msgid "Product"
 msgstr "Toode"
 
 #. module: partner_commission
+#. odoo-python
 #: code:addons/partner_commission/models/commission_plan.py:0
 #, python-format
 msgid "Product %s does not belong to category %s"
@@ -411,12 +412,6 @@ msgid ""
 "The required minimum amount total needed to automatically confirm purchase "
 "orders"
 msgstr ""
-
-#. module: partner_commission
-#: model:product.product,uom_name:partner_commission.product_commission
-#: model:product.template,uom_name:partner_commission.product_commission_product_template
-msgid "Units"
-msgstr "tk"
 
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__res_company__commission_automatic_po_frequency__weekly

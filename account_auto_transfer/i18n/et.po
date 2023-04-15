@@ -16,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Anna, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
@@ -46,7 +46,6 @@ msgstr "Konto Ülekande Mudelijoon"
 #. module: account_auto_transfer
 #: model:ir.actions.server,name:account_auto_transfer.ir_cron_auto_transfer_ir_actions_server
 #: model:ir.cron,cron_name:account_auto_transfer.ir_cron_auto_transfer
-#: model:ir.cron,name:account_auto_transfer.ir_cron_auto_transfer
 msgid "Account automatic transfers : Perform transfers"
 msgstr "Konto automaatsed ülekanded: Teosta ülekanded"
 
@@ -84,18 +83,21 @@ msgid "Automated Transfer"
 msgstr "Automatiseeritud Siire"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (%s%% from account %s)"
 msgstr "Automaatne ülekanne (%s%% kontolt%s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (-%s%%)"
 msgstr "Automaatne ülekanne (-%s%%)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid ""
@@ -105,18 +107,21 @@ msgstr ""
 "%s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (entries with analytic account(s): %s)"
 msgstr "Automaatne ülekanne (analüütilise konto(de) kanded: %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (entries with partner(s): %s)"
 msgstr "Automaatne ülekanne (kanded partneri(te)ga): %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid ""
@@ -127,18 +132,21 @@ msgstr ""
 "partneri(te)ga: %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (from account %s with analytic account(s): %s)"
 msgstr "Automaatne ülekanne (kontolt %s analüütilise konto(de)ga: %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (from account %s with partner(s): %s)"
 msgstr "Automaatne ülekanne (kontolt%s partneri(te)ga: %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (to account %s)"
@@ -368,12 +376,14 @@ msgid "Stop Date"
 msgstr "Lõpukuupäev"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "The analytic filter %s is duplicated"
 msgstr "Analüütiline filter %s on dubleeritud. "
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid ""
@@ -382,12 +392,14 @@ msgid ""
 msgstr "Partneri filter %s koos analüütilise filtriga %s dubleeritakse. "
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "The partner filter %s is duplicated"
 msgstr "Partneri filter %s on dubleeritud. "
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "The total percentage (%s) should be less or equal to 100 !"

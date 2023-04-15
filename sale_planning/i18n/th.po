@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:29+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
@@ -65,7 +65,6 @@ msgid "By Sales Order"
 msgstr "โดยคำสั่งขาย"
 
 #. module: sale_planning
-#: model:product.product,name:sale_planning.developer_product
 #: model:product.template,name:sale_planning.developer_product_product_template
 msgid "Developer (Plan services)"
 msgstr "นักพัฒนา (แผนบริการ)"
@@ -81,15 +80,6 @@ msgid "Functional Tester"
 msgstr ""
 
 #. module: sale_planning
-#: model:product.product,uom_name:sale_planning.developer_product
-#: model:product.product,uom_name:sale_planning.technical_maintainance_product
-#: model:product.template,uom_name:sale_planning.developer_product_product_template
-#: model:product.template,uom_name:sale_planning.technical_maintainance_product_product_template
-msgid "Hours"
-msgstr "ชั่วโมง"
-
-#. module: sale_planning
-#: model:product.product,name:sale_planning.technical_maintainance_product
 #: model:product.template,name:sale_planning.technical_maintainance_product_product_template
 msgid "IT Technical Maintenance (Plan services)"
 msgstr "การบำรุงรักษาด้านเทคนิคไอที (บริการวางแผน)"
@@ -140,13 +130,12 @@ msgid "Orders Planned"
 msgstr ""
 
 #. module: sale_planning
-#: model_terms:product.product,description:sale_planning.developer_product
 #: model_terms:product.template,description:sale_planning.developer_product_product_template
 msgid "Our developer will help you to add new features to your Software."
 msgstr "นักพัฒนาของเราจะช่วยคุณเพิ่มฟีเจอร์ใหม่ให้กับซอฟต์แวร์ของคุณ"
 
 #. module: sale_planning
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_planning/static/src/views/sale_planning_calendar/sale_planning_calendar_controller.xml:0
 #: code:addons/sale_planning/static/src/views/sale_planning_calendar/sale_planning_calendar_controller.xml:0
 #: code:addons/sale_planning/static/src/xml/planning_gantt.xml:0
@@ -163,6 +152,7 @@ msgid "Plan Services"
 msgstr "แผนบริการ"
 
 #. module: sale_planning
+#. odoo-python
 #: code:addons/sale_planning/models/product.py:0
 #, python-format
 msgid ""
@@ -173,6 +163,7 @@ msgstr ""
 "%s"
 
 #. module: sale_planning
+#. odoo-python
 #: code:addons/sale_planning/models/product.py:0
 #, python-format
 msgid "Plannable services should use an UoM within the %s category."
@@ -290,6 +281,7 @@ msgid "Services"
 msgstr "บริการ"
 
 #. module: sale_planning
+#. odoo-python
 #: code:addons/sale_planning/controllers/main.py:0
 #, python-format
 msgid "Shift"
@@ -301,13 +293,12 @@ msgid "Start Date"
 msgstr "วันที่เริ่ม"
 
 #. module: sale_planning
-#: model_terms:product.product,description:sale_planning.technical_maintainance_product
 #: model_terms:product.template,description:sale_planning.technical_maintainance_product_product_template
 msgid "Take a rest. We'll do our best."
 msgstr "พักก่อน เราจะพยายามอย่างเต็มที่"
 
 #. module: sale_planning
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_planning/static/src/js/backend/sale_planning_mixin.js:0
 #: code:addons/sale_planning/static/src/views/hooks.js:0
 #, python-format
@@ -315,7 +306,7 @@ msgid "The sales orders have successfully been assigned."
 msgstr "มอบหมายคำสั่งขายเรียบร้อยแล้ว"
 
 #. module: sale_planning
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_planning/static/src/js/backend/sale_planning_mixin.js:0
 #: code:addons/sale_planning/static/src/views/hooks.js:0
 #, python-format
@@ -323,6 +314,7 @@ msgid "There are no sales orders to assign or no employees are available."
 msgstr "ไม่มีคำสั่งขายที่จะมอบหมายหรือไม่มีพนักงานอยู่"
 
 #. module: sale_planning
+#. odoo-python
 #: code:addons/sale_planning/models/planning_slot.py:0
 #, python-format
 msgid ""
@@ -331,7 +323,7 @@ msgid ""
 msgstr ""
 
 #. module: sale_planning
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_planning/static/src/js/backend/planning_gantt_controller.js:0
 #, python-format
 msgid ""
@@ -344,13 +336,14 @@ msgid "Unschedule"
 msgstr "ยังไม่กำหนดเวลา"
 
 #. module: sale_planning
+#. odoo-python
 #: code:addons/sale_planning/models/sale_order.py:0
 #, python-format
 msgid "View Planning"
 msgstr ""
 
 #. module: sale_planning
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_planning/static/src/views/hooks.js:0
 #, python-format
 msgid "View Shifts"
@@ -367,6 +360,7 @@ msgid "e.g. Consultant"
 msgstr ""
 
 #. module: sale_planning
+#. odoo-python
 #: code:addons/sale_planning/models/sale_order_line.py:0
 #, python-format
 msgid "remaining"

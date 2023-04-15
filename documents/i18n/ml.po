@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Niyas Raphy, 2023
+# Nikhil Krishnan, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
+"Last-Translator: Nikhil Krishnan, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,6 +25,11 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid " + Add a tag"
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_page
+msgid "#{document_is_url and 'Link to ' or 'Download '}#{document.name}"
 msgstr ""
 
 #. module: documents
@@ -261,7 +267,7 @@ msgid ""
 "                                                    </a>\n"
 "                                                </div>\n"
 "                                            </center><br/>\n"
-"                                            Please provide us with the missing document before the link expires (planned on <t t-out=\"object.date_deadline or ''\">2021-05-17</t>).\n"
+"                                            Please provide us with the missing document<t t-if=\"object.date_deadline\"> before the link expires (planned on <t t-out=\"object.date_deadline\">2021-05-17</t>)</t>.\n"
 "                                            <t t-if=\"user and user.signature\">\n"
 "                                                <br/>\n"
 "                                                <t t-out=\"user.signature or ''\">--<br/>Mitchell Admin</t>\n"
@@ -398,7 +404,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
-msgstr ""
+msgstr "ആക്ഷൻസ്"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__active
@@ -436,12 +442,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_mail_activity_type
 msgid "Activity Type"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് ഐക്കൺ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -590,7 +596,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: documents
 #. odoo-javascript
@@ -632,7 +638,7 @@ msgstr "അറ്റാച്ച്മെന്റ്"
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_attachment_count
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ് എണ്ണം"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__description
@@ -817,7 +823,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "ക്രീയേറ്റ്‌"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_mark
@@ -888,7 +894,7 @@ msgstr "ദിവസം"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "ഡീഫോൾട് വാല്യൂ "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -914,12 +920,12 @@ msgstr ""
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
 msgid "Deprecate"
-msgstr ""
+msgstr "ഒഴിവാക്കുക"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_status_deprecated
 msgid "Deprecated"
-msgstr ""
+msgstr "ഒഴിവാക്കി"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__description
@@ -1038,7 +1044,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder_deletion_wizard
@@ -1299,7 +1305,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__previous_attachment_ids
 #, python-format
 msgid "History"
-msgstr ""
+msgstr "ഹിസ്റ്ററി"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__id
@@ -1368,7 +1374,7 @@ msgstr ""
 #: model:documents.tag,name:documents.documents_internal_status_inbox
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_Inbox
 msgid "Inbox"
-msgstr ""
+msgstr "ഇൻബോക്സ്"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__include_sub_folders
@@ -1390,7 +1396,7 @@ msgstr ""
 #. module: documents
 #: model:documents.folder,name:documents.documents_internal_folder
 msgid "Internal"
-msgstr ""
+msgstr "ഇന്റെര്ണല്"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__is_editable_attachment
@@ -1513,7 +1519,10 @@ msgid "Limit Write Groups to the documents of which they are owner."
 msgstr ""
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
+#, python-format
 msgid "Link"
 msgstr "ലിങ്ക്"
 
@@ -1538,7 +1547,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Lock"
-msgstr ""
+msgstr "ലോക്ക്"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__is_locked
@@ -1614,12 +1623,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__model_id
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Model"
-msgstr ""
+msgstr "മോഡൽ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__accessible_model_ids
 msgid "Models"
-msgstr ""
+msgstr "മോഡൽസ്"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__months
@@ -1687,7 +1696,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "പുതിയ"
 
 #. module: documents
 #. odoo-javascript
@@ -1725,7 +1734,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "അടുത്ത പ്രവർത്തന സമയപരിധി"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_summary
@@ -1956,7 +1965,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__resource_ref
 msgid "Record"
-msgstr ""
+msgstr "റെക്കോർഡ്"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
@@ -2271,7 +2280,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Split"
-msgstr ""
+msgstr "സ്‌പ്ലിറ്റ്  "
 
 #. module: documents
 #. odoo-javascript
@@ -2361,12 +2370,12 @@ msgstr "ടാഗുകൾ"
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_template
 msgid "Templates"
-msgstr ""
+msgstr "ടെംപ്ലേറ്റുകൾ"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_text
 msgid "Text"
-msgstr ""
+msgstr "ടെക്സ്റ്റ്"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip
@@ -2535,7 +2544,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
-msgstr ""
+msgstr "അപ്‌ലോഡ്"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action
@@ -2618,7 +2627,7 @@ msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 #: model:ir.model.fields,help:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് കമ്മ്യൂണിക്കേഷൻ ചരിത്രം"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__weeks
@@ -2651,13 +2660,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Workspace"
-msgstr ""
+msgstr "വർക്സ്പേസ്"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.folder_action
 #: model:ir.ui.menu,name:documents.folder_menu
 msgid "Workspaces"
-msgstr ""
+msgstr "വർക്സ്പേസ്"
 
 #. module: documents
 #. odoo-javascript

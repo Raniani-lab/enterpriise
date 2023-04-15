@@ -19,9 +19,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Tugay Hatıl <tugayh@projetgrup.com>, 2023\n"
 "Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
@@ -43,7 +43,7 @@ msgid "All related social media posts"
 msgstr "İlgili tüm sosyal medya gönderileri"
 
 #. module: social_push_notifications
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Allow"
@@ -65,7 +65,7 @@ msgid "Delay"
 msgstr "Geciken"
 
 #. module: social_push_notifications
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Deny"
@@ -101,6 +101,7 @@ msgid "Enable Web Push Notifications"
 msgstr "Web Anlık Bildirimlerini Etkinleştir"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 #, python-format
@@ -117,6 +118,7 @@ msgid "Firebase Admin Key File"
 msgstr "Firebase Admin Anahtar Dosyası"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/social_account.py:0
 #, python-format
 msgid "Firebase Admin Key File is missing from the configuration."
@@ -196,6 +198,7 @@ msgid "Media Type"
 msgstr "Medya Türü"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/social_live_post.py:0
 #: code:addons/social_push_notifications/models/social_post_template.py:0
 #, python-format
@@ -210,7 +213,7 @@ msgid "Notification Request Delay (seconds)"
 msgstr "Bildirim Talebi Gecikmesi (saniye)"
 
 #. module: social_push_notifications
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings__notification_request_icon
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_account__notification_request_icon
@@ -405,6 +408,7 @@ msgid "Social Post Template"
 msgstr "Sosyal Gönderi Şablonu"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/website_visitor.py:0
 #, python-format
 msgid "Some selected visitors do not allow push notifications."
@@ -477,6 +481,7 @@ msgid "Visitors"
 msgstr "Ziyaretçiler"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 #, python-format
@@ -501,12 +506,14 @@ msgid "Website Visitor"
 msgstr "Websitesi Ziyaretçi"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/social_account.py:0
 #, python-format
 msgid "You can't delete a Push Notification account."
 msgstr "Anlık bildirim hesabını silemezsiniz."
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/social_account.py:0
 #, python-format
 msgid ""

@@ -39,7 +39,7 @@ msgstr "%s Zahlungserinnerung - %s"
 #. module: account_followup
 #: model:ir.actions.report,print_report_name:account_followup.action_report_followup
 msgid "'Follow-up ' + object.display_name"
-msgstr ""
+msgstr "'Mahnung ' + object.display_name"
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_res_partner__type
@@ -51,6 +51,11 @@ msgid ""
 "- Private: Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...).\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
+"- Verwenden Sie dies, um die Kontaktdaten der Mitarbeiter eines bestimmten Unternehmens zu organisieren (z. B. CEO, CFO ...)\n"
+"- Rechnungsadresse: Bevorzugte Adresse für alle Rechnungen. Wird standardmäßig ausgewählt, wenn Sie einen Auftrag in Rechnung stellen, der zu diesem Unternehmen gehört.\n"
+"- Lieferadresse: Bevorzugte Adresse für alle Lieferungen. Wird standardmäßig ausgewählt, wenn Sie einen Auftrag liefern, der zu diesem Unternehmen gehört.\n"
+"- Privat: Privatadressen sind nur für autorisierte Benutzer sichtbar und enthalten sensible Daten (Privatadressen von Mitarbeitern ...).\n"
+"- Andere: Andere Adresse für das Unternehmen (z. B. Niederlassung ...)."
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
@@ -322,7 +327,7 @@ msgstr "Aktivität"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Activity Notes"
-msgstr ""
+msgstr "Aktivitätsnotizen"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__activity_type_id
@@ -577,19 +582,19 @@ msgstr "Erste Erinnerung"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Follow up"
-msgstr ""
+msgstr "Mahnung"
 
 #. module: account_followup
 #. odoo-python
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Follow-up %s - %s"
-msgstr ""
+msgstr "Mahnung %s - %s"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__type__followup
 msgid "Follow-up Address"
-msgstr ""
+msgstr "Mahnadresse"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_followup_line
@@ -647,7 +652,7 @@ msgstr "Mahnstufen"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Follow-up letter generated"
-msgstr ""
+msgstr "Mahnbrief ersteltl"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.account_followup_journal_dashboard_kanban_view
@@ -824,6 +829,9 @@ msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the activities. If empty, we will find someone responsible."
 msgstr ""
+"Optional können Sie diesem Feld einen Benutzer zuweisen, der für diese "
+"Aktivitäten verantwortlich ist. Falls leer, werden wir einen "
+"Verantwortlichen finden."
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
@@ -877,7 +885,7 @@ msgstr "Mahnung drucken"
 #. module: account_followup
 #: model:ir.actions.server,name:account_followup.action_account_reports_customer_statements_do_followup
 msgid "Process Automatic Follow-ups"
-msgstr ""
+msgstr "Automatische Mahnungen verarbeiten"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
@@ -1012,6 +1020,9 @@ msgid ""
 "the reminder. Can be negative if you want to send the reminder before the "
 "invoice due date."
 msgstr ""
+"Die Anzahl der Tage nach Fälligkeit der Rechnung vor dem Senden der "
+"Erinnerung. Kann auch negativ sein, wenn Sie die Erinnerung vor dem "
+"Fälligkeitsdatum der Rechnung senden möchten."
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_tree_view
@@ -1046,13 +1057,13 @@ msgstr "Insgesamt überfällig"
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoice_ids
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoice_ids
 msgid "Unpaid Invoice"
-msgstr ""
+msgstr "Unbezahlte"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoices_count
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoices_count
 msgid "Unpaid Invoices Count"
-msgstr ""
+msgstr "Anzahl unbezahlter Rechnungen"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unreconciled_aml_ids
@@ -1089,6 +1100,8 @@ msgid ""
 "You are trying to send an Email, but no follow-up contact has any email "
 "address set"
 msgstr ""
+"Sie versuchen, eine E-Mail zu verschicken, aber kein Mahnkontakt hat eine "
+"E-Mail-Adresse eingestellt"
 
 #. module: account_followup
 #. odoo-python
@@ -1098,6 +1111,8 @@ msgid ""
 "You are trying to send an SMS, but no follow-up contact has any mobile/phone"
 " number set"
 msgstr ""
+"Sie versuchen, eine SMS zu verschicken, aber kein Mahnkontakt hat eine "
+"Handy-/Telefonnummer eingestellt"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form

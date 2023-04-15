@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Niyas Raphy, 2023
+# Nikhil Krishnan, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
+"Last-Translator: Nikhil Krishnan, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +39,7 @@ msgstr ""
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_kanban
 msgid "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -46,22 +47,24 @@ msgid ""
 "<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
 "title=\"Arrow\"/>"
 msgstr ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
+"title=\"Arrow\"/>"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "<span class=\"o_stat_text\">Budget</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">ബജറ്റ്</span>"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__account_ids
 #: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_form
 msgid "Accounts"
-msgstr ""
+msgstr "അക്കൗണ്ട്"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__percentage
 msgid "Achievement"
-msgstr ""
+msgstr "നേട്ടം"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction
@@ -86,7 +89,7 @@ msgstr ""
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് ഐക്കൺ"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
@@ -114,17 +117,17 @@ msgstr "അനലിറ്റിക് അക്കൗണ്ട്"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_plan_id
 msgid "Analytic Plan"
-msgstr ""
+msgstr "അനാലിറ്റിക് പ്ലാൻ"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Approve"
-msgstr ""
+msgstr "അപ്പ്രൂവ്"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ് എണ്ണം"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_crossovered_budget
@@ -156,17 +159,17 @@ msgstr "ബജറ്റ് ലൈൻ"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_tree
 msgid "Budget Lines"
-msgstr ""
+msgstr "ബജറ്റ് ലൈനുകൾ"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__name
 msgid "Budget Name"
-msgstr ""
+msgstr "ബജറ്റിന്റെ പേര്"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__crossovered_budget_state
 msgid "Budget State"
-msgstr ""
+msgstr "ബജറ്റ് സ്റ്റേറ്റ്"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_budget_post
@@ -175,13 +178,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_search
 #: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_tree
 msgid "Budgetary Position"
-msgstr ""
+msgstr "ബജറ്റ് പൊസിഷൻ"
 
 #. module: account_budget
 #: model:ir.actions.act_window,name:account_budget.open_budget_post_form
 #: model:ir.ui.menu,name:account_budget.menu_budget_post_form
 msgid "Budgetary Positions"
-msgstr ""
+msgstr "ബജറ്റ് പൊസിഷൻ"
 
 #. module: account_budget
 #: model:ir.actions.act_window,name:account_budget.act_crossovered_budget_view
@@ -194,12 +197,12 @@ msgstr "ബജറ്റുകൾ"
 #: model:ir.actions.act_window,name:account_budget.act_crossovered_budget_lines_view
 #: model:ir.ui.menu,name:account_budget.menu_act_crossovered_budget_lines_view
 msgid "Budgets Analysis"
-msgstr ""
+msgstr "ബജറ്റ് വിശകലനം"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Cancel Budget"
-msgstr ""
+msgstr "ബജറ്റ് റദ്ദാക്കുക"
 
 #. module: account_budget
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__cancel
@@ -281,7 +284,7 @@ msgstr "ഡ്രാഫ്റ്റ്"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Draft Budgets"
-msgstr ""
+msgstr "ഡ്രാഫ്റ്റ് ബജറ്റുകൾ"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__date_to
@@ -427,7 +430,7 @@ msgstr ""
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "അടുത്ത പ്രവർത്തന സമയപരിധി"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_summary
@@ -478,26 +481,26 @@ msgstr "പീരീഡ്"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__planned_amount
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Planned Amount"
-msgstr ""
+msgstr "പ്ലാൻഡ്‌ തുക"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Planned amount"
-msgstr ""
+msgstr "പ്ലാൻഡ്‌ തുക"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__practical_amount
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "Practical Amount"
-msgstr ""
+msgstr "പ്രാക്റ്റിക്കൽ തുക"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Practical amount"
-msgstr ""
+msgstr "പ്രാക്റ്റിക്കൽ തുക"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -555,13 +558,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "Theoretical Amount"
-msgstr ""
+msgstr "തിയററ്റിക്കൽ തുക"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Theoretical amount"
-msgstr ""
+msgstr "തിയററ്റിക്കൽ തുക"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -611,7 +614,7 @@ msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് കമ്മ്യൂണിക്കേഷൻ ചരിത്രം"
 
 #. module: account_budget
 #: code:addons/account_budget/models/account_budget.py:0

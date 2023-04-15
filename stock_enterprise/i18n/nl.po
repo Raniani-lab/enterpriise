@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
@@ -81,34 +81,6 @@ msgid "Delay (Days)"
 msgstr "Vertraging (dagen)"
 
 #. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid ""
-"Delay to deliver an order (in days). Computed by comparing the scheduled "
-"date of the delivery order and its effective date."
-msgstr ""
-"Vertraging bij de levering van een order (in dagen). Dit is berekend door de"
-" geplande datum te vergelijken met de datum waarop de levering gereed is."
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid ""
-"Delay to receive an order (in days). Computed by comparing the scheduled "
-"date of the receipt and its effective date."
-msgstr ""
-"Vertraging bij de ontvangst van een order (in dagen). Dit is berekend door "
-"de geplande datum te vergelijken met de datum waarop de ontvangst gereed is."
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "Deliveries Cycle Time"
-msgstr "Leveringen cyclustijd"
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "Deliveries Delay"
-msgstr "Leveringen vertraging"
-
-#. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
 msgid "Display Name"
 msgstr "Schermnaam"
@@ -169,7 +141,7 @@ msgid "New"
 msgstr "Nieuw"
 
 #. module: stock_enterprise
-#: model_terms:ir.actions.act_window,help:stock_enterprise.stock_report_dashboard_action
+#: model_terms:ir.actions.act_window,help:stock_enterprise.stock_report_action_performance
 msgid "No data yet!"
 msgstr "Nog geen gegevens!"
 
@@ -219,16 +191,6 @@ msgid "Quantity"
 msgstr "Aantal"
 
 #. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "Receipts Cycle Time"
-msgstr "Ontvangsten cyclustijd"
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "Receipts Delay"
-msgstr "Ontvangsten vertraging"
-
-#. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
 msgid "Reference"
@@ -258,24 +220,6 @@ msgstr "Voorraadoverzicht"
 #: model:ir.model,name:stock_enterprise.model_stock_report
 msgid "Stock Report"
 msgstr "Voorraadrapportage"
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid ""
-"Time needed to deliver an order (in days). Computed by comparing the "
-"creation date of the delivery order and its done date."
-msgstr ""
-"Tijd benodigd om een order te leveren (in dagen). Dit is berekend door de "
-"aanmaakdatum te vergelijken met de datum waarop de levering gereed is."
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid ""
-"Time needed to receive an order (in days). Computed by comparing the "
-"creation date of the receipt and its done date."
-msgstr ""
-"Tijd benodigd om een order te ontvangen (in dagen). Dit is berekend door de "
-"aanmaakdatum te vergelijken met de datum waarop de ontvangst gereed is."
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__date_done
@@ -308,11 +252,6 @@ msgid "Waiting Availability"
 msgstr "Wachtend op beschikbaarheid"
 
 #. module: stock_enterprise
-#: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
+#: model:ir.actions.act_window,name:stock_enterprise.stock_report_action_performance
 msgid "Warehouse Analysis"
 msgstr "Magazijnanalyse"
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
-msgid "days"
-msgstr "dagen"

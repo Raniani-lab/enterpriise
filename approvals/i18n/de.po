@@ -5,15 +5,16 @@
 # Translators:
 # Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Friederike Fasterling-Nesselbosch, 2022\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -110,6 +111,7 @@ msgstr ""
 "Ein zusätzlicher Verweis welcher in der Anfrage angegeben werden muss."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid "An user may not be in the approver list multiple times."
@@ -178,7 +180,7 @@ msgid "Approvals to review"
 msgstr "Genehmigungen zur Überprüfung"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/components/approval/approval.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
@@ -202,6 +204,7 @@ msgid "Approver"
 msgstr "Genehmigender"
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid ""
@@ -389,7 +392,7 @@ msgid "Date start"
 msgstr "Datum Start"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
@@ -591,7 +594,6 @@ msgstr "Falls markiert, benötigen neue Nachrichten Ihre Kenntnisnahme."
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_has_error
-#: model:ir.model.fields,help:approvals.field_approval_request__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 "Das Senden mancher Nachrichten ist fehlgeschlagen wenn dieses Fenster "
@@ -692,7 +694,7 @@ msgid "Location"
 msgstr "Ort"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
@@ -726,6 +728,7 @@ msgid "Minimum Approval"
 msgstr "Mindestgenehmigung"
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid ""
@@ -766,6 +769,7 @@ msgid "Name"
 msgstr "Name"
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__new
 #: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__new
@@ -925,6 +929,7 @@ msgstr "Produktvarianten"
 #: model:ir.ui.menu,name:approvals.approvals_menu_product_template
 #: model_terms:ir.ui.view,arch_db:approvals.approval_product_line_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_product_line_view_tree
+#: model_terms:ir.ui.view,arch_db:approvals.approval_product_line_view_tree_independent
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Products"
 msgstr "Produkte"
@@ -948,7 +953,7 @@ msgid "Reference Sequence"
 msgstr "Nummernfolge"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/components/approval/approval.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
@@ -1008,11 +1013,7 @@ msgid "Responsible User"
 msgstr "Verantwortlicher Benutzer"
 
 #. module: approvals
-#: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr "SMS Zustellungsfehler"
-
-#. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #: code:addons/approvals/models/approval_category.py:0
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__sequence
@@ -1063,6 +1064,7 @@ msgid "The user will have access to the approvals configuration."
 msgstr "Der Benutzer hat Zugriff auf die Konfiguration der Genehmigungen."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid ""
@@ -1073,6 +1075,7 @@ msgstr ""
 "Mitarbeiterprofil ist kein Vorgesetzter verknüpft."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid ""
@@ -1083,6 +1086,7 @@ msgstr ""
 "Benutzer, der mit Ihrem Vorgesetzten verknüpft ist."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid ""
@@ -1093,7 +1097,7 @@ msgstr ""
 " ist nicht in der Liste der Genehmigenden."
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/components/approval/approval.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__pending
@@ -1123,7 +1127,7 @@ msgid "Unit of Measure"
 msgstr "Mengeneinheit"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__user_id
@@ -1144,35 +1148,30 @@ msgid "Waiting"
 msgstr "Warten"
 
 #. module: approvals
-#: model:ir.model.fields,field_description:approvals.field_approval_request__website_message_ids
-msgid "Website Messages"
-msgstr "Website-Nachrichten"
-
-#. module: approvals
-#: model:ir.model.fields,help:approvals.field_approval_request__website_message_ids
-msgid "Website communication history"
-msgstr "Website-Kommunikationshistorie"
-
-#. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Withdraw"
 msgstr "Zurückziehen"
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You cannot approve before the previous approver."
 msgstr "Sie können nicht vor dem vorherigen Genehmigenden genehmigen."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid ""
 "You cannot assign the same approver multiple times on the same request."
 msgstr ""
+"Sie können denselben Genehmiger nicht mehrfach für dieselbe Anfrage "
+"zuweisen."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to add at least %s approvers to confirm your request."
@@ -1181,12 +1180,14 @@ msgstr ""
 "bestätigen."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to attach at lease one document."
 msgstr "Sie müssen mindestens ein Dokument anhängen."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid "Your minimum approval exceeds the total of default approvers."

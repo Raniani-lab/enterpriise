@@ -22,12 +22,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Ediz Duman <neps1192@gmail.com>, 2023\n"
-"Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
+"Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -35,18 +35,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "%(user)s decided, as %(role)s, to publish the employee's feedback"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "%s Goals"
 msgstr "%s Hedefler"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "1 Meeting"
@@ -193,6 +196,7 @@ msgstr ""
 "            "
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_employee_base.py:0
 #, python-format
 msgid ""
@@ -340,11 +344,6 @@ msgid "Administrator"
 msgstr "Yönetici"
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-msgid "Application Settings"
-msgstr "Uygulama Ayarları"
-
-#. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action
 #: model:ir.actions.act_window,name:hr_appraisal.open_view_hr_appraisal_tree2
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_ids
@@ -399,6 +398,7 @@ msgid "Appraisal Employee Feedback Template"
 msgstr "Değerlendirme Çalışan Geri Bildirimi Şablonu"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Form to Fill"
@@ -416,6 +416,7 @@ msgid "Appraisal Manager Feedback Template"
 msgstr "Değerlendirme Yöneticisi Geri Bildirim Şablonu"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Officer"
@@ -427,6 +428,7 @@ msgid "Appraisal Plan Posted"
 msgstr "Değerlendirme Planı Yayınlandı"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
@@ -455,18 +457,14 @@ msgid "Appraisal Templates"
 msgstr "Değerlendirme Şablonları"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal of %s"
 msgstr "%s değerlendirmesi"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:0
-#, python-format
-msgid "Appraisal reopened"
-msgstr ""
-
-#. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
@@ -481,7 +479,6 @@ msgstr "Başlangıç Değerlendirmesi"
 #. module: hr_appraisal
 #: model:ir.actions.server,name:hr_appraisal.ir_cron_scheduler_appraisal_ir_actions_server
 #: model:ir.cron,cron_name:hr_appraisal.ir_cron_scheduler_appraisal
-#: model:ir.cron,name:hr_appraisal.ir_cron_scheduler_appraisal
 msgid "Appraisal: Run employee appraisal"
 msgstr "Değerlendirme: Personel değerlendirmesi yapın"
 
@@ -512,6 +509,7 @@ msgid "Ask to fill a survey to other employees"
 msgstr "Diğer çalışanlara anket doldurmalarını isteme"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Assessment"
@@ -600,11 +598,6 @@ msgstr "Sözleşme bitiş tarihinden sonra tüm değerlendirmeleri iptal edin."
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_report__state__cancel
 msgid "Cancelled"
 msgstr "İptal Edildi"
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
-msgid "Chat"
-msgstr "Sohbet"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__color
@@ -738,6 +731,7 @@ msgid "Deadline:"
 msgstr "Zaman Sınırı:"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal_goal.py:0
 #, python-format
 msgid "Deadline: %s"
@@ -857,6 +851,7 @@ msgid "Evaluation Scale"
 msgstr "Değerlendirme Ölçeği"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Exceeds expectations"
@@ -873,6 +868,7 @@ msgid "Feedback Templates"
 msgstr "Geri bildirim şablonları"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Fill appraisal for %s"
@@ -993,9 +989,7 @@ msgstr "İşaretliyse, yeni mesajlar dikkatinize sunulacak."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_sms_error
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_error
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "İşaretliyse, bazı mesajlar gönderi hatası içermektedir."
 
@@ -1068,6 +1062,7 @@ msgid "Last Appraisal Date"
 msgstr "Son Değerlendirme Tarihi"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Last Meeting"
@@ -1121,6 +1116,7 @@ msgid "Main Attachment"
 msgstr "Ana Ek"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__manager_id
@@ -1178,6 +1174,7 @@ msgid "Meetings"
 msgstr "Toplantılar"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Meets expectations"
@@ -1220,6 +1217,7 @@ msgid "Name"
 msgstr "Adı"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Needs improvement"
@@ -1256,18 +1254,21 @@ msgid "Next Appraisal Date"
 msgstr "Sonraki Değerleme Tarihi"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Next Meeting"
 msgstr "Sonraki Toplantı"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "No Meeting"
 msgstr "Toplantı Yok"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Note"
@@ -1308,6 +1309,7 @@ msgid "Ongoing Appraisal Count"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal_goal.py:0
 #, python-format
 msgid "Operation not supported"
@@ -1347,6 +1349,7 @@ msgstr ""
 "tartışın."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Previous Appraisals"
@@ -1428,12 +1431,6 @@ msgstr "Bir Değerlendirme Talebi"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_user_id
 msgid "Responsible User"
 msgstr "Sorumlu Kullanıcı"
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_sms_error
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr "SMS İleti hatası"
 
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
@@ -1525,6 +1522,7 @@ msgstr ""
 "Planlanan: Gelecek aktiviteler."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Strongly Exceed Expectations"
@@ -1541,12 +1539,14 @@ msgid "Subject..."
 msgstr "Konu..."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Such grouping is not allowed."
 msgstr "Böyle bir gruplamaya izin verilmez."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid ""
@@ -1557,6 +1557,7 @@ msgstr ""
 "olmadan, yeni Değerlendirme %s tarihinde otomatik olarak oluşturulacaktır."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The appraisal's status has been set to Done by %s"
@@ -1590,6 +1591,7 @@ msgid "The duration time must be bigger or equal to 1 month."
 msgstr "Süre 1 aya eşit veya daha büyük olmalıdır."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""
@@ -1601,13 +1603,14 @@ msgstr ""
 "belirleyebilirsiniz."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The employee feedback cannot be changed by managers."
 msgstr "Çalışan geri bildirimi yöneticiler tarafından değiştirilemez."
 
 #. module: hr_appraisal
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_appraisal/static/src/fields/boolean_confirm.js:0
 #, python-format
 msgid ""
@@ -1616,6 +1619,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The manager feedback cannot be changed by an employee."
@@ -1654,6 +1658,7 @@ msgid "Type of the exception activity on record."
 msgstr "Kayıttaki istisna aktivite türü."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/wizard/request_appraisal.py:0
 #, python-format
 msgid "Unable to post message, please configure the sender's email address."
@@ -1667,6 +1672,7 @@ msgid "Uncomplete Goals Count"
 msgstr "Tamamlanmamış Hedef Sayısı"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
@@ -1690,18 +1696,7 @@ msgid "Waiting Feedback from Employee/Managers"
 msgstr "Çalışan/Yöneticilerden Geri Bildirim Bekleme"
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__website_message_ids
-msgid "Website Messages"
-msgstr "Websitesi Mesajları"
-
-#. module: hr_appraisal
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__website_message_ids
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__website_message_ids
-msgid "Website communication history"
-msgstr "Websitesi iletişim geçmişi"
-
-#. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""
@@ -1713,6 +1708,7 @@ msgstr ""
 "belirleyecektir."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "You cannot delete appraisal which is not in draft or canceled state"
@@ -1727,6 +1723,7 @@ msgid "Your Appraisal has been completed"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""
@@ -1739,6 +1736,7 @@ msgstr ""
 "belirleyebilirsiniz."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""

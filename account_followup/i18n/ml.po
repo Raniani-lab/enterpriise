@@ -216,7 +216,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Actions"
-msgstr ""
+msgstr "ആക്ഷൻസ്"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
@@ -232,12 +232,12 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__activity_type_id
 msgid "Activity Type"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് "
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
 msgid "Add a note"
-msgstr ""
+msgstr "ഒരു കുറിപ്പ് ചേർക്കുക"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -607,7 +607,7 @@ msgstr "ഇൻവോയ്സുകൾ"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__is_mail_template_editor
 msgid "Is Editor"
-msgstr ""
+msgstr "എഡിറ്റർ ആണ്"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_move_line
@@ -663,7 +663,7 @@ msgstr "മെയിൽ ടെംപ്ലേറ്റ്"
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_line_filter
 msgid "Manual"
-msgstr ""
+msgstr "മാനുവൽ"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__next_action_date
@@ -731,7 +731,7 @@ msgstr "ഓപ്ഷൻസ്"
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__invoice_origin
 #, python-format
 msgid "Origin"
-msgstr ""
+msgstr "ഒറിജിൻ"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
@@ -748,7 +748,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "പാർട്ണർ"
 
 #. module: account_followup
 #. odoo-python
@@ -756,7 +756,7 @@ msgstr ""
 #: model:mail.template,name:account_followup.email_template_followup_1
 #, python-format
 msgid "Payment Reminder"
-msgstr ""
+msgstr "പേയ്‌മെന്റ് ഓർമ്മപ്പെടുത്തൽ"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__print
@@ -777,12 +777,12 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Reconcile"
-msgstr ""
+msgstr "റീകൺസയിൽ"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Remind"
-msgstr ""
+msgstr "ഓർമ്മിപ്പിക്കുക"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_reminder_type
@@ -861,7 +861,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms
 msgid "Sms"
-msgstr ""
+msgstr "എസ്എംഎസ്"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms_body
@@ -877,7 +877,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__sms_template_id
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms_template_id
 msgid "Sms Template"
-msgstr ""
+msgstr "എസ്എംഎസ് ടെംപ്ലേറ്റ്"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__subject
@@ -1009,7 +1009,7 @@ msgstr ""
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "payment reminder"
-msgstr ""
+msgstr "പേയ്മെന്റ് ഓർമ്മപ്പെടുത്തൽ"
 
 #. module: account_followup
 #: model:mail.template,subject:account_followup.demo_followup_email_template_2

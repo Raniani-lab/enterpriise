@@ -47,7 +47,7 @@ msgstr ""
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_ids
 msgid "Alerts"
-msgstr ""
+msgstr "അലേർട്ടുകൾ"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__check_ids
@@ -70,7 +70,7 @@ msgstr "പ്രൊഡക്ഷൻ ഓർഡർ"
 #: model:ir.model,name:quality_mrp.model_quality_alert
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
 msgid "Quality Alert"
-msgstr ""
+msgstr "ഗുണനിലവാര മുന്നറിയിപ്പ്"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_count
@@ -80,7 +80,7 @@ msgstr ""
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "ഗുണനിലവാര പരിശോധന"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_check_fail
@@ -101,7 +101,7 @@ msgstr ""
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "ക്വാളിറ്റി കോൺട്രോൾ പോയിന്റ് "
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_stock_move

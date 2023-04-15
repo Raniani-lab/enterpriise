@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
@@ -20,14 +20,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: quality_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
 #, python-format
 msgid "Capture image..."
 msgstr ""
 
 #. module: quality_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
 #, python-format
 msgid "Connection to device failed"
@@ -59,7 +59,7 @@ msgid "Identifier"
 msgstr ""
 
 #. module: quality_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
 #, python-format
 msgid "Please check if the device is still connected."
@@ -73,12 +73,12 @@ msgstr ""
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "ഗുണനിലവാര പരിശോധന"
 
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "ക്വാളിറ്റി കോൺട്രോൾ പോയിന്റ് "
 
 #. module: quality_iot
 #: model_terms:ir.ui.view,arch_db:quality_iot.iot_device_view_form_inherit

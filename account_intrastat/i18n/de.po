@@ -3,16 +3,16 @@
 # 	* account_intrastat
 # 
 # Translators:
-# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,6 +76,7 @@ msgid "All"
 msgstr "Alle"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Arrival"
@@ -170,6 +171,7 @@ msgid "Default transport mode"
 msgstr "Standard-Transportmodus"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Dispatch"
@@ -228,7 +230,7 @@ msgstr "Intrastat Bericht"
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_report_handler
 msgid "Intrastat Report Custom Handler"
-msgstr ""
+msgstr "Intrastat-Bericht Benutzerdefinierter Handler"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_bank_statement_line__intrastat_transport_mode_id
@@ -265,12 +267,14 @@ msgid "Intrastat transaction code"
 msgstr "Intrastat-Transaktionscode"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid commodity intrastat code products."
 msgstr ""
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid transaction intrastat code entries."
@@ -292,10 +296,14 @@ msgid "Only with VAT numbers"
 msgstr "Nur mit Umsatzsteuer-Identifikationsnummer"
 
 #. module: account_intrastat
-#: model:account.report.column,name:account_intrastat.intrastat_report_column_product_origin_country
 #: model_terms:ir.ui.view,arch_db:account_intrastat.report_invoice_document_intrastat_2019
 msgid "Origin"
 msgstr "Herkunft"
+
+#. module: account_intrastat
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_product_origin_country
+msgid "Origin Country"
+msgstr "Herkunftsland"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_partner_vat
@@ -360,19 +368,19 @@ msgstr "Standard"
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_supplementary_unit
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Supplementary Unit"
-msgstr ""
+msgstr "Zusätzliche Einheit"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_supplementary_units
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_supplementary_unit_amount
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_supplementary_unit_amount
 msgid "Supplementary Units"
-msgstr ""
+msgstr "Zusätzliche Einheiten"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
 msgid "Supplementary Units per Product"
-msgstr ""
+msgstr "Zusätzliche Einheiten pro Produkt"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_system
@@ -390,9 +398,10 @@ msgstr ""
 #: model:ir.model.fields,help:account_intrastat.field_product_product__intrastat_supplementary_unit_amount
 #: model:ir.model.fields,help:account_intrastat.field_product_template__intrastat_supplementary_unit_amount
 msgid "The number of supplementary units per product quantity."
-msgstr ""
+msgstr "Die Anzahl zusätzlicher Einheiten je Produktmenge"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Total"
@@ -425,16 +434,18 @@ msgid "Triplet code/type/country_id must be unique."
 msgstr "Genetischer Code/typ/Länder_id muss eindeutig sein."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined supplementary unit products."
-msgstr ""
+msgstr "Undefinierte Anzahl zusätzlicher Einheiten für Produkte."
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined weight products."
-msgstr ""
+msgstr "Undefiniertes Gewichteprodukt"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_value
@@ -442,6 +453,7 @@ msgid "Value"
 msgstr "Wert"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "View Journal Entry"
@@ -490,42 +502,42 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_h2o2
 msgid "kg H2O2"
-msgstr ""
+msgstr "kg H2O2"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_k2o
 msgid "kg K2O"
-msgstr ""
+msgstr "kg K2O"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_koh
 msgid "kg KOH"
-msgstr ""
+msgstr "kg KOH"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_n
 msgid "kg N"
-msgstr ""
+msgstr "kg N"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_naoh
 msgid "kg NaOH"
-msgstr ""
+msgstr "kg NaOH"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_p2o5
 msgid "kg P2O5"
-msgstr ""
+msgstr "kg P2O5"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_u
 msgid "kg U"
-msgstr ""
+msgstr "kg U"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_met_am_
 msgid "kg met.am."
-msgstr ""
+msgstr "kg met.am."
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg/net_eda
@@ -540,12 +552,12 @@ msgstr "l alc. 100 %"
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__m2
 msgid "m2"
-msgstr ""
+msgstr "m2"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__m3
 msgid "m3"
-msgstr ""
+msgstr "m3"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__p/st
@@ -575,7 +587,7 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__t__co2
 msgid "t. CO2"
-msgstr ""
+msgstr "t. CO2"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template

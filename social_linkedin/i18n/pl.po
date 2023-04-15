@@ -12,9 +12,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:29+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
@@ -55,7 +55,7 @@ msgid "App Secret"
 msgstr "Sekret aplikacji"
 
 #. module: social_linkedin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_linkedin/static/src/xml/social_linkedin_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_linkedin.social_stream_post_view_kanban
 #, python-format
@@ -83,7 +83,7 @@ msgid "Display LinkedIn Preview"
 msgstr "Wyświetl podgląd LinkedIn"
 
 #. module: social_linkedin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_linkedin/static/src/xml/social_linkedin_templates.xml:0
 #, python-format
 msgid "Likes"
@@ -107,7 +107,7 @@ msgid "LinkedIn Account URN"
 msgstr "URN konta LinkedIn"
 
 #. module: social_linkedin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_linkedin/static/src/js/stream_post_kanban_record.js:0
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_comments_count
 #, python-format
@@ -151,6 +151,7 @@ msgid "LinkedIn author image URL"
 msgstr "URL obrazu autora LinkedIn"
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/controllers/main.py:0
 #, python-format
 msgid "LinkedIn did not provide a valid access token."
@@ -222,6 +223,7 @@ msgid "The access token is used to perform request to the REST API"
 msgstr "Token dostępu jest wykorzystywany do wykonywania zapytań REST API."
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/models/social_media.py:0
 #, python-format
 msgid ""
@@ -232,18 +234,21 @@ msgstr ""
 "aplikacji."
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/models/social_account.py:0
 #, python-format
 msgid "There is no page linked to this account"
 msgstr "Nie ma strony powiązanej z tym kontem."
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/controllers/main.py:0
 #, python-format
 msgid "There was a authentication issue during your request."
 msgstr "Podczas Twojego zapytania wystąpił problem z uwierzytelnianiem."
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
@@ -269,6 +274,7 @@ msgid "Vanity name, used to generate a link to the author"
 msgstr ""
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/models/social_live_post.py:0
 #, python-format
 msgid ""
@@ -279,6 +285,7 @@ msgstr ""
 "przesłać go ponownie (błąd: Failed during upload registering)."
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/models/social_live_post.py:0
 #, python-format
 msgid ""
@@ -288,18 +295,21 @@ msgstr ""
 "zamieścić go ponownie."
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/models/social_stream.py:0
 #, python-format
 msgid "Wrong stream type for \"%s\""
 msgstr "Nieprawidłowy typ strumienia dla \"%s\""
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
 msgstr "Nie masz aktywnej subskrypcji. Możesz ją zakupić tutaj: %s"
 
 #. module: social_linkedin
+#. odoo-python
 #: code:addons/social_linkedin/models/social_live_post.py:0
 #, python-format
 msgid "unknown"

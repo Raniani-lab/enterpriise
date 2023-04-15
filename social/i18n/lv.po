@@ -296,7 +296,7 @@ msgstr "Uzņēmums"
 #. module: social
 #: model:ir.model,name:social.model_res_config_settings
 msgid "Config Settings"
-msgstr "Konfigurācijas iestatījumi"
+msgstr "Konfigurācijas uzstādījumi"
 
 #. module: social
 #: model:ir.ui.menu,name:social.menu_social_configuration

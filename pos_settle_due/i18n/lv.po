@@ -70,7 +70,7 @@ msgstr ""
 #: code:addons/pos_settle_due/static/src/js/PaymentScreen.js:0
 #, python-format
 msgid "The order is empty"
-msgstr ""
+msgstr "Pasūtījums ir tukšs"
 
 #. module: pos_settle_due
 #. odoo-javascript

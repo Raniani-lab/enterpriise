@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
@@ -22,6 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid ""
@@ -107,6 +108,7 @@ msgid "<span title=\"Send by Mail\">Refer Friend</span>"
 msgstr "<span title=\"Invia con e-mail\">Segnala amico</span>"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/wizard/hr_referral_alert_mail_wizard.py:0
 #, python-format
 msgid ""
@@ -180,21 +182,7 @@ msgid "Applicant"
 msgstr "Candidato"
 
 #. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
-msgid "Applicant Referred"
-msgstr "Candidato con referenza"
-
-#. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
-msgid "Applicant Referred Hired"
-msgstr "Candidati con referenza assunti"
-
-#. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
-msgid "Applicant Referred Refused"
-msgstr "Candidati con referenza respinti"
-
-#. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Applicant must have a company."
@@ -217,6 +205,7 @@ msgid "Avatar"
 msgstr "Avatar"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__awarded_employees
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_backend_kanban
@@ -262,14 +251,14 @@ msgid "Channel"
 msgstr "Canale"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Choose an avatar for your new friend!"
 msgstr "Scegli un avatar per il tuo nuovo amico!"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Click to level up!"
@@ -341,7 +330,7 @@ msgid "Created on"
 msgstr "Data creazione"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.js:0
 #: code:addons/hr_referral/static/src/views/dashboard.js:0
 #: code:addons/hr_referral/static/src/views/dashboard.js:0
@@ -390,6 +379,7 @@ msgstr "Ufficio"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__description
+#: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_form
 msgid "Description"
 msgstr "Descrizione"
 
@@ -399,6 +389,7 @@ msgid "Direct Clicks"
 msgstr "Clic diretti"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/report/hr_referral_report.py:0
 #, python-format
 msgid "Direct Referral"
@@ -424,6 +415,7 @@ msgid "Display Name"
 msgstr "Nome visualizzato"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/wizard/hr_referral_send_mail.py:0
 #, python-format
 msgid "Do not have access"
@@ -441,7 +433,6 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__earned_points
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__earned_points
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
 msgid "Earned Points"
 msgstr "Punti guadagnati"
 
@@ -451,7 +442,7 @@ msgid "Email"
 msgstr "E-mail"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Email a friend"
@@ -557,14 +548,14 @@ msgid "Front"
 msgstr ""
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Gather your team"
 msgstr "Riunisci la tua squadra"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Gather your team!"
@@ -607,6 +598,7 @@ msgid "Has Referrer"
 msgstr "Ha un segnalatore"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/wizard/hr_referral_send_mail.py:0
 #, python-format
 msgid ""
@@ -618,6 +610,7 @@ msgstr ""
 "lavoro</a>"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/wizard/hr_referral_send_mail.py:0
 #, python-format
 msgid ""
@@ -724,7 +717,7 @@ msgid "Job Positions"
 msgstr "Posizioni lavorative"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Job Referral Program"
@@ -801,7 +794,7 @@ msgid "Let's share a job position."
 msgstr "Condividiamo una posizione lavorativa."
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Level"
@@ -881,19 +874,21 @@ msgid "My Referral"
 msgstr "Le mie referenze"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/wizard/hr_referral_alert_mail_wizard.py:0
 #, python-format
 msgid "New Alert In Referrals App"
 msgstr ""
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
 #, python-format
 msgid "New gift awarded for %s"
 msgstr "Assegnato un nuovo regalo per %s"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Next"
@@ -968,7 +963,7 @@ msgid "Onboarding"
 msgstr "Inserimento lavorativo"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Ongoing"
@@ -1002,11 +997,6 @@ msgstr "Punti"
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__points_not_hired
 msgid "Points Given For Not Hired"
 msgstr "Punti dati per non assunto"
-
-#. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
-msgid "Points Given For Refused"
-msgstr "Punti dati per respinto"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__points_missing
@@ -1101,11 +1091,6 @@ msgid "Referral Points"
 msgstr "Punti referenza"
 
 #. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.hr_recruitment_report_view_dashboard_inherit
-msgid "Referral Rate"
-msgstr "Tasso referenze"
-
-#. module: hr_referral
 #: model:res.groups,name:hr_referral.group_hr_referral_reward_responsible_user
 msgid "Referral Reward Responsible User"
 msgstr ""
@@ -1122,19 +1107,21 @@ msgid "Referral State"
 msgstr "Stato referenza"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Referral: %s"
 msgstr "Referenza: %s"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Referral: %s (%s)"
 msgstr "Referenza: %s (%s)"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #: model:ir.ui.menu,name:hr_referral.menu_hr_referral_root
 #: model_terms:ir.ui.view,arch_db:hr_referral.res_config_settings_view__form
@@ -1153,16 +1140,6 @@ msgid "Referred By User"
 msgstr "Segnalato da utente"
 
 #. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.hr_recruitment_report_view_dashboard_inherit
-msgid "Referred Hired People"
-msgstr "Persone segnalate assunte"
-
-#. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.hr_recruitment_report_view_dashboard_inherit
-msgid "Referrer People"
-msgstr "Persone segnalatrici"
-
-#. module: hr_referral
 #: model:ir.ui.menu,name:hr_referral.menu_report_employee_referral_all
 msgid "Reporting"
 msgstr "Rendiconto"
@@ -1178,7 +1155,7 @@ msgid "Responsible User"
 msgstr "Utente responsabile"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Restart Onboarding"
@@ -1190,7 +1167,7 @@ msgid "Restore Default"
 msgstr ""
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Reward"
@@ -1202,7 +1179,7 @@ msgid "Reward for Referrals"
 msgstr "Premio per referenze"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #: model:ir.actions.act_window,name:hr_referral.action_hr_referral_reward
 #: model:ir.actions.act_window,name:hr_referral.action_hr_referral_reward_configuration
@@ -1266,7 +1243,7 @@ msgid "Settings"
 msgstr "Impostazioni"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Share"
@@ -1298,18 +1275,25 @@ msgid "Show in Referrals"
 msgstr ""
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Skip"
 msgstr "Salta"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Skip and Start"
 msgstr "Salta e inizia"
+
+#. module: hr_referral
+#. odoo-python
+#: code:addons/hr_referral/models/hr_applicant.py:0
+#, python-format
+msgid "Sorry, your referral %s has been refused in the recruitment process."
+msgstr ""
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id
@@ -1327,7 +1311,7 @@ msgid "Stage"
 msgstr "Fase"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
@@ -1336,16 +1320,11 @@ msgid "Start"
 msgstr "Avvio"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Start Now"
 msgstr "Inizia ora"
-
-#. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
-msgid "State"
-msgstr "Provincia"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__activity_state
@@ -1367,7 +1346,7 @@ msgid "Subject"
 msgstr "Oggetto"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Successful"
@@ -1377,13 +1356,6 @@ msgstr "Con successo"
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__text
 msgid "Text"
 msgstr "Testo"
-
-#. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.hr_recruitment_report_view_dashboard_inherit
-msgid ""
-"The % is based on the total of applicant that have been referred by someone "
-"else divided by the total of applicant."
-msgstr ""
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_friend__image
@@ -1432,14 +1404,14 @@ msgid "This report performs analysis on your employee referral."
 msgstr "Questo resoconto esegue analisi delle referenze dei dipendenti."
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "To Spend"
 msgstr "Da utilizzare"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Total"
@@ -1500,18 +1472,14 @@ msgid "User responsible of this gift."
 msgstr "Utente responsabile per il regalo."
 
 #. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
-msgid "Users Referrer"
-msgstr "Segnalatore utenti"
-
-#. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "View Jobs"
 msgstr "Vedi lavori"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_job.py:0
 #, python-format
 msgid "Visit Webpage"
@@ -1533,12 +1501,14 @@ msgid "Welcome Onboarding in Referral App"
 msgstr ""
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "You are not allowed to access applicant records."
 msgstr "Nessuna autorizzazione per accedere ai record del candidato."
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/utm_campaign.py:0
 #, python-format
 msgid ""
@@ -1547,6 +1517,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/utm_source.py:0
 #, python-format
 msgid ""
@@ -1555,6 +1526,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_referral_reward.py:0
 #, python-format
 msgid ""
@@ -1575,12 +1547,14 @@ msgid "You need another"
 msgstr "Hai bisogno di un altro/a"
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Your referrer got a step further!"
 msgstr ""
 
 #. module: hr_referral
+#. odoo-python
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Your referrer is hired!"
@@ -1592,7 +1566,7 @@ msgid "click(s)"
 msgstr "clic"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "has been hired!"
@@ -1604,14 +1578,14 @@ msgid "https://www.google.com"
 msgstr "https://www.google.com"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "reward"
 msgstr "premio"
 
 #. module: hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "share"

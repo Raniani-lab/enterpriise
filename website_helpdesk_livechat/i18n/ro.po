@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
 "Last-Translator: Cozmin Candea <office@terrabit.ro>, 2023\n"
 "Language-Team: Romanian (https://app.transifex.com/odoo/teams/41243/ro/)\n"
@@ -23,6 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid " This channel is private. People must be invited to join it."
@@ -31,12 +32,14 @@ msgstr ""
 "el."
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/chatbot_script_step.py:0
 #, python-format
 msgid "%(name)s's Ticket"
 msgstr "Tichetul lui %(name)s"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -87,13 +90,14 @@ msgid "Create Ticket"
 msgstr "Creare Bilet"
 
 #. module: website_helpdesk_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Create a new helpdesk ticket"
 msgstr "Creați un nou tichet de asistență"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "Created a new ticket: %s"
@@ -172,6 +176,7 @@ msgid "No canned reponses found. Let's create one!"
 msgstr "Nu s-au găsit răspunsuri predefinite. Hai să creăm unul!"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -203,13 +208,14 @@ msgid "Please write below your customer reference."
 msgstr "Vă rugăm să scrieți mai jos referința dvs. de client."
 
 #. module: website_helpdesk_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Search for a helpdesk ticket"
 msgstr "Căutați un tichet de asistență"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
@@ -252,6 +258,7 @@ msgid "View Channels"
 msgstr "Vizualizați canalele"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "We found some matched ticket(s) related to the search query: %s"
@@ -281,18 +288,21 @@ msgid "Yes"
 msgstr "Da"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "You are in a private conversation with <b>%(mentions)s</b>."
 msgstr "Sunteți într-o conversație privată cu <b>%(mentions)s</b>."
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "You are in channel <b>#%s</b>."
 msgstr "Sunteți în canal  <b>#%s</b>."
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""

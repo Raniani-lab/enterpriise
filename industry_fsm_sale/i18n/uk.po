@@ -8,12 +8,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023\n"
-"Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
+"Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -21,6 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
@@ -28,13 +29,14 @@ msgid "%s - %s"
 msgstr "%s - %s"
 
 #. module: industry_fsm_sale
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "<b>Invoice your time and material</b> to your customer."
 msgstr "<b>Виставляйте у рахунку час та матеріали</b> вашому клієнту."
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid ""
@@ -77,6 +79,7 @@ msgid "<span>Disc.%</span>"
 msgstr "<span>Зниж.%</span>"
 
 #. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_sharing_project_task_inherit_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "<span>Products</span>"
 msgstr "<span>Товари</span>"
@@ -102,6 +105,7 @@ msgid "<strong>Untaxed amount</strong>"
 msgstr "<strong>Сума без податків</strong>"
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
@@ -126,6 +130,7 @@ msgstr ""
 "завдання або за ставкою співробітника."
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/wizard/sale_make_invoice_advance.py:0
 #, python-format
 msgid "An invoice has been created: %s"
@@ -147,6 +152,7 @@ msgid "Blocked"
 msgstr "Заблоковано"
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid ""
@@ -157,13 +163,14 @@ msgstr ""
 "замовлення на продаж без відмінностей."
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Choose Products"
 msgstr "Оберіть товари"
 
 #. module: industry_fsm_sale
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid ""
@@ -174,7 +181,7 @@ msgstr ""
 "тощо).</i>"
 
 #. module: industry_fsm_sale
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid ""
@@ -191,7 +198,7 @@ msgid "Config Settings"
 msgstr "Налаштування"
 
 #. module: industry_fsm_sale
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Confirm the creation of your <b>invoice</b>."
@@ -275,7 +282,6 @@ msgid "Favorites"
 msgstr "Закладки"
 
 #. module: industry_fsm_sale
-#: model:product.product,name:industry_fsm_sale.field_service_product
 #: model:product.template,name:industry_fsm_sale.field_service_product_product_template
 msgid "Field Service"
 msgstr "Виїзне обслуговування"
@@ -296,29 +302,26 @@ msgid "Group By"
 msgstr "Групувати за"
 
 #. module: industry_fsm_sale
-#: model:product.product,uom_name:industry_fsm_sale.field_service_product
-#: model:product.template,uom_name:industry_fsm_sale.field_service_product_product_template
-msgid "Hours"
-msgstr "Години"
-
-#. module: industry_fsm_sale
 #: model:project.task.type,legend_normal:industry_fsm_sale.field_service_project_stage_0
 msgid "In Progress"
 msgstr "В процесі"
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid operator: %s"
 msgstr "Недійсний оператор: %s"
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid value: %s"
 msgstr "Недійсне значення: %s"
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Invoice"
@@ -344,6 +347,7 @@ msgstr ""
 "завдань."
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_sharing_project_task_inherit_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_form_quotation
@@ -357,7 +361,7 @@ msgid "Is Task Phone Update"
 msgstr "Оновлення робочого телефону"
 
 #. module: industry_fsm_sale
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Let's <b>track the material</b> you use for your task."
@@ -365,7 +369,7 @@ msgstr ""
 "Давайте <b>відстежувати матеріали</b>, які ви використовуєте для завдань."
 
 #. module: industry_fsm_sale
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Let's create a new <b>product</b>."
@@ -462,7 +466,6 @@ msgstr "Варіант товару"
 #: model:ir.actions.act_window,name:industry_fsm_sale.product_action_fsm
 #: model:ir.ui.menu,name:industry_fsm_sale.fsm_menu_settings_product
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_sharing_project_task_inherit_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "Products"
 msgstr "Товари"
@@ -491,6 +494,7 @@ msgid "Quantity"
 msgstr "Кількість"
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/controllers/portal.py:0
 #, python-format
 msgid "Quotation"
@@ -502,12 +506,14 @@ msgid "Quotation Count"
 msgstr "Підрахунок комерційних пропозицій"
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/models/sale_order.py:0
 #, python-format
 msgid "Quotation created: %s"
 msgstr "Комерційну пропозицію створено: %s"
 
 #. module: industry_fsm_sale
+#. odoo-python
 #: code:addons/industry_fsm_sale/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_sharing_project_task_inherit_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_form_quotation
@@ -570,23 +576,6 @@ msgid ""
 msgstr ""
 "Рядок замовлення на продаж, який буде вибрано за замовчуванням у завданнях і табелях цього проекту, за винятком випадків, коли працівник, указаний у табелях, явно пов’язаний з іншим рядком замовлення на продаж в проекті.\n"
 "За потреби його можна змінити для кожного завдання та окремого запису в табелі."
-
-#. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
-#, python-format
-msgid "Save your <b>product</b>."
-msgstr "Збережіть ваш <b>товар</b>."
-
-#. module: industry_fsm_sale
-#: model:ir.model.fields,help:industry_fsm_sale.field_product_product__project_id
-#: model:ir.model.fields,help:industry_fsm_sale.field_product_template__project_id
-msgid ""
-"Select a billable project on which tasks can be created. This setting must "
-"be set for each company."
-msgstr ""
-"Виберіть оплачуваний проект, за яким можна створювати завдання. Це "
-"налаштування потрібно встановити для кожної компанії."
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__timesheet_product_id
@@ -685,14 +674,14 @@ msgid "Upselling Opportunity"
 msgstr "Можливість допродажу"
 
 #. module: industry_fsm_sale
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to navigate to your <b>list of products</b>."
 msgstr "Використовуйте бредкрамбс для навігації вашого <b>списку товарів</b>."
 
 #. module: industry_fsm_sale
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to return to your <b>task</b>."
@@ -700,7 +689,7 @@ msgstr ""
 "Використовуйте ваші бредкраамбс для повернення на ваше <b>завдання</b>."
 
 #. module: industry_fsm_sale
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Wait for the invoice to show up"

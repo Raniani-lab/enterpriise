@@ -14,7 +14,7 @@ msgstr ""
 "POT-Creation-Date: 2023-02-02 10:53+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -141,14 +141,14 @@ msgstr ""
 #. module: sign_itsme
 #: model:ir.model.fields,field_description:sign_itsme.field_sign_request_item__itsme_signer_birthdate
 msgid "itsme® Signer's Birthdate"
-msgstr ""
+msgstr "itsme® Geburtstag des Unterzeichners"
 
 #. module: sign_itsme
 #: model:ir.model.fields,field_description:sign_itsme.field_sign_request_item__itsme_signer_name
 msgid "itsme® Signer's Name"
-msgstr ""
+msgstr "itsme® Name des Unterzeichners"
 
 #. module: sign_itsme
 #: model:ir.model.fields,field_description:sign_itsme.field_sign_request_item__itsme_validation_hash
 msgid "itsme® Validation Token"
-msgstr ""
+msgstr "itsme®-Validierungstoken"

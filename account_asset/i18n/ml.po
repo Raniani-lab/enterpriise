@@ -3,7 +3,9 @@
 # 	* account_asset
 # 
 # Translators:
+# Rafeeq Salam, 2023
 # Niyas Raphy, 2023
+# Nikhil Krishnan, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-16 09:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
+"Last-Translator: Nikhil Krishnan, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -293,7 +295,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് ഐക്കൺ"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -344,7 +346,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
 msgid "Analytic"
-msgstr ""
+msgstr "അനാലിറ്റിക്"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
@@ -357,7 +359,7 @@ msgstr "അനലിറ്റിക് പ്രിസിഷൻ"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: account_asset
 #. odoo-python
@@ -517,7 +519,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr ""
+msgstr "അസറ്റ്/റവന്യൂ തിരിച്ചറിയൽ"
 
 #. module: account_asset
 #. odoo-python
@@ -551,7 +553,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ് എണ്ണം"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -1153,7 +1155,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Date"
-msgstr ""
+msgstr "എക്സ്പെൻസ്‌ തീയതി"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1446,7 +1448,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__model
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_kanban
 msgid "Model"
-msgstr ""
+msgstr "മോഡൽ"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -1518,7 +1520,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "അടുത്ത പ്രവർത്തന സമയപരിധി"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_summary
@@ -1769,7 +1771,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #, python-format
 msgid "Revenue"
-msgstr ""
+msgstr "വരുമാനം"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
@@ -2063,7 +2065,7 @@ msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് കമ്മ്യൂണിക്കേഷൻ ചരിത്രം"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__state

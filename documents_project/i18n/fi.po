@@ -36,11 +36,13 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Joukko ehtoja ja toimia, jotka ovat kaikkien ehtoja vastaavien "
+"liitetiedostojen käytettävissä"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_ask_for_validation
 msgid "Ask for Validation"
-msgstr ""
+msgstr "Pyydä varmistusta"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_ir_attachment
@@ -75,7 +77,7 @@ msgstr "Oletustunnisteet"
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_deprecate
 msgid "Deprecate"
-msgstr ""
+msgstr "Poista käytöstä"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_deprecated
@@ -109,7 +111,7 @@ msgstr ""
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "Asiakirjat-työtila"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_draft
@@ -119,12 +121,12 @@ msgstr "Luonnos"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_document__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "On jaettu"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_mark_as_draft
 msgid "Mark As Draft"
-msgstr ""
+msgstr "Merkitse luonnokseksi"
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -163,7 +165,7 @@ msgstr "Projektit"
 #: model:ir.model.fields,field_description:documents_project.field_project_project__shared_document_ids
 #: model:ir.model.fields,field_description:documents_project.field_project_task__shared_document_ids
 msgid "Shared Documents"
-msgstr ""
+msgstr "Jaetut asiakirjat"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__shared_document_count
@@ -253,7 +255,7 @@ msgstr "Vahvistettu"
 #: model:ir.model.fields,field_description:documents_project.field_project_project__documents_folder_id
 #: model:ir.model.fields,field_description:documents_project.field_project_task__documents_folder_id
 msgid "Workspace"
-msgstr ""
+msgstr "Työtila"
 
 #. module: documents_project
 #: model:ir.model.fields,help:documents_project.field_project_project__documents_folder_id

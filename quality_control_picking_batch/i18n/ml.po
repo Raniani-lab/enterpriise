@@ -43,7 +43,7 @@ msgstr "പ്രോഡക്റ്റ് മൂവ്‌സ് (സ്റ്റ
 #. module: quality_control_picking_batch
 #: model:ir.model,name:quality_control_picking_batch.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "ഗുണനിലവാര പരിശോധന"
 
 #. module: quality_control_picking_batch
 #: model:ir.model.fields,field_description:quality_control_picking_batch.field_stock_picking_batch__quality_check_todo

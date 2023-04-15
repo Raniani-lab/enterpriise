@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Bohdan Lisnenko, 2022
-# Martin Trigaux, 2022
 # Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -190,8 +190,8 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-plus-circle me-1\"/>Create"
-msgstr "<i class=\"fa fa-plus-circle me-1\"/>Створити"
+msgid "<i class=\"fa fa-plus-circle me-1\"/>New"
+msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -1969,6 +1969,11 @@ msgid "Link an article."
 msgstr "Дайте лінк на статтю."
 
 #. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.articles_template
+msgid "Load more"
+msgstr "Завантажити більше"
+
+#. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_locked
 msgid "Locked"
 msgstr "Заблокований"
@@ -2164,6 +2169,11 @@ msgid "No access"
 msgstr "Немає доступу"
 
 #. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
+msgid "No article found"
+msgstr ""
+
+#. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
@@ -2299,11 +2309,6 @@ msgstr "Іконка вилучення"
 #, python-format
 msgid "Remove Member"
 msgstr "Вилучити учасника"
-
-#. module: knowledge
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "Remove from Trash"
-msgstr "Вилучити зі смітника"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2582,6 +2587,15 @@ msgstr "Тема — це назва найвищої батьківської �
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
 msgstr "Перегляд не існує або у вас немає доступу до нього."
+
+#. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/controllers/main.py:0
+#, python-format
+msgid ""
+"This Article cannot be unfolded. Either you lost access to it or it has been"
+" deleted."
+msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form

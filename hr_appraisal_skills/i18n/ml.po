@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
@@ -28,7 +28,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal_skills
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_appraisal_skills/static/src/js/appraisal_skills_one2many.xml:0
 #, python-format
 msgid "Add new skills"
@@ -37,7 +37,7 @@ msgstr ""
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__appraisal_id
 msgid "Appraisal"
-msgstr ""
+msgstr "അപ്പ്രൈസൽ"
 
 #. module: hr_appraisal_skills
 #: model:ir.actions.act_window,name:hr_appraisal_skills.hr_appraisal_skill_report_action
@@ -191,7 +191,7 @@ msgstr ""
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__level_progress
 msgid "Progress"
-msgstr ""
+msgstr "പ്രോഗ്രസ്സ്"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,help:hr_appraisal_skills.field_hr_appraisal_skill__level_progress
@@ -212,19 +212,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__skill_id
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill_report__skill_id
 msgid "Skill"
-msgstr ""
+msgstr "സ്കിൽ "
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__skill_level_id
 msgid "Skill Level"
-msgstr ""
+msgstr "സ്കിൽ ലെവൽ"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__skill_type_id
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill_report__skill_type_id
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_skills.hr_appraisal_skill_report_view_search
 msgid "Skill Type"
-msgstr ""
+msgstr "സ്കിൽ ടൈപ്പ് "
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal__skill_ids

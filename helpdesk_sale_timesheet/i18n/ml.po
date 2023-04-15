@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:28+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
@@ -28,11 +28,6 @@ msgstr ""
 #: model:ir.model,name:helpdesk_sale_timesheet.model_account_analytic_line
 msgid "Analytic Account"
 msgstr "അനലിറ്റിക് അക്കൗണ്ട്"
-
-#. module: helpdesk_sale_timesheet
-#: model:helpdesk.ticket,legend_blocked:helpdesk_sale_timesheet.helpdesk_ticket_24
-msgid "Blocked"
-msgstr ""
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket_convert_wizard
@@ -115,11 +110,6 @@ msgid "Hours:"
 msgstr ""
 
 #. module: helpdesk_sale_timesheet
-#: model:helpdesk.ticket,legend_normal:helpdesk_sale_timesheet.helpdesk_ticket_24
-msgid "In Progress"
-msgstr ""
-
-#. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_product_template
 msgid "Product"
 msgstr "പ്രോഡക്റ്റ്"
@@ -140,11 +130,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
 msgid "Project's sale order"
 msgstr ""
-
-#. module: helpdesk_sale_timesheet
-#: model:helpdesk.ticket,legend_done:helpdesk_sale_timesheet.helpdesk_ticket_24
-msgid "Ready"
-msgstr "റെഡി"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
@@ -197,6 +182,7 @@ msgid ""
 msgstr ""
 
 #. module: helpdesk_sale_timesheet
+#. odoo-python
 #: code:addons/helpdesk_sale_timesheet/controllers/portal.py:0
 #: code:addons/helpdesk_sale_timesheet/models/helpdesk.py:0
 #: model:ir.model,name:helpdesk_sale_timesheet.model_sale_order
@@ -253,7 +239,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Timesheets"
-msgstr "ടൈംഷീറ്റുകൾ"
+msgstr "ടൈംഷീറ്"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet

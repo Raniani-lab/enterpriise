@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Niyas Raphy, 2023
+# Nikhil Krishnan, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
+"Last-Translator: Nikhil Krishnan, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -91,7 +92,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് ഐക്കൺ"
 
 #. module: social
 #. odoo-javascript
@@ -146,7 +147,7 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_search
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__has_active_accounts
@@ -164,7 +165,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_attachment_count
 #: model:ir.model.fields,field_description:social.field_social_post__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ് എണ്ണം"
 
 #. module: social
 #. odoo-javascript
@@ -172,7 +173,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_account__audience
 #, python-format
 msgid "Audience"
-msgstr ""
+msgstr "പ്രേക്ഷകർ"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__audience_trend
@@ -985,7 +986,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "അടുത്ത പ്രവർത്തന സമയപരിധി"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_summary
@@ -1192,7 +1193,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__posted
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__posted
 msgid "Posted"
-msgstr ""
+msgstr "പോസ്‌റ്റഡ്‌"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__posting
@@ -1206,7 +1207,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_kanban
 msgid "Posts"
-msgstr ""
+msgstr "പോസ്റ്റ്"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__live_post_ids
@@ -1282,7 +1283,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Reply"
-msgstr ""
+msgstr "മറുപടി"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_user_id
@@ -1386,7 +1387,7 @@ msgstr ""
 #. module: social
 #: model:ir.ui.menu,name:social.menu_social_global
 msgid "Social Marketing"
-msgstr ""
+msgstr "സോഷ്യൽ മാർക്കറ്റിങ്"
 
 #. module: social
 #. odoo-javascript
@@ -1719,7 +1720,7 @@ msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 #: model:ir.model.fields,help:social.field_social_media__website_message_ids
 #: model:ir.model.fields,help:social.field_social_post__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് കമ്മ്യൂണിക്കേഷൻ ചരിത്രം"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__post_method

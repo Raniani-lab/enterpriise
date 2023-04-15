@@ -125,7 +125,7 @@ msgstr "Anzeige Timer"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timer_pause
 msgid "Display Timer Pause"
-msgstr ""
+msgstr "Pause des Timers anzeigen"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timer_resume
@@ -145,7 +145,7 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timer_stop
 msgid "Display Timer Stop"
-msgstr ""
+msgstr "Stopp des Timers anzeigen"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timesheet_timer
@@ -280,6 +280,8 @@ msgid ""
 "Project to which the timesheets of this helpdesk team's tickets will be "
 "linked."
 msgstr ""
+"Projekt, mit dem die Zeiterfassungsbögen für die Tickets dieses "
+"Kundendienstteams verknüpft werden sollen."
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.actions.act_window,help:helpdesk_timesheet.act_hr_timesheet_line_helpdesk
@@ -441,7 +443,7 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__user_timer_id
 msgid "User Timer"
-msgstr ""
+msgstr "Benutzertimer"
 
 #. module: helpdesk_timesheet
 #: model:project.project,name:helpdesk_timesheet.helpdesk_team3_projet

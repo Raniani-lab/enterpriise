@@ -14,7 +14,7 @@ msgstr ""
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -800,7 +800,7 @@ msgstr "Sync Bestellungen"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Sync Pickings"
-msgstr ""
+msgstr "Kommissionierung synchronisieren"
 
 #. module: sale_amazon
 #: model:mail.template,subject:sale_amazon.order_sync_failure
@@ -827,17 +827,17 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order_line__amazon_item_ref
 msgid "The Amazon-defined item reference."
-msgstr ""
+msgstr "Die von Amazon definierte Artikelreferenz."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__api_ref
 msgid "The Amazon-defined marketplace reference."
-msgstr ""
+msgstr "Die von Amazon definierte Markerplace-Referenz."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order__amazon_order_ref
 msgid "The Amazon-defined order reference."
-msgstr ""
+msgstr "Die von Amazon definierte Bestellreferenz."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__team_id
@@ -1025,6 +1025,9 @@ msgid ""
 "                                          cannot be undone. Are you sure you"
 " want to proceed?"
 msgstr ""
+"Diese Aktion trennt die Verbindung Ihres Kontos mit Amazon und"
+"                                           kann nicht rückgängig gemacht "
+"werden. Sind Sie sicher, dass Sie fortfahren möchten?"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_stock_picking
@@ -1034,7 +1037,7 @@ msgstr "Lieferung vornehmen"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Unlink account"
-msgstr ""
+msgstr "Konto trennen"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -1044,7 +1047,7 @@ msgstr "Verfügbare Marktplätze aktualisieren"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_offer_view_tree
 msgid "View on Seller Central"
-msgstr ""
+msgstr "Sicht auf Seller Central"
 
 #. module: sale_amazon
 #. odoo-python
@@ -1056,12 +1059,12 @@ msgstr "Warnung"
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_stock_picking__amazon_sync_pending
 msgid "Whether the picking must be notified to Amazon or not."
-msgstr ""
+msgstr "Ob die Kommissionierung an Amazon gemeldet werden muss oder nicht."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__tax_included
 msgid "Whether the price includes the tax amount or not."
-msgstr ""
+msgstr "Unabhängig davon, ob der Preis den Steuerbetrag enthält."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_stock_location__amazon_location
@@ -1069,11 +1072,13 @@ msgid ""
 "Whether this location represents the stock of a seller managed by Amazon "
 "under the Amazon Fulfillment program or not."
 msgstr ""
+"Wenn dieser Standort den Bestand eines Verkäufers darstellt, der von Amazon "
+"im Rahmen des Amazon-Fulfillment-Programms verwaltet wird"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_crm_team__amazon_team
 msgid "Whether this sales team is associated with Amazon orders or not."
-msgstr ""
+msgstr "Wenn dieses Verkaufsteam mit Amazon-Bestellungen verbunden ist"
 
 #. module: sale_amazon
 #. odoo-python
@@ -1099,6 +1104,8 @@ msgid ""
 "You reached the maximum number of requests for this operation; please try "
 "again later."
 msgstr ""
+"Sie haben die maximale Anzahl von Anfragen für diesen Vorgang erreicht; "
+"bitte versuchen Sie es später noch einmal."
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form

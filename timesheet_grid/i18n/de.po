@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
@@ -531,6 +531,8 @@ msgstr "Zeit vermindern"
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
 msgstr ""
+"Bestimmen Sie „Stundenkosten“ für den Mitarbeiter ein, um die Kosten für "
+"seine Zeit zu verfolgen."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -576,6 +578,8 @@ msgid ""
 "Difference between the number of %s allocated to the project and the number "
 "of %s recorded."
 msgstr ""
+"Differenz zwischen der Anzahl dem Projekt zugewiesener %s und der Anzahl "
+"erfasster %s."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -585,6 +589,8 @@ msgid ""
 "Difference between the number of %s allocated to the task and the number of "
 "%s recorded."
 msgstr ""
+"Differenz zwischen der Anzahl der Aufgabe zugewiesener %s und der Anzahl "
+"erfasster %s."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -635,7 +641,7 @@ msgstr "Anzeige Timer"
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_pause
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_pause
 msgid "Display Timer Pause"
-msgstr ""
+msgstr "Pause des Timers anzeigen"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_resume
@@ -658,7 +664,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_stop
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_stop
 msgid "Display Timer Stop"
-msgstr ""
+msgstr "Stopp des Timers anzeigen"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timesheet_timer
@@ -826,8 +832,8 @@ msgstr "Starten Sie den <b>Timer</b> um eine neue Aktivität zu beginnen."
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
-msgid "Lock Dates"
-msgstr "Sperrdaten"
+msgid "Lock Timesheets"
+msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow
@@ -854,7 +860,7 @@ msgstr "Zusammenführen"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 msgid "Merge Timesheet"
-msgstr ""
+msgstr "Zeiterfassung zusammenfügen"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -863,7 +869,7 @@ msgstr ""
 #: model:ir.model,name:timesheet_grid.model_hr_timesheet_merge_wizard
 #, python-format
 msgid "Merge Timesheets"
-msgstr ""
+msgstr "Zeiterfassungen zusammenfügen"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_min_duration
@@ -1238,7 +1244,7 @@ msgstr "Die Zeit auf dem Stundenzettel muss positiv sein"
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
 #, python-format
 msgid "The timesheets have successfully been merged."
-msgstr ""
+msgstr "Die Zeiterfassungsbögen wurden erfolgreich zusammengeführt."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1267,7 +1273,7 @@ msgstr ""
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "There are no timesheets to merge."
-msgstr ""
+msgstr "Es gibt keine Zeiterfassungsbögen zum Zusammenführen."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1277,6 +1283,8 @@ msgid ""
 "There are no timesheets to reset to draft or they have already been "
 "invoiced."
 msgstr ""
+"Es gibt keine Zeiterfassungen, die auf Entwurf zurückgesetzt werden müssen, "
+"oder sie wurden bereits in Rechnung gestellt."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1325,7 +1333,7 @@ msgstr "Stundenerfassung Genehmiger"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheet_grid_mixin
 msgid "Timesheet Grid mixin"
-msgstr ""
+msgstr "Zeiterfassungsraster Mixin"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__duration_unit_amount
@@ -1387,6 +1395,8 @@ msgid ""
 "Timesheets before the %s (included) have been validated, and can no longer "
 "be %s."
 msgstr ""
+"Zeiterfassungen vor dem %s (einschließlich) wurden validiert und können "
+"nicht mehr %s werden."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -1398,6 +1408,12 @@ msgid ""
 "of 15 min). We recommend having the same value for the minimal duration and "
 "for the round up."
 msgstr ""
+"Über den Timer kodierte Zeiterfassungen, die nicht der Mindestdauer "
+"entsprechen, werden automatisch auf den festgelegten Wert aufgerundet. Wenn "
+"Sie z. B. Ihren Timer bei 00:04:36 anhalten, wird die Dauer deder "
+"Zeiterfassung automatisch auf 00:15 aufgerundet (vorausgesetzt, Sie haben "
+"eine Mindestdauer von 15 Minuten festgelegt). Wir empfehlen, für die "
+"Mindestdauer und die Aufrundung denselben Wert zu verwenden."
 
 #. module: timesheet_grid
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month
@@ -1450,7 +1466,7 @@ msgstr "Erinnerungshäufigkeit für Benutzer"
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__user_timer_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__user_timer_id
 msgid "User Timer"
-msgstr ""
+msgstr "Benutzertimer"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee_public__timesheet_manager_id
@@ -1481,7 +1497,7 @@ msgstr "Genehmigt"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated_status
 msgid "Validated Status"
-msgstr ""
+msgstr "Validierter Status"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated
@@ -1655,7 +1671,7 @@ msgstr "modifiziert"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "or a"
-msgstr ""
+msgstr "oder ein"
 
 #. module: timesheet_grid
 #. odoo-javascript

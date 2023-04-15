@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
@@ -38,6 +38,7 @@ msgid "# ECOs in progress"
 msgstr "# ECOs in Bearbeitung"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "%(approval_name)s %(approver_name)s %(approval_status)s this ECO"
@@ -58,6 +59,7 @@ msgstr ""
 "title=\"Domain alias\"/>&amp;nbsp;"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid ""
@@ -298,6 +300,7 @@ msgid "Attachment Count"
 msgstr "# Anhänge"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__mrp_document_ids
 #, python-format
@@ -331,6 +334,7 @@ msgid "Bill of Material Line"
 msgstr "Stücklistenposition"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.actions.act_window,name:mrp_plm.mrp_bom_action_kanban
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_id
@@ -352,6 +356,7 @@ msgstr ""
 "Fertigungsauftrag oder ein Produktpaket."
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__kanban_state__blocked
 #: model:mrp.eco.stage,legend_blocked:mrp_plm.ecostage_effective
@@ -384,7 +389,7 @@ msgid "BoM Revision"
 msgstr "BoM-Revision"
 
 #. module: mrp_plm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_plm/static/src/components/bom_overview_table/mrp_bom_overview_table.xml:0
 #: model_terms:ir.ui.view,arch_db:mrp_plm.report_mrp_bom_inherit_mrp_plm
 #, python-format
@@ -704,7 +709,7 @@ msgid "ECO(s)"
 msgstr "ECO(s)"
 
 #. module: mrp_plm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_plm/static/src/components/bom_overview_display_filter/mrp_bom_overview_display_filter.js:0
 #: code:addons/mrp_plm/static/src/components/bom_overview_line/mrp_bom_overview_line.js:0
 #: code:addons/mrp_plm/static/src/components/bom_overview_table/mrp_bom_overview_table.xml:0
@@ -721,12 +726,14 @@ msgid "ECOs"
 msgstr "ECOs"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Eco"
 msgstr "ECO"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Eco BoM"
@@ -946,6 +953,7 @@ msgid "In #{kanban_getcolorname(record.color.raw_value)}"
 msgstr "In #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__kanban_state__normal
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__state__progress
@@ -1055,11 +1063,6 @@ msgstr "Verspätete Aktivitäten"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_production__latest_bom_id
 msgid "Latest Bom"
 msgstr "Letzte Stückliste"
-
-#. module: mrp_plm
-#: model:ir.model.fields,help:mrp_plm.field_mrp_eco__email_cc
-msgid "List of cc from incoming emails."
-msgstr "Liste der cc aus eingehenden E-Mails."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_main_attachment_id
@@ -1276,6 +1279,7 @@ msgid "Operation Changes"
 msgstr "Betriebliche Änderungen"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Operation not supported"
@@ -1430,6 +1434,7 @@ msgid "Product"
 msgstr "Produkt"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Product Only"
@@ -1461,6 +1466,7 @@ msgid "Quantity"
 msgstr "Menge"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:mrp.eco.stage,legend_done:mrp_plm.ecostage_effective
 #: model:mrp.eco.stage,legend_done:mrp_plm.ecostage_new
@@ -1632,6 +1638,7 @@ msgstr ""
 "Geplant: anstehende Aktivitäten."
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Successfully Rebased !"
@@ -1882,6 +1889,7 @@ msgstr ""
 "angezeigt werden."
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "You cannot change the stage, as approvals are required in the process."
@@ -1890,6 +1898,7 @@ msgstr ""
 "werden."
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "You cannot change the stage, as approvals are still required."

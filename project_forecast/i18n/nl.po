@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
@@ -20,12 +20,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: project_forecast
-#: code:addons/project_forecast/models/project.py:0
-#, python-format
-msgid "%s's Planning"
-msgstr "%s's planning"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.planning_menu_schedule_by_project
@@ -63,6 +57,7 @@ msgid "Plan your resources on project tasks"
 msgstr "Plan je resources op projecttaken"
 
 #. module: project_forecast
+#. odoo-python
 #: code:addons/project_forecast/models/project.py:0
 #, python-format
 msgid "Planned"
@@ -119,6 +114,7 @@ msgstr ""
 "verkooporders."
 
 #. module: project_forecast
+#. odoo-python
 #: code:addons/project_forecast/controllers/main.py:0
 #, python-format
 msgid "Shift"

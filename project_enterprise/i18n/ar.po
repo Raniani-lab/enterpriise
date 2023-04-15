@@ -9,12 +9,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -22,6 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "%s other task(s) for the same employee at the same time."
@@ -124,6 +125,7 @@ msgid "Cancel"
 msgstr "إلغاء "
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "Caution: some tasks have not been scheduled"
@@ -192,11 +194,11 @@ msgid "ID"
 msgstr "المُعرف"
 
 #. module: project_enterprise
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_enterprise/static/src/js/task_gantt_utils.js:0
 #, python-format
 msgid "Invalid scale interval"
-msgstr "فاصل مقياس غير صالح"
+msgstr "فترات الميزان غير صحيحة "
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard____last_update
@@ -233,12 +235,14 @@ msgid "Mobile"
 msgstr "الهاتف المحمول"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "No task has been scheduled in the future."
 msgstr ""
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -247,6 +251,7 @@ msgid ""
 msgstr ""
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -262,6 +267,7 @@ msgid "Overlap Warning"
 msgstr "تحذير من التداخل"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "Overlapping Tasks"
@@ -274,6 +280,7 @@ msgid "Phone"
 msgstr "رقم الهاتف"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_sharing_project_task_view_form_inherited
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
@@ -334,6 +341,7 @@ msgid "Show Warnings"
 msgstr "إظهار التحذيرات"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -397,24 +405,28 @@ msgid "The planned start date must be before the planned end date."
 msgstr ""
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The task has been successfully scheduled."
 msgstr ""
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The tasks have been successfully scheduled."
 msgstr ""
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "This Progress Bar is not implemented."
 msgstr "لم يتم تطبيق شريط التقدم. "
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -423,6 +435,7 @@ msgid ""
 msgstr ""
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -435,7 +448,7 @@ msgid "Timesheets"
 msgstr "الجداول الزمنية "
 
 #. module: project_enterprise
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_enterprise/static/src/js/task_gantt_model.js:0
 #, python-format
 msgid "Unassigned Tasks"
@@ -458,7 +471,7 @@ msgid "User Names"
 msgstr "أسماء المستخدمين "
 
 #. module: project_enterprise
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_enterprise/static/src/js/task_gantt_controller.js:0
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__warning
 #, python-format

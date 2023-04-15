@@ -8,12 +8,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Abe Manyo, 2023\n"
-"Language-Team: Indonesian (https://www.transifex.com/odoo/teams/41243/id/)\n"
+"Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -38,6 +38,7 @@ msgid "# ECOs in progress"
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "%(approval_name)s %(approver_name)s %(approval_status)s this ECO"
@@ -56,6 +57,7 @@ msgid ""
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid ""
@@ -291,6 +293,7 @@ msgid "Attachment Count"
 msgstr "Hitungan Lampiran"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__mrp_document_ids
 #, python-format
@@ -324,6 +327,7 @@ msgid "Bill of Material Line"
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.actions.act_window,name:mrp_plm.mrp_bom_action_kanban
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__bom_id
@@ -342,6 +346,7 @@ msgid ""
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__kanban_state__blocked
 #: model:mrp.eco.stage,legend_blocked:mrp_plm.ecostage_effective
@@ -374,7 +379,7 @@ msgid "BoM Revision"
 msgstr ""
 
 #. module: mrp_plm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_plm/static/src/components/bom_overview_table/mrp_bom_overview_table.xml:0
 #: model_terms:ir.ui.view,arch_db:mrp_plm.report_mrp_bom_inherit_mrp_plm
 #, python-format
@@ -690,7 +695,7 @@ msgid "ECO(s)"
 msgstr ""
 
 #. module: mrp_plm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_plm/static/src/components/bom_overview_display_filter/mrp_bom_overview_display_filter.js:0
 #: code:addons/mrp_plm/static/src/components/bom_overview_line/mrp_bom_overview_line.js:0
 #: code:addons/mrp_plm/static/src/components/bom_overview_table/mrp_bom_overview_table.xml:0
@@ -707,12 +712,14 @@ msgid "ECOs"
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Eco"
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Eco BoM"
@@ -928,6 +935,7 @@ msgid "In #{kanban_getcolorname(record.color.raw_value)}"
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__kanban_state__normal
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__state__progress
@@ -1037,11 +1045,6 @@ msgstr "Aktifitas terakhir"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_production__latest_bom_id
 msgid "Latest Bom"
 msgstr ""
-
-#. module: mrp_plm
-#: model:ir.model.fields,help:mrp_plm.field_mrp_eco__email_cc
-msgid "List of cc from incoming emails."
-msgstr "Daftar cc dari email masuk"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_main_attachment_id
@@ -1253,6 +1256,7 @@ msgid "Operation Changes"
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Operation not supported"
@@ -1265,9 +1269,9 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
-"ID Opsional dari berkas (catatan) di mana semua pesan masuk akan "
-"dilampirkan, bahkan jika mereka tidak menjawabnya. Jika diatur, hal ini akan"
-" menonaktifkan pembuatan catatan baru sepenuhnya."
+"ID Opsional dari file (catatan) di mana semua pesan masuk akan dilampirkan, "
+"bahkan jika mereka tidak menjawabnya. Jika diatur, hal ini akan "
+"menonaktifkan pembuatan catatan baru sepenuhnya."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_document__origin_attachment_id
@@ -1327,7 +1331,7 @@ msgstr "Model Induk"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr "Catatan Induk ID Berkas"
+msgstr "Catatan Induk ID File"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__alias_parent_model_id
@@ -1398,6 +1402,7 @@ msgid "Product"
 msgstr "Produk"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Product Only"
@@ -1429,6 +1434,7 @@ msgid "Quantity"
 msgstr "Kuantitas"
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:mrp.eco.stage,legend_done:mrp_plm.ecostage_effective
 #: model:mrp.eco.stage,legend_done:mrp_plm.ecostage_new
@@ -1598,6 +1604,7 @@ msgstr ""
 "Direncanakan: Aktivitas yang akan datang."
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "Successfully Rebased !"
@@ -1836,12 +1843,14 @@ msgid ""
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "You cannot change the stage, as approvals are required in the process."
 msgstr ""
 
 #. module: mrp_plm
+#. odoo-python
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "You cannot change the stage, as approvals are still required."

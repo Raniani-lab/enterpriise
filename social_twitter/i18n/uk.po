@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:29+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
@@ -21,6 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_post_template.py:0
 #, python-format
 msgid "%s / %s characters to fit in a Tweet"
@@ -69,19 +70,21 @@ msgid "@twitteraccount ·"
 msgstr "@twitteraccount ·"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "A retweet already exists"
 msgstr "Ретвіт вже існує"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "An error occurred (%s)"
 msgstr "Виникла помилка (%s)"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format
@@ -89,7 +92,7 @@ msgid "Author Image"
 msgstr "Зображення автора"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Cancel"
@@ -105,6 +108,7 @@ msgstr ""
 "розробника Twitter замість наданого."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -154,14 +158,14 @@ msgid "Display Twitter Preview"
 msgstr "Відображати попередній перегляд Twitter"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Error"
 msgstr "Помилка"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
 #, python-format
 msgid "Error while sending the data to the server."
@@ -209,13 +213,14 @@ msgid "Last Updated on"
 msgstr "Останнє оновлення"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Likes"
 msgstr "Сподобалось"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid ""
@@ -226,6 +231,7 @@ msgstr ""
 "знову."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid ""
@@ -251,13 +257,14 @@ msgid "Name"
 msgstr "Назва"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid "Please select a Twitter account for this stream type."
 msgstr "Оберіть обліковий запис Twitter для цього типу трансляції."
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Post"
@@ -269,7 +276,7 @@ msgid "Post Image"
 msgstr "Зображення публікації"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Quote a Tweet"
@@ -316,7 +323,7 @@ msgid "Retweet or Quote"
 msgstr "Ретвітнути чи цитувати"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Retweets"
@@ -378,6 +385,7 @@ msgid "Social Twitter Account"
 msgstr "Обліковий запис соцмережі Twitter"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid ""
@@ -388,12 +396,14 @@ msgstr ""
 "словами."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "The tweet is empty. Add a message and try posting again."
 msgstr "Твіт пустий. Додайте повідомлення і спробуйте опублікувати знову."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
 msgid ""
@@ -425,7 +435,7 @@ msgid "Twitter Can Retweet"
 msgstr "Twitter можна ретвітнути"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_comments_count
 #, python-format
@@ -485,7 +495,7 @@ msgid "Twitter Preview"
 msgstr "Попередній перегляд Twitter"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Twitter Profile Image"
@@ -527,12 +537,14 @@ msgid "Twitter User Likes"
 msgstr "Лайки користувача в Twitter"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Twitter did not provide a valid access token or it may have expired."
 msgstr "Twitter не надав дійсний токен доступу або він протермінований."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Twitter did not provide a valid access token."
@@ -544,6 +556,7 @@ msgid "Twitter tweet id"
 msgstr "Id твіта в Twitter"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
@@ -555,6 +568,7 @@ msgid "Undo Retweet"
 msgstr "Скасувати ретвіт"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -577,6 +591,7 @@ msgstr ""
 "певним медіа ('facebook', 'twitter', ...)."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_account.py:0
 #, python-format
 msgid ""
@@ -587,6 +602,7 @@ msgstr ""
 " опублікувати знову (помилка: %s)."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -595,7 +611,7 @@ msgid "You are not authenticated"
 msgstr "Ви не аутентифіковані"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_comments.js:0
 #, python-format
 msgid ""
@@ -611,6 +627,7 @@ msgid "You can not store two times the same tweet on the same stream!"
 msgstr "Ви не можете зберігати двічі один і той самий твіт в одному стрімі!"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid ""
@@ -621,12 +638,14 @@ msgstr ""
 "IЦе можливо через його захист. Щоби вирішити це, переконайтеся, що ви стежите за ни перед тим, як пробувати ще раз."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
 msgstr "У вас немає активної підписки. Купіть її тут: %s"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
 msgid ""
@@ -642,7 +661,7 @@ msgid "e.g. #odoo"
 msgstr "напр. #odoo"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_comment.js:0
 #, python-format
 msgid "tweet"

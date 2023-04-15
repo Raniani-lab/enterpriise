@@ -4,22 +4,22 @@
 # 
 # Translators:
 # Haojun Zou <apollo_zhj@msn.com>, 2022
+# Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2022
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2022
 # Kim Asplund <kim.asplund@gmail.com>, 2022
 # Simon S, 2022
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # Kristoffer Grundström <lovaren@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2023\n"
-"Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
+"Last-Translator: Martin Trigaux, 2022\n"
+"Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -667,8 +667,8 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
-msgid "Lock Dates"
-msgstr "Lås datum"
+msgid "Lock Timesheets"
+msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow

@@ -11,10 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -700,7 +700,7 @@ msgstr "En arrière"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Bar"
-msgstr "Barre"
+msgstr "Barres"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base
@@ -719,7 +719,7 @@ msgstr "Vide"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Block"
-msgstr "Bloquer"
+msgstr "Bloc"
 
 #. module: web_studio
 #. odoo-python
@@ -1357,7 +1357,7 @@ msgstr "Jour"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Day Precision"
-msgstr "Précision du jour"
+msgstr "Précision de jour"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1433,7 +1433,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Delay Field"
-msgstr "Champ de retard"
+msgstr "Champ de délai"
 
 #. module: web_studio
 #. odoo-python
@@ -1499,7 +1499,6 @@ msgstr "Désactiver la création"
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
-#: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Disable opening"
 msgstr "Désactiver l'ouverture"
@@ -1523,7 +1522,7 @@ msgstr "Afficher le nom"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Display Total row"
-msgstr "Afficher la ligne totale"
+msgstr "Afficher la ligne de total"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1868,7 +1867,7 @@ msgstr "Expression de champ"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Field in Cell"
-msgstr "Champ en cellule"
+msgstr "Champ dans cellule"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_fields
@@ -1955,7 +1954,7 @@ msgstr "Formulaire"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Forward"
-msgstr "Transférer"
+msgstr "En avant"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2480,7 +2479,7 @@ msgstr "Limiter la visibilité aux groupes"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Line"
-msgstr "Ligne"
+msgstr "Linéaire"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2691,7 +2690,7 @@ msgstr "Mois"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Month Precision"
-msgstr "Précision du mois"
+msgstr "Précision de mois"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2832,7 +2831,7 @@ msgstr "Nouvel enregistrement en bas"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "New record on top"
-msgstr "Nouvel enregistrement en tête"
+msgstr "Nouvel enregistrement en haut"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3019,14 +3018,14 @@ msgstr "Fichier PDF "
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_report_paperformat
 msgid "Paper Format Config"
-msgstr "Configuration du format du papier"
+msgstr "Configuration du format de papier"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Paper format"
-msgstr "Format du papier"
+msgstr "Format de papier"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3062,7 +3061,7 @@ msgstr "Image"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Pie"
-msgstr "Graphique circulaire"
+msgstr "Circulaire"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3174,7 +3173,7 @@ msgstr "Tirer vers la droite"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Quarter Hour"
-msgstr "Un quart d'heure"
+msgstr "Quart d'heure"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3624,7 +3623,7 @@ msgstr "Définir des règles d'approbation"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Set as Default"
-msgstr "Utiliser par défaut"
+msgstr "Définir par défaut"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3903,7 +3902,7 @@ msgstr "Style de tableau"
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Tabs"
-msgstr "Tabulations"
+msgstr "Onglets"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3957,7 +3956,7 @@ msgstr "Décoration du texte"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Text in Cell"
-msgstr "Texte en cellule"
+msgstr "Texte dans cellule"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4243,7 +4242,7 @@ msgstr "Ligne du temps"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Timeline Views"
-msgstr "Vues ligne du temps"
+msgstr "Vues de ligne du temps"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4444,7 +4443,7 @@ msgstr "Semaine"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Week Precision"
-msgstr "Précision de la semaine"
+msgstr "Précision de semaine"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4718,7 +4717,7 @@ msgstr "email de test"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "top"
-msgstr "top"
+msgstr "haut"
 
 #. module: web_studio
 #. odoo-javascript

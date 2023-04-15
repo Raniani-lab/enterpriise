@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:53+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
@@ -111,6 +111,11 @@ msgstr "Anzeigename"
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration
 msgid "Duration"
 msgstr "Dauer"
+
+#. module: sale_temporal
+#: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration_display
+msgid "Duration Display"
+msgstr ""
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
@@ -333,17 +338,17 @@ msgstr "Die Preislaufzeit muss größer oder gleich 0 sein."
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "The product (%s) has incompatible values: %s"
-msgstr ""
+msgstr "Das Produkt (%s) hat inkompatible Werte: %s"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
-msgid "Time based pricing"
-msgstr "Zeitbasierte Preisgestaltung"
+msgid "Time-based pricing"
+msgstr ""
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
-msgid "Time based rules"
-msgstr "Zeitbasierte Regeln"
+msgid "Time-based rules"
+msgstr ""
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
@@ -398,6 +403,8 @@ msgid ""
 "You cannot have multiple pricing for the same variant, recurrence and "
 "pricelist"
 msgstr ""
+"Sie können nicht mehrere Preise für dieselbe Variante, Wiederholung und "
+"Preisliste haben."
 
 #. module: sale_temporal
 #. odoo-python

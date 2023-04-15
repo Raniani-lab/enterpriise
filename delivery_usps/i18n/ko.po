@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Sarah Park, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
@@ -36,6 +36,7 @@ msgid "Check this box if your account is validated by USPS"
 msgstr "USPS에서 계정을 확인한 경우 이 확인란을 선택하십시오"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Company phone number is invalid. Please insert a US phone number."
@@ -62,6 +63,7 @@ msgid "Domestic"
 msgstr "국내"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid ""
@@ -229,6 +231,7 @@ msgid ""
 msgstr "패키지가 가공 가능한지 USPS 웹 사이트를 확인하십시오."
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -236,24 +239,28 @@ msgid ""
 msgstr "다른 서비스를 선택하십시오 (이 서비스의 최대 무게는 4 파운드입니다)"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please enter a valid ZIP code in recipient address"
 msgstr "수신자 주소에 유효한 우편 번호를 입력하십시오"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please enter a valid ZIP code in your Company address"
 msgstr "회사 주소에 유효한 우편 번호를 입력하십시오"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "최소한 하나의 배송 품목을 입력해 주세요."
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -277,12 +284,14 @@ msgid "Provider"
 msgstr "공급업체"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Quantity for each move line should be less than 1000."
 msgstr "각 이동 라인의 수량은 1000보다 작아야합니다."
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Recipient address cannot be found. Please check the address exists."
@@ -325,12 +334,14 @@ msgid "Sample"
 msgstr "견본"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Shipment #%s has been cancelled"
 msgstr ""
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
@@ -358,6 +369,7 @@ msgid "TIF"
 msgstr "TIF"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -368,6 +380,7 @@ msgstr ""
 "%s)"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -376,6 +389,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -386,6 +400,7 @@ msgstr ""
 "%s)"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "The selected USPS service (%s) cannot be used to deliver this package."
@@ -418,12 +433,12 @@ msgstr "USPS 환경 설정"
 
 #. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_domestic
-#: model:product.product,name:delivery_usps.product_product_delivery_usps_domestic
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_domestic_product_template
 msgid "USPS Domestic Flat Rate Envelope"
 msgstr "USPS 국내 고정 비율 봉투"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -438,12 +453,12 @@ msgstr "USPS 퍼스트 클래스 메일 유형"
 
 #. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_international
-#: model:product.product,name:delivery_usps.product_product_delivery_usps_international
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "USPS International Flat Rate Box"
 msgstr "USPS 국제 고정 비율 상자"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -479,19 +494,12 @@ msgid "USPS User ID"
 msgstr "USPS 사용자 ID"
 
 #. module: delivery_usps
-#: model:product.product,uom_name:delivery_usps.product_product_delivery_usps_domestic
-#: model:product.product,uom_name:delivery_usps.product_product_delivery_usps_international
-#: model:product.template,uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
-#: model:product.template,uom_name:delivery_usps.product_product_delivery_usps_international_product_template
-msgid "Units"
-msgstr "단위"
-
-#. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_size_container
 msgid "Usps Size Container"
 msgstr "Usps 컨테이너 크기"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Your company or recipient ZIP code is incorrect."

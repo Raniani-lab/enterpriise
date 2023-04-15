@@ -16,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
 "Last-Translator: Łukasz Grzenkowicz <lukasz.grzenkowicz@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
@@ -40,7 +40,7 @@ msgid "Applications"
 msgstr "Aplikacje"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
@@ -48,7 +48,7 @@ msgid "Applications by Creation Date"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
@@ -56,28 +56,28 @@ msgid "Company"
 msgstr "Firma"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Current"
 msgstr "Bieżące"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Date"
 msgstr "Data"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Department"
 msgstr "Dział"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
@@ -89,28 +89,28 @@ msgid "Hired"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired Ratio"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired by referral"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired ratio"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
@@ -118,7 +118,7 @@ msgid "Job Position"
 msgstr "Stanowisko pracy"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
@@ -126,21 +126,21 @@ msgid "Medium"
 msgstr "Medium"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Most Hired Job Positions"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Name"
 msgstr "Nazwa"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
@@ -148,56 +148,56 @@ msgid "New Applications"
 msgstr "Nowe aplikacje"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New Hires"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New applicants"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Period"
 msgstr "Okres"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Position"
 msgstr "Stanowisko"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Previous"
 msgstr "Poprzedni"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process Duration"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process duration"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
@@ -208,14 +208,14 @@ msgid "Rate"
 msgstr "Kurs"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recent Applications"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
@@ -224,7 +224,7 @@ msgid "Recruiter"
 msgstr "Rekruter"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
@@ -232,49 +232,49 @@ msgid "Recruitment Analysis by Company"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Job"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Medium"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Recruiter"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Source"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral Rate"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral rate"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
@@ -282,56 +282,56 @@ msgid "Source"
 msgstr "Źródło"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Stage"
 msgstr "Etap"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Companies"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Job Positions"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Recruiters"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Sources"
 msgstr ""
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "stats - current"
 msgstr "obecne statystyki"
 
 #. module: spreadsheet_dashboard_hr_referral
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "stats - previous"

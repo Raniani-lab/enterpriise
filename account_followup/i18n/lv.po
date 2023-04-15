@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Artjoms Ustinovs <artyom.ustinov2010@yandex.ru>, 2022
-# JanisJanis <jbojars@gmail.com>, 2022
 # Anzelika Adejanova, 2022
 # Konstantins Zabogonskis <inculin4ik@gmail.com>, 2022
 # Martin Trigaux, 2022
@@ -249,7 +248,7 @@ msgstr "Pievienot piezīmi"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Add contacts to notify..."
-msgstr "Add contacts to notify..."
+msgstr "Pievienot kontaktus, lai paziņot..."
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__type

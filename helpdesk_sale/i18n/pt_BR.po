@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Marcel Savegnago <marcel.savegnago@gmail.com>, 2022\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
@@ -36,17 +36,6 @@ msgstr "Ticket da Central de Ajuda"
 #: model:ir.model.fields,field_description:helpdesk_sale.field_helpdesk_ticket_report_analysis__sale_order_id
 msgid "Ref. Sales Order"
 msgstr ""
-
-#. module: helpdesk_sale
-#: model:ir.model.fields,help:helpdesk_sale.field_helpdesk_ticket__sale_order_id
-msgid ""
-"Reference of the Sales Order to which this ticket refers. Setting this "
-"information aims at easing your After Sales process and only serves "
-"indicative purposes."
-msgstr ""
-"Referência do pedido de venda a que este ticket se refere. A definição "
-"dessas informações visa facilitar o seu processo de Pós-venda e serve apenas"
-" para fins indicativos."
 
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_sla_report_analysis

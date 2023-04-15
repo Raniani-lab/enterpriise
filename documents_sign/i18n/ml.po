@@ -29,7 +29,7 @@ msgstr ""
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "ക്രീയേറ്റ്‌"
 
 #. module: documents_sign
 #: code:addons/documents_sign/models/workflow.py:0

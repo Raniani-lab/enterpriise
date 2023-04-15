@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Niyas Raphy, 2023
+# Nikhil Krishnan, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
+"Last-Translator: Nikhil Krishnan, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -171,7 +172,7 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-plus-circle me-1\"/>Create"
+msgid "<i class=\"fa fa-plus-circle me-1\"/>New"
 msgstr ""
 
 #. module: knowledge
@@ -674,7 +675,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് ഐക്കൺ"
 
 #. module: knowledge
 #. odoo-javascript
@@ -752,7 +753,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search_items
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: knowledge
 #. odoo-javascript
@@ -959,7 +960,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ് എണ്ണം"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1051,7 +1052,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #, python-format
 msgid "Categories"
-msgstr ""
+msgstr "കാറ്റഗറി"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1173,7 +1174,7 @@ msgstr "സൃഷ്ടിച്ചത്"
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "Dear"
-msgstr ""
+msgstr "പ്രിയപ്പെട്ട"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__internal_permission
@@ -1683,6 +1684,11 @@ msgid "Link an article."
 msgstr ""
 
 #. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.articles_template
+msgid "Load more"
+msgstr "കൂടുതൽ ലോഡ് ചെയ്യുക"
+
+#. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_locked
 msgid "Locked"
 msgstr ""
@@ -1822,7 +1828,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "അടുത്ത പ്രവർത്തന സമയപരിധി"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_summary
@@ -1872,6 +1878,11 @@ msgstr ""
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_invite__permission__none
 msgid "No access"
 msgstr ""
+
+#. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
+msgid "No article found"
+msgstr "ലേഖനമൊന്നും കണ്ടെത്തിയില്ല"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1954,7 +1965,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__partner_id
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_search
 msgid "Partner"
-msgstr ""
+msgstr "പാർട്ണർ"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__permission
@@ -1975,7 +1986,7 @@ msgstr "പ്രൈവറ്റ്"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties
 msgid "Properties"
-msgstr ""
+msgstr "പ്രോപ്പർട്ടികൾ"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2006,11 +2017,6 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Remove Member"
-msgstr ""
-
-#. module: knowledge
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "Remove from Trash"
 msgstr ""
 
 #. module: knowledge
@@ -2204,7 +2210,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 #, python-format
 msgid "Template"
-msgstr ""
+msgstr "ടെംപ്ലേറ്റ്"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2277,6 +2283,15 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
+msgstr ""
+
+#. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/controllers/main.py:0
+#, python-format
+msgid ""
+"This Article cannot be unfolded. Either you lost access to it or it has been"
+" deleted."
 msgstr ""
 
 #. module: knowledge
@@ -2372,7 +2387,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Update"
-msgstr ""
+msgstr "അപ്ഡേറ്റ്"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2440,7 +2455,7 @@ msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് കമ്മ്യൂണിക്കേഷൻ ചരിത്രം"
 
 #. module: knowledge
 #. odoo-python
@@ -2492,7 +2507,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 #, python-format
 msgid "Workspace"
-msgstr ""
+msgstr "വർക്സ്പേസ്"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner

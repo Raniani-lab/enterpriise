@@ -19,9 +19,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: jabelchi, 2023\n"
 "Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
@@ -95,9 +95,9 @@ msgid "All Appointments"
 msgstr "Totes les cites"
 
 #. module: website_appointment
+#. odoo-python
 #: code:addons/website_appointment/models/website.py:0
 #: model:website.menu,name:website_appointment.menu_appointment
-#: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
 #, python-format
 msgid "Appointment"
 msgstr "Cita"
@@ -113,7 +113,7 @@ msgid "Appointment Type"
 msgstr "Tipus de cita"
 
 #. module: website_appointment
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_appointment/static/src/xml/website_appointment_templates.xml:0
 #, python-format
 msgid "Appointment Type Name"
@@ -155,7 +155,7 @@ msgid "Choose who you will meet"
 msgstr "Trieu amb qui us trobareu"
 
 #. module: website_appointment
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Contact us"
@@ -172,7 +172,7 @@ msgid "Details<span class=\"chevron position-absolute d-block\"/>"
 msgstr "Detalls<span class=\"chevron position-absolute d-block\"/>"
 
 #. module: website_appointment
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Go back to Appointment"
@@ -209,7 +209,7 @@ msgid "Operator"
 msgstr "Operador"
 
 #. module: website_appointment
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_appointment/static/src/xml/website_appointment_templates.xml:0
 #, python-format
 msgid "Please fill this field"
@@ -247,6 +247,7 @@ msgid "Schedule an Appointment"
 msgstr "Programar una cita"
 
 #. module: website_appointment
+#. odoo-python
 #: code:addons/website_appointment/models/website.py:0
 #, python-format
 msgid "Schedule an appointment"
@@ -284,7 +285,7 @@ msgid "Use the top button '<b>+ New</b>' to create an appointment type."
 msgstr "Utilitza el botó superior'<b>+ Nou</b>' per crear un tipus de cita."
 
 #. module: website_appointment
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_appointment/static/src/xml/website_appointment_templates.xml:0
 #, python-format
 msgid "Users"
@@ -331,21 +332,21 @@ msgid "Website opengraph image"
 msgstr "Imatge del lloc web"
 
 #. module: website_appointment
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "contact us"
 msgstr "contacta'ns"
 
 #. module: website_appointment
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_appointment/static/src/xml/website_appointment_templates.xml:0
 #, python-format
 msgid "e.g. \"Technical Demo\""
 msgstr "p. ex. \"Democràcia tècnica\""
 
 #. module: website_appointment
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "or"

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Thi Huong Nguyen, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
@@ -3169,14 +3169,6 @@ msgstr "Lưu trang này và tải lại để kích hoạt tính năng."
 #. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
-msgid "Save this ticket and the modifications you've made to it."
-msgstr ""
-"Lưu phiếu hỗ trợ và các sửa đổi bạn đã thực hiện trên phiếu hỗ trợ này."
-
-#. module: helpdesk
-#. odoo-javascript
-#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
-#, python-format
 msgid "Schedule your <b>activity</b>."
 msgstr "Lên lịch <b>hoạt động</b> của bạn."
 
@@ -3646,8 +3638,8 @@ msgid ""
 "Those represent the different categories of things you have to do (e.g. "
 "\"Call\" or \"Send email\")."
 msgstr ""
-"Loại hành động đại diện cho danh mục khác nhau của những việc bạn cần làm "
-"(ví dụ: \"Gọi\" hoặc \"Gửi email\"). "
+"Loại hành động đại diện cho những danh mục việc bạn cần làm khác nhau (ví "
+"dụ: \"Gọi\" hoặc \"Gửi email\"). "
 
 #. module: helpdesk
 #. odoo-javascript

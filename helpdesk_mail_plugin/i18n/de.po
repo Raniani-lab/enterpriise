@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 11:00+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
@@ -21,63 +21,63 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
 msgid "Closed"
 msgstr "Abgeschlossen"
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #, python-format
 msgid "Could not create the ticket"
 msgstr "Ticket konnte nicht erstellt werden"
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #, python-format
 msgid "Email already logged on the ticket"
 msgstr "E-Mail bereits auf dem Ticket erfasst"
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
 msgid "Log Email Into Ticket"
 msgstr "E-Mail auf Ticket erfassen"
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #, python-format
 msgid "Log the email on the ticket"
 msgstr "E-Mail auf Ticket erfassen"
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
 msgid "No tickets found for this contact."
 msgstr "Für diesen Kontakt konnte kein Ticket gefunden werden."
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
 msgid "Save Contact to create new Tickets."
 msgstr "Speichern Sie den Kontakt um neue Tickets zu erstellen."
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #, python-format
 msgid "Save the contact to create new tickets."
 msgstr "Speichern Sie den Kontakt um neue Tickets zu erstellen."
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
@@ -90,7 +90,7 @@ msgid "Ticket: redirect to form in edit mode"
 msgstr "Ticket: Weiterleitung zum Formular im Bearbeitungsmodus"
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
@@ -98,14 +98,14 @@ msgid "Tickets"
 msgstr "Veranstaltungs-Ticket"
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
 msgid "Tickets (%(count)s)"
 msgstr "Tickets (%(count)s)"
 
 #. module: helpdesk_mail_plugin
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #, python-format
 msgid "Tickets (%s)"

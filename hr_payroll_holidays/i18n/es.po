@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: oscaryuu, 2022\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
@@ -82,6 +82,7 @@ msgid "Meet the time off dashboard."
 msgstr "Conoce el tablero de ausencias"
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid ""
@@ -92,6 +93,7 @@ msgstr ""
 "libre%s. por favor haga la operacion manualmente"
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid "Only an employee time off to defer can be reported to next month"
@@ -110,6 +112,7 @@ msgid "Payslip State"
 msgstr "Estado de la nómina"
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid "Please create manually the work entry for %s"
@@ -132,6 +135,7 @@ msgid "Responsible"
 msgstr "Responsable"
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid ""
@@ -142,6 +146,7 @@ msgstr ""
 "validadas para el tiempo libre %s"
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid ""
@@ -152,6 +157,7 @@ msgstr ""
 "puede crear un tiempo personal en ese periodo."
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid ""
@@ -161,6 +167,7 @@ msgstr ""
 "El tiempo libre %s no se puede informar porque se define en más de 2 meses "
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid "There is no work entries linked to this time off to report"
@@ -168,6 +175,7 @@ msgstr ""
 "No hay entradas de trabajo vinculadas a este tiempo libre para informar"
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_payslip.py:0
 #, python-format
 msgid ""
@@ -187,12 +195,14 @@ msgid "Time Off"
 msgstr "Ausencias"
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_payslip.py:0
 #, python-format
 msgid "Time Off To Defer"
 msgstr "tiempo libre para aplazar"
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_payslip.py:0
 #, python-format
 msgid "Time Off Without Joined Document"
@@ -224,27 +234,28 @@ msgid "To defer to next payslip"
 msgstr "Para diferir en el siguiente recibo de nómina"
 
 #. module: hr_payroll_holidays
+#. odoo-python
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid "Validated Time Off to Defer"
 msgstr "Tiempo personal validado por diferir"
 
 #. module: hr_payroll_holidays
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_payroll_holidays/static/src/xml/templates.xml:0
 #, python-format
 msgid "You have some"
 msgstr "Usted tiene algunos"
 
 #. module: hr_payroll_holidays
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_payroll_holidays/static/src/xml/templates.xml:0
 #, python-format
 msgid "time off"
 msgstr "Tiempo personal"
 
 #. module: hr_payroll_holidays
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_payroll_holidays/static/src/xml/templates.xml:0
 #, python-format
 msgid "to defer to the next month."

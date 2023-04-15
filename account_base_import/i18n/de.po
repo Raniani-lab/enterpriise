@@ -30,12 +30,12 @@ msgstr ""
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"text-muted\">(end of year balances)</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">(Jahresendsalden)</span>"
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"text-muted\">(for full history)</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">(für vollständige Historie)</span>"
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_account
@@ -47,7 +47,7 @@ msgstr "Konto"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Account Winbooks Import module"
-msgstr ""
+msgstr "Importmodul für Winbooks-Konten"
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
@@ -164,7 +164,7 @@ msgstr "Kontakte importieren"
 #: model:ir.actions.client,name:account_base_import.action_account_move_line_import
 #, python-format
 msgid "Import Journal Items"
-msgstr ""
+msgstr "Journalzeilen importieren"
 
 #. module: account_base_import
 #: model:ir.actions.client,name:account_base_import.action_partner_import
@@ -191,7 +191,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import the Chart of Accounts and initial balances using a"
-msgstr ""
+msgstr "Importieren Sie den Kontenplan und Anfangssalden mit einer"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -220,6 +220,8 @@ msgid ""
 "Most accounting software in France support exporting FEC file for audit purposes.\n"
 "                            Use the"
 msgstr ""
+"Die meisten Buchhaltungssoftwares in Frankreich unterstützen den Export von FEC-Dateien zu Prüfungszwecken..\n"
+"                            Verwenden Sie das"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -227,6 +229,8 @@ msgstr ""
 #, python-format
 msgid "Optional, but useful to import open receivables & payables using a"
 msgstr ""
+"Optional, aber nützlich für den Import von offenen Forderungen und "
+"Verbindlichkeiten mit"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -252,6 +256,9 @@ msgid ""
 " import. Only use the Journal Items import for unreconciled entries in your "
 "Payable and Receivable Accounts."
 msgstr ""
+"Tipp: Wir empfehlen, Ihre Anfangssalden über den Kontenplanimport zu "
+"importieren. Verwenden Sie den Import von Journalposten nur für nicht "
+"abgestimmte Einträge in Ihren Kreditoren- und Debitorenkonten."
 
 #. module: account_base_import
 #. odoo-javascript
@@ -259,6 +266,7 @@ msgstr ""
 #, python-format
 msgid "Use predefined format to import your data faster."
 msgstr ""
+"Verwenden Sie vordefinierte Formate, um Ihre Daten schneller zu importieren"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -284,6 +292,8 @@ msgid ""
 "Winbooks is an old school Belgian accounting software acquired by Exact.\n"
 "                            Use the"
 msgstr ""
+"Winbooks ist eine alte belgische Buchhaltungssoftware, die von Exact übernommen wurde.\n"
+"                            Verwenden Sie das"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -309,6 +319,8 @@ msgid ""
 "to import a Winbooks full back-up (Maintenance > Backup) to get the chart of accounts, contacts, taxes, history of journal entries, and documents.\n"
 "                            Support versions: Winbooks Desktop 5.50, 6, 7, 8."
 msgstr ""
+", um ein vollständiges Winbooks-Backup zu importieren (Wartung > Backup), um den Kontenplan, die Kontakte, die Steuern, die Historie der Journalbuchungen und die Dokumente zu erhalten.\n"
+"                            Unterstützte Versionen: Winbooks Desktop 5.50, 6, 7, 8."
 
 #. module: account_base_import
 #. odoo-javascript
@@ -318,3 +330,5 @@ msgid ""
 "to import the FEC file. We will setup your charts of accounts and the "
 "history of journal entries."
 msgstr ""
+", um die FEC-Datei zu importieren. Wir richten Ihre Kontenpläne und die "
+"Historie der Journalbuchungen ein."

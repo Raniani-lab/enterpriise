@@ -3,20 +3,19 @@
 # 	* helpdesk_sale_timesheet
 # 
 # Translators:
+# Martin Trigaux, 2022
 # Svante Suominen <svante.suominen@web-veistamo.fi>, 2022
 # Kari Lindgren <kari.lindgren@emsystems.fi>, 2022
 # Janne Rättyä <janne.rattya@web-veistamo.fi>, 2022
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
-# Martin Trigaux, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
-# Marko Happonen <marko.happonen@sprintit.fi>, 2022
 # Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:28+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
@@ -35,11 +34,6 @@ msgstr "4 tuntia valmiiksi saamiseen"
 #: model:ir.model,name:helpdesk_sale_timesheet.model_account_analytic_line
 msgid "Analytic Account"
 msgstr "Kustannuspaikka"
-
-#. module: helpdesk_sale_timesheet
-#: model:helpdesk.ticket,legend_blocked:helpdesk_sale_timesheet.helpdesk_ticket_24
-msgid "Blocked"
-msgstr "Estetty"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket_convert_wizard
@@ -122,11 +116,6 @@ msgid "Hours:"
 msgstr "Tunnit:"
 
 #. module: helpdesk_sale_timesheet
-#: model:helpdesk.ticket,legend_normal:helpdesk_sale_timesheet.helpdesk_ticket_24
-msgid "In Progress"
-msgstr "Käynnissä"
-
-#. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_product_template
 msgid "Product"
 msgstr "Tuote"
@@ -149,11 +138,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
 msgid "Project's sale order"
 msgstr "Projektin myyntitilaus"
-
-#. module: helpdesk_sale_timesheet
-#: model:helpdesk.ticket,legend_done:helpdesk_sale_timesheet.helpdesk_ticket_24
-msgid "Ready"
-msgstr "Valmis siirrettäväksi"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
@@ -208,6 +192,7 @@ msgstr ""
 "liitetty tätä palvelua sisältävään myyntitilauksen kohteeseen."
 
 #. module: helpdesk_sale_timesheet
+#. odoo-python
 #: code:addons/helpdesk_sale_timesheet/controllers/portal.py:0
 #: code:addons/helpdesk_sale_timesheet/models/helpdesk.py:0
 #: model:ir.model,name:helpdesk_sale_timesheet.model_sale_order

@@ -12,10 +12,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -1655,13 +1655,6 @@ msgstr "Dans les favoris, retirez-le"
 #: model:ir.model.fields,field_description:sign.field_sign_log__log_hash
 msgid "Inalterability Hash"
 msgstr "Hash inaltérable"
-
-#. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_modal.xml:0
-#, python-format
-msgid "Include a visual security frame around your signature"
-msgstr "Comprend un cadre de sécurité visuel autour de votre signature."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
@@ -3973,6 +3966,18 @@ msgstr ""
 #, python-format
 msgid "You cannot reassign this signatory"
 msgstr "Vous ne pouvez réassigner ce signataire"
+
+#. module: sign
+#. odoo-python
+#: code:addons/sign/models/sign_template.py:0
+#, python-format
+msgid ""
+"You cannot share this document by link, because it has fields to be filled "
+"by different roles. Use Send button instead."
+msgstr ""
+"Vous ne pouvez pas partager ce document par lien, parce que certains champs "
+"doivent être complétés par des rôles différents. Utilisez plutôt le bouton "
+"Envoyer."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner

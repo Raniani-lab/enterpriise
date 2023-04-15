@@ -12,12 +12,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
 "Last-Translator: Alena Vlasova, 2023\n"
-"Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
@@ -33,7 +33,7 @@ msgid " days"
 msgstr "дней"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
@@ -53,21 +53,21 @@ msgid "# Leads"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average Deal Size"
 msgstr "Средний размер сделки"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average deal size"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
@@ -75,7 +75,7 @@ msgid "Campaign"
 msgstr "Кампания"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -83,42 +83,42 @@ msgid "City"
 msgstr "Город"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close Rate"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close rate"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed"
 msgstr "Закрытые"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed revenue"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
@@ -129,7 +129,7 @@ msgid "Country"
 msgstr "Страна"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -137,7 +137,7 @@ msgid "Current"
 msgstr "Текущий"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
@@ -145,63 +145,63 @@ msgid "Current period"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Assign"
 msgstr "Дней до назначения"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Win"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to assign"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to win"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected"
 msgstr "Ожидается"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected Closing"
 msgstr "Ожидаемое закрытие"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected count"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected revenue"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -209,14 +209,14 @@ msgid "KPI"
 msgstr "KPI"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Leads by Month"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
@@ -224,7 +224,7 @@ msgid "Lost Reason"
 msgstr "Причина отказа"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
@@ -234,28 +234,28 @@ msgid "Medium"
 msgstr "Тип трафика"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Open opportunities"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Opportunity"
 msgstr "Сделка"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Percentage closed"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -263,14 +263,14 @@ msgid "Period"
 msgstr "Период"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Pipeline Stages"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -278,7 +278,7 @@ msgid "Previous"
 msgstr "Назад"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
@@ -286,7 +286,7 @@ msgid "Previous period"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
@@ -309,7 +309,7 @@ msgid "Revenue"
 msgstr "Доход"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
@@ -319,7 +319,7 @@ msgid "Sales Team"
 msgstr "Команда продаж"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
@@ -330,7 +330,7 @@ msgid "Salesperson"
 msgstr "Продавец"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
@@ -340,7 +340,7 @@ msgid "Source"
 msgstr "Источник"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -348,42 +348,42 @@ msgid "Stage"
 msgstr "Этап"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Tag"
 msgstr "Тег"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Tags"
 msgstr "Теги"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "To close"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Campaigns"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Cities"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -391,14 +391,14 @@ msgid "Top Countries"
 msgstr "Топ Стран"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Lost Reasons"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -406,14 +406,14 @@ msgid "Top Mediums"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -421,7 +421,7 @@ msgid "Top Sales Teams"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -429,7 +429,7 @@ msgid "Top Salespeople"
 msgstr "Лучшие продавцы"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -437,98 +437,98 @@ msgid "Top Sources"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to assign"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to win"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total leads"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Won leads"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - current"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - previous"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - current"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - previous"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - current"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - previous"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - current"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - previous"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
@@ -537,14 +537,14 @@ msgid "last period"
 msgstr "прошлый период"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "list opps"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
@@ -554,28 +554,28 @@ msgid "since last period"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "to campaign"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "to close"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -583,28 +583,28 @@ msgid "top countries"
 msgstr "топ стран"
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top lost reasons"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top mediums"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
@@ -612,35 +612,35 @@ msgid "top sales team"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top salespeople"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top salesperson"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sources"
 msgstr ""
 
 #. module: spreadsheet_dashboard_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top tags"

@@ -12,10 +12,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -42,7 +42,7 @@ msgstr "<i class=\"fa fa-play text-success\" title=\"المؤقت جارٍ \"/>"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "<span class=\"col-auto ms-2\">minutes</span>"
-msgstr "<span class=\"col-auto ms-2\">دقيقة</span>"
+msgstr "<span class=\"col-auto ms-2\">دقائق</span> "
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -825,8 +825,8 @@ msgstr "قم بتشغيل <b>المؤقت</b> لبدء نشاط جديد. "
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
-msgid "Lock Dates"
-msgstr "تواريخ الإقفال"
+msgid "Lock Timesheets"
+msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow
@@ -1537,6 +1537,8 @@ msgid ""
 "You cannot adjust the time of the timesheet for a project with timesheets "
 "disabled."
 msgstr ""
+"لا يمكنك تعديل الوقت في الجداول الزمنية لمشروع تم تعطيل الجداول الزمنية فيه."
+" "
 
 #. module: timesheet_grid
 #. odoo-python

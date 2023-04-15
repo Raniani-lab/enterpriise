@@ -46,7 +46,7 @@ msgstr "Sallitut työntekijät"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_report_mrp_report_bom_structure
 msgid "BOM Overview Report"
-msgstr ""
+msgstr "Kokoonpanolistan yleiskatsausraportti"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript

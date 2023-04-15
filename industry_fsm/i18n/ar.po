@@ -10,12 +10,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -33,14 +33,14 @@ msgid "'Worksheet %s - %s' % (object.name, object.partner_id.name)"
 msgstr "'ورقة العمل %s - %s' % (object.name, object.partner_id.name) "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "<b>Review and sign</b> the <b>task report</b> with your customer."
 msgstr "<b>قم بمراجعة والتوقيع على</b> <b>تقرير المهمة</b> مع عميلك. "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
@@ -98,15 +98,6 @@ msgid "<i class=\"fa fa-check me-1\"/>Sign"
 msgstr "<i class=\"fa fa-check me-1\"/>التوقيع  "
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.project_sharing_inherit_project_task_view_form
-msgid ""
-"<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-label=\"Arrow icon\" title=\"Arrow\"/>\n"
-"                        <i class=\"fa fa-long-arrow-right mx-2 oe_read_only\" aria-label=\"Arrow icon\" title=\"Arrow\" attrs=\"{'invisible': [('planned_date_begin', '=', False), ('planned_date_end', '=', False)]}\"/>"
-msgstr ""
-"<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-label=\"Arrow icon\" title=\"سهم \"/>\n"
-"                        <i class=\"fa fa-long-arrow-right mx-2 oe_read_only\" aria-label=\"Arrow icon\" title=\"سهم \" attrs=\"{'invisible': [('planned_date_begin', '=', False), ('planned_date_end', '=', False)]}\"/>"
-
-#. module: industry_fsm
 #: model:mail.template,body_html:industry_fsm.mail_template_data_task_report
 msgid ""
 "<p>\n"
@@ -124,6 +115,13 @@ msgstr ""
 "                مع أطيب التحيات،<br/><br/>\n"
 "            </p>\n"
 "        "
+
+#. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
+msgid ""
+"<span class=\"o_stat_text\">Worksheet</span>\n"
+"                            <span class=\"o_stat_text\">Complete</span>"
+msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
@@ -216,34 +214,9 @@ msgid "Average Rating"
 msgstr "متوسط التقييم "
 
 #. module: industry_fsm
-#: model:project.task,legend_blocked:industry_fsm.planning_task_0
-#: model:project.task,legend_blocked:industry_fsm.planning_task_1
-#: model:project.task,legend_blocked:industry_fsm.planning_task_10
-#: model:project.task,legend_blocked:industry_fsm.planning_task_11
-#: model:project.task,legend_blocked:industry_fsm.planning_task_12
-#: model:project.task,legend_blocked:industry_fsm.planning_task_13
-#: model:project.task,legend_blocked:industry_fsm.planning_task_14
-#: model:project.task,legend_blocked:industry_fsm.planning_task_15
-#: model:project.task,legend_blocked:industry_fsm.planning_task_16
-#: model:project.task,legend_blocked:industry_fsm.planning_task_17
-#: model:project.task,legend_blocked:industry_fsm.planning_task_19
-#: model:project.task,legend_blocked:industry_fsm.planning_task_2
-#: model:project.task,legend_blocked:industry_fsm.planning_task_20
-#: model:project.task,legend_blocked:industry_fsm.planning_task_3
-#: model:project.task,legend_blocked:industry_fsm.planning_task_4
-#: model:project.task,legend_blocked:industry_fsm.planning_task_5
-#: model:project.task,legend_blocked:industry_fsm.planning_task_6
-#: model:project.task,legend_blocked:industry_fsm.planning_task_7
-#: model:project.task,legend_blocked:industry_fsm.planning_task_8
-#: model:project.task,legend_blocked:industry_fsm.planning_task_9
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_1
 msgid "Blocked"
 msgstr "محجوب"
-
-#. module: industry_fsm
-#: model:project.task,legend_done:industry_fsm.planning_task_18
-msgid "Buzz or set as done"
-msgstr "تنبيه أو تعين كمهمة منتهية"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.project_task_menu_planning_by_project_fsm
@@ -319,7 +292,7 @@ msgid "Confirm"
 msgstr "تأكيد"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -394,6 +367,7 @@ msgid "Custom Worksheets"
 msgstr "أوراق عمل مخصصة "
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__partner_id
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__partner_id
@@ -507,6 +481,7 @@ msgid "Dissatisfied"
 msgstr "غير راضٍ "
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "Do you want to stop the running timers?"
@@ -544,6 +519,7 @@ msgid "FSM Tasks Analysis"
 msgstr "تحليل مهام إدارة الخدمات الميدانية "
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_project.py:0
 #: code:addons/industry_fsm/models/res_company.py:0
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__is_fsm
@@ -567,7 +543,7 @@ msgid "Field Service: Task Report"
 msgstr "الخدمة الميدانية: تقرير المهمة "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Fill in your <b>worksheet</b> with the details of your intervention."
@@ -601,7 +577,7 @@ msgid "Future"
 msgstr "المستقبل "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -611,7 +587,7 @@ msgstr ""
 "أضف <b>عنواناً</b> <i>(مثال: صيانة السخان، تركيب جهاز التكييف، إلخ).</i> "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Go back to your Field Service <b>task</b>."
@@ -636,27 +612,6 @@ msgid "ID"
 msgstr "المُعرف"
 
 #. module: industry_fsm
-#: model:project.task,legend_normal:industry_fsm.planning_task_0
-#: model:project.task,legend_normal:industry_fsm.planning_task_1
-#: model:project.task,legend_normal:industry_fsm.planning_task_10
-#: model:project.task,legend_normal:industry_fsm.planning_task_11
-#: model:project.task,legend_normal:industry_fsm.planning_task_12
-#: model:project.task,legend_normal:industry_fsm.planning_task_13
-#: model:project.task,legend_normal:industry_fsm.planning_task_14
-#: model:project.task,legend_normal:industry_fsm.planning_task_15
-#: model:project.task,legend_normal:industry_fsm.planning_task_16
-#: model:project.task,legend_normal:industry_fsm.planning_task_17
-#: model:project.task,legend_normal:industry_fsm.planning_task_18
-#: model:project.task,legend_normal:industry_fsm.planning_task_19
-#: model:project.task,legend_normal:industry_fsm.planning_task_2
-#: model:project.task,legend_normal:industry_fsm.planning_task_20
-#: model:project.task,legend_normal:industry_fsm.planning_task_3
-#: model:project.task,legend_normal:industry_fsm.planning_task_4
-#: model:project.task,legend_normal:industry_fsm.planning_task_5
-#: model:project.task,legend_normal:industry_fsm.planning_task_6
-#: model:project.task,legend_normal:industry_fsm.planning_task_7
-#: model:project.task,legend_normal:industry_fsm.planning_task_8
-#: model:project.task,legend_normal:industry_fsm.planning_task_9
 #: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_1
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
@@ -669,19 +624,21 @@ msgid "Initially Planned Hours"
 msgstr "ساعات العمل المبدئية المخطط لها"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "Invalid Task."
 msgstr "المهمة غير صالحة. "
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "Invalid signature data."
 msgstr "بيانات التوقيع غير صالحة. "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Invite your customer to <b>validate and sign your task report</b>."
@@ -740,14 +697,14 @@ msgid "Late Tasks"
 msgstr "المهام المتأخرة "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Launch the timer to <b>track the time spent</b> on your task."
 msgstr "قم بتشغيل المؤقت <b>لتعقب الوقت الذي تقضيه</b> في مهامك. "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -758,7 +715,7 @@ msgstr ""
 "مخزونك تلقائياً، وسوف يتم إغلاق مهمتك.</i> "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Let's create your first <b>task</b>."
@@ -860,11 +817,6 @@ msgid "Navigate To"
 msgstr "التنقل إلى "
 
 #. module: industry_fsm
-#: model:project.task,legend_blocked:industry_fsm.planning_task_18
-msgid "Need functional or technical help"
-msgstr "تحتاج إلى مساعدة فنية أو تقنية "
-
-#. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "No Rating"
@@ -909,7 +861,7 @@ msgid "Okay"
 msgstr "حسناً "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -942,11 +894,6 @@ msgstr "مرحلة شخصية "
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
 msgid "Planned"
 msgstr "المخطط له "
-
-#. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.project_sharing_inherit_project_task_view_form
-msgid "Planned Date"
-msgstr "التاريخ المخطط "
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__hours_planned
@@ -1015,31 +962,12 @@ msgid "Rating Value (/5)"
 msgstr "قيمة التقييم (/5) "
 
 #. module: industry_fsm
-#: model:project.task,legend_done:industry_fsm.planning_task_0
-#: model:project.task,legend_done:industry_fsm.planning_task_1
-#: model:project.task,legend_done:industry_fsm.planning_task_10
-#: model:project.task,legend_done:industry_fsm.planning_task_11
-#: model:project.task,legend_done:industry_fsm.planning_task_12
-#: model:project.task,legend_done:industry_fsm.planning_task_13
-#: model:project.task,legend_done:industry_fsm.planning_task_14
-#: model:project.task,legend_done:industry_fsm.planning_task_15
-#: model:project.task,legend_done:industry_fsm.planning_task_16
-#: model:project.task,legend_done:industry_fsm.planning_task_17
-#: model:project.task,legend_done:industry_fsm.planning_task_19
-#: model:project.task,legend_done:industry_fsm.planning_task_2
-#: model:project.task,legend_done:industry_fsm.planning_task_3
-#: model:project.task,legend_done:industry_fsm.planning_task_4
-#: model:project.task,legend_done:industry_fsm.planning_task_5
-#: model:project.task,legend_done:industry_fsm.planning_task_6
-#: model:project.task,legend_done:industry_fsm.planning_task_7
-#: model:project.task,legend_done:industry_fsm.planning_task_8
-#: model:project.task,legend_done:industry_fsm.planning_task_9
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_1
 msgid "Ready"
 msgstr "جاهز"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -1048,11 +976,6 @@ msgid ""
 msgstr ""
 "أأنت جاهز <b>لإدارة عملياتك في مواقع العمل</b>؟ <i>اضغط على الخدمة الميدانية"
 " للبدء.</i> "
-
-#. module: industry_fsm
-#: model:project.task,legend_done:industry_fsm.planning_task_20
-msgid "Ready to reopen"
-msgstr "جاهز لإعادة الفتح"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__remaining_hours
@@ -1072,7 +995,7 @@ msgid "Satisfied"
 msgstr "راضي "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Save time by automatically generating a <b>signature</b>."
@@ -1092,7 +1015,7 @@ msgid "Search planning"
 msgstr "البحث في التخطيط "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Select the <b>customer</b> for your task."
@@ -1104,6 +1027,7 @@ msgid "Send Report"
 msgstr "إرسال التقرير"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "Send report"
@@ -1147,6 +1071,7 @@ msgid "Signature"
 msgstr "التوقيع"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "Signature is missing."
@@ -1197,7 +1122,7 @@ msgid "Start date"
 msgstr "تاريخ البدء"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Stop the <b>timer</b> when you are done."
@@ -1290,24 +1215,28 @@ msgid "Tasks in Conflict"
 msgstr "المهام المتعارضة "
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "The worksheet has been signed"
 msgstr "تم التوقيع على ورقة العمل "
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "The worksheet is not in a state requiring customer signature."
 msgstr "ورقة العمل ليست في حالة تستلزم توقيع العميل. "
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "There are no reports to send."
 msgstr "لا توجد تقارير لإرسالها. "
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 #, python-format
@@ -1394,7 +1323,7 @@ msgid "Unread Messages"
 msgstr "الرسائل غير المقروءة "
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to return to your <b>task</b>."
@@ -1406,7 +1335,7 @@ msgid "User"
 msgstr "المستخدم"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Validate the <b>signature</b>."
@@ -1453,16 +1382,13 @@ msgid "Worksheet"
 msgstr "ورقة العمل"
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
-msgid "Worksheet Complete"
-msgstr "تم إكمال ورقة العمل "
-
-#. module: industry_fsm
 #: model:mail.template,report_name:industry_fsm.mail_template_data_task_report
 msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
 "object.partner_id.name else '' }}.pdf"
 msgstr ""
+"Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
+"object.partner_id.name else '' }}.pdf"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_worksheets

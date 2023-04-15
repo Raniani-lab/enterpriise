@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:28+0000\n"
+"POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -118,6 +118,7 @@ msgid "<strong>Zip: </strong>"
 msgstr "<strong>邮编：</strong>"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "A debtor account is required to validate a SEPA Direct Debit mandate."
@@ -169,6 +170,7 @@ msgid "Activity Type Icon"
 msgstr "活动类型图标"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
@@ -463,12 +465,14 @@ msgid "If checked, some messages have a delivery error."
 msgstr "如果勾选此项， 某些消息将会产生传递错误。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/res_company.py:0
 #, python-format
 msgid "Invalid creditor identifier. Make sure you made no typo."
 msgstr "无效的债权人标识符。确保您没有错别字。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/res_company.py:0
 #, python-format
 msgid "Invalid creditor identifier. Wrong format."
@@ -560,7 +564,6 @@ msgstr "授权标识符必须是唯一的！请选择另一个。"
 #. module: account_sepa_direct_debit
 #: model:ir.actions.server,name:account_sepa_direct_debit.sdd_mandate_state_cron_ir_actions_server
 #: model:ir.cron,cron_name:account_sepa_direct_debit.sdd_mandate_state_cron
-#: model:ir.cron,name:account_sepa_direct_debit.sdd_mandate_state_cron
 msgid "Mandate state updater"
 msgstr "更新授权状态"
 
@@ -668,6 +671,7 @@ msgid "One-off Mandate"
 msgstr "一次性授权"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -676,6 +680,7 @@ msgid ""
 msgstr "仅 IBAN 账号可以接收 SEPA 直接借记付款。请选择与其相关的日志。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -699,6 +704,7 @@ msgid "Originating SEPA mandate"
 msgstr "起源于 SEPA 的授权范围"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "Paid Invoices"
@@ -736,6 +742,7 @@ msgid "Payments generated thanks to this mandate."
 msgstr "由于该授权生成的支付。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "Payments to Collect"
@@ -825,6 +832,7 @@ msgid "SDD creditor identifier"
 msgstr "SDD 债权人标识符"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid "SDD scheme is set on the customer mandate."
@@ -847,6 +855,7 @@ msgid ""
 msgstr "银行给予公司 SEPA 直接借记债权人标识符。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -881,6 +890,7 @@ msgid "Signature"
 msgstr "签名"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid ""
@@ -932,6 +942,7 @@ msgstr ""
 "一些银行/企业可能不接受B2B SDD。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
@@ -940,12 +951,14 @@ msgid ""
 msgstr "与支付相关的 SEPA 直接借记授权已被吊销，不能再使用。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/res_company.py:0
 #, python-format
 msgid "The creditor identifier exceeds the maximum length of 35 characters."
 msgstr "债权人标识符超过 35 个字符的做大长度。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -954,6 +967,7 @@ msgid ""
 msgstr "您规定的债务人标识符超过 SEPA 规范强制要求的 35 个字符的限制"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -972,6 +986,7 @@ msgstr ""
 "                您必须与我们联系， 以停止使用。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
@@ -1001,6 +1016,7 @@ msgid ""
 msgstr "使用直接借记方式支付结算单并且只有出于信息目的才可以发送结算单。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid ""
@@ -1017,6 +1033,7 @@ msgid ""
 msgstr "当且仅当只有一笔交易时，可以使用该授权。如果设置该选项，则再付款中第一次使用后，就会自动从“启用”状态变更为“终止”状态。\n"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
@@ -1025,6 +1042,7 @@ msgid ""
 msgstr "尝试生成直接借记 XML 文件，文件中包含来自其他公司而不是文件债权人的支付信息。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
@@ -1033,6 +1051,7 @@ msgid ""
 msgstr "尝试通过其他支付方法生成一种直接借记 XML 支付方式，而不是由 SEPA 直接借记。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
@@ -1046,6 +1065,7 @@ msgid "Type of the exception activity on record."
 msgstr "记录的异常活动类型。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_invoice.py:0
 #, python-format
 msgid ""
@@ -1077,6 +1097,7 @@ msgid "Website communication history"
 msgstr "网上沟通记录"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/res_partner_bank.py:0
 #, python-format
 msgid ""
@@ -1085,6 +1106,7 @@ msgid ""
 msgstr "您不能删除链接到活动 SEPA 直接借记授权的银行帐户。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid ""
@@ -1093,6 +1115,7 @@ msgid ""
 msgstr "不能生成需要归集历史日期的SEPA直接借贷文件。"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid ""

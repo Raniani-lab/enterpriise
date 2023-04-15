@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Niyas Raphy, 2023
+# Nikhil Krishnan, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
+"Last-Translator: Nikhil Krishnan, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,7 +78,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_icon
 #: model:ir.model.fields,field_description:quality.field_quality_check__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് ഐക്കൺ"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__additional_note
@@ -102,7 +103,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__alert_ids
 msgid "Alerts"
-msgstr ""
+msgstr "അലേർട്ടുകൾ"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_id
@@ -132,7 +133,7 @@ msgstr ""
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_attachment_count
@@ -140,7 +141,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_attachment_count
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ് എണ്ണം"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__reason
@@ -159,7 +160,7 @@ msgid "Check Count"
 msgstr ""
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Close"
@@ -173,7 +174,7 @@ msgstr "കളർ"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_tag__color
 msgid "Color Index"
-msgstr ""
+msgstr "കളർ ഇൻഡക്സ് "
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__company_id
@@ -250,7 +251,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "ഡീഫോൾട് വാല്യൂ "
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
@@ -467,19 +468,14 @@ msgid "Late Activities"
 msgstr "ലേറ്റായ ആക്ടിവിറ്റീസ്‌"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
-msgid "List of cc from incoming emails."
-msgstr ""
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
 msgid "Lot"
-msgstr ""
+msgstr "ലോട്ട്"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
 msgid "Lot/Serial"
-msgstr ""
+msgstr "ലോട്ടസ് /സീരിയൽ"
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__1
@@ -531,7 +527,7 @@ msgid "Name"
 msgstr "പേര്"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:0
+#. odoo-python
 #: code:addons/quality/models/quality.py:0
 #: code:addons/quality/models/quality.py:0
 #: code:addons/quality/models/quality.py:0
@@ -543,7 +539,7 @@ msgstr "പേര്"
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "പുതിയ"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_calendar_event_id
@@ -555,7 +551,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
 #: model:ir.model.fields,field_description:quality.field_quality_check__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "അടുത്ത പ്രവർത്തന സമയപരിധി"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
@@ -570,6 +566,7 @@ msgid "Next Activity Type"
 msgstr ""
 
 #. module: quality
+#. odoo-python
 #: code:addons/quality/models/quality.py:0
 #, python-format
 msgid ""
@@ -676,7 +673,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "പാർട്ണർ"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_parts
@@ -692,7 +689,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__picking_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__picking_id
 msgid "Picking"
-msgstr ""
+msgstr "പിക്കിങ്"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
@@ -744,7 +741,7 @@ msgstr "പ്രോഡക്ടസ് "
 #: model:ir.model,name:quality.model_quality_alert
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Quality Alert"
-msgstr ""
+msgstr "ഗുണനിലവാര മുന്നറിയിപ്പ്"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert_stage
@@ -759,12 +756,12 @@ msgstr ""
 #. module: quality
 #: model:ir.model,name:quality.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "ഗുണനിലവാര പരിശോധന"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "ക്വാളിറ്റി കോൺട്രോൾ പോയിന്റ് "
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point_test_type
@@ -886,7 +883,7 @@ msgid "Tags"
 msgstr "ടാഗുകൾ"
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Take a Picture"
@@ -902,7 +899,7 @@ msgstr "ടീം"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__team_ids
 msgid "Teams"
-msgstr ""
+msgstr "ടീം"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__test_type
@@ -992,7 +989,7 @@ msgstr "യൂസർ"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__partner_id
 msgid "Vendor"
-msgstr ""
+msgstr "സപ്ലയർ"
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__3
@@ -1000,7 +997,7 @@ msgid "Very High"
 msgstr ""
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Viewer"
@@ -1020,7 +1017,7 @@ msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 #: model:ir.model.fields,help:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,help:quality.field_quality_point__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് കമ്മ്യൂണിക്കേഷൻ ചരിത്രം"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_wo

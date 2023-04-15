@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.4alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 08:56+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,7 +38,7 @@ msgstr "Anzeigename"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_pause
 msgid "Display Timer Pause"
-msgstr ""
+msgstr "Pause des Timers anzeigen"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_resume
@@ -52,7 +53,7 @@ msgstr ""
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_stop
 msgid "Display Timer Stop"
-msgstr ""
+msgstr "Stopp des Timers anzeigen"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__id
@@ -86,13 +87,14 @@ msgid "Only one timer occurrence by model, record and user"
 msgstr ""
 
 #. module: timer
+#. odoo-python
 #: code:addons/timer/models/timer_mixin.py:0
 #, python-format
 msgid "Operation not supported"
 msgstr "Vorgang nicht unterstützt"
 
 #. module: timer
-#. openerp-web
+#. odoo-javascript
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Play"
@@ -109,14 +111,16 @@ msgid "Res Model"
 msgstr "Res Model"
 
 #. module: timer
-#. openerp-web
+#. odoo-javascript
+#: code:addons/timer/static/src/component/timer_toggle_button/timer_toggle_button.js:0
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Start"
 msgstr "Start"
 
 #. module: timer
-#. openerp-web
+#. odoo-javascript
+#: code:addons/timer/static/src/component/timer_toggle_button/timer_toggle_button.js:0
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
@@ -153,4 +157,4 @@ msgstr "Benutzer"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__user_timer_id
 msgid "User Timer"
-msgstr ""
+msgstr "Benutzertimer"

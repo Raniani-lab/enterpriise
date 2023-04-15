@@ -27,7 +27,7 @@ msgstr ""
 #. module: quality_mrp_workorder_worksheet
 #: model:ir.model,name:quality_mrp_workorder_worksheet.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "ഗുണനിലവാര പരിശോധന"
 
 #. module: quality_mrp_workorder_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder_worksheet.quality_check_view_form_tablet_inherit_quality_control_worksheet

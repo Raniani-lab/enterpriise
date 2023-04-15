@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Sarah Park, 2022\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
@@ -380,7 +380,6 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: model:marketing.campaign,title:marketing_automation.marketing_campaign_1
 #: model:utm.campaign,title:marketing_automation.marketing_campaign_1_utm_campaign
 msgid "Commercial prospection"
 msgstr "상업적 전망"
@@ -454,7 +453,7 @@ msgid "Delete"
 msgstr "삭제"
 
 #. module: marketing_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
 msgid ""
@@ -510,6 +509,7 @@ msgid "Email"
 msgstr "이메일"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Email canceled"
@@ -521,6 +521,7 @@ msgid "Email composition wizard"
 msgstr "이메일 구성 마법사"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Email failed"
@@ -537,18 +538,21 @@ msgid "Error message"
 msgstr "오류 메시지"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
 msgstr "오류가 발생했습니다! 활동의 재귀 계층 구조를 생성할 수 없습니다."
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr "일괄 메일에 예외 발생 : %s"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in server action: %s"
@@ -666,6 +670,7 @@ msgid "Last activities synchronization"
 msgstr "최근 활동 동기화"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/wizard/marketing_campaign_test.py:0
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #, python-format
@@ -778,12 +783,14 @@ msgid "Mails sent and not bounced"
 msgstr "메일을 보냈고 반송되지 않음"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Manually"
 msgstr "수동"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Marked as completed"
@@ -815,14 +822,12 @@ msgstr "마케팅 자동화 메일링"
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_execute_activities_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_execute_activities
-#: model:ir.cron,name:marketing_automation.ir_cron_campaign_execute_activities
 msgid "Marketing Automation: execute activities"
 msgstr "마케팅 자동화 : 활동 실행"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_sync_participants_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_sync_participants
-#: model:ir.cron,name:marketing_automation.ir_cron_campaign_sync_participants
 msgid "Marketing Automation: sync participants"
 msgstr "마케팅 자동화 : 참여자 동기화"
 
@@ -1017,24 +1022,28 @@ msgid "Parent"
 msgstr "상위"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail bounced"
 msgstr "상위 활동의 메일이 반송됨"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail clicked"
 msgstr "상위 활동의 메일을 클릭함"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail opened"
 msgstr "상위활동의 메일 개봉함"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail replied"
@@ -1073,6 +1082,7 @@ msgid "Participants"
 msgstr "참석자"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Participants of %s (%s)"
@@ -1122,6 +1132,7 @@ msgid "Record ID"
 msgstr "레코드 ID"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Record deleted"
@@ -1134,6 +1145,7 @@ msgid "Record model"
 msgstr "기록 모델"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
@@ -1143,6 +1155,7 @@ msgid "Rejected"
 msgstr "거부됨"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
@@ -1356,6 +1369,7 @@ msgid "Subject"
 msgstr "제목"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
@@ -1363,6 +1377,7 @@ msgid "Success"
 msgstr "성공"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid ""
@@ -1418,6 +1433,7 @@ msgid "Tests"
 msgstr "테스트"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid ""
@@ -1426,6 +1442,7 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid ""
@@ -1553,6 +1570,7 @@ msgid "Validity Duration Type"
 msgstr "유효 기간 유형"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Warning"
@@ -1581,6 +1599,7 @@ msgid "Workflow Started On"
 msgstr "업무 순서 시작"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid ""
@@ -1589,6 +1608,7 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/utm_campaign.py:0
 #, python-format
 msgid ""
@@ -1597,6 +1617,7 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/utm_source.py:0
 #, python-format
 msgid ""
@@ -1605,6 +1626,7 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "You must set up at least one activity to start this campaign."

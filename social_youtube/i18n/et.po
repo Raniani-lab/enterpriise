@@ -17,9 +17,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:29+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: JanaAvalah, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
@@ -82,6 +82,7 @@ msgid "Account"
 msgstr "Konto"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_live_post.py:0
 #: code:addons/social_youtube/models/social_stream_post.py:0
 #, python-format
@@ -89,13 +90,14 @@ msgid "An error occurred."
 msgstr "Ilmnes viga"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "Auth endpoint did not provide a refresh token. Please try again."
 msgstr ""
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
 #, python-format
@@ -118,7 +120,7 @@ msgid "Channel"
 msgstr "Allikas"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
@@ -126,6 +128,7 @@ msgid "Clear"
 msgstr "Tühjenda"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_stream_post.py:0
 #, python-format
 msgid ""
@@ -139,7 +142,7 @@ msgid "Config Settings"
 msgstr "Seadistused"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Confirmation"
@@ -157,6 +160,7 @@ msgid "Contains the ID of the video category as returned by the YouTube API"
 msgstr ""
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/wizard/social_account_revoke_youtube.py:0
 #, python-format
 msgid ""
@@ -182,14 +186,14 @@ msgid "Display Name"
 msgstr "Näidatav nimi"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Do you also want to remove the video from your YouTube account?"
 msgstr ""
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Draft Video"
@@ -238,7 +242,7 @@ msgid "Last Updated on"
 msgstr "Viimati uuendatud"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
 msgid "Likes"
@@ -250,7 +254,7 @@ msgid "Media Type"
 msgstr "Meedia tüüp"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "No"
@@ -283,6 +287,7 @@ msgstr ""
 "videoks."
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_post.py:0
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form
 #, python-format
@@ -295,7 +300,7 @@ msgid "Private"
 msgstr "Privaatne"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Processing..."
@@ -307,6 +312,7 @@ msgid "Public"
 msgstr "Avalik"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "Reason:"
@@ -330,6 +336,7 @@ msgid "Revoke & Delete"
 msgstr "Tühista & Kustuta"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_account.py:0
 #, python-format
 msgid "Revoke Account"
@@ -343,13 +350,14 @@ msgid "Revoke YouTube Account"
 msgstr "Tühista YouTube konto"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_account.py:0
 #, python-format
 msgid "Revoking access tokens is currently limited to YouTube accounts only."
 msgstr ""
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
 msgid "Select"
@@ -408,19 +416,21 @@ msgid "Social Stream Post"
 msgstr "Sotsiaalmeedia striiming postitus"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_post.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
 msgstr "Postituse ID jaoks on 'message' väli nõutud %s"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "The selected video exceeds the maximum allowed size of %s."
 msgstr "Valitud video ületab maksimaalse faili suurust, mis on %s."
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_media.py:0
 #, python-format
 msgid ""
@@ -431,12 +441,14 @@ msgstr ""
 "loojaga. "
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_live_post.py:0
 #, python-format
 msgid "The video you are trying to publish has been deleted from YouTube."
 msgstr "Video, mida te üritate avaldada, on YouTube'ist kustutatud."
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "There is no channel linked with this YouTube account."
@@ -455,12 +467,14 @@ msgid "Token expiration date"
 msgstr "Token'i aegumiskuupäev"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
 msgstr "Autoriseerimata. Palun võtke ühendust oma administraatoriga."
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/wizard/social_account_revoke_youtube.py:0
 #, python-format
 msgid "Unknown"
@@ -472,28 +486,28 @@ msgid "Unlisted"
 msgstr "Registreerimata"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
 msgid "Upload Video"
 msgstr "Lae video üles"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Upload failed. Please try again."
 msgstr "Üleslaadimine ebaõnnestus. Palun proovi uuesti."
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Uploading %s"
 msgstr "Üleslaadimine %s"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Uploading... %s%%"
@@ -514,6 +528,7 @@ msgstr ""
 "funktsioone konkreetsele meediale (\"facebook\", \"twitter\", ...)."
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_post.py:0
 #, python-format
 msgid "Video"
@@ -535,20 +550,21 @@ msgid "Video Title"
 msgstr "Video pealkiri"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Video Upload"
 msgstr "Video üleslaadimine"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_stream_post.py:0
 #, python-format
 msgid "Video not found. It could have been removed from Youtube."
 msgstr "Videot ei leitud. "
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
 #, python-format
@@ -556,19 +572,21 @@ msgid "Views"
 msgstr "Vaated"
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Yes, delete it"
 msgstr "Jah, kustuta"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
 msgstr "Teil pole aktiivset tellimust. Palun osta üks siit: %s"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_post.py:0
 #, python-format
 msgid "You have to upload a video when posting on YouTube."
@@ -603,7 +621,7 @@ msgid ""
 msgstr ""
 
 #. module: social_youtube
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_youtube/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "YouTube Comments"
@@ -718,12 +736,14 @@ msgid "YouTube Views"
 msgstr "YouTube'i vaatamised"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "YouTube did not provide a valid access token or it may have expired."
 msgstr ""
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "YouTube did not provide a valid authorization code."
@@ -735,6 +755,7 @@ msgid "Your channel name and picture"
 msgstr "Teie kanali nimi ja pilt"
 
 #. module: social_youtube
+#. odoo-python
 #: code:addons/social_youtube/models/social_live_post.py:0
 #, python-format
 msgid "Your video is missing a correct title or description."

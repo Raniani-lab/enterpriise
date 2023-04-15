@@ -8,14 +8,14 @@
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Marek Pontus, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
-# Leaanika Randmets, 2022
+# Leaanika Randmets, 2023
 # Anna, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Anna, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
@@ -78,6 +78,24 @@ msgstr "Sulge"
 #: model:ir.model.fields,field_description:website_delivery_ups.field_payment_provider__custom_mode
 msgid "Custom Mode"
 msgstr "Kohandatud režiim"
+
+#. module: website_delivery_ups
+#. odoo-javascript
+#: code:addons/website_delivery_ups/static/src/js/checkout_form.js:0
+#, python-format
+msgid ""
+"If you believe that it is an error, please contact the website "
+"administrator."
+msgstr ""
+"Kui arvate, et tegemist on veaga, võtke ühendust veebilehe "
+"administraatoriga."
+
+#. module: website_delivery_ups
+#. odoo-javascript
+#: code:addons/website_delivery_ups/static/src/js/checkout_form.js:0
+#, python-format
+msgid "No suitable payment option could be found."
+msgstr "Sobivat maksevõimalust ei õnnestunud leida."
 
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_payment_provider

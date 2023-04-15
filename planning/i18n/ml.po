@@ -29,7 +29,7 @@ msgstr "%s (കോപ്പി)"
 #. module: planning
 #: model:ir.actions.report,print_report_name:planning.report_planning_slot
 msgid "'Planning'"
-msgstr ""
+msgstr "'പ്ലാനിംഗ്'"
 
 #. module: planning
 #. odoo-python
@@ -568,7 +568,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: planning
 #. odoo-javascript
@@ -641,7 +641,7 @@ msgstr "കളർ"
 #. module: planning
 #: model:planning.role,name:planning.planning_role_cm
 msgid "Community Manager"
-msgstr ""
+msgstr "കമ്മ്യൂണിറ്റി മാനേജർ"
 
 #. module: planning
 #: model:ir.model,name:planning.model_res_company
@@ -822,7 +822,7 @@ msgstr ""
 #. module: planning
 #: model:planning.role,name:planning.planning_role_developer
 msgid "Developer"
-msgstr ""
+msgstr "ഡെവലപ്പർ"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.employee_no_email_list_wizard
@@ -940,7 +940,7 @@ msgstr ""
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_settings_employee
 msgid "Employees"
-msgstr "ജീവനക്കാർ"
+msgstr "എംപ്ലോയീസ്"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_send__employee_ids
@@ -1215,7 +1215,7 @@ msgstr ""
 #: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #, python-format
 msgid "Legend"
-msgstr ""
+msgstr "ലെജൻഡ്"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__allow_self_unassign
@@ -1252,7 +1252,7 @@ msgstr ""
 #. module: planning
 #: model:planning.role,name:planning.planning_role_management
 msgid "Management"
-msgstr ""
+msgstr "മാനേജ്മെന്റ്"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__manager_id
@@ -1490,7 +1490,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model,name:planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "പ്ലാനിംഗ് അനാലിസിസ് റിപ്പോർട്ട്"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_recurrency
@@ -1672,7 +1672,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Resource"
-msgstr ""
+msgstr "റിസോഴ്സ്"
 
 #. module: planning
 #: model:ir.model,name:planning.model_resource_resource

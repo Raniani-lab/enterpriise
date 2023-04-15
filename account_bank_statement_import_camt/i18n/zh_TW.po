@@ -1429,19 +1429,19 @@ msgstr "Pair-Off"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Partial Payment"
-msgstr "Partial Payment"
+msgstr "未足額付款"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Partial Redemption Without Reduction of Nominal Value"
-msgstr "Partial Redemption Without Reduction of Nominal Value"
+msgstr ""
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Partial Redemption with reduction of nominal value"
-msgstr "Partial Redemption with reduction of nominal value"
+msgstr ""
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

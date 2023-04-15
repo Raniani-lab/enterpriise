@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:28+0000\n"
+"POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2022\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
@@ -124,6 +124,7 @@ msgid "<strong>Zip: </strong>"
 msgstr "<strong>CAP: </strong>"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "A debtor account is required to validate a SEPA Direct Debit mandate."
@@ -177,6 +178,7 @@ msgid "Activity Type Icon"
 msgstr "Icona tipo di attività"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
@@ -476,6 +478,7 @@ msgid "If checked, some messages have a delivery error."
 msgstr "Se selezionata, alcuni messaggi presentano un errore di consegna."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/res_company.py:0
 #, python-format
 msgid "Invalid creditor identifier. Make sure you made no typo."
@@ -483,6 +486,7 @@ msgstr ""
 "Identificativo creditore non valido, controllare che non ci siano refusi."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/res_company.py:0
 #, python-format
 msgid "Invalid creditor identifier. Wrong format."
@@ -578,7 +582,6 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.actions.server,name:account_sepa_direct_debit.sdd_mandate_state_cron_ir_actions_server
 #: model:ir.cron,cron_name:account_sepa_direct_debit.sdd_mandate_state_cron
-#: model:ir.cron,name:account_sepa_direct_debit.sdd_mandate_state_cron
 msgid "Mandate state updater"
 msgstr "Aggiornatore stato del mandato"
 
@@ -687,6 +690,7 @@ msgid "One-off Mandate"
 msgstr "Mandato unico"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -697,6 +701,7 @@ msgstr ""
 " di conto IBAN. Selezionare un registro con un IBAN associato."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -722,6 +727,7 @@ msgid "Originating SEPA mandate"
 msgstr "Mandato SEPA iniziale"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "Paid Invoices"
@@ -759,6 +765,7 @@ msgid "Payments generated thanks to this mandate."
 msgstr "Pagamenti generati grazie al mandato."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "Payments to Collect"
@@ -852,6 +859,7 @@ msgid "SDD creditor identifier"
 msgstr "Identificativo creditore SDD"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid "SDD scheme is set on the customer mandate."
@@ -876,6 +884,7 @@ msgstr ""
 "dalla banca)."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -912,6 +921,7 @@ msgid "Signature"
 msgstr "Firma"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid ""
@@ -965,6 +975,7 @@ msgstr ""
 "Alcune banche/attività potrebbero non accettare SDD per B2B."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
@@ -975,6 +986,7 @@ msgstr ""
 "e non può più essere utilizzato."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/res_company.py:0
 #, python-format
 msgid "The creditor identifier exceeds the maximum length of 35 characters."
@@ -983,6 +995,7 @@ msgstr ""
 "creditore."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -993,6 +1006,7 @@ msgstr ""
 "caratteri imposto dalla norma SEPA."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid ""
@@ -1013,6 +1027,7 @@ msgstr ""
 "                per interrompere l'utilizzo è necessario contattarci."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
@@ -1051,6 +1066,7 @@ msgstr ""
 "                        inviata solo a scopo informativo."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid ""
@@ -1072,6 +1088,7 @@ msgstr ""
 " a \"Chiuso\" dopo il primo utilizzo nel pagamento.\n"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
@@ -1082,6 +1099,7 @@ msgstr ""
 " da un'azienda diversa da quella del creditore del file."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #, python-format
 msgid ""
@@ -1092,6 +1110,7 @@ msgstr ""
 "provenienti da metodi diversi da quelli SEPA."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_payment.py:0
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
@@ -1107,6 +1126,7 @@ msgid "Type of the exception activity on record."
 msgstr "Tipo di attività eccezione sul record."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_invoice.py:0
 #, python-format
 msgid ""
@@ -1140,6 +1160,7 @@ msgid "Website communication history"
 msgstr "Cronologia comunicazioni sito web"
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/res_partner_bank.py:0
 #, python-format
 msgid ""
@@ -1150,6 +1171,7 @@ msgstr ""
 "diretto SEPA attivo."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid ""
@@ -1160,6 +1182,7 @@ msgstr ""
 "riscossione nel passato."
 
 #. module: account_sepa_direct_debit
+#. odoo-python
 #: code:addons/account_sepa_direct_debit/models/account_batch_payment.py:0
 #, python-format
 msgid ""

@@ -14,9 +14,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
 "Last-Translator: JanaAvalah, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
@@ -27,14 +27,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Category"
 msgstr "Kategooria"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
@@ -42,7 +42,7 @@ msgid "Current"
 msgstr "Praegune"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
@@ -50,21 +50,21 @@ msgid "Customer"
 msgstr "Klient"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Daily Rentals"
 msgstr "Igapäevased rentimised"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "KPI"
 msgstr "KPI"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
@@ -74,35 +74,35 @@ msgid "Ordered"
 msgstr "Tellitud"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Ordered Qty"
 msgstr "Tellitud ühikud"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Orders"
 msgstr "Tellimused"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Period"
 msgstr "Periood"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Picked-up Qty"
 msgstr "Kättesaadud ühikud"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
@@ -110,7 +110,7 @@ msgid "Previous"
 msgstr "Eelmine"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
@@ -118,14 +118,14 @@ msgid "Product"
 msgstr "Toode"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Product Category"
 msgstr "Tootekategooria"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
@@ -133,49 +133,49 @@ msgid "Quotations"
 msgstr "Pakkumised"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Customer"
 msgstr "Kliendipõhine rendianalüüs"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product"
 msgstr "Tootepõhine rendianalüüs"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product Category"
 msgstr "Tootekategooria põhine rendianalüüs"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Salesman"
 msgstr "Analüüs müügijuhipõhiselt"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rentals"
 msgstr "Rentimised"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Returned Qty"
 msgstr "Tagastatud ühikud"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
@@ -187,7 +187,7 @@ msgid "Revenue"
 msgstr "Tulu"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
@@ -195,49 +195,49 @@ msgid "Salesperson"
 msgstr "Müügiesindaja"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Customers"
 msgstr "Parimad kliendid"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
 msgstr "Parimad tootekategooriad"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Products"
 msgstr "Parimad tooted"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
 msgstr "Parimad müügiesindajad"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - current"
 msgstr "Jooksev rendistatistika"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - previous"
 msgstr "Eelnev rendistatistika"
 
 #. module: spreadsheet_dashboard_sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0

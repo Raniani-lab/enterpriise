@@ -4,15 +4,16 @@
 # 
 # Translators:
 # Niyas Raphy, 2023
+# Nikhil Krishnan, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:42+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
-"Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
+"Last-Translator: Nikhil Krishnan, 2023\n"
+"Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -118,7 +119,7 @@ msgstr ""
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_kanban_inherit_maintenance
 msgid "Maintenance"
-msgstr ""
+msgstr "മൈന്റെനൻസ്"
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_maintenance_equipment
@@ -127,7 +128,7 @@ msgid "Maintenance Equipment"
 msgstr ""
 
 #. module: mrp_maintenance
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_maintenance/static/src/components/menuPopup.xml:0
 #: model:ir.model,name:mrp_maintenance.model_maintenance_request
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_production_view_form_inherit_maintenance
@@ -136,6 +137,7 @@ msgid "Maintenance Request"
 msgstr ""
 
 #. module: mrp_maintenance
+#. odoo-python
 #: code:addons/mrp_maintenance/models/mrp_maintenance.py:0
 #, python-format
 msgid "Maintenance Requests"
@@ -144,7 +146,7 @@ msgstr ""
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__production_id
 msgid "Manufacturing Order"
-msgstr ""
+msgstr "മാനുഫാക്ചട്യൂറിങ് ഓർഡർ"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
@@ -164,6 +166,7 @@ msgid "Mean Time To Repair"
 msgstr ""
 
 #. module: mrp_maintenance
+#. odoo-python
 #: code:addons/mrp_maintenance/models/mrp_maintenance.py:0
 #: code:addons/mrp_maintenance/models/mrp_maintenance.py:0
 #, python-format
@@ -178,7 +181,7 @@ msgstr ""
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_search_inherit_mrp
 msgid "Operation"
-msgstr ""
+msgstr "പ്രവർത്തനം"
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__production_company_id
@@ -221,7 +224,7 @@ msgstr ""
 #: model:ir.model,name:mrp_maintenance.model_mrp_workorder
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__workorder_id
 msgid "Work Order"
-msgstr ""
+msgstr "വർക്ക് ഓർഡർ"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
@@ -229,6 +232,7 @@ msgid "days"
 msgstr "ദിവസം"
 
 #. module: mrp_maintenance
+#. odoo-python
 #: code:addons/mrp_maintenance/models/mrp_maintenance.py:0
 #, python-format
 msgid "work centers"

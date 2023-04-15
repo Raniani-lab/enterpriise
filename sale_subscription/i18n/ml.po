@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Niyas Raphy, 2023
+# Nikhil Krishnan, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
+"Last-Translator: Nikhil Krishnan, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,13 +42,6 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__percentage_satisfaction
 msgid "% Happy"
-msgstr ""
-
-#. module: sale_subscription
-#. odoo-python
-#: code:addons/sale_subscription/models/sale_order_line.py:0
-#, python-format
-msgid "%(product)s - %(duration)d %(unit)s"
 msgstr ""
 
 #. module: sale_subscription
@@ -301,7 +295,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<strong class=\"mr16\">Subtotal</strong>"
-msgstr ""
+msgstr "<strong class=\"mr16\">സബ് ടോട്ടൽ</strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -698,7 +692,7 @@ msgstr "ആക്റ്റിവിറ്റി"
 #: model:ir.actions.act_window,name:sale_subscription.mail_activity_type_action_config_subscription
 #: model:ir.ui.menu,name:sale_subscription.subscription_menu_config_activity_type
 msgid "Activity Types"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_type
@@ -720,7 +714,7 @@ msgstr ""
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_alert
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
 msgid "Alerts"
-msgstr ""
+msgstr "അലേർട്ടുകൾ"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurring_live
@@ -733,7 +727,7 @@ msgstr ""
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "All"
-msgstr ""
+msgstr "എല്ലാം"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -763,7 +757,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_template_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__archived_product_count
@@ -1418,7 +1412,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__done
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__health__done
 msgid "Good"
-msgstr ""
+msgstr "നല്ലത്"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__good_health_domain
@@ -1463,7 +1457,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "History"
-msgstr ""
+msgstr "ഹിസ്റ്ററി"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__history_count
@@ -1546,13 +1540,6 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_template__auto_close_limit
-msgid ""
-"If the chosen payment method has failed to renew the subscription after this"
-" time, the subscription is automatically closed."
-msgstr ""
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid ""
 "If you confirm, your subscription will be closed right away. Your current "
@@ -1602,7 +1589,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__invoice_mail_template_id
 msgid "Invoice Email Template"
-msgstr ""
+msgstr "ഇൻവോയ്സ് ഇമെയിൽ ടെംപ്ലേറ്റ്"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_success
@@ -1867,8 +1854,8 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid ""
-"Manual payment succeeded. Payment reference: %s; Amount: %(amount)s. Invoice"
-" %(invoice)s"
+"Manual payment succeeded. Payment reference: %(tx_model)s; Amount: "
+"%(amount)s. Invoice %(invoice)s"
 msgstr ""
 
 #. module: sale_subscription
@@ -1893,7 +1880,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_id
 msgid "Model"
-msgstr ""
+msgstr "മോഡൽ"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_name
@@ -2107,7 +2094,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_transaction
 msgid "Payment Transaction"
-msgstr ""
+msgstr "പേയ്മെന്റ് ഇടപാട്"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2206,7 +2193,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__code
 msgid "Python Code"
-msgstr ""
+msgstr "പൈത്തൺ കോഡ്"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__quantity
@@ -2218,7 +2205,7 @@ msgstr "അളവ്"
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_stage__category__draft
 #: model:sale.order.stage,name:sale_subscription.sale_subscription_stage_draft
 msgid "Quotation"
-msgstr ""
+msgstr "കോറ്റേഷൻ"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_template
@@ -2312,7 +2299,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__name
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 msgid "Reason"
-msgstr ""
+msgstr "കാരണം"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurrence_id
@@ -2354,6 +2341,15 @@ msgstr ""
 msgid ""
 "Recurring product are discounted according to the prorated period from %s to"
 " %s"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order_line.py:0
+#, python-format
+msgid ""
+"Recurring product are entirely discounted as the next period has not been "
+"invoiced yet."
 msgstr ""
 
 #. module: sale_subscription
@@ -2727,7 +2723,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_stage_action
 msgid "Stages"
-msgstr ""
+msgstr "സ്റ്റേജ്സ്"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__start_date
@@ -2950,12 +2946,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 #, python-format
 msgid "Subscriptions"
-msgstr ""
+msgstr "സുബ്സ്ക്രിപ്ഷൻ"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_report_pivot_action
 msgid "Subscriptions Analysis"
-msgstr ""
+msgstr "സുബ്സ്ക്രിപ്ഷൻ അനാലിസിസ്"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action
@@ -3014,7 +3010,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Template"
-msgstr ""
+msgstr "ടെംപ്ലേറ്റ്"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.mail_template_subscription_alert
@@ -3083,6 +3079,14 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
 msgid "The full URL to access the server action through the website."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"The last invoice (%s) of this subscription is unpaid after the due date."
 msgstr ""
 
 #. module: sale_subscription
@@ -3203,13 +3207,6 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
-msgid ""
-"This will trigger the action on all linked subsccriptions, regardless of "
-"possible timed conditions. Are you sure you want to proceed?"
-msgstr ""
-
-#. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_time
 msgid "Timed Condition"
 msgstr ""
@@ -3326,6 +3323,13 @@ msgid "Unit of Measure"
 msgstr "യൂണിറ്റ് ഓഫ് മെഷർ"
 
 #. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_template__auto_close_limit
+msgid ""
+"Unpaid subscription after the due date majored by this number of days will be automatically closed by the subscriptions expiration scheduled action. \n"
+"If the chosen payment method has failed to renew the subscription after this time, the subscription is automatically closed."
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "Untaxed Total:"
 msgstr ""
@@ -3424,7 +3428,7 @@ msgstr "താക്കീത്"
 #: code:addons/sale_subscription/static/src/js/manage_form.js:0
 #, python-format
 msgid "Warning!"
-msgstr ""
+msgstr "വാണിംഗ്!"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3504,20 +3508,21 @@ msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
-#: code:addons/sale_subscription/models/sale_order.py:0
-#, python-format
-msgid ""
-"You can not upsell a subscription that has not been invoiced yet. Please, "
-"update directly the %s contract or invoice it first."
-msgstr ""
-
-#. module: sale_subscription
-#. odoo-python
 #: code:addons/sale_subscription/models/res_partner.py:0
 #, python-format
 msgid ""
 "You can't archive the partner as it is used in the following recurring "
 "orders: %s"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot create an upsell for this subscription because it :\n"
+" - Has not started yet.\n"
+" - Has no invoiced period in the future."
 msgstr ""
 
 #. module: sale_subscription
@@ -3549,6 +3554,24 @@ msgstr ""
 msgid ""
 "You cannot set to draft a confirmed subscription. Please create a new "
 "quotation"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot upsell a subscription whose next invoice date is in the past.\n"
+"Please, invoice directly the %s contract."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot validate a renewal quotation starting before the next invoice "
+"date of the parent contract. Please update the start date after the %s."
 msgstr ""
 
 #. module: sale_subscription

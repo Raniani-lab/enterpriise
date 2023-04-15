@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
@@ -24,21 +24,21 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "- Indirect Demand Forecast"
 msgstr "-การพยากรณ์ความต้องการทางอ้อม"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "ATP"
 msgstr "ATP"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
@@ -46,20 +46,21 @@ msgid "Actual"
 msgstr "แท้จริง"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
 msgid "Actual Demand"
 msgstr "ความต้องการที่แท้จริง"
 
 #. module: mrp_mps
+#. odoo-python
 #: code:addons/mrp_mps/models/mrp_mps.py:0
 #, python-format
 msgid "Actual Demand %s %s (%s - %s)"
 msgstr "ความต้องการที่แท้จริง %s %s (%s - %s)"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
@@ -67,7 +68,7 @@ msgid "Actual Demand Y-1"
 msgstr "ความต้องการที่แท้จริง Y-1"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
@@ -75,7 +76,7 @@ msgid "Actual Demand Y-2"
 msgstr "ความต้องการที่แท้จริง Y-2"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__total_qty
 #, python-format
@@ -83,13 +84,14 @@ msgid "Actual Replenishment"
 msgstr "การเติมสินค้าที่แท้จริง"
 
 #. module: mrp_mps
+#. odoo-python
 #: code:addons/mrp_mps/models/mrp_mps.py:0
 #, python-format
 msgid "Actual Replenishment %s %s (%s - %s)"
 msgstr "การเติมสินค้าที่แท้จริง %s %s (%s - %s)"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.xml:0
 #: model:ir.actions.act_window,name:mrp_mps.action_mrp_mps_form_view
 #, python-format
@@ -97,21 +99,21 @@ msgid "Add a Product"
 msgstr "เพิ่มสินค้า"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/models/master_production_schedule_model.js:0
 #, python-format
 msgid "Are you sure you want to delete these records?"
 msgstr "คุณแน่ใจหรือไม่ว่าต้องการลบบันทึกเหล่านี้?"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/models/master_production_schedule_model.js:0
 #, python-format
 msgid "Are you sure you want to delete this record?"
 msgstr "คุณแน่ใจหรือไม่ว่าต้องการลบบันทึกนี้?"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
 msgid "Available to Promise"
@@ -153,7 +155,7 @@ msgid "Config Settings"
 msgstr "ตั้งค่าการกำหนดค่า"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/models/master_production_schedule_model.js:0
 #, python-format
 msgid "Confirmation"
@@ -196,14 +198,14 @@ msgid ""
 msgstr "ค่าเริ่มต้นสำหรับช่วงเวลาในรายงานกำหนดการผลิตหลัก"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.js:0
 #, python-format
 msgid "Delete"
 msgstr "ลบ"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__forecast_qty
 #, python-format
@@ -268,14 +270,14 @@ msgid "Display To Replenish"
 msgstr "แสดงการเติมสินค้า"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.js:0
 #, python-format
 msgid "Export"
 msgstr "ส่งออก"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.js:0
 #, python-format
 msgid "External ID"
@@ -287,14 +289,14 @@ msgid "Forecast Demand Details"
 msgstr "พยากรณ์รายละเอียดความต้องการ"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Forecast Report"
 msgstr ""
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
@@ -302,14 +304,14 @@ msgid "Forecasted"
 msgstr "พยากรณ์"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Forecasted Demand"
 msgstr "พยากรณ์ความต้องการ"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
@@ -334,7 +336,7 @@ msgid "ID"
 msgstr "ไอดี"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
 msgid "Indirect Demand Forecast"
@@ -378,7 +380,7 @@ msgid "Manufacturing Period"
 msgstr "ช่วงเวลาการผลิต"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/main.js:0
 #: model:ir.actions.client,name:mrp_mps.action_mrp_mps
 #: model:ir.ui.menu,name:mrp_mps.mrp_mps_report_menu
@@ -407,7 +409,7 @@ msgid "Move"
 msgstr "ย้าย"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/main.xml:0
 #, python-format
 msgid "No product yet. Add one to start scheduling."
@@ -502,7 +504,7 @@ msgid "Quantity from RFQ"
 msgstr "จำนวนจาก RFQ"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid ""
@@ -518,7 +520,7 @@ msgid "Receipts"
 msgstr "ใบเสร็จ"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.js:0
@@ -538,7 +540,7 @@ msgid "Requests for quotation"
 msgstr "ร้องขอใบเสนอราคา"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
 msgid "Rows"
@@ -580,7 +582,7 @@ msgid "Sequence"
 msgstr "ลำดับ"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
 msgid "Starting Inventory"
@@ -592,7 +594,7 @@ msgid "Stock Rule"
 msgstr "กฎสต๊อก"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Suggested Replenishment"
@@ -604,14 +606,14 @@ msgid "The combination of warehouse and product must be unique !"
 msgstr "การผสมผสานระหว่างคลังกับสินค้าต้องไม่ซ้ำกัน !"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "The confirmed demand, based on the confirmed sales orders."
 msgstr "ความต้องการที่ยืนยันตามใบสั่งขายที่ยืนยันแล้ว"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid ""
@@ -621,28 +623,28 @@ msgstr ""
 "ความต้องการที่พยากรณ์ไว้เพื่อตอบสนองความต้องการในส่วนประกอบของใบสั่งผลิต"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "The forecasted demand. This value has to be entered manually."
 msgstr "ความต้องการที่พยากรณ์ไว้ ค่านี้จะต้องป้อนด้วยตนเอง"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "The forecasted quantity in stock at the beginning of the period."
 msgstr "จำนวนที่พยากรณ์ในสต๊อกเมื่อเริ่มต้นช่วงเวลา"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "The forecasted quantity in stock at the end of the period."
 msgstr "จำนวนที่พยากรณ์ในสต๊อกเมื่อสิ้นสุดช่วงเวลา"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/main.xml:0
 #, python-format
 msgid ""
@@ -663,7 +665,7 @@ msgid ""
 msgstr ""
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid ""
@@ -672,7 +674,7 @@ msgid ""
 msgstr "จำนวนที่เติม โดยอิงตามคำขอใบเสนอราคาและใบสั่งผลิต"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid ""
@@ -692,7 +694,7 @@ msgid "Time Range"
 msgstr "ช่วงเวลา"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__replenish_qty
 #, python-format
@@ -706,6 +708,7 @@ msgid ""
 msgstr ""
 
 #. module: mrp_mps
+#. odoo-python
 #: code:addons/mrp_mps/models/res_company.py:0
 #, python-format
 msgid "Week {week_num} ({start_date}-{end_date}/{month})"
@@ -717,7 +720,7 @@ msgid "Weekly"
 msgstr "รายสัปดาห์"
 
 #. module: mrp_mps
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "by"

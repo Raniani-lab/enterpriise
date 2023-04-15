@@ -49,7 +49,7 @@ msgstr ""
 #. module: hr_work_entry_contract_planning
 #: model:ir.model.fields.selection,name:hr_work_entry_contract_planning.selection__hr_contract__work_entry_source__planning
 msgid "Planning"
-msgstr "ആസൂത്രണം"
+msgstr "പ്ലാനിംഗ്"
 
 #. module: hr_work_entry_contract_planning
 #: model:ir.model,name:hr_work_entry_contract_planning.model_planning_slot

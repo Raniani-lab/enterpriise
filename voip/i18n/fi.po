@@ -16,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
@@ -34,28 +34,28 @@ msgid "# of Cases"
 msgstr "Tapausten määrä"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "%(number of missed calls)s missed calls"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "1 missed call"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "2 missed calls"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -64,14 +64,14 @@ msgid ""
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Accept"
 msgstr "Hyväksy"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: model:ir.model,name:voip.model_mail_activity
@@ -80,7 +80,7 @@ msgid "Activity"
 msgstr "Toimenpide"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/call_queue_switch_view.js:0
 #, python-format
 msgid "Add to Call Queue"
@@ -92,7 +92,7 @@ msgid "Add to call queue"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -110,7 +110,7 @@ msgid ""
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -123,7 +123,7 @@ msgid "Ask"
 msgstr "Kysy"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
@@ -133,7 +133,7 @@ msgid "Avatar"
 msgstr "Avatar"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -141,7 +141,8 @@ msgid "Backspace"
 msgstr "Askelpalautin"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
+#. odoo-python
 #: code:addons/voip/models/voip_queue_mixin.py:0
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: code:addons/voip/static/src/js/dialing_panel.js:0
@@ -163,6 +164,7 @@ msgid "Call Name"
 msgstr ""
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Call duration: %(min)smin %(sec)ssec"
@@ -175,13 +177,14 @@ msgid "Call from another device"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Call rejected (reason: \"%(reasonPhrase)s\")"
 msgstr ""
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #: code:addons/voip/models/voip_phonecall.py:0
 #: code:addons/voip/models/voip_phonecall.py:0
@@ -190,7 +193,7 @@ msgid "Call to %s"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/voip_service.js:0
 #, python-format
 msgid "Calling %s"
@@ -202,7 +205,7 @@ msgid "Calls Date"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -210,7 +213,7 @@ msgid "Cancel"
 msgstr "Peruuta"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
@@ -224,7 +227,7 @@ msgid "Cancelled"
 msgstr "Peruttu"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -246,14 +249,14 @@ msgid ""
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Click to unblock"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -266,7 +269,7 @@ msgid "Config Settings"
 msgstr "Asetukset"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Connecting..."
@@ -280,7 +283,7 @@ msgid "Contact"
 msgstr "Kontakti"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Contacts"
@@ -304,7 +307,7 @@ msgid "Creation Date"
 msgstr "Luontipäivä"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -333,7 +336,7 @@ msgid "Direction"
 msgstr "Suunta"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -348,7 +351,7 @@ msgid "Display Name"
 msgstr "Näyttönimi"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Document"
@@ -376,7 +379,7 @@ msgid "Duration in minutes."
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -384,7 +387,7 @@ msgid "Edit"
 msgstr "Muokkaa"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
@@ -392,14 +395,14 @@ msgid "End Call"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Enter number or name"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Enter the number..."
@@ -412,7 +415,7 @@ msgid "External device number"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -432,7 +435,7 @@ msgid "Group By"
 msgstr "Ryhmittely"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -502,7 +505,7 @@ msgid "In Call Queue"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "In call for:"
@@ -521,7 +524,8 @@ msgid "Incoming"
 msgstr "Saapuva"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #: code:addons/voip/models/voip_phonecall.py:0
 #: code:addons/voip/models/voip_phonecall.py:0
@@ -531,14 +535,14 @@ msgid "Incoming call from %s"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Incoming call from %s (%s)"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Incoming call from..."
@@ -552,7 +556,7 @@ msgid "Is in the Call Queue"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -610,14 +614,14 @@ msgid "Logged Phonecall"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Make a call using:"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -630,6 +634,7 @@ msgid "Missed"
 msgstr ""
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Missed Call from %s"
@@ -648,14 +653,14 @@ msgid "Mobile number sanitized"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/components/activity/activity.xml:0
 #, python-format
 msgid "Mobile:"
 msgstr "Matkapuhelin:"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -668,14 +673,14 @@ msgid "My Phonecalls"
 msgstr "Omat puhelinsoitot"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Next activities"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -714,14 +719,14 @@ msgid "PBX Server IP"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "PBX or Websocket address is missing. Please check your settings."
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
@@ -729,7 +734,7 @@ msgid "Pending"
 msgstr "Odottaa"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: model:ir.model.fields,field_description:voip.field_mail_activity__phone
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__phone
@@ -744,14 +749,14 @@ msgid "Phone number sanitized"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/components/activity/activity.xml:0
 #, python-format
 msgid "Phone:"
 msgstr "Phone:"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -767,7 +772,7 @@ msgid "Phonecalls"
 msgstr "Puhelinsoitot"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
@@ -775,7 +780,7 @@ msgid "Please accept the use of the microphone."
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid ""
@@ -789,14 +794,14 @@ msgid "Production"
 msgstr "Valmistus"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Recent"
-msgstr ""
+msgstr "Viimeisin"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -804,21 +809,21 @@ msgid "Refresh the Panel"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid "Registration rejected: %(statusCode)s %(reasonPhrase)s."
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Reject"
 msgstr "Hylkää"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Reject call"
@@ -836,27 +841,28 @@ msgid "Rejected"
 msgstr "Rechazado"
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Rejected Incoming Call from %s"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Remember ?"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/call_queue_switch_view.js:0
 #, python-format
 msgid "Remove from Call Queue"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
@@ -871,7 +877,7 @@ msgid "Responsible"
 msgstr "Vastuuhenkilö"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Ringing..."
@@ -888,21 +894,21 @@ msgid "Schedule A New Activity"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Activity"
 msgstr "Aikatauluta toimenpide"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Next"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Search"
@@ -914,7 +920,7 @@ msgid "Search Phonecalls"
 msgstr "Etsi puhelut"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -927,6 +933,7 @@ msgid "Sequence"
 msgstr "Järjestys"
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_queue_mixin.py:0
 #, python-format
 msgid ""
@@ -957,12 +964,7 @@ msgid "Summary"
 msgstr "Yhteenveto"
 
 #. module: voip
-#: model:ir.model,name:voip.model_ir_config_parameter
-msgid "System Parameter"
-msgstr "Järjestelmäparametri"
-
-#. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Take call"
@@ -979,14 +981,14 @@ msgid "The URL of your WebSocket"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The connection cannot be made.</br> Please check your configuration."
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid ""
@@ -996,7 +998,7 @@ msgid ""
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -1012,21 +1014,21 @@ msgid "The password that will be used to register with the PBX server."
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The person you try to contact is currently unavailable."
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "The phonecall has no number"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid ""
@@ -1052,7 +1054,7 @@ msgid ""
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -1073,7 +1075,7 @@ msgid "Tomorrow"
 msgstr "Huomenna"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -1116,7 +1118,7 @@ msgid "VOIP Queue support"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__voip
 #: model_terms:ir.ui.view,arch_db:voip.res_user_form
@@ -1148,7 +1150,7 @@ msgid "VoIP username / Extension number"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Voip"
@@ -1160,14 +1162,14 @@ msgid "WebSocket"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "You are already in a call"
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid ""
@@ -1176,7 +1178,7 @@ msgid ""
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
@@ -1185,7 +1187,7 @@ msgid ""
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -1193,7 +1195,7 @@ msgid ""
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -1201,7 +1203,7 @@ msgid "min"
 msgstr "minimi"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format

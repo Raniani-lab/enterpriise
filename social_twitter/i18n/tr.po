@@ -17,9 +17,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:29+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Tugay Hatıl <tugayh@projetgrup.com>, 2023\n"
 "Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
@@ -30,6 +30,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_post_template.py:0
 #, python-format
 msgid "%s / %s characters to fit in a Tweet"
@@ -80,19 +81,21 @@ msgid "@twitteraccount ·"
 msgstr "@twitteraccount ·"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "A retweet already exists"
 msgstr "Retweet zaten var"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "An error occurred (%s)"
 msgstr "Bir hata oluştu (%s)"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format
@@ -100,7 +103,7 @@ msgid "Author Image"
 msgstr "Üretici Resmi"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Cancel"
@@ -116,6 +119,7 @@ msgstr ""
 "istiyorsanız bunu işaretleyin."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -165,14 +169,14 @@ msgid "Display Twitter Preview"
 msgstr "Twitter Önizlemesini Görüntüle"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Error"
 msgstr "Hata"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
 #, python-format
 msgid "Error while sending the data to the server."
@@ -220,13 +224,14 @@ msgid "Last Updated on"
 msgstr "Son Güncelleme"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Likes"
 msgstr "Beğeniler"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid ""
@@ -237,6 +242,7 @@ msgstr ""
 "deneyin."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid ""
@@ -262,13 +268,14 @@ msgid "Name"
 msgstr "Adı"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid "Please select a Twitter account for this stream type."
 msgstr "Lütfen bu akışı türü için bir Twitter hesabı seçin."
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Post"
@@ -280,7 +287,7 @@ msgid "Post Image"
 msgstr "Gönderi Resmi"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Quote a Tweet"
@@ -327,7 +334,7 @@ msgid "Retweet or Quote"
 msgstr "Retweetle veya Alıntıla"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Retweets"
@@ -389,6 +396,7 @@ msgid "Social Twitter Account"
 msgstr "Sosyal Twitter Hesabı"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid ""
@@ -398,12 +406,14 @@ msgstr ""
 "Yazdığın kelime uygun gözükmüyor. Lütfen başka kelimelerle tekrar dene."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "The tweet is empty. Add a message and try posting again."
 msgstr "Tweet boş. Bir mesaj ekleyin ve tekrar göndermeyi deneyin."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
 msgid ""
@@ -435,7 +445,7 @@ msgid "Twitter Can Retweet"
 msgstr "Twitter Retweet Yapabilir"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_comments_count
 #, python-format
@@ -495,7 +505,7 @@ msgid "Twitter Preview"
 msgstr "Twitter Önizlemesi"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Twitter Profile Image"
@@ -537,6 +547,7 @@ msgid "Twitter User Likes"
 msgstr "Twitter Kullanıcı Beğenileri"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Twitter did not provide a valid access token or it may have expired."
@@ -544,6 +555,7 @@ msgstr ""
 "Twitter geçerli bir access token sağlamadı veya süresi dolmuş olabilir."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Twitter did not provide a valid access token."
@@ -555,6 +567,7 @@ msgid "Twitter tweet id"
 msgstr "Twitter tweet id"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
@@ -566,6 +579,7 @@ msgid "Undo Retweet"
 msgstr "Retweetlemeyi geri al"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -588,6 +602,7 @@ msgstr ""
 "karşılaştırmalar yapmak için kullanılır ('facebook', 'twitter', ...)."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_account.py:0
 #, python-format
 msgid ""
@@ -598,6 +613,7 @@ msgstr ""
 "deneyiniz ( hata: %s)."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -606,7 +622,7 @@ msgid "You are not authenticated"
 msgstr "kimliğiniz doğrulanmadı"
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_comments.js:0
 #, python-format
 msgid ""
@@ -622,6 +638,7 @@ msgid "You can not store two times the same tweet on the same stream!"
 msgstr "Aynı tweet'i iki kez aynı akışta depolayamazsınız!"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid ""
@@ -632,6 +649,7 @@ msgstr ""
 "Korumalı olduğu için olabilir. Bunu çözmek için lütfen tekrar denemeden önce onu takip ettiğinizden emin olun."
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
@@ -640,6 +658,7 @@ msgstr ""
 "Fazla Bilgi İçin : %s"
 
 #. module: social_twitter
+#. odoo-python
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
 msgid ""
@@ -655,7 +674,7 @@ msgid "e.g. #odoo"
 msgstr "#odoo v.b. "
 
 #. module: social_twitter
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_twitter/static/src/js/stream_post_comment.js:0
 #, python-format
 msgid "tweet"

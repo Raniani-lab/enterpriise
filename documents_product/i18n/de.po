@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,7 +78,7 @@ msgstr "Dokumente"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__documents_product_settings
 msgid "Documents Product Settings"
-msgstr ""
+msgstr "Dokumente Produkteinstellungen"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_msds_tag
@@ -114,7 +115,7 @@ msgstr "Produktvarianten"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
 msgid "Product Workspace"
-msgstr ""
+msgstr "Produktarbeitsbereich"
 
 #. module: documents_product
 #: model:ir.model.fields.selection,name:documents_product.selection__documents_workflow_rule__create_model__product_template
@@ -139,4 +140,4 @@ msgstr "Arbeitsbereich"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
 msgid "product default workspace"
-msgstr ""
+msgstr "Standardarbeitsbereich für Produkte"

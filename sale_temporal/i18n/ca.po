@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:53+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2023\n"
 "Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
@@ -118,6 +118,11 @@ msgstr "Nom a mostrar"
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration
 msgid "Duration"
 msgstr "Durada"
+
+#. module: sale_temporal
+#: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration_display
+msgid "Duration Display"
+msgstr ""
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
@@ -345,13 +350,13 @@ msgstr "El producte (%s) té valors incompatibles: %s"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
-msgid "Time based pricing"
-msgstr "Preu basat en el temps"
+msgid "Time-based pricing"
+msgstr ""
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
-msgid "Time based rules"
-msgstr "Regles basades en l'hora"
+msgid "Time-based rules"
+msgstr ""
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit

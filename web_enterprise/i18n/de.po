@@ -354,7 +354,7 @@ msgstr "Abonnementcode:"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "TIP"
-msgstr ""
+msgstr "TIPP"
 
 #. module: web_enterprise
 #. odoo-javascript

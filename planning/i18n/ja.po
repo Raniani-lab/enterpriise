@@ -16,7 +16,7 @@ msgstr ""
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
-"Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
+"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -489,7 +489,7 @@ msgstr "有効"
 #: code:addons/planning/static/src/js/planning_gantt_controller.js:0
 #, python-format
 msgid "Add Shift"
-msgstr ""
+msgstr "シフトを追加"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
@@ -504,7 +504,7 @@ msgstr "従業員に送信される電子メールに表示される追加のメ
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 msgid "Additional note sent to the employee"
-msgstr ""
+msgstr "従業員に送付される追加メモ "
 
 #. module: planning
 #: model:res.groups,name:planning.group_planning_manager
@@ -526,12 +526,12 @@ msgstr "割り当てられた時間"
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_hours
 #: model_terms:ir.ui.view,arch_db:planning.resource_planning
 msgid "Allocated Time"
-msgstr ""
+msgstr "割当時間"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_percentage
 msgid "Allocated Time %"
-msgstr ""
+msgstr "割当時間 %"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__allocated_percentage
@@ -1015,13 +1015,13 @@ msgstr "エクストラメッセージ"
 msgid ""
 "Find here your planning. Assign yourself open shifts that match your roles, "
 "or indicate your unavailability."
-msgstr ""
+msgstr "あなたの計画をこちらで見つけてください。自分の役割に合ったオープンシフトを割り当てたり、稼働できないことを表示したりします。"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.view_employee_filter_inherit_hr
 #: model_terms:ir.ui.view,arch_db:planning.view_resource_resource_search_inherit
 msgid "Fixed Hours"
-msgstr ""
+msgstr "時間固定"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__flexible_hours
@@ -1029,7 +1029,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.view_employee_filter_inherit_hr
 #: model_terms:ir.ui.view,arch_db:planning.view_resource_resource_search_inherit
 msgid "Flexible Hours"
-msgstr ""
+msgstr "フレックスタイム"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__allocation_type__forecast
@@ -1331,7 +1331,7 @@ msgstr "自分の計画"
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Roles"
-msgstr ""
+msgstr "自分の役割"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -1767,7 +1767,7 @@ msgstr "リソースごとのスケジュール"
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_role
 msgid "Schedule by Role"
-msgstr "役割によってスケジュール"
+msgstr "役割別スケジュール"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_resource
@@ -2252,7 +2252,7 @@ msgstr "勤務場所"
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__working_days_count
 #: model:ir.model.fields,field_description:planning.field_planning_slot__working_days_count
 msgid "Working Days"
-msgstr ""
+msgstr "作業日数"
 
 #. module: planning
 #. odoo-javascript

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:28+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Thi Huong Nguyen, 2023\n"
 "Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
@@ -528,7 +528,7 @@ msgstr "Thêm một chức năng ở đây..."
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a specific appointment."
-msgstr ""
+msgstr "Thêm một cuộc hẹn cụ thể."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -643,8 +643,6 @@ msgstr "Bất kể Người dùng"
 #. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 #, python-format
 msgid "Appointment"
@@ -960,7 +958,7 @@ msgstr "Kết nối với lịch của bạn"
 #. module: appointment
 #: model:ir.model,name:appointment.model_res_partner
 msgid "Contact"
-msgstr "Danh bạ"
+msgstr "Liên hệ"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_partner_ids
@@ -1360,7 +1358,7 @@ msgstr "Để trống nếu cuộc họp diễn ra trực tuyến"
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot____last_update
 #: model:ir.model.fields,field_description:appointment.field_appointment_type____last_update
 msgid "Last Modified on"
-msgstr "Chỉnh sửa Lần cuối vào"
+msgstr "Chỉnh sửa lần cuối vào"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__write_uid
@@ -1371,7 +1369,7 @@ msgstr "Chỉnh sửa Lần cuối vào"
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__write_uid
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__write_uid
 msgid "Last Updated by"
-msgstr "Cập nhật Lần cuối bởi"
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__write_date
@@ -1382,7 +1380,7 @@ msgstr "Cập nhật Lần cuối bởi"
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__write_date
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__write_date
 msgid "Last Updated on"
-msgstr "Cập nhật Lần cuối vào"
+msgstr "Cập nhật lần cuối vào"
 
 #. module: appointment
 #. odoo-javascript
@@ -1516,7 +1514,7 @@ msgstr "Tên"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Navigation"
-msgstr ""
+msgstr "Điều hướng"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_alarm__default_for_new_appointment_type
@@ -1668,7 +1666,7 @@ msgstr "Tùy chọn"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Our Appointment Types"
-msgstr ""
+msgstr "Loại cuộc hẹn"
 
 #. module: appointment
 #. odoo-javascript
@@ -1692,7 +1690,7 @@ msgstr "Quá khứ"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__placeholder
 msgid "Placeholder"
-msgstr "Vùng giữ chỗ"
+msgstr "Trình giữ chỗ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -1819,7 +1817,7 @@ msgstr "Lên lịch một Cuộc hẹn"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Schedule an appointment."
-msgstr ""
+msgstr "Lên lịch một cuộc hẹn."
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.calendar_event_action_report

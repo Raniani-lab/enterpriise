@@ -17,9 +17,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Leaanika Randmets, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
@@ -30,6 +30,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "%s other task(s) for the same employee at the same time."
@@ -134,6 +135,7 @@ msgid "Cancel"
 msgstr "Tühista"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "Caution: some tasks have not been scheduled"
@@ -202,7 +204,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: project_enterprise
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_enterprise/static/src/js/task_gantt_utils.js:0
 #, python-format
 msgid "Invalid scale interval"
@@ -243,12 +245,14 @@ msgid "Mobile"
 msgstr "Mobiil"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "No task has been scheduled in the future."
 msgstr "Ühtegi ülesannet pole tulevikuks planeeritud."
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -259,6 +263,7 @@ msgstr ""
 " lõppkuupäeva."
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -274,6 +279,7 @@ msgid "Overlap Warning"
 msgstr "Kattumishoiatus"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "Overlapping Tasks"
@@ -286,6 +292,7 @@ msgid "Phone"
 msgstr "Telefon"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_sharing_project_task_view_form_inherited
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
@@ -346,6 +353,7 @@ msgid "Show Warnings"
 msgstr "Näita hoiatusi"
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -413,24 +421,28 @@ msgid "The planned start date must be before the planned end date."
 msgstr "Planeeritud alguskuupäev peab olema enne kavandatud lõppkuupäeva."
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The task has been successfully scheduled."
 msgstr "Ülesanne on edukalt planeeritud."
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The tasks have been successfully scheduled."
 msgstr "Ülesanded on edukalt planeeritud."
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "This Progress Bar is not implemented."
 msgstr "Antud edenemisriba ei rakendatud. "
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -441,6 +453,7 @@ msgstr ""
 "Võrdluseks võeti ettevõtte töötunnid."
 
 #. module: project_enterprise
+#. odoo-python
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid ""
@@ -454,7 +467,7 @@ msgid "Timesheets"
 msgstr "Tööaja arvestusleht"
 
 #. module: project_enterprise
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_enterprise/static/src/js/task_gantt_model.js:0
 #, python-format
 msgid "Unassigned Tasks"
@@ -477,7 +490,7 @@ msgid "User Names"
 msgstr "Kasutajanimed"
 
 #. module: project_enterprise
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_enterprise/static/src/js/task_gantt_controller.js:0
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__warning
 #, python-format

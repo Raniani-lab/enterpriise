@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
@@ -169,7 +169,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__trace_ids
 msgid "Actions"
-msgstr ""
+msgstr "ആക്ഷൻസ്"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__active
@@ -204,7 +204,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_type
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__activity_type
 msgid "Activity Type"
-msgstr ""
+msgstr "ആക്ടിവിറ്റി ടൈപ്പ് "
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__domain
@@ -257,7 +257,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -305,12 +305,12 @@ msgstr "ക്യാമ്പയിൻ"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__name
 msgid "Campaign Identifier"
-msgstr ""
+msgstr "ക്യാമ്പയിൻ ഐഡന്റിഫയർ"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__title
 msgid "Campaign Name"
-msgstr ""
+msgstr "ക്യാമ്പയിൻ പേര്"
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.marketing_campaign_action
@@ -366,7 +366,7 @@ msgstr "ക്ലിക്കുകൾ"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__color
 msgid "Color Index"
-msgstr ""
+msgstr "കളർ ഇൻഡക്സ് "
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_participants_action_reporting
@@ -376,7 +376,6 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
-#: model:marketing.campaign,title:marketing_automation.marketing_campaign_1
 #: model:utm.campaign,title:marketing_automation.marketing_campaign_1_utm_campaign
 msgid "Commercial prospection"
 msgstr ""
@@ -450,7 +449,7 @@ msgid "Delete"
 msgstr "ഡിലീറ്റ്"
 
 #. module: marketing_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
 msgid ""
@@ -506,6 +505,7 @@ msgid "Email"
 msgstr "ഇമെയിൽ"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Email canceled"
@@ -517,6 +517,7 @@ msgid "Email composition wizard"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Email failed"
@@ -533,18 +534,21 @@ msgid "Error message"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Error! You can't create recursive hierarchy of Activity."
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in mass mailing: %s"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in server action: %s"
@@ -662,6 +666,7 @@ msgid "Last activities synchronization"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/wizard/marketing_campaign_test.py:0
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #, python-format
@@ -687,7 +692,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.ui.menu,name:marketing_automation.link_tracker_menu_reporting_marketing_automation
 msgid "Link Tracker"
-msgstr ""
+msgstr "ലിങ്ക് ട്രാക്കർ"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.link_tracker_action_marketing_campaign
@@ -774,12 +779,14 @@ msgid "Mails sent and not bounced"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Manually"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Marked as completed"
@@ -801,7 +808,7 @@ msgstr ""
 #: model:ir.module.category,name:marketing_automation.module_marketing_automation_category
 #: model:ir.ui.menu,name:marketing_automation.marketing_automation_menu
 msgid "Marketing Automation"
-msgstr ""
+msgstr "മാർക്കറ്റിംഗ് ഓട്ടോമേഷൻ"
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.mail_mass_mailing_action_marketing_automation
@@ -811,14 +818,12 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_execute_activities_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_execute_activities
-#: model:ir.cron,name:marketing_automation.ir_cron_campaign_execute_activities
 msgid "Marketing Automation: execute activities"
 msgstr ""
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_sync_participants_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_sync_participants
-#: model:ir.cron,name:marketing_automation.ir_cron_campaign_sync_participants
 msgid "Marketing Automation: sync participants"
 msgstr ""
 
@@ -888,7 +893,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__model_id
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 msgid "Model"
-msgstr ""
+msgstr "മോഡൽ"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.ir_model_view_tree_marketing
@@ -916,7 +921,7 @@ msgstr "പേര്"
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_campaign__state__draft
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 msgid "New"
-msgstr ""
+msgstr "പുതിയ"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -1013,24 +1018,28 @@ msgid "Parent"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail bounced"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail clicked"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail opened"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Parent activity mail replied"
@@ -1069,6 +1078,7 @@ msgid "Participants"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Participants of %s (%s)"
@@ -1109,7 +1119,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__resource_ref
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__resource_ref
 msgid "Record"
-msgstr ""
+msgstr "റെക്കോർഡ്"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__res_id
@@ -1118,6 +1128,7 @@ msgid "Record ID"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Record deleted"
@@ -1130,6 +1141,7 @@ msgid "Record model"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__rejected
@@ -1139,6 +1151,7 @@ msgid "Rejected"
 msgstr "നിരസിച്ചു"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Rejected by activity filter or record deleted / archived"
@@ -1266,13 +1279,13 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Sent"
-msgstr ""
+msgstr "സെൻറ് "
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__server_action_id
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__activity_type__action
 msgid "Server Action"
-msgstr ""
+msgstr "സെർവർ ആക്ഷൻ"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__social_posts_count
@@ -1352,6 +1365,7 @@ msgid "Subject"
 msgstr "വിഷയം"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
@@ -1359,6 +1373,7 @@ msgid "Success"
 msgstr "വിജയം"
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid ""
@@ -1391,7 +1406,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Templates"
-msgstr ""
+msgstr "ടെംപ്ലേറ്റുകൾ"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -1414,6 +1429,7 @@ msgid "Tests"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid ""
@@ -1422,6 +1438,7 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid ""
@@ -1508,7 +1525,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Update"
-msgstr ""
+msgstr "അപ്ഡേറ്റ്"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__use_leads
@@ -1545,6 +1562,7 @@ msgid "Validity Duration Type"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "Warning"
@@ -1573,6 +1591,7 @@ msgid "Workflow Started On"
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid ""
@@ -1581,6 +1600,7 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/utm_campaign.py:0
 #, python-format
 msgid ""
@@ -1589,6 +1609,7 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/utm_source.py:0
 #, python-format
 msgid ""
@@ -1597,6 +1618,7 @@ msgid ""
 msgstr ""
 
 #. module: marketing_automation
+#. odoo-python
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
 #, python-format
 msgid "You must set up at least one activity to start this campaign."

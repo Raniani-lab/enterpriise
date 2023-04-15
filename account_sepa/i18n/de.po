@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -300,6 +301,12 @@ msgid ""
 "- 2 letters or digits: location code\n"
 "- 3 letters or digits: branch code, optional\n"
 msgstr ""
+"Der BIC-Code „%s“ der Bank „%s“ des Bankkontos „%s“ des Partners „%s“ entspricht nicht der erforderlichen Richtlinie.\n"
+"Er muss 8 oder 11 Zeichen enthalten und folgender Struktur entsprechen:\n"
+"- 4 Buchstaben: Institutscode oder Bankleitzahl\n"
+"- 2 Buchstaben: country code\n"
+"- 2 Buchstaben oder Ziffern: Ortskennzahl\n"
+"- 3 Buchstaben oder Ziffern: Zweigcode, optional\n"
 
 #. module: account_sepa
 #. odoo-python

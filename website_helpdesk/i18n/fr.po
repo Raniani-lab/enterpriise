@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
@@ -28,7 +28,6 @@ msgstr "<b>À propos de notre équipe</b>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
-#: model_terms:website.page,arch_db:website_helpdesk.aboutus_page
 msgid ""
 "<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
 "label=\"Success\" title=\"Success\"/>"
@@ -122,14 +121,14 @@ msgid "All Types"
 msgstr "Tous les types"
 
 #. module: website_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk/static/src/xml/website_helpdesk.xml:0
 #, python-format
 msgid "All results"
 msgstr "Tous les résultats"
 
 #. module: website_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #, python-format
 msgid "Attachment"
@@ -161,6 +160,7 @@ msgid "Contact Us"
 msgstr "Contactez-nous"
 
 #. module: website_helpdesk
+#. odoo-python
 #: code:addons/website_helpdesk/__init__.py:0
 #, python-format
 msgid "Customer Care"
@@ -172,7 +172,7 @@ msgid "Date Filter"
 msgstr "Filtre de date"
 
 #. module: website_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #, python-format
 msgid "Description"
@@ -184,6 +184,7 @@ msgid "Form"
 msgstr "Formulaire"
 
 #. module: website_helpdesk
+#. odoo-python
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #: code:addons/website_helpdesk/models/website.py:0
 #, python-format
@@ -196,13 +197,14 @@ msgid "Help Center Page"
 msgstr "Page du Centre d'assistance"
 
 #. module: website_helpdesk
+#. odoo-python
 #: code:addons/website_helpdesk/models/website.py:0
 #, python-format
 msgid "Helpdesk Customer Satisfaction"
 msgstr "Satisfaction client de l'assistance"
 
 #. module: website_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #: model:ir.model,name:website_helpdesk.model_helpdesk_team
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
@@ -216,25 +218,28 @@ msgid "Is Published"
 msgstr "Est publié"
 
 #. module: website_helpdesk
+#. odoo-python
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Month"
 msgstr "Le mois dernier"
 
 #. module: website_helpdesk
+#. odoo-python
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Week"
 msgstr "La semaine dernière"
 
 #. module: website_helpdesk
+#. odoo-python
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Year"
 msgstr "L'année dernière "
 
 #. module: website_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk/static/src/xml/website_helpdesk.xml:0
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.search_results
 #, python-format
@@ -242,19 +247,12 @@ msgid "No results found. Please try another search."
 msgstr "Aucun résultat trouvé. Veuillez essayer une autre recherche."
 
 #. module: website_helpdesk
-#: code:addons/website_helpdesk/models/helpdesk.py:0
-#, python-format
-msgid "Redirect to the Website Helpdesk Rating Page"
-msgstr ""
-"Redirection vers la page d'évaluation du service d'assistance du site web"
-
-#. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
 msgid "Search for articles, best practices and more..."
 msgstr "Recherchez des articles, des bonnes pratiques et plus encore..."
 
 #. module: website_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #, python-format
 msgid "Subject"
@@ -279,7 +277,6 @@ msgstr "Filtre des étiquettes"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
-#: model_terms:website.page,arch_db:website_helpdesk.aboutus_page
 msgid "Thank you for submitting your issue, our team will get right on it!"
 msgstr ""
 "Merci d'avoir ouvert un ticket, notre équipe le prendra en charge dans les "
@@ -291,6 +288,7 @@ msgid "The full URL to access the document through the website."
 msgstr "L'URL complète pour accéder au document à travers le site web."
 
 #. module: website_helpdesk
+#. odoo-python
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "The team company and the website company should match"
@@ -328,14 +326,14 @@ msgid "Website URL"
 msgstr "URL du site web"
 
 #. module: website_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #, python-format
 msgid "Your Email"
 msgstr "Votre email"
 
 #. module: website_helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #, python-format
 msgid "Your Name"
@@ -343,6 +341,5 @@ msgstr "Votre nom"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
-#: model_terms:website.page,arch_db:website_helpdesk.aboutus_page
 msgid "Your Ticket Number is"
 msgstr "Le numéro de votre ticket est"

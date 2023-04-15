@@ -65,7 +65,7 @@ msgstr "ലഭ്യത"
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__qty_available
 msgid "Available"
-msgstr ""
+msgstr "അവൈലബിൾ"
 
 #. module: sale_stock_renting
 #. odoo-javascript
@@ -135,7 +135,7 @@ msgstr "ജേണൽ എൻട്രി"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_stock_lot
 msgid "Lot/Serial"
-msgstr ""
+msgstr "ലോട്ടസ് /സീരിയൽ"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form

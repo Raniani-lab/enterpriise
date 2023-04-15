@@ -130,6 +130,9 @@ msgid ""
 "Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"Ein Abschreibungseintrag wird am und einschließlich des Datums %s "
+"veröffentlicht. <br/> %s Zukünftige Buchungen werden neu berechnet, um die "
+"Anlage entsprechend der Änderungen abzuschreiben."
 
 #. module: account_asset
 #. odoo-python
@@ -139,6 +142,8 @@ msgid ""
 "A depreciation entry will be posted on and including the date %s.<br/> A "
 "disposal entry will be posted on the %s account <b>%s</b>."
 msgstr ""
+"Eine Abschreibungsbuchung wird am %s und einschließlich dieses Datums "
+"gebucht.<br/> Eine Ausbuchung wird auf das %s Konto <b>%s</b> gebucht. "
 
 #. module: account_asset
 #. odoo-python
@@ -367,6 +372,8 @@ msgstr "Eine Anlage wurde erstellt für die Buchung:"
 #, python-format
 msgid "An asset will be created for the value increase of the asset. <br/>"
 msgstr ""
+"Ein Vermögenswert wird für die Wertsteigerung des Anlagevermögens erstellt. "
+"<br/>"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
@@ -376,7 +383,7 @@ msgstr "Kostenstelle"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "Analysegenauigkeit"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -483,7 +490,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
 msgid "Asset Report Custom Handler"
-msgstr ""
+msgstr "Anlagenbericht Benutzerdefinierter Handler"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_type
@@ -1746,7 +1753,7 @@ msgstr "Einkauf: Anlagevermögen"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Re-evaluate"
-msgstr ""
+msgstr "Neu bewerten"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -2029,6 +2036,8 @@ msgid ""
 "There are unposted depreciations prior to the selected operation date, "
 "please deal with them first."
 msgstr ""
+"Es gibt noch nichtgebuchte Abschreibungen vor dem gewählten Datum, bitte "
+"bearbeiten Sie diese zuerst."
 
 #. module: account_asset
 #. odoo-javascript
@@ -2052,7 +2061,7 @@ msgstr "Gesamt"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciable_value
 msgid "Total Depreciable Value"
-msgstr ""
+msgstr "Insgesamt abzuschreibender Wert"
 
 #. module: account_asset
 #. odoo-python

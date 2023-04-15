@@ -22,12 +22,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: JanaAvalah, 2023\n"
-"Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
+"Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -35,18 +35,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "%(user)s decided, as %(role)s, to publish the employee's feedback"
 msgstr "%(user)s otsustas %(role)s, et avaldab töötaja tagasiside"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "%s Goals"
 msgstr "%s eesmärgid"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "1 Meeting"
@@ -211,6 +214,7 @@ msgstr ""
 "            "
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_employee_base.py:0
 #, python-format
 msgid ""
@@ -366,11 +370,6 @@ msgid "Administrator"
 msgstr "Administraator"
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-msgid "Application Settings"
-msgstr "Rakenduse seaded"
-
-#. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action
 #: model:ir.actions.act_window,name:hr_appraisal.open_view_hr_appraisal_tree2
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_ids
@@ -425,6 +424,7 @@ msgid "Appraisal Employee Feedback Template"
 msgstr "Töötaja hindamise tagasiside mall"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Form to Fill"
@@ -442,6 +442,7 @@ msgid "Appraisal Manager Feedback Template"
 msgstr "Hindamise juhataja tagasiside mall"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Officer"
@@ -453,6 +454,7 @@ msgid "Appraisal Plan Posted"
 msgstr "Hindamise plaan postitatud"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
@@ -481,18 +483,14 @@ msgid "Appraisal Templates"
 msgstr "Hindamise mallid"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal of %s"
 msgstr "Hinnang %s kohta"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:0
-#, python-format
-msgid "Appraisal reopened"
-msgstr "Hindamine taasavatud"
-
-#. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
@@ -507,7 +505,6 @@ msgstr "Alusta hindamist"
 #. module: hr_appraisal
 #: model:ir.actions.server,name:hr_appraisal.ir_cron_scheduler_appraisal_ir_actions_server
 #: model:ir.cron,cron_name:hr_appraisal.ir_cron_scheduler_appraisal
-#: model:ir.cron,name:hr_appraisal.ir_cron_scheduler_appraisal
 msgid "Appraisal: Run employee appraisal"
 msgstr "Hindamine: Töötajate hindamine"
 
@@ -538,6 +535,7 @@ msgid "Ask to fill a survey to other employees"
 msgstr "Küsi töötajatelt küsitluse täitmist"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Assessment"
@@ -626,11 +624,6 @@ msgstr "Tühista hindamine peale lepingu lõpukuupäeva,"
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_report__state__cancel
 msgid "Cancelled"
 msgstr "Tühistatud"
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
-msgid "Chat"
-msgstr "Vestlus"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__color
@@ -764,6 +757,7 @@ msgid "Deadline:"
 msgstr "Tähtaeg:"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal_goal.py:0
 #, python-format
 msgid "Deadline: %s"
@@ -883,6 +877,7 @@ msgid "Evaluation Scale"
 msgstr "Hindamisskaala"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Exceeds expectations"
@@ -899,6 +894,7 @@ msgid "Feedback Templates"
 msgstr "Tagasiside mallid"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Fill appraisal for %s"
@@ -1019,9 +1015,7 @@ msgstr "Kui märgitud, siis uued sõnumid nõuavad Su tähelepanu."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_sms_error
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_error
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Kui valitud, on mõningatel sõnumitel saatmiserror."
 
@@ -1094,6 +1088,7 @@ msgid "Last Appraisal Date"
 msgstr "Viimase hindamise kuupäev"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Last Meeting"
@@ -1147,6 +1142,7 @@ msgid "Main Attachment"
 msgstr "Peamine manus"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__manager_id
@@ -1204,6 +1200,7 @@ msgid "Meetings"
 msgstr "Kohtumised"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Meets expectations"
@@ -1246,6 +1243,7 @@ msgid "Name"
 msgstr "Nimi"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Needs improvement"
@@ -1282,18 +1280,21 @@ msgid "Next Appraisal Date"
 msgstr "Järgmine hindamise kuupäev"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Next Meeting"
 msgstr "Järgmine kohtumine"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "No Meeting"
 msgstr "Kohtumisi pole"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Note"
@@ -1334,6 +1335,7 @@ msgid "Ongoing Appraisal Count"
 msgstr "Käimasolevate hindamiste arv"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal_goal.py:0
 #, python-format
 msgid "Operation not supported"
@@ -1372,6 +1374,7 @@ msgstr ""
 "Plaaneeri ettevõttesiseseid hindamisi ning aruta kolleegidega tulemusi."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Previous Appraisals"
@@ -1453,12 +1456,6 @@ msgstr "Taotle hindamine"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_user_id
 msgid "Responsible User"
 msgstr "Vastutav kasutaja"
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_sms_error
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr "Sõnumi kohaletoimetamise veateade"
 
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
@@ -1553,6 +1550,7 @@ msgstr ""
 "Planeeritud: Tulevased tegevused."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Strongly Exceed Expectations"
@@ -1569,12 +1567,14 @@ msgid "Subject..."
 msgstr "Teema..."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Such grouping is not allowed."
 msgstr "Taoline grupeering pole lubatud."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid ""
@@ -1584,6 +1584,7 @@ msgstr ""
 "Tänu Teie hindamisplaanile luuakse automaatselt uus hindamine aadressil %s."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The appraisal's status has been set to Done by %s"
@@ -1617,6 +1618,7 @@ msgid "The duration time must be bigger or equal to 1 month."
 msgstr "Kestus peab olema suurem või võrdne 1 kuuga."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""
@@ -1627,13 +1629,14 @@ msgstr ""
 "hinnata %s & määrata 1to1 kohtumise kuupäeva enne %s."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The employee feedback cannot be changed by managers."
 msgstr "Töötajate tagasisidet ei saa juhid muuta."
 
 #. module: hr_appraisal
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_appraisal/static/src/fields/boolean_confirm.js:0
 #, python-format
 msgid ""
@@ -1644,6 +1647,7 @@ msgstr ""
 "seda avaldada? See tegevus registreeritakse vestluses."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The manager feedback cannot be changed by an employee."
@@ -1682,6 +1686,7 @@ msgid "Type of the exception activity on record."
 msgstr "Kirjel oleva erandtegevuse tüüp."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/wizard/request_appraisal.py:0
 #, python-format
 msgid "Unable to post message, please configure the sender's email address."
@@ -1694,6 +1699,7 @@ msgid "Uncomplete Goals Count"
 msgstr "Lõpetamata eesmärkide arv"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
@@ -1717,18 +1723,7 @@ msgid "Waiting Feedback from Employee/Managers"
 msgstr "Ootab töötaja/juhataja tagasisidet"
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__website_message_ids
-msgid "Website Messages"
-msgstr "Veebilehe sõnumid"
-
-#. module: hr_appraisal
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__website_message_ids
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__website_message_ids
-msgid "Website communication history"
-msgstr "Veebilehe suhtluse ajalugu"
-
-#. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""
@@ -1739,6 +1734,7 @@ msgstr ""
 "hinnata siin. Juhatada määrab üks-ühele kohtumise kuupäeva."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "You cannot delete appraisal which is not in draft or canceled state"
@@ -1753,6 +1749,7 @@ msgid "Your Appraisal has been completed"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""
@@ -1764,6 +1761,7 @@ msgstr ""
 " Saate hinnata %s & määrata 1to1 kohtumise kuupäeva enne %s."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""

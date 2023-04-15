@@ -251,7 +251,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.account_tag_action
 msgid "Add a new tag"
-msgstr ""
+msgstr "ഒരു പുതിയ ടാഗ് ചേർക്കുക"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -313,7 +313,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution
 #, python-format
 msgid "Analytic"
-msgstr ""
+msgstr "അനാലിറ്റിക്"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -382,7 +382,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_bank_statement_line
 msgid "Bank Statement Line"
-msgstr ""
+msgstr "ബാങ്ക് സ്റ്റേറ്റ്മെന്റ് ലൈൻ"
 
 #. module: account_accountant
 #. odoo-python
@@ -631,7 +631,7 @@ msgstr "ഡൈജസ്റ്റ്"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Discuss"
-msgstr ""
+msgstr "ഡിസ്‌കസ്"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__display_name
@@ -656,7 +656,7 @@ msgstr ""
 #: code:addons/account_accountant/models/digest.py:0
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
-msgstr ""
+msgstr "ആക്‌സസ് ഇല്ല, ഉപയോക്താവിന്റെ ഡൈജസ്റ്റ് ഇമെയിലിനായി ഈ ഡാറ്റ ഒഴിവാക്കുക"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1276,7 +1276,7 @@ msgstr "പേര്"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "പുതിയ"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__next_action_todo
@@ -1390,7 +1390,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Partner"
-msgstr ""
+msgstr "പാർട്ണർ"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1529,12 +1529,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_tree
 #, python-format
 msgid "Reconcile"
-msgstr ""
+msgstr "റീകൺസയിൽ"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr ""
+msgstr "റീകൺസയിൽ മോഡൽ"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
@@ -1565,7 +1565,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Reset"
-msgstr ""
+msgstr "റീസെറ്റ്"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1582,12 +1582,12 @@ msgstr "സേവ്"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Save & Close"
-msgstr ""
+msgstr "സേവ് & ക്ലോസ് "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Save & New"
-msgstr ""
+msgstr "സേവ് & ന്യൂ "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1708,7 +1708,7 @@ msgstr "സ്റ്റേറ്റ്"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Statement"
-msgstr ""
+msgstr "സ്റ്റേറ്റ്മെൻറ്"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1942,7 +1942,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
 msgid "Valid"
-msgstr ""
+msgstr "വാലിഡ്‌"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1979,7 +1979,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__wizard_id
 msgid "Wizard"
-msgstr ""
+msgstr "വിസാർഡ്"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__company_currency_id
@@ -2112,7 +2112,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_widget_wizard
 msgid "e.g. Bank Fees"
-msgstr ""
+msgstr "ഉദാ. ബാങ്ക് ഫീസ്"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__early_payment

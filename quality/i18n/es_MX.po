@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
@@ -164,7 +164,7 @@ msgid "Check Count"
 msgstr "Comprobar recuento"
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Close"
@@ -477,11 +477,6 @@ msgid "Late Activities"
 msgstr "Actividades atrasadas"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
-msgid "List of cc from incoming emails."
-msgstr "Lista de cc en correos electrónicos entrantes."
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
 msgid "Lot"
 msgstr "Lote"
@@ -541,7 +536,7 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:0
+#. odoo-python
 #: code:addons/quality/models/quality.py:0
 #: code:addons/quality/models/quality.py:0
 #: code:addons/quality/models/quality.py:0
@@ -580,6 +575,7 @@ msgid "Next Activity Type"
 msgstr "Tipo de la siguiente actividad"
 
 #. module: quality
+#. odoo-python
 #: code:addons/quality/models/quality.py:0
 #, python-format
 msgid ""
@@ -915,7 +911,7 @@ msgid "Tags"
 msgstr "Etiquetas"
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Take a Picture"
@@ -1039,7 +1035,7 @@ msgid "Very High"
 msgstr "Muy alta"
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Viewer"

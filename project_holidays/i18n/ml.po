@@ -39,4 +39,4 @@ msgstr ""
 #. module: project_holidays
 #: model:ir.model,name:project_holidays.model_project_task
 msgid "Task"
-msgstr ""
+msgstr "ടാസ്‌ക്"

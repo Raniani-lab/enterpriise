@@ -52,7 +52,7 @@ msgstr "കോൺഫിഗറേഷൻ സെറ്റിങ്‌സ്"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "ക്രീയേറ്റ്‌"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_sheet_tag
@@ -67,7 +67,7 @@ msgstr ""
 #. module: documents_product
 #: model:documents.facet,name:documents_product.documents_product_documents_facet
 msgid "Documents"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__documents_product_settings
@@ -82,7 +82,7 @@ msgstr ""
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_new_tag
 msgid "New"
-msgstr ""
+msgstr "പുതിയ"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_plans_tag
@@ -129,7 +129,7 @@ msgstr ""
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Workspace"
-msgstr ""
+msgstr "വർക്സ്പേസ്"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder

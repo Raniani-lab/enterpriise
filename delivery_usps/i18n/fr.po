@@ -8,12 +8,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:56+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -36,6 +36,7 @@ msgid "Check this box if your account is validated by USPS"
 msgstr "Cocher cette case si votre compte est validé par USPS"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Company phone number is invalid. Please insert a US phone number."
@@ -64,6 +65,7 @@ msgid "Domestic"
 msgstr "Domestique"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid ""
@@ -232,6 +234,7 @@ msgstr ""
 "Veuillez vérifier sur le site internet d'USPS si votre colis est machinable."
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -241,24 +244,28 @@ msgstr ""
 "1,8 kg [4 lb])"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please enter a valid ZIP code in recipient address"
 msgstr "Saisissez un code postal correct pour l'adresse de destination."
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please enter a valid ZIP code in your Company address"
 msgstr "Saisissez un code postal correct dans l'adresse de votre société"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Veuillez fournir au moins un article à expédier."
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -284,6 +291,7 @@ msgid "Provider"
 msgstr "Fournisseur"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Quantity for each move line should be less than 1000."
@@ -292,6 +300,7 @@ msgstr ""
 "1000."
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Recipient address cannot be found. Please check the address exists."
@@ -336,12 +345,14 @@ msgid "Sample"
 msgstr "Échantillon"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Shipment #%s has been cancelled"
 msgstr "L'expédition #%s a été annulée"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
@@ -369,6 +380,7 @@ msgid "TIF"
 msgstr "TIF"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -379,6 +391,7 @@ msgstr ""
 "(Champ(s) manquant(s) : %s)"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -389,6 +402,7 @@ msgstr ""
 " %s"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -399,6 +413,7 @@ msgstr ""
 "(Champ(s) manquant(s) : %s)"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "The selected USPS service (%s) cannot be used to deliver this package."
@@ -433,12 +448,12 @@ msgstr "Configuration USPS"
 
 #. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_domestic
-#: model:product.product,name:delivery_usps.product_product_delivery_usps_domestic
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_domestic_product_template
 msgid "USPS Domestic Flat Rate Envelope"
 msgstr "USPS Domestique Enveloppe à prix fixe"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -455,12 +470,12 @@ msgstr "Type de courrier de première classe USPS"
 
 #. module: delivery_usps
 #: model:delivery.carrier,name:delivery_usps.delivery_carrier_usps_international
-#: model:product.product,name:delivery_usps.product_product_delivery_usps_international
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "USPS International Flat Rate Box"
 msgstr "Boîte à taux fixe USPS International"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid ""
@@ -497,19 +512,12 @@ msgid "USPS User ID"
 msgstr "Identifiant de l'utilisateur USPS"
 
 #. module: delivery_usps
-#: model:product.product,uom_name:delivery_usps.product_product_delivery_usps_domestic
-#: model:product.product,uom_name:delivery_usps.product_product_delivery_usps_international
-#: model:product.template,uom_name:delivery_usps.product_product_delivery_usps_domestic_product_template
-#: model:product.template,uom_name:delivery_usps.product_product_delivery_usps_international_product_template
-msgid "Units"
-msgstr "Unité(s)"
-
-#. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_size_container
 msgid "Usps Size Container"
 msgstr "Dimension du conteneur USPS"
 
 #. module: delivery_usps
+#. odoo-python
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Your company or recipient ZIP code is incorrect."

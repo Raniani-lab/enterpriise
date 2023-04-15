@@ -9,12 +9,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:05+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -32,21 +32,21 @@ msgid "Accept payments with an Ingenico payment terminal"
 msgstr "Accepter des paiements avec un terminal de paiement Ingenico"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
 #, python-format
 msgid "Access your"
 msgstr "Accéder à votre"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
 #, python-format
 msgid "Action identifier:"
 msgstr "Identifiant de l'action :"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
 #, python-format
 msgid "Amount:"
@@ -54,6 +54,7 @@ msgstr "Montant :"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
 msgid "Barcode Scanners/Card Readers"
 msgstr "Lecteurs de codes-barres/Lecteurs de cartes"
 
@@ -66,18 +67,19 @@ msgstr ""
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
 msgid "Cashdrawer"
 msgstr "Tiroir-caisse"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
 msgstr "Cliquez sur Avancé/Afficher les détails/Détails/Plus d'informations"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
 #, python-format
 msgid ""
@@ -88,7 +90,7 @@ msgstr ""
 "sur la page web"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
 #, python-format
 msgid "Close this window and try again"
@@ -100,14 +102,14 @@ msgid "Config Settings"
 msgstr "Paramètres de configuration"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Configuration of payment terminal failed"
 msgstr "Echec de la configuration du terminal de paiement"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/iot_longpolling.js:0
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
@@ -115,14 +117,14 @@ msgid "Connection to IoT Box failed"
 msgstr "Echec de la connexion à l'IoT Box"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Connection to terminal failed"
 msgstr "Échec de la connexion au terminal"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/ScaleScreen.js:0
 #, python-format
 msgid "Could not connect to IoT scale"
@@ -130,6 +132,7 @@ msgstr "Impossible de se connecter à la balance IoT"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
 msgid "Customer Display"
 msgstr "Affichage client"
 
@@ -146,11 +149,12 @@ msgstr "Documentation"
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_electronic_scale
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
 msgid "Electronic Scale"
 msgstr "Balance électronique"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/LastTransactionStatus.js:0
 #, python-format
 msgid "Electronic payment in progress"
@@ -159,6 +163,7 @@ msgstr "Paiement électronique en cours"
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_scan_via_proxy
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_scanner_ids
+#: model:ir.model.fields,help:pos_iot.field_res_config_settings__pos_iface_scanner_ids
 msgid ""
 "Enable barcode scanning with a remotely connected barcode scanner and card "
 "swiping with a Vantiv card reader."
@@ -172,21 +177,21 @@ msgid "Enables Electronic Scale integration."
 msgstr "Permet d'activer l'intégration d'une balance électronique."
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
 msgstr "Firefox uniquement : Cliquez sur Confirmer l'exception de sécurité"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/ScaleScreen.xml:0
 #, python-format
 msgid "Get Weight"
 msgstr "Obtenir le poids"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
 #, python-format
 msgid ""
@@ -197,21 +202,25 @@ msgstr ""
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_display_id
+#: model:ir.model.fields,field_description:pos_iot.field_res_config_settings__pos_iface_display_id
 msgid "Iface Display"
 msgstr "Affichage Iface"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_printer_id
+#: model:ir.model.fields,field_description:pos_iot.field_res_config_settings__pos_iface_printer_id
 msgid "Iface Printer"
 msgstr "Imprimante Iface"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scale_id
+#: model:ir.model.fields,field_description:pos_iot.field_res_config_settings__pos_iface_scale_id
 msgid "Iface Scale"
 msgstr "Balance Iface"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__iface_scanner_ids
+#: model:ir.model.fields,field_description:pos_iot.field_res_config_settings__pos_iface_scanner_ids
 msgid "Iface Scanner"
 msgstr "Lecteur Iface"
 
@@ -226,7 +235,7 @@ msgid "Ingenico Payment Terminal"
 msgstr "Terminal de paiement Ingenico"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
 #, python-format
 msgid "IoT Box Homepage"
@@ -234,6 +243,7 @@ msgstr "Page d'accueil de l'IoT Box"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
 msgid "IoT Devices"
 msgstr "Appareils IoT"
 
@@ -243,7 +253,7 @@ msgid "Iot Device"
 msgstr "Appareil IoT"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/ProductScreen.js:0
 #, python-format
 msgid ""
@@ -254,21 +264,21 @@ msgstr ""
 "Assurez-vous que la balance est connectée et visible dans l'application IoT."
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
 #, python-format
 msgid "Last Transaction Status"
 msgstr "Statut de la dernière transaction"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/ProductScreen.js:0
 #, python-format
 msgid "No Scale Detected"
 msgstr "Aucune balance détectée"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
 #, python-format
 msgid "Ok"
@@ -286,14 +296,14 @@ msgid "Payment Terminal Device"
 msgstr "Terminal de paiement"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Payment terminal error"
 msgstr "Erreur terminal de paiement"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #: code:addons/pos_iot/static/src/xml/IoTErrorPopup.xml:0
 #, python-format
@@ -301,14 +311,14 @@ msgid "Please check if the IoT Box is still connected."
 msgstr "Veuillez vérifier si l'IoT Box est toujours connectée."
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Please check if the terminal is still connected."
 msgstr "Veuillez vérifier si le terminal est toujours connecté."
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid ""
@@ -319,7 +329,7 @@ msgstr ""
 "de la dernière transaction."
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/Chrome.js:0
 #, python-format
 msgid "Please process or cancel the current transaction."
@@ -347,6 +357,7 @@ msgstr "Imprimer via un proxy"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
+#: model_terms:ir.ui.view,arch_db:pos_iot.res_config_view_form_inherit_pos_iot
 msgid "Receipt Printer"
 msgstr "Imprimante de reçu"
 
@@ -363,14 +374,14 @@ msgstr ""
 "distance."
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Terminal Disconnected"
 msgstr "Terminal déconnecté"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/ScaleScreen.js:0
 #, python-format
 msgid "The IoT scale is not responding. You should check your connection."
@@ -396,21 +407,21 @@ msgstr ""
 "Worldline sur le mode de paiement associé."
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
 #, python-format
 msgid "Time:"
 msgstr "Temps :"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Transaction could not be cancelled"
 msgstr "La transaction n'a pas pu être annulée"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/Chrome.js:0
 #, python-format
 msgid "Transaction in progress"
@@ -422,7 +433,7 @@ msgid "Worldline"
 msgstr "Worldline"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/xml/LastTransactionStatus.xml:0
 #, python-format
 msgid "Worldline - Last Transaction Status"
@@ -434,7 +445,7 @@ msgid "Worldline Payment Terminal"
 msgstr "Terminal de paiement Worldline"
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/LastTransactionStatus.js:0
 #, python-format
 msgid ""
@@ -445,7 +456,7 @@ msgstr ""
 "paiement est en cours."
 
 #. module: pos_iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "You must select a payment terminal in your POS config."

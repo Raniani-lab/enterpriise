@@ -55,7 +55,7 @@ msgstr "കാറ്റഗറി"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "ക്രീയേറ്റ്‌"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule
@@ -70,12 +70,12 @@ msgstr ""
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_deprecate
 msgid "Deprecate"
-msgstr ""
+msgstr "ഒഴിവാക്കുക"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_deprecated
 msgid "Deprecated"
-msgstr ""
+msgstr "ഒഴിവാക്കി"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_document
@@ -94,7 +94,7 @@ msgstr "ഡോക്യുമെന്റ്"
 #: model_terms:ir.ui.view,arch_db:documents_project.view_task_form2_document_inherit
 #, python-format
 msgid "Documents"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ്"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.edit_project_document_form_inherit
@@ -174,7 +174,7 @@ msgstr "സ്റ്റാറ്റസ്"
 #: model:ir.model,name:documents_project.model_project_task
 #: model:ir.model.fields.selection,name:documents_project.selection__documents_workflow_rule__create_model__project_task
 msgid "Task"
-msgstr ""
+msgstr "ടാസ്‌ക്"
 
 #. module: documents_project
 #: code:addons/documents_project/models/workflow.py:0
@@ -248,7 +248,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_project.field_project_project__documents_folder_id
 #: model:ir.model.fields,field_description:documents_project.field_project_task__documents_folder_id
 msgid "Workspace"
-msgstr ""
+msgstr "വർക്സ്പേസ്"
 
 #. module: documents_project
 #: model:ir.model.fields,help:documents_project.field_project_project__documents_folder_id

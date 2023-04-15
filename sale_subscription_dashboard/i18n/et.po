@@ -12,17 +12,17 @@
 # Egon Raamat <egon@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Anna, 2023
-# Jana Jaakson, 2023
+# JanaAvalah, 2023
 # Leaanika Randmets, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Leaanika Randmets, 2023\n"
-"Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
+"Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -30,41 +30,42 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "# Subscriptions"
 msgstr "# Tellimused"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "# of Subscriptions"
 msgstr "Liitumiste arv"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "1 month ago"
 msgstr "1 kuu tagasi"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "12 months ago"
 msgstr "12 kuud tagasi"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "3 months ago"
 msgstr "3 kuud tagasi"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "30 Days Ago"
@@ -86,19 +87,21 @@ msgid "Active invoices"
 msgstr "Aktiivsed arved"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Annual Run-Rate"
 msgstr "Aastane 'Run-Rate'"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Apply"
 msgstr "Kinnita"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid ""
@@ -108,14 +111,14 @@ msgstr ""
 "Tellimuse keskmine tulu, mis saadakse MRRi jagamisel tellimuste arvuga"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Categories"
 msgstr "Kategooriad"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
@@ -123,14 +126,14 @@ msgid "Churned MRR"
 msgstr "Kurnitud MRR"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Companies"
 msgstr "Ettevõtted"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -139,14 +142,14 @@ msgid "Company"
 msgstr "Ettevõte"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Current"
 msgstr "Praegune"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Current MRR"
@@ -158,7 +161,7 @@ msgid "Current MRR ("
 msgstr "Hetke MRR ("
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
@@ -166,20 +169,21 @@ msgid "Current Value: "
 msgstr "Praegune väärtus"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Custom"
 msgstr "Kohandatud"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Customer Churn"
 msgstr "Kliendi kaotus"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -188,14 +192,14 @@ msgid "Date"
 msgstr "Kuupäev"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Date cannot be empty"
 msgstr "Kuupäev ei saa olla tühi"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -203,7 +207,7 @@ msgid "Dates"
 msgstr "Periood"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
@@ -211,7 +215,7 @@ msgid "Delta"
 msgstr "Delta"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Detailed Analysis"
@@ -223,7 +227,7 @@ msgid "Detailed KPI"
 msgstr "Detailne KPI"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
@@ -231,7 +235,7 @@ msgid "Document"
 msgstr "Dokument"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
@@ -239,14 +243,14 @@ msgid "Down MRR"
 msgstr "Alanenud MRR"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "End Date :"
 msgstr "Lõppkuupäev:"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
@@ -254,6 +258,7 @@ msgid "Expansion MRR"
 msgstr "Juurdetulnud MRR"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid ""
@@ -266,7 +271,7 @@ msgstr ""
 "MRR is $ 100 and your churn rate is 5%, the LTV will be $ 100/5% = $ 2,000)"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -274,12 +279,14 @@ msgid "Exponential"
 msgstr "Ekspodentsiaalne"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Forecasted Annual MRR Growth"
 msgstr "Prognoositud aastane MRR kasv"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Forecasted Annual Subscriptions Growth"
@@ -297,7 +304,7 @@ msgid ""
 msgstr "Sellest vaatest saab analüüsida erinevate arveridade kandeid."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "From:"
@@ -309,7 +316,7 @@ msgid "Group By"
 msgstr "Grupeeri"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -317,7 +324,7 @@ msgid "Growth Type:"
 msgstr "Kasvu tüüp:"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -332,6 +339,7 @@ msgid "Invoice Line Entries Analysis"
 msgstr "Arve rea kirjete analüüs"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
 #, python-format
 msgid ""
@@ -342,7 +350,7 @@ msgstr ""
 "sama valuutaga."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -350,7 +358,7 @@ msgid "Last Financial Year"
 msgstr "Eelmine majandusaasta"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -358,7 +366,7 @@ msgid "Last Month"
 msgstr "Eelmine kuu"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -366,13 +374,14 @@ msgid "Last Quarter"
 msgstr "Eelmine kvartal"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Lifetime Value"
 msgstr "Eluaja väärtus"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -389,7 +398,7 @@ msgstr ""
 "                         ühekordsed tulud nendel arvetel selle konkreetse müüja kohta."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid ""
@@ -400,7 +409,7 @@ msgstr ""
 "                     tulud nendel arvetel selle konkreetse müüja kohta."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
@@ -414,13 +423,14 @@ msgid "Loading..."
 msgstr "Laadimine..."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "MRR Growth"
 msgstr "MRR Kasv"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid ""
@@ -431,13 +441,14 @@ msgstr ""
 "aastatellimuse korral on MRR 100 dollarit)"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Monthly Recurring Revenue"
 msgstr "igakuine korduv tulu"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
@@ -445,14 +456,14 @@ msgid "Monthly Recurring Revenue :"
 msgstr "Igakuine korduv tulu"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Monthly Recurring Revenue Growth"
 msgstr "Igakuine korduvtulude kasv"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -460,7 +471,7 @@ msgid "Months"
 msgstr "kuu järel"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -473,7 +484,7 @@ msgid "NRR ("
 msgstr "NRR ("
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
@@ -481,13 +492,14 @@ msgid "Net New MRR"
 msgstr "Neto uus MRR"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Net Revenue"
 msgstr "Neto tulu"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
@@ -495,13 +507,14 @@ msgid "New MRR"
 msgstr "Uus MRR"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
 #, python-format
 msgid "No company selected."
 msgstr "Ettevõtet pole valitud."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
@@ -509,13 +522,14 @@ msgid "Non Recurring invoices"
 msgstr "Mittekorduvad arved"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Non-Recurring Revenue"
 msgstr "Mittekorduvad tulud"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
@@ -523,12 +537,14 @@ msgid "Non-Recurring Revenue :"
 msgstr "Mittekorduvad tulud"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Number of contracts"
 msgstr "Lepingute arv"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Number of subscriptions that gets closed during a period"
@@ -540,27 +556,28 @@ msgid "OUT invoices"
 msgstr "OUT arved"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Odoo Warning"
 msgstr "Odoo hoiatus"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "One-shot revenue that is not part of a subscription"
 msgstr "Ühekordne tulu, mis ei ole osa tellimusest"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "PRINT PREVIEW"
 msgstr "Printimise eelvaade"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -569,21 +586,21 @@ msgid "Partner"
 msgstr "Partner"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Pick a salesman and a period"
 msgstr "Vali müügiinimene ja periood"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Plan"
 msgstr "Plaan"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Previous MRR"
@@ -595,7 +612,7 @@ msgid "Previous MRR ("
 msgstr "Eelmine MRR ("
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -603,33 +620,35 @@ msgid "Projection Time:"
 msgstr "Projektsiooni aeg:"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Recurrency"
 msgstr "Korduvus"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Reduction in total MRR over the period"
 msgstr "Kogu MRR vähenemine perioodi jooksul"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Revenue Churn"
 msgstr "Tulu Churn"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Revenue Churn:"
 msgstr "Tulude vähenemine:"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Revenue Growth:"
@@ -642,6 +661,7 @@ msgid "Revenue KPIs"
 msgstr "Tulu KPId"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Revenue per Subscription"
@@ -653,7 +673,7 @@ msgid "Sales Order"
 msgstr "Müügitellimus"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Sales Team"
@@ -666,13 +686,14 @@ msgid "Salesperson Dashboard"
 msgstr "Müügiesindaja töölaud"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/models/sale_order.py:0
 #, python-format
 msgid "Salesperson report"
 msgstr "Müügiesindaja aruanne"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -680,35 +701,35 @@ msgid "Sample data"
 msgstr "Näidisandmed"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Select at least one company."
 msgstr "Vali vähemalt üks ettevõte."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Start Date :"
 msgstr "Alguskuupäev :"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Starting MRR:"
 msgstr "MRR-i alustamine:"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Starting Subscription:"
 msgstr "Tellimuse alustamine:"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
@@ -716,7 +737,7 @@ msgid "Subscription"
 msgstr "Tellimus"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
@@ -737,7 +758,7 @@ msgstr ""
 "                         samal päeval)."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid ""
@@ -752,7 +773,7 @@ msgstr ""
 "                     samal päeval)."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -760,28 +781,28 @@ msgid "Subscriptions"
 msgstr "Tellimused"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions Churn:"
 msgstr "Tellimuste vähenemine:"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions Growth:"
 msgstr "Tellimuste kasv:"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions plans"
 msgstr "Tellimuste plaanid"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
@@ -789,7 +810,7 @@ msgid "Template"
 msgstr "Mall"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid ""
@@ -800,7 +821,7 @@ msgstr ""
 "suhtes selle viimase väärtusega."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid ""
@@ -811,28 +832,28 @@ msgstr ""
 "meetodist erineda."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "The following values are measured at the end of the selected period."
 msgstr "Valitud perioodi lõpus mõõdetakse järgmisi väärtusi."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "There is no invoice during this period."
 msgstr "Selle perioodi jooksul arvet ei esitata."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "There is no subscription modification during this period."
 msgstr "Selle perioodi jooksul tellimust ei muudeta."
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -840,7 +861,7 @@ msgid "This Financial Year"
 msgstr "See majandusaasta"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -848,7 +869,7 @@ msgid "This Month"
 msgstr "See kuu"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -856,12 +877,14 @@ msgid "This Quarter"
 msgstr "See kvartal"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Total net revenue (all invoices emitted during the period)"
 msgstr "Puhastulu kokku (kõik perioodi jooksul väljastatud arved)"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
@@ -873,13 +896,14 @@ msgstr ""
 "MRR 100 dollarit)"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
 #, python-format
 msgid "Unknown error"
 msgstr "Tundmatu viga"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -887,7 +911,7 @@ msgid "Update"
 msgstr "Uuenda"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
@@ -895,20 +919,21 @@ msgid "Warning"
 msgstr "Hoiatus"
 
 #. module: sale_subscription_dashboard
+#. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Yearly version of the MRR, obtained by multiplying the MRR by 12"
 msgstr "MRR-i aastaversioon, mis saadakse MRR-i korrutamisel 12-ga"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "churn, your MRR will be"
 msgstr "churn, your MRR will be"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "churn, your subscription base will be"
@@ -920,14 +945,14 @@ msgid "graphic"
 msgstr "graafiline"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "growth and"
 msgstr "kasv ja"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
@@ -935,14 +960,14 @@ msgid "months with"
 msgstr "kuud koos"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "subscription growth and"
 msgstr "tellimuste kasv ja"
 
 #. module: sale_subscription_dashboard
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "to:"

@@ -11,12 +11,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Luca Carlo, 2023\n"
-"Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
+"Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -34,14 +34,14 @@ msgid "'Worksheet %s - %s' % (object.name, object.partner_id.name)"
 msgstr "\"Foglio di lavoro %s - %s\" % (object.name, object.partner_id.name)"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "<b>Review and sign</b> the <b>task report</b> with your customer."
 msgstr ""
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
@@ -79,15 +79,6 @@ msgid "<i class=\"fa fa-check me-1\"/>Sign"
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.project_sharing_inherit_project_task_view_form
-msgid ""
-"<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-label=\"Arrow icon\" title=\"Arrow\"/>\n"
-"                        <i class=\"fa fa-long-arrow-right mx-2 oe_read_only\" aria-label=\"Arrow icon\" title=\"Arrow\" attrs=\"{'invisible': [('planned_date_begin', '=', False), ('planned_date_end', '=', False)]}\"/>"
-msgstr ""
-"<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-label=\"Arrow icon\" title=\"Freccia\"/>\n"
-"                        <i class=\"fa fa-long-arrow-right mx-2 oe_read_only\" aria-label=\"Arrow icon\" title=\"Freccia\" attrs=\"{'invisible': [('planned_date_begin', '=', False), ('planned_date_end', '=', False)]}\"/>"
-
-#. module: industry_fsm
 #: model:mail.template,body_html:industry_fsm.mail_template_data_task_report
 msgid ""
 "<p>\n"
@@ -97,6 +88,13 @@ msgid ""
 "                Best regards,<br/><br/>\n"
 "            </p>\n"
 "        "
+msgstr ""
+
+#. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
+msgid ""
+"<span class=\"o_stat_text\">Worksheet</span>\n"
+"                            <span class=\"o_stat_text\">Complete</span>"
 msgstr ""
 
 #. module: industry_fsm
@@ -190,34 +188,9 @@ msgid "Average Rating"
 msgstr "Valutazione Media"
 
 #. module: industry_fsm
-#: model:project.task,legend_blocked:industry_fsm.planning_task_0
-#: model:project.task,legend_blocked:industry_fsm.planning_task_1
-#: model:project.task,legend_blocked:industry_fsm.planning_task_10
-#: model:project.task,legend_blocked:industry_fsm.planning_task_11
-#: model:project.task,legend_blocked:industry_fsm.planning_task_12
-#: model:project.task,legend_blocked:industry_fsm.planning_task_13
-#: model:project.task,legend_blocked:industry_fsm.planning_task_14
-#: model:project.task,legend_blocked:industry_fsm.planning_task_15
-#: model:project.task,legend_blocked:industry_fsm.planning_task_16
-#: model:project.task,legend_blocked:industry_fsm.planning_task_17
-#: model:project.task,legend_blocked:industry_fsm.planning_task_19
-#: model:project.task,legend_blocked:industry_fsm.planning_task_2
-#: model:project.task,legend_blocked:industry_fsm.planning_task_20
-#: model:project.task,legend_blocked:industry_fsm.planning_task_3
-#: model:project.task,legend_blocked:industry_fsm.planning_task_4
-#: model:project.task,legend_blocked:industry_fsm.planning_task_5
-#: model:project.task,legend_blocked:industry_fsm.planning_task_6
-#: model:project.task,legend_blocked:industry_fsm.planning_task_7
-#: model:project.task,legend_blocked:industry_fsm.planning_task_8
-#: model:project.task,legend_blocked:industry_fsm.planning_task_9
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_1
 msgid "Blocked"
 msgstr "Bloccato"
-
-#. module: industry_fsm
-#: model:project.task,legend_done:industry_fsm.planning_task_18
-msgid "Buzz or set as done"
-msgstr "Chiama o imposta a completato"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.project_task_menu_planning_by_project_fsm
@@ -293,7 +266,7 @@ msgid "Confirm"
 msgstr "Conferma"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -368,6 +341,7 @@ msgid "Custom Worksheets"
 msgstr ""
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__partner_id
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__partner_id
@@ -481,6 +455,7 @@ msgid "Dissatisfied"
 msgstr "Insoddisfatto"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "Do you want to stop the running timers?"
@@ -518,6 +493,7 @@ msgid "FSM Tasks Analysis"
 msgstr "Analisi lavori da FSM"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_project.py:0
 #: code:addons/industry_fsm/models/res_company.py:0
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__is_fsm
@@ -541,7 +517,7 @@ msgid "Field Service: Task Report"
 msgstr ""
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Fill in your <b>worksheet</b> with the details of your intervention."
@@ -576,7 +552,7 @@ msgid "Future"
 msgstr "in futuro"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -585,7 +561,7 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Go back to your Field Service <b>task</b>."
@@ -610,27 +586,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: industry_fsm
-#: model:project.task,legend_normal:industry_fsm.planning_task_0
-#: model:project.task,legend_normal:industry_fsm.planning_task_1
-#: model:project.task,legend_normal:industry_fsm.planning_task_10
-#: model:project.task,legend_normal:industry_fsm.planning_task_11
-#: model:project.task,legend_normal:industry_fsm.planning_task_12
-#: model:project.task,legend_normal:industry_fsm.planning_task_13
-#: model:project.task,legend_normal:industry_fsm.planning_task_14
-#: model:project.task,legend_normal:industry_fsm.planning_task_15
-#: model:project.task,legend_normal:industry_fsm.planning_task_16
-#: model:project.task,legend_normal:industry_fsm.planning_task_17
-#: model:project.task,legend_normal:industry_fsm.planning_task_18
-#: model:project.task,legend_normal:industry_fsm.planning_task_19
-#: model:project.task,legend_normal:industry_fsm.planning_task_2
-#: model:project.task,legend_normal:industry_fsm.planning_task_20
-#: model:project.task,legend_normal:industry_fsm.planning_task_3
-#: model:project.task,legend_normal:industry_fsm.planning_task_4
-#: model:project.task,legend_normal:industry_fsm.planning_task_5
-#: model:project.task,legend_normal:industry_fsm.planning_task_6
-#: model:project.task,legend_normal:industry_fsm.planning_task_7
-#: model:project.task,legend_normal:industry_fsm.planning_task_8
-#: model:project.task,legend_normal:industry_fsm.planning_task_9
 #: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_1
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
@@ -643,19 +598,21 @@ msgid "Initially Planned Hours"
 msgstr "Ore inizialmente pianificate"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "Invalid Task."
 msgstr "Lavoro non valido."
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "Invalid signature data."
 msgstr "Dati firma non validi."
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Invite your customer to <b>validate and sign your task report</b>."
@@ -716,7 +673,7 @@ msgid "Late Tasks"
 msgstr "Lavori in ritardo"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Launch the timer to <b>track the time spent</b> on your task."
@@ -724,7 +681,7 @@ msgstr ""
 "Lancia il timer per <b>tracciare il tempo trascorso</b> sul tuo compito."
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -733,7 +690,7 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Let's create your first <b>task</b>."
@@ -835,11 +792,6 @@ msgid "Navigate To"
 msgstr "Naviga Verso"
 
 #. module: industry_fsm
-#: model:project.task,legend_blocked:industry_fsm.planning_task_18
-msgid "Need functional or technical help"
-msgstr "Richiede assistenza tecnica o funzionale"
-
-#. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "No Rating"
@@ -884,7 +836,7 @@ msgid "Okay"
 msgstr "OK"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -917,11 +869,6 @@ msgstr ""
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
 msgid "Planned"
 msgstr "Pianificata"
-
-#. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.project_sharing_inherit_project_task_view_form
-msgid "Planned Date"
-msgstr "Data pianificata"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__hours_planned
@@ -990,31 +937,12 @@ msgid "Rating Value (/5)"
 msgstr "Livello valutazione (/5)"
 
 #. module: industry_fsm
-#: model:project.task,legend_done:industry_fsm.planning_task_0
-#: model:project.task,legend_done:industry_fsm.planning_task_1
-#: model:project.task,legend_done:industry_fsm.planning_task_10
-#: model:project.task,legend_done:industry_fsm.planning_task_11
-#: model:project.task,legend_done:industry_fsm.planning_task_12
-#: model:project.task,legend_done:industry_fsm.planning_task_13
-#: model:project.task,legend_done:industry_fsm.planning_task_14
-#: model:project.task,legend_done:industry_fsm.planning_task_15
-#: model:project.task,legend_done:industry_fsm.planning_task_16
-#: model:project.task,legend_done:industry_fsm.planning_task_17
-#: model:project.task,legend_done:industry_fsm.planning_task_19
-#: model:project.task,legend_done:industry_fsm.planning_task_2
-#: model:project.task,legend_done:industry_fsm.planning_task_3
-#: model:project.task,legend_done:industry_fsm.planning_task_4
-#: model:project.task,legend_done:industry_fsm.planning_task_5
-#: model:project.task,legend_done:industry_fsm.planning_task_6
-#: model:project.task,legend_done:industry_fsm.planning_task_7
-#: model:project.task,legend_done:industry_fsm.planning_task_8
-#: model:project.task,legend_done:industry_fsm.planning_task_9
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_1
 msgid "Ready"
 msgstr "Pronto"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
@@ -1023,11 +951,6 @@ msgid ""
 msgstr ""
 "Pronto a <b>gestire i tuoi interventi in loco</b>? <i>Clicca su Assistenza "
 "sul campo per iniziare.</i>"
-
-#. module: industry_fsm
-#: model:project.task,legend_done:industry_fsm.planning_task_20
-msgid "Ready to reopen"
-msgstr "Pronto per riapertura"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__remaining_hours
@@ -1047,7 +970,7 @@ msgid "Satisfied"
 msgstr "Soddisfatto"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Save time by automatically generating a <b>signature</b>."
@@ -1067,7 +990,7 @@ msgid "Search planning"
 msgstr "Ricerca pianificazione"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Select the <b>customer</b> for your task."
@@ -1079,6 +1002,7 @@ msgid "Send Report"
 msgstr "Invia Report"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "Send report"
@@ -1120,6 +1044,7 @@ msgid "Signature"
 msgstr "Firma"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "Signature is missing."
@@ -1168,7 +1093,7 @@ msgid "Start date"
 msgstr "Data inizio"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Stop the <b>timer</b> when you are done."
@@ -1261,24 +1186,28 @@ msgid "Tasks in Conflict"
 msgstr "Compiti in conflitto"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "The worksheet has been signed"
 msgstr "Il foglio di lavoro è stato firmato"
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "The worksheet is not in a state requiring customer signature."
 msgstr "Lo stato del foglio di lavoro non richiede la firma del cliente."
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "There are no reports to send."
 msgstr "Non ci sono rapporti da inviare."
 
 #. module: industry_fsm
+#. odoo-python
 #: code:addons/industry_fsm/models/project_task.py:0
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 #, python-format
@@ -1364,7 +1293,7 @@ msgid "Unread Messages"
 msgstr "Messaggi non letti"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to return to your <b>task</b>."
@@ -1376,7 +1305,7 @@ msgid "User"
 msgstr "Utente"
 
 #. module: industry_fsm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Validate the <b>signature</b>."
@@ -1421,11 +1350,6 @@ msgstr "Orario di lavoro da chiudere"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "Worksheet"
 msgstr "Foglio di lavoro"
-
-#. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
-msgid "Worksheet Complete"
-msgstr ""
 
 #. module: industry_fsm
 #: model:mail.template,report_name:industry_fsm.mail_template_data_task_report

@@ -1922,7 +1922,7 @@ msgstr ""
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Tender"
-msgstr ""
+msgstr "Kostenvoranschlag"
 
 #. module: l10n_be_coda
 #. odoo-python
@@ -2941,7 +2941,7 @@ msgstr "Bestätigungsdatum"
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "volume"
-msgstr ""
+msgstr "Lautstärke"
 
 #. module: l10n_be_coda
 #. odoo-python

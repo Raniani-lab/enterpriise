@@ -106,7 +106,7 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__lot_id
 msgid "Lot/Serial Number"
-msgstr ""
+msgstr "ലോട്ടസ് /സീരിയൽ നമ്പർ"
 
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
@@ -163,7 +163,7 @@ msgstr "സ്റ്റോക്ക് മൂവ് "
 #: model:ir.model,name:industry_fsm_stock.model_project_task
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__task_id
 msgid "Task"
-msgstr ""
+msgstr "ടാസ്‌ക്"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__fsm_done

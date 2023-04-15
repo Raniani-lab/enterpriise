@@ -147,7 +147,7 @@ msgstr "ഒപ്പ് അഭ്യർത്ഥന"
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_sale_order__sign_request_ids
 msgid "Signature Requests"
-msgstr ""
+msgstr "ഒപ്പ് അഭ്യർത്ഥനകൾ"
 
 #. module: sale_renting_sign
 #: model:ir.model.fields,help:sale_renting_sign.field_res_company__rental_sign_tmpl_id

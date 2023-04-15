@@ -8,12 +8,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023\n"
-"Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
+"Language-Team: Vietnamese (https://app.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -21,18 +21,21 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "%(user)s decided, as %(role)s, to publish the employee's feedback"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "%s Goals"
 msgstr "%s Mục tiêu"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "1 Meeting"
@@ -197,6 +200,7 @@ msgstr ""
 "            "
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_employee_base.py:0
 #, python-format
 msgid ""
@@ -348,11 +352,6 @@ msgid "Administrator"
 msgstr "Người quản trị"
 
 #. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
-msgid "Application Settings"
-msgstr "Cài đặt ứng dụng"
-
-#. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action
 #: model:ir.actions.act_window,name:hr_appraisal.open_view_hr_appraisal_tree2
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_ids
@@ -407,6 +406,7 @@ msgid "Appraisal Employee Feedback Template"
 msgstr "Mẫu phản hồi đánh giá nhân viên"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Form to Fill"
@@ -424,6 +424,7 @@ msgid "Appraisal Manager Feedback Template"
 msgstr "Mẫu phản hồi quản lý đánh giá"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Officer"
@@ -435,6 +436,7 @@ msgid "Appraisal Plan Posted"
 msgstr "Kế hoạch đánh giá đã đăng"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
@@ -463,18 +465,14 @@ msgid "Appraisal Templates"
 msgstr "Mẫu đánh giá"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal of %s"
 msgstr "Đánh giá của %s"
 
 #. module: hr_appraisal
-#: code:addons/hr_appraisal/models/hr_appraisal.py:0
-#, python-format
-msgid "Appraisal reopened"
-msgstr ""
-
-#. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
@@ -489,7 +487,6 @@ msgstr "Bắt đầu đánh giá"
 #. module: hr_appraisal
 #: model:ir.actions.server,name:hr_appraisal.ir_cron_scheduler_appraisal_ir_actions_server
 #: model:ir.cron,cron_name:hr_appraisal.ir_cron_scheduler_appraisal
-#: model:ir.cron,name:hr_appraisal.ir_cron_scheduler_appraisal
 msgid "Appraisal: Run employee appraisal"
 msgstr "Đánh giá: thực hiện đánh giá nhân viên"
 
@@ -520,6 +517,7 @@ msgid "Ask to fill a survey to other employees"
 msgstr "Yêu cầu điền khảo sát về nhân viên khác"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Assessment"
@@ -608,11 +606,6 @@ msgstr "Hủy tất cả đánh giá sau ngày hợp đồng kết thúc."
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_report__state__cancel
 msgid "Cancelled"
 msgstr "Đã hủy"
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
-msgid "Chat"
-msgstr "Nhắn tin"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__color
@@ -744,6 +737,7 @@ msgid "Deadline:"
 msgstr "Hạn chót:"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal_goal.py:0
 #, python-format
 msgid "Deadline: %s"
@@ -863,6 +857,7 @@ msgid "Evaluation Scale"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Exceeds expectations"
@@ -879,6 +874,7 @@ msgid "Feedback Templates"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Fill appraisal for %s"
@@ -999,9 +995,7 @@ msgstr "Nếu chọn, các tin nhắn mới yêu cầu sự có mặt của bạ
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_sms_error
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_error
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Nếu đánh dấu thì một số thông điệp có lỗi."
 
@@ -1074,6 +1068,7 @@ msgid "Last Appraisal Date"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Last Meeting"
@@ -1127,6 +1122,7 @@ msgid "Main Attachment"
 msgstr "Tệp đính kèm chính"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__manager_id
@@ -1184,6 +1180,7 @@ msgid "Meetings"
 msgstr "Cuộc gặp"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Meets expectations"
@@ -1226,6 +1223,7 @@ msgid "Name"
 msgstr "Tên"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Needs improvement"
@@ -1262,18 +1260,21 @@ msgid "Next Appraisal Date"
 msgstr "Ngày đánh giá kế tiếp"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Next Meeting"
 msgstr "Cuộc gặp tiếp theo"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "No Meeting"
 msgstr "Không có cuộc gặp"
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Note"
@@ -1314,6 +1315,7 @@ msgid "Ongoing Appraisal Count"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal_goal.py:0
 #, python-format
 msgid "Operation not supported"
@@ -1350,6 +1352,7 @@ msgid "Plan appraisals with your colleagues, collect and discuss feedback."
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Previous Appraisals"
@@ -1431,12 +1434,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_user_id
 msgid "Responsible User"
 msgstr "Người phụ trách"
-
-#. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_sms_error
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr "Lỗi gửi SMS"
 
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
@@ -1528,6 +1525,7 @@ msgstr ""
 "Kế hoạch: Các hoạt động trong tương lai."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Strongly Exceed Expectations"
@@ -1544,12 +1542,14 @@ msgid "Subject..."
 msgstr "Chủ đề..."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Such grouping is not allowed."
 msgstr "Nhóm như vậy là không được phép."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid ""
@@ -1558,6 +1558,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The appraisal's status has been set to Done by %s"
@@ -1591,6 +1592,7 @@ msgid "The duration time must be bigger or equal to 1 month."
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""
@@ -1599,13 +1601,14 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The employee feedback cannot be changed by managers."
 msgstr ""
 
 #. module: hr_appraisal
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_appraisal/static/src/fields/boolean_confirm.js:0
 #, python-format
 msgid ""
@@ -1614,6 +1617,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The manager feedback cannot be changed by an employee."
@@ -1652,6 +1656,7 @@ msgid "Type of the exception activity on record."
 msgstr "Loại hoạt động ngoại lệ trên hồ sơ."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/wizard/request_appraisal.py:0
 #, python-format
 msgid "Unable to post message, please configure the sender's email address."
@@ -1665,6 +1670,7 @@ msgid "Uncomplete Goals Count"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
@@ -1688,18 +1694,7 @@ msgid "Waiting Feedback from Employee/Managers"
 msgstr ""
 
 #. module: hr_appraisal
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
-#: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__website_message_ids
-msgid "Website Messages"
-msgstr "Thông báo Website"
-
-#. module: hr_appraisal
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__website_message_ids
-#: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__website_message_ids
-msgid "Website communication history"
-msgstr "Lịch sử thông tin liên lạc website"
-
-#. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""
@@ -1708,6 +1703,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "You cannot delete appraisal which is not in draft or canceled state"
@@ -1721,6 +1717,7 @@ msgid "Your Appraisal has been completed"
 msgstr ""
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""
@@ -1732,6 +1729,7 @@ msgstr ""
 "được tạo. Bạn có thể truy cập %s & định ngày họp '1:1' trước %s."
 
 #. module: hr_appraisal
+#. odoo-python
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid ""

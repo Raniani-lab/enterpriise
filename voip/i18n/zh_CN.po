@@ -5,16 +5,16 @@
 # Translators:
 # Martin Trigaux, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2022\n"
-"Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -27,28 +27,28 @@ msgid "# of Cases"
 msgstr "案例"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "%(number of missed calls)s missed calls"
 msgstr "%(未接来电数)的未接来电"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "1 missed call"
 msgstr "1个未接电话"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "2 missed calls"
 msgstr "2个未接电话"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -57,14 +57,14 @@ msgid ""
 msgstr "在尝试访问录音设备时，发生了一个硬件错误。请确保你的驱动程序是最新的，然后再试一次。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Accept"
 msgstr "接受"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: model:ir.model,name:voip.model_mail_activity
@@ -73,7 +73,7 @@ msgid "Activity"
 msgstr "活动"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/call_queue_switch_view.js:0
 #, python-format
 msgid "Add to Call Queue"
@@ -85,7 +85,7 @@ msgid "Add to call queue"
 msgstr "添加到呼叫队列"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -103,7 +103,7 @@ msgid ""
 msgstr ""
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -116,7 +116,7 @@ msgid "Ask"
 msgstr "提问"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
@@ -126,7 +126,7 @@ msgid "Avatar"
 msgstr "形象"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -134,7 +134,8 @@ msgid "Backspace"
 msgstr "退格键"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
+#. odoo-python
 #: code:addons/voip/models/voip_queue_mixin.py:0
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: code:addons/voip/static/src/js/dialing_panel.js:0
@@ -156,6 +157,7 @@ msgid "Call Name"
 msgstr "呼叫名称"
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Call duration: %(min)smin %(sec)ssec"
@@ -168,13 +170,14 @@ msgid "Call from another device"
 msgstr "来自其他设备的呼叫"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Call rejected (reason: \"%(reasonPhrase)s\")"
 msgstr "呼叫被拒绝 (原因：“%(reasonPhrase)s”)"
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #: code:addons/voip/models/voip_phonecall.py:0
 #: code:addons/voip/models/voip_phonecall.py:0
@@ -183,7 +186,7 @@ msgid "Call to %s"
 msgstr "呼叫 %s"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/voip_service.js:0
 #, python-format
 msgid "Calling %s"
@@ -195,7 +198,7 @@ msgid "Calls Date"
 msgstr "通话日期"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -203,7 +206,7 @@ msgid "Cancel"
 msgstr "取消"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
@@ -217,7 +220,7 @@ msgid "Cancelled"
 msgstr "已取消"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -244,14 +247,14 @@ msgstr ""
 "            • 询问：总是询问是否必须使用软电话或设备的电话"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Click to unblock"
 msgstr "解除阻塞"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -264,7 +267,7 @@ msgid "Config Settings"
 msgstr "配置设置"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Connecting..."
@@ -278,7 +281,7 @@ msgid "Contact"
 msgstr "联系人"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Contacts"
@@ -302,7 +305,7 @@ msgid "Creation Date"
 msgstr "创建日期"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -331,7 +334,7 @@ msgid "Direction"
 msgstr "方向"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -346,7 +349,7 @@ msgid "Display Name"
 msgstr "显示名称"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Document"
@@ -374,7 +377,7 @@ msgid "Duration in minutes."
 msgstr "按分钟计的时长"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -382,7 +385,7 @@ msgid "Edit"
 msgstr "编辑"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
@@ -390,14 +393,14 @@ msgid "End Call"
 msgstr "结束通话"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Enter number or name"
 msgstr "输入号码或名称"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Enter the number..."
@@ -410,7 +413,7 @@ msgid "External device number"
 msgstr "外部设备号码"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -430,7 +433,7 @@ msgid "Group By"
 msgstr "分组"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -500,7 +503,7 @@ msgid "In Call Queue"
 msgstr "在呼叫队列"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "In call for:"
@@ -521,7 +524,8 @@ msgid "Incoming"
 msgstr "来电"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #: code:addons/voip/models/voip_phonecall.py:0
 #: code:addons/voip/models/voip_phonecall.py:0
@@ -531,14 +535,14 @@ msgid "Incoming call from %s"
 msgstr "来自%s的来电"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Incoming call from %s (%s)"
 msgstr "来自%s的来电（%s）。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Incoming call from..."
@@ -552,7 +556,7 @@ msgid "Is in the Call Queue"
 msgstr "在呼叫队列"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -610,14 +614,14 @@ msgid "Logged Phonecall"
 msgstr "记录来电"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Make a call using:"
 msgstr "拨打电话使用:"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -630,6 +634,7 @@ msgid "Missed"
 msgstr "错过了"
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Missed Call from %s"
@@ -648,14 +653,14 @@ msgid "Mobile number sanitized"
 msgstr "移动号码已净化"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/components/activity/activity.xml:0
 #, python-format
 msgid "Mobile:"
 msgstr "手机："
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -668,14 +673,14 @@ msgid "My Phonecalls"
 msgstr "我的电话"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Next activities"
 msgstr "下个活动"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -717,14 +722,14 @@ msgid "PBX Server IP"
 msgstr "PBX服务器IP"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "PBX or Websocket address is missing. Please check your settings."
 msgstr "PBX或Websocket地址丢失。请检查您的设置。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
@@ -732,7 +737,7 @@ msgid "Pending"
 msgstr "待定"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: model:ir.model.fields,field_description:voip.field_mail_activity__phone
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__phone
@@ -747,14 +752,14 @@ msgid "Phone number sanitized"
 msgstr "电话号码已净化"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/components/activity/activity.xml:0
 #, python-format
 msgid "Phone:"
 msgstr "电话:"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -770,7 +775,7 @@ msgid "Phonecalls"
 msgstr "电话"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
@@ -778,7 +783,7 @@ msgid "Please accept the use of the microphone."
 msgstr "请同意使用麦克风。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid ""
@@ -792,14 +797,14 @@ msgid "Production"
 msgstr "生产"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Recent"
 msgstr "最近"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
@@ -807,21 +812,21 @@ msgid "Refresh the Panel"
 msgstr "刷新面板"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid "Registration rejected: %(statusCode)s %(reasonPhrase)s."
 msgstr "注册被拒绝：%(statusCode)s%(reasonPhrase)s。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Reject"
 msgstr "拒绝"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Reject call"
@@ -839,27 +844,28 @@ msgid "Rejected"
 msgstr "已拒绝"
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Rejected Incoming Call from %s"
 msgstr "拒绝来自%s的来电"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Remember ?"
 msgstr "记得吗？"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/call_queue_switch_view.js:0
 #, python-format
 msgid "Remove from Call Queue"
 msgstr "从呼叫队列中移除"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
@@ -874,7 +880,7 @@ msgid "Responsible"
 msgstr "负责人"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Ringing..."
@@ -891,21 +897,21 @@ msgid "Schedule A New Activity"
 msgstr "安排新活动"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Activity"
 msgstr "安排活动"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Next"
 msgstr "安排下一个"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Search"
@@ -917,7 +923,7 @@ msgid "Search Phonecalls"
 msgstr "搜索电话"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -930,6 +936,7 @@ msgid "Sequence"
 msgstr "单号规则"
 
 #. module: voip
+#. odoo-python
 #: code:addons/voip/models/voip_queue_mixin.py:0
 #, python-format
 msgid ""
@@ -960,12 +967,7 @@ msgid "Summary"
 msgstr "摘要"
 
 #. module: voip
-#: model:ir.model,name:voip.model_ir_config_parameter
-msgid "System Parameter"
-msgstr "系统参数"
-
-#. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Take call"
@@ -982,14 +984,14 @@ msgid "The URL of your WebSocket"
 msgstr "你的WebSocket的网址"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The connection cannot be made.</br> Please check your configuration."
 msgstr "连接无法建立。</br>请检查您的配置。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid ""
@@ -999,7 +1001,7 @@ msgid ""
 msgstr "该错误可能来自传输层。请让管理员验证 \"常规设置 \"中的websocket服务器URL。如果问题持续存在，这可能是服务器的问题。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -1015,21 +1017,21 @@ msgid "The password that will be used to register with the PBX server."
 msgstr "将被用来在PBX服务器注册的密码"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The person you try to contact is currently unavailable."
 msgstr "你试图联系的人目前不在。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "The phonecall has no number"
 msgstr "该来电没有号码"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid ""
@@ -1058,7 +1060,7 @@ msgid ""
 msgstr "将用于向PBX服务器注册的用户名 (通常是分机号)。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -1079,7 +1081,7 @@ msgid "Tomorrow"
 msgstr "明天"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -1122,7 +1124,7 @@ msgid "VOIP Queue support"
 msgstr "VOIP队列支持"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__voip
 #: model_terms:ir.ui.view,arch_db:voip.res_user_form
@@ -1154,7 +1156,7 @@ msgid "VoIP username / Extension number"
 msgstr "VoIP用户名 / 分机号"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Voip"
@@ -1166,14 +1168,14 @@ msgid "WebSocket"
 msgstr "WebSocket"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "You are already in a call"
 msgstr "您已经在通话中"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid ""
@@ -1182,7 +1184,7 @@ msgid ""
 msgstr "你必须允许访问你设备上的麦克风。否则，VoIP呼叫接收器将听不到你的声音。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
@@ -1191,7 +1193,7 @@ msgid ""
 msgstr "您的浏览器不能支持WebRTC。请检查您的配置。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid ""
@@ -1199,7 +1201,7 @@ msgid ""
 msgstr "您的凭证没有正确设置。请联系您的管理员。"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
@@ -1207,7 +1209,7 @@ msgid "min"
 msgstr "最小值"
 
 #. module: voip
-#. openerp-web
+#. odoo-javascript
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format

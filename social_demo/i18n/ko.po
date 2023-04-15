@@ -3,16 +3,16 @@
 # 	* social_demo
 # 
 # Translators:
-# SeongHyeon Cho <jaymz9634@gmail.com>, 2022
-# JH CHOI <hwangtog@gmail.com>, 2022
 # Martin Trigaux, 2022
+# 조성현 (jaymz9634) <jaymz9634@gmail.com>, 2022
+# JH CHOI <hwangtog@gmail.com>, 2022
 # Sarah Park, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Sarah Park, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
@@ -28,25 +28,21 @@ msgid "Channel: My Company"
 msgstr ""
 
 #. module: social_demo
-#: model:product.product,name:social_demo.product_product_4
 #: model:product.template,name:social_demo.product_product_4_product_template
 msgid "Desk"
 msgstr "책상"
 
 #. module: social_demo
-#: model:product.product,name:social_demo.product_product_4b
 #: model:product.template,name:social_demo.product_product_4b_product_template
 msgid "Desk Variant B"
 msgstr "책상 세부선택항목 B"
 
 #. module: social_demo
-#: model:product.product,name:social_demo.product_product_4c
 #: model:product.template,name:social_demo.product_product_4c_product_template
 msgid "Desk Variant C"
 msgstr "책상 세부선택항목 C"
 
 #. module: social_demo
-#: model:product.product,name:social_demo.product_product_4d
 #: model:product.template,name:social_demo.product_product_4d_product_template
 msgid "Desk Variant D"
 msgstr "책상 세부선택항목 D"
@@ -117,19 +113,7 @@ msgid "UTM Campaign"
 msgstr "UTM 캠페인"
 
 #. module: social_demo
-#: model:product.product,uom_name:social_demo.product_product_4
-#: model:product.product,uom_name:social_demo.product_product_4b
-#: model:product.product,uom_name:social_demo.product_product_4c
-#: model:product.product,uom_name:social_demo.product_product_4d
-#: model:product.template,uom_name:social_demo.product_product_4_product_template
-#: model:product.template,uom_name:social_demo.product_product_4b_product_template
-#: model:product.template,uom_name:social_demo.product_product_4c_product_template
-#: model:product.template,uom_name:social_demo.product_product_4d_product_template
-msgid "Units"
-msgstr "단위"
-
-#. module: social_demo
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_demo/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "You cannot upload videos in demo mode."

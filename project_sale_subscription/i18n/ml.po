@@ -38,4 +38,4 @@ msgstr "സെയിൽസ് ഓർഡർ ലൈൻ"
 #: code:addons/project_sale_subscription/models/project.py:0
 #, python-format
 msgid "Subscriptions"
-msgstr ""
+msgstr "സുബ്സ്ക്രിപ്ഷൻ"

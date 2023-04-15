@@ -14,9 +14,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
@@ -72,7 +72,7 @@ msgid "Convert Social Post to Lead"
 msgstr "Przekształć post społecznościowy w lead"
 
 #. module: social_crm
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_crm/static/src/xml/social_crm_button.xml:0
 #: code:addons/social_crm/static/src/xml/social_crm_button.xml:0
 #, python-format
@@ -186,6 +186,7 @@ msgid "Related Customer"
 msgstr "Powiązany klient"
 
 #. module: social_crm
+#. odoo-python
 #: code:addons/social_crm/wizard/social_post_to_lead.py:0
 #, python-format
 msgid "Request from %s"
@@ -207,6 +208,7 @@ msgid "Social Stream Post"
 msgstr "Post w kanale społecznościowym"
 
 #. module: social_crm
+#. odoo-python
 #: code:addons/social_crm/wizard/social_post_to_lead.py:0
 #, python-format
 msgid "The lead has been created successfully."

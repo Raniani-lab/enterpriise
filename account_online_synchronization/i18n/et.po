@@ -21,9 +21,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:40+0000\n"
+"POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: JanaAvalah, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
@@ -91,7 +91,6 @@ msgstr "Konto nimi"
 #. module: account_online_synchronization
 #: model:ir.actions.server,name:account_online_synchronization.online_sync_cron_ir_actions_server
 #: model:ir.cron,cron_name:account_online_synchronization.online_sync_cron
-#: model:ir.cron,name:account_online_synchronization.online_sync_cron
 msgid "Account: Journal online sync"
 msgstr "Konto: Online andmiku sünkroniseerimine"
 
@@ -121,7 +120,7 @@ msgid "Activity Type Icon"
 msgstr "Tegevuse liigi sümbol"
 
 #. module: account_online_synchronization
-#. openerp-web
+#. odoo-javascript
 #: code:addons/account_online_synchronization/static/src/xml/online_sync_template.xml:0
 #, python-format
 msgid "Add A Bank Account"
@@ -133,6 +132,7 @@ msgid "Attachment Count"
 msgstr "Manuste arv"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Automated Bank Synchronization"
@@ -171,6 +171,7 @@ msgid "Bank Synchronization: Update consent"
 msgstr "Panga sünkroniseerimine: värskendage nõusolekut"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Bank Synchronization: Update your consent"
@@ -229,11 +230,6 @@ msgstr "Nõusolek aegub "
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
-msgid "Consent expires on"
-msgstr "Nõusolek aegub"
-
-#. module: account_online_synchronization
-#: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Consent expires today"
 msgstr "Nõusolek aegub täna"
 
@@ -243,36 +239,42 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Create a Bank Account"
 msgstr "Loo pangakonto"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create bi-monthly statements"
 msgstr "Loo iga kahe kuu tagant aruanne"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create daily statements"
 msgstr "Loo igapäevaseid aruandeid"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create monthly statements"
 msgstr "Loo igakuiseid aruandeid"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create one statement per synchronization"
 msgstr "Loo üks aruanne sünkroniseerimise kohta"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #, python-format
 msgid "Create weekly statements"
@@ -346,6 +348,7 @@ msgid "Fetch Transactions"
 msgstr "Too tehingud"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Fetched Transactions"
@@ -438,12 +441,14 @@ msgid "Institution Name"
 msgstr "Asutuse nimi"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Internal Error"
 msgstr "Sisemine viga"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Invalid value for proxy_mode config parameter."
@@ -472,6 +477,7 @@ msgid "Journal"
 msgstr "Andmik"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/wizard/account_link_journal_wizard.py:0
 #, python-format
 msgid "Journals linked to a bank account must be of the bank type."
@@ -517,6 +523,7 @@ msgid "Last synchronization"
 msgstr "Viimane sünkroniseerimine"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Link Account to Journal"
@@ -543,6 +550,7 @@ msgid "Main Attachment"
 msgstr "Peamine manus"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Message"
@@ -670,12 +678,14 @@ msgid "Online Transaction Identifier"
 msgstr "Võrgu ülekande tuvastaja"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_bank_statement.py:0
 #, python-format
 msgid "Opening statement: first synchronization"
 msgstr "Avasõna: esimene sünkroniseerimine"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Please reconnect your online account."
@@ -758,6 +768,7 @@ msgid "Synchronized accounts"
 msgstr "Sünkroniseeritud kontod"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid ""
@@ -768,6 +779,7 @@ msgstr ""
 "uuesti."
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid ""
@@ -782,6 +794,7 @@ msgid "There is no new bank account to link."
 msgstr "Ühendumiseks ei leidu uut pangakotot."
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid ""
@@ -841,12 +854,14 @@ msgid "Website communication history"
 msgstr "Veebilehe suhtluse ajalugu"
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/wizard/account_link_journal_wizard.py:0
 #, python-format
 msgid "You can not link two accounts to the same journal."
 msgstr "Sa ei või linkida kahte kontot sama registriga."
 
 #. module: account_online_synchronization
+#. odoo-python
 #: code:addons/account_online_synchronization/models/account_journal.py:0
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format

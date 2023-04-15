@@ -21,12 +21,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
-"Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
+"Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -51,7 +51,6 @@ msgstr "Pozycja modelu transferu konta"
 #. module: account_auto_transfer
 #: model:ir.actions.server,name:account_auto_transfer.ir_cron_auto_transfer_ir_actions_server
 #: model:ir.cron,cron_name:account_auto_transfer.ir_cron_auto_transfer
-#: model:ir.cron,name:account_auto_transfer.ir_cron_auto_transfer
 msgid "Account automatic transfers : Perform transfers"
 msgstr "Automatyczne przelewy na konto: wykonuj przelewy"
 
@@ -89,18 +88,21 @@ msgid "Automated Transfer"
 msgstr "Przelew Automatyczny"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (%s%% from account %s)"
 msgstr "Przelew Automatyczny (%s%% z konta %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (-%s%%)"
 msgstr "Przelew Automatyczny (-%s%%)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid ""
@@ -110,18 +112,21 @@ msgstr ""
 "partnerem(ami): %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (entries with analytic account(s): %s)"
 msgstr "Przelew automatyczny (wpisy z kontami analitycznymi): %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (entries with partner(s): %s)"
 msgstr "Transfer automatyczny (wpisy z partnerem/ami: %s )"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid ""
@@ -130,18 +135,21 @@ msgid ""
 msgstr "Przelew automatyczny (z konta %s z analityką: %s i partnera: %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (from account %s with analytic account(s): %s)"
 msgstr "Przelew automatyczny ( z konta %s z kontem analitycznym: %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (from account %s with partner(s): %s)"
 msgstr "Przelew automatyczny (z konta %s i partnera: %s)"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "Automatic Transfer (to account %s)"
@@ -373,12 +381,14 @@ msgid "Stop Date"
 msgstr "Data końcowa"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "The analytic filter %s is duplicated"
 msgstr "Filtr analityczny %s jest zduplikowany"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid ""
@@ -388,12 +398,14 @@ msgstr ""
 "Filtr partnera %s w połączeniu z filtrem analitycznym %s jest zduplikowany"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "The partner filter %s is duplicated"
 msgstr "Filtr partnera %s jest zduplikowany"
 
 #. module: account_auto_transfer
+#. odoo-python
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
 msgid "The total percentage (%s) should be less or equal to 100 !"

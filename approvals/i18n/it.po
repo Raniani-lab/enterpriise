@@ -8,12 +8,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2022\n"
-"Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
+"Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -112,6 +112,7 @@ msgstr ""
 "Un riferimento aggiuntivo che dovrebbe essere specificato nella richiesta."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid "An user may not be in the approver list multiple times."
@@ -180,7 +181,7 @@ msgid "Approvals to review"
 msgstr "Approvazioni da verificare"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/components/approval/approval.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
@@ -204,6 +205,7 @@ msgid "Approver"
 msgstr "Approvatore"
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid ""
@@ -390,7 +392,7 @@ msgid "Date start"
 msgstr "Data inizio"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
@@ -592,7 +594,6 @@ msgstr "Se selezionata, nuovi messaggi richiedono attenzione."
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_has_error
-#: model:ir.model.fields,help:approvals.field_approval_request__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Se selezionata, alcuni messaggi presentano un errore di consegna."
 
@@ -689,7 +690,7 @@ msgid "Location"
 msgstr "Ubicazione"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #, python-format
@@ -723,6 +724,7 @@ msgid "Minimum Approval"
 msgstr "Approvazione minima"
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid ""
@@ -763,6 +765,7 @@ msgid "Name"
 msgstr "Nome"
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__new
 #: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__new
@@ -922,6 +925,7 @@ msgstr "Varianti prodotto"
 #: model:ir.ui.menu,name:approvals.approvals_menu_product_template
 #: model_terms:ir.ui.view,arch_db:approvals.approval_product_line_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_product_line_view_tree
+#: model_terms:ir.ui.view,arch_db:approvals.approval_product_line_view_tree_independent
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Products"
 msgstr "Prodotti"
@@ -945,7 +949,7 @@ msgid "Reference Sequence"
 msgstr "Sequenza di riferimento"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/components/approval/approval.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
@@ -1005,11 +1009,7 @@ msgid "Responsible User"
 msgstr "Utente responsabile"
 
 #. module: approvals
-#: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr "Errore di consegna SMS"
-
-#. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #: code:addons/approvals/models/approval_category.py:0
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__sequence
@@ -1058,6 +1058,7 @@ msgid "The user will have access to the approvals configuration."
 msgstr "L'utente avrà accesso alla configurazione delle approvazioni."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid ""
@@ -1068,6 +1069,7 @@ msgstr ""
 "manager collegato al tuo profilo di dipendente."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid ""
@@ -1077,6 +1079,7 @@ msgstr ""
 "La tua approvazione minima supera il totale degli approvatori predefiniti."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid ""
@@ -1087,7 +1090,7 @@ msgstr ""
 " nella lista degli approvatori."
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/components/approval/approval.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model:ir.model.fields.selection,name:approvals.selection__approval_approver__status__pending
@@ -1117,7 +1120,7 @@ msgid "Unit of Measure"
 msgstr "Unità di misura"
 
 #. module: approvals
-#. openerp-web
+#. odoo-javascript
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: code:addons/approvals/static/src/xml/web_kanban_activity.xml:0
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__user_id
@@ -1138,28 +1141,20 @@ msgid "Waiting"
 msgstr "In attesa"
 
 #. module: approvals
-#: model:ir.model.fields,field_description:approvals.field_approval_request__website_message_ids
-msgid "Website Messages"
-msgstr "Messaggi sito web"
-
-#. module: approvals
-#: model:ir.model.fields,help:approvals.field_approval_request__website_message_ids
-msgid "Website communication history"
-msgstr "Cronologia comunicazioni sito web"
-
-#. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Withdraw"
 msgstr "Ritira"
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You cannot approve before the previous approver."
 msgstr ""
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid ""
@@ -1167,6 +1162,7 @@ msgid ""
 msgstr ""
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to add at least %s approvers to confirm your request."
@@ -1174,12 +1170,14 @@ msgstr ""
 "Per confermare la richiesta devono essere aggiunti almeno %s approvatori."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to attach at lease one document."
 msgstr "Devi allegare almeno un documento."
 
 #. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid "Your minimum approval exceeds the total of default approvers."

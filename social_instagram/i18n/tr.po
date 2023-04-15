@@ -15,9 +15,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:29+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Tugay Hatıl <tugayh@projetgrup.com>, 2023\n"
 "Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
@@ -70,6 +70,7 @@ msgid "Access Token"
 msgstr "Erişim Anahtarı"
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/models/social_post.py:0
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 #, python-format
@@ -87,7 +88,7 @@ msgid "App Secret"
 msgstr "Gizli Uygulama"
 
 #. module: social_instagram
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_instagram/static/src/xml/social_instagram_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
 #, python-format
@@ -109,6 +110,7 @@ msgid "Config Settings"
 msgstr "Yapılandırma Ayarları"
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "Could not find any account to add."
@@ -174,7 +176,7 @@ msgid "Instagram App Secret"
 msgstr "Instagram Uygulama Sırrı"
 
 #. module: social_instagram
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_instagram/static/src/js/stream_post_kanban_record.js:0
 #: model:ir.model.fields,field_description:social_instagram.field_social_stream_post__instagram_comments_count
 #, python-format
@@ -230,13 +232,14 @@ msgid "Instagram Preview"
 msgstr "Instagram Önizlemesi"
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "Instagram did not provide a valid access token."
 msgstr "Instagram geçerli bir access token sağlamadı."
 
 #. module: social_instagram
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_instagram/static/src/xml/social_instagram_templates.xml:0
 #, python-format
 msgid "Likes"
@@ -248,12 +251,14 @@ msgid "Media Type"
 msgstr "Medya Türü"
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "No Instagram accounts linked with your Facebook page"
 msgstr "Facebook sayfanızla bağlantılı bir Instagram hesabı yok."
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/models/social_post.py:0
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 #, python-format
@@ -315,12 +320,14 @@ msgstr ""
 "Facebook Kimliği."
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "There was a authentication issue during your request."
 msgstr "İsteğiniz sırasında kimlik doğrulama sorunu oluştu."
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
@@ -349,6 +356,7 @@ msgstr ""
 "karşılaştırmalar yapmak için kullanılır ('facebook', 'twitter', ...)."
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
@@ -357,6 +365,7 @@ msgstr ""
 "Fazla Bilgi İçin : %s"
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/models/social_post.py:0
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 #, python-format
@@ -364,6 +373,7 @@ msgid "Your image appears to be corrupted, please try loading it again."
 msgstr "Görseliniz hasar görmüş gözüküyor, lütfen tekrar yüklemeyi deneyin."
 
 #. module: social_instagram
+#. odoo-python
 #: code:addons/social_instagram/models/social_post.py:0
 #, python-format
 msgid ""

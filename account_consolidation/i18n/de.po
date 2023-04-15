@@ -326,6 +326,8 @@ msgid ""
 "An account group can only have accounts or other groups children but not "
 "both !"
 msgstr ""
+"Eine Kontengruppe kann nur Konten oder andere Gruppen als untergeordnete "
+"haben, aber nicht beides!"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__period_id
@@ -729,7 +731,7 @@ msgstr ""
 #. module: account_consolidation
 #: model:res.groups,name:account_consolidation.group_consolidation_user
 msgid "Consolidation user"
-msgstr ""
+msgstr "Konsolidierungsbenutzer"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
@@ -1531,7 +1533,7 @@ msgstr "Vorläufige Bilanz"
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "Rohbilanz Benutzerdefinierter Handler"
 
 #. module: account_consolidation
 #. odoo-python

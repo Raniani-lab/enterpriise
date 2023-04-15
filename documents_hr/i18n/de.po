@@ -13,7 +13,7 @@ msgstr ""
 "POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -166,7 +166,7 @@ msgstr "HR"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid "HR Documents: %s"
-msgstr ""
+msgstr "Personaldokumente: %s"
 
 #. module: documents_hr
 #: model:mail.template,name:documents_hr.mail_template_document_folder_link
@@ -186,7 +186,7 @@ msgstr "Zugangslink senden"
 #. module: documents_hr
 #: model:ir.actions.server,name:documents_hr.ir_actions_server_send_access_link
 msgid "Send HR Documents Access Link"
-msgstr ""
+msgstr "Link für den Zugriff auf Personaldokumente versendne"
 
 #. module: documents_hr
 #: model:ir.model.fields,help:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link

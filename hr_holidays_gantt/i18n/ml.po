@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2021-09-14 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Niyas Raphy, 2023\n"
-"Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
+"Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -60,7 +60,7 @@ msgstr "ദിവസം"
 #: model:ir.model,name:hr_holidays_gantt.model_hr_leave
 #: model_terms:ir.ui.view,arch_db:hr_holidays_gantt.hr_leave_report_calendar_view_gantt
 msgid "Time Off"
-msgstr ""
+msgstr "ടൈം ഓഫ്"
 
 #. module: hr_holidays_gantt
 #: model:ir.model,name:hr_holidays_gantt.model_hr_leave_report_calendar

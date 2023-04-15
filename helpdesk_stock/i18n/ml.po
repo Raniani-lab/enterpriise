@@ -47,12 +47,12 @@ msgstr ""
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__lot_id
 msgid "Lot/Serial Number"
-msgstr ""
+msgstr "ലോട്ടസ് /സീരിയൽ നമ്പർ"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__picking_id
 msgid "Picking"
-msgstr ""
+msgstr "പിക്കിങ്"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_sla_report_analysis__product_id

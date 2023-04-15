@@ -99,7 +99,7 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_costs_hour
 msgid "Employee Hourly Cost"
-msgstr ""
+msgstr "Darbinieka stundas likme"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_name

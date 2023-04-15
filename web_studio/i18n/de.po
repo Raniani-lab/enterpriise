@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
@@ -415,7 +415,7 @@ msgstr "Adressenblock"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Aggregate"
-msgstr ""
+msgstr "Aggregieren"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1355,7 +1355,7 @@ msgstr "Tag"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Day Precision"
-msgstr ""
+msgstr "Taggenauigkeit"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1496,7 +1496,6 @@ msgstr "Erstellen deaktivieren"
 
 #. module: web_studio
 #. odoo-javascript
-#: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Disable opening"
@@ -2349,7 +2348,7 @@ msgstr "Intervall"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Invalid studio_approval %s in button"
-msgstr ""
+msgstr "Ungültige studio_approval %s in Schaltfläche"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3610,7 +3609,7 @@ msgstr "Als Standard setzen"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Set expression"
-msgstr ""
+msgstr "Ausdruck festlegen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3696,7 +3695,7 @@ msgstr "Legen Sie die gewünschten Werte fest"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Stacked graph"
-msgstr ""
+msgstr "Gestapelte Grafik"
 
 #. module: web_studio
 #. odoo-python
@@ -3774,24 +3773,24 @@ msgstr "Studio App Creator"
 #: model:ir.actions.act_window,name:web_studio.studio_approval_entry_action
 #: model:ir.ui.menu,name:web_studio.menu_studio_approval_entry
 msgid "Studio Approval Entries"
-msgstr ""
+msgstr "Studio Genehmigungseinträge"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_entry
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_form_view
 msgid "Studio Approval Entry"
-msgstr ""
+msgstr "Studio Genehmigungseintrag"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_request
 msgid "Studio Approval Request"
-msgstr ""
+msgstr "Studio Genehmigungsanfrage"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_rule
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_form_view
 msgid "Studio Approval Rule"
-msgstr ""
+msgstr "Studio Genehmigungsregel"
 
 #. module: web_studio
 #: model:ir.actions.act_window,name:web_studio.studio_approval_rule_action
@@ -3956,6 +3955,8 @@ msgid ""
 "The description will be shown to users to understand why they must ask for "
 "approval."
 msgstr ""
+"Die Beschreibung wird den Benutzern angezeigt, damit sie verstehen, warum "
+"sie eine Genehmigung beantragen müssen."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4197,6 +4198,8 @@ msgstr ""
 #, python-format
 msgid "This user will be assigned a next activity when approval is requested."
 msgstr ""
+"Diesem Benutzer wird eine nächste Aktivität zugewiesen, wenn die Genehmigung"
+" beantragt wird."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4444,7 +4447,7 @@ msgstr "Ob die Regel vom aktuellen Benutzer genehmigt werden kann"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
 msgid "Whether this model is abstract"
-msgstr ""
+msgstr "Ob dieses Modell abstrakt ist"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4563,7 +4566,7 @@ msgstr "Sie machst einfach gerne Dinge kaputt, nicht wahr?"
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "You must have at least one option set"
-msgstr ""
+msgstr "Sie müssen mindestens eine eingestellte Option haben"
 
 #. module: web_studio
 #. odoo-javascript

@@ -6,18 +6,18 @@
 # abc Def <hdogan1974@gmail.com>, 2022
 # Levent Karakaş <levent@mektup.at>, 2022
 # Umur Akın <umura@projetgrup.com>, 2022
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022
 # Murat Durmuş <muratd@projetgrup.com>, 2022
 # Ediz Duman <neps1192@gmail.com>, 2022
 # Murat Kaplan <muratk@projetgrup.com>, 2022
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022
 # Martin Trigaux, 2022
 # Halil, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Halil, 2023\n"
 "Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
@@ -28,6 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: partner_commission
+#. odoo-python
 #: code:addons/partner_commission/models/account_move.py:0
 #, python-format
 msgid ""
@@ -38,6 +39,7 @@ msgstr ""
 "%s: %s'den %s'a"
 
 #. module: partner_commission
+#. odoo-python
 #: code:addons/partner_commission/models/account_move.py:0
 #, python-format
 msgid " (%d month(s))"
@@ -83,7 +85,6 @@ msgstr "Şapkalı"
 
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__purchase_order__purchase_type__commission
-#: model:product.product,name:partner_commission.product_commission
 #: model:product.template,name:partner_commission.product_commission_product_template
 msgid "Commission"
 msgstr "Komisyon"
@@ -271,7 +272,6 @@ msgstr "Yalnızca Kendi Belgeleriniz"
 #. module: partner_commission
 #: model:ir.actions.server,name:partner_commission.cron_confirm_purchase_orders_ir_actions_server
 #: model:ir.cron,cron_name:partner_commission.cron_confirm_purchase_orders
-#: model:ir.cron,name:partner_commission.cron_confirm_purchase_orders
 msgid "Partner Commission: confirm purchase orders"
 msgstr "İş Ortağı Komisyonu: Satın alma siparişlerini onaylayın"
 
@@ -301,6 +301,7 @@ msgid "Product"
 msgstr "Ürün"
 
 #. module: partner_commission
+#. odoo-python
 #: code:addons/partner_commission/models/commission_plan.py:0
 #, python-format
 msgid "Product %s does not belong to category %s"
@@ -419,12 +420,6 @@ msgid ""
 msgstr ""
 "Satınalma siparişlerini otomatik olarak onaylamak için gereken minimum tutar"
 " toplamı"
-
-#. module: partner_commission
-#: model:product.product,uom_name:partner_commission.product_commission
-#: model:product.template,uom_name:partner_commission.product_commission_product_template
-msgid "Units"
-msgstr "Adet"
 
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__res_company__commission_automatic_po_frequency__weekly

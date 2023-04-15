@@ -15,17 +15,17 @@
 # Yihya Hugirat <hugirat@gmail.com>, 2022
 # Martin Trigaux, 2022
 # NoaFarkash, 2022
-# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # Roy Sayag, 2023
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Roy Sayag, 2023\n"
-"Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2023\n"
+"Language-Team: Hebrew (https://app.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -188,8 +188,8 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-plus-circle me-1\"/>Create"
-msgstr "<i class=\"fa fa-plus-circle me-1\"/>יצירה"
+msgid "<i class=\"fa fa-plus-circle me-1\"/>New"
+msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -1714,6 +1714,11 @@ msgid "Link an article."
 msgstr "קישור למאמר."
 
 #. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.articles_template
+msgid "Load more"
+msgstr "טען עוד"
+
+#. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_locked
 msgid "Locked"
 msgstr "נעולה"
@@ -1905,6 +1910,11 @@ msgid "No access"
 msgstr "אין גישה"
 
 #. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
+msgid "No article found"
+msgstr ""
+
+#. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
@@ -2040,11 +2050,6 @@ msgstr "הסר אייקון"
 #, python-format
 msgid "Remove Member"
 msgstr ""
-
-#. module: knowledge
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "Remove from Trash"
-msgstr "הסר מהאשפה"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2316,6 +2321,15 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
+msgstr ""
+
+#. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/controllers/main.py:0
+#, python-format
+msgid ""
+"This Article cannot be unfolded. Either you lost access to it or it has been"
+" deleted."
 msgstr ""
 
 #. module: knowledge

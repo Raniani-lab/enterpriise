@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
 "Last-Translator: Tugay Hatıl <tugayh@projetgrup.com>, 2023\n"
 "Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_event_social
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_event_social/static/src/js/push_notification_widget.js:0
 #, python-format
 msgid ""
@@ -55,7 +55,7 @@ msgid "Event Registrations"
 msgstr "Etkinlik Kayıtları"
 
 #. module: website_event_social
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_event_social/static/src/js/push_notification_widget.js:0
 #, python-format
 msgid "Get the best experience!"
@@ -67,6 +67,7 @@ msgid "Send Push"
 msgstr "Push gönder"
 
 #. module: website_event_social
+#. odoo-python
 #: code:addons/website_event_social/models/event.py:0
 #: code:addons/website_event_social/models/event.py:0
 #, python-format

@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
@@ -22,14 +22,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "&emsp;Start"
 msgstr "&emsp;Start"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -37,14 +37,14 @@ msgid "&emsp;Stop"
 msgstr "&emsp;Stop"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "(Last sync was unsuccessful)"
 msgstr "(Laatste synchronisatie was niet succesvol)"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -52,14 +52,14 @@ msgid "Action"
 msgstr "Actie"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Activity created"
 msgstr "Activiteit aangemaakt"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -72,21 +72,21 @@ msgid "Analytic Account"
 msgstr "Kostenplaats"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Are you sure that you want to delete this activity?"
 msgstr "Ben je zeker dat je deze activiteit wilt verwijderen?"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Are you sure that you want to reset the app?"
 msgstr "Ben je zeker dat je de app wilt resetten?"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
@@ -95,7 +95,7 @@ msgid "Cancel"
 msgstr "Annuleren"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid ""
@@ -106,7 +106,7 @@ msgstr ""
 "apparaten."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid ""
@@ -114,7 +114,7 @@ msgid ""
 msgstr "Kon de server niet vinden. Controleer of de opgegeven URL correct is."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
@@ -124,7 +124,7 @@ msgid ""
 msgstr "Kon niet inloggen. Controleer of de opgegeven informatie correct is."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid ""
@@ -137,7 +137,7 @@ msgstr ""
 "online is."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
@@ -151,14 +151,14 @@ msgstr ""
 "of het opgegeven serveradres geldig is en of de server online is."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Create Task : "
 msgstr "Maak taak aan:"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -166,21 +166,21 @@ msgid "Current activity"
 msgstr "Huidige activiteit"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Database"
 msgstr "Database"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Default project"
 msgstr "Standaard project"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -188,7 +188,7 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
@@ -197,14 +197,14 @@ msgid "Discard"
 msgstr "Negeren"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Discard data"
 msgstr "Gegevens negeren"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid ""
@@ -215,21 +215,21 @@ msgstr ""
 "verbinding heeft of probeer het later nog eens."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Keep data"
 msgstr "Data bewaren"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Last sync :"
 msgstr "Laatste sync:"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -237,14 +237,14 @@ msgid "Locked"
 msgstr "Geblokkeerd"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Logged in as"
 msgstr "Ingelogd als"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
@@ -254,7 +254,7 @@ msgid "Login"
 msgstr "Inloggen"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -262,28 +262,28 @@ msgid "Login to an on premise Odoo instance"
 msgstr "Inloggen op een on premise Odoo instantie"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Login with Odoo"
 msgstr "Inloggen met Odoo"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Logout"
 msgstr "Uitloggen"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Minimal duration"
 msgstr "Minimale duur"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -291,21 +291,21 @@ msgid "Motivation Text"
 msgstr "Motivatie tekst"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Multiple to round up all durations"
 msgstr "Meerdere om alle looptijden naar boven af te ronden"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Next"
 msgstr "Volgende"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -313,7 +313,7 @@ msgid "Next week"
 msgstr "Volgende week"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -321,28 +321,28 @@ msgid "Next week unavailable"
 msgstr "Volgende week onbeschikbaar"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No default project"
 msgstr "Geen standaard project"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "No task"
 msgstr "Geen taak"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No task selected"
 msgstr "Geen taak geselecteerd"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid ""
@@ -351,21 +351,21 @@ msgstr ""
 "Merk op dat dit nieuwe projecten en taken aanmaakt op je Odoo instantie"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Odoo login failed"
 msgstr "Odoo login mislukt"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "On server"
 msgstr "Op server"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid ""
@@ -376,7 +376,7 @@ msgstr ""
 " ze hier. Dit staat je toe om je dag op voorhand te plannen."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -384,35 +384,35 @@ msgid "Password"
 msgstr "Wachtwoord"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Please enter a database name:"
 msgstr "Voer een database naam in:"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Please enter a valid duration"
 msgstr "Voor een geldige duur in"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Please select a project first"
 msgstr "Selecteer eerst een project"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Please select a project."
 msgstr "Selecteer een project."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -420,7 +420,7 @@ msgid "Previous week"
 msgstr "Vorige week"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -428,28 +428,28 @@ msgid "Previous week unavailable"
 msgstr "Vorige week onbeschikbaar"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Project"
 msgstr "Project"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "RESET"
 msgstr "RESETTEN"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Reset"
 msgstr "Resetten"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -457,28 +457,28 @@ msgid "Run"
 msgstr "Uitvoeren"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Save"
 msgstr "Opslaan"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Select your Odoo instance from the list below :"
 msgstr "Selecteer je Odoo instantie uit de onderstaande lijst:"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Settings"
 msgstr "Instellingen"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -486,28 +486,28 @@ msgid "Show password"
 msgstr "Laat wachtwoord zien"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Sign In"
 msgstr "Inloggen"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Sign Up"
 msgstr "Aanmelden"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Statistics"
 msgstr "Statistieken"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -515,14 +515,14 @@ msgid "Subtract"
 msgstr "Aftrekken"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Sync Now"
 msgstr "Nu synchroniseren"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -530,28 +530,28 @@ msgid "Sync in progress"
 msgstr "Sync in uitvoering"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Synchronize"
 msgstr "Synchroniseren"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Syncing data, this shouldn't take long"
 msgstr "Gegevens synchroniseren, dit zou niet lang moeten duren"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Task"
 msgstr "Taak"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid ""
@@ -564,7 +564,7 @@ msgstr ""
 "mogelijk op te halen."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid ""
@@ -575,7 +575,7 @@ msgstr ""
 "versie 9 of een nieuwere versie van Odoo Enterprise Edition."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid ""
@@ -588,7 +588,7 @@ msgstr ""
 "urenstaatapplicatie\" te installeren."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid ""
@@ -603,35 +603,35 @@ msgstr ""
 "Odoo Enterprise versie) te installeren."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "This Week"
 msgstr "Deze week"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Time spent (hh:mm)"
 msgstr "Gespendeerde tijd (uu:mm)"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Time spent (hhmm)"
 msgstr "Gespendeerde tijd (uumm)"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Time unit"
 msgstr "Tijdseenheid"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid ""
@@ -642,7 +642,7 @@ msgstr ""
 "Je moet overwegen om je Odoo-versie te upgraden als je het wil gebruiken."
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -650,14 +650,14 @@ msgid "Today"
 msgstr "Vandaag"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Today's Plan"
 msgstr "Plan van vandaag"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -665,14 +665,14 @@ msgid "Toggle action"
 msgstr "Toggle actie"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Total :"
 msgstr "Totaal:"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid ""
@@ -683,35 +683,35 @@ msgstr ""
 "en de aan taken gespendeerde tijd te factureren"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Use an Odoo.com account"
 msgstr "Gebruik een Odoo.com account"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Week"
 msgstr "Week"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Work Summary"
 msgstr "Samenvatting werk"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Working time per week"
 msgstr "Werkuren per week"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid ""
@@ -722,21 +722,21 @@ msgstr ""
 "gastgebruiker ook worden gesynchroniseerd?"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Would you like to delete this activity?"
 msgstr "Wil je deze activiteit verwijderen?"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "You are logged in !"
 msgstr "Je bent ingelogd!"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid ""
@@ -747,35 +747,35 @@ msgstr ""
 "activeren. Eenmaal dit geactiveerd is is het mogelijk voor jou om"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Your Odoo Server Address"
 msgstr "Je Odoo server adres"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Your database and account have been created !"
 msgstr "Je database en account is aangemaakt!"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "ex: admin@example.com"
 msgstr "b.v: admin@example.com"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "http://"
 msgstr "http://"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -783,7 +783,7 @@ msgid "https://"
 msgstr "https://"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
@@ -791,14 +791,14 @@ msgid "minutes"
 msgstr "minuten"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "remaining)"
 msgstr "resterend)"
 
 #. module: project_timesheet_synchro
-#. openerp-web
+#. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "sign in"

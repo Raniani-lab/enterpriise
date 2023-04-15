@@ -3,17 +3,18 @@
 # 	* sale_renting
 # 
 # Translators:
-# Friederike Fasterling-Nesselbosch, 2022
 # Martin Trigaux, 2022
+# Friederike Fasterling-Nesselbosch, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -21,11 +22,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/models/product_product.py:0
 #: code:addons/sale_renting/models/product_template.py:0
 #, python-format
 msgid "%s (Rental)"
-msgstr ""
+msgstr "%s (Vermietung)"
 
 #. module: sale_renting
 #: model:ir.actions.report,print_report_name:sale_renting.action_report_rental_saleorder
@@ -35,12 +37,14 @@ msgid ""
 msgstr ""
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid "/day"
 msgstr "/Tag"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid "/hour"
@@ -128,7 +132,7 @@ msgid "Ask customer to sign documents on the spot."
 msgstr "Den Kunden fragen, die Dokumente vor Ort zu unterzeichnen."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "At first, let's create some products to rent."
@@ -162,28 +166,28 @@ msgid "Cancelled"
 msgstr "Abgebrochen"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to create a new quotation."
 msgstr "Klicken Sie hier um ein neues Angebot zu erstellen."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to register the pickup."
 msgstr "Klicken Sie hier, um die Abholung einzutragen."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to set up your first rental product."
 msgstr "Klicken Sie hier, um Ihr erstes Mietprodukt anzulegen."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to start filling the quotation."
@@ -224,7 +228,7 @@ msgid "Configure the rental of a product"
 msgstr "Konfigurieren Sie die Vermietung eines Produkts"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Confirm the order when the customer agrees with the terms."
@@ -233,7 +237,7 @@ msgstr ""
 "ist."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Confirm the returned quantities and hit Validate."
@@ -274,7 +278,7 @@ msgid "Create a new rental product!"
 msgstr "Erstellen Sie ein neues Leihprodukt!"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Create or select a customer here."
@@ -414,14 +418,14 @@ msgid "Edited Rental Line"
 msgstr "Bearbeitete Mietzeile"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Enter the product name."
 msgstr "Produktnamen eingeben."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid ""
@@ -432,6 +436,7 @@ msgstr ""
 "Klicken Sie anschließend hier um das Produkt hinzuzufügen."
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/models/sale_order_line.py:0
 #, python-format
 msgid "Expected"
@@ -455,6 +460,7 @@ msgid "Extra Hour"
 msgstr "Überstunden"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid "Extras:"
@@ -473,13 +479,14 @@ msgid "Fine by hour overdue"
 msgstr "Bußgeld nach Zeitüberschreitung"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid "Fixed rental price"
 msgstr "Fester Mietpreis"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Go to the orders menu."
@@ -496,17 +503,17 @@ msgstr "Gruppieren nach"
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__has_late_lines
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_late_lines
 msgid "Has Late Lines"
-msgstr ""
+msgstr "Hta verspätete Positionen"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_pickable_lines
 msgid "Has Pickable Lines"
-msgstr ""
+msgstr "Hat abholbare Posten"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_returnable_lines
 msgid "Has Returnable Lines"
-msgstr ""
+msgstr "Hat umtauschbare Positionen"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pricing_explanation
@@ -601,14 +608,13 @@ msgid "Late Return"
 msgstr "Verspätete Rückgabe"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Let's now create an order."
 msgstr "Lassen Sie uns einen Auftrag erstellen."
 
 #. module: sale_renting
-#: model:product.product,name:sale_renting.rental_product_2
 #: model:product.template,name:sale_renting.rental_product_2_product_template
 msgid "Meeting Room"
 msgstr "Meeting Raum"
@@ -648,6 +654,7 @@ msgid "No data yet!"
 msgstr "Noch keine Daten vorhanden!"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid ""
@@ -672,7 +679,7 @@ msgstr ""
 "können dann eine Rechnung erstellen und die Zahlung abwickeln."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Once the rental is done, you can register the return."
@@ -871,7 +878,6 @@ msgid "Products"
 msgstr "Produkte"
 
 #. module: sale_renting
-#: model:product.product,name:sale_renting.rental_product_1
 #: model:product.template,name:sale_renting.rental_product_1_product_template
 msgid "Projector"
 msgstr "Projector"
@@ -1002,7 +1008,7 @@ msgstr "Mietassistent Zeile"
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_sale_renting_periods
 msgid "Rental periods"
-msgstr ""
+msgstr "Mietzeiträume"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard_line
@@ -1055,6 +1061,7 @@ msgid "Return:"
 msgstr "Rückgabe:"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/models/sale_order_line.py:0
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__qty_returned
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__qty_returned
@@ -1113,14 +1120,14 @@ msgid "Salesperson"
 msgstr "Verkäufer"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Save the product."
 msgstr "Das Produkt speichern."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Save the quotation."
@@ -1132,6 +1139,7 @@ msgid "Schedule"
 msgstr "Ausführungsplan"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/models/product_product.py:0
 #: code:addons/sale_renting/models/product_template.py:0
 #: model:ir.actions.act_window,name:sale_renting.action_rental_order_schedule
@@ -1140,7 +1148,7 @@ msgid "Scheduled Rentals"
 msgstr "Geplante Vermietungen"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Select your rental product."
@@ -1217,7 +1225,7 @@ msgid "The products haven't been returned in time"
 msgstr "Die Produkte wurden nicht rechtzeitig zurückgegeben"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "The rental configuration is available here."
@@ -1314,32 +1322,26 @@ msgid "Unit of Measure"
 msgstr "Mengeneinheit"
 
 #. module: sale_renting
-#: model:product.product,uom_name:sale_renting.rental_product_1
-#: model:product.product,uom_name:sale_renting.rental_product_2
-#: model:product.template,uom_name:sale_renting.rental_product_1_product_template
-#: model:product.template,uom_name:sale_renting.rental_product_2_product_template
-msgid "Units"
-msgstr "Einheiten"
-
-#. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
 msgid "Validate"
 msgstr "Bestätigen"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/models/sale_order.py:0
 #, python-format
 msgid "Validate a pickup"
 msgstr "Eine Abholung validieren"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/models/sale_order.py:0
 #, python-format
 msgid "Validate a return"
 msgstr "eine Rücksendung bestätigen"
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Validate the operation after checking the picked-up quantities."
@@ -1347,7 +1349,7 @@ msgstr ""
 "Validieren Sie den Vorgang nach der Überprüfung der aufgenommenen Mengen."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid ""
@@ -1385,8 +1387,12 @@ msgid ""
 "                <br>\n"
 "                or create a new rental order."
 msgstr ""
+"Mit den Filtern hier oben können Sie in einem größeren Zeitraum suchen\n"
+"                <br>\n"
+"                oder einen neuen Mietauftrag erstellen."
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/wizard/rental_processing.py:0
 #, python-format
 msgid "You can't return more than what's been picked-up."
@@ -1398,7 +1404,7 @@ msgid "You cannot return more than what has been picked up."
 msgstr "Sie können nicht mehr zurückgeben als abgeholt wurde."
 
 #. module: sale_renting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "You're done with your fist rental. Congratulations !"
@@ -1410,6 +1416,7 @@ msgid "hours"
 msgstr "Stunden"
 
 #. module: sale_renting
+#. odoo-python
 #: code:addons/sale_renting/models/sale_order_line.py:0
 #, python-format
 msgid "to"

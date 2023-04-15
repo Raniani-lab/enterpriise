@@ -26,12 +26,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
-"Language-Team: Finnish (https://www.transifex.com/odoo/teams/41243/fi/)\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -180,7 +180,7 @@ msgid "Check Count"
 msgstr "Tarkastusten määrä"
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Close"
@@ -492,11 +492,6 @@ msgid "Late Activities"
 msgstr "Myöhässä olevat toimenpiteet"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
-msgid "List of cc from incoming emails."
-msgstr "Saapuvien sähköpostien kopio-vastaanottajat"
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
 msgid "Lot"
 msgstr "Erä/sarjanumero"
@@ -556,7 +551,7 @@ msgid "Name"
 msgstr "Nimi"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:0
+#. odoo-python
 #: code:addons/quality/models/quality.py:0
 #: code:addons/quality/models/quality.py:0
 #: code:addons/quality/models/quality.py:0
@@ -595,6 +590,7 @@ msgid "Next Activity Type"
 msgstr "Seuraavan toimenpiteen tyyppi"
 
 #. module: quality
+#. odoo-python
 #: code:addons/quality/models/quality.py:0
 #, python-format
 msgid ""
@@ -925,7 +921,7 @@ msgid "Tags"
 msgstr "Tunnisteet"
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Take a Picture"
@@ -1049,7 +1045,7 @@ msgid "Very High"
 msgstr "Erittäin korkea"
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Viewer"

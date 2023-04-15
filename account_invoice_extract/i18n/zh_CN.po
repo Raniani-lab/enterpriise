@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:28+0000\n"
+"POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -420,13 +420,6 @@ msgid "The document has been rejected because it is too small"
 msgstr "文档因太小而被拒绝"
 
 #. module: account_invoice_extract
-#. odoo-javascript
-#: code:addons/account_invoice_extract/static/src/xml/populated_fields_tooltip.xml:0
-#, python-format
-msgid "The following fields were populated by the OCR:"
-msgstr "OCR 填充了以下字段："
-
-#. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__to_validate
 msgid "To validate"
 msgstr "‎来验证‎"
@@ -497,15 +490,6 @@ msgstr "页面"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_text
 msgid "Word Text"
 msgstr "字符文本"
-
-#. module: account_invoice_extract
-#. odoo-javascript
-#: code:addons/account_invoice_extract/static/src/xml/populated_fields_tooltip.xml:0
-#, python-format
-msgid ""
-"You can always change the mapping by clicking on one field in the Invoice "
-"form and select the appropriate value in the PDF."
-msgstr "您始终可以通过单击 结算 窗体中的一个字段并在 PDF 中选择适当的值来更改映射。"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr

@@ -11,10 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
-"Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
+"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -44,13 +44,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__percentage_satisfaction
 msgid "% Happy"
 msgstr "% 満足"
-
-#. module: sale_subscription
-#. odoo-python
-#: code:addons/sale_subscription/models/sale_order_line.py:0
-#, python-format
-msgid "%(product)s - %(duration)d %(unit)s"
-msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1553,13 +1546,6 @@ msgstr ""
 "それ以外の場合は、最も低い順序の販売ジャーナルが使用されます。"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order_template__auto_close_limit
-msgid ""
-"If the chosen payment method has failed to renew the subscription after this"
-" time, the subscription is automatically closed."
-msgstr ""
-
-#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid ""
 "If you confirm, your subscription will be closed right away. Your current "
@@ -1874,8 +1860,8 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid ""
-"Manual payment succeeded. Payment reference: %s; Amount: %(amount)s. Invoice"
-" %(invoice)s"
+"Manual payment succeeded. Payment reference: %(tx_model)s; Amount: "
+"%(amount)s. Invoice %(invoice)s"
 msgstr ""
 
 #. module: sale_subscription
@@ -2364,6 +2350,15 @@ msgid ""
 msgstr ""
 
 #. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order_line.py:0
+#, python-format
+msgid ""
+"Recurring product are entirely discounted as the next period has not been "
+"invoiced yet."
+msgstr ""
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Reference:"
 msgstr "参照:"
@@ -2537,7 +2532,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Salesperson"
-msgstr "営業担当者"
+msgstr "販売担当者"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_template_view_search
@@ -3096,6 +3091,14 @@ msgid "The full URL to access the server action through the website."
 msgstr "ウェブサイトを通じてサーバーアクションにアクセスするための完全なURL。"
 
 #. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"The last invoice (%s) of this subscription is unpaid after the due date."
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_check_start_date_lower_next_invoice_date
 msgid "The next invoice date of a sale order should be after its start date."
 msgstr ""
@@ -3209,13 +3212,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid ""
 "This will trigger the action on all linked subscriptions, regardless of "
-"possible timed conditions. Are you sure you want to proceed?"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
-msgid ""
-"This will trigger the action on all linked subsccriptions, regardless of "
 "possible timed conditions. Are you sure you want to proceed?"
 msgstr ""
 
@@ -3334,6 +3330,13 @@ msgstr "単価"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__product_uom
 msgid "Unit of Measure"
 msgstr "単位"
+
+#. module: sale_subscription
+#: model:ir.model.fields,help:sale_subscription.field_sale_order_template__auto_close_limit
+msgid ""
+"Unpaid subscription after the due date majored by this number of days will be automatically closed by the subscriptions expiration scheduled action. \n"
+"If the chosen payment method has failed to renew the subscription after this time, the subscription is automatically closed."
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -3515,20 +3518,21 @@ msgstr ""
 
 #. module: sale_subscription
 #. odoo-python
-#: code:addons/sale_subscription/models/sale_order.py:0
-#, python-format
-msgid ""
-"You can not upsell a subscription that has not been invoiced yet. Please, "
-"update directly the %s contract or invoice it first."
-msgstr ""
-
-#. module: sale_subscription
-#. odoo-python
 #: code:addons/sale_subscription/models/res_partner.py:0
 #, python-format
 msgid ""
 "You can't archive the partner as it is used in the following recurring "
 "orders: %s"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot create an upsell for this subscription because it :\n"
+" - Has not started yet.\n"
+" - Has no invoiced period in the future."
 msgstr ""
 
 #. module: sale_subscription
@@ -3560,6 +3564,24 @@ msgstr ""
 msgid ""
 "You cannot set to draft a confirmed subscription. Please create a new "
 "quotation"
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot upsell a subscription whose next invoice date is in the past.\n"
+"Please, invoice directly the %s contract."
+msgstr ""
+
+#. module: sale_subscription
+#. odoo-python
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You cannot validate a renewal quotation starting before the next invoice "
+"date of the parent contract. Please update the start date after the %s."
 msgstr ""
 
 #. module: sale_subscription

@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
 "Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
@@ -21,18 +21,21 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid " This channel is private. People must be invited to join it."
 msgstr "このチャネルはプライベートです。 人々はそれに参加するためには招待が必要です。"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/chatbot_script_step.py:0
 #, python-format
 msgid "%(name)s's Ticket"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -79,13 +82,14 @@ msgid "Create Ticket"
 msgstr "チケット作成"
 
 #. module: website_helpdesk_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Create a new helpdesk ticket"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "Created a new ticket: %s"
@@ -163,6 +167,7 @@ msgid "No canned reponses found. Let's create one!"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -189,13 +194,14 @@ msgid "Please write below your customer reference."
 msgstr ""
 
 #. module: website_helpdesk_livechat
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Search for a helpdesk ticket"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
@@ -235,6 +241,7 @@ msgid "View Channels"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "We found some matched ticket(s) related to the search query: %s"
@@ -259,18 +266,21 @@ msgid "Yes"
 msgstr "はい"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "You are in a private conversation with <b>%(mentions)s</b>."
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "You are in channel <b>#%s</b>."
 msgstr "あなたは <b>#%s</b> チャネルにいます。"
 
 #. module: website_helpdesk_livechat
+#. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""

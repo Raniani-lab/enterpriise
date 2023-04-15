@@ -214,6 +214,9 @@ msgid ""
 "which it is linked. Please update the company of the \"%s\" project, or "
 "leave the company of this workspace empty."
 msgstr ""
+"Dieser Arbeitsbereich sollte im selben Unternehmen bleiben wie das Projekt "
+"„%s“, mit dem er verknüpft ist. Bitte aktualisieren Sie das Unternehmen des "
+"Projekts „%s“ oder lassen Sie das Unternehmen dieses Arbeitsbereichs leer."
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -224,6 +227,10 @@ msgid ""
 "\n"
 "Please update the company of those projects, or leave the company of this workspace empty."
 msgstr ""
+"Dieser Arbeitsbereich sollte im selben Unternehmen bleiben wie das folgende Projekt, mit dem er verknüpft ist:\n"
+"%s\n"
+"\n"
+"Bitte aktualisieren Sie das Unternehmen des Projekts oder lassen Sie das Unternehmen dieses Arbeitsbereichs leer."
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_to_validate
@@ -236,6 +243,8 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or </span>drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"<span class=\"fw-normal\">Eine Datei</span> hochladen oder <span class=\"fw-"
+"normal\">hier</span> ablegen"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__project_use_documents
@@ -279,20 +288,24 @@ msgid ""
 "\n"
 "Please update the company of all projects so that they remain in the same company as their workspace, or leave the company of the \"%s\" workspace blank."
 msgstr ""
+"Sie können das Unternehmen dieses Projekts nicht ändern, weil der Arbeitsbereich mit den anderen folgenden Projekten verknüpft ist, die sich noch im „%s“-Unternehmen befinden:\n"
+"%s\n"
+"\n"
+"Bitte aktualisieren Sie das Unternehmen aller Projekte, sodass sie im selben Unternehmen wie ihr Arbeitsbereich bleiben, oder lassen Sie das Unternehmen des Arbeitsbereichs „%s“ leer."
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
 #, python-format
 msgid "You cannot set a company on the Projects workspace."
-msgstr ""
+msgstr "Sie können kein Unternehmen im Projekte-Arbeitsbereich einstellen."
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.share_page
 msgid "documents shared"
-msgstr ""
+msgstr "freigegebene Dokumente"
 
 #. module: documents_project
 #: code:addons/documents_project/models/workflow.py:0
 #, python-format
 msgid "new %s from %s"
-msgstr ""
+msgstr "neue %s aus %s"

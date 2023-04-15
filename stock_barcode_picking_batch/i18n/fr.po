@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
@@ -55,7 +55,7 @@ msgid "Batch Transfer Name"
 msgstr "Nom du transfert par lot"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/main_menu.xml:0
 #: model:ir.actions.act_window,name:stock_barcode_picking_batch.stock_barcode_batch_picking_action_kanban
 #, python-format
@@ -68,6 +68,7 @@ msgid "Cancel Operation"
 msgstr "Annuler le transfert"
 
 #. module: stock_barcode_picking_batch
+#. odoo-python
 #: code:addons/stock_barcode_picking_batch/models/stock_picking_batch.py:0
 #, python-format
 msgid "Cancel this batch transfer ?"
@@ -104,20 +105,21 @@ msgid "No batch transfer found"
 msgstr "Aucun transfert par lot trouvé"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "No ready transfers found"
 msgstr "Pas de transferts prêts trouvés"
 
 #. module: stock_barcode_picking_batch
+#. odoo-python
 #: code:addons/stock_barcode_picking_batch/models/stock_picking_batch.py:0
 #, python-format
 msgid "Open picking batch form"
 msgstr "Ouvrir le formulaire de transfert par lot"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Print Batch Transfer"
@@ -129,35 +131,35 @@ msgid "Product Moves (Stock Move Line)"
 msgstr "Mouvements de produit (Ligne de mouvement de stock)"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Scan the package %s"
 msgstr "Scanner le colis %s"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Select an operation type for batch transfer"
 msgstr "Sélectionnez un type de transfert pour le transfert par lot"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Select transfers for batch transfer"
 msgstr "Sélectionnez les transferts du transfert par lot"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "The Batch Transfer has been validated"
 msgstr "Le transfert par lot a été validé"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "The batch picking has been cancelled"
@@ -182,21 +184,21 @@ msgid "The stock operation where the packing has been made"
 msgstr "L'opération de stock où le colis a été fait."
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "This batch transfer is already done"
 msgstr "Ce transfert par lot est déjà effectué"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "This batch transfer is cancelled"
 msgstr "Ce transfert par lot à été annulé"
 
 #. module: stock_barcode_picking_batch
-#. openerp-web
+#. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid ""
@@ -224,6 +226,7 @@ msgid "Unbatch Transfer"
 msgstr "Sortir le transfert du lot"
 
 #. module: stock_barcode_picking_batch
+#. odoo-python
 #: code:addons/stock_barcode_picking_batch/models/stock_picking.py:0
 #, python-format
 msgid ""

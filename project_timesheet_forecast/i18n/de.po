@@ -193,7 +193,7 @@ msgstr "Planung"
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Planungsanalysebericht"
 
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_planning_slot

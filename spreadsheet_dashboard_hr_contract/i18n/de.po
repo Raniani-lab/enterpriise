@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
 "Last-Translator: Friederike Fasterling-Nesselbosch, 2022\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
@@ -21,21 +21,21 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Contract history by Job Position"
 msgstr "Vertragsverlauf nach Stellen"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Contracts"
 msgstr "Verträge"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
@@ -43,14 +43,14 @@ msgid "Department"
 msgstr "Abteilung"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Employee"
 msgstr "Mitarbeiter"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
@@ -59,49 +59,49 @@ msgid "Employees"
 msgstr "Personal"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Employees Analysis by Department"
 msgstr "Mitarbeiteranalyse nach Abteilung"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Hires"
 msgstr "Einstellungen"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Job Position"
 msgstr "Stelle"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "New Employees by Month"
 msgstr "Neue Mitarbeiter nach Monat"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Period"
 msgstr "Zeitraum"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Top Departments"
 msgstr "Top Abteilungen"
 
 #. module: spreadsheet_dashboard_hr_contract
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Top Paid Job Positions"

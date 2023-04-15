@@ -15,9 +15,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
@@ -33,7 +33,7 @@ msgid "Action Window View"
 msgstr "Widok okna akcji"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/js/grid_controller.js:0
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
@@ -41,7 +41,7 @@ msgid "Add a Line"
 msgstr "Dodaj pozycję"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Add a line"
@@ -53,6 +53,7 @@ msgid "Base"
 msgstr "Baza"
 
 #. module: web_grid
+#. odoo-python
 #: code:addons/web_grid/models/models.py:0
 #: code:addons/web_grid/models/models.py:0
 #, python-format
@@ -60,14 +61,14 @@ msgid "Can not use fields of type %s as grid columns"
 msgstr "Nie można użyć pól typu %s jako kolumn siatki"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/js/grid_view.js:0
 #, python-format
 msgid "Day"
 msgstr "Dzień"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/js/grid_view.js:0
 #: model:ir.model.fields.selection,name:web_grid.selection__ir_actions_act_window_view__view_mode__grid
 #: model:ir.model.fields.selection,name:web_grid.selection__ir_ui_view__type__grid
@@ -76,7 +77,7 @@ msgid "Grid"
 msgstr "Siatka"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
@@ -84,21 +85,21 @@ msgid "Next"
 msgstr "Następny"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/js/grid_controller.js:0
 #, python-format
 msgid "No activities found"
 msgstr "Nie znaleziono aktywności"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "None"
 msgstr "Brak"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
@@ -106,13 +107,14 @@ msgid "Previous"
 msgstr "Poprzedni"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "See all the records aggregated in this cell"
 msgstr "Zobacz wszystkie rekordy zagregowane w tej komórce"
 
 #. module: web_grid
+#. odoo-python
 #: code:addons/web_grid/models/models.py:0
 #: code:addons/web_grid/models/models.py:0
 #, python-format
@@ -120,7 +122,7 @@ msgid "The field used as readonly type must have a group_operator attribute."
 msgstr "Pole używane tylko do odczytu musi mieć atrybut group_operator."
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/js/grid_model.js:0
 #, python-format
 msgid ""
@@ -128,14 +130,14 @@ msgid ""
 msgstr "Widok przekroju siatki nie obsługuje grup o różnych zestawach kolumn"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Today"
 msgstr "Na dzisiaj"
 
 #. module: web_grid
-#. openerp-web
+#. odoo-javascript
 #: code:addons/web_grid/static/src/js/grid_renderer.js:0
 #, python-format
 msgid "Total"
@@ -153,6 +155,7 @@ msgid "View Type"
 msgstr "Typ widoku"
 
 #. module: web_grid
+#. odoo-python
 #: code:addons/web_grid/models/models.py:0
 #, python-format
 msgid ""
@@ -161,11 +164,3 @@ msgid ""
 msgstr ""
 "Tydzień %(weeknumber)s\n"
 "%(week_start)s - %(week_end)s"
-
-#. module: web_grid
-#. openerp-web
-#: code:addons/web_grid/static/src/xml/grid_view.xml:0
-#: code:addons/web_grid/static/src/xml/grid_view.xml:0
-#, python-format
-msgid "\\u00A0"
-msgstr "\\u00A0"

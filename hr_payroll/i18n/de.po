@@ -102,7 +102,7 @@ msgstr "/ Monat"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "1. Save documents to terminated employees"
-msgstr ""
+msgstr "1. Dokumente für gekündigte Mitarbeiter speichern"
 
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_13th_month_salary
@@ -126,6 +126,9 @@ msgid ""
 "                            Save your Salary Rule in order to add Parameter Values.\n"
 "                        </span>"
 msgstr ""
+"<span class=\"bg-white opacity-75 w-100 h-100 o_salary_rule_overlay position-absolute top-0 end-0 w-100 h-100 text-center d-flex justify-content-center flex-column fs-3\">\n"
+"                            Speichern Sie Ihre Gehaltsregel, um Parameterwerte hinzuzufügen.\n"
+"                        </span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
@@ -162,6 +165,10 @@ msgid ""
 " contracts that are not running, this wizard can only index running "
 "contracts.</span>"
 msgstr ""
+"<span role=\"status\" class=\"alert alert-warning d-block\" "
+"attrs=\"{'invisible': [('display_warning', '=', False)]}\">Sie haben ruhende"
+" Verträge ausgewählt. Dieser Assistent kann nur laufende Verträge "
+"indizieren.</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
@@ -597,7 +604,7 @@ msgstr "Zweiwöchentlich"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Board meeting summary :"
-msgstr ""
+msgstr "Zusammenfassung der Vorstandssitzung:"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_line_form
@@ -1014,7 +1021,7 @@ msgstr "SEPA-Zahlung erstellen"
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_new_salary_attachment
 msgid "Create Salary Attachment"
-msgstr ""
+msgstr "Gehaltspfändung erstellen"
 
 #. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.action_hr_contract_repository
@@ -1180,7 +1187,7 @@ msgstr "Standard-Arbeitseintragstyp"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Define a <strong>Wage</strong>."
-msgstr ""
+msgstr "Ein <strong>Gehalt</strong> festlegen."
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract__schedule_pay
@@ -1795,13 +1802,13 @@ msgstr ""
 #: code:addons/hr_payroll/static/src/xml/hr_contract_tree_views.xml:0
 #, python-format
 msgid "Index Contracts"
-msgstr ""
+msgstr "Verträge indizieren"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.action_hr_payroll_index
 #: model:ir.actions.server,name:hr_payroll.action_index_contracts
 msgid "Index contract(s)"
-msgstr ""
+msgstr "Vertrag/Verträge indizieren"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payroll_index
@@ -3062,25 +3069,25 @@ msgstr "Gehaltspfändung"
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_salary_attachment_report
 msgid "Salary Attachment / Report"
-msgstr ""
+msgstr "Gehaltspfändung / Bericht"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract_history__salary_attachment_count
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_employee__salary_attachment_count
 msgid "Salary Attachment Count"
-msgstr ""
+msgstr "Anzahl Gehaltspfändungen"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.hr_salary_attachment_report_action
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_attachment_salary_report
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_attachment_report_view_pivot
 msgid "Salary Attachment Report"
-msgstr ""
+msgstr "Gehaltspfändungsbericht"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__salary_attachment_count
 msgid "Salary Attachment count"
-msgstr ""
+msgstr "Anzahl Gehaltspfändungen"
 
 #. module: hr_payroll
 #. odoo-python
@@ -3133,7 +3140,7 @@ msgstr "Parameter Gehaltsregel"
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_rule_parameter_value
 msgid "Salary Rule Parameter Value"
-msgstr ""
+msgstr "Parameterwert der Gehaltsregel"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.hr_rule_parameter_action
@@ -3914,6 +3921,8 @@ msgstr "Art der Rundung des Arbeitseintragstyps."
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "We have to improve our Payroll flow with the new Odoo process"
 msgstr ""
+"Wir müssen unsere Personalabrechnungsabläufe mit dem neuen Odoo-Verfahren "
+"verbessern"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__website_message_ids
@@ -3991,6 +4000,8 @@ msgid ""
 "Work Entries are generated for each <strong>time period</strong> defined in "
 "the Working Schedule of the Contract."
 msgstr ""
+"Arbeitseinträge werden für jeden <strong>Zeitraum</strong>, der im "
+"Arbeitsplan des Vertrags definiertz ist, generiert."
 
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_work_entry_report

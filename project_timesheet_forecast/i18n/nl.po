@@ -321,7 +321,7 @@ msgid ""
 "Track the progress of your projects by comparing the hours initially planned"
 " with the effective hours recorded"
 msgstr ""
-"Volg de voortgang van je projecten door de aanvankelijke geplande duren te "
+"Volg de voortgang van je projecten door de aanvankelijke geplande uren te "
 "vergelijken met de werkelijke geregistreerde uren."
 
 #. module: project_timesheet_forecast

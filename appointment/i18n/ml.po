@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Niyas Raphy, 2023
+# Nikhil Krishnan, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:28+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
+"Last-Translator: Nikhil Krishnan, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -392,7 +393,7 @@ msgstr "അഡ്മിനിസ്ട്രേറ്റർ"
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "All"
-msgstr ""
+msgstr "എല്ലാം"
 
 #. module: appointment
 #: model:ir.actions.act_window,name:appointment.calendar_event_action_report
@@ -478,8 +479,6 @@ msgstr ""
 #. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 #, python-format
 msgid "Appointment"
@@ -636,7 +635,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__staff_users_choice
@@ -659,7 +658,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "അറ്റാച്ച്മെന്റ് എണ്ണം"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -703,18 +702,18 @@ msgstr ""
 #: model:ir.ui.menu,name:appointment.calendar_appointment_type_menu_action
 #, python-format
 msgid "Calendar"
-msgstr ""
+msgstr "കലണ്ടർ"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_calendar_attendee
 msgid "Calendar Attendee Information"
-msgstr ""
+msgstr "കലണ്ടർ പങ്കെടുക്കുന്നവരുടെ വിവരങ്ങൾ"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_calendar_event
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__calendar_event_id
 msgid "Calendar Event"
-msgstr ""
+msgstr "കലണ്ടർ ഇവന്റ്"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
@@ -758,7 +757,7 @@ msgstr ""
 #: model:onboarding.onboarding.step,button_text:appointment.appointment_onboarding_create_appointment_type_step
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Configure"
-msgstr ""
+msgstr "കോൺഫിഗർ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -850,7 +849,7 @@ msgstr "സൃഷ്ടിച്ചത്"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__custom
 msgid "Custom"
-msgstr ""
+msgstr "കസ്‌റ്റം"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__partner_id
@@ -1444,7 +1443,7 @@ msgstr ""
 #: model:ir.ui.menu,name:appointment.menu_schedule_report_all
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_search_inherit_appointment
 msgid "Online Appointments"
-msgstr ""
+msgstr "ഓൺലൈൻ അപ്പോയ്ന്റ്മെന്റ് "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
@@ -1502,7 +1501,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__placeholder
 msgid "Placeholder"
-msgstr ""
+msgstr "പ്ലെയ്‌സ്‌ഹോൾഡർ"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -1976,7 +1975,7 @@ msgstr "വ്യാഴാഴ്ച"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "Timezone"
-msgstr ""
+msgstr "ടൈംസോൺ"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__appointment_tz
@@ -2071,7 +2070,7 @@ msgstr "വെബ്സൈറ്റ് സന്ദേശങ്ങൾ"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "വെബ്സൈറ്റ് കമ്മ്യൂണിക്കേഷൻ ചരിത്രം"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__3

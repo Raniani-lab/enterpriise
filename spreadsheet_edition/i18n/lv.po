@@ -5,17 +5,17 @@
 # Translators:
 # InfernalLV <karlisdreizis@gmail.com>, 2022
 # JanisJanis <jbojars@gmail.com>, 2022
+# Arnis Putniņš <arnis@allegro.lv>, 2022
 # ievaputnina <ievai.putninai@gmail.com>, 2022
 # Anzelika Adejanova, 2022
 # Martin Trigaux, 2022
-# Arnis Putniņš <arnis@allegro.lv>, 2022
 # Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:53+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023\n"
 "Language-Team: Latvian (https://app.transifex.com/odoo/teams/41243/lv/)\n"
@@ -150,7 +150,7 @@ msgstr "Valūta"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Dashboards"
-msgstr "Dashboards"
+msgstr "Informācijas paneļi"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -221,6 +221,13 @@ msgstr "Filtrs"
 #, python-format
 msgid "Download"
 msgstr "Download"
+
+#. module: spreadsheet_edition
+#. odoo-javascript
+#: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
+#, python-format
+msgid "Download as JSON"
+msgstr ""
 
 #. module: spreadsheet_edition
 #. odoo-javascript

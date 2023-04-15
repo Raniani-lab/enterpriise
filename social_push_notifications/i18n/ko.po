@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# SeongHyeon Cho <jaymz9634@gmail.com>, 2022
+# 조성현 (jaymz9634) <jaymz9634@gmail.com>, 2022
 # Seongseok Shin <shinss61@hotmail.com>, 2022
 # JH CHOI <hwangtog@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: JH CHOI <hwangtog@gmail.com>, 2022\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
@@ -34,7 +34,7 @@ msgid "All related social media posts"
 msgstr "모든 관련 소셜 미디어 게시물"
 
 #. module: social_push_notifications
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Allow"
@@ -56,7 +56,7 @@ msgid "Delay"
 msgstr "지연"
 
 #. module: social_push_notifications
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #, python-format
 msgid "Deny"
@@ -92,6 +92,7 @@ msgid "Enable Web Push Notifications"
 msgstr "웹 푸시 알림 활성화"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 #, python-format
@@ -106,6 +107,7 @@ msgid "Firebase Admin Key File"
 msgstr "Firebase 관리 키 파일"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/social_account.py:0
 #, python-format
 msgid "Firebase Admin Key File is missing from the configuration."
@@ -185,6 +187,7 @@ msgid "Media Type"
 msgstr "매체 유형"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/social_live_post.py:0
 #: code:addons/social_push_notifications/models/social_post_template.py:0
 #, python-format
@@ -199,7 +202,7 @@ msgid "Notification Request Delay (seconds)"
 msgstr "알림 요청 지연 (초)"
 
 #. module: social_push_notifications
-#. openerp-web
+#. odoo-javascript
 #: code:addons/social_push_notifications/static/src/xml/social_push_notifications_templates.xml:0
 #: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings__notification_request_icon
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_account__notification_request_icon
@@ -392,6 +395,7 @@ msgid "Social Post Template"
 msgstr ""
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/website_visitor.py:0
 #, python-format
 msgid "Some selected visitors do not allow push notifications."
@@ -460,6 +464,7 @@ msgid "Visitors"
 msgstr "방문자"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 #, python-format
@@ -484,12 +489,14 @@ msgid "Website Visitor"
 msgstr "웹사이트 방문자"
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/social_account.py:0
 #, python-format
 msgid "You can't delete a Push Notification account."
 msgstr "푸시 알림 계정은 삭제할 수 없습니다."
 
 #. module: social_push_notifications
+#. odoo-python
 #: code:addons/social_push_notifications/models/social_account.py:0
 #, python-format
 msgid ""

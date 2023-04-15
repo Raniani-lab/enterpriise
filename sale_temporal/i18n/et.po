@@ -12,7 +12,7 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Martin Trigaux, 2022
-# Jana Jaakson, 2023
+# JanaAvalah, 2023
 # Anna, 2023
 # Leaanika Randmets, 2023
 # 
@@ -20,10 +20,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:53+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Leaanika Randmets, 2023\n"
-"Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
+"Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -92,6 +92,7 @@ msgstr "Kohandatud hinnakujundused"
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Day"
 msgstr "Päev"
@@ -118,6 +119,11 @@ msgid "Duration"
 msgstr "Kestus"
 
 #. module: sale_temporal
+#: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration_display
+msgid "Duration Display"
+msgstr ""
+
+#. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,help:sale_temporal.field_product_template__display_price
 msgid "First leasing pricing of the product"
@@ -126,6 +132,7 @@ msgstr ""
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Hour"
 msgstr "tund"
@@ -188,6 +195,7 @@ msgstr ""
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Month"
 msgstr "Kuu"
@@ -340,13 +348,13 @@ msgstr "Tootel (%s) on kokkusobimatud väärtused: %s"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
-msgid "Time based pricing"
-msgstr "Ajapõhine hinnakujundus"
+msgid "Time-based pricing"
+msgstr ""
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
-msgid "Time based rules"
-msgstr "Ajapõhised reeglid"
+msgid "Time-based rules"
+msgstr ""
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
@@ -361,6 +369,7 @@ msgstr "Variatsioonid"
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Week"
 msgstr "Nädal"
@@ -373,6 +382,7 @@ msgstr "nädala järel"
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "Year"
 msgstr "Aasta"

@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
 "Last-Translator: Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
@@ -30,35 +30,35 @@ msgid " days"
 msgstr "días"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Cycle Time"
 msgstr "Ciclo de tiempo promedio"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Delay"
 msgstr "Retraso promedio"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg cycle time"
 msgstr "Ciclo de tiempo promedio"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg delay"
 msgstr "Retraso promedio"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
@@ -66,14 +66,14 @@ msgid "Current"
 msgstr "Actual"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "KPI"
 msgstr "KPI"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
@@ -81,14 +81,14 @@ msgid "Location"
 msgstr "Ubicación"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Moved Quantity"
 msgstr "Cantidad movida"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
@@ -98,7 +98,7 @@ msgid "Moves"
 msgstr "Movimientos"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
@@ -106,14 +106,14 @@ msgid "Partner"
 msgstr "Partner"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Period"
 msgstr "Periodo"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
@@ -121,7 +121,7 @@ msgid "Previous"
 msgstr "Anterior"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
@@ -129,14 +129,14 @@ msgid "Product"
 msgstr "Producto"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Product quantity"
 msgstr "Cantidad del producto"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
@@ -146,63 +146,63 @@ msgid "Quantity"
 msgstr "Cantidad"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Address "
 msgstr "Análisis de los movimientos de existencias por dirección de destino"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Location"
 msgstr "Análisis de movimientos de existencias por ubicación del destino"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Product"
 msgstr "Análisis de movimientos de existencias por producto"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Warehouse"
 msgstr "Análisis de los movimientos de existencias por almacén"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Locations"
 msgstr "Ubicaciones principales"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Partners"
 msgstr "Partners principales"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Products"
 msgstr "Mejores productos"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Warehouses"
 msgstr "Almacenes principales"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
@@ -210,14 +210,14 @@ msgid "Warehouse"
 msgstr "Almacén"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Weekly Stock Moves"
 msgstr "Movimientos de existencias semanales"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
@@ -225,21 +225,21 @@ msgid "last period"
 msgstr "último periodo"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "since last period"
 msgstr "desde el último periodo"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - current"
 msgstr "estadísticas - actuales"
 
 #. module: spreadsheet_dashboard_stock
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - previous"

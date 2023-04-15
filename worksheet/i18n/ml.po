@@ -51,7 +51,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_form
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_search
 msgid "Archived"
-msgstr ""
+msgstr "ആർക്കൈവ് ചെയ്തു"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__color
@@ -113,7 +113,7 @@ msgstr "അവസാനം അപ്ഡേറ്റ് ചെയ്തത്"
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__model_id
 msgid "Model"
-msgstr ""
+msgstr "മോഡൽ"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__name
@@ -172,7 +172,7 @@ msgstr ""
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_list
 msgid "Worksheets"
-msgstr ""
+msgstr "വർക്ക്ഷീറ്റുകൾ"
 
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_form

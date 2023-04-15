@@ -9,12 +9,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -42,12 +42,6 @@ msgid "# Meetings"
 msgstr "عدد الاجتماعات "
 
 #. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
-msgid "# Payslips"
-msgstr "# إيصالات الدفع "
-
-#. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__refused
 msgid "# Refused"
 msgstr "# تم الرفض "
@@ -69,11 +63,6 @@ msgstr "المتقدم"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "Applicant Name"
 msgstr "اسم مقدم الطلب "
-
-#. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
-msgid "Applicant that have been enrolled into the company."
-msgstr "المتقدمين للوظيفة الذين قد تم تعيينهم في الشركة. "
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__company_id
@@ -106,11 +95,6 @@ msgid "End Date"
 msgstr "تاريخ الانتهاء"
 
 #. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
-msgid "From creation till hire"
-msgstr "من الإنشاء وحتى التوظيف "
-
-#. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "Group By"
@@ -123,21 +107,11 @@ msgid "Hired"
 msgstr "تم التعيين "
 
 #. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
-msgid "Hired People"
-msgstr "الأفراد الذين تم توظيفهم "
-
-#. module: hr_recruitment_reports
+#. odoo-python
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Hiring ratio"
 msgstr "نسبة التعيين "
-
-#. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
-msgid "Hiring ratio (%)"
-msgstr "نسبة التعيين (%) "
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__id
@@ -177,23 +151,14 @@ msgstr "آخر تعديل في"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__medium_id
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_search
 msgid "Medium"
 msgstr "متوسط "
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__process_duration
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid "Process Duration"
 msgstr "مدة العملية "
-
-#. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
-msgid "Process Duration in Days"
-msgstr "معالجة المدة بالأيام "
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__user_id
@@ -216,12 +181,6 @@ msgid "Recruitment Analysis Report"
 msgstr "تقرير تحليل التوظيف "
 
 #. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
-msgid "Recruitment Rate"
-msgstr "معدل التوظيف "
-
-#. module: hr_recruitment_reports
 #: model:ir.model,name:hr_recruitment_reports.model_hr_recruitment_stage_report
 msgid "Recruitment Stage Analysis"
 msgstr "تحليل مرحلة التوظيف "
@@ -240,7 +199,6 @@ msgstr "تم الرفض "
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__source_id
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_inherit_kanban_view
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_search
 msgid "Source"
 msgstr "المصدر"
@@ -281,24 +239,6 @@ msgid "Team Performance"
 msgstr "أداء الفريق"
 
 #. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
-msgid ""
-"The % is based on the total of applicant that have been hired divided by the"
-" total of applicant."
-msgstr ""
-"الـ % مبنية على إجمالي عدد المتقدمين للوظيفة الذين قد تم تعيينهم، مقسوماً "
-"على إجمالي عدد المتقدمين للوظيفة. "
-
-#. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
-msgid ""
-"The process duration is based on the time between the applicant creation and"
-" the stage \"hired\" or \"refused\"."
-msgstr ""
-"تعتمد مدة العملية على الوقت بين إنشاء ملف المتقدم للطلب ومرحلة \"تم "
-"التعيين\" أو \"تم الرفض\". "
-
-#. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_source_action
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_source_job_action
 msgid "This report performs analysis on your recruitment source."
@@ -332,36 +272,22 @@ msgid "Time In Stage Analysis"
 msgstr "الوقت في مرحلة التحليل "
 
 #. module: hr_recruitment_reports
+#. odoo-python
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Hired"
 msgstr "إجمالي من تم تعيينهم "
 
 #. module: hr_recruitment_reports
+#. odoo-python
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Meetings"
 msgstr "إجمالي عدد الاجتماعات "
 
 #. module: hr_recruitment_reports
+#. odoo-python
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 #, python-format
 msgid "Total applicants"
 msgstr "إجمالي عدد المتقدمين للوظيفة "
-
-#. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
-msgid "Total hired"
-msgstr "إجمالي من تم تعيينهم "
-
-#. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
-msgid "Total meetings"
-msgstr "إجمالي عدد الاجتماعات "
-
-#. module: hr_recruitment_reports
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
-#: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
-msgid "weeks"
-msgstr "أسابيع"

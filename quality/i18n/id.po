@@ -8,12 +8,12 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Abe Manyo, 2023\n"
-"Language-Team: Indonesian (https://www.transifex.com/odoo/teams/41243/id/)\n"
+"Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -162,7 +162,7 @@ msgid "Check Count"
 msgstr ""
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Close"
@@ -474,11 +474,6 @@ msgid "Late Activities"
 msgstr "Aktifitas terakhir"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
-msgid "List of cc from incoming emails."
-msgstr "Daftar cc dari email masuk"
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
 msgid "Lot"
 msgstr "Lot"
@@ -538,7 +533,7 @@ msgid "Name"
 msgstr "Nama"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:0
+#. odoo-python
 #: code:addons/quality/models/quality.py:0
 #: code:addons/quality/models/quality.py:0
 #: code:addons/quality/models/quality.py:0
@@ -577,6 +572,7 @@ msgid "Next Activity Type"
 msgstr "Tipe Aktivitas Berikutnya"
 
 #. module: quality
+#. odoo-python
 #: code:addons/quality/models/quality.py:0
 #, python-format
 msgid ""
@@ -651,9 +647,9 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
-"ID Opsional dari berkas (catatan) di mana semua pesan masuk akan "
-"dilampirkan, bahkan jika mereka tidak menjawabnya. Jika diatur, hal ini akan"
-" menonaktifkan pembuatan catatan baru sepenuhnya."
+"ID Opsional dari file (catatan) di mana semua pesan masuk akan dilampirkan, "
+"bahkan jika mereka tidak menjawabnya. Jika diatur, hal ini akan "
+"menonaktifkan pembuatan catatan baru sepenuhnya."
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_other
@@ -673,7 +669,7 @@ msgstr "Model Induk"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr "Catatan Induk ID Berkas"
+msgstr "Catatan Induk ID File"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_parent_model_id
@@ -907,7 +903,7 @@ msgid "Tags"
 msgstr "Label"
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Take a Picture"
@@ -1031,7 +1027,7 @@ msgid "Very High"
 msgstr "Sangat Tinggi"
 
 #. module: quality
-#. openerp-web
+#. odoo-javascript
 #: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Viewer"

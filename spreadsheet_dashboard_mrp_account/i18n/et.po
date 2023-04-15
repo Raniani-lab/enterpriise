@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-26 07:35+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
 "Last-Translator: JanaAvalah, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
@@ -27,28 +27,28 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Available time (min)t"
 msgstr "Saadaval aeg (minut)"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average Cost / Unit"
 msgstr "Keskmine ühikukulu"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average cost / unitt"
 msgstr "Keskmine ühikukulu"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
@@ -56,56 +56,56 @@ msgid "Current"
 msgstr "Praegune"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "KPI"
 msgstr "KPI"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders"
 msgstr "Tootmistellimused"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Operation Type"
 msgstr "Tootmistellimused operatsiooni tüübi järgi"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Product"
 msgstr "Tootmistellimused toote järgi"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Responsible"
 msgstr "Tootmistellimused vastutaja järgi"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing orders"
 msgstr "Tootmistellimused"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Most Produced Products"
 msgstr "Enim toodetud tooted"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
@@ -113,7 +113,7 @@ msgid "OEE"
 msgstr "Masina efektiisus"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
@@ -121,7 +121,7 @@ msgid "Operation Type"
 msgstr "Operatsiooni tüüp"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
@@ -130,14 +130,14 @@ msgid "Orders"
 msgstr "Tellimused"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Period"
 msgstr "Periood"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
@@ -145,7 +145,7 @@ msgid "Previous"
 msgstr "Eelmine"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
@@ -153,14 +153,14 @@ msgid "Product"
 msgstr "Toode"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Productive time (min)t"
 msgstr "Produktiivne aeg (minutit)"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
@@ -169,14 +169,14 @@ msgid "Qty Produced"
 msgstr "Toodetud kogus"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Quantity Produced"
 msgstr "Toodetud kogus"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
@@ -184,77 +184,77 @@ msgid "Responsible"
 msgstr "Vastutaja"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Operation Types"
 msgstr "Parimad operatsioonitüübid"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Products"
 msgstr "Parimad tooted"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Responsibles"
 msgstr "Parimad vastutajad"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total quantity"
 msgstr "Kogus kokku"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total time (min)t"
 msgstr "Aeg kokku (minutit)"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Weekly Production"
 msgstr "Nädalane tootmine"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "avg cost - current"
 msgstr "keskmine kulu - jooksev"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "avg cost - previous"
 msgstr "keskmine kulu - eelnev"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - current"
 msgstr "Masina efektiivsus - jooksev"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - previous"
 msgstr "Masina efektiivsus - eelnev"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
@@ -264,14 +264,14 @@ msgid "since last period"
 msgstr "alates eelmisest perioodist"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - current"
 msgstr "stats mo - jooksev"
 
 #. module: spreadsheet_dashboard_mrp_account
-#. openerp-web
+#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - previous"

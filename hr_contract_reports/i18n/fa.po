@@ -3,22 +3,22 @@
 # 	* hr_contract_reports
 # 
 # Translators:
-# Yousef Shadmanesh, 2023
+# Yousef Shadmanesh <y.shadmanesh@gmail.com>, 2023
+# Martin Trigaux, 2023
 # Hamid Darabi, 2023
 # Hamed Mohammadi <hamed@dehongi.com>, 2023
 # Hanna Kheradroosta, 2023
 # Farid Hariri <fhari1234@gmail.com>, 2023
 # سید محمد آذربرا <mohammadazarbara98@gmail.com>, 2023
-# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 09:53+0000\n"
+"POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
-"Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
+"Last-Translator: سید محمد آذربرا <mohammadazarbara98@gmail.com>, 2023\n"
+"Language-Team: Persian (https://app.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -73,13 +73,7 @@ msgid "Department"
 msgstr "دپارتمان"
 
 #. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Departure Employees"
-msgstr "خروج کارمندان"
-
-#. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__departure_reason_id
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Departure Reason"
 msgstr "دلیل خروج"
 
@@ -124,29 +118,9 @@ msgid "Last 365 Days"
 msgstr "365 روز اخیر"
 
 #. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Last Contract Ended"
-msgstr "تاریخ و زمان آخرین قرارداد به پایان رسید"
-
-#. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report____last_update
 msgid "Last Modified on"
 msgstr "آخرین اصلاح در"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Max Date in Months"
-msgstr "حداکثر تاریخ در ماه"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Mean Contract Duration"
-msgstr "مدت قرارداد متوسط"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Min Date in Months"
-msgstr "تاریخ حداقل در ماه"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__start_date_months
@@ -159,41 +133,11 @@ msgid "Months of last date of this month since 01/01/1970"
 msgstr "ماه ها از آخرین تاریخ این ماه از تاریخ 01/01/1970"
 
 #. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "New Employees"
-msgstr "کارمندان جدید"
-
-#. module: hr_contract_reports
 #: model_terms:ir.actions.act_window,help:hr_contract_reports.contract_employee_report_action
 msgid "This report performs analysis on your contracts."
 msgstr "این گزارش تحلیل بر روی فیش‌حقوق شما را انجام می دهد."
 
 #. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Total Contract Length"
-msgstr "کل طول قرارداد"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Total Contracts"
-msgstr "مجموع قراردادها"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Total Employees"
-msgstr "کل کارکنان"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "Turnover Rate"
-msgstr "نرخ گردش مالی"
-
-#. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__wage
 msgid "Wage"
 msgstr "دستمزد"
-
-#. module: hr_contract_reports
-#: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
-msgid "months"
-msgstr "ماه"

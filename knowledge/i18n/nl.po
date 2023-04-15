@@ -3,18 +3,18 @@
 # 	* knowledge
 # 
 # Translators:
-# Martin Trigaux, 2022
-# Jolien De Paepe, 2023
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Jolien De Paepe, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
-"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"Last-Translator: Martin Trigaux, 2023\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -194,8 +194,8 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-plus-circle me-1\"/>Create"
-msgstr "<i class=\"fa fa-plus-circle me-1\"/>Aanmaken"
+msgid "<i class=\"fa fa-plus-circle me-1\"/>New"
+msgstr "<i class=\"fa fa-plus-circle me-1\"/>Nieuw"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -1978,6 +1978,11 @@ msgid "Link an article."
 msgstr "Koppel een artikel."
 
 #. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.articles_template
+msgid "Load more"
+msgstr "Meer laden"
+
+#. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_locked
 msgid "Locked"
 msgstr "Beveiligd"
@@ -2173,6 +2178,11 @@ msgid "No access"
 msgstr "Geen toegang"
 
 #. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
+msgid "No article found"
+msgstr "Geen artikel gevonden"
+
+#. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
@@ -2308,11 +2318,6 @@ msgstr "Pictogram verwijderen"
 #, python-format
 msgid "Remove Member"
 msgstr "Lid verwijderen"
-
-#. module: knowledge
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "Remove from Trash"
-msgstr "Verwijderen uit prullenbak"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2593,6 +2598,15 @@ msgstr ""
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
 msgstr "De weergave bestaat niet of je heeft er geen toegang toe."
+
+#. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/controllers/main.py:0
+#, python-format
+msgid ""
+"This Article cannot be unfolded. Either you lost access to it or it has been"
+" deleted."
+msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form

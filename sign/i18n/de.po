@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:27+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
@@ -1655,13 +1655,6 @@ msgid "Inalterability Hash"
 msgstr "Unveränderlichkeits-Hash"
 
 #. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/xml/sign_modal.xml:0
-#, python-format
-msgid "Include a visual security frame around your signature"
-msgstr ""
-
-#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
 msgid "Information"
 msgstr "Information"
@@ -2824,7 +2817,7 @@ msgstr "Historie der Signaturanfrage"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request
 msgid "Sign send request"
-msgstr ""
+msgstr "Anfrage unterzeichnen und senden"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request_signer
@@ -3973,6 +3966,15 @@ msgstr ""
 #, python-format
 msgid "You cannot reassign this signatory"
 msgstr "Sie können diesen Unterzeichner nicht neu zuordnen"
+
+#. module: sign
+#. odoo-python
+#: code:addons/sign/models/sign_template.py:0
+#, python-format
+msgid ""
+"You cannot share this document by link, because it has fields to be filled "
+"by different roles. Use Send button instead."
+msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner

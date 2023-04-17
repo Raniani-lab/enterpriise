@@ -421,10 +421,12 @@ class SignItemParty(models.Model):
     _name = "sign.item.role"
     _description = "Signature Item Party"
     _rec_name = "name"
+    _order = "sequence, id"
 
     name = fields.Char(required=True, translate=True)
     color = fields.Integer()
     default = fields.Boolean(required=True, default=False)
+    sequence = fields.Integer(string="Default order", default=10)
 
     auth_method = fields.Selection(string="Extra Authentication Step", selection=[
         ('sms', 'Unique Code via SMS')
@@ -435,3 +437,13 @@ class SignItemParty(models.Model):
     _sql_constraints = [
         ('name_uniq', 'unique (name)', "Name already exists!"),
     ]
+
+    def write(self, vals):
+        vals.pop('default', None)
+        return super().write(vals)
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_role(self):
+        for role in self:
+            if role.default:
+                raise AccessError(_("The role %s is required by the Sign application and cannot be deleted.", role.name))

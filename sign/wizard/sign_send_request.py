@@ -24,14 +24,15 @@ class SignSendRequest(models.TransientModel):
         if 'subject' in fields:
             res['subject'] = _("Signature Request - %(file_name)s", file_name=template.attachment_id.name)
         if 'signers_count' in fields or 'signer_ids' in fields or 'signer_id' in fields:
-            roles = template.sign_item_ids.responsible_id
+            roles = template.sign_item_ids.responsible_id.sorted()
             if 'signers_count' in fields:
                 res['signers_count'] = len(roles)
             if 'signer_ids' in fields:
                 res['signer_ids'] = [(0, 0, {
                     'role_id': role.id,
                     'partner_id': False,
-                }) for role in roles]
+                    'mail_sent_order': default_signing_order + 1,
+                }) for default_signing_order, role in enumerate(roles)]
             if self.env.context.get('sign_directly_without_mail'):
                 if len(roles) == 1 and 'signer_ids' in fields and res.get('signer_ids'):
                     res['signer_ids'][0][2]['partner_id'] = self.env.user.partner_id.id
@@ -77,11 +78,12 @@ class SignSendRequest(models.TransientModel):
         self.signer_id = False
         self.filename = self.template_id.display_name
         self.subject = _("Signature Request - %s") % (self.template_id.attachment_id.name or '')
-        roles = self.template_id.mapped('sign_item_ids.responsible_id')
+        roles = self.template_id.mapped('sign_item_ids.responsible_id').sorted()
         signer_ids = [(0, 0, {
             'role_id': role.id,
             'partner_id': False,
-        }) for role in roles]
+            'mail_sent_order': default_signing_order + 1
+        }) for default_signing_order, role in enumerate(roles)]
         if self.env.context.get('sign_directly_without_mail'):
             if len(roles) == 1:
                 signer_ids[0][2]['partner_id'] = self.env.user.partner_id.id

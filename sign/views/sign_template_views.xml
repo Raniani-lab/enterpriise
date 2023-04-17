@@ -338,6 +338,7 @@
         <field name="model">sign.item.role</field>
         <field name="arch" type="xml">
             <tree editable="bottom">
+                <field name="sequence" widget="handle"/>
                 <field name="name" string="Role Name"/>
                 <field name="auth_method"/>
                 <field name="change_authorized"/>

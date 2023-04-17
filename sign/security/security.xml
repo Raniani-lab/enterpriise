@@ -215,28 +215,6 @@
             <field name="perm_unlink" eval="False"/>
         </record>
 
-        <record id="ir_rule_sign_role_default_readonly" model="ir.rule">
-            <field name="name">sign.role: group_sign_user: Read-only default roles</field>
-            <field name="model_id" ref="sign.model_sign_item_role"/>
-            <field name="domain_force">[('default', '=', True)]</field>
-            <field name="groups" eval="[(4, ref('sign.group_sign_user'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="False"/>
-            <field name="perm_create" eval="False"/>
-            <field name="perm_unlink" eval="False"/>
-        </record>
-
-        <record id="ir_rule_sign_role_not_default" model="ir.rule">
-            <field name="name">sign.role: group_sign_user: Full permission to non default roles</field>
-            <field name="model_id" ref="sign.model_sign_item_role"/>
-            <field name="domain_force">[('default', '=', False)]</field>
-            <field name="groups" eval="[(4, ref('sign.group_sign_user'))]"/>
-            <field name="perm_read" eval="True"/>
-            <field name="perm_write" eval="True"/>
-            <field name="perm_create" eval="True"/>
-            <field name="perm_unlink" eval="True"/>
-        </record>
-
     </data>
 
 </odoo>

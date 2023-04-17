@@ -28,6 +28,7 @@ const LegacyMockServer = require('web.MockServer');
 
 const { MapRenderer } = require("@web_map/map_view/map_renderer");
 const { KanbanRecord } = require("@web/views/kanban/kanban_record");
+const { _KanbanEditorRecord } = require("@web_studio/client_action/view_editors/kanban/kanban_editor_record")
 
 const { registry } = require("@web/core/registry");
 const { SIDEBAR_SAFE_FIELDS } = require("@web_studio/legacy/js/views/sidebar_safe_fields");
@@ -2790,6 +2791,36 @@ QUnit.module('ViewEditorManager', {
         await click(target, ".myLittleHandler");
         assert.verifySteps([]);
         assert.containsOnce(target, ".myLittleHandler");
+    });
+
+    QUnit.test("click on a link doesn't do anything", async (assert) => {
+        patchWithCleanup(_KanbanEditorRecord.prototype, {
+            onGlobalClickCapture(ev) {
+                assert.step("globalClickCapture");
+                assert.ok(!ev.defaultPrevented);
+                this._super(ev);
+                assert.ok(ev.defaultPrevented);
+            }
+        });
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch: `
+            <kanban>
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div>
+                            <a name="action_view_tasks" type="object">Tasks</a>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`,
+            viewID: 1,
+        });
+
+        await click(target, "a[name='action_view_tasks']");
+        assert.verifySteps(["globalClickCapture"]);
     });
 
     QUnit.test("disable global click", async (assert) => {

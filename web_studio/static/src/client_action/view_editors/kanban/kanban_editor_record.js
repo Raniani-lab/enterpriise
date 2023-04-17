@@ -76,7 +76,7 @@ class SafeKanbanRecord extends KanbanRecord {
 }
 SafeKanbanRecord.template = "web_studio.SafeKanbanRecord";
 
-class _KanbanEditorRecord extends KanbanRecord {
+export class _KanbanEditorRecord extends KanbanRecord {
     setup() {
         super.setup();
         this.dialogService = useService("dialog");
@@ -144,6 +144,7 @@ class _KanbanEditorRecord extends KanbanRecord {
             return;
         }
         ev.stopPropagation();
+        ev.preventDefault();
     }
 
     isFieldValueEmpty(value) {

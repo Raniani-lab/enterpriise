@@ -56,7 +56,7 @@
                                     <span>Duration</span>
                                 </div>
                                 <div class="my-sm-auto w-50">
-                                    <field name="staff_user_ids" widget="many2many_avatar_user"/>
+                                    <field name="staff_user_ids" readonly="true" widget="many2many_avatar_user"/>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-8 col-12 p-0 my-auto">

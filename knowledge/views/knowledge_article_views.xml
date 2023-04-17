@@ -46,7 +46,7 @@
                             <!-- File explorer -->
                             <div class="flex-grow-1 position-relative">
                                 <div class="o_scroll_view border-bottom d-flex flex-column">
-                                    <div class="o_knowledge_tree mx-3" t-ref="tree">
+                                    <div class="o_knowledge_tree user-select-none mx-3" t-ref="tree">
                                         <div class="p-5 text-center">
                                             <i class="fa fa-circle-o-notch fa-2x fa-spin" title="loader" role="img"/>
                                         </div>

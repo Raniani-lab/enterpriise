@@ -23,11 +23,6 @@
             }
         }
     }
-
-    .min-w-0 {
-        min-width: 0;
-    }
-
     .o_breadcrumb_article_name > input:not(.o_readonly_modifier):hover {
         border-bottom: $input-border-width solid $o-brand-primary;
     }
@@ -42,40 +37,23 @@
         }
     }
 
-    .o_article_emoji_dropdown_panel {
-        user-select: none;
-        max-width: 70vw;
-    }
-
     .o_knowledge_editor .o_field_html .note-editable{
         padding-top: 0px;
     }
     .o_knowledge_icon.o_large,
     .o_knowledge_editor .o_field_html .note-editable,
-    .o_knowledge_editor .o_field_html .o_readonly,
-    .o_knowledge_editor .o_field_properties {
+    .o_knowledge_editor .o_field_html .o_readonly {
         margin-bottom: -0.5rem;
         padding-left: var(--editor-gutter-size) !important;
         padding-right: var(--editor-gutter-size) !important;
     }
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .note-editable,
-    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .o_readonly,
-    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_properties {
+    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .o_readonly {
         width: 100%;
         max-width: calc(750px + 2 * var(--editor-gutter-size));
         margin-left: auto;
         margin-right: auto;
-    }
-    // Copy button in share panel
-    .o_field_CopyClipboardChar {
-        width: 100% !important;
-        white-space: nowrap;
-        > span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 100%;
-        }
     }
 
     // = Sidebar
@@ -92,11 +70,6 @@
     .ui-sortable-handle {
         display: block;
     }
-
-    .ui-sortable-handle:not(.dropdown-menu) {
-        display: block;
-    }
-
     .o_no_root_placeholder .o_tree > .ui-sortable-placeholder {
         display: none;
     }
@@ -105,10 +78,6 @@
 
         .o_scroll_view {
             max-height: 100%;
-        }
-
-        .o_knowledge_tree {
-            user-select: none;
         }
 
         .o_article_emoji_dropdown {
@@ -234,9 +203,6 @@
         overflow-x: hidden;
         overflow-y: auto;
         right: 0;
-        .o_clipboard_button {
-            padding: 0 10px;
-        }
         .form-switch .form-check-input {
             margin-left: 0;
             cursor: pointer;
@@ -377,24 +343,12 @@
                 min-height: 0px !important;
             }
         }
-        .o_knowledge_editor .o_kanban_view .o_field_properties {
-            // kanban view in editor
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
     }
 }
 
 @include media-breakpoint-down(md) {
     .o_knowledge_form_view {
-
         --editor-gutter-size: 1rem;
-
-        .o_knowledge_editor .o_kanban_view .o_field_properties {
-            // kanban view in editor
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
     }
 }
 

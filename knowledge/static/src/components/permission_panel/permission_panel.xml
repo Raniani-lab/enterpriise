@@ -32,7 +32,7 @@
                         <span t-else="" t-out="state.based_on"/>
                     </div>
                 </div>
-                <div class="flex-shrink-0 bg-white">
+                <div class="flex-shrink-0">
                     <select class="o_permission form-select rounded"
                         t-att-value="state.internal_permission"
                         t-on-change="_onChangeInternalPermission"
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="flex-grow-1 px-3">Visibility</div>
-                <div class="flex-shrink-0 bg-white">
+                <div class="flex-shrink-0">
                     <select class="o_permission form-select rounded"
                         t-att-value="state.is_article_visible_by_everyone ? 'join': 'everyone'"
                         t-on-change="_onChangeVisibility"

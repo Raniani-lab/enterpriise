@@ -153,7 +153,7 @@ export class PlanningGanttModel extends GanttModel {
      * @param {Data} data
      */
     async _fetchResourceWorkInterval(metaData, data) {
-        const [workIntervals] = await this.orm.call(
+        const [workIntervals, isFlexibleHours] = await this.orm.call(
             metaData.resModel,
             "gantt_resource_work_interval",
             [data.records.map((r) => r.id)],
@@ -168,6 +168,10 @@ export class PlanningGanttModel extends GanttModel {
             if (resourceIntervals.length) {
                 data.workIntervals[resourceId] = resourceIntervals;
             }
+        }
+        data.isFlexibleHours = {};
+        for (const resourceId in isFlexibleHours) {
+            data.isFlexibleHours[resourceId] = isFlexibleHours[resourceId];
         }
     }
 

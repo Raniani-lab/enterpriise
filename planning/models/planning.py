@@ -955,7 +955,7 @@ class Planning(models.Model):
             This method is used in a rpc call
 
         :param slot_ids: The slots the work intervals have to be returned for.
-        :return: a dict of { resource_id: [Intervals] }.
+        :return: list of dicts { resource_id: [Intervals] } and { resource_id: flexible_hours }.
         """
         # Get the oldest start date and latest end date from the slots.
         domain = [("id", "in", slot_ids)]
@@ -981,7 +981,10 @@ class Planning(models.Model):
                 work_interval_per_resource[resource_id].append(
                     (resource_work_interval[0].astimezone(pytz.UTC), resource_work_interval[1].astimezone(pytz.UTC))
                 )
-        return [work_interval_per_resource]
+        # Add the flexible status per resource to the output
+        flexible_per_resource = {resource.id: not bool(resource.calendar_id) for resource in set(resources)}
+        flexible_per_resource[False] = False
+        return [work_interval_per_resource, flexible_per_resource]
 
     @api.model
     def gantt_unavailability(self, start_date, end_date, scale, group_bys=None, rows=None):

@@ -131,8 +131,8 @@ class AccountMove(models.Model):
             'VAT_Number', 'currency', 'payment_ref', 'iban', 'SWIFT_code', 'merged_lines', 'invoice_lines',
         ]
 
-    def _retry_ocr_success_callback(self):
-        super()._retry_ocr_success_callback()
+    def _upload_to_extract_success_callback(self):
+        super()._upload_to_extract_success_callback()
         attachments = self.message_main_attachment_id
         self.extract_attachment_id = attachments
 
@@ -156,11 +156,11 @@ class AccountMove(models.Model):
         })
         return user_infos
 
-    def retry_ocr(self):
-        """ Call parent method retry_ocr only if self is an invoice. """
+    def upload_to_extract(self):
+        """ Call parent method upload_to_extract only if self is an invoice. """
         self.ensure_one()
         if self.is_invoice():
-            super().retry_ocr()
+            super().upload_to_extract()
 
     def get_validation(self, field):
         """
@@ -595,47 +595,46 @@ class AccountMove(models.Model):
 
         return invoice_lines_to_create
 
-    def _check_ocr_status(self, force_write=False):
-        self.ensure_one()
-        if self.state == 'draft':
-            ocr_results = super()._check_ocr_status()
-            if ocr_results is not None:
-                if 'full_text_annotation' in ocr_results:
-                    self.message_main_attachment_id.index_content = ocr_results['full_text_annotation']
-                if 'detected_layout_id' in ocr_results:
-                    self.extract_detected_layout = ocr_results['detected_layout_id']
+    def _fill_document_with_results(self, ocr_results, force_write=False):
+        if self.state != 'draft' or ocr_results is None:
+            return
 
-                self._save_form(ocr_results, force_write=force_write)
+        if 'full_text_annotation' in ocr_results:
+            self.message_main_attachment_id.index_content = ocr_results['full_text_annotation']
+        if 'detected_layout_id' in ocr_results:
+            self.extract_detected_layout = ocr_results['detected_layout_id']
 
-                if not self.extract_word_ids:  # We don't want to recreate the boxes when the user clicks on "Reload AI data"
-                    fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number', 'total']
-                    for field in fields_with_boxes:
-                        if field in ocr_results:
-                            value = ocr_results[field]
-                            selected_value = value.get('selected_value')
-                            data = []
+        self._save_form(ocr_results, force_write=force_write)
 
-                            # We need to make sure that only one candidate is selected.
-                            # Once this flag is set, the next candidates can't be set as selected.
-                            ocr_chosen_found = False
-                            for word in value.get('candidates', []):
-                                ocr_chosen = selected_value == word and not ocr_chosen_found
-                                if ocr_chosen:
-                                    ocr_chosen_found = True
-                                data.append((0, 0, {
-                                    "field": field,
-                                    "ocr_selected": ocr_chosen,
-                                    "user_selected": ocr_chosen,
-                                    "word_text": word['content'],
-                                    "word_page": word['page'],
-                                    "word_box_midX": word['coords'][0],
-                                    "word_box_midY": word['coords'][1],
-                                    "word_box_width": word['coords'][2],
-                                    "word_box_height": word['coords'][3],
-                                    "word_box_angle": word['coords'][4],
-                                }))
-                            self.write({'extract_word_ids': data})
-        return ocr_results
+        if self.extract_word_ids:  # We don't want to recreate the boxes when the user clicks on "Reload AI data"
+            return
+
+        fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number', 'total']
+        for field in filter(ocr_results.get, fields_with_boxes):
+            value = ocr_results[field]
+            selected_value = value.get('selected_value')
+            data = []
+
+            # We need to make sure that only one candidate is selected.
+            # Once this flag is set, the next candidates can't be set as selected.
+            ocr_chosen_candidate_found = False
+            for candidate in value.get('candidates', []):
+                ocr_chosen = selected_value == candidate and not ocr_chosen_candidate_found
+                if ocr_chosen:
+                    ocr_chosen_candidate_found = True
+                data.append((0, 0, {
+                    "field": field,
+                    "ocr_selected": ocr_chosen,
+                    "user_selected": ocr_chosen,
+                    "word_text": candidate['content'],
+                    "word_page": candidate['page'],
+                    "word_box_midX": candidate['coords'][0],
+                    "word_box_midY": candidate['coords'][1],
+                    "word_box_width": candidate['coords'][2],
+                    "word_box_height": candidate['coords'][3],
+                    "word_box_angle": candidate['coords'][4],
+                }))
+            self.write({'extract_word_ids': data})
 
     def _save_form(self, ocr_results, force_write=False):
         date_ocr = self.get_ocr_selected_value(ocr_results, 'date', "")

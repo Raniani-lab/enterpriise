@@ -62,9 +62,7 @@ class HrExpense(models.Model):
         self.validate_ocr()
         return res
 
-    def _check_ocr_status(self):
-        self.ensure_one()
-        ocr_results = super()._check_ocr_status()
+    def _fill_document_with_results(self, ocr_results, force_write=False):
         if ocr_results is not None:
             description_ocr = self.get_ocr_selected_value(ocr_results, 'description', "")
             total_ocr = self.get_ocr_selected_value(ocr_results, 'total', 0.0)
@@ -101,7 +99,6 @@ class HrExpense(models.Model):
                 )
                 if currency:
                     self.currency_id = currency
-        return ocr_results
 
     def action_send_for_digitization(self):
         if any(not expense.is_in_extractable_state or expense.sheet_id for expense in self):
@@ -183,8 +180,8 @@ class HrExpense(models.Model):
     def _get_validation_fields(self):
         return ['total', 'date', 'description', 'currency', 'bill_reference']
 
-    def _retry_ocr_success_callback(self):
-        super()._retry_ocr_success_callback()
+    def _upload_to_extract_success_callback(self):
+        super()._upload_to_extract_success_callback()
         if 'isMobile' in self.env.context and self.env.context['isMobile']:
             for record in self:
                 timer = 0

@@ -56,8 +56,7 @@ class HrApplicant(models.Model):
         self.validate_ocr()
         return res
 
-    def _check_ocr_status(self):
-        ocr_results = super()._check_ocr_status()
+    def _fill_document_with_results(self, ocr_results, force_write=False):
         if ocr_results is not None:
             name_ocr = self.get_ocr_selected_value(ocr_results, 'name', "")
             email_from_ocr = self.get_ocr_selected_value(ocr_results, 'email', "")
@@ -69,7 +68,6 @@ class HrApplicant(models.Model):
             self.email_from = email_from_ocr
             self.partner_phone = phone_ocr
             self.partner_mobile = mobile_ocr
-        return ocr_results
 
     def action_send_for_digitization(self):
         if any(not applicant.is_in_extractable_state for applicant in self):

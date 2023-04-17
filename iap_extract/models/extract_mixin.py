@@ -101,7 +101,7 @@ class ExtractMixin(models.AbstractModel):
         for rec in self.search([('extract_state', '=', 'waiting_upload')]):
             try:
                 with self.env.cr.savepoint(flush=False):
-                    rec.retry_ocr()
+                    rec.upload_to_extract()
                     # We handle the flush manually so that if an error occurs, e.g. a concurrent update error,
                     # the savepoint will be rollbacked when exiting the context manager
                     self.env.cr.flush()
@@ -186,8 +186,8 @@ class ExtractMixin(models.AbstractModel):
         """ Return the validation of the record. This method is meant to be overridden """
         return None
 
-    def retry_ocr(self):
-        """ Retry to contact iap to submit the first attachment in the chatter. """
+    def upload_to_extract(self):
+        """ Contacts IAP extract to parse the first attachment in the chatter."""
         self.ensure_one()
         if not self._get_ocr_option_can_extract():
             return False
@@ -198,7 +198,7 @@ class ExtractMixin(models.AbstractModel):
         ):
             account_token = self.env['iap.account'].get('invoice_ocr')
             # This line contact iap to create account if this is the first request.
-            # It allow iap to give free credits if the database is elligible
+            # It allows iap to give free credits if the database is eligible
             self.env['iap.account'].get_credits('invoice_ocr')
             if not account_token.account_token:
                 self.extract_state = 'error_status'
@@ -221,7 +221,7 @@ class ExtractMixin(models.AbstractModel):
                     self.extract_document_uuid = result['document_uuid']
                     if self.env['ir.config_parameter'].sudo().get_param("iap_extract.already_notified", True):
                         self.env['ir.config_parameter'].sudo().set_param("iap_extract.already_notified", False)
-                    self._retry_ocr_success_callback()
+                    self._upload_to_extract_success_callback()
                 elif result['status'] == 'error_no_credit':
                     self.send_no_credit_notification()
                     self.extract_state = 'not_enough_credit'
@@ -266,20 +266,25 @@ class ExtractMixin(models.AbstractModel):
             ocr_trigger_datetime = fields.Datetime.now() + relativedelta(minutes=self.env.context.get('ocr_trigger_delta', 0))
             self._get_cron_ocr('validate')._trigger(at=ocr_trigger_datetime)
 
-    def _check_ocr_status(self):
-        """ Contact iap to get the actual status of the ocr request. This function returns the OCR results if any. """
+    def _check_ocr_status(self, force_write=False):
+        """ Contact iap to get the actual status of the ocr request. """
         self.ensure_one()
         result = self._contact_iap_extract('get_result', params={'document_uuid': self.extract_document_uuid})
         self.extract_status = result['status']
-        ocr_results = None
         if result['status'] == 'success':
             self.extract_state = 'waiting_validation'
-            ocr_results = result['results'][0]
+            # Set OdooBot as the author of the tracking message
+            self._track_set_author(self.env.ref('base.partner_root'))
+            self._fill_document_with_results(result['results'][0], force_write=force_write)
+
         elif result['status'] == 'processing':
             self.extract_state = 'extract_not_ready'
         else:
             self.extract_state = 'error_status'
-        return ocr_results
+
+    def _fill_document_with_results(self, ocr_results, force_write=False):
+        """ Fill the document with the results of the OCR. This method is meant to be overridden """
+        raise NotImplementedError()
 
     def _get_cron_ocr(self, ocr_action):
         """ Return the cron used to parse the documents, based on the module name.
@@ -317,7 +322,7 @@ class ExtractMixin(models.AbstractModel):
         module_name = self._get_ocr_module_name()
         return f'{baseurl}/{module_name}/request_done'
 
-    def _retry_ocr_success_callback(self):
+    def _upload_to_extract_success_callback(self):
         """ This method is called when the OCR flow is successful. This method is meant to be overridden """
         return None
 

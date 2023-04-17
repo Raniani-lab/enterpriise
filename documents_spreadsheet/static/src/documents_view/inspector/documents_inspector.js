@@ -51,6 +51,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
             isPdfSplit: false,
             rules: [],
             hasPdfSplit: false,
+            selection: [record],
         });
     },
 

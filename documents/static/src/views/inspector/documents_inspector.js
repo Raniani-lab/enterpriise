@@ -518,6 +518,7 @@ export class DocumentsInspector extends Component {
             isPdfSplit,
             rules: this.getCommonRules(),
             hasPdfSplit: !this.isLocked && !this.isEditDisabled,
+            selection: documents,
         });
     }
 

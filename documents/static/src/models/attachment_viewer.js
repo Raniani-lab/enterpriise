@@ -35,6 +35,15 @@ registerPatch({
             }
             return this._super();
         },
+        /**
+         * @override
+         */
+        onClick(ev) {
+            if (this.documentListOwner) {
+                ev.stopPropagation();
+            }
+            return this._super();
+        },
     },
     fields: {
         attachmentViewerViewable: {

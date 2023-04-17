@@ -191,7 +191,7 @@ function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements }) {
         attachmentViewer: null,
     });
 
-    const onOpenDocumentsPreview = async ({ documents, mainDocument, isPdfSplit, rules, hasPdfSplit }) => {
+    const onOpenDocumentsPreview = async ({ documents, mainDocument, isPdfSplit, rules, hasPdfSplit, selection}) => {
         const messaging = await env.services.messaging.get();
         const openPdfSplitter = (documents) => {
             let newDocumentIds = [];
@@ -259,9 +259,10 @@ function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements }) {
             },
             onDeleteCallback: () => {
                 component.env.documentsView.previewStore.documentList = null;
+                selectedDocument.record.toggleSelection(false);
                 // Restore selection
-                if (documents.length > 1) {
-                    for (const rec of documents) {
+                if (selection.length > 1) {
+                    for (const rec of selection) {
                         rec.toggleSelection(true);
                     }
                 }

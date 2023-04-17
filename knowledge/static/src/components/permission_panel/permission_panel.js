@@ -81,7 +81,16 @@ export class PermissionPanel extends Component {
 
     _onInviteMembersClick () {
         this.actionService.doAction('knowledge.knowledge_invite_action_from_article', {
-            additionalContext: {active_id: this.props.article_id}
+            additionalContext: {active_id: this.props.article_id},
+            onClose: async () => {
+                const prevCategory = this.state.category;
+                // Update panel content
+                await this.loadPanel();
+                if (this.state.category !== prevCategory) {
+                    // Update sidebar to show article in correct category
+                    this.props.renderTree(this.props.article_id, '/knowledge/tree_panel');
+                }
+            }
         });
     }
 

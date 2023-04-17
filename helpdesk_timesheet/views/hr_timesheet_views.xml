@@ -103,6 +103,9 @@
             <field name="task_id" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
+            <field name="unit_amount" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
         </field>
     </record>
 
@@ -122,6 +125,9 @@
                 <attribute name="invisible">not display_task</attribute>
                 <attribute name="readonly">readonly_timesheet</attribute>
             </xpath>
+            <field name="unit_amount" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
         </field>
     </record>
 

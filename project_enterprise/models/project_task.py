@@ -77,6 +77,13 @@ class Task(models.Model):
         for task in self:
             task.display_warning_dependency_in_gantt = not task.is_closed
 
+    @api.onchange('planned_date_begin', 'planned_date_end')
+    def _onchange_planned_date(self):
+        if not self.planned_date_end and self.planned_date_begin:
+            self.planned_date_begin = False
+        elif not self.planned_date_begin and self.planned_date_end:
+            self.planned_date_end = False
+
     def _get_planning_overlap_per_task(self):
         if not self.ids:
             return {}
@@ -260,10 +267,27 @@ class Task(models.Model):
 
     def write(self, vals):
         compute_default_planned_dates = None
+        date_start_update = 'planned_date_begin' in vals
+        date_end_update = 'planned_date_end' in vals
         if not self._context.get('fsm_mode', False) \
            and not self._context.get('smart_task_scheduling', False) \
-           and 'planned_date_begin' in vals and 'planned_date_end' in vals:  # if fsm_mode=True then the processing in industry_fsm module is done for these dates.
+           and date_start_update and date_end_update:  # if fsm_mode=True then the processing in industry_fsm module is done for these dates.
             compute_default_planned_dates = self.filtered(lambda task: not task.planned_date_begin and not task.planned_date_end)
+
+        date_start = vals.get('planned_date_begin', True)
+        date_end = vals.get('planned_date_end', True)
+        no_current_date_end = any(not task.planned_date_end for task in self)
+        no_current_date_begin = any(not task.planned_date_begin for task in self)
+        # Either the date_end or the date_start was set to False, so we set both dates to False
+        if not date_start or not date_end:
+            vals['planned_date_begin'] = False
+            vals['planned_date_end'] = False
+        else:
+            # Either the date_end or the date_start was set to a new value, while the other date is False, so we discard the date from the values to write.
+            if (date_start_update and no_current_date_end and not date_end_update):
+                del vals['planned_date_begin']
+            elif (date_end_update and no_current_date_begin and not date_start_update):
+                del vals['planned_date_end']
 
         res = super().write(vals)
 

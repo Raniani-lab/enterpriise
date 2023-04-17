@@ -1302,7 +1302,7 @@
                     <record id="account_financial_report_be_PL_14_balance" model="account.report.expression">
                         <field name="label">balance</field>
                         <field name="engine">aggregation</field>
-                        <field name="formula">BE_9906.balance + BE_791.balance - BE_691_2.balance</field>
+                        <field name="formula">BE_9906.balance + BE_791.balance - BE_691_2.balance + BE_794.balance - BE_694_6.balance</field>
                         <field name="date_scope">normal</field>
                     </record>
                 </field>

@@ -7,8 +7,8 @@
         <field name="inherit_id" ref="project.project_task_view_tree_base"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="after">
-                <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" optional="hide" attrs="{'required': [('planned_date_end', '!=', False)], 'invisible': [('project_id', '=', False)]}"/>
-                <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" optional="hide" attrs="{'required': [('planned_date_begin', '!=', False)], 'invisible': [('project_id', '=', False)]}"/>
+                <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" optional="hide" attrs="{'invisible': [('project_id', '=', False)]}"/>
+                <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" optional="hide" attrs="{'invisible': [('project_id', '=', False)]}"/>
             </xpath>
         </field>
     </record>
@@ -35,10 +35,10 @@
                 <label for="planned_date_begin" string="Planned Date" attrs="{'invisible': [('project_id', '=', False)]}"/>
                 <div class="w-100" attrs="{'invisible': [('project_id', '=', False)]}">
                     <div class="o_row">
-                        <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
+                        <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}"/>
                         <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
                         <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow" attrs="{'invisible': [('planned_date_begin', '=', False), ('planned_date_end', '=', False)]}"/>
-                        <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
+                        <field name="planned_date_end" widget="daterange" options="{'related_start_date': 'planned_date_begin'}"/>
                     </div>
                 </div>
             </xpath>

@@ -51,12 +51,10 @@
                                             <i class="fa fa-circle-o-notch fa-2x fa-spin" title="loader" role="img"/>
                                         </div>
                                     </div>
-                                    <div class="o_section o_knowledge_management_tools w-100 mt-auto p-2">
-                                        <button class="btn btn-link text-black mb-0" href="#" name="%(knowledge_article_action_trashed)d" type="action">
-                                            <i class="fa fa-trash"/>
-                                            <span class="ps-2 flex-grow-1 text-truncate">
-                                                Open the Trash
-                                            </span>
+                                    <div class="o_section o_knowledge_management_tools mt-auto">
+                                        <button class="btn btn-light w-100 fw-normal text-black text-start text-truncate" type="action" name="%(knowledge_article_action_trashed)d">
+                                            <i class="fa fa-fw fs-6 fa-trash me-1"/>
+                                            <span>Open the Trash</span>
                                         </button>
                                     </div>
                                 </div>
@@ -69,7 +67,7 @@
                             <widget name="knowledge_topbar"/>
                             <!-- Invisible Article Warning Banner-->
                             <div class="alert alert-info text-center mb-0" role="alert"
-                                 attrs="{'invisible': ['|', ('is_article_visible_by_everyone', '=', True), ('is_article_visible', '=', True)]}">
+                                 attrs="{'invisible': ['|', '|', ('id', '=', False), ('is_article_visible_by_everyone', '=', True), ('is_article_visible', '=', True)]}">
                                 <field name="user_has_access_parent_path" invisible="1"/>
                                 This article is only displayed to its members.
                                 <a attrs="{'invisible': [('user_has_access_parent_path', '!=', True)]}" role="button" type="object" name="action_join" class="text-decoration-underline oe_link alert-link">

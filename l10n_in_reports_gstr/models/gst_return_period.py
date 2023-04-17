@@ -1475,7 +1475,7 @@ class L10nInGSTReturnPeriod(models.Model):
                         checked_bills += matched_bills
                 else:
                     partner = 'vat' in gstr2b_bill and self.env['res.partner'].search([('vat', '=', gstr2b_bill['vat']), ('company_id', 'in', (False, self.company_id.id))], limit=1)
-                    journal = self.env['account.journal'].search([('type', '=', 'purchase'), ('company_id', '=', self.company_id.id)])
+                    journal = self.env['account.journal'].search([('type', '=', 'purchase'), ('company_id', '=', self.company_id.id)], limit=1)
                     create_vals.append({
                         "move_type": gstr2b_bill.get('bill_type') == 'credit_note' and "in_refund" or "in_invoice",
                         "ref": gstr2b_bill.get('bill_number'),
@@ -1538,7 +1538,8 @@ class L10nInGSTReturnPeriod(models.Model):
                 '&', ("invoice_date", ">=", self.start_date),
                 '&', ("invoice_date", "<=", self.end_date),
                 '&', ("company_id", "in", self.company_ids.ids or self.company_id.ids),
-                    ("state", "=", "posted"),
+                '&', ("state", "=", "posted"),
+                     ("l10n_in_gst_treatment", "not in", ('composition', 'unregistered', 'consumer'))
             ]
             to_match_bills = AccountMove.search(domain)
             for late_bill in gstr2b_late_streamline_bills:
@@ -1549,6 +1550,7 @@ class L10nInGSTReturnPeriod(models.Model):
                     ("move_type", "in", AccountMove.get_purchase_types()),
                     ('ref', '=', late_bill.get('bill_number')),
                     ("state", "=", "posted"),
+                    ("l10n_in_gst_treatment", "not in", ('composition', 'unregistered', 'consumer'))
                 ])
             for bill in to_match_bills:
                 bill_type = 'bill'

@@ -2425,18 +2425,24 @@ class TestSubscription(TestSubscriptionCommon):
         sub_paused = sub_progress.copy()
         (sub_progress | sub_paused).action_confirm()
         sub_paused.subscription_state = '4_paused'
+        with self.assertRaises(ValidationError):
+            sub_paused._action_cancel()
+        sub_paused.subscription_state = '6_churn'
         sub_paused._action_cancel()
         sub_progress._create_recurring_invoice()
         with self.assertRaises(ValidationError):
             sub_paused.subscription_state = '4_paused'
+        with self.assertRaises(ValidationError):
+            sub_progress._action_cancel()
+        sub_progress.subscription_state = '6_churn'
         sub_progress._action_cancel()
         with self.assertRaises(ValidationError):
             sub_progress.subscription_state = '3_progress'
         action = sub_progress.prepare_renewal_order()
         renewal_so = self.env['sale.order'].browse(action['res_id'])
         renewal_so.action_confirm()
-        self.assertEqual(sub_progress.subscription_state, '6_churn')
-        self.assertEqual(sub_progress.state, 'done')
+        self.assertEqual(sub_progress.state, 'cancel')
+        self.assertEqual(sub_progress.subscription_state, '6_churn', "sub was churned")
         inv = renewal_so._create_invoices()
         inv._post()
         self.assertEqual(renewal_so.subscription_state, '3_progress')
@@ -2562,6 +2568,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub = self.subscription
         end_date = datetime.date(2022, 6, 20)
         sub.end_date = end_date
+        sub.action_confirm()
         with freeze_time(end_date):
             sub._create_recurring_invoice()
         self.assertEqual(sub.close_reason_id.id, self.env.ref('sale_subscription.close_reason_end_of_contract').id)
@@ -2582,7 +2589,7 @@ class TestSubscription(TestSubscriptionCommon):
     def test_renewal_churn(self):
         # Test what we expect when we
         # 1) create a renewal quote
-        # 2) close the parebt
+        # 2) close the parent
         # 3) confirm the renewal
         SaleOrder = self.env["sale.order"]
         with freeze_time("2021-01-01"), patch.object(type(SaleOrder), '_get_unpaid_subscriptions', lambda x: []):

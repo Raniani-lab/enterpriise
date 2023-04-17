@@ -730,6 +730,7 @@ class SaleOrder(models.Model):
         return super(SaleOrder, self).action_draft()
 
     def _action_cancel(self):
+        res = super()._action_cancel()
         for order in self:
             if order.subscription_state == '7_upsell':
                 cancel_message_body = escape(_("The upsell %s has been canceled.")) % order._get_html_link()
@@ -740,7 +741,7 @@ class SaleOrder(models.Model):
             elif order.subscription_state in SUBSCRIPTION_PROGRESS_STATE:
                 # should not happen with the constraint but this is a safety for some custos.
                 order.subscription_state = '6_churn'
-        return super()._action_cancel()
+        return res
 
     def _prepare_confirmation_values(self):
         """
@@ -848,16 +849,11 @@ class SaleOrder(models.Model):
 
             renew_msg_body = escape(_("This subscription is renewed in %s with a change of plan.")) % renew._get_html_link()
             parent.message_post(body=renew_msg_body)
-            subscription_state = '5_renewed' if parent.subscription_state != '6_churn' else parent.subscription_state
             renew_close_reason_id = self.env.ref('sale_subscription.close_reason_renew')
             end_of_contract_reason_id = self.env.ref('sale_subscription.close_reason_end_of_contract')
-            close_reason_id = renew_close_reason_id if subscription_state == "5_renewed" else end_of_contract_reason_id
-            parent.update({
-                'state': 'done',
-                'end_date': parent.next_invoice_date,
-                'subscription_state': subscription_state
-            })
-            parent.set_close(close_reason_id=close_reason_id.id)
+            parent.update({'end_date': parent.next_invoice_date})
+            close_reason_id = renew_close_reason_id if parent.subscription_state != "6_churn" else end_of_contract_reason_id
+            parent.set_close(close_reason_id=close_reason_id.id, renew=True)
             # TODO fix : This can create hole that are not taken into account by progress_sub upselling
             start_date = renew.start_date or parent.next_invoice_date
             renew.write({'date_order': today, 'start_date': start_date})

@@ -5045,6 +5045,64 @@ QUnit.module("documents", {}, function () {
                     );
                 }
             );
+
+            QUnit.test(
+                "documents previewer : download button on documents without attachment",
+                async function (assert) {
+                    assert.expect(4);
+                    pyEnv["documents.document"].create({
+                        folder_id: pyEnv["documents.folder"].search([])[0],
+                        name: "newYoutubeVideo",
+                        type: "url",
+                        url: "https://youtu.be/Ayab6wZ_U1A",
+                    });
+                    const views = {
+                        "documents.document,false,kanban": `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                            <div class="o_kanban_image">
+                                <div name="document_preview" class="o_kanban_image_wrapper" t-if="record.type.raw_value == 'url'">
+                                    <img width="100" height="100" class="o_attachment_image"/>
+                                </div>
+                            </div>
+                            <div>
+                                <field name="name"/>
+                            </div>
+                        </t></templates></kanban>`,
+                    };
+                    const { openView } = await createDocumentsViewWithMessaging({
+                        serverData: { views },
+                    });
+                    await openView({
+                        res_model: "documents.document",
+                        views: [[false, "kanban"]],
+                    });
+
+                    [...target.querySelectorAll(".oe_kanban_previewer")].pop().click();
+                    await nextTick();
+
+                    assert.containsOnce(
+                        target,
+                        ".o-mail-AttachmentViewer",
+                        "should have a document preview"
+                    );
+                    assert.containsOnce(
+                        target,
+                        "[title='Close (Esc)']",
+                        "should have a close button"
+                    );
+                    assert.containsNone(
+                        target,
+                        ".o-mail-AttachmentViewer-download",
+                        "should not have a download button"
+                    );
+                    target.querySelector("[title='Close (Esc)']").click();
+                    await nextTick();
+                    assert.containsNone(
+                        target,
+                        ".o-mail-AttachmentViewer",
+                        "should not have a document preview"
+                    );
+                }
+            );
         }
     );
 });

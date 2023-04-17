@@ -19,6 +19,14 @@ patch(AttachmentViewer.prototype, "documents", {
             (document) => document.attachment.isPdf
         );
     },
+    get withDownload() {
+        if (this.documentService.documentList?.initialRecordSelectionLength === 1) {
+            return this.documentService.documentList.selectedDocument.attachment.isUrlYoutube;
+        }
+        return this.documentService.documentList?.documents.every(
+            (document) => document.attachment.isUrlYoutube
+        );
+    },
     onClickPdfSplit() {
         if (this.documentService.documentList?.initialRecordSelectionLength === 1) {
             return this.documentService.documentList?.pdfManagerOpenCallback([

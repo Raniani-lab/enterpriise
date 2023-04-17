@@ -9,6 +9,9 @@
                 </t>
             </div>
         </xpath>
+        <xpath expr="//div[hasclass('o-mail-AttachmentViewer-download')]" position="replace">
+            <t t-if="!withDownload">$0</t>   
+        </xpath>
         <xpath expr="//div[hasclass('o-mail-AttachmentViewer-navigation')][@aria-label='Previous']" position="attributes">
             <attribute name="class" add="bg-dark" separator=" "/>
         </xpath>

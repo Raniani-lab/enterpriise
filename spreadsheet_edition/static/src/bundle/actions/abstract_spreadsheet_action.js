@@ -283,7 +283,11 @@ export class AbstractSpreadsheetAction extends Component {
         this.ui.block();
         try {
             const data = JSON.stringify(this.model.exportData());
-            await downloadFile(data, `${this.props.name}.osheet.json`, "application/json");
+            await downloadFile(
+                data,
+                `${this.state.spreadsheetName}.osheet.json`,
+                "application/json"
+            );
         } finally {
             this.ui.unblock();
         }

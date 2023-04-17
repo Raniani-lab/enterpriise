@@ -147,14 +147,7 @@ class AccountAvatax(models.AbstractModel):
         :param partner (Model<res.partner>): the partner we need the addresses of.
         :return (dict): the AddressesModel to return to Avatax
         """
-        return {
-            'shipTo': {
-                'city': partner.city,
-                'country': partner.country_id.code,
-                'region': partner.state_id.code,
-                'postalCode': partner.zip,
-                'line1': partner.street,
-            },
+        res = {
             'shipFrom': {
                 'city': self.company_id.partner_id.city,
                 'country': self.company_id.partner_id.country_id.code,
@@ -163,6 +156,24 @@ class AccountAvatax(models.AbstractModel):
                 'line1': self.company_id.partner_id.street,
             },
         }
+        if partner.partner_latitude and partner.partner_longitude:
+            res.update({
+                'shipTo': {
+                    'latitude': partner.partner_latitude,
+                    'longitude': partner.partner_longitude,
+                },
+            })
+        else:
+            res.update({
+                'shipTo': {
+                    'city': partner.city,
+                    'country': partner.country_id.code,
+                    'region': partner.state_id.code,
+                    'postalCode': partner.zip,
+                    'line1': partner.street,
+                },
+            })
+        return res
 
     def _get_avatax_taxes(self, commit):
         """Get the transaction values.

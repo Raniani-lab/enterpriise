@@ -493,6 +493,8 @@ class WinbooksImportWizard(models.TransientModel):
                     'date_maturity': rec.get('DUEDATE', False),
                     'name': _('Counterpart (generated at import from Winbooks)'),
                     'balance': -move_amount_total,
+                    'amount_currency': -move_amount_total,
+                    'price_unit': abs(move_amount_total),
                 }
                 move_line_data_list.append((0, 0, line_data))
 
@@ -521,7 +523,7 @@ class WinbooksImportWizard(models.TransientModel):
                 _logger.info("Advancement: %s", len(move_data_list))
 
         _logger.info("Creating moves")
-        move_ids = self.env['account.move'].create(move_data_list)
+        move_ids = self.env['account.move'].with_context(skip_invoice_sync=True).create(move_data_list)
         move_ids._post()
         _logger.info("Creating attachments")
         for move, pdf_files in zip(move_ids, pdf_file_list):
@@ -592,7 +594,7 @@ class WinbooksImportWizard(models.TransientModel):
             analytic_account_data[rec.get('NUMBER')] = analytic_account.id
         return analytic_account_data
 
-    def _import_analytic_account_line(self, dbf_records, analytic_account_data, account_data):
+    def _import_analytic_account_line(self, dbf_records, analytic_account_data, account_data, param_data):
         """Import the analytic lines from the *_ant*.dbf files.
         """
         _logger.info("Import Analytic Account Lines")
@@ -607,7 +609,7 @@ class WinbooksImportWizard(models.TransientModel):
             data = {
                 'date': rec.get('DATE', False),
                 'name': rec.get('COMMENT'),
-                'amount': abs(rec.get('AMOUNTEUR')),
+                'amount': rec.get('AMOUNTEUR'),
                 'general_account_id': account_data.get(rec.get('ACCOUNTGL'))
             }
             for analytic in analytic_list:
@@ -800,7 +802,7 @@ class WinbooksImportWizard(models.TransientModel):
                 analytic_account_data = self._import_analytic_account(anf_recs)
 
                 ant_recs = get_dbfrecords(lambda file: file.lower().endswith("_ant.dbf"))
-                self._import_analytic_account_line(ant_recs, analytic_account_data, account_data)
+                self._import_analytic_account_line(ant_recs, analytic_account_data, account_data, param_data)
 
                 self._post_import(account_deprecated_ids)
                 _logger.info("Completed")

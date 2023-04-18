@@ -822,7 +822,7 @@ class BankRecWidget(models.Model):
         elif not self.form_amount_currency:
             self.form_amount_currency = 0.0
 
-        if self.form_currency_id == line.company_currency_id:
+        if self.form_currency_id == line.company_currency_id or not self.form_currency_id:
             # Single currency: amount_currency must be equal to balance.
             self.form_balance = self.form_amount_currency
         elif line.flag == 'new_aml':

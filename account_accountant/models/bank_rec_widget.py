@@ -115,7 +115,7 @@ class BankRecWidget(models.Model):
     form_name = fields.Char()
     form_date = fields.Date()
     form_ref = fields.Char()
-    form_notes = fields.Html()
+    form_notes = fields.Html(readonly=True)
     form_transaction_details = fields.Html(readonly=True)
     form_account_id = fields.Many2one(
         comodel_name='account.account',

@@ -493,10 +493,10 @@
                                            widget="bank_rec_html"/>
                                 </group>
                             </group>
-                            <group>
-                                <field name="form_notes"
-                                       string="Notes"
-                                       attrs="{'invisible': ['|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False)]}"/>
+                            <group attrs="{'invisible': ['|', '|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False), ('form_notes', '=', False)]}">
+                                <group colspan="2">
+                                    <field name="form_notes" string="Notes"/>
+                                </group>
                             </group>
                             <group groups="base.group_no_one"
                                    attrs="{'invisible': ['|', '|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False), ('form_transaction_details', '=', False)]}">

@@ -759,3 +759,25 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                 </xpath>
             </data>
         ''')
+
+    def test_edit_form_subview_attributes(self):
+        self.testView.arch = '''
+            <form>
+                <field name="child_ids">
+                    <form>
+                        <field name="display_name" />
+                    </form>
+                </field>
+            </form>
+        '''
+
+        self.start_tour("/web?debug=tests", 'web_studio_test_edit_form_subview_attributes', login="admin",
+                        timeout=200)
+
+        studioView = _get_studio_view(self.testView)
+        assertViewArchEqual(self, studioView.arch, """
+            <data>
+                <xpath expr="//form[1]/field[@name='child_ids']/form[1]" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </data>""")

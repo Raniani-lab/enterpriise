@@ -809,7 +809,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         if (this.x2mField && op.target) {
             this._setSubViewXPath(op);
             const { type, position } = op.target.subview_xpath.match(/\/(?<type>\w+)\[(?<position>\d+)]$/).groups;
-            if (op.target.xpath_info[0].tag === type) {
+            if (op.target.xpath_info && op.target.xpath_info[0].tag === type) {
                 op.target.xpath_info[0].indice = parseInt(position);
             }
         }

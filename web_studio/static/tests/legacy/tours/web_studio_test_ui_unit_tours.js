@@ -527,3 +527,37 @@ tour.register("web_studio_test_studio_view_is_last",
         },
     ],
 );
+
+tour.register("web_studio_test_edit_form_subview_attributes",
+    {
+        test: true,
+    },
+    [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger:
+                ".o_web_studio_form_view_editor .o_field_widget[name='child_ids'] .o_field_x2many_list",
+        },
+        {
+            extra_trigger: ".o-web-studio-edit-x2manys-buttons",
+            trigger: ".o_web_studio_editX2Many[data-type='form']",
+        },
+        {
+            extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains(Subview Form)",
+            trigger: ".o_web_studio_sidebar .o_web_studio_view",
+        },
+        {
+            trigger: ".o_web_studio_sidebar input[name='create']:checked",
+        },
+        {
+            trigger: ".o_web_studio_sidebar input[name='create']:not(:checked)",
+            run() {},
+        },
+    ]
+);

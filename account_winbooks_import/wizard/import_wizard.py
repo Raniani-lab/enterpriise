@@ -197,7 +197,7 @@ class WinbooksImportWizard(models.TransientModel):
             if property_name:
                 self.env['ir.property']._set_default(property_name, model_name, account, self.env.company)
             if tax_group_name:
-                self.env['account.tax.group'].search(['company_id', '=', self.env.company])[tax_group_name] = account
+                self.env['account.tax.group'].search([('company_id', '=', self.env.company.id)])[tax_group_name] = account
 
         _logger.info("Import Accounts")
         account_data = {}
@@ -417,6 +417,7 @@ class WinbooksImportWizard(models.TransientModel):
                     'amount_currency': amount_currency,
                     'amount_residual_currency': amount_currency,
                     'winbooks_matching_number': matching_number,
+                    'winbooks_line_id': rec['DOCORDER'],
                 }
                 if currency:
                     line_data['currency_id'] = currency.id
@@ -495,6 +496,8 @@ class WinbooksImportWizard(models.TransientModel):
                     'date_maturity': rec.get('DUEDATE', False),
                     'name': _('Counterpart (generated at import from Winbooks)'),
                     'balance': -move_amount_total,
+                    'amount_currency': -move_amount_total,
+                    'price_unit': abs(move_amount_total),
                 }
                 move_line_data_list.append((0, 0, line_data))
 
@@ -523,7 +526,7 @@ class WinbooksImportWizard(models.TransientModel):
                 _logger.info("Advancement: %s", len(move_data_list))
 
         _logger.info("Creating moves")
-        move_ids = self.env['account.move'].create(move_data_list)
+        move_ids = self.env['account.move'].with_context(skip_invoice_sync=True).create(move_data_list)
         move_ids._post()
         _logger.info("Creating attachments")
         for move, pdf_files in zip(move_ids, pdf_file_list):
@@ -563,7 +566,7 @@ class WinbooksImportWizard(models.TransientModel):
                     lines.with_context(no_exchange_difference=True).reconcile()
                 else:
                     raise ue
-        return True
+        return {f"{m.date.year}_{m.ref}" : m for m in move_ids}
 
     def _import_analytic_account(self, dbf_records):
         """Import the analytic accounts from *_anf*.dbf files.
@@ -594,7 +597,7 @@ class WinbooksImportWizard(models.TransientModel):
             analytic_account_data[rec.get('NUMBER')] = analytic_account.id
         return analytic_account_data
 
-    def _import_analytic_account_line(self, dbf_records, analytic_account_data, account_data):
+    def _import_analytic_account_line(self, dbf_records, analytic_account_data, account_data, move_data, param_data):
         """Import the analytic lines from the *_ant*.dbf files.
         """
         _logger.info("Import Analytic Account Lines")
@@ -606,11 +609,29 @@ class WinbooksImportWizard(models.TransientModel):
                 # These columns contain the analytic account number associated to that plan.
                 # We thus need to create an analytic line for each of these accounts.
                 analytic_list = [k for k in rec.keys() if 'ZONANA' in k]
+            bookyear_first_year = param_data['period_date'][int(rec['BOOKYEAR'], 36)][0].year
+            bookyear_last_year = param_data['period_date'][int(rec['BOOKYEAR'], 36)][-1].year
+            journal_code, move_number = rec['DBKCODE'], rec['DOCNUMBER']
+            move_line_id = False
+            move = move_data.get(f"{bookyear_first_year}_{journal_code}_{move_number}") or move_data.get(f"{bookyear_last_year}_{journal_code}_{move_number}")
+            if move:
+                if rec['DOCORDER'] == 'VAT':
+                    # A move can have multiple VAT lines. If that's the case, we have to use the line order from Winbooks,
+                    # as the docorder just says "VAT". The line order can only be used for open years, as Winbooks doesn't export
+                    # all the lines otherwise.
+                    tax_lines = move.line_ids.filtered(lambda l: l.display_type == 'tax')
+                    if rec['LINEORDER'] and int(rec['BOOKYEAR'], 36) in param_data['open_years'] and len(tax_lines) > 1:
+                        move_line_id = move.line_ids.sorted('id')[rec['LINEORDER']-1]
+                    else:
+                        move_line_id = tax_lines[0].id
+                else:
+                    move_line_id = move.line_ids.filtered(lambda l: l.winbooks_line_id == rec['DOCORDER']).id
             data = {
                 'date': rec.get('DATE', False),
                 'name': rec.get('COMMENT'),
-                'amount': abs(rec.get('AMOUNTEUR')),
-                'general_account_id': account_data.get(rec.get('ACCOUNTGL'))
+                'amount': rec.get('AMOUNTEUR'),
+                'general_account_id': account_data.get(rec.get('ACCOUNTGL')),
+                'move_line_id': move_line_id,
             }
             for analytic in analytic_list:
                 if rec.get(analytic):
@@ -796,13 +817,13 @@ class WinbooksImportWizard(models.TransientModel):
                 partner_data = self._import_partner(csf_recs, civility_data, category_data, account_data)
 
                 act_recs = get_dbfrecords(lambda file: file.lower().endswith("_act.dbf"))
-                self._import_move(act_recs, pdffiles, account_data, account_central, journal_data, partner_data, vatcode_data, param_data)
+                move_data = self._import_move(act_recs, pdffiles, account_data, account_central, journal_data, partner_data, vatcode_data, param_data)
 
                 anf_recs = get_dbfrecords(lambda file: file.lower().endswith("_anf.dbf"))
                 analytic_account_data = self._import_analytic_account(anf_recs)
 
                 ant_recs = get_dbfrecords(lambda file: file.lower().endswith("_ant.dbf"))
-                self._import_analytic_account_line(ant_recs, analytic_account_data, account_data)
+                self._import_analytic_account_line(ant_recs, analytic_account_data, account_data, move_data, param_data)
 
                 self._post_import(account_deprecated_ids)
                 _logger.info("Completed")

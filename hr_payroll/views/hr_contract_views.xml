@@ -64,6 +64,9 @@
                 <separator/>
                 <filter string="Part Time" name="part_time" domain="[('time_credit', '=', True)]"/>
             </xpath>
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="employee_id" string="Employee Code" filter_domain="[('employee_id.registration_number','ilike', self)]"/>
+            </xpath>
         </field>
     </record>
 

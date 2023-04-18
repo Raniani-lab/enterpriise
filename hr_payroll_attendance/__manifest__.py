@@ -14,6 +14,7 @@
     ],
     'data': [
         'data/hr_payroll_attendance_data.xml',
+        'views/hr_payroll_attendance_views.xml',
         'views/hr_payslip_views.xml',
     ],
     'demo': [

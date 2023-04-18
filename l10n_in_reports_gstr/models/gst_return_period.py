@@ -1484,12 +1484,13 @@ class L10nInGSTReturnPeriod(models.Model):
                 else:
                     partner = 'vat' in gstr2b_bill and self.env['res.partner'].search([('vat', '=', gstr2b_bill['vat']), ('company_id', 'in', (False, self.company_id.id))], limit=1)
                     journal = self.env['account.journal'].search([('type', '=', 'purchase'), ('company_id', '=', self.company_id.id)], limit=1)
+                    default_l10n_in_gst_treatment = (gstr2b_bill.get('section_code') == 'impg' and 'overseas') or (gstr2b_bill.get('section_code') == 'impgsez' and 'special_economic_zone') or 'regular'
                     create_vals.append({
                         "move_type": gstr2b_bill.get('bill_type') == 'credit_note' and "in_refund" or "in_invoice",
                         "ref": gstr2b_bill.get('bill_number'),
                         "invoice_date": gstr2b_bill.get('bill_date'),
                         "partner_id": partner.id,
-                        "l10n_in_gst_treatment": partner and partner.l10n_in_gst_treatment or "regular",
+                        "l10n_in_gst_treatment": partner and partner.l10n_in_gst_treatment in ('deemed_export', 'uin_holders') and partner.l10n_in_gst_treatment or default_l10n_in_gst_treatment,
                         "journal_id": journal.id,
                         "l10n_in_gstr2b_reconciliation_status": "gstr2_bills_not_in_odoo",
                         "to_check": True,
@@ -1590,7 +1591,9 @@ class L10nInGSTReturnPeriod(models.Model):
                                 'bill_date': self.convert_to_date(doc_data.get('dt')),
                                 'bill_total': doc_data.get('val'),
                                 'bill_value_json': doc_data,
-                                'bill_type': section_code == 'cdnr' and 'credit_note' or 'bill'}
+                                'bill_type': section_code == 'cdnr' and 'credit_note' or 'bill',
+                                'section_code': section_code,
+                            }
                             vals_list.append(vals)
                             if return_period != doc_data.get('supprd'):
                                 late_vals_list.append(vals)
@@ -1603,6 +1606,7 @@ class L10nInGSTReturnPeriod(models.Model):
                             'bill_taxable_value': bill_data.get('txval'),
                             'bill_value_json': bill_data,
                             'bill_type': 'bill',
+                            'section_code': section_code,
                         })
                 if section_code == 'impgsez':
                     for bill_by_vat in bill_datas:
@@ -1614,6 +1618,7 @@ class L10nInGSTReturnPeriod(models.Model):
                                 'bill_taxable_value': bill_data.get('txval'),
                                 'bill_value_json': bill_data,
                                 'bill_type': 'bill',
+                                'section_code': section_code,
                             })
             return vals_list, late_vals_list
 

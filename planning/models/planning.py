@@ -1740,6 +1740,25 @@ class Planning(models.Model):
             'role_id': self.role_id.id
         }
 
+    def _manage_archived_resources(self, departure_date):
+        shift_vals_list = []
+        shift_ids_to_remove_resource = []
+        for slot in self:
+            split_time = pytz.timezone(self._get_tz()).localize(departure_date).astimezone(pytz.utc).replace(tzinfo=None)
+            if (slot.start_datetime < split_time) and (slot.end_datetime > split_time):
+                shift_vals_list.append({
+                    'start_datetime': split_time,
+                    **slot._prepare_shift_vals(),
+                })
+                if split_time > slot.start_datetime:
+                    slot.write({'end_datetime': split_time})
+            elif slot.start_datetime >= split_time:
+                shift_ids_to_remove_resource.append(slot.id)
+        if shift_vals_list:
+            self.sudo().create(shift_vals_list)
+        if shift_ids_to_remove_resource:
+            self.sudo().browse(shift_ids_to_remove_resource).write({'resource_id': False})
+
     def _read_group_resource_id(self, resources, domain, order):
         dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, (tuple, list)) and len(dom) == 3]
         resource_ids = self.env.context.get('filter_resource_ids', False)

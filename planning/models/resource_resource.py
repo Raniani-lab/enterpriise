@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from random import randint
 
+from datetime import datetime, time, timedelta
 from odoo import api, fields, models
 
 class ResourceResource(models.Model):
@@ -69,3 +70,14 @@ class ResourceResource(models.Model):
             resource.id,
             resource.employee_id._get_employee_name_with_job_title() if resource.employee_id else resource.name,
         ) for resource in self]
+
+    def action_archive(self):
+        res = super().action_archive()
+        departure_date = datetime.combine(fields.Date.context_today(self) + timedelta(days=1), time.min)
+        planning_slots = self.env['planning.slot'].sudo().search([
+            ('resource_id', 'in', self.ids),
+            ('resource_type', '=', 'material'),
+            ('end_datetime', '>=', departure_date),
+        ])
+        planning_slots._manage_archived_resources(departure_date)
+        return res

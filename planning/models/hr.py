@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
 import uuid
-from pytz import utc, timezone
 
 from datetime import datetime, time, timedelta
 from odoo import fields, models, _, api
@@ -88,27 +87,8 @@ class Employee(models.Model):
             ('resource_id', 'in', self.resource_id.ids),
             ('end_datetime', '>=', departure_date),
         ])
-        self._manage_archived_employee_shifts(planning_slots, departure_date)
+        planning_slots._manage_archived_resources(departure_date)
         return res
-
-    def _manage_archived_employee_shifts(self, planning_slots, departure_date):
-        shift_vals_list = []
-        shift_ids_to_remove_resource = []
-        for slot in planning_slots:
-            split_time = timezone(slot.resource_id.tz).localize(departure_date).astimezone(utc).replace(tzinfo=None)
-            if (slot.start_datetime < split_time) and (slot.end_datetime > split_time):
-                shift_vals_list.append({
-                    'start_datetime': split_time,
-                    **slot._prepare_shift_vals(),
-                })
-                if split_time > slot.start_datetime:
-                    slot.write({'end_datetime': split_time})
-            elif slot.start_datetime >= split_time:
-                shift_ids_to_remove_resource.append(slot.id)
-        if shift_vals_list:
-            self.env['planning.slot'].sudo().create(shift_vals_list)
-        if shift_ids_to_remove_resource:
-            self.env['planning.slot'].sudo().browse(shift_ids_to_remove_resource).write({'resource_id': False})
 
 class HrEmployeeBase(models.AbstractModel):
     _inherit = "hr.employee.base"

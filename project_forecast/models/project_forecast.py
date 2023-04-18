@@ -15,8 +15,7 @@ class PlanningShift(models.Model):
     project_id = fields.Many2one(
         'project.project', string="Project", compute='_compute_project_id', store=True,
         readonly=False, copy=True, check_company=True, group_expand='_read_group_project_id',
-        domain="[('company_id', '=', company_id), ('allow_forecast', '=', True)]")
-    allow_forecast = fields.Boolean(related="project_id.allow_forecast")
+        domain="[('company_id', '=', company_id)]")
 
     @api.depends('template_id.project_id')
     def _compute_project_id(self):

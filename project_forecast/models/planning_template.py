@@ -7,7 +7,7 @@ class PlanningTemplate(models.Model):
     _inherit = 'planning.slot.template'
 
     project_id = fields.Many2one('project.project', string="Project",
-                                 company_dependent=True, domain="[('allow_forecast', '=', True)]", copy=True)
+                                 company_dependent=True, copy=True)
 
     def name_get(self):
         name_template = super(PlanningTemplate, self).name_get()

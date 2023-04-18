@@ -14,9 +14,9 @@ class TestSubscriptionTask(TestSubscriptionCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.env.user.groups_id += cls.env.ref('project.group_project_recurring_tasks')
         cls.project = cls.env['project.project'].with_context({'mail_create_nolog': True}).create({
             'name': 'Project',
-            'allow_recurring_tasks': True,
             'type_ids': [
                 Command.create({'name': 'a'}),
                 Command.create({'name': 'b'}),

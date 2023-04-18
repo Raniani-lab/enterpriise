@@ -9,7 +9,7 @@ class ProjectUpdate(models.Model):
     @api.model
     def _get_services_values(self, project):
         services = super()._get_services_values(project)
-        if not project.allow_billable or not project.allow_forecast:
+        if not project.allow_billable:
             return services
         sol_ids = [
             service['sol'].id

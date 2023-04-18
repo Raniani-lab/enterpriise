@@ -226,6 +226,12 @@
             <xpath expr="//field[@name='depend_on_ids']/tree/field[@name='partner_id']" position="attributes">
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)], 'column_invisible': [('parent.allow_billable', '=', False), ('parent.is_fsm', '=', False)], 'invisible': [('allow_billable', '=', False), ('is_fsm', '=', False)]}</attribute>
             </xpath>
+            <field name="project_id" position="attributes">
+                <attribute name="context">{
+                    'default_allow_billable': True,
+                    'default_is_fsm': context.get('fsm_mode'),
+                }</attribute>
+            </field>
         </field>
     </record>
 

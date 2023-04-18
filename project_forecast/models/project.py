@@ -12,7 +12,6 @@ from odoo.osv import expression
 class Project(models.Model):
     _inherit = 'project.project'
 
-    allow_forecast = fields.Boolean("Planning", default=True)
     total_forecast_time = fields.Integer(compute='_compute_total_forecast_time',
                                          help="Total number of forecast hours in the project rounded to the unit.", compute_sudo=True)
 
@@ -25,12 +24,6 @@ class Project(models.Model):
         shifts_per_project = {project.id: int(round(allocated_hours_sum)) for project, allocated_hours_sum in shifts_read_group}
         for project in self:
             project.total_forecast_time = shifts_per_project.get(project.id, 0)
-
-    @api.depends('is_fsm')
-    def _compute_allow_forecast(self):
-        for project in self:
-            if not project._origin:
-                project.allow_forecast = not project.is_fsm
 
     def action_project_forecast_from_project(self):
         action = self.env["ir.actions.actions"]._for_xml_id("project_forecast.project_forecast_action_from_project")
@@ -66,7 +59,6 @@ class Project(models.Model):
             'additional_context': json.dumps({
                 'active_id': self.id,
             }),
-            'show': self.allow_forecast,
             'sequence': 12,
         })
         return buttons

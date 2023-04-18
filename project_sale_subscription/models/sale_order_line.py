@@ -24,7 +24,7 @@ class SaleOrderLine(models.Model):
         task = super()._timesheet_create_task(project)
         order = self.order_id
         # if the product is not recurrent or the project doesn't allow recurring tasks, we don't bother
-        if not self.product_id.recurring_invoice or not project.allow_recurring_tasks:
+        if not self.product_id.recurring_invoice or not self.env.user.has_group('project.group_project_recurring_tasks'):
             return task
 
         # if there is a recurrent task template and the subscription product has an end date,

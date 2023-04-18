@@ -66,7 +66,6 @@ class TestForecastAccessRights(TestCommonForecast):
             'name': 'Tinyhouse',
             'color': 1,
             'privacy_visibility': 'followers',
-            'allow_forecast': True,
         })
         values_list = []
         for partner in cls.tinyhouse_followers:

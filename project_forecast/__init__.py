@@ -6,11 +6,6 @@ from . import controllers
 from . import report
 
 
-def post_init(env):
-    if 'is_fsm' in env['project.project']:
-        env['project.project'].search([('is_fsm', '=', True)]).write({'allow_forecast': False})
-
-
 def _uninstall_hook(env):
     resource_menu = env.ref('planning.planning_menu_schedule_by_resource', raise_if_not_found=False)
     if resource_menu:

@@ -9,9 +9,6 @@ from odoo.osv import expression
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    def _timesheet_create_project(self):
-        return super(SaleOrderLine, self.with_context(default_allow_forecast=True))._timesheet_create_project()
-
     @api.depends('analytic_line_ids.unit_amount', 'analytic_line_ids.validated', 'planning_slot_ids.allocated_hours', 'task_id', 'project_id')
     def _compute_planning_hours_planned(self):
         PlanningSlot = self.env['planning.slot']

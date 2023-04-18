@@ -120,7 +120,7 @@ class ResPartner(models.Model):
     def _compute_followup_status(self):
         all_data = self._query_followup_data()
         for partner in self:
-            partner_data = all_data.get(partner.id, {'followup_status': 'no_action_needed', 'followup_line_id': False})
+            partner_data = all_data.get(partner._origin.id, {'followup_status': 'no_action_needed', 'followup_line_id': False})
             partner.followup_status = partner_data['followup_status']
             partner.followup_line_id = partner_data['followup_line_id']
 

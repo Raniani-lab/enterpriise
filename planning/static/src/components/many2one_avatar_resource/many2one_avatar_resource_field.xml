@@ -11,7 +11,7 @@
                         </span>
                         <span t-elif="!props.readonly" class="o_m2o_avatar_empty"></span>
                     </span>
-                    <Many2OneField t-props="props"/>
+                    <Many2OneField t-props="props" canOpen="false"/>
                 </div>
             </t>
         </xpath>

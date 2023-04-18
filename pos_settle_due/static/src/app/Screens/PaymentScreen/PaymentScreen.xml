@@ -4,7 +4,7 @@
         <xpath expr="//div[hasclass('partner-button')]/div[hasclass('button')]" position="replace">
             <div class="button partner-due-balance-button"
                 t-att-class="{ highlight: this.highlightPartnerBtn, 'credit-limit-warning': this.partnerInfos.overDue and this.partnerInfos.useLimit}"
-                t-on-click="selectPartner">
+                t-on-click="() => this.selectPartner(false, [])">
                 <i class="fa fa-user" role="img" title="Customer" />
                 <span class="partner-due-balance">
                     <t t-if="currentOrder.get_partner()">

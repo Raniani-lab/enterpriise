@@ -515,14 +515,6 @@
                 <p>
                 Keep track of your working hours by project every day and bill your customers for that time.
               </p>
-              <p>Get our web/mobile apps to track your time from anywhere, even offline.</p>
-               <div>
-                   <a href="http://www.odoo.com/app/timesheet?platform=chrome" target="_blank" class="o_chrome_store_link d-none d-sm-inline-block">
-                        <img alt="Google Chrome Store" class="img img-fluid h-100" src="project/static/src/img/chrome_store.png"/>
-                    </a>
-                    <img alt="Apple App Store" class="img img-fluid h-100 o_config_app_store" style="cursor: pointer;" src="project/static/src/img/app_store.png"/>
-                    <img alt="Google Play Store" class="img img-fluid h-100 o_config_play_store" style="cursor: pointer;" src="project/static/src/img/play_store.png"/>
-                </div>
             </field>
         </record>
 

@@ -101,12 +101,10 @@ class OSSTaxReportTest(TestAccountReportsCommon):
                     <ns2:FixedEstablishment>
                         <ns2:VATIdentificationNumber issuedBy="BE">0477472701</ns2:VATIdentificationNumber>
                     </ns2:FixedEstablishment>
-                    <ns2:VatRateType>20.0</ns2:VatRateType>
+                    <ns2:VatRateType type="STANDARD">20.00</ns2:VatRateType>
                     <ns2:VatAmount currency="USD">200.0</ns2:VatAmount>
                     <ns2:TaxableAmount currency="USD">1000.0</ns2:TaxableAmount>
                   </ns2:OSSDeclarationRows>
-                  <ns2:CorrectionsInfo>
-                  </ns2:CorrectionsInfo>
                 </ns0:OSSDeclarationInfo>
                 <ns0:OSSDeclarationInfo SequenceNumber="2">
                   <ns2:MemberStateOfConsumption>LU</ns2:MemberStateOfConsumption>
@@ -115,12 +113,10 @@ class OSSTaxReportTest(TestAccountReportsCommon):
                     <ns2:FixedEstablishment>
                         <ns2:VATIdentificationNumber issuedBy="BE">0477472701</ns2:VATIdentificationNumber>
                     </ns2:FixedEstablishment>
-                    <ns2:VatRateType>16.0</ns2:VatRateType>
+                    <ns2:VatRateType type="REDUCED">16.00</ns2:VatRateType>
                     <ns2:VatAmount currency="USD">160.0</ns2:VatAmount>
                     <ns2:TaxableAmount currency="USD">1000.0</ns2:TaxableAmount>
                   </ns2:OSSDeclarationRows>
-                  <ns2:CorrectionsInfo>
-                  </ns2:CorrectionsInfo>
                 </ns0:OSSDeclarationInfo>
               </ns0:OSSDeclaration>
             </ns0:OSSConsignment>

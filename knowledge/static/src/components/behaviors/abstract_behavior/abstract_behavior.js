@@ -14,10 +14,10 @@ let observerId = 0;
 export class AbstractBehavior extends Component {
     setup() {
         super.setup();
+        this.setupAnchor()
         this.knowledgeCommandsService = useService('knowledgeCommandsService');
         this.observerId = observerId++;
         if (!this.props.readonly) {
-            this.props.anchor.setAttribute('contenteditable', 'false');
             onWillStart(() => {
                 this.editor.observerUnactive(`knowledge_behavior_id_${this.observerId}`);
                 this.editor.idSet(this.props.anchor);
@@ -34,6 +34,18 @@ export class AbstractBehavior extends Component {
                 this.editor.idSet(this.props.anchor);
                 this.editor.observerActive(`knowledge_behavior_id_${this.observerId}`);
             });
+        }
+    }
+    /**
+     * This method is used to ensure that the correct attributes are set
+     * on the anchor of the Behavior. Attributes could be incorrect for the
+     * following reasons: cleaned by the sanitization (frontend or backend),
+     * attributes from a previous Odoo version, attributes from a drop/paste
+     * of a Behavior which was in another state (i.e. from readonly to editable)
+     */
+    setupAnchor() {
+        if (!this.props.readonly) {
+            this.props.anchor.setAttribute('contenteditable', 'false');
         }
     }
     get editor () {

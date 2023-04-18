@@ -17,6 +17,10 @@ export class ArticleBehavior extends AbstractBehavior {
              * @param {Event} event
              */
             const onLinkClick = event => {
+                if (!event.currentTarget.closest('.o_knowledge_editor')) {
+                    // Use the link normally if not already in Knowledge
+                    return;
+                }
                 event.preventDefault();
                 event.stopPropagation();
                 this.openArticle();
@@ -26,6 +30,14 @@ export class ArticleBehavior extends AbstractBehavior {
                 this.props.anchor.removeEventListener('click', onLinkClick);
             };
         });
+    }
+
+    /**
+     * @override
+     */
+    setupAnchor () {
+        super.setupAnchor();
+        this.props.anchor.setAttribute('target', '_blank');
     }
 
     async openArticle () {

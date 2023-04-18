@@ -32,13 +32,11 @@
                            <ns2:FixedEstablishment t-if="id_number">
                               <ns2:VATIdentificationNumber t-att-issuedBy="id_number[:2]" t-esc="id_number[2:]"/>
                            </ns2:FixedEstablishment>
-                           <ns2:VatRateType t-esc="line['tax'].amount"/>
+                           <ns2:VatRateType t-att-type="line['rate_type']" t-esc="'{:.2f}'.format(line['tax'].amount)"/>
                            <ns2:VatAmount t-att-currency="line['currency'].name" t-esc="line['tax_amt']"/>
                            <ns2:TaxableAmount t-att-currency="line['currency'].name" t-esc="line['net_amt']"/>
                         </ns2:OSSDeclarationRows>
                      </t>
-                     <ns2:CorrectionsInfo>
-                     </ns2:CorrectionsInfo>
                   </ns0:OSSDeclarationInfo>
                </t>
             </ns0:OSSDeclaration>

@@ -209,7 +209,9 @@ class AmazonAccount(models.Model):
             ], limit=1)
             if not location:
                 parent_location_data = self.env['stock.warehouse'].search_read(
-                    [('company_id', '=', vals.get('company_id'))], ['view_location_id'], limit=1
+                    ['|', ('company_id', '=', False), ('company_id', '=', vals.get('company_id'))],
+                    ['view_location_id'],
+                    limit=1,
                 )
                 location = self.env['stock.location'].create({
                     'name': 'Amazon',

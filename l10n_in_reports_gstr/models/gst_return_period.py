@@ -1356,7 +1356,7 @@ class L10nInGSTReturnPeriod(models.Model):
                     sub_response = self._get_gstr2b_data(company=self.company_id, month_year=self.return_period_month_year, file_number=file_num)
                     if not sub_response.get('error'):
                         attachment_ids += self.env['ir.attachment'].create({
-                            'name': 'gstr2b_%s.json',
+                            'name': 'gstr2b_%s.json' % (file_num),
                             'mimetype': 'application/json',
                             'raw': json.dumps(sub_response),
                         })

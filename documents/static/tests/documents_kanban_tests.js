@@ -669,6 +669,37 @@ QUnit.module("documents", {}, function () {
                 );
             });
 
+            QUnit.test("can multi edit records", async function (assert) {
+                assert.expect(6);
+
+                await createDocumentsView({
+                    type: "kanban",
+                    resModel: "documents.document",
+                    arch: `
+                        <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                                <field name="is_editable_attachment" widget="boolean_toggle"/>
+                            </div>
+                        </t></templates></kanban>`,
+                    mockRPC(route, args) {
+                        if (args.method === "write") {
+                            assert.deepEqual(args.args, [[4, 5], { is_editable_attachment: true }]);
+                        }
+                    }
+                });
+
+                assert.containsN(target, ".o_kanban_record:not(.o_kanban_ghost)", 5);
+                assert.containsNone(target, ".o_record_selected");
+                assert.containsOnce(target, ".o_field_widget[name=is_editable_attachment] input:checked");
+                await click(target.querySelectorAll(".o_record_selector")[3]);
+                await click(target.querySelectorAll(".o_record_selector")[4]);
+                assert.containsN(target, ".o_record_selected", 2);
+                await click(target.querySelectorAll(".o_field_widget[name=is_editable_attachment] input")[4]);
+                assert.containsN(target, ".o_field_widget[name=is_editable_attachment] input:checked", 3);
+            });
+
             QUnit.test(
                 "only visible selected records are kept after a reload",
                 async function (assert) {
@@ -2662,6 +2693,42 @@ QUnit.module("documents", {}, function () {
                     );
                 }
             );
+
+            QUnit.test("document inspector: edit workspace", async function (assert) {
+                assert.expect(6);
+                pyEnv["documents.folder"].create({
+                    name: "Workspace5",
+                    description: "_F1-test-description_",
+                    has_write_access: false,
+                });
+
+                await createDocumentsView({
+                    type: "kanban",
+                    resModel: "documents.document",
+                    arch: `
+                    <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                        <div>
+                            <i class="fa fa-circle-thin o_record_selector"/>
+                            <field name="name"/>
+                        </div>
+                    </t></templates></kanban>`,
+                    mockRPC: async function (route, args) {
+                        if (args.method === "write") {
+                            assert.deepEqual(args.args, [[1, 2], { folder_id: 3 }]);
+                        }
+                    },
+                });
+
+                assert.containsN(target, ".o_kanban_record:not(.o_kanban_ghost)", 5);
+                assert.containsNone(target, ".o_record_selected");
+                await click(target.querySelector(".o_record_selector"));
+                await click(target.querySelectorAll(".o_record_selector")[1]);
+                assert.containsN(target, ".o_record_selected", 2);
+                await click(target, ".o_documents_inspector .o_field_widget[name=folder_id] input");
+                assert.containsN(target, ".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li", 4)
+                await click(target.querySelectorAll(".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li")[2]);
+                assert.containsN(target, ".o_kanban_record:not(.o_kanban_ghost)", 3);
+            });
 
             QUnit.module("DocumentChatter");
 

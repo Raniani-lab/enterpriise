@@ -113,35 +113,17 @@ export const DocumentsDataPointMixin = (component) => class extends component {
         this.fileSize = Math.round(size * 100) / 100;
         return res;
     }
-
-    /**
-     * Remove the confirmation dialog upon multiSave + keep selection.
-     * Warning: we do remove some validation -> see original DynamicList._multiSave
-     * @override
-     */
-    async _multiSave(record, changes = undefined) {
-        if (this.blockUpdate) {
-            return;
-        }
-        changes = changes || record.getChanges();
-        if (!changes) {
-            return;
-        }
-        const resIds = this.selection.map((rec) => rec.resId);
-        try {
-            const context = this.context;
-            await this.model.orm.write(this.resModel, resIds, changes, { context });
-            await Promise.all(this.selection.map((rec) => rec.load()));
-            this.model.notify();
-        } catch {
-            if (record.getChanges()) {
-                record.discard();
-            }
-        }
-    }
 };
 
 export const DocumentsRecordMixin = (component) => class extends component {
+
+    async update(changes) {
+        const originalFolderId = this.data.folder_id[0];
+        await super.update(...arguments);
+        if (this.data.folder_id[0] !== originalFolderId) {
+            this.model.root.selection.forEach((rec) => this.model.root.removeRecord(rec));
+        }
+    }
 
     isPdf() {
         return this.data.mimetype === "application/pdf" || this.data.mimetype === "application/pdf;base64";

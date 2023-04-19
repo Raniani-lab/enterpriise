@@ -13,5 +13,11 @@ export class DocumentsKanbanController extends KanbanController {
         });
         Object.assign(this, properties);
     }
+
+    get modelParams() {
+        const modelParams = super.modelParams;
+        modelParams.multiEdit = true;
+        return modelParams;
+    }
 }
 DocumentsKanbanController.template = "documents.DocumentsKanbanView";

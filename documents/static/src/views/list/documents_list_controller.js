@@ -14,6 +14,16 @@ export class DocumentsListController extends ListController {
         });
         Object.assign(this, properties);
     }
+
+    get modelParams() {
+        const modelParams = super.modelParams;
+        modelParams.multiEdit = true;
+        return modelParams;
+    }
+
+    onWillSaveMultiRecords() {}
+
+    onSavedMultiRecords() {}
 }
 
 DocumentsListController.template = "documents.DocumentsListController";

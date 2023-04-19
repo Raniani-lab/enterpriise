@@ -27,20 +27,7 @@ export class DocumentsInspectorField extends Field {
             record.isDocumentsInspector = true;
             const recordUpdate = record.update.bind(record);
             record.update = async (value) => {
-                doLockAction(async () => {
-                    // Temporarily enable multiEdit -> save on all selected records
-                    const originalFolderId = record.data.folder_id[0];
-                    const previousMultiEdit = record.model.multiEdit;
-                    record.model.multiEdit = true;
-                    await recordUpdate(value);
-                    record.model.multiEdit = previousMultiEdit;
-                    if (
-                        this.props.name === "folder_id" &&
-                        record.data.folder_id[0] !== originalFolderId
-                    ) {
-                        this.props.selection.forEach((rec) => record.model.root.removeRecord(rec));
-                    }
-                });
+                doLockAction(() => recordUpdate(value));
             };
         }
 

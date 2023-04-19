@@ -43,6 +43,11 @@ export class DocumentsListRenderer extends ListRenderer {
     }
 
     /**
+     * There's a custom behavior on cell clicked as we (un)select the row (see record.onRecordClick)
+     */
+    onCellClicked() {}
+
+    /**
      * Called when a click event is triggered.
      */
     onGlobalClick(ev) {

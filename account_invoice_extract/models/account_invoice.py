@@ -127,7 +127,7 @@ class AccountMove(models.Model):
 
     def _get_validation_fields(self):
         return [
-            'total', 'subtotal', 'date', 'due_date', 'invoice_id', 'partner',
+            'total', 'subtotal', 'total_tax_amount', 'date', 'due_date', 'invoice_id', 'partner',
             'VAT_Number', 'currency', 'payment_ref', 'iban', 'SWIFT_code', 'merged_lines', 'invoice_lines',
         ]
 
@@ -191,6 +191,8 @@ class AccountMove(models.Model):
             text_to_send["content"] = self.amount_total
         elif field == "subtotal":
             text_to_send["content"] = self.amount_untaxed
+        elif field == "total_tax_amount":
+            text_to_send["content"] = self.amount_tax
         elif field == "date":
             text_to_send["content"] = str(self.invoice_date) if self.invoice_date else False
         elif field == "due_date":

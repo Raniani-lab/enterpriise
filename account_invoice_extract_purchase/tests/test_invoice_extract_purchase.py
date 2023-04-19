@@ -50,6 +50,7 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, TestExtractMixin):
                 'supplier': {'selected_value': {'content': "Test"}, 'candidates': []},
                 'total': {'selected_value': {'content': 300}, 'candidates': []},
                 'subtotal': {'selected_value': {'content': 300}, 'candidates': []},
+                'total_tax_amount': {'selected_value': {'content': 0.0}, 'words': []},
                 'invoice_id': {'selected_value': {'content': 'INV0001'}, 'candidates': []},
                 'currency': {'selected_value': {'content': 'EUR'}, 'candidates': []},
                 'VAT_Number': {'selected_value': {'content': 'BE123456789'}, 'candidates': []},

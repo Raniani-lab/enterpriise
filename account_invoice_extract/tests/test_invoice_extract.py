@@ -50,6 +50,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
                 'total': {'selected_value': {'content': 330}, 'candidates': []},
                 'subtotal': {'selected_value': {'content': 300}, 'candidates': []},
                 'invoice_id': {'selected_value': {'content': 'INV0001'}, 'candidates': []},
+                'total_tax_amount': {'selected_value': {'content': 30.0}, 'words': []},
                 'currency': {'selected_value': {'content': 'EUR'}, 'candidates': []},
                 'VAT_Number': {'selected_value': {'content': 'BE0477472701'}, 'candidates': []},
                 'date': {'selected_value': {'content': '2019-04-12 00:00:00'}, 'candidates': []},
@@ -514,6 +515,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
         self.assertEqual(invoice.get_validation('due_date')['content'], str(invoice.invoice_date_due))
         self.assertEqual(invoice.get_validation('invoice_id')['content'], invoice.ref)
         self.assertEqual(invoice.get_validation('partner')['content'], invoice.partner_id.name)
+        self.assertEqual(invoice.get_validation('total_tax_amount')['content'], invoice.amount_tax)
         self.assertEqual(invoice.get_validation('VAT_Number')['content'], invoice.partner_id.vat)
         self.assertEqual(invoice.get_validation('currency')['content'], invoice.currency_id.name)
         self.assertEqual(invoice.get_validation('payment_ref')['content'], invoice.payment_reference)

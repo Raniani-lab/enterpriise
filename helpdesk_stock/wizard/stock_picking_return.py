@@ -56,6 +56,10 @@ class ReturnPicking(models.TransientModel):
     @api.depends('ticket_id.partner_id.commercial_partner_id')
     def _compute_suitable_sale_orders(self):
         for r in self:
+            if not r.ticket_id and not r.sale_order_id:
+                r.suitable_sale_order_ids = False
+                continue
+
             domain = [('state', '=', 'sale')]
             if r.ticket_id.product_id:
                 domain += [('order_line.product_id', '=', r.ticket_id.product_id._origin.id)]

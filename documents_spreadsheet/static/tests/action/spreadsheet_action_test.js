@@ -265,20 +265,20 @@ QUnit.module(
         });
 
         QUnit.test("menu > download as json", async function (assert) {
-            assert.expect(6);
-
             let downloadedData = null;
             patchWithCleanup(downloadFile, {
-                _download: (data) => {
+                _download: (data, fileName) => {
                     assert.step("download");
                     assert.ok(data.includes("Hello World"));
                     assert.ok(data.includes("A3"));
+                    assert.strictEqual(fileName, "My spreadsheet.osheet.json");
                     downloadedData = data;
                 },
             });
 
             const serverData = getBasicServerData();
             const spreadsheet = serverData.models["documents.document"].records[1];
+            spreadsheet.name = "My spreadsheet";
             spreadsheet.spreadsheet_data = JSON.stringify({
                 sheets: [{ cells: { A3: { content: "Hello World" } } }],
             });

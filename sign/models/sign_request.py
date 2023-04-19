@@ -814,7 +814,7 @@ class SignRequestItem(models.Model):
                 'body': signer.sign_request_id.message if not is_html_empty(signer.sign_request_id.message) else False,
                 'use_sign_terms': self.env['ir.config_parameter'].sudo().get_param('sign.use_sign_terms'),
                 'user_signature': signer.create_uid.signature,
-            }, minimal_qcontext=True)
+            }, lang=signer_lang, minimal_qcontext=True)
 
             attachment_ids = signer.sign_request_id.attachment_ids.ids
             self.env['sign.request']._message_send_mail(

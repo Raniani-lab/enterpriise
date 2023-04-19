@@ -9,6 +9,7 @@ import { RelationalModel } from "@web/views/relational_model";
 
 import { Component, xml } from "@odoo/owl";
 import { ListEditorSidebar } from "./list_editor_sidebar/list_editor_sidebar";
+import { getStudioNoFetchFields } from "../utils";
 
 function parseStudioGroups(node) {
     if (node.hasAttribute("studio_groups")) {
@@ -23,12 +24,11 @@ class EditorArchParser extends listView.ArchParser {
 
     parse(arch, models, modelName) {
         const parsed = super.parse(...arguments);
-        const noFetchFields = Object.entries(parsed.fieldNodes)
-            .filter(([fname, field]) => field.attrs && field.attrs.studio_no_fetch)
-            .map((f) => f[0]);
-        parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetchFields);
-        parsed.activeFields = omit(parsed.activeFields, ...noFetchFields);
-        parsed.columns = parsed.columns.filter((field) => !noFetchFields.includes(field.name));
+        const noFetch = getStudioNoFetchFields(parsed.fieldNodes);
+        parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetch.fieldNodes);
+        const noFetchFieldNames = noFetch.fieldNames;
+        parsed.activeFields = omit(parsed.activeFields, ...noFetchFieldNames);
+        parsed.columns = parsed.columns.filter((field) => !noFetchFieldNames.includes(field.name));
         return parsed;
     }
 

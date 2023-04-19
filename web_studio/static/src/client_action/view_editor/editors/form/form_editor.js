@@ -9,15 +9,14 @@ import { omit } from "@web/core/utils/objects";
 import { makeModelErrorResilient } from "@web_studio/client_action/view_editor/editors/utils";
 import { getModifier } from "@web/views/view_compiler";
 import { FormEditorSidebar } from "./form_editor_sidebar/form_editor_sidebar";
+import { getStudioNoFetchFields } from "../utils";
 
 class EditorArchParser extends formView.ArchParser {
     parse(arch, models, modelName) {
         const parsed = super.parse(...arguments);
-        const noFetchFields = Object.entries(parsed.fieldNodes)
-            .filter(([fname, field]) => field.attrs && field.attrs.studio_no_fetch)
-            .map((f) => f[0]);
-        parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetchFields);
-        parsed.activeFields = omit(parsed.activeFields, ...noFetchFields);
+        const noFetch = getStudioNoFetchFields(parsed.fieldNodes);
+        parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetch.fieldNodes);
+        parsed.activeFields = omit(parsed.activeFields, ...noFetch.fieldNames);
         return parsed;
     }
 

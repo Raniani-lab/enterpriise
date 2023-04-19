@@ -792,3 +792,60 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             </xpath>
             </data>
         ''')
+
+    def test_field_group_studio_no_fetch(self):
+        doesNotHaveGroup = self.env["res.groups"].create({
+            "name": "studio does not have"
+        })
+        doesNotHaveGroupXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_doesnothavegroup",
+            "model": "res.groups",
+            "module": "web_studio",
+            "res_id": doesNotHaveGroup.id,
+        })
+        self.patch(type(self.env["res.partner"]).function, "groups", doesNotHaveGroupXmlId.complete_name)
+
+        self.testViewForm = self.env["ir.ui.view"].create({
+            "name": "simple partner",
+            "model": "res.partner",
+            "type": "form",
+            "arch": '''
+                <form>
+                    <field name="function" />
+                    <field name="name" />
+                </form>
+            '''
+        })
+        self.testViewList = self.env["ir.ui.view"].create({
+            "name": "simple partner",
+            "model": "res.partner",
+            "type": "tree",
+            "arch": '''
+                <tree>
+                    <field name="function" />
+                    <field name="name" />
+                </tree>
+            '''
+        })
+        self.testViewKanban = self.env["ir.ui.view"].create({
+            "name": "simple partner",
+            "model": "res.partner",
+            "type": "kanban",
+            "arch": '''
+                <kanban>
+                    <t t-name="kanban-box">
+                        <field name="function" />
+                        <field name="name" />
+                    </t>
+                </kanban>
+            '''
+        })
+        self.testAction.write({
+            "view_ids": [
+                Command.clear(),
+                Command.create({"view_id": self.testViewForm.id, "view_mode": "form"}),
+                Command.create({"view_id": self.testViewList.id, "view_mode": "tree"}),
+                Command.create({"view_id": self.testViewKanban.id, "view_mode": "kanban"}),
+            ]
+        })
+        self.start_tour("/web?debug=tests", 'web_studio_field_group_studio_no_fetch', login="admin", timeout=200)

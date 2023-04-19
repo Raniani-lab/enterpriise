@@ -1,6 +1,6 @@
 /** @odoo-module */
 import { registry } from "@web/core/registry";
-import { stepNotInStudio } from "@web_studio/../tests/tours/tour_helpers";
+import { stepNotInStudio, assertEqual } from "@web_studio/../tests/tours/tour_helpers";
 
 registry
     .category("web_tour.tours")
@@ -770,6 +770,70 @@ registry.category("web_tour.tours").add("web_studio_x2many_two_levels_edition", 
         {
             trigger: ".o_web_studio_form_view_editor [data-field-name='create_date']",
             run() {},
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_field_group_studio_no_fetch", {
+    test: true,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor",
+            run() {
+                assertEqual(this.$anchor[0].querySelectorAll(".o_field_widget").length, 1);
+                assertEqual(
+                    this.$anchor[0].querySelectorAll(".o_field_widget")[0].dataset.studioXpath,
+                    "/form[1]/field[2]"
+                );
+            },
+        },
+        {
+            trigger: ".o_web_studio_views_icons a[title='List']",
+        },
+        {
+            trigger: ".o_web_studio_list_view_editor",
+            run() {
+                assertEqual(
+                    this.$anchor[0].querySelectorAll("th:not(.o_web_studio_hook)").length,
+                    1
+                );
+                assertEqual(
+                    this.$anchor[0].querySelectorAll("th:not(.o_web_studio_hook)")[0].dataset
+                        .studioXpath,
+                    "/tree[1]/field[2]"
+                );
+            },
+        },
+        {
+            trigger: ".o_web_studio_views_icons a[title='Kanban']",
+        },
+        {
+            trigger: ".o_web_studio_kanban_view_editor",
+            run() {
+                assertEqual(
+                    this.$anchor[0].querySelectorAll(
+                        ".o_kanban_record:not(.o_kanban_demo):not(.o_kanban_ghost) [data-field-name]"
+                    ).length,
+                    1
+                );
+                assertEqual(
+                    this.$anchor[0]
+                        .querySelectorAll(
+                            ".o_kanban_record:not(.o_kanban_demo):not(.o_kanban_ghost) [data-field-name]"
+                        )[0]
+                        .getAttribute("studioxpath"),
+                    "/kanban[1]/t[1]/field[2]"
+                );
+            },
         },
     ],
 });

@@ -212,3 +212,18 @@ export function fieldsToChoices(fields, filterCallback = undefined) {
         value: field.name,
     }));
 }
+
+export function getStudioNoFetchFields(_fieldNodes) {
+    const fieldNames = [];
+    const fieldNodes = [];
+    Object.entries(_fieldNodes)
+        .filter(([fNode, field]) => field.attrs && field.attrs.studio_no_fetch)
+        .forEach(([fNode, field]) => {
+            fieldNames.push(field.name);
+            fieldNodes.push(fNode);
+        });
+    return {
+        fieldNames,
+        fieldNodes,
+    };
+}

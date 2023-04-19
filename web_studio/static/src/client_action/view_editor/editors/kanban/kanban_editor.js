@@ -5,15 +5,14 @@ import { kanbanView } from "@web/views/kanban/kanban_view";
 import { KanbanEditorRenderer } from "@web_studio/client_action/view_editor/editors/kanban/kanban_editor_renderer";
 import { makeModelErrorResilient } from "@web_studio/client_action/view_editor/editors/utils";
 import { KanbanEditorSidebar } from "./kanban_editor_sidebar/kanban_editor_sidebar";
+import { getStudioNoFetchFields } from "../utils";
 
 class EditorArchParser extends kanbanView.ArchParser {
     parse(arch, models, modelName) {
         const parsed = super.parse(...arguments);
-        const noFetchFields = Object.entries(parsed.fieldNodes)
-            .filter(([fname, field]) => field.attrs && field.attrs.studio_no_fetch)
-            .map((f) => f[0]);
-        parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetchFields);
-        parsed.activeFields = omit(parsed.activeFields, ...noFetchFields);
+        const noFetch = getStudioNoFetchFields(parsed.fieldNodes);
+        parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetch.fieldNodes);
+        parsed.activeFields = omit(parsed.activeFields, ...noFetch.fieldNames);
         return parsed;
     }
 }

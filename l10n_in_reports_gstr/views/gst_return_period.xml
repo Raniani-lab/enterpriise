@@ -183,7 +183,6 @@
                 <field name="gstr2b_status"/>
                 <field name="gstr3b_status"/>
                 <field name="gstr_reference"/>
-                <field name="gstr2b_json_from_portal_ids"/>
                 <field name="gstr1_blocking_level"/>
                 <field name="gstr2b_blocking_level"/>
                 <templates>

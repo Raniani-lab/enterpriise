@@ -541,4 +541,7 @@ class ResPartner(models.Model):
 
     def _cron_execute_followup(self):
         for company in self.env["res.company"].search([]):
+            # Since the cache is done by database and not by company, we need to invalidate in this special case
+            # where the context is changing in the same transaction
+            self.env.cr.execute("DROP TABLE IF EXISTS followup_data_cache")
             self.with_context(allowed_company_ids=company.ids)._cron_execute_followup_company()

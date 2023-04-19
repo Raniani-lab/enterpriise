@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from unittest.mock import patch
+
 from freezegun import freeze_time
 
 from odoo import Command, fields
@@ -280,3 +282,24 @@ class TestAccountFollowupReports(AccountTestInvoicingCommon):
         expected_partners = followup_partner_1 + followup_partner_2
         followup_contacts = self.partner_a._get_all_followup_contacts()
         self.assertEqual(expected_partners, followup_contacts)
+
+    def test_followup_cron(self):
+        cron = self.env.ref('account_followup.ir_cron_auto_post_draft_entry')
+        followup_10 = self.create_followup(delay=10)
+        followup_10.auto_execute = True
+
+        self.create_invoice('2022-01-01')
+
+        # Check that no followup is automatically done if there is no action needed
+        with freeze_time('2022-01-10'), patch.object(type(self.env['res.partner']), '_send_followup') as patched:
+            self.assertPartnerFollowup(self.partner_a, 'with_overdue_invoices', followup_10)
+            cron.method_direct_trigger()
+            patched.assert_not_called()
+            self.assertPartnerFollowup(self.partner_a, 'with_overdue_invoices', followup_10)
+
+        # Check that the action is taken one and only one time when there is an action needed
+        with freeze_time('2022-01-11'), patch.object(type(self.env['res.partner']), '_send_followup') as patched:
+            self.assertPartnerFollowup(self.partner_a, 'in_need_of_action', followup_10)
+            cron.method_direct_trigger()
+            patched.assert_called_once()
+            self.assertPartnerFollowup(self.partner_a, 'with_overdue_invoices', followup_10)

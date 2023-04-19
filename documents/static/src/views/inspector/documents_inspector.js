@@ -7,6 +7,7 @@ import { KeepLast } from "@web/core/utils/concurrency";
 import { intersection } from "@web/core/utils/arrays";
 import { AutoComplete } from "@web/core/autocomplete/autocomplete";
 import { x2ManyCommands } from "@web/core/orm_service";
+import { browser } from "@web/core/browser/browser";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { FileUploader } from "@web/views/fields/file_handler";
@@ -310,11 +311,6 @@ export class DocumentsInspector extends Component {
         }
     }
 
-    // Override during tests.
-    _writeInClipboard(text) {
-        navigator.clipboard.writeText(text);
-    }
-
     async onShare() {
         const resIds = this.resIds;
         if (!this.generatedUrls[resIds]) {
@@ -328,7 +324,7 @@ export class DocumentsInspector extends Component {
                 }],
             );
         }
-        this._writeInClipboard(this.generatedUrls[resIds]);
+        browser.navigator.clipboard.writeText(this.generatedUrls[resIds]);
         this.notificationService.add(
             this.env._t("The share url has been copied to your clipboard."),
             {

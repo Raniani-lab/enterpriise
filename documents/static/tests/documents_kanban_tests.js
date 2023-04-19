@@ -17,7 +17,6 @@ import { getOrigin } from "@web/core/utils/urls";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { fakeCookieService, makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
-import { DocumentsInspector } from "@documents/views/inspector/documents_inspector";
 
 import {
     afterNextRender,
@@ -89,9 +88,13 @@ QUnit.module("documents", {}, function () {
                         serviceRegistry.add(serviceName, service);
                     }
                 }
-                // navigator.clipboard.writeText is not always allowed during testing.
-                patchWithCleanup(DocumentsInspector.prototype, {
-                    _writeInClipboard() {},
+                patchWithCleanup(browser, {
+                    navigator: {
+                        ...browser.navigator,
+                        clipboard: {
+                            writeText: () => {},
+                        },
+                    },
                 });
                 // Historically the inspector had the preview on the kanban, due to it being
                 // controlled with a props we simply force the kanban view to also have it during the tests

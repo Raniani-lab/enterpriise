@@ -164,6 +164,10 @@ var accountReportsWidget = AbstractAction.extend({
         },
     },
 
+    jsLibs: (AbstractAction.prototype.jsLibs || []).concat([
+        "/web/static/lib/tempusdominus/tempusdominus.js",
+    ]),
+
     init: function(parent, action) {
         this.actionManager = parent;
         this.odoo_context = action.context;

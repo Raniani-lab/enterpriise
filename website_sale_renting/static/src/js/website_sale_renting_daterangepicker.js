@@ -14,6 +14,9 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
         '/web/static/lib/daterangepicker/daterangepicker.js',
         '/web/static/src/legacy/js/libs/daterangepicker.js',
     ]),
+    cssLibs: (publicWidget.Widget.prototype.cssLibs || []).concat([
+        "/web/static/lib/daterangepicker/daterangepicker.css",
+    ]),
 
     /**
      * During start, load the renting constraints to validate renting pickup and return dates.

@@ -19,14 +19,13 @@ publicWidget.registry.RentalSearchSnippet = publicWidget.Widget.extend({
      * This function is triggered when the user clicks on the rental search button.
      * @param ev
      */
-    _onClickRentalSearchButton(ev) {
+    _onClickRentalSearchButton(ev, picker) {
         const rentalSearch = ev.currentTarget.closest('.s_rental_search');
         const searchParams = new URLSearchParams();
-        const rawInput = document.querySelector('.daterange-input').value;
-        const [startDate, endDate] = rawInput.split(' - ');
-        if (startDate && endDate) {
-            searchParams.append('start_date', `${new Date(startDate).toISOString()}`);
-            searchParams.append('end_date', `${new Date(endDate).toISOString()}`);
+        picker = picker || this.$("#s_rental_search_date_input").data("daterangepicker");
+        if (picker.startDate && picker.endDate) {
+            searchParams.append('start_date', `${picker.startDate.toISOString()}`);
+            searchParams.append('end_date', `${picker.endDate.toISOString()}`);
         }
         const productAttributeId = rentalSearch.querySelector('.product_attribute_search_rental_name').id;
 

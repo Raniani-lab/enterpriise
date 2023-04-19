@@ -187,6 +187,7 @@
              t-att-data-grid-row="rowPosition"
              t-att-data-grid-column="column_index + 1 + columnsGap"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
+             t-on-click.prevent.synthetic="onCellClick"
         >
             <div class="position-absolute top-0 start-0 w-100 h-100 opacity-50 transition-base"
                  t-att-class="{

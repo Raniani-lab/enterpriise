@@ -362,13 +362,21 @@ export class GridRenderer extends Component {
     }
 
     /**
-     * Handle click on any element in the grid
+     * Handle the click on a cell in mobile
      *
      * @param {MouseEvent} ev
      */
-    onClick(ev) {
-        if (this.editionState.editedCellInfo && !ev.target.closest(".o_grid_highlightable")) {
-            this.onEditCell(false);
+    onCellClick(ev) {
+        ev.stopPropagation();
+        const cell = ev.target.closest(".o_grid_highlightable");
+        const { row, column } = cell.dataset;
+        if (row && column) {
+            if (this.editCellProps.reactive.cell) {
+                this.editCellProps.reactive.cell
+                    .querySelector(".o_grid_cell_readonly")
+                    .classList.remove("d-none");
+            }
+            this.editCellProps.reactive.cell = cell;
         }
     }
 

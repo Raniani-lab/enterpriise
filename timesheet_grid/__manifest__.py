@@ -9,7 +9,7 @@
 * Activate grid view for timesheets
     """,
     'version': '1.0',
-    'depends': ['project_enterprise', 'web_grid', 'hr_timesheet', 'timer'],
+    'depends': ['project_enterprise', 'web_grid', 'hr_timesheet', 'timer', 'hr_org_chart'],
     'category': 'Services/Timesheets',
     'sequence': 65,
     'data': [

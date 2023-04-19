@@ -96,7 +96,7 @@
         box-shadow: 0 -3px 10px $gray-300;
         > .btn {
             text-transform: uppercase;
-            flex-grow: 1;
+            flex: 1 1 0px;
             border-width: 1px 0 0 0;
             border-style: solid;
             @media (orientation: portrait) {

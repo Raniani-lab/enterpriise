@@ -20,6 +20,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         };
         this.lastScanned.destLocation = false;
         this.shouldShortenLocationName = true;
+        this.actionName = "stock_barcode.stock_barcode_picking_client_action";
     }
 
     setData(data) {
@@ -828,21 +829,29 @@ export default class BarcodePickingModel extends BarcodeModel {
                 "stock.picking",
                 this.backordersDomain,
                 ["display_name", "id"]);
+            const buttons = backorders.map(bo => {
+                const additional_context = { active_id: bo.id };
+                return {
+                    name: bo.display_name,
+                    onClick: () => {
+                        this.trigger('do-action', {
+                            action: this.actionName,
+                            options: { additional_context },
+                        });
+                    },
+                };
+            });
             if (backorders.length) {
                 const phrase = backorders.length === 1 ?
                     _t("Following backorder was created:") :
                     _t("Following backorders were created:");
-                const backorderLinks = backorders.map(bo => {
-                    return `<a href="#action=${this.actionId}&active_id=${bo.id}">${escape(bo.display_name)}</a>`
-                });
                 this.validateMessage = `<div>
                     <p>${escape(this.validateMessage)}<br>${escape(phrase)}</p>
-                    ${backorderLinks.join("<br>")}
                 </div>`;
                 this.validateMessage = markup(this.validateMessage);
             }
             // If all is OK, displays a notification and goes back to the previous page.
-            this.notification(this.validateMessage, { type: "success" });
+            this.notification(this.validateMessage, { type: "success", buttons });
             this.trigger('history-back');
         }
     }

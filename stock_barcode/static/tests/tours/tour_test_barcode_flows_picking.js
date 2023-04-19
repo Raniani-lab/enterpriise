@@ -842,7 +842,7 @@ registry.category("web_tour.tours").add("test_delivery_reserved_4_backorder", { 
     {
         trigger: ".o_notification",
         run: function() {
-            const backorderLink = document.querySelector(".o_notification_content a");
+            const backorderLink = document.querySelector(".o_notification_buttons span");
             helper.assert(
                 backorderLink.innerText.includes("WH/OUT/"), true,
                 "The notification should contain a link to the created backorder."

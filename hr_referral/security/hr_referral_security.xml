@@ -13,7 +13,7 @@
         <field name="implied_ids" eval="[(4, ref('hr_referral.group_hr_recruitment_referral_user'))]"/>
     </record>
 
-    <record id="hr_recruitment.group_hr_recruitment_user" model="res.groups">
+    <record id="hr_recruitment.group_hr_recruitment_interviewer" model="res.groups">
         <field name="implied_ids" eval="[(4, ref('hr_referral.group_hr_recruitment_referral_user'))]"/>
     </record>
 

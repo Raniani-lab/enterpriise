@@ -43,7 +43,7 @@
                             groups="base.group_no_one"/>
                 </header>
                 <sheet>
-                    <field name="company_id" invisible="1"/>
+                    <field name="company_id" invisible="1" force_save="1"/>
                     <field name="available_marketplace_ids" invisible="1"/>
                     <field name="is_follow_up_displayed" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
@@ -164,7 +164,6 @@
                                            'invisible': [('id', '=', False)]}"/>
                                     <field name="company_id"
                                            groups="base.group_multi_company"
-                                           force_save="1"
                                            options="{'no_create_edit': True, 'no_open': True}"/>
                                     <field name="location_id"
                                            groups="stock.group_stock_multi_locations"

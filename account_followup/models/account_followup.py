@@ -34,7 +34,7 @@ class FollowupLine(models.Model):
                                                               "- Salesperson: Sales Person defined on the invoice\n"
                                                               "- Account Manager: Sales Person defined on the customer")
 
-    auto_execute = fields.Boolean(string="Automatic", default=True)
+    auto_execute = fields.Boolean(string="Automatic", default=False)
 
     _sql_constraints = [
         ('days_uniq', 'unique(company_id, delay)', 'Days of the follow-up lines must be different per company'),

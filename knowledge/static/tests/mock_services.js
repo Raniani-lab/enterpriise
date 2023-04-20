@@ -12,6 +12,8 @@ function makeFakeKnowledgeCommandsService() {
             return {
                 setCommandsRecordInfo() {},
                 getCommandsRecordInfo() { return null; },
+                setPendingBehaviorBlueprint() {},
+                popPendingBehaviorBlueprint() {},
             };
         }
     };

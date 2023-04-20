@@ -109,11 +109,11 @@
         </ul>
     </li>
 </ul>
-<div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template">
+<div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template" data-oe-protected="true">
     <div class="d-flex">
         <div class="o_knowledge_template_label align-middle">Template</div>
     </div>
-    <div class="o_knowledge_content" data-prop-name="content">
+    <div class="o_knowledge_content" data-prop-name="content" data-oe-protected="false">
         <p>
             Hello there, I am a template 👋
             <br />
@@ -143,7 +143,7 @@
         </ul>
     </li>
 </ul>
-<div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file">
+<div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file" data-oe-protected="true">
     <div class="o_knowledge_file_image" data-prop-name="fileImage">
         <a href="/knowledge/static/src/demo/Onboarding.pdf?download=true" title="Onboarding.pdf" data-mimetype="application/pdf" class="o_image"></a>
     </div>

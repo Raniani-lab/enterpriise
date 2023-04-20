@@ -9,6 +9,7 @@ import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import {
     useRef,
+    markup,
     onMounted,
     onWillUnmount } from "@odoo/owl";
 
@@ -21,6 +22,16 @@ export class TemplateBehavior extends AbstractBehavior {
         this.uiService = useService("ui");
         this.copyToClipboardButton = useRef("copyToClipboardButton");
         this.templateContent = useRef("templateContent");
+        // <p><br/></p> can't be put in the template because adding a
+        // t-if t-else in the template will add empty text nodes from
+        // OWL in the editor, which are not compatible with collaborative:
+        // if the template value is the props content, we get
+        // text - value - text - text
+        // and if the props content is undefined (else), we get
+        // text - text - value - text
+        // which means that for the same [value] nodes, we get different
+        // html contents, which means they can't be synchronized.
+        this.content = this.props.content || markup('<p><br/></p>');
         onMounted(() => {
             // Using ClipboardJS because ClipboardItem constructor is not
             // accepted by odoo eslint yet. In the future, it would be better

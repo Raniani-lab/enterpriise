@@ -2,31 +2,26 @@
 <templates>
     <!-- /index and /outline template -->
     <t t-name="knowledge.ArticlesStructureBehavior" owl="1">
-        <t t-if="this.state.loading">
-            <i class="fa fa-circle-o-notch fa-2x fa-spin" title="loader" role="img"/>
-        </t>
-        <t t-else="">
-            <div class="o_knowledge_toolbar o_knowledge_clean_for_save">
-                <div class="btn-group">
-                    <button t-if="!this.props.readonly"
-                            t-on-click="_onSwitchMode"
-                            class="btn btn-primary btn-link btn-sm border-0"
-                            title="Switch Mode">
-                        <i t-attf-class="fa {{ this.state.showAllChildren ? 'fa-eye-slash' : 'fa-eye' }}" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">
-                            <t t-if="this.state.showAllChildren">Show Less</t>
-                            <t t-else="">Show All</t>
-                        </span>
-                    </button>
-                    <button t-if="!this.props.readonly"
-                            t-on-click="_onRefreshBtnClick"
-                            class="btn btn-primary btn-link btn-sm border-0"
-                            title="Update">
-                        <i t-attf-class="fa fa-refresh {{ this.state.refreshing ? 'fa-spin' : '' }}" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Refresh</span>
-                    </button>
-                </div>
+        <div class="o_knowledge_toolbar" data-oe-transient-content="true">
+            <div class="btn-group">
+                <button t-if="!this.props.readonly"
+                        t-on-click="_onSwitchMode"
+                        class="btn btn-primary btn-link btn-sm border-0"
+                        title="Switch Mode">
+                    <i t-attf-class="fa {{ this.state.showAllChildren ? 'fa-eye-slash' : 'fa-eye' }}" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">
+                        <t t-if="this.state.showAllChildren">Show Less</t>
+                        <t t-else="">Show All</t>
+                    </span>
+                </button>
+                <button t-if="!this.props.readonly"
+                        t-on-click="_onRefreshBtnClick"
+                        class="btn btn-primary btn-link btn-sm border-0"
+                        title="Update">
+                    <i t-attf-class="fa fa-refresh {{ this.state.refreshing || this.state.changeContent ? 'fa-spin' : '' }}" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Refresh</span>
+                </button>
             </div>
-            <div class="o_knowledge_articles_structure_content"
-                data-prop-name="content" t-out="this.state.content"/>
-        </t>
+        </div>
+        <div class="o_knowledge_articles_structure_content" data-oe-protected="false"
+            data-prop-name="content" t-ref="articlesStructureContent"/>
     </t>
 </templates>

@@ -21,11 +21,11 @@ class TestHelpdeskKnowledgeCrossModuleFeatures(HttpCase):
             'name': 'EditorCommandsArticle',
             'body': Markup("""
                 <p><br></p>
-                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template">
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template" data-oe-protected="true">
                     <div class="d-flex">
                         <div class="o_knowledge_template_label align-middle">Template</div>
                     </div>
-                    <div class="o_knowledge_content" data-prop-name="content">
+                    <div class="o_knowledge_content" data-prop-name="content" data-oe-protected="false">
                         <p>Hello world</p>
                     </div>
                 </div>

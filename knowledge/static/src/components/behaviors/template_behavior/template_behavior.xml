@@ -4,7 +4,7 @@
     <t t-name="knowledge.TemplateBehavior" owl="1">
         <div>
             <div class="o_knowledge_template_label pe-3">Template</div>
-            <div class="o_knowledge_template_toolbar o_knowledge_toolbar o_knowledge_clean_for_save">
+            <div class="o_knowledge_template_toolbar o_knowledge_toolbar" data-oe-transient-content="true">
                 <div class="btn-group">
                     <button t-if="targetRecordInfo and targetRecordInfo.withChatter" t-on-click="onClickSendAsMessage" title="Send as Message" class="btn btn-primary btn-link btn-sm border-0">
                         <i class="fa fa-envelope" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Send as Message</span>
@@ -18,10 +18,9 @@
                 </div>
             </div>
         </div>
-        <div class="o_knowledge_content" data-prop-name="content" t-ref="templateContent"
+        <div class="o_knowledge_content" data-prop-name="content" t-ref="templateContent" data-oe-protected="false"
             t-att-contenteditable="!props.readonly ? 'true' : 'false'">
-            <t t-if="props.content" t-out="props.content"/>
-            <p t-else=""><br/></p>
+            <t t-out="content"/>
         </div>
     </t>
 </templates>

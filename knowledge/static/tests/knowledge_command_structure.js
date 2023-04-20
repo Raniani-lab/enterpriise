@@ -83,7 +83,7 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
             '<sheet>' +
                 '<div t-ref="tree"/>' +
                 '<div t-ref="root">' +
-                    '<div class="o_knowledge_editor d-flex flex-grow-1">' +
+                    '<div class="o_knowledge_editor">' +
                         '<field name="body" widget="html"/>' +
                     '</div>' +
                 '</div>' +

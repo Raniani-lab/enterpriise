@@ -116,20 +116,9 @@
                     <field name="state" widget="statusbar" statusbar_visible="sent,signed"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button type="object" name="go_to_document" class="oe_stat_button" icon="fa-pencil" states="sent,signed">
-                            <div class="o_field_widget o_stat_info">
-                                <span class="o_stat_value"><field name="nb_closed"/>/<field name="nb_total"/><span class="o_stat_text"> Signed</span></span>
-                                <span class="o_stat_text">View</span>
-                            </div>
-                        </button>
-                        <button type="object" name="open_logs" class="oe_stat_button" icon="fa-pencil">
-                            <!-- TODO show only in debug to sign managers? -->
-                            <div class="o_field_widget o_stat_info">
-                                <span class="o_stat_text">Activity Logs</span>
-                            </div>
-                        </button>
-                    </div>
+                    <field name="active" invisible="1"/>
+                    <field name="template_id" invisible="1" kanban_view_ref="1484"/>
+                    <field name="favorited_ids" widget="many2many_tags" options="{'color_field': 'color'}" invisible="1"/>
                     <widget name="web_ribbon" title="Fully Signed" attrs="{'invisible': [('state', '!=', 'signed')]}"/>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="integrity" invisible="1"/>
@@ -140,28 +129,45 @@
                     <div class="alert alert-warning" role="alert" attrs="{'invisible': [('integrity', '=', True)]}">
                         The integrity of the document's history cannot be verified. This could mean that signature values or the underlying PDF document may have been modified after the fact.
                     </div>
-                    <label for="template_tags" class="p-0 m-0 me-2">Tags:</label>
-                    <field name="template_tags" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Add document tags here"/>
-                    <div>
-                        <label for="validity" class="p-0 m-0 me-2"/><field name="validity" attrs="{'readonly': [('state', 'not in', ['shared', 'sent'])]}"/>
-                    </div>
-                    <div>
-                        <label for="reminder"/>Send a reminder every <field name="reminder" class="oe_inline o_field_highlight" attrs="{'readonly': [('state', 'not in', ['shared', 'sent'])]}"/> days.
-                    </div>
-                    <field name="request_item_ids" context="{'default_sign_request_id': id}" nolabel="1"/>
-                    <field name="cc_partner_ids">
-                        <tree>
-                            <field name="name" string="Contacts in copy"/>
-                            <field name="email"/>
-                        </tree>
-                    </field>
                     <group>
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="template_id" invisible="1" context="{'kanban_view_ref': 'sign.sign_template_view_kanban_mobile'}"/>
                             <field name="favorited_ids" widget="many2many_tags" options="{'color_field': 'color'}" invisible="1"/>
+                            <field name="template_tags" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Add document tags here"/>
+                            <field name="validity" attrs="{'readonly': [('state', 'not in', ['shared', 'sent'])]}"/>
+                            <label for="reminder"/>
+                            <div class="d-flex">
+                                <span>Send a reminder every </span><field name="reminder" class="oe_inline o_field_highlight mx-1" attrs="{'readonly': [('state', 'not in', ['shared', 'sent'])]}"/><span> days</span>.
+                            </div>
                         </group>
                     </group>
+                    <notebook>
+                      <page string="Signers" name="signers">
+                        <field name="request_item_ids" context="{'default_sign_request_id': id}"/>
+                      </page>
+                      <page string="Contacts in copy" name="cc_contacts">
+                        <field name="cc_partner_ids">
+                            <tree>
+                                <field name="name" string="Contacts in copy"/>
+                                <field name="email"/>
+                            </tree>
+                        </field>
+                      </page>
+                      <page string="Activity Logs" name="activity_logs" groups="sign.group_sign_manager">
+                        <field name="sign_log_ids" readonly="1">
+                          <tree>
+                            <field name="action"/>
+                            <field name="log_date"/>
+                            <field name="request_state" nolabel="1"/>
+                            <field name="partner_id" string="Contact"/>
+                            <field name="latitude" optional="hide"/>
+                            <field name="longitude" optional="hide"/>
+                            <field name="ip" string="IP Address"/>
+                          </tree>
+                        </field>
+                      </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                      <field name="message_follower_ids"/>

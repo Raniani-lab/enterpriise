@@ -1236,7 +1236,7 @@ class TestSubscription(TestSubscriptionCommon):
                       in renew_logs]
         self.assertEqual(renew_data, [('0_creation', datetime.date(2021, 9, 1), '3_progress', 20.0, 20.0)])
 
-        future_data = future_sub.order_log_ids.sorted('event_type') # several events aggregated on the same date
+        future_data = future_sub.order_log_ids.sorted('event_date') # several events aggregated on the same date
         simple_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log
                        in future_data]
         self.assertEqual(simple_data, [('0_creation', datetime.date(2021, 1, 1), '3_progress', 1.0, 1.0),
@@ -2524,7 +2524,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.flush_tracking()
             renewal_so.action_confirm()
             self.flush_tracking()
-            order_log_ids = sub.order_log_ids.sorted('event_date')
+            order_log_ids = sub.order_log_ids.sorted('id')
             sub_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
                         for log in order_log_ids]
             self.assertEqual(sub_data,

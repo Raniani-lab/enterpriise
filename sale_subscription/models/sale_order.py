@@ -512,9 +512,6 @@ class SaleOrder(models.Model):
             if self.order_log_ids:
                 # Simple contraction or extension
                 event_type = self._get_change_event_type(mrr_difference)
-            elif self.subscription_state == '5_renewed':
-                # The parent is transferring to the children.
-                event_type = '3_transfer'
             else:
                 event_type = '0_creation'
                 order_start_date = self.start_date or fields.Date.context_today(self)

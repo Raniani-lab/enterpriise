@@ -26,15 +26,18 @@ class SaleOrder(models.Model):
 
     def _renew(self, sample_size):
         random = populate.Random('renew')
-        to_renew = self.browse(random.choices(self.ids, k=int(len(self) * sample_size)))
-        to_renew._create_invoices()
+        to_renew_ids = set(random.choices(self.ids, k=int(len(self) * sample_size)))
+        to_renew = self.browse(to_renew_ids)
         vals = []
         _logger.info("Renewing %d sale orders", len(to_renew))
         for so in to_renew:
             vals += [so._prepare_upsell_renew_order_values('2_renewal')]
         renewal = self.create(vals)
-        renewal_to_confirm = self.env['sale.order'].browse(random.sample(renewal.ids, int(len(renewal.ids) * 0.8)))
-        renewal_to_confirm.action_confirm()
+        to_confirm_ids = set(random.sample(renewal.ids, int(len(renewal.ids) * 0.8)))
+        renewal_to_confirm = self.env['sale.order'].browse(to_confirm_ids)
+        renewal_to_confirm.action_quotation_sent()
+        # Don't confirm renewals as random data trigger random constraints
+        # renewal_to_confirm.action_confirm()
 
     def _populate_factories(self):
         recurrence_id = self.env.registry.populated_models['sale.temporal.recurrence']
@@ -61,7 +64,7 @@ class SaleOrder(models.Model):
             for values in iterator:
                 if values['start_date']:
                     recurrence = self.env['sale.temporal.recurrence'].browse(values['recurrence_id'])
-                    values[field_name] = values['start_date'] + relativedelta(**{recurrence.unit+'s':random.randint(0, 3)*recurrence.duration})
+                    values[field_name] = values['start_date'] + relativedelta(**{recurrence.unit+'s': random.randint(0, 3)*recurrence.duration})
                 else:
                     values[field_name] = False
                 yield values

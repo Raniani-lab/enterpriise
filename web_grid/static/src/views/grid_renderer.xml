@@ -324,7 +324,7 @@
                 </div>
             </div>
             <div t-if="!props.options.hideLineTotal"
-                 class="o_grid_row o_grid_column_total o_grid_row_total o_grid_highlightable transition-base"
+                 class="o_grid_row o_grid_column_total o_grid_row_total o_grid_highlightable position-md-sticky end-0 transition-base"
                  t-att-data-grid-row="rowPosition + 1"
                  t-att-data-grid-column="props.columns.length + 1 + columnsGap"
                  t-attf-style="grid-row: {{rowPosition + 1}}; grid-column: {{props.columns.length + 1 + columnsGap}};"

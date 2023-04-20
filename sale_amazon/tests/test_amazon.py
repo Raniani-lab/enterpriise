@@ -459,6 +459,43 @@ class TestAmazon(common.TestAmazonCommon):
             self.order_canceled = True
             self.account._sync_orders(auto_commit=False)
 
+    def test_inventory_sync_is_skipped_when_disabled(self):
+        """ Test that the inventory synchronization is skipped when the account has disabled it. """
+        self.account.synchronize_inventory = False
+        with patch(
+            'odoo.addons.sale_amazon.utils.make_proxy_request',
+            return_value=common.AWS_RESPONSE_MOCK
+        ) as mock:
+            self.assertEqual(self.account.offer_ids, self.offer)
+            self.assertEqual(self.offer.amazon_sync_status, False)
+            self.account._sync_inventory()
+            self.assertEqual(
+                mock.call_count,
+                0,
+                msg="The stock synchronization is deactivated, no call should have been made.",
+            )
+            self.assertEqual(self.offer.amazon_sync_status, False)
+
+    @mute_logger('odoo.addons.sale_amazon.models.amazon_account')
+    @mute_logger('odoo.addons.sale_amazon.models.amazon_offer')
+    def test_sync_inventory(self):
+        """ Test the inventory availability confirmation synchronization. """
+        self.account.synchronize_inventory = True
+        with patch(
+            'odoo.addons.sale_amazon.utils.make_proxy_request',
+            return_value=common.AWS_RESPONSE_MOCK
+        ), patch('odoo.addons.sale_amazon.utils.submit_feed', return_value='An_amazing_id') as mock:
+            self.account.aws_credentials_expiry = '1970-01-01'  # The field is not stored.
+            self.assertEqual(self.account.offer_ids, self.offer)
+            self.assertEqual(self.offer.amazon_sync_status, False)
+            self.account._sync_inventory()
+            self.assertEqual(self.offer.amazon_sync_status, 'processing')
+            self.assertEqual(
+                mock.call_count,
+                1,
+                msg="An inventory availability feed should be sent to Amazon for all the offers.",
+            )
+
     @mute_logger('odoo.addons.sale_amazon.models.amazon_account')
     @mute_logger('odoo.addons.sale_amazon.models.stock_picking')
     def test_sync_pickings(self):

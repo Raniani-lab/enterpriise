@@ -21,23 +21,28 @@
         <field name="arch" type="xml">
             <form string="Amazon Account">
                 <header attrs="{'invisible': [('id', '=', False)]}">
+                    <button name="action_recover_order"
+                            string="Recover Order"
+                            type="object"
+                            class="btn-secondary"
+                            groups="base.group_no_one"/>
                     <button name="action_sync_orders"
                             string="Sync Orders"
                             type="object"
                             class="btn-secondary"
                             groups="base.group_no_one"/>
                     <button name="action_sync_pickings"
-                            string="Sync Delivery Orders"
+                            string="Sync Deliveries"
+                            type="object"
+                            class="btn-secondary"
+                            groups="base.group_no_one"/>
+                    <button name="action_sync_inventory"
+                            string="Sync FBM Inventory"
                             type="object"
                             class="btn-secondary"
                             groups="base.group_no_one"/>
                     <button name="action_sync_feeds_status"
                             string="Sync Feeds Status"
-                            type="object"
-                            class="btn-secondary"
-                            groups="base.group_no_one"/>
-                    <button name="action_recover_order"
-                            string="Recover Order"
                             type="object"
                             class="btn-secondary"
                             groups="base.group_no_one"/>
@@ -97,7 +102,7 @@
                                         <div class="text-muted">
                                             <br/>
                                             <p>Select the marketplace on which your seller account
-                                                was originally created.</p>
+                                                was initially created.</p>
                                             <p>After validation of the credentials, the marketplaces
                                                 to which this account has access will be
                                                 synchronized and automatically made available.</p>
@@ -171,6 +176,8 @@
                                            attrs="{'required': [('id', '!=', False)],
                                            'invisible': [('id', '=', False)]}"/>
                                     <field name="active"
+                                           attrs="{'invisible': [('id', '=', False)]}"/>
+                                    <field name="synchronize_inventory"
                                            attrs="{'invisible': [('id', '=', False)]}"/>
                                     <field name="last_orders_sync" groups="base.group_no_one"/>
                                 </group>

@@ -26,6 +26,9 @@ class AmazonAccount(models.Model):
     _check_company_auto = True
 
     name = fields.Char(string="Name", help="The user-defined name of the account.", required=True)
+    offer_ids = fields.One2many(
+        string="Offers", comodel_name='amazon.offer', inverse_name='account_id', auto_join=True
+    )
 
     # Credentials fields.
     seller_key = fields.Char()
@@ -77,8 +80,8 @@ class AmazonAccount(models.Model):
 
     # Marketplace fields.
     base_marketplace_id = fields.Many2one(
-        string="Sign-up Marketplace",
-        help="The original sign-up marketplace of this account. Used for authentication only.",
+        string="Home Marketplace",
+        help="The home marketplace of this account; used for authentication only.",
         comodel_name='amazon.marketplace',
         required=True,
     )
@@ -130,6 +133,12 @@ class AmazonAccount(models.Model):
         help="If made inactive, this account will no longer be synchronized with Amazon.",
         default=True,
         required=True,
+    )
+    synchronize_inventory = fields.Boolean(
+        string="Synchronize FBM Inventory",
+        help="Whether the available quantities of FBA products linked to this account are"
+             " synchronized with Amazon.",
+        default=True,
     )
     last_orders_sync = fields.Datetime(
         help="The last synchronization date for orders placed on this account. Orders whose status "
@@ -197,9 +206,7 @@ class AmazonAccount(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        amazon_accounts_rg = self._read_group(
-            [], ['team_id', 'location_id'],
-        )
+        amazon_accounts_rg = self._read_group([], ['team_id', 'location_id'])
         amazon_teams_ids = [team.id for team, __ in amazon_accounts_rg]
         amazon_locations_ids = [location.id for __, location in amazon_accounts_rg]
         for vals in vals_list:
@@ -329,6 +336,9 @@ class AmazonAccount(models.Model):
 
     def action_sync_pickings(self):
         self.env['stock.picking']._sync_pickings(tuple(self.ids))
+
+    def action_sync_inventory(self):
+        self._sync_inventory()
 
     def action_sync_feeds_status(self):
         self._sync_feeds()
@@ -619,12 +629,12 @@ class AmazonAccount(models.Model):
 
         # Create the sales order.
         fulfillment_channel = order_data['FulfillmentChannel']
-        # The state is first set to 'sale' and later to 'done' to generate a picking if fulfilled
-        # by merchant, or directly set to 'done' to generate no picking if fulfilled by Amazon.
         purchase_date = dateutil.parser.parse(order_data['PurchaseDate']).replace(tzinfo=None)
         order_vals = {
             'origin': f"Amazon Order {amazon_order_ref}",
             'state': 'sale',
+            # The order is first created unlocked and later locked to trigger the creation of a
+            # stock picking if fulfilled by merchant.
             'locked': fulfillment_channel == 'AFN',
             'date_order': purchase_date,
             'partner_id': contact_partner.id,
@@ -950,9 +960,7 @@ class AmazonAccount(models.Model):
         """
         self.ensure_one()
 
-        offer = self.env['amazon.offer'].search(
-            [('sku', '=', sku), ('account_id', '=', self.id)], limit=1
-        )
+        offer = self.offer_ids.filtered(lambda o: o.sku == sku)
         if not offer:
             offer = self.env['amazon.offer'].with_context(tracking_disable=True).create({
                 'account_id': self.id,
@@ -1091,6 +1099,36 @@ class AmazonAccount(models.Model):
             stock_move._set_quantity_done(order_line.product_uom_qty)
             stock_move._action_done()
 
+    def _sync_inventory(self):
+        """ Synchronize the inventory availability of products sold on Amazon.
+
+        If called on an empty recordset, the products of all active accounts with inventory
+        synchronization are synchronized instead.
+
+        Note: This method is called by the `ir_cron_sync_amazon_inventory` cron.
+
+        :return: None
+        """
+        self = self or self.search([])
+        accounts = self.filtered('synchronize_inventory')
+        if not accounts:
+            return
+
+        amazon_utils.refresh_aws_credentials(accounts)  # Prevent redundant refresh requests.
+
+        # Cache `free_qty` of all products to avoid recomputing it for each offer.
+        accounts.offer_ids.product_id.filtered(lambda p: p.type == 'product')._compute_quantities()
+
+        for account in accounts:
+            amazon_utils.ensure_account_is_set_up(account)
+            offers = account.offer_ids.filtered(lambda o: o.product_id.type == 'product')
+            offers._update_inventory_availability(account)
+
+        # As Amazon needs some time to process the feed, we trigger the cron to check the status of
+        # the feed after 10 minutes.
+        next_call = fields.Datetime.now() + timedelta(minutes=10)
+        self.env.ref('sale_amazon.ir_cron_sync_amazon_feeds')._trigger(at=next_call)
+
     def _sync_feeds(self):
         """ Synchronize the status of the accounts' feeds that were sent to Amazon.
 
@@ -1103,49 +1141,73 @@ class AmazonAccount(models.Model):
 
         :return: None
         """
-        StockPicking = self.env['stock.picking']
         self = self or self.search([])
-        pickings_by_account = StockPicking._get_pickings_by_account('processing', tuple(self.ids))
-        accounts = self.filtered(lambda acc: acc in pickings_by_account)
+
+        # Select accounts with offers or pickings requiring synchronization.
+        accounts_with_offers = self.filtered(
+            lambda a: any(o.amazon_sync_status == 'processing' for o in a.offer_ids)
+        )
+        pickings_by_account = self.env['stock.picking']._get_pickings_by_account(
+            'processing', tuple(self.ids)
+        )
+
+        # Refresh AWS credentials only once.
+        accounts = self.filtered(lambda a: a in accounts_with_offers or a in pickings_by_account)
         amazon_utils.refresh_aws_credentials(accounts)
 
+        # Syn feeds status.
+        for account in accounts_with_offers:
+            amazon_utils.ensure_account_is_set_up(account)
+            offers = account.offer_ids.filtered(lambda o: o.amazon_sync_status == 'processing')
+            account._pull_feeds_status(offers, 'inventory_sync')
         for account, pickings in pickings_by_account.items():
             amazon_utils.ensure_account_is_set_up(account)
-            account._pull_feeds_status(pickings)
+            account._pull_feeds_status(pickings, 'picking_sync')
 
-        # Re-schedule the cron if not all the pickings reached a final status.
-        processing_pickings = StockPicking
-        for account_pickings in pickings_by_account.values():
-            processing_pickings += account_pickings.filtered(
-                lambda p: p.amazon_sync_status == 'processing'
-            )
-        if processing_pickings:
+        # Re-schedule the cron if not all the offers and pickings reached a final status.
+        any_processing_feed = any(
+            offer.amazon_sync_status == 'processing' for offer in accounts_with_offers.offer_ids
+        ) or any(
+            account_pickings.filtered(lambda p: p.amazon_sync_status == 'processing')
+            for account_pickings in pickings_by_account.values()
+        )
+        if any_processing_feed:
             next_call = fields.Datetime.now() + timedelta(minutes=10)
             self.env.ref('sale_amazon.ir_cron_sync_amazon_feeds')._trigger(at=next_call)
 
-    def _pull_feeds_status(self, pickings):
-        """ Pull the status of the feeds corresponding to the provided pickings.
+    def _pull_feeds_status(self, records, flow):
+        """ Pull the status of the feeds corresponding to the provided recordset.
 
         Note: `self.ensure_one()`
 
-        :param stock.picking pickings: The pickings whose feed status should be pulled.
+        :param recordset records: The records whose feed status should be pulled. Only
+                                  `amazon.offer` and `stock.picking` are supported.
+        :param str flow: The feed name that must be fetched. Supported feeds are 'inventory_sync'
+                         and 'picking_sync'.
         :return: None
         """
         self.ensure_one()
 
-        pickings_by_feed = {}
-        for picking in pickings:
-            pickings_by_feed.setdefault(picking.amazon_feed_ref, self.env['stock.picking'])
-            pickings_by_feed[picking.amazon_feed_ref] += picking
+        if flow == 'inventory_sync':
+            record_model = self.env['amazon.offer']
+        elif flow == 'picking_sync':
+            record_model = self.env['stock.picking']
+        else:
+            return
 
-        errors_by_picking = {}
-        for feed_ref, feed_pickings in pickings_by_feed.items():
+        records_by_feed = {}
+        for record in records:
+            records_by_feed.setdefault(record.amazon_feed_ref, record_model)
+            records_by_feed[record.amazon_feed_ref] += record
+
+        errors_by_record = {}
+        for feed_ref, feed_records in records_by_feed.items():
             # Pull the status and result document reference for the current feed.
             feed_data = amazon_utils.make_sp_api_request(self, 'getFeed', path_parameter=feed_ref)
             feed_status = feed_data['processingStatus']
             result_document_ref = feed_data.get('resultFeedDocumentId')
 
-            # Update the pickings according to their feed status.
+            # Update the records according to their feed status.
             if feed_status == 'DONE':  # The feed was fully processed.
                 try:
                     document = amazon_utils.get_feed_document(self, result_document_ref)
@@ -1159,42 +1221,52 @@ class AmazonAccount(models.Model):
                     )
                 else:
                     if document.find('ProcessingSummary/MessagesWithError').text == '0':
-                        feed_pickings.amazon_sync_status = 'done'
+                        feed_records.amazon_sync_status = 'done'
                         _logger.info(
                             "Synchronized feed %(feed_ref)s for Amazon account with id"
                             " %(account_id)s.", {'feed_ref': feed_ref, 'account_id': self.id}
                         )
                         continue
 
-                    # Iterate over the processing results and flag failed pickings as in 'error'.
-                    consider_unprocessed_pickings_as_failed = False
+                    # Iterate over the processing results and flag failed records as in 'error'.
+                    consider_unprocessed_records_as_failed = False
                     for result_message in document.iter('Result'):
                         result_code = result_message.find('ResultCode').text
-                        if result_code == 'Error':
+                        if result_code != 'Error':
+                            continue
+                        if flow == 'inventory_sync':
+                            sku = result_message.find('AdditionalInfo/SKU').text
+                            failed_offer = feed_records.filtered(lambda o: o.sku == sku)
+                            # Using a set to combine duplicates created by Amazon with every retry.
+                            errors_by_record.setdefault(failed_offer, set())
+                            errors_by_record[failed_offer].add(
+                                result_message.find('ResultDescription').text
+                            )
+                        elif flow == 'picking_sync':
                             order_info = result_message.find('AdditionalInfo/AmazonOrderID')
                             order_id = order_info is not None and order_info.text
                             if order_id:  # We can identify failed pickings.
                                 error_desc = result_message.find('ResultDescription').text
-                                failed_pickings = feed_pickings.filtered(
+                                failed_pickings = feed_records.filtered(
                                     lambda p: p.sale_id.amazon_order_ref == order_id
                                 )
                                 for failed_picking in failed_pickings:
-                                    errors_by_picking.setdefault(failed_picking, [])
-                                    errors_by_picking[failed_picking].append(error_desc)
+                                    errors_by_record.setdefault(failed_picking, set())
+                                    errors_by_record[failed_picking].append(error_desc)
                             else:  # Amazon doesn't specify which order (and thus picking) failed.
-                                consider_unprocessed_pickings_as_failed = True
-                    feed_pickings.filtered(
-                        lambda p: p in errors_by_picking
+                                consider_unprocessed_records_as_failed = True
+                    feed_records.filtered(
+                        lambda p: p in errors_by_record
                     ).amazon_sync_status = 'error'
-                    unprocessed_pickings = feed_pickings.filtered(
+                    unprocessed_records = feed_records.filtered(
                         lambda p: p.amazon_sync_status == 'processing'
-                    )  # The sync order might have run before, avoid changing back done pickings.
-                    if consider_unprocessed_pickings_as_failed:
-                        for picking in unprocessed_pickings:
-                            errors_by_picking.setdefault(picking, []).append(None)
-                        unprocessed_pickings.amazon_sync_status = 'error'
-                    else:  # All errors were identified, the remaining pickings succeeded.
-                        unprocessed_pickings.amazon_sync_status = 'done'
+                    )  # The sync order might have run before, avoid changing back done records.
+                    if consider_unprocessed_records_as_failed:
+                        for record in unprocessed_records:
+                            errors_by_record.setdefault(record, set()).add(None)
+                        unprocessed_records.amazon_sync_status = 'error'
+                    else:  # All errors were identified, the remaining records succeeded.
+                        unprocessed_records.amazon_sync_status = 'done'
                     _logger.info(
                         "Found errors while synchronizing feed %(feed_ref)s for Amazon account with"
                         " id %(account_id)s.", {'feed_ref': feed_ref, 'account_id': self.id}
@@ -1207,38 +1279,49 @@ class AmazonAccount(models.Model):
                 )
 
             elif feed_status == 'CANCELLED':  # The feed has been canceled before being processed.
-                feed_pickings.amazon_sync_status = 'pending'
-                _logger.info(
-                    "Re-scheduling a synchronization for pickings of canceled feed %(feed_ref)s for"
-                    " Amazon account with id %(account_id)s.",
-                    {'feed_ref': feed_ref, 'account_id': self.id},
-                )
+                feed_records.amazon_sync_status = 'pending'
+                if flow == 'inventory_sync':
+                    _logger.info(
+                        "Re-scheduling a synchronization of inventory for offers of canceled"
+                        " feed %(feed_ref)s for Amazon account with id %(account_id)s.",
+                        {'feed_ref': feed_ref, 'account_id': self.id},
+                    )
+                elif flow == 'picking_sync':
+                    _logger.info(
+                        "Re-scheduling a synchronization for pickings of canceled feed %(feed_ref)s"
+                        " for Amazon account with id %(account_id)s.",
+                        {'feed_ref': feed_ref, 'account_id': self.id},
+                    )
 
             elif feed_status == 'FATAL':  # The feed failed with no further information.
-                for picking in feed_pickings:
-                    errors_by_picking.setdefault(picking, []).append(None)
-                feed_pickings.amazon_sync_status = 'error'
+                for record in feed_records:
+                    errors_by_record.setdefault(record, set()).add(None)
+                feed_records.amazon_sync_status = 'error'
 
-        if errors_by_picking:
+        if errors_by_record:
             error_messages = []
-            for p, errors in errors_by_picking.items():
+            for r, errors in errors_by_record.items():
                 for error in errors:
-                    if error:
-                        p.message_post(body=Markup("%s<br/>%s") % (
+                    if error and flow == 'picking_sync':
+                        r.message_post(body=Markup("%s<br/>%s") % (
                             _("The synchronization with Amazon failed. Amazon gave us this "
                               "information about the problem:"),
                             error,
                         ))
-                    error_messages.append(
-                        {'order_ref': p.sale_id.amazon_order_ref, 'message': error}
-                    )
-            self._handle_sync_failure(flow='picking_sync', error_messages=error_messages)
+                    if flow == 'inventory_sync':
+                        error_messages.append({'sku': r.sku, 'message': error})
+                    elif flow == 'picking_sync':
+                        error_messages.append(
+                            {'order_ref': r.sale_id.amazon_order_ref, 'message': error}
+                        )
+
+            self._handle_sync_failure(flow=flow, error_messages=error_messages)
 
     def _handle_sync_failure(self, flow, amazon_order_ref=False, error_messages=False):
         """ Send a mail to the responsible persons to report a synchronization failure.
 
-        :param str flow: The flow for which the failure mail is requested. Either `order_sync` or
-                         `picking_sync`.
+        :param str flow: The flow for which the failure mail is requested. Supported flows are:
+                        `order_sync`, `inventory_sync`, and `picking_sync`.
         :param str amazon_order_ref: The amazon reference of the order that failed to synchronize.
                                      Required for the `order_sync` flow.
         :param list[dict] error_messages: A list containing the referenced Amazon orders and their
@@ -1253,7 +1336,14 @@ class AmazonAccount(models.Model):
                 {'ref': amazon_order_ref, 'account_id': self.id, 'seller_id': self.seller_key},
             )
             mail_template_id = 'sale_amazon.order_sync_failure'
-        else:  # flow == 'picking_sync'
+        elif flow == 'inventory_sync':
+            _logger.exception(
+                "Failed to synchronize the inventory for offers in amazon.account with id "
+                "%(account_id)s (seller id %(seller_id)s).",
+                {'account_id': self.id, 'seller_id': self.seller_key}
+            )
+            mail_template_id = 'sale_amazon.inventory_sync_failure'
+        else:  # flow == 'picking_sync':
             _logger.exception(
                 "Failed to synchronize pickings for amazon.account with id %(account_id)s "
                 "(seller id %(seller_id)s).", {'account_id': self.id, 'seller_id': self.seller_key}
@@ -1271,6 +1361,7 @@ class AmazonAccount(models.Model):
                 'email_to': ','.join(responsible_emails),
                 'amazon_order_ref': amazon_order_ref,
                 'error_messages': error_messages,
+                'amazon_account': self.name,
             }).send_mail(self.env.user.id)
             _logger.info(
                 "Sent synchronization failure notification email to %s",

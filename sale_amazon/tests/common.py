@@ -111,8 +111,18 @@ class TestAmazonCommon(TransactionCase):
             'company_id': self.env.company.id,
         })
 
+        # Create an offer linked to the product
+        product = self.env['product.product'].create(
+            {'name': "This is a storable product", 'type': 'product'}
+        )
+        self.offer = self.env['amazon.offer'].create({
+            'account_id': self.account.id,
+            'marketplace_id': marketplace.id,
+            'product_id': product.id,
+            'sku': 'TESTING_SKU',
+        })
+
         # Create a delivery carrier
-        product = self.env['product.product'].create({'name': "This is a product"})
         self.carrier = self.env['delivery.carrier'].create(
             {'name': "My Truck", 'product_id': product.id}  # delivery_type == 'fixed'
         )

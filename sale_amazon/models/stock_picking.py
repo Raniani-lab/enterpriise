@@ -162,6 +162,7 @@ class StockPicking(models.Model):
             amazon_utils.refresh_aws_credentials(accounts)
 
         for account, pickings in pickings_by_account.items():
+            amazon_utils.ensure_account_is_set_up(account)
             pickings._confirm_shipment(account)
 
         # As Amazon needs some time to process the feed, we trigger the cron to check the status of
@@ -239,7 +240,6 @@ class StockPicking(models.Model):
                 ElementTree.SubElement(ship_from_, 'AddressFieldOne').text = location_.street[:180]
                 ElementTree.SubElement(ship_from_, 'CountryCode').text = location_.country_id.code
 
-        amazon_utils.ensure_account_is_set_up(account)
         xml_feed = amazon_utils.build_feed(account, 'OrderFulfillment', build_feed_messages)
         try:
             feed_ref = amazon_utils.submit_feed(account, xml_feed, 'POST_ORDER_FULFILLMENT_DATA')

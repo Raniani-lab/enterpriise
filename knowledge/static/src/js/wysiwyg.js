@@ -87,6 +87,7 @@ Wysiwyg.include({
             priority: 10,
             description: _t('Link an article.'),
             fontawesome: 'fa-file',
+            isDisabled: () => this.options.isWebsite || this.options.inIframe,
             callback: () => {
                 this._insertArticleLink();
             },

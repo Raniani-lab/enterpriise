@@ -40,6 +40,7 @@ Indian Payroll Salary Rules.
         'views/hr_employee_views.xml',
         'views/res_config_settings_views.xml',
         'views/hr_payroll_advice_views.xml',
+        'views/hr_payslip_run_views.xml',
         'security/ir.model.access.csv',
         'views/report_payslip_details_template.xml',
         'views/report_hr_salary_employee_bymonth_template.xml',

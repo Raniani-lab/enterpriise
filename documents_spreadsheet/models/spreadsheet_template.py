@@ -50,3 +50,16 @@ class SpreadsheetTemplate(models.Model):
                 "convert_from_template": True,
             },
         }
+
+    def action_edit(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'action_open_template',
+            'params': {
+                'spreadsheet_id': self.id,
+            }
+        }
+
+    def _creation_msg(self):
+        return _("New spreadsheet template created")

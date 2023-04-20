@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class SpreadsheetDashboard(models.Model):
@@ -26,3 +26,16 @@ class SpreadsheetDashboard(models.Model):
     def _compute_file_name(self):
         for dashboard in self:
             dashboard.file_name = f"{dashboard.name}.osheet.json"
+
+    def action_edit(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'action_edit_dashboard',
+            'params': {
+                'spreadsheet_id': self.id,
+            }
+        }
+
+    def _creation_msg(self):
+        return _("New dashboard created")

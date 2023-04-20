@@ -33,3 +33,48 @@ class SpreadsheetMixinTest(SpreadsheetTestCase):
         data = spreadsheet.with_company(company_gbp).join_spreadsheet_session()
         self.assertEqual(data["default_currency"]["code"], "GBP")
         self.assertEqual(data["default_currency"]["symbol"], "£")
+
+    def test_fork_history(self):
+        spreadsheet = self.env["spreadsheet.test"].create({})
+        spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
+        rev1 = spreadsheet.spreadsheet_revision_ids[0]
+        action = spreadsheet.fork_history(rev1.id, {"test": "snapshot"})
+        self.assertTrue(isinstance(action, dict))
+
+        self.assertEqual(action["params"]["message"], "test spreadsheet created")
+        self.assertEqual(action["tag"], "display_notification")
+        self.assertEqual(action["type"], "ir.actions.client")
+
+        next_action = action["params"]["next"]
+
+        self.assertTrue(isinstance(next_action, dict))
+        copy_id = next_action["params"]["spreadsheet_id"]
+        spreadsheet_copy = self.env["spreadsheet.test"].browse(copy_id)
+        self.assertTrue(spreadsheet_copy.exists())
+        self.assertEqual(len(spreadsheet_copy.spreadsheet_revision_ids), 1)
+        self.assertEqual(spreadsheet_copy.spreadsheet_revision_ids[0].commands, rev1.commands)
+
+    def test_rename_revision(self):
+        spreadsheet = self.env["spreadsheet.test"].create({})
+        spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
+        revision = spreadsheet.spreadsheet_revision_ids[0]
+        self.assertEqual(revision.name, False)
+
+        spreadsheet.rename_revision(revision.id, "new revision name")
+        self.assertEqual(revision.name, "new revision name")
+
+    def test_get_spreadsheet_history(self):
+        spreadsheet = self.env["spreadsheet.test"].create({})
+        spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
+        self.snapshot(
+            spreadsheet,
+            self.get_revision(spreadsheet), "snapshot-revision-id", {"sheets": []},
+        )
+        spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
+
+        data = spreadsheet.get_spreadsheet_history()
+        self.assertEqual(len(data["revisions"]), 3)
+
+        # from snapshot
+        data = spreadsheet.get_spreadsheet_history(True)
+        self.assertEqual(len(data["revisions"]), 1)

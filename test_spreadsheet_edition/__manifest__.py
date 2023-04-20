@@ -13,4 +13,13 @@
     """,
     'depends': ['spreadsheet_edition', 'test_spreadsheet'],
     'license': 'OEEL-1',
+    'assets': {
+        'spreadsheet.o_spreadsheet': [
+            'test_spreadsheet_edition/static/src/**/*.js',
+            'test_spreadsheet_edition/static/src/**/*.xml',
+        ],
+        'web.qunit_suite_tests': [
+            'test_spreadsheet_edition/static/tests/**/*',
+        ],
+    }
 }

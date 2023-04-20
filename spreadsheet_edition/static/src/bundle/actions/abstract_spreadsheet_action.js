@@ -1,16 +1,7 @@
 /** @odoo-module **/
-import {
-    onMounted,
-    onWillStart,
-    useState,
-    Component,
-    useSubEnv,
-    onWillUnmount,
-    status,
-} from "@odoo/owl";
+import { onMounted, onWillStart, useState, Component, useSubEnv, onWillUnmount } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
-import { _t } from "@web/core/l10n/translation";
 import { downloadFile } from "@web/core/network/download";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
@@ -19,8 +10,8 @@ import * as spreadsheet from "@odoo/o-spreadsheet";
 import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
-
 import { RecordFileStore } from "../image/record_file_store";
+import { useSpreadsheetCurrencies, useSpreadsheetLocales, useSpreadsheetThumbnail } from "../hooks";
 
 const { createCurrencyFormat } = spreadsheet.helpers;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -59,6 +50,9 @@ export class AbstractSpreadsheetAction extends Component {
         this.http = useService("http");
         this.user = useService("user");
         this.ui = useService("ui");
+        this.loadLocales = useSpreadsheetLocales();
+        this.loadCurrencies = useSpreadsheetCurrencies();
+        this.getThumbnail = useSpreadsheetThumbnail();
         this.fileStore = new RecordFileStore(this.resModel, this.resId, this.http, this.orm);
         const spreadsheetService = useService("spreadsheet_collaborative");
         this.transportService = spreadsheetService.makeCollaborativeChannel(
@@ -81,6 +75,7 @@ export class AbstractSpreadsheetAction extends Component {
         useSubEnv({
             download: this.download.bind(this),
             downloadAsJson: this.downloadAsJson.bind(this),
+            showHistory: this.showHistory.bind(this),
         });
         this.state = useState({
             spreadsheetName: UNTITLED_SPREADSHEET_NAME,
@@ -121,9 +116,6 @@ export class AbstractSpreadsheetAction extends Component {
         if (!this.props.state) {
             await Promise.all([this._setupPreProcessingCallbacks()]);
         }
-        if (status(this) === "destroyed") {
-            return;
-        }
         const [record] = await Promise.all([this._fetchData()]);
         this._initializeWith(record);
     }
@@ -148,8 +140,8 @@ export class AbstractSpreadsheetAction extends Component {
                 custom: { env: this.env, orm: this.orm, dataSources },
                 external: {
                     fileStore: this.fileStore,
-                    loadCurrencies: this.loadCurrencies.bind(this),
-                    loadLocales: this.loadLocales.bind(this),
+                    loadCurrencies: this.loadCurrencies,
+                    loadLocales: this.loadLocales,
                 },
                 defaultCurrencyFormat,
                 transportService: this.transportService,
@@ -301,40 +293,25 @@ export class AbstractSpreadsheetAction extends Component {
         );
     }
 
+    showHistory() {
+        this.actionService.doAction(
+            {
+                type: "ir.actions.client",
+                tag: "action_open_spreadsheet_history",
+                params: {
+                    spreadsheet_id: this.resId,
+                    res_model: this.resModel,
+                },
+            },
+            { clear_breadcrumbs: true }
+        );
+    }
+
     /**
      * Reload the spreadsheet if an unexpected revision id is triggered.
      */
     onUnexpectedRevisionId() {
         this.actionService.doAction("reload_context");
-    }
-
-    /**
-     * Load currencies from database
-     */
-    async loadCurrencies() {
-        const odooCurrencies = await this.orm.searchRead(
-            "res.currency", // model
-            [], // domain
-            ["symbol", "full_name", "position", "name", "decimal_places"], // fields
-            {
-                // opts
-                order: "active DESC, full_name ASC",
-                context: { active_test: false },
-            }
-        );
-        return odooCurrencies.map((currency) => {
-            return {
-                code: currency.name,
-                symbol: currency.symbol,
-                position: currency.position || "after",
-                name: currency.full_name || _t("Currency"),
-                decimalPlaces: currency.decimal_places || 2,
-            };
-        });
-    }
-
-    async loadLocales() {
-        return this.orm.call("res.lang", "get_locales_for_spreadsheet", []);
     }
 
     /**
@@ -384,34 +361,6 @@ export class AbstractSpreadsheetAction extends Component {
             revisionId: data.revisionId,
             thumbnail: this.getThumbnail(),
         };
-    }
-
-    getThumbnail() {
-        const dimensions = spreadsheet.SPREADSHEET_DIMENSIONS;
-        const canvas = document.querySelector(".o-grid canvas:not(.o-figure-canvas)");
-        const canvasResizer = document.createElement("canvas");
-        const size = 750;
-        canvasResizer.width = size;
-        canvasResizer.height = size;
-        const canvasCtx = canvasResizer.getContext("2d");
-        // use only 25 first rows in thumbnail
-        const sourceSize = Math.min(
-            25 * dimensions.DEFAULT_CELL_HEIGHT,
-            canvas.width,
-            canvas.height
-        );
-        canvasCtx.drawImage(
-            canvas,
-            dimensions.HEADER_WIDTH - 1,
-            dimensions.HEADER_HEIGHT - 1,
-            sourceSize,
-            sourceSize,
-            0,
-            0,
-            size,
-            size
-        );
-        return canvasResizer.toDataURL().replace("data:image/png;base64,", "");
     }
 }
 AbstractSpreadsheetAction.props = { ...standardActionServiceProps };

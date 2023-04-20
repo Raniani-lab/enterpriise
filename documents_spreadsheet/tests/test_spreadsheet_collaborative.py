@@ -159,28 +159,6 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
         spreadsheet.unlink()
         self.assertFalse(revisions.exists())
 
-    def test_autovacuum_revisions(self):
-        spreadsheet = self.create_spreadsheet()
-        with freeze_time("2021-01-10 18:00"):
-            spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
-
-        with freeze_time("2021-01-20 18:00"):
-            spreadsheet.dispatch_spreadsheet_message(self.new_revision_data(spreadsheet))
-
-        with freeze_time("2021-03-15 18:00"):
-            self.env["spreadsheet.revision"]._gc_revisions()
-        self.assertEqual(len(self.env["spreadsheet.revision"].with_context(active_test=False).search([])), 2)
-
-        self.env["spreadsheet.revision"].search([]).active = False
-
-        with freeze_time("2021-03-15 18:00"):
-            self.env["spreadsheet.revision"]._gc_revisions()
-        self.assertEqual(len(self.env["spreadsheet.revision"].with_context(active_test=False).search([])), 1)
-
-        with freeze_time("2021-04-15 18:00"):
-            self.env["spreadsheet.revision"]._gc_revisions()
-        self.assertEqual(len(self.env["spreadsheet.revision"].with_context(active_test=False).search([])), 0)
-
 
 @tagged("collaborative_spreadsheet")
 class SpreadsheetORMAccess(SpreadsheetTestCommon):

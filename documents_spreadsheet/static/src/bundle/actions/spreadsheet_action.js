@@ -16,7 +16,6 @@ import { useState, useSubEnv } from "@odoo/owl";
 
 export class SpreadsheetAction extends AbstractSpreadsheetAction {
     resModel = "documents.document";
-
     setup() {
         super.setup();
         this.notificationMessage = _t("New spreadsheet created in Documents");
@@ -86,7 +85,9 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     async _onSpreadSheetNameChanged(detail) {
         await super._onSpreadSheetNameChanged(detail);
         const { name } = detail;
-        return await this.orm.write("documents.document", [this.resId], { name });
+        return this.orm.write("documents.document", [this.resId], {
+            name,
+        });
     }
 
     /**

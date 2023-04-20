@@ -6,9 +6,9 @@ import base64
 import psycopg2
 
 from datetime import timedelta
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
-from odoo import _, fields, models
+from odoo import _, fields, models, api
 from odoo.exceptions import AccessError
 from odoo.tools import mute_logger
 _logger = logging.getLogger(__name__)
@@ -115,10 +115,16 @@ class SpreadsheetMixin(models.AbstractModel):
             return True
         return False
 
-    def _copy_revisions_to(self, spreadsheet):
+    def _copy_revisions_to(self, spreadsheet, up_to_revision_id=False):
         self._check_collaborative_spreadsheet_access("read")
         revisions_data = []
-        for revision in self.sudo().spreadsheet_revision_ids:
+        if up_to_revision_id:
+            revisions = self.sudo().spreadsheet_revision_ids.filtered(
+                lambda r: r.id <= up_to_revision_id
+            )
+        else:
+            revisions = self.sudo().spreadsheet_revision_ids
+        for revision in revisions:
             revisions_data += revision.copy_data({
                 "res_model": spreadsheet._name,
                 "res_id": spreadsheet.id,
@@ -272,3 +278,67 @@ class SpreadsheetMixin(models.AbstractModel):
             return True
         self.sudo().with_context(active_test=False).spreadsheet_revision_ids.unlink()
         return super().unlink()
+
+    def action_edit(self):
+        raise NotImplementedError("This method is not implemented in class %s." % self._name)
+
+    @api.model
+    def _creation_msg(self):
+        raise NotImplementedError("This method is not implemented in class %s." % self._name)
+
+    def get_spreadsheet_history(self, from_snapshot=False):
+        """Fetch the spreadsheet history.
+         - if from_snapshot is provided, then provides the last snapshot and the revisions since then
+         - otherwise, returns the empty skeleton of the spreasheet with all the revisions since its creation
+        """
+        self.ensure_one()
+        self._check_collaborative_spreadsheet_access("read")
+        spreadsheet_sudo = self.sudo()
+
+        if from_snapshot:
+            data = spreadsheet_sudo._get_spreadsheet_snapshot()
+            revisions = spreadsheet_sudo._build_spreadsheet_messages()
+
+        else:
+            data = json.loads(self.spreadsheet_data)
+            revisions = [
+                dict(
+                    json.loads(rev.commands),
+                    id=rev.id,
+                    name=rev.name,
+                    user=(rev.create_uid.id, rev.create_uid.name),
+                    serverRevisionId=rev.parent_revision_id,
+                    nextRevisionId=rev.revision_id,
+                    timestamp=rev.create_date,
+                )
+                for rev in self.with_context(active_test=False).spreadsheet_revision_ids
+            ]
+
+        return {
+            "name": spreadsheet_sudo.display_name,
+            "data": data,
+            "revisions": revisions,
+        }
+
+    def rename_revision(self, revision_id, name):
+        self.ensure_one()
+        self._check_collaborative_spreadsheet_access("write")
+        self.env["spreadsheet.revision"].sudo().browse(revision_id).name = name
+
+    def fork_history(self, revision_id: int, spreadsheet_snapshot: dict, default: Optional[dict] = None):
+        self.ensure_one()
+        default = default or {}
+        default['spreadsheet_revision_ids'] = []
+        default['spreadsheet_data'] = self.spreadsheet_data
+        default['spreadsheet_snapshot'] = base64.b64encode(json.dumps(spreadsheet_snapshot).encode())
+        new_spreadsheet = self.copy(default)
+        self.with_context(active_test=False)._copy_revisions_to(new_spreadsheet, revision_id)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'type': 'info',
+                'message': self._creation_msg(),
+                'next': new_spreadsheet.action_edit(),
+            }
+        }

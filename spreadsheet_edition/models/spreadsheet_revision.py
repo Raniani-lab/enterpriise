@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import datetime
-
 from odoo import api, fields, models
 
 
@@ -10,7 +8,9 @@ class SpreadsheetRevision(models.Model):
     _name = "spreadsheet.revision"
     _description = "Collaborative spreadsheet revision"
     _rec_name = 'revision_id'
+    _rec_names_search = ['name', 'revision_id']
 
+    name = fields.Char("Revision name")
     active = fields.Boolean(default=True)
     res_model = fields.Char(string="Model", required=True)
     res_id = fields.Many2oneReference(string="Record id", model_field='res_model', required=True)
@@ -21,12 +21,7 @@ class SpreadsheetRevision(models.Model):
         ('parent_revision_unique', 'unique(parent_revision_id, res_id, res_model)', 'o-spreadsheet revision refused due to concurrency')
     ]
 
-    @api.autovacuum
-    def _gc_revisions(self):
-        days = int(self.env["ir.config_parameter"].sudo().get_param(
-            "spreadsheet_edition.revisions_limit_days",
-            '60',
-        ))
-        timeout_ago = datetime.datetime.utcnow()-datetime.timedelta(days=days)
-        domain = [("create_date", "<", timeout_ago), ("active", "=", False)]
-        return self.search(domain).unlink()
+    @api.depends('name', 'revision_id')
+    def _compute_display_name(self):
+        for revision in self:
+            revision.display_name = revision.name or revision.revision_id

@@ -23,13 +23,21 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet-Icon.CLEAR_HISTORY">
+  <t t-name="o-spreadsheet-Icon.VERSION_HISTORY">
     <svg class="o-icon">
       <path
         fill="currentColor"
         d="M9.5,2 C5.5,2 2.5,5 2.8,9 l-1,-1 L0.5,9 l3,3 3,-3 -1,-1 -1,1 C4.5,6 6.5,3.5 9.5,3.5 c3,0 5.5,2.5 5.5,5.5 s-2.5,5.5 -5.5,5.5
            c-2,0 -3.5,-1 -4.5,-2.5 l-1,1 C5.5,15 7.5,16 9.5,16 c4,0 7,-3 7,-7 s-3,-7 -7,-7 M8.5,5 v4 l3,3 1,-1 L10,8.5 V5
         "
+      />
+    </svg>
+  </t>
+  <t t-name="o-spreadsheet-Icon.CAMERA">
+    <svg class="o-icon">
+      <path
+        fill="currentColor"
+        d="M1 5.5A1.5 1.5 0 0 1 2.5 4H5l1-2h6l1 2h2.5A1.5 1.5 0 0 1 17 5.5v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 1 13.5m1.5-8v8h13v-8H12l-1-2H7l-1 2m6.5 1.75a1.25 1.25 0 0 0 2.5 0 1.25 1.25 0 0 0-2.5 0M6 10a3 3 0 0 0 6 0 3 3 0 0 0-6 0h1a2 2 0 0 1 4 0 2 2 0 0 1-4 0"
       />
     </svg>
   </t>

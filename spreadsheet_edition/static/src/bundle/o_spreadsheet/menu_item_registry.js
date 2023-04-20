@@ -34,13 +34,14 @@ topbarMenuRegistry.addChild("save_as_template", ["file"], {
 topbarMenuRegistry.addChild("download", ["file"], {
     name: _t("Download"),
     sequence: 50,
+    isVisible: (env) => env.download,
     execute: (env) => env.download(),
     isReadonlyAllowed: true,
     icon: "o-spreadsheet-Icon.DOWNLOAD",
 });
 
 topbarMenuRegistry.addChild("clear_history", ["file"], {
-    name: _t("Clear history"),
+    name: _t("Snapshot"),
     sequence: 60,
     isVisible: (env) => env.debug,
     execute: (env) => {
@@ -48,13 +49,13 @@ topbarMenuRegistry.addChild("clear_history", ["file"], {
         env.model.garbageCollectExternalResources();
         window.location.reload();
     },
-    icon: "o-spreadsheet-Icon.CLEAR_HISTORY",
+    icon: "o-spreadsheet-Icon.CAMERA",
 });
 
 topbarMenuRegistry.addChild("download_as_json", ["file"], {
     name: _t("Download as JSON"),
     sequence: 70,
-    isVisible: (env) => env.debug,
+    isVisible: (env) => env.debug && env.downloadAsJson,
     execute: (env) => env.downloadAsJson(),
     isReadonlyAllowed: true,
     icon: "o-spreadsheet-Icon.DOWNLOAD_AS_JSON",

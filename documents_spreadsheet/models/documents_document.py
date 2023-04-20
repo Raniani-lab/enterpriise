@@ -308,5 +308,18 @@ class Document(models.Model):
         ]
         self.search(domain).action_archive()
 
+    def action_edit(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'action_open_spreadsheet',
+            'params': {
+                'spreadsheet_id': self.id,
+            }
+        }
+
+    def _creation_msg(self):
+        return _("New spreadsheet created in Documents")
+
 class XSLXReadUserError(UserError):
     pass

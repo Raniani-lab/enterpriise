@@ -38,8 +38,10 @@
         <field name="model">hr.payroll.structure.type</field>
         <field name="arch" type="xml">
             <tree string="Structure Type">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="default_schedule_pay"/>
+                <field name="country_id"/>
                 <field name="default_resource_calendar_id"/>
                 <field name="wage_type"/>
                 <field name="default_struct_id" domain="[('id', 'in', struct_ids)]"/>

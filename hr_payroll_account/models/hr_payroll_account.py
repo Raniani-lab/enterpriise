@@ -188,8 +188,8 @@ class HrPayslip(models.Model):
                         not line.salary_rule_id.analytic_account_id.id and
                         not line.slip_id.contract_id.analytic_account_id.id
                     )
-                    or line.salary_rule_id.analytic_account_id.id in line_id['analytic_distribution']
-                    or line.slip_id.contract_id.analytic_account_id.id in line_id['analytic_distribution']
+                    or line_id['analytic_distribution'] and line.salary_rule_id.analytic_account_id.id in line_id['analytic_distribution']
+                    or line_id['analytic_distribution'] and line.slip_id.contract_id.analytic_account_id.id in line_id['analytic_distribution']
 
                 )
         )

@@ -16,7 +16,7 @@ QUnit.test("'backbutton' event should close chat window", async (assert) => {
         overrideBackButton({ enabled }) {},
     });
     const pyEnv = await startServer();
-    pyEnv["mail.channel"].create({
+    pyEnv["discuss.channel"].create({
         channel_member_ids: [
             [
                 0,
@@ -48,7 +48,7 @@ QUnit.test("[technical] chat window should properly override the back button", a
         },
     });
     const pyEnv = await startServer();
-    pyEnv["mail.channel"].create({ name: "test" });
+    pyEnv["discuss.channel"].create({ name: "test" });
     patchUiSize({ size: SIZES.SM });
     await start();
 

@@ -7,7 +7,7 @@ from odoo.tests.common import tagged, HttpCase
 
 
 @tagged('-at_install', 'post_install')
-class TestMailChannelExpand(HttpCase):
+class TestDiscussChannelExpand(HttpCase):
 
     def test_channel_expand_tour(self):
         testuser = self.env['res.users'].create({
@@ -17,9 +17,9 @@ class TestMailChannelExpand(HttpCase):
             'login': 'testuser',
             'password': 'testuser',
         })
-        MailChannelAsUser = self.env['mail.channel'].with_user(testuser)
-        channel_info = MailChannelAsUser.channel_create(name="test-mail-channel-expand-tour", group_id=self.ref('base.group_user'))
-        channel = MailChannelAsUser.browse(channel_info['id'])
+        DiscussChannelAsUser = self.env['discuss.channel'].with_user(testuser)
+        channel_info = DiscussChannelAsUser.channel_create(name="test-mail-channel-expand-tour", group_id=self.ref('base.group_user'))
+        channel = DiscussChannelAsUser.browse(channel_info['id'])
         channel.channel_fold('folded')
         channel.message_post(
             body=Markup("<p>test-message-mail-channel-expand-tour</p>"),
@@ -29,4 +29,4 @@ class TestMailChannelExpand(HttpCase):
         # clear all bus notifications, so that tour does not replay old notifications
         # on a more recent state with init_messaging
         self.env['bus.bus'].search([]).unlink()
-        self.start_tour("/web", 'mail_enterprise/static/tests/tours/mail_channel_expand_test_tour.js', login='testuser')
+        self.start_tour("/web", 'mail_enterprise/static/tests/tours/discuss_channel_expand_test_tour.js', login='testuser')

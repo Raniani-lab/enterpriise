@@ -6,24 +6,24 @@ QUnit.module("thread (patch)");
 
 QUnit.test("[technical] /ticket command gets a body as kwarg", async (assert) => {
     const pyEnv = await startServer();
-    const channelId = pyEnv["mail.channel"].create({
+    const channelId = pyEnv["discuss.channel"].create({
         channel_type: "channel",
         name: "General",
     });
     const messageId = pyEnv["mail.message"].create({
-        model: "mail.channel",
+        model: "discuss.channel",
         res_id: channelId,
     });
-    const [channelMemberId] = pyEnv["mail.channel.member"].search([
+    const [channelMemberId] = pyEnv["discuss.channel.member"].search([
         ["channel_id", "=", channelId],
         ["partner_id", "=", pyEnv.currentPartnerId],
     ]);
-    pyEnv["mail.channel.member"].write([channelMemberId], {
+    pyEnv["discuss.channel.member"].write([channelMemberId], {
         seen_message_id: messageId,
     });
     const { openDiscuss } = await start({
         mockRPC(route, { model, method, kwargs }) {
-            if (model === "mail.channel" && method === "execute_command_helpdesk") {
+            if (model === "discuss.channel" && method === "execute_command_helpdesk") {
                 assert.step(`execute command helpdesk. body: ${kwargs.body}`);
                 // random value returned in order for the mock server to know that this route is implemented.
                 return true;

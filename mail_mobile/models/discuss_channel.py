@@ -4,8 +4,8 @@
 from odoo import models
 
 
-class MailChannel(models.Model):
-    _inherit = 'mail.channel'
+class DiscussChannel(models.Model):
+    _inherit = 'discuss.channel'
 
     def _notify_thread_by_ocn(self, message, recipients_data, msg_vals=False, **kwargs):
         """ Specifically handle channel members. """
@@ -32,10 +32,10 @@ class MailChannel(models.Model):
         else:
             channel_rdata = recipients_data
 
-        return super(MailChannel, self)._notify_thread_by_ocn(message, channel_rdata, msg_vals=msg_vals, **kwargs)
+        return super()._notify_thread_by_ocn(message, channel_rdata, msg_vals=msg_vals, **kwargs)
 
     def _notify_by_ocn_prepare_payload(self, message, receiver_ids, msg_vals=False):
-        payload = super(MailChannel, self)._notify_by_ocn_prepare_payload(message, receiver_ids, msg_vals=msg_vals)
+        payload = super()._notify_by_ocn_prepare_payload(message, receiver_ids, msg_vals=msg_vals)
         payload['action'] = 'mail.action_discuss'
         record_name = msg_vals.get('record_name') if msg_vals and 'record_name' in msg_vals else message.record_name
         if self.channel_type == 'chat':

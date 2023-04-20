@@ -14,7 +14,7 @@ patch(Messaging.prototype, "website_helpdesk_livechat", {
         }
         if (this.store.helpdesk_livechat_active) {
             registry
-                .category("mail.channel_commands")
+                .category("discuss.channel_commands")
                 .add(
                     "ticket",
                     {
@@ -33,8 +33,8 @@ patch(Messaging.prototype, "website_helpdesk_livechat", {
                     { force: true }
                 );
         } else {
-            registry.category("mail.channel_commands").remove("ticket");
-            registry.category("mail.channel_commands").remove("search_tickets");
+            registry.category("discuss.channel_commands").remove("ticket");
+            registry.category("discuss.channel_commands").remove("search_tickets");
         }
     },
 });

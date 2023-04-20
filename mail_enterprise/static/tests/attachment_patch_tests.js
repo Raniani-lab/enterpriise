@@ -16,7 +16,7 @@ QUnit.test("'backbutton' event should close attachment viewer", async (assert) =
 
     patchUiSize({ size: SIZES.SM });
     const pyEnv = await startServer();
-    const channelId = pyEnv["mail.channel"].create({
+    const channelId = pyEnv["discuss.channel"].create({
         channel_type: "channel",
         name: "channel",
     });
@@ -27,7 +27,7 @@ QUnit.test("'backbutton' event should close attachment viewer", async (assert) =
     pyEnv["mail.message"].create({
         attachment_ids: [attachmentId],
         body: "<p>Test</p>",
-        model: "mail.channel",
+        model: "discuss.channel",
         res_id: channelId,
     });
     const { openDiscuss } = await start();

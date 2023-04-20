@@ -50,7 +50,7 @@ class TestPushNotification(SMSCommon):
         sudo_icp.set_param('odoo_ocn.project_id', 'Test')
         sudo_icp.set_param('mail_mobile.enable_ocn', True)
 
-        channel = cls.env['mail.channel'].with_context(cls._test_context)
+        channel = cls.env['discuss.channel'].with_context(cls._test_context)
 
         cls.user_email = cls.user_employee
         cls.user_email.notification_type = 'email'
@@ -80,7 +80,7 @@ class TestPushNotification(SMSCommon):
             'name': "Direct Message",
         })
 
-        cls.group_channel = cls.env['mail.channel'].browse(cls.env['mail.channel'].channel_create(name='Channel', group_id=None)['id'])
+        cls.group_channel = cls.env['discuss.channel'].browse(cls.env['discuss.channel'].channel_create(name='Channel', group_id=None)['id'])
         cls.group_channel.add_members((cls.user_email + cls.user_inbox).partner_id.ids)
 
     @patch('odoo.addons.mail_mobile.models.mail_thread.iap_tools.iap_jsonrpc')

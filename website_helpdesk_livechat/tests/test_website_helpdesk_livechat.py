@@ -22,18 +22,18 @@ class TestWebsiteHelpdeskLivechat(HelpdeskCommon):
         self.test_team.use_website_helpdesk_livechat = True
 
     def test_helpdesk_commands(self):
-        channel_info = self.livechat_channel.with_user(self.helpdesk_manager)._open_livechat_mail_channel(anonymous_name='Visitor')
-        mail_channel = self.env['mail.channel'].browse(channel_info['id']).with_user(self.helpdesk_manager)
+        channel_info = self.livechat_channel.with_user(self.helpdesk_manager)._open_livechat_discuss_channel(anonymous_name='Visitor')
+        discuss_channel = self.env['discuss.channel'].browse(channel_info['id']).with_user(self.helpdesk_manager)
 
         self.assertFalse(self.env['helpdesk.ticket'].search([('team_id', '=', self.test_team.id)]), 'The team should start with no tickets')
 
         # Post a message that will be part of the chat history in the ticket description
         test_message = 'Test message'
-        mail_channel.message_post(body=test_message)
+        discuss_channel.message_post(body=test_message)
 
         # Create the ticket with the /ticket command
         ticket_name = 'Test website helpdesk livechat'
-        mail_channel.execute_command_helpdesk(body=f"/ticket {ticket_name}")
+        discuss_channel.execute_command_helpdesk(body=f"/ticket {ticket_name}")
 
         bus = self.env['bus.bus'].search([('channel', 'like', f"\"res.partner\",{self.helpdesk_manager.partner_id.id}")], order='id desc', limit=1)
         message = json.loads(bus.message)
@@ -46,7 +46,7 @@ class TestWebsiteHelpdeskLivechat(HelpdeskCommon):
         self.assertIn(test_message, f"{self.helpdesk_manager.name}: {str(ticket.description)}", 'The chat history should be in the ticket description.')
 
         # Search the tickets with the /search_tickets command
-        mail_channel.execute_command_helpdesk_search(body=f"/search_tickets {ticket_name}")
+        discuss_channel.execute_command_helpdesk_search(body=f"/search_tickets {ticket_name}")
 
         bus = self.env['bus.bus'].search([('channel', 'like', f"\"res.partner\",{self.helpdesk_manager.partner_id.id}")], order='id desc', limit=1)
         message = json.loads(bus.message)

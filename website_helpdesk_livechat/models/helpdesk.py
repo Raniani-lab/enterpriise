@@ -50,8 +50,8 @@ class HelpdeskTeam(models.Model):
             action.update(res_id=channel_ids[0], views=[(False, 'form')])
         return action
 
-class MailChannel(models.Model):
-    _inherit = 'mail.channel'
+class DiscussChannel(models.Model):
+    _inherit = 'discuss.channel'
 
     # ------------------------------------------------------
     #  Commands

@@ -390,7 +390,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
         )
 
     def test_reconciliation_report_non_statement_payment(self):
-        ''' Test that moves not linked to a bank statement/payment but linked for example to expanses are used in the
+        ''' Test that moves not linked to a bank statement/payment but linked for example to expenses are all showing in the
         report
         '''
 
@@ -422,6 +422,25 @@ class TestReconciliationReport(TestAccountReportsCommon):
             ]
         }).action_post()
 
+        self.env['account.move'].create({
+            'journal_id': bank_journal.id,
+            'date': '2015-12-31',
+            'line_ids': [
+                (0, 0, {
+                    'name': 'Source',
+                    'debit': 500,
+                    'credit': 0,
+                    'account_id': self.company_data['default_account_expense'].id,
+                }),
+                (0, 0, {
+                    'name': 'Destination',
+                    'debit': 0,
+                    'credit': 500,
+                    'account_id': bank_journal.company_id.account_journal_payment_credit_account_id.id,
+                }),
+            ]
+        }).action_post()
+
         # ==== Report ====
 
         report = self.env.ref('account_reports.bank_reconciliation_report').with_context(
@@ -446,13 +465,14 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
                     ('Total Balance of 101405 Bank',                                '01/02/2016',   ''),
 
-                    ('Outstanding Payments/Receipts',                               '',             -800.0),
+                    ('Outstanding Payments/Receipts',                               '',             -1300.0),
 
-                    ('(-) Outstanding Payments',                                    '',             -800.0),
+                    ('(-) Outstanding Payments',                                    '',             -1300.0),
+                    ('BNKKK/2015/00001',                                            '12/31/2015',   -500.0),
                     ('BNKKK/2014/00001',                                            '12/31/2014',   -800.0),
-                    ('Total (-) Outstanding Payments',                              '',             -800.0),
+                    ('Total (-) Outstanding Payments',                              '',             -1300.0),
 
-                    ('Total Outstanding Payments/Receipts',                         '',             -800.0),
+                    ('Total Outstanding Payments/Receipts',                         '',             -1300.0),
                 ],
                 currency_map={3: {'currency': bank_journal.currency_id}},
                 ignore_folded=False,

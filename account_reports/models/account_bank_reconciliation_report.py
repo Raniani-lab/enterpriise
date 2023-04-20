@@ -469,7 +469,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
         self._cr.execute(query, params)
 
         for results in self._cr.dictfetchall():
-            grouped_results.setdefault(results['payment_id'], {}).setdefault(results['column_group_key'], results)
+            grouped_results.setdefault(results['move_id'], {}).setdefault(results['column_group_key'], results)
 
         for column_group_results in grouped_results.values():
 

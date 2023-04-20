@@ -139,8 +139,6 @@
                 <ADQ_5 t-out="invoice_partner.ref"/>
                 <ADQ_6 t-out="invoice_partner.display_name"/>
                 <ADQ_7 t-out="invoice_partner.l10n_co_edi_commercial_name or invoice_partner.name"/>
-                <ADQ_8 t-out="invoice_partner.name"/>
-                <ADQ_9 t-out="invoice_partner.name"/>
                 <t t-if="invoice_partner.vat != '222222222222'">
                     <ADQ_10 t-out="invoice_partner._l10n_co_edi_get_company_address()"/>
                     <ADQ_11 t-out="str(invoice_partner.state_id.l10n_co_edi_code).zfill(2)"/>

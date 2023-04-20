@@ -53,6 +53,11 @@
             padding-left: 0 !important;
             padding-right: 0 !important;
         }
+        .o_content:has(div.o_kanban_group) .o_kanban_renderer {
+            // force kanban grouped by (stage mainly) to be a bit taller,
+            // to ease reading of stages.
+            min-height: 250px;
+        }
     }
     .o_graph_renderer {
         .o_graph_canvas_container {

@@ -37,7 +37,11 @@ class TestKnowledgeEditorCommands(HttpCase):
 
     def test_knowledge_kanban_command_tour(self):
         """Test the /kanban command in the editor"""
-        self.start_tour('/web', 'knowledge_kanban_command_tour', login='admin', step_delay=100)
+        self.start_tour('/web', 'knowledge_kanban_command_tour', login='admin')
+
+    def test_knowledge_kanban_cards_command_tour(self):
+        """Test the /card command in the editor"""
+        self.start_tour('/web', 'knowledge_kanban_cards_command_tour', login='admin')
 
     def test_knowledge_list_command_tour(self):
         """Test the /list command in the editor"""

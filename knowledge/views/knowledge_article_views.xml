@@ -216,6 +216,19 @@
         </field>
     </record>
 
+    <record id="knowledge_article_view_form_item_quick_create" model="ir.ui.view">
+        <field name="name">knowledge.article.view.form.item.quick_create</field>
+        <field name="model">knowledge.article</field>
+        <field name="priority">666</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name" string="Title" placeholder="My New Item"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
     <record id="knowledge_article_view_tree_items" model="ir.ui.view">
         <field name="name">knowledge.article.view.tree.embedded</field>
         <field name="model">knowledge.article</field>
@@ -287,7 +300,10 @@
         <field name="model">knowledge.article</field>
         <field name="priority">32</field>
         <field name="arch" type="xml">
-            <kanban create="1" js_class="knowledge_article_view_kanban_embedded" class="o_knowledge_article_kanban_view" default_order="sequence asc, write_date desc, id desc">
+            <kanban quick_create_view="knowledge.knowledge_article_view_form_item_quick_create"
+                    js_class="knowledge_article_view_kanban_embedded"
+                    class="o_knowledge_article_kanban_view"
+                    default_order="sequence asc, write_date desc, id desc">
                 <field name="icon" invisible="1"/>
                 <field name="is_locked" invisible="1"/>
                 <field name="is_user_favorite" invisible="1"/>
@@ -297,6 +313,7 @@
                 <field name="article_properties"/>
                 <field name="cover_image_url"/>
                 <field name="activity_ids"/>
+                <field name="stage_id"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
@@ -324,6 +341,20 @@
                     </t>
                 </templates>
             </kanban>
+        </field>
+    </record>
+
+    <record id="knowledge_article_view_kanban_items_stages" model="ir.ui.view">
+        <field name="name">knowledge.article.view.kanban.embedded.stages</field>
+        <field name="model">knowledge.article</field>
+        <field name="priority">48</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="knowledge.knowledge_article_view_kanban_items"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="default_group_by">stage_id</attribute>
+                <attribute name="on_create">quick_create</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -375,11 +406,18 @@
                 <field name="body"/>
                 <field name="last_edition_uid"/>
                 <field name="article_properties"/>
+                <field name="stage_id"/>
 
-                <filter name="filter_active" string="Archived"
-                    domain="[('active', '=', False)]"/>
+                <filter name="filter_my_items" string="My Items"
+                    domain="[('create_uid', '=', uid)]"/>
                 <filter name="filter_favorites" string="My Favorites"
                     domain="[('is_user_favorite', '=', True)]"/>
+                <separator/>
+                <filter name="filter_active" string="Archived"
+                    domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_stage" string="Stage" domain="[]" context="{'group_by': 'stage_id'}"/>
+                </group>
             </search>
         </field>
     </record>
@@ -431,6 +469,33 @@
         <field name="view_mode">tree</field>
         <field name="view_id" ref="knowledge_article_view_tree_items"/>
         <field name="act_window_id" ref="knowledge_article_item_action"/>
+    </record>
+
+    <record id="knowledge_article_item_action_stages" model="ir.actions.act_window">
+        <field name="name">Article Items</field>
+        <field name="res_model">knowledge.article</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('parent_id', '=', active_id), ('is_article_item', '=', True)]</field>
+        <field name="search_view_id" ref="knowledge_article_view_search_items"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new article item
+            </p>
+        </field>
+    </record>
+
+    <record id="knowledge_article_view_items_kanban_stages" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="knowledge_article_view_kanban_items_stages"/>
+        <field name="act_window_id" ref="knowledge_article_item_action_stages"/>
+    </record>
+
+    <record id="knowledge_article_view_items_tree_stages" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="knowledge_article_view_tree_items"/>
+        <field name="act_window_id" ref="knowledge_article_item_action_stages"/>
     </record>
 
     <record id="knowledge_article_action_trashed_tree" model="ir.actions.act_window.view">

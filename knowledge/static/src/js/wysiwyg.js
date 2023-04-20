@@ -91,7 +91,10 @@ Wysiwyg.include({
             },
         });
         if (this.options.knowledgeCommands) {
-            categories.push({ name: _t('Knowledge'), priority: 10 });
+            categories.push(
+                { name: _t('Knowledge'), priority: 11 },
+                { name: _t('Knowledge Databases'), priority: 10 }
+            );
             commands.push({
                 category: _t('Knowledge'),
                 name: _t('File'),
@@ -129,7 +132,7 @@ Wysiwyg.include({
                     this._insertTableOfContent();
                 },
             }, {
-                category: _t('Knowledge'),
+                category: _t('Knowledge Databases'),
                 name: _t('Item Kanban'),
                 priority: 40,
                 description: _t('Insert a Kanban view of article items'),
@@ -138,17 +141,39 @@ Wysiwyg.include({
                 callback: () => {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'kanban';
-                    this._openEmbeddedViewDialog(viewType, name => {
-                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, restoreSelection, {
+                    this._openEmbeddedViewDialog(viewType, async (name) => {
+                        await this._rpc({
+                            model: 'knowledge.article',
+                            method: 'create_default_item_stages',
+                            args: [[this.options.recordInfo.res_id]],
+                        });
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action_stages', viewType, name, restoreSelection, {
                             active_id: this.options.recordInfo.res_id,
                             default_parent_id: this.options.recordInfo.res_id,
-                            default_icon: '📄',
                             default_is_article_item: true,
                         });
                     });
                 }
             }, {
-                category: _t('Knowledge'),
+                category: _t('Knowledge Databases'),
+                name: _t('Item Cards'),
+                priority: 39,
+                description: _t('Insert a Card view of article items'),
+                fontawesome: 'fa-address-card',
+                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                callback: () => {
+                    const restoreSelection = preserveCursor(this.odooEditor.document);
+                    const viewType = 'kanban';
+                    this._openEmbeddedViewDialog(viewType, name => {
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, restoreSelection, {
+                            active_id: this.options.recordInfo.res_id,
+                            default_parent_id: this.options.recordInfo.res_id,
+                            default_is_article_item: true,
+                        });
+                    });
+                }
+            }, {
+                category: _t('Knowledge Databases'),
                 name: _t('Item List'),
                 priority: 50,
                 description: _t('Insert a List view of article items'),
@@ -161,7 +186,6 @@ Wysiwyg.include({
                         this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, restoreSelection, {
                             active_id: this.options.recordInfo.res_id,
                             default_parent_id: this.options.recordInfo.res_id,
-                            default_icon: '📄',
                             default_is_article_item: true,
                         });
                     });

@@ -47,4 +47,10 @@
         parent="knowledge_menu_configuration"
         groups="base.group_system"
         sequence="3"/>
+    <menuitem
+        id="knowledge_article_stage_menu"
+        name="Stages"
+        action="knowledge.knowledge_article_stage_action"
+        parent="knowledge_menu_configuration"
+        sequence="4"/>
 </odoo>

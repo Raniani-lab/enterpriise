@@ -90,10 +90,9 @@ class Article(models.Model):
     child_ids = fields.One2many(
         "knowledge.article", "parent_id", string="Child Articles and Items",
         copy=True)
+    has_item_parent = fields.Boolean('Is the parent an Item?', related='parent_id.is_article_item')
     has_item_children = fields.Boolean('Has article item children?', compute="_compute_has_article_children")
     has_article_children = fields.Boolean('Has normal article children?', compute="_compute_has_article_children")
-    has_item_parent = fields.Boolean('Is the parent an Item?', related='parent_id.is_article_item')
-    is_article_item = fields.Boolean('Is Item?', index=True)
     is_desynchronized = fields.Boolean(
         string="Desyncronized with parents",
         help="If set, this article won't inherit access rules from its parents anymore.")
@@ -105,6 +104,12 @@ class Article(models.Model):
         'knowledge.article', string="Menu Article", recursive=True,
         compute="_compute_root_article_id", store=True, compute_sudo=True, tracking=10,
         help="The subject is the title of the highest parent in the article hierarchy.")
+    # Item management
+    is_article_item = fields.Boolean('Is Item?', index=True)
+    stage_id = fields.Many2one('knowledge.article.stage', string="Item Stage",
+        compute='_compute_stage_id', store=True, readonly=False, tracking=True,
+        group_expand='_read_group_stage_ids', domain="[('parent_id', '=', parent_id)]")
+
     # categories and ownership
     category = fields.Selection(
         [('workspace', 'Workspace'), ('private', 'Private'), ('shared', 'Shared')],
@@ -253,6 +258,27 @@ class Article(models.Model):
                 ancestors += parent
                 parent = parent.parent_id
             articles.root_article_id = ancestors[-1:]
+
+    @api.depends('parent_id', 'is_article_item')
+    def _compute_stage_id(self):
+        articles = self.filtered(lambda article: not article.is_article_item)
+        articles.stage_id = False
+        if articles == self:
+            return
+
+        # Put the new article(s) in the first stage (specific by parent_id)
+        items = self - articles
+        results = self.env['knowledge.article.stage'].search_read(
+            [('parent_id', 'in', items.parent_id.ids)],
+            ['parent_id', 'id'])
+        stages_by_parent_id = dict()
+        # keep only the first stage by parent_id
+        for result in results:
+            parent_id = result['parent_id'][0] if result.get('parent_id') else False
+            if parent_id and not stages_by_parent_id.get(parent_id):
+                stages_by_parent_id[parent_id] = result['id']
+        for item in items:
+            item.stage_id = stages_by_parent_id.get(item.parent_id)
 
     @api.depends('parent_id', 'parent_id.inherited_permission_parent_id', 'internal_permission')
     def _compute_inherited_permission(self):
@@ -704,6 +730,12 @@ class Article(models.Model):
         vals_as_sudo = []
 
         for vals in vals_list:
+            # Set body to match title if any, or prepare a void header to ease
+            # article onboarding.
+            if "body" not in vals:
+                vals["body"] = Markup('<h1>%s</h1>') % vals["name"] if vals.get("name") \
+                               else Markup('<h1 class="oe-hint"><br></h1>')
+
             can_sudo = False
             # get values from vals or defaults
             member_ids = vals.get('article_member_ids') or defaults.get('article_member_ids') or False
@@ -855,6 +887,14 @@ class Article(models.Model):
             )
 
         return duplicates
+
+    @api.model
+    def _read_group_stage_ids(self, stages, domain, order):
+        search_domain = [('id', 'in', stages.ids)]
+        if self.env.context.get('default_parent_id'):
+            search_domain = expression.OR([[('parent_id', '=', self.env.context['default_parent_id'])], search_domain])
+        stage_ids = stages._search(search_domain, order=order)
+        return stages.browse(stage_ids)
 
     def _get_read_domain(self):
         """ Independently from admin bypass, give the domain allowing to read
@@ -1266,12 +1306,7 @@ class Article(models.Model):
             'parent_id': parent.id
         }
         if title:
-            values.update({
-                'body': Markup('<h1>%s</h1>') % title,
-                'name': title,
-            })
-        else:
-            values['body'] = Markup('<h1 class="oe-hint"><br></h1>')
+            values['name'] = title
 
         if parent:
             if not is_private and parent.category == "private":
@@ -2212,14 +2247,28 @@ class Article(models.Model):
     # BUSINESS METHODS
     # ------------------------------------------------------------
 
-    def render_embedded_view_link(self, act_window_id_or_xml_id, view_type, name, context=None):
+    def create_default_item_stages(self):
+        """ Need to create stages if this article has no stage yet. """
+        stage_count = self.env['knowledge.article.stage'].search_count(
+            [('parent_id', '=', self.id)])
+        if not stage_count:
+            self.env['knowledge.article.stage'].create([{
+                "name": stage_name,
+                "sequence": sequence,
+                "parent_id": self.id,
+                "fold": fold
+            } for stage_name, sequence, fold in [
+                (_("New"), 0, False), (_("Ongoing"), 1, False), (_("Done"), 2, True)]
+            ])
+
+    def render_embedded_view_link(self, act_window_id_or_xml_id, view_type, name, view_context):
         """
         Returns the HTML tag that will be recognized by the editor as a
         view link. This tag will contain all data needed to open the given view.
         :param int | str act_window_id_or_xml_id: id or xml id of the action
         :param str view_type: type of the view ('kanban', 'list', ...)
         :param str name: display name
-        :param dict context: context of the view
+        :param dict view_context: context of the view
 
         :return: rendered template for the view link
         """
@@ -2230,7 +2279,7 @@ class Article(models.Model):
             'knowledge.knowledge_view_link', {
                 'behavior_props': parse.quote(json.dumps({
                     'act_window': action_data,
-                    'context': context or {},
+                    'context': view_context or {},
                     'name': name,
                     'view_type': view_type,
                 }), safe='()*!\'')
@@ -2239,24 +2288,25 @@ class Article(models.Model):
             raise_if_not_found=False
         )
 
-    def render_embedded_view(self, act_window_id_or_xml_id, view_type, name, context=None):
+    def render_embedded_view(self, act_window_id_or_xml_id, view_type, name, view_context):
         """
         Returns the HTML tag that will be recognized by the editor as an embedded view.
         :param int | str act_window_id_or_xml_id: id or xml id of the action
         :param str view_type: type of the view ('kanban', 'list', ...)
         :param str name: display name
-        :param dict context: context of the view
+        :param dict view_context: context of the view
 
         :return: rendered template for embedded views
         """
         self.ensure_one()
         action_data = self._extract_act_window_data(act_window_id_or_xml_id, name)
         action_help = action_data.pop('help', None)
+
         return self.env['ir.qweb']._render(
             'knowledge.knowledge_embedded_view', {
                 'behavior_props': parse.quote(json.dumps({
                     'act_window': action_data,
-                    'context': context or {},
+                    'context': view_context or {},
                     'view_type': view_type,
                 }), safe='()*!\''),
                 'action_help': Markup(action_help) if action_help else False,

@@ -24,7 +24,7 @@ registry.category("web_tour.tours").add("knowledge_search_favorites_tour", {
         },
         // Create the first Kanban
         {
-            trigger: ".odoo-editor-editable > p",
+            trigger: ".odoo-editor-editable > h1",
             run: function () {
                 openCommandBar(this.$anchor[0]);
             },
@@ -41,7 +41,7 @@ registry.category("web_tour.tours").add("knowledge_search_favorites_tour", {
         },
         // Create the second Kanban
         {
-            trigger: ".odoo-editor-editable > p",
+            trigger: ".odoo-editor-editable > h1",
             run: function () {
                 openCommandBar(this.$anchor[0]);
             },

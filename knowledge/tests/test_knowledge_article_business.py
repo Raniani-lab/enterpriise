@@ -129,6 +129,8 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonBusinessCase):
             'internal_permission': 'none',
             'name': 'AdminPrivate',
         })
+        # If no body given at create, make it reflect article title.
+        self.assertEqual(private_nonmember.body, "<h1>AdminPrivate</h1>")
         _title = 'Fthagn, but with parent private none: cracboum'
         with self.assertRaises(exceptions.AccessError):
             Article.article_create(title=_title, parent_id=private_nonmember.id, is_private=False)

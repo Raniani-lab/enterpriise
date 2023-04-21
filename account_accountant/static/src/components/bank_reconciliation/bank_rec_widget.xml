@@ -136,20 +136,21 @@
     <t t-name="account_accountant.bank_rec_widget_form_lines_widget" owl="1">
         <t t-set="data" t-value="getRenderValues()"/>
         <div class="o_list_renderer table-responsive">
-                <table class="o_list_table table table-sm position-relative mb-0 o_list_table_ungrouped table-striped o_bank_rec_lines_widget_table"
-                       style="table-layout: fixed">
+                <table class="o_list_table table table-sm position-relative mb-0 o_list_table_ungrouped table-striped o_bank_rec_lines_widget_table">
                     <thead>
-                        <t t-foreach="data.columns" t-as="column" t-key="column[0]">
-                            <t t-if="['amount_currency', 'debit', 'credit'].includes(column[0])">
-                                <th class="o_list_number_th text-end" t-out="column[1]"/>
+                        <tr>
+                            <t t-foreach="data.columns" t-as="column" t-key="column[0]">
+                                <t t-if="['amount_currency', 'debit', 'credit'].includes(column[0])">
+                                    <th class="o_list_number_th text-end" t-out="column[1]"/>
+                                </t>
+                                <t t-elif="column[0] === '__trash'">
+                                    <th class="o_list_actions_header"/>
+                                </t>
+                                <t t-else="">
+                                    <th t-out="column[1]"/>
+                                </t>
                             </t>
-                            <t t-elif="column[0] === '__trash'">
-                                <th class="o_list_actions_header"/>
-                            </t>
-                            <t t-else="">
-                                <th t-out="column[1]"/>
-                            </t>
-                        </t>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr/> <!-- This is a hack to start from dark strip in the table layout -->

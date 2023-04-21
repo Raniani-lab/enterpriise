@@ -278,6 +278,47 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         response = self.url_open(url_inactive_past_slot)
         self.assertEqual(response.status_code, 404, "Response should be Page Not Found (404)")
 
+    @freeze_time('2023-04-23')
+    def test_booking_validity_timezone(self):
+        """
+        When the utc offset of the timezone is large, it is possible that the day of the week no longer corresponds.
+        It is necessary to take this into account when checking the slots.
+        """
+        appointment = self.env['appointment.type'].create({
+            'appointment_tz': 'Pacific/Auckland',
+            'appointment_duration': 1,
+            'assign_method': 'time_auto_assign',
+            'category': 'website',
+            'location_id': self.staff_user_nz.partner_id.id,
+            'name': 'New Zealand Appointment',
+            'max_schedule_days': 15,
+            'min_cancellation_hours': 1,
+            'min_schedule_hours': 1,
+            'slot_ids': [
+                (0, False, {'weekday': weekday,
+                            'start_hour': hour,
+                            'end_hour': hour + 1,
+                           })
+                for weekday in ['1']
+                for hour in range(9, 12)
+            ],
+            'staff_user_ids': [(4, self.staff_user_nz.id)],
+        })
+        session = self.authenticate(None, None)
+        session['timezone'] = appointment.appointment_tz
+        odoo.http.root.session_store.save(session)
+        appointment_invite = self.env['appointment.invite'].create({'appointment_type_ids': appointment.ids})
+        appointment_url = url_join(appointment.get_base_url(), '/appointment/%s' % appointment.id)
+        appointment_info_url = "%s/info?" % appointment_url
+        url = appointment_info_url + url_encode({
+            'staff_user_id': self.staff_user_nz.id,
+            'date_time': datetime(2023, 4, 24, 9, 0),
+            'duration': 1,
+            **appointment_invite._get_redirect_url_parameters(),
+        })
+        response = self.url_open(url)
+        self.assertEqual(response.status_code, 200, "Response should be Ok (200)")
+
     @users('apt_manager')
     def test_customer_event_description(self):
         """Check calendar file description generation."""

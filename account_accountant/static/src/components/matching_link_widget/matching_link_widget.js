@@ -12,8 +12,13 @@ class MatchingLink extends Component {
     }
 
     async reconcile() {
-        const action = await this.orm.call("account.move.line", "action_reconcile", [this.props.record.resId], {});
-        this.action.doAction(action);
+        console.log(this.props)
+        this.action.doAction("account_accountant.action_move_line_posted_unreconciled", {
+            additionalContext: {
+                search_default_partner_id: this.props.record.data.partner_id[0],
+                search_default_account_id: this.props.record.data.account_id[0],
+            },
+        });
     }
 
     async viewMatch() {

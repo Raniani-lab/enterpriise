@@ -17,16 +17,7 @@ class account_journal(models.Model):
             )
         else:
             # Open reconciliation view for customers/suppliers
-            action_context = {'show_mode_selector': False, 'company_ids': self.mapped('company_id').ids}
-            if self.type == 'sale':
-                action_context.update({'mode': 'customers'})
-            elif self.type == 'purchase':
-                action_context.update({'mode': 'suppliers'})
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'manual_reconciliation_view',
-                'context': action_context,
-            }
+            return self.env.ref('account_accountant.action_move_line_posted_unreconciled')
 
     def action_open_to_check(self):
         self.ensure_one()

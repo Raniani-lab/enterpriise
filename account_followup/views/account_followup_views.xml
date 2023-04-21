@@ -22,9 +22,8 @@
                                 type="action" class="button btn-primary" attrs="{'invisible': [('followup_status', '!=', 'in_need_of_action')]}"/>
                         <button string="Follow up" name="%(manual_reminder_action)d"
                                 type="action" class="button btn-secondary" attrs="{'invisible': [('followup_status', '=', 'in_need_of_action')]}"/>
-                        <button string="Reconcile" name="%(account_accountant.action_manual_reconciliation)d"
-                                class="btn btn-secondary" type="action"
-                                context="{'mode': 'customers', 'partner_ids': active_ids, 'all_entries': True}"/>
+                        <button string="Reconcile" name="action_open_unreconciled_partner"
+                                class="btn btn-secondary" type="object"/>
                         <field name="followup_line_id" widget="statusbar" options="{'clickable': '1'}"/>
                     </header>
                     <sheet>

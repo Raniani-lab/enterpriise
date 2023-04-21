@@ -3436,25 +3436,6 @@ class AccountReport(models.Model):
         action['context'] = {}
         return action
 
-    def action_partner_reconcile(self, options, params):
-        model, model_id = self._get_model_info_from_id(params['line_id'])
-
-        if model != 'res.partner':
-            raise UserError(_("Can't open partner reconciliation for line id %s ; model should res.partner.", params['line_id']))
-
-        form = self.env.ref('account_accountant.action_manual_reconciliation').sudo()
-        return {
-            'type': 'ir.actions.client',
-            'view_id': form.id,
-            'tag': form.tag,
-            'context': {
-                **self._context,
-                'partner_ids': [model_id] if model_id is not None else None,
-                'active_id': model_id,
-                'all_entries': True,
-            },
-        }
-
     def action_modify_manual_value(self, options, column_group_key, new_value_str, target_expression_id, rounding, json_friendly_column_group_totals):
         """ Edit a manual value from the report, updating or creating the corresponding account.report.external.value object.
 

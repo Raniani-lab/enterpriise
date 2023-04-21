@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+import ast
 import logging
 from odoo import api, fields, models, _
 from odoo.tools.misc import format_date
@@ -166,6 +166,13 @@ class ResPartner(models.Model):
             'partner_id': self.id
         }
         return action
+
+    def action_open_unreconciled_partner(self):
+        action_values = self.env["ir.actions.actions"]._for_xml_id("account_accountant.action_move_line_posted_unreconciled")
+        domain = ast.literal_eval(action_values['domain'])
+        domain.append(('partner_id', 'in', self.ids))
+        action_values['domain'] = domain
+        return action_values
 
     @api.depends('invoice_ids')
     @api.depends_context('company', 'allowed_company_ids')

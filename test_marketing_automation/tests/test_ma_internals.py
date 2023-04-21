@@ -63,6 +63,16 @@ class MarketingCampaignTest(TestMACommon):
 
     @users('user_markauto')
     @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
+    def test_internals_participants_compute(self):
+        """Check that the participant compute method works with empty campaign."""
+        campaign = self.env['marketing.campaign'].create({
+            'name': 'My First Campaign',
+            'model_id': self.env['ir.model']._get('marketing.test.sms').id,
+        })
+        self.assertEqual(campaign.total_participant_count, 0)
+
+    @users('user_markauto')
+    @mute_logger('odoo.addons.base.ir.ir_model', 'odoo.models')
     def test_internals_unique_field(self):
         # initial data: 0-1-2 have unique partners, 3-4 are void, 4 will receive same partner as 0 to test uniqueness
         test_records = self.test_records[:5]

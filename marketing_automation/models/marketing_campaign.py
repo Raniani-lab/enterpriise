@@ -135,7 +135,7 @@ class MarketingCampaign(models.Model):
             else:
                 mapped_data[campaign.id][state] = count
         for campaign in self:
-            campaign_data = mapped_data.get(campaign.id)
+            campaign_data = mapped_data[campaign.id]
             campaign.running_participant_count = campaign_data.get('running', 0)
             campaign.completed_participant_count = campaign_data.get('completed', 0)
             campaign.total_participant_count = campaign.completed_participant_count + campaign.running_participant_count

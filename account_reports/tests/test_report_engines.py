@@ -1018,3 +1018,57 @@ class TestReportEngines(TestAccountReportsCommon):
             expr_map['CROSS_REPORT_AGG']._expand_aggregations(),
             expr_map['CROSS_REPORT_AGG'] + expr_map['SIMPLE_AGG'] + expr_map['BOUNDED_AGG'] + expr_map['TAG_1'] + expr_map['TAG_2'] + expr_map['TAG_3'],
         )
+
+    def test_load_more(self):
+        partner_a, partner_b, partner_c = self.env['res.partner'].create([
+            {'name': 'Partner A'},
+            {'name': 'Partner B'},
+            {'name': 'Partner C'},
+        ])
+
+        self._create_test_account_moves([
+            self._prepare_test_account_move_line(1000.0, partner_id=partner_a.id, date='2020-01-01'),
+            self._prepare_test_account_move_line(2000.0, partner_id=partner_b.id, date='2020-01-01'),
+            self._prepare_test_account_move_line(3000.0, partner_id=partner_c.id, date='2020-01-01'),
+        ])
+
+        report = self._create_report(
+            test_report_line_values_list=[self._prepare_test_report_line(
+                self._prepare_test_expression_domain([('partner_id', '!=', False)], 'sum'),
+                groupby='partner_id',
+            )],
+            load_more_limit=2,
+        )
+
+        options = self._generate_options(report, '2020-01-01', '2020-01-31')
+        lines = report._get_lines(options)
+
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            lines,
+            [   0,                                1],
+            [
+                ('test_line_1',     '$ 6,000.00'),
+                ('Partner A',       '$ 1,000.00'),
+                ('Partner B',       '$ 2,000.00'),
+                ('Load more...',                 ''),
+            ]
+        )
+
+        load_more_line = lines[-1]
+        load_more_res = report._get_custom_report_function(load_more_line['expand_function'], 'expand_unfoldable_line')(
+            load_more_line['id'],
+            load_more_line['groupby'],
+            options,
+            load_more_line['progress'],
+            load_more_line['offset']
+        )['lines']
+
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            load_more_res,
+            [   0,                                1],
+            [
+                ('Partner C',       '$ 3,000.00'),
+            ]
+        )

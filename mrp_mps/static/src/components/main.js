@@ -7,7 +7,6 @@ import { MasterProductionScheduleModel } from '@mrp_mps/models/master_production
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { CheckBox } from "@web/core/checkbox/checkbox";
-import { getDefaultConfig } from "@web/views/view";
 import { usePager } from "@web/search/pager_hook";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { WithSearch } from "@web/search/with_search/with_search";
@@ -37,7 +36,7 @@ class MainComponent extends Component {
             model: this.model,
             defaultPageLimit: 20,
             config: {
-                ...getDefaultConfig(),
+                ...this.env.config,
                 offset: 0,
                 limit: 20,
                 mpsImportRecords: true,

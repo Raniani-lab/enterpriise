@@ -82,6 +82,9 @@
         <field name="model">sign.request</field>
         <field name="arch" type="xml">
             <tree multi_edit="1" sample="1" js_class="sign_list" decoration-info="state in ('shared', 'sent')" decoration-muted="state in ('refused', 'canceled')">
+                <header>
+                    <button type="object" name="send_signature_accesses" class="btn btn-secondary" string="Resend"/>
+                </header>
                 <field name="reference" readonly="1"/>
                 <field name="template_id" readonly="1" optional="hide"/>
                 <field name="state" readonly="1"/>

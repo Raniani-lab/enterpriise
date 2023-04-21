@@ -728,7 +728,7 @@ class AccountReport(models.Model):
     @api.model
     def _get_options_unreconciled_domain(self, options):
         if options.get('unreconciled'):
-            return [('reconciled', '=', False)]
+            return ['&', ('full_reconcile_id', '=', False), ('balance', '!=', '0')]
         return []
 
     ####################################################

@@ -460,3 +460,43 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Total',                            378.0,            0.0,            378.0),
             ],
         )
+
+    def test_filter_unreconciled_entries_only(self):
+        new_partner = self.env['res.partner'].create({'name': 'Obiwan Kenobi'})
+        move_1 = self.init_invoice('out_invoice', partner=new_partner, invoice_date='2019-01-01', amounts=[1000.0], taxes=[], post=True)
+        move_2 = self.init_invoice('out_invoice', partner=new_partner, invoice_date='2019-01-01', amounts=[5000.0], taxes=[], post=True)
+
+        self.env['account.payment.register'].create({
+            'payment_date': '2019-01-01',
+            'line_ids': move_1.line_ids.filtered(lambda l: l.display_type == 'payment_term'),
+            'amount': 700.0,
+        })._create_payments()
+        self.env['account.payment.register'].create({
+            'payment_date': '2019-01-01',
+            'line_ids': move_2.line_ids.filtered(lambda l: l.display_type == 'payment_term'),
+        })._create_payments()
+
+        self.assertEqual(move_1.payment_state, 'partial')
+        self.assertEqual(move_2.payment_state, 'in_payment')
+
+        options = self._generate_options(self.report, '2019-01-01', '2019-12-31', default_options={'partner_ids': new_partner.ids})
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                                      Debit              Credit            Balance
+            [   0,                                            6,                  7,                9],
+            [
+                ('Obiwan Kenobi',                        6000.0,             5700.0,             300.0),
+                ('Total',                                6000.0,             5700.0,             300.0),
+            ]
+        )
+
+        options['unreconciled'] = True
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                                      Debit              Credit            Balance
+            [   0,                                            6,                  7,                9],
+            [
+                ('Obiwan Kenobi',                        1000.0,             700.0,             300.0),
+                ('Total',                                1000.0,             700.0,             300.0),
+            ]
+        )

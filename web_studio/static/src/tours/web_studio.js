@@ -7,7 +7,7 @@ import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add("web_studio_home_menu_background_tour", {
     url: "/web",
-    sequence: 260,
+    sequence: 1260,
     steps: [
         {
             trigger: ".o_web_studio_navbar_item",
@@ -33,7 +33,7 @@ registry.category("web_tour.tours").add("web_studio_home_menu_background_tour", 
 
 registry.category("web_tour.tours").add("web_studio_new_app_tour", {
     url: "/web#action=studio&mode=home_menu",
-    sequence: 270,
+    sequence: 1270,
     steps: [
         {
             trigger: ".o_web_studio_new_app",

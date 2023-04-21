@@ -290,7 +290,7 @@ class AppointmentType(models.Model):
 
     def _slots_generate(self, first_day, last_day, timezone, reference_date=None):
         """ Generate all appointment slots (in naive UTC, appointment timezone, and given (visitors) timezone)
-            between first_day and last_day (datetimes in appointment timezone)
+            between first_day and last_day
 
         :param datetime first_day: beginning of appointment check boundary. Timezoned to UTC;
         :param datetime last_day: end of appointment check boundary. Timezoned to UTC;
@@ -366,8 +366,8 @@ class AppointmentType(models.Model):
             # Regular recurring slots (not a custom appointment), generate necessary slots using configuration rules
             slot_weekday = [int(weekday) - 1 for weekday in self.slot_ids.mapped('weekday')]
             for day in rrule.rrule(rrule.DAILY,
-                                dtstart=first_day.date(),
-                                until=last_day.date(),
+                                dtstart=first_day.astimezone(appt_tz).date(),
+                                until=last_day.astimezone(appt_tz).date(),
                                 byweekday=slot_weekday):
                 for slot in self.slot_ids.filtered(lambda x: int(x.weekday) == day.isoweekday()):
                     append_slot(day, slot)
@@ -590,7 +590,6 @@ class AppointmentType(models.Model):
         if not reference_date:
             reference_date = datetime.utcnow()
 
-        appt_tz = pytz.timezone(self.appointment_tz)
         requested_tz = pytz.timezone(timezone)
 
         appointment_duration_days = self.max_schedule_days
@@ -609,8 +608,8 @@ class AppointmentType(models.Model):
 
         # Compute available slots (ordered)
         slots = self._slots_generate(
-            first_day.astimezone(appt_tz),
-            last_day.astimezone(appt_tz),
+            first_day.astimezone(pytz.utc),
+            last_day.astimezone(pytz.utc),
             timezone,
             reference_date=reference_date
         )

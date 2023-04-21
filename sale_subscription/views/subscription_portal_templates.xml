@@ -32,14 +32,14 @@
                                 </div>
                                 <t t-if="subscription.subscription_state in ['3_progress', '4_paused', '6_churn']">
                                     <!-- User is logged in under the partner set on the subscription -->
-                                    <t t-if="user.partner_id == subscription.partner_id">
+                                    <t t-if="enable_manage_payment_form">
                                         <a role="button" class="btn btn-secondary btn-block mb-2 w-100" data-bs-toggle="modal" data-bs-target="#payment_managing" href="#">
                                             <t t-if="subscription.payment_token_id">Manage Payment Method</t>
                                             <t t-else="">Set Payment Method</t>
                                         </a>
                                     </t>
                                     <!-- User is logged in under a partner different than that set on the subscription -->
-                                    <button t-elif="not user._is_public() and user.partner_id != subscription.partner_id"
+                                    <button t-elif="not user._is_public()"
                                             title="Managing payment methods requires to be logged in under the customer order."
                                             href="#"
                                             disabled="true"

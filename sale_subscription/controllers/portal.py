@@ -116,6 +116,9 @@ class CustomerPortal(payment_portal.PaymentPortal):
             return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
         active_plan_sudo = order_sudo.sale_order_template_id.sudo()
         display_close = active_plan_sudo.user_closable and order_sudo.subscription_state == '3_progress'
+        is_portal_user = request.env.user.has_group('base.group_portal')
+
+        enable_manage_payment_form = is_portal_user and request.env.user.partner_id in (order_sudo.partner_id.child_ids | order_sudo.partner_id)
         is_follower = request.env.user.partner_id in order_sudo.message_follower_ids.partner_id
         periods = {'day': 'days', 'week': 'weeks', 'month': 'months', 'year': 'years'}
         # Calculate the duration when the customer can reopen his subscription
@@ -138,6 +141,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'message': message,
             'message_class': message_class,
             'pricelist': order_sudo.pricelist_id.sudo(),
+            'enable_manage_payment_form': enable_manage_payment_form
         }
         payment_values = {
             **SalePortal._get_payment_values(

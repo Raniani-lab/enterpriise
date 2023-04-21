@@ -47,28 +47,34 @@ class ShareRoute(http.Controller):
 
     @classmethod
     def _get_downloadable_documents(cls, documents):
-        """ file requests are not downloadable """
-        return documents.filtered(lambda d: d.type != "empty")
+        """Only files are downloadable."""
+        return documents.filtered(lambda d: d.type == "binary")
 
     @classmethod
     def _make_zip(cls, name, documents):
+        streams = (
+            request.env['ir.binary']._get_stream_from(document, 'raw')
+            for document in cls._get_downloadable_documents(documents)
+        )
+        return cls._generate_zip(name, streams)
+
+    @classmethod
+    def _generate_zip(cls, name, file_streams):
         """returns zip files for the Document Inspector and the portal.
 
         :param name: the name to give to the zip file.
-        :param documents: files (documents.document) to be zipped.
+        :param file_streams: binary file streams to be zipped.
         :return: a http response to download a zip file.
         """
         # TODO: zip on-the-fly while streaming instead of loading the
         #       entire zip in memory and sending it all at once.
 
         stream = io.BytesIO()
-        documents.check_access_rule('read')
         try:
             with zipfile.ZipFile(stream, 'w') as doc_zip:
-                for document in cls._get_downloadable_documents(documents):
-                    if document.type != 'binary':
+                for binary_stream in file_streams:
+                    if not binary_stream:
                         continue
-                    binary_stream = request.env['ir.binary']._get_stream_from(document, 'raw')
                     doc_zip.writestr(
                         binary_stream.download_name,
                         binary_stream.read(),  # Cf Todo: this is bad
@@ -239,8 +245,9 @@ class ShareRoute(http.Controller):
         :param zip_name: name of the zip file.
         """
         ids_list = [int(x) for x in file_ids.split(',')]
-        env = request.env
-        response = self._make_zip(zip_name, env['documents.document'].browse(ids_list))
+        documents = request.env['documents.document'].browse(ids_list)
+        documents.check_access_rights('read')
+        response = self._make_zip(zip_name, documents)
         return response
 
     @http.route(["/document/download/all/<int:share_id>/<access_token>"], type='http', auth='public')
@@ -254,13 +261,22 @@ class ShareRoute(http.Controller):
         try:
             share = env['documents.share'].sudo().browse(share_id)
             documents = share._get_documents_and_check_access(access_token, operation='read')
-            if documents:
-                return self._make_zip((share.name or 'unnamed-link') + '.zip', documents)
-            else:
-                return request.not_found()
+            if not documents:
+                raise request.not_found()
+            streams = (
+                self._get_share_zip_data_stream(share, document)
+                for document in documents
+            )
+            return self._generate_zip((share.name or 'unnamed-link') + '.zip', streams)
         except Exception:
             logger.exception("Failed to zip share link id: %s" % share_id)
-        return request.not_found()
+        raise request.not_found()
+
+    @classmethod
+    def _get_share_zip_data_stream(cls, share, document):
+        if document == cls._get_downloadable_documents(document):
+            return request.env['ir.binary']._get_stream_from(document, 'raw')
+        return False
 
     @http.route([
         "/document/avatar/<int:share_id>/<access_token>",

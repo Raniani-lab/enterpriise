@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import _
-from odoo.exceptions import AccessError
+from odoo.http import request
+from odoo.exceptions import AccessError, MissingError
 from odoo.addons.documents.controllers.documents import ShareRoute
 
 class SpreadsheetShareRoute(ShareRoute):
@@ -19,3 +20,17 @@ class SpreadsheetShareRoute(ShareRoute):
         if any(doc.handler == "spreadsheet" for doc in documents):
             raise AccessError(_("You cannot upload spreadsheets in a shared folder"))
         return documents
+
+    @classmethod
+    def _get_share_zip_data_stream(cls, share, document):
+        if document.handler == "spreadsheet":
+            spreadsheet_copy = share.freezed_spreadsheet_ids.filtered(
+                lambda s: s.document_id == document
+            )
+            try:
+                return request.env["ir.binary"]._get_stream_from(
+                    spreadsheet_copy, "excel_export", filename=document.name
+                )
+            except MissingError:
+                return False
+        return super()._get_share_zip_data_stream(share, document)

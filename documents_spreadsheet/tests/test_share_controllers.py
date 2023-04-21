@@ -1,6 +1,9 @@
 import json
 import base64
+
+from io import BytesIO
 from urllib.parse import urlparse
+from zipfile import ZipFile
 
 from odoo.tests.common import HttpCase, new_test_user
 from odoo.tools import mute_logger
@@ -99,3 +102,23 @@ class TestShareController(SpreadsheetTestCommon, HttpCase):
         with mute_logger('odoo.http'):  # mute 403 warning
             response = self.url_open(f"/document/download/{share.id}/{share.access_token}/{other_spreadsheet.id}")
         self.assertEqual(response.status_code, 403)
+
+    def test_download_all_document(self):
+        spreadsheet = self.create_spreadsheet()
+        share = self.share_spreadsheet(spreadsheet)
+        share.freezed_spreadsheet_ids.excel_export = base64.b64encode(b"test")
+        response = self.url_open(f"/document/download/all/{share.id}/{share.access_token}")
+        self.assertEqual(response.status_code, 200)
+        with ZipFile(BytesIO(response.content)) as zip_file:
+            self.assertEqual(len(zip_file.filelist), 1)
+            file_content = zip_file.open(zip_file.filelist[0]).read()
+            self.assertEqual(file_content, b"test")
+
+    def test_download_all_document_with_missing_excel_file(self):
+        spreadsheet = self.create_spreadsheet()
+        share = self.share_spreadsheet(spreadsheet)
+        share.freezed_spreadsheet_ids.excel_export = False
+        response = self.url_open(f"/document/download/all/{share.id}/{share.access_token}")
+        self.assertEqual(response.status_code, 200)
+        with ZipFile(BytesIO(response.content)) as zip_file:
+            self.assertEqual(len(zip_file.filelist), 0)

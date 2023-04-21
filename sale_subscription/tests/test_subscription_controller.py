@@ -221,13 +221,26 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 }
         self._make_json_rpc_request(url, data)
         invoice_transactions = subscription.invoice_ids.transaction_ids
-        self.assertEqual(len(invoice_transactions), 1, "Only one transaction should be created")
+        self.assertEqual(len(invoice_transactions), 2, "Two transactions should be created. Calling /my/subscription/transaction/ creates a new one")
         last_transaction_id = subscription.transaction_ids - first_transaction_id
         self.assertEqual(len(subscription.transaction_ids), 2)
         self.assertEqual(last_transaction_id.sale_order_ids, subscription)
         self.assertEqual(last_transaction_id.reference, "test_automatic_invoice_token",
                          "The reference should come from the prefix")
         last_transaction_id._set_done()
-        self.assertEqual(subscription.invoice_ids.mapped('state'), ['posted'])
-        self.assertTrue(subscription.invoice_ids.payment_state in ['paid', 'in_payment'])
+        self.assertEqual(subscription.invoice_ids.mapped('state'), ['posted', 'draft'])
+        subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
+        subscription.transaction_ids._reconcile_after_done()  # Create the payment
+        # subscription has a payment_token_id, the invoice is created by the flow.
+        subscription.invoice_ids.invoice_line_ids.account_id.account_type = 'asset_cash'
+        subscription.invoice_ids.auto_post = 'at_date'
+        subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
+        self.env['account.payment.register'] \
+            .with_context(active_model='account.move', active_ids=subscription.invoice_ids.ids) \
+            .create({
+            'currency_id': subscription.currency_id.id,
+            'amount': subscription.amount_total,
+        })._create_payments()
+        self.assertFalse(set(subscription.invoice_ids.mapped('payment_state')) & {'not_paid', 'partial'},
+                         "All invoices should be in paid or in_payment status")
         return subscription

@@ -195,16 +195,23 @@ class PaymentPortal(payment_portal.PaymentPortal):
             'callback_res_id': order_sudo.id,
         }
         if not is_validation:  # Renewal transaction
+            unpaid_invoice_sudo = order_sudo.invoice_ids.filtered(lambda am: am.state == 'posted' and am.payment_state not in ['paid', 'in_payment'])
+            draft_invoice_sudo = order_sudo.invoice_ids.filtered(lambda am: am.state == 'draft')
+            invoice_sudo = unpaid_invoice_sudo or draft_invoice_sudo
+            if not invoice_sudo:
+                invoice_sudo = order_sudo.with_context(lang=order_sudo.partner_id.lang,) \
+                    ._create_invoices(final=True)
             kwargs.update({
-                'amount': order_sudo.amount_total,
+                'amount': invoice_sudo.amount_total,
                 'currency_id': order_sudo.currency_id.id,
                 'tokenization_requested': True,  # Renewal transactions are always tokenized
             })
-            # Create the transaction. The `invoice_ids` field is populated later with the final inv.
+            # Create the transaction.
             tx_sudo = self._create_transaction(
                 custom_create_values={
                     **common_callback_values,
                     'sale_order_ids': [Command.set([order_id])],
+                    'invoice_ids': [Command.set([invoice_sudo.id])],
                     'callback_method': '_reconcile_and_assign_token',
                 },
                 is_validation=is_validation,

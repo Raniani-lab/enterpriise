@@ -237,7 +237,7 @@ class MrpReport(models.Model):
     def _read_group_select(self, aggregate_spec, query):
         if aggregate_spec in ('unit_cost:avg', 'unit_component_cost:avg', 'unit_operation_cost:avg', 'unit_duration:avg'):
             # Make a weigthed average instead of simple average for these fields
-            fname, __ = models.parse_read_group_spec(aggregate_spec)
+            fname, *__ = models.parse_read_group_spec(aggregate_spec)
             field_expression = self._inherits_join_calc(self._table, fname, query)
             qty_produced_expression = self._inherits_join_calc(self._table, 'qty_produced', query)
             sql_expression = f'SUM({field_expression} * {qty_produced_expression}) / SUM({qty_produced_expression})'

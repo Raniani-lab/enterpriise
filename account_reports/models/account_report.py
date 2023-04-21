@@ -3921,13 +3921,13 @@ class AccountReport(models.Model):
         if ',' not in groupby and not self._context.get('print_mode'):
             # if ',' not in groupby, then its a terminal groupby (like 'id' in 'partner_id, id'), so we can use the 'load more' feature if necessary
             # When printing, we want to ignore the limit.
-            limit_to_load = self.load_more_limit + 1 if self.load_more_limit else None
+            limit_to_load = self.load_more_limit or None
         else:
             # Else, we disable it
             limit_to_load = None
             offset = 0
 
-        rslt_lines = line._expand_groupby(line_dict_id, groupby, options, offset=offset, limit=limit_to_load, unfold_all_batch_data=unfold_all_batch_data)
+        rslt_lines = line._expand_groupby(line_dict_id, groupby, options, offset=offset, limit=limit_to_load, load_one_more=bool(limit_to_load), unfold_all_batch_data=unfold_all_batch_data)
         lines_to_load = rslt_lines[:self.load_more_limit] if limit_to_load else rslt_lines
 
         if not limit_to_load and not self._context.get('print_mode'):
@@ -4802,7 +4802,7 @@ class AccountReport(models.Model):
 class AccountReportLine(models.Model):
     _inherit = 'account.report.line'
 
-    def _expand_groupby(self, line_dict_id, groupby, options, offset=0, limit=None, unfold_all_batch_data=None):
+    def _expand_groupby(self, line_dict_id, groupby, options, offset=0, limit=None, load_one_more=False, unfold_all_batch_data=None):
         """ Expand function used to get the sublines of a groupby.
         groupby param is a string consisting of one or more coma-separated field names. Only the first one
         will be used for the expansion; if there are subsequent ones, the generated lines will themselves used them as
@@ -4852,7 +4852,7 @@ class AccountReportLine(models.Model):
                 options,
                 groupby_to_expand=groupby,
                 offset=offset,
-                limit=limit
+                limit=limit + 1 if limit and load_one_more else limit,
             )
 
         # Put similar grouping keys from different totals/periods together, so that we don't display multiple
@@ -4917,11 +4917,21 @@ class AccountReportLine(models.Model):
 
         if groupby_model:
             browsed_groupby_keys = self.env[groupby_model].browse(list(key for key in group_lines_by_keys if key is not None))
-            for record in browsed_groupby_keys.with_context(active_test=False).sorted():
+
+            out_of_sorting_record = None
+            records_to_sort = browsed_groupby_keys
+            if browsed_groupby_keys and load_one_more and len(browsed_groupby_keys) >= limit:
+                out_of_sorting_record = browsed_groupby_keys[-1]
+                records_to_sort = records_to_sort[:-1]
+
+            for record in records_to_sort.with_context(active_test=False).sorted():
                 keys_and_names_in_sequence[record.id] = record.display_name
 
             if None in group_lines_by_keys:
                 keys_and_names_in_sequence[None] = _("Unknown")
+
+            if out_of_sorting_record:
+                keys_and_names_in_sequence[out_of_sorting_record.id] = out_of_sorting_record.display_name
 
         else:
             for non_relational_key in sorted(group_lines_by_keys.keys()):

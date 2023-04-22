@@ -53,6 +53,9 @@ msgid ""
 "                <span>We don't automatically resize your image to avoid undesired result.</span><br/>\n"
 "                <span>More information on:</span>"
 msgstr ""
+"<span>Ihr Bild muss das von Instagram geforderte Seitenverhältnis von 4:5 und 1,91:1 haben.</span><br/>\n"
+"                <span>Wir passen die Bildgröße nicht automatisch an, um unerwünschte Ergebnisse zu vermeiden.</span><br/>\n"
+"                <span>Weitere Informationen auf:</span>"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_post__instagram_access_token
@@ -139,6 +142,8 @@ msgid ""
 "Instagram Access Token provided by the Facebook API, this should never be set manually.\n"
 "        It's used to authenticate requests when posting to or reading information from this account."
 msgstr ""
+"Von der Facebook-API zu Verfügung gestellte Instagram-Zugriffstoken. Dieses sollte niemals manuell eingestellt werden.\n"
+"        Es wird verwendet, um Anfragen zu authentifizieren, wenn Sie Informationen von diesem Konto lesen oder auf diesem Konto posten."
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_account__instagram_account_id
@@ -175,17 +180,17 @@ msgstr "Instagram-Kommentare"
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.res_config_settings_view_form
 msgid "Instagram Developer Account"
-msgstr ""
+msgstr "Instagram-Entwicklerkonto"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_account__instagram_facebook_account_id
 msgid "Instagram Facebook Account ID"
-msgstr ""
+msgstr "Instagram-Facebook-Konto-ID"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_stream_post__instagram_facebook_author_id
 msgid "Instagram Facebook Author ID"
-msgstr ""
+msgstr "Instagram-Facebook-Autor-ID"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_post__instagram_image_id
@@ -305,6 +310,8 @@ msgid ""
 "The Facebook ID of this Instagram post author, used to fetch the profile "
 "picture."
 msgstr ""
+"Die Facebook-ID des Autors dieses Instagram-Posts, die verwendet wird, um "
+"das Profilbild abzurufen."
 
 #. module: social_instagram
 #. odoo-python
@@ -367,6 +374,8 @@ msgid ""
 "Your image has to be within the 4:5 and the 1.91:1 aspect ratio as required "
 "by Instagram."
 msgstr ""
+"Ihr Bild muss das von Instagram geforderte Seitenverhältnis von 4:5 und "
+"1,91:1 haben"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview

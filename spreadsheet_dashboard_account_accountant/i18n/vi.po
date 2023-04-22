@@ -1029,7 +1029,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "giai đoạn trước"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

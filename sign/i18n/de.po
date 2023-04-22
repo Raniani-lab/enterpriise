@@ -745,6 +745,8 @@ msgstr "Kontrollkästchen"
 #: model:ir.model.fields,help:sign.field_sign_template__is_sharing
 msgid "Checked if this template has created a shared document for you"
 msgstr ""
+"Angekreuzt, wenn diese Vorlage ein für Sie freigegebenes Dokument erstellt "
+"hat"
 
 #. module: sign
 #. odoo-javascript
@@ -1403,6 +1405,8 @@ msgid ""
 "For 1000kg of paper usage, with 10% of recycled paper, environmental savings"
 " are based on"
 msgstr ""
+"Bei einem Papierverbrauch von 1000 kg und einem Anteil von 10 % "
+"Recyclingpapier ergeben sich Umwelteinsparungen von"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_role__auth_method
@@ -1423,12 +1427,12 @@ msgstr "Rahmen"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__frame_has_hash
 msgid "Frame Has Hash"
-msgstr ""
+msgstr "Rahmen hat Hash"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__frame_hash
 msgid "Frame Hash"
-msgstr ""
+msgstr "Rahmenhash"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__frame_value
@@ -1528,7 +1532,7 @@ msgstr "Hallo"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__tip
 msgid "Hint displayed in the signing hint"
-msgstr ""
+msgstr "Hinweis, der im Signaturhinweis angezeigt wird"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -1548,7 +1552,7 @@ msgstr "Wie berechnen wir?"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "I've got a total weight, and now?"
-msgstr ""
+msgstr "Ich habe ein Gesamtgewicht und jetzt?"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__id
@@ -1605,6 +1609,9 @@ msgid ""
 "having sent the request. Useful to replace a signatory who is out of office,"
 " etc."
 msgstr ""
+"Wenn angekreuzt können die Empfänger eines Dokuments mit dieser Rolle "
+"geändert werden, nachdem die Anfrage gesendet wurde. Nützlich, um einen "
+"Unterzeichner zu ersetzen, der frei hat usw."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
@@ -1838,7 +1845,7 @@ msgstr "Längengrad"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__mail_sent_order
 msgid "Mail Sent Order"
-msgstr ""
+msgstr "Reihenfolge der gesendeten E-Mails"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__update_mail
@@ -2149,12 +2156,12 @@ msgstr "Seitenanzahl"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "One can weights 15 g"
-msgstr ""
+msgstr "Eine Dose wiegt 15 g"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "One liter of gas fuel will produce 8.9 kg of CO²"
-msgstr ""
+msgstr "Ein Liter Gasbrennstoff erzeugt 8,9 kg CO²"
 
 #. module: sign
 #. odoo-python
@@ -2822,13 +2829,15 @@ msgstr "Anfrage unterzeichnen und senden"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request_signer
 msgid "Sign send request signer"
-msgstr ""
+msgstr "Unterzeichner der Signaturanfrage"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid ""
 "Sign up for Odoo Sign to manage your own documents and signature requests!"
 msgstr ""
+"Melden Sie sich für Odoo E-Signatur an, um Ihre eigenen Dokumente und "
+"Signaturanfragen zu verwalten!"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -2838,7 +2847,7 @@ msgstr "Unterzeichner"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Signatory's hash :"
-msgstr ""
+msgstr "Hash des Unterzeichners:"
 
 #. module: sign
 #. odoo-javascript
@@ -2877,7 +2886,7 @@ msgstr "Partei des Signaturelements"
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_item_role_action
 msgid "Signature Item Role"
-msgstr ""
+msgstr "Funktion des Signaturelements"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_item_type_action
@@ -2888,7 +2897,7 @@ msgstr "Typ des Signaturelements"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_item_value
 msgid "Signature Item Value"
-msgstr ""
+msgstr "Wert des Signaturelements"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_item_ids
@@ -3148,7 +3157,7 @@ msgstr "Status"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__request_state
 msgid "State of the request on action log"
-msgstr ""
+msgstr "Status der Anfrage im Aktivitätenprotokoll"
 
 #. module: sign
 #. odoo-python
@@ -3176,7 +3185,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Stop Sharing"
-msgstr ""
+msgstr "Freigabe anhalten"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject
@@ -3278,7 +3287,7 @@ msgstr "Geschäftsbedingungen"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__res_company__sign_terms_type__html
 msgid "Terms as Web Page"
-msgstr ""
+msgstr "Bedingunge als Webseite"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__res_company__sign_terms_type__plain
@@ -3294,6 +3303,10 @@ msgid ""
 "        Terms as Web Page - A link will be pasted at the bottom of every signature request email, leading to your content.\n"
 "        "
 msgstr ""
+"Bedingungen in E-Mail - Der Text wird am Ende jeder E-Mail mit einer Signaturanfrage angezeigt.\n"
+"\n"
+"        Bedingungen als Webseite - Ein Link, der zu Ihrem Inhalt führt, wird am Ende jeder E-Mail mit einer Signaturanfrage eingefügt.\n"
+"        "
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__text
@@ -3542,7 +3555,7 @@ msgstr "Sie werden aus den hochgeladenen Dateien entfernt"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This function can only be called with sudo."
-msgstr ""
+msgstr "Diese Funktion kann nur mit Sudo aufgerufen werden."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__reference
@@ -3857,6 +3870,8 @@ msgid ""
 "We display to you a ratio based on the saved weight versus 1000 kg of paper "
 "usage."
 msgstr ""
+"Wir stellen Ihnen ein Verhältnis dar, das auf dem eingesparten Gewicht "
+"gegenüber 1000 kg Papierverbrauch basiert."
 
 #. module: sign
 #. odoo-javascript
@@ -3902,7 +3917,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "What about those conversions I see?"
-msgstr ""
+msgstr "Was ist mit den Unterhaltungen, die ich sehe?"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
@@ -4102,7 +4117,7 @@ msgstr "und"
 #: code:addons/sign/static/src/components/template_alert_dialog/template_alert_dialog.xml:0
 #, python-format
 msgid "and the process will continue"
-msgstr ""
+msgstr "und der Prozess fährt fort"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -4196,7 +4211,7 @@ msgstr "ip"
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "like"
-msgstr ""
+msgstr "wie"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_initial
@@ -4252,7 +4267,7 @@ msgstr "An:"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "we've got a list of consumption for 1000 kg of paper usage."
-msgstr ""
+msgstr "erhalten wir eine Liste des Verbrauchs für 1000 kg Papier."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits

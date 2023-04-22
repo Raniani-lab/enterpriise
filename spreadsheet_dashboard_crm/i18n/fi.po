@@ -427,7 +427,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Huippumyyjät"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

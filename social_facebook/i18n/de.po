@@ -132,7 +132,7 @@ msgstr "Facebook Kommentar"
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "Facebook Developer Account"
-msgstr ""
+msgstr "Facebook-Entwicklerkonto"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_access_token
@@ -140,6 +140,8 @@ msgid ""
 "Facebook Page Access Token provided by the Facebook API, this should never be set manually.\n"
 "            It's used to authenticate requests when posting to or reading information from this account."
 msgstr ""
+"Von der Facebook-API zu Verfügung gestellte Facebook-Zugriffstoken. Dieses sollte niemals manuell eingestellt werden.\n"
+"        Es wird verwendet, um Anfragen zu authentifizieren, wenn Sie Informationen von diesem Konto lesen oder auf diesem Konto posten."
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_account_id
@@ -147,6 +149,8 @@ msgid ""
 "Facebook Page ID provided by the Facebook API, this should never be set "
 "manually."
 msgstr ""
+"Facebookseiten-ID, die von der Facebook-API bereitgestellt wird. Diese "
+"sollte niemals manuell eingestellt werden."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_post_id

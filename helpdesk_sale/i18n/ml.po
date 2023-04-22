@@ -22,12 +22,12 @@ msgstr ""
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "ഹെൽപ്പ്ഡെസ്ക് ടീം"
 
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr ""
+msgstr "ഹെൽപ്പ് ഡെസ്ക് ടിക്കറ്റ്"
 
 #. module: helpdesk_sale
 #: model:ir.model.fields,field_description:helpdesk_sale.field_helpdesk_sla_report_analysis__sale_order_id

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -492,6 +493,8 @@ msgstr "Ort"
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_account_deletion_endpoint
 msgid "Marketplace account deletion notification endpoint"
 msgstr ""
+"Endpunkt zur Benachrichtigung über die Löschung eines Online-"
+"Marktplatzkontos"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -816,6 +819,10 @@ msgid ""
 "eBay does not handle longer timespans. Instead use synchronize_orders which "
 "split in as many calls as needed."
 msgstr ""
+"Diese Funktion sollte nicht mit einer Spanne von mehr als 30 Tagen "
+"aufgerufen werden, da eBay längere Zeitspannen nicht verarbeiten kann. "
+"Verwenden Sie stattdessen synchronize_orders, das sich in so viele Aufrufe "
+"wie nötig aufteilt."
 
 #. module: sale_ebay
 #. odoo-python
@@ -826,6 +833,9 @@ msgid ""
 "\n"
 "However, personal information might remain in linked documents, please review them according to laws that apply."
 msgstr ""
+"Dies ist eine automatische Benachrichtigung, da ein Löschungsantrag von eBay für das Konto „%s (%s)“ eingegangen ist. Das Konto wurde bereits anonymisiert und der Zugang zum Portal gesperrt (sofern vorhanden).\n"
+"\n"
+"Es kann jedoch sein, dass personenbezogene Daten in verknüpften Dokumenten verbleiben, bitte überprüfen Sie diese entsprechend den geltenden Gesetzen."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title

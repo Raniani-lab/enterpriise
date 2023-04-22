@@ -173,6 +173,8 @@ msgid ""
 "Could not revoke your account.\n"
 "Error: %s"
 msgstr ""
+"Ihr Konto konnte nicht aufgehoben werden.\n"
+"Fehler: %s"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube__create_uid
@@ -209,6 +211,8 @@ msgid ""
 "Expiration date of the Access Token provided by the YouTube API, this should"
 " never be set manually."
 msgstr ""
+"Ablaufdatum des von der YouTube-API bereitgestellten Zugriffstokens. Dieses "
+"Datum sollte niemals manuell festgelegt werden."
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_access_token
@@ -280,11 +284,15 @@ msgid ""
 "Odoo will lose access to your YouTube account\n"
 "                        and delete all its related data from your database."
 msgstr ""
+"Odoo wir den Zugang zu Ihrem YouTube-Konto verlieren\n"
+"                        und alle damit verbundenen Daten aus Ihrer Datenbank löschen."
 
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_post__youtube_video_privacy
 msgid "Once posted, set the video as Public/Private/Unlisted"
 msgstr ""
+"Legen Sie das Video nach der Veröffentlichung als "
+"öffentlich/privat/ungelistet fest."
 
 #. module: social_youtube
 #. odoo-python
@@ -335,21 +343,21 @@ msgstr "Widerrufen"
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
 msgid "Revoke & Delete"
-msgstr ""
+msgstr "Aufheben & Löschen"
 
 #. module: social_youtube
 #. odoo-python
 #: code:addons/social_youtube/models/social_account.py:0
 #, python-format
 msgid "Revoke Account"
-msgstr ""
+msgstr "Konto aufheben"
 
 #. module: social_youtube
 #: model:ir.actions.act_window,name:social_youtube.social_account_revoke_youtube_action
 #: model:ir.model,name:social_youtube.model_social_account_revoke_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
 msgid "Revoke YouTube Account"
-msgstr ""
+msgstr "YouTube-Konto aufheben"
 
 #. module: social_youtube
 #. odoo-python
@@ -357,6 +365,8 @@ msgstr ""
 #, python-format
 msgid "Revoking access tokens is currently limited to YouTube accounts only."
 msgstr ""
+"Der Widerruf von Zugriffstoken ist derzeit nur auf YouTube-Konten "
+"beschränkt."
 
 #. module: social_youtube
 #. odoo-javascript
@@ -458,7 +468,7 @@ msgstr ""
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "There is no channel linked with this YouTube account."
-msgstr ""
+msgstr "Mit diesem YouTube-Konto ist kein Kanal verknüpft."
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
@@ -491,7 +501,7 @@ msgstr "Unbekannt"
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__unlisted
 msgid "Unlisted"
-msgstr ""
+msgstr "Nicht aufgelistet"
 
 #. module: social_youtube
 #. odoo-javascript
@@ -512,14 +522,14 @@ msgstr "Upload fehlgeschlagen. Bitte versuchen Sie es später erneut."
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Uploading %s"
-msgstr ""
+msgstr "%s hochladen"
 
 #. module: social_youtube
 #. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Uploading... %s%%"
-msgstr ""
+msgstr "Hochladen... %s%%"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_res_config_settings__youtube_use_own_account
@@ -550,7 +560,7 @@ msgstr "Video-Beschreibung"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video_privacy
 msgid "Video Privacy"
-msgstr ""
+msgstr "Video-Datenschutz"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form
@@ -645,7 +655,7 @@ msgstr "Anzahl YouTube-Kommentare"
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.res_config_settings_view_form
 msgid "YouTube Developer Account"
-msgstr ""
+msgstr "YouTube-Entwicklerkonto"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_dislikes_count
@@ -660,7 +670,7 @@ msgstr "YouTube Likes"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_likes_ratio
 msgid "YouTube Likes Ratio"
-msgstr ""
+msgstr "YouTube-Likes-Verhältnis"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_res_config_settings__youtube_oauth_client_id
@@ -702,7 +712,7 @@ msgstr "YouTube Thumbnail"
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_thumbnail_url
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_thumbnail_url
 msgid "YouTube Thumbnail Url"
-msgstr ""
+msgstr "URL des YouTube-Miniaturbils"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_upload_playlist_id
@@ -738,7 +748,7 @@ msgstr "YouTube Videotitel"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video_url
 msgid "YouTube Video Url"
-msgstr ""
+msgstr "URL des Youtube-Videos"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_views_count
@@ -779,6 +789,8 @@ msgid ""
 "Your videos metadata including title and view counts (but never the video "
 "itself)"
 msgstr ""
+"Die Metadaten Ihrer Videos, einschließlich Titel und Anzahl der Aufrufe "
+"(aber niemals das Video selbst)"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form
@@ -797,4 +809,4 @@ msgstr "z.B. Odoo Social Tutorial"
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
 msgid "the Google Third-party app account access panel"
-msgstr ""
+msgstr "die Tafel für den Zugriff auf das Google-Drittanbieter-App-Konto"

@@ -525,7 +525,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "Quarter"
-msgstr ""
+msgstr "ക്വാർട്ടർ"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_collaborative_mixin__raw

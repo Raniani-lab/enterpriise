@@ -345,7 +345,7 @@ msgstr "SYNC BESTELLUNGEN"
 #: model:ir.actions.server,name:sale_amazon.ir_cron_sync_amazon_pickings_ir_actions_server
 #: model:ir.cron,cron_name:sale_amazon.ir_cron_sync_amazon_pickings
 msgid "Amazon: sync pickings"
-msgstr ""
+msgstr "Amazon: Kommissionierungen synchronisieren"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.authorization_error
@@ -466,7 +466,7 @@ msgstr "Ferner Osten"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_order_view_form
 msgid "Fulfilled by Amazon"
-msgstr ""
+msgstr "Fulfilled by Amazon"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_order_view_form
@@ -476,7 +476,7 @@ msgstr "Vom Händler erfüllt"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_sale_order__amazon_channel
 msgid "Fulfillment Channel"
-msgstr ""
+msgstr "Bestellabwicklungskanal"
 
 #. module: sale_amazon
 #: model:ir.model.fields.selection,name:sale_amazon.selection__sale_order__amazon_channel__fba
@@ -486,7 +486,7 @@ msgstr "Erfüllung durch Amazon"
 #. module: sale_amazon
 #: model:ir.model.fields.selection,name:sale_amazon.selection__sale_order__amazon_channel__fbm
 msgid "Fulfillment by Merchant"
-msgstr ""
+msgstr "Fulfillment by Merchant"
 
 #. module: sale_amazon
 #. odoo-python
@@ -765,12 +765,12 @@ msgstr "Seller Central URL"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__seller_key
 msgid "Seller Key"
-msgstr ""
+msgstr "Verkäuferschlüssel"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__base_marketplace_id
 msgid "Sign-up Marketplace"
-msgstr ""
+msgstr "Online-Marktplatz-Anmeldung"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__location_id
@@ -849,7 +849,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__sku
 msgid "The Stock Keeping Unit."
-msgstr ""
+msgstr "Die Lagerhaltungseinheit"
 
 #. module: sale_amazon
 #. odoo-python
@@ -892,6 +892,8 @@ msgid ""
 "The location of the stock managed by Amazon under the Amazon Fulfillment "
 "program."
 msgstr ""
+"Der Standort des von Amazon im Rahmen des Amazon-Fulfillment-Programms "
+"verwalteten Bestands."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__refresh_token
@@ -903,18 +905,18 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__marketplace_id
 msgid "The marketplace of this offer."
-msgstr ""
+msgstr "Der Online-Marktplatz dieses Angebots."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__available_marketplace_ids
 msgid "The marketplaces this account has access to."
-msgstr ""
+msgstr "Der Online-Marktplatz, auf den dieses Kontos Zugriff hat."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__active_marketplace_ids
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__active_marketplace_ids
 msgid "The marketplaces this account sells on."
-msgstr ""
+msgstr "Der Online-Marktplatz, auf dem dieses Kontos verkauft."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__aws_credentials_expiry
@@ -972,6 +974,8 @@ msgid ""
 "The short-lived key used to verify the access to the assumed ARN role on "
 "AWS."
 msgstr ""
+"Der kurzzeitige Schlüssel, der verwendet wird, um die angenommene ARN-Rolle "
+"auf AWS zu verfizieren."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__restricted_data_token
@@ -979,11 +983,15 @@ msgid ""
 "The short-lived token used instead of the LWA Access Token to access "
 "restricted data"
 msgstr ""
+"Das kurzeitige Token, das statt des LWS-Zugangstokens verwendet wird, um auf"
+" eingeschränkte Daten zuzugreifen."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__access_token
 msgid "The short-lived token used to query Amazon API on behalf of a seller."
 msgstr ""
+"Das kurzzeitige Token, das verwendet wird, um die Amazon-API im Namen eines "
+"Verkäufers abzufragen."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__aws_session_token
@@ -991,11 +999,13 @@ msgid ""
 "The short-lived token used to query the SP-API with the assumed ARN role on "
 "AWS."
 msgstr ""
+"Das kurzzeitige Token, das verwendet wird, um die SP-API mit der "
+"angenommenen ARN-Rolle auf AWS abzufragen."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__name
 msgid "The user-defined name of the account."
-msgstr ""
+msgstr "Der benutzerdefinierte Name des Kontos."
 
 #. module: sale_amazon
 #: model:ir.model.constraint,message:sale_amazon.constraint_amazon_marketplace_unique_api_ref
@@ -1095,6 +1105,8 @@ msgid ""
 "You first need to set the marketplaces to synchronize for the Amazon account"
 " %s."
 msgstr ""
+"Sie müssen zunächst die Online-Marktplätze für die Synchronisierung des "
+"Amazon-Kontos %s festlegen."
 
 #. module: sale_amazon
 #. odoo-python

@@ -54,7 +54,7 @@ msgstr "Sử dụng khu vực sản xuất"
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_mrp_workorder
 msgid "Work Order"
-msgstr "Lệnh làm việc"
+msgstr "Công đoạn"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_mrp_workcenter_productivity

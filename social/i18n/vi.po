@@ -1168,7 +1168,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_live_post__live_post_link
 #: model:ir.model.fields,field_description:social.field_social_stream_post__post_link
 msgid "Post Link"
-msgstr ""
+msgstr "Liên kết bài đăng"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
@@ -1366,7 +1366,7 @@ msgstr "Thiết lập"
 #: model:ir.model.fields,field_description:social.field_social_stream__account_id
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_form
 msgid "Social Account"
-msgstr ""
+msgstr "Tài khoản mạng xã hội"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_account
@@ -1450,7 +1450,7 @@ msgstr "Trên Mạng xã hội"
 #: model:ir.model,name:social.model_social_stream_post
 #: model:ir.model,name:social.model_social_stream_type
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Bài phát trực tiếp trên mạng xã hội"
 
 #. module: social
 #: model:ir.model,name:social.model_social_stream_post_image

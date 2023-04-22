@@ -142,12 +142,12 @@ msgstr "잔액"
 #: model:ir.model.fields,help:account_online_synchronization.field_account_link_journal_line__balance
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__balance
 msgid "Balance of the account sent by the third party provider"
-msgstr ""
+msgstr "제3자 공급업체로부터 전송된 계정 잔액"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_online_link
 msgid "Bank Connection"
-msgstr ""
+msgstr "은행 연결"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_bank_statement_line
@@ -157,14 +157,14 @@ msgstr "예금거래 명세서 내역"
 #. module: account_online_synchronization
 #: model:mail.activity.type,name:account_online_synchronization.bank_sync_activity_update_consent
 msgid "Bank Synchronization: Update consent"
-msgstr ""
+msgstr "은행 동기화: 동의 내역 업데이트"
 
 #. module: account_online_synchronization
 #. odoo-python
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Bank Synchronization: Update your consent"
-msgstr ""
+msgstr "은행 동기화: 동의 내용 업데이트"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_bank_rec_widget
@@ -210,17 +210,17 @@ msgstr "연결됨"
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Consent expired"
-msgstr ""
+msgstr "동의 내용이 만료되었습니다"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Consent expires in"
-msgstr ""
+msgstr "동의 내용이 다음 일자 후 만료됩니다"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Consent expires today"
-msgstr ""
+msgstr "동의 내용이 오늘로 만료됩니다"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_res_partner
@@ -295,7 +295,7 @@ msgstr "통화"
 #: model:ir.model.fields,help:account_online_synchronization.field_account_journal__expiring_synchronization_date
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__expiring_synchronization_date
 msgid "Date when the consent for this connection expires"
-msgstr ""
+msgstr "이 연결 항목에 대하여 동의한 내용이 만료되는 날짜"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__display_name
@@ -314,12 +314,12 @@ msgstr "오류"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__expiring_synchronization_date
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__expiring_synchronization_date
 msgid "Expiring Synchronization Date"
-msgstr ""
+msgstr "동기화 날짜 만료"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__expiring_synchronization_due_day
 msgid "Expiring Synchronization Due Day"
-msgstr ""
+msgstr "동기화 기한 만료 예정일"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__account_data
@@ -341,7 +341,7 @@ msgstr "거래내역 가져오기"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Fetched Transactions"
-msgstr ""
+msgstr "가져온 거래 내역"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_follower_ids
@@ -422,7 +422,7 @@ msgstr "가능하면, 이 자료의 신규 거래내역을 자동으로 가져�
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__provider_data
 msgid "Information needed to interact with third party provider"
-msgstr ""
+msgstr "제3자 공급업체와 상호 연락하는데 필요한 정보"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__name
@@ -470,7 +470,7 @@ msgstr "분개장"
 #: code:addons/account_online_synchronization/wizard/account_link_journal_wizard.py:0
 #, python-format
 msgid "Journals linked to a bank account must be of the bank type."
-msgstr ""
+msgstr "은행 계좌에 연결되어 있는 전표의 유형은 은행으로 선택되어야 합니다"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal____last_update
@@ -703,7 +703,7 @@ msgstr "새로 고침 토큰"
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__client_id
 msgid "Represent a link for a given user towards a banking institution"
-msgstr ""
+msgstr "은행 기관에 대한 해당 사용자의 링크를 나타냅니다"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_user_id
@@ -763,7 +763,7 @@ msgstr "동기화된 계정"
 msgid ""
 "The online synchronization service is not available at the moment. Please "
 "try again later."
-msgstr ""
+msgstr "현재 온라인 동기화 서비스를 사용할 수 없습니다. 나중에 다시 시도해주시기 바랍니다."
 
 #. module: account_online_synchronization
 #. odoo-python
@@ -772,7 +772,7 @@ msgstr ""
 msgid ""
 "The reference of your error is %s. Please mention it when contacting Odoo "
 "support."
-msgstr ""
+msgstr "해당 오류에 대한 참조 내역은 %s입니다. Odoo 지원팀과 연락하실 경우 말씀해주시기 바랍니다."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
@@ -787,6 +787,8 @@ msgid ""
 "This version of Odoo appears to be outdated and does not support the '%s' "
 "sync mode. Installing the latest update might solve this."
 msgstr ""
+"사용 중인 Odoo 버전이 최신 버전이 아닌 관계로 '%s' 동기화 모드가 지원되지 않습니다. 최신 업데이트를 설치하시면 이 문제를 "
+"해결하실 수 있습니다."
 
 #. module: account_online_synchronization
 #: model_terms:ir.actions.act_window,help:account_online_synchronization.action_account_online_link_form
@@ -869,4 +871,4 @@ msgstr "일"
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_online_account
 msgid "representation of an online bank account"
-msgstr ""
+msgstr "온라인 은행 계좌 표시"

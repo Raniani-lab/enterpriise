@@ -28,18 +28,18 @@ msgstr "Công ty"
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_ticket_convert_wizard
 msgid "Convert Helpdesk Tickets to Tasks"
-msgstr ""
+msgstr "Chuyển phiếu hỗ trợ thành nhiệm vụ"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
 msgid "Create & View Task"
-msgstr "Create & View Task"
+msgstr "Tạo & xem nhiệm vụ"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
 msgid "Create Task"
-msgstr "Tạo tác vụ"
+msgstr "Tạo nhiệm vụ"
 
 #. module: helpdesk_fsm
 #. odoo-python
@@ -47,7 +47,7 @@ msgstr "Tạo tác vụ"
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
 #, python-format
 msgid "Create a Field Service task"
-msgstr "Create a Field Service task"
+msgstr "Tạo một nhiệm vụ dịch vụ hiện trường"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__create_uid
@@ -77,32 +77,32 @@ msgstr "Tên hiển thị"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__display_helpdesk_ticket_button
 msgid "Display Ticket"
-msgstr ""
+msgstr "Hiển thị phiếu hỗ trợ"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__fsm_project_id
 msgid "FSM Project"
-msgstr "Dự án quản lý thực địa"
+msgstr "Dự án FSM"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__use_fsm
 msgid "Field Service"
-msgstr "Dịch vụ Hiện trường"
+msgstr "Dịch vụ hiện trường"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__fsm_task_count
 msgid "Fsm Task Count"
-msgstr "Fsm Task Count"
+msgstr "Số nhiệm vụ FSM"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr "Nhóm Helpdesk"
+msgstr "Đội ngũ hỗ trợ "
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr "Thẻ hỗ trợ"
+msgstr "Phiếu hỗ trợ"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__id
@@ -112,12 +112,12 @@ msgstr "ID"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task____last_update
 msgid "Last Modified on"
-msgstr "Sửa lần cuối vào"
+msgstr "Chỉnh sửa lần cuối vào"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__write_uid
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__write_date
@@ -127,7 +127,7 @@ msgstr "Cập nhật lần cuối vào"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
 msgid "Original Ticket"
-msgstr ""
+msgstr "Phiếu hỗ trợ gốc"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
@@ -138,12 +138,12 @@ msgstr "Dự án"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
 msgid "Project in which to create the task"
-msgstr "Project in which to create the task"
+msgstr "Dự án cần tạo nhiệm vụ"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__helpdesk_ticket_id
 msgid "Related ticket"
-msgstr "Related ticket"
+msgstr "Phiếu hỗ trợ liên quan"
 
 #. module: helpdesk_fsm
 #. odoo-python
@@ -151,7 +151,7 @@ msgstr "Related ticket"
 #: model:ir.model,name:helpdesk_fsm.model_project_task
 #, python-format
 msgid "Task"
-msgstr "Công việc"
+msgstr "Nhiệm vụ"
 
 #. module: helpdesk_fsm
 #: model:mail.message.subtype,description:helpdesk_fsm.mt_team_ticket_task_done
@@ -159,14 +159,14 @@ msgstr "Công việc"
 #: model:mail.message.subtype,name:helpdesk_fsm.mt_team_ticket_task_done
 #: model:mail.message.subtype,name:helpdesk_fsm.mt_ticket_task_done
 msgid "Task Done"
-msgstr "Hoàn thành công việc"
+msgstr "Nhiệm vụ hoàn tất"
 
 #. module: helpdesk_fsm
 #. odoo-python
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0
 #, python-format
 msgid "Task created"
-msgstr ""
+msgstr "Phiếu hỗ trợ đã tạo"
 
 #. module: helpdesk_fsm
 #. odoo-python
@@ -183,12 +183,12 @@ msgstr "Nhiệm vụ"
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0
 #, python-format
 msgid "Tasks from Tickets"
-msgstr "Tasks from Tickets"
+msgstr "Nhiệm vụ từ phiếu hỗ trợ"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_ticket__fsm_task_ids
 msgid "Tasks generated from this ticket"
-msgstr "Tasks generated from this ticket"
+msgstr "Nhiệm vụ được tạo từ phiếu hỗ trợ này"
 
 #. module: helpdesk_fsm
 #. odoo-python
@@ -196,17 +196,17 @@ msgstr "Tasks generated from this ticket"
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_sharing_inherit_project_task_view_form
 #, python-format
 msgid "Ticket"
-msgstr "Vé"
+msgstr "Phiếu hỗ trợ"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_sharing_inherit_project_task_view_form
 msgid "Ticket from this task"
-msgstr "Ticket from this task"
+msgstr "Phiếu hỗ trợ từ nhiệm vụ này"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_create_fsm_task__partner_id
 msgid "Ticket's customer, will be linked to the task"
-msgstr "Ticket's customer, will be linked to the task"
+msgstr "Khách hàng của phiếu hỗ trợ, sẽ được liên kết với nhiệm vụ"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__name

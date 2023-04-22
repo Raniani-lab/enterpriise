@@ -28,7 +28,7 @@ msgstr "Bearbeiten"
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__raw
 msgid "Raw"
-msgstr ""
+msgstr "Roh"
 
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model,name:spreadsheet_dashboard_edition.model_spreadsheet_dashboard

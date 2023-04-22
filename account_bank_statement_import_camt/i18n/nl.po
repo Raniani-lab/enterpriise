@@ -484,7 +484,7 @@ msgstr "Bedrijfsmerk eigendom van klant"
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
 #, python-format
 msgid "Counter Party: %(partner)s"
-msgstr "Tegenpartij: %(relatie)s"
+msgstr "Tegenrekening: %(partner)s"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

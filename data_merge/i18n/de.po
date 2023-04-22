@@ -56,7 +56,7 @@ msgstr ""
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
 msgid "<span class=\"me-1\">Every</span>"
-msgstr ""
+msgstr "<span class=\"me-1\">Alle</span>"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
@@ -143,6 +143,7 @@ msgstr "Kontakt"
 msgid ""
 "Contextual menu action that redirects to the deduplicate view of data_merge."
 msgstr ""
+"Kontextmenü-Aktion, die zur deduplizierten Ansicht von data_merge umleitet."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__record_create_uid
@@ -184,7 +185,7 @@ msgstr "Benutzerdefinierte Zusammenführungsmethode"
 #: model:ir.actions.server,name:data_merge.ir_cron_cleanup_ir_actions_server
 #: model:ir.cron,cron_name:data_merge.ir_cron_cleanup
 msgid "Data Merge: Cleanup Records"
-msgstr ""
+msgstr "Daten zusammenführen: Datensätze bereinigen"
 
 #. module: data_merge
 #: model:ir.actions.server,name:data_merge.ir_cron_find_duplicates_ir_actions_server
@@ -227,7 +228,7 @@ msgstr "Modell Dublettenabgleich"
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_data_merge_record
 msgid "Deduplication Record"
-msgstr ""
+msgstr "Deduplikationsdatensatz"
 
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_data_merge_rule
@@ -246,7 +247,7 @@ msgstr "Deduplizierungsregeln"
 #: code:addons/data_merge/models/data_merge_model.py:0
 #, python-format
 msgid "Deduplication is forbidden on the model: %s"
-msgstr ""
+msgstr "Deduplikation ist für dieses Modell verboten: %s"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__removal_mode__delete
@@ -320,7 +321,7 @@ msgstr ""
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.ir_model_view_form
 msgid "Enable Merge"
-msgstr ""
+msgstr "Zusammenführung aktivieren"
 
 #. module: data_merge
 #. odoo-python
@@ -359,6 +360,8 @@ msgid ""
 "If True, the generic data merge tool is available in the contextual menu of "
 "this model."
 msgstr ""
+"Wenn True, ist das generische Datenzusammenführungstool im Kontextmenü "
+"dieses Modells verfügbar."
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__is_contextual_merge_action
@@ -366,6 +369,8 @@ msgid ""
 "If True, this record is used for contextual menu action \"Merge\" on the "
 "target model."
 msgstr ""
+"Wenn True, wird dieser Datensatz für die Kontextmenü-Aktion „Zusammenführen“"
+" auf dem Zielmodell verwendet."
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_ir_model__hide_merge_action
@@ -387,7 +392,7 @@ msgstr "Verworfen"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__is_master
 msgid "Is Master"
-msgstr ""
+msgstr "Ist Master"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group____last_update
@@ -494,14 +499,14 @@ msgstr "Merge-Action Manager"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__is_contextual_merge_action
 msgid "Merge action attached"
-msgstr ""
+msgstr "Zusammenführungsaktion angehängt"
 
 #. module: data_merge
 #. odoo-python
 #: code:addons/data_merge/models/data_merge_model.py:0
 #, python-format
 msgid "Missing required PostgreSQL extension: unaccent"
-msgstr ""
+msgstr "Erforderliche PostgreSQL-Erweiterung fehlt: unaccent"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__res_model_id
@@ -553,7 +558,7 @@ msgstr "Benachrichtigung"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__notify_frequency_period
 msgid "Notify Frequency Period"
-msgstr ""
+msgstr "Zeitraum der Benachrichtigungshäufigkeit"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__notify_user_ids
@@ -566,7 +571,7 @@ msgstr "Benutzer benachrichtigen"
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "Query Failed."
-msgstr ""
+msgstr "Anfrage fehlgeschlagen."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__record_ids
@@ -576,7 +581,7 @@ msgstr "Datensatz"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__group_id
 msgid "Record Group"
-msgstr ""
+msgstr "Datensatzgruppe"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__res_id
@@ -604,7 +609,7 @@ msgstr "Datensätze, die für den Dublettenabgleich geeignet sind"
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "Records must be of the same model"
-msgstr ""
+msgstr "Datensätze müssen vom selben Modell sein"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__merge_threshold
@@ -638,13 +643,15 @@ msgstr "Ähnlichkeit %"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__merge_threshold
 msgid "Similarity Threshold"
-msgstr ""
+msgstr "Ähnlichkeitsgrenze"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_group__similarity
 msgid ""
 "Similarity coefficient based on the amount of text fields exactly in common."
 msgstr ""
+"Ähnlichkeitskoeffizient auf der Grundlage der Anzahl der Textfelder, die "
+"genau übereinstimmen."
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__rule_ids
@@ -668,14 +675,14 @@ msgstr "Die Benachrichtigungsfrequenz sollte größer als 0 sein."
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "The referenced record does not exist"
-msgstr ""
+msgstr "Der referenzierte Datensatz existiert nicht"
 
 #. module: data_merge
 #. odoo-javascript
 #: code:addons/data_merge/static/src/views/data_merge_list_view.js:0
 #, python-format
 msgid "The selected records have been merged"
-msgstr ""
+msgstr "Die ausgewählten Datensätze wurden zusammengeführt"
 
 #. module: data_merge
 #. odoo-python
@@ -689,7 +696,7 @@ msgstr "Das Zielmodell existiert nicht."
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "There is not referenced record"
-msgstr ""
+msgstr "Es gibt keinen referenzierten Datensatz"
 
 #. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_model_uniq_name
@@ -746,7 +753,7 @@ msgstr ""
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_duplicate
 msgid "duplicate records with the '"
-msgstr ""
+msgstr "doppelte Datensätze identifiziert mit der „"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_duplicate

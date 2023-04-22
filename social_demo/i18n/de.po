@@ -64,7 +64,7 @@ msgstr "Stichwort: #meinkonkurrent"
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_facebook_page
 msgid "Page Posts: My Company"
-msgstr ""
+msgstr "Vertragsbereich"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_linkedin_page

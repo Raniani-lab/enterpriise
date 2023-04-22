@@ -148,9 +148,9 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_worksheet_template
 msgid "Worksheet Template"
-msgstr ""
+msgstr "Työarkin malli"
 
 #. module: quality_control_worksheet
 #: model:ir.actions.act_window,name:quality_control_worksheet.template_action_Quality_Issues
 msgid "Worksheets"
-msgstr ""
+msgstr "Työarkit"

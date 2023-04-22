@@ -49,7 +49,7 @@ msgstr "Dozwoleni pracownicy"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_report_mrp_report_bom_structure
 msgid "BOM Overview Report"
-msgstr ""
+msgstr "Raport z przeglądu BOM"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript

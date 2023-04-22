@@ -109,6 +109,13 @@ msgid ""
 "            </p>\n"
 "        "
 msgstr ""
+"<p>\n"
+"                Yth <t t-out=\"object.partner_id.name or 'Customer'\">Pelanggan</t>,<br/><br/>\n"
+"                Telah dilampirkan worksheet untuk pengoperasian onsite kami. <br/><br/>\n"
+"                Silakan hubungi kami bila Anda memiliki pertanyaan apapun.<br/><br/>\n"
+"                Salam hormat,<br/><br/>\n"
+"            </p>\n"
+"        "
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit

@@ -38,12 +38,12 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
 msgid "Allowed Employees"
-msgstr ""
+msgstr "Nhân viên được phép"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_report_mrp_report_bom_structure
 msgid "BOM Overview Report"
-msgstr "Báo cáo Tổng quan Định mức Nguyên vật liệu"
+msgstr "Báo cáo Tổng quan Định mức nguyên liệu"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -195,7 +195,7 @@ msgstr "Sử dụng khu vực sản xuất"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workorder
 msgid "Work Order"
-msgstr "Lệnh làm việc"
+msgstr "Công đoạn"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter_productivity

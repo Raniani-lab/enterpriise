@@ -25,14 +25,14 @@ msgstr ""
 #: code:addons/sale_stock_renting/models/product_product.py:0
 #, python-format
 msgid "%(product)s (%(qty)s item)"
-msgstr ""
+msgstr "%(product)s (%(qty)s Artikel)"
 
 #. module: sale_stock_renting
 #. odoo-python
 #: code:addons/sale_stock_renting/models/product_product.py:0
 #, python-format
 msgid "%(product)s (%(qty)s items)"
-msgstr ""
+msgstr "%(product)s (%(qty)s Artikel)"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_order_wizard_view_form
@@ -42,6 +42,10 @@ msgid ""
 "                            Some products don't have the requested qty available for pickup\n"
 "                        </span>"
 msgstr ""
+"<i class=\"fa fa-warning\"/>\n"
+"                        <span>\n"
+"                            Einige Produkte sind nicht in der gewünschten Menge zur Abholung verfügbar\n"
+"                        </span>"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
@@ -109,12 +113,12 @@ msgstr ""
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard__has_lines_missing_stock
 msgid "Has lines whose products have insufficient stock"
-msgstr ""
+msgstr "Hat Zeilen, deren Produkte nicht ausreichend auf Lager sind"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard__has_tracked_lines
 msgid "Has lines with tracked products"
-msgstr ""
+msgstr "Hat Zeilen mit verfolgten Produkten"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_res_company__rental_loc_id
@@ -246,6 +250,8 @@ msgstr "Reservierte Menge"
 #: model:ir.model.fields,help:sale_stock_renting.field_rental_wizard__rented_qty_during_period
 msgid "Quantity reserved by other Rental lines during the given period"
 msgstr ""
+"Während des angegebenen Zeitraums von anderen Vermietungsposten reservierte "
+"Menge"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_sale_rental_report
@@ -263,7 +269,7 @@ msgstr "Vermietungsplan"
 #: code:addons/sale_stock_renting/models/sale_order_line.py:0
 #, python-format
 msgid "Rental move :"
-msgstr ""
+msgstr "Vermietungsbewegung:"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_rental_order_wizard_line
@@ -273,12 +279,12 @@ msgstr "RentalOrderLine transient representation"
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_sale_order_line__reserved_lot_ids
 msgid "Reserved Lot"
-msgstr ""
+msgstr "Reserviertes Los"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__returnable_lot_ids
 msgid "Returnable Lot"
-msgstr ""
+msgstr "Umtauschbares Los"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__returned_lot_ids
@@ -295,7 +301,7 @@ msgstr "Auftragsposition"
 #: model:ir.model.fields,field_description:sale_stock_renting.field_product_product__preparation_time
 #: model:ir.model.fields,field_description:sale_stock_renting.field_product_template__preparation_time
 msgid "Security Time"
-msgstr ""
+msgstr "Sicherheitszeit"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_configurator_view_form
@@ -320,7 +326,7 @@ msgstr "Seriennummern"
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_configurator_view_form
 msgid "Serials Tracking"
-msgstr ""
+msgstr "Serienverfolgung"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__rentable_lot_ids
@@ -330,7 +336,7 @@ msgstr "Verfügbare Serien auf Lager"
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__rented_lot_ids
 msgid "Serials in rent for given period"
-msgstr ""
+msgstr "Im angegebenen Zeitraum vermietete Serien"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_configurator_view_form
@@ -371,6 +377,8 @@ msgid ""
 "Tracking by lots isn't supported for rental products.\n"
 "You should rather change the tracking mode to unique serial numbers."
 msgstr ""
+"Verfolgung nach Losen wird für Mietprodukte unterstützt.\n"
+"Sie sollten lieber den Verfolgungsmodus auf eindeutige Seriennummern ändern."
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_sale_order_line__unavailable_lot_ids
@@ -403,6 +411,8 @@ msgstr "Sie können das Produkt einer kommissionierten Zeile nicht ändern."
 #, python-format
 msgid "You cannot change the product of lines linked to stock moves."
 msgstr ""
+"Sie können das Produkt von Zeilen, die mit Lagerbewegungen verbunden sind, "
+"nicht ändern."
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form

@@ -3,6 +3,7 @@
 # 	* helpdesk_sale_timesheet
 # 
 # Translators:
+# Nikhil Krishnan, 2023
 # Niyas Raphy, 2023
 # 
 msgid ""
@@ -87,12 +88,12 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "ഹെൽപ്പ്ഡെസ്ക് ടീം"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr ""
+msgstr "ഹെൽപ്പ് ഡെസ്ക് ടിക്കറ്റ്"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.portal_helpdesk_ticket_timesheet
@@ -229,7 +230,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.sale_order_form_inherit_helpdesk_sale
 msgid "Tickets"
-msgstr ""
+msgstr "ടിക്കറ്റുകൾ"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_sale_timesheet

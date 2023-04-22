@@ -56,4 +56,4 @@ msgstr "Tikettianalyysi"
 #. module: helpdesk_sale
 #: model:res.groups,name:helpdesk_sale.group_use_helpdesk_sale_timesheet
 msgid "Use Time Billing"
-msgstr ""
+msgstr "Käytä aikalaskutusta"

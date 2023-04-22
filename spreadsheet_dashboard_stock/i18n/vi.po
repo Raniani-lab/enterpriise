@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023
 # Thi Huong Nguyen, 2023
 # 
 msgid ""
@@ -34,28 +33,28 @@ msgstr "ngày"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Cycle Time"
-msgstr ""
+msgstr "Thời gian chu kỳ trung bình"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Delay"
-msgstr ""
+msgstr "Thời gian trễ trung bình"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg cycle time"
-msgstr ""
+msgstr "Thời gian chu kỳ trung bình"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg delay"
-msgstr ""
+msgstr "Thời gian trễ trung bình"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -78,14 +77,14 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Location"
-msgstr "Địa điểm"
+msgstr "Vị trí"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Moved Quantity"
-msgstr "Số lượng đã chuyển"
+msgstr "Số lượng đã dịch chuyển"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -110,7 +109,7 @@ msgstr "Đối tác"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Period"
-msgstr "Chu kỳ"
+msgstr "Kỳ"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -133,7 +132,7 @@ msgstr "Sản phẩm"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Product quantity"
-msgstr ""
+msgstr "Số lượng sản phẩm"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -150,42 +149,42 @@ msgstr "Số lượng"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Address "
-msgstr ""
+msgstr "Phân tích dịch chuyển tồn kho theo địa chỉ điểm đến"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Location"
-msgstr ""
+msgstr "Phân tích dịch chuyển tồn kho theo vị trí điểm đến"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Product"
-msgstr ""
+msgstr "Phân tích dịch chuyển tồn kho theo sản phẩm"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Warehouse"
-msgstr ""
+msgstr "Phân tích dịch chuyển tồn kho theo kho hàng"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Locations"
-msgstr ""
+msgstr "Vị trí hàng đầu"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Partners"
-msgstr ""
+msgstr "Đối tác hàng đầu"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -199,7 +198,7 @@ msgstr "Sản phẩm hàng đầu"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Warehouses"
-msgstr ""
+msgstr "Kho hàng hàng đầu"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -207,14 +206,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Warehouse"
-msgstr "Kho"
+msgstr "Kho hàng"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Weekly Stock Moves"
-msgstr ""
+msgstr "Dịch chuyển tồn kho hàng tuần"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -222,25 +221,25 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "kỳ trước"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr "kể từ giai đoạn trước"
+msgstr "kể từ kỳ trước"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr "số liệu thống kê - hiện tại"
+msgstr "thống kê - hiện tại"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr "số liệu thống kê - trước đó"
+msgstr "thống kê - trước đó"

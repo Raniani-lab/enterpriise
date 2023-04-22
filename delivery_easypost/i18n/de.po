@@ -55,12 +55,16 @@ msgstr ""
 #, python-format
 msgid "A production key is required in order to load your easypost carriers."
 msgstr ""
+"Ein Produktionsschlüssel ist erforderlich, um Ihre easypost-Anbieter zu "
+"laden."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "A production key is required in order to load your insurance fees."
 msgstr ""
+"Ein Produktionsschlüssel ist erforderlich, um Ihre Versicherungsgebühren zu "
+"laden."
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -242,12 +246,12 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_insurance_fee_minimum
 msgid "Insurance fee minimum (USD)"
-msgstr ""
+msgstr "Mindestversicherungsgebühr (USD)"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_insurance_fee_rate
 msgid "Insurance fee rate (USD)"
-msgstr ""
+msgstr "Rate der Versicherungsgebühr (USD)"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -331,7 +335,7 @@ msgstr "Anbieter"
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "Return Label<br/>"
-msgstr ""
+msgstr "Rücksendeetikett<br/>"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -387,6 +391,8 @@ msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
 " Default Package Type)"
 msgstr ""
+"Der %s-Spediteur fehlt (fehlende(s) Feld(er):\n"
+" Standardpakettyp)"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0

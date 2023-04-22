@@ -343,12 +343,12 @@ msgstr "Het product (%s) heeft onverenigbare waarden: %s"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Time-based pricing"
-msgstr ""
+msgstr "Op tijd gebaseerde prijzen"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Time-based rules"
-msgstr ""
+msgstr "Op tijd gebaseerde regels"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit

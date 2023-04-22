@@ -30,7 +30,7 @@ msgstr "<span>Ilość</span>"
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "<span>Subcontractor</span>"
-msgstr ""
+msgstr "<span>Podwykonawca</span>"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
@@ -45,22 +45,22 @@ msgstr "<span>Koszt Jednostkowy</span>"
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "<strong>Total Cost of Subcontracting</strong>"
-msgstr ""
+msgstr "<strong>Całkowity koszt podwykonawstwa</strong>"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_report_pivot_view_inherit_subcontracting
 msgid "Average Subcontracting Cost / Unit"
-msgstr ""
+msgstr "Średni koszt podwykonawstwa/jednostka"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "Cost of Subcontracting"
-msgstr ""
+msgstr "Kosz podwykonawstwa"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "Cost of Subcontracting per unit (in"
-msgstr ""
+msgstr "Koszt podwykonawstwa per jednostka"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model,name:mrp_subcontracting_account_enterprise.model_report_mrp_account_enterprise_mrp_cost_structure
@@ -78,6 +78,8 @@ msgid ""
 "Subcontracting cost per unit produced (in product UoM) of manufacturing "
 "order"
 msgstr ""
+"Koszt podwykonawstwa na jednostkę wyprodukowaną (w UoM produktu) ze zlecenia"
+" produkcji"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__total_cost
@@ -87,12 +89,12 @@ msgstr "Suma kosztów"
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost
 msgid "Total Subcontracting Cost"
-msgstr ""
+msgstr "Całkowity koszt podwykonawstwa"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__unit_subcontracting_cost
 msgid "Total Subcontracting Cost / Unit"
-msgstr ""
+msgstr "Całkowity koszt podwykonawstwa / jednostka"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__total_cost
@@ -106,4 +108,4 @@ msgstr ""
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost
 msgid "Total cost of subcontracting for manufacturing order"
-msgstr ""
+msgstr "Całkowity koszt podwykonawstwa dla zlecenia produkcji"

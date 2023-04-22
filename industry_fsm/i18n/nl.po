@@ -121,6 +121,8 @@ msgid ""
 "<span class=\"o_stat_text\">Worksheet</span>\n"
 "                            <span class=\"o_stat_text\">Complete</span>"
 msgstr ""
+"<span class=\"o_stat_text\">Werkbon</span>\n"
+"                            <span class=\"o_stat_text\">volledig</span>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page

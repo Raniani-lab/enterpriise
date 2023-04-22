@@ -330,6 +330,8 @@ msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
 msgstr ""
+"Ta pozycja zamówienia sprzedaży nie ma wartości docelowej planowanych "
+"godzin. Planowane godziny :"
 
 #. module: sale_planning
 #. odoo-javascript

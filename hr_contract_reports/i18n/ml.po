@@ -38,7 +38,7 @@ msgstr "കമ്പനി"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__contract_id
 msgid "Contract"
-msgstr ""
+msgstr "കോൺട്രാക്ട്"
 
 #. module: hr_contract_reports
 #: model:ir.model,name:hr_contract_reports.model_hr_contract_employee_report

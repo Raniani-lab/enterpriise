@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Cécile Collart <cco@odoo.com>, 2023
-# Jolien De Paepe, 2023
 # Martin Trigaux, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,8 +13,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-03 09:25+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -162,14 +162,14 @@ msgstr "Contrat de l'employé"
 #: code:addons/l10n_be_hr_contract_salary/models/hr_payslip.py:0
 #, python-format
 msgid "Employees without Intellectual Property"
-msgstr ""
+msgstr "Employés sans propriété intellectuelle"
 
 #. module: l10n_be_hr_contract_salary
 #. odoo-python
 #: code:addons/l10n_be_hr_contract_salary/models/hr_payslip.py:0
 #, python-format
 msgid "Employees without Withholding Taxes Exemption"
-msgstr ""
+msgstr "Employés sans exonération du précompte professionnel"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_extra_time_off
@@ -214,7 +214,7 @@ msgstr "Copie de la carte d'identité (recto-verso)"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_ip
 msgid "If checked, the job position is eligible to Intellectual Property"
-msgstr ""
+msgstr "Si coché, le poste est éligible à la propriété intellectuelle"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_withholding_taxes_exemption
@@ -222,6 +222,8 @@ msgid ""
 "If checked, the job position will grant a withholding taxes exemption to "
 "eligible employees"
 msgstr ""
+"Si coché, le poste accordera une exemption du précompte professionnel aux "
+"employés exigibles"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_intellectual_property
@@ -243,7 +245,7 @@ msgstr "Facture d'abonnement internet"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.actions.server,name:l10n_be_hr_contract_salary.action_hr_job_payroll_configuration
 msgid "Job Configuration"
-msgstr ""
+msgstr "Configuration de l'offre d'emploi"
 
 #. module: l10n_be_hr_contract_salary
 #. odoo-python
@@ -266,7 +268,7 @@ msgstr "Postes"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.job,name:l10n_be_hr_contract_salary.job_developer_belgium
 msgid "Junior Developer BE"
-msgstr ""
+msgstr "Développeur junior BE"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_km_home_work
@@ -276,7 +278,7 @@ msgstr "Km Domicile - Bureau"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_contract__l10n_be_bicyle_cost
 msgid "L10N Be Bicyle Cost"
-msgstr ""
+msgstr "L10N Be Coût du vélo"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_marital_cohabitant
@@ -491,7 +493,7 @@ msgstr "Avec basses pensions"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_withholding_taxes_exemption
 msgid "Withholding Taxes Exemption"
-msgstr "Exonération du Précompte Professionnel"
+msgstr "Exonération du précompte professionnel"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_without_income

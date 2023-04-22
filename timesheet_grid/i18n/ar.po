@@ -530,7 +530,7 @@ msgstr "تقليل الوقت "
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__employee_id
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
-msgstr ""
+msgstr "قم بتحديد التكلفة بالساعة للموظف لتتبع تكلفة وقته. "
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form

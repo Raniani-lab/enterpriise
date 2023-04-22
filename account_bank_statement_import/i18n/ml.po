@@ -78,7 +78,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "Go to Apps"
-msgstr ""
+msgstr "ആപ്പുകളിലേക്ക് പോകുക"
 
 #. module: account_bank_statement_import
 #. odoo-python

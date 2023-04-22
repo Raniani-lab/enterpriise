@@ -3,6 +3,8 @@
 # 	* web_studio
 # 
 # Translators:
+# Hasna, 2023
+# Nikhil Krishnan, 2023
 # Niyas Raphy, 2023
 # 
 msgid ""
@@ -1028,7 +1030,7 @@ msgstr "സ്ഥിരീകരിക്കുക"
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.js:0
 #, python-format
 msgid "Confirmation"
-msgstr ""
+msgstr "സ്ഥിരീകരണം"
 
 #. module: web_studio
 #. odoo-python
@@ -1762,7 +1764,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/search_renderer.xml:0
 #, python-format
 msgid "Favourites"
-msgstr ""
+msgstr "പ്രിയപ്പെട്ടവ"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2272,7 +2274,7 @@ msgstr "ഇന്റെര്ണല്"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Interval"
-msgstr ""
+msgstr "ഇടവേള"
 
 #. module: web_studio
 #. odoo-python
@@ -3018,7 +3020,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_record.xml:0
 #, python-format
 msgid "Preview is not available"
-msgstr ""
+msgstr "പ്രിവ്യൂ ലഭ്യമല്ല"
 
 #. module: web_studio
 #. odoo-javascript

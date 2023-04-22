@@ -435,7 +435,7 @@ msgstr "Beurteilung Manager Feedback Vorlage"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Officer"
-msgstr ""
+msgstr "Beurteilungsbeauftragter"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__appraisal_plan_posted
@@ -585,12 +585,12 @@ msgstr "Darf Körper bearbeiten"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__can_see_employee_publish
 msgid "Can See Employee Publish"
-msgstr ""
+msgstr "Kann sehen, wenn Mitarbeiter veröffentlicht"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__can_see_manager_publish
 msgid "Can See Manager Publish"
-msgstr ""
+msgstr "Kann sehen, wenn Vorgesetzter veröffentlicht"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
@@ -1318,7 +1318,7 @@ msgstr "Anzahl der Nachrichten mit einem Fehler beim Senden."
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "Officer : Access all appraisals"
-msgstr ""
+msgstr "Büroangestellter: Auf alle Mitarbeiterbeurteilungen zugreifen"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__ongoing_appraisal_count
@@ -1513,7 +1513,7 @@ msgstr "Einstellungen"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__show_employee_feedback_full
 msgid "Show Employee Feedback Full"
-msgstr ""
+msgstr "Komplettes Feedback des Mitarbeiters anzeigen"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__show_manager_feedback_full
@@ -1750,7 +1750,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Your Appraisal has been completed"
-msgstr ""
+msgstr "Ihre Beurteilung ist abgeschlossen"
 
 #. module: hr_appraisal
 #. odoo-python

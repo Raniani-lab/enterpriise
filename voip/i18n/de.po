@@ -465,7 +465,7 @@ msgstr "Erledigt"
 #: model:ir.model.fields,field_description:voip.field_res_users__how_to_call_on_mobile
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__how_to_call_on_mobile
 msgid "How to place calls on mobile"
-msgstr ""
+msgstr "Wie Anrufe mobil tätigen"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__id

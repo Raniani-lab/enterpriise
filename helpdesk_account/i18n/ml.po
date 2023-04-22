@@ -48,7 +48,7 @@ msgstr "ക്രെഡിറ്റ് നോട്ട് കൗണ്ട് "
 #: model:ir.model,name:helpdesk_account.model_helpdesk_ticket
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__helpdesk_ticket_id
 msgid "Helpdesk Ticket"
-msgstr ""
+msgstr "ഹെൽപ്പ് ഡെസ്ക് ടിക്കറ്റ്"
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
@@ -75,7 +75,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:helpdesk_account.helpdesk_ticket_action_refund
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.helpdesk_ticket_view_form_inherit_helpdesk_invoicing
 msgid "Refund"
-msgstr ""
+msgstr "റീഫണ്ട്"
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0

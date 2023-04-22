@@ -39,12 +39,12 @@ msgstr "Luo"
 #: code:addons/documents_sign/models/workflow.py:0
 #, python-format
 msgid "New templates"
-msgstr ""
+msgstr "Uudet mallit"
 
 #. module: documents_sign
 #: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_direct
 msgid "PDF to Sign"
-msgstr ""
+msgstr "PDF allekirjoitettavaksi"
 
 #. module: documents_sign
 #: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
@@ -54,7 +54,7 @@ msgstr "Allekirjoita"
 #. module: documents_sign
 #: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_new
 msgid "Signature PDF Template"
-msgstr ""
+msgstr "Allekirjoituksen PDF-malli"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
@@ -64,14 +64,14 @@ msgstr "Allekirjoituspyyntö"
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template
 msgid "Signature Template"
-msgstr ""
+msgstr "Allekirjoitusmalli"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
 msgid "Signed Document Tags"
-msgstr ""
+msgstr "Allekirjoitetun asiakirjan tunnisteet"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
 msgid "Signed Document Workspace"
-msgstr ""
+msgstr "Allekirjoitetun asiakirjan työtila"

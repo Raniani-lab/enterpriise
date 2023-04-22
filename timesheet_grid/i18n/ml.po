@@ -3,6 +3,7 @@
 # 	* timesheet_grid
 # 
 # Translators:
+# Hasna, 2023
 # Niyas Raphy, 2023
 # 
 msgid ""
@@ -613,7 +614,7 @@ msgstr "അവസാനം അപ്ഡേറ്റ് ചെയ്തത്"
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_month
 msgid "Last Month"
-msgstr ""
+msgstr "കഴിഞ്ഞ മാസം"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__write_uid
@@ -635,7 +636,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_week
 msgid "Last Week"
-msgstr ""
+msgstr "കഴിഞ്ഞ ആഴ്ച"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -695,7 +696,7 @@ msgstr ""
 #: model:ir.model,name:timesheet_grid.model_hr_timesheet_merge_wizard
 #, python-format
 msgid "Merge Timesheets"
-msgstr ""
+msgstr "ടൈംഷീറ്റുകൾ ലയിപ്പിക്കുക"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_min_duration
@@ -731,13 +732,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Tasks"
-msgstr ""
+msgstr "എന്റെ ചുമതലകൾ"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Team"
-msgstr ""
+msgstr "എന്റെ സംഘം"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_nextdate
@@ -795,7 +796,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Pause"
-msgstr ""
+msgstr "താൽക്കാലികമായി നിർത്തുക"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -837,7 +838,7 @@ msgstr "പ്രൊജക്റ്റ് "
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee_public
 msgid "Public Employee"
-msgstr ""
+msgstr "പൊതു ജീവനക്കാരൻ"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__unit_amount
@@ -847,19 +848,19 @@ msgstr "അളവ്"
 #. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_user
 msgid "Reminder to log your timesheets"
-msgstr ""
+msgstr "നിങ്ങളുടെ ടൈംഷീറ്റുകൾ ലോഗ് ചെയ്യാനുള്ള ഓർമ്മപ്പെടുത്തൽ"
 
 #. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_manager
 msgid "Reminder to validate your team's timesheets"
-msgstr ""
+msgstr "നിങ്ങളുടെ ടീമിന്റെ ടൈംഷീറ്റുകൾ സാധൂകരിക്കാനുള്ള ഓർമ്മപ്പെടുത്തൽ"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.invalidate_timesheet_action
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_form_view
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Reset to draft"
-msgstr ""
+msgstr "ഡ്രാഫ്റ്റിലേക്ക് പുനഃസജ്ജമാക്കുക"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -1071,7 +1072,7 @@ msgstr ""
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
 #, python-format
 msgid "The timesheets must have the same encoding unit"
-msgstr ""
+msgstr "ടൈംഷീറ്റുകൾക്ക് ഒരേ എൻകോഡിംഗ് യൂണിറ്റ് ഉണ്ടായിരിക്കണം"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1105,19 +1106,19 @@ msgstr "സമയം"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 msgid "Time Spent"
-msgstr ""
+msgstr "ചിലവഴിച്ച സമയം"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__timer_pause
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__timer_pause
 msgid "Timer Last Pause"
-msgstr ""
+msgstr "ടൈമർ അവസാന വിരാമം"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__timer_start
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__timer_start
 msgid "Timer Start"
-msgstr ""
+msgstr "ടൈമർ ആരംഭം"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
@@ -1129,7 +1130,7 @@ msgstr "ടൈംഷീറ് "
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.view_employee_tree_inherit_timesheet
 msgid "Timesheet Approver"
-msgstr ""
+msgstr "ടൈംഷീറ്റ് അംഗീകാരം നൽകുന്നയാൾ"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheet_grid_mixin

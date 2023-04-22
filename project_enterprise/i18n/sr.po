@@ -82,7 +82,7 @@ msgstr ""
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<strong>Assignees — </strong>"
-msgstr ""
+msgstr "<strong>Zaduženi — </strong>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
@@ -119,7 +119,7 @@ msgstr "Vrsta dodeljivanja"
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view_no_title
 msgid "Assignees"
-msgstr ""
+msgstr "Zaduženi"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_confirm_schedule_wizard_form

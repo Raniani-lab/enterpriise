@@ -218,12 +218,12 @@ msgstr "Zeige tatsächliche Nachfrage"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__mrp_mps_show_actual_demand_year_minus_2
 msgid "Display Actual Demand Before Year"
-msgstr ""
+msgstr "Tatsächliche Nachfrage vor dem Jahr anzeigen"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__mrp_mps_show_actual_demand_year_minus_1
 msgid "Display Actual Demand Last Year"
-msgstr ""
+msgstr "Tatsächliche Nachfrage des letzten Jahren anzeigen"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__mrp_mps_show_actual_replenishment
@@ -657,6 +657,9 @@ msgid ""
 "                    It ensures everything gets scheduled on time, based on constraints such as: safety stock, production capacity, lead times.\n"
 "                    It's the perfect tool to support your S&OP meetings."
 msgstr ""
+"Der Produktionsplan übersetzt Ihre Verkaufs- Und Bedarfsprognosen in eine Produktions- und Einkaufsplanung für jede Komponente.\n"
+"                     Er stellt sicher, dass alles rechtzeitig eingeplant wird, basierend auf Einschränkungen wie: Sicherheitsbestand, Produktionskapazität, Vorlaufzeiten.\n"
+"                    Es ist das perfekte Tool zur Unterstützung Ihrer Meetings zur Absatz- und Vertriebsplanung."
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__max_to_replenish_qty
@@ -665,6 +668,10 @@ msgid ""
 "MPS. Note that if the demand is higher than that amount, the remaining "
 "quantity will be transferred to the next period automatically."
 msgstr ""
+"Die maximale Auffüllmenge, die Sie für jede Periode in der Lagerfertigung "
+"starten möchten. Beachten Sie, dass die verbleibende Menge automatisch auf "
+"die nächste Periode übertragen wird, wenn die Nachfrage höher ist als dieser"
+" Betrag."
 
 #. module: mrp_mps
 #. odoo-javascript

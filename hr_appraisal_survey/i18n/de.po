@@ -860,6 +860,9 @@ msgid ""
 "The following employees do not have any email : \n"
 "%s"
 msgstr ""
+"Der Mitarbeiter hate keine E-Mail-Adresse hinterlegt und wird keine E-mails erhalten.\n"
+"Folgende Mitarbeiter haben keine E-Mail-Adresse:\n"
+"%s"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,help:hr_appraisal_survey.field_hr_department__appraisal_survey_template_id

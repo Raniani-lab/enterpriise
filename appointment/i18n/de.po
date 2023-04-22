@@ -1682,7 +1682,7 @@ msgstr "Optionen"
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Our Appointment Types"
-msgstr ""
+msgstr "Unsere Terminarten"
 
 #. module: appointment
 #. odoo-javascript

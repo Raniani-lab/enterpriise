@@ -6,6 +6,7 @@
 # Lucia Pacheco <lpo@odoo.com>, 2022
 # Martin Trigaux, 2022
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2023
+# Antoine Demany, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2023\n"
+"Last-Translator: Antoine Demany, 2023\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -419,53 +420,53 @@ msgstr "Todas las variantes"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s days"
-msgstr ""
+msgstr "por %s días"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s months"
-msgstr ""
+msgstr "por %s meses"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s weeks"
-msgstr ""
+msgstr "por %s semanas"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per %s years"
-msgstr ""
+msgstr "por %s años"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per day"
-msgstr ""
+msgstr "por dia"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per month"
-msgstr ""
+msgstr "por mes"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per week"
-msgstr ""
+msgstr "por semana"
 
 #. module: sale_temporal
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per year"
-msgstr ""
+msgstr "por año"

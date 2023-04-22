@@ -94,7 +94,7 @@ msgstr "ഡിസ്പ്ലേ നെയിം"
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr ""
+msgstr "ഹെൽപ്പ് ഡെസ്ക് ടിക്കറ്റ്"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__id

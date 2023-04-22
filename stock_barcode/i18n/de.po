@@ -481,7 +481,7 @@ msgstr "Dummy"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__empty_move_count
 msgid "Empty Move Count"
-msgstr ""
+msgstr "Anzahl leerer Bewegungen"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
@@ -605,6 +605,8 @@ msgstr "Lass es"
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_product
 msgid "Line's product must be scanned before the line can be edited"
 msgstr ""
+"Das Produkt der Zeile muss zuerst gescannt werden, damit die Zeile "
+"bearbeitet werden kann"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -772,7 +774,7 @@ msgstr "Verpackungsmenge"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__partial_move_count
 msgid "Partial Move Count"
-msgstr ""
+msgstr "Anzahl Teilbewegungen"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
@@ -1508,7 +1510,7 @@ msgstr "Es wird erwartet, dass Sie ein oder mehrere Produkte scannen."
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You are supposed to scan %s or another source location"
-msgstr ""
+msgstr "Sie müssen %s oder einen anderen Herkunftsstandort scannen"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1635,7 +1637,7 @@ msgstr "um einen neuen Vorgang zu erstellen."
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to know its content."
-msgstr ""
+msgstr ", um den Inhalt zu kennen."
 
 #. module: stock_barcode
 #. odoo-javascript

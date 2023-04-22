@@ -228,7 +228,7 @@ msgstr "Khu vực sản xuất"
 #: model:ir.model,name:mrp_maintenance.model_mrp_workorder
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__workorder_id
 msgid "Work Order"
-msgstr "Lệnh làm việc"
+msgstr "Công đoạn"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp

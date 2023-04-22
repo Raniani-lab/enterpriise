@@ -317,7 +317,7 @@ msgstr "Amls Widget"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Amongst unmatched bank transactions"
-msgstr ""
+msgstr "Unter den nichtabgestimmten Banktransaktionen"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -691,12 +691,12 @@ msgstr "Anzeigename"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_amount_currency
 msgid "Display Stroked Amount Currency"
-msgstr ""
+msgstr "Gestrichener Währungsbetrag"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_balance
 msgid "Display Stroked Balance"
-msgstr ""
+msgstr "Gestrichenes Saldo anzeigen"
 
 #. module: account_accountant
 #. odoo-python
@@ -1040,7 +1040,7 @@ msgstr "Rechnungen"
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__invoicing_switch_threshold
 msgid "Invoicing Switch Threshold"
-msgstr ""
+msgstr "Umstellungsdatum für Rechnungne"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_is_reconciled
@@ -1171,7 +1171,7 @@ msgstr "Zuletzt aktualisiert am"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Learn how blazing fast bank matching works"
-msgstr ""
+msgstr "Erfahren Sie, wie ein blitzschneller Bankabgleich funktioniert"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1222,7 +1222,7 @@ msgstr "Zeile"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget_line
 msgid "Line of the lines_widget"
-msgstr ""
+msgstr "Zeile des lines_widget"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__lines_widget
@@ -1286,7 +1286,7 @@ msgstr "Abstimmung vorhandener Einträge"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Match payments and invoices"
-msgstr ""
+msgstr "Zahlungen und Rechnungen abstimmen"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1608,7 +1608,7 @@ msgstr "Empfangen"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
 msgid "Reco Models Widget"
-msgstr ""
+msgstr "Abstimmungsmodell-Widget"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1626,7 +1626,7 @@ msgstr "Abstimmung"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr ""
+msgstr "Abstimmmodell"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
@@ -1712,7 +1712,7 @@ msgstr "Eine Transaktion auswählen"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
 msgid "Selected Aml"
-msgstr ""
+msgstr "Ausgewähltes"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1743,42 +1743,42 @@ msgstr "Einige Felder sind nicht definiert"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_id
 msgid "Source Aml"
-msgstr ""
+msgstr "Quell-AML"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_id
 msgid "Source Aml Move"
-msgstr ""
+msgstr "Quelle AML-Bewegung"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_name
 msgid "Source Aml Move Name"
-msgstr ""
+msgstr "Quelle Name der AML-Bewegung"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_amount_currency
 msgid "Source Amount Currency"
-msgstr ""
+msgstr "Quelle Betragswährung"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_balance
 msgid "Source Balance"
-msgstr ""
+msgstr "Quelle Saldo"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_credit
 msgid "Source Credit"
-msgstr ""
+msgstr "Quelle Kreditor"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_debit
 msgid "Source Debit"
-msgstr ""
+msgstr "Quelle Soll"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_id
 msgid "St Line"
-msgstr ""
+msgstr "Auszugszeile"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__date_from
@@ -1820,7 +1820,7 @@ msgstr "Steuer"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
 msgid "Tax Base Amount Currency"
-msgstr ""
+msgstr "Währung des Steuerbasisbetrags"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1847,7 +1847,7 @@ msgstr "Steuererklärung Sperrdatum"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
 msgid "Tax Tag"
-msgstr ""
+msgstr "Steuer-Tag"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1992,7 +1992,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr ""
+msgstr "Mit offenen Einträgen abzugleichen"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2004,7 +2004,7 @@ msgstr "Um die Abstimmung zu beschleunigen, definieren Sie"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__todo_command
 msgid "Todo Command"
-msgstr ""
+msgstr "To-do-Befehl"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -2044,6 +2044,8 @@ msgid ""
 "Use the <strong>Manual Operations</strong> tab to register the difference, "
 "or create expenses on the fly"
 msgstr ""
+"Verwenden Sie den Reiter <strong>Manuelle Vorgänge</strong>, um die "
+"Differenz zu registrieren oder erstellen Sie spontan Ausgaben"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
@@ -2176,6 +2178,8 @@ msgstr "Sie können ein Sperrdatum in der Zukunft festlegen."
 msgid ""
 "You might want to %(btn_start)sfully reconcile%(btn_end)s the document."
 msgstr ""
+"Möglicherweise möchten Sie das Dokument %(btn_start)svollständig "
+"abstimmen%(btn_end)s."
 
 #. module: account_accountant
 #. odoo-python
@@ -2185,6 +2189,8 @@ msgid ""
 "You might want to make a %(btn_start)spartial reconciliation%(btn_end)s "
 "instead."
 msgstr ""
+"Möglicherweise möchten Sie das Dokument %(btn_start)steilweise "
+"abstimmen%(btn_end)s."
 
 #. module: account_accountant
 #. odoo-python
@@ -2192,6 +2198,8 @@ msgstr ""
 #, python-format
 msgid "You might want to record a %(btn_start)spartial payment%(btn_end)s."
 msgstr ""
+"Möglicherweise möchten Sie eine %(btn_start)sTeilzahlung%(btn_end)s "
+"erfassen."
 
 #. module: account_accountant
 #. odoo-python
@@ -2200,6 +2208,8 @@ msgstr ""
 msgid ""
 "You might want to set the invoice as %(btn_start)sfully paid%(btn_end)s."
 msgstr ""
+"Möglicherweise möchten Sie die Rechnung auf %(btn_start)svollständig "
+"bezahlt%(btn_end)s setzen."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2211,7 +2221,7 @@ msgstr "Sie haben eine Abstimmung vorgenommen von"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__aml
 msgid "aml"
-msgstr ""
+msgstr "AML"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2243,12 +2253,12 @@ msgstr "exchange_diff"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity
 msgid "liquidity"
-msgstr ""
+msgstr "Liquidität"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__manual
 msgid "manual"
-msgstr ""
+msgstr "manuell"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__new_aml

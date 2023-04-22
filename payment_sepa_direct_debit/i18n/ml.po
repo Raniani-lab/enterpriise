@@ -514,7 +514,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__code
 msgid "The technical code of this payment provider."
-msgstr ""
+msgstr "ഈ പേയ്‌മെന്റ് ദാതാവിന്റെ സാങ്കേതിക കോഡ്."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python

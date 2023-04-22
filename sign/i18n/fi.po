@@ -29,10 +29,10 @@
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
 # Eino Mäkitalo <eino.makitalo@netitbe.fi>, 2022
 # Joakim Weckman, 2022
-# Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
 # Pekko Tuomisto <pekko.tuomisto@web-veistamo.fi>, 2022
 # Martin Trigaux, 2022
 # Konsta Aavaranta, 2023
+# Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2023
 # Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
 msgid ""
@@ -1326,7 +1326,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__new_pdf
 msgid "File name"
-msgstr ""
+msgstr "Tiedostonimi"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__filename
@@ -1624,7 +1624,7 @@ msgstr "Tiedot"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__initial
 msgid "Initial"
-msgstr ""
+msgstr "Alkuperäinen"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_initial
@@ -2142,7 +2142,7 @@ msgstr "Oho"
 #: model:sign.template,redirect_url_text:sign.template_sign_5
 #: model:sign.template,redirect_url_text:sign.template_sign_tour
 msgid "Open Link"
-msgstr ""
+msgstr "Avaa linkki"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__value
@@ -2769,7 +2769,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request
 msgid "Sign send request"
-msgstr ""
+msgstr "Lähetä allekirjoituspyyntö"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request_signer
@@ -2906,7 +2906,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_sign_template
 msgid "Signature Template"
-msgstr ""
+msgstr "Allekirjoitusmalli"
 
 #. module: sign
 #. odoo-javascript

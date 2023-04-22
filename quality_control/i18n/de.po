@@ -35,7 +35,7 @@ msgstr "% der Transfers"
 #: model:ir.actions.report,print_report_name:quality_control.quality_check_report
 #: model:ir.actions.report,print_report_name:quality_control.quality_check_report_internal
 msgid "'Worksheet_%s' % object.name"
-msgstr ""
+msgstr "'Worksheet_%s' % object.name"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -97,6 +97,8 @@ msgid ""
 "<span class=\"o_stat_text\">Pass:</span>\n"
 "                        <span class=\"o_stat_text\">Fail:</span>"
 msgstr ""
+"<span class=\"o_stat_text\">Bestehen:</span>\n"
+"                        <span class=\"o_stat_text\">Nicht bestehen:</span>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
@@ -237,7 +239,7 @@ msgstr "Scheck"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_move_line__check_state
 msgid "Check State"
-msgstr ""
+msgstr "Status prüfen"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_tree
@@ -471,6 +473,8 @@ msgid ""
 "In case of Quality Check by Quantity, Move Line on which the Quality Check "
 "applies"
 msgstr ""
+"Im Falle einer Qualitätsprüfung nach Menge, verschieben Sie die Zeile, auf "
+"die sich die Qualitätsprüfung bezieht."
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -480,7 +484,7 @@ msgstr "Anleitung"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__is_last_check
 msgid "Is Last Check"
-msgstr ""
+msgstr "Ist letzte Prüfung"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard____last_update
@@ -501,14 +505,14 @@ msgstr "Zuletzt aktualisiert am"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__lot_line_id
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__lot_line_id
 msgid "Lot Line"
-msgstr ""
+msgstr "Loszeile"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__is_lot_tested_fractionally
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__is_lot_tested_fractionally
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__is_lot_tested_fractionally
 msgid "Lot Tested Fractionally"
-msgstr ""
+msgstr "Los teilweise geprüft"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
@@ -578,7 +582,7 @@ msgstr "Monate"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__nb_checks
 msgid "Nb Checks"
-msgstr ""
+msgstr "Anzahl Prüfungen"
 
 #. module: quality_control
 #. odoo-python
@@ -670,6 +674,9 @@ msgid ""
 "                  Product = A quality check is requested per product.\n"
 "                 Quantity = A quality check is requested for each new product quantity registered, with partial quantity checks also possible."
 msgstr ""
+"Vorgang = Eine Qualitätsprüfung wird auf dieser Vorgangsebene gefragt.\n"
+"                  Produkt = Pro Produkt wird eine Qualitätsprüfung verlangt.\n"
+"                 Quantity = Für jede neu erfasste Produktmenge wird eine Qualitätsprüfung verlangt, bei der auch Teilqualitätsprüfungen möglich sind."
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
@@ -729,7 +736,7 @@ msgstr "Bild hochgeladen"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__position_current_check
 msgid "Position Current Check"
-msgstr ""
+msgstr "Position der aktuellen Prüfunge"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -911,7 +918,7 @@ msgstr "Qualitätskontrollpunkt"
 #: model:ir.model.fields,field_description:quality_control.field_product_product__quality_control_point_qty
 #: model:ir.model.fields,field_description:quality_control.field_product_template__quality_control_point_qty
 msgid "Quality Control Point Qty"
-msgstr ""
+msgstr "Menge der Qualitätskontrollpunkte"
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_point_action
@@ -922,7 +929,7 @@ msgstr "Qualitätsprüfpunkte"
 #: model:ir.model.fields,field_description:quality_control.field_product_product__quality_fail_qty
 #: model:ir.model.fields,field_description:quality_control.field_product_template__quality_fail_qty
 msgid "Quality Fail Qty"
-msgstr ""
+msgstr "Menge nichtbestandener Qualtiätskontrolle"
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_team_action
@@ -933,7 +940,7 @@ msgstr "Qualitätsübersicht"
 #: model:ir.model.fields,field_description:quality_control.field_product_product__quality_pass_qty
 #: model:ir.model.fields,field_description:quality_control.field_product_template__quality_pass_qty
 msgid "Quality Pass Qty"
-msgstr ""
+msgstr "Mg. bestandener Qualtiätskontrolle"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.product_product_form_view_quality_control
@@ -965,12 +972,12 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_report_quality_control_quality_worksheet_internal
 msgid "Quality Worksheet Internal Report"
-msgstr ""
+msgstr "Interner Bericht über Qualitätsarbeitsblatt"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_report_quality_control_quality_worksheet
 msgid "Quality Worksheet Report"
-msgstr ""
+msgstr "Bericht über Qualitätsarbeitsblatt"
 
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_point_action
@@ -999,7 +1006,7 @@ msgstr "Getestete Menge"
 #: model:ir.model.fields,help:quality_control.field_quality_check__qty_tested
 #: model:ir.model.fields,help:quality_control.field_quality_check_wizard__qty_tested
 msgid "Quantity of product tested within the lot"
-msgstr ""
+msgstr "Menge des geprüften Produkts innerhalb des Loses"
 
 #. module: quality_control
 #: model:ir.model.fields,help:quality_control.field_quality_check__qty_to_test
@@ -1037,7 +1044,7 @@ msgstr "Verantwortlich"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__show_lot_text
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__show_lot_text
 msgid "Show Lot Text"
-msgstr ""
+msgstr "Los-Text anzeigen"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__stock_move_line__check_state__fail
@@ -1110,14 +1117,14 @@ msgstr "Testtyp"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_tree
 msgid "Testing % Within Lot"
-msgstr ""
+msgstr "Geprüfter % In Los"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__testing_percentage_within_lot
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__testing_percentage_within_lot
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__testing_percentage_within_lot
 msgid "Testing Percentage Within Lot"
-msgstr ""
+msgstr "Geprüfter Prozentsatz In Los"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
@@ -1177,12 +1184,12 @@ msgstr "Assistent für Qualitätsprüfung Pop Up"
 #. module: quality_control
 #: model:ir.actions.report,name:quality_control.quality_check_report
 msgid "Worksheet Report - External (PDF)"
-msgstr ""
+msgstr "Arbeitsblattbericht - Extern (PDF)"
 
 #. module: quality_control
 #: model:ir.actions.report,name:quality_control.quality_check_report_internal
 msgid "Worksheet Report - Internal (PDF)"
-msgstr ""
+msgstr "Arbeitsblattbericht - Intern (PDF)"
 
 #. module: quality_control
 #. odoo-python
@@ -1197,7 +1204,7 @@ msgstr ""
 #: code:addons/quality_control/wizard/quality_check_wizard.py:0
 #, python-format
 msgid "You must provide a picture before validating"
-msgstr ""
+msgstr "Sie müssen vor der Validierung ein Bild zur Verfügung stellen"
 
 #. module: quality_control
 #. odoo-python

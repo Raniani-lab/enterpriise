@@ -32,6 +32,8 @@ msgid ""
 "360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.\n"
 "            This typically includes the employee's manager, peers, and direct reports."
 msgstr ""
+"La Retroalimentación de 360 grados es un sistema o proceso en el que los gerentes solicitan retroalimentación de las personas que trabajan con el empleado.\n"
+"            Esto normalmente incluye al gerente del empleado, sus pares y las personas que reportan directamente al empleado."
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_360_feedback_template
@@ -276,12 +278,12 @@ msgstr "Retroalimentación solicitada"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the conclusion of the appraisal time period"
-msgstr ""
+msgstr "En la conclusión del periodo de evaluación"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the outset of the appraisal time period"
-msgstr ""
+msgstr "Al inicio del periodo de evaluación"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__attachment_ids
@@ -390,6 +392,8 @@ msgid ""
 "Critical or key elements of performance and professional development needs "
 "(if any), should also be noted at this time"
 msgstr ""
+"Los elementos críticos o clave del rendimiento y necesidades de desarrollo "
+"profesional (si las hay) también se deben anotar en este momento"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_8
@@ -425,7 +429,7 @@ msgstr "Departamento"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Did not meet standards and expectations"
-msgstr ""
+msgstr "No cumple con los estándares y expectativas"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__display_name
@@ -470,7 +474,7 @@ msgstr "Entusiasmo e implicación en los proyectos/asignaciones"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Exceeds standards and expectations"
-msgstr ""
+msgstr "Supera los estándares y expectativas"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -515,6 +519,9 @@ msgid ""
 "Identify professional, performance, or project objectives you recommend for "
 "employee’s continued career development over the coming year."
 msgstr ""
+"Identifique los objetivos profesionales, de rendimiento o de proyecto que "
+"recomienda para el desarrollo continuo de la carrera del empleado durante el"
+" próximo año."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_5
@@ -534,6 +541,10 @@ msgid ""
 " major employee responsibilities and corresponding benchmarks against which "
 "results will be evaluated."
 msgstr ""
+"Es responsabilidad conjunta del empleado y del supervisor (evaluador) "
+"establecer un plan de trabajo viable para el próximo año, lo que incluye las"
+" responsabilidades principales del empleado y los parámetros "
+"correspondientes con los que se evaluarán los resultados."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -542,6 +553,9 @@ msgid ""
 "input from the appropriate sources of feedback (internal and/or external "
 "customers, peers)."
 msgstr ""
+"Es responsabilidad principal del supervisor recolectar la información "
+"necesaria de las fuentes adecuadas de retroalimentación (clientes internos "
+"y/o externos, pares)."
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__lang
@@ -590,7 +604,7 @@ msgstr "Plantilla de correo electrónico"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Meet standards and expectations"
-msgstr ""
+msgstr "Cumple con los estándares y expectativas"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -641,7 +655,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "Overall Purpose Of Employee Appraisal"
-msgstr ""
+msgstr "Objetivo general de la evaluación del empleado"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4_2
@@ -742,13 +756,15 @@ msgstr "Muestro buen juicio al tomar decisiones"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Significantly below standards and expectations"
-msgstr ""
+msgstr "Considerablemente por debajo de los estándares y expectativas"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid ""
 "Significantly exceeds standards and expectations required of the position"
 msgstr ""
+"Supera considerablemente los estándares y expectativas necesarias para el "
+"puesto"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_3
@@ -834,6 +850,8 @@ msgid ""
 "The appraiser should rate the employee’s major work accomplishments and "
 "performance according to the metric provided below:"
 msgstr ""
+"El evaluador debe calificar los principales logros laborales y rendimiento "
+"del empleado según la métrica que se proporciona a continuación:"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -841,6 +859,8 @@ msgid ""
 "The employee may choose to offer comments or explanation regarding the "
 "completed review."
 msgstr ""
+"El empleado puede elegir dar comentarios o explicaciones sobre la revisión "
+"completa."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -851,6 +871,11 @@ msgid ""
 "criterion. Once the form had been filled, the employee send it to their "
 "supervisor."
 msgstr ""
+"El empleado será responsable de completar un borrador del formulario de "
+"evaluación como herramienta de autoevaluación, además será el punto de "
+"inicio de la evaluación del supervisor. El empleado puede agregar ejemplos "
+"de logros para cada criterio. Una vez que complete el formulario, el "
+"empleado debe enviarlo a su supervisor."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -859,6 +884,9 @@ msgid ""
 "appraisal. The motivation of the evaluation is explained in the ad hoc "
 "fields."
 msgstr ""
+"El supervisor sintetiza e integra toda la información en la evaluación "
+"completa. El motivo de la evaluación se explica en los campos "
+"correspondientes."
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -894,6 +922,8 @@ msgid ""
 "This survey allows you to give a feedback about your collaboration with an "
 "employee. Filling it helps us improving the appraisal process."
 msgstr ""
+"La encuesta le permite dar retroalimentación sobre su colaboración con un "
+"empleado. Completarla nos ayuda a mejorar el proceso de evaluación."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_15
@@ -906,11 +936,14 @@ msgid ""
 "To assist employees in their professional growth, through the identification"
 " of strengths and opportunities for development"
 msgstr ""
+"Para apoyar a los empleados en su crecimiento profesional mediante la "
+"identificación de fortalezas y áreas de oportunidad de desarrollo"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "To initiate a clear and open communication of performance expectations"
 msgstr ""
+"Para comunicar de forma clara y abierta las expectativas de rendimiento"
 
 #. module: hr_appraisal_survey
 #. odoo-python

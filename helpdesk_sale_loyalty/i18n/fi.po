@@ -42,14 +42,14 @@ msgstr "Kuponki"
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_sale_coupon_generate__program
 msgid "Coupon Program"
-msgstr ""
+msgstr "Kuponkiohjelma"
 
 #. module: helpdesk_sale_loyalty
 #. odoo-python
 #: code:addons/helpdesk_sale_loyalty/wizard/helpdesk_sale_coupon_generate.py:0
 #, python-format
 msgid "Coupon created"
-msgstr ""
+msgstr "Alennuskuponki luotu"
 
 #. module: helpdesk_sale_loyalty
 #. odoo-python
@@ -62,7 +62,7 @@ msgstr "Kupongit"
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_ticket__coupons_count
 msgid "Coupons count"
-msgstr ""
+msgstr "Kuponkien määrä"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_sale_coupon_generate__create_uid
@@ -87,18 +87,18 @@ msgstr "Generoi"
 #. module: helpdesk_sale_loyalty
 #: model:ir.model,name:helpdesk_sale_loyalty.model_helpdesk_sale_coupon_generate
 msgid "Generate Sales Coupon from Helpdesk"
-msgstr ""
+msgstr "Luo myyntikuponki Helpdeskistä"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.actions.act_window,name:helpdesk_sale_loyalty.helpdesk_sale_coupon_generate_action
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_loyalty.helpdesk_sale_coupon_generate_view_form
 msgid "Generate a Coupon"
-msgstr ""
+msgstr "Luo kuponki"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_ticket__coupon_ids
 msgid "Generated Coupons"
-msgstr ""
+msgstr "Luo kupongit"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model,name:helpdesk_sale_loyalty.model_helpdesk_ticket

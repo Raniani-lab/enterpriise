@@ -647,18 +647,18 @@ msgstr "Pause des Timers anzeigen"
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_resume
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_resume
 msgid "Display Timer Resume"
-msgstr ""
+msgstr "Fortsetzung des Timers anzeigen"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_start_primary
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_start_primary
 msgid "Display Timer Start Primary"
-msgstr ""
+msgstr "Primären Start des Timers anzeigen"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_start_secondary
 msgid "Display Timer Start Secondary"
-msgstr ""
+msgstr "Sekundären Start des Timers anzeigen"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_stop
@@ -678,6 +678,8 @@ msgstr "Stundenzettel anzeigen"
 msgid ""
 "Download our web/mobile apps to track your time from anywhere, even offline."
 msgstr ""
+"Laden Sie unsere Web-/mobilen Apps herunter, um Ihre Zeit von überall aus zu"
+" erfassen, auch offline."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__draft
@@ -719,7 +721,7 @@ msgstr "Einheit für Zeiterfassung"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "Enter"
-msgstr ""
+msgstr "Eingabe"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -804,7 +806,7 @@ msgstr "Zuletzt aktualisiert am"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__last_validated_timesheet_date
 msgid "Last Validated Timesheet Date"
-msgstr ""
+msgstr "Datum des letzten validierten Zeiterfassungsbogen"
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_week
@@ -821,6 +823,10 @@ msgid ""
 "can also directly add 15 minutes to this project by hitting the <b>shift + "
 "[A] keys</b>.</i>"
 msgstr ""
+"Starten Sie den <b>Timer</b> für dieses Projekt, indem Sie die <b>Taste "
+"[a]</b> drücken. Wechseln Sie mit diesen Tasten leicht von einem Projekt zum"
+" anderen. <i>Tipp: Sie können auch direkt 15 Minuten zu diesem Projekt "
+"hinzufügen, indem Sie die Tasten <b>Umschalt + [A] drücken</b>.</i>"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -990,7 +996,7 @@ msgstr "Timer pausieren"
 #: code:addons/timesheet_grid/static/src/js/timesheet_uom_timer.js:0
 #, python-format
 msgid "Play"
-msgstr ""
+msgstr "Abspielen"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1146,6 +1152,8 @@ msgstr ""
 #, python-format
 msgid "Sorry, you cannot use a timer for a validated timesheet"
 msgstr ""
+"Es tut uns leid, aber Sie können eine Timer nicht für eine validierte "
+"Zeiterfassung verwenden."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1181,6 +1189,9 @@ msgid ""
 "Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> in the "
 "description to automatically log your activity.</i>"
 msgstr ""
+"Stoppen Sie den <b>Timer</b>, wenn Sie fertig sind. <i>Tipp: Drücken Sie "
+"<b>[Enter]</b> in der Beschreibung, um Ihre Aktivität automatisch zu "
+"erfassen.</i>"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -1226,6 +1237,12 @@ msgid ""
 "00:30 (assuming you have a round up of 15 min). We recommend having the same"
 " value for the minimal duration and for the round up."
 msgstr ""
+"Die Dauer von über den Timer kodierte Zeiterfassungen werden automatisch auf"
+" diese Zahl aufgerundet. Wenn Sie z. B. Ihren Timer bei 00:16:56 anhalten, "
+"wird die Dauer der Zeiterfassung automatisch auf 00:30 aufgerundet "
+"(vorausgesetzt, Sie haben eine Aufrundung von 15 Minuten festgelegt). Wir "
+"empfehlen, für die Mindestdauer und die Aufrundung denselben Wert zu "
+"verwenden."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1266,7 +1283,7 @@ msgstr "Die Stundennachweise wurden erfolgreich validiert."
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
 #, python-format
 msgid "The timesheets must have the same encoding unit"
-msgstr ""
+msgstr "Die Zeiterfassungen müssen dieselbe Kodierungseinheit haben"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1338,7 +1355,7 @@ msgstr "Zeiterfassungsraster Mixin"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__duration_unit_amount
 msgid "Timesheet Init Amount"
-msgstr ""
+msgstr "Anfangsbetrag der Zeiterfassung"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__is_timesheet
@@ -1349,7 +1366,7 @@ msgstr "Zeiterfassungsposition"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__unit_amount_validate
 msgid "Timesheet Unit Time"
-msgstr ""
+msgstr "Zeiteinheit der Zeiterfassung"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_reminder_user_ir_actions_server
@@ -1508,17 +1525,17 @@ msgstr "Validierte Zeile"
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_all_timesheets_action_server
 msgid "Validation All Timesheet Server Action"
-msgstr ""
+msgstr "Serveraktion zur Validierung aller Zeiterfassungen"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_week_action_server
 msgid "Validation Timesheet Week_view Server Action"
-msgstr ""
+msgstr "Serveraktion zur Validierung der Zeiterfassungen Week_view"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_month_action_server
 msgid "Validation Timesheet month_view Server Action"
-msgstr ""
+msgstr "Serveraktion zur Validierung der Zeiterfassungen month_view"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid
@@ -1643,7 +1660,7 @@ msgstr "Tage"
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "deleted"
-msgstr ""
+msgstr "gelöscht"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1685,11 +1702,11 @@ msgstr "Drücken Sie"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press Shift + a letter shortcut"
-msgstr ""
+msgstr "Shift + Tastenkürzel drücken"
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "to add"
-msgstr ""
+msgstr "zum Hinzufügen"

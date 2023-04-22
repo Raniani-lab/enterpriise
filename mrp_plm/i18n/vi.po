@@ -321,7 +321,7 @@ msgstr "Chờ xác nhận"
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_report_mrp_report_bom_structure
 msgid "BOM Overview Report"
-msgstr "Báo cáo Tổng quan Định mức Nguyên vật liệu"
+msgstr "Báo cáo Tổng quan Định mức nguyên liệu"
 
 #. module: mrp_plm
 #: model:ir.model,name:mrp_plm.model_mrp_bom

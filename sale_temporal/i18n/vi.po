@@ -211,7 +211,7 @@ msgstr "Ghi chú"
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Period"
-msgstr "Giai đoạn"
+msgstr "Kỳ"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_form
@@ -222,7 +222,7 @@ msgstr "Định kỳ"
 #. module: sale_temporal
 #: model:ir.actions.act_window,name:sale_temporal.sale_temporal_recurrence_action
 msgid "Periods"
-msgstr "Chu kỳ"
+msgstr "Kỳ"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__price

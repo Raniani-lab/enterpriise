@@ -15,7 +15,7 @@ msgstr ""
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -199,7 +199,7 @@ msgstr "betrieblicher Aufwand"
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_parse
 msgid "Expense OCR: Parse Expenses"
-msgstr ""
+msgstr "Spesen-OCR: Spesen analysieren"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -262,7 +262,7 @@ msgstr "Generierte Auslage"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__hide_partial
 msgid "Hide Partial"
-msgstr ""
+msgstr "Teilweise verbergen"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__hide_payment_method_line
@@ -429,7 +429,7 @@ msgstr "Für Digitalisierung versenden"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection
 msgid "Send mode on expense attachments"
-msgstr ""
+msgstr "Sendemodus für Spesenabrechnungsanhänge"
 
 #. module: hr_expense_extract
 #. odoo-python

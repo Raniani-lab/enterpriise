@@ -430,7 +430,7 @@ msgstr "Aktueller Kurs"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Debt-to-equity"
-msgstr ""
+msgstr "Eigenkapitalüberdeckung"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -568,6 +568,7 @@ msgstr "Monat-Jahr"
 #, python-format
 msgid "Net Credit Purchases / Average accounts payable balance for period"
 msgstr ""
+"Nettokreditkäufe / Durchschnittliche Verbindlichkeiten für den Zeitraum"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -643,56 +644,56 @@ msgstr "Ausserbilanz"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Month"
-msgstr ""
+msgstr "Zeitabstand -1 - Monat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Month-Year"
-msgstr ""
+msgstr "Zeitabstand -1 - Monat-Jahr"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Start date"
-msgstr ""
+msgstr "Zeitabstand -1 - Startdatum"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Year"
-msgstr ""
+msgstr "Zeitabstand -1 - Jahr"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Month"
-msgstr ""
+msgstr "Zeitabstand -4 - Monat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Month-Year"
-msgstr ""
+msgstr "Zeitabstand -4 - Monat-Jahr"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Start date"
-msgstr ""
+msgstr "Zeitabstand -4 - Startdatum"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Year"
-msgstr ""
+msgstr "Zeitabstand -4 - Jahr"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -700,7 +701,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Operating margin"
-msgstr ""
+msgstr "Umsatzrendite"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -999,7 +1000,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "current liabilities"
-msgstr ""
+msgstr "aktuelle Verbindlichkeiten"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1042,7 +1043,7 @@ msgstr "letzter Zeitraum"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "net sales - COGS"
-msgstr ""
+msgstr "Nettoverkäufe - Wareneinsatz"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

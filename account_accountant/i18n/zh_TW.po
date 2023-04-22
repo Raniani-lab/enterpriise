@@ -1498,7 +1498,7 @@ msgstr "預測供應商賬單賬戶"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Presets config"
-msgstr "Presets config"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__fiscalyear_lock_date

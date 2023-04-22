@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Agent"
-msgstr ""
+msgstr "Asiakaspalvelija"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -52,21 +52,21 @@ msgstr "Asiakas"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to assign"
-msgstr ""
+msgstr "Vastuuttamiseen tarvittavat tunnit"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to close"
-msgstr ""
+msgstr "Sulkemiseen tarvittavat tunnit"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to respond"
-msgstr ""
+msgstr "Vastaamiseen tarvittavat tunnit"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -111,28 +111,28 @@ msgstr "Tiimi"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Assigned To"
-msgstr ""
+msgstr "Analyysi tukipyynnöistä vastuutettujen mukaan"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Customer"
-msgstr ""
+msgstr "Analyysi tukipyynnöistä asiakkaiden mukaan"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Team"
-msgstr ""
+msgstr "Analyysi tukipyynnöistä tiimien mukaan"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Ticket Type"
-msgstr ""
+msgstr "Analyysi tukipyynnöistä näiden tyyppien mukaan"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -159,14 +159,14 @@ msgstr "Pääsyliput"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Stage"
-msgstr ""
+msgstr "Tukipyynnöt vaiheittain"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Type"
-msgstr ""
+msgstr "Tukipyynnöt tyypeittäin"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -180,21 +180,21 @@ msgstr "Aika vastuuttamiseen"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
-msgstr ""
+msgstr "Aika sulkemiseen"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Respond"
-msgstr ""
+msgstr "Aika vastaamiseen"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Agents"
-msgstr ""
+msgstr "Parhaat työntekijät"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -208,14 +208,14 @@ msgstr "Parhaat asiakkaat"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Teams"
-msgstr ""
+msgstr "Parhaat tiimit"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Ticket Types"
-msgstr ""
+msgstr "Parhaat tukipyyntötyypit"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript

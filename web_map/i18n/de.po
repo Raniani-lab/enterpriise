@@ -155,6 +155,8 @@ msgstr "Keine"
 #, python-format
 msgid "OpenStreetMap's request limit exceeded, try again later."
 msgstr ""
+"Das Anfragelimit von OpenStreetMap wurde überschritten, versuchen Sie es "
+"später noch einmal."
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form

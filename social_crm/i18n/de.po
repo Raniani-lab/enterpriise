@@ -158,17 +158,17 @@ msgstr "Verkaufschancen:"
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__author_name
 msgid "Post Author Name"
-msgstr ""
+msgstr "Autorname des Beitrags"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_content
 msgid "Post Content"
-msgstr ""
+msgstr "Beitragsinhalt"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_datetime
 msgid "Post Datetime"
-msgstr ""
+msgstr "Datum/Zeit des Beitrags"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_link
@@ -185,7 +185,7 @@ msgstr "Zugehöriger Kunde"
 #: code:addons/social_crm/wizard/social_post_to_lead.py:0
 #, python-format
 msgid "Request from %s"
-msgstr ""
+msgstr "Anfrage von %s"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__social_account_id
@@ -207,7 +207,7 @@ msgstr "Social Stream Post"
 #: code:addons/social_crm/wizard/social_post_to_lead.py:0
 #, python-format
 msgid "The lead has been created successfully."
-msgstr ""
+msgstr "Der Lead wurde erfolgreich erstellt."
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post__use_leads
@@ -217,14 +217,14 @@ msgstr "Nutze Interessenten"
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__utm_campaign_id
 msgid "Utm Campaign"
-msgstr ""
+msgstr "UTM-Kampagne"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__utm_medium_id
 msgid "Utm Medium"
-msgstr ""
+msgstr "UTM-Medium"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__utm_source_id
 msgid "Utm Source"
-msgstr ""
+msgstr "UTM-Quelle"

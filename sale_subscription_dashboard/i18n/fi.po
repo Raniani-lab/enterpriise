@@ -31,7 +31,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "# Subscriptions"
-msgstr ""
+msgstr "# Tilaukset"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -71,12 +71,12 @@ msgstr "30 päivää sitten"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no invoice during this period.</i>"
-msgstr ""
+msgstr "<i>Tänä aikana ei laskuteta.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no subscription modification during this period.</i>"
-msgstr ""
+msgstr "<i>Tilausta ei muuteta tänä aikana.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
@@ -105,6 +105,8 @@ msgid ""
 "Average revenue of a subscription, obtained by dividing the MRR by the "
 "number of subscriptions"
 msgstr ""
+"Tilauksen keskimääräinen tuotto, joka saadaan jakamalla kuukausittainen "
+"toistuva tulo tilausten lukumäärällä"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -154,7 +156,7 @@ msgstr "Nykyinen MRR:"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Current MRR ("
-msgstr ""
+msgstr "Nykyinen kuukausittain toistuva tulo ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -176,7 +178,7 @@ msgstr "Mukautettu"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Customer Churn"
-msgstr ""
+msgstr "Asiakkaiden menetys"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -243,7 +245,7 @@ msgstr "Alas MRR"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "End Date :"
-msgstr "Päättymispäivä"
+msgstr "Päättymispäivä:"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -262,6 +264,11 @@ msgid ""
 "the average MRR of a subscription by the churn rate (e.g. if your average "
 "MRR is $ 100 and your churn rate is 5%, the LTV will be $ 100/5% = $ 2,000)"
 msgstr ""
+"Keskimääräisen tilauksen odotettu elinikäinen tuotto; saadaan jakamalla "
+"tilauksen keskimääräinen kuukausittain toistuvien tulojen arvo "
+"poistumisasteella (esim. jos keskimääräinen kuukausittain toistuvien tulojen"
+" arvo on 100 dollaria ja poistumisaste on 5 %, LTV on 100/5 % = 2 000 "
+"dollaria)"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -339,6 +346,8 @@ msgid ""
 "It makes no sense to sum MRR of different currencies. Please select "
 "companies with the same currency."
 msgstr ""
+"Ei ole järkeä laskea yhteen eri valuuttojen kuukausittain toistuvat tulot. "
+"Valitse yritykset, joilla on sama valuutta."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -385,6 +394,8 @@ msgid ""
 "List all invoices containing non-recurring sales and the amount of\n"
 "                        non-recurring revenues in these invoices for this particular salesperson."
 msgstr ""
+"Luettelo kaikista laskuista, jotka sisältävät kertaluonteista myyntiä, ja niiden määrästä\n"
+"                        kertaluonteisten tulojen määrä näissä laskuissa kyseisen myyjän osalta."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -394,6 +405,8 @@ msgid ""
 "List all invoices containing non-recurring sales and the amount of non-recurring\n"
 "                    revenues in these invoices for this particular salesperson."
 msgstr ""
+"Luettelo kaikista laskuista, jotka sisältävät kertaluonteista myyntiä, ja kertaluonteisen myynnin määrä\n"
+"                    tulot näissä laskuissa tälle myyjälle."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -424,6 +437,9 @@ msgid ""
 "MRR for short; total subscription revenue per month (e.g. for an annual "
 "subscription of $ 1,200, the MRR is $ 100)"
 msgstr ""
+"Kuukausittain toistuvat tulot lyhyesti; tilauksen kokonaistulot kuukaudessa "
+"(esim. 1 200 dollarin vuositilauksen kuukausittain toistuva tulo on 100 "
+"dollaria)"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -438,7 +454,7 @@ msgstr "Kuukausittainen toistuva tulo (MRR)"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Monthly Recurring Revenue :"
-msgstr ""
+msgstr "Kuukausittainen toistuva tulo (MRR) :"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -466,7 +482,7 @@ msgstr "NRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "NRR ("
-msgstr ""
+msgstr "Ei toistuva tulo (NRR) ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -504,7 +520,7 @@ msgstr "Ei yritystä valittuna."
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non Recurring invoices"
-msgstr ""
+msgstr "Kertaluonteiset laskut"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -519,26 +535,26 @@ msgstr "Ei-toistuva liikevaihto (NRR)"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non-Recurring Revenue :"
-msgstr ""
+msgstr "Ei-toistuva liikevaihto (NRR)"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Number of contracts"
-msgstr ""
+msgstr "Sopimusten lukumäärä"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Number of subscriptions that gets closed during a period"
-msgstr ""
+msgstr "Suljettujen tilausten määrä jakson aikana"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "OUT invoices"
-msgstr ""
+msgstr "OUT-laskut"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -552,14 +568,14 @@ msgstr "Odoo-varoitus"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "One-shot revenue that is not part of a subscription"
-msgstr ""
+msgstr "Kertaluonteiset tulot, jotka eivät ole osa tilausta"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "PRINT PREVIEW"
-msgstr ""
+msgstr "TULOSTUKSEN ESIKATSELU"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -594,7 +610,7 @@ msgstr "Edellinen MRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Previous MRR ("
-msgstr ""
+msgstr "Edellinen kuukausittain toistuva tulo ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -616,7 +632,7 @@ msgstr "Toistuvuus"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Reduction in total MRR over the period"
-msgstr ""
+msgstr "Kuukausittain toistuvan tulon kokonaisväheneminen kauden aikana"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -675,7 +691,7 @@ msgstr "Myyjän työpöytä"
 #: code:addons/sale_subscription_dashboard/models/sale_order.py:0
 #, python-format
 msgid "Salesperson report"
-msgstr ""
+msgstr "Myyntimiehen raportti"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -727,7 +743,7 @@ msgstr "Tilaus"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Subscription Modifications"
-msgstr ""
+msgstr "Tilauksen muutokset"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -737,6 +753,10 @@ msgid ""
 "                        (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened\n"
 "                        on the same day)."
 msgstr ""
+"Tilausmuutokset kokoavat yhteen kaikki muutokset, jotka tapahtuivat vuonna\n"
+"                        valitulla ajanjaksolla. Huomaa, että samana päivänä tapahtuneet muutokset voidaan ryhmitellä yhteen\n"
+"                        (esim. kaksi samana päivänä tapahtuvaa myyntiä tai tilauksen sulkeminen ja uudelleen avaaminen)\n"
+"                        samana päivänä)."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -748,6 +768,10 @@ msgid ""
 "                    (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened on the\n"
 "                    same day)."
 msgstr ""
+"Tilauksen muutokset kokoavat yhteen kaikki muutokset, jotka tapahtuivat valitun\n"
+"                    ajanjaksolla. Huomaa, että samana päivänä tapahtuneet muutokset voidaan ryhmitellä yhteen\n"
+"                    (esim. kaksi samana päivänä tapahtuvaa myyntiä tai tilauksen sulkeminen ja uudelleen avaaminen samana päivänä)\n"
+"                    samana päivänä)."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -776,7 +800,7 @@ msgstr "Tilausten kasvu:"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions plans"
-msgstr ""
+msgstr "Tilaussuunnitelmat"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -794,6 +818,8 @@ msgid ""
 "The current value is measured at the end of the selected period and "
 "historical data are relative to this last value."
 msgstr ""
+"Nykyinen arvo mitataan valitun ajanjakson lopussa, ja historiatiedot ovat "
+"suhteessa tähän viimeiseen arvoon."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -803,27 +829,29 @@ msgid ""
 "The following report relies on a previous calculation method. Results may "
 "differ from the new method."
 msgstr ""
+"Seuraava kertomus perustuu aiempaan laskentamenetelmään. Tulokset voivat "
+"poiketa uudesta menetelmästä."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "The following values are measured at the end of the selected period."
-msgstr ""
+msgstr "Seuraavat arvot mitataan valitun jakson lopussa."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "There is no invoice during this period."
-msgstr ""
+msgstr "Tänä aikana ei laskuteta."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "There is no subscription modification during this period."
-msgstr ""
+msgstr "Tilausta ei muuteta tänä aikana."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -854,7 +882,7 @@ msgstr "Kuluva kvartaali"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Total net revenue (all invoices emitted during the period)"
-msgstr ""
+msgstr "Nettotulot yhteensä (kaikki kauden aikana lähetetyt laskut)"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -865,6 +893,8 @@ msgid ""
 "Total subscription revenue per month (e.g. for an annual subscription of $ "
 "1,200, the MRR is $ 100)"
 msgstr ""
+"Tilauksen kokonaistulot kuukaudessa (esim. 1 200 dollarin vuositilauksen "
+"kuukausittain toistuva tulo on 100 dollaria)"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -895,6 +925,8 @@ msgstr "Varoitus"
 #, python-format
 msgid "Yearly version of the MRR, obtained by multiplying the MRR by 12"
 msgstr ""
+"Kuukausittain toistuvan tulon vuotuinen versio, joka saadaan kertomalla "
+"kuukausittain toistuva tulo 12:lla"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -913,7 +945,7 @@ msgstr "irtisanomissuhteella tilausten määrä tulee olemaan"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "graphic"
-msgstr ""
+msgstr "graafinen"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

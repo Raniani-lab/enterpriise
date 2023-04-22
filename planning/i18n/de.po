@@ -440,7 +440,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<span class=\"fw-bold\">Schedule</span>"
-msgstr ""
+msgstr "<span class=\"fw-bold\">Planen</span>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
@@ -752,6 +752,10 @@ msgid ""
 "open shifts for the roles you will be needing to complete a mission. Then, "
 "assign those open shifts to the resources that are available.</i>"
 msgstr ""
+"Weisen Sie eine <b>Ressource</b> zu oder oder lassen Sie sie vorerst offen. "
+"<i>Tipp: Erstellen Sie offene Schichten für die Rollen, die Sie zur "
+"Erfüllung einer Aufgabe benötigen werden. Weisen Sie dann diese offenen "
+"Schichten den verfügbaren Ressourcen zu.</i>"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_resource_resource__avatar_128
@@ -822,6 +826,8 @@ msgid ""
 "Company linked to the material resource. Leave empty for the resource to be "
 "available in every company."
 msgstr ""
+"Mit der Materialressource verbundenes Unternehmen. Leer lassen, wenn die "
+"Ressource in jedem Unternehmen verfügbar sein soll."
 
 #. module: planning
 #: model:ir.model,name:planning.model_res_config_settings
@@ -1068,7 +1074,7 @@ msgstr "Dauer"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__duration_days
 msgid "Duration Days"
-msgstr ""
+msgstr "Dauer in Tagen"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
@@ -1150,7 +1156,7 @@ msgstr "Enddatum"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__end_time
 msgid "End Hour"
-msgstr ""
+msgstr "Endzeit"
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_hr_employee_employee_token_unique
@@ -1187,7 +1193,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.view_employee_filter_inherit_hr
 #: model_terms:ir.ui.view,arch_db:planning.view_resource_resource_search_inherit
 msgid "Fixed Hours"
-msgstr ""
+msgstr "Festgelegte Stunden"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__flexible_hours
@@ -1229,7 +1235,7 @@ msgstr "Schichten generieren"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.brand_promotion
 msgid "Give depth to your"
-msgstr ""
+msgstr "Geben Sie Ihren"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -1314,7 +1320,7 @@ msgstr "Schließt offene Schichten ein"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__is_hatched
 msgid "Is Hatched"
-msgstr ""
+msgstr "Ist Schraffiert"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__is_assigned_to_me
@@ -1431,7 +1437,7 @@ msgstr "Verwalten Sie den Arbeitsplan Ihrer Mitarbeiter!"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_shift_template
 msgid "Make encoding shifts easy with templates."
-msgstr ""
+msgstr "Erleichtern Sie die Erfassung von Schichten dank Vorlagen."
 
 #. module: planning
 #: model:planning.role,name:planning.planning_role_management
@@ -1465,6 +1471,8 @@ msgid ""
 "Modifications made to a shift only impact the current shift and not the other ones that are part of the recurrence. The same goes when deleting a recurrent shift. Disable this option to stop the recurrence.\n"
 "To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode."
 msgstr ""
+"Änderungen an einer Schicht wirken sich nur auf die aktuelle Schicht aus und nicht auf die anderen Schichten, die Teil der Wiederholung sind. Dasselbe gilt für das Löschen einer wiederkehrenden Schicht. Deaktivieren Sie diese Option, um die Wiederholung zu stoppen.\n"
+"Um eine Verschmutzung Ihrer Datenbank und Leistungsprobleme zu vermeiden, werden Schichten nur für die nächsten 6 Monate erstellt. Sie werden dann im Laufe der Zeit nach und nach erstellt, sodass Sie immer Schichten für 6 Monate im Voraus erhalten. Dieser Wert kann in den Einstellungen der Planungsapp im Fehlerbeseitigungsmodus geändert werden."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__publication_warning
@@ -1475,7 +1483,7 @@ msgstr "Seit letzter Veröffentlichung bearbeitet"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Monday, 29th"
-msgstr ""
+msgstr "Monday, 29."
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_unit__month
@@ -1538,7 +1546,7 @@ msgstr "Keine E-Mail-Adresse für einige Mitarbeiter"
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_recurrency__repeat_number
 msgid "No Of Repetitions of the plannings"
-msgstr ""
+msgstr "Anzahl Wiederholungen dieser Planungen"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
@@ -1616,6 +1624,8 @@ msgid ""
 "Operation not supported, you should always compare overlap_slot_count to 0 "
 "value with = or > operator."
 msgstr ""
+"Vorgang nicht unterstützt. Sie sollten overlap_slot_count immer mithilfe der"
+" Operatoren = oder > vergleichen."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__overlap_slot_count
@@ -1889,6 +1899,8 @@ msgid ""
 "Role that will be selected by default when creating a shift for this employee.\n"
 "This role will also have precedence over the other roles of the employee when planning orders."
 msgstr ""
+"Rolle, die standardmäßig ausgewählt wird, wenn Sie eine Schicht für diesen Mitarbeiter erstellen.\n"
+"Diese Rolle hat auch bei der Planung von Aufträgen Vorrang vor den anderen Rollen des Mitarbeiters."
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_roles
@@ -2538,7 +2550,7 @@ msgstr "Tage vor Beginn der Schicht"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
 msgid "days span)"
-msgstr ""
+msgstr "Zeitspanne)"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
@@ -2550,7 +2562,7 @@ msgstr "z. B. Barpersonal"
 #: model_terms:ir.ui.view,arch_db:planning.resource_resource_form_view_inherit
 #: model_terms:ir.ui.view,arch_db:planning.resource_resource_tree_view_inherit
 msgid "e.g. Crane"
-msgstr ""
+msgstr "z. B. Kran"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.hr_employee_view_form_simplified

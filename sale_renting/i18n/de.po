@@ -35,6 +35,8 @@ msgid ""
 "(object.rental_status not in ('draft', 'sent') and 'Delivery or Return "
 "Receipt - %s' %(object.name)) or 'Order - %s' % (object.name)"
 msgstr ""
+"(object.rental_status not in ('draft', 'sent') und 'Liefer- oder "
+"Retourenschein - %s' %(object.name)) oder 'Auftrag - %s' % (object.name)"
 
 #. module: sale_renting
 #. odoo-python
@@ -795,7 +797,7 @@ msgstr "Abhol- und Rückgabebeleg"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__reservation_begin
 msgid "Pickup date - padding time"
-msgstr ""
+msgstr "Abholdatum - Pufferzeit"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_kanban
@@ -1079,7 +1081,7 @@ msgstr "Retourniert"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "Temporärer wiederkehrender Verkauf"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__done
@@ -1408,7 +1410,7 @@ msgstr "Sie können nicht mehr zurückgeben als abgeholt wurde."
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "You're done with your fist rental. Congratulations !"
-msgstr ""
+msgstr "Sie sind fertig mit Ihrer ersten Vermietung. Herzlichen Glückwunsch!"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form

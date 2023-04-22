@@ -35,7 +35,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
 msgid "<span class=\"navbar-brand h4 my-0 me-auto\">Help Center</span>"
-msgstr ""
+msgstr "<span class=\"navbar-brand h4 my-0 me-auto\">支援中心</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1

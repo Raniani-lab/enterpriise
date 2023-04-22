@@ -470,7 +470,7 @@ msgstr "日記賬"
 #: code:addons/account_online_synchronization/wizard/account_link_journal_wizard.py:0
 #, python-format
 msgid "Journals linked to a bank account must be of the bank type."
-msgstr "Journals linked to a bank account must be of the bank type."
+msgstr ""
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal____last_update

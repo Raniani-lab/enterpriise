@@ -507,6 +507,8 @@ msgid ""
 "Dear client, we kindly remind you that you still have unpaid invoices. "
 "Please check them and take appropriate action. %s"
 msgstr ""
+"Client terhormat, kami sekadar kami mengingatkan bahwa Anda masih memiliki "
+"faktur yang belum dibayar. Mohon periksa dan ambil tindakan yang sesuai. %s"
 
 #. module: account_followup
 #: model_terms:ir.actions.act_window,help:account_followup.action_account_followup_line_definition_form

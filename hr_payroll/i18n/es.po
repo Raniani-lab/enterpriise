@@ -10,6 +10,7 @@
 # oscaryuu, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2023
+# mahdi cheikhrouhou, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,8 +18,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2023\n"
-"Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
+"Last-Translator: mahdi cheikhrouhou, 2023\n"
+"Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -59,7 +60,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.actions.report,print_report_name:hr_payroll.action_report_payslip
 msgid "'Payslip - %s' % (object.name)"
-msgstr "`Nómina - ' % (object.name)"
+msgstr "'Nómina - %s' % (object.name)"
 
 #. module: hr_payroll
 #. odoo-python

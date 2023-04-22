@@ -117,7 +117,7 @@ msgstr "Zuletzt aktualisiert am"
 #: code:addons/spreadsheet_dashboard_documents/static/src/bundle/documents_spreadsheet_action.js:0
 #, python-format
 msgid "Name your dashboard and select its section"
-msgstr ""
+msgstr "Benennen Sie Ihr Dashboard und legen Sie Abschnitte"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model,name:spreadsheet_dashboard_documents.model_spreadsheet_dashboard

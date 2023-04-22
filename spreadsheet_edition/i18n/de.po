@@ -38,7 +38,7 @@ msgstr "Einen neuen Filter hinzufügen..."
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "After next"
-msgstr ""
+msgstr "Nach nächster"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -59,7 +59,7 @@ msgstr "Sind Sie sicher, dass Sie diese Pivot-Tabelle löschen möchten?"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Automatically filter on the current period"
-msgstr ""
+msgstr "Automatisch nach aktueller Periode filtern"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -74,7 +74,7 @@ msgstr "Zurück"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Before previous"
-msgstr ""
+msgstr "Vor vorheriger"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -245,14 +245,14 @@ msgstr "Bearbeiten"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Edit domain"
-msgstr ""
+msgstr "Domain bearbeiten"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Field matching"
-msgstr ""
+msgstr "Feldübereinstimmung"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -484,21 +484,21 @@ msgstr "Übergeordnete Überprüfung"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.xml:0
 #, python-format
 msgid "Period offset"
-msgstr ""
+msgstr "Periodenverschiebung"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Period offset applied to this source"
-msgstr ""
+msgstr "Auf diese Quelle angewandte Periodenverschiebung"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/pivot_view/pivot_view.js:0
 #, python-format
 msgid "Pivot contains duplicate groupbys"
-msgstr ""
+msgstr "Pivot enthält doppelte Hroupbys"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -532,7 +532,7 @@ msgstr "Quartal"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_collaborative_mixin__raw
 msgid "Raw"
-msgstr ""
+msgstr "Roh"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -559,7 +559,7 @@ msgstr "Datensatz #"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__res_id
 msgid "Record id"
-msgstr ""
+msgstr "Datensatz-ID"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -581,7 +581,7 @@ msgstr "Werte aktualisieren"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Related model"
-msgstr ""
+msgstr "Zugehöriges Modell"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -595,7 +595,7 @@ msgstr "Beziehung"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "Relative Period"
-msgstr ""
+msgstr "Relative Periode"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -849,7 +849,7 @@ msgstr "nie"
 #. module: spreadsheet_edition
 #: model:ir.model.constraint,message:spreadsheet_edition.constraint_spreadsheet_revision_parent_revision_unique
 msgid "o-spreadsheet revision refused due to concurrency"
-msgstr ""
+msgstr "o-Spreadsheet-Revision wegen Gleichzeitigkeit abgelehnt"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

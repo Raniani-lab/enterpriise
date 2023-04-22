@@ -32,7 +32,7 @@ msgid ""
 "Choose the scales you want to use for this operation type. Those scales can "
 "be used to weigh the packages created."
 msgstr ""
-"Chọn loại cân bạn muốn sử dụng cho loại hành động này. Những loại cân đó có "
+"Chọn loại cân bạn muốn sử dụng cho loại hoạt động này. Những loại cân đó có "
 "thể được sử dụng để cân các kiện hàng đã tạo."
 
 #. module: delivery_iot

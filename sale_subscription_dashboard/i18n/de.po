@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Friederike Fasterling-Nesselbosch, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -259,6 +260,11 @@ msgid ""
 "the average MRR of a subscription by the churn rate (e.g. if your average "
 "MRR is $ 100 and your churn rate is 5%, the LTV will be $ 100/5% = $ 2,000)"
 msgstr ""
+"Erwarteter lebenslanger Umsatz eines durchschnittlichen Abonnements; erhält "
+"man, indem man die durchschnittliche MRR eines Abonnements durch die "
+"Abwanderungsrate dividiert (z. B. wenn Ihre durchschnittliche MRR 100 $ und "
+"Ihre Abwanderungsrate 5 % beträgt, beträgt der Lebenszeitwert 100/5 % $ = "
+"2,000 $)"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -386,6 +392,8 @@ msgid ""
 "List all invoices containing non-recurring sales and the amount of\n"
 "                        non-recurring revenues in these invoices for this particular salesperson."
 msgstr ""
+"Listen Sie alle Rechnungen auf, die einmalige Verkäufe enthalten, und den Betrag der einmaligen\n"
+"                        Umsätze in diesen Rechnungen für diesen bestimmten Vertriebsmitarbeiter."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -427,6 +435,8 @@ msgid ""
 "MRR for short; total subscription revenue per month (e.g. for an annual "
 "subscription of $ 1,200, the MRR is $ 100)"
 msgstr ""
+"Kurz MRR; Gesamtumsatz durch Abonnements pro Monat (z. B. für ein "
+"Jahresabonnement von 1,200 $ beträgt die MRR 100 $)"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -619,7 +629,7 @@ msgstr "Häufigkeit"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Reduction in total MRR over the period"
-msgstr ""
+msgstr "Verminderung in Gesamt-MRR über den Zeitraum"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -740,6 +750,10 @@ msgid ""
 "                        (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened\n"
 "                        on the same day)."
 msgstr ""
+"Abonnementänderungen beinhalten alle Änderungen, die in dem ausgewählten Zeitraum\n"
+"                        vorgenommen wurden. Beachten Sie, dass Änderungen, die am selben Tag vorgenommen werden, gruppiert werden können\n"
+"                        (z. B. zwei Upsellings, die am selben Tag passieren oder ein Abonnement, das geschlossen und am selben Tag wiederd\n"
+"                        geöffnet wird)."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -808,6 +822,8 @@ msgid ""
 "The following report relies on a previous calculation method. Results may "
 "differ from the new method."
 msgstr ""
+"Der folgende Bericht stützt sich auf eine frühere Berechnungsmethode. Die "
+"Ergebnisse können von der neuen Methode abweichen."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -904,6 +920,7 @@ msgstr "Warnung"
 #, python-format
 msgid "Yearly version of the MRR, obtained by multiplying the MRR by 12"
 msgstr ""
+"Jährliche Version der MRR, erhalten durch Multiplikation der MRR mit 12"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -922,7 +939,7 @@ msgstr "abgewandert, Ihre Abonnementbasis wird"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "graphic"
-msgstr ""
+msgstr "graphisch"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

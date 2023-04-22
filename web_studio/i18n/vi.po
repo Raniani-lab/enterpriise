@@ -1014,7 +1014,7 @@ msgstr "Công ty"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Components"
-msgstr "Thành phần"
+msgstr "Nguyên liệu"
 
 #. module: web_studio
 #. odoo-javascript

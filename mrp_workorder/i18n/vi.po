@@ -454,7 +454,7 @@ msgstr "Thành phần truy xuất"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_last_unfinished_wo
 msgid "Is Last Work Order To Process"
-msgstr "Lệnh làm việc đang xử lý"
+msgstr "Công đoạn đang xử lý"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_last_lot
@@ -464,7 +464,7 @@ msgstr "Lot gần đây"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__is_first_started_wo
 msgid "Is The first Work Order"
-msgstr "Là Lệnh làm việc đầu tiên"
+msgstr "Là Công đoạn đầu tiên"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__is_workorder_step
@@ -508,7 +508,7 @@ msgstr "Lô/Số serial"
 #. module: mrp_workorder
 #: model:res.groups,name:mrp_workorder.group_mrp_wo_tablet_timer
 msgid "Manage Work Order timer on Tablet View"
-msgstr "Quản lý thời gian lệnh làm việc theo bảng công"
+msgstr "Quản lý thời gian công đoạn theo bảng công"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
@@ -910,7 +910,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
 msgid "Show the timer on the work order screen"
-msgstr "Hiển thị thời gian trên màn hình lệnh làm việc"
+msgstr "Hiển thị thời gian trên màn hình công đoạn"
 
 #. module: mrp_workorder
 #: model:product.template,description_sale:mrp_workorder.product_template_stool
@@ -1143,19 +1143,19 @@ msgstr "Sử dụng khu vực sản xuất"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_workorder
 msgid "Work Order"
-msgstr "Lệnh làm việc"
+msgstr "Công đoạn"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_tree
 msgid "Work Order Operation"
-msgstr "Hoạt động lệnh làm việc"
+msgstr "Hoạt động công đoạn"
 
 #. module: mrp_workorder
 #: model:ir.actions.act_window,name:mrp_workorder.mrp_workorder_action_tablet
 #: model:ir.ui.menu,name:mrp_workorder.mrp_workorder_menu_planning
 msgid "Work Orders"
-msgstr "Lệnh làm việc"
+msgstr "Công đoạn"
 
 #. module: mrp_workorder
 #: model:ir.actions.server,name:mrp_workorder.action_mrp_workorder_dependencies_workcenter
@@ -1165,7 +1165,7 @@ msgstr "Kế hoạch hoạt động sản xuất"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workcenter_view_kanban_inherit_workorder
 msgid "Work orders"
-msgstr "Lệnh làm việc"
+msgstr "Công đoạn"
 
 #. module: mrp_workorder
 #: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet

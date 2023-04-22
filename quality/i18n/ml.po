@@ -5,6 +5,7 @@
 # Translators:
 # Niyas Raphy, 2023
 # Nikhil Krishnan, 2023
+# Hasna, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Nikhil Krishnan, 2023\n"
+"Last-Translator: Hasna, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -187,7 +188,7 @@ msgstr "കമ്പനി"
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_1
 msgid "Confirmed"
-msgstr ""
+msgstr "സ്ഥിരീകരിച്ചു"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__control_date
@@ -319,7 +320,7 @@ msgstr "ഫോള്ളോവെഴ്‌സ് "
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "അനുയായികൾ (പങ്കാളികൾ)"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__activity_type_icon
@@ -343,7 +344,7 @@ msgstr "ഗ്രൂപ്പ് ബൈ"
 #: model:ir.model.fields,field_description:quality.field_quality_check__has_message
 #: model:ir.model.fields,field_description:quality.field_quality_point__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "സന്ദേശമുണ്ട്"
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__2
@@ -424,7 +425,7 @@ msgstr "നിർദ്ദേശങ്ങൾ"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_is_follower
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "അനുയായിയാണ്"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert____last_update

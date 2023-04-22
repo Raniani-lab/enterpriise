@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Niyas Raphy, 2023
+# Hasna, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
+"Last-Translator: Hasna, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -609,7 +610,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model,name:planning.model_hr_employee_base
 msgid "Basic Employee"
-msgstr ""
+msgstr "അടിസ്ഥാന ജീവനക്കാരൻ"
 
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_schedule_by_resource
@@ -733,12 +734,12 @@ msgstr "തീയതി"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__date_end
 msgid "Date End"
-msgstr ""
+msgstr "അവസാന ദിവസം"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__date_start
 msgid "Date Start"
-msgstr ""
+msgstr "ആരംഭിക്കുന്ന തീയതി"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_unit__day
@@ -961,7 +962,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.resource_planning
 msgid "End"
-msgstr ""
+msgstr "അവസാനം"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__end_datetime
@@ -996,7 +997,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_send__note
 msgid "Extra Message"
-msgstr ""
+msgstr "അധിക സന്ദേശം"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_my_calendar
@@ -1028,7 +1029,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_type__forever
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_type__forever
 msgid "Forever"
-msgstr ""
+msgstr "എന്നെന്നേക്കുമായി"
 
 #. module: planning
 #. odoo-python
@@ -1041,7 +1042,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Future"
-msgstr ""
+msgstr "ഭാവി"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
@@ -1077,18 +1078,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "I Am Unavailable"
-msgstr ""
+msgstr "ഞാൻ ലഭ്യമല്ല"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "I Take It"
-msgstr ""
+msgstr "ഞാൻ അത് എടുക്കുന്നു"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "I am unavailable"
-msgstr ""
+msgstr "ഞാൻ ലഭ്യമല്ല"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__id
@@ -1208,7 +1209,7 @@ msgstr "അവസാനം അപ്ഡേറ്റ് ചെയ്തത്"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Last Week"
-msgstr ""
+msgstr "കഴിഞ്ഞ ആഴ്ച"
 
 #. module: planning
 #. odoo-javascript
@@ -1311,7 +1312,7 @@ msgstr "എന്റെ വകുപ്പ്"
 #: model:ir.actions.act_window,name:planning.planning_action_open_shift
 #: model:ir.ui.menu,name:planning.planning_menu_my_planning
 msgid "My Planning"
-msgstr ""
+msgstr "എന്റെ ആസൂത്രണം"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -1319,20 +1320,20 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Roles"
-msgstr ""
+msgstr "എന്റെ റോളുകൾ"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Shifts"
-msgstr ""
+msgstr "എന്റെ ഷിഫ്റ്റുകൾ"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Team"
-msgstr ""
+msgstr "എന്റെ സംഘം"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_role__name
@@ -1342,7 +1343,7 @@ msgstr "പേര്"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Next Week"
-msgstr ""
+msgstr "അടുത്ത ആഴ്ച"
 
 #. module: planning
 #. odoo-python
@@ -1404,7 +1405,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_type__x_times
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_type__x_times
 msgid "Number of Repetitions"
-msgstr ""
+msgstr "ആവർത്തനങ്ങളുടെ എണ്ണം"
 
 #. module: planning
 #. odoo-javascript
@@ -1440,7 +1441,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Past"
-msgstr ""
+msgstr "ഭൂതകാലം"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_send__start_datetime
@@ -1460,7 +1461,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__start_time
 msgid "Planned Hours"
-msgstr ""
+msgstr "ആസൂത്രണം ചെയ്ത മണിക്കൂറുകൾ"
 
 #. module: planning
 #. odoo-python
@@ -1485,7 +1486,7 @@ msgstr "ആസൂത്രണം"
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_report_view_graph
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_report_view_pivot
 msgid "Planning Analysis"
-msgstr ""
+msgstr "ആസൂത്രണ വിശകലനം"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_analysis_report
@@ -1495,13 +1496,13 @@ msgstr "പ്ലാനിംഗ് അനാലിസിസ് റിപ്പ�
 #. module: planning
 #: model:ir.model,name:planning.model_planning_recurrency
 msgid "Planning Recurrence"
-msgstr ""
+msgstr "ആസൂത്രണ ആവർത്തനം"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_role
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_form
 msgid "Planning Role"
-msgstr ""
+msgstr "ആസൂത്രണ പങ്ക്"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_tree
@@ -1516,7 +1517,7 @@ msgstr "പ്ലാനിംഗ് ഷിഫ്റ്റ്"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "Planning:"
-msgstr ""
+msgstr "ആസൂത്രണം:"
 
 #. module: planning
 #: model:mail.template,name:planning.email_template_planning_planning

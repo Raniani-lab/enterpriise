@@ -3,8 +3,8 @@
 # 	* account_intrastat
 # 
 # Translators:
-# Larissa Manderfeld, 2023
 # Martin Trigaux, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,12 +100,12 @@ msgstr "Nach Typ"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Check the expired"
-msgstr ""
+msgstr "Prüfen Sie abgelaufene Intrastat"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Check the premature"
-msgstr ""
+msgstr "Prüfen Sie frühzeitige Intrastat"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__commodity
@@ -271,14 +271,14 @@ msgstr "Intrastat-Transaktionscode"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid commodity intrastat code products."
-msgstr ""
+msgstr "Produkte mit ungültiger Intrastat-Warennummer."
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid transaction intrastat code entries."
-msgstr ""
+msgstr "Produkte mit ungültigem Intrastat-Transaktionscode."
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move
@@ -341,22 +341,22 @@ msgstr "Regionscode"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Some lines have expired intrastat"
-msgstr ""
+msgstr "Einige Zeilen haben abgelaufene Intrastat"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Some lines have premature intrastat"
-msgstr ""
+msgstr "Einige Zeilen haben frühzeitige Intrastat"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Some lines have undefined"
-msgstr ""
+msgstr "Einige Zeilen haben undefinierte"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Some products have undefined"
-msgstr ""
+msgstr "Einige Produkte haben undefinierte"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -472,32 +472,32 @@ msgstr "Mit Umsatzsteuer-Identifikationsnummer"
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__c/k
 msgid "c/k"
-msgstr ""
+msgstr "c/k"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__ce/el
 msgid "ce/el"
-msgstr ""
+msgstr "ce/el"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "commodity codes"
-msgstr ""
+msgstr "Warennummern"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__ct/l
 msgid "ct/l"
-msgstr ""
+msgstr "ct/l"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__gi_f_/_s
 msgid "gi F / S"
-msgstr ""
+msgstr "gi F / S"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_90_%_sdt
 msgid "kg 90 % sdt"
-msgstr ""
+msgstr "kg 90 % sdt"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_h2o2
@@ -542,7 +542,7 @@ msgstr "kg met.am."
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg/net_eda
 msgid "kg/net eda"
-msgstr ""
+msgstr "kg/net eda"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__l_alc__100_%
@@ -562,12 +562,12 @@ msgstr "m3"
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__p/st
 msgid "p/st"
-msgstr ""
+msgstr "p/st"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__pa
 msgid "pa"
-msgstr ""
+msgstr "pa"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
@@ -577,12 +577,12 @@ msgstr "Produkt"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "product's commodity codes"
-msgstr ""
+msgstr "Warennummern des Produkts"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "supplementary units"
-msgstr ""
+msgstr "zusätzliche Einheiten"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__t__co2
@@ -592,14 +592,14 @@ msgstr "t. CO2"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "transaction codes"
-msgstr ""
+msgstr "Transaktionscodes"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "weights"
-msgstr ""
+msgstr "Gewichte"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "when they are required."
-msgstr ""
+msgstr ", wenn erforderlich."

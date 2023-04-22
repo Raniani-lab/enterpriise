@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,6 +111,8 @@ msgstr ""
 msgid ""
 "Could not find server. Please check that the url you entered is correct."
 msgstr ""
+"Server konnte nicht gefunden werden. Bitte stellen Sie sicher, dass die von "
+"Ihnen eingegebene URL korrekt ist."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -120,6 +123,8 @@ msgstr ""
 msgid ""
 "Could not login. Please check that the information you entered is correct."
 msgstr ""
+"Sie konnten sich nicht anmelden. Bitte überprüfen Sie, ob die von Ihnen "
+"eingegebenen Informationen korrekt sind."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -130,6 +135,10 @@ msgid ""
 "connection, that the server address and database name you entered is valid, "
 "and that the server is online."
 msgstr ""
+"Der Server konnte nicht erreicht werden. Bitte vergewissern Sie sich, dass "
+"Sie eine Internetverbindung habe, dass die von Ihnen gemachten Angaben zur "
+"Serveradresse und zum Datenbankname gültig sind und dass der Server online "
+"ist."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -142,6 +151,9 @@ msgid ""
 "connection, that the server address you entered is valid, and that the "
 "server is online."
 msgstr ""
+"Der Server konnte nicht erreicht werden. Bitte vergewissern Sie sich, dass "
+"Sie eine Internetverbindung haben, dass die von Ihnen angegebene "
+"Serveradresse gültig ist und dass der Server online ist."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -318,7 +330,7 @@ msgstr "Nächste Woche nicht verfügbar"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No default project"
-msgstr ""
+msgstr "Kein Standardprojekt"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -332,7 +344,7 @@ msgstr "Keine Aufgabe"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No task selected"
-msgstr ""
+msgstr "Keine Aufgabe ausgewählt"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -349,7 +361,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Odoo login failed"
-msgstr ""
+msgstr "Odoo-Anmeldung fehlgeschlagen"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -553,6 +565,9 @@ msgid ""
 "been released. You or your system administrator should consider retrieving "
 "it as soon as possible."
 msgstr ""
+"Der Code auf Ihrem Odoo-Server ist nicht auf dem neuesten Stand und es wurde"
+" ein wichtiges Update veröffentlicht. Sie oder Ihr Systemadministrator "
+"sollten es so bald wie möglich abrufen."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -562,6 +577,8 @@ msgid ""
 "The server does not support timesheet synchronization. It requires Odoo "
 "Enterprise Edition version 9 or newer."
 msgstr ""
+"Der Server unterstützt keine Synchronisierung von Zeiterfassungen. Odoo-"
+"Enterprise-Edition Version 9 oder neuer ist erforderlich-"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -572,6 +589,9 @@ msgid ""
 "your administrator in order to install the module \"Synchronization with the"
 " external timesheet application\""
 msgstr ""
+"Der Server unterstützt nicht die Synchronisierung von Zeiterfassungen. "
+"Wenden Sie sich an Ihren Administrator, um das Modul „Synchronisierung mit "
+"der externen Zeiterfassungsanwendung“ zu installieren."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -624,6 +644,9 @@ msgid ""
 "Timesheet Synchronization is available in Odoo Enterprise Edition. You "
 "should consider upgrading your Odoo version if you would like to use it."
 msgstr ""
+"Die Synchronisierung von Zeiterfassungen ist in der Odoo-Enterprise-Edition "
+"verfügbar. Sie sollten ein Upgrade Ihrer Odoo-Version in Betracht ziehen, "
+"wenn Sie diese Funktion nutzen möchten."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -693,7 +716,7 @@ msgstr "Tätigkeitsbeschreibung"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Working time per week"
-msgstr ""
+msgstr "Arbeitszeit pro Woche"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript

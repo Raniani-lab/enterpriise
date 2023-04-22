@@ -51,7 +51,7 @@ msgstr "Batch-Transfer"
 #. module: stock_barcode_picking_batch
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_cancel_operation__batch_name
 msgid "Batch Transfer Name"
-msgstr ""
+msgstr "Name des Stapeltransfers"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript

@@ -29,6 +29,9 @@ msgid ""
 "                        as\n"
 "                    </span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('planning_enabled', '=', False)]}\" class=\"oe_inline me-2\">\n"
+"                        als\n"
+"                    </span>"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.view_order_form_inherit_sale_planning
@@ -79,7 +82,7 @@ msgstr "Enddatum"
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_tester
 msgid "Functional Tester"
-msgstr ""
+msgstr "Funktionaler Tester"
 
 #. module: sale_planning
 #: model:product.template,name:sale_planning.technical_maintainance_product_product_template
@@ -177,6 +180,8 @@ msgstr ""
 #, python-format
 msgid "Plannable services should use an UoM within the %s category."
 msgstr ""
+"Planbare Dienstleistungen sollten eine Maßeinheit mit der %s-Kategorie "
+"verwenden."
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_analysis_report
@@ -186,7 +191,7 @@ msgstr "Planungsanalysebericht"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_first_sale_line_id
 msgid "Planning First Sale Line"
-msgstr ""
+msgstr "Planung der ersten Verkaufszeile"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_hours_planned
@@ -230,7 +235,7 @@ msgstr "Produkt"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_analysis_report__role_product_ids
 msgid "Role Product"
-msgstr ""
+msgstr "Rollenprodukt"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_sale_order
@@ -264,6 +269,10 @@ msgid ""
 "are automatically planned, the remaining hours of the sales order item, as "
 "well as the role defined on the service, are taken into account."
 msgstr ""
+"Verkaufauftragsposition, für die diese Schicht durchgeführt wird. Wenn "
+"Verkaufsaufträge automatisch geplant werden, werden die restlichen Stunden "
+"der Verkaufsauftragsposition sowie die für die Dienstleistung bestimmten "
+"Rollen berücksichtigt."
 
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.sale_planning_action_schedule_by_sale_order
@@ -334,6 +343,8 @@ msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
 msgstr ""
+"Für diese Verkaufsauftragsposition gibt es keinen Sollwert für die geplanten"
+" Stunden. Geplante Stunden:"
 
 #. module: sale_planning
 #. odoo-javascript

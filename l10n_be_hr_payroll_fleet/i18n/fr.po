@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2023
 # Tivisse <yti@odoo.com>, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,8 +13,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 17:09+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Tivisse <yti@odoo.com>, 2023\n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -62,7 +63,7 @@ msgstr "<strong>Voiture de Société</strong>"
 #. module: l10n_be_hr_payroll_fleet
 #: model:hr.salary.rule,name:l10n_be_hr_payroll_fleet.cp200_employees_salary_co2_fee
 msgid "Accounting: CO2 Fee (Employer)"
-msgstr ""
+msgstr "Comptabilité : Cotisation CO2 (Employeur)"
 
 #. module: l10n_be_hr_payroll_fleet
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_fleet.field_fleet_vehicle__atn
@@ -146,7 +147,7 @@ msgstr "Valeur Catalogue (TVA incl.)"
 #. module: l10n_be_hr_payroll_fleet
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_fleet.field_hr_contract__bike_id
 msgid "Company Bike"
-msgstr ""
+msgstr "Vélo d'entreprise"
 
 #. module: l10n_be_hr_payroll_fleet
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll_fleet.field_hr_contract__company_bike_depreciated_cost

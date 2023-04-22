@@ -28,7 +28,7 @@ msgstr "Edytuj"
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__raw
 msgid "Raw"
-msgstr ""
+msgstr "Surowy"
 
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model,name:spreadsheet_dashboard_edition.model_spreadsheet_dashboard
@@ -38,16 +38,16 @@ msgstr "Konsola arkusza"
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__spreadsheet_revision_ids
 msgid "Spreadsheet Revision"
-msgstr ""
+msgstr "Rewizja arkusza"
 
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__spreadsheet_snapshot
 msgid "Spreadsheet Snapshot"
-msgstr ""
+msgstr "Migawka arkusza"
 
 #. module: spreadsheet_dashboard_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_edition/static/src/assets/dashboard_selector_dialog/dashboard_selector_panel.xml:0
 #, python-format
 msgid "getPageTitle('DASHBOARD')"
-msgstr ""
+msgstr "getPageTitle('DASHBOARD')"

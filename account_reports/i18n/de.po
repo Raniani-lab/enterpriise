@@ -88,6 +88,8 @@ msgid ""
 "'Open General Ledger' caret option is only available form report lines "
 "targetting accounts."
 msgstr ""
+"Die Caret-Option „Hauptbuch öffnen“ ist nur für Berichtszeilen verfügbar, "
+"die auf Konten abzielen."
 
 #. module: account_reports
 #. odoo-python
@@ -97,6 +99,8 @@ msgid ""
 "'View Bank Statement' caret option is only available for report lines "
 "targeting bank statements."
 msgstr ""
+"Die Caret-Option „Bankkontoauszug ansehen“ ist nur für Berichtszeilen "
+"verfügbar, die auf Bankkontoauszüge abzielen."
 
 #. module: account_reports
 #. odoo-python
@@ -104,6 +108,7 @@ msgstr ""
 #, python-format
 msgid "'external' engine does not support groupby, limit nor offset."
 msgstr ""
+"„Externes“ Modul unterstützt weder groupby oder Limit noch Zeitabstand."
 
 #. module: account_reports
 #. odoo-python
@@ -429,7 +434,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "=&gt; Audit"
-msgstr ""
+msgstr "=&gt; Audit"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
@@ -485,7 +490,7 @@ msgstr "Account Code"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_display_representative_field
 msgid "Account Display Representative Field"
-msgstr ""
+msgstr "Repräsentatives Feld für die Kontoanzeige"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_custom_handler
@@ -501,12 +506,12 @@ msgstr "Finanzbericht Fußnote"
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__account_represented_company_ids
 #: model:ir.model.fields,field_description:account_reports.field_res_users__account_represented_company_ids
 msgid "Account Represented Company"
-msgstr ""
+msgstr "Konto Dargestelltes Unternehmen"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_journal_id
 msgid "Account Revaluation Journal"
-msgstr ""
+msgstr "Journal zur Neubewertung der Konten"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_representative_id
@@ -541,12 +546,12 @@ msgstr "Konten"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
 msgid "Accounts Coverage Report"
-msgstr ""
+msgstr "Bericht zur Kontenabdeckung"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.multicurrency_revaluation_to_adjust
 msgid "Accounts To Adjust"
-msgstr ""
+msgstr "Abzugleichende Konten"
 
 #. module: account_reports
 #. odoo-python
@@ -734,7 +739,7 @@ msgstr "Kostenstellen:"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
 msgid "Analytic Group By"
-msgstr ""
+msgstr "Kostenstellengruppe nach"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -746,7 +751,7 @@ msgstr "Analyseplan:"
 msgid ""
 "Analytic filters will include analytic items without accounting "
 "correspondence"
-msgstr ""
+msgstr "Analytische Filter enthalten Kostenpunkte ohne Buchungskorrespondenz"
 
 #. module: account_reports
 #. odoo-javascript
@@ -835,7 +840,7 @@ msgstr "Saldo zum aktuellen Kurs"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_operation
 msgid "Balance at Operation Rate"
-msgstr ""
+msgstr "Saldo bei Gemeinkosten"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_currency
@@ -859,21 +864,21 @@ msgstr "Saldo von %s"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Balance tax advance payment account"
-msgstr ""
+msgstr "Konto für Steuervorauszahlungssaldo"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Balance tax current account (payable)"
-msgstr ""
+msgstr "Saldo des laufenden Steuerkontos (Kreditoren)"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Balance tax current account (receivable)"
-msgstr ""
+msgstr "Saldo des laufenden Steuerkontos (Debitoren)"
 
 #. module: account_reports
 #: model:ir.actions.client,name:account_reports.action_account_report_bank_reconciliation
@@ -915,6 +920,8 @@ msgstr "Grundbetrag"
 msgid ""
 "Can't open partner reconciliation for line id %s ; model should res.partner."
 msgstr ""
+"Partnerabstimmung für Zeilen-ID %s konnte nicht geöffnet werden; Modell "
+"sollte res.partner sein."
 
 #. module: account_reports
 #. odoo-javascript
@@ -956,7 +963,7 @@ msgstr "Übertrag"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover adjustment for tax unit"
-msgstr ""
+msgstr "Übertragsberichtigung für Steuereinheit"
 
 #. module: account_reports
 #. odoo-python
@@ -1184,6 +1191,7 @@ msgstr "Herstellungskosten"
 #, python-format
 msgid "Could not expand term %s while evaluating formula %s"
 msgstr ""
+"Begriff %s konnte bei der Auswertung der Formel %s nicht erweitert werden"
 
 #. module: account_reports
 #. odoo-python
@@ -1956,14 +1964,14 @@ msgstr "Erlöskonto"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_income_provision_account_id
 msgid "Income Provision Account"
-msgstr ""
+msgstr "Ertragssteuerrückstellungskonto"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Income Provision for %s"
-msgstr ""
+msgstr "Ertragssteuerrückstellung für %s"
 
 #. module: account_reports
 #. odoo-python
@@ -1980,6 +1988,8 @@ msgid ""
 "Inconsistent data: more than one external value at the same date for a "
 "'most_recent' external line."
 msgstr ""
+"Inkonsistente Daten: mehr als ein externer Wert zum gleichen Datum für eine "
+"externe „most_recent“ Zeile."
 
 #. module: account_reports
 #. odoo-python
@@ -1988,6 +1998,8 @@ msgstr ""
 msgid ""
 "Inconsistent report_id in options dictionary. Options says %s; report is %s."
 msgstr ""
+"Inkonsistente report_id in Optionenwörterbuch. Optionen sagen %s; Bericht "
+"ist %s."
 
 #. module: account_reports
 #. odoo-python
@@ -2203,7 +2215,7 @@ msgstr "Hauptunternehmen"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__main_table_header_template
 msgid "Main Table Header Template"
-msgstr ""
+msgstr "Kopfzeilenvorlage für Haupttabelle"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__main_template
@@ -2691,7 +2703,7 @@ msgstr "Vorschlag für die Steuerabschlussbuchung"
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Provision for %(for_cur)s (1 %(comp_cur)s = %(rate)s %(for_cur)s)"
-msgstr ""
+msgstr "Rückstellung für %(for_cur)s (1 %(comp_cur)s = %(rate)s %(for_cur)s)"
 
 #. module: account_reports
 #. odoo-python
@@ -2759,7 +2771,7 @@ msgstr "Berichtsname"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Report lines mentioning the account code"
-msgstr ""
+msgstr "Berichtzeilen, die den Kontocode erwähnen"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -2863,7 +2875,7 @@ msgstr "Forecast zu kurzfristigem Geldvermögen"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__show_warning_move_id
 msgid "Show Warning Move"
-msgstr ""
+msgstr "Warnbewegung anzeigen"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -2879,6 +2891,7 @@ msgstr "Einige Kontrollen fehlgeschlagen."
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "Some journal items appear to point to obsolete report lines."
 msgstr ""
+"Einige Journalbuchungen scheinen auf veraltete Berichtszeilen zu verweisen."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -2937,7 +2950,7 @@ msgstr "Zusammenfassung"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "T: %s"
-msgstr ""
+msgstr "T: %s"
 
 #. module: account_reports
 #. odoo-javascript
@@ -2959,7 +2972,7 @@ msgstr "Steuerbetrag"
 #: model:ir.model.fields,field_description:account_reports.field_account_move__tax_closing_end_date
 #: model:ir.model.fields,field_description:account_reports.field_account_payment__tax_closing_end_date
 msgid "Tax Closing End Date"
-msgstr ""
+msgstr "Enddatum des Steuerabschlusses"
 
 #. module: account_reports
 #. odoo-python
@@ -2985,14 +2998,14 @@ msgstr "USt-IdNr"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Tax Paid Adjustment"
-msgstr ""
+msgstr "Berichtigung der gezahlten Steuern"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Tax Received Adjustment"
-msgstr ""
+msgstr "Berichtigung der erhaltenen Steuern"
 
 #. module: account_reports
 #: model:ir.actions.client,name:account_reports.action_account_report_gt
@@ -3089,7 +3102,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "The Book balance in Odoo dated today"
-msgstr ""
+msgstr "Der Buchbestand in Odoo von heute"
 
 #. module: account_reports
 #. odoo-python
@@ -3347,6 +3360,8 @@ msgid ""
 "Trying to use the journal line expand function on a line that is not linked "
 "to a journal."
 msgstr ""
+"Versuch, die Funktion zum Erweitern von Journalzeilen auf eine Zeile "
+"anzuwenden, die nicht mit einem Journal verknüpft ist."
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_unaffected_earnings0
@@ -3392,7 +3407,7 @@ msgstr "Unbekannter Partner"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Unknown bound criterium: %s"
-msgstr ""
+msgstr "Unbekanntes Grenzkriterium: %s"
 
 #. module: account_reports
 #. odoo-python
@@ -3562,7 +3577,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "and correct their tax tags if necessary."
-msgstr ""
+msgstr "und korregieren Sie die Steuer-Tags, wenn nötig."
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__year
@@ -3718,7 +3733,7 @@ msgstr "⇒ Hauptbuch"
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
 msgid "⇒ Journal Items"
-msgstr ""
+msgstr "⇒ Journalbuchungen"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

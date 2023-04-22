@@ -168,7 +168,7 @@ msgstr "Anzeigename"
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__display_warning_dependency_in_gantt
 msgid "Display Warning Dependency In Gantt"
-msgstr ""
+msgstr "Warnung über Abhängigkeit in Ganrr anzeigen"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__duration
@@ -198,7 +198,7 @@ msgstr "ID"
 #: code:addons/project_enterprise/static/src/js/task_gantt_utils.js:0
 #, python-format
 msgid "Invalid scale interval"
-msgstr ""
+msgstr "Ungültiges Skalenintervall"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard____last_update
@@ -249,6 +249,8 @@ msgid ""
 "One parameter is missing to use this method. You should give a start and end"
 " dates."
 msgstr ""
+"Ein Parameter fehlt, um diese Methode zu verwenden. Sie sollten ein Start- "
+"und Enddatum angeben."
 
 #. module: project_enterprise
 #. odoo-python
@@ -346,6 +348,8 @@ msgid ""
 "Some tasks weren't planned because the closest available starting date was "
 "too far ahead in the future"
 msgstr ""
+"Einige Aufgaben wurden nicht geplant, weil der nächstmögliche Starttermin zu"
+" weit in der Zukunft lag"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__date_begin
@@ -372,12 +376,12 @@ msgstr "Aufgabe"
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_line_wizard
 msgid "Task confirm schedule line wizard"
-msgstr ""
+msgstr "Assistent zur Bestätigung einer Aufgabenplanungszeile"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_wizard
 msgid "Task confirm schedule wizard"
-msgstr ""
+msgstr "Assistent zur Bestätigung einer Aufgabenplanung"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_report_project_task_user

@@ -515,4 +515,4 @@ msgstr "an den Abo-Besitzer (E-Mail:)"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "— open me anywhere with"
-msgstr ""
+msgstr "— öffnen Sie mich überall mit"

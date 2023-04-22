@@ -842,7 +842,7 @@ msgstr "Start de <b>timer</b> om een nieuwe activiteit te starten."
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
 msgid "Lock Timesheets"
-msgstr ""
+msgstr "Urenstaten vergrendelen"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow

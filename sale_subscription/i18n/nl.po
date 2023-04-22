@@ -5,8 +5,8 @@
 # Translators:
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2022
 # Martin Trigaux, 2023
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # Jolien De Paepe, 2023
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2850,6 +2850,8 @@ msgid ""
 "Recurring product are entirely discounted as the next period has not been "
 "invoiced yet."
 msgstr ""
+"Herhalende producten worden volledig verdisconteerd omdat de volgende "
+"periode nog niet is gefactureerd."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -4107,6 +4109,9 @@ msgid ""
 " - Has not started yet.\n"
 " - Has no invoiced period in the future."
 msgstr ""
+"Je kan geen upsell maken voor dit abonnement omdat deze:\n"
+" - Nog niet gestart is.\n"
+" - Geen gefactureerde periode in de toekomst heeft."
 
 #. module: sale_subscription
 #. odoo-python
@@ -4155,6 +4160,8 @@ msgid ""
 "You cannot upsell a subscription whose next invoice date is in the past.\n"
 "Please, invoice directly the %s contract."
 msgstr ""
+"Je kan geen abonnement upsellen waarvan de volgende factuurdatum in het verleden ligt. \n"
+"Gelieve rechtstreeks het contract %s te factureren."
 
 #. module: sale_subscription
 #. odoo-python
@@ -4164,7 +4171,7 @@ msgid ""
 "You cannot validate a renewal quotation starting before the next invoice "
 "date of the parent contract. Please update the start date after the %s."
 msgstr ""
-"Je kan een verlengingsofferte niet valideren die begint voor de volgende "
+"Je kan een verlengingsofferte niet bevestigen die begint voor de volgende "
 "factuurdatum van het bovenliggend contract. Werk de begindatum bij na de %s."
 
 #. module: sale_subscription

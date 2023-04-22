@@ -44,7 +44,7 @@ msgstr ""
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "<span class=\"o_form_label\">Package Length Unit</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Längeneinheit des Pakets</span>"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -115,22 +115,22 @@ msgstr ""
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Extra Data"
-msgstr ""
+msgstr "Zusatzdaten"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_rate_request
 msgid "Extra data for rate"
-msgstr ""
+msgstr "Zusatzdaten für Satz"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_return_request
 msgid "Extra data for return"
-msgstr ""
+msgstr "Zusatzdaten für Retoure"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_ship_request
 msgid "Extra data for ship"
-msgstr ""
+msgstr "Zusatzdaten für Versand"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_file_type
@@ -296,7 +296,7 @@ msgstr "INTERNATIONAL_PRIORITY"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Invalid syntax for FedEx extra data."
-msgstr ""
+msgstr "Ungültige Syntax für FedEx-Zusatzdaten."
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_weight_unit__kg
@@ -569,6 +569,15 @@ msgid ""
 "With the above example, the AdditionalInformation of each piece will be updated.\n"
 "More info on https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
 msgstr ""
+"Die Zusatzdaten in FedEx sind wie das Innere einer json-Datei organisiert.\n"
+"Diese Funktionalität ist fortgeschritten/technisch und sollte nur verwendet werden, wenn Sie wissen, was Sie tun.\n"
+"\n"
+"Beispiel eines gültigen Werts: ```\n"
+"\"ShipmentDetails\": {\"Pieces\": {\"Piece\": {\"AdditionalInformation\": \"extra info\"}}}\n"
+"```\n"
+"\n"
+"Nach diesem Beispiel werden die AdditionalInformation jedes Teils aktualisiert.\n"
+"Weitere Infos unter https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex

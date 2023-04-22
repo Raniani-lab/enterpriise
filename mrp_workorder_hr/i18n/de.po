@@ -34,6 +34,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Log In "
 "</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Anmelden "
+"</span>"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
@@ -58,7 +60,7 @@ msgstr "Abbrechen"
 #: code:addons/mrp_workorder_hr/static/src/components/tablet.js:0
 #, python-format
 msgid "Change Worker"
-msgstr ""
+msgstr "Arbeiter ändern"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -219,12 +221,12 @@ msgstr "Falsches Passwort!"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_id
 msgid "employee that record this working time"
-msgstr ""
+msgstr "Mitarbeiter, der diese Arbeitszeit erfasst hat"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_cost
 msgid "employee_cost"
-msgstr ""
+msgstr "employee_cost"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_ids
@@ -234,7 +236,7 @@ msgstr "Mitarbeiter mit Zugang"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "if left empty, all employees can log in to the workcenter"
-msgstr ""
+msgstr "falls leer, können sich alle Mitarbeiter in dem Arbeitsplatz anmelden"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit

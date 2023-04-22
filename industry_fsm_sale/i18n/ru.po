@@ -13,6 +13,7 @@
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
 # Alena Vlasova, 2023
+# alenafairy, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Alena Vlasova, 2023\n"
+"Last-Translator: alenafairy, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -137,7 +138,7 @@ msgstr "Аналитический счёт"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_billable
 msgid "Billable"
-msgstr ""
+msgstr "Подлежит оплате"
 
 #. module: industry_fsm_sale
 #: model:project.task.type,legend_blocked:industry_fsm_sale.field_service_project_stage_0
@@ -542,6 +543,9 @@ msgid ""
 "By default the sales order item set on the project will be selected. In the absence of one, the last prepaid sales order item that has time remaining will be used.\n"
 "Remove the sales order item in order to make this task non billable. You can also change or remove the sales order item of each timesheet entry individually."
 msgstr ""
+"Позиция в заказе на продажу, к которой будет добавлено время, потраченное на выполнение этой задачи, для выставления счета заказчику. \n"
+"По умолчанию будет выбрана позиция в заказе на продажу, установленная в проекте. При ее отсутствии будет использоваться последняя предоплаченная позиция заказа на продажу, имеющая оставшееся время. \n"
+"Удалите позицию в заказе, чтобы сделать эту задачу не подлежащей оплате. Вы также можете изменить или удалить позицию в заказе на продажу для каждой записи табеля учета рабочего времени по отдельности."
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_order_line

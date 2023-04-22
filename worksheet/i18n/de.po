@@ -124,7 +124,7 @@ msgstr "Name"
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__report_view_id
 msgid "Report View"
-msgstr ""
+msgstr "Berichtsansicht"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__sequence

@@ -70,7 +70,7 @@ msgstr "ACH Vorab-Autorisiert"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "ACH Return"
-msgstr ""
+msgstr "ACH-Bericht"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -104,7 +104,7 @@ msgstr "ACH Transaktion"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "ARP Debit"
-msgstr ""
+msgstr "ARP-Lastschrift"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -242,7 +242,7 @@ msgstr "Vermittlungsprovision"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Buy Sell Back"
-msgstr ""
+msgstr "Ankauf-Verkauf"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -254,7 +254,7 @@ msgstr "Durch Zentralverwahrer gesperrte Transaktionen"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Call on intermediate securities"
-msgstr ""
+msgstr "Call auf Bucheffekten"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -597,13 +597,13 @@ msgstr "Verrechnungsscheck"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Custody"
-msgstr ""
+msgstr "Verwahrung"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Custody Collection"
-msgstr ""
+msgstr "Inkasso in Verwahrung"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -684,7 +684,7 @@ msgstr "Lastschriftverfahren unter Vorbehalt"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Discounted Draft"
-msgstr ""
+msgstr "Diskontwechsel"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -729,7 +729,7 @@ msgstr "Inlandsüberweisung"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Draft Maturity Change"
-msgstr ""
+msgstr "Geänderter Wechsel bei Fälligkeit"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2055,7 +2055,7 @@ msgstr "Wertstellungsdatum"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Warrant Exercise/Warrant Conversion"
-msgstr ""
+msgstr "Die Summe nach der Aufteilung bleibt gleich"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

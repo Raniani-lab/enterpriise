@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Bohdan Lisnenko, 2022
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023
 # Martin Trigaux, 2023
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1433,14 +1433,14 @@ msgstr "Кастомний обробник звіту продажів EC"
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC tax on non EC countries"
-msgstr ""
+msgstr "Податок ЄС на країни, що не є ЄС"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC tax on same country"
-msgstr ""
+msgstr "Податок ЄС на тій же країні"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_equity0
@@ -1509,7 +1509,7 @@ msgstr "Кінцевий баланс:"
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Entries with partners with no VAT"
-msgstr ""
+msgstr "Записи з партнерами без ПДВ"
 
 #. module: account_reports
 #. odoo-python
@@ -2010,7 +2010,7 @@ msgstr "Включити неопубліковані проведення"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "Intra-community taxes are applied on"
-msgstr ""
+msgstr "Застосовуються податки всередині спільноти"
 
 #. module: account_reports
 #. odoo-python
@@ -3077,6 +3077,8 @@ msgid ""
 "The Accounts Coverage Report is only available for the Profit and Loss and "
 "Balance Sheet reports."
 msgstr ""
+"Звіт про покриття рахунків доступний лише для звітів про доходи і витрати та"
+" балансу."
 
 #. module: account_reports
 #. odoo-python
@@ -3505,6 +3507,7 @@ msgstr "Неправильний ID для розширення рядка ро�
 #, python-format
 msgid "Wrong format for if_other_expr_above/if_other_expr_below formula: %s"
 msgstr ""
+"Невірний формат для формули if_other_expr_above/if_other_expr_below: %s"
 
 #. module: account_reports
 #. odoo-python
@@ -3536,12 +3539,12 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "[Draft]"
-msgstr ""
+msgstr "[Чернетка]"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "addressed to"
-msgstr ""
+msgstr "адресовано"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -3619,7 +3622,7 @@ msgstr "назва моделі звіту"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "partners"
-msgstr ""
+msgstr "партнери"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -3644,7 +3647,7 @@ msgstr "виписки"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "that are not established abroad."
-msgstr ""
+msgstr "які не створені за кордоном."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -3671,7 +3674,7 @@ msgstr "що не є результатом виписки з банку та п
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "who are not established in any of the EC countries."
-msgstr ""
+msgstr "які не зареєстровані в жодній із країн ЄС."
 
 #. module: account_reports
 #. odoo-javascript
@@ -3690,7 +3693,7 @@ msgstr "буде перенесено на цей рядок в наступно
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "without a valid intra-community VAT number."
-msgstr ""
+msgstr "без дійсного внутрішнього номера ПДВ."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/project_timesheet_forecast_sale/models/project.py:0
 #, python-format
 msgid "%(name)s's Timesheets and Planning Analysis"
-msgstr ""
+msgstr "Zeiterfassungs- und Planungsanalyse von %(name)s"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_account_analytic_line
@@ -35,7 +35,7 @@ msgstr "Kostenstelle"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_planning_analysis_report__billable_allocated_hours
 msgid "Billable Hours Allocated"
-msgstr ""
+msgstr "Abrechenbare Stunden zugewiesen"
 
 #. module: project_timesheet_forecast_sale
 #: model:planning.role,name:project_timesheet_forecast_sale.planning_role_consultant
@@ -45,12 +45,12 @@ msgstr "Berater"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_project__display_planning_timesheet_analysis
 msgid "Display Planning Timesheet Analysis"
-msgstr ""
+msgstr "Analyse der Zeiterfassungsplanung anzeigen"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_planning_analysis_report__non_billable_allocated_hours
 msgid "Non-billable Hours Allocated"
-msgstr ""
+msgstr "Nichtabrechenbare Stunden zugewiesen"
 
 #. module: project_timesheet_forecast_sale
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.project_update_default_description
@@ -102,11 +102,15 @@ msgstr "Software Senior Architect"
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_analysis_report__billable_allocated_hours
 msgid "Sum of hours allocated to shifts linked to a SOL."
 msgstr ""
+"Summe der einer Schicht zugewiesenen Stunden, die mit einer "
+"Verkaufsauftragszeile verknüpft ist."
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_analysis_report__non_billable_allocated_hours
 msgid "Sum of hours allocated to shifts not linked to a SOL."
 msgstr ""
+"Summe der einer Schicht zugewiesenen Stunden, die nicht mit einer "
+"Verkaufsauftragszeile verknüpft ist."
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/models/project.py:0

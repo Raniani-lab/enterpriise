@@ -154,6 +154,10 @@ msgid ""
 "second entry will neutralize the original income and post the  outcome of "
 "this sale on account <b>%s</b>."
 msgstr ""
+"Eine Abschreibungsbuchung wird am %s und einschließlich dieses Datums "
+"gebucht.<br/> Eine zweite Buchung wird die ursprüngliche Einnahme "
+"neutralisieren und das Ergebnis dieses Verkaufs auf dem Konto <b>%s</b> "
+"verbucht"
 
 #. module: account_asset
 #. odoo-python
@@ -419,7 +423,7 @@ msgstr "Anlagenkonto"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset Cancelled"
-msgstr ""
+msgstr "Vermögenswert storniert"
 
 #. module: account_asset
 #. odoo-python
@@ -431,11 +435,14 @@ msgid ""
 "%(dep_delta)s. This corresponds to %(move_count)s cancelled "
 "%(word)s:<br>%(entries)s"
 msgstr ""
+"Aktiva storniert <br>Dem Konto %(exp_acc)s wurden %(exp_delta)s "
+"gutgeschrieben, während das Konto %(dep_acc)s mit %(dep_delta)s belastet "
+"wurde. Das entspricht stornierten %(move_count)s %(word)s:<br>%(entries)s"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_counterpart_id
 msgid "Asset Counterpart Account"
-msgstr ""
+msgstr "Aktiva-Gegenkonto"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_id_display_name
@@ -447,7 +454,7 @@ msgstr "Anlage ID Anzeigename"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_lifetime_days
 msgid "Asset Lifetime Days"
-msgstr ""
+msgstr "Lebensdauertage des Vermögenswerts"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_model
@@ -485,7 +492,7 @@ msgstr "Asset-Optionen"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
 msgid "Asset Paused Days"
-msgstr ""
+msgstr "Pausierte Tage des Vermögenswerts"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
@@ -525,7 +532,7 @@ msgstr "Anlage erzeugt"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset disposed. %s"
-msgstr ""
+msgstr "Vermögenswert veräußert. %s"
 
 #. module: account_asset
 #. odoo-python
@@ -546,7 +553,7 @@ msgstr "Vermögenswert verkauft. %s"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Asset unpaused. %s"
-msgstr ""
+msgstr "Asset nicht pausiert. %s"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
@@ -610,7 +617,7 @@ msgstr "Automation"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__daily_computation
 msgid "Based on days per period"
-msgstr ""
+msgstr "Basierend auf Tagen pro Periode"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -715,7 +722,7 @@ msgstr "Bestätigen"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
 msgid "Constant Periods"
-msgstr ""
+msgstr "Konstante Perioden"
 
 #. module: account_asset
 #: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
@@ -1078,7 +1085,7 @@ msgstr "Anlagenspiegel"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Depreciation board modified %s"
-msgstr ""
+msgstr "Abschreibungstafel geändert %s"
 
 #. module: account_asset
 #. odoo-python
@@ -1276,7 +1283,7 @@ msgstr "Brutto Werterhöhung"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_id
 msgid "Gross Increase Account"
-msgstr ""
+msgstr "Bruttoerhöhungskonto"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_value
@@ -1598,13 +1605,13 @@ msgstr "Nein"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__none
 msgid "No Prorata"
-msgstr ""
+msgstr "Kein Pro-Rata"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__non_deductible_tax_value
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__non_deductible_tax_value
 msgid "Non Deductible Tax Value"
-msgstr ""
+msgstr "Nichtabzugsfähiger Steuerwert"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__salvage_value
@@ -1717,7 +1724,7 @@ msgstr "Pause"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__paused_prorata_date
 msgid "Paused Prorata Date"
-msgstr ""
+msgstr "Pausiertes Pro-Rata-Datum"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
@@ -2228,18 +2235,18 @@ msgstr "book_value"
 #: model:account.report.column,name:account_asset.assets_report_date_from
 #: model:account.report.column,name:account_asset.assets_report_depre_date_from
 msgid "date from"
-msgstr ""
+msgstr "Datum vom"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_assets_date_to
 #: model:account.report.column,name:account_asset.assets_report_depre_date_to
 msgid "date to"
-msgstr ""
+msgstr "Datum bis"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "depreciable)"
-msgstr ""
+msgstr "abschreibungsfähig)"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form

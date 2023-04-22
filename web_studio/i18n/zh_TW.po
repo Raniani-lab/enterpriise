@@ -2464,7 +2464,7 @@ msgstr "Many2one"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Map"
-msgstr ""
+msgstr "地圖"
 
 #. module: web_studio
 #. odoo-javascript

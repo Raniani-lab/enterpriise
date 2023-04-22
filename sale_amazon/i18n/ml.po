@@ -403,7 +403,7 @@ msgstr "സൃഷ്ടിച്ചത്"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Credentials"
-msgstr ""
+msgstr "ക്രെഡൻഷ്യലുകൾ"
 
 #. module: sale_amazon
 #. odoo-python

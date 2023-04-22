@@ -136,7 +136,7 @@ msgstr ""
 #: code:addons/sign_itsme/controllers/main.py:0
 #, python-format
 msgid "itsme® IAP service could not be found."
-msgstr ""
+msgstr "IAP-Dienst von itsme® konnte nicht gefunden werden."
 
 #. module: sign_itsme
 #: model:ir.model.fields,field_description:sign_itsme.field_sign_request_item__itsme_signer_birthdate

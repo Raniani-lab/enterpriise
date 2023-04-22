@@ -61,12 +61,12 @@ msgstr "Asiakaspalvelutiketti"
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
 #, python-format
 msgid "Helpdesk Ticket #%s"
-msgstr ""
+msgstr "Asiakaspalvelun tukipyyntö #%s"
 
 #. module: helpdesk_account
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.view_account_move_reversal_inherit_helpdesk_account
 msgid "Invoices to Refund"
-msgstr ""
+msgstr "Hyvitettävät laskut"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_account_move
@@ -88,7 +88,7 @@ msgstr "Hyvitys"
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
 #, python-format
 msgid "Refund created"
-msgstr ""
+msgstr "Hyvitys luotu"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__helpdesk_sale_order_id
@@ -98,7 +98,7 @@ msgstr "Myyntitilaus"
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__suitable_move_ids
 msgid "Suitable Move"
-msgstr ""
+msgstr "Sopiva siirto"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__suitable_sale_order_ids

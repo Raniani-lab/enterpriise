@@ -58,7 +58,7 @@ msgstr "Peruttu"
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Centralize files attached to applications and job positions"
-msgstr ""
+msgstr "Hakemuksiin ja työpaikkoihin liitettyjen tiedostojen keskittäminen"
 
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_res_company
@@ -78,7 +78,7 @@ msgstr "Luo"
 #. module: documents_hr_recruitment
 #: model:documents.workflow.rule,name:documents_hr_recruitment.documents_applicant_rule
 msgid "Create an Applicant"
-msgstr ""
+msgstr "Luo hakija"
 
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
@@ -95,7 +95,7 @@ msgstr "Dokumentit"
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__documents_recruitment_settings
 msgid "Documents Recruitment Settings"
-msgstr ""
+msgstr "Asiakirjojen rekrytointiasetukset"
 
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_new_tag
@@ -116,27 +116,27 @@ msgstr "Rekrytointi"
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_plans_tag
 msgid "Recruitment Reserve"
-msgstr ""
+msgstr "Rekrytointireservi"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_tag_ids
 msgid "Recruitment Tag"
-msgstr ""
+msgstr "Rekrytointitunniste"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_tag_ids
 msgid "Recruitment Tags"
-msgstr ""
+msgstr "Rekrytointitunnisteet"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_folder_id
 msgid "Recruitment Workspace"
-msgstr ""
+msgstr "Rekrytoinnin työtila"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_folder_id
 msgid "Recruitment default workspace"
-msgstr ""
+msgstr "Rekrytoinnin oletustyötila"
 
 #. module: documents_hr_recruitment
 #: model:documents.facet,name:documents_hr_recruitment.documents_recruitment_documents_facet

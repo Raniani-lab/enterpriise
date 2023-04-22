@@ -123,7 +123,7 @@ msgstr "Kostenstelle"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_plan_id
 msgid "Analytic Plan"
-msgstr ""
+msgstr "Kostenstellenplan"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form

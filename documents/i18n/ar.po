@@ -613,7 +613,7 @@ msgstr "حدث خطأ ما أثناء الرفع. "
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Archive"
-msgstr "أرشفة"
+msgstr "الأرشيف "
 
 #. module: documents
 #. odoo-javascript

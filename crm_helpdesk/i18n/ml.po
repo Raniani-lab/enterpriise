@@ -91,7 +91,7 @@ msgstr ""
 #. module: crm_helpdesk
 #: model:ir.model,name:crm_helpdesk.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr ""
+msgstr "ഹെൽപ്പ് ഡെസ്ക് ടിക്കറ്റ്"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__id

@@ -146,6 +146,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Restore from Trash"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Aus dem Papierkorb wiederherstellen"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -1215,6 +1216,8 @@ msgstr "Artikel"
 msgid ""
 "Articles %s cannot be updated as this would create a recursive hierarchy."
 msgstr ""
+"Artikel %s können nicht aktualisiert werden, da dies eine rekursive "
+"Hierarchie führen würde."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__article_ids
@@ -1332,6 +1335,9 @@ msgid ""
 "Cannot move %(article_name)s as a root of the 'shared' section since access "
 "rights can not be inferred without a parent."
 msgstr ""
+"%(article_name)s konnte nicht als Stamm des „geteilten“ Abschnitts bewegt "
+"werden, da die Zugriffsrechte nicht ohne übergeordneten Artikel abgeleitet "
+"werden können."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1399,7 +1405,7 @@ msgstr "URL des Deckblatts"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__attachment_id
 msgid "Cover attachment"
-msgstr ""
+msgstr "Deckblattanhang"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__cover_image_url
@@ -1561,6 +1567,9 @@ msgid ""
 "Error: The given action is not an act_window. This action can not be used to"
 " create an embedded view or a view link"
 msgstr ""
+"Fehler: Die angegebene Aktion ist kein act_window. Diese Aktion kann nicht "
+"verwendet werden, um eine eingebettete Ansicht zu erstellen oder einen Link "
+"anzusehen"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1667,7 +1676,7 @@ msgstr "Hat untergeordnete normale Artikel?"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__have_share_partners
 msgid "Have Share Partners"
-msgstr ""
+msgstr "Haben Partner, mit denen geteilt wird"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1748,7 +1757,7 @@ msgstr "Vererbte Berechtigung"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission_parent_id
 msgid "Inherited Permission Parent Article"
-msgstr ""
+msgstr "Vererbte Berechtigung des übergeordneten Artikels"
 
 #. module: knowledge
 #. odoo-javascript
@@ -1901,7 +1910,7 @@ msgstr "Wissensdatenbank-Artikel"
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_cover
 msgid "Knowledge Cover"
-msgstr ""
+msgstr "Deckblatt der Wissensdatenbank"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_invite
@@ -2005,6 +2014,8 @@ msgid ""
 "Logging changes from %(partner_name)s without write access on article "
 "%(article_name)s due to hierarchy tree update"
 msgstr ""
+"Protokoll der Änderungen durch %(partner_name)s, ohne Schreibzugriff auf "
+"Artikel %(article_name)s wegen Aktualsierung des Hierarchiebaums"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
@@ -2087,6 +2098,8 @@ msgid ""
 "Move to target of %(article_name)s is ambiguous, you should specify the "
 "category."
 msgstr ""
+"Bewegung zum Ziel vom %(article_name)s ist mehrdeutig, Sie sollten die "
+"Kategorie bestimmen."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__my_activity_date_deadline
@@ -2357,7 +2370,7 @@ msgstr "Zugriff einschränken"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_desync_on_root
 msgid "Root articles cannot be desynchronized."
-msgstr ""
+msgstr "Stammartikel kann nicht desynchronisiert werden."
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_permission_on_root
@@ -2581,12 +2594,16 @@ msgstr "Das ausgewählte Mitglied existiert nicht oder wurde bereits gelöscht."
 msgid ""
 "The sequence is computed only among the articles that have the same parent."
 msgstr ""
+"Die Sequenz wird nur für die Artikel berechnet, die denselben übergeordneten"
+" Artikel haben."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__root_article_id
 msgid ""
 "The subject is the title of the highest parent in the article hierarchy."
 msgstr ""
+"Das Thema ist der Titel des höchsten übergeordneten Artikels in der "
+"Artikelhierarchie."
 
 #. module: knowledge
 #. odoo-javascript
@@ -2669,7 +2686,7 @@ msgstr "Odoo testen"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Trying to remove wrong member."
-msgstr ""
+msgstr "Versuch, falsches Mitglied zu entfernen."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_exception_decoration
@@ -2744,7 +2761,7 @@ msgstr "Benutzer"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_favorite_sequence
 msgid "User Favorite Sequence"
-msgstr ""
+msgstr "Bevorzugte Benutzersequenz"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2793,6 +2810,8 @@ msgid ""
 "When locked, users cannot write on the body or change the title, even if "
 "they have write access on the article."
 msgstr ""
+"Wenn gesperrt, können Benutzer nicht im Textkörper schreiben oder den Titel "
+"ändern, auch wenn Sie Schreibzugriff auf den Artikel haben."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__to_delete
@@ -2802,6 +2821,10 @@ msgid ""
 "                parameter can be used to modify the number of days. \n"
 "                (default is 30)"
 msgstr ""
+"Wenn Artikel in den Papierkorb verschoben wurden, werden sie\n"
+"                Tage nach der letzten Bearbeitung als zu löschen gekennzeichnet. Der Konfigurationsparameter knowledge_article_trash_limit_days config\n"
+"                kann verwendet werden, um die Anzahl Tage abzuändern. \n"
+"                (Standard ist 30)"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__full_width
@@ -2960,7 +2983,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "and the following child article(s) have"
-msgstr ""
+msgstr "und die folgenden Unterartikel haben"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3006,7 +3029,7 @@ msgstr "haben"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
 msgid "invited you to access"
-msgstr ""
+msgstr "hat Sie eingeladen, auf folgende(n) Artikel zuzugreifen:"
 
 #. module: knowledge
 #. odoo-javascript
@@ -3016,12 +3039,12 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "loader"
-msgstr ""
+msgstr "Lader"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__none
 msgid "none"
-msgstr ""
+msgstr "keine"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -3041,7 +3064,7 @@ msgstr "lesen"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "to unleash the power of Knowledge !"
-msgstr ""
+msgstr ", um die Macht der Wissensdatenbank zu entfesseln!"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__write

@@ -110,7 +110,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:web_map.selection__ir_ui_view__type__map
 #, python-format
 msgid "Map"
-msgstr ""
+msgstr "地圖"
 
 #. module: web_map
 #. odoo-javascript

@@ -108,7 +108,7 @@ msgstr "Hinzufügen"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
 msgid "Add Post"
-msgstr ""
+msgstr "Beitrag hinzufügen"
 
 #. module: social
 #. odoo-javascript
@@ -205,6 +205,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Before posting, links will be converted to be trackable."
 msgstr ""
+"Links werden vor der Veröffentlichung so umgewandelt, dass sie verfolgbar "
+"sind."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
@@ -318,6 +320,8 @@ msgid ""
 "Contains the social media handle of the person that created this account. "
 "E.g: '@odoo.official' for the 'Odoo' Twitter account"
 msgstr ""
+"Beinhaltet den Social-Media-Namen der Person, die dieses Konto erstellt hat."
+" Z. B.: „@odoo.official“ für das „Odoo“-Twitter-Konto."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__message
@@ -587,7 +591,7 @@ msgstr "Gruppieren nach"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__social_account_handle
 msgid "Handle / Short Name"
-msgstr ""
+msgstr "Name/Kurzname"
 
 #. module: social
 #. odoo-javascript
@@ -847,7 +851,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__live_post_link
 msgid "Link of the live post on the target media."
-msgstr ""
+msgstr "Link des Live-Beitrags auf dem Zielmedium."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -1873,6 +1877,8 @@ msgid ""
 "You cannot delete these UTM Mediums as they are linked to the following social accounts in Social:\n"
 "%(social_accounts)s"
 msgstr ""
+"Sie können diese UTM-Medien nicht löschen, da sie mit den folgenden sozialen Konten in Social verknüpft sind:\n"
+"%(social_accounts)s"
 
 #. module: social
 #. odoo-python

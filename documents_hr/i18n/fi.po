@@ -42,6 +42,9 @@ msgid ""
 "                                    Default tags\n"
 "                                </span>"
 msgstr ""
+"<span name=\"documents_hr_tags\" class=\"o_form_label\" invisible=\"1\" attrs=\"{'invisible' : [('documents_hr_settings', '=', False)]}\">\n"
+"                                    Oletustunnisteet\n"
+"                                </span>"
 
 #. module: documents_hr
 #: model:mail.template,body_html:documents_hr.mail_template_document_folder_link
@@ -62,6 +65,21 @@ msgid ""
 "    </tbody></table>\n"
 "                "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
+"        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
+"            Hyvä <t t-esc=\"object.name\"/>, henkilökohtaisten asiakirjojesi linkki on käytettävissäsi.<br/><br/>\n"
+"            Löydät kaikki henkilökohtaiset HR-asiakirjasi tästä kansiosta.<br/><br/>\n"
+"            Pidäthän tämän linkin turvassa.<br/><br/>\n"
+"            <div style=\"text-align: center; padding: 16px 0px 16px 0px; font-size: 14px;\">\n"
+"                <a t-attf-href=\"{{ object.documents_share_id.full_url }}\" target=\"_blank\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                    Asiakirjasi\n"
+"                </a>\n"
+"            </div>\n"
+"            Hyvää päivänjatkoa,<br/>\n"
+"            HR-tiimi\n"
+"        </td></tr>\n"
+"    </tbody></table>\n"
+"                "
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_absences
@@ -71,7 +89,7 @@ msgstr "Poissaolot"
 #. module: documents_hr
 #: model_terms:ir.ui.view,arch_db:documents_hr.res_config_settings_view_form
 msgid "Centralize your employees' documents (contracts, payslips, etc.)"
-msgstr ""
+msgstr "Keskitä työntekijöidesi asiakirjat (sopimukset, palkkalaskelmat jne.)"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_Cerification
@@ -91,7 +109,7 @@ msgstr "Asetukset"
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_hr_departure_wizard
 msgid "Departure Wizard"
-msgstr ""
+msgstr "Lähdön ohjattu toiminto"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_users__document_ids
@@ -116,7 +134,7 @@ msgstr "Dokumentit"
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_settings
 msgid "Documents Hr Settings"
-msgstr ""
+msgstr "Asiakirjojen HR-Asetukset"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_employee__documents_share_id
@@ -135,11 +153,13 @@ msgid ""
 "Employee's private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
+"Työntekijän yksityisen sähköpostin on oltava asetettu käyttämään \"Send Access Link\" -toimintoa:\n"
+"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees
 msgid "Employees Documents"
-msgstr ""
+msgstr "Työntekijöiden asiakirjat"
 
 #. module: documents_hr
 #: model:documents.folder,name:documents_hr.documents_hr_folder
@@ -150,12 +170,12 @@ msgstr "Henkilöstöpalvelut"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid "HR Documents: %s"
-msgstr ""
+msgstr "HR-asiakirjat: %s"
 
 #. module: documents_hr
 #: model:mail.template,name:documents_hr.mail_template_document_folder_link
 msgid "HR: Document Access Link"
-msgstr ""
+msgstr "HR: Asiakirjojen pääsylinkki"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_settings
@@ -165,29 +185,31 @@ msgstr "Henkilöstöhallinto"
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
 msgid "Send Access Link"
-msgstr ""
+msgstr "Lähetä kirjautumislinkki"
 
 #. module: documents_hr
 #: model:ir.actions.server,name:documents_hr.ir_actions_server_send_access_link
 msgid "Send HR Documents Access Link"
-msgstr ""
+msgstr "Lähetä HR-asiakirjojen pääsylinkki"
 
 #. module: documents_hr
 #: model:ir.model.fields,help:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
 msgid ""
 "Send an email to the user with a share link to all the documents he owns."
 msgstr ""
+"Lähetä käyttäjälle sähköpostiviesti, jossa on jakolinkki kaikkiin hänen "
+"omistamiinsa asiakirjoihin."
 
 #. module: documents_hr
 #: model:mail.template,description:documents_hr.mail_template_document_folder_link
 msgid "Sent manually when recording an employee departure"
-msgstr ""
+msgstr "Lähetetään manuaalisesti työntekijän lähdön kirjaamisen yhteydessä"
 
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid "The access link has been sent to the employee."
-msgstr ""
+msgstr "Linkki on lähetetty työntekijälle."
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_users
@@ -206,18 +228,21 @@ msgid ""
 "You must set a private address on the Employee in order to use Document's "
 "features."
 msgstr ""
+"Työntekijälle on määritettävä yksityinen osoite, jotta voit käyttää "
+"Asiakirjahallinnan ominaisuuksia."
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_folder
 msgid "hr Workspace"
-msgstr ""
+msgstr "HR-työtila"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_folder
 msgid "hr default workspace"
-msgstr ""
+msgstr "HR:n oletustyötila"
 
 #. module: documents_hr
 #: model:mail.template,subject:documents_hr.mail_template_document_folder_link
 msgid "{{ object.name }}, your personal documents access link is available"
 msgstr ""
+"{{ object.name }}, henkilökohtaisten asiakirjojesi linkki on käytettävissä"

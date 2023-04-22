@@ -561,7 +561,7 @@ msgstr "يستهلك جهاز الحاسوب العادي حوالي 750 واط 
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Archive"
-msgstr "أرشفة"
+msgstr "الأرشيف "
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form

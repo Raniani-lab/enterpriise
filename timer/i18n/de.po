@@ -43,12 +43,12 @@ msgstr "Pause des Timers anzeigen"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_resume
 msgid "Display Timer Resume"
-msgstr ""
+msgstr "Fortsetzung des Timers anzeigen"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_start_primary
 msgid "Display Timer Start Primary"
-msgstr ""
+msgstr "Primären Start des Timers anzeigen"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_stop
@@ -98,7 +98,7 @@ msgstr "Vorgang nicht unterstützt"
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Play"
-msgstr ""
+msgstr "Abspielen"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_id
@@ -136,12 +136,12 @@ msgstr "Timer zuletzt pausiert"
 #. module: timer
 #: model:ir.model,name:timer.model_timer_mixin
 msgid "Timer Mixin"
-msgstr ""
+msgstr "Timer-Mixin"
 
 #. module: timer
 #: model:ir.model,name:timer.model_timer_timer
 msgid "Timer Module"
-msgstr ""
+msgstr "Timer-Modul"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__timer_start

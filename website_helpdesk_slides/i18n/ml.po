@@ -76,7 +76,7 @@ msgstr "കോഴ്സുകൾ"
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "ഹെൽപ്പ്ഡെസ്ക് ടീം"
 
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,help:website_helpdesk_slides.field_helpdesk_team__website_slide_channel_ids

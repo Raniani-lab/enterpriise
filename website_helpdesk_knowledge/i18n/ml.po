@@ -51,7 +51,7 @@ msgstr ""
 #. module: website_helpdesk_knowledge
 #: model:ir.model.fields,field_description:website_helpdesk_knowledge.field_helpdesk_team__website_article_id
 msgid "Article"
-msgstr ""
+msgstr "ലേഖനം"
 
 #. module: website_helpdesk_knowledge
 #: model:ir.model.fields,help:website_helpdesk_knowledge.field_helpdesk_team__website_article_id
@@ -74,7 +74,7 @@ msgstr ""
 #. module: website_helpdesk_knowledge
 #: model:ir.model,name:website_helpdesk_knowledge.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "ഹെൽപ്പ്ഡെസ്ക് ടീം"
 
 #. module: website_helpdesk_knowledge
 #: model:ir.model,name:website_helpdesk_knowledge.model_knowledge_article

@@ -52,7 +52,7 @@ msgstr "Luo tehtävä"
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
 #, python-format
 msgid "Create a Field Service task"
-msgstr ""
+msgstr "Luo kenttäpalvelun tehtävä"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__create_uid

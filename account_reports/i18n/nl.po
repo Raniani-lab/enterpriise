@@ -6,9 +6,9 @@
 # Eric Geens <ericgeens@yahoo.com>, 2022
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Dylan Kiss, 2023
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # Martin Trigaux, 2023
 # Jolien De Paepe, 2023
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1516,7 +1516,7 @@ msgstr "Eindbalans :"
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Entries with partners with no VAT"
-msgstr "Boekingen met partners zonder BTW"
+msgstr "Boekingen met relaties zonder BTW"
 
 #. module: account_reports
 #. odoo-python
@@ -3087,6 +3087,8 @@ msgid ""
 "The Accounts Coverage Report is only available for the Profit and Loss and "
 "Balance Sheet reports."
 msgstr ""
+"Het rekeningdekkingsrapport is alleen beschikbaar voor de winst- en "
+"verliesrekening en de balans."
 
 #. module: account_reports
 #. odoo-python
@@ -3640,7 +3642,7 @@ msgstr "naam van het model van het rapport"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "partners"
-msgstr "partners"
+msgstr "relaties"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

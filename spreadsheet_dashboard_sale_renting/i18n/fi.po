@@ -51,7 +51,7 @@ msgstr "Asiakas"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Daily Rentals"
-msgstr ""
+msgstr "Päivittäiset vuokrat"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -75,7 +75,7 @@ msgstr "Tilattu"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Ordered Qty"
-msgstr ""
+msgstr "Tilattu määrä"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -96,7 +96,7 @@ msgstr "Jakso"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Picked-up Qty"
-msgstr ""
+msgstr "Noudettu määrä"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -134,42 +134,42 @@ msgstr "Tarjoukset"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Customer"
-msgstr ""
+msgstr "Vuokrausanalyysi asiakkaittain"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product"
-msgstr ""
+msgstr "Vuokrausanalyysi tuotteittain"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product Category"
-msgstr ""
+msgstr "Vuokrausanalyysi tuoteryhmittäin"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Salesman"
-msgstr ""
+msgstr "Vuokrausanalyysi myyntimiehittäin"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rentals"
-msgstr ""
+msgstr "Vuokraukset"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Returned Qty"
-msgstr ""
+msgstr "Palautettu määrä"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -217,21 +217,21 @@ msgstr "Parhaat tuotteet"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Huippumyyjät"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - current"
-msgstr ""
+msgstr "vuokraustilastot - nykyinen"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - previous"
-msgstr ""
+msgstr "vuokraustilastot - edellinen"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

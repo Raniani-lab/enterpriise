@@ -3,6 +3,7 @@
 # 	* sale_subscription_dashboard
 # 
 # Translators:
+# Hasna, 2023
 # Niyas Raphy, 2023
 # 
 msgid ""
@@ -193,7 +194,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Dates"
-msgstr ""
+msgstr "തീയതികൾ"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -347,7 +348,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Last Month"
-msgstr ""
+msgstr "കഴിഞ്ഞ മാസം"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -676,7 +677,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Sample data"
-msgstr ""
+msgstr "സാമ്പിൾ ഡാറ്റ"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -824,7 +825,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "This Financial Year"
-msgstr ""
+msgstr "ഈ സാമ്പത്തിക വർഷം"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

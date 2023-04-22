@@ -476,6 +476,7 @@ msgstr "Datum:"
 #: model:ir.model.constraint,message:account_followup.constraint_account_followup_followup_line_days_uniq
 msgid "Days of the follow-up lines must be different per company"
 msgstr ""
+"Die Tage der Mahnzeilen müssen je nach Unternehmen unterschiedlich sein"
 
 #. module: account_followup
 #. odoo-python
@@ -523,6 +524,10 @@ msgid ""
 "- Salesperson: Sales Person defined on the invoice\n"
 "- Account Manager: Sales Person defined on the customer"
 msgstr ""
+"Bestimmen Sie, wem diese Aktivität zugewiesen wird:\n"
+"- Verantwortlicher für Mahnungen (Standard)\n"
+"- Vertriebsmitarbeiter: auf der Rechnung bestimmter Vertriebsmitarbeiter\n"
+"- Kundenberater: auf dem Kunden bestimmter Vertriebsmitarbeiter"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__display_name
@@ -666,6 +671,9 @@ msgid ""
 "            possible to use print and e-mail templates to send specific messages to\n"
 "            the customer."
 msgstr ""
+"Für jede Stufe, legen Sie die vorzunehmenden Aktionen und den Verzug in Tagen fest. Es ist\n"
+"            möglich, Druck- und E-Mail-Vorlagen zu verwenden, um dem Kunden\n"
+"            spezifische Nachrichten zu übermitteln."
 
 #. module: account_followup
 #: model:mail.template,name:account_followup.demo_followup_email_template_4

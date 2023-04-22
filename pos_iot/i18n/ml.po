@@ -275,7 +275,7 @@ msgstr "ശരി"
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_payment_method__payment_terminal_ids
 msgid "Payment Terminal"
-msgstr ""
+msgstr "പേയ്മെന്റ് ടെർമിനൽ"
 
 #. module: pos_iot
 #: model:ir.model.fields,field_description:pos_iot.field_pos_config__payment_terminal_device_ids

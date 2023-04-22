@@ -46,21 +46,21 @@ msgstr "ngày"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "# Leads"
-msgstr "# Leads"
+msgstr "# Lead"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average Deal Size"
-msgstr "Số tiền trung bình của một thoả thuận mua bán thành công"
+msgstr "Quy mô giao dịch trung bình"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average deal size"
-msgstr ""
+msgstr "Quy mô giao dịch trung bình"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -83,35 +83,35 @@ msgstr "Thành phố"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close Rate"
-msgstr ""
+msgstr "Tỷ lệ chốt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close rate"
-msgstr ""
+msgstr "Tỷ lệ chốt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed"
-msgstr "Đã đóng"
+msgstr "Đã chốt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
-msgstr ""
+msgstr "Số đã chốt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed revenue"
-msgstr ""
+msgstr "Doanh thu đã chốt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -138,63 +138,63 @@ msgstr "Hiện tại"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Current period"
-msgstr ""
+msgstr "Kỳ hiện tại"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Assign"
-msgstr "Số ngày tới khi phân công"
+msgstr "Ngày để phân công"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Win"
-msgstr ""
+msgstr "Ngày để đạt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to assign"
-msgstr ""
+msgstr "Ngày để phân công"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to win"
-msgstr ""
+msgstr "Ngày để đạt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected"
-msgstr "Được mong đợi"
+msgstr "Dự kiến"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected Closing"
-msgstr "Đóng được dự kiến"
+msgstr "Đóng dự kiến"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected count"
-msgstr ""
+msgstr "Số dự kiến"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected revenue"
-msgstr ""
+msgstr "Doanh thu dự kiến"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -209,7 +209,7 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Leads by Month"
-msgstr ""
+msgstr "Lead theo tháng"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -217,7 +217,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Lost Reason"
-msgstr "Lý do Thất bại"
+msgstr "Lý do mất"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -227,14 +227,14 @@ msgstr "Lý do Thất bại"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Medium"
-msgstr "Kênh trung gian"
+msgstr "Phương tiện"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Open opportunities"
-msgstr ""
+msgstr "Cơ hội mở"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -248,7 +248,7 @@ msgstr "Cơ hội"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Percentage closed"
-msgstr ""
+msgstr "Tỷ lệ đã chốt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -256,14 +256,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Period"
-msgstr "Chu kỳ"
+msgstr "Kỳ"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Pipeline Stages"
-msgstr ""
+msgstr "Giai đoạn chu trình"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -279,7 +279,7 @@ msgstr "Trước đó"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Previous period"
-msgstr ""
+msgstr "Kỳ trước"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -312,7 +312,7 @@ msgstr "Doanh thu"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Sales Team"
-msgstr "Đội ngũ bán hàng"
+msgstr "Đội ngũ kinh doanh"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -348,35 +348,35 @@ msgstr "Giai đoạn"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Tag"
-msgstr "Tag"
+msgstr "Thẻ"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Tags"
-msgstr "Tag"
+msgstr "Thẻ"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "To close"
-msgstr ""
+msgstr "Cần chốt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Campaigns"
-msgstr ""
+msgstr "Chiến dịch hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Cities"
-msgstr ""
+msgstr "Thành phố hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -384,14 +384,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Countries"
-msgstr ""
+msgstr "Quốc gia hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Lost Reasons"
-msgstr ""
+msgstr "Các lý do mất tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -399,14 +399,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr ""
+msgstr "Phương tiện hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
-msgstr ""
+msgstr "Cơ hội hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -414,7 +414,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr ""
+msgstr "Đội ngũ kinh doanh tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -422,7 +422,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Nhân viên kinh doanh tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -430,98 +430,98 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr ""
+msgstr "Nguồn hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr ""
+msgstr "Thẻ hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to assign"
-msgstr ""
+msgstr "Tổng ngày để phân công"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to win"
-msgstr ""
+msgstr "Tổng ngày để đạt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total leads"
-msgstr ""
+msgstr "Tổng lead"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Won leads"
-msgstr ""
+msgstr "Lead đã đạt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - current"
-msgstr ""
+msgstr "quy mô giao dịch trung bình - hiện tại"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - previous"
-msgstr ""
+msgstr "quy mô giao dịch trung bình - trước đó"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - current"
-msgstr ""
+msgstr "tỷ lệ chốt - hiện tại"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - previous"
-msgstr ""
+msgstr "tỷ lệ chốt - trước đó"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - current"
-msgstr ""
+msgstr "ngày - hiện tại"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - previous"
-msgstr ""
+msgstr "ngày - trước đó"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - current"
-msgstr ""
+msgstr "dự kiến - hiện tại"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - previous"
-msgstr ""
+msgstr "dự kiến - trước đó"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -530,14 +530,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "kỳ trước"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "list opps"
-msgstr ""
+msgstr "liệt kê cơ hội"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -547,28 +547,28 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr "kể từ giai đoạn trước"
+msgstr "kể từ kỳ trước"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "to campaign"
-msgstr ""
+msgstr "để lập chiến dịch"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "to close"
-msgstr ""
+msgstr "để chốt"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
-msgstr ""
+msgstr "thành phố hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -576,28 +576,28 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top countries"
-msgstr ""
+msgstr "quốc gia hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top lost reasons"
-msgstr ""
+msgstr "các lý do mất tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
-msgstr ""
+msgstr "phương tiện hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top mediums"
-msgstr ""
+msgstr "phương tiện hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -605,39 +605,39 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sales team"
-msgstr ""
+msgstr "đội ngũ kinh doanh tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top salespeople"
-msgstr ""
+msgstr "nhân viên kinh doanh tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top salesperson"
-msgstr ""
+msgstr "nhân viên kinh doanh tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
-msgstr ""
+msgstr "nguồn hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sources"
-msgstr ""
+msgstr "nguồn hàng đầu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top tags"
-msgstr ""
+msgstr "thẻ hàng đầu"

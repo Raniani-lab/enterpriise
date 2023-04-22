@@ -314,7 +314,7 @@ msgstr "തീയതി"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__demo
 msgid "Demo"
-msgstr ""
+msgstr "ഡെമോ"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__phone

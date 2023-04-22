@@ -43,6 +43,8 @@ msgstr "# ECOs in Bearbeitung"
 #, python-format
 msgid "%(approval_name)s %(approver_name)s %(approval_status)s this ECO"
 msgstr ""
+"%(approval_name)s %(approver_name)s %(approval_status)s dieser "
+"Änderungsauftrag"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -189,7 +191,7 @@ msgstr "Alle Validierungen"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__allow_change_kanban_state
 msgid "Allow Change Kanban State"
-msgstr ""
+msgstr "Änderung der Kanban-Phase zulassen"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__allow_change_stage
@@ -574,7 +576,7 @@ msgstr "Unterschied der alten BoM- und der neuen BoM-Revision"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__routing_change_ids
 msgid "Difference between old operation and new operation revision"
-msgstr ""
+msgstr "Unterschiede der alten und der neuen Vorgangsrevision"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__display_name
@@ -1299,7 +1301,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_document__origin_attachment_id
 msgid "Origin Attachment"
-msgstr ""
+msgstr "Ursprünglicher Anhang"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__legend_blocked

@@ -7326,6 +7326,8 @@ msgid ""
 "The work entry type used when generating work entries to fit full time "
 "working schedule."
 msgstr ""
+"Die Arbeitseintragsart, die bei der Erstellung von Arbeitseinträgen für "
+"Vollzeitarbeitszeitpläne verwendet wird."
 
 #. module: l10n_be_hr_payroll
 #. odoo-python

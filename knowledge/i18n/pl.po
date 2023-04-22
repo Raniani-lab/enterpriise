@@ -18,10 +18,10 @@
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2022
 # Wojciech Warczakowski <w.warczakowski@gmail.com>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
 # Natalia Gros <nag@odoo.com>, 2022
 # Maksym <ms@myodoo.pl>, 2022
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
+# Paweł Wodyński <pw@myodoo.pl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -29,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -158,7 +158,7 @@ msgstr "<i class=\"fa fa-fw fa-lg fa-trash-o\" title=\"Remove cover\"/> Usuń ok
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Restore from Trash"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Przywróć z Kosza"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -203,7 +203,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-plus-circle me-1\"/>New"
-msgstr ""
+msgstr "<i class=\"fa fa-plus-circle me-1\"/>Nowy"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -794,6 +794,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Each of them can be used both as:</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Każdy z nich może być używany zarówno "
+"jako:</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1170,7 +1172,7 @@ msgstr "Członek Artykułu"
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Article Structure"
-msgstr ""
+msgstr "Struktura Artykułu"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_url
@@ -2181,7 +2183,7 @@ msgstr "Brak dostępu"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
 msgid "No article found"
-msgstr ""
+msgstr "Nie znaleziono artykułu"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2529,7 +2531,7 @@ msgstr "Szablon skopiowany do schowka."
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "The Article you are trying to access has been deleted"
-msgstr ""
+msgstr "Artykuł, do którego próbujesz uzyskać dostęp, został usunięty"
 
 #. module: knowledge
 #. odoo-python
@@ -2609,6 +2611,8 @@ msgid ""
 "This Article cannot be unfolded. Either you lost access to it or it has been"
 " deleted."
 msgstr ""
+"Tego artykułu nie można rozwinąć. Albo utraciłeś do niego dostęp, albo "
+"został usunięty."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form

@@ -292,7 +292,7 @@ msgstr "Wiederkehrende Preislistenregeln"
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "Temporärer wiederkehrender Verkauf"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order
@@ -321,7 +321,7 @@ msgstr "Wählen Sie Produkte aus, auf die diese Preise angewendet werden."
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__subscription_unit_display
 msgid "Subscription Unit Display"
-msgstr ""
+msgstr "Anzeige der Abonnementeinheit"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order_line__temporal_type
@@ -394,6 +394,8 @@ msgid ""
 "You can not have a time-based rule for products that are not recurring or "
 "rentable."
 msgstr ""
+"Sie können keine zeitbasierte Regel für Produkte haben, die nicht "
+"wiederkehrend oder mietbar sind."
 
 #. module: sale_temporal
 #. odoo-python

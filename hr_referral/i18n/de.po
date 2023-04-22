@@ -586,7 +586,7 @@ msgstr "Gruppieren nach"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.hr_referral_alert_view_search
 msgid "HR Referral Alert Search"
-msgstr ""
+msgstr "Personal Empfehlungsalarm Suche"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__has_message
@@ -1070,7 +1070,7 @@ msgstr "Empfehlung"
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_alert_mail_wizard
 msgid "Referral Alert Mail Wizard"
-msgstr ""
+msgstr "Assistent für E-Mails für Empfehlungsalarme"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_company__hr_referral_background
@@ -1086,7 +1086,7 @@ msgstr "Empfehlungslink zum Teilen"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_users__referral_point_ids
 msgid "Referral Point"
-msgstr ""
+msgstr "Empfehlungspunkte"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__referral_points_ids
@@ -1101,7 +1101,7 @@ msgstr "Empfehlungsprämie Verantwortlicher Benutzer"
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_send_mail
 msgid "Referral Send Mail"
-msgstr ""
+msgstr "Empfehlungs-E-Mail senden"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_applicant__referral_state

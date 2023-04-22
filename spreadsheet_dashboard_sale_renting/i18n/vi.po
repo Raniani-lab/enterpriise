@@ -200,7 +200,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
-msgstr ""
+msgstr "Danh mục sản phẩm hàng đầu"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -214,7 +214,7 @@ msgstr "Sản phẩm hàng đầu"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Nhân viên kinh doanh tiêu biểu"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

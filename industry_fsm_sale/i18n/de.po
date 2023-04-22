@@ -251,12 +251,12 @@ msgstr "Beschreibung"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_primary
 msgid "Display Create Invoice Primary"
-msgstr ""
+msgstr "„Rechnung erstellen“ primär anzeigen"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_secondary
 msgid "Display Create Invoice Secondary"
-msgstr ""
+msgstr "„Rechnung erstellen“ sekundär anzeigen"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
@@ -386,7 +386,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_total_price
 msgid "Material Line Total Price"
-msgstr ""
+msgstr "Gesamtpreis der Materialzeile"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_quantity
@@ -426,7 +426,7 @@ msgstr "Partnerpreis"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_quotation_count
 msgid "Portal Quotation Count"
-msgstr ""
+msgstr "Anzahl Portalangebote"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
@@ -489,7 +489,7 @@ msgstr "Projekt"
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_sale_line_employee_map
 msgid "Project Sales line, employee mapping"
-msgstr ""
+msgstr "Verkaufslinie des Projekts, Mapping des Mitarbeiters"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -604,7 +604,7 @@ msgstr "Aufgabenwiederholung"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id
 msgid "Task from which this quotation have been created"
-msgstr ""
+msgstr "Aufgabe, aus der dieses Angebot erstellt wurde"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale

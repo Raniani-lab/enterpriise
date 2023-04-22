@@ -50,6 +50,7 @@ msgstr "Kostenstelle"
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_account_analytic_line__has_so_access
 msgid "Check that user has a sales access right or not."
 msgstr ""
+"Überprüfen Sie, ob der Benutzer Verkaufszugriffsrechte hat oder nicht."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_res_config_settings
@@ -64,6 +65,8 @@ msgid ""
 "Difference between the number of %s ordered on the sales order item and the "
 "number of %s delivered."
 msgstr ""
+"Differenz zwischen der Anzahl in der Verkaufsauftragsposition bestellter %s "
+"und der Anzahl gelieferter %s."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_progress
@@ -78,7 +81,7 @@ msgstr "Effektive Stunden"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_account_analytic_line__has_so_access
 msgid "Has So Access"
-msgstr ""
+msgstr "Hat Zugriff auf Verkaufsaufträge"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -106,7 +109,7 @@ msgstr "Monat"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Portal Effective Hours"
-msgstr ""
+msgstr "Portal tatsächliche Stunden"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_progress
@@ -116,17 +119,17 @@ msgstr "Portalfortschritt"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_remaining_hours
 msgid "Portal Remaining Hours"
-msgstr ""
+msgstr "Portal restliche Stunden"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Portal Subtask Effective Hours"
-msgstr ""
+msgstr "Portal-Unteraufgabe tatsächliche Stunden"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Portal Total Hours Spent"
-msgstr ""
+msgstr "Portal Insgesamt aufgewendete Stunden"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -170,6 +173,8 @@ msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
 msgstr ""
+"Für diese Verkaufsauftragsposition gibt es keinen Sollwert für die geplanten"
+" Stunden. Geplante Stunden:"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
@@ -232,3 +237,5 @@ msgid ""
 "With the 'all recorded timesheets' option, all timesheets will be invoiced without distinction, even if they haven't been validated. Additionally, all timesheets will be accessible in your customers' portal. \n"
 "When you choose the 'validated timesheets only' option, only the validated timesheets will be invoiced and appear in your customers' portal."
 msgstr ""
+"Mit der Option „Alle verzeichneten Zeiterfassungen“ werden alle Zeiterfassungen ohne Ausnahme in Rechnung gestellt, auch wenn sie nicht validiert wurden. Außerdem sind alle Zeiterfassungen in Ihrem Kundenportal verfügbar.\n"
+"Wenn Sie die Option „Nur validierte Zeiterfassungen“ auswählen, werden nur die validierten Zeiterfassungen in Rechnung gestellt und in Ihrem Kundenportal angezeigt."

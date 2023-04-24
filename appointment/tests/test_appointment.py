@@ -645,7 +645,7 @@ class AppointmentTest(AppointmentCommon, HttpCase):
         }]
         apt_type_UTC = self.env['appointment.type'].create({
             'appointment_tz': 'UTC',
-            'assign_method': 'random',
+            'assign_method': 'time_auto_assign',
             'category': 'website',
             'max_schedule_days': 5,  # Only consider the first three slots
             'name': 'Private Guitar Lesson',

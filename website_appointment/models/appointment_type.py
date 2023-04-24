@@ -77,6 +77,7 @@ class AppointmentType(models.Model):
         allowed_appointment_type_ids = WebsiteAppointment._fetch_available_appointments(
             options.get('filter_appointment_type_ids'),
             options.get('filter_staff_user_ids'),
+            options.get('filter_resource_ids'),
             invite_token).ids
         domain = [[('id', 'in', allowed_appointment_type_ids)]]
 

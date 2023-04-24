@@ -49,7 +49,7 @@
             </nav>
         </xpath>
         <xpath expr="//t[@t-call='appointment.staff_user_select']" position="attributes">
-            <attribute name="t-if">appointment_type.assign_method == 'chosen' and not skip_operator_selection</attribute>
+            <attribute name="t-if">appointment_type.assign_method != 'time_auto_assign' and not skip_resource_selection</attribute>
         </xpath>
     </template>
 
@@ -78,16 +78,18 @@
                 <div class="container pb64 o_appointment o_wappointment_select_operator">
                     <h1 class="o_page_header mt32"> Schedule <span class="text-primary" t-out="appointment_type.name"/></h1>
                     <div class="row justify-content-between my-2">
-                        <h3 class="col-12 col-md-6 pt-1 pb-2">Choose who you will meet</h3>
-                        <div class="col-12 col-md-6 mb-md-0 my-3 mt-md-2 text-center text-md-end">
-                            <a t-attf-href="/appointment/#{ appointment_type.id }?#{keep_query('*', skip_operator_selection=1)}"
+                        <h3 t-if="appointment_type.schedule_based_on == 'users'" class="col-12 col-md-6 pt-1 pb-2">Choose who you will meet</h3>
+                        <div t-attf-class="col-12 #{'col-md-6' if appointment_type.schedule_based_on == 'users' else ''} mb-md-0 my-3 mt-md-2 text-center text-md-end">
+                            <a t-attf-href="/appointment/#{ appointment_type.id }?#{keep_query('*', skip_resource_selection=1)}"
                                 class="o_wappointment_select_btn text-reset h6 px-3 py-2">
                                 <span> See all availabilities <i class="fa fa-long-arrow-right"/></span>
                             </a>
                         </div>
                     </div>
                     <div class="row px-0 pt-3">
-                        <div t-foreach="users_possible" t-as="staff_user" class="col-md-6 col-lg-4 mb-4">
+                        <div t-if="appointment_type.schedule_based_on == 'users'"
+                            t-foreach="users_possible" t-as="staff_user"
+                            class="col-md-6 col-lg-4 mb-4">
                             <article class="card border-1 shadow-sm h-100" itemscope="itemscope" itemtype="http://schema.org/Employee">
                                 <a t-attf-href="/appointment/#{appointment_type.id}?staff_user_id=#{staff_user.id}&amp;#{keep_query('*')}"
                                    class="text-reset text-decoration-none h-100">
@@ -107,6 +109,28 @@
                                             <span class="d-block text-center h6 mb-0">Choose <t t-out="staff_user.name"/></span>
                                         </div>
                                     </main>
+                                </a>
+                            </article>
+                        </div>
+                        <div t-if="appointment_type.schedule_based_on == 'resources'"
+                            t-foreach="resources_possible" t-as="resource"
+                            class="col-md-6 col-lg-4 mb-4">
+                            <article class="card border-1 shadow-sm h-100">
+                                <a t-attf-href="/appointment/#{appointment_type.id}?#{keep_query('*', resource_selected_id=resource.id)}"
+                                    class="text-reset text-decoration-none h-100">
+                                    <header class="bg-secondary rounded-top o_appointment_avatar_container">
+                                        <div t-attf-style="background-image: url('/web/image/appointment.resource/#{resource.id}/avatar_512');"
+                                             class="o_appointment_avatar_background"/>
+                                    </header>
+                                    <main class="card-body">
+                                        <h2 class="mb-0" t-out="resource.name"/>
+                                        <div class="o_wappointment_card_user_dsc mt-3 mb48">
+                                            <div t-field="resource.description" placeholder="Add a resource description here..."/>
+                                        </div>
+                                        <div class="o_wappointment_card_user_select o_wappointment_select_btn position-absolute h6 p-2 mb-0">
+                                            <span class="d-block text-center h6 mb-0">Choose <t t-out="resource.name"/></span>
+                                        </div>
+                                    </main> 
                                 </a>
                             </article>
                         </div>
@@ -142,13 +166,15 @@
         <t t-set="STEP_TIME" t-value="20"/>
         <t t-set="STEP_FORM" t-value="30"/>
         <t t-set="STEP_VALIDATION" t-value="40"/>
-        <t t-set="show_operator_select" t-value="step==STEP_OPERATOR_SELECT or appointment_type.avatars_display == 'show' and appointment_type.assign_method == 'chosen' and len(users_possible) > 1"/>
+        <t t-set="show_operator_select" t-value="step==STEP_OPERATOR_SELECT or appointment_type.avatars_display == 'show' and appointment_type.assign_method != 'time_auto_assign' and len(users_possible) > 1"/>
         <ul class="o_wappointment_progress_bar list-unstyled my-0 ms-auto float-end d-none d-lg-block">
             <t t-if="show_operator_select">
                 <li t-att-class="'position-relative float-start m-0 ' + (step==STEP_OPERATOR_SELECT and 'o_current_stage' or step&gt;STEP_OPERATOR_SELECT and 'o_passed_stage bg-transparent' or 'o_future_stage bg-transparent text-muted')">
                     <a class="text-decoration-none text-reset"
                        t-att-href="'#' if step&lt;STEP_OPERATOR_SELECT or step==STEP_OPERATOR_SELECT else '/appointment/%s?%s' % (appointment_type.id, keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token'))">
-                        Operator<t t-out="operator_chevron_href"/><span class="chevron position-absolute d-block"></span>
+                        <span t-if="appointment_type.schedule_based_on == 'users'">Operator</span>
+                        <span t-else="">Meeting</span>
+                        <t t-out="operator_chevron_href"/><span class="chevron position-absolute d-block"></span>
                     </a>
                 </li>
             </t>
@@ -193,6 +219,7 @@
                             </t>
                             <input type="hidden" name="filter_appointment_type_ids" t-att-value="filter_appointment_type_ids"/>
                             <input type="hidden" name="filter_staff_user_ids" t-att-value="filter_staff_user_ids"/>
+                            <input type="hidden" name="filter_resource_ids" t-att-value="filter_resource_ids"/>
                             <input type="hidden" name="invite_token" t-att-value="invite_token"/>
                             <t t-out="0"/>
                         </t>
@@ -235,8 +262,9 @@
                             <span t-field="appointment.message_intro" itemprop="message_intro"
                                     placeholder="Add an intro message here..."/>
                         </div>
-                        <div t-if="appointment.assign_method != 'random'" class="o_wappointment_card_staff_users lh-lg d-flex">
-                            <t t-if="len(appointment.staff_user_ids)" t-call="website_appointment.appointment_staff_users_description"/>
+                        <div t-if="appointment.assign_method != 'time_auto_assign'" class="o_wappointment_card_staff_users lh-lg d-flex">
+                            <t t-set="booking_count" t-value="len(appointment.staff_user_ids if appointment.schedule_based_on == 'users' else appointment.resource_ids)"/>
+                            <t t-if="booking_count" t-call="website_appointment.appointment_booking_resource_description"/>
                         </div>
                         <div itemprop="location" class="o_wappointment_card_location mt-3 mb-5 d-flex">
                             <i class="fa fa-map-marker text-center text-muted fs-5 me-2"/>
@@ -255,22 +283,30 @@
         </div>
     </template>
 
-    <template id='appointment_staff_users_description' name="Staff Avatars">
-        <t t-set="staff_users_count" t-value="len(appointment.staff_user_ids)"/>
-        <t t-if="appointment.avatars_display == 'show'">
+    <template id='appointment_booking_resource_description' name="Avatars">
+        <t t-if="appointment.avatars_display == 'show' and appointment.schedule_based_on == 'users'">
             <span class="o_wappointment_user_avatars d-flex">
                 <t t-foreach="appointment.staff_user_ids[:5]" t-as="staff_user">
                     <img t-attf-src="/appointment/#{appointment.id}/avatar?user_id=#{staff_user.id}&amp;avatar_size=128" t-att-title="staff_user.name"
                         class="rounded-circle o_appointment_avatar_background o_wappointment_user_avatar"/>
                 </t>
             </span>
-            <span t-if="staff_users_count == 1"><t t-out="appointment.staff_user_ids[0].name"/></span>
-            <span t-if="staff_users_count == 6" class="ps-2"> (+1 other) </span>
-            <span t-if="staff_users_count > 6" class="ps-2"> (+<t t-out="staff_users_count - 5"/> others) </span>
+            <span t-if="booking_count == 1"><t t-out="appointment.staff_user_ids[0].name"/></span>
+            <span t-if="booking_count == 6" class="ps-2"> (+1 other) </span>
+            <span t-if="booking_count > 6" class="ps-2"> (+<t t-out="booking_count - 5"/> others) </span>
         </t>
         <t t-else="">
-            <t t-if="staff_users_count == 1"><span class="fa fa-user text-muted text-center fs-5 me-2 pt-1"/><t t-out="appointment.staff_user_ids[0].name"/></t>
-            <t t-else=""><span class="fa fa-group text-muted text-center fs-5 me-2 pt-1"/><t t-out="staff_users_count"/> people available </t>
+            <t t-if="booking_count == 1">
+                <t t-set="booking_name" t-value="appointment.resource_ids[0].name if appointment.resource_ids else appointment.staff_user_ids[0].name"/>
+                <span class="fa fa-user text-muted text-center fs-5 me-2 pt-1"/><t t-out="booking_name"/>
+            </t>
+            <t t-else="">
+                <span class="fa fa-group text-muted text-center fs-5 me-2 pt-1"/>
+                <t t-out="booking_count"/>
+                <t t-if="appointment.schedule_based_on == 'users'"> people</t>
+                <t t-else=""> resource(s)</t>
+                available
+            </t>
         </t>
     </template>
 </odoo>

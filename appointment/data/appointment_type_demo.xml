@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="appointment_type_dental_care" model="appointment.type">
+        <field name="name">Dental Care</field>
+        <field name="location_id" ref="res_partner_appointment_type_dental_care"/>
+        <field name="appointment_duration">0.5</field>
+        <field name="max_schedule_days">45</field>
+        <field name="schedule_based_on">users</field>
+        <field name="staff_user_ids" eval="[(6, 0, [ref('base.user_admin'), ref('base.user_demo')])]"/>
+        <field name="avatars_display">show</field>
+    </record>
+
+    <record id="appointment_type_dental_care_question_1" model="appointment.question">
+        <field name="appointment_type_id" ref="appointment_type_dental_care"/>
+        <field name="name">Symptoms</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="appointment_type_tennis_court" model="appointment.type">
+        <field name="name">Tennis Court</field>
+        <field name="location_id" ref="res_partner_appointment_type_tennis_court"/>
+        <field name="appointment_duration">1</field>
+        <field name="schedule_based_on">resources</field>
+        <field name="assign_method">time_resource</field>
+        <field name="max_schedule_days">45</field>
+        <field name="message_partner_ids" eval="[(6, 0, [ref('base.partner_admin')])]"/>
+    </record>
+
+    <record id="appointment_type_restaurant_table" model="appointment.type">
+        <field name="name">Book a Table</field>
+        <field name="location_id" ref="res_partner_appointment_type_restaurant_table"/>
+        <field name="appointment_duration">2</field>
+        <field name="max_schedule_days">60</field>
+        <field name="schedule_based_on">resources</field>
+        <field name="assign_method">time_auto_assign</field>
+        <field name="resource_manage_capacity" eval="True"/>
+        <field name="resource_manual_confirmation" eval="True"/>
+        <field name="resource_manual_confirmation_percentage">0.8</field>
+        <field name="message_partner_ids" eval="[(6, 0, [ref('base.partner_admin')])]"/>
+    </record>
+</odoo>

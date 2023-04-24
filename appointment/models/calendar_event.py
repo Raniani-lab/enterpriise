@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import uuid
+
 from odoo import _, api, fields, models, SUPERUSER_ID
 from odoo.tools import html2plaintext
 
@@ -17,6 +18,10 @@ class CalendarEvent(models.Model):
     appointment_type_id = fields.Many2one('appointment.type', 'Online Appointment', readonly=True, tracking=True)
     appointment_answer_input_ids = fields.One2many('appointment.answer.input', 'calendar_event_id', string="Appointment Answers")
     appointment_invite_id = fields.Many2one('appointment.invite', 'Appointment Invitation', readonly=True, ondelete='set null')
+    booking_line_ids = fields.One2many('appointment.booking.line', 'calendar_event_id', string="Booking Lines")
+    appointment_resource_ids = fields.Many2many('appointment.resource', string="Appointment Resources", compute="_compute_resource_ids")
+    resource_total_capacity_reserved = fields.Integer('Total Capacity Reserved', compute="_compute_resource_total_capacity")
+    resource_total_capacity_used = fields.Integer('Total Capacity Used', compute="_compute_resource_total_capacity")
 
     def _get_public_fields(self):
         return super()._get_public_fields() | {'appointment_type_id'}
@@ -26,6 +31,29 @@ class CalendarEvent(models.Model):
         for event in self.filtered('appointment_type_id'):
             if not event.alarm_ids:
                 event.alarm_ids = event.appointment_type_id.reminder_ids
+
+    @api.depends('booking_line_ids')
+    def _compute_resource_ids(self):
+        for event in self:
+            event.appointment_resource_ids = event.booking_line_ids.appointment_resource_id
+
+    @api.depends('booking_line_ids')
+    def _compute_resource_total_capacity(self):
+        booking_data = self.env['appointment.booking.line']._read_group(
+            [('calendar_event_id', 'in', self.ids)],
+            ['calendar_event_id'],
+            ['capacity_reserved:sum', 'capacity_used:sum'],
+        )
+        mapped_data = {
+            meeting.id: {
+                'total_capacity_reserved': total_capacity_reserved,
+                'total_capacity_used': total_capacity_used,
+            } for meeting, total_capacity_reserved, total_capacity_used in booking_data}
+
+        for event in self:
+            data = mapped_data.get(event.id)
+            event.resource_total_capacity_reserved = data.get('total_capacity_reserved', 0) if data else 0
+            event.resource_total_capacity_used = data.get('total_capacity_used', 0) if data else 0
 
     def _compute_is_highlighted(self):
         super(CalendarEvent, self)._compute_is_highlighted()

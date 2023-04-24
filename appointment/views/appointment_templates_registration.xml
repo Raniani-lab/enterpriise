@@ -8,11 +8,15 @@
                     <t t-call="appointment.appointment_edit_in_backend"/>
                 </t>
                 <div class="oe_structure container o_appointment mb16">
-                    <t t-set="is_chosen_assign_method" t-value="appointment_type.assign_method == 'chosen'"/>
+                    <t t-set="is_chosen_user_assign_method" t-value="appointment_type.assign_method != 'time_auto_assign'"/>
+                    <t t-set="based_on_users" t-value="appointment_type.schedule_based_on == 'users'"/>
                     <h1 class="o_page_header mt32">
                         Schedule <span class="text-primary" t-out="appointment_type.name"/>
-                        <span t-if="(len(users_possible) == 1 or is_chosen_assign_method) and not (staff_user.name in appointment_type.name)">
+                        <span t-if="based_on_users and ((len(users_possible) == 1 or is_chosen_assign_method) and not (staff_user.name in appointment_type.name))">
                             with <span class="text-primary" t-out="staff_user.name"/>
+                        </span>
+                        <span t-if="not based_on_users and resource">
+                            for <span class="text-primary" t-out="resource.name"/>
                         </span>
                     </h1>
                     <div class="oe_structure"/>
@@ -24,6 +28,8 @@
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <input type="hidden" name="datetime_str" t-att-value="datetime_str"/>
                                 <input type="hidden" name="duration_str" t-att-value="duration_str"/>
+                                <input type="hidden" name="available_resource_ids" t-att-value="available_resource_ids"/>
+                                <input type="hidden" name="asked_capacity" t-att-value="asked_capacity"/>
                                 <div class="mb-3">
                                     <label class="pb-2" for="name">Your Name*</label>
                                     <div>
@@ -108,18 +114,23 @@
                                 </div>
                             </form>
                             <div class="col-lg-4 col-md-12 mb-5 mb-lg-0 pt-3 pt-lg-0">
-                                <article t-if="len(users_possible) == 1 or is_chosen_assign_method or appointment_type.category != 'website'"
+                                <article t-if="(based_on_users and (len(users_possible) == 1 or is_chosen_user_assign_method or appointment_type.category != 'website')) or (not based_on_users and resource)"
                                     class="card o_appointment_user_short_card border-1 shadow-sm mb-3"
                                     itemscope="itemscope"
                                     itemtype="http://schema.org/Employee">
                                     <header t-if="appointment_type.avatars_display == 'show'" class="bg-secondary rounded-top o_appointment_avatar_container">
-                                        <div t-attf-style="background-image: url('/appointment/#{appointment_type.id}/avatar?user_id=#{staff_user.id}');"
+                                        <div t-if="staff_user" t-attf-style="background-image: url('/appointment/#{appointment_type.id}/avatar?user_id=#{staff_user.id}');"
+                                             class="o_appointment_avatar_background"/>
+                                        <div t-else="" t-attf-style="background-image: url('/web/image/appointment.resource/#{resource.id}/avatar_512');"
                                              class="o_appointment_avatar_background"/>
                                     </header>
                                     <main class="card-body">
-                                        <h2 class="mb-0" t-out="staff_user.name"/>
-                                        <div class="o_appointment_card_user_fct text-black-50 h6">
+                                        <h2 class="mb-0" t-out="staff_user.name or resource.name"/>
+                                        <div t-if="staff_user" class="o_appointment_card_user_fct text-black-50 h6">
                                             <div t-field="staff_user.partner_id.function" placeholder="Add a function here..."/>
+                                        </div>
+                                        <div t-elif="resource.description" class="o_wappointment_card_user_dsc mt-3">
+                                            <div t-field="resource.description" placeholder="Add a resource description here..."/>
                                         </div>
                                         <div t-if="staff_user.email" class="fs-6 lh-lg d-flex">
                                             <i class="fa fa-envelope o_appointment_fa_width text-center fs-5 me-2 pt-1"/>
@@ -142,6 +153,10 @@
                                     <div class="d-flex fs-6 lh-lg pt-1">
                                         <i class="fa fa-clock-o o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
                                         <span t-out="duration" t-options="{'widget': 'duration', 'unit': 'hour', 'round': 'minute'}"/>
+                                    </div>
+                                    <div class="d-flex fs-6 lh-lg pt-1">
+                                        <i class="fa fa-group o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
+                                        <t t-out="asked_capacity"/> people
                                     </div>
                                     <div class="d-flex pt-1 fs-6 lh-lg">
                                         <i class="fa fa-map-marker o_appointment_fa_width text-center fs-5 me-2 mt-1"/>

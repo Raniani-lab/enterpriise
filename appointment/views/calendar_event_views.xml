@@ -1,19 +1,43 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="calendar_event_view_form_inherit_appointment" model="ir.ui.view">
-        <field name="name">calendar.event.form</field>
+    <record id="calendar_event_view_form" model="ir.ui.view">
+        <field name="name">calendar.event.view.form.inherit.appointment</field>
         <field name="model">calendar.event</field>
         <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='user_id']" position="after">
-                <field name="appointment_type_id" groups="base.group_no_one"/>
+            <xpath expr="//page[@name='page_details']" position="after">
+                <page name="page_appointment" string="Appointment Details"
+                    attrs="{'invisible': [('appointment_type_id', '=', False)]}">
+                    <group>
+                        <field name="appointment_type_id"/>
+                    </group>
+                    <field name="booking_line_ids" attrs="{'invisible': [('active', '=', False)]}" readonly="true">
+                        <tree editable="bottom">
+                            <field name="appointment_resource_id"/>
+                            <field name="capacity_reserved" sum="Total Capacity Reserved"/>
+                            <field name="capacity_used" optional="hide" sum="Total Capacity Used"/>
+                        </tree>
+                    </field>
+                </page>
             </xpath>
         </field>
     </record>
 
-    <record id="calendar_event_view_search_inherit_appointment" model="ir.ui.view">
-        <field name="name">calendar.event.search.inherit.appointment</field>
+    <record id="calendar_event_view_tree" model="ir.ui.view">
+        <field name="name">calendar.event.view.tree.inherit.appointment</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="calendar.view_calendar_event_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='duration']" position="after">
+                <field name="appointment_type_id" groups="base.group_no_one"/>
+                <field name="appointment_resource_ids" widget="many2many_tags" groups="base.group_no_one"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="calendar_event_view_search" model="ir.ui.view">
+        <field name="name">calendar.event.view.search.inherit.appointment</field>
         <field name="model">calendar.event</field>
         <field name="inherit_id" ref="calendar.view_calendar_event_search"/>
         <field name="arch" type="xml">
@@ -29,9 +53,41 @@
         </field>
     </record>
 
+    <record id="calendar_event_view_tree_booking" model="ir.ui.view">
+        <field name="name">calendar.event.view.tree.booking</field>
+        <field name="model">calendar.event</field>
+        <field name="arch" type="xml">
+            <tree create="0" sample="1" decoration-danger="not active">
+                <field name="active" invisible="1"/>
+                <field name="name" string="Subject"/>
+                <field name="appointment_type_id"/>
+                <field name="attendee_ids" string="Booked by" widget="many2many_tags"/>
+                <field name="appointment_resource_ids" widget="many2many_tags"/>
+                <field name="start"/>
+                <field name="stop"/>
+                <field name="resource_total_capacity_reserved" sum="Total Capacity Reserved"/>
+                <field name="resource_total_capacity_used" optional="show" sum="Total Capacity Used"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="calendar_event_action_view_bookings" model="ir.actions.act_window">
+        <field name="name">Resource Bookings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="calendar_event_view_tree_booking"/>
+        <field name="domain">[('booking_line_ids', '!=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Appointment Booking Found
+            </p>
+        </field>
+    </record>
+
     <!-- Calendar Reporting -->
     <record id="calendar_event_view_graph" model="ir.ui.view">
-        <field name="name">Events</field>
+        <field name="name">calendar.event.view.graph</field>
         <field name="model">calendar.event</field>
         <field name="arch" type="xml">
             <graph string="Appointments" type="line" sample="1">
@@ -42,7 +98,7 @@
     </record>
 
     <record id="calendar_event_view_pivot" model="ir.ui.view">
-        <field name="name">calendar.event.pivot</field>
+        <field name="name">calendar.event.view.pivot</field>
         <field name="model">calendar.event</field>
         <field name="arch" type="xml">
             <pivot string="Appointments" display_quantity="1" sample="1">

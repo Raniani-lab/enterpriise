@@ -14,7 +14,8 @@
     <t t-set="recurrent" t-value="object.recurrence_id and not ctx.get('calendar_template_ignore_recurrence')" />
     <t t-set="mail_tz" t-value="object._get_mail_tz() or ctx.get('mail_tz')" />
     <p>
-    Appointment booked for <t t-out="object.appointment_type_id.name or ''">Technical Demo</t> <t t-if="object.appointment_type_id.category != 'custom'"> with <t t-out="object.partner_id.name or ''">Brandon Freeman</t></t>.
+    Appointment booked for <t t-out="object.appointment_type_id.name or ''">Technical Demo</t>
+    <t t-if="object.appointment_type_id.category != 'custom' and object.appointment_type_id.schedule_based_on == 'users'"> with <t t-out="object.partner_id.name or ''">Brandon Freeman</t></t>.
     </p>
     <div style="text-align: center; padding: 16px 0px 16px 0px;">
         <a t-attf-href="/calendar/meeting/join?token={{ object.access_token }}"
@@ -69,6 +70,17 @@
                             </t>
                         </li>
                     </ul></li>
+                    <li t-if="object.appointment_type_id.resource_manage_capacity">
+                        For: <t t-out="object.resource_total_capacity_reserved"/> people
+                    </li>
+                    <li t-if="object.appointment_type_id.assign_method != 'time_auto_assign'">
+                        Resources
+                        <ul>
+                            <li t-foreach="object.appointment_resource_ids" t-as="resource">
+                                <span style="margin-left:5px" t-out="resource.name or ''">Table 1</span>
+                            </li>
+                        </ul>
+                    </li>
                     <li t-if="object.videocall_location">
                         How to Join:
                         <t t-if="object.get_base_url() in object.videocall_location"> Join with Odoo Discuss</t>

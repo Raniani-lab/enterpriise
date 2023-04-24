@@ -156,7 +156,7 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
                 self.assertFalse(mock_request.env.user.country_id)
                 self.assertFalse(mock_request.geoip.country_code)
 
-                available_appointments = wa_controller._fetch_available_appointments(None, None, "")
+                available_appointments = wa_controller._fetch_available_appointments(None, None, None, "")
 
                 self.assertNotIn(appointments_belgium, available_appointments,
                                  "US visitor should not have access to an Appointment Type restricted to Belgium.")

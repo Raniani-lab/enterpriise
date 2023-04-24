@@ -52,10 +52,12 @@ class AppointmentCalendarController(CalendarController):
         Render the validation of an appointment and display a summary of it
 
         :param access_token: the access_token of the event linked to the appointment
+        :param partner_id: id of the partner who booked the appointment
         :param state: allow to display an info message, possible values:
             - new: Info message displayed when the appointment has been correctly created
             - no-cancel: Info message displayed when an appointment can no longer be canceled
         """
+        partner_id = int(partner_id)
         event = request.env['calendar.event'].sudo().search([('access_token', '=', access_token)], limit=1)
         if not event:
             return request.not_found()
@@ -97,6 +99,7 @@ class AppointmentCalendarController(CalendarController):
             'google_url': google_url,
             'state': state,
             'partner_id': partner_id,
+            'attendee_status': event.attendee_ids.filtered(lambda a: a.partner_id.id == partner_id).state,
             'is_html_empty': is_html_empty,
         })
 
@@ -118,7 +121,13 @@ class AppointmentCalendarController(CalendarController):
         if appointment_invite:
             redirect_url = appointment_invite.redirect_url + '&state=cancel'
         else:
-            redirect_url = f'/appointment/{appointment_type.id}?{keep_query("*", state="cancel")}'
+            reset_params = {'state': 'cancel'}
+            if appointment_type.schedule_based_on == 'resources':
+                reset_params.update({
+                    'resource_id': '',
+                    'available_resource_ids': '',
+                })
+            redirect_url = f'/appointment/{appointment_type.id}?{keep_query("*", **reset_params)}'
         return request.redirect(redirect_url)
 
     @route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)

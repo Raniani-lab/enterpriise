@@ -13,6 +13,7 @@ class AppointmentSlot(models.Model):
     _order = "weekday, start_hour, start_datetime, end_datetime"
 
     appointment_type_id = fields.Many2one('appointment.type', 'Appointment Type', ondelete='cascade')
+    schedule_based_on = fields.Selection(related="appointment_type_id.schedule_based_on")
     slot_type = fields.Selection([('recurring', 'Recurring'), ('unique', 'One Shot')],
         string='Slot type', default='recurring', required=True, compute="_compute_slot_type", store=True,
         help="""Defines the type of slot. The recurring slot is the default type which is used for
@@ -24,7 +25,10 @@ class AppointmentSlot(models.Model):
     restrict_to_user_ids = fields.Many2many(
         'res.users', string='Restrict to Users',
         help="If empty, all users are considered to be available.\n"
-            "If set, only the selected users will be taken into account for this slot.")
+             "If set, only the selected users will be taken into account for this slot.")
+    restrict_to_resource_ids = fields.Many2many("appointment.resource", string="Restrict to Resources",
+        help="If empty, all resources are considered to be available.\n"
+             "If set, only the selected resources will be taken into account for this slot.")
     # Recurring slot
     weekday = fields.Selection([
         ('1', 'Monday'),

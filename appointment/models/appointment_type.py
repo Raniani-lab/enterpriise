@@ -12,6 +12,7 @@ from werkzeug.urls import url_encode, url_join
 
 from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
+from odoo.tools import float_compare
 from odoo.tools.misc import babel_locale_parse, get_lang
 from odoo.addons.base.models.res_partner import _tz_get
 
@@ -54,15 +55,16 @@ class AppointmentType(models.Model):
 
     # Assign Configuration
     assign_method = fields.Selection([
-        ('chosen', 'Chosen by the Customer'),
-        ('random', 'Random')], string='Assignment Method', default='chosen',
-        help="How users will be assigned to meetings customers book on your website.")
+        ('resource_time', 'Pick User/Resource then Time'),
+        ('time_resource', 'Select Time then User/Resource'),
+        ('time_auto_assign', 'Select Time then auto-assign')],
+        string="Assignment Method", default="resource_time", required=True,
+        help="How users and resources will be assigned to meetings customers book on your website.")
     avatars_display = fields.Selection(
-        [('hide', 'No Picture'), ('show', 'Show Users\' Pictures')],
+        [('hide', 'No Picture'), ('show', 'Show Pictures')],
         string='Front-End Display', compute='_compute_avatars_display', readonly=False, store=True,
-        help="""This option toggles the display of avatars of the staff members during the frontend appointment process.
-        When choosing amongst several users, a selection screen will also be used, if website is installed.
-        For resources, we always display the avatar.""")
+        help="""This option toggles the display of avatars of the staff members or resources during the frontend appointment process.
+        When choosing amongst several possibilities, a selection screen will also be used, if website is installed.""")
     category = fields.Selection([
         ('website', 'Website'),
         ('custom', 'Custom'),
@@ -92,6 +94,9 @@ class AppointmentType(models.Model):
     reminder_ids = fields.Many2many(
         'calendar.alarm', string="Reminders",
         default=lambda self: self.env['calendar.alarm'].search([('default_for_new_appointment_type', '=', True)]))
+    schedule_based_on = fields.Selection([
+        ('users', 'Users'),
+        ('resources', 'Resources')], string="Availability on", default="users", required=True)
     slot_ids = fields.One2many('appointment.slot', 'appointment_type_id', 'Availabilities', copy=True)
 
     # Staff Users Management
@@ -99,9 +104,23 @@ class AppointmentType(models.Model):
         'res.users',
         'appointment_type_res_users_rel',
         domain="[('share', '=', False)]",
-        string='Users',
-        default=lambda self: self.env.user)
+        string="Users", default=lambda self: self.env.user,
+        compute="_compute_staff_user_ids", store=True, readonly=False)
     staff_user_count = fields.Integer('# Staff Users', compute='_compute_staff_user_count')
+
+    # Resources Management
+    resource_ids = fields.Many2many('appointment.resource', string="Appointment Resources",
+        relation="appointment_type_appointment_resource_rel",
+        compute="_compute_resource_ids", store=True, readonly=False)
+    resource_count = fields.Integer('# Resources', compute='_compute_resource_info')
+    resource_manual_confirmation = fields.Boolean("Manual Confirmation",
+        help="""Do not automatically accept meetings created from the appointment once the total capacity
+            reserved for a slot exceeds the percentage chosen. The appointment is still considered as reserved for
+            the slots availability.""")
+    resource_manual_confirmation_percentage = fields.Float("Capacity Percentage")
+    resource_manage_capacity = fields.Boolean("Manage Capacities", compute="_compute_resource_manage_capacity", store=True, readonly=False,
+        help="""Manage the maximum amount of people a resource can handle (e.g. Table for 6 persons, ...)""")
+    resource_total_capacity = fields.Integer('Total Capacity', compute="_compute_resource_info")
 
     # Statistics / Technical / Misc
     appointment_count = fields.Integer('# Appointments', compute='_compute_appointment_count')
@@ -117,6 +136,12 @@ class AppointmentType(models.Model):
                                            help="Contacts that need to be notified whenever a new appointment is booked or canceled, \
                                                  regardless of whether they attend or not")
 
+    _sql_constraints = [
+        ('check_resource_manual_confirmation_percentage',
+         'check(resource_manual_confirmation_percentage >= 0 and resource_manual_confirmation_percentage <= 1)',
+         'The capacity percentage should be between 0 and 100%')
+    ]
+
     @api.depends('meeting_ids')
     def _compute_appointment_count(self):
         meeting_data = self.env['calendar.event']._read_group([('appointment_type_id', 'in', self.ids)], ['appointment_type_id'], ['__count'])
@@ -127,9 +152,9 @@ class AppointmentType(models.Model):
     @api.depends('meeting_ids')
     def _compute_appointment_count_report(self, n_days=30):
         from_n_days_ago = datetime.combine(datetime.today().date() - timedelta(days=n_days), datetime.min.time())
-        until_yersterday = datetime.combine(datetime.today().date(), datetime.max.time())
+        until_yesterday = datetime.combine(datetime.today().date(), datetime.max.time())
         meeting_data = self.env['calendar.event']._read_group(
-            [('appointment_type_id', 'in', self.ids), ('start', '>=', from_n_days_ago), ('start', '<=', until_yersterday)],
+            [('appointment_type_id', 'in', self.ids), ('start', '>=', from_n_days_ago), ('start', '<=', until_yesterday)],
             ['appointment_type_id'], ['__count'])
         mapped_data = {appointment_type.id: count for appointment_type, count in meeting_data}
 
@@ -163,6 +188,43 @@ class AppointmentType(models.Model):
             else:
                 record.location = record.location_id.name or ''
 
+    @api.depends('schedule_based_on')
+    def _compute_resource_ids(self):
+        for appointment_type in self.filtered(lambda appt: appt.schedule_based_on == 'users'):
+            appointment_type.resource_ids = False
+
+    @api.depends('schedule_based_on')
+    def _compute_staff_user_ids(self):
+        for appointment_type in self.filtered(lambda appt: appt.schedule_based_on == 'resources'):
+            appointment_type.staff_user_ids = False
+
+    @api.depends('resource_ids', 'resource_ids.capacity')
+    def _compute_resource_info(self):
+        resource_data = self.env['appointment.resource']._read_group(
+            [('appointment_type_ids', 'in', self.ids)],
+            ['appointment_type_ids'],
+            ['__count', 'capacity:sum'])
+        mapped_data = {
+            appointment_type.id: {
+                'count': count,
+                'total_capacity': total_capacity,
+            } for appointment_type, count, total_capacity in resource_data}
+
+        for appointment_type in self:
+            if isinstance(appointment_type.id, models.NewId):
+                appointment_type.resource_count = len(appointment_type.resource_ids)
+                appointment_type.resource_total_capacity = sum(resource.capacity for resource in appointment_type.resource_ids)
+            else:
+                appointment_type_data = mapped_data.get(appointment_type.id, {})
+                appointment_type.resource_count = appointment_type_data.get('count', 0)
+                appointment_type.resource_total_capacity = appointment_type_data.get('total_capacity', 0)
+
+    @api.depends('schedule_based_on')
+    def _compute_resource_manage_capacity(self):
+        for appointment_type in self:
+            if appointment_type.schedule_based_on == 'users':
+                appointment_type.resource_manage_capacity = False
+
     @api.depends('staff_user_ids')
     def _compute_staff_user_count(self):
         for record in self:
@@ -174,10 +236,10 @@ class AppointmentType(models.Model):
             if not record.appointment_duration > 0.0:
                 raise ValidationError(_('Appointment Duration should be higher than 0.00.'))
 
-    @api.constrains('category', 'staff_user_ids', 'slot_ids')
+    @api.constrains('category', 'staff_user_ids', 'schedule_based_on', 'slot_ids')
     def _check_staff_user_configuration(self):
         anytime_appointments = self.search([('category', '=', 'anytime')])
-        for appointment_type in self:
+        for appointment_type in self.filtered(lambda appt: appt.schedule_based_on == "users"):
             if appointment_type.category != 'website' and len(appointment_type.staff_user_ids) != 1:
                 raise ValidationError(_("This category of appointment type should only have one user but got %s users", len(appointment_type.staff_user_ids)))
             invalid_restricted_users = appointment_type.slot_ids.restrict_to_user_ids - appointment_type.staff_user_ids
@@ -201,6 +263,15 @@ class AppointmentType(models.Model):
         default['name'] = self.name + _(' (copy)')
         return super().copy(default=default)
 
+    def action_appointment_resources(self):
+        self.ensure_one()
+        action = self.env["ir.actions.act_window"]._for_xml_id("appointment.appointment_resource_action")
+        action["domain"] = [('appointment_type_ids', 'in', self.ids)]
+        action["context"] = {
+            'default_appointment_type_ids': self.ids,
+        }
+        return action
+
     def action_calendar_events_reporting(self):
         self.ensure_one()
         action = self.env["ir.actions.act_window"]._for_xml_id("appointment.calendar_event_action_reporting")
@@ -213,7 +284,13 @@ class AppointmentType(models.Model):
 
     def action_calendar_meetings(self):
         self.ensure_one()
-        action = self.env["ir.actions.actions"]._for_xml_id("calendar.action_calendar_event")
+        if self.schedule_based_on == 'users':
+            action = self.env["ir.actions.actions"]._for_xml_id("calendar.action_calendar_event")
+        else:
+            action = self.env["ir.actions.actions"]._for_xml_id("appointment.calendar_event_action_view_bookings")
+            action['views'] = [
+                [self.env.ref('appointment.calendar_event_view_tree_booking').id, 'tree'],
+            ]
         appointments = self.meeting_ids.filtered_domain([
             ('start', '>=', datetime.today())
         ])
@@ -221,10 +298,11 @@ class AppointmentType(models.Model):
             ('start', '>=', datetime.today() + timedelta(weeks=1))
         ])
 
-        if not 'pivot' in action['view_mode']:
-            action['view_mode'] = 'pivot,' + action['view_mode']
-        if not any(view == 'pivot' for (_, view) in action['views']):
-            action['views'].insert(0, (False, 'pivot'))
+        for view_type in ('calendar', 'pivot'):
+            if view_type not in action['view_mode']:
+                action['view_mode'] = f'{view_type},{action["view_mode"]}'
+            if not any(view == view_type for (_, view) in action['views']):
+                action['views'].insert(0, (False, view_type))
 
         action['context'] = {
             'default_appointment_type_id': self.id,
@@ -298,6 +376,28 @@ class AppointmentType(models.Model):
             'hours_range': hours_range,
         }
 
+    def _get_default_appointment_attendee_status(self, start_dt, stop_dt, capacity_reserved):
+        """ Get the status of attendee linked to the appointment based on manual confirmation if configured.
+        If not we consider the status of each attendee as accepted.
+        :param datetime start_dt: start datetime of appointment (in naive UTC)
+        :param datetime stop_dt: stop datetime of appointment (in naive UTC)
+        :param int capacity_reserved: capacity reserved by the customer for the appointment
+        """
+        self.ensure_one()
+        default_state = 'accepted'
+        if self.resource_manual_confirmation:
+            bookings_data = self.env['appointment.booking.line'].sudo().read_group([
+                ('appointment_type_id', '=', self.id),
+                ('event_start', '<', datetime.combine(stop_dt, time.max)),
+                ('event_stop', '>', datetime.combine(start_dt, time.min))
+            ], ['capacity_used'], ['appointment_type_id'])
+            capacity_already_used = bookings_data[0]['capacity_used'] if bookings_data else 0
+            resource_total_capacity_used = capacity_already_used + capacity_reserved
+
+            if float_compare(resource_total_capacity_used / self.resource_total_capacity, self.resource_manual_confirmation_percentage, 2) >= 0:
+                default_state = 'needsAction'
+        return default_state
+
     def _slots_generate(self, first_day, last_day, timezone, reference_date=None):
         """ Generate all appointment slots (in naive UTC, appointment timezone, and given (visitors) timezone)
             between first_day and last_day (datetimes in appointment timezone)
@@ -352,7 +452,7 @@ class AppointmentType(models.Model):
             # if local_start >= local_slot_end, no slot will be appended
             end_start_delta = ((local_slot_end - local_start).total_seconds() / 3600)
             n_slot = int(end_start_delta / self.appointment_duration)
-            for _ in range(n_slot):
+            for _index in range(n_slot):
                 slots.append({
                     self.appointment_tz: (
                         local_start,
@@ -407,13 +507,18 @@ class AppointmentType(models.Model):
                 })
         return slots
 
-    def _get_appointment_slots(self, timezone, filter_users=None, reference_date=None):
+    def _get_appointment_slots(self, timezone, filter_users=None, filter_resources=None, asked_capacity=1, reference_date=None):
         """ Fetch available slots to book an appointment.
 
         :param str timezone: timezone string e.g.: 'Europe/Brussels' or 'Etc/GMT+1'
         :param <res.users> filter_users: filter available slots for those users (can be a singleton
           for fixed appointment types or can contain several users, e.g. with random assignment and
           filters) If not set, use all users assigned to this appointment type.
+        :param <appointment.resource> filter_resources: filter available slots for those resources
+          (can be a singleton for fixed appointment types or can contain several resources,
+          e.g. with random assignment and filters) If not set, use all resources assigned to this
+          appointment type.
+        :param int asked_capacity: the capacity the user want to book.
         :param datetime reference_date: starting datetime to fetch slots. If not
           given now (in UTC) is used instead. Note that minimum schedule hours
           defined on appointment type is added to the beginning of slots;
@@ -471,17 +576,37 @@ class AppointmentType(models.Model):
         if not slots:
             return slots
         valid_users = filter_users.filtered(lambda user: user in self.staff_user_ids) if filter_users else None
+        valid_resources = filter_resources.filtered(lambda resource: resource in self.resource_ids) if filter_resources else None
         # Not found staff user : incorrect configuration -> skip useless computation
         if filter_users and not valid_users:
             return []
-        self._slots_fill_users_availability(
-            slots,
-            first_day.astimezone(pytz.UTC),
-            last_day.astimezone(pytz.UTC),
-            valid_users
-        )
+        if filter_resources and not valid_resources:
+            return []
+        if self.schedule_based_on == 'users':
+            self._slots_fill_users_availability(
+                slots,
+                first_day.astimezone(pytz.UTC),
+                last_day.astimezone(pytz.UTC),
+                valid_users,
+            )
+            slot_field_label = 'staff_user_id'
+        else:
+            self._slots_fill_resources_availability(
+                slots,
+                first_day.astimezone(pytz.UTC),
+                last_day.astimezone(pytz.UTC),
+                valid_resources,
+                asked_capacity,
+            )
+            slot_field_label = 'available_resource_ids'
 
-        total_nb_slots = sum('staff_user_id' in slot for slot in slots)
+        total_nb_slots = sum(slot_field_label in slot for slot in slots)
+        # If there is no slot for the minimum capacity then we return an empty list.
+        # This will lead to a screen informing the customer that there is no availability.
+        # We don't want to return an empty list if the capacity as been tempered by the customer
+        # as he should still be able to interact with the screen and select another capacity.
+        if not total_nb_slots and asked_capacity == 1:
+            return []
         nb_slots_previous_months = 0
 
         # Compute calendar rendering and inject available slots
@@ -491,7 +616,7 @@ class AppointmentType(models.Model):
         month_dates_calendar = cal.Calendar(locale.first_week_day).monthdatescalendar
         months = []
         while (start.year, start.month) <= (last_day.year, last_day.month):
-            nb_slots_next_months = sum('staff_user_id' in slot for slot in slots)
+            nb_slots_next_months = sum(slot_field_label in slot for slot in slots)
             has_availabilities = False
             dates = month_dates_calendar(start.year, start.month)
             for week_index, week in enumerate(dates):
@@ -507,12 +632,16 @@ class AppointmentType(models.Model):
                     else:
                         # slots are ordered, so check all unprocessed slots from until > day
                         while slots and (slots[0][timezone][0].date() <= day):
-                            if (slots[0][timezone][0].date() == day) and ('staff_user_id' in slots[0]):
-                                slot_staff_user_id = slots[0]['staff_user_id'].id
+                            if (slots[0][timezone][0].date() == day) and (slot_field_label in slots[0]):
                                 slot_start_dt_tz = slots[0][timezone][0].strftime('%Y-%m-%d %H:%M:%S')
                                 slot = {
                                     'datetime': slot_start_dt_tz,
-                                    'staff_user_id': slot_staff_user_id,
+                                    'staff_user_id': slots[0]['staff_user_id'].id if self.schedule_based_on == 'users' else False,
+                                    'available_resources': [{
+                                        'id': resource.id,
+                                        'name': resource.name,
+                                        'capacity': resource.capacity,
+                                    } for resource in slots[0]['available_resource_ids']] if self.schedule_based_on == 'resources' else False,
                                 }
                                 if slots[0]['slot'].allday:
                                     slot_duration = 24
@@ -528,11 +657,15 @@ class AppointmentType(models.Model):
                                         'hours': "%s - %s" % (start_hour, end_hour) if self.category == 'custom' else start_hour,
                                         'slot_duration': slot_duration,
                                     })
-                                slot['url_parameters'] = url_encode({
-                                    'staff_user_id': slot_staff_user_id,
+                                url_parameters = {
                                     'date_time': slot_start_dt_tz,
                                     'duration': slot_duration,
-                                })
+                                }
+                                if self.schedule_based_on == 'users':
+                                    url_parameters.update(staff_user_id=str(slots[0]['staff_user_id'].id))
+                                else:
+                                    url_parameters.update(available_resource_ids=str(slots[0]['available_resource_ids'].ids))
+                                slot['url_parameters'] = url_encode(url_parameters)
                                 today_slots.append(slot)
                                 nb_slots_next_months -= 1
                             slots.pop(0)
@@ -559,11 +692,13 @@ class AppointmentType(models.Model):
             start = start + relativedelta(months=1)
         return months
 
-    def _check_appointment_is_valid_slot(self, staff_user, timezone, start_dt, duration):
+    def _check_appointment_is_valid_slot(self, staff_user, resources, asked_capacity, timezone, start_dt, duration):
         """
         Given slot parameters check if it is still valid, based on employee
         availability, slot boundaries, ...
         :param (optional record) staff_user: the user for whom the appointment was booked for
+        :param (optional record) resources: the resources for which the appointment was booked for
+        :param integer asked_capacity: the capacity asked by the customer
         :param str timezone: visitor's timezone
         :param datetime start_dt: start datetime of the appointment (UTC)
         :param float duration: the duration of the appointment in hours
@@ -574,18 +709,26 @@ class AppointmentType(models.Model):
         end_dt = start_dt + relativedelta(hours=duration)
         slots = self_sudo._slots_generate(start_dt, end_dt, timezone)
         slots[:] = [slot for slot in slots if slot['UTC'] == (start_dt.replace(tzinfo=None), end_dt.replace(tzinfo=None))]
-        if slots and (not staff_user or staff_user in self_sudo.staff_user_ids):
+        if slots and self_sudo.schedule_based_on == 'users' and (not staff_user or staff_user in self_sudo.staff_user_ids):
             self_sudo._slots_fill_users_availability(slots, start_dt, end_dt, staff_user)
-        return any([
-            slot for slot in slots
-            if slot.get("staff_user_id", False) == staff_user
-            and ((slot['slot'].sudo().slot_type == 'recurring' and self_sudo.appointment_duration == duration) or
-                 (slot['slot'].sudo().slot_type == 'unique' and slot['slot'].sudo().duration == duration))
-        ])
+        elif slots and self_sudo.schedule_based_on == 'resources' and (not resources or all(r in self_sudo.resource_ids for r in resources)):
+            self_sudo._slots_fill_resources_availability(slots, start_dt, end_dt, filter_resources=resources, asked_capacity=asked_capacity)
+        for slot in slots:
+            if staff_user and slot.get("staff_user_id", False) != staff_user:
+                continue
+            if resources and any(resource not in slot.get("available_resource_ids") for resource in resources):
+                continue
+            if slot['slot'].slot_type == 'recurring' and self_sudo.appointment_duration != duration:
+                continue
+            if slot['slot'].slot_type == 'unique' and slot['slot'].duration != duration:
+                continue
+            return True
+        return False
 
     # --------------------------------------
     # Staff Users - Slots Availability
     # --------------------------------------
+
     def _slots_fill_users_availability(self, slots, start_dt, end_dt, filter_users=None):
         """ Fills the slot structure with an available user
 
@@ -733,3 +876,241 @@ class AppointmentType(models.Model):
                         partner_events[date_date] = event
 
         return {'partner_to_events': partner_to_events}
+
+    # --------------------------------------
+    # Resources - Slots Availability
+    # --------------------------------------
+
+    def _slots_fill_resources_availability(self, slots, start_dt_utc, end_dt_utc, filter_resources=None, asked_capacity=1):
+        """ Fills the slot structure with a list of available resources
+
+        :param list slots: slots (list of slot dict), as generated by ``_slots_generate``;
+        :param datetime start_dt_utc: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt_utc: end of appointment check boundary. Timezoned to UTC;
+        :param <appointment.resource> filter_resources: filter available slots for those resources (can be a singleton
+          for fixed appointment types or can contain several resources)
+          If not set, use all resources assigned to this appointment type.
+        :param integer asked_capacity: asked capacity for the appointment
+
+        :return: None but instead update ``slots`` adding ``available_resource_ids``
+            "available_resource_ids" containing the resources ids which are available for the slot
+        """
+        if self.resource_total_capacity < asked_capacity:
+            return False
+        available_resources = [
+            resource.with_context(tz=resource.tz)
+            for resource in (filter_resources or self.resource_ids)
+        ]
+        available_resources = self.env['appointment.resource'].concat(*available_resources)
+
+        availability_values = self._slot_availability_prepare_resources_values(
+            available_resources, start_dt_utc, end_dt_utc
+        )
+
+        for slot in slots:
+            capacity_info = {}
+            for resource in available_resources:
+                if not self._slot_availability_is_resource_available(slot, resource, availability_values):
+                    continue
+                resources_remaining_capacity = self._get_resources_remaining_capacity(
+                    resource,
+                    slot['UTC'][0],
+                    slot['UTC'][1],
+                    resource_to_bookings=availability_values.get('resource_to_bookings'),
+                    filter_resources=slot['slot'].restrict_to_resource_ids,
+                )
+                if resources_remaining_capacity['total_remaining_capacity'] < asked_capacity:
+                    continue
+                capacity_info[resource] = {
+                    'total_remaining_capacity': resources_remaining_capacity['total_remaining_capacity'],
+                    'remaining_capacity': resources_remaining_capacity[resource],
+                }
+                # Keep only the potential linked resources and add them in capacity_info
+                del resources_remaining_capacity['total_remaining_capacity']
+                del resources_remaining_capacity[resource]
+                for linked_resource, remaining_capacity in resources_remaining_capacity.items():
+                    if linked_resource in capacity_info:
+                        continue
+                    capacity_info[linked_resource] = {
+                        'total_remaining_capacity': remaining_capacity,
+                        'remaining_capacity': remaining_capacity,
+                    }
+            if capacity_info:
+                best_resources_selected = self._slot_availability_select_best_resources(
+                    capacity_info,
+                    asked_capacity,
+                )
+                if best_resources_selected:
+                    slot['available_resource_ids'] = best_resources_selected
+
+    def _slot_availability_is_resource_available(self, slot, resource, availability_values):
+        """ This method verifies if the resource is available on the given slot.
+        It checks whether the resource has bookings clashing and if it
+        is included in slot's restricted resources.
+
+        Can be overridden to add custom checks.
+
+        :param dict slot: a slot as generated by ``_slots_generate``;
+        :param <appointment.resource> resource: resource to check against slot boundaries.
+          At this point timezone should be correctly set in context;
+        :param dict availability_values: dict of data used for availability check.
+          See ``_slot_availability_prepare_resources_values()`` for more details;
+
+        :return: boolean: is resource available for an appointment for given slot
+        """
+        if slot['slot'].restrict_to_resource_ids and resource not in slot['slot'].restrict_to_resource_ids:
+            return False
+
+        slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
+        resource_to_bookings = availability_values.get('resource_to_bookings')
+        # Check if there is already a booking line for the time slot and the resource is not shareable
+        # We don't want to make it "available" because of the potential linked resources
+        if (not resource.shareable or not self.resource_manage_capacity) and resource_to_bookings.get(resource):
+            resource_booking_lines = resource_to_bookings.get(resource)
+            if resource_booking_lines.filtered(lambda bl: bl.event_start < slot_end_dt_utc and bl.event_stop > slot_start_dt_utc):
+                return False
+
+        return True
+
+    def _get_resources_remaining_capacity(self, resources, slot_start_utc, slot_stop_utc, resource_to_bookings=None, with_linked_resources=True, filter_resources=None):
+        """ Compute the remaining capacities for resources in a particular time slot.
+            :param <appointment.resource> resources : record containing one or a multiple of resources
+            :param datetime slot_start_utc: start of slot (in naive UTC)
+            :param datetime slot_stop_utc: end of slot (in naive UTC)
+            :param list resource_to_bookings: list of resource linked to their booking lines from the prepared value.
+                If no value is passed, then we search manually the booking lines (used for the appointment validation step)
+            :param bool with_linked_resources: If true we take into account the linked resources for the computation.
+                The fact to not take into account the linked resources could be useful when checking the remaining capacity
+                of particular resources (e.g. when we check if the resources are still available when a customer book an
+                appointment or to compute remaining capacity for a particular resource)
+            :param <appointment.resource> filter_resources: filter the resources impacted with this value
+            :return remaining_capacity:
+        """
+        self.ensure_one()
+
+        all_resources = ((resources | resources.linked_resource_ids) if with_linked_resources else resources) & self.resource_ids
+        if filter_resources:
+            all_resources &= filter_resources
+        if not resources:
+            return False
+
+        booking_lines = self.env['appointment.booking.line'].sudo()
+        if resource_to_bookings is not None:
+            for r in all_resources:
+                resource_booking_lines = resource_to_bookings.get(r)
+                if resource_booking_lines:
+                    booking_lines |= resource_booking_lines.filtered(lambda bl: bl.event_start < slot_stop_utc and bl.event_stop > slot_start_utc)
+        else:
+            booking_lines = self.env['appointment.booking.line'].sudo().search([
+                ('appointment_type_id', '=', self.id),
+                ('appointment_resource_id', 'in', all_resources.ids),
+                ('event_start', '<', slot_stop_utc),
+                ('event_stop', '>', slot_start_utc),
+            ])
+
+        resources_booking_lines = booking_lines.grouped('appointment_resource_id')
+        resources_remaining_capacity = {
+            resource: resource.capacity - sum([booking_line.capacity_used for booking_line in resource_booking_lines]) for resource, resource_booking_lines in resources_booking_lines.items()
+        }
+        for resource in all_resources:
+            if resource not in resources_remaining_capacity.keys():
+                resources_remaining_capacity[resource] = resource.capacity
+        resources_remaining_capacity.update(total_remaining_capacity=sum(resources_remaining_capacity.values()))
+        return resources_remaining_capacity
+
+    def _slot_availability_select_best_resources(self, capacity_info, asked_capacity):
+        """ Check and select the best resources for the capacity needed
+            :params main_resources_remaining_capacity <dict>: dict containing remaining capacities of resources available
+            :params linked_resources_remaining_capacity <dict>: dict containing remaining capacities of linked resources
+            :params asked_capacity <integer>: asked capacity for the appointment
+            :returns: we return recordset of best resources selected
+        """
+        self.ensure_one()
+        available_resources = self.env['appointment.resource'].concat(*capacity_info.keys()).sorted('sequence')
+        if not available_resources:
+            return self.env['appointment.resource']
+        if not self.resource_manage_capacity:
+            return available_resources[0] if self.assign_method != 'time_resource' else available_resources
+
+        perfect_matches = available_resources.filtered(lambda resource: resource.capacity == asked_capacity)
+        if perfect_matches:
+            return available_resources if self.assign_method == 'time_resource' else perfect_matches[0]
+
+        first_resource_selected = available_resources[0]
+        first_resource_selected_capacity_info = capacity_info.get(first_resource_selected)
+        first_resource_selected_capacity = first_resource_selected_capacity_info['remaining_capacity']
+        capacity_needed = asked_capacity - first_resource_selected_capacity
+        if capacity_needed > 0:
+            # Get the best resources combination based on the capacity we need and the resources available.
+            resource_possible_combinations = available_resources._get_filtered_possible_capacity_combinations(
+                asked_capacity,
+                capacity_info,
+            )
+            if not resource_possible_combinations:
+                return self.env['appointment.resource']
+            if asked_capacity <= first_resource_selected_capacity_info['total_remaining_capacity'] - first_resource_selected_capacity:
+                r_ids = first_resource_selected.ids + first_resource_selected.linked_resource_ids.ids
+                resource_possible_combinations = list(filter(lambda cap: any(r_id in r_ids for r_id in cap[0]), resource_possible_combinations))
+            resources_combinations_exact_capacity = list(filter(lambda cap: cap[1] == asked_capacity, resource_possible_combinations))
+            resources_combination_selected = resources_combinations_exact_capacity[0] if resources_combinations_exact_capacity else resource_possible_combinations[0]
+            return available_resources.filtered(lambda resource: resource.id in resources_combination_selected[0])
+
+        if self.assign_method == 'time_resource':
+            return available_resources
+
+        return first_resource_selected
+
+    def _slot_availability_prepare_resources_values(self, resources, start_dt_utc, end_dt_utc):
+        """ The purpose is the same as ``_slot_availability_prepare_users_values``
+        Instead of meetings, here we get booking lines for each resources.
+
+
+        :param <appointment.resource> resources: prepare values to check availability
+          of those resources against given appointment boundaries. At this point
+          timezone should be correctly set in context of those resources;
+        :param datetime start_dt_utc: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt_utc: end of appointment check boundary. Timezoned to UTC;
+
+        :return: dict containing main values for computation, formatted like
+          {
+            'resource_to_bookings': bookings based on resources
+              (see ``_slot_availability_prepare_resources_bookings_values()``);
+          }
+        """
+        return self._slot_availability_prepare_resources_bookings_values(resources, start_dt_utc, end_dt_utc)
+
+    def _slot_availability_prepare_resources_bookings_values(self, resources, start_dt_utc, end_dt_utc):
+        """ This method computes bookings of resources between start_dt and end_dt
+        of appointment check. Also, resources can be shared between multiple appointment
+        type. So booking lines in different appointment type can overlap as a resource could
+        be book by several appointment type at the same time. So a resource booked in an appointment
+        type is still considered available in another.
+
+        :param <appointment.resource> resources: prepare values to check availability
+          of those resources against given appointment boundaries. At this point
+          timezone should be correctly set in context of those resources;
+        :param datetime start_dt_utc: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt_utc: end of appointment check boundary. Timezoned to UTC;
+
+        :return: dict containing main values for computation, formatted like
+          {
+            'resource_to_bookings': bookings, formatted as a dict
+              {
+                'appointment_resource_id': recordset of booking line,
+                ...
+              },
+          }
+        """
+
+        resource_to_bookings = {}
+        if resources:
+            booking_lines = self.env['appointment.booking.line'].sudo().search([
+                ('appointment_resource_id', 'in', resources.ids),
+                ('appointment_type_id', '=', self.id),
+                ('event_stop', '>', datetime.combine(start_dt_utc, time.min)),
+                ('event_start', '<', datetime.combine(end_dt_utc, time.max))])
+            resource_to_bookings = booking_lines.grouped('appointment_resource_id')
+
+        return {
+            'resource_to_bookings': resource_to_bookings,
+        }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+    <t t-name="appointment.resources_list">
+        <div class="d-flex">
+            <i class="fa fa-cubes my-auto o_appointment_fa_width text-center fs-5 me-2 text-muted"/>
+            <select class="o_resources_list form-select cursor-pointer" name="resource_id">
+                <option t-foreach="availableResources" t-as="resource"
+                    t-att-value="resource['id']" t-att-data-resource-capacity="resource['capacity']">
+                    <t t-out="resource['name']"/>
+                </option>
+            </select>
+        </div>
+        <button name="submitSlotInfoSelected" class="btn btn-primary w-100 mt-3">Confirm</button>
+    </t>
+
+</template>

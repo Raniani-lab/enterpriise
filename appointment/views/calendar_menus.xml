@@ -14,6 +14,11 @@
         id="menu_schedule_report_online"
         parent="appointment.menu_schedule_report"
         action="calendar_event_action_report"/>
+    <menuitem
+        id="menu_appointment_booking"
+        parent="appointment.menu_schedule_report"
+        action="calendar_event_action_view_bookings"
+        groups="group_appointment_manager"/>
 
     <menuitem
         id="calendar_appointment_type_menu_action"
@@ -28,6 +33,12 @@
         parent="calendar.mail_menu_calendar"
         action="appointment_type_action"
         sequence="10"/>
+
+    <menuitem
+        id="menu_appointment_resource"
+        parent="calendar.calendar_menu_config"
+        action="appointment_resource_action"
+        groups="base.group_no_one"/>
 
     <menuitem
         id="menu_appointment_type_custom_and_anytime"

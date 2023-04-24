@@ -39,6 +39,9 @@ class AppointmenHrPerformanceCase(AppointmentHrCommon, AppointmentPerformanceCas
              'tz': 'Europe/Brussels',
             } for idx in range(20)
         ])
+        cls.resources = cls.env['appointment.resource'].create([
+            {'name': 'Resource %s' % idx} for idx in range(20)
+        ])
 
         # User resources and employees
         cls.staff_users_resources = cls.env['resource.resource'].create([
@@ -85,12 +88,13 @@ class AppointmenHrPerformanceCase(AppointmentHrCommon, AppointmentPerformanceCas
         cls.test_apt_type = cls.env['appointment.type'].create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
-            'assign_method': 'random',
+            'assign_method': 'time_auto_assign',
             'category': 'website',
             'max_schedule_days': 60,
             'min_cancellation_hours': 1,
             'min_schedule_hours': 1,
             'name': 'Test Appointment Type',
+            'schedule_based_on': 'users',
             'slot_ids': [
                 (0, 0, {'end_hour': hour + 1,
                         'start_hour': hour,
@@ -243,7 +247,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         apt_type_custom_bxls = self.env['appointment.type'].sudo().create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
-            'assign_method': 'random',
+            'assign_method': 'time_auto_assign',
             'category': 'custom',
             'location_id': self.test_appointment_location.id,
             'name': 'Bxls Appt Type',
@@ -309,9 +313,9 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         apt_type_custom_bxls = self.env['appointment.type'].sudo().create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
-            'assign_method': 'random',
+            'assign_method': 'time_auto_assign',
             'category': 'custom',
-            'location_id':  self.test_appointment_location.id,
+            'location_id': self.test_appointment_location.id,
             'name': 'Bxls Appt Type',
             'min_cancellation_hours': 1,
             'min_schedule_hours': 1,

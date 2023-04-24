@@ -3,6 +3,7 @@
 
 import re
 import uuid
+from markupsafe import Markup
 from werkzeug.urls import url_encode, url_join
 
 from odoo import api, fields, models, _
@@ -32,17 +33,22 @@ class AppointmentShare(models.Model):
         domain="[('category', '=', 'website')]", context={"active_test": False})
     appointment_type_info_msg = fields.Html('No User Assigned Message', compute='_compute_appointment_type_info_msg')
     appointment_type_count = fields.Integer('Selected Appointments Count', compute='_compute_appointment_type_count', store=True)
+    schedule_based_on = fields.Char('Schedule Based On', compute="_compute_schedule_based_on")
+    suggested_resource_ids = fields.Many2many('appointment.resource', related="appointment_type_ids.resource_ids", string="Possible resources")
+    suggested_resource_count = fields.Integer('# Resources', compute='_compute_suggested_resource_count')
     suggested_staff_user_ids = fields.Many2many(
         'res.users', related='appointment_type_ids.staff_user_ids', string='Possible users',
         help="Get the users linked to the appointment type selected to apply a domain on the users that can be selected")
     suggested_staff_user_count = fields.Integer('# Staff Users', compute='_compute_suggested_staff_user_count')
-    staff_users_choice = fields.Selection(
+    resources_choice = fields.Selection(
         selection=[
-            ('current_user', 'Me'),
-            ('all_assigned_users', 'Any User'),
-            ('specific_users', 'Specific Users')],
-        string='Assign to', compute='_compute_staff_users_choice', store=True, readonly=False)
-    staff_user_ids = fields.Many2many('res.users', string='Users', domain="[('id','in',suggested_staff_user_ids)]",
+            ('current_user', 'Me (only with Users)'),
+            ('all_assigned_resources', 'Any User/Resource'),
+            ('specific_resources', 'Specific Users/Resources')],
+        string='Assign to', compute='_compute_resources_choice', store=True, readonly=False)
+    resource_ids = fields.Many2many('appointment.resource', string='Resources', domain="[('id', 'in', suggested_resource_ids)]",
+        compute='_compute_resource_ids', store=True, readonly=False)
+    staff_user_ids = fields.Many2many('res.users', string='Users', domain="[('id', 'in', suggested_staff_user_ids)]",
         compute='_compute_staff_user_ids', store=True, readonly=False)
 
     calendar_event_ids = fields.One2many('calendar.event', 'appointment_invite_id', string="Booked Appointments", readonly=True)
@@ -59,21 +65,34 @@ class AppointmentShare(models.Model):
                 "Only letters, numbers, underscores and dashes are allowed in your links. You need to adapt %s.", invalid_invite.short_code
             ))
 
+    @api.depends('appointment_type_ids')
+    def _compute_schedule_based_on(self):
+        """ Get the schedule_based_on value when selecting one appointment type.
+        This allows to personalize the warning or info message based on this value. """
+        for invite in self:
+            invite.schedule_based_on = invite.appointment_type_ids.schedule_based_on if len(invite.appointment_type_ids) == 1 else False
+
     @api.depends('appointment_type_ids', 'appointment_type_count')
     def _compute_appointment_type_info_msg(self):
         '''
-            When there is more than one appointment type selected to be shared and at least one doesn't have any staff user assigned,
-            display an alert info to tell the current user that, without staff users, an appointment type won't be published.
+            When there is more than one appointment type selected to be shared and at least one doesn't have any staff user or resource assigned,
+            display an alert info to tell the current user that, without staff users or resources, an appointment type won't be published.
         '''
         for invite in self:
-            appt_without_staff_user = invite.appointment_type_ids.filtered_domain([('staff_user_ids', '=', False)])
+            appt_without_staff_user = invite.appointment_type_ids.filtered_domain([('schedule_based_on', '=', 'users'), ('staff_user_ids', '=', False)])
+            appt_without_resource = invite.appointment_type_ids.filtered_domain([('schedule_based_on', '=', 'resources'), ('resource_ids', '=', False)])
+            appointment_type_info_msg = Markup()
             if appt_without_staff_user and invite.appointment_type_count > 1:
-                invite.appointment_type_info_msg = _(
+                appointment_type_info_msg += _(
                     'The following appointment type(s) have no staff assigned: %s.',
                     ', '.join(appt_without_staff_user.mapped('name'))
+                ) + Markup('<br/>')
+            if appt_without_resource and invite.appointment_type_count > 1:
+                appointment_type_info_msg += _(
+                    'The following appointment type(s) have no resource assigned: %s.',
+                    ', '.join(appt_without_resource.mapped('name'))
                 )
-            else:
-                invite.appointment_type_info_msg = False
+            invite.appointment_type_info_msg = appointment_type_info_msg if appointment_type_info_msg else False
 
     @api.depends('appointment_type_ids')
     def _compute_appointment_type_count(self):
@@ -102,23 +121,34 @@ class AppointmentShare(models.Model):
                 ('id', '!=', invite._origin.id), ('short_code', '=', invite.short_code)]))
 
     @api.depends('appointment_type_ids')
-    def _compute_staff_users_choice(self):
+    def _compute_resources_choice(self):
         for invite in self:
             if len(invite.appointment_type_ids) != 1:
-                invite.staff_users_choice = False
-            elif self.env.user in invite.appointment_type_ids._origin.staff_user_ids:
-                invite.staff_users_choice = 'current_user'
+                invite.resources_choice = False
+            elif invite.appointment_type_ids.schedule_based_on == 'users' and self.env.user in invite.appointment_type_ids._origin.staff_user_ids:
+                invite.resources_choice = 'current_user'
             else:
-                invite.staff_users_choice = 'all_assigned_users'
+                invite.resources_choice = 'all_assigned_resources'
 
-    @api.depends('appointment_type_ids', 'staff_users_choice')
+    @api.depends('appointment_type_ids')
+    def _compute_resource_ids(self):
+        for invite in self:
+            if len(invite.appointment_type_ids) > 1 or invite.appointment_type_ids.schedule_based_on != 'resources':
+                invite.resource_ids = False
+
+    @api.depends('appointment_type_ids', 'resources_choice')
     def _compute_staff_user_ids(self):
         for invite in self:
-            if invite.staff_users_choice == "current_user" and \
+            if invite.resources_choice == "current_user" and \
                     self.env.user.id in invite.appointment_type_ids.staff_user_ids.ids:
                 invite.staff_user_ids = self.env.user
             else:
                 invite.staff_user_ids = False
+
+    @api.depends('suggested_resource_ids')
+    def _compute_suggested_resource_count(self):
+        for invite in self:
+            invite.suggested_resource_count = len(invite.suggested_resource_ids)
 
     @api.depends('suggested_staff_user_ids')
     def _compute_suggested_staff_user_count(self):
@@ -133,13 +163,14 @@ class AppointmentShare(models.Model):
         for invite in self:
             invite.book_url = url_join(invite.base_book_url, invite.short_code) if invite.short_code else False
 
-    @api.depends('appointment_type_ids', 'staff_user_ids')
+    @api.depends('appointment_type_ids', 'staff_user_ids', 'resource_ids')
     def _compute_redirect_url(self):
         """
         Compute a link that will be share for the user depending on the appointment types and users
         selected. We allow to preselect a group of them if there is only one appointment type selected.
         Indeed, it would be too complex to manage ones with multiple appointment types.
-        Two possible params can be generated with the link:
+        Three possible params can be generated with the link:
+            - filter_resource_ids: which allows the user to select a resource between the ones selected
             - filter_staff_user_ids: which allows the user to select an user between the ones selected
             - filter_appointment_type_ids: which display a selection of appointment types to user from which
             they can choose
@@ -174,16 +205,21 @@ class AppointmentShare(models.Model):
             url_param.update({
                 'filter_staff_user_ids': str(self.staff_user_ids.ids)
             })
+        elif self.resource_ids:
+            url_param.update({
+                'filter_resource_ids': str(self.resource_ids.ids)
+            })
         return url_param
 
-    def _check_appointments_params(self, appointment_types, users):
+    def _check_appointments_params(self, appointment_types, users, resources):
         """
         Check if the param receive through the URL match with the appointment invite info
         :param recordset appointment_types: the appointment types representing the filter_appointment_type_ids
         :param recordset users: the staff users representing the filter_staff_user_ids
+        :param recordset resources: the resources representing the filter_resource_ids
         """
         self.ensure_one()
-        if (self.appointment_type_ids and self.appointment_type_ids != appointment_types) or self.staff_user_ids != users:
+        if (self.appointment_type_ids and self.appointment_type_ids != appointment_types) or self.staff_user_ids != users or self.resource_ids != resources:
             return False
         return True
 

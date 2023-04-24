@@ -28,6 +28,7 @@ class WebsiteAppointment(AppointmentController):
         available_appointment_types = self._fetch_available_appointments(
             kwargs.get('filter_appointment_type_ids'),
             kwargs.get('filter_staff_user_ids'),
+            kwargs.get('filter_resource_ids'),
             kwargs.get('invite_token'),
             kwargs.get('search')
         )
@@ -58,7 +59,7 @@ class WebsiteAppointment(AppointmentController):
     # APPOINTMENT TYPE PAGE VIEW : WITH NEW OPERATOR SELECTION VIEW
     # ----------------------------------------------------------------
 
-    def _get_appointment_type_operator_selection_view(self, appointment_type, page_values):
+    def _get_appointment_type_resource_selection_view(self, appointment_type, page_values):
         """
         Renders the appointment_select_operator template. This displays a card view of available staff users to
         select from for appointment_type, containing their picture, job description and website_description.
@@ -71,6 +72,7 @@ class WebsiteAppointment(AppointmentController):
             'available_appointments': page_values['available_appointments'],
             'main_object': appointment_type,
             'users_possible': page_values['users_possible'],
+            'resources_possible': page_values['resources_possible'],
         })
 
     def _get_appointment_type_page_view(self, appointment_type, page_values, state=False, **kwargs):
@@ -78,32 +80,40 @@ class WebsiteAppointment(AppointmentController):
         Override: when website_appointment is installed, instead of the default appointment type page, renders the
         operator selection template, if the condition below is met.
         """
-        # If the user skips the user selection to see all availabilities, make sure we do not show the selection.
+        # If the user skips the resource selection to see all availabilities, make sure we do not show the selection.
         # As the operator view is mainly user cards, we only show it if avatars are 'on'. Also, it makes no sense in
         # random appointment types since it is a selection screen. Moreover, the selection should not have already
-        # been made before in order to avoid loops. Finally, in order to choose, one needs at least 2 possible users.
-        if not kwargs.get('skip_operator_selection') and \
-                appointment_type.active and \
-                appointment_type.assign_method == 'chosen' and \
-                appointment_type.avatars_display == 'show' and \
-                not page_values['user_selected'] and \
-                len(page_values['users_possible']) > 1:
-            return self._get_appointment_type_operator_selection_view(appointment_type, page_values)
+        # been made before in order to avoid loops. Finally, in order to choose, one needs at least 2 possible users/resources.
+        skip_resource_selection = kwargs.get('skip_resource_selection') or \
+            not appointment_type.active or \
+            appointment_type.assign_method != 'resource_time' or \
+            appointment_type.avatars_display != 'show'
+        operator_selection = not skip_resource_selection and \
+            appointment_type.schedule_based_on == 'users' and \
+            not page_values['user_selected'] and \
+            len(page_values['users_possible']) > 1
+        resource_selection = not skip_resource_selection and \
+            appointment_type.schedule_based_on == 'resources' and \
+            not page_values['resource_selected'] and \
+            len(page_values['resources_possible']) > 1
+        if operator_selection or resource_selection:
+            return self._get_appointment_type_resource_selection_view(appointment_type, page_values)
         return super()._get_appointment_type_page_view(appointment_type, page_values, state, **kwargs)
 
-    def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, skip_operator_selection=False, **kwargs):
+    def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, resource_selected_id=False, skip_resource_selection=False, **kwargs):
         """
         Override: Take into account the operator selection flow. When skipping the selection,
         no user_selected or user_default should be set. The display is also properly managed according to this new flow.
 
-        :param skip_operator_selection: If true, skip the selection, and instead see all availabilities. No user should be selected.
+        :param skip_resource_selection: If true, skip the selection, and instead see all availabilities. No user should be selected.
         """
-        values = super()._prepare_appointment_type_page_values(appointment_type, staff_user_id, **kwargs)
-        values['skip_operator_selection'] = skip_operator_selection
-        if skip_operator_selection:
+        values = super()._prepare_appointment_type_page_values(appointment_type, staff_user_id, resource_selected_id, **kwargs)
+        values['skip_resource_selection'] = skip_resource_selection
+        if skip_resource_selection:
             values['user_selected'] = values['user_default'] = request.env['res.users']
         else:
-            values['hide_select_dropdown'] = len(values['users_possible']) <= 1 or (appointment_type.avatars_display == 'show' and values['user_selected'])
+            values['hide_select_dropdown'] = len(values['users_possible']) <= 1 or (
+                appointment_type.avatars_display == 'show' and values['user_selected'] and appointment_type.assign_method != 'time_resource')
         return values
 
     # Tools / Data preparation
@@ -117,6 +127,7 @@ class WebsiteAppointment(AppointmentController):
             appointment_types = self._fetch_available_appointments(
                 kwargs.get('filter_appointment_type_ids'),
                 kwargs.get('filter_staff_user_ids'),
+                kwargs.get('filter_resource_ids'),
                 kwargs.get('invite_token'),
                 kwargs.get('search')
             )

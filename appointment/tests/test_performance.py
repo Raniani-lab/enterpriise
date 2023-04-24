@@ -66,7 +66,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
         self.authenticate(None, None)
         t0 = time.time()
         with freeze_time(self.reference_now):
-            with self.assertQueryCount(default=29):  # apt 29
+            with self.assertQueryCount(default=30):  # apt 30
                 self._test_url_open(invitation.redirect_url)
         t1 = time.time()
 

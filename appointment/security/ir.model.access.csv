@@ -17,3 +17,10 @@ access_appointment_invite_manager,appointment.invite.manager,model_appointment_i
 access_appointment_onboarding_link_all,appointment.onboarding.link.all,model_appointment_onboarding_link,,0,0,0,0
 access_appointment_onboarding_link_user,appointment.onboarding.link.user,model_appointment_onboarding_link,base.group_user,0,0,0,0
 access_appointment_onboarding_link_manager,appointment.onboarding.link.manager,model_appointment_onboarding_link,group_appointment_manager,1,1,1,1
+access_appointment_resource_manager,appointment.resource.manager,model_appointment_resource,group_appointment_manager,1,1,1,1
+access_appointment_resource_user,appointment.resource.user,model_appointment_resource,base.group_user,1,0,0,0
+access_appointment_resource_all,appointment.resource.all,model_appointment_resource,,0,0,0,0
+access_appointment_booking_line_manager,appointment.booking.line.manager,model_appointment_booking_line,group_appointment_manager,1,1,1,1
+access_appointment_booking_line_user,appointment.booking.line.user,model_appointment_booking_line,base.group_user,1,0,0,0
+access_appointment_booking_line_all,appointment.booking.line.all,model_appointment_booking_line,,0,0,0,0
+access_resource_resource_appointment_manager,resource.resource.appointment.manager,resource.model_resource_resource,group_appointment_manager,1,1,1,0

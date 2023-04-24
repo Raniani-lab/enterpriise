@@ -5,14 +5,15 @@
         <t t-call="portal.portal_layout">
             <t t-set="appointment_type" t-value="event.appointment_type_id"/>
             <t t-set="staff_user" t-value="event.user_id"/>
-            <t t-set="show_user_details" t-value="staff_user and appointment_type.avatars_display == 'show'"/>
+            <t t-set="resources" t-value="event.appointment_resource_ids"/>
+            <t t-set="based_on_users" t-value="appointment_type.schedule_based_on == 'users'"/>
             <div id="wrap" class="o_appointment d-flex bg-o-color-4 px-3 mt-3">
                 <div class="oe_structure"/>
                 <div class="oe_structure container">
                     <h1 class="o_page_header mt32">
                         <t t-if="appointment_type">
                             <span class="text-primary" t-out="appointment_type.name"/> Appointment
-                            <span t-if="staff_user and staff_user.name not in appointment_type.name"> with <span class="text-primary" t-out="staff_user.name"/> </span>
+                            <span t-if="based_on_users and staff_user and staff_user.name not in appointment_type.name"> with <span class="text-primary" t-out="staff_user.name"/> </span>
                         </t>
                         <t t-else="">
                             <span class="text-primary" t-out="event.name"/>
@@ -21,10 +22,11 @@
                     </h1>
                     <div class="oe_structure"/>
                     <div class="o_appointment_validation_details row justify-content-between pt-3 mb48">
-                        <div t-attf-class="col-12 o_not_editable {{'col-md-8 pe-md-4 pe-lg-5' if staff_user else ''}}">
+                        <div t-attf-class="col-12 o_not_editable {{'col-md-8 pe-md-4 pe-lg-5' if (staff_user and based_on_users) or (len(resources) == 1 and appointment_type.assign_method != 'time_auto_assign') else ''}}">
                             <div class="alert alert-info pb16" t-if="state == 'new'" role="status">
                                 <p class="mb-0">
-                                    <strong>Your appointment has been successfully booked!</strong>
+                                    <strong t-if="attendee_status == 'accepted'">Your appointment has been successfully booked!</strong>
+                                    <strong t-else="">Your appointment has been reserved! We will come back to you to confirm it.</strong>
                                     <a groups="appointment.group_appointment_manager"
                                        t-attf-href="/web#id=#{event.appointment_type_id.id}&amp;view_type=form&amp;model=appointment.type&amp;action=appointment.appointment_type_action">
                                         <span class="text-nowrap"><i class="fa fa-arrow-right mx-2"/>Back to edit mode</span>
@@ -55,6 +57,14 @@
                                     <t t-out="event.duration" t-options="{'widget': 'duration', 'unit': 'hour', 'round': 'minute'}"/>
                                 </div>
                             </div>
+                            <div t-if="event.resource_total_capacity_reserved > 1" class="row">
+                                <div class="col-4 col-sm-3 col-xl-2 pe-0">
+                                    <label>For:</label>
+                                </div>
+                                <div class="o_pt_2_px col-8 col-sm-9 col-xl-10">
+                                    <t t-out="event.resource_total_capacity_reserved"/> people
+                                </div>
+                            </div>
                             <div t-if="event.videocall_location" class="row">
                                 <div class="col-4 col-sm-3 col-xl-2 pe-0">
                                     <label class="form-label">How to Join:</label>
@@ -67,23 +77,21 @@
                                     <a t-att-href="event.videocall_location" target="_blank" t-out="event.videocall_location"/>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div t-if="based_on_users or appointment_type.location_id or event.location" class="row">
                                 <div class="col-4 col-sm-3 col-xl-2 pe-0">
                                     <label>Location:</label>
                                 </div>
                                 <div class="o_pt_2_px col-8 col-sm-9 col-xl-10">
-                                    <span t-if="appointment_type and appointment_type.location_id">
+                                    <span t-if="appointment_type.location_id">
                                         <div t-att-class="str(appointment_type.location_id.contact_address).strip() and 'fw-bold' or ''"
                                              t-field="appointment_type.location_id" t-options="{'widget': 'contact', 'fields': ['name']}"/>
                                         <div t-field="appointment_type.location_id" t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': true}"/>
                                     </span>
-                                    <t t-else="">
-                                        <t t-if="event.location" t-out="event.location"/>
-                                        <t t-else="" ><span>Online</span></t>
-                                    </t>
+                                    <t t-elif="event.location" t-out="event.location"/>
+                                    <t t-elif="based_on_users" ><span>Online</span></t>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div t-if="based_on_users" class="row">
                                 <div class="col-4 col-sm-3 col-xl-2 pe-0">
                                     <label>Attendees:</label>
                                 </div>
@@ -92,6 +100,16 @@
                                         <t t-out="attendee.common_name"/>
                                         <span t-if="attendee.state == 'accepted'" class="fa fa-check text-success" title="Confirmed" role="img" aria-label="Confirmed"/>
                                         <span t-if="attendee.state == 'declined'" class="fa fa-times text-danger" title="Declined" role="img" aria-label="Declined"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div t-elif="appointment_type.assign_method != 'time_auto_assign'" class="row">
+                                <div class="col-4 col-sm-3 col-xl-2 pe-0">
+                                    <label>Resources:</label>
+                                </div>
+                                <div class="o_pt_2_px col-8 col-sm-9 col-xl-10">
+                                    <div t-foreach="event.appointment_resource_ids" t-as="resource">
+                                        <t t-out="resource.name"/>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +123,7 @@
                             </div>
                             <div t-if="appointment_type" t-out="appointment_type.message_confirmation" class="mt-4"/>
                         </div>
-                        <div t-if="staff_user" class="col-12 col-md-4">
+                        <div t-if="staff_user and based_on_users" class="col-12 col-md-4">
                             <article class="card o_appointment_user_short_card border-1 shadow-sm" itemscope="itemscope" itemtype="http://schema.org/Employee">
                                 <header t-if="appointment_type.avatars_display == 'show'" class="bg-secondary rounded-top o_appointment_avatar_container">
                                     <div t-attf-style="background-image: url('/appointment/#{appointment_type.id}/avatar?user_id=#{staff_user.id}');"
@@ -123,6 +141,21 @@
                                     <div t-if="staff_user.partner_id.phone" class="fs-6 lh-lg d-flex">
                                         <i class="fa fa-phone o_appointment_fa_width text-center fs-5 me-2 pt-1"/>
                                         <t t-out="staff_user.partner_id.phone"/>
+                                    </div>
+                                </main>
+                            </article>
+                        </div>
+                        <div t-elif="len(resources) == 1 and appointment_type.assign_method != 'time_auto_assign'" class="col-12 col-md-4">
+                            <t t-set="resource" t-value="resources[0]"/>
+                            <article class="card o_appointment_user_short_card border-1 shadow-sm" itemscope="itemscope">
+                                <header t-if="appointment_type.avatars_display == 'show'" class="bg-secondary rounded-top o_appointment_avatar_container">
+                                    <div t-attf-style="background-image: url('/web/image/appointment.resource/#{resource.id}/avatar_512');"
+                                         class="o_appointment_avatar_background"/>
+                                </header>
+                                <main class="card-body">
+                                    <h2 class="mb-0" t-out="resource.name"/>
+                                    <div t-if="resource.description" class="o_wappointment_card_user_dsc mt-3">
+                                        <div t-field="resource.description" placeholder="Add a resource description here..."/>
                                     </div>
                                 </main>
                             </article>

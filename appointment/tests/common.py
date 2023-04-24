@@ -76,7 +76,7 @@ class AppointmentCommon(MailCommon, common.HttpCase):
         cls.apt_type_bxls_2days = cls.env['appointment.type'].create({
             'appointment_tz': 'Europe/Brussels',
             'appointment_duration': 1,
-            'assign_method': 'random',
+            'assign_method': 'time_auto_assign',
             'category': 'website',
             'location_id': cls.staff_user_bxls.partner_id.id,
             'name': 'Bxls Appt Type',
@@ -92,6 +92,21 @@ class AppointmentCommon(MailCommon, common.HttpCase):
                 for hour in range(8, 14)
             ],
             'staff_user_ids': [(4, cls.staff_user_bxls.id)],
+        })
+
+        cls.apt_type_resource = cls.env['appointment.type'].create({
+            'appointment_tz': 'UTC',
+            'assign_method': 'time_auto_assign',
+            'min_schedule_hours': 1.0,
+            'max_schedule_days': 5,
+            'name': 'Test',
+            'resource_manage_capacity': True,
+            'schedule_based_on': 'resources',
+            'slot_ids': [(0, 0, {
+                'weekday': str(cls.reference_monday.isoweekday()),
+                'start_hour': 15,
+                'end_hour': 16,
+            })],
         })
 
     def _test_url_open(self, url):
@@ -124,7 +139,7 @@ class AppointmentCommon(MailCommon, common.HttpCase):
             'appointment_type_ids': self.all_apts.ids,
         })
 
-    def _filter_appointment_slots(self, slots, filter_months=False, filter_weekdays=False, filter_users=False):
+    def _filter_appointment_slots(self, slots, filter_months=False, filter_weekdays=False, filter_users=False, filter_resources=False):
         """ Get all the slots info computed.
         Can target a part of slots by referencing the expected months or days we want.
         :param list slots: slots content computed from _get_appointment_slots() method.
@@ -153,6 +168,9 @@ class AppointmentCommon(MailCommon, common.HttpCase):
                     for slot in day['slots']:
                         if filter_users and slot.get('staff_user_id') not in filter_users.ids:
                             continue
+                        if filter_resources:
+                            if any(slot_resource['id'] not in filter_resources.ids for slot_resource in slot.get('available_resources')):
+                                continue
                         slots_info.append(slot)
         return slots_info
 

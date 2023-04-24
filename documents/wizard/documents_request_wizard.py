@@ -2,6 +2,7 @@
 
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
+from odoo.tools.misc import clean_context
 
 
 class RequestWizard(models.TransientModel):
@@ -83,7 +84,7 @@ class RequestWizard(models.TransientModel):
             if deadline:
                 share_vals['date_deadline'] = deadline
             share = self.env['documents.share'].create(share_vals)
-            share.send_share_by_mail('documents.mail_template_document_request')
+            share.with_context(clean_context(self.env.context)).send_share_by_mail('documents.mail_template_document_request')
             document.create_share_id = share
 
         activity = document.with_context(mail_activity_quick_update=request_by_mail).activity_schedule(**activity_vals)

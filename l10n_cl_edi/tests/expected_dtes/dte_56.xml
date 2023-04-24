@@ -43,7 +43,7 @@
                 <QtyItem>1.000000</QtyItem>
                 <UnmdItem>U</UnmdItem>
                 <PrcItem>497804.440000</PrcItem>
-                <DescuentoPct>10.0</DescuentoPct>
+                <DescuentoPct>10.00</DescuentoPct>
                 <DescuentoMonto>49780</DescuentoMonto>
                 <MontoItem>448024</MontoItem>
             </Detalle>
@@ -54,7 +54,7 @@
                 <QtyItem>1.000000</QtyItem>
                 <UnmdItem>U</UnmdItem>
                 <PrcItem>171375.560000</PrcItem>
-                <DescuentoPct>10.0</DescuentoPct>
+                <DescuentoPct>10.00</DescuentoPct>
                 <DescuentoMonto>17138</DescuentoMonto>
                 <MontoItem>154238</MontoItem>
             </Detalle>
@@ -65,7 +65,7 @@
                 <QtyItem>1.000000</QtyItem>
                 <UnmdItem>U</UnmdItem>
                 <PrcItem>6801.110000</PrcItem>
-                <DescuentoPct>10.0</DescuentoPct>
+                <DescuentoPct>10.00</DescuentoPct>
                 <DescuentoMonto>680</DescuentoMonto>
                 <MontoItem>6121</MontoItem>
             </Detalle>
@@ -76,7 +76,7 @@
                 <QtyItem>1.000000</QtyItem>
                 <UnmdItem>U</UnmdItem>
                 <PrcItem>19722.220000</PrcItem>
-                <DescuentoPct>10.0</DescuentoPct>
+                <DescuentoPct>10.00</DescuentoPct>
                 <DescuentoMonto>1972</DescuentoMonto>
                 <MontoItem>17750</MontoItem>
             </Detalle>
@@ -105,7 +105,7 @@
                 <QtyItem>1.000000</QtyItem>
                 <UnmdItem>U</UnmdItem>
                 <PrcItem>150973.330000</PrcItem>
-                <DescuentoPct>10.0</DescuentoPct>
+                <DescuentoPct>10.00</DescuentoPct>
                 <DescuentoMonto>15097</DescuentoMonto>
                 <MontoItem>135876</MontoItem>
             </Detalle>

@@ -113,7 +113,7 @@
                 <PrcItem t-esc="float_repr(line_amounts['price_item'], 6)"/>
             </t>
             <t t-if="line.discount > 0">
-                <DescuentoPct t-esc="line.discount"/>
+                <DescuentoPct t-esc="float_repr(line.discount, 2)"/>
                 <DescuentoMonto t-esc="line_amounts['total_discount']"/>
             </t>
                 <OtrMnda t-if="line_amounts.get('second_currency', False)">

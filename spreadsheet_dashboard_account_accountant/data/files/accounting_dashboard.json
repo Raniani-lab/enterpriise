@@ -1172,7 +1172,7 @@
                     "content": "DEB/OPINC*365"
                 },
                 "B24": {
-                    "content": "CRE/OPINC*365"
+                    "content": "CRE/(COS+EXP)*365"
                 },
                 "B25": {
                     "content": "DEB-CRE"
@@ -1365,7 +1365,7 @@
                 },
                 "C24": {
                     "format": 4,
-                    "content": "=iferror(C35/C38*365,0)"
+                    "content": "=iferror(C35/(C29+C31)*365,0)"
                 },
                 "C25": {
                     "content": "=C34-C35"
@@ -1546,7 +1546,7 @@
                 },
                 "D24": {
                     "format": 4,
-                    "content": "=iferror(D35/D38*365,0)"
+                    "content": "=iferror(D35/(D29+D31)*365,0)"
                 },
                 "D25": {
                     "content": "=D34-D35"
@@ -1729,7 +1729,7 @@
                 },
                 "E24": {
                     "format": 4,
-                    "content": "=iferror(E35/E38*365,0)"
+                    "content": "=iferror(E35/(E29+E31)*365,0)"
                 },
                 "E25": {
                     "content": "=E34-E35"

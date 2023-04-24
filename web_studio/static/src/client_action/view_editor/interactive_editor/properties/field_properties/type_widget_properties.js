@@ -7,9 +7,9 @@ import { _lt } from "@web/core/l10n/translation";
 import { getWowlFieldWidgets } from "@web_studio/client_action/view_editor/editors/utils";
 
 const imageSizes = {
-    small: { label: _lt("Small"), value: [0, 90] },
-    medium: { label: _lt("Medium"), value: [0, 180] },
-    large: { label: _lt("Large"), value: [0, 270] },
+    small: { label: _lt("Small"), value: "[0,90]" },
+    medium: { label: _lt("Medium"), value: "[0,180]" },
+    large: { label: _lt("Large"), value: "[0,270]" },
 };
 
 const FIELD_TYPE_PROPERTIES = {
@@ -116,7 +116,7 @@ const FIELD_WIDGET_PROPERTIES = {
                     if (size) {
                         const stringSize = JSON.stringify(size);
                         const choice = Object.entries(imageSizes).find(([s, def]) => {
-                            return JSON.stringify(def.value) === stringSize;
+                            return def.value === stringSize;
                         });
                         return choice ? choice[1].value : "";
                     }
@@ -258,7 +258,7 @@ export class TypeWidgetProperties extends Component {
         }
         const options = { ...this.props.node.attrs.options };
         if (value || currentProperty.type === "boolean") {
-            options[name] = value;
+            options[name] = ["[", "{"].includes(value[0]) ? JSON.parse(value) : value;
         } else {
             delete options[name];
         }

@@ -79,7 +79,7 @@
                 <QtyItem>5.000000</QtyItem>
                 <UnmdItem>U</UnmdItem>
                 <PrcItem>40000.000000</PrcItem>
-                <DescuentoPct>10.0</DescuentoPct>
+                <DescuentoPct>10.00</DescuentoPct>
                 <DescuentoMonto>20000</DescuentoMonto>
                 <MontoItem>180000</MontoItem>
             </Detalle>

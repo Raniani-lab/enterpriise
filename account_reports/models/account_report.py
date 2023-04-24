@@ -874,7 +874,7 @@ class AccountReport(models.Model):
 
         def compute_group_totals(line, group=None):
             return [
-                hierarchy_total + column.get('no_format', 0.0)
+                hierarchy_total + (column.get('no_format') or 0.0)
                 for hierarchy_total, column
                 in zip(hierarchy[group]['totals'], line['columns'])
             ]

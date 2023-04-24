@@ -80,13 +80,14 @@ export class GridCell {
     }
 
     async _update(value) {
+        const oldValue = this.value;
+        this.value = value;
         await this.model.orm.call(
             this.model.resModel,
             "grid_update_cell",
-            [this.domain.toList({}), this.model.measureFieldName, value - this.value],
+            [this.domain.toList({}), this.model.measureFieldName, value - oldValue],
             { context: this.context }
         );
-        this.value = value;
         await this.model.fetchData();
     }
 }

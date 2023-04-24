@@ -355,6 +355,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         where = f"""
             WHERE
                 {where_clause}
+                AND account_move_line.display_type = 'product'
                 AND (account_move_line.price_subtotal != 0 OR account_move_line.price_unit * account_move_line.quantity != 0)
                 AND company_country.id != country.id
                 AND country.intrastat = TRUE AND (country.code != 'GB' OR account_move.date < '2021-01-01')

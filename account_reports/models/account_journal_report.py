@@ -152,12 +152,13 @@ class JournalReportCustomHandler(models.AbstractModel):
 
         report = self.env.ref('account_reports.journal_report')
 
+        treated_amls_count = 0
         for move_key, move_line_vals_list in line_dict_grouped.items():
             # All move lines for a move will share static values, like if the move is multicurrency, the journal,..
             # These can be fetched using any column groups or lines for this move.
             first_move_line = move_line_vals_list[0]
             general_line_vals = next(col_group_val for col_group_val in first_move_line.values())
-            if report.load_more_limit and len(move_line_vals_list) + len(lines) > report.load_more_limit and not self._context.get('print_mode'):
+            if report.load_more_limit and len(move_line_vals_list) + treated_amls_count > report.load_more_limit and not self._context.get('print_mode'):
                 # This element won't generate a line now, but we use it to know that we'll need to add a load_more line.
                 has_more_lines = True
                 break
@@ -171,6 +172,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 continue
             # Create the first line separately, as we want to give it some specific behavior and styling
             lines.append(self._get_first_move_line(options, parent_line_id, move_key, first_move_line, is_unreconciled_payment))
+            treated_amls_count += len(move_line_vals_list)
             treated_results_count += 1
             for line_index, move_line_vals in enumerate(move_line_vals_list[1:]):
                 if journal.type == 'bank':

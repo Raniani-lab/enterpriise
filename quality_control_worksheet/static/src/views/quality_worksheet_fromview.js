@@ -13,6 +13,7 @@ class WorksheetValidationController extends FormController {
 
     async onRecordSaved(record) {
         if (record.mode != "readonly") {
+            this.context['from_worksheet'] = true
             const action = await this.orm.call(
                 "quality.check",
                 "action_worksheet_check",

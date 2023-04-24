@@ -131,7 +131,10 @@ class Applicant(models.Model):
         action_url = '/web#' + url
         body = ("<a class='o_document_link' href=%s>%s</a><br>%s") % (action_url, subject, body)
         odoobot = self.env.ref('base.partner_root')
-        self.message_notify(
+        # Do *not* notify on `self` as it will lead to unintended behavior.
+        # See opw-3285752
+        self.env['mail.thread'].sudo().message_notify(
+            model=self._name,
             subject=subject,
             body=body,
             author_id=odoobot.id,

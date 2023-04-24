@@ -109,6 +109,8 @@ export function useDocumentView(helpers) {
                     default_partner_id: props.context.default_partner_id || false,
                     default_folder_id: env.searchModel.getSelectedFolderId(),
                     default_tag_ids: [x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds())],
+                    default_res_id: props.context.default_res_id || false,
+                    default_res_model: props.context.default_res_model || false,
                 },
                 fullscreen: env.isSmall,
                 onClose: async () => {

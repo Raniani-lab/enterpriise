@@ -25,7 +25,7 @@ class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase, AppointmenHrP
 
     @warmup
     def test_appointment_type_page_website_whours_public(self):
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
 
         t0 = time.time()
         with freeze_time(self.reference_now):
@@ -40,7 +40,7 @@ class OnelineWAppointmentPerformance(AppointmentUIPerformanceCase, AppointmenHrP
 
     @warmup
     def test_appointment_type_page_website_whours_user(self):
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
 
         t0 = time.time()
         with freeze_time(self.reference_now):

@@ -34,53 +34,67 @@ class AppointmentType(models.Model):
             result['slot_ids'] = self._get_default_slots(result.get('category'))
         return result
 
+    # Global Settings
     sequence = fields.Integer('Sequence', default=10)
     name = fields.Char('Appointment Title', required=True, translate=True)
     active = fields.Boolean(default=True)
 
-    # Technical field for backward compatibility with previous default published appointment type
-    is_published = fields.Boolean('Is Published')
-    category = fields.Selection([
-        ('website', 'Website'),
-        ('custom', 'Custom'),
-        ('anytime', 'Any Time')
-        ], string="Category", default="website",
-        help="""Used to define this appointment type's category.\n
-        Can be one of:\n
-            - Website: the default category, the people can access and schedule the appointment with users from the website\n
-            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots\n
-            - Anytime: the user will create and share to another user an appointment type covering all their time slots""")
-    min_schedule_hours = fields.Float('Schedule before (hours)', required=True, default=1.0)
-    max_schedule_days = fields.Integer('Schedule not after (days)', required=True, default=15)
-    min_cancellation_hours = fields.Float('Cancel Before (hours)', required=True, default=1.0)
+    # Global Appointment Type Settings
     appointment_duration = fields.Float('Duration', required=True, default=1.0)
     appointment_duration_formatted = fields.Char(
         'Appointment Duration Formatted ', compute='_compute_appointment_duration_formatted', readonly=True,
         help='Appointment Duration formatted in words')
-    reminder_ids = fields.Many2many(
-        'calendar.alarm', string="Reminders",
-        default=lambda self: self.env['calendar.alarm'].search([('default_for_new_appointment_type', '=', True)]))
+    appointment_tz = fields.Selection(
+        _tz_get, string='Timezone', required=True, default=lambda self: self.env.user.tz,
+        help="Timezone where appointment take place")
     location_id = fields.Many2one('res.partner', string='Location')
     location = fields.Char(
         'Location formatted', compute='_compute_location', compute_sudo=True,
         help='Location formatted for one line uses')
 
-    meeting_ids = fields.One2many('calendar.event', 'appointment_type_id', string="Appointment Meetings")
+    # Assign Configuration
+    assign_method = fields.Selection([
+        ('chosen', 'Chosen by the Customer'),
+        ('random', 'Random')], string='Assignment Method', default='chosen',
+        help="How users will be assigned to meetings customers book on your website.")
+    avatars_display = fields.Selection(
+        [('hide', 'No Picture'), ('show', 'Show Users\' Pictures')],
+        string='Front-End Display', compute='_compute_avatars_display', readonly=False, store=True,
+        help="""This option toggles the display of avatars of the staff members during the frontend appointment process.
+        When choosing amongst several users, a selection screen will also be used, if website is installed.
+        For resources, we always display the avatar.""")
+    category = fields.Selection([
+        ('website', 'Website'),
+        ('custom', 'Custom'),
+        ('anytime', 'Any Time')],
+        string="Category", default="website",
+        help="""Used to define this appointment type's category.\n
+        Can be one of:\n
+            - Website: the default category, the people can access and schedule the appointment with users from the website\n
+            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots\n
+            - Anytime: the user will create and share to another user an appointment type covering all their time slots""")
+    country_ids = fields.Many2many(
+        'res.country', 'appointment_type_country_rel', string='Allowed Countries',
+        help="Keep empty to allow visitors from any country, otherwise you only allow visitors from selected countries")
 
+    # Frontend Settings
     message_confirmation = fields.Html('Confirmation Message', translate=True,
         help="Extra information provided once the appointment is booked.")
     message_intro = fields.Html('Introduction Message', translate=True,
         help="Small description of the appointment type.")
 
-    country_ids = fields.Many2many(
-        'res.country', 'appointment_type_country_rel', string='Allowed Countries',
-        help="Keep empty to allow visitors from any country, otherwise you only allow visitors from selected countries")
-    question_ids = fields.One2many('appointment.question', 'appointment_type_id', string='Questions', copy=True)
+    # Scheduling Configuration
+    min_cancellation_hours = fields.Float('Cancel Before (hours)', required=True, default=1.0)
+    min_schedule_hours = fields.Float('Schedule before (hours)', required=True, default=1.0)
+    max_schedule_days = fields.Integer('Schedule not after (days)', required=True, default=15)
 
+    question_ids = fields.One2many('appointment.question', 'appointment_type_id', string='Questions', copy=True)
+    reminder_ids = fields.Many2many(
+        'calendar.alarm', string="Reminders",
+        default=lambda self: self.env['calendar.alarm'].search([('default_for_new_appointment_type', '=', True)]))
     slot_ids = fields.One2many('appointment.slot', 'appointment_type_id', 'Availabilities', copy=True)
-    appointment_tz = fields.Selection(
-        _tz_get, string='Timezone', required=True, default=lambda self: self.env.user.tz,
-        help="Timezone where appointment take place")
+
+    # Staff Users Management
     staff_user_ids = fields.Many2many(
         'res.users',
         'appointment_type_res_users_rel',
@@ -89,19 +103,15 @@ class AppointmentType(models.Model):
         default=lambda self: self.env.user)
     staff_user_count = fields.Integer('# Staff Users', compute='_compute_staff_user_count')
 
-    assign_method = fields.Selection([
-        ('chosen', 'Chosen by the Customer'),
-        ('random', 'Random')], string='Assignment Method', default='chosen',
-        help="How users will be assigned to meetings customers book on your website.")
+    # Statistics / Technical / Misc
     appointment_count = fields.Integer('# Appointments', compute='_compute_appointment_count')
     appointment_count_report = fields.Integer(
         '# Appointments in the last 30 days', compute='_compute_appointment_count_report')
     appointment_invite_ids = fields.Many2many('appointment.invite', string='Invitation Links')
-    avatars_display = fields.Selection(
-        [('hide', 'No Picture'), ('show', 'Show Users\' Pictures')],
-        string='Front-End Display', compute='_compute_avatars_display', readonly=False, store=True,
-        help="""This option toggles the display of avatars of the staff members during the frontend appointment process.
-        When choosing amongst several users, a selection screen will also be used, if website is installed.""")
+    meeting_ids = fields.One2many('calendar.event', 'appointment_type_id', string="Appointment Meetings")
+
+    # Technical field for backward compatibility with previous default published appointment type
+    is_published = fields.Boolean('Is Published')
     # override mail.thread for better string/help
     message_partner_ids = fields.Many2many(string='CC to',
                                            help="Contacts that need to be notified whenever a new appointment is booked or canceled, \
@@ -397,167 +407,6 @@ class AppointmentType(models.Model):
                 })
         return slots
 
-    def _slots_available(self, slots, start_dt, end_dt, filter_users=None):
-        """ Fills the slot structure with an available user
-
-        :param list slots: slots (list of slot dict), as generated by ``_slots_generate``;
-        :param datetime start_dt: beginning of appointment check boundary. Timezoned to UTC;
-        :param datetime end_dt: end of appointment check boundary. Timezoned to UTC;
-        :param <res.users> filter_users: filter available slots for those users (can be a singleton
-          for fixed appointment types or can contain several users e.g. with random assignment and
-          filters) If not set, use all users assigned to this appointment type.
-
-        :return: None but instead update ``slots`` adding ``staff_user_id`` key
-          containing found available user ID;
-        """
-        # shuffle the available users into a random order to avoid having the same
-        # one assigned every time, force timezone
-        available_users = [
-            user.with_context(tz=user.tz)
-            for user in (filter_users or self.staff_user_ids)
-        ]
-        random.shuffle(available_users)
-        available_users_tz = self.env['res.users'].concat(*available_users)
-
-        # fetch value used for availability in batch
-        availability_values = self._slot_availability_prepare_values(
-            available_users_tz, start_dt, end_dt
-        )
-
-        for slot in slots:
-            available_staff_user = next(
-                (staff_user
-                 for staff_user in available_users_tz
-                 if self._slot_availability_is_user_available(
-                    slot,
-                    staff_user,
-                    availability_values
-                 )),
-                False)
-            if available_staff_user:
-                slot['staff_user_id'] = available_staff_user
-
-    def _is_staff_user_available(self, staff_user, slot, availability_values):
-        # remove me in master
-        return self._slot_availability_is_user_available(slot, staff_user, availability_values)
-
-    def _slot_availability_is_user_available(self, slot, staff_user, availability_values):
-        """ This method verifies if the user is available on the given slot.
-        It checks whether the user has calendar events clashing and if he
-        is included in slot's restricted users.
-
-        Can be overridden to add custom checks.
-
-        :param dict slot: a slot as generated by ``_slots_generate``;
-        :param <res.users> staff_user: user to check against slot boundaries.
-          At this point timezone should be correctly set in context;
-        :param dict availability_values: dict of data used for availability check.
-          See ``_slot_availability_prepare_values()`` for more details;
-
-        :return: boolean: is user available for an appointment for given slot
-        """
-        slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
-
-        if slot['slot'].restrict_to_user_ids and staff_user not in slot['slot'].restrict_to_user_ids:
-            return False
-
-        partner_to_events = availability_values.get('partner_to_events') or {}
-        if partner_to_events.get(staff_user.partner_id):
-            for day_dt in rrule.rrule(freq=rrule.DAILY,
-                                      dtstart=slot_start_dt_utc,
-                                      until=slot_end_dt_utc,
-                                      interval=1):
-                day_events = partner_to_events[staff_user.partner_id].get(day_dt.date()) or []
-                if any(event.allday or (event.start < slot_end_dt_utc and event.stop > slot_start_dt_utc) for event in day_events):
-                    return False
-
-        return True
-
-    @api.model
-    def _prepare_availability_additional_values(self, available_staff_users, first_day, last_day):
-        # remove me in master
-        return self._slot_availability_prepare_values(available_staff_users, first_day, last_day)
-
-    def _slot_availability_prepare_values(self, staff_users, start_dt, end_dt):
-        """ Hook method used to prepare useful values in the computation of slots
-        availability. Purpose is to prepare values (event meetings notably)
-        in batch instead of doing it in a loop in ``_slots_available``.
-
-        Can be overridden to add custom values preparation to be used in custom
-        overrides of ``_slot_availability_is_user_available()``.
-
-        :param <res.users> staff_users: prepare values to check availability
-          of those users against given appointment boundaries. At this point
-          timezone should be correctly set in context of those users;
-        :param datetime start_dt: beginning of appointment check boundary. Timezoned to UTC;
-        :param datetime end_dt: end of appointment check boundary. Timezoned to UTC;
-
-        :return: dict containing main values for computation, formatted like
-          {
-            'partner_to_events': meetings (not declined), based on user_partner_id
-              (see ``_slot_availability_prepare_values_meetings()``);
-          }
-        """
-        return self._slot_availability_prepare_values_meetings(staff_users, start_dt, end_dt)
-
-    def _slot_availability_prepare_values_meetings(self, staff_users, start_dt, end_dt):
-        """ This method computes meetings of users between start_dt and end_dt
-        of appointment check.
-
-        :param <res.users> staff_users: prepare values to check availability
-          of those users against given appointment boundaries. At this point
-          timezone should be correctly set in context of those users;
-        :param datetime start_dt: beginning of appointment check boundary. Timezoned to UTC;
-        :param datetime end_dt: end of appointment check boundary. Timezoned to UTC;
-
-        :return: dict containing main values for computation, formatted like
-          {
-            'partner_to_events': meetings (not declined), formatted as a dict
-              {
-                'user_partner_id': dict of day-based meetings: {
-                  'date in UTC': calendar events;
-                  'date in UTC': calendar events;
-                  ...
-              },
-              { ... }
-          }
-        """
-        related_partners = staff_users.partner_id
-
-        # perform a search based on start / end being set to day min / day max
-        # in order to include day-long events without having to include conditions
-        # on start_date and allday
-        all_events = self.env['calendar.event']
-        if related_partners:
-            all_events = self.env['calendar.event'].search(
-                ['&',
-                 ('partner_ids', 'in', related_partners.ids),
-                 '&',
-                 ('stop', '>', datetime.combine(start_dt, time.min)),
-                 ('start', '<', datetime.combine(end_dt, time.max)),
-                ],
-                order='start asc',
-            )
-
-        partner_to_events = {}
-        for event in all_events:
-            for attendee in event.attendee_ids.filtered_domain(
-                    [('state', '!=', 'declined'),
-                     ('partner_id', 'in', related_partners.ids)]
-                ):
-                for day_dt in rrule.rrule(freq=rrule.DAILY,
-                                          dtstart=event.start,
-                                          until=event.stop,
-                                          interval=1):
-                    partner_events = partner_to_events.setdefault(attendee.partner_id, {})
-                    date_date = day_dt.date()  # map per day, not per hour
-                    if partner_events.get(date_date):
-                        partner_events[date_date] += event
-                    else:
-                        partner_events[date_date] = event
-
-        return {'partner_to_events': partner_to_events}
-
     def _get_appointment_slots(self, timezone, filter_users=None, reference_date=None):
         """ Fetch available slots to book an appointment.
 
@@ -625,7 +474,7 @@ class AppointmentType(models.Model):
         # Not found staff user : incorrect configuration -> skip useless computation
         if filter_users and not valid_users:
             return []
-        self._slots_available(
+        self._slots_fill_users_availability(
             slots,
             first_day.astimezone(pytz.UTC),
             last_day.astimezone(pytz.UTC),
@@ -726,10 +575,161 @@ class AppointmentType(models.Model):
         slots = self_sudo._slots_generate(start_dt, end_dt, timezone)
         slots[:] = [slot for slot in slots if slot['UTC'] == (start_dt.replace(tzinfo=None), end_dt.replace(tzinfo=None))]
         if slots and (not staff_user or staff_user in self_sudo.staff_user_ids):
-            self_sudo._slots_available(slots, start_dt, end_dt, staff_user)
+            self_sudo._slots_fill_users_availability(slots, start_dt, end_dt, staff_user)
         return any([
             slot for slot in slots
             if slot.get("staff_user_id", False) == staff_user
             and ((slot['slot'].sudo().slot_type == 'recurring' and self_sudo.appointment_duration == duration) or
                  (slot['slot'].sudo().slot_type == 'unique' and slot['slot'].sudo().duration == duration))
         ])
+
+    # --------------------------------------
+    # Staff Users - Slots Availability
+    # --------------------------------------
+    def _slots_fill_users_availability(self, slots, start_dt, end_dt, filter_users=None):
+        """ Fills the slot structure with an available user
+
+        :param list slots: slots (list of slot dict), as generated by ``_slots_generate``;
+        :param datetime start_dt: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt: end of appointment check boundary. Timezoned to UTC;
+        :param <res.users> filter_users: filter available slots for those users (can be a singleton
+          for fixed appointment types or can contain several users e.g. with random assignment and
+          filters) If not set, use all users assigned to this appointment type.
+
+        :return: None but instead update ``slots`` adding ``staff_user_id`` key
+          containing found available user ID;
+        """
+        # shuffle the available users into a random order to avoid having the same
+        # one assigned every time, force timezone
+        available_users = [
+            user.with_context(tz=user.tz)
+            for user in (filter_users or self.staff_user_ids)
+        ]
+        random.shuffle(available_users)
+        available_users_tz = self.env['res.users'].concat(*available_users)
+
+        # fetch value used for availability in batch
+        availability_values = self._slot_availability_prepare_users_values(
+            available_users_tz, start_dt, end_dt
+        )
+
+        for slot in slots:
+            available_staff_user = next(
+                (staff_user for staff_user in available_users_tz if self._slot_availability_is_user_available(
+                    slot,
+                    staff_user,
+                    availability_values
+                )),
+                False)
+            if available_staff_user:
+                slot['staff_user_id'] = available_staff_user
+
+    def _slot_availability_is_user_available(self, slot, staff_user, availability_values):
+        """ This method verifies if the user is available on the given slot.
+        It checks whether the user has calendar events clashing and if he
+        is included in slot's restricted users.
+
+        Can be overridden to add custom checks.
+
+        :param dict slot: a slot as generated by ``_slots_generate``;
+        :param <res.users> staff_user: user to check against slot boundaries.
+          At this point timezone should be correctly set in context;
+        :param dict availability_values: dict of data used for availability check.
+          See ``_slot_availability_prepare_users_values()`` for more details;
+        :return: boolean: is user available for an appointment for given slot
+        """
+        slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
+
+        if slot['slot'].restrict_to_user_ids and staff_user not in slot['slot'].restrict_to_user_ids:
+            return False
+
+        partner_to_events = availability_values.get('partner_to_events') or {}
+        if partner_to_events.get(staff_user.partner_id):
+            for day_dt in rrule.rrule(freq=rrule.DAILY,
+                                      dtstart=slot_start_dt_utc,
+                                      until=slot_end_dt_utc,
+                                      interval=1):
+                day_events = partner_to_events[staff_user.partner_id].get(day_dt.date()) or []
+                if any(event.allday or (event.start < slot_end_dt_utc and event.stop > slot_start_dt_utc) for event in day_events):
+                    return False
+
+        return True
+
+    def _slot_availability_prepare_users_values(self, staff_users, start_dt, end_dt):
+        """ Hook method used to prepare useful values in the computation of slots
+        availability. Purpose is to prepare values (event meetings notably)
+        in batch instead of doing it in a loop in ``_slots_fill_users_availability``.
+
+        Can be overridden to add custom values preparation to be used in custom
+        overrides of ``_slot_availability_is_user_available()``.
+
+        :param <res.users> staff_users: prepare values to check availability
+          of those users against given appointment boundaries. At this point
+          timezone should be correctly set in context of those users;
+        :param datetime start_dt: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt: end of appointment check boundary. Timezoned to UTC;
+
+        :return: dict containing main values for computation, formatted like
+          {
+            'partner_to_events': meetings (not declined), based on user_partner_id
+              (see ``_slot_availability_prepare_users_values_meetings()``);
+          }
+        """
+        return self._slot_availability_prepare_users_values_meetings(staff_users, start_dt, end_dt)
+
+    def _slot_availability_prepare_users_values_meetings(self, staff_users, start_dt, end_dt):
+        """ This method computes meetings of users between start_dt and end_dt
+        of appointment check.
+
+        :param <res.users> staff_users: prepare values to check availability
+          of those users against given appointment boundaries. At this point
+          timezone should be correctly set in context of those users;
+        :param datetime start_dt: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt: end of appointment check boundary. Timezoned to UTC;
+
+        :return: dict containing main values for computation, formatted like
+          {
+            'partner_to_events': meetings (not declined), formatted as a dict
+              {
+                'user_partner_id': dict of day-based meetings: {
+                  'date in UTC': calendar events;
+                  'date in UTC': calendar events;
+                  ...
+              },
+              { ... }
+            }
+        """
+        related_partners = staff_users.partner_id
+
+        # perform a search based on start / end being set to day min / day max
+        # in order to include day-long events without having to include conditions
+        # on start_date and allday
+        all_events = self.env['calendar.event']
+        if related_partners:
+            all_events = self.env['calendar.event'].search(
+                ['&',
+                 ('partner_ids', 'in', related_partners.ids),
+                 '&',
+                 ('stop', '>', datetime.combine(start_dt, time.min)),
+                 ('start', '<', datetime.combine(end_dt, time.max)),
+                ],
+                order='start asc',
+            )
+        partner_to_events = {}
+        for event in all_events:
+            for attendee in event.attendee_ids.filtered_domain([
+                ('state', '!=', 'declined'),
+                ('partner_id', 'in', related_partners.ids)
+            ]):
+                for day_dt in rrule.rrule(freq=rrule.DAILY,
+                                          dtstart=event.start,
+                                          until=event.stop,
+                                          interval=1):
+                    partner_events = partner_to_events.setdefault(attendee.partner_id, {})
+                    date_date = day_dt.date()  # map per day, not per hour
+                    if partner_events.get(date_date):
+                        partner_events[date_date] += event
+                    else:
+                        partner_events[date_date] = event
+
+        return {'partner_to_events': partner_to_events}

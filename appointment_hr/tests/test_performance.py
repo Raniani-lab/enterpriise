@@ -373,7 +373,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
     def test_get_appointment_slots_website(self):
         """ Website type: multi users (choose first available), without working
         hours. """
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
         self.test_apt_type.write({'work_hours_activated': False})
         apt_type = self.test_apt_type.with_user(self.env.user)
 
@@ -424,7 +424,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
     def test_get_appointment_slots_website_whours(self):
         """ Website type: multi users (choose first available), with working hours
         involved. """
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
         apt_type = self.test_apt_type.with_user(self.env.user)
 
         # with self.profile(collectors=['sql']) as profile:
@@ -474,7 +474,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
     def test_get_appointment_slots_website_whours_short(self):
         """ Website type: multi users (choose first available), with working hours
         involved. """
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
         self.test_apt_type.write({'max_schedule_days': 10})
         self.env.flush_all()
         apt_type = self.test_apt_type.with_user(self.env.user)
@@ -518,7 +518,7 @@ class AppointmentTest(AppointmenHrPerformanceCase):
     def test_get_appointment_slots_website_whours_short_warmup(self):
         """ Website type: multi users (choose first available), with working hours
         involved. """
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
         self.test_apt_type.write({'max_schedule_days': 10})
         self.env.flush_all()
         apt_type = self.test_apt_type.with_user(self.env.user)
@@ -564,7 +564,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase, AppointmenHrPer
     @warmup
     def test_appointment_type_page_anytime(self):
         """ Any time type: mono user, involved any time check. """
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
 
         self.test_apt_type.write({
             'category': 'anytime',
@@ -597,7 +597,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase, AppointmenHrPer
     def test_appointment_type_page_website_whours_user(self):
         """ Website type: multi users (choose first available), with working hours
         involved. """
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
 
         t0 = time.time()
         with freeze_time(self.reference_now):

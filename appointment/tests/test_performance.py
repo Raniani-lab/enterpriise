@@ -57,7 +57,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
     @warmup
     def test_appointment_invitation_page_anonymous(self):
         """ Anonymous access of invitation page """
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
         invitation = self.env['appointment.invite'].create({
             'short_code': 'spock',
             'appointment_type_ids': self.apt_type_bxls_2days.ids,
@@ -75,7 +75,7 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase):
     @warmup
     def test_appointment_type_page_website_authenticated(self):
         """ Authenticated access of Appointment type page """
-        random.seed(1871)  # fix shuffle in _slots_available
+        random.seed(1871)  # fix shuffle in _slots_fill_users_availability
 
         self.authenticate('staff_user_aust', 'staff_user_aust')
         t0 = time.time()

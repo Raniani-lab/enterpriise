@@ -33,6 +33,9 @@
     }
 }
 
+$indent-size: 10px;
+$indent-size-md: 3px;
+
 // The selector is to target financial reports without targeting follow ups
 // reports_body are not a direct child of o_content on follow ups but it is for financial reports
 .o_content > .o_account_reports_body {
@@ -61,6 +64,12 @@
         padding: 24px;
         max-width: calc(100% - 12px); // Prevents the sheet to take horizontal space that is not available
         width: calc(100% - 12px);
+        @media (max-width: map-get($grid-breakpoints,"md")) {
+            margin: 0;
+            padding: 0 4px;
+            max-width: 100%;
+            width: 100%;
+        }
 
         .table-responsive {
             min-height: 470px;
@@ -383,7 +392,10 @@
     }
     @for $i from 3 through 19 {
         .o_account_reports_domain_line_#{$i} {
-            margin-left: ($i * 10px) + 10;
+            margin-left: ($i * $indent-size) + $indent-size;
+            @media (max-width: map-get($grid-breakpoints,"md")) {
+                margin-left: ($i * $indent-size-md) + $indent-size-md;
+            }
         }
     }
     tr.o_account_reports_domain_total {
@@ -441,14 +453,20 @@
         line-height: 1.8;
 
         > td.o_account_report_line_indent > span:last-child {
-            margin-left: ($indent + 1) * 10px;
+            margin-left: ($indent + 1) * $indent-size;
+            @media (max-width: map-get($grid-breakpoints,"md")) {
+                margin-left: ($indent + 1) * $indent-size-md;
+            }
         }
         &.total {
             font-weight: bold !important;
             color: var(--AccountFinancial-text-color, #212121) !important;
 
             > td > span:last-child {
-                margin-left: $indent * 10px;
+                margin-left: $indent * $indent-size;
+                @media (max-width: map-get($grid-breakpoints,"md")) {
+                    margin-left: $indent * $indent-size-md;
+                }
             }
         }
     }

@@ -379,7 +379,7 @@ class AccountMove(models.Model):
                 'payment_code': self.l10n_ec_sri_payment_id.code,
                 'payment_total': abs(line.balance),
             }
-            if self.invoice_payment_term_id and line.date_maturity:
+            if self.invoice_payment_term_id and line.date_maturity and self.invoice_date:
                 payment_vals.update({
                     'payment_term': max(((line.date_maturity - self.invoice_date).days), 0),
                     'time_unit': "dias",

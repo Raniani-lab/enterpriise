@@ -39,7 +39,7 @@ class AppointmentResource(models.Model):
         domain="[('id', '!=', id)]",
         store=False,
         help="""List of resources that can be combined to handle a bigger demand.""")
-    description = fields.Html("Description", translate=html_translate)
+    description = fields.Html("Description", translate=html_translate, sanitize_attributes=False)
     appointment_type_ids = fields.Many2many('appointment.type', string="Available in",
         relation="appointment_type_appointment_resource_rel",
         domain="[('schedule_based_on', '=', 'resources')]")

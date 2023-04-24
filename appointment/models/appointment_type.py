@@ -83,6 +83,7 @@ class AppointmentType(models.Model):
     message_confirmation = fields.Html('Confirmation Message', translate=True,
         help="Extra information provided once the appointment is booked.")
     message_intro = fields.Html('Introduction Message', translate=True,
+        sanitize_attributes=False,
         help="Small description of the appointment type.")
 
     # Scheduling Configuration

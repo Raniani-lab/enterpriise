@@ -544,7 +544,7 @@ class AccountReconciliation(models.AbstractModel):
             moves.action_post()
             account = move_lines[0].account_id
             move_lines |= moves.line_ids.filtered(lambda line: line.account_id == account and not line.reconciled)
-        move_lines.reconcile()
+        move_lines.with_context(reduced_line_sorting=True).reconcile()
 
     @api.model
     def get_reconciliation_dict_from_model(self, model_id, residual_balance, widget_partner_id):

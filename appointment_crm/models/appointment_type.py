@@ -36,4 +36,5 @@ class AppointmentType(models.Model):
         self.ensure_one()
         action = self.env['ir.actions.act_window']._for_xml_id('crm.crm_lead_opportunities')
         action['domain'] = [('id', 'in', self.lead_ids.ids)]
+        action['context'] = dict(default_type='opportunity', create=False)
         return action

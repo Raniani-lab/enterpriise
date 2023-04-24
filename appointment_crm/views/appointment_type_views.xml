@@ -6,7 +6,8 @@
         <field name="inherit_id" ref="appointment.appointment_type_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_calendar_meetings']" position="before">
-                <button class="oe_stat_button" type="object" name="action_appointment_leads" icon="fa-star">
+                <button name="action_appointment_leads" attrs="{'invisible': [('lead_count', '=', 0)]}"
+                    type="object" class="oe_stat_button" icon="fa-star">
                     <field string="Leads" name="lead_count" widget="statinfo"/>
                 </button>
             </xpath>

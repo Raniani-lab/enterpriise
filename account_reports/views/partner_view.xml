@@ -14,6 +14,7 @@
                         id="partner_ledger_button"
                         icon="fa-pencil-square-o"
                         name="open_partner_ledger"
+                        title="Partner Ledger"
                         context="{'default_partner_id': active_id}">
                         <div class="o_stat_info">
                             <span class="o_stat_text">Partner Ledger</span>

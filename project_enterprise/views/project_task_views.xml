@@ -170,6 +170,18 @@
         </field>
     </record>
 
+    <record id="view_task_gantt_inherit_my_task" model="ir.ui.view">
+        <field name="name">project.task.my.gantt</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_task_view_gantt"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <gantt position="attributes">
+                <attribute name="default_group_by">project_id</attribute>
+            </gantt>
+        </field>
+    </record>
+
     <!-- Adding dependency gantt view to Project -->
     <record id="project_task_dependency_view_gantt" model="ir.ui.view">
         <field name="name">project.task.dependency.view.gantt</field>
@@ -230,7 +242,7 @@
         <field name="sequence" eval="30"/>
         <field name="view_mode">gantt</field>
         <field name="act_window_id" ref="project.action_view_my_task"/>
-        <field name="view_id" ref="view_task_gantt_inherit_all_task"/>
+        <field name="view_id" ref="view_task_gantt_inherit_my_task"/>
     </record>
 
     <record id="project.action_view_all_task" model="ir.actions.act_window">

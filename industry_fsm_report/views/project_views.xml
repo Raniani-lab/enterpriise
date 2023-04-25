@@ -292,9 +292,6 @@
             <xpath expr="//field[@name='project_id']" position="replace">
                 <field name="worksheet_template_id" type="row"/>
             </xpath>
-            <xpath expr="//field[@name='stage_id']" position="replace">
-                <field name="user_ids" type="row"/>
-            </xpath>
         </field>
     </record>
 

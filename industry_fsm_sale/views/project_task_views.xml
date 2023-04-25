@@ -53,16 +53,6 @@
         </field>
     </record>
 
-    <record id="view_project_task_pivot_fsm_inherit_sale" model="ir.ui.view">
-        <field name="name">project.task.view.pivot</field>
-        <field name="model">project.task</field>
-        <field name="mode">primary</field>
-        <field name="inherit_id" ref="project.view_project_task_pivot"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='stage_id']" position='replace'/>
-        </field>
-    </record>
-
     <record id="project_task_action_to_invoice_fsm_view_list" model="ir.actions.act_window.view">
         <field name="sequence" eval="5"/>
         <field name="view_mode">tree</field>
@@ -101,7 +91,6 @@
     <record id="project_task_action_to_invoice_fsm_view_pivot" model="ir.actions.act_window.view">
         <field name="sequence" eval="30"/>
         <field name="view_mode">pivot</field>
-        <field name="view_id" ref="industry_fsm_sale.view_project_task_pivot_fsm_inherit_sale"/>
         <field name="act_window_id" ref="project_task_action_to_invoice_fsm"/>
     </record>
 

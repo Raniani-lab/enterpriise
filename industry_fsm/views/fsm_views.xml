@@ -186,20 +186,10 @@
         </field>
     </record>
 
-    <record id="project_task_view_pivot_fsm" model="ir.ui.view">
-        <field name="name">project.task.view.pivot.fsm</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="project.view_project_task_pivot"/>
-        <field name="mode">primary</field>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='stage_id']" position='replace'/>
-        </field>
-    </record>
-
     <record id="project_task_view_pivot_group_by_planned_date_begin_fsm" model="ir.ui.view">
         <field name="name">project.task.view.pivot.fsm.group.by.planned_date_begin</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project_task_view_pivot_fsm"/>
+        <field name="inherit_id" ref="project.view_project_task_pivot"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='project_id']" position='replace'>
@@ -394,7 +384,6 @@
     <record id="project_task_action_fsm_map_view_pivot" model="ir.actions.act_window.view">
         <field name="sequence" eval="30"/>
         <field name="view_mode">pivot</field>
-        <field name="view_id" ref="project_task_view_pivot_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_map"/>
     </record>
 

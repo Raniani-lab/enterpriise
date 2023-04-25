@@ -10,7 +10,6 @@ import {
     toggleMenuItemOption,
 } from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
-import { dialogService } from "@web/core/dialog/dialog_service";
 import {
     click,
     getFixture,
@@ -46,7 +45,7 @@ QUnit.module("Views", (hooks) => {
             "project.task": {
                 fields: {
                     display_name: { string: "name", type: "char" },
-                    scheduled_date: { string: "Schedule date", type: "datetime"},
+                    scheduled_date: { string: "Schedule date", type: "datetime" },
                     sequence: { string: "sequence", type: "integer" },
                     partner_id: {
                         string: "partner",
@@ -75,7 +74,12 @@ QUnit.module("Views", (hooks) => {
                 twoRecordsFieldDateTime: {
                     records: [
                         { id: 1, display_name: "Foo", scheduled_date: false, partner_id: [1] },
-                        { id: 2, display_name: "Bar", scheduled_date: "2022-02-07 21:09:31", partner_id: [2] },
+                        {
+                            id: 2,
+                            display_name: "Bar",
+                            scheduled_date: "2022-02-07 21:09:31",
+                            partner_id: [2],
+                        },
                     ],
                     length: 2,
                 },
@@ -272,7 +276,6 @@ QUnit.module("Views", (hooks) => {
         };
         serverData = { models };
         setupControlPanelServiceRegistry();
-        serviceRegistry.add("dialog", dialogService);
         serviceRegistry.add("localization", makeFakeLocalizationService());
         serviceRegistry.add("http", makeFakeHTTPService());
 
@@ -1675,14 +1678,14 @@ QUnit.module("Views", (hooks) => {
         );
     });
 
-    QUnit.test('Content of the marker popup with date time', async function (assert) {
+    QUnit.test("Content of the marker popup with date time", async function (assert) {
         assert.expect(2);
         serverData.views = {
             "project.task,false,form": "<form/>",
-        };    
+        };
 
         patchTimeZone(120); // UTC+2
-        patchWithCleanup(session, {map_box_token: MAP_BOX_TOKEN});
+        patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
         serverData.models["res.partner"].twoRecordsAddressCoordinates[0].partner_latitude = 11.0;
 
         await makeView({
@@ -1713,8 +1716,11 @@ QUnit.module("Views", (hooks) => {
 
         await click(target, "div.leaflet-marker-icon:last-child");
 
-        assert.strictEqual(target.querySelector("tbody tr .o-map-renderer--popup-table-content-value").textContent, "2022-02-07 23:09:31",
-            'The time  "2022-02-07 21:09:31" should be in the local timezone');
+        assert.strictEqual(
+            target.querySelector("tbody tr .o-map-renderer--popup-table-content-value").textContent,
+            "2022-02-07 23:09:31",
+            'The time  "2022-02-07 21:09:31" should be in the local timezone'
+        );
     });
 
     /**

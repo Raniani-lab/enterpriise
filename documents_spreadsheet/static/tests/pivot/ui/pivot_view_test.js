@@ -8,8 +8,6 @@ import {
     triggerEvent,
 } from "@web/../tests/helpers/utils";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
-import { dialogService } from "@web/core/dialog/dialog_service";
-import { registry } from "@web/core/registry";
 import {
     setupControlPanelServiceRegistry,
     toggleMenu,
@@ -118,9 +116,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
     QUnit.test("Insert in spreadsheet is disabled when data is empty", async (assert) => {
         assert.expect(1);
 
-        const serviceRegistry = registry.category("services");
         setupControlPanelServiceRegistry();
-        serviceRegistry.add("dialog", dialogService);
 
         const data = getBasicData();
         data.partner.records = [];
@@ -150,8 +146,6 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         assert.expect(1);
 
         setupControlPanelServiceRegistry();
-        const serviceRegistry = registry.category("services");
-        serviceRegistry.add("dialog", dialogService);
         const serverData = {
             models: getBasicData(),
         };
@@ -180,8 +174,6 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         "Insert in spreadsheet is disabled when same groupby occurs in both columns and rows",
         async (assert) => {
             setupControlPanelServiceRegistry();
-            const serviceRegistry = registry.category("services");
-            serviceRegistry.add("dialog", dialogService);
             const serverData = {
                 models: getBasicData(),
             };
@@ -213,8 +205,6 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         "Insert in spreadsheet is disabled when columns or rows contain duplicate groupbys",
         async (assert) => {
             setupControlPanelServiceRegistry();
-            const serviceRegistry = registry.category("services");
-            serviceRegistry.add("dialog", dialogService);
             const serverData = {
                 models: getBasicData(),
             };

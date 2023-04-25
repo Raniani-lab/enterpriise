@@ -118,7 +118,7 @@
                     class="o_gantt_row_thumbnail_wrapper"
                     t-att-class="{ 'me-1' : row.isGroup }"
                 >
-                    <img t-att-src="row.thumbnailUrl" class="o_gantt_row_thumbnail rounded-circle"/>
+                    <img t-att-src="row.thumbnailUrl" class="o_gantt_row_thumbnail o_avatar rounded"/>
                 </span>
                 <span class="text-truncate w-0 flex-grow-1">
                     <t t-esc="row.name" />

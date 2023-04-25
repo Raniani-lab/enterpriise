@@ -102,16 +102,12 @@ class AccountMoveLine(models.Model):
 
     def _inter_company_prepare_invoice_line_data(self):
         ''' Get values to create the invoice line.
+        We prioritize the analytic distribution in the following order:
+            - Default Analytic Distribution model specific to Company B
+            - Analytic Distribution set for the line in Company A's document if available to Company B
         :return: Python dictionary of values.
         '''
         self.ensure_one()
-
-        account_ids = [int(account_id) for account_id in self.analytic_distribution or {}]
-        accounts = self.env['account.analytic.account'].browse(account_ids)
-        analytic_distribution = {
-            str(account_id): self.analytic_distribution[str(account_id)]
-            for account_id in accounts.filtered(lambda r: not r.company_id).ids
-        }
 
         vals = {
             'display_type': self.display_type,
@@ -122,7 +118,26 @@ class AccountMoveLine(models.Model):
             'quantity': self.quantity,
             'discount': self.discount,
             'price_unit': self.price_unit,
-            'analytic_distribution': analytic_distribution,
         }
+
+        company_b = self.env['res.company']._find_company_from_partner(self.move_id.partner_id.id)
+        company_b_default_distribution = self.env['account.analytic.distribution.model']._get_distribution({
+            "product_id": self.product_id.id,
+            "product_categ_id": self.product_id.categ_id.id,
+            "partner_id": self.partner_id.id,
+            "partner_category_id": self.partner_id.category_id.ids,
+            "account_prefix": self.account_id.code,
+            "company_id": company_b.id,
+        })
+
+        account_ids = [int(account_id) for account_id in self.analytic_distribution or {}]
+        accounts = self.env['account.analytic.account'].browse(account_ids)
+        analytic_distribution = {
+            str(account_id): self.analytic_distribution[str(account_id)]
+            for account_id in accounts.filtered(lambda r: not r.company_id).ids
+        }
+
+        if company_b_default_distribution or analytic_distribution:
+            vals['analytic_distribution'] = dict(company_b_default_distribution, **analytic_distribution)
 
         return vals

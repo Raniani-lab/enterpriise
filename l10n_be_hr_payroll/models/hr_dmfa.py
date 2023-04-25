@@ -1147,9 +1147,9 @@ class HrDMFAReport(models.Model):
             'group_insurance_amount': format_amount(group_onss),
             'pretty_format': lambda a: str(round(int(a) / 100.0, 2)),
         }
-        result['global_contribution'] = format_amount(self._get_global_contribution(result['natural_persons'], format_amount(double_onss)))
 
         # Special employer contribution reduction due to 2023 index
+        contribution_reduction = 0
         if self.quarter_start.year == 2023 and self.quarter_start.month < 4:
             # The 7.07% contribution reduction is calculated on the overall net basic
             # employer contributions. These are the employer contributions calculated
@@ -1158,22 +1158,25 @@ class HrDMFAReport(models.Model):
             # 65 and 66 ) after deduction of applicable employer contribution reductions
             # with the exception of the maribel social package.
             # Source: https://www.socialsecurity.be/employer/instructions/dmfa/fr/latest/instructions/deductions/otheremployersreductions/competitivity_reduction.html
-            total = 0
+            total_employer_contribution = 0
             # Sum all employer contributions
             for natural_person in result['natural_persons']:
                 for worker_record in natural_person.worker_records:
                     for contribution in worker_record.contributions:
-                        total += int(contribution.amount) / 100.0
+                        total_employer_contribution += int(contribution.amount) / 100.0
                     for contribution in worker_record.student_contributions:
-                        total += int(contribution.student_contribution_amount) / 100.0
+                        total_employer_contribution += int(contribution.student_contribution_amount) / 100.0
             # Sum all employee deductions
             for natural_person in result['natural_persons']:
                 for worker_record in natural_person.worker_records:
                     for deduction in worker_record.deductions:
-                        total -= int(deduction.amount) / 100.00
-            result['employer_compensation'] = format_amount(round(total * 7.07 / 100, 2))
+                        total_employer_contribution -= int(deduction.amount) / 100.00
+            contribution_reduction = round(total_employer_contribution * 7.07 / 100, 2)
+            result['employer_compensation'] = format_amount(contribution_reduction)
         else:
             result['employer_compensation'] = 0
+
+        result['global_contribution'] = format_amount(self._get_global_contribution(result['natural_persons'], format_amount(double_onss - contribution_reduction)))
         return result
 
     def _get_global_contribution(self, employees_infos, double_onss):

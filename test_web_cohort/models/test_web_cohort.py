@@ -11,8 +11,10 @@ class WebCohortSimpleModel(models.Model):
     _name = 'web.cohort.simple.model'
 
     name = fields.Char()
-    date_start = fields.Datetime()
-    date_stop = fields.Datetime()
+    datetime_start = fields.Datetime()
+    datetime_stop = fields.Datetime()
+    date_start = fields.Date()
+    date_stop = fields.Date()
     revenue = fields.Float()
     type_id = fields.Many2one("web.cohort.type")
 

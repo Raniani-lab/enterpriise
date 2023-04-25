@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-from datetime import datetime
+from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 import babel.dates
@@ -57,6 +57,15 @@ class Base(models.AbstractModel):
             groupby=[date_start + ':' + interval],
             aggregates=[measure],
         )
+
+        date_start_field = self._fields[date_start]
+        if date_start_field.type == 'datetime':
+            today = datetime.today()
+            convert_method = fields.Datetime.to_datetime
+        else:
+            today = date.today()
+            convert_method = fields.Date.to_date
+
         for group_value, value in row_groups:
             total_value += value
             group_domain = expression.AND([
@@ -68,7 +77,10 @@ class Base(models.AbstractModel):
                 groupby=[date_stop + ':' + interval],
                 aggregates=[measure],
             )
-            sub_group_per_period = dict(sub_group)
+            sub_group_per_period = {
+                convert_method(group_value): aggregate_value
+                for group_value, aggregate_value in sub_group
+            }
 
             columns = []
             initial_value = value
@@ -88,7 +100,7 @@ class Base(models.AbstractModel):
                     col_start_date += relativedelta(years=col)
                     col_end_date = col_start_date + relativedelta(years=1)
 
-                if col_start_date > datetime.today():
+                if col_start_date > today:
                     columns_avg[col_index]
                     columns.append({
                         'value': '-',
@@ -153,9 +165,9 @@ class Base(models.AbstractModel):
                 })
 
             rows.append({
-                'date': babel.dates.format_datetime(
+                'date': babel.dates.format_date(
                     group_value, format=models.READ_GROUP_DISPLAY_FORMAT[interval],
-                    tzinfo=group_value.tzinfo, locale=locale,
+                    locale=locale,
                 ),
                 'value': value,
                 'domain': group_domain,

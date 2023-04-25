@@ -17,8 +17,8 @@ from odoo.addons.iap.tools.iap_tools import iap_jsonrpc
 from odoo.exceptions import AccessError
 from odoo.tools import float_round, html_escape
 
-DEFAULT_IAP_ENDPOINT = 'https://iap-pe-edi.odoo.com'
-DEFAULT_IAP_TEST_ENDPOINT = 'https://l10n-pe-edi-proxy-demo.odoo.com'
+DEFAULT_IAP_ENDPOINT = 'https://l10n-pe-edi.api.odoo.com'
+DEFAULT_IAP_TEST_ENDPOINT = 'https://l10n-pe-edi.test.odoo.com'
 
 
 class AccountEdiFormat(models.Model):

@@ -2003,11 +2003,14 @@ class AccountReport(models.Model):
 
                 # Compute rounding for manual values
                 rounding = None
-                rounding_opt_match = re.search(r"\Wrounding\W*=\W*(?P<rounding>\d+)", column_expression.subformula)
-                if rounding_opt_match:
-                    rounding = int(rounding_opt_match.group('rounding'))
-                elif figure_type in ('monetary', 'monetary_without_symbol'):
-                    rounding = self.env.company.currency_id.decimal_places
+                if figure_type == 'integer':
+                    rounding = 0
+                else:
+                    rounding_opt_match = re.search(r"\Wrounding\W*=\W*(?P<rounding>\d+)", column_expression.subformula)
+                    if rounding_opt_match:
+                        rounding = int(rounding_opt_match.group('rounding'))
+                    elif figure_type in ('monetary', 'monetary_without_symbol'):
+                        rounding = self.env.company.currency_id.decimal_places
 
                 if 'editable' in column_expression.subformula:
                     edit_popup_data = {

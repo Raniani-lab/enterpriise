@@ -73,7 +73,7 @@ class AccountBankStatementLine(models.Model):
             journal_currency = journal.currency_id or journal.company_id.currency_id
             # If there are neither statement and the ending balance != 0, we create an opening bank statement
             if not any_st_line and not journal_currency.is_zero(online_account.balance - total):
-                opening_st_line = self.create({
+                opening_st_line = self.with_context(skip_statement_line_cron_trigger=True).create({
                     'date': date_utils.subtract(sorted_transactions[0]['date'], days=1),
                     'journal_id': journal.id,
                     'payment_ref': _("Opening statement: first synchronization"),
@@ -99,7 +99,7 @@ class AccountBankStatementLine(models.Model):
                 st_line_vals_list.append(st_line_vals)
 
             if st_line_vals_list:
-                line_to_reconcile += self.env['account.bank.statement.line'].create(st_line_vals_list)
+                line_to_reconcile += self.env['account.bank.statement.line'].with_context(skip_statement_line_cron_trigger=True).create(st_line_vals_list)
             # Set last sync date as the last transaction date
             journal.account_online_account_id.sudo().write({'last_sync': sorted_transactions[-1]['date']})
 

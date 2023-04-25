@@ -1210,7 +1210,7 @@ class SaleOrder(models.Model):
                 line_condition = line.order_id.next_invoice_date and line.order_id.next_invoice_date <= date_from and line.order_id.start_date and line.order_id.start_date <= date_from
             else:
                 # We don't invoice line past their SO's end_date
-                line_condition = not line.order_id.end_date or line.order_id.next_invoice_date < line.order_id.end_date
+                line_condition = not line.order_id.end_date or (line.order_id.next_invoice_date and line.order_id.next_invoice_date < line.order_id.end_date)
 
             line_to_invoice = False
             if line in res:
@@ -1430,7 +1430,7 @@ class SaleOrder(models.Model):
                         # handled manually
                         msg_body = _(
                             "Mix of negative recurring lines and non-recurring line. The contract should be fixed manually",
-                            inv=self.next_invoice_date
+                            inv=subscription.next_invoice_date
                         )
                         subscription.message_post(body=msg_body)
                         subscription.payment_exception = True

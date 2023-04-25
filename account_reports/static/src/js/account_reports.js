@@ -467,13 +467,15 @@ var accountReportsWidget = AbstractAction.extend({
         $($matchingChilds.get().reverse()).each(function(index, el) {
             const id = $.escapeSelector(String(el.dataset.parentId));
             const $parent = self.$('.o_account_report_line[data-id="' + id + '"]');
-            $parent.closest('tr').toggleClass('o_account_reports_filtered_lines', false);
+            $parent.closest('tr').removeClass('o_account_reports_filtered_lines');
+            if ($parent.hasClass('folded')) {
+                $(el).addClass('o_account_reports_filtered_lines');
+            }
         });
         if (this.filterOn) {
-            this.$('.o_account_reports_level1.total').hide();
-        }
-        else {
-            this.$('.o_account_reports_level1.total').show();
+            this.$('.o_account_reports_level1.total').addClass('o_account_reports_filtered_lines');
+        } else {
+            this.$('.o_account_reports_level1.total').removeClass('o_account_reports_filtered_lines');
         }
         this.report_options['filter_search_bar'] = query;
         this.render_footnotes();
@@ -1039,7 +1041,7 @@ var accountReportsWidget = AbstractAction.extend({
             if (parent_ids.has($row.data('parent-id'))) {
                 parent_ids.get($row.data('parent-id'))[0].dataset.unfolded = 'False';
                 $row.find('.js_account_report_line_footnote').addClass('folded');
-                $row.hide();
+                $row.addClass('o_account_reports_filtered_lines');
                 var child = $row.find('[data-id]:first');
                 if (child) {
                     return child;
@@ -1077,7 +1079,7 @@ var accountReportsWidget = AbstractAction.extend({
         var $lines_to_hide = this.$el.find('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
         if ($lines_to_hide.length > 0) {
             $lines_to_hide.find('.js_account_report_line_footnote').addClass('folded');
-            $lines_to_hide.hide();
+            $lines_to_hide.addClass('o_account_reports_filtered_lines');
             _.each($lines_to_hide, function(el){
                 var child = $(el).find('[data-id]:first');
                 if (child) {
@@ -1090,7 +1092,7 @@ var accountReportsWidget = AbstractAction.extend({
     unfold: function(line) {
         var self = this;
         var line_id = line.data('id');
-        line.toggleClass('folded');
+        line.removeClass('folded');
         self.report_options.unfolded_lines.push(line_id);
         var $lines_in_dom = this.$el.find('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
         let $total_lines = $lines_in_dom.filter('.total');
@@ -1105,7 +1107,7 @@ var accountReportsWidget = AbstractAction.extend({
                 }
             });
             $lines_in_dom.find('.js_account_report_line_footnote').removeClass('folded');
-            $lines_in_dom.show();
+            $lines_in_dom.removeClass('o_account_reports_filtered_lines');
             line.find('.o_account_reports_caret_icon .fa-caret-right').toggleClass('fa-caret-right fa-caret-down');
             line[0].dataset.unfolded = 'True';
             this._add_line_classes();
@@ -1114,7 +1116,7 @@ var accountReportsWidget = AbstractAction.extend({
         else {
             // Display the total lines (for 'totals below section' option)
             if ($total_lines.length > 0) {
-                $total_lines.show();
+                $lines_in_dom.removeClass('o_account_reports_filtered_lines');
             }
 
             // Change the caret icon

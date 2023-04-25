@@ -23,7 +23,7 @@
         <field name="date_from" eval="datetime(2000, 1, 1).date()"/>
     </record>
 
-     <record id="rule_parameter_professional_tax" model="hr.rule.parameter">
+    <record id="rule_parameter_professional_tax" model="hr.rule.parameter">
         <field name="name">India: Professional Tax</field>
         <field name="code">l10n_in_professional_tax</field>
         <field name="country_id" ref="base.in"/>
@@ -31,6 +31,28 @@
     <record id="rule_parameter_professional_tax_2022" model="hr.rule.parameter.value">
         <field name="parameter_value">[-200, -150, -80]</field>
         <field name="rule_parameter_id" ref="rule_parameter_professional_tax"/>
+        <field name="date_from" eval="datetime(2000, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_leave_days" model="hr.rule.parameter">
+        <field name="name">India: Leave Days</field>
+        <field name="code">l10n_in_leave_days</field>
+        <field name="country_id" ref="base.in"/>
+    </record>
+    <record id="rule_parameter_leave_days_value" model="hr.rule.parameter.value">
+        <field name="parameter_value">22</field>
+        <field name="rule_parameter_id" ref="rule_parameter_leave_days"/>
+        <field name="date_from" eval="datetime(2000, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_std_awl" model="hr.rule.parameter">
+        <field name="name">India: STD AWL</field>
+        <field name="code">l10n_in_std_awl</field>
+        <field name="country_id" ref="base.in"/>
+    </record>
+    <record id="rule_parameter_std_awl_value" model="hr.rule.parameter.value">
+        <field name="parameter_value">4167</field>
+        <field name="rule_parameter_id" ref="rule_parameter_std_awl"/>
         <field name="date_from" eval="datetime(2000, 1, 1).date()"/>
     </record>
 

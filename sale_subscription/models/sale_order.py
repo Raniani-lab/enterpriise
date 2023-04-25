@@ -322,7 +322,7 @@ class SaleOrder(models.Model):
     def _compute_show_rec_invoice_button(self):
         self.show_rec_invoice_button = False
         for order in self:
-            if not order.is_subscription or order.stage_category != 'progress' or order.state not in ['sale', 'done']:
+            if not order.is_subscription or order.stage_category not in ('progress', 'paused') or order.state not in ['sale', 'done']:
                 continue
             order.show_rec_invoice_button = True
 
@@ -1142,9 +1142,11 @@ class SaleOrder(models.Model):
         auto_commit = automatic and not bool(config['test_enable'] or config['test_file'])
         Mail = self.env['mail.mail']
         today = fields.Date.today()
+        invoiceable_categories = ['progress']
         if len(self) > 0:
             all_subscriptions = self.filtered(lambda so: so.is_subscription and so.subscription_management != 'upsell' and not so.payment_exception)
             need_cron_trigger = False
+            invoiceable_categories.append('paused')
         else:
             search_domain = self._recurring_invoice_domain()
             all_subscriptions = self.search(search_domain, limit=batch_size + 1)
@@ -1171,7 +1173,7 @@ class SaleOrder(models.Model):
             self.env.cr.commit()
         for subscription in all_subscriptions:
             # We only invoice contract in sale state. Locked contracts are invoiced in advance. They are frozen.
-            if not (subscription.state == 'sale' and subscription.stage_category == 'progress'):
+            if not (subscription.state == 'sale' and subscription.stage_category in invoiceable_categories):
                 continue
             try:
                 subscription = subscription[0] # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration

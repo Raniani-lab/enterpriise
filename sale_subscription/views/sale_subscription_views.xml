@@ -104,6 +104,8 @@
                 <separator/>
                 <filter name="pending" string="To Renew" domain="[('to_renew','=',True)]" help="Pending subscriptions"/>
                 <separator/>
+                <filter name="to_invoice" string="To Invoice" domain="[('next_invoice_date', '&lt;=', context_today().strftime('%Y-%m-%d')), ('stage_category', 'in', ('progress', 'paused'))]"/>
+                <separator/>
                 <filter name="payment_exception" string="Failed Payments" domain="[('payment_exception','=', True)]" help="Contracts whose payment has failed"/>
                 <separator/>
                 <filter name="closed" string="Closed" domain="[('stage_category','=','closed')]" help="Closed subscriptions"/>

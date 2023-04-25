@@ -41,7 +41,7 @@ export class LastTransactionStatusButton extends Component {
         this.pos.globalState.payment_methods.map((pm) => {
             if (pm.use_payment_terminal == "worldline") {
                 var terminal = pm.payment_terminal.get_terminal();
-                terminal.add_listener(this._onLastTransactionStatus.bind(this));
+                terminal.addListener(this._onLastTransactionStatus.bind(this));
                 terminal.action({ messageType: "LastTransactionStatus" }).catch(() => {
                     this.state.pending = false;
                 });

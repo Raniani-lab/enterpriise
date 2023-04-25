@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
 /**
- * Modern version of the DeviceProxy from iot.DeviceProxy.
- * It's not dependent to the legacy iot_longpolling service.
+ * Used to communicate to the iot devices.
  */
 export class DeviceController {
     /**

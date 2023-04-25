@@ -15,7 +15,7 @@ patch(RemoteDisplay.prototype, "pos_iot.RemoteDisplay", {
      * @override replaces the original behaviour completely
      */
     async connect() {
-        this.hardwareProxy.deviceProxies.display.action({
+        this.hardwareProxy.deviceControllers.display.action({
             action: "take_control",
             html: await this.globalState.customerDisplayHTML(),
         });
@@ -24,7 +24,7 @@ patch(RemoteDisplay.prototype, "pos_iot.RemoteDisplay", {
      * @override replaces the original behaviour completely
      */
     async update() {
-        return this.hardwareProxy.deviceProxies?.display?.action({
+        return this.hardwareProxy.deviceControllers?.display?.action({
             action: "customer_facing_display",
             html: await this.globalState.customerDisplayHTML(),
         });
@@ -33,10 +33,10 @@ patch(RemoteDisplay.prototype, "pos_iot.RemoteDisplay", {
      * @override replaces the original behaviour completely
      */
     updateStatus() {
-        if (!this.hardwareProxy.deviceProxies.display) {
+        if (!this.hardwareProxy.deviceControllers.display) {
             return;
         }
-        this.hardwareProxy.deviceProxies.display.add_listener(({ error, owner }) => {
+        this.hardwareProxy.deviceControllers.display.addListener(({ error, owner }) => {
             if (error) {
                 this.status = "not_found";
             } else if (owner === this.iotLongpolling._session_id) {
@@ -46,7 +46,7 @@ patch(RemoteDisplay.prototype, "pos_iot.RemoteDisplay", {
             }
         });
         setTimeout(() => {
-            this.hardwareProxy.deviceProxies.display.action({ action: "get_owner" });
+            this.hardwareProxy.deviceControllers.display.action({ action: "get_owner" });
         }, 1500);
     },
 });

@@ -6,6 +6,7 @@ import {
 } from "@point_of_sale/app/hardware_proxy/hardware_proxy";
 import { browser } from "@web/core/browser/browser";
 import { patch } from "@web/core/utils/patch";
+import { IoTPrinter } from "@pos_iot/js/iot_printer";
 
 patch(hardwareProxyService, "pos_iot.HardwareProxy", {
     dependencies: [...hardwareProxyService.dependencies, "orm"],
@@ -14,15 +15,14 @@ patch(HardwareProxy.prototype, "pos_iot.HardwareProxy", {
     setup({ orm }) {
         this._super(...arguments);
         this.orm = orm;
-        this.deviceProxies = {};
+        this.deviceControllers = {};
         this.iotBoxes = [];
     },
     /**
      * @override
      */
     connectToPrinter() {
-        this.printer = this.deviceProxies.printer;
-        this.printer.pos = this.pos;
+        this.printer = new IoTPrinter({ device: this.deviceControllers.printer });
     },
     /**
      * Ping all of the IoT Boxes of the devices set on POS config and update the

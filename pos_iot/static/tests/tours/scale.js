@@ -2,13 +2,12 @@
 /* global posmodel */
 
 import { registry } from "@web/core/registry";
-import DeviceProxy from "iot.DeviceProxy";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
-var PosScaleDummy = DeviceProxy.extend({
-    action: function () {},
-    remove_listener: function () {},
-    add_listener: function (callback) {
+class PosScaleDummy {
+    action() {}
+    removeListener() {}
+    addListener(callback) {
         setTimeout(
             () =>
                 callback({
@@ -18,8 +17,8 @@ var PosScaleDummy = DeviceProxy.extend({
             1000
         );
         return Promise.resolve();
-    },
-});
+    }
+}
 
 registry.category("web_tour.tours").add("pos_iot_scale_tour", {
     url: "/web",
@@ -35,10 +34,7 @@ registry.category("web_tour.tours").add("pos_iot_scale_tour", {
         {
             trigger: ".pos .pos-content",
             run: function () {
-                posmodel.hardwareProxy.deviceProxies.scale = new PosScaleDummy(null, {
-                    iot_ip: "",
-                    identifier: "",
-                });
+                posmodel.hardwareProxy.deviceControllers.scale = new PosScaleDummy();
             },
         },
         {

@@ -3,9 +3,8 @@
 import { ReprintReceiptButton } from "@point_of_sale/js/Screens/TicketScreen/ControlButtons/ReprintReceiptButton";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
-import core from "web.core";
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
-var _t = core._t;
 
 patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
     setup() {

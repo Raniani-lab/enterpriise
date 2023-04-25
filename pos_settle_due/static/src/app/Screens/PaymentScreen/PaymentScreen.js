@@ -2,7 +2,7 @@
 
 import { PaymentScreen } from "@point_of_sale/js/Screens/PaymentScreen/PaymentScreen";
 import { patch } from "@web/core/utils/patch";
-import { float_is_zero } from "web.utils";
+import { floatIsZero } from "@web/core/utils/numbers";
 import { ConfirmPopup } from "@point_of_sale/js/Popups/ConfirmPopup";
 
 patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
@@ -30,7 +30,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
             .find((payment) => payment.payment_method.type == "pay_later");
         if (
             order.get_orderlines().length === 0 &&
-            !float_is_zero(change, this.env.pos.currency.decimal_places) &&
+            !floatIsZero(change, this.env.pos.currency.decimal_places) &&
             paylaterPaymentMethod &&
             !existingPayLaterPayment
         ) {

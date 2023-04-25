@@ -28,7 +28,7 @@ patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
         }
     },
     get scale() {
-        return this.hardwareProxy.deviceProxies.scale;
+        return this.hardwareProxy.deviceControllers.scale;
     },
     get isManualMeasurement() {
         return this.scale?.manual_measurement;
@@ -51,7 +51,7 @@ patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
         this._super(...arguments);
         // FIXME POSREF shouldn't the stop_reading action be awaited before removing the listener?
         this.scale.action({ action: "stop_reading" });
-        this.scale.remove_listener();
+        this.scale.removeListener();
     },
     measureWeight() {
         this.scale.action({ action: "read_once" });
@@ -61,7 +61,7 @@ patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
      * Completely replace how the original _readScale works.
      */
     async _readScale() {
-        await this.scale.add_listener(this._onValueChange.bind(this));
+        await this.scale.addListener(this._onValueChange.bind(this));
         await this.scale.action({ action: "read_once" });
     },
     async _onValueChange(data) {

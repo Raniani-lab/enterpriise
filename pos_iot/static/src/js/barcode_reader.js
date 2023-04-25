@@ -5,9 +5,9 @@ import { BarcodeReader } from "@point_of_sale/app/barcode_reader_service";
 
 patch(BarcodeReader.prototype, "pos_iot.BarcodeReader", {
     connectToProxy() {
-        this.scanners = this.hardwareProxy.deviceProxies.scanners;
+        this.scanners = this.hardwareProxy.deviceControllers.scanners;
         for (const scanner of Object.values(this.scanners)) {
-            scanner.add_listener((barcode) => this.scan(barcode.value));
+            scanner.addListener((barcode) => this.scan(barcode.value));
         }
     },
 
@@ -15,7 +15,7 @@ patch(BarcodeReader.prototype, "pos_iot.BarcodeReader", {
     disconnectFromProxy() {
         if (this.scanners) {
             for (const scanner of Object.values(this.scanners)) {
-                scanner.remove_listener();
+                scanner.removeListener();
             }
         }
     },

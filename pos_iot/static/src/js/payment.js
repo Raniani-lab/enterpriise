@@ -1,18 +1,16 @@
 /** @odoo-module */
-import core from "web.core";
+import { _t } from "@web/core/l10n/translation";
 import { PaymentInterface } from "@point_of_sale/js/payment";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 
-var _t = core._t;
-
-export const PaymentIngenico = PaymentInterface.extend({
+export class PaymentIngenico extends PaymentInterface {
     get_terminal() {
         return this.payment_method.terminal_proxy;
-    },
+    }
 
-    send_payment_request: function (cid) {
+    send_payment_request(cid) {
         var self = this;
-        this._super.apply(this, this.arguments);
+        super.send_payment_request(...arguments);
         const terminal_proxy = self.get_terminal();
 
         if (!terminal_proxy) {
@@ -22,14 +20,14 @@ export const PaymentIngenico = PaymentInterface.extend({
 
         return new Promise(function (resolve) {
             self._waitingResponse = self._waitingPayment;
-            terminal_proxy.add_listener(
+            terminal_proxy.addListener(
                 self._onValueChange.bind(self, resolve, self.pos.get_order())
             );
             self._send_request(self.get_payment_data(cid));
         });
-    },
+    }
 
-    get_payment_data: function (cid) {
+    get_payment_data(cid) {
         var paymentline = this.pos.get_order().get_paymentline(cid);
         return {
             messageType: "Transaction",
@@ -37,35 +35,35 @@ export const PaymentIngenico = PaymentInterface.extend({
             cid: cid,
             amount: Math.round(paymentline.amount * 100),
         };
-    },
+    }
 
-    send_payment_cancel: function (order, cid) {
+    send_payment_cancel(order, cid) {
         var self = this;
         var terminal = this.get_terminal();
         if (terminal) {
-            this._super.apply(this, this.arguments);
+            super.send_payment_cancel(...arguments);
             var data = {
                 messageType: "Cancel",
                 reason: "manual",
             };
             return new Promise(function (resolve) {
                 self._waitingResponse = self._waitingCancel;
-                terminal.add_listener(self._onValueChange.bind(self, resolve, order));
+                terminal.addListener(self._onValueChange.bind(self, resolve, order));
                 self._send_request(data);
             });
         }
         return Promise.reject();
-    },
+    }
 
     // extra private methods
-    _send_request: function (data) {
+    _send_request(data) {
         var self = this;
         this.get_terminal()
             .action(data)
             .then(self._onActionResult.bind(self))
             .guardedCatch(self._onActionFail.bind(self));
-    },
-    _onActionResult: function (data) {
+    }
+    _onActionResult(data) {
         if (data.result === false) {
             this.pos.env.services.popup.add(ErrorPopup, {
                 title: _t("Connection to terminal failed"),
@@ -75,8 +73,8 @@ export const PaymentIngenico = PaymentInterface.extend({
                 this.pos.get_order().selected_paymentline.set_payment_status("force_done");
             }
         }
-    },
-    _onActionFail: function () {
+    }
+    _onActionFail() {
         this.pos.env.services.popup.add(ErrorPopup, {
             title: _t("Connection to IoT Box failed"),
             body: _t("Please check if the IoT Box is still connected."),
@@ -84,36 +82,36 @@ export const PaymentIngenico = PaymentInterface.extend({
         if (this.pos.get_order().selected_paymentline) {
             this.pos.get_order().selected_paymentline.set_payment_status("force_done");
         }
-    },
-    _showErrorConfig: function () {
+    }
+    _showErrorConfig() {
         this.pos.env.services.popup.add(ErrorPopup, {
             title: _t("Configuration of payment terminal failed"),
             body: _t("You must select a payment terminal in your POS config."),
         });
-    },
+    }
 
-    _waitingPayment: function (resolve, data, line) {
+    _waitingPayment(resolve, data, line) {
         if (data.Error) {
             this.pos.env.services.popup.add(ErrorPopup, {
                 title: _t("Payment terminal error"),
                 body: _t(data.Error),
             });
-            this.get_terminal().remove_listener();
+            this.get_terminal().removeListener();
             resolve(false);
         } else if (data.Response === "Approved") {
-            this.get_terminal().remove_listener();
+            this.get_terminal().removeListener();
             resolve(true);
         } else if (["WaitingForCard", "WaitingForPin"].includes(data.Stage)) {
             line.set_payment_status("waitingCard");
         }
-    },
+    }
 
-    _waitingCancel: function (resolve, data) {
+    _waitingCancel(resolve, data) {
         if (data.Stage === "Finished" || data.Error) {
-            this.get_terminal().remove_listener();
+            this.get_terminal().removeListener();
             resolve(true);
         }
-    },
+    }
 
     /**
      * Function ran when Device status changes.
@@ -127,7 +125,7 @@ export const PaymentIngenico = PaymentInterface.extend({
      * @param {Object} data.value
      * @param {Object} data.Card
      */
-    _onValueChange: function (resolve, order, data) {
+    _onValueChange(resolve, order, data) {
         var line = order.get_paymentline(data.cid);
         var terminal_proxy = this.pos.payment_methods_by_id[line.payment_method.id].terminal_proxy;
         if (
@@ -143,11 +141,11 @@ export const PaymentIngenico = PaymentInterface.extend({
                 line.card_type = data.Card;
             }
         }
-    },
-});
+    }
+}
 
-export const PaymentWorldline = PaymentIngenico.extend({
-    send_payment_cancel: function (order, cid) {
+export class PaymentWorldline extends PaymentIngenico {
+    send_payment_cancel(order, cid) {
         if (this.get_terminal()) {
             this._send_request({ messageType: "Cancel" });
         }
@@ -155,21 +153,21 @@ export const PaymentWorldline = PaymentIngenico.extend({
         return new Promise((resolve) => {
             this.cancel_resolve = resolve;
         });
-    },
+    }
 
-    send_payment_request: function (cid) {
+    send_payment_request(cid) {
         var paymentline = this.pos.get_order().get_paymentline(cid);
         paymentline.transaction_id = Math.floor(Math.random() * Math.pow(2, 32)); // 4 random bytes
-        return this._super.apply(this, arguments);
-    },
+        return super.send_payment_request(...arguments);
+    }
 
-    get_payment_data: function (cid) {
-        var data = this._super.apply(this, arguments);
+    get_payment_data(cid) {
+        var data = super.get_payment_data(...arguments);
         data.actionIdentifier = this.pos.get_order().get_paymentline(cid).transaction_id;
         return data;
-    },
+    }
 
-    _waitingPayment: function (resolve, data, line) {
+    _waitingPayment(resolve, data, line) {
         if (data.Stage == "Cancel") {
             // Result of a cancel request
             if (data.Error) {
@@ -181,7 +179,7 @@ export const PaymentWorldline = PaymentIngenico.extend({
                     body: data.Error,
                 });
             } else {
-                this.get_terminal().remove_listener();
+                this.get_terminal().removeListener();
                 this.cancel_resolve(true);
                 resolve(false);
             }
@@ -196,7 +194,7 @@ export const PaymentWorldline = PaymentIngenico.extend({
             });
         } else if (line.payment_status !== "retry") {
             // Result of a transaction
-            return this._super.apply(this, arguments);
+            return super._waitingPayment(...arguments);
         }
-    },
-});
+    }
+}

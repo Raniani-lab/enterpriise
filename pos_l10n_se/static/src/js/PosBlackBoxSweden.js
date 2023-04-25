@@ -1,7 +1,6 @@
 /** @odoo-module */
 import { PosGlobalState, Order, Orderline } from "@point_of_sale/js/models";
-import core from "web.core";
-var _t = core._t;
+import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 
@@ -47,7 +46,7 @@ patch(PosGlobalState.prototype, "pos_l10n_se.PosGlobalState", {
         }
     },
     async push_order_to_blackbox(order) {
-        const fdm = this.hardwareProxy.deviceProxies.fiscal_data_module;
+        const fdm = this.hardwareProxy.deviceControllers.fiscal_data_module;
         const data = {
             date: moment(order.creation_date).format("YYYYMMDDHHmm"),
             receipt_id: order.sequence_number.toString(),
@@ -73,7 +72,7 @@ patch(PosGlobalState.prototype, "pos_l10n_se.PosGlobalState", {
                 : " ",
         };
         return new Promise((resolve, reject) => {
-            fdm.add_listener((data) => (data.status === "ok" ? resolve(data) : reject(data)));
+            fdm.addListener((data) => (data.status === "ok" ? resolve(data) : reject(data)));
             fdm.action({
                 action: "registerReceipt",
                 high_level_message: data,

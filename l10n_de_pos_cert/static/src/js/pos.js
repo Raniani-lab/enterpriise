@@ -2,10 +2,9 @@
 
 import { PosGlobalState, Order } from "@point_of_sale/js/models";
 import { uuidv4 } from "@point_of_sale/js/utils";
+import { roundDecimals as round_di } from "@web/core/utils/numbers";
 import { convertFromEpoch } from "@l10n_de_pos_cert/js/utils";
 import { TaxError } from "@l10n_de_pos_cert/js/errors";
-import utils from "web.utils";
-const round_di = utils.round_decimals;
 import { patch } from "@web/core/utils/patch";
 
 const RATE_ID_MAPPING = {

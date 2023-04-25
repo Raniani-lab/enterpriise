@@ -1,12 +1,10 @@
 /** @odoo-module */
 /* global posmodel */
 
-import core from "web.core";
+import { _t } from "@web/core/l10n/translation";
 import { IoTLongpolling, iotLongpollingService } from "@iot/iot_longpolling";
 import { patch } from "@web/core/utils/patch";
 import { IoTErrorPopup } from "./IoTErrorPopup";
-
-var _t = core._t;
 
 patch(iotLongpollingService, "pos_iot.IoTLongpolling", {
     dependencies: ["popup", "hardware_proxy", ...iotLongpollingService.dependencies],

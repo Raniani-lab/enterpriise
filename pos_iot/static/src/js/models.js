@@ -2,13 +2,10 @@
 
 import { PosGlobalState, Product, register_payment_method } from "@point_of_sale/js/models";
 import { PaymentIngenico, PaymentWorldline } from "@pos_iot/js/payment";
-import DeviceProxy from "iot.DeviceProxy";
-import { PrinterProxy } from "@pos_iot/js/printers";
+import { DeviceController } from "@iot/device_controller";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
-import core from "web.core";
-
-var _t = core._t;
+import { _t } from "@web/core/l10n/translation";
 
 register_payment_method("ingenico", PaymentIngenico);
 register_payment_method("worldline", PaymentWorldline);
@@ -20,16 +17,16 @@ patch(PosGlobalState.prototype, "pos_iot.PosGlobalState", {
         this.hardwareProxy.iotBoxes = loadedData["iot.box"];
     },
     _loadIotDevice(devices) {
+        const iotLongpolling = this.env.services.iot_longpolling;
         for (const device of devices) {
             // FIXME POSREF this seems like it can't work, we're pushing an id to an array of
             // objects expected to be of the form { ip, ip_url }, so this seems useless?
             if (!this.hardwareProxy.iotBoxes.includes(device.iot_id[0])) {
                 this.hardwareProxy.iotBoxes.push(device.iot_id[0]);
             }
-            const { deviceProxies } = this.hardwareProxy;
+            const { deviceControllers } = this.hardwareProxy;
             const { type, identifier } = device;
-            const ProxyClass = type === "printer" ? PrinterProxy : DeviceProxy;
-            const deviceProxy = new ProxyClass(this, device);
+            const deviceProxy = new DeviceController(iotLongpolling, device);
             if (type === "payment") {
                 for (const pm of this.payment_methods) {
                     if (pm.iot_device_id[0] === device.id) {
@@ -37,10 +34,10 @@ patch(PosGlobalState.prototype, "pos_iot.PosGlobalState", {
                     }
                 }
             } else if (type === "scanner") {
-                deviceProxies.scanners ||= {};
-                deviceProxies.scanners[identifier] = deviceProxy;
+                deviceControllers.scanners ||= {};
+                deviceControllers.scanners[identifier] = deviceProxy;
             } else {
-                deviceProxies[type] = deviceProxy;
+                deviceControllers[type] = deviceProxy;
             }
         }
     },
@@ -56,6 +53,6 @@ patch(Product.prototype, "pos_iot.Product", {
         });
     },
     get isScaleAvailable() {
-        return this._super(...arguments) && Boolean(this.pos.hardwareProxy.deviceProxies.scale);
+        return this._super(...arguments) && Boolean(this.pos.hardwareProxy.deviceControllers.scale);
     },
 });

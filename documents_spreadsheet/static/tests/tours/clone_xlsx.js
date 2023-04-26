@@ -16,6 +16,11 @@ registry.category("web_tour.tours").add("spreadsheet_clone_xlsx", {
             content: "Open Test folder workspace",
         },
         {
+            trigger: '.o_search_panel_field header.active:contains("Test folder")',
+            extra_trigger: '.o_inspector_value:contains("1")',
+            content: "Make sure we start with one card",
+        },
+        {
             trigger: ".o_document_xlsx",
             content: "Open xlsx card",
         },
@@ -28,20 +33,18 @@ registry.category("web_tour.tours").add("spreadsheet_clone_xlsx", {
             content: "Open with Odoo Spreadsheet",
         },
         {
+            trigger: ".o-spreadsheet-topbar",
+            content: "Check that we are now in Spreadsheet",
+            isCheck: true,
+        },
+        {
             trigger: '[data-menu-xmlid="documents.dashboard"]',
             content: "Go back to Document App",
         },
         {
-            trigger: ".o_kanban_renderer .o_kanban_record:first:contains('test')",
+            trigger: ".o_kanban_renderer .o_kanban_record:first:has('.o_document_spreadsheet')",
             content: "Check a spreadsheet document was created",
-            run: () => {
-                const card = document.querySelectorAll(
-                    ".o_kanban_renderer .o_kanban_record:nth-child(1) .o_document_spreadsheet"
-                );
-                if (!card.length) {
-                    throw new Error("Missing spreadsheet document card.");
-                }
-            },
+            isCheck: true,
         },
         {
             trigger: ".o_document_xlsx",
@@ -52,20 +55,18 @@ registry.category("web_tour.tours").add("spreadsheet_clone_xlsx", {
             content: "Open with Odoo Spreadsheet without unchecking the box",
         },
         {
+            trigger: ".o-spreadsheet-topbar",
+            content: "Check that we are now in Spreadsheet",
+            isCheck: true,
+        },
+        {
             trigger: '[data-menu-xmlid="documents.dashboard"]',
             content: "Go back to Document App",
         },
         {
-            trigger: ".o_kanban_renderer .o_kanban_record",
-            content: "Check XLSX is not visible",
-            run: () => {
-                const card = document.querySelectorAll(
-                    ".o_kanban_renderer .o_kanban_record .o_document_xlsx"
-                );
-                if (card.length) {
-                    throw new Error("XLSX document was not archived.");
-                }
-            },
+            trigger: ".o_kanban_renderer:not(:has(.o_kanban_record .o_document_xlsx))",
+            content: "Check that XLSX is no longer visible",
+            isCheck: true,
         },
         {
             trigger: ".o_control_panel .o_searchview_dropdown_toggler",
@@ -84,16 +85,14 @@ registry.category("web_tour.tours").add("spreadsheet_clone_xlsx", {
             content: "Restore xlsx",
         },
         {
+            trigger: '.o_searchview_input_container:not(:contains("Archived"))',
+            content: 'Wait for the "Archived" filter to be removed',
+            isCheck: true,
+        },
+        {
             trigger: ".o_kanban_renderer .o_kanban_record",
+            extra_trigger: '.o_inspector_value:contains("3")',
             content: "Check all records are now visible.",
-            run: () => {
-                const cards = document.querySelectorAll(
-                    ".o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)"
-                );
-                if (cards.length !== 3) {
-                    throw new Error("Unexpected number of records visible in current workspace.");
-                }
-            },
         },
     ],
 });

@@ -28,13 +28,18 @@ registry.category("web_tour.tours").add("spreadsheet_save_multipage", {
             content: "Add a sheet",
         },
         {
+            trigger: ".o-sheet-list .o-ripple-container:nth-child(2)",
+            content: "Check that there are now two sheets",
+            isCheck: true,
+        },
+        {
             trigger: '[data-menu-xmlid="documents.dashboard"]',
             content: "Go back to Document App",
         },
         {
             trigger: ".o_kanban_renderer .o_kanban_record:first .o_kanban_stack ",
             content: "Check is rendered as multipage",
-            run: () => {},
+            isCheck: true,
         },
         {
             trigger: ".o_document_spreadsheet:first",

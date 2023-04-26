@@ -5,7 +5,7 @@ import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanba
 import { documentService } from "@documents/core/document_service";
 import { storeService } from "@mail/core/store_service";
 import { attachmentService } from "@mail/attachments/attachment_service";
-import { contextService } from "@mail/web/discuss/context_service";
+import { contextService } from "@mail/web/discuss_app/context_service";
 import { multiTabService } from "@bus/multi_tab_service";
 import { busParametersService } from "@bus/bus_parameters_service";
 import { busService } from "@bus/services/bus_service";

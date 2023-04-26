@@ -87,11 +87,11 @@ registry.category("web_tour.tours").add('planning_test_tour', {
     trigger: "button[name='action_check_emails']",
     content: "<b>Publish & send</b> your planning to make it available to your employees.",
 }, {
-    trigger: ".o_gantt_progress_bar",
+    trigger: ".o_gantt_row_header:contains('Thibault') .o_gantt_progress_bar",
     content: "See employee progress bar",
     auto: true,
     run: function () {
-        const $progressbar = $(".o_gantt_progress_bar:eq(0)");
+        const $progressbar = this.$anchor;
         if ($progressbar.length) {
             if ($progressbar[0].querySelector("span").style.width === '') {
                 console.error("Progress bar should be displayed");

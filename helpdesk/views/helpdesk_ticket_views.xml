@@ -9,10 +9,10 @@
                 <field name="user_id"/>
                 <templates>
                     <div t-name="activity-box">
-                        <field t-if="record.user_id.value" name="user_id" widget="many2one_avatar_user"/>
-                        <img t-else="" t-att-src="activity_image('res.users', 'image_128', record.user_id.raw_value)" role="img" t-att-title="record.user_id.value" t-att-alt="record.user_id.value"/>
+                        <field t-if="record.user_id.value" name="user_id" widget="many2one_avatar_user" class="m-0"/>
+                        <img t-else="" t-att-src="activity_image('res.users', 'image_128', record.user_id.raw_value)" role="img" t-att-title="record.user_id.value" t-att-alt="record.user_id.value" class="me-2"/>
                         <div class="w-100">
-                            <div>
+                            <div class="d-flex justify-content-between">
                                 <span class="o_helpdesk_activity_box_title">
                                     <field name="name" display="full"/>
                                 </span>

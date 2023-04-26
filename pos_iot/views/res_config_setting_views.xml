@@ -33,11 +33,11 @@
                 </div>
             </xpath>
             <block id="pos_payment_terminals_section" position="inside">
-                <setting title="The transactions are processed by Ingenico. Set your Ingenico device on the related payment method." string="Ingenico (BENELUX)" documentation="/applications/sales/point_of_sale/payment/ingenico.html" help="Accept payments with an Ingenico payment terminal">
+                <setting title="The transactions are processed by Ingenico. Set your Ingenico device on the related payment method." string="Ingenico (BENELUX)" documentation="/applications/sales/point_of_sale/payment_methods/terminals/ingenico.html" help="Accept payments with an Ingenico payment terminal">
                     <field name="ingenico_payment_terminal"/>
                 </setting>
                 <setting title="The transactions are processed by Worldline. Set your Worldline device on the related payment method." string="Worldline" help="Accept payments with a Worldline payment terminal"
-                         documentation="/applications/sales/point_of_sale/payment/worldline.html">
+                         documentation="/applications/sales/point_of_sale/payment_methods/terminals/worldline.html">
                     <field name="worldline_payment_terminal"/>
                 </setting>
             </block>

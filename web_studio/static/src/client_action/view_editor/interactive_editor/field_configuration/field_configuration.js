@@ -360,7 +360,7 @@ export class FilterConfiguration extends Component {
         return {
             resModel: this.props.resModel,
             readonly: false,
-            value: this.state.domain,
+            domain: this.state.domain,
             update: (domainStr) => {
                 this.state.domain = domainStr;
             },

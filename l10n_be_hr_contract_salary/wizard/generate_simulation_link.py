@@ -15,7 +15,7 @@ class GenerateSimulationLink(models.TransientModel):
     show_new_car = fields.Boolean(compute='_compute_show_new_car')
     car_id = fields.Many2one('fleet.vehicle', string='Default Vehicle', compute='_compute_car_id', readonly=False, domain="[('vehicle_type', '=', 'car')]", help="Default employee's company car. If left empty, the default value will be the employee's current car.")
     l10n_be_canteen_cost = fields.Float(
-        string="Canteen Cost", compute='_compute_from_contract_id', store=True, readonly=False)
+        string="Canteen Cost", compute='_compute_l10n_be_canteen_cost', store=True, readonly=False)
 
     @api.depends('applicant_id.partner_id', 'employee_id.partner_id')
     def _compute_car_id(self):
@@ -53,6 +53,6 @@ class GenerateSimulationLink(models.TransientModel):
                 wizard.show_new_car = wizard.contract_id.available_cars_amount >= wizard.contract_id.max_unused_cars
 
     @api.depends('contract_id.l10n_be_canteen_cost')
-    def _compute_from_contract_id(self):
+    def _compute_l10n_be_canteen_cost(self):
         for wizard in self:
             wizard.l10n_be_canteen_cost = wizard.contract_id.l10n_be_canteen_cost

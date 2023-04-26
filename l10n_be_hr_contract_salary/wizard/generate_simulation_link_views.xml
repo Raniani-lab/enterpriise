@@ -12,7 +12,7 @@
                 <field name="show_new_car" invisible="1"/>
                 <field name="new_car" attrs="{'invisible': [('show_new_car', '=', False)]}" />
                 <field name="car_id"/>
-                <field name="l10n_be_canteen_cost"/>
+                <field name="l10n_be_canteen_cost" invisible="1"/>
             </field>
         </field>
     </record>

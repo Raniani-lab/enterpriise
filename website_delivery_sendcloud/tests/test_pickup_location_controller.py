@@ -86,18 +86,38 @@ class TestWebsiteDeliverySendcloudLocationsController(TransactionCase):
 
         uom = cls.env.ref('uom.product_uom_meter')
 
+        # Allow customization of 'sendcloud_use_locations' on the delivery_carrier
+        cls.sendcloud_shipping = cls.env['sendcloud.shipping.product'].create({
+                'name': 'Test product',
+                'sendcloud_code': 'test',
+                'carrier': 'Test',
+                'min_weight': 1,
+                'max_weight': 50001,
+                'functionalities': {
+                    'bool_func': [],
+                    'detail_func': {},
+                    'customizable': {
+                        'last_mile': [
+                            'service_point',
+                            'home_delivery',
+                        ]
+                    },
+                },
+        })
+
         cls.sendcloud = cls.env['delivery.carrier'].create({
             'delivery_type': 'sendcloud',
             'product_id': shipping_product.id,
             'sendcloud_public_key': 'mock_key',
             'sendcloud_secret_key': 'mock_key',
             'name': 'SendCloud',
-            'sendcloud_use_locations': True,
             'sendcloud_locations_radius_value': 1000,
             'sendcloud_locations_radius_unit': uom.id,
-            'sendcloud_locations_id': 1
+            'sendcloud_locations_id': 1,
+            'sendcloud_shipping_id': cls.sendcloud_shipping.id,
         })
 
+        cls.sendcloud.sendcloud_use_locations = True
         cls.payment_provider = cls.env['payment.provider'].create({'name': 'test'})
 
         cls.payment_method_id = cls.env.ref('payment.payment_method_unknown').id

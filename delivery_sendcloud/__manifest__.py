@@ -15,5 +15,11 @@
         'views/res_config_settings_views.xml',
         'wizard/sendcloud_shipping_wizard.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'delivery_sendcloud/static/src/**/*.js',
+            'delivery_sendcloud/static/src/**/*.xml',
+        ],
+    },
     'license': 'OEEL-1',
 }

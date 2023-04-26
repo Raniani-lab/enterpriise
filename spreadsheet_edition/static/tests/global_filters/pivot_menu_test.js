@@ -33,7 +33,12 @@ QUnit.module("spreadsheet_edition > menu", {}, () => {
                 },
             });
             selectCell(model, "A6");
-            const reinsertPivotPath = ["data", "reinsert_pivot", "reinsert_pivot_1"];
+            const reinsertPivotPath = [
+                "data",
+                "insert_pivot",
+                "reinsert_pivot",
+                "reinsert_pivot_1",
+            ];
             await doMenuAction(topbarMenuRegistry, reinsertPivotPath, env);
             await nextTick();
             assert.equal(getCellContent(model, "B6"), getCellContent(model, "B1"));

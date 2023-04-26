@@ -12,6 +12,7 @@ topbarMenuRegistry.addChild("add_document_to_dashboard", ["file"], {
     sequence: 200,
     isVisible: (env) => env.canAddDocumentAsDashboard,
     execute: (env) => env.createDashboardFromDocument(env.model),
+    icon: "o-spreadsheet-Icon.ADD_TO_DASHBOARD",
 });
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */

@@ -32,7 +32,7 @@ import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 
 let target;
 
-const reinsertPivotPath = ["data", "reinsert_pivot", "reinsert_pivot_1"];
+const reinsertPivotPath = ["data", "insert_pivot", "reinsert_pivot", "reinsert_pivot_1"];
 
 QUnit.module(
     "documents_spreadsheet > Pivot Menu Items",
@@ -283,9 +283,14 @@ QUnit.module(
                 assert.ok(children.find((c) => c.name(env) === "(#2) Partner Pivot"));
                 // bottom children
                 assert.ok(children.find((c) => c.name(env) === "Refresh all data"));
-                assert.ok(children.find((c) => c.name(env) === "Re-insert pivot"));
-                assert.ok(children.find((c) => c.name(env) === "Insert pivot cell"));
+                assert.ok(children.find((c) => c.name(env) === "Insert pivot"));
                 assert.ok(children.find((c) => c.name(env) === "Re-insert list"));
+
+                const insertPivotChildren = children
+                    .find((c) => c.name(env) === "Insert pivot")
+                    .children(env);
+                assert.ok(insertPivotChildren.find((c) => c.name(env) === "Re-insert pivot"));
+                assert.ok(insertPivotChildren.find((c) => c.name(env) === "Insert pivot cell"));
             }
         );
 

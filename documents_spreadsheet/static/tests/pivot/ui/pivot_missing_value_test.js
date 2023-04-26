@@ -11,7 +11,7 @@ import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 
 const { topbarMenuRegistry } = spreadsheet.registries;
 
-const insertPivotCellPath = ["data", "insert_pivot_cell", "insert_pivot_cell_1"];
+const insertPivotCellPath = ["data", "insert_pivot", "insert_pivot_cell", "insert_pivot_cell_1"];
 
 QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
     QUnit.test("Open pivot dialog and insert a value, with UNDO/REDO", async function (assert) {

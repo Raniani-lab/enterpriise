@@ -164,6 +164,7 @@
                                            'invisible': [('id', '=', False)]}"/>
                                     <field name="company_id"
                                            groups="base.group_multi_company"
+                                           force_save="1"
                                            options="{'no_create_edit': True, 'no_open': True}"/>
                                     <field name="location_id"
                                            groups="stock.group_stock_multi_locations"

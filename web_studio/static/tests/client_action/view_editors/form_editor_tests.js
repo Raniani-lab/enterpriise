@@ -3152,8 +3152,8 @@ QUnit.module("View Editors", (hooks) => {
             await click(target.querySelector(".o_web_studio_sidebar input#domain"));
             assert.containsOnce(target, ".modal");
             assert.strictEqual(
-                target.querySelector(".modal .modal-body").textContent,
-                " This domain is not supported. Reset domain"
+                target.querySelector(".modal .o_ds_expr_value").textContent,
+                "parent.display_name"
             );
         }
     );

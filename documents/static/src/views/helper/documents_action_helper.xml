@@ -12,6 +12,7 @@
                     </p>
                     <p class="fw-normal"><em>Tip: configure your scanner to send all documents to this address.</em></p>
                 </div>
+                <p t-else="">No alias configured</p>
             </div>
         </div>
     </t>

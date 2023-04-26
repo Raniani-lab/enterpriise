@@ -8,7 +8,7 @@
                 contentClass="'o-spreadsheet-templates-dialog'"
                 footer="true"
             >
-                <div>
+                <div class="ms-auto w-50 pb-2">
                     <SearchBar/>
                 </div>
                 <div class="o-pager">
@@ -59,7 +59,7 @@
                         <t>Create</t>
                     </button>
                     <button class="btn btn-secondary" t-on-click="data.close">
-                        <t>Cancel</t>
+                        <t>Discard</t>
                     </button>
                 </t>
             </Dialog>

@@ -14,7 +14,7 @@ except ImportError:
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import AccessError, UserError
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.osv import expression
 from odoo.tools import image_process
 from odoo.tools.mimetypes import get_extension
@@ -294,6 +294,12 @@ class Document(models.Model):
             document_ids = self.env['documents.document'].search(subset)
             for document in document_ids:
                 document.available_rule_ids = [(4, rule.id, False)]
+
+    @api.constrains('url')
+    def _check_url(self):
+        for document in self.filtered("url"):
+            if not document.url.startswith(('https://', 'http://', 'ftp://')):
+                raise ValidationError(_('URL %s does not seem complete, as it does not begin with http(s):// or ftp://', document.url))
 
     @api.model
     def message_new(self, msg_dict, custom_values=None):

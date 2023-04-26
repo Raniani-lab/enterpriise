@@ -9,6 +9,7 @@ import { MockServer } from "@web/../tests/helpers/mock_server";
 // Services
 import { systrayItem } from "@web_studio/systray_item/systray_item";
 import { ormService } from "@web/core/orm_service";
+import { fieldService } from "@web/core/field_service";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import { studioService, useStudioServiceAsReactive } from "@web_studio/studio_service";
 import { actionService } from "@web/webclient/actions/action_service";
@@ -98,6 +99,7 @@ export function registerViewEditorDependencies() {
 
     const serviceRegistry = registry.category("services");
     serviceRegistry.add("orm", ormService);
+    serviceRegistry.add("field", fieldService);
     serviceRegistry.add("home_menu", homeMenuService);
     serviceRegistry.add("studio", studioService);
     serviceRegistry.add("action", actionService);

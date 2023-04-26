@@ -93,7 +93,6 @@
                     </div>
                     <field name="user_closable" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
                     <label for="auto_close_limit" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
-                    <!--  ARJ TODO master ir config parameter or a company setting -->
                     <div class="o_row" attrs="{'invisible': [('recurrence_id','=', False),]}">
                         <field name="auto_close_limit" class="oe_inline"/>
                         <div>days after due date</div>

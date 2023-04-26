@@ -846,7 +846,7 @@ class SaleOrder(models.Model):
             parent.update({'end_date': parent.next_invoice_date})
             close_reason_id = renew_close_reason_id if parent.subscription_state != "6_churn" else end_of_contract_reason_id
             parent.set_close(close_reason_id=close_reason_id.id, renew=True)
-            # TODO fix : This can create hole that are not taken into account by progress_sub upselling
+            # This can create hole that are not taken into account by progress_sub upselling, it's an assumed choice over more upselling complexity
             start_date = renew.start_date or parent.next_invoice_date
             renew.write({'date_order': today, 'start_date': start_date})
             renew._save_token_from_payment()

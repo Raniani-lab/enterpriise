@@ -54,6 +54,7 @@ class TestApprovalsPurchase(TestApprovalsCommon):
             # ... but raise an error because all product line need a product_id.
             request_purchase.action_approve()
         # Edit the line without product id then try to approve it again.
+        request_purchase.action_draft()
         request_form = Form(request_purchase)
         with request_form.product_line_ids.edit(1) as line:
             line.product_id = self.product_computer

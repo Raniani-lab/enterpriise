@@ -82,6 +82,19 @@
 
 .o_bank_rec_expanded_line{
     border-bottom: transparent;
+    td {
+        padding-bottom: 0;
+    }
+}
+
+.o_bank_rec_second_line {
+    td {
+        padding-top: 0;
+        padding-bottom: 1rem;
+    }
+    .o_form_uri {
+        cursor: pointer;
+    }
 }
 
 .o_bank_rec_widget_form_suggest_button{
@@ -90,10 +103,6 @@
     @extend .fst-italic;
     padding: 0px;
     text-transform: none !important;
-}
-
-.o_bank_rec_widget_lines_widget_label {
-    max-width: 320px;
 }
 
 .o_bank_rec_right_div {

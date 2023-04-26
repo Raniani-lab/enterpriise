@@ -219,7 +219,7 @@ tour.register('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "Select the mounted invoice line and check the strikethrough value",
-            extra_trigger: "div[name='lines_widget']:has(.text-muted[style='text-decoration: line-through;']:contains('$ 2,000.00'))",
+            extra_trigger: "div[name='lines_widget']:has(.text-decoration-line-through:contains('$ 2,000.00'))",
             trigger: ".o_field_bank_rec_widget_form_lines_widget tr.o_data_row:last() td[field='name']:contains('INV/2019/00003')",
         },
         {
@@ -229,7 +229,7 @@ tour.register('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "Check the remainder",
-            trigger: ".o_field_bank_rec_widget_form_lines_widget tr.o_data_row:last() td[field='debit']:contains('$ 1,000.00')",
+            trigger: ".o_field_bank_rec_widget_form_lines_widget tr.o_data_row:contains('Suspense') td[field='debit']:contains('$ 1,000.00')",
             run: () => {},
         },
         {
@@ -272,7 +272,7 @@ tour.register('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "mount the remaining opening balance line",
-            trigger: ".o_field_bank_rec_widget_form_lines_widget tr.o_data_row:last() td[field='credit']:contains('$ 400.00')",
+            trigger: ".o_field_bank_rec_widget_form_lines_widget tr.o_data_row:contains('Suspense') td[field='credit']:contains('$ 400.00')",
         },
         {
             content: "Remove the manual entry",
@@ -281,7 +281,7 @@ tour.register('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "amls_tab is activated and auto balancing line is 1000",
-            extra_trigger: ".o_field_bank_rec_widget_form_lines_widget tr.o_data_row:last() td[field='credit']:contains('$ 1,000.00')",
+            extra_trigger: ".o_field_bank_rec_widget_form_lines_widget tr.o_data_row:contains('Suspense') td[field='credit']:contains('$ 1,000.00')",
             trigger: "a.active[name='amls_tab']",
             run: () => {},
         },

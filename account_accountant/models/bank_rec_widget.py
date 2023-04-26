@@ -408,9 +408,6 @@ class BankRecWidget(models.Model):
             bank_account = wizard.st_line_id.partner_bank_id.display_name or wizard.st_line_id.account_number
             if bank_account:
                 extra_notes.append(bank_account)
-            narration = wizard.st_line_id.narration and html2plaintext(wizard.st_line_id.narration)
-            if narration:
-                extra_notes.append(narration)
 
             bool_analytic_distribution = False
             for line in wizard.line_ids:

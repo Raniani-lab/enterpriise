@@ -496,6 +496,7 @@
                                            string="Notes"
                                            attrs="{'invisible': [('st_line_narration', '=', False)]}"/>
                                     <field name="st_line_narration"
+                                           nolabel="1"
                                            attrs="{'invisible': [('st_line_narration', '=', False)]}"/>
                                 </group>
                             </group>

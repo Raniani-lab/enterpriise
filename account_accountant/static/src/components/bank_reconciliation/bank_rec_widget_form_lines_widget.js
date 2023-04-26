@@ -5,12 +5,10 @@ import { useService } from "@web/core/utils/hooks";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { TagsList } from "@web/views/fields/many2many_tags/tags_list";
 
-const { Component, useState } = owl;
+const { Component } = owl;
 
 export class BankRecWidgetFormLinesWidget extends Component {
     setup() {
-        this.state = useState({extraNoteVisible: false});
-
         this.bankRecService = useService("bank_rec_widget");
     }
 
@@ -31,16 +29,15 @@ export class BankRecWidgetFormLinesWidget extends Component {
             ["account", this.env._t("Account")],
             ["partner", this.env._t("Partner")],
             ["date", this.env._t("Date")],
-            ["label", this.env._t("Label")],
         ];
         if(data.display_analytic_account_column){
             columns.push(["analytic_account", this.env._t("Analytic Account")]);
         }
-        if(data.display_multi_currency_column){
-            columns.push(["amount_currency", this.env._t("Amount in Currency")], ["currency", this.env._t("Currency")]);
-        }
         if(data.display_taxes_column){
             columns.push(["taxes", this.env._t("Taxes")]);
+        }
+        if(data.display_multi_currency_column){
+            columns.push(["amount_currency", this.env._t("Amount in Currency")], ["currency", this.env._t("Currency")]);
         }
         columns.push(["debit", this.env._t("Debit")], ["credit", this.env._t("Credit")], ["__trash", ""]);
 

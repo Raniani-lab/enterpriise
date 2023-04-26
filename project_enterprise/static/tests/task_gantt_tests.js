@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { getFixture, patchDate } from "@web/../tests/helpers/utils";
+import { getFixture, patchDate, click, nextTick } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
@@ -241,4 +241,50 @@ QUnit.test("progress bar has the correct unit", async (assert) => {
         target.querySelector(SELECTORS.progressBarForeground).textContent,
         "100 h / 100 h"
     );
+});
+
+QUnit.test("open a dialog to schedule task", async (assert) => {
+    ganttViewParams.serverData.views = {
+        "task,false,list": '<tree><field name="name"/></tree>',
+    };
+    ganttViewParams.serverData.models.task.records.push(
+        {
+            id: 51,
+            name: "Task 51",
+            project_id: 1,
+            user_ids: 100,
+        },
+    );
+    await makeView({
+        arch: '<gantt date_start="start" date_stop="stop" js_class="task_gantt" />',
+        resModel: "task",
+        type: "gantt",
+        serverData: ganttViewParams.serverData,
+        mockRPC(route, args) {
+            if (args.method === "search_milestone_from_task") {
+                return [];
+            } else if (args.method === "schedule_tasks") {
+                assert.step("schedule_tasks");
+                const response = {
+                    action: {
+                        name: 'Caution: some tasks have not been scheduled',
+                        type: 'ir.actions.act_window',
+                        res_model: 'task',
+                        views: [[false, 'list']],
+                        target: 'new',
+                    }
+                };
+                return response;
+            }
+        },
+    });
+
+    await hoverGridCell(1, 1);
+    await click(target, SELECTORS.cellPlanButton);
+
+    await click(target, ".modal .o_list_view tbody tr:nth-child(1) input");
+    await nextTick();
+    assert.hasClass(target.querySelector('.modal .o_list_view .o_data_row'), 'o_data_row_selected');
+    await click(target, ".modal footer .o_select_button");
+    assert.verifySteps(["schedule_tasks"]);
 });

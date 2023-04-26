@@ -1335,6 +1335,8 @@ export class GanttRenderer extends Component {
         return this.getGridPosition({ column: row.grid.column });
     }
 
+    openPlanDialogCallback() {}
+
     getSelectCreateDialogProps(params) {
         const domain = this.getPlanDialogDomain();
         const schedule = this.model.getDialogContext(params);
@@ -1345,8 +1347,7 @@ export class GanttRenderer extends Component {
             domain,
             onSelected: (resIds) => {
                 if (resIds.length) {
-                    // openPlanDialogCallback defined in extensions only
-                    this.model.reschedule(resIds, schedule, this.openPlanDialogCallback);
+                    this.model.reschedule(resIds, schedule, this.openPlanDialogCallback.bind(this));
                 }
             },
         };

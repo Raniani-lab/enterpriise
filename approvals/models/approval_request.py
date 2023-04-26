@@ -133,8 +133,8 @@ class ApprovalRequest(models.Model):
             approvers = approvers.filtered(lambda a: a.status == 'new')
 
         approvers._create_activity()
-        approvers.write({'status': 'pending'})
-        self.write({'date_confirmed': fields.Datetime.now()})
+        approvers.sudo().write({'status': 'pending'})
+        self.sudo().write({'date_confirmed': fields.Datetime.now()})
 
     def _get_user_approval_activities(self, user):
         domain = [

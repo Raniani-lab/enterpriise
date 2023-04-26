@@ -32,6 +32,9 @@ class AccountJournal(models.Model):
 
     def _import_bank_statement(self, attachments):
         """ Process the file chosen in the wizard, create bank statement(s) and go to reconciliation. """
+        if any(not a.raw for a in attachments):
+            raise UserError(_("You uploaded an invalid or empty file."))
+
         statement_ids_all = []
         notifications_all = {}
         errors = {}

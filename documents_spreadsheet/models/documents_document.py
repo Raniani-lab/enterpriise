@@ -62,6 +62,12 @@ class Document(models.Model):
         data = super().join_spreadsheet_session()
         return dict(data, is_favorited=self.is_favorited)
 
+    def _compute_file_extension(self):
+        """ Spreadsheet documents do not have file extension. """
+        spreadsheet_docs = self.filtered(lambda rec: rec.handler == "spreadsheet")
+        spreadsheet_docs.file_extension = False
+        super(Document, self - spreadsheet_docs)._compute_file_extension()
+
     @api.depends("datas", "handler")
     def _compute_spreadsheet_binary_data(self):
         for document in self:

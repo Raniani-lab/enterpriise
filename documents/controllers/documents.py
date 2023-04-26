@@ -34,7 +34,9 @@ class ShareRoute(http.Controller):
         if not record or not record.exists():
             raise request.not_found()
 
-        return request.env['ir.binary']._get_stream_from(record, field).get_response()
+        filename = (record.name if not record.file_extension or record.name.endswith(f'.{record.file_extension}')
+                    else f'{record.name}.{record.file_extension}')
+        return request.env['ir.binary']._get_stream_from(record, field, filename=filename).get_response()
 
     @classmethod
     def _get_downloadable_documents(cls, documents):

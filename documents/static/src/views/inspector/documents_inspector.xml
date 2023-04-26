@@ -179,6 +179,9 @@
                         <t t-call="documents.DocumentsInspector.field">
                             <t t-set="field">name</t>
                         </t>
+                        <t t-if="isDebugMode and records[0].data.type === 'binary'" t-call="documents.DocumentsInspector.field">
+                            <t t-set="field">file_extension</t>
+                        </t>
                         <t t-if="records[0].data.type === 'url'" t-call="documents.DocumentsInspector.field">
                             <t t-set="field">url</t>
                         </t>

@@ -33,6 +33,7 @@ export const inspectorFields = [
     "available_rule_ids",
     "checksum",
     "display_name",
+    "file_extension",
     "folder_id",
     "thumbnail_status",
     "lock_uid",
@@ -168,6 +169,10 @@ export class DocumentsInspector extends Component {
 
     get resIds() {
         return this.props.selection.map((rec) => rec.resId);
+    }
+
+    get isDebugMode() {
+        return Boolean(odoo.debug);
     }
 
     get isMobile() {

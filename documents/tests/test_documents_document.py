@@ -476,3 +476,20 @@ class TestCaseDocuments(TransactionCase):
             'folder_id': self.folder_a.id,
         })
         self.assertEqual(message.tag_ids.ids, [self.tag_b.id], "Should only keep the existing tag")
+
+    def test_file_extension(self):
+        """ Test the detection of the file extension and its edition. """
+        sanitized_extension = 'txt'
+        for extension in ('.txt', ' .txt', '..txt', '.txt ', ' .txt ', '  .txt   '):
+            document = self.env['documents.document'].create({
+                'datas': base64.b64encode(b"Test"),
+                'name': f'name{extension}',
+                'mimetype': 'text/plain',
+                'folder_id': self.folder_b.id,
+            })
+            self.assertEqual(document.file_extension, sanitized_extension,
+                             f'"{extension}" must be sanitized to "{sanitized_extension}" at creation')
+        for extension in ('txt', '  txt', '  txt   ', '.txt', ' .txt', ' .txt  ', '..txt', '  ..txt '):
+            document.file_extension = extension
+            self.assertEqual(document.file_extension, sanitized_extension,
+                             f'"{extension}" must be sanitized to "{sanitized_extension}" at edition')

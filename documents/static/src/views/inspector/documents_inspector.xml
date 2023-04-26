@@ -120,7 +120,9 @@
                 <t t-set="locked" t-value="isLocked"/>
                 <t t-set="editDisabled" t-value="isEditDisabled"/>
                 <t t-if="records[0].data.type == 'url'">
-                    <a t-att-href="records[0].data.url" target="new">
+                    <t t-set="url" t-value="records[0].data.url"/>
+                    <a t-if="url and (url.startsWith('https://') || url.startsWith('http://') || url.startsWith('ftp://'))"
+                        t-att-href="url" target="new">
                         <button class="btn fa fa-link o_inspector_button" title="Link"/>
                     </a>
                 </t>

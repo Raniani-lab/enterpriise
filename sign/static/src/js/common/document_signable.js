@@ -830,7 +830,50 @@ export const ThankYouDialog = Dialog.extend({
     this.parent = parent;
     this.suggestSignUp = (session.user_id === false);
     this.nextDocuments = [];
-
+    /*
+      Buttons, in this order (right to left):
+      if suggestSignUp
+      - "Download Document" or hidden
+      - "Sign Up for free"
+      else
+      - "Download Document" or hidden
+      - "Close"
+      - "Sign Next Document" or hidden
+    */
+    options.buttons.push({
+      text: _t("Download Document"),
+      classes: "d-none btn-primary",
+      click: this.downloadDocument,
+    });
+    if (this.suggestSignUp) {
+      options.message += _t(" You can safely close this window.");
+      options.buttons.push({
+        text: _t("Sign Up for free"),
+        classes: "btn-primary",
+        click: function () {
+          window.open("https://www.odoo.com/trial?selected_app=sign&utm_source=db&utm_medium=sign", "_blank");
+        },
+      });
+    } else {
+      options.buttons.push({
+        text: _t("Close"),
+        classes: "btn-primary",
+        click: function () {
+          if (session.is_frontend) {
+            window.location.replace("/my/signatures");
+          } else {
+            this.do_action("sign.sign_template_action", {
+              clear_breadcrumbs: true,
+            });
+          }
+        },
+      });
+      options.buttons.push({
+        text: _t("Sign Next Document"),
+        classes: "d-none btn-primary o_thankyou_button_next",
+        click: this.clickButtonNext,
+      });
+    }
     let url = parent.RedirectURL;
     if (url) {
       // check if url contains http:// or https://
@@ -844,54 +887,8 @@ export const ThankYouDialog = Dialog.extend({
           window.location.replace(url);
         },
       });
-    } else {
-      /*
-        Buttons, in this order (right to left):
-        if suggestSignUp
-        - "Download Document" or hidden
-        - "Sign Up for free"
-        else
-        - "Download Document" or hidden
-        - "Close"
-        - "Sign Next Document" or hidden
-      */
-      options.buttons.push({
-        text: _t("Download Document"),
-        classes: "d-none btn-secondary",
-        click: this.downloadDocument,
-      });
-      if (this.suggestSignUp) {
-        options.message += " You can safely close this window.";
-        options.buttons.push({
-          text: _t("Sign Up for free"),
-          classes: "btn-secondary",
-          click: function () {
-            window.open("https://www.odoo.com/trial?selected_app=sign&utm_source=db&utm_medium=sign", "_blank");
-          },
-        });
-      } else {
-        options.buttons.push({
-          text: _t("Close"),
-          classes: "btn-secondary",
-          click: function () {
-            if (session.is_frontend) {
-              window.location.replace("/my/signatures");
-            } else {
-              this.do_action("sign.sign_template_action", {
-                clear_breadcrumbs: true,
-              });
-            }
-          },
-        });
-        options.buttons.push({
-          text: _t("Sign Next Document"),
-          classes: "d-none btn-secondary o_thankyou_button_next",
-          click: this.clickButtonNext,
-        });
-      }
     }
     this.options = options;
-
     this._super(parent, options);
 
     this._rpc({

@@ -19,6 +19,7 @@ export class TemplateDialog extends Component {
         this.viewService = useService("view");
         this.notificationService = useService("notification");
         this.actionService = useService("action");
+        this.companyService = useService("company");
 
         this.data = this.env.dialogData;
         useHotkey("escape", () => this.data.close());
@@ -50,6 +51,12 @@ export class TemplateDialog extends Component {
         this.keepLast = new KeepLast();
 
         onWillStart(async () => {
+            const defaultFolder = await this.orm.searchRead(
+                "res.company",
+                [["id", "=", this.companyService.currentCompany.id]],
+                ["documents_spreadsheet_folder_id"]
+            );
+            this.documentsSpreadsheetFolderId = defaultFolder[0].documents_spreadsheet_folder_id[0];
             const views = await this.viewService.loadViews({
                 resModel: "spreadsheet.template",
                 context: this.props.context,
@@ -122,14 +129,14 @@ export class TemplateDialog extends Component {
             return this.orm.call(
                 "spreadsheet.template",
                 "action_create_spreadsheet",
-                [templateId, { folder_id: this.props.folderId }],
+                [templateId, { folder_id: this.props.folderId || this.documentsSpreadsheetFolderId }],
                 { context }
             );
         }
         return this.orm.call(
             "documents.document",
             "action_open_new_spreadsheet",
-            [{ folder_id: this.props.folderId }],
+            [{ folder_id: this.props.folderId || this.documentsSpreadsheetFolderId }],
             { context }
         );
     }
@@ -191,6 +198,7 @@ TemplateDialog.components = { Dialog, SearchBar, Pager };
 TemplateDialog.template = "documents_spreadsheet.TemplateDialog";
 TemplateDialog.props = {
     context: Object,
-    folderId: Number,
+    folderId: { type: Number, optional: true },
     close: Function, // prop added by the Dialog service
+    folders: Array,
 };

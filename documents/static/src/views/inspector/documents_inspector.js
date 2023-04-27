@@ -322,15 +322,10 @@ export class DocumentsInspector extends Component {
     }
 
     async onShare() {
-        const resIds = this.resIds;
+        const resIds = this.props.documents
+            .filter((rec) => rec._values.type !== "empty")
+            .map((rec) => rec._values.id);
         const linkProportion = await dUtils.get_link_proportion(this.orm, resIds ? resIds : false);
-        if (linkProportion == 'all') {
-            this.notificationService.add(
-                _t("Links cannot be shared."),
-                { type: "danger", },
-            );
-            return;
-        }
         if (!this.generatedUrls[resIds]) {
             const vals = await this.createShareVals();
             this.generatedUrls[resIds] = await this.orm.call(

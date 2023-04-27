@@ -5,10 +5,12 @@ import { getEnrichedSearchArch } from "@documents/../tests/documents_test_utils"
 
 import { start, startServer } from "@mail/../tests/helpers/test_utils";
 
-import { editInput, triggerEvent, getFixture, click } from "@web/../tests/helpers/utils";
+import { editInput, triggerEvent, getFixture, click, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 
 import { mockActionService } from "@documents_spreadsheet/../tests/spreadsheet_test_utils";
+import { companyService } from "@web/webclient/company_service";
+import { session } from "@web/session";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { fileUploadService } from "@web/core/file_upload/file_upload_service";
@@ -133,6 +135,12 @@ QUnit.module(
                     };
                 },
             });
+
+            patchWithCleanup(session.user_companies.allowed_companies[1], {
+                documents_spreadsheet_folder_id: 1,
+            });
+
+            serviceRegistry.add("company", companyService, { force: true });
         },
     },
     () => {

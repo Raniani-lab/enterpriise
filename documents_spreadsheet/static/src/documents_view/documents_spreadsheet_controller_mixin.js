@@ -112,8 +112,9 @@ export const DocumentsSpreadsheetControllerMixin = () => ({
 
     async onClickCreateSpreadsheet(ev) {
         this.dialogService.add(TemplateDialog, {
-            folderId: this.env.searchModel.getSelectedFolderId(),
+            folderId: this.env.searchModel.getSelectedFolderId() || undefined,
             context: this.props.context,
+            folders: this.env.searchModel.getFolders().slice(1),
         });
     },
 });

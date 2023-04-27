@@ -285,7 +285,6 @@ QUnit.module("documents", {}, function () {
         function () {
             QUnit.test("kanban basic rendering", async function (assert) {
                 assert.expect(25);
-
                 await createDocumentsView({
                     type: "kanban",
                     resModel: "documents.document",
@@ -320,21 +319,25 @@ QUnit.module("documents", {}, function () {
 
                 await click(target, ".o_search_panel_category_value:nth-of-type(1) header");
 
-                assert.ok(
-                    target.querySelector(".o_documents_kanban_upload").disabled,
+                assert.containsOnce(
+                    target.querySelector(".o_cp_buttons"),
+                    ".o_documents_kanban_upload.pe-none.opacity-25",
                     "the upload button should be disabled on global view"
                 );
-                assert.ok(
+
+                assert.notOk(
                     target.querySelector(".o_documents_kanban_url").disabled,
                     "the upload url button should be disabled on global view"
                 );
-                assert.ok(
+                assert.notOk(
                     target.querySelector(".o_documents_kanban_request").disabled,
                     "the request button should be disabled on global view"
                 );
+
+                await click(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
                 assert.ok(
-                    target.querySelector(".o_documents_kanban_share_domain").disabled,
-                    "the share button should be disabled on global view"
+                    target.querySelector(".o_documents_kanban_share_domain").disabled === false,
+                    "the share button should be enabled on global view when documents are selected"
                 );
 
                 assert.containsN(
@@ -397,8 +400,9 @@ QUnit.module("documents", {}, function () {
                     "Upload",
                     "should have a primary 'Upload' button"
                 );
-                assert.ok(
-                    target.querySelector(".o_documents_kanban_upload").disabled === false,
+                assert.containsNone(
+                    target,
+                    ".o_documents_kanban_upload.pe-none.opacity-25",
                     "the upload button should be enabled when a folder is selected"
                 );
                 assert.containsN(

@@ -461,6 +461,8 @@ class ShareRoute(http.Controller):
                     return request.render('documents.not_available', options)
                 else:
                     return request.not_found()
+
+            shareable_documents = available_documents.filtered(lambda r: r.type != 'url')
             options = {
                 'name': share.name,
                 'base_url': share.get_base_url(),
@@ -469,16 +471,16 @@ class ShareRoute(http.Controller):
                 'share_id': str(share.id),
                 'author': share.create_uid.name,
                 'date_deadline': share.date_deadline,
-                'document_ids': available_documents,
+                'document_ids': shareable_documents,
             }
-            if len(available_documents) == 1 and available_documents.type == 'empty':
+            if len(shareable_documents) == 1 and shareable_documents.type == 'empty':
                 return request.render("documents.document_request_page", options)
             elif share.type == 'domain':
-                options.update(all_button='binary' in [document.type for document in available_documents],
+                options.update(all_button='binary' in [document.type for document in shareable_documents],
                                request_upload=share.action == 'downloadupload')
                 return request.render('documents.share_workspace_page', options)
 
-            total_size = sum(document.file_size for document in available_documents)
+            total_size = sum(document.file_size for document in shareable_documents)
             options.update(file_size=total_size, is_files_shared=True)
             return request.render("documents.share_files_page", options)
         except Exception:

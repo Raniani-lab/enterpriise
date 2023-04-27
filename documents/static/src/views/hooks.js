@@ -9,7 +9,6 @@ import { useSetupView } from "@web/views/view_hook";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";
 import { ShareFormViewDialog } from "@documents/views/helper/share_form_view_dialog";
-import dUtils from '@documents/views/helper/documents_utils';
 
 const { EventBus, onWillStart, markup, useComponent, useEnv, useRef, useSubEnv } = owl;
 
@@ -54,7 +53,6 @@ export function useDocumentView(helpers) {
     const component = useComponent();
     const props = component.props;
     const root = useRef("root");
-    const uploadFileInputRef = useRef("uploadFileInput");
     const orm = useService("orm");
     const notification = useService("notification");
     const dialogService = useService("dialog");
@@ -88,7 +86,6 @@ export function useDocumentView(helpers) {
     return {
         // Refs
         root,
-        uploadFileInputRef,
         // Services
         orm,
         notification,
@@ -101,20 +98,17 @@ export function useDocumentView(helpers) {
         // Trigger rule
         ...useTriggerRule(),
         // Helpers
-        hasDisabledButtons: () => {
-            const folder = env.searchModel.getSelectedFolder();
-            return !folder.id || !folder.has_write_access;
-        },
         hasShareDocuments: () => {
             const folder = env.searchModel.getSelectedFolder();
-            return !folder.id
+            const selectedRecords = env.model.root.selection.length;
+            return !folder.id && !selectedRecords;
         },
         // Listeners
         onClickDocumentsRequest: () => {
             action.doAction("documents.action_request_form", {
                 additionalContext: {
                     default_partner_id: props.context.default_partner_id || false,
-                    default_folder_id: env.searchModel.getSelectedFolderId(),
+                    default_folder_id: env.searchModel.getSelectedFolderId() || env.searchModel.getFolders()[1].id,
                     default_tag_ids: [
                         x2ManyCommands.set(env.searchModel.getSelectedTagIds()),
                     ],
@@ -149,42 +143,46 @@ export function useDocumentView(helpers) {
             });
         },
         onClickShareDomain: async () => {
-            const resIds = await env.model.root.getResIds(true);
-            const selectedRecords = env.model.root.records.filter((rec) =>
-                resIds.includes(rec.resId)
-            );
+            const selection = env.model.root.selection;
+            const folderId = env.searchModel.getSelectedFolderId();
             if (
-                selectedRecords.length &&
-                selectedRecords.every((rec) => rec._values.type === "empty")
+                selection.length &&
+                selection.every((rec) => ["empty", "url"].includes(rec._values.type))
             ) {
-                notification.add(_t("The requested documents are not shareable."), {
+                notification.add(_t("The links and requested documents are not shareable."), {
                     type: "danger",
                 });
                 return;
             }
+            // All workspace
+            let folderIds;
+            if (!folderId) {
+                folderIds = selection
+                    .filter((rec) => !["empty", "url"].includes(rec._values.type))
+                    .map((rec) => rec.data.folder_id[0]);
+                // Check if documents are from different workspace
+                if (folderIds.length > 1 && folderIds.some((val) => val !== folderIds[0])) {
+                    notification.add(_t("Can't share documents of different workspaces."), {
+                        type: "danger",
+                    });
+                    return;
+                }
+            }
             const defaultVals = {
                 domain: env.searchModel.domain,
-                folder_id: env.searchModel.getSelectedFolderId(),
+                folder_id: folderId || folderIds[0],
                 tag_ids: [x2ManyCommands.set(env.searchModel.getSelectedTagIds())],
-                type: selectedRecords.length ? "ids" : "domain",
-                document_ids: selectedRecords.length
+                type: selection.length ? "ids" : "domain",
+                document_ids: selection.length
                     ? [
                           x2ManyCommands.set(
-                              selectedRecords
+                              selection
                                   .filter((rec) => rec._values.type !== "empty")
                                   .map((rec) => rec.resId)
                           ),
                       ]
                     : false,
             };
-            const linkProportion = await dUtils.get_link_proportion(orm, resIds ? resIds : false, defaultVals.domain);
-            if (linkProportion == 'all') {
-                notification.add(
-                    _t("Links cannot be shared."),
-                    { type: "danger", },
-                );
-                return;
-            }
             const vals = helpers?.sharePopupAction ? await helpers.sharePopupAction(defaultVals) : defaultVals;
             const act = await orm.call("documents.share", "open_share_popup", [vals]);
             const shareResId = act.res_id;

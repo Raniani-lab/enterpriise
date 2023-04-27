@@ -255,7 +255,7 @@ class DataMergeGroup(models.Model):
             records_kept = 0
 
             # Delete records no longer existing
-            original_records = {r.id: r for r in group.record_ids._original_records()}
+            original_records = {r.id: r for r in group.record_ids._original_records()} if group.record_ids else {}
             # Delete group if all original records in a group have been deleted
             if not original_records:
                 groups_to_delete += group

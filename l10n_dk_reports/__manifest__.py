@@ -14,8 +14,8 @@ Accounting reports for Denmark
     """,
     'depends': ['l10n_dk', 'account_reports'],
     'data': [
-        'data/account_income_statement_html_report_data.xml',
-        'data/account_balance_dk_html_report_data.xml',
+        'data/balance_sheet.xml',
+        'data/profit_loss.xml',
         'data/account_report_ec_sales_list_report.xml',
     ],
     'auto_install': ['l10n_dk', 'account_reports'],

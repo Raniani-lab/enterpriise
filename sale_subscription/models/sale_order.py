@@ -1513,6 +1513,7 @@ class SaleOrder(models.Model):
                 invoice.action_post()
             else:
                 payment_callback_done = False
+                existing_transactions = order.transaction_ids
                 try:
                     payment_token = order.payment_token_id
                     transaction = None
@@ -1540,16 +1541,12 @@ class SaleOrder(models.Model):
                         order._handle_subscription_payment_failure(invoice, transaction, email_context)
                         existing_invoices -= invoice  # It will be unlinked in the call above
                 except Exception:
-                    self._subscription_rollback_cursor(auto_commit)
-                    # we suppose that the payment is run only once a day
-                    last_transaction = self.env['payment.transaction'].search(['|',
-                        ('reference', 'like', order.client_order_ref),
-                        ('reference', 'like', order.name)
-                    ], limit=1)
+                    last_transaction = order.transaction_ids - existing_transactions
                     error_message = "Error during renewal of contract [%s] %s (%s)" \
                                     % (order.id, order.client_order_ref or order.name, 'Payment recorded: %s' % last_transaction.reference
                                        if last_transaction and last_transaction.state == 'done' else 'Payment not recorded')
                     _logger.exception(error_message)
+                    self._subscription_rollback_cursor(auto_commit)
                     mail = Mail.sudo().create({'body_html': error_message, 'subject': error_message,
                                         'email_to': email_context.get('responsible_email'), 'auto_delete': True})
                     mail.send()

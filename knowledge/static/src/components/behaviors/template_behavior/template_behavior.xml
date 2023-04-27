@@ -2,21 +2,31 @@
 <templates>
     <!-- /clipboard template -->
     <t t-name="knowledge.TemplateBehavior" owl="1">
-        <div>
-            <div class="o_knowledge_template_label pe-3">Clipboard</div>
-            <div class="o_knowledge_template_toolbar o_knowledge_toolbar" data-oe-transient-content="true">
-                <div class="btn-group">
-                    <button t-if="targetRecordInfo and targetRecordInfo.withChatter" t-on-click="onClickSendAsMessage" title="Send as Message" class="btn btn-primary btn-link btn-sm border-0">
-                        <i class="fa fa-envelope" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Send as Message</span>
-                    </button>
-                    <button t-if="targetRecordInfo and targetRecordInfo.withHtmlField" t-on-click="onClickUseAsDescription" title="Use as Description" class="btn btn-primary btn-link btn-sm border-0">
-                        <i class="fa fa-pencil-square" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Use as <t t-out="targetRecordInfo.fieldInfo.string"/></span>
-                    </button>
-                    <button t-ref="copyToClipboardButton" t-on-click="onClickCopyToClipboard" title="Copy to Clipboard" class="btn btn-primary btn-link btn-sm border-0">
-                        <i class="fa fa-clipboard" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Copy</span>
-                    </button>
-                </div>
-            </div>
+        <div class="d-flex justify-content-between flex-wrap w-100">
+            <div class="o_knowledge_template_label px-2 py-1 text-break">Clipboard</div>
+            <BehaviorToolbar>
+                <t t-set-slot="buttons">
+                    <BehaviorToolbarButton
+                        hidden="!targetRecordInfo?.withChatter"
+                        icon="'fa-envelope'"
+                        label="env._t('Send as Message')"
+                        onClick.bind="onClickSendAsMessage"
+                    />
+                    <BehaviorToolbarButton
+                        hidden="!targetRecordInfo?.withHtmlField"
+                        icon="'fa-pencil-square'"
+                        label="htmlFieldTargetMessage"
+                        onClick.bind="onClickUseAsDescription"
+                    />
+                    <BehaviorToolbarButton
+                        icon="'fa-clipboard'"
+                        label="env._t('Copy')"
+                        name="'copyToClipboard'"
+                        onClick.bind="onClickCopyToClipboard"
+                        title="env._t('Copy to Clipboard')"
+                    />
+                </t>
+            </BehaviorToolbar>
         </div>
         <div class="o_knowledge_content" data-prop-name="content" t-ref="templateContent" data-oe-protected="false"
             t-att-contenteditable="!props.readonly ? 'true' : 'false'">

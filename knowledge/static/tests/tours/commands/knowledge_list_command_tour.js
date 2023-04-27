@@ -42,7 +42,7 @@ registry.category("web_tour.tours").add('knowledge_list_command_tour', {
         behaviorProps = decodeDataBehaviorProps(embeddedViewElement.dataset.behaviorProps);
     }
 }, { // click on rename button
-    trigger: '.o_knowledge_toolbar button[title="Rename"]',
+    trigger: '.o_knowledge_toolbar button:contains(Rename)',
     run: 'click',
 }, { // click to validate the modal
     trigger: '.modal-footer button.btn-primary',
@@ -59,7 +59,7 @@ registry.category("web_tour.tours").add('knowledge_list_command_tour', {
         }
     }
 }, { // click on rename button
-    trigger: '.o_knowledge_toolbar button[title="Rename"]',
+    trigger: '.o_knowledge_toolbar button:contains(Rename)',
     run: 'click',
 }, { // rename the view
     trigger: '.modal-body input',

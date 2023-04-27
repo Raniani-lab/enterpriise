@@ -12,6 +12,11 @@ import {
     onWillStart,
     onWillDestroy,
 } from "@odoo/owl";
+import {
+    BehaviorToolbar,
+    BehaviorToolbarButton,
+} from "@knowledge/components/behaviors/behavior_toolbar/behavior_toolbar";
+
 
 /**
  * It creates a listing of children of this article.
@@ -21,6 +26,16 @@ import {
  * - /outline that lists all children
  */
 export class ArticlesStructureBehavior extends AbstractBehavior {
+    static components = {
+        BehaviorToolbar,
+        BehaviorToolbarButton,
+    };
+    static props = {
+        ...AbstractBehavior.props,
+        content: { type: Object, optional: true },
+    };
+    static template = "knowledge.ArticlesStructureBehavior";
+
     setup () {
         super.setup();
         this.rpc = useService('rpc');
@@ -261,9 +276,3 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         await this._onRefreshBtnClick(event);
     }
 }
-
-ArticlesStructureBehavior.template = "knowledge.ArticlesStructureBehavior";
-ArticlesStructureBehavior.props = {
-    ...AbstractBehavior.props,
-    content: { type: Object, optional: true },
-};

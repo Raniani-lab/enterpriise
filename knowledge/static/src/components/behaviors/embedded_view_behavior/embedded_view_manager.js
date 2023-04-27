@@ -9,8 +9,14 @@ import { useService } from "@web/core/utils/hooks";
 import {
     Component,
     onWillStart,
-    useSubEnv } from "@odoo/owl";
+    useSubEnv
+} from "@odoo/owl";
 import { decodeDataBehaviorProps, encodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
+import {
+    BehaviorToolbar,
+    BehaviorToolbarButton,
+} from "@knowledge/components/behaviors/behavior_toolbar/behavior_toolbar";
+
 
 const EMBEDDED_VIEW_LIMITS = {
     kanban: 20,
@@ -21,6 +27,22 @@ const EMBEDDED_VIEW_LIMITS = {
  * Wrapper for the embedded view, manage the toolbar and the embedded view props
  */
 export class EmbeddedViewManager extends Component {
+    static components = {
+        BehaviorToolbar,
+        BehaviorToolbarButton,
+    };
+    static props = {
+        el: { type: HTMLElement },
+        action: { type: Object },
+        context: { type: Object },
+        viewType: { type: String },
+        setTitle: { type: Function },
+        getTitle: { type: Function },
+        readonly: { type: Boolean },
+        record: { type: Object },
+    };
+    static template = 'knowledge.EmbeddedViewManager';
+
     setup() {
         // allow access to the SearchModel exported state which contain facets
         this.__getGlobalState__ = new CallbackRecorder();
@@ -227,15 +249,3 @@ export class EmbeddedViewManager extends Component {
         });
     }
 }
-
-EmbeddedViewManager.template = 'knowledge.EmbeddedViewManager';
-EmbeddedViewManager.props = {
-    el: { type: HTMLElement },
-    action: { type: Object },
-    context: { type: Object },
-    viewType: { type: String },
-    setTitle: { type: Function },
-    getTitle: { type: Function },
-    readonly: { type: Boolean },
-    record: { type: Object },
-};

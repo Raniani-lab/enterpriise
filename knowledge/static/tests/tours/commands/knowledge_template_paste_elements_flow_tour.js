@@ -41,7 +41,7 @@ registry.category("web_tour.tours").add('knowledge_template_paste_elements_tour'
     trigger: '.o_knowledge_content > p',
     run: 'text Hello world'
 }, {
-    trigger: '.btn-primary[title="Use as Description"]',
+    trigger: '.btn-primary:contains(Use as)',
     run: 'click'
 }, {
     trigger: '.note-editable > p:contains("Hello world")',

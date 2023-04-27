@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { _t } from "web.core";
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { AttachToMessageMacro, UseAsAttachmentMacro } from "@knowledge/macros/file_macros";
@@ -10,9 +9,25 @@ import utils from "web.utils";
 import {
     encodeDataBehaviorProps,
 } from "@knowledge/js/knowledge_utils";
+import {
+    BehaviorToolbar,
+    BehaviorToolbarButton,
+} from "@knowledge/components/behaviors/behavior_toolbar/behavior_toolbar";
 
 
 export class FileBehavior extends AbstractBehavior {
+    static components = {
+        BehaviorToolbar,
+        BehaviorToolbarButton,
+    };
+    static props = {
+        ...AbstractBehavior.props,
+        fileName: { type: String, optional: true },
+        fileExtension: { type: String, optional: true },
+        fileImage: { type: Object, optional: true },
+    };
+    static template = "knowledge.FileBehavior";
+
     setup() {
         super.setup();
         this.dialogService = useService('dialog');
@@ -54,10 +69,10 @@ export class FileBehavior extends AbstractBehavior {
             downloadLink.click();
         } catch {
             this.dialogService.add(AlertDialog, {
-                body: sprintf(_t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.'), title),
-                title: _t('Missing File'),
+                body: sprintf(this.env._t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.'), title),
+                title: this.env._t('Missing File'),
                 confirm: () => {},
-                confirmLabel: _t('Ok'),
+                confirmLabel: this.env._t('Ok'),
             });
         }
     }
@@ -144,11 +159,3 @@ export class FileBehavior extends AbstractBehavior {
         macro.start();
     }
 }
-
-FileBehavior.template = "knowledge.FileBehavior";
-FileBehavior.props = {
-    ...AbstractBehavior.props,
-    fileName: { type: String, optional: true },
-    fileExtension: { type: String, optional: true },
-    fileImage: { type: Object, optional: true },
-};

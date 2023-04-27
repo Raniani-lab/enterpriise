@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { _t } from "web.core";
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { browser } from "@web/core/browser/browser";
 import { SendAsMessageMacro, UseAsDescriptionMacro } from "@knowledge/macros/template_macros";
@@ -11,16 +10,31 @@ import {
     useRef,
     markup,
     onMounted,
-    onWillUnmount } from "@odoo/owl";
+    onWillUnmount,
+} from "@odoo/owl";
+import {
+    BehaviorToolbar,
+    BehaviorToolbarButton,
+} from "@knowledge/components/behaviors/behavior_toolbar/behavior_toolbar";
+import { sprintf } from '@web/core/utils/strings';
 
 
 export class TemplateBehavior extends AbstractBehavior {
+    static components = {
+        BehaviorToolbar,
+        BehaviorToolbarButton,
+    };
+    static props = {
+        ...AbstractBehavior.props,
+        content: { type: Object, optional: true },
+    };
+    static template = "knowledge.TemplateBehavior";
+
     setup() {
         super.setup();
         this.dialogService = useService("dialog");
         this.popover = usePopover(Tooltip);
         this.uiService = useService("ui");
-        this.copyToClipboardButton = useRef("copyToClipboardButton");
         this.templateContent = useRef("templateContent");
         // <p><br/></p> can't be put in the template because adding a
         // t-if t-else in the template will add empty text nodes from
@@ -33,11 +47,12 @@ export class TemplateBehavior extends AbstractBehavior {
         // html contents, which means they can't be synchronized.
         this.content = this.props.content || markup('<p><br/></p>');
         onMounted(() => {
+            this.copyToClipboardButton = this.props.anchor.querySelector("[name='copyToClipboard']");
             // Using ClipboardJS because ClipboardItem constructor is not
             // accepted by odoo eslint yet. In the future, it would be better
             // to use the CopyButton component (calling the native clipboard API).
             this.clipboard = new ClipboardJS(
-                this.copyToClipboardButton.el,
+                this.copyToClipboardButton,
                 {target: () => this.templateContent.el}
             );
             this.clipboard.on('success', () => {
@@ -51,10 +66,11 @@ export class TemplateBehavior extends AbstractBehavior {
             }
         });
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
+        this.htmlFieldTargetMessage = sprintf(this.env._t('Use as %s'), this.targetRecordInfo?.fieldInfo?.string || 'Description');
     }
     showTooltip() {
-        this.popover.open(this.copyToClipboardButton.el, {
-            tooltip: _t("Content copied to clipboard."),
+        this.popover.open(this.copyToClipboardButton, {
+            tooltip: this.env._t("Content copied to clipboard."),
         });
         browser.setTimeout(this.popover.close, 800);
     }
@@ -121,9 +137,3 @@ export class TemplateBehavior extends AbstractBehavior {
         return dataTransfer;
     }
 }
-
-TemplateBehavior.template = "knowledge.TemplateBehavior";
-TemplateBehavior.props = {
-    ...AbstractBehavior.props,
-    content: { type: Object, optional: true },
-};

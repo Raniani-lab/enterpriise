@@ -37,6 +37,10 @@ patch(AttachmentViewer.prototype, "documents", {
             this.documentService.documentList.documents
         );
     },
+    close() {
+        this.documentService.documentList?.onDeleteCallback();
+        this._super();
+    },
     next() {
         this._super();
         if (this.onSelectDocument) {

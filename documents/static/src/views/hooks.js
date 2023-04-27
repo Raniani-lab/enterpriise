@@ -213,6 +213,7 @@ function useDocumentsViewFilePreviewer({
         isPdfSplit,
         rules,
         hasPdfSplit,
+        selection,
     }) => {
         const openPdfSplitter = (documents) => {
             let newDocumentIds = [];
@@ -293,9 +294,10 @@ function useDocumentsViewFilePreviewer({
             },
             onDeleteCallback: () => {
                 component.env.documentsView.previewStore.documentList = null;
+                selectedDocument.record.toggleSelection(false);
                 // Restore selection
-                if (documents.length > 1) {
-                    for (const rec of documents) {
+                if (selection.length >= 1) {
+                    for (const rec of selection) {
                         rec.toggleSelection(true);
                     }
                 }

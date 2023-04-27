@@ -1,7 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from pytz import timezone, utc
-
 from odoo import api, fields, models
 from odoo.http import request
 
@@ -27,13 +25,10 @@ class SaleOrderLine(models.Model):
 
         Note: api.model
         """
-        tz = timezone(self._get_tz())
-        pickup_day = utc.localize(start_date).astimezone(tz).isoweekday()
-        return_day = utc.localize(end_date).astimezone(tz).isoweekday()
         duration_vals = self.env['product.pricing']._compute_duration_vals(start_date, end_date)
         return {
-            'pickup_day': pickup_day,
-            'return_day': return_day,
+            'pickup_day': start_date.isoweekday(),
+            'return_day': end_date.isoweekday(),
             'duration': duration_vals[company.renting_minimal_time_unit],
         }
 

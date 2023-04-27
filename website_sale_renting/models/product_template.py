@@ -2,7 +2,6 @@
 
 from dateutil.relativedelta import relativedelta
 from math import ceil
-from pytz import timezone, utc, UTC
 
 from odoo import fields, models, _
 from odoo.exceptions import UserError
@@ -186,10 +185,9 @@ class ProductTemplate(models.Model):
 
     def _get_default_start_date(self):
         """ Get the default pickup date and make it extensible """
-        tz = timezone(self.env.user.tz or self.env.context.get('tz') or 'UTC')
-        date = utc.localize(fields.Datetime.now()).astimezone(tz)
-        date += relativedelta(days=1, minute=0, second=0, microsecond=0)
-        return self._get_first_potential_date(date.astimezone(UTC).replace(tzinfo=None))
+        return self._get_first_potential_date(
+            fields.Datetime.now() + relativedelta(days=1, minute=0, second=0, microsecond=0)
+        )
 
     def _get_default_end_date(self, start_date, duration, unit):
         """ Get the default return date based on pickup date and duration
@@ -206,9 +204,8 @@ class ProductTemplate(models.Model):
     def _get_first_potential_date(self, date):
         """ Get the first potential date which respects company unavailability days settings
         """
-        tz = timezone(self.env.user.tz or self.env.context.get('tz') or 'UTC')
         days_forbidden = self.env.company._get_renting_forbidden_days()
-        weekday = utc.localize(date).astimezone(tz).isoweekday()
+        weekday = date.isoweekday()
         for i in range(7):
             if ((weekday + i) % 7 or 7) not in days_forbidden:
                 break

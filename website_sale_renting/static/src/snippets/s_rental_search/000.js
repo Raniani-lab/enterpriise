@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import publicWidget from 'web.public.widget';
+import { serializeDateTime } from "@web/core/l10n/dates";
 
 
 publicWidget.registry.RentalSearchSnippet = publicWidget.Widget.extend({
@@ -24,8 +25,8 @@ publicWidget.registry.RentalSearchSnippet = publicWidget.Widget.extend({
         const searchParams = new URLSearchParams();
         picker = picker || this.$("#s_rental_search_date_input").data("daterangepicker");
         if (picker.startDate && picker.endDate) {
-            searchParams.append('start_date', `${picker.startDate.toISOString()}`);
-            searchParams.append('end_date', `${picker.endDate.toISOString()}`);
+            searchParams.append('start_date', `${serializeDateTime(picker.startDate)}`);
+            searchParams.append('end_date', `${serializeDateTime(picker.endDate)}`);
         }
         const productAttributeId = rentalSearch.querySelector('.product_attribute_search_rental_name').id;
 

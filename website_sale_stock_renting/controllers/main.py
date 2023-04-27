@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo import fields
 from odoo.http import request
 from odoo.addons.website_sale_renting.controllers.main import WebsiteSaleRenting
-from odoo.addons.website_sale_renting.controllers.product import parse_date
 
 
 class WebsiteSaleStockRenting(WebsiteSaleRenting):
@@ -13,7 +13,9 @@ class WebsiteSaleStockRenting(WebsiteSaleRenting):
         if options.get('from_date') and options.get('to_date'):
             try:
                 search_result = search_result._filter_on_available_rental_products(
-                    parse_date(options.get('from_date')), parse_date(options.get('to_date')), request.website._get_warehouse_available(),
+                    fields.Datetime.to_datetime(options.get('from_date')),
+                    fields.Datetime.to_datetime(options.get('to_date')),
+                    request.website._get_warehouse_available(),
                 )
                 product_count = len(search_result)
             except ValueError:

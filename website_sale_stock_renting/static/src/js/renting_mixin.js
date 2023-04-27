@@ -2,7 +2,7 @@
 
 import { _t } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
-import time from 'web.time';
+import { formatDateTime } from "@web/core/l10n/dates";
 import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 
 const oldGetInvalidMessage = RentingMixin._getInvalidMessage;
@@ -16,13 +16,12 @@ RentingMixin._getInvalidMessage = function (startDate, endDate, productId) {
     if (message || !startDate || !endDate || !this.rentingAvailabilities || !this.preparationTime) {
         return message;
     }
-    if (this._isDurationWithHours() && startDate.isBefore(moment().add({hours: this.preparationTime}))) {
+    if (this._isDurationWithHours() && startDate < luxon.DateTime.now().plus({hours: this.preparationTime})) {
         return _t("Your rental product cannot be prepared as fast, please rent later.");
     }
     if (!this.rentingAvailabilities[productId]) {
         return message;
     }
-    const format = time.getLangDatetimeFormat();
     for (const interval of this.rentingAvailabilities[productId]) {
         if (interval.start <= endDate) {
             if (interval.end > startDate) {
@@ -32,7 +31,7 @@ RentingMixin._getInvalidMessage = function (startDate, endDate, productId) {
                     }
                     message += " " + sprintf(
                         _t("- From %s to %s.\n"),
-                        interval.start.format(format), interval.end.format(format)
+                        formatDateTime(interval.start), formatDateTime(interval.end)
                     );
                 }
             }

@@ -12,12 +12,18 @@
                 </div>
                 <div t-if="this.props.record.data.website_published"
                      class="flex-grow-1 px-3">
-                    <div class="lead">Article published</div>
+                    <div class="lead">Article Published</div>
                     <div>Anyone can view</div>
                 </div>
                  <div t-if="!this.props.record.data.website_published" class="flex-grow-1 px-3">
+                 <t t-if="this.props.record.data.user_can_write">
                     <div class="lead">Share to web</div>
-                    <div>Publish and share with anyone</div>
+                    <div>Publish to share with anyone</div>
+                 </t>
+                 <t t-else="">
+                    <div class="lead">Article not Published</div>
+                    <div>Only specific people can access</div>
+                 </t>
                 </div>
                 <div class="o_knowledge_share_toggle align-self-center pe-3 form-check form-switch"
                      t-if="this.props.record.data.user_can_write">

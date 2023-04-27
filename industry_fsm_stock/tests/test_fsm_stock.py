@@ -928,3 +928,16 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
             {'product_id': product_03_lot.id, 'lot_id': p03lot01.id, 'reserved_uom_qty': 3.0},
             {'product_id': product_03_lot.id, 'lot_id': p03lot02.id, 'reserved_uom_qty': 4.0},
         ])
+
+    def test_mark_as_done_with_report_enable_and_multi_step(self):
+        """ This test ensure that when the 'report' setting is enabled for the inventory app, it does not prevent the correct use case of 'mark as done' for
+        an fsm task """
+
+        self.project_user.groups_id += self.env.ref('stock.group_reception_report')
+        self.warehouse.delivery_steps = 'pick_pack_ship'
+        self.task.partner_id = self.partner_1.id
+        self.consu_product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).fsm_add_quantity()
+        self.task.with_user(self.project_user).action_fsm_validate()
+
+        self.assertTrue(self.project_user.has_group('stock.group_reception_report'))
+        self.assertTrue(all(self.task.sale_order_id.picking_ids.mapped(lambda p: p.state == 'done')), "Pickings should be set as done")

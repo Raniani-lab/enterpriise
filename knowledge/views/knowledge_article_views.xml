@@ -11,7 +11,7 @@
         <field name="name">knowledge.article.view.form</field>
         <field name="model">knowledge.article</field>
         <field name="arch" type="xml">
-            <form class="h-100 p-0" js_class="knowledge_article_view_form" disable_autofocus="1">
+            <form js_class="knowledge_article_view_form" disable_autofocus="1">
                 <field name="active" invisible="1"/>
                 <field name="article_properties_is_empty" invisible="1"/>
                 <field name="category" invisible="1"/>

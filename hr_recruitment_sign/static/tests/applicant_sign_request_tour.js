@@ -34,7 +34,7 @@
             {
                 content: "Validate the creation",
                 trigger: '.btn.o_form_button_save',
-                extra_trigger: '.o_employee_form',
+                extra_trigger: '.o_hr_employee_form_view',
                 run: 'click',
             },
             {

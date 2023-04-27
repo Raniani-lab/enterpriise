@@ -20,7 +20,7 @@
         <field name="name">hr.payslip.run.tree</field>
         <field name="model">hr.payslip.run</field>
         <field name="arch" type="xml">
-            <tree string="Payslips Batches" class="o_payslip_run_list" sample="1">
+            <tree string="Payslips Batches" sample="1">
                 <field name="name"/>
                 <field name="date_start"/>
                 <field name="date_end"/>

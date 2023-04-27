@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="documents.DocumentsInspector" owl="1">
-        <t t-set="records" t-value="props.selection"/>
+        <t t-set="records" t-value="props.documents"/>
         <t t-set="currentFolder" t-value="getCurrentFolder()"/>
         <div class="o_documents_inspector h-100">
-            <t t-set="nbPreviews" t-value="props.selection.length"/>
+            <t t-set="nbPreviews" t-value="props.documents.length"/>
             <div t-if="props.withFilePreview || nbPreviews === 0" class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
                 <div t-if="nbPreviews === 0">
                     <t t-if="currentFolder">
@@ -23,7 +23,7 @@
                 </t>
             </div>
         </div>
-        <div t-if="state.showChatter and props.selection.length === 1" class="o_document_chatter_container">
+        <div t-if="state.showChatter and props.documents.length === 1" class="o_document_chatter_container">
             <div class="o_documents_chatter_placeholder mt-2" t-ref="chatterContainer">
                 <Chatter close="isMobile ? undefined : () => state.showChatter = false" hasActivities="records[0].resModel === 'documents.document'" threadId="records[0].resId" threadModel="records[0].resModel" compactHeight="true" />
             </div>
@@ -331,13 +331,13 @@
     </t>
 
     <t t-name="documents.DocumentsInspectorMobile" owl="1">
-        <details t-attf-class="{{props.selection.length ? '' : 'd-none'}} o_documents_mobile_inspector" t-ref="inspectorMobile">
+        <details t-attf-class="{{props.documents.length ? '' : 'd-none'}} o_documents_mobile_inspector" t-ref="inspectorMobile">
             <summary class="o_documents_toggle_inspector btn btn-primary d-flex align-items-center">
                 <i class="o_documents_close_inspector oi oi-fw oi-arrow-left"/>
                 <span class="m-auto">
-                    <t t-esc="props.selection.length"/>
-                    <t t-if="props.selection.length > 1"> documents</t>
-                    <t t-if="props.selection.length === 1"> document</t>
+                    <t t-esc="props.documents.length"/>
+                    <t t-if="props.documents.length > 1"> documents</t>
+                    <t t-if="props.documents.length === 1"> document</t>
                     selected
                 </span>
             </summary>

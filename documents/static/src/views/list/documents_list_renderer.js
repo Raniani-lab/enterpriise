@@ -14,11 +14,40 @@ import { DocumentsListRendererCheckBox } from "./documents_list_renderer_checkbo
 const { useRef } = owl;
 
 export class DocumentsListRenderer extends ListRenderer {
+    static props = [...ListRenderer.props, "inspectedDocuments", "previewStore"];
+    static template = "documents.DocumentsListRenderer";
+    static recordRowTemplate = "documents.DocumentsListRenderer.RecordRow";
+    static components = Object.assign({}, ListRenderer.components, {
+        DocumentsInspector,
+        DocumentsListRendererCheckBox,
+        FileUploadProgressContainer,
+        FileUploadProgressDataRow,
+        DocumentsDropZone,
+        DocumentsActionHelper,
+        DocumentsFileViewer,
+    });
+
     setup() {
         super.setup();
         this.root = useRef("root");
         const { uploads } = useService("file_upload");
         this.documentUploads = uploads;
+    }
+
+    getDocumentsAttachmentViewerProps() {
+        return { previewStore: this.props.previewStore };
+    }
+
+    getDocumentsInspectorProps() {
+        return {
+            documents: this.props.inspectedDocuments.length
+                ? this.props.inspectedDocuments
+                : this.props.list.selection,
+            count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
+            fileSize: this.props.list.fileSize,
+            archInfo: this.props.archInfo,
+            withFilePreview: !this.props.previewStore.documentList,
+        };
     }
 
     /**
@@ -62,27 +91,4 @@ export class DocumentsListRenderer extends ListRenderer {
     get hasSelectors() {
         return this.props.allowSelectors;
     }
-
-    getDocumentsInspectorProps() {
-        return {
-            selection: this.props.list.selection,
-            count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
-            fileSize: this.props.list.fileSize,
-            archInfo: this.props.archInfo,
-            withFilePreview: !this.env.documentsView.previewStore.documentList,
-        };
-    }
 }
-
-DocumentsListRenderer.template = "documents.DocumentsListRenderer";
-DocumentsListRenderer.recordRowTemplate = "documents.DocumentsListRenderer.RecordRow";
-
-DocumentsListRenderer.components = Object.assign({}, ListRenderer.components, {
-    DocumentsInspector,
-    DocumentsListRendererCheckBox,
-    FileUploadProgressContainer,
-    FileUploadProgressDataRow,
-    DocumentsDropZone,
-    DocumentsActionHelper,
-    DocumentsFileViewer,
-});

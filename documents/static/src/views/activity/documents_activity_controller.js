@@ -3,6 +3,7 @@
 import { ActivityController } from "@mail/views/web/activity/activity_controller";
 
 import { preSuperSetup, useDocumentView } from "@documents/views/hooks";
+const { useState } = owl;
 
 export class DocumentsActivityController extends ActivityController {
     setup() {
@@ -10,6 +11,18 @@ export class DocumentsActivityController extends ActivityController {
         super.setup(...arguments);
         const properties = useDocumentView(this.documentsViewHelpers());
         Object.assign(this, properties);
+
+        this.documentStates = useState({
+            inspectedDocuments: [],
+            previewStore: {},
+        });
+    }
+
+    get rendererProps() {
+        const props = super.rendererProps;
+        props.inspectedDocuments = this.documentStates.inspectedDocuments;
+        props.previewStore = this.documentStates.previewStore;
+        return props;
     }
 
     /**
@@ -19,6 +32,12 @@ export class DocumentsActivityController extends ActivityController {
         return {
             getSelectedDocumentsElements: () => [],
             isRecordPreviewable: this.isRecordPreviewable.bind(this),
+            setInspectedDocuments: (inspectedDocuments) => {
+                this.documentStates.inspectedDocuments = inspectedDocuments;
+            },
+            setPreviewStore: (previewStore) => {
+                this.documentStates.previewStore = previewStore;
+            },
         };
     }
 

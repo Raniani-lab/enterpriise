@@ -8,26 +8,37 @@ import { DocumentsFileViewer } from "../helper/documents_file_viewer";
 const { useRef } = owl;
 
 export class DocumentsActivityRenderer extends ActivityRenderer {
+    static props = {
+        ...ActivityRenderer.props,
+        inspectedDocuments: Array,
+        previewStore: Object,
+    };
+    static template = "documents.DocumentsActivityRenderer";
+    static components = {
+        ...ActivityRenderer.components,
+        DocumentsFileViewer,
+        DocumentsInspector,
+    };
+
     setup() {
         super.setup();
         this.root = useRef("root");
     }
+
+    getDocumentsAttachmentViewerProps() {
+        return { previewStore: this.props.previewStore };
+    }
+
     /**
      * Props for documentsInspector
      */
     getDocumentsInspectorProps() {
         return {
-            selection: this.props.records.filter((rec) => rec.selected),
+            documents: this.props.records.filter((rec) => rec.selected),
             count: 0,
             fileSize: 0,
             archInfo: this.props.archInfo,
-            withFilePreview: !this.env.documentsView.previewStore.documentList,
+            withFilePreview: !this.props.previewStore.documentList,
         };
     }
 }
-DocumentsActivityRenderer.template = "documents.DocumentsActivityRenderer";
-DocumentsActivityRenderer.components = {
-    ...ActivityRenderer.components,
-    DocumentsFileViewer,
-    DocumentsInspector,
-};

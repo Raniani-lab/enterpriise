@@ -20,6 +20,7 @@ class TestUi(AccountTestInvoicingHttpCommon):
         cls.env['pos.config'].create({
             'name': "MX Pos config",
             'payment_method_ids': payment_method.ids,
+            'module_pos_restaurant': False,
         })
 
     def test_mx_pos_invoice_order(self):

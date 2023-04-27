@@ -6,7 +6,7 @@ import { patch } from "@web/core/utils/patch";
 
 patch(PosGlobalState.prototype, "l10n_de_pos_res_cert.PosGlobalState", {
     isRestaurantCountryGermanyAndFiskaly() {
-        return this.isCountryGermanyAndFiskaly() && this.config.is_table_management;
+        return this.isCountryGermanyAndFiskaly() && this.config.module_pos_restaurant;
     },
     //@Override
     disallowLineQuantityChange() {

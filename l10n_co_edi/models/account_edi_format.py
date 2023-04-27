@@ -84,7 +84,7 @@ class AccountEdiFormat(models.Model):
                     'IMP_2': (
                         abs((rec.amount_currency or rec.balance) * 100 / 15)
                         if rec.tax_line_id.l10n_co_edi_type.code == '05' else
-                        _convert(rec.company_id.currency_id, rec.tax_base_amount, rec.currency_id, rec.company_id, rec.move_id.invoice_date)
+                        abs(_convert(rec.company_id.currency_id, rec.tax_base_amount, rec.currency_id, rec.company_id, rec.move_id.invoice_date))
                     ),
                     'IMP_3': invoice_currency.name,
                     'IMP_4': abs(rec.amount_currency or rec.balance),

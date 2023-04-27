@@ -63,6 +63,7 @@ export class PlanningFormController extends FormController {
                 } else {
                     this.dialogService.add(ConfirmationDialog, {
                         body: this.env._t("Are you sure you want to delete this shift?"),
+                        confirmLabel: this.env._t("Delete"),
                         cancel: () => resolve(false),
                         close: () => resolve(false),
                         confirm: () => resolve(true),

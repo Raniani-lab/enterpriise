@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, Command, fields, models, tools, _
@@ -365,6 +366,15 @@ class HelpdeskTicket(models.Model):
 
     def action_customer_preview(self):
         self.ensure_one()
+        if self.team_privacy_visibility != 'portal' or not self.partner_id:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'type': 'danger',
+                    'message': _('At this time, there is no customer preview available to show. The current ticket cannot be accessed by the customer, as it belongs to a helpdesk team that is not publicly available, or there is no customer associated with the ticket.'),
+                }
+            }
         return {
             'type': 'ir.actions.act_url',
             'url': self.get_portal_url(),
@@ -660,7 +670,10 @@ class HelpdeskTicket(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.helpdesk_ticket_action_main_tree")
         action.update({
             'domain': [('id', '!=', self.id), ('id', 'in', self.partner_ticket_ids.ids)],
-            'context': {'create': False},
+            'context': {
+                **ast.literal_eval(action.get('context', {})),
+                'create': False,
+            },
         })
         return action
 

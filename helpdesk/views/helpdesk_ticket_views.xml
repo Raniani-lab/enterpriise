@@ -366,12 +366,6 @@
                                 </div>
                             </div>
                         </button>
-                        <button class="oe_stat_button" type="object" name="action_customer_preview" icon="fa-globe"
-                            attrs="{'invisible': ['|', ('partner_id', '=', False), ('team_privacy_visibility', '!=', 'portal')]}">
-                            <div class="o_stat_info">
-                                <span class="o_stat_text">Customer Preview</span>
-                            </div>
-                        </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="kanban_state" widget="state_selection"/>
@@ -395,7 +389,7 @@
                             <field name="domain_user_ids" invisible="1"/>
                             <field name="priority" widget="priority"/>
                             <field name="ticket_type_id" options="{'no_open': True}"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                         </group>
                         <group>
                             <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" context="{'default_phone': partner_phone}"/>
@@ -821,6 +815,15 @@
         <field name="view_mode">pivot</field>
         <field name="view_id" ref="helpdesk_ticket_action_close_analysis_pivot_inherit_dashboard"/>
         <field name="act_window_id" ref="helpdesk_ticket_action_success"/>
+    </record>
+
+    <record id="action_open_customer_preview" model="ir.actions.server">
+        <field name="name">Customer Preview</field>
+        <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_customer_preview()</field>
     </record>
 
 </odoo>

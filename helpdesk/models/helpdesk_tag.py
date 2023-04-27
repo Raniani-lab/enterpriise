@@ -3,7 +3,7 @@
 
 from random import randint
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 class HelpdeskTag(models.Model):
     _name = 'helpdesk.tag'
@@ -19,3 +19,10 @@ class HelpdeskTag(models.Model):
     _sql_constraints = [
         ('name_uniq', 'unique (name)', "A tag with the same name already exists."),
     ]
+
+    @api.model
+    def name_create(self, name):
+        existing_tag = self.search([('name', '=ilike', name.strip())], limit=1)
+        if existing_tag:
+            return existing_tag.name_get()[0]
+        return super().name_create(name)

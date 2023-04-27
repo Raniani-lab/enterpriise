@@ -30,6 +30,7 @@ of recall defined. You can define different policies for different companies.
         'data/account_followup_data.xml',
         'data/cron.xml',
         'wizard/followup_manual_reminder_views.xml',
+        'wizard/followup_missing_information.xml',
         'views/account_followup_views.xml',
         'views/account_followup_line_views.xml',
         'views/partner_view.xml',

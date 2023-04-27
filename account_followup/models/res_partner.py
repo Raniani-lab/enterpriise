@@ -548,9 +548,49 @@ class ResPartner(models.Model):
         if options.get('print') and to_print:
             return self.env['account.followup.report']._print_followup_letter(self, options)
 
+    def _create_followup_missing_information_wizard(self):
+        """ Returns a wizard containing all the partners with missing information.
+        """
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _("Missing information"),
+            'view_mode': 'form',
+            'res_model': 'account_followup.missing.information.wizard',
+            'target': 'new',
+            'context': {'default_partner_ids': self.ids},
+        }
+
     def action_manually_process_automatic_followups(self):
+        partners_with_missing_info = self.env['res.partner']
+
         for partner in self:
+            if partner.followup_status != 'in_need_of_action':
+                continue
+
+            followup_line = partner.followup_line_id
+            followup_contacts = partner._get_all_followup_contacts() or partner
+
+            # Skip partner with missing info.
+            if followup_line.send_email and not any(followup_contacts.mapped('email')):
+                partners_with_missing_info |= partner
+                continue
+
+            if followup_line.send_sms and not (any(followup_contacts.mapped('mobile'))
+                                               or any(followup_contacts.mapped('phone'))):
+                partners_with_missing_info |= partner
+                continue
+
+            if followup_line.send_letter and not any(self.env['snailmail.letter']._is_valid_address(to_send_partner)
+                                                     for to_send_partner in followup_contacts):
+                partners_with_missing_info |= partner
+                continue
+
             partner._execute_followup_partner()
+
+        # If one or more partners are missing information, open a wizard listing them.
+        if partners_with_missing_info:
+            return partners_with_missing_info._create_followup_missing_information_wizard()
 
     def _cron_execute_followup_company(self):
         followup_data = self._query_followup_data(all_partners=True)

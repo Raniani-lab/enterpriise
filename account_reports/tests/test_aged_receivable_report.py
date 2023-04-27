@@ -20,11 +20,11 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
         cls.partner_b = cls.env['res.partner'].create({'name': 'partner_b', 'company_id': False, 'category_id': [Command.set([cls.partner_category_a.id])]})
 
         receivable_1 = cls.company_data['default_account_receivable']
-        receivable_2 = cls.company_data['default_account_receivable'].copy()
-        receivable_3 = cls.company_data['default_account_receivable'].copy()
+        receivable_2 = cls.copy_account(cls.company_data['default_account_receivable'])
+        receivable_3 = cls.copy_account(cls.company_data['default_account_receivable'])
         receivable_4 = cls.company_data_2['default_account_receivable']
-        receivable_5 = cls.company_data_2['default_account_receivable'].copy()
-        receivable_6 = cls.company_data_2['default_account_receivable'].copy()
+        receivable_5 = cls.copy_account(cls.company_data_2['default_account_receivable'])
+        receivable_6 = cls.copy_account(cls.company_data_2['default_account_receivable'])
         misc_1 = cls.company_data['default_account_revenue']
         misc_2 = cls.company_data_2['default_account_revenue']
 

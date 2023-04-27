@@ -36,7 +36,7 @@ class HrPayslip(models.Model):
             [('state', '=', 'published')],
             domain,
         ])
-        read_group = self.env['planning.slot'].read_group(domain, groupby=['employee_id', 'start_datetime:day'], aggregates=['__count'])
+        read_group = self.env['planning.slot']._read_group(domain, groupby=['employee_id', 'start_datetime:day'], aggregates=['__count'])
         for employee, start_datetime_utc, count in read_group:
             slips = slip_by_employee[employee.id]
             start_date_employee = start_datetime_utc.astimezone(pytz.timezone(employee.tz)).date()

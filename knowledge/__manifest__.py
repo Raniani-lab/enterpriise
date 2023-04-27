@@ -6,7 +6,7 @@
     'summary': 'Centralize, manage, share and grow your knowledge library',
     'description': 'Centralize, manage, share and grow your knowledge library',
     'category': 'Productivity/Knowledge',
-    'version': '0.1',
+    'version': '1.0',
     'depends': [
         'web',
         'web_editor',

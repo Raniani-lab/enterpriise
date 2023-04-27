@@ -943,19 +943,7 @@ class HelpdeskTicket(models.Model):
 
         self.ensure_one()
 
-        if self.user_id:
-            return groups
-
-        local_msg_vals = dict(msg_vals or {})
-        take_action = self._notify_get_action_link('assign', **local_msg_vals)
-        helpdesk_actions = [{'url': take_action, 'title': _('Assign to me')}]
-        helpdesk_user_group_id = self.env.ref('helpdesk.group_helpdesk_user').id
-        new_groups = [(
-            'group_helpdesk_user',
-            lambda pdata: pdata['type'] == 'user' and helpdesk_user_group_id in pdata['groups'],
-            {'actions': helpdesk_actions}
-        )]
-        return new_groups + groups
+        return groups
 
     def _notify_get_reply_to(self, default=None):
         """ Override to set alias of tickets to their team if any. """

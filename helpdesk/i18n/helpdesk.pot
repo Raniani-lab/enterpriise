@@ -643,13 +643,6 @@ msgstr ""
 
 #. module: helpdesk
 #. odoo-python
-#: code:addons/helpdesk/models/helpdesk_ticket.py:0
-#, python-format
-msgid "Assign to me"
-msgstr ""
-
-#. module: helpdesk
-#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Assigned"

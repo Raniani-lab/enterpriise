@@ -785,35 +785,13 @@ class HelpdeskTicket(models.Model):
         return super(HelpdeskTicket, self)._track_subtype(init_values)
 
     def _notify_get_recipients_groups(self, message, model_description, msg_vals=None):
-        """ Handle helpdesk users and managers recipients that can assign
-        tickets directly from notification emails. Also give access button
-        to portal and portal customers. If they are notified they should
-        probably have access to the document. """
-        groups = super()._notify_get_recipients_groups(
+        """
+        Give access button to portal and portal customers.
+        If they are notified they should probably have access to the document.
+        """
+        return super()._notify_get_recipients_groups(
             message, model_description, msg_vals=msg_vals
         )
-        if not self:
-            return groups
-
-        self.ensure_one()
-
-        if self.user_id:
-            return groups
-
-        local_msg_vals = dict(msg_vals or {})
-        take_action = self._notify_get_action_link('assign', **local_msg_vals)
-        helpdesk_actions = [{'url': take_action, 'title': _('Assign to me')}]
-        helpdesk_user_group_id = self.env.ref('helpdesk.group_helpdesk_user').id
-        new_groups = [(
-            'group_helpdesk_user',
-            lambda pdata: pdata['type'] == 'user' and helpdesk_user_group_id in pdata['groups'],
-            {
-                'actions': helpdesk_actions,
-                'active': True,
-                'has_button_access': True,
-            }
-        )]
-        return new_groups + groups
 
     def _notify_get_reply_to(self, default=None):
         """ Override to set alias of tickets to their team if any. """

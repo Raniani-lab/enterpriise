@@ -2,7 +2,7 @@
 
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
-import { AttachmentViewer } from "@mail/attachments/attachment_viewer";
+import { AttachmentViewer } from "@web/core/attachment_viewer/attachment_viewer";
 
 patch(AttachmentViewer.prototype, "documents", {
     setup() {

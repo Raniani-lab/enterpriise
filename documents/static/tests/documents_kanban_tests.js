@@ -1269,7 +1269,7 @@ QUnit.module("documents", {}, function () {
 
                 assert.containsNone(
                     target,
-                    ".o-mail-AttachmentViewer",
+                    ".o-AttachmentViewer",
                     "should not have a document preview"
                 );
                 assert.containsOnce(
@@ -1280,25 +1280,25 @@ QUnit.module("documents", {}, function () {
 
                 await click(target, ".o_document_preview img");
 
-                assert.containsOnce(target, ".o-mail-AttachmentViewer");
-                assert.containsOnce(target, ".o-mail-AttachmentViewer div[aria-label='Close']");
+                assert.containsOnce(target, ".o-AttachmentViewer");
+                assert.containsOnce(target, ".o-AttachmentViewer div[aria-label='Close']");
 
-                await click(target, ".o-mail-AttachmentViewer div[aria-label='Close']");
+                await click(target, ".o-AttachmentViewer div[aria-label='Close']");
 
                 await click(find(target, ".o_kanban_record", "blip"));
 
                 await click(target, ".o_preview_available");
 
-                assert.containsOnce(target, ".o-mail-AttachmentViewer div[title='Split PDF']");
+                assert.containsOnce(target, ".o-AttachmentViewer div[title='Split PDF']");
                 assert.containsOnce(
                     target,
                     `iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=${getOrigin()}/web/content/2#pagemode=none"]`,
                     "should have an iframe with the correct pdfviewer src"
                 );
 
-                await click(target, ".o-mail-AttachmentViewer div[aria-label='Close']");
+                await click(target, ".o-AttachmentViewer div[aria-label='Close']");
 
-                assert.containsNone(target, ".o-mail-AttachmentViewer");
+                assert.containsNone(target, ".o-AttachmentViewer");
             });
 
             QUnit.test(
@@ -1332,14 +1332,14 @@ QUnit.module("documents", {}, function () {
 
                     await click(target, ".o_document_preview img");
                     await nextTick();
-                    assert.containsNone(target, ".o-mail-AttachmentViewer");
+                    assert.containsNone(target, ".o-AttachmentViewer");
 
                     def.resolve();
                     await nextTick();
                     await click(target, ".o_document_preview img");
                     await nextTick();
-                    assert.containsOnce(target, ".o-mail-AttachmentViewer");
-                    await click(target, ".o-mail-AttachmentViewer div[aria-label='Close']");
+                    assert.containsOnce(target, ".o-AttachmentViewer");
+                    await click(target, ".o-AttachmentViewer div[aria-label='Close']");
                 }
             );
 
@@ -5141,7 +5141,7 @@ QUnit.module("documents", {}, function () {
 
                     assert.containsOnce(
                         target,
-                        ".o-mail-AttachmentViewer",
+                        ".o-AttachmentViewer",
                         "should have a document preview"
                     );
                     assert.containsOnce(
@@ -5151,14 +5151,14 @@ QUnit.module("documents", {}, function () {
                     );
                     assert.containsNone(
                         target,
-                        ".o-mail-AttachmentViewer-download",
+                        ".o-AttachmentViewer-download",
                         "should not have a download button"
                     );
                     target.querySelector("[title='Close (Esc)']").click();
                     await nextTick();
                     assert.containsNone(
                         target,
-                        ".o-mail-AttachmentViewer",
+                        ".o-AttachmentViewer",
                         "should not have a document preview"
                     );
                 }

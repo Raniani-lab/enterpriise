@@ -1,6 +1,6 @@
 /* @odoo-module **/
 
-import { AttachmentViewer } from "@mail/attachments/attachment_viewer";
+import { AttachmentViewer } from "@web/core/attachment_viewer/attachment_viewer";
 
 const { Component, useEffect, useRef, useState } = owl;
 

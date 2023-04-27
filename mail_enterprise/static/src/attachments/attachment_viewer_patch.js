@@ -1,6 +1,6 @@
 /* @odoo-module */
 
-import { AttachmentViewer } from "@mail/attachments/attachment_viewer";
+import { AttachmentViewer } from "@web/core/attachment_viewer/attachment_viewer";
 
 import { patch } from "@web/core/utils/patch";
 

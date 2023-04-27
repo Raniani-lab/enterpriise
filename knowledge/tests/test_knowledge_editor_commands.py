@@ -17,7 +17,7 @@ class TestKnowledgeEditorCommands(HttpCase):
         super(TestKnowledgeEditorCommands, cls).setUpClass()
         # remove existing articles to ease tour management
         cls.env['knowledge.article'].search([]).unlink()
-        cls.env['knowledge.article'].create({
+        cls.article = cls.env['knowledge.article'].create({
             'is_article_visible_by_everyone': True,
             'name': 'EditorCommandsArticle',
             'body': Markup('<p><br></p>')
@@ -38,6 +38,15 @@ class TestKnowledgeEditorCommands(HttpCase):
     def test_knowledge_kanban_command_tour(self):
         """Test the /kanban command in the editor"""
         self.start_tour('/web', 'knowledge_kanban_command_tour', login='admin')
+        # Test the behaviour of the kanban when the parent article is readonly
+        self.article.write({
+            'article_member_ids': [(0, 0, {
+                'partner_id': self.ref('base.user_admin'),
+                'permission': 'write',
+            })],
+            'internal_permission': 'read',
+        })
+        self.start_tour('/web', 'knowledge_readonly_item_kanban_tour', login='demo')
 
     def test_knowledge_kanban_cards_command_tour(self):
         """Test the /card command in the editor"""
@@ -46,6 +55,15 @@ class TestKnowledgeEditorCommands(HttpCase):
     def test_knowledge_list_command_tour(self):
         """Test the /list command in the editor"""
         self.start_tour('/web', 'knowledge_list_command_tour', login='admin', step_delay=100)
+        # Test the behaviour of the list when the parent article is readonly
+        self.article.write({
+            'article_member_ids': [(0, 0, {
+                'partner_id': self.ref('base.user_admin'),
+                'permission': 'write',
+            })],
+            'internal_permission': 'read',
+        })
+        self.start_tour('/web', 'knowledge_readonly_item_list_tour', login='demo')
 
     def test_knowledge_outline_command_tour(self):
         """Test the /outline command in the editor"""

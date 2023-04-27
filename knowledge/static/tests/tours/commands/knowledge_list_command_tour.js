@@ -58,4 +58,9 @@ registry.category("web_tour.tours").add('knowledge_list_command_tour', {
             throw new Error('data-behavior-props should be semantically the same as before');
         }
     }
+}, {
+    // reload the article to make sure that the article is saved for readonly tour
+    trigger: 'a[data-menu-xmlid="knowledge.knowledge_menu_home"]',
+}, { // wait for embed to be visible
+    trigger: '.o_knowledge_behavior_type_embedded_view',
 }]});

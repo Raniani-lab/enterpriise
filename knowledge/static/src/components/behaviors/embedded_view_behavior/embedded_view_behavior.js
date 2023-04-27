@@ -43,7 +43,8 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
         }
 
         useSubEnv({
-            knowledgeEmbeddedViewId: embeddedViewId
+            knowledgeEmbeddedViewId: embeddedViewId,
+            knowledgeArticleUserCanWrite: this.props.record.data.user_can_write,
         });
 
         onMounted(() => {

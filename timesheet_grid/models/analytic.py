@@ -302,6 +302,10 @@ class AnalyticLine(models.Model):
         return super()._check_can_write(vals)
 
     @api.model
+    def _get_timesheet_field_and_model_name(self):
+        return 'task_id', 'project.task'
+
+    @api.model
     def grid_update_cell(self, domain, measure_field_name, value):
         if value == 0:  # nothing to do
             return
@@ -319,9 +323,10 @@ class AnalyticLine(models.Model):
             timesheets[measure_field_name] += value
         else:
             project_id = self._context.get('default_project_id', False)
-            task_id = self._context.get('default_task_id', False)
-            if not project_id and task_id:
-                project_id = self.env['project.task'].browse(task_id).project_id.id
+            field_name, model_name = self._get_timesheet_field_and_model_name()
+            field_value = self._context.get(f'default_{field_name}', False)
+            if not project_id and field_value:
+                project_id = self.env[model_name].browse(field_value).project_id.id
 
             if not self.env['project.project'].browse(project_id).allow_timesheets:
                 raise UserError(_("You cannot adjust the time of the timesheet for a project with timesheets disabled."))
@@ -329,7 +334,7 @@ class AnalyticLine(models.Model):
             self.create({
                 'name': '/',
                 'project_id': project_id,
-                'task_id': task_id,
+                field_name: field_value,
                 measure_field_name: value,
             })
 

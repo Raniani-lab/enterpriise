@@ -60,6 +60,11 @@ class AccountAnalyticLine(models.Model):
                     vals.update(vals_update)
         return super(AccountAnalyticLine, self)._timesheet_preprocess(vals_list)
 
+    def _get_timesheet_field_and_model_name(self):
+        if self._context.get('default_helpdesk_ticket_id', False):
+            return 'helpdesk_ticket_id', 'helpdesk.ticket'
+        return super()._get_timesheet_field_and_model_name()
+
     def _timesheet_get_portal_domain(self):
         domain = super(AccountAnalyticLine, self)._timesheet_get_portal_domain()
         if not self.env.user.has_group('hr_timesheet.group_hr_timesheet_user'):

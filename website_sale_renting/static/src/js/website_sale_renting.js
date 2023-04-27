@@ -3,6 +3,8 @@
 import { WebsiteSale } from 'website_sale.website_sale';
 import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 import '@website_sale_renting/js/variant_mixin';
+import { serializeDateTime } from "@web/core/l10n/dates";
+import { momentToLuxon } from "@website_sale_renting/js/date_utils";
 
 WebsiteSale.include(RentingMixin);
 WebsiteSale.include({
@@ -22,7 +24,7 @@ WebsiteSale.include({
      */
     _updateRootProduct($form, productId) {
         this._super(...arguments);
-        Object.assign(this.rootProduct, this._getRentingDates());
+        Object.assign(this.rootProduct, this._getSerializedRentingDates());
     },
 
     // ------------------------------------------
@@ -90,7 +92,7 @@ WebsiteSale.include({
             return false;
         }
         const message = this._getInvalidMessage(
-            moment(rentingDates.start_date), moment(rentingDates.end_date),
+            rentingDates.start_date, rentingDates.end_date,
             this._getProductId($parent.closest('form'))
         );
         if (message) {
@@ -145,8 +147,8 @@ WebsiteSale.include({
             const $daterangeInput = $(datepickerEl.querySelector(".daterange-input"));
             const daterangepicker = $daterangeInput.data("daterangepicker");
             if (daterangepicker.startDate && daterangepicker.endDate) {
-                searchParams.set("start_date", daterangepicker.startDate.toISOString());
-                searchParams.set("end_date", daterangepicker.endDate.toISOString());
+                searchParams.set("start_date", serializeDateTime(momentToLuxon(daterangepicker.startDate)));
+                searchParams.set("end_date", serializeDateTime(momentToLuxon(daterangepicker.endDate)));
             }
             const searchString = searchParams.toString();
             window.location = `/shop` + searchString.length ? `?${searchString}` : ``;

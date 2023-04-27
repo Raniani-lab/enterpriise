@@ -1,22 +1,9 @@
 /** @odoo-module **/
 
-import { serializeDate, serializeDateTime } from "@web/core/l10n/dates";
+import { serializeDateTime, deserializeDateTime } from "@web/core/l10n/dates";
+import { momentToLuxon } from "@website_sale_renting/js/date_utils";
 import { sprintf } from "@web/core/utils/strings";
 import { _lt, _t } from "web.core";
-
-function momentToLuxon(dt) {
-    const o = dt.toObject();
-    // Note: the month is 0-based in moment.js, but 1-based in luxon.js
-    return luxon.DateTime.fromObject({
-        year: o.years,
-        month: o.months + 1,
-        day: o.date,
-        hour: o.hours,
-        minute: o.minutes,
-        second: o.seconds,
-        millisecond: o.milliseconds,
-    });
-}
 
 export const msecPerUnit = {
     hour: 3600 * 1000,
@@ -35,8 +22,8 @@ export const RentingMixin = {
     /**
      * Get the message to display if the renting has invalid dates.
      *
-     * @param {moment} startDate
-     * @param {moment} endDate
+     * @param {DateTime} startDate
+     * @param {DateTime} endDate
      * @private
      */
     _getInvalidMessage(startDate, endDate, productId = false) {
@@ -45,15 +32,15 @@ export const RentingMixin = {
             return message;
         }
         if (startDate && endDate) {
-            if (this.rentingUnavailabilityDays[startDate.isoWeekday() % 7]) {
+            if (this.rentingUnavailabilityDays[startDate.weekday]) {
                 message = _t("You cannot pick up your rental on that day of the week.");
-            } else if (this.rentingUnavailabilityDays[endDate.isoWeekday() % 7]) {
+            } else if (this.rentingUnavailabilityDays[endDate.weekday]) {
                 message = _t("You cannot return your rental on that day of the week.");
             } else {
                 const rentingDuration = endDate - startDate;
                 if (rentingDuration < 0) {
                     message = _t("The return date should be after the pickup date.");
-                } else if (startDate.isBefore(moment(), "day")) {
+                } else if (startDate.startOf("day") < luxon.DateTime.now().startOf("day")) {
                     message = _t("The pickup date cannot be in the past.");
                 } else if (
                     ["hour", "day", "week", "month"].includes(this.rentingMinimalTime.unit)
@@ -94,14 +81,9 @@ export const RentingMixin = {
         let date = picker && picker[fieldName];
         if (!date || !date._isValid) {
             const $defaultDate = this.el.querySelector('input[name="default_' + inputName + '"]');
-            date = $defaultDate && $defaultDate.value;
+            date = $defaultDate && deserializeDateTime($defaultDate.value);
         } else {
-            // serializeDate(Time) requires a luxon object.
-            const luxonDate = momentToLuxon(date);
-            // if the duration unit is not in hours, the server will receive a Date, not a DateTime.
-            date = this._isDurationWithHours()
-                ? serializeDateTime(luxonDate)
-                : serializeDate(luxonDate);
+            date = momentToLuxon(date);
         }
         return date;
     },
@@ -109,6 +91,7 @@ export const RentingMixin = {
     /**
      * Get the renting pickup and return dates from the website sale renting daterange picker object.
      *
+     * @private
      * @param {$.Element} $product
      */
     _getRentingDates($product) {
@@ -122,4 +105,21 @@ export const RentingMixin = {
         }
         return {};
     },
+
+    /**
+     * Return serialized dates from `_getRentingDates`. Used for client-server exchange.
+     *
+     * @private
+     * @param {$.Element} $product
+     */
+    _getSerializedRentingDates($product) {
+        const { start_date, end_date } = this._getRentingDates($product);
+        if (start_date && end_date) {
+            return {
+                start_date: serializeDateTime(start_date),
+                end_date: serializeDateTime(end_date),
+            };
+        }
+    }
+
 };

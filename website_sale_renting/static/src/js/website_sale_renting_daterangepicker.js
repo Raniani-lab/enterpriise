@@ -4,6 +4,8 @@ import { _t } from 'web.core';
 import time from 'web.time';
 import publicWidget from 'web.public.widget';
 import { msecPerUnit, RentingMixin } from '@website_sale_renting/js/renting_mixin';
+import { deserializeDateTime } from "@web/core/l10n/dates";
+import { luxonToMoment, momentToLuxon } from "@website_sale_renting/js/date_utils";
 
 publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(RentingMixin, {
     selector: '.o_website_sale_daterange_picker',
@@ -89,12 +91,13 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
      */
     _initSaleRentingDateRangePicker(dateInput) {
         const $dateInput = this.$(dateInput);
+        const weekdays = luxon.Info.weekdays('short');
         $dateInput.daterangepicker({
             // dates
-            minDate: moment.min(moment(), this.startDate),
-            maxDate: moment.max(moment().add(3, 'y'), this.endDate),
-            startDate: this.startDate,
-            endDate: this.endDate,
+            minDate: luxonToMoment(luxon.DateTime.min(luxon.DateTime.now(), this.startDate)),
+            maxDate: luxonToMoment(luxon.DateTime.max(luxon.DateTime.now().plus({years: 3}), this.endDate)),
+            startDate: luxonToMoment(this.startDate),
+            endDate: luxonToMoment(this.endDate),
             isInvalidDate: this._isInvalidDate.bind(this),
             isCustomDate: this._isCustomDate.bind(this),
             // display
@@ -106,15 +109,15 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
                 cancelLabel: _t('Cancel'),
                 weekLabel: 'W',
                 customRangeLabel: _t('Custom Range'),
-                daysOfWeek: moment.weekdaysMin(),
-                monthNames: moment.monthsShort(),
-                firstDay: moment.localeData().firstDayOfWeek()
+                daysOfWeek: weekdays,
+                monthNames: luxon.Info.months('short'),
+                firstDay: weekdays[0],
             },
             timePicker: this._isDurationWithHours(),
             timePicker24Hour: true,
         }, (start, end, _label) => {
-            this.startDate = start;
-            this.endDate = this._isDurationWithHours() ? end : end.startOf('day');
+            this.startDate = momentToLuxon(start);
+            this.endDate = this._isDurationWithHours() ? momentToLuxon(end) : momentToLuxon(end).startOf('day');
             if (this._verifyValidPeriod()) {
                 this.$('input[name=renting_dates]').change();
             }
@@ -154,24 +157,26 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
     _getDefaultRentingDate(inputName) {
         let defaultDate = this._getSearchDefaultRentingDate(inputName);
         if (defaultDate) {
-            return moment(defaultDate);
+            return deserializeDateTime(defaultDate);
         }
         // that means that the date is not in the url
         const defaultDateEl = this.el.querySelector(`input[name="default_${inputName}"]`);
         if (defaultDateEl) {
-            return moment(defaultDateEl.value);
+            return deserializeDateTime(defaultDateEl.value);
         }
         if (this.startDate) {
             // that means that the start date is already set
             const rentingDurationMs = this.rentingMinimalTime.duration * msecPerUnit[this.rentingMinimalTime.unit];
             const defaultRentingDurationMs = msecPerUnit['day']; // default duration is 1 day
-            let endDate = this.startDate.clone().add(Math.max(rentingDurationMs, defaultRentingDurationMs), 'ms');
+            let endDate = this.startDate.plus(
+                Math.max(rentingDurationMs, defaultRentingDurationMs), 'ms'
+            );
             return this._getFirstAvailableDate(endDate);
         }
         // that means that the date is not in the url and not in the hidden input
         // get the first available date based on this.rentingUnavailabilityDays
-        let date = moment().add(1, 'd');
-        return moment(this._getFirstAvailableDate(date));
+        let date = luxon.DateTime.now().plus({days: 1});
+        return this._getFirstAvailableDate(date);
     },
 
     /**
@@ -238,8 +243,8 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
      */
     _getFirstAvailableDate(date) {
         let counter = 0;
-        while (this._isInvalidDate(date) && counter < 1000) {
-            date = date.add(1, 'd');
+        while (this._isInvalidDate(luxonToMoment(date)) && counter < 1000) {
+            date = date.plus({days: 1});
             counter++;
         }
         return date;

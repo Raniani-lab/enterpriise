@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { deserializeDateTime, serializeDateTime } from "@web/core/l10n/dates";
 import WebsiteSaleDaterangePicker from '@website_sale_renting/js/website_sale_renting_daterangepicker';
 
 WebsiteSaleDaterangePicker.include({
@@ -53,17 +54,21 @@ WebsiteSaleDaterangePicker.include({
             route: "/rental/product/availabilities",
             params: {
                 product_id: productId,
-                min_date: moment(),
-                max_date: moment().add(3, 'y'),
+                min_date: serializeDateTime(luxon.DateTime.now()),
+                max_date: serializeDateTime(luxon.DateTime.now().plus({years: 3})),
             }
         }).then((result) => {
             if (result.renting_availabilities) {
-                for (const interval of result.renting_availabilities) {
-                    let utcDate = moment(interval.start);
-                    interval.start = utcDate.add(this.getSession().getTZOffset(utcDate), 'minutes');
-                    utcDate = moment(interval.end);
-                    interval.end = utcDate.add(this.getSession().getTZOffset(utcDate), 'minutes');
-                }
+                result.renting_availabilities = result.renting_availabilities.map(
+                    rentingAvailabilities => {
+                        const {start, end, ...rest} = rentingAvailabilities;
+                        return {
+                            start: deserializeDateTime(start),
+                            end: deserializeDateTime(end),
+                            ...rest
+                        }
+                    }
+                )
             }
             this.rentingAvailabilities[productId] = result.renting_availabilities || [];
             this.preparationTime = result.preparation_time;

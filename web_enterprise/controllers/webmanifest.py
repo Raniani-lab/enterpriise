@@ -7,7 +7,7 @@ import mimetypes
 from odoo import http
 from odoo.exceptions import AccessError
 from odoo.http import request
-from odoo.tools import ustr
+from odoo.tools import ustr, file_open
 
 
 class WebManifest(http.Controller):
@@ -72,15 +72,15 @@ class WebManifest(http.Controller):
     def service_worker(self):
         """ Returns a ServiceWorker javascript file scoped for the backend (aka. '/web')
         """
-        body = """
-            /**
-            * PWA "installability" criteria requires to have a listener registered
-            * for "fetch" events in the ServiceWorker, even an empty one.
-            */
-            self.addEventListener("fetch", () => {});
-        """
+        with file_open('web_enterprise/static/src/service_worker.js') as f:
+            body = f.read()
         response = request.make_response(body, [
             ('Content-Type', 'text/javascript'),
             ('Service-Worker-Allowed', '/web'),
         ])
         return response
+
+    @http.route('/web/offline', type='http', auth='public', methods=['GET'])
+    def offline(self):
+        """ Returns the offline page delivered by the service worker """
+        return request.render('web_enterprise.webclient_offline')

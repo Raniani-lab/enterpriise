@@ -65,3 +65,11 @@ class WebManifestRoutesTest(HttpCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["Content-Type"], "text/javascript")
         self.assertEqual(response.headers["Service-Worker-Allowed"], "/web")
+
+    def test_offline_url(self):
+        """
+        This route returns the offline page
+        """
+        response = self.url_open("/web/offline")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["Content-Type"], "text/html; charset=utf-8")

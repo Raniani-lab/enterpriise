@@ -60,7 +60,7 @@
                 t-esc="model.metaData.string"
             />
         </t>
-        <div class="o_gantt_header o_gantt_header_slots o_gantt_grid_columns position-sticky top-0 bg-view">
+        <div class="o_gantt_header o_gantt_header_slots o_gantt_grid_columns position-sticky top-0 border-start bg-view">
             <b class="o_gantt_header_scale d-flex align-items-center justify-content-center" t-esc="getFormattedFocusDate()" />
             <t t-set="formats" t-value="{'week': 'cccc, d', 'month': 'dd', 'year': env.isSmall ? 'MMM' : 'MMMM'}"/>
             <t t-foreach="columns" t-as="column" t-key="column.id">

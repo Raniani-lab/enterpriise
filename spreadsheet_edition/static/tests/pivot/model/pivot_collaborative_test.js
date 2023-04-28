@@ -13,7 +13,7 @@ import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 /**
  * Get a pivot definition, a data source and a pivot model (already loaded)
  */
-async function getPivotReady(model) {
+async function getPivotReady(model, pivotId) {
     const definition = {
         metaData: {
             colGroupBys: ["foo"],
@@ -29,7 +29,12 @@ async function getPivotReady(model) {
         },
         name: "Partner",
     };
-    const dataSource = model.config.custom.dataSources.create(PivotDataSource, definition);
+    const dataSourceId = model.getters.getPivotDataSourceId(pivotId);
+    const dataSource = model.config.custom.dataSources.add(
+        dataSourceId,
+        PivotDataSource,
+        definition
+    );
     await dataSource.load();
     return { definition, dataSource };
 }
@@ -53,15 +58,12 @@ function insertPreloadedPivot(model, params) {
         rows,
         measures,
     };
-    const dataSourceId = params.dataSourceId || "data";
-    model.config.custom.dataSources._dataSources[dataSourceId] = dataSource;
     model.dispatch("INSERT_PIVOT", {
         sheetId,
         col: params.anchor ? params.anchor[0] : 0,
         row: params.anchor ? params.anchor[1] : 0,
         table,
-        id: "1",
-        dataSourceId,
+        id: params.pivotId,
         definition,
     });
     const columns = [];
@@ -76,10 +78,11 @@ function insertPreloadedPivot(model, params) {
  * @param {Model} model
  */
 export async function insertPivot(model) {
-    const { definition, dataSource } = await getPivotReady(model);
+    const { definition, dataSource } = await getPivotReady(model, "1");
     insertPreloadedPivot(model, {
         definition,
         dataSource,
+        pivotId: "1",
     });
     await waitForDataSourcesLoaded(model);
 }
@@ -134,19 +137,19 @@ QUnit.test("Add a pivot", async (assert) => {
 
 QUnit.test("Add two pivots concurrently", async (assert) => {
     assert.expect(6);
-    const { definition: def1, dataSource: ds1 } = await getPivotReady(alice);
-    const { definition: def2, dataSource: ds2 } = await getPivotReady(bob);
+    const { definition: def1, dataSource: ds1 } = await getPivotReady(alice, "1");
+    const { definition: def2, dataSource: ds2 } = await getPivotReady(bob, "1");
     await network.concurrent(() => {
         insertPreloadedPivot(alice, {
             definition: def1,
             dataSource: ds1,
-            dataSourceId: "data1",
+            pivotId: "1",
         });
         insertPreloadedPivot(bob, {
             definition: def2,
             dataSource: ds2,
-            dataSourceId: "data2",
             anchor: [0, 25],
+            pivotId: "1",
         });
     });
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => user.getters.getPivotIds(), [
@@ -184,7 +187,7 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
 });
 
 QUnit.test("Add a pivot in another sheet", async (assert) => {
-    const { definition: def1, dataSource: ds1 } = await getPivotReady(alice);
+    const { definition: def1, dataSource: ds1 } = await getPivotReady(alice, "1");
     alice.dispatch("CREATE_SHEET", {
         sheetId: "sheetId",
         name: "Sheet",
@@ -196,7 +199,7 @@ QUnit.test("Add a pivot in another sheet", async (assert) => {
     insertPreloadedPivot(alice, {
         definition: def1,
         dataSource: ds1,
-        dataSourceId: "data1",
+        pivotId: "1",
     });
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => user.getters.getPivotIds(), [
         "1",

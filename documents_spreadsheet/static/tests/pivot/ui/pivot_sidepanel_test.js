@@ -11,7 +11,7 @@ import {
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetFromPivotView } from "../../utils/pivot_helpers";
-import PivotPlugin from "@spreadsheet/pivot/plugins/pivot_core_plugin";
+import PivotUIPlugin from "@spreadsheet/pivot/plugins/pivot_ui_plugin";
 import { insertPivotInSpreadsheet } from "@spreadsheet/../tests/utils/pivot";
 
 const { cellMenuRegistry } = spreadsheet.registries;
@@ -237,7 +237,7 @@ QUnit.module(
             async function (assert) {
                 const { model, env } = await createSpreadsheetFromPivotView();
                 const pivotPlugin = model["handlers"].find(
-                    (handler) => handler instanceof PivotPlugin
+                    (handler) => handler instanceof PivotUIPlugin
                 );
                 const dataSource = Object.values(pivotPlugin.dataSources._dataSources)[0];
                 // remove all loading promises and the model to simulate the data source is not loaded

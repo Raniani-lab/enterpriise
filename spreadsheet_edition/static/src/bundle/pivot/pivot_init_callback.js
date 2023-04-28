@@ -23,7 +23,8 @@ export function insertPivot(pivotData) {
         name: pivotData.name,
     };
     return async (model) => {
-        const dataSourceId = uuidGenerator.uuidv4();
+        const pivotId = model.getters.getNextPivotId();
+        const dataSourceId = model.getters.getPivotDataSourceId(pivotId);
         model.config.custom.dataSources.add(dataSourceId, PivotDataSource, definition);
         await model.config.custom.dataSources.load(dataSourceId);
         const pivotDataSource = model.config.custom.dataSources.get(dataSourceId);
@@ -43,15 +44,17 @@ export function insertPivot(pivotData) {
 
         const defWithoutFields = JSON.parse(JSON.stringify(definition));
         defWithoutFields.metaData.fields = undefined;
-        model.dispatch("INSERT_PIVOT", {
+        const result = model.dispatch("INSERT_PIVOT", {
             sheetId,
             col: 0,
             row: 0,
             table,
-            id: model.getters.getNextPivotId(),
-            dataSourceId,
+            id: pivotId,
             definition: defWithoutFields,
         });
+        if (!result.isSuccessful) {
+            throw new Error(`Couldn't insert pivot in spreadsheet. Reasons : ${result.reasons}`);
+        }
         const columns = [];
         for (let col = 0; col <= table.cols[table.cols.length - 1].length; col++) {
             columns.push(col);

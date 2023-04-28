@@ -5,6 +5,8 @@
         <t t-call="base.onboarding_step">
             <t t-set="title">The Scope of Consolidation</t>
             <t t-set="description">Define the companies that should be consolidated &amp; the target currency</t>
+            <t t-set="image" t-value="'/base/static/img/onboarding_company-data.png'"/>
+            <t t-set="alt" t-value="'Onboarding The Scope of Consolidation'"/>
             <t t-set="btn_text">Define</t>
             <t t-set="done_text">Scope of Consolidation defined!</t>
             <t t-set="method" t-value="'setting_consolidation_action'"/>
@@ -18,6 +20,8 @@
             <t t-set="description">Setup your consolidated accounts and their currency conversion method.
                 Then map them with the companies accounts.
             </t>
+            <t t-set="image" t-value="'/base/static/img/onboarding_puzzle.png'"/>
+            <t t-set="alt" t-value="'Onboarding Chart of Accounts'"/>
             <t t-set="btn_text">Setup</t>
             <t t-set="done_text">Chart of account set!</t>
             <t t-set="method" t-value="'setting_consolidated_chart_of_accounts_action'"/>
@@ -29,6 +33,8 @@
         <t t-call="base.onboarding_step">
             <t t-set="title">Analysis period</t>
             <t t-set="description">Create your first analysis period &amp; set the currency rates.</t>
+            <t t-set="image" t-value="'/base/static/img/onboarding_chart-of-accounts.png'"/>
+            <t t-set="alt" t-value="'Onboarding Analysis Period'"/>
             <t t-set="btn_text">Create</t>
             <t t-set="done_text">Analysis period created!</t>
             <t t-set="method" t-value="'setting_create_period_action'"/>
@@ -40,8 +46,6 @@
     <template id="account_consolidation_dashboard_onboarding_panel"
               name="account_consolidation.dashboard.onboarding.panel">
         <t t-call="base.onboarding_container">
-            <t t-set="classes" t-value="'o_onboarding_orange'"/>
-            <t t-set="bg_image" t-value="'/account/static/src/img/account_dashboard_onboarding_bg.jpg'"/>
             <t t-set="close_method" t-value="'action_close_account_dashboard_onboarding'"/>
             <t t-set="close_model" t-value="'res.company'"/>
 

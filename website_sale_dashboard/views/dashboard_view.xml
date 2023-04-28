@@ -81,6 +81,8 @@
             <t t-call="base.onboarding_step">
                 <t t-set="title">Online Payments</t>
                 <t t-set="description">Enable credit &amp; debit card payments supported by Stripe</t>
+                <t t-set="image" t-value="'/base/static/img/onboarding_bank-account.png'"/>
+                <t t-set="alt" t-value="'Online Payments'"/>
                 <t t-set="btn_text">Activate Stripe</t>
                 <t t-set="done_text">Online payments enabled</t>
                 <t t-set="model" t-value="'res.company'" />
@@ -91,8 +93,6 @@
 
         <template id="website_sale_dashboard_onboarding_panel" name="website.sale.dashboard.onboarding.panel">
             <t t-call="base.onboarding_container">
-                <t t-set="classes" t-valuef="o_onboarding_orange"/>
-                <t t-set="bg_image" t-translation="off">/website_sale_dashboard/static/src/img/website_sale_dashboard_onboarding_bg.jpg</t>
                 <t t-set="close_method" t-valuef="action_close_website_sale_dashboard_onboarding"/>
                 <t t-set="close_model" t-valuef="res.company"/>
                 <t t-set="text_completed">The configuration is done. Happy selling!</t>

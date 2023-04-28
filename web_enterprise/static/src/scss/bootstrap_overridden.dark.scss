@@ -108,7 +108,7 @@ $card-bg: $card-cap-bg !default;
 
 
 // == Popovers
-$popover-bg: $o-gray-300 !default;
+$popover-bg: mix($o-gray-300, $o-gray-200, 20%) !default;
 
 // == Toasts
 

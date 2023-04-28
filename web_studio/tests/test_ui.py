@@ -747,7 +747,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
 
         expected = '''
             <tree>
-               <field name="display_name" on_change="1" modifiers="{modifiers}"/>
+               <field name="display_name" modifiers="{modifiers}"/>
                {xml_stringified}
              </tree>
         '''.format(modifiers="{&quot;readonly&quot;: true}", xml_stringified=etree.tostring(xml_temp).decode("utf-8"))

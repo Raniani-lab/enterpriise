@@ -55,10 +55,11 @@ class SocialLivePost(models.Model):
         for live_post in self:
             live_post.live_post_link = False
 
-    def name_get(self):
+    def _compute_display_name(self):
         """ ex: [Facebook] Odoo Social: posted, [Twitter] Mitchell Admin: failed, ... """
-        state_description_values = {elem[0]: elem[1] for elem in self._fields['state']._description_selection(self.env)}
-        return [(live_post.id, '%s: %s' % (live_post.account_id.display_name, state_description_values.get(live_post.state))) for live_post in self]
+        state_description_values = dict(self._fields['state']._description_selection(self.env))
+        for live_post in self:
+            live_post.display_name = f'{live_post.account_id.display_name}: {state_description_values.get(live_post.state)}'
 
     @api.model_create_multi
     def create(self, vals_list):

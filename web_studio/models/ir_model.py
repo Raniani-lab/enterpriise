@@ -176,7 +176,7 @@ class IrModel(models.Model):
     def name_create(self, name):
         if self._context.get('studio'):
             (main_model, _) = self.studio_model_create(name)
-            return main_model.name_get()[0]
+            return main_model.id, main_model.display_name
         return super().name_create(name)
 
     def _create_option_lines(self, model_vals):
@@ -603,10 +603,11 @@ class IrModelField(models.Model):
             return ['name', 'field_description', 'model', 'model_id.name']
         return ['field_description']
 
-    def name_get(self):
-        if self.env.context.get('studio'):
-            return [(field.id, "%s (%s)" % (field.field_description, field.model_id.name)) for field in self]
-        return super(IrModelField, self).name_get()
+    def _compute_display_name(self):
+        if not self.env.context.get('studio'):
+            return super()._compute_display_name()
+        for field in self:
+            field.display_name = f"{field.field_description} ({field.model_id.name})"
 
     @api.constrains('name')
     def _check_name(self):

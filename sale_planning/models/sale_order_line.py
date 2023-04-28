@@ -69,25 +69,17 @@ class SaleOrderLine(models.Model):
         self.filtered(lambda sol: not sol.is_expense)._post_process_planning_sale_line()
         return res
 
-    def name_get(self):
-        res = super().name_get()
-        with_planning_remaining_hours = self.env.context.get('with_planning_remaining_hours')
-        if not with_planning_remaining_hours:
-            return res
-        names = dict(res)
-        res = []
+    def _compute_display_name(self):
+        super()._compute_display_name()
+        if not self.env.context.get('with_planning_remaining_hours'):
+            return
         remaining = _("remaining")
         for line in self:
-            name = names.get(line.id)
+            name = line.display_name
             if line.product_id.planning_enabled:
                 remaining_hours = line.planning_hours_to_plan - line.planning_hours_planned
-                name = '{name} ({duration} {remaining})'.format(
-                    name=name,
-                    duration=format_duration(remaining_hours),
-                    remaining=remaining,
-                )
-            res.append((line.id, name))
-        return res
+                name = f'{name} ({format_duration(remaining_hours)} {remaining})'
+            line.display_name = name
 
     # -----------------------------------------------------------------
     # Business methods

@@ -199,20 +199,14 @@ class SocialPost(models.Model):
             values['live_post_link'] = live_posts[0].live_post_link if len(live_posts) >= 1 else False
         return values
 
-    def name_get(self):
+    def _compute_display_name(self):
         """ We use the first 20 chars of the message (or "Post" if no message yet).
         We also add "(Draft)" at the end if the post is still in draft state. """
-        result = []
         for post in self:
-            result.append((
-                post.id,
-                self._prepare_post_name(
-                    post.message,
-                    state=post.state if post.state == 'draft' else False
-                )
-            ))
-
-        return result
+            post.display_name = self._prepare_post_name(
+                post.message,
+                state=post.state if post.state == 'draft' else False,
+            )
 
     @api.model
     def default_get(self, fields):

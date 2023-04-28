@@ -24,9 +24,6 @@ class CompanyActivities(models.Model):
     active = fields.Boolean('Active', help='Allows you to hide the activity without removing it.', default=True)
 
     @api.model
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for record in self:
-            name = '(%s) %s' % (record.code, record.name)
-            result.append((record.id, name))
-        return result
+            record.display_name = f'({record.code}) {record.name}'

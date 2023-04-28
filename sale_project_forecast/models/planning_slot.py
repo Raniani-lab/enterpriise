@@ -28,11 +28,11 @@ class PlanningSlot(models.Model):
     # ORM Override
     # -----------------------------------------------------------------
 
-    def _name_get_fields(self):
-        """ List of fields that can be displayed in the name_get """
+    def _display_name_fields(self):
+        """ List of fields that can be displayed in the display_name """
         # Ensure this will be displayed in the right order
-        name_get_fields = [item for item in super()._name_get_fields() if item not in ['sale_line_id', 'project_id']]
-        return name_get_fields + ['project_id', 'sale_line_id']
+        display_name_fields = [item for item in super()._display_name_fields() if item not in ['sale_line_id', 'project_id']]
+        return display_name_fields + ['project_id', 'sale_line_id']
 
     # -----------------------------------------------------------------
     # Business methods

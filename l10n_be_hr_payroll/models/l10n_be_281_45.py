@@ -135,11 +135,9 @@ class L10nBe28145(models.Model):
                 record.xml_validation_state = 'invalid'
                 record.error_message = str(err)
 
-    def name_get(self):
-        return [(
-            record.id,
-            '%s%s' % (record.reference_year, _('- Test') if record.is_test else '')
-        ) for record in self]
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = f'{record.reference_year}{_("- Test") if record.is_test else ""}'
 
     def _check_employees_configuration(self, employees):
         invalid_employees = employees.filtered(lambda e: not (e.company_id and e.company_id.street and e.company_id.zip and e.company_id.city and e.company_id.phone and e.company_id.vat))

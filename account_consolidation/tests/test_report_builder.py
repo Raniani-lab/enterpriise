@@ -340,9 +340,9 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
             },
             {
                 'id': account_line_id,
-                'name': '%s' % section.child_ids[0].account_ids[0].name_get()[0][1],
+                'name': '%s' % section.child_ids[0].account_ids[0].display_name,
                 'title_hover': '%s (Closing Rate Currency Conversion Method)' %
-                               section.child_ids[0].account_ids[0].name_get()[0][1],
+                               section.child_ids[0].account_ids[0].display_name,
                 'columns': [
                     {
                         'name': f'1,000.00{NON_BREAKING_SPACE}€',

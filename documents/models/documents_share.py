@@ -65,11 +65,9 @@ class DocumentShare(models.Model):
         ('share_unique', 'unique (access_token)', "This access token already exists"),
     ]
 
-    def name_get(self):
-        name_array = []
+    def _compute_display_name(self):
         for record in self:
-            name_array.append((record.id, record.name or "unnamed link"))
-        return name_array
+            record.display_name = record.name or "unnamed link"
 
     def _get_documents_domain(self):
         """

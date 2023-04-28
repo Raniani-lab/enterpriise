@@ -116,11 +116,9 @@ class SocialPostTemplate(models.Model):
         res._set_attachemnt_res_id()
         return res
 
-    def name_get(self):
-        return [
-            (record.id, record.message if len(record.message) < 50 else '%s...' % record.message[:47])
-            for record in self
-        ]
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = record.message if len(record.message) < 50 else f'{record.message[:47]}...'
 
     def action_generate_post(self):
         self.ensure_one()

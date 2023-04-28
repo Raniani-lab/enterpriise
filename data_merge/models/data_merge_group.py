@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, fields
+from odoo import models, api, fields, _
 from odoo.models import MAGIC_COLUMNS
 from odoo.osv import expression
 from odoo.tools import split_every
@@ -29,13 +29,9 @@ class DataMergeGroup(models.Model):
         compute='_compute_similarity', store=True)
     record_ids = fields.One2many('data_merge.record', 'group_id')
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for group in self:
-            name = '%s - Similarity: %s%%' % (group.model_id.name, int(group.similarity * 100))
-            result.append((group.id, name))
-
-        return result
+            group.display_name = _('%s - Similarity: %s%%', group.model_id.name, int(group.similarity * 100))
 
     def _get_similarity_fields(self):
         self.ensure_one()

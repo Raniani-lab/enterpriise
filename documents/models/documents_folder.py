@@ -32,15 +32,13 @@ class DocumentFolder(models.Model):
 
         return res
 
-    def name_get(self):
-        name_array = []
+    def _compute_display_name(self):
         hierarchical_naming = self.env.context.get('hierarchical_naming', True)
         for record in self:
             if hierarchical_naming and record.parent_folder_id:
-                name_array.append((record.id, "%s / %s" % (record.parent_folder_id.sudo().name, record.name)))
+                record.display_name = f"{record.parent_folder_id.sudo().name} / {record.name}"
             else:
-                name_array.append((record.id, record.name))
-        return name_array
+                record.display_name = record.name
 
     company_id = fields.Many2one('res.company', 'Company',
                                  help="This workspace will only be available to the selected company")

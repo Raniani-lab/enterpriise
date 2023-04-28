@@ -385,16 +385,13 @@ class HelpdeskTicket(models.Model):
     # ORM overrides
     # ------------------------------------------------------------
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         display_partner_name = self._context.get('with_partner', False)
         for ticket in self:
             name = f'{ticket.name} (#{ticket.ticket_ref})'
-            if display_partner_name:
-                if ticket.partner_name:
-                    name += f' - {ticket.partner_name}'
-            result.append((ticket.id, name))
-        return result
+            if display_partner_name and ticket.partner_name:
+                name += f' - {ticket.partner_name}'
+            ticket.display_name = name
 
     @api.model
     def get_empty_list_help(self, help_message):

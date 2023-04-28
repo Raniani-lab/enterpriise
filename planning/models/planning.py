@@ -754,13 +754,12 @@ class Planning(models.Model):
             """ % {'table_name': self._table}
             self.env.cr.execute(query)
 
-    def name_get(self):
+    def _compute_display_name(self):
         group_by = self.env.context.get('group_by', [])
-        field_list = [fname for fname in self._name_get_fields() if fname not in group_by]
+        field_list = [fname for fname in self._display_name_fields() if fname not in group_by]
 
         # Sudo as a planning manager is not able to read private project if he is not project manager.
         self = self.sudo()
-        result = []
         for slot in self.with_context(hide_partner_ref=True):
             # label part, depending on context `groupby`
             name_values = [
@@ -772,10 +771,9 @@ class Planning(models.Model):
 
             # add unicode bubble to tell there is a note
             if slot.name:
-                name = u'%s \U0001F4AC' % name
+                name = f'{name} \U0001F4AC'
 
-            result.append([slot.id, name or ''])
-        return result
+            slot.display_name = name or ''
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -1701,8 +1699,8 @@ class Planning(models.Model):
                     new_slot_values += self._merge_slots_values(split_slot_values, unassigned_interval)
         return new_slot_values
 
-    def _name_get_fields(self):
-        """ List of fields that can be displayed in the name_get """
+    def _display_name_fields(self):
+        """ List of fields that can be displayed in the display_name """
         return ['resource_id', 'role_id']
 
     def _get_fields_breaking_publication(self):
@@ -2182,8 +2180,7 @@ class PlanningPlanning(models.Model):
 
     def _compute_display_name(self):
         """ This override is need to have a human readable string in the email light layout header (`message.record_name`) """
-        for planning in self:
-            planning.display_name = _('Planning')
+        self.display_name = _('Planning')
 
     # ----------------------------------------------------
     # Business Methods

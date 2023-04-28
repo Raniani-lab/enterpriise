@@ -421,7 +421,7 @@ class StudioApprovalRule(models.Model):
                         'id': new_entry.id,
                         'approved': True,
                         'rule_id': [rule_id, False],
-                        'user_id': self.env.user.name_get()[0]
+                        'user_id': (self.env.user.id, self.env.user.display_name),
                     })
                     entries_by_rule[rule_id] = True
                 except UserError:

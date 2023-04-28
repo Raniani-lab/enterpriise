@@ -30,15 +30,11 @@ class Employee(models.Model):
         ('employee_token_unique', 'unique(employee_token)', 'Error: each employee token must be unique')
     ]
 
-    def name_get(self):
+    def _compute_display_name(self):
         if not self.env.context.get('show_job_title'):
-            return super().name_get()
-        return [(employee.id, employee._get_employee_name_with_job_title()) for employee in self]
-
-    def _get_employee_name_with_job_title(self):
-        if self.job_title:
-            return "%s (%s)" % (self.name, self.job_title)
-        return self.name
+            return super()._compute_display_name()
+        for employee in self:
+            employee.display_name = f"{employee.name} ({employee.job_title})" if employee.job_title else employee.name
 
     def _init_column(self, column_name):
         # to avoid generating a single default employee_token when installing the module,

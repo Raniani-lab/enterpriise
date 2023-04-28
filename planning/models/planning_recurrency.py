@@ -40,15 +40,13 @@ class PlanningRecurrency(models.Model):
             if any(recurrency.company_id != planning.company_id for planning in recurrency.slot_ids):
                 raise ValidationError(_('An shift must be in the same company as its recurrency.'))
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for recurrency in self:
             if recurrency.repeat_type == 'forever':
-                name = _('Forever, every %s week(s)') % (recurrency.repeat_interval,)
+                name = _('Forever, every %s week(s)', recurrency.repeat_interval)
             else:
-                name = _('Every %s week(s) until %s') % (recurrency.repeat_interval, recurrency.repeat_until)
-            result.append([recurrency.id, name])
-        return result
+                name = _('Every %s week(s) until %s', recurrency.repeat_interval, recurrency.repeat_until)
+            recurrency.display_name = name
 
     @api.model
     def _cron_schedule_next(self):

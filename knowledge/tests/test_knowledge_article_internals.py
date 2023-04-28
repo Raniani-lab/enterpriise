@@ -105,8 +105,8 @@ class TestKnowledgeArticleFields(KnowledgeCommonWData):
 class TestKnowledgeArticleInternals(KnowledgeCommonWData):
     """ Testing model/ORM overrides """
 
-    def test_name_get(self):
-        """ Test our custom name_get / name_search / name_create. """
+    def test_display_name(self):
+        """ Test our custom display_name / name_search / name_create. """
 
         KnowledgeArticle = self.env['knowledge.article']
         icon_placeholder = KnowledgeArticle._get_no_icon_placeholder()
@@ -142,7 +142,7 @@ class TestKnowledgeArticleInternals(KnowledgeCommonWData):
         ):
             self.assertEqual(
                 KnowledgeArticle.name_search(name=search_input, operator='ilike'),
-                expected_articles.name_get(),
+                [(rec.id, rec.display_name) for rec in expected_articles],
                 "Not matching for input '%s'" % search_input,
             )
 
@@ -163,7 +163,7 @@ class TestKnowledgeArticleInternals(KnowledgeCommonWData):
         ):
             self.assertEqual(
                 KnowledgeArticle.name_search(name=search_input, operator='='),
-                expected_articles.name_get(),
+                [(rec.id, rec.display_name) for rec in expected_articles],
                 "Not matching for input '%s'" % search_input,
             )
 
@@ -178,7 +178,7 @@ class TestKnowledgeArticleInternals(KnowledgeCommonWData):
              ('Article With Icon', icon_placeholder),
              ('Article With Icon', '🚀')]
         ):
-            # result of name_create is a name_get
+            # result of name_create is a display_name
             new_article = KnowledgeArticle.browse(KnowledgeArticle.name_create(create_input)[0])
             self.assertEqual(new_article.name, expected_name)
             self.assertEqual(new_article.icon, expected_icon)

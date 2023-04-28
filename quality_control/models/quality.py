@@ -296,20 +296,18 @@ class QualityAlert(models.Model):
         }
 
     @api.depends('name', 'title')
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for record in self:
             name = record.name + ' - ' + record.title if record.title else record.name
-            result.append((record.id, name))
-        return result
+            record.display_name = name
 
     @api.model
     def name_create(self, name):
         """ Create an alert with name_create should use prepend the sequence in the name """
-        values = {
+        record = self.create({
             'title': name,
-        }
-        return self.create(values).name_get()[0]
+        })
+        return record.id, record.display_name
 
     @api.model
     def message_new(self, msg_dict, custom_values=None):

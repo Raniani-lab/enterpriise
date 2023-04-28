@@ -25,23 +25,16 @@ class AccountDisallowedExpensesCategory(models.Model):
 
     @api.depends('current_rate')
     def _compute_display_name(self):
-        return super()._compute_display_name()
+        for record in self:
+            rate = record.current_rate or _('No Rate')
+            name = f'{record.code} - {record.name} ({rate})'
+            record.display_name = name
 
     @api.depends('rate_ids')
     def _compute_current_rate(self):
         rates = self._get_current_rates()
         for rec in self:
             rec.current_rate = ('%g%%' % rates[rec.id]) if rates.get(rec.id) else None
-
-    def name_get(self):
-        if not self.ids:
-            return []
-        result = []
-        for record in self:
-            rate = record.current_rate or _('No Rate')
-            name = '%s - %s (%s)' % (record.code, record.name, rate)
-            result.append((record.id, name))
-        return result
 
     def _get_current_rates(self):
         sql = """

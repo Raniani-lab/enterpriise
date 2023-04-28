@@ -10,8 +10,6 @@ class L10nPEPleUsage(models.Model):
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for prod in self:
-            result.append((prod.id, "%s %s" % (prod.code, prod.name or "")))
-        return result
+            prod.display_name = f"{prod.code} {prod.name or ''}"

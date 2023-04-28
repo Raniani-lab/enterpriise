@@ -10,9 +10,6 @@ class CustomsPort(models.Model):
     code = fields.Integer(required=True)
     country_id = fields.Many2one(comodel_name='res.country', required=True)
 
-    def name_get(self):
-        res = []
+    def _compute_display_name(self):
         for port in self:
-            name = '(%s) %s' % (port.code, port.name)
-            res.append((port.id, name))
-        return res
+            port.display_name = f'({port.code}) {port.name}'

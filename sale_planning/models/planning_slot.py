@@ -125,9 +125,9 @@ class PlanningSlot(models.Model):
                     res['end_datetime'] = res['start_datetime'] + timedelta(hours=remaining_hours_to_plan)
         return res
 
-    def _name_get_fields(self):
-        """ List of fields that can be displayed in the name_get """
-        return ['partner_id'] + super()._name_get_fields() + ['sale_line_id']
+    def _display_name_fields(self):
+        """ List of fields that can be displayed in the display_name """
+        return ['partner_id'] + super()._display_name_fields() + ['sale_line_id']
 
     @api.model_create_multi
     def create(self, vals_list):

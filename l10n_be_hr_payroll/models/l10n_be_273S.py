@@ -62,11 +62,9 @@ class L10nBe273S(models.Model):
     ], default='normal', compute='_compute_validation_state', store=True)
     error_message = fields.Char('Error Message', compute='_compute_validation_state', store=True)
 
-    def name_get(self):
-        return [(
-            record.id,
-            format_date(self.env, record.period, date_format="MMMM y", lang_code=self.env.user.lang)
-        ) for record in self]
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = format_date(self.env, record.period, date_format="MMMM y", lang_code=self.env.user.lang)
 
     @api.depends('year', 'month')
     def _compute_period(self):

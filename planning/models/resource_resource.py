@@ -63,13 +63,11 @@ class ResourceResource(models.Model):
             self.env['hr.employee'].sudo().with_context(from_planning=False).create(create_vals)
         return resources
 
-    def name_get(self):
+    def _compute_display_name(self):
         if not self.env.context.get('show_job_title'):
-            return super().name_get()
-        return [(
-            resource.id,
-            resource.employee_id._get_employee_name_with_job_title() if resource.employee_id else resource.name,
-        ) for resource in self]
+            return super()._compute_display_name()
+        for resource in self:
+            resource.display_name = resource.employee_id.display_name if resource.employee_id else resource.name
 
     def action_archive(self):
         res = super().action_archive()

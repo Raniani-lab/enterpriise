@@ -43,8 +43,8 @@ class PlanningShift(models.Model):
         result.append('project_id')
         return result
 
-    def _name_get_fields(self):
-        return  super()._name_get_fields() + ['project_id']
+    def _display_name_fields(self):
+        return  super()._display_name_fields() + ['project_id']
 
     def _prepare_template_values(self):
         result = super(PlanningShift, self)._prepare_template_values()

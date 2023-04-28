@@ -97,15 +97,13 @@ class PlanningTemplate(models.Model):
             timedelta(hours=end_datetime.hour, minutes=end_datetime.minute).total_seconds() / 3600,
         )
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for shift_template in self:
-            name = '%s %s' % (
+            name = '{} {}'.format(
                 shift_template.name,
-                shift_template.role_id.name if shift_template.role_id.name is not False else ''
+                shift_template.role_id.name if shift_template.role_id.name is not False else '',
             )
-            result.append([shift_template.id, name])
-        return result
+            shift_template.display_name = name
 
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):

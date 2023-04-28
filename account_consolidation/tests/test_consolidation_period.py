@@ -427,7 +427,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
         ap = self._create_analysis_period(start_date='2019-01-01', end_date='2019-01-31')
         cp = self._create_company_period(period=ap, start_date='2019-01-01', end_date='2019-01-31')
         expected_str = cp.company_name
-        self.assertEqual(expected_str, cp._get_display_name())
+        self.assertEqual(expected_str, cp.display_name)
 
         # SAME MONTH & YEAR
         cp.write({
@@ -435,7 +435,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
             'date_company_end': datetime.strptime('2019-02-28', '%Y-%m-%d')
         })
         expected_str = cp.company_name + ' (' + cp.date_company_begin.strftime('%b %Y') + ')'
-        self.assertEqual(expected_str, cp._get_display_name())
+        self.assertEqual(expected_str, cp.display_name)
 
         # SAME MONTH BUT DIFFERENT YEAR
         cp.write({
@@ -444,7 +444,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
         })
         expected_str = cp.company_name + ' (' + '-'.join((cp.date_company_begin.strftime('%b %Y'),  # Jan 2019-Jan 2020
                                                           cp.date_company_end.strftime('%b %Y'))) + ')'
-        self.assertEqual(expected_str, cp._get_display_name())
+        self.assertEqual(expected_str, cp.display_name)
 
         # SAME YEAR BUT DIFFERENT YEAR
         cp.write({
@@ -453,7 +453,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
         })
         expected_str = cp.company_name + ' (' + '-'.join((cp.date_company_begin.strftime('%b'),  # # Jan-Dec 2019
                                                           cp.date_company_end.strftime('%b %Y'))) + ')'
-        self.assertEqual(expected_str, cp._get_display_name())
+        self.assertEqual(expected_str, cp.display_name)
 
         # DIFFERENT YEAR AND MONTH
         cp.write({
@@ -462,7 +462,7 @@ class TestConsolidationCompanyPeriod(AccountConsolidationTestCase):
         })
         expected_str = cp.company_name + ' (' + '-'.join((cp.date_company_begin.strftime('%b %Y'),  # Jan 2019-Jun 2020
                                                           cp.date_company_end.strftime('%b %Y'))) + ')'
-        self.assertEqual(expected_str, cp._get_display_name())
+        self.assertEqual(expected_str, cp.display_name)
 
     @patch(
         'odoo.addons.account_consolidation.models.consolidation_period.ConsolidationCompanyPeriod._get_total_balance_and_audit_lines',

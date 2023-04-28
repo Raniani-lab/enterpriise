@@ -73,13 +73,9 @@ class ResPartner(models.Model):
         groups='account.group_account_readonly,account.group_account_invoice',
     )
 
-    def _get_name(self):
-        # OVERRIDE base/models/res_partner.py
-        name = super()._get_name()
-        # Add a placeholder name for the followup address
-        if self.type == 'followup' and not self.name:
-            name += dict(self.fields_get(['type'])['type']['selection'])[self.type]
-        return name
+    @property
+    def _complete_name_displayed_types(self):
+        return super()._complete_name_displayed_types + ('followup',)
 
     def _search_status(self, operator, value):
         """

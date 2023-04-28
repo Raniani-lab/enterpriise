@@ -9,11 +9,9 @@ class AccountDisallowedExpensesCategory(models.Model):
 
     car_category = fields.Boolean('Car Category', help='This checkbox makes the vehicle mandatory while booking a vendor bill.')
 
-    def name_get(self):
-        res = super().name_get()
+    def _compute_display_name(self):
+        super()._compute_display_name()
         # Do no display the rate in the name for car expenses
-        for i in range(len(res)):
-            category = self.browse(res[i][0])
+        for category in self:
             if category.car_category:
-                res[i] = (res[i][0], '%s - %s' % (category.code, category.name))
-        return res
+                category.display_name = f'{category.code} - {category.name}'

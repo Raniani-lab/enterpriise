@@ -104,15 +104,10 @@ class AppointmentSlot(models.Model):
         self.ensure_one()
         return self.end_hour if self.end_hour else 24
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         weekdays = dict(self._fields['weekday'].selection)
         for slot in self:
             if slot.slot_type == 'recurring':
-                result.append((
-                    slot.id,
-                    "%s, %02d:%02d - %02d:%02d" % (weekdays.get(slot.weekday), int(slot.start_hour), int(round((slot.start_hour % 1) * 60)), int(slot.end_hour), int(round((slot.end_hour % 1) * 60)))
-                ))
+                slot.display_name = "%s, %02d:%02d - %02d:%02d" % (weekdays.get(slot.weekday), int(slot.start_hour), int(round((slot.start_hour % 1) * 60)), int(slot.end_hour), int(round((slot.end_hour % 1) * 60)))
             else:
-                result.append((slot.id, "%s - %s" % (slot.start_datetime, slot.end_datetime)))
-        return result
+                slot.display_name = f"{slot.start_datetime} - {slot.end_datetime}"

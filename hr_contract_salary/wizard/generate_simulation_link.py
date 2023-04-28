@@ -113,8 +113,9 @@ class GenerateSimulationLink(models.TransientModel):
         else:
             self.contract_id = self.employee_job_id.default_contract_id
 
-    def name_get(self):
-        return [(w.id, w.employee_id.name or w.applicant_id.partner_name) for w in self]
+    def _compute_display_name(self):
+        for w in self:
+            w.display_name = w.employee_id.name or w.applicant_id.partner_name
 
     def send_offer(self):
         if self.env.context.get('active_model') == "hr.applicant" and not self.applicant_id.partner_name:

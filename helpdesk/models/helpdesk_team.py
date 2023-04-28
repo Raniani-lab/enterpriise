@@ -325,16 +325,14 @@ class HelpdeskTeam(models.Model):
     # ORM overrides
     # ------------------------------------------------------------
 
-    def name_get(self):
-        res = super().name_get()
+    def _compute_display_name(self):
+        super()._compute_display_name()
         if len(self.env.context.get('allowed_company_ids', [])) <= 1:
-            return res
-        name_mapping = dict(res)
+            return
         team_default_name = _('Customer Care')
         for team in self:
             if team.name == team_default_name:
-                name_mapping[team.id] = f'{name_mapping[team.id]} - {team.company_id.name}'
-        return list(name_mapping.items())
+                team.display_name = f'{team.display_name} - {team.company_id.name}'
 
     @api.model_create_multi
     def create(self, vals_list):

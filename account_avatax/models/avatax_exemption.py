@@ -12,8 +12,6 @@ class AvataxExemption(models.Model):
     valid_country_ids = fields.Many2many('res.country')
     company_id = fields.Many2one('res.company', required=True)
 
-    def name_get(self):
-        res = []
+    def _compute_display_name(self):
         for record in self:
-            res.append((record.id, '[%s] %s' % (record.code, record.name)))
-        return res
+            record.display_name = f'[{record.code}] {record.name}'

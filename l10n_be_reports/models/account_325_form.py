@@ -187,8 +187,9 @@ class Form325(models.Model):
         compute='_compute_form_281_50_total_amount',
     )
 
-    def name_get(self):
-        return [(f_325.id, f"325 - {f_325.reference_year}{' - TEST' if f_325.is_test else ''}") for f_325 in self]
+    def _compute_display_name(self):
+        for f_325 in self:
+            f_325.display_name = f"325 - {f_325.reference_year}{' - TEST' if f_325.is_test else ''}"
 
     @api.depends('form_281_50_ids')
     def _compute_form_281_50_count(self):

@@ -151,8 +151,9 @@ class Form28150(models.Model):
         readonly=True,
     )
 
-    def name_get(self):
-        return [(record.id, f"{record.reference_year} {record.partner_name}") for record in self]
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = f"{record.reference_year} {record.partner_name}"
 
     def assign_official_id(self):
         """Assigns an official_id pulled from `ir.sequence` or, if in test mode, from a simple enumerate"""

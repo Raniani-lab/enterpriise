@@ -72,12 +72,10 @@ class AccountIntrastatCode(models.Model):
         help='Date from which a code may be used.',
     )
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for r in self:
             text = r.name or r.description
-            result.append((r.id, text and '%s %s' % (r.code, text) or r.code))
-        return result
+            r.display_name = f'{r.code} {text}' if text else r.code
 
     _sql_constraints = [
         ('intrastat_region_code_unique', 'UNIQUE (code, type, country_id)', 'Triplet code/type/country_id must be unique.'),

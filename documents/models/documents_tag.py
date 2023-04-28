@@ -19,13 +19,11 @@ class Tags(models.Model):
         ('facet_name_unique', 'unique (facet_id, name)', "Tag already exists for this facet"),
     ]
 
-    def name_get(self):
-        names = []
+    def _compute_display_name(self):
         if self._context.get('simple_name'):
-            return super(Tags, self).name_get()
+            return super()._compute_display_name()
         for record in self:
-            names.append((record.id, "%s > %s" % (record.facet_id.name, record.name)))
-        return names
+            record.display_name = f"{record.facet_id.name} > {record.name}"
 
     @api.model
     def _get_tags(self, domain, folder_id):

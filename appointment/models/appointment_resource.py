@@ -69,14 +69,12 @@ class AppointmentResource(models.Model):
             resource.source_resource_ids = resource.source_resource_ids + new_resources - old_resources
             resource.destination_resource_ids = resource.destination_resource_ids - old_resources
 
-    def name_get(self):
+    def _compute_display_name(self):
         """ Display the capacity of the resource next to its name if resource_manage_capacity is enabled """
-        res = []
         for resource in self:
             resource_name_capacity = f"{resource.name} ({resource.capacity})"
             display_name = resource_name_capacity if resource.capacity > 1 else resource.name
-            res.append((resource.id, display_name))
-        return res
+            resource.display_name = display_name
 
     def _get_filtered_possible_capacity_combinations(self, asked_capacity, capacity_info):
         """ Get combinations of resources with total capacity based on the capacity needed and the resources we want.

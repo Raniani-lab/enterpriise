@@ -933,7 +933,7 @@ class Article(models.Model):
 
     @api.model
     def name_create(self, name):
-        """" This override is meant to make the 'name_create' symmetrical to the name_get.
+        """" This override is meant to make the 'name_create' symmetrical to the display_name.
         When creating an article, we attempt to extract a potential icon from the beginning of the
         name to correctly split the 'name' and 'icon' fields.
 
@@ -949,13 +949,15 @@ class Article(models.Model):
         if not icon:
             return super().name_create(name)
 
-        return self.create({
+        record = self.create({
             'name': article_name,
             'icon': icon,
-        }).name_get()[0]
+        })
+        return record.id, record.display_name
 
-    def name_get(self):
-        return [(rec.id, "%s %s" % (rec.icon or self._get_no_icon_placeholder(), rec.name or _("Untitled"))) for rec in self]
+    def _compute_display_name(self):
+        for rec in self:
+            rec.display_name = f"{rec.icon or self._get_no_icon_placeholder()} {rec.name or _('Untitled')}"
 
     def _get_no_icon_placeholder(self):
         """ Emoji used in templates as a placeholder when icon is False. It's
@@ -968,12 +970,12 @@ class Article(models.Model):
         return "📄"
 
     def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None):
-        """ This override is meant to make the 'name_search' symmetrical to the name_get.
+        """ This override is meant to make the 'name_search' symmetrical to the display_name.
         As we append the icon (emoji) before the article name, when searching based on that same
         syntax '[emoji] name' we need to return the appropriate results.
 
         This is especially important since some flows, such as exporting and re-importing records,
-        are based on name_get / name_search to match records (for example when importing the article
+        are based on display_name / name_search to match records (for example when importing the article
         parent record, without this override it will never match). """
 
         if operator not in ('=', 'ilike'):
@@ -985,7 +987,7 @@ class Article(models.Model):
 
         domain = domain or []
         if icon == self._get_no_icon_placeholder():
-            # special case using the icon placeholder (no icon stored but the name_get returns one)
+            # special case using the icon placeholder (no icon stored but the display_name returns one)
             domain = expression.AND([domain, [
                 ('name', operator, article_name),
                 '|',

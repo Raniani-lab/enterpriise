@@ -26,7 +26,7 @@ class L10nBeHrPayrollEmployeeLangWizard(models.TransientModel):
                 #This is an edge case, an employee should never not have an address
                 if not line.employee_id.address_home_id:
                     line.employee_id.sudo().address_home_id = self.env['res.partner'].sudo().create({
-                        'name': line.employee_id.name_get()[0][1],
+                        'name': line.employee_id.display_name,
                         'lang': line.lang,
                     })
                 else:

@@ -56,9 +56,10 @@ class L10nPeEdiVehicle(models.Model):
         help="The number of the vehicle's special authorization",
     )
 
-    def name_get(self):
+    def _compute_display_name(self):
         # OVERRIDE
-        return [(vehicle.id, "[%s] %s" % (vehicle.license_plate, vehicle.name)) for vehicle in self]
+        for vehicle in self:
+            vehicle.display_name = f"[{vehicle.license_plate}] {vehicle.name}"
 
     @api.model
     def _name_search(self, name, domain=None, operator='ilike', limit=None, order=None):

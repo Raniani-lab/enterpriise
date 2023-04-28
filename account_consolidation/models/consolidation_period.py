@@ -421,11 +421,9 @@ class ConsolidationPeriodComposition(models.Model):
             if comp.composed_period_id == comp.using_period_id:
                 raise ValidationError(_("The Composed Analysis Period must be different from the Analysis Period"))
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for record in self:
-            result.append((record.id, record.composed_period_id.display_name))
-        return result
+            record.display_name = record.composed_period_id.display_name
 
     def _generate_journal(self):
         """
@@ -565,11 +563,28 @@ class ConsolidationCompanyPeriod(models.Model):
             record.currencies_are_different = record.currency_chart_id != record.currency_company_id
 
     # ORM OVERRIDES
-    def name_get(self):
-        result = []
+    @api.depends('company_name', 'date_company_begin', 'date_company_end', 'period_id')
+    def _compute_display_name(self):
+        """
+        Set the display name of the company period. It's based on the dates and the analysis period dates to avoid too
+        much information to be uselessly shown.
+        """
         for record in self:
-            result.append((record.id, record._get_display_name()))
-        return result
+            generic_name = record.company_name if record.company_name else '?'
+            date_begin = record.date_company_begin if record.date_company_begin else '?'
+            date_end = record.date_company_end if record.date_company_end else '?'
+            ap = record.period_id
+            date_analysis_begin = ap.date_analysis_begin if ap.date_analysis_begin else '?'
+            date_analysis_end = ap.date_analysis_end if ap.date_analysis_end else '?'
+
+            if date_analysis_begin == date_begin and date_analysis_end == date_end:
+                record.display_name = generic_name
+            elif date_begin.month == date_end.month and date_begin.year == date_end.year:
+                record.display_name = '%s (%s)' % (generic_name, date_begin.strftime('%b %Y'))
+            elif date_begin.year == date_end.year:
+                record.display_name = '%s (%s-%s)' % (generic_name, date_begin.strftime('%b'), date_end.strftime('%b %Y'))
+            else:
+                record.display_name = '%s (%s-%s)' % (generic_name, date_begin.strftime('%b %Y'), date_end.strftime('%b %Y'))
 
     def _generate_journal(self):
         """
@@ -729,27 +744,3 @@ class ConsolidationCompanyPeriod(models.Model):
         """
         self.ensure_one()
         return (self.rate_consolidation / 100.0) * amount
-
-    def _get_display_name(self):
-        """
-        Get the display name of the company period. It's based on the dates and the analysis period dates to avoid too
-        much information to be uselessly shown.
-        :return: The computed display name
-        :rtype: str
-        """
-        self.ensure_one()
-        generic_name = self.company_name if self.company_name else '?'
-        date_begin = self.date_company_begin if self.date_company_begin else '?'
-        date_end = self.date_company_end if self.date_company_end else '?'
-        ap = self.period_id
-        date_analysis_begin = ap.date_analysis_begin if ap.date_analysis_begin else '?'
-        date_analysis_end = ap.date_analysis_end if ap.date_analysis_end else '?'
-
-        if date_analysis_begin == date_begin and date_analysis_end == date_end:
-            return generic_name
-        if date_begin.month == date_end.month and date_begin.year == date_end.year:
-            return '%s (%s)' % (generic_name, date_begin.strftime('%b %Y'))
-        elif date_begin.year == date_end.year:
-            return '%s (%s-%s)' % (generic_name, date_begin.strftime('%b'), date_end.strftime('%b %Y'))
-        else:
-            return '%s (%s-%s)' % (generic_name, date_begin.strftime('%b %Y'), date_end.strftime('%b %Y'))

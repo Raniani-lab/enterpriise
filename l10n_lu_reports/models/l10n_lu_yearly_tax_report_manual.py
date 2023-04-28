@@ -52,11 +52,9 @@ class L10nLuYearlyTaxReportManual(models.Model):
     submitted_rcs = fields.Boolean(string="Annual accounts submitted to the Trade and Companies Register (RCS)", states={'exported': [('readonly', True)]}, tracking=True)
     company_ids = fields.Many2many('res.company', string="Companies", required=True, default=_get_default_company_ids)
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for r in self:
-            result.append((r.id, _('Yearly Tax Report Manual Data') + ' (' + ', '.join(r.company_ids.mapped('name')) + ') ' + r.year))
-        return result
+            r.display_name = _('Yearly Tax Report Manual Data') + ' (' + ', '.join(r.company_ids.mapped('name')) + ') ' + r.year
 
     @api.depends("avg_nb_employees_with_salary", "avg_nb_employees_with_no_salary")
     def _compute_avg_nb_employees(self):

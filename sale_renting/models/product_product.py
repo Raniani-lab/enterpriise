@@ -8,14 +8,13 @@ class ProductProduct(models.Model):
 
     qty_in_rent = fields.Float("Quantity currently in rent", compute='_get_qty_in_rent')
 
-    def name_get(self):
-        res_names = super(ProductProduct, self).name_get()
+    def _compute_display_name(self):
+        super()._compute_display_name()
         if not self._context.get('rental_products'):
-            return res_names
-        return [
-            (res[0], self.browse(res[0]).rent_ok and _("%s (Rental)", res[1]) or res[1])
-            for res in res_names
-        ]
+            return
+        for product in self:
+            if product.rent_ok:
+                product.display_name = _("%s (Rental)", product.display_name)
 
     def _get_qty_in_rent_domain(self):
         return [

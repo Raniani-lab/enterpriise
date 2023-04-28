@@ -85,11 +85,9 @@ class L10nBe274XX(models.Model):
     xls_file = fields.Binary(string="XLS file")
     xls_filename = fields.Char()
 
-    def name_get(self):
-        return [(
-            record.id,
-            format_date(self.env, record.date_start, date_format="MMMM y", lang_code=self.env.user.lang)
-        ) for record in self]
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = format_date(self.env, record.date_start, date_format="MMMM y", lang_code=self.env.user.lang)
 
     @api.depends('year', 'month')
     def _compute_dates(self):

@@ -59,14 +59,13 @@ class ProductTemplate(models.Model):
             }
         }
 
-    def name_get(self):
-        res_names = super(ProductTemplate, self).name_get()
+    def _compute_display_name(self):
+        super()._compute_display_name()
         if not self._context.get('rental_products'):
-            return res_names
-        return [
-            (res[0], self.browse(res[0]).rent_ok and _("%s (Rental)", res[1]) or res[1])
-            for res in res_names
-        ]
+            return
+        for template in self:
+            if template.rent_ok:
+                template.display_name = _("%s (Rental)", template.display_name)
 
     def _get_contextual_price(self, product=None):
         self.ensure_one()

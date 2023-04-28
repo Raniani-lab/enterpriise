@@ -88,9 +88,10 @@ class SocialAccount(models.Model):
         for account in self:
             account.stats_link = False
 
-    def name_get(self):
+    def _compute_display_name(self):
         """ ex: [Facebook] Odoo Social, [Twitter] Mitchell Admin, ... """
-        return [(account.id, '[%s] %s' % (account.media_id.name, account.name if account.name else '')) for account in self]
+        for account in self:
+            account.display_name = f"[{account.media_id.name}] {account.name if account.name else ''}"
 
     @api.model_create_multi
     def create(self, vals_list):

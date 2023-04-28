@@ -118,11 +118,9 @@ class L10nBe28110(models.Model):
                 record.xml_validation_state = 'invalid'
                 record.error_message = str(err)
 
-    def name_get(self):
-        return [(
-            record.id,
-            '%s%s' % (record.reference_year, _('- Test') if record.is_test else '')
-        ) for record in self]
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = f'{record.reference_year}{_("- Test") if record.is_test else ""}'
 
     @api.model
     def _check_employees_configuration(self, employees):

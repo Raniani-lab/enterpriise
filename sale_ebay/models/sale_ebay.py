@@ -36,11 +36,9 @@ class EbayCategory(models.Model):
                 parent_id = parent.category_parent_id if parent.category_parent_id else '0'
             rec.full_name = name
 
-    def name_get(self):
-        result = []
+    def _compute_display_name(self):
         for cat in self:
-            result.append((cat.id, cat.full_name))
-        return result
+            cat.display_name = cat.full_name
 
     @api.model
     def _cron_sync(self, auto_commit=False):

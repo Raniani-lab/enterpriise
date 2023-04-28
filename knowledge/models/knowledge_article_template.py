@@ -45,11 +45,10 @@ class ArticleTemplate(models.Model):
          ),
     ]
 
-    def name_get(self):
-        return [(rec.id, "%s %s" % (
-            rec.icon or self.env["knowledge.article"]._get_no_icon_placeholder(),
-            rec.name
-        )) for rec in self]
+    def _compute_display_name(self):
+        no_icon_placeholder = self.env['knowledge.article']._get_no_icon_placeholder()
+        for rec in self:
+            rec.display_name = f"{rec.icon or no_icon_placeholder} {rec.name}"
 
     @api.constrains("parent_id")
     def _check_parent_id_recursion(self):

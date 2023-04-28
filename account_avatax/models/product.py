@@ -12,11 +12,9 @@ class ProductAvataxCategory(models.Model):
     code = fields.Char(required=True)
     description = fields.Char(required=True)
 
-    def name_get(self):
-        res = []
+    def _compute_display_name(self):
         for category in self:
-            res.append((category.id, _('[%s] %s') % (category.code, category.description[0:50])))
-        return res
+            category.display_name = _('[%s] %s', category.code, category.description[0:50])
 
 
 class ProductCategory(models.Model):

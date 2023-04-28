@@ -204,7 +204,7 @@ class ConsolidationAccount(models.Model):
     def _compute_full_name(self):
         for record in self:
             if record.group_id:
-                record.full_name = '%s / %s' % (record.group_id.name_get()[0][1], record.name)
+                record.full_name = f'{record.group_id.display_name} / {record.name}'
             else:
                 record.full_name = record.name
 
@@ -254,15 +254,9 @@ class ConsolidationAccount(models.Model):
 
     # ORM OVERRIDES
 
-    def name_get(self):
-        ret_list = []
+    def _compute_display_name(self):
         for record in self:
-            if record.code:
-                name = '%s %s' % (record.code, record.name)
-            else:
-                name = record.name
-            ret_list.append((record.id, name))
-        return ret_list
+            record.display_name = f'{record.code} {record.name}' if record.code else record.name
 
     # HELPERS
 
@@ -325,16 +319,15 @@ class ConsolidationGroup(models.Model):
             if record.child_ids and len(record.child_ids) > 0 and record.account_ids and len(record.account_ids) > 0:
                 raise ValidationError(_("An account group can only have accounts or other groups children but not both!"))
 
-    def name_get(self):
-        ret_list = []
+    def _compute_display_name(self):
         for section in self:
             orig_section = section
             name = section.name
             while section.parent_id:
                 section = section.parent_id
                 name = section.name + " / " + name
-            ret_list.append((orig_section.id, name))
-        return ret_list
+            orig_section.display_name = name
+
 
     @api.depends('parent_id.sign', 'invert_sign', 'chart_id.sign')
     def _compute_sign(self):

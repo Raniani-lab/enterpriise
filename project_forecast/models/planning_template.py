@@ -9,14 +9,11 @@ class PlanningTemplate(models.Model):
     project_id = fields.Many2one('project.project', string="Project",
                                  company_dependent=True, copy=True)
 
-    def name_get(self):
-        name_template = super(PlanningTemplate, self).name_get()
-        name_dict = dict([(x[0], x[1]) for x in name_template])
-        result = []
+    def _compute_display_name(self):
+        super()._compute_display_name()
         for shift_template in self:
             if shift_template.project_id:
-                name = '%s [%s]' % (name_dict[shift_template.id], shift_template.project_id.display_name[:30])
+                name = f'{shift_template.display_name} [{shift_template.project_id.display_name[:30]}]'
             else:
-                name = name_dict[shift_template.id]
-            result.append([shift_template.id, name])
-        return result
+                name = shift_template.display_name
+            shift_template.display_name = name

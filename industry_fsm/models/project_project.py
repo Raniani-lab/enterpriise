@@ -13,16 +13,14 @@ class Project(models.Model):
         "Worksheets", compute="_compute_allow_worksheets", store=True, readonly=False)
     allow_milestones = fields.Boolean(compute='_compute_allow_milestones', store=True, readonly=False)
 
-    def name_get(self):
-        res = super().name_get()
+    def _compute_display_name(self):
+        super()._compute_display_name()
         if len(self.env.context.get('allowed_company_ids', [])) <= 1:
-            return res
-        name_mapping = dict(res)
+            return
         fsm_project_default_name = _("Field Service")
         for project in self:
             if project.is_fsm and project.name == fsm_project_default_name and not project.is_internal_project:
-                name_mapping[project.id] = f'{name_mapping[project.id]} - {project.company_id.name}'
-        return list(name_mapping.items())
+                project.display_name = f'{project.display_name} - {project.company_id.name}'
 
     @api.depends('is_fsm')
     def _compute_allow_task_dependencies(self):

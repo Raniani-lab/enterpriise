@@ -276,7 +276,7 @@ class AbstractBuilder(ABC):
             for total in totals]
 
         # Line
-        name = account.name_get()[0][1]
+        name = account.display_name
 
         if account.group_id:
             account_line_id = self.env['account.report']._get_generic_line_id(None, None, markup=f'{account.id}', parent_line_id=parent_id)

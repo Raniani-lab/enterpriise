@@ -2048,7 +2048,7 @@ QUnit.module("Views", (hooks) => {
         const records = serverData.models["project.task"].threeRecords;
         const partners = serverData.models["res.partner"].twoRecordsAddressCoordinates;
         for (const record of records.records) {
-            // add name on partner_id to have name_get like value
+            // add name on partner_id to have display_name like value
             record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
         }
         await makeView({
@@ -2125,7 +2125,7 @@ QUnit.module("Views", (hooks) => {
         const partners = serverData.models["res.partner"].records;
 
         for (const record of records.records) {
-            // add name on partner_id to have name_get like value
+            // add name on partner_id to have display_name like value
             record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
         }
         await makeView({
@@ -2220,7 +2220,7 @@ QUnit.module("Views", (hooks) => {
         const records = serverData.models["project.task"].threeRecords;
         const partners = serverData.models["res.partner"].twoRecordsAddressCoordinates;
         for (const record of records.records) {
-            // add name on partner_id to have name_get like value
+            // add name on partner_id to have display_name like value
             record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
         }
         await makeView({

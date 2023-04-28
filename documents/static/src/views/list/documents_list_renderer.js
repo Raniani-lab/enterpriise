@@ -9,7 +9,7 @@ import { FileUploadProgressDataRow } from "@web/core/file_upload/file_upload_pro
 import { DocumentsDropZone } from "../helper/documents_drop_zone";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
-import { DocumentsAttachmentViewer } from "../helper/documents_attachment_viewer";
+import { DocumentsFileViewer } from "../helper/documents_file_viewer";
 
 const { useRef } = owl;
 
@@ -103,5 +103,5 @@ DocumentsListRenderer.components = Object.assign({}, ListRenderer.components, {
     FileUploadProgressDataRow,
     DocumentsDropZone,
     DocumentsActionHelper,
-    DocumentsAttachmentViewer,
+    DocumentsFileViewer,
 });

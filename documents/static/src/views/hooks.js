@@ -204,7 +204,7 @@ function useDocumentsViewFilePreviewer({
 
     env.documentsView.previewStore = reactive({
         inspectedDocuments: [],
-        attachmentViewer: null,
+        fileViewer: null,
     });
 
     const onOpenDocumentsPreview = async ({

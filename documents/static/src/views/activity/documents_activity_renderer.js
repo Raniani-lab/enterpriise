@@ -3,7 +3,7 @@
 import { ActivityRenderer } from "@mail/views/activity/activity_renderer";
 
 import { DocumentsInspector } from "../inspector/documents_inspector";
-import { DocumentsAttachmentViewer } from "../helper/documents_attachment_viewer";
+import { DocumentsFileViewer } from "../helper/documents_file_viewer";
 
 const { useRef } = owl;
 
@@ -28,6 +28,6 @@ export class DocumentsActivityRenderer extends ActivityRenderer {
 DocumentsActivityRenderer.template = "documents.DocumentsActivityRenderer";
 DocumentsActivityRenderer.components = {
     ...ActivityRenderer.components,
-    DocumentsAttachmentViewer,
+    DocumentsFileViewer,
     DocumentsInspector,
 };

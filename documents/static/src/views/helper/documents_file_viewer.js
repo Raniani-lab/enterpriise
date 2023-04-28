@@ -1,10 +1,10 @@
 /* @odoo-module **/
 
-import { AttachmentViewer } from "@web/core/attachment_viewer/attachment_viewer";
+import { FileViewer } from "@web/core/file_viewer/file_viewer";
 
 const { Component, useEffect, useRef, useState } = owl;
 
-export class DocumentsAttachmentViewer extends Component {
+export class DocumentsFileViewer extends Component {
     static props = [
         "parentRoot", // Parent's root element, used to know the zone to use.
     ];
@@ -60,7 +60,7 @@ export class DocumentsAttachmentViewer extends Component {
     }
 
     onGlobalKeydown(ev) {
-        // Some keydown events are not handled by the attachmentViewer as we want them too
+        // Some keydown events are not handled by the fileViewer as we want them too
         // making it possible to interact with the background.
         const cancelledKeys = ["ArrowUp", "ArrowDown"];
         if (cancelledKeys.includes(ev.key)) {
@@ -74,7 +74,7 @@ export class DocumentsAttachmentViewer extends Component {
         }
     }
 }
-DocumentsAttachmentViewer.components = {
-    AttachmentViewer,
+DocumentsFileViewer.components = {
+    FileViewer,
 };
-DocumentsAttachmentViewer.template = "documents.DocumentsAttachmentViewer";
+DocumentsFileViewer.template = "documents.DocumentsFileViewer";

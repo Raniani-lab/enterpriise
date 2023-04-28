@@ -2,9 +2,9 @@
 
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
-import { AttachmentViewer } from "@web/core/attachment_viewer/attachment_viewer";
+import { FileViewer } from "@web/core/file_viewer/file_viewer";
 
-patch(AttachmentViewer.prototype, "documents", {
+patch(FileViewer.prototype, "documents", {
     setup() {
         this._super();
         /** @type {import("@documents/core/document_service").DocumentService} */

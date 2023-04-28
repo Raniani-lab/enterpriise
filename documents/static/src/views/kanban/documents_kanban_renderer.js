@@ -9,7 +9,7 @@ import { FileUploadProgressContainer } from "@web/core/file_upload/file_upload_p
 import { FileUploadProgressKanbanRecord } from "@web/core/file_upload/file_upload_progress_record";
 import { DocumentsKanbanRecord } from "./documents_kanban_record";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
-import { DocumentsAttachmentViewer } from "../helper/documents_attachment_viewer";
+import { DocumentsFileViewer } from "../helper/documents_file_viewer";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 
 const { useRef } = owl;
@@ -98,5 +98,5 @@ DocumentsKanbanRenderer.components = Object.assign({}, KanbanRenderer.components
     FileUploadProgressKanbanRecord,
     KanbanRecord: DocumentsKanbanRecord,
     DocumentsActionHelper,
-    DocumentsAttachmentViewer,
+    DocumentsFileViewer,
 });

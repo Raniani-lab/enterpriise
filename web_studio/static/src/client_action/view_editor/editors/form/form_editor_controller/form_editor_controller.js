@@ -48,7 +48,7 @@ export class FormEditorController extends formView.Controller {
     setup() {
         super.setup();
         this.mailTemplate = null;
-        this.hasAttachmentViewerInArch = false;
+        this.hasFileViewerInArch = false;
 
         if (this.props.parentRecord) {
             applyParentRecordOnModel(this.model, this.props.parentRecord);

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="documents.DocumentsAttachmentViewer" owl="1">
+    <t t-name="documents.DocumentsFileViewer" owl="1">
         <div t-if="previewState.attachments" t-ref="root"
             t-attf-style="top: {{state.topOffset}}px !important; z-index: 990; background-color: rgba(0, 0, 0, 0.7);"
             class="position-absolute w-100 h-100 start-0 d-flex justify-content-center align-items-center"
             t-on-keydown="onGlobalKeydown"
         >
-            <AttachmentViewer
-                attachments="previewState.attachments"
+            <FileViewer
+                files="previewState.attachments"
                 startIndex="previewState.startIndex"
                 close="previewState.close"
                 modal="false"

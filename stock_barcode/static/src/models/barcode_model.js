@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import BarcodeParser from 'barcodes.BarcodeParser';
+import { BarcodeParser } from "@barcodes/js/barcode_parser";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Mutex } from "@web/core/utils/concurrency";
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
@@ -8,7 +8,7 @@ import { _t } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
 import { url } from '@web/core/utils/urls';
 import { useService } from "@web/core/utils/hooks";
-import { FNC1_CHAR } from "barcodes_gs1_nomenclature.barcode_parser";
+import { FNC1_CHAR } from "@barcodes_gs1_nomenclature/js/barcode_parser";
 
 const { EventBus } = owl;
 
@@ -758,8 +758,6 @@ export default class BarcodeModel extends EventBus {
             result.match = true;
             return result; // Simple barcode, no more information to retrieve.
         }
-        // Then, parses the barcode through the nomenclature.
-        await this.parser.is_loaded();
         try {
             const parsedBarcode = this.parser.parse_barcode(barcode);
             if (parsedBarcode.length) { // With the GS1 nomenclature, the parsed result is a list.

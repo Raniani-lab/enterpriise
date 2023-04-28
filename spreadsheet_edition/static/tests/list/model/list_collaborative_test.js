@@ -11,8 +11,6 @@ import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
-let dataSourceId = 0;
-
 function insertList(model, id, anchor = [0, 0]) {
     const { definition, columns } = getListPayload();
     return model.dispatch("INSERT_ODOO_LIST", {
@@ -21,7 +19,6 @@ function insertList(model, id, anchor = [0, 0]) {
         row: anchor[1],
         id,
         definition,
-        dataSourceId: dataSourceId++,
         columns,
         linesNumber: 5,
     });

@@ -1,6 +1,5 @@
 /** @odoo-module **/
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import ListDataSource from "@spreadsheet/list/list_data_source";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
@@ -34,12 +33,6 @@ export function insertList({ list, threshold, fields, name }) {
         name,
     };
     return async (model) => {
-        const dataSourceId = uuidGenerator.uuidv4();
-        model.config.custom.dataSources.add(dataSourceId, ListDataSource, {
-            ...definition,
-            limit: threshold,
-        });
-        await model.config.custom.dataSources.load(dataSourceId);
         if (!this.isEmptySpreadsheet) {
             const sheetId = uuidGenerator.uuidv4();
             const sheetIdFrom = model.getters.getActiveSheetId();
@@ -52,16 +45,21 @@ export function insertList({ list, threshold, fields, name }) {
         const defWithoutFields = JSON.parse(JSON.stringify(definition));
         defWithoutFields.metaData.fields = undefined;
         const sheetId = model.getters.getActiveSheetId();
-        model.dispatch("INSERT_ODOO_LIST", {
+        const listId = model.getters.getNextListId();
+        const result = model.dispatch("INSERT_ODOO_LIST", {
             sheetId,
             col: 0,
             row: 0,
-            id: model.getters.getNextListId(),
+            id: listId,
             definition: defWithoutFields,
-            dataSourceId,
             linesNumber: threshold,
             columns: list.columns,
         });
+        if (!result.isSuccessful) {
+            throw new Error(`Couldn't insert list in spreadsheet. Reasons : ${result.reasons}`);
+        }
+        const dataSource = model.getters.getListDataSource(listId);
+        await dataSource.load();
         const columns = [];
         for (let col = 0; col < list.columns.length; col++) {
             columns.push(col);

@@ -23,7 +23,10 @@ Supported devices include payment terminals, receipt printers, scales and custom
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {
-        'point_of_sale.assets': [
+        'point_of_sale._assets_pos': [
+            'iot/static/src/iot_longpolling.js',
+            'iot/static/src/device_controller.js',
+            'iot/static/src/iot_connection_error_dialog.js',
             'pos_iot/static/src/js/**/*.js',
             'pos_iot/static/src/css/pos.css',
             'pos_iot/static/src/xml/**/*',
@@ -32,7 +35,7 @@ Supported devices include payment terminals, receipt printers, scales and custom
         'web.assets_tests': [
             'pos_iot/static/tests/**/*',
         ],
-        'point_of_sale.qunit_suite_tests': [
+        'point_of_sale.assets_qunit_tests': [
             'pos_iot/static/tests/unit/**/*',
         ],
     }

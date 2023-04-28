@@ -31,7 +31,7 @@ Install this if you are using the Point of Sale app in Germany.
         'views/res_company_views.xml',
     ],
     'assets': {
-        'point_of_sale.assets': [
+        'point_of_sale._assets_pos': [
             'l10n_de_pos_cert/static/src/css/**/*',
             'l10n_de_pos_cert/static/src/js/**/*',
             'l10n_de_pos_cert/static/src/xml/**/*',

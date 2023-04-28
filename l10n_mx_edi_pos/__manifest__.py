@@ -14,7 +14,7 @@
         'views/pos_payment_method_views.xml',
     ],
     'assets': {
-        'point_of_sale.assets': [
+        'point_of_sale._assets_pos': [
             'l10n_mx_edi_pos/static/src/**/*.js',
             'l10n_mx_edi_pos/static/src/**/*.xml',
             'l10n_mx_edi_pos/static/src/**/*.scss',

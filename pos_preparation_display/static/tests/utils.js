@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import "@point_of_sale/../tests/utils";
+import "@point_of_sale/../tests/unit/utils";
 import { registry } from "@web/core/registry";
 
 const loadPosData = registry.category("mock_server").get("pos.session/load_pos_data");

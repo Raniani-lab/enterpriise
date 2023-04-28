@@ -4,6 +4,7 @@ import { PaymentScreen } from "@point_of_sale/js/Screens/PaymentScreen/PaymentSc
 import { patch } from "@web/core/utils/patch";
 import { floatIsZero } from "@web/core/utils/numbers";
 import { ConfirmPopup } from "@point_of_sale/js/Popups/ConfirmPopup";
+import { sprintf } from "@web/core/utils/strings";
 
 patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
     get partnerInfos() {
@@ -38,7 +39,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
             if (partner) {
                 const { confirmed } = await this.popup.add(ConfirmPopup, {
                     title: this.env._t("The order is empty"),
-                    body: _.str.sprintf(
+                    body: sprintf(
                         this.env._t("Do you want to deposit %s to %s?"),
                         this.env.pos.format_currency(change),
                         order.get_partner().name
@@ -53,7 +54,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
             } else {
                 const { confirmed } = await this.popup.add(ConfirmPopup, {
                     title: this.env._t("The order is empty"),
-                    body: _.str.sprintf(
+                    body: sprintf(
                         this.env._t(
                             "Do you want to deposit %s to a specific customer? If so, first select him/her."
                         ),

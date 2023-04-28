@@ -46,10 +46,10 @@
 
             'pos_preparation_display/static/src/app/**/*',
         ],
-        'point_of_sale.assets': [
+        'point_of_sale._assets_pos': [
             'pos_preparation_display/static/src/override/**/*.js',
         ],
-        'point_of_sale.qunit_suite_tests': [
+        'point_of_sale.assets_qunit_tests': [
             'pos_preparation_display/static/tests/*.js',
         ],
     },

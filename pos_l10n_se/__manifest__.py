@@ -18,7 +18,7 @@
         'views/order.xml',
     ],
     'assets': {
-        'point_of_sale.assets': [
+        'point_of_sale._assets_pos': [
             'pos_l10n_se/static/src/js/PosBlackBoxSweden.js',
             'pos_l10n_se/static/src/js/PrintBill.js',
             'pos_l10n_se/static/src/js/ReprintReceiptButton.js',

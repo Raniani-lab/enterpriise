@@ -320,6 +320,7 @@
                 <field name="company_id" groups="!base.group_multi_company" invisible="1"/>
                 <field name="state"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
+                <field name="activity_ids" widget="list_activity" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -393,6 +394,7 @@
         <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_purchase_tree')}),
             (0, 0, {'view_mode': 'kanban'}),
+            (0, 0, {'view_mode': 'activity'}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_asset_form')})]"/>
         <field name="domain">[('asset_type', '=', 'purchase'), ('state', '!=', 'model'), ('parent_id', '=', False)]</field>
         <field name="context">{'asset_type': 'purchase', 'default_asset_type': 'purchase'}</field>

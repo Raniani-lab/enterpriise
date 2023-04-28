@@ -36,4 +36,9 @@ registry.category("web_tour.tours").add('helpdesk_insert_kanban_view_link_in_kno
     trigger: '.o_searchview .o_facet_value:contains("My Tickets")',
 }, { // check the title of the view
     trigger: '.o_control_panel .breadcrumb-item.active:contains("Tickets")',
+}, {
+    trigger: '.o_back_button'
+}, {
+    trigger: '.o_knowledge_behavior_type_view_link',
+    run: () => {}
 }]});

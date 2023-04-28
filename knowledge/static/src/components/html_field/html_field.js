@@ -423,6 +423,7 @@ const HtmlFieldPatch = {
                     } else {
                         this.wysiwyg.odooEditor.execCommand('insert', anchor);
                     }
+                    this.props.record.askChanges();
                 };
                 if (behaviorData.behaviorStatus !== 'new') {
                     // Copy the current state of the Behavior blueprint

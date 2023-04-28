@@ -112,7 +112,7 @@
         <record id="email_template_shift_switch_email" model="mail.template">
             <field name="name">Planning: Shift Re-assigned</field>
             <field name="email_from">{{ object.company_id.email_formatted }}</field>
-            <field name="subject">Your shift on {{ ctx.get('start_datetime') }} was re-assigned to {{ ctx['employee'].name }}</field>
+            <field name="subject">Your shift on {{ ctx.get('start_datetime') }} was re-assigned to {{ ctx.get('new_assignee_name', 'Marc Demo') }}</field>
             <field name="email_to"></field><!-- Set in the code  -->
             <field name="model_id" ref="model_planning_slot"/>
             <field name="auto_delete" eval="False"/><!-- TODO JEM  change this as we are testing -->
@@ -120,9 +120,9 @@
             <field name="body_html" type="html">
                 <div>
                     <p>
-                        Dear <t t-out="ctx['assignee'].name or ''"></t>,
+                        Dear <t t-out="ctx.get('old_assignee_name', 'Mitchel Admin')"></t>,
                         <br/><br/>
-                        Your following shift was re-assigned to <t t-out="ctx['employee'].name"></t>.
+                        Your following shift was re-assigned to <t t-out="ctx.get('new_assignee_name', 'Marc Demo')"></t>.
                     </p>
                     <br/>
                     <table style="width: 80%; margin: auto;">

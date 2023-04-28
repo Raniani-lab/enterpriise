@@ -1892,8 +1892,8 @@ class Planning(models.Model):
         start_datetime = self._format_datetime_to_user_tz(slot.start_datetime, assignee.env, tz=assignee.tz, lang_code=assignee.user_partner_id.lang)
         end_datetime = self._format_datetime_to_user_tz(slot.end_datetime, assignee.env, tz=assignee.tz, lang_code=assignee.user_partner_id.lang)
         template_context = {
-            'assignee': assignee,
-            'employee': human_resource.employee_id,
+            'old_assignee_name': assignee.name,
+            'new_assignee_name': human_resource.employee_id.name,
             'start_datetime': start_datetime,
             'end_datetime': end_datetime,
         }

@@ -40,7 +40,7 @@ $o-wo-tablet-text: color-contrast($o-wo-tablet-bg, $body-color, #FFF);
         z-index: 50;
     }
 
-    .o_view_controller.o_form_view {
+    .o_view_controller.o_form_view.o_workorder_tablet_form {
         color: $o-wo-tablet-text;
         background-color: $o-wo-tablet-bg;
         background-repeat: repeat;
@@ -56,7 +56,7 @@ $o-wo-tablet-text: color-contrast($o-wo-tablet-bg, $body-color, #FFF);
         .o_form_nosheet {
             padding: 0;
         }
-        .o_workorder_tablet_form {
+        .o_form_renderer {
             display: flex;
             flex-flow: column;
             justify-content: flex-start;

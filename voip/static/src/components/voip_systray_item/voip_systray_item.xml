@@ -3,7 +3,7 @@
     <t t-name="voip.SystrayItem" owl="1">
         <!-- This div is needed for the style of systray items to apply properly -->
         <div>
-            <button class="btn" t-on-click="onClick">
+            <button class="o_nav_entry" t-on-click="onClick">
                 <i class="oi oi-large oi-voip"/>
             </button>
         </div>

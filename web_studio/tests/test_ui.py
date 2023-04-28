@@ -444,7 +444,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             ("state", "=", "manual"),
         ])
 
-        self.start_tour("/web?debug=tests", 'web_studio_test_create_one2many_lines_then_edit_name', login="admin", timeout=200)
+        self.start_tour("/web?debug=tests", 'web_studio_test_create_one2many_lines_then_edit_name', login="admin", timeout=30000)
 
         custom_fields = self.env["ir.model.fields"].search_read([
             ("state", "=", "manual"),

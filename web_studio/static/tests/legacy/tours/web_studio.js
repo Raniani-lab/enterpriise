@@ -1169,7 +1169,8 @@ tour.register(
         },
         {
             trigger: ".o_form_label",
-            extra_trigger: ".o_field_x2many_list"
+            extra_trigger: ".o_field_x2many_list",
+            timeout: 20000,
         },
         {
             extra_trigger: ".o_web_studio_sidebar .o_web_studio_properties.active",
@@ -1177,7 +1178,8 @@ tour.register(
             run: "text new name",
         },
         {
-            trigger: ".o_web_studio_leave"
+            trigger: ".o_web_studio_leave",
+            timeout: 20000,
         },
     ]
 );

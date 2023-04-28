@@ -198,7 +198,7 @@ class HrExpenseSheet(models.Model):
         samples = set(self.mapped('expense_line_ids.sample'))
         if len(samples) > 1:
             raise UserError(_("You can't mix sample expenses and regular ones"))
-        return samples.pop() # True / False
+        return samples and samples.pop() # True / False
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_posted_or_paid(self):

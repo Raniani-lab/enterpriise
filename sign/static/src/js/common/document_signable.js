@@ -7,6 +7,7 @@
 import ajax from "web.ajax";
 import config from "web.config";
 import core from "web.core";
+import { localization } from "@web/core/l10n/localization";
 import { sprintf } from "@web/core/utils/strings";
 import Dialog from "web.Dialog";
 import { Document } from "@sign/js/common/document";
@@ -119,12 +120,13 @@ const SignNameAndSignature = NameAndSignature.extend({
     if (this.activeFrame && !this.frameChanged) {
       this.signatureChanged = true;
       this.frameChanged = true;
+      const xOffset = localization.direction === "rtl" ? 0.75 : 0.06; // magic numbers
       return html2canvas(this.$frameDiv.toggleClass('active', this.activeFrame)[0],
         {
           'backgroundColor': null,
           'width': this.$signatureField.width(),
           'height': this.$signatureField.height(),
-          'x': -this.$signatureField.width() * 0.06, // TODO VISUEL
+          'x': -this.$signatureField.width() * xOffset, // TODO VISUEL
           'y': -this.$signatureField.height() * 0.09, // TODO VISUEL
         }
       ).then(canvas => {

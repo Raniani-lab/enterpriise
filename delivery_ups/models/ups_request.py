@@ -315,7 +315,7 @@ class UPSRequest():
 
             unit_type = self.factory_ns4.UnitType()
             unit_type.Number = int(commodity.qty)
-            unit_type.Value = commodity.monetary_value
+            unit_type.Value = float_repr(commodity.monetary_value, 2)
             unit_type.UnitOfMeasurement = uom_type
 
             product = self.factory_ns4.ProductType()

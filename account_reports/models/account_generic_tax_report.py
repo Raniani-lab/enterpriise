@@ -219,6 +219,13 @@ class AccountTaxReportHandler(models.AbstractModel):
         period_start, period_end = company._get_tax_closing_period_boundaries(fields.Date.from_string(options['date']['date_to']))
         new_options['date']['date_from'] = fields.Date.to_string(period_start)
         new_options['date']['date_to'] = fields.Date.to_string(period_end)
+        new_options['date']['period_type'] = 'custom'
+        new_options['date']['filter'] = 'custom'
+        report = self.env['account.report'].browse(options['report_id'])
+        new_options = report._get_options(previous_options=new_options)
+        # Force the use of the fiscal position from the original options (_get_options sets the fiscal
+        # position to 'all' when the report is the generic tax report)
+        new_options['fiscal_position'] = options['fiscal_position']
 
         tables, where_clause, where_params = self.env.ref('account.generic_tax_report')._query_get(
             new_options,

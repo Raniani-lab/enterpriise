@@ -84,7 +84,3 @@ class ProductTemplate(models.Model):
         return pricelist._get_product_price(
             product or self, quantity, uom=uom, date=date, start_date=start_date, end_date=end_date
         )
-
-    def _can_be_added_to_cart(self):
-        """Override to allow rental products to be used in a sale order"""
-        return super()._can_be_added_to_cart() or self.rent_ok

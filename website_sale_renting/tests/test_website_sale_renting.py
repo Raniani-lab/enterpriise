@@ -12,6 +12,30 @@ from .common import TestWebsiteSaleRentingCommon
 @tagged('post_install', '-at_install')
 class TestWebsiteSaleRenting(TestWebsiteSaleRentingCommon):
 
+    def test_is_add_to_cart_possible(self):
+        self.product_id = self.env['product.product'].create({
+            'name': 'Projector',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'type': 'consu',
+            'rent_ok': True,
+            'extra_hourly': 7.0,
+            'extra_daily': 30.0,
+        })
+
+        self.product_template_id = self.product_id.product_tmpl_id
+        # Check that `is_add_to_cart_possible` returns True when
+        # the product is active and can be rent or/and sold
+        self.product_template_id.write({'sale_ok': False, 'rent_ok': False})
+        self.assertFalse(self.product_template_id._is_add_to_cart_possible())
+        self.product_template_id.write({'sale_ok': True})
+        self.assertTrue(self.product_template_id._is_add_to_cart_possible())
+        self.product_template_id.write({'sale_ok': False, 'rent_ok': True})
+        self.assertTrue(self.product_template_id._is_add_to_cart_possible())
+        self.product_template_id.write({'sale_ok': True})
+        self.assertTrue(self.product_template_id._is_add_to_cart_possible())
+        self.product_template_id.write({'active': False})
+        self.assertFalse(self.product_template_id._is_add_to_cart_possible())
+
     @freeze_time('2023, 1, 1')
     def test_invalid_dates(self):
         now = fields.Datetime.now()

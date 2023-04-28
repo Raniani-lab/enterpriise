@@ -616,14 +616,13 @@ class WinbooksImportWizard(models.TransientModel):
             move = move_data.get(f"{bookyear_first_year}_{journal_code}_{move_number}") or move_data.get(f"{bookyear_last_year}_{journal_code}_{move_number}")
             if move:
                 if rec['DOCORDER'] == 'VAT':
-                    # A move can have multiple VAT lines. If that's the case, we have to use the line order from Winbooks,
-                    # as the docorder just says "VAT". The line order can only be used for open years, as Winbooks doesn't export
-                    # all the lines otherwise.
-                    tax_lines = move.line_ids.filtered(lambda l: l.display_type == 'tax')
-                    if rec['LINEORDER'] and int(rec['BOOKYEAR'], 36) in param_data['open_years'] and len(tax_lines) > 1:
-                        move_line_id = move.line_ids.sorted('id')[rec['LINEORDER']-1]
-                    else:
-                        move_line_id = tax_lines[0].id
+                    # A move can have multiple VAT lines. If that's the case, we will just take any tax with a corresponding account and amount,
+                    # as the docorder just says "VAT".
+                    tax_lines = move.line_ids.filtered(lambda l:
+                        l.display_type == 'tax'
+                        and l.account_id.id == account_data.get(rec.get('ACCOUNTGL'))
+                        and round(l.balance, 1) == round(rec.get('AMOUNTGL'), 1))
+                    move_line_id = tax_lines[0].id if tax_lines else False
                 else:
                     move_line_id = move.line_ids.filtered(lambda l: l.winbooks_line_id == rec['DOCORDER']).id
             data = {

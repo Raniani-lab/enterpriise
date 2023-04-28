@@ -30,12 +30,6 @@ class ProductTemplate(models.Model):
         super()._compute_is_temporal()
         self.filtered('rent_ok').is_temporal = True
 
-    def _compute_visible_qty_configurator(self):
-        super(ProductTemplate, self)._compute_visible_qty_configurator()
-        for product_template in self:
-            if len(product_template.product_variant_ids) > 1 and product_template.rent_ok:
-                product_template.visible_qty_configurator = False
-
     def _get_qty_in_rent(self):
         rentable = self.filtered('rent_ok')
         not_rentable = self - rentable

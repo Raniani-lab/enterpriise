@@ -365,7 +365,7 @@ msgstr "ربط قائمة في جدول البيانات "
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/odoo_menu/chart_panel.xml:0
 #, python-format
 msgid "Link to Odoo menu"
-msgstr ""
+msgstr "الربط بقائمة أودو "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -431,7 +431,7 @@ msgstr "الشهر"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Name of the %s:"
-msgstr ""
+msgstr "اسم %s: "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -560,7 +560,7 @@ msgstr "رقم السجل "
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__res_id
 msgid "Record id"
-msgstr ""
+msgstr "معرّف السجل "
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -689,7 +689,7 @@ msgstr "اختر قائمة... "
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Select a spreadsheet to insert your %s."
-msgstr ""
+msgstr "قم بتحديد جدول بيانات لإدراج %s الخاصة بك. "
 
 #. module: spreadsheet_edition
 #. odoo-javascript

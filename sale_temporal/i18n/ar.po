@@ -34,7 +34,7 @@ msgstr "%(amount)s (ثابت)"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "%s %s"
-msgstr ""
+msgstr "%s %s"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__active
@@ -55,7 +55,7 @@ msgstr "الشركة "
 #: model_terms:ir.actions.act_window,help:sale_temporal.product_pricing_action
 #: model_terms:ir.actions.act_window,help:sale_temporal.sale_temporal_recurrence_action
 msgid "Create a new recurrence"
-msgstr ""
+msgstr "إنشاء تكرار جديد "
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__create_uid
@@ -78,7 +78,7 @@ msgstr "العملة"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__product_pricing_ids
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__product_pricing_ids
 msgid "Custom Pricings"
-msgstr ""
+msgstr "الأسعار المخصصة "
 
 #. module: sale_temporal
 #. odoo-python
@@ -118,7 +118,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,help:sale_temporal.field_product_template__display_price
 msgid "First leasing pricing of the product"
-msgstr ""
+msgstr "أول سعر تأجير للمنتج "
 
 #. module: sale_temporal
 #. odoo-python
@@ -148,7 +148,7 @@ msgstr "ملاحظات داخلية"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__is_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__is_temporal
 msgid "Is Temporal"
-msgstr ""
+msgstr "مؤقت "
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing____last_update
@@ -277,17 +277,17 @@ msgstr "مدى التكرار "
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricelist__product_pricing_ids
 msgid "Recurring Price Rules"
-msgstr ""
+msgstr "قواعد الأسعار المتكررة "
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Recurring Pricelist Rules"
-msgstr ""
+msgstr "قواعد قوائم الأسعار المتكررة "
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "التكرار المؤقت للمبيعات "
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order
@@ -305,6 +305,8 @@ msgid ""
 "Select Variants of the Product for which this rule applies. Leave empty if "
 "this rule applies for any variant of this template."
 msgstr ""
+"قم باختيار متغيرات المنتج التي تنطبق عليها هذه القاعدة. اتركه فارغاً إذا "
+"كانت هذه القاعدة تنطبق على أي متغير لهذا القالب. "
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_template_id
@@ -331,7 +333,7 @@ msgstr "يجب أن تكون مدة التسعير أكبر من أو مساوي
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "The product (%s) has incompatible values: %s"
-msgstr ""
+msgstr "المنتج (%s) به قيم غير متوافقة: %s "
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
@@ -396,6 +398,8 @@ msgid ""
 "You cannot have multiple pricing for the same variant, recurrence and "
 "pricelist"
 msgstr ""
+"لا يمكن أن يكون لديك عدة أسعار لنفس متغير المنتج أو نفس التكرار أو نفس قائمة"
+" الأسعار "
 
 #. module: sale_temporal
 #. odoo-python
@@ -403,7 +407,7 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "all variants"
-msgstr ""
+msgstr "كافة المتغيرات "
 
 #. module: sale_temporal
 #. odoo-python

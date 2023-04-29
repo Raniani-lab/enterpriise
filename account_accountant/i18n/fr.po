@@ -301,8 +301,8 @@ msgid ""
 "All invoices and payments have been matched, your accounts' balances are "
 "clean."
 msgstr ""
-"Toutes les factures et paiements ont été lettrés, la balance des comptes est"
-" juste."
+"Toutes les factures et paiements ont été lettrés, le solde des comptes est "
+"juste."
 
 #. module: account_accountant
 #: model:res.groups,name:account_accountant.group_fiscal_year
@@ -319,7 +319,7 @@ msgstr "Amls widget"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Amongst unmatched bank transactions"
-msgstr "Parmi les transactions bancaires non réconciliées"
+msgstr "Parmi les transactions bancaires non lettrées"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -686,7 +686,7 @@ msgstr "Messages"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__display_name
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_amount_currency
@@ -1172,7 +1172,7 @@ msgstr "Dernière mise à jour le"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Learn how blazing fast bank matching works"
-msgstr "Découvrez comment fonctionne la réconciliation bancaire ultrarapide"
+msgstr "Découvrez comment fonctionne le rapprochement bancaire ultrarapide"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1294,8 +1294,8 @@ msgstr "Lettrage des paiements et des factures"
 #, python-format
 msgid "Match with entries that are not from receivable/payable accounts"
 msgstr ""
-"Correspondance avec les écritures qui ne proviennent pas de comptes à "
-"recevoir / à payer"
+"Lettrer avec les écritures qui ne proviennent pas de comptes à recevoir / à "
+"payer"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1319,7 +1319,7 @@ msgstr "Les règles de lettrage permettent une réconciliation automatique "
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Miscellaneous Matching"
-msgstr "Correspondances diverses"
+msgstr "Lettrages divers"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1446,14 +1446,14 @@ msgstr "Montant ouvert en devise"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Open balance"
-msgstr "Balance d'ouverture"
+msgstr "Solde d'ouverture"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Open balance: %s"
-msgstr "Balance d'ouverture : %s"
+msgstr "Solde d'ouverture : %s"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1502,7 +1502,7 @@ msgstr "Fournisseur :"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_payment_form_inherit_account_accountant
 msgid "Payment Matching"
-msgstr "Correspondance des paiements"
+msgstr "Lettrage des paiements"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_bank_statement_line__payment_state_before_switch
@@ -1520,7 +1520,7 @@ msgstr "Paiements"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
 msgid "Payments Matching"
-msgstr "Correspondance des paiements"
+msgstr "Lettrage des paiements"
 
 #. module: account_accountant
 #. odoo-python
@@ -2048,7 +2048,7 @@ msgid ""
 "or create expenses on the fly"
 msgstr ""
 "Utilisez l'onglet <strong>Opérations manuelles</strong> pour enregistrer "
-"l'écart ou créer des dépenses à la volée"
+"l'écart ou créer des charges à la volée"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid

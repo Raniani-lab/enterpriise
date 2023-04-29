@@ -5,7 +5,6 @@
 # Translators:
 # Martin Trigaux, 2022
 # Tivisse <yti@odoo.com>, 2022
-# Cécile Collart <cco@odoo.com>, 2022
 # Jolien De Paepe, 2023
 # 
 msgid ""
@@ -75,7 +74,7 @@ msgstr "Congé à reporter"
 #. module: hr_payroll_holidays
 #: model:ir.actions.server,name:hr_payroll_holidays.ir_actions_server_mark_as_reported
 msgid "Mark as deferred"
-msgstr "Marquer comme différé"
+msgstr "Marquer comme reporté"
 
 #. module: hr_payroll_holidays
 #: model_terms:ir.actions.act_window,help:hr_payroll_holidays.hr_leave_work_entry_action

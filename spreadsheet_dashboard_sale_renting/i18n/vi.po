@@ -193,7 +193,7 @@ msgstr "Nhân viên kinh doanh"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "Khách hàng tiêu biểu"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

@@ -1451,7 +1451,7 @@ msgstr "Xác nhận"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_scrap___barcode_scanned
 msgid "Value of the last barcode scanned."
-msgstr "Giá trị lần quét cuối cùng."
+msgstr "Giá trị mã vạch quét cuối cùng. "
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_warehouse

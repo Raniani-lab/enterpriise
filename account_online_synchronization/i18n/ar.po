@@ -113,7 +113,7 @@ msgstr "أيقونة نوع النشاط"
 #: code:addons/account_online_synchronization/static/src/xml/online_sync_template.xml:0
 #, python-format
 msgid "Add A Bank Account"
-msgstr ""
+msgstr "إضافة حساب بنكي "
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_attachment_count
@@ -341,7 +341,7 @@ msgstr "جلب المعاملات "
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Fetched Transactions"
-msgstr ""
+msgstr "المعاملات التي تم جلبها "
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_follower_ids
@@ -798,6 +798,8 @@ msgid ""
 "To create a synchronization with your banking institution,<br>\n"
 "                please click on <b>Add a Bank Account</b>."
 msgstr ""
+"لإنشاء مزامنة مع المنشأة البنكية،<br>\n"
+"                يرجى الضغط على <b>إضافة حساب بنكي</b>. "
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__access_token

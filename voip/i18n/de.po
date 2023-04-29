@@ -106,6 +106,8 @@ msgid ""
 "An error occurred during the instantiation of the User Agent:</br></br> "
 "%(error message)s"
 msgstr ""
+"Bei der Instanziierung des Benutzeragenten ist ein Fehler "
+"aufgetreten:</br></br> %(error message)s"
 
 #. module: voip
 #. odoo-javascript
@@ -1032,6 +1034,10 @@ msgid ""
 "verify the websocket server URL in the General Settings. If the problem "
 "persists, this is probably an issue with the server."
 msgstr ""
+"Der Fehler kann von der Transportschicht herrühren. Bitte lassen Sie einen "
+"Administrator die URL des Websocket-Servers in den Allgemeinen Einstellungen"
+" überprüfen. Wenn das Problem weiterhin besteht, handelt es sich "
+"wahrscheinlich um ein Problem mit dem Server."
 
 #. module: voip
 #. odoo-javascript
@@ -1100,6 +1106,8 @@ msgid ""
 "The username (typically the extension number) that will be used to register "
 "with the PBX server."
 msgstr ""
+"Der Benutzername (in der Regel die Nebenstellennummer), der für die "
+"Registrierung beim PBX-Server verwendet werden soll."
 
 #. module: voip
 #. odoo-javascript
@@ -1191,7 +1199,7 @@ msgstr "VOIP-Umgebung"
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_secret
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_secret
 msgid "VoIP secret"
-msgstr ""
+msgstr "VoIP-Geheimnis"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username

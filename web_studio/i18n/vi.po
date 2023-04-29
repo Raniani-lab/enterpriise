@@ -1936,7 +1936,7 @@ msgstr "Biểu thức forEach"
 #: code:addons/web_studio/static/src/client_action/view_editors/components/field_content_overlay.js:0
 #, python-format
 msgid "Form"
-msgstr "Biể mẫu"
+msgstr "Biểu mẫu"
 
 #. module: web_studio
 #. odoo-javascript

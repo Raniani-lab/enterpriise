@@ -27,9 +27,9 @@ msgstr "Pièce comptable"
 #. module: account_reports_tax_reminder
 #: model:mail.activity.type,name:account_reports_tax_reminder.mail_activity_type_tax_report_to_be_sent
 msgid "Tax Report Ready"
-msgstr "Rapport de taxes prêt"
+msgstr "Déclaration de TVA prête"
 
 #. module: account_reports_tax_reminder
 #: model:mail.activity.type,summary:account_reports_tax_reminder.mail_activity_type_tax_report_to_be_sent
 msgid "Tax report is ready to be sent to the administration"
-msgstr "Le rapport de taxes est prêt à être envoyé à l'administration."
+msgstr "La déclaration de TVA est prête à être envoyée à l'administration."

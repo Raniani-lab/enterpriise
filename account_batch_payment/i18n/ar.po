@@ -825,4 +825,4 @@ msgstr "لا يمكنك إضافة المدفوعات التي لم يتم نش�
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "You cannot add payments with zero amount in a Batch Payment."
-msgstr ""
+msgstr "لا يمكنك إضافة مدفوعات قيمتها صفر في دفعة مجمعة "

@@ -444,4 +444,4 @@ msgstr "سيتم حفظ الملف كجدول بيانات أودو للسماح
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_selector_dialog/document_selector_panel.xml:0
 #, python-format
 msgid "getPageTitle('SPREADSHEET')"
-msgstr ""
+msgstr "getPageTitle('SPREADSHEET')"

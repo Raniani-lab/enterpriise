@@ -181,6 +181,8 @@ msgid ""
 "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': "
 "[('lock_uid', '=', False)]}\"/>"
 msgstr ""
+"<i class=\"fa fa-lock oe_inline\" title=\"مقفل \" attrs=\"{'invisible': "
+"[('lock_uid', '=', False)]}\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1060,7 +1062,7 @@ msgstr "قائمة المستندات"
 #. module: documents
 #: model:mail.template,name:documents.mail_template_document_request
 msgid "Document: Document Request"
-msgstr ""
+msgstr "المستند: طلب المستند "
 
 #. module: documents
 #. odoo-javascript
@@ -2195,7 +2197,7 @@ msgstr "الإرسال إلى القسم القانوني "
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request
 msgid "Sent to partner when requesting a document from them"
-msgstr ""
+msgstr "يتم إرساله إلى الشريك عند طلب مستند منه "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence

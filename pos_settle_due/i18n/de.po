@@ -63,7 +63,7 @@ msgstr "Wählen Sie die Zahlungsmethode zur Begleichung des fälligen Betrags"
 #: code:addons/pos_settle_due/static/src/xml/templates.xml:0
 #, python-format
 msgid "Settle due accounts"
-msgstr ""
+msgstr "Fällige Konten ausgleichen"
 
 #. module: pos_settle_due
 #. odoo-javascript

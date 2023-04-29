@@ -185,7 +185,7 @@ msgstr "Créé le"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: social_youtube
 #. odoo-javascript

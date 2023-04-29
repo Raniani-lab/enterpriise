@@ -50,7 +50,7 @@ msgstr "Aktion anzeigen"
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__action_technical
 msgid "Action Technical"
-msgstr ""
+msgstr "Aktion Technisch"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__action
@@ -411,7 +411,7 @@ msgstr "Sequenz"
 #: model:ir.model.fields.selection,name:data_cleaning.selection__data_cleaning_rule__action__case
 #, python-format
 msgid "Set Type Case"
-msgstr ""
+msgstr "Groß- und Kleinschreibung einstellen"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__suggested_value_display
@@ -458,7 +458,7 @@ msgstr "Kürzen"
 #: model:ir.model.fields.selection,name:data_cleaning.selection__data_cleaning_rule__action__trim
 #, python-format
 msgid "Trim Spaces"
-msgstr ""
+msgstr "Leerzeichen wegschneiden"
 
 #. module: data_cleaning
 #. odoo-javascript
@@ -486,6 +486,9 @@ msgid ""
 "Which spaces are trimmed by the rule. Leading, trailing, and successive "
 "spaces are considered superfluous."
 msgstr ""
+"Welche Leerzeichen von der Regel weggeschnitten werden. Führende, "
+"nachgestellte und aufeinanderfolgende Leerzeichen werden als überflüssig "
+"betrachtet."
 
 #. module: data_cleaning
 #: model_terms:ir.ui.view,arch_db:data_cleaning.notification

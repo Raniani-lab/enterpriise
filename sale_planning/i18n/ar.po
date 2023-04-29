@@ -28,6 +28,9 @@ msgid ""
 "                        as\n"
 "                    </span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('planning_enabled', '=', False)]}\" class=\"oe_inline me-2\">\n"
+"                        كـ\n"
+"                    </span>"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.view_order_form_inherit_sale_planning
@@ -104,7 +107,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
 msgid "My Sales Orders"
-msgstr ""
+msgstr "أوامر البيع الخاصة بي "
 
 #. module: sale_planning
 #: model_terms:ir.actions.act_window,help:sale_planning.sale_planning_action_schedule_by_sale_order
@@ -127,7 +130,7 @@ msgstr "وحدها الخانات المرتبطة بخدمة قابلة للت�
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.planning_action_orders_planned
 msgid "Orders Planned"
-msgstr ""
+msgstr "الطلبات المخطط لها "
 
 #. module: sale_planning
 #: model_terms:product.template,description:sale_planning.developer_product_product_template
@@ -325,6 +328,8 @@ msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
 msgstr ""
+"ليس لعنصر أمر البيع هذا قيمة مستهدفة للساعات المخطط لها. الساعات المخطط لها:"
+" "
 
 #. module: sale_planning
 #. odoo-javascript
@@ -361,7 +366,7 @@ msgstr "أداة تخطيط العمل "
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.product_template_form_view_invoice_policy_inherit_sale_planning
 msgid "e.g. Consultant"
-msgstr ""
+msgstr "مثال: استشاري "
 
 #. module: sale_planning
 #. odoo-python

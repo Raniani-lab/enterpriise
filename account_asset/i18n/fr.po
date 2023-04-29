@@ -104,14 +104,14 @@ msgstr "(incl."
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A deferred expense has been created for this move:"
-msgstr "Une dépense différée a été créé pour cette écriture :"
+msgstr "Une charge constatée d'avance a été créée pour cette écriture :"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A deferred revenue has been created for this move:"
-msgstr "Un revenu différé a été créé pour cette écriture :"
+msgstr "Un produit constaté d'avance a été créé pour cette écriture :"
 
 #. module: account_asset
 #. odoo-python
@@ -219,27 +219,27 @@ msgid ""
 "expense."
 msgstr ""
 "Compte utilisé dans les écritures périodiques, pour enregistrer une partie "
-"de l'amortissement comme une dépense."
+"de l'amortissement comme une charge."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Account used to recognize the expense"
-msgstr "Compte utilisé pour évaluer les frais"
+msgstr "Compte utilisé pour évaluer les charges"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Account used to recognize the revenue"
-msgstr "Compte utilisé pour évaluer le revenu"
+msgstr "Compte utilisé pour évaluer le produit"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Account used to record the deferred expense"
-msgstr "Compte utilisé pour enregistrer les dépenses différées"
+msgstr "Compte utilisé pour enregistrer les charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Account used to record the deferred income"
-msgstr "Compte utilisé pour l'enregistrement du revenu différé"
+msgstr "Compte utilisé pour l'enregistrement du revenu constaté d'avance"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_asset_id
@@ -461,19 +461,19 @@ msgstr "Durée de vie de l'actif"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Asset Model"
-msgstr "Modèle d'actif"
+msgstr "Catégorie d'immobilisations"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Asset Model name"
-msgstr "Nom du modèle d'actif"
+msgstr "Nom de la catégorie d'immobilisations"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_model_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_model_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
 msgid "Asset Models"
-msgstr "Modèles d'actif"
+msgstr "Catégories d'immobilisations"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__name
@@ -554,7 +554,7 @@ msgstr "Actif réactivé. %s"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr "Comptabilisation des actifs/revenus"
+msgstr "Comptabilisation des immobilisations/produits"
 
 #. module: account_asset
 #. odoo-python
@@ -573,7 +573,7 @@ msgstr "Immobilisations"
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_finance_config_assets
 msgid "Assets and Revenues"
-msgstr "Immobilisations et revenus"
+msgstr "Immobilisations et produits"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -598,12 +598,12 @@ msgstr "Automatiser l'actif"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Deferred Expense"
-msgstr "Automatiser les dépenses différées"
+msgstr "Automatiser les charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Deferred Revenue"
-msgstr "Automatiser les revenus différés"
+msgstr "Automatiser les produits constatés d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -703,12 +703,12 @@ msgstr "Calcul des amortissements"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Compute Expense"
-msgstr "Calcul des frais"
+msgstr "Calcul des charges"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Compute Revenue"
-msgstr "Calcul des revenus"
+msgstr "Calcul des produits"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -745,27 +745,27 @@ msgstr "Créez une nouvelle immobilisation."
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_model_form
 msgid "Create new asset model"
-msgstr "Créez un nouveau modèle d'immobilisations."
+msgstr "Créer une nouvelle catégorie d'immobilisations"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_form
 msgid "Create new deferred expense"
-msgstr "Créer de nouvelles dépenses différées"
+msgstr "Créer de nouvelles charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_model_form
 msgid "Create new deferred expense model"
-msgstr "Créer un nouveau modèle de dépenses différées"
+msgstr "Créer un nouveau modèle de charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_form
 msgid "Create new deferred revenue"
-msgstr "Créez un nouveau revenu différé"
+msgstr "Créez de nouveaux produits constatés d'avance"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_model_form
 msgid "Create new deferred revenue model"
-msgstr "Créez une nouveau modèle de revenu différé"
+msgstr "Créez une nouveau modèle de produits constatés d'avance"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__create_uid
@@ -789,12 +789,12 @@ msgstr "Amortissement accumulé"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Cumulative Expense"
-msgstr "Dépense cumulative"
+msgstr "Charge cumulative"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Cumulative Revenue"
-msgstr "Revenu cumulé"
+msgstr "Produit cumulé"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__currency_id
@@ -858,12 +858,12 @@ msgstr "Dégressif puis linéaire."
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Def. Expenses"
-msgstr "Dépenses différées"
+msgstr "Charges différées"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Def. Revenues"
-msgstr "Revenus différés"
+msgstr "Produits différés"
 
 #. module: account_asset
 #. odoo-python
@@ -872,58 +872,58 @@ msgstr "Revenus différés"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
 #, python-format
 msgid "Deferred Expense"
-msgstr "Dépense différée"
+msgstr "Charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 msgid "Deferred Expense Account"
-msgstr "Compte de dépenses différées"
+msgstr "Compte de charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense Amount"
-msgstr "Montant de la dépense différée"
+msgstr "Montant des charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Expense Model"
-msgstr "Modèle de dépenses différées"
+msgstr "Modèle de charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense Model name"
-msgstr "Nom du modèle de dépenses différées"
+msgstr "Nom du modèle de charges constatées d'avance"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_model_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_expense_model_recognition
 msgid "Deferred Expense Models"
-msgstr "Modèles de dépenses différées"
+msgstr "Modèles de charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Expense Options"
-msgstr "Options de dépenses différées"
+msgstr "Options de charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
-msgstr "Nom de la dépense différée"
+msgstr "Nom des charges constatées d'avance"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_expense_recognition
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
 msgid "Deferred Expenses"
-msgstr "Dépenses différées"
+msgstr "Charges constatées d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 msgid "Deferred Expenses Models"
-msgstr "Modèles de dépenses différées"
+msgstr "Modèles de charges constatées d'avance"
 
 #. module: account_asset
 #. odoo-python
@@ -931,86 +931,86 @@ msgstr "Modèles de dépenses différées"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__sale
 #, python-format
 msgid "Deferred Revenue"
-msgstr "Revenus différés"
+msgstr "Produits constatés d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Deferred Revenue Account"
-msgstr "Compte de revenus différés"
+msgstr "Compte de produits constatés d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue Amount"
-msgstr "Montant des revenus différés"
+msgstr "Montant des produits constatés d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Revenue Model"
-msgstr "Modèle de revenus différés"
+msgstr "Modèle des produits constatés d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue Model name"
-msgstr "Nom du modèle de revenus différés"
+msgstr "Nom du modèle des produits constatés d'avance"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_model_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_model_recognition
 msgid "Deferred Revenue Models"
-msgstr "Modèles de revenus différés"
+msgstr "Modèles des produits constatés d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Revenue Options"
-msgstr "Options des revenus différés"
+msgstr "Options des produits constatés d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
-msgstr "Nom des revenus différés"
+msgstr "Nom des produits constatés d'avance"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_recognition
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
 msgid "Deferred Revenues"
-msgstr "Revenus différés"
+msgstr "Produits constatés d'avance"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 msgid "Deferred Revenues Models"
-msgstr "Modèles de revenus différés"
+msgstr "Modèles de produits constatés d'avance"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Deferred expense"
-msgstr "Dépense différée"
+msgstr "Charges constatées d'avance"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Deferred expense created"
-msgstr "Dépense différée créée"
+msgstr "Charges constatées d'avance créées"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Deferred revenue"
-msgstr "Revenu différé"
+msgstr "Produits constatés d'avance"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Deferred revenue created"
-msgstr "Revenu différé créé"
+msgstr "Produits constatés d'avance créés"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__value_residual
@@ -1106,7 +1106,7 @@ msgstr "Afficher l'actif du compte"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_name
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: account_asset
 #. odoo-python
@@ -1174,7 +1174,7 @@ msgstr "Durée / Taux"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
 #, python-format
 msgid "Expense"
-msgstr "Dépense"
+msgstr "Charge"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_expense_id
@@ -1184,32 +1184,32 @@ msgstr "Dépense"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 msgid "Expense Account"
-msgstr "Compte de dépenses"
+msgstr "Compte de charges"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Board"
-msgstr "Tableau de dépense"
+msgstr "Tableau de charges"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Date"
-msgstr "Date de la dépense"
+msgstr "Date de la charge"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Lines"
-msgstr "Ligne de frais"
+msgstr "Ligne de charge"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 msgid "Expense Name"
-msgstr "Nom de la dépense"
+msgstr "Nom de la charge"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Recognition"
-msgstr "Comptabilisation des dépenses"
+msgstr "Comptabilisation des charges"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_first_depreciation
@@ -1337,7 +1337,7 @@ msgid ""
 "If this is selected, an expense/revenue will be created automatically when "
 "Journal Items on this account are posted."
 msgstr ""
-"Si cette option est sélectionnée, une dépense/recette sera créée "
+"Si cette option est sélectionnée, une charge ou un produit sera créé "
 "automatiquement lorsque les écritures comptables de ce compte seront "
 "comptabilisées."
 
@@ -1520,12 +1520,12 @@ msgstr "Modifier l'amortissement"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Modify Expense"
-msgstr "Modifier la dépense"
+msgstr "Modifier la charge"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Modify Revenue"
-msgstr "Modifier le revenu"
+msgstr "Modifier le produit"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__1
@@ -1586,12 +1586,12 @@ msgstr "Type d'activités à venir"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Next Period Expense"
-msgstr "Dépense de la prochaine période"
+msgstr "Charge de la prochaine période"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Next Period Revenue"
-msgstr "Revenu de la période suivante"
+msgstr "Produits de la période suivante"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__no
@@ -1773,7 +1773,7 @@ msgstr "Immobilisations liées"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Related Expenses"
-msgstr "Dépenses liées"
+msgstr "Charges liées"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
@@ -1822,40 +1822,40 @@ msgstr "Reprendre l'amortissement"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #, python-format
 msgid "Revenue"
-msgstr "Revenu"
+msgstr "Produit"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Revenue Account"
-msgstr "Compte des revenus"
+msgstr "Compte des produits"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Board"
-msgstr "Tableau des revenus"
+msgstr "Tableau des produits"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Date"
-msgstr "Date de revenu"
+msgstr "Date du produit"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Lines"
-msgstr "Lignes de revenus"
+msgstr "Lignes de produits"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
 msgid "Revenue Name"
-msgstr "Nom de revenu"
+msgstr "Nom du produit"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Recognition"
-msgstr "Comptabilisation des revenus"
+msgstr "Comptabilisation des produits"
 
 #. module: account_asset
 #. odoo-python
@@ -1888,7 +1888,7 @@ msgstr "Ventes"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__sale
 msgid "Sale: Revenue Recognition"
-msgstr "Ventes : Comptabilisation des revenus"
+msgstr "Ventes : Comptabilisation des produits"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -2073,14 +2073,14 @@ msgstr "Valeur amortissable totale"
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Turn as a deferred expense"
-msgstr "Transformer en dépense différée"
+msgstr "Transformer en charge constatée d'avance"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Turn as a deferred revenue"
-msgstr "Transformer en revenu différé"
+msgstr "Transformer en produit constaté d'avance"
 
 #. module: account_asset
 #. odoo-python

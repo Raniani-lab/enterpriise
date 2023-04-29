@@ -218,6 +218,8 @@ msgstr "Social Stream Post"
 #: model:ir.model.fields,help:social_linkedin.field_social_account__linkedin_access_token
 msgid "The access token is used to perform request to the REST API"
 msgstr ""
+"Das Zugriffstoken wird verwendet, um eine Anfrage an die REST-API zu "
+"stellen."
 
 #. module: social_linkedin
 #. odoo-python

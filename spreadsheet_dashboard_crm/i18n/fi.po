@@ -404,7 +404,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr ""
+msgstr "Parhaat mediat"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -419,7 +419,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr ""
+msgstr "Parhaat myyntitiimit"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -435,7 +435,7 @@ msgstr "Huippumyyjät"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr ""
+msgstr "Parhaat lähteet"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

@@ -286,7 +286,7 @@ msgstr "Ignoré"
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__display_name
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__divergent_fields

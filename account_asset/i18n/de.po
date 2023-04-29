@@ -1766,12 +1766,12 @@ msgstr "Neu bewerten"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Recognition Values"
-msgstr ""
+msgstr "Erfassungswerte"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
 msgid "Related Assets"
-msgstr ""
+msgstr "Verknüpfter Vermögenswert"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1781,7 +1781,7 @@ msgstr "Dazugehörige Ausgaben"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
 msgid "Related Purchase Value"
-msgstr ""
+msgstr "Zugehöriger Kaufwert"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -2147,6 +2147,10 @@ msgid ""
 "You can manually close an asset when the depreciation is over.\n"
 "By cancelling an asset, all depreciation entries will be reversed"
 msgstr ""
+"Beim Anlegen einer Anlage ist der Status „Entwurf“.\n"
+"Wird die Anlage bestätigt, geht der Status auf „Laufend“ und die Abschreibungszeilen können in der Buchhaltung gebucht werden.\n"
+"Der Status „Zurückgestellt“ kann manuell gesetzt werden, wenn die Abschreibung einer Anlage für einige Zeit unterbrochen werden soll.\n"
+"Nach Ablauf der Abschreibung kann eine Anlage manuell abgeschlossen werden. Wird eine Abschreibungszeile storniert, werden alle Abschreibungsbuchungen rückgängig gemacht"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12
@@ -2162,6 +2166,8 @@ msgid ""
 "You can't post an entry related to a draft asset. Please post the asset "
 "before."
 msgstr ""
+"Sie können keinen Eintrag zu einem Analagenentwurf veröffentlichen. Bitte "
+"buchen Sie die Anlage vorher."
 
 #. module: account_asset
 #. odoo-python
@@ -2209,6 +2215,8 @@ msgid ""
 "You cannot delete an asset linked to posted entries.\n"
 "You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
 msgstr ""
+"Sie können eine Anlage, die mit Buchungen verknüpft ist, nicht löschen.\n"
+"Sie sollten die Anlage entweder bestätigen und dann verkaufen oder veräußern oder die verknüpften Journalbuchungen stornieren."
 
 #. module: account_asset
 #. odoo-python
@@ -2225,6 +2233,8 @@ msgstr ""
 #, python-format
 msgid "You cannot resume at a date equal to or before the pause date"
 msgstr ""
+"Sie können nicht zu einem Datum fortfahren, das dem Datum der Unterbrechung "
+"entspricht oder davor liegt."
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance
@@ -2268,7 +2278,7 @@ msgstr "z.B. Laptop iBook"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entries"
-msgstr ""
+msgstr "Buchungen"
 
 #. module: account_asset
 #. odoo-python

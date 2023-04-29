@@ -326,7 +326,7 @@ msgstr "Mindestgewicht der Retoure"
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_wizard__return_product
 msgid "Return Shipping Product"
-msgstr ""
+msgstr "Retourenversandprodukt"
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields.selection,name:delivery_sendcloud.selection__delivery_carrier__sendcloud_shipping_rules__return
@@ -382,7 +382,7 @@ msgstr "Sendcloud-Ref. des Retourenpakets"
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_delivery_carrier__sendcloud_return_id
 msgid "Sendcloud Return Shipping Product"
-msgstr ""
+msgstr "Sendcloud-Retourenversandprodukt"
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_delivery_carrier__sendcloud_secret_key

@@ -86,7 +86,7 @@ msgstr "Jours dans l'étape"
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__display_name
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_stage_report__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__date_closed

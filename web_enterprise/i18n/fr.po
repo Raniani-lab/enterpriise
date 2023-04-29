@@ -341,8 +341,8 @@ msgid ""
 "Something went wrong while registering your database. You can try again or "
 "contact"
 msgstr ""
-"Une erreur s'est produite en enregistrant votre base de données. Vous pouvez"
-" réessayer ou contacter"
+"Une erreur s'est produite lors de l'enregistrement de votre base de données."
+" Veuillez réessayer ou contacter"
 
 #. module: web_enterprise
 #. odoo-javascript

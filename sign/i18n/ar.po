@@ -1405,12 +1405,12 @@ msgstr "إطار "
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__frame_has_hash
 msgid "Frame Has Hash"
-msgstr ""
+msgstr "الإطار به تشفير "
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__frame_hash
 msgid "Frame Hash"
-msgstr ""
+msgstr "تشفير الإطار "
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__frame_value
@@ -3499,7 +3499,7 @@ msgstr "ستتم إزالتها من الملفات المرفوعة "
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This function can only be called with sudo."
-msgstr ""
+msgstr "يمكن استدعاء هذه الوظيفة فقط باستخدام sudo. "
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__reference

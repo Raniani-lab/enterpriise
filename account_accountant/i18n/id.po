@@ -560,7 +560,7 @@ msgstr "Buat Laporan"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Create a counterpart"
-msgstr "Create a counterpart"
+msgstr "Buat counterpart"
 
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.action_account_group_tree
@@ -680,12 +680,12 @@ msgstr "Nama Tampilan"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_amount_currency
 msgid "Display Stroked Amount Currency"
-msgstr ""
+msgstr "Tampilkan Mata Uang Stroked Amount"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_balance
 msgid "Display Stroked Balance"
-msgstr ""
+msgstr "Tampilkan Stroked Balance"
 
 #. module: account_accountant
 #. odoo-python
@@ -1508,7 +1508,7 @@ msgstr "Payments without a customer can't be matched"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Pick a date to lock"
-msgstr ""
+msgstr "Pilih tanggal untuk dikunci"
 
 #. module: account_accountant
 #. odoo-python
@@ -1535,6 +1535,9 @@ msgid ""
 "Prevents Journal Entry creation or modification prior to the defined date "
 "for all users. As a closed period, all accounting operations are prohibited."
 msgstr ""
+"Mencegah pembuatan Entri Jurnal atau modifikasi sebelum tanggal yang "
+"ditetapkan untuk semua user. Sebagai periode tertutup, semua operasi "
+"akuntansi dilarang."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
@@ -1542,6 +1545,8 @@ msgid ""
 "Prevents Journal entries creation prior to the defined date. Except for "
 "Accountants users."
 msgstr ""
+"Mencegah pembuatan entri jurnal sebelum tanggal yang ditentukan. "
+"Pengecualian untuk user Akuntan."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
@@ -1550,13 +1555,16 @@ msgid ""
 " involving taxes). The Tax Return Lock Date is automatically set when the "
 "corresponding Journal Entry is posted."
 msgstr ""
+"Mencegah modifikasi SPT sebelum tanggal yang ditentukan (Entri Jurnal yang "
+"melibatkan pajak). Tanggal Kunci SPT secara otomatis ditetapkan saat Entri "
+"Jurnal yang sesuai di-post."
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Process this transaction."
-msgstr ""
+msgstr "Proses transaksi ini."
 
 #. module: account_accountant
 #. odoo-python
@@ -1568,7 +1576,7 @@ msgstr "Piutang"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
-msgstr ""
+msgstr "Piutang:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
@@ -1578,7 +1586,7 @@ msgstr "Diterima"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
 msgid "Reco Models Widget"
-msgstr ""
+msgstr "Widget Reco Model"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1596,7 +1604,7 @@ msgstr "Rekonsiliasi"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr ""
+msgstr "Reconcile Model"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
@@ -1663,7 +1671,7 @@ msgstr "Simpan dan Buka Baru"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Search customer"
-msgstr ""
+msgstr "Cari pelanggan"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1677,17 +1685,17 @@ msgstr "Memilih mitra"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "Select a transaction"
-msgstr ""
+msgstr "Pilih transaksi"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
 msgid "Selected Aml"
-msgstr ""
+msgstr "Aml yang dipilih"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Set as Checked"
-msgstr ""
+msgstr "Tetapkan sebagai Diperiksa"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1812,7 +1820,7 @@ msgstr "Tax Repartition Line"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
 msgid "Tax Return Lock Date"
-msgstr ""
+msgstr "Tanggal Kunci SPT"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids

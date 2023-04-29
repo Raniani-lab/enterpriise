@@ -58,7 +58,7 @@ msgstr "Ignorer"
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__display_name
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: industry_fsm_stock
 #: code:addons/industry_fsm_stock/wizard/fsm_stock_tracking.py:0

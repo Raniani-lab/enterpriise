@@ -5,8 +5,8 @@
 # Translators:
 # Uuganbayar Batbaatar <uuganaaub33@gmail.com>, 2022
 # Batmunkh Ganbat <batmunkh.g@bumanit.mn>, 2022
-# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2023\n"
 "Language-Team: Mongolian (https://app.transifex.com/odoo/teams/41243/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -200,7 +200,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_planning.field_product_product__planning_role_id
 #: model:ir.model.fields,field_description:sale_planning.field_product_template__planning_role_id
 msgid "Planning Role"
-msgstr ""
+msgstr "Төлөвлөгөөний чиг үүрэг"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_slot
@@ -284,7 +284,7 @@ msgstr "Үйлчилгээ"
 #: code:addons/sale_planning/controllers/main.py:0
 #, python-format
 msgid "Shift"
-msgstr ""
+msgstr "Хуваарь"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__start_datetime
@@ -339,7 +339,7 @@ msgstr ""
 #: code:addons/sale_planning/models/sale_order.py:0
 #, python-format
 msgid "View Planning"
-msgstr ""
+msgstr "Төлөвлөгөө харах"
 
 #. module: sale_planning
 #. odoo-javascript

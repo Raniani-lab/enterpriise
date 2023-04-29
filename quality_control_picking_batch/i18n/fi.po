@@ -45,17 +45,17 @@ msgstr "Tuotteiden siirrot (Stock Move Line)"
 #. module: quality_control_picking_batch
 #: model:ir.model,name:quality_control_picking_batch.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Laadun tarkistus"
 
 #. module: quality_control_picking_batch
 #: model:ir.model.fields,field_description:quality_control_picking_batch.field_stock_picking_batch__quality_check_todo
 msgid "Quality Check Todo"
-msgstr ""
+msgstr "Laadun tarkistus tehtävänä"
 
 #. module: quality_control_picking_batch
 #: model_terms:ir.ui.view,arch_db:quality_control_picking_batch.stock_picking_batch_form
 msgid "Quality Checks"
-msgstr ""
+msgstr "Laaduntarkastukset"
 
 #. module: quality_control_picking_batch
 #: model_terms:ir.ui.view,arch_db:quality_control_picking_batch.stock_picking_batch_form

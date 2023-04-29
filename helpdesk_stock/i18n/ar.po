@@ -69,6 +69,8 @@ msgid ""
 "Product this ticket is about. If selected, only the sales orders, deliveries"
 " and invoices including this product will be visible."
 msgstr ""
+"المنتج الذي تتمحور حوله هذه التذكرة. إذا تم تحديده، ستكون أوامر البيع "
+"والتوصيلات والفواتير التي تحتوي على هذه المنتج فقط هي المرئية. "
 
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.helpdesk_ticket_view_form_inherit_stock_user

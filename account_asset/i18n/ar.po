@@ -59,7 +59,7 @@ msgstr "عدد قيود الإهلاك المُرحلة"
 msgid ""
 "%s Future entries will be recomputed to depreciate the asset following the "
 "changes."
-msgstr ""
+msgstr "%s سيتم احتساب القيود المستقبلية لإهلاك الأصل الذي يتبع التغييرات. "
 
 #. module: account_asset
 #. odoo-python
@@ -124,6 +124,8 @@ msgid ""
 "Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"سيتم ترحيل إحدى قيود الإهلاك بتاريخ %s. <br/> %s سيتم احتساب القيود "
+"المستقبلية لإهلاك الأصل الذي يتبع التغييرات. "
 
 #. module: account_asset
 #. odoo-python
@@ -143,6 +145,8 @@ msgid ""
 "second entry will neutralize the original income and post the  outcome of "
 "this sale on account <b>%s</b>."
 msgstr ""
+"سيتم ترحيل قيد الإهلاك بتاريخ %s.<br/> سيقوم القيد الثاني بتعطيل الدخل "
+"الأصلي وترحيل ناتج عملية البيع هذه في الحساب <b>%s</b>. "
 
 #. module: account_asset
 #. odoo-python
@@ -348,7 +352,7 @@ msgstr "تم إنشاء أصل لهذه الحركة: "
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "An asset will be created for the value increase of the asset. <br/>"
-msgstr ""
+msgstr "سيتم إنشاء أصل لزيادة قيمة الأصل. <br/> "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
@@ -503,14 +507,14 @@ msgstr "تم إنشاء الأصل"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset disposed. %s"
-msgstr ""
+msgstr "تم التخلص من الأصل. %s "
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset paused. %s"
-msgstr ""
+msgstr "تم إيقاف الأصل مؤقتاً. %s "
 
 #. module: account_asset
 #. odoo-python
@@ -524,7 +528,7 @@ msgstr "بيع الأصل. %s"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Asset unpaused. %s"
-msgstr ""
+msgstr "تم تعطيل الإيقاف المؤقت للأصل %s"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
@@ -588,7 +592,7 @@ msgstr "الأتمتة "
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__daily_computation
 msgid "Based on days per period"
-msgstr ""
+msgstr "بناءً على الأيام لكل فترة "
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -803,7 +807,7 @@ msgstr "التاريخ"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_depreciation_beginning_date
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_depreciation_beginning_date
 msgid "Date of the beginning of the depreciation"
-msgstr ""
+msgstr "تاريخ بداية الإهلاك "
 
 #. module: account_asset
 #. odoo-python
@@ -1056,7 +1060,7 @@ msgstr "جدول الإهلاك "
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Depreciation board modified %s"
-msgstr ""
+msgstr "تم تعديل لوح الإهلاك %s "
 
 #. module: account_asset
 #. odoo-python
@@ -1573,7 +1577,7 @@ msgstr "لا"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__none
 msgid "No Prorata"
-msgstr ""
+msgstr "بلاتناسب "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__non_deductible_tax_value
@@ -1692,7 +1696,7 @@ msgstr "إيقاف مؤقت "
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__paused_prorata_date
 msgid "Paused Prorata Date"
-msgstr ""
+msgstr "إيقاف التاريخ النسبي مؤقتاً "
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
@@ -2128,6 +2132,7 @@ msgid ""
 "You can't post an entry related to a draft asset. Please post the asset "
 "before."
 msgstr ""
+"لا يمكنك ترحيل قيد متعلق بأصل في حالة المسودة. يرحى ترحيل الأصل أولاً. "
 
 #. module: account_asset
 #. odoo-python

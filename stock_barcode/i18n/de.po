@@ -195,7 +195,7 @@ msgstr "Zuteilung"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__barcode_validation_full
 msgid "Allow full picking validation"
-msgstr ""
+msgstr "Vollständige Kommissionierungsvalidierung erlauben"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__barcode_validation_full
@@ -713,7 +713,7 @@ msgstr "NIcht der erwartete Scan"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.picking_view_kanban_inherit_barcode
 msgid "Open picking"
-msgstr ""
+msgstr "Offene Kommissionierung"
 
 #. module: stock_barcode
 #. odoo-python

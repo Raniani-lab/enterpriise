@@ -24,7 +24,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:helpdesk.sla,name:helpdesk_sale_timesheet.helpdesk_sla_4
 msgid "4 hours to finish"
-msgstr ""
+msgstr "4 ساعات حتى الانتهاء "
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_account_analytic_line
@@ -126,7 +126,7 @@ msgstr "المشروع"
 msgid ""
 "Project to which the timesheets of this helpdesk team's tickets will be "
 "linked."
-msgstr ""
+msgstr "المشروع الذي سيتم ربط الجداول الزمنية لفريق مكنب المساعدة. "
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
@@ -182,6 +182,8 @@ msgid ""
 "SLA Policy that will automatically apply to the tickets linked to a sales "
 "order item containing this service."
 msgstr ""
+"سياية اتفاقية مستوى الخدمة التي سيتم تطبيقها تلقائياً على التذاكر المرتبطة "
+"بعنصر أمر بيع يحتوي على هذه الخدمة. "
 
 #. module: helpdesk_sale_timesheet
 #. odoo-python
@@ -207,6 +209,10 @@ msgid ""
 "Remove the sales order item in order to make this ticket non-billable.\n"
 "You can also change or remove the sales order item of each timesheet entry individually."
 msgstr ""
+"عنصر أمر البيع الذي ستتم إضافة الوقت المقضي في هذه التذكرة إليه حتى تتم فوترته إلى عميلك.\n"
+"سيتم تحديد آخر عنصر أمر بيع مسبق الدفع به وقت متبقٍ افتراضياً.\n"
+"قم بإزالة عنصر أمر البيع لجعل هذه التذكرة غير قابلة للفوترة.\n"
+"يمكنك أيضاً تغيير أو إزالة عنصر أمر البيع لكل قيد أمر بيع على حدة. "
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids

@@ -177,28 +177,28 @@ msgstr "Phân tích dịch chuyển tồn kho theo kho hàng"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Locations"
-msgstr "Vị trí hàng đầu"
+msgstr "Vị trí tiêu biểu"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Partners"
-msgstr "Đối tác hàng đầu"
+msgstr "Đối tác tiêu biểu"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Products"
-msgstr "Sản phẩm hàng đầu"
+msgstr "Sản phẩm tiêu biểu"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Warehouses"
-msgstr "Kho hàng hàng đầu"
+msgstr "Kho hàng tiêu biểu"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript

@@ -154,7 +154,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_post_ids
 msgid "All related social media posts"
-msgstr ""
+msgstr "Kaikki asiaan liittyvät sosiaalisen median viestit"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__account_allowed_ids
@@ -1075,6 +1075,8 @@ msgstr "Virheiden määrä"
 msgid ""
 "Number of interactions (likes, shares, comments ...) with the social posts"
 msgstr ""
+"Vuorovaikutuksen määrä (tykkäykset, jakamiset, kommentit jne.) sosiaalisten "
+"julkaisujen kanssa"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
@@ -1427,7 +1429,7 @@ msgstr "Sosiaalinen media"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_posts_count
 msgid "Social Media Posts"
-msgstr ""
+msgstr "Sosiaalisen median viestit"
 
 #. module: social
 #: model:ir.model,name:social.model_social_post

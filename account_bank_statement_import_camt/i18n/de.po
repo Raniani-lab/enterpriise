@@ -653,7 +653,7 @@ msgstr "Kaution/Beitrag"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Depositary Receipt Issue"
-msgstr ""
+msgstr "Ausgabe von Hinterlegungsscheinen"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -747,7 +747,7 @@ msgstr "Inanspruchnahme"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Drawing"
-msgstr ""
+msgstr "Girokonto"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1780,13 +1780,13 @@ msgstr "Abrechnung bei Fälligkeit"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Settlement of Sight Export document"
-msgstr ""
+msgstr "Abwicklung des Exportakkreditivdokuments"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Settlement of Sight Import document"
-msgstr ""
+msgstr "Dokumentenakkreditiv zur Abwicklung eines Importgeschäftes"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1929,7 +1929,7 @@ msgstr "Kostenvoranschlag"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Topping"
-msgstr ""
+msgstr "Aufstockung"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1965,13 +1965,13 @@ msgstr "Transaktions-ID: %s"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Transfer In"
-msgstr ""
+msgstr "Eingänge"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Transfer Out"
-msgstr ""
+msgstr "Ausgänge"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2011,7 +2011,7 @@ msgstr "umgekehrtes Triparty-Repo"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Turnaround"
-msgstr ""
+msgstr "Umkehrung"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

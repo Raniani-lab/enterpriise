@@ -49,7 +49,7 @@ msgstr "العميل"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Daily Rentals"
-msgstr ""
+msgstr "التأجيرات اليومية "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -73,7 +73,7 @@ msgstr "تم طلبه"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Ordered Qty"
-msgstr ""
+msgstr "الكمية التي تم طلبها "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -94,7 +94,7 @@ msgstr "الفترة"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Picked-up Qty"
-msgstr ""
+msgstr "الكمية التي تم استلامها "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -132,28 +132,28 @@ msgstr "عروض الأسعار"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Customer"
-msgstr ""
+msgstr "تحليل التأجير حسب العميل "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product"
-msgstr ""
+msgstr "تحليل التأجير حسب المنتج "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product Category"
-msgstr ""
+msgstr "تحليل التأجير حسب فئة المنتج "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Salesman"
-msgstr ""
+msgstr "تحليل التأجير حسب مندوب المبيعات "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -167,7 +167,7 @@ msgstr "التأجيرات "
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Returned Qty"
-msgstr ""
+msgstr "الكمية المرجعة "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -201,7 +201,7 @@ msgstr "كبار العملاء"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
-msgstr ""
+msgstr "أهم فئات المنتجات "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -222,14 +222,14 @@ msgstr "كبار مندوبي المبيعات"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - current"
-msgstr ""
+msgstr "إحصائيات التأجير - الحالية "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - previous"
-msgstr ""
+msgstr "إحصائيات التأجير - السابقة "
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

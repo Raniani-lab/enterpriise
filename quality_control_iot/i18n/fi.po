@@ -33,4 +33,4 @@ msgstr "Tunniste"
 #. module: quality_control_iot
 #: model:ir.model,name:quality_control_iot.model_quality_check_wizard
 msgid "Wizard for Quality Check Pop Up"
-msgstr ""
+msgstr "Ohjattu laatutarkistuksen ponnahdusikkuna"

@@ -27,6 +27,10 @@ msgid ""
 "financial institutions use the local format.Therefore, it is frequent "
 "outside the US to have QIF date formatted day-first (dd/mm/yy)."
 msgstr ""
+"Walaupun format tanggal historis QIF adalah bulan lebih dulu "
+"(bulan/hari/tahun), banyak institusi keuangan yang menggunakan format lokal."
+" Oleh karena itu, umumnya di luar AS tanggal QIF diformat dengan hari lebih "
+"dulu (hari/bulan/tahun)."
 
 #. module: account_bank_statement_import_qif
 #: code:addons/account_bank_statement_import_qif/models/account_journal.py:0

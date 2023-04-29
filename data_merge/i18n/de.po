@@ -120,7 +120,7 @@ msgstr "Zusammenführung möglich"
 #: code:addons/data_merge/models/data_merge_rule.py:0
 #, python-format
 msgid "Case/Accent Insensitive Match"
-msgstr ""
+msgstr "Übereinstimmung ohne Rücksicht auf Groß- und Kleinschreibung/Akzente"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__company_id
@@ -291,7 +291,7 @@ msgstr "Anzeigename"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__divergent_fields
 msgid "Divergent Fields"
-msgstr ""
+msgstr "Abweichende Felder"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__domain
@@ -338,7 +338,7 @@ msgstr "Feldwerte"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_ir_model__hide_merge_action
 msgid "Hide merge action button"
-msgstr ""
+msgstr "Schaltfläche für die Zusammenführungsaktion verbergen"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_duplicate
@@ -378,6 +378,8 @@ msgid ""
 "If the model already has a custom merge method, the class attribute `_merge_disabled` is set to true on\n"
 "             that model and the generic data merge action should not be available on that model."
 msgstr ""
+"Wenn das Modell schon eine benutzerdefinierte Zusammenführungsmethode hat, ist das Klassenattribut `_merge_disabled`  auf diesem\n"
+"             Modell auf true eingestellt und die generische Aktion zur Zusammenführung von Daten sollte für dieses Modell nicht verfügbar sein."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__is_deleted
@@ -474,7 +476,7 @@ msgstr "Zusammenführen"
 #. module: data_merge
 #: model:ir.ui.menu,name:data_merge.ir_model_menu_merge_action_manager
 msgid "Merge Action Manager"
-msgstr ""
+msgstr "Manager der Zusammenführungsaktion"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__match_mode
@@ -489,7 +491,7 @@ msgstr "Merge-Modus"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_ir_model__ref_merge_ir_act_server_id
 msgid "Merge Server Action"
-msgstr ""
+msgstr "Serveraktion zum Zusammenführen"
 
 #. module: data_merge
 #: model:ir.actions.act_window,name:data_merge.ir_model_action_merge
@@ -768,4 +770,4 @@ msgstr "zusammengefügt in"
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_main
 msgid "merged into this one"
-msgstr ""
+msgstr "in diesem zusammengeführt"

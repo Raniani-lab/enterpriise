@@ -224,4 +224,4 @@ msgstr ""
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "You should install a Fiscal Localization first."
-msgstr ""
+msgstr "Anda sebaiknya menginstal Lokalisasi Fiskal terlebih dahulu"

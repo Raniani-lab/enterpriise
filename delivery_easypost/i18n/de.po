@@ -463,7 +463,7 @@ msgstr "Transfer"
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "Unable to retrieve your default insurance rates."
-msgstr ""
+msgstr "Nicht in der Lage, Ihre Standardversicherungstarife abzurufen."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0

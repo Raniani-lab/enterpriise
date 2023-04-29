@@ -163,7 +163,7 @@ msgstr "Validasi"
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_mrp_workorder
 msgid "Work Order"
-msgstr "Order Kerja"
+msgstr "SPK"
 
 #. module: quality_mrp_workorder
 #. odoo-python

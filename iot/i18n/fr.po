@@ -278,7 +278,7 @@ msgstr "Affichage"
 #: model:ir.model.fields,field_description:iot.field_iot_device__display_name
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__display_url

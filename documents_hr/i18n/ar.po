@@ -172,7 +172,7 @@ msgstr "مستندات الموارد البشرية: %s "
 #. module: documents_hr
 #: model:mail.template,name:documents_hr.mail_template_document_folder_link
 msgid "HR: Document Access Link"
-msgstr ""
+msgstr "الموارد البشرية: رابط الوصول إلى المستند "
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_settings

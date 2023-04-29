@@ -171,7 +171,7 @@ msgstr "التذاكر حسب النوع "
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Assign"
-msgstr ""
+msgstr "الوقت لتعيينه "
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript

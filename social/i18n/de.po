@@ -1158,7 +1158,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Or add"
-msgstr ""
+msgstr "Oder fügen Sie"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__audience_trend
@@ -1901,7 +1901,7 @@ msgstr "Ihr Post"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "a Stream from an existing account"
-msgstr ""
+msgstr "einen Stream von einem existierenden Konto hinzufügen"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form

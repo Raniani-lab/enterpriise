@@ -1892,7 +1892,7 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
-"ID của hồ sơ gốc chứa bí danh (ví dụ: dự án chứa bí danh tạo nhiệm vụ)"
+"ID của hồ sơ cha chứa bí danh (ví dụ: dự án chứa bí danh tạo nhiệm vụ)"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__activity_exception_icon
@@ -2588,7 +2588,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_page
 msgid "Our Customer Satisfaction"
-msgstr "Sự hài lòng của khách hàng"
+msgstr "Mức độ hài lòng của khách hàng"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_my_home_menu_helpdesk
@@ -3527,7 +3527,7 @@ msgid ""
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
 "Model (Loại tài liệu Odoo) mà bí danh này tương tác. Mọi email đến mà không "
-"phải là email trả lời một bản ghi cụ thể sẽ tạo ra bản ghi mới trong model "
+"phải là email trả lời một bản ghi cụ thể sẽ tạo ra dữ liệu mới trong model "
 "này. (ví dụ: Nhiệm vụ dự án) "
 
 #. module: helpdesk
@@ -3547,7 +3547,7 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
-"Người sở hữu của các bản ghi được tạo khi nhận email gửi tới bí danh này. "
+"Người sở hữu của các dữ liệu được tạo khi nhận email gửi tới bí danh này. "
 "Nếu trường này không được cài đặt, hệ thống sẽ cố gắng tìm đúng người sở hữu"
 " dựa vào địa chỉ người gửi (Từ), hoặc sẽ dùng tài khoản Quản trị viên nếu "
 "không tìm thấy người dùng hệ thống nào cho địa chỉ đó. "

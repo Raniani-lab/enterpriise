@@ -372,12 +372,12 @@ msgstr "قالب المنشور الاجتماعي "
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream
 msgid "Social Stream"
-msgstr "التدفق الاجتماعي "
+msgstr "الوسائط الاجتماعية "
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream_post
 msgid "Social Stream Post"
-msgstr "منشور التدفق الاجتماعي "
+msgstr "منشور الوسائط الاجتماعية "
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_twitter_account

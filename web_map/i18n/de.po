@@ -209,7 +209,7 @@ msgstr ""
 #: code:addons/web_map/models/res_config_settings.py:0
 #, python-format
 msgid "This referer is not authorized"
-msgstr ""
+msgstr "Dieser Empfehler ist nicht autorisiert"
 
 #. module: web_map
 #. odoo-javascript

@@ -131,7 +131,7 @@ msgstr "تعليقات Facebook "
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "Facebook Developer Account"
-msgstr ""
+msgstr "حساب مطور فيسبوك "
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_access_token
@@ -267,12 +267,12 @@ msgstr "قالب المنشور الاجتماعي "
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_stream
 msgid "Social Stream"
-msgstr "التدفق الاجتماعي "
+msgstr "الوسائط الاجتماعية "
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_stream_post
 msgid "Social Stream Post"
-msgstr "منشور التدفق الاجتماعي "
+msgstr "منشور الوسائط الاجتماعية "
 
 #. module: social_facebook
 #. odoo-python

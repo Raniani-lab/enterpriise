@@ -175,7 +175,7 @@ msgstr "Numériser sur demande uniquement"
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__display_name
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__no_send

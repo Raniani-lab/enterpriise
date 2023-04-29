@@ -219,7 +219,7 @@ msgstr "Betriebl. Währung"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_account_payment_tree_inherit_account_batch_payment
 msgid "Create Batch"
-msgstr ""
+msgstr "Stapel erstellen"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_journal.py:0

@@ -166,6 +166,8 @@ msgid ""
 "Could not revoke your account.\n"
 "Error: %s"
 msgstr ""
+"لم نتمكن من إبطال حسابك.\n"
+"الخطأ: %s "
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube__create_uid
@@ -281,7 +283,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_post__youtube_video_privacy
 msgid "Once posted, set the video as Public/Private/Unlisted"
-msgstr ""
+msgstr "بمجرد أن قد قمت بالنشر، قم بتعيين مقطع الفيديو كعام/خاص/غير مدرج "
 
 #. module: social_youtube
 #. odoo-python
@@ -332,7 +334,7 @@ msgstr "إلغاء "
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
 msgid "Revoke & Delete"
-msgstr ""
+msgstr "إبطال وإلغاء "
 
 #. module: social_youtube
 #. odoo-python
@@ -346,14 +348,14 @@ msgstr "سحب او إبطال حساب "
 #: model:ir.model,name:social_youtube.model_social_account_revoke_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
 msgid "Revoke YouTube Account"
-msgstr ""
+msgstr "إبطال حساب يوتيوب "
 
 #. module: social_youtube
 #. odoo-python
 #: code:addons/social_youtube/models/social_account.py:0
 #, python-format
 msgid "Revoking access tokens is currently limited to YouTube accounts only."
-msgstr ""
+msgstr "إبطال رموز الوصول أصبح ممكناً في حسابات يوتيوب فقط. "
 
 #. module: social_youtube
 #. odoo-javascript
@@ -409,12 +411,12 @@ msgstr "قالب المنشور الاجتماعي "
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_stream
 msgid "Social Stream"
-msgstr "التدفق الاجتماعي "
+msgstr "الوسائط الاجتماعية "
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_stream_post
 msgid "Social Stream Post"
-msgstr "منشور التدفق الاجتماعي "
+msgstr "منشور الوسائط الاجتماعية "
 
 #. module: social_youtube
 #. odoo-python
@@ -453,7 +455,7 @@ msgstr "مقطع الفيديو الذي تحاول نشره قد تم حذفه 
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "There is no channel linked with this YouTube account."
-msgstr ""
+msgstr "لا توجد قناة مرتبطة بحساب يوتيوب هذا. "
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
@@ -486,7 +488,7 @@ msgstr "غير معروف"
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__unlisted
 msgid "Unlisted"
-msgstr ""
+msgstr "غير مدرج "
 
 #. module: social_youtube
 #. odoo-javascript
@@ -507,14 +509,14 @@ msgstr "فشلت عملية رفع الفيديو. يرجى المحاولة م�
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Uploading %s"
-msgstr ""
+msgstr "جاري الرفع %s "
 
 #. module: social_youtube
 #. odoo-javascript
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Uploading... %s%%"
-msgstr ""
+msgstr "جاري الرفع... %s%% "
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_res_config_settings__youtube_use_own_account
@@ -615,7 +617,7 @@ msgstr "معرّف فئة YouTube "
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_channel_id
 msgid "YouTube Channel ID"
-msgstr ""
+msgstr "معرف قناة يوتيوب "
 
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_account__youtube_channel_id
@@ -641,7 +643,7 @@ msgstr "عدد تعليقات YouTube "
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.res_config_settings_view_form
 msgid "YouTube Developer Account"
-msgstr ""
+msgstr "حساب مطور يوتيوب "
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_dislikes_count
@@ -656,7 +658,7 @@ msgstr "إعجابات YouTube "
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_likes_ratio
 msgid "YouTube Likes Ratio"
-msgstr ""
+msgstr "نسبة الإعجابات في يوتيوب "
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_res_config_settings__youtube_oauth_client_id
@@ -698,7 +700,7 @@ msgstr "الصورة المصغرة لـ YouTube "
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_thumbnail_url
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_thumbnail_url
 msgid "YouTube Thumbnail Url"
-msgstr ""
+msgstr "رابط URL للصورة المصغرة في يوتيوب "
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_upload_playlist_id
@@ -734,7 +736,7 @@ msgstr "عنوان فيديو YouTube "
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video_url
 msgid "YouTube Video Url"
-msgstr ""
+msgstr "رابط URL لفيديو على اليوتيوب "
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_views_count
@@ -773,6 +775,8 @@ msgid ""
 "Your videos metadata including title and view counts (but never the video "
 "itself)"
 msgstr ""
+"البيانات الوصفية لمقاطع الفيديو الخاصة بك، شاملة العناوين وعدد المشاهدات "
+"(ولكن ليس الفيديو نفسه أبداً) "
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form
@@ -791,4 +795,4 @@ msgstr "مثال: درس أودو التعليمي للتواصل الاجتما
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
 msgid "the Google Third-party app account access panel"
-msgstr ""
+msgstr "لوحة الوصول إلى حساب تطبيق Google الخارجي "

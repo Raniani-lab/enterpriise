@@ -27,6 +27,8 @@ msgid ""
 "<br/>\n"
 "                        <span>Do you want to cancel payments to retry them later or keep the batch open with unprocess payments, if you expect them later.</span>"
 msgstr ""
+"<br/>\n"
+"                        <span>Apakah Anda ingin membatalkan pembayaran untuk dicoba lagi nanti atau Anda ingin batch tetap terbuka dengan pembayaran yang belum diproses, bila Anda menunggu pembayarannya nanti.</span>"
 
 #. module: account_accountant_batch_payment
 #: model:ir.model,name:account_accountant_batch_payment.model_bank_rec_widget

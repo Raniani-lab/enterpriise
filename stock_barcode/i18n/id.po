@@ -236,7 +236,7 @@ msgstr ""
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
 msgid "Barcode Inventory Client Action"
-msgstr ""
+msgstr "Barcode Inventory Client Action"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
@@ -798,7 +798,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Print Inventory"
-msgstr ""
+msgstr "Cetak Inventaris"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1292,7 +1292,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "The inventory adjustment has been validated"
-msgstr ""
+msgstr "Inventory adjustment telah divalidasi"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1487,7 +1487,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "commands for Inventory"
-msgstr ""
+msgstr "command untuk Inventory"
 
 #. module: stock_barcode
 #. odoo-javascript

@@ -340,7 +340,7 @@ msgstr "Description"
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__display_name
 #: model:ir.model.fields,field_description:account_avatax.field_product_avatax_category__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form

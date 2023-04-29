@@ -84,7 +84,7 @@ msgstr "Zuletzt aktualisiert am"
 #. module: timer
 #: model:ir.model.constraint,message:timer.constraint_timer_timer_unique_timer
 msgid "Only one timer occurrence by model, record and user"
-msgstr ""
+msgstr "Nur ein einziges Timer-Ereignis pro Modell, Datensatz und Benutzer"
 
 #. module: timer
 #. odoo-python
@@ -103,7 +103,7 @@ msgstr "Abspielen"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_id
 msgid "Res"
-msgstr ""
+msgstr "Res"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_model

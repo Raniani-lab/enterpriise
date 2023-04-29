@@ -86,7 +86,7 @@ msgstr "Designer le modèle"
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__res_model

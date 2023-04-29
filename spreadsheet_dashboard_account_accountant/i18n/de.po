@@ -729,7 +729,7 @@ msgstr "Kreditoren"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payable turnover"
-msgstr ""
+msgstr "Umsatz aus Verbindlichkeiten"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -993,7 +993,7 @@ msgstr "Herstellungskosten"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "current assets"
-msgstr ""
+msgstr "Umlaufvermögen"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1060,7 +1060,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "payable"
-msgstr ""
+msgstr "Verbindlichkeit"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1068,6 +1068,8 @@ msgstr ""
 #, python-format
 msgid "payable + credit card + current liabilities + non-current liabilities"
 msgstr ""
+"Verbindlichkeit + Kreditkarte + kurzfristige Verbindlichkeiten + "
+"langfristige Verbindlichkeiten"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1141,14 +1143,14 @@ msgstr "mögliche Probleme bei der kurzfristigen Verfügbarkeit von Bargeld"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable"
-msgstr ""
+msgstr "Forderung"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable + bank and cash + current assets"
-msgstr ""
+msgstr "Forderung + Bank und Bargeld + Umlaufvermögen"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1158,6 +1160,8 @@ msgid ""
 "receivable + bank and cash + current assets + non-current assets + "
 "prepayments + fixed assets"
 msgstr ""
+"Forderung + Bank und Bargeld + Umlaufvermögen + Anlagevermögen + "
+"Vorausleistungen + Kapitalanlagen"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

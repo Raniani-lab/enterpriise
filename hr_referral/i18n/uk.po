@@ -1289,7 +1289,7 @@ msgstr "Пропустити та почати"
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "Sorry, your referral %s has been refused in the recruitment process."
-msgstr ""
+msgstr "Вибачте, вашу рекомендацію %s було відхилено в процесі рекрутингу."
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id

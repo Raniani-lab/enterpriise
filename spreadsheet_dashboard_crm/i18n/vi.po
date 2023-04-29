@@ -369,14 +369,14 @@ msgstr "Cần chốt"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Campaigns"
-msgstr "Chiến dịch hàng đầu"
+msgstr "Chiến dịch tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Cities"
-msgstr "Thành phố hàng đầu"
+msgstr "Thành phố tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -384,7 +384,7 @@ msgstr "Thành phố hàng đầu"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Countries"
-msgstr "Quốc gia hàng đầu"
+msgstr "Quốc gia tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -399,14 +399,14 @@ msgstr "Các lý do mất tiêu biểu"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr "Phương tiện hàng đầu"
+msgstr "Phương tiện tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
-msgstr "Cơ hội hàng đầu"
+msgstr "Cơ hội tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -430,14 +430,14 @@ msgstr "Nhân viên kinh doanh tiêu biểu"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr "Nguồn hàng đầu"
+msgstr "Nguồn tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr "Thẻ hàng đầu"
+msgstr "Thẻ tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -568,7 +568,7 @@ msgstr "để chốt"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
-msgstr "thành phố hàng đầu"
+msgstr "thành phố tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -576,7 +576,7 @@ msgstr "thành phố hàng đầu"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top countries"
-msgstr "quốc gia hàng đầu"
+msgstr "quốc gia tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -590,14 +590,14 @@ msgstr "các lý do mất tiêu biểu"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
-msgstr "phương tiện hàng đầu"
+msgstr "phương tiện tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top mediums"
-msgstr "phương tiện hàng đầu"
+msgstr "phương tiện tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -626,18 +626,18 @@ msgstr "nhân viên kinh doanh tiêu biểu"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
-msgstr "nguồn hàng đầu"
+msgstr "nguồn tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sources"
-msgstr "nguồn hàng đầu"
+msgstr "nguồn tiêu biểu"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top tags"
-msgstr "thẻ hàng đầu"
+msgstr "thẻ tiêu biểu"

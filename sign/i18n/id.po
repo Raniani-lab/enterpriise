@@ -309,6 +309,9 @@ msgid ""
 "            They will be able to access this document and sign it as yourself.<br/>\n"
 "            <span>Your IP address and localization are associated to your signature to ensure traceability.</span>"
 msgstr ""
+"<strong>Peringatan</strong> jangan forward email ini ke orang lain!<br/>\n"
+"            Mereka akan dapat mengakses dokumen ini dan memberikan tanda tangan sebagai Anda.<br/>\n"
+"            <span>IP address dan lokalisasi terhubung ke tanda tangan Anda untuk memastikan ketertelusuran.</span>"
 
 #. module: sign
 #. odoo-javascript

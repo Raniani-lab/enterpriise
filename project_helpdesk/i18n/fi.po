@@ -39,7 +39,7 @@ msgstr "Muunna"
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_helpdesk_ticket_convert_wizard
 msgid "Convert Helpdesk Tickets to Tasks"
-msgstr "Muunna helpdesk-tukipyynnöt tehtäviksi."
+msgstr "Muunna helpdesk-tukipyynnöt tehtäviksi"
 
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_project_task_convert_wizard
@@ -53,7 +53,7 @@ msgstr "Muunna projektin tehtävät tukipyynnöiksi"
 #: model_terms:ir.ui.view,arch_db:project_helpdesk.helpdesk_ticket_convert_to_task_wizard_view_form
 #, python-format
 msgid "Convert to Task"
-msgstr ""
+msgstr "Muunna tehtäväksi"
 
 #. module: project_helpdesk
 #. odoo-python
@@ -69,14 +69,14 @@ msgstr "Muunna tukipyynnöksi"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Converted Tasks"
-msgstr ""
+msgstr "Muunnetut tehtävät"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Converted Tickets"
-msgstr ""
+msgstr "Muunnetut tukipyynnöt"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__create_uid
@@ -135,7 +135,7 @@ msgstr "Projektit"
 #: code:addons/project_helpdesk/models/project.py:0
 #, python-format
 msgid "Recurring tasks cannot be converted into tickets."
-msgstr ""
+msgstr "Toistuvia tehtäviä ei voi muuntaa tukipyynnöiksi."
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__stage_id
@@ -153,14 +153,14 @@ msgstr "Tehtävä"
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Task converted into ticket %s"
-msgstr ""
+msgstr "Tehtävä muunnettu tukipyynnöksi %s"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Task created from ticket %s"
-msgstr ""
+msgstr "Tehtävä luotu tukipyynnöstä %s"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_project_task_convert_wizard__team_id
@@ -172,11 +172,11 @@ msgstr "Tiimi"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Ticket converted into task %s"
-msgstr ""
+msgstr "Tukipyyntö muunnettu tehtäväksi %s"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Ticket created from task %s"
-msgstr ""
+msgstr "Tehtävästä luotu tukipyyntö %s"

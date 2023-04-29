@@ -3094,7 +3094,7 @@ msgstr "Mohon tetapkan field."
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_record.xml:0
 #, python-format
 msgid "Preview is not available"
-msgstr ""
+msgstr "Pratinjau tidak tersedia"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3836,7 +3836,7 @@ msgstr "Subtotal & Total"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Subtotal & Total can only be used in these models: "
-msgstr ""
+msgstr "Subtotal & Total hanya dapat digunakan pada model berikut:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4328,7 +4328,7 @@ msgstr "Placeholder avatar user"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "User is not a member of the selected group."
-msgstr ""
+msgstr "User bukan merupakan anggota kelompok yang dipilih."
 
 #. module: web_studio
 #. odoo-javascript

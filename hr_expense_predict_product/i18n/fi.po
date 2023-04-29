@@ -51,17 +51,17 @@ msgstr "Sekalaiset"
 #. module: hr_expense_predict_product
 #: model:ir.model.fields.selection,name:hr_expense_predict_product.selection__hr_expense__predicted_category__parking
 msgid "Parking"
-msgstr ""
+msgstr "Pysäköinti"
 
 #. module: hr_expense_predict_product
 #: model:ir.model.fields,field_description:hr_expense_predict_product.field_hr_expense__predicted_category
 msgid "Predicted Category"
-msgstr ""
+msgstr "Ennustettu luokka"
 
 #. module: hr_expense_predict_product
 #: model:ir.model.fields.selection,name:hr_expense_predict_product.selection__hr_expense__predicted_category__toll
 msgid "Toll"
-msgstr ""
+msgstr "Kulkuoikeusmaksu"
 
 #. module: hr_expense_predict_product
 #: model:ir.model.fields.selection,name:hr_expense_predict_product.selection__hr_expense__predicted_category__transport

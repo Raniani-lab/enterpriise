@@ -60,7 +60,7 @@ msgstr "Anlegen"
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model,name:spreadsheet_dashboard_documents.model_spreadsheet_document_to_dashboard
 msgid "Create a dashboard from a spreadsheet document"
-msgstr ""
+msgstr "Erstellen Sie ein Dashboard auf einer Tabellenkalkulation"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__create_uid

@@ -102,7 +102,7 @@ msgstr "Description"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__display_name
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration

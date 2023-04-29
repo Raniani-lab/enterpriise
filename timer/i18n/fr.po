@@ -34,7 +34,7 @@ msgstr "Créé le"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__display_timer_pause

@@ -75,19 +75,19 @@ msgstr ""
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Laadun tarkistus"
 
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Laadunvalvontapiste"
 
 #. module: quality_iot
 #: model_terms:ir.ui.view,arch_db:quality_iot.iot_device_view_form_inherit
 msgid "Quality Control Points"
-msgstr ""
+msgstr "Laadunvalvontapisteet"
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_iot_device__quality_point_ids
 msgid "Quality Point"
-msgstr ""
+msgstr "Laatupiste"

@@ -10,8 +10,8 @@
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # Christophe Klopfert, 2022
-# Jolien De Paepe, 2023
 # Jinjiu Liu, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jinjiu Liu, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -166,7 +166,7 @@ msgstr ", Trié par numéro"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Check your tax report"
-msgstr "-> Vérifier votre rapport de taxes"
+msgstr "-> Vérifiez votre déclaration de TVA"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
@@ -1200,7 +1200,7 @@ msgstr "Contact"
 #: model:account.report.line,name:account_reports.account_financial_report_cost_sales0
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_direct_costs0
 msgid "Cost of Revenue"
-msgstr "Coût des ventes"
+msgstr "Coût des produits"
 
 #. module: account_reports
 #. odoo-python
@@ -1409,7 +1409,7 @@ msgstr "Amortissement"
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__display_name
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__doc_name
@@ -1630,7 +1630,7 @@ msgstr "Provision pour charges de %s"
 #: model:account.report.line,name:account_reports.account_financial_report_expense0
 #: model:account.report.line,name:account_reports.account_financial_report_less_expenses0
 msgid "Expenses"
-msgstr "Dépenses"
+msgstr "Charges"
 
 #. module: account_reports
 #. odoo-python
@@ -1783,19 +1783,21 @@ msgstr "Relevé intra-communautaire générique"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler
 msgid "Generic Tax Report Custom Handler"
-msgstr "Gestionnaire personnalisé du rapport de taxes générique"
+msgstr "Gestionnaire personnalisé de la déclaration de TVA générique"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_account_tax
 msgid "Generic Tax Report Custom Handler (Account -> Tax)"
 msgstr ""
-"Gestionnaire personnalisé du rapport de taxes générique (Compte -> Taxes)"
+"Gestionnaire personnalisé de la déclaration de TVA générique (Compte -> "
+"Taxe)"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_tax_account
 msgid "Generic Tax Report Custom Handler (Tax -> Account)"
 msgstr ""
-"Gestionnaire personnalisé du rapport de taxes générique (Taxes -> Compte)"
+"Gestionnaire personnalisé de la déclaration de TVA générique (Taxe -> "
+"Compte)"
 
 #. module: account_reports
 #. odoo-python
@@ -2283,7 +2285,7 @@ msgstr "Valeurs manuelles"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.partner_ledger_report_matching_number
 msgid "Matching Number"
-msgstr "Nombre équivalent "
+msgstr "Référence de lettrage"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__company_ids
@@ -3031,14 +3033,14 @@ msgstr "Ajustement de l'impôt perçu"
 #: model:mail.activity.type,summary:account_reports.tax_closing_activity_type
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Tax Report"
-msgstr "Rapport de taxes"
+msgstr "Déclaration de TVA"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_bank_statement_line__tax_report_control_error
 #: model:ir.model.fields,field_description:account_reports.field_account_move__tax_report_control_error
 #: model:ir.model.fields,field_description:account_reports.field_account_payment__tax_report_control_error
 msgid "Tax Report Control Error"
-msgstr "Erreur de contrôle du rapport fiscal"
+msgstr "Erreur de contrôle de la déclaration de TVA"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
@@ -3061,7 +3063,7 @@ msgstr "Unités fiscales"
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__mail_activity_type__category__tax_report
 msgid "Tax report"
-msgstr "Rapport de taxes"
+msgstr "Déclaration de TVA"
 
 #. module: account_reports
 #. odoo-python
@@ -3137,7 +3139,7 @@ msgid ""
 "reports declaration."
 msgstr ""
 "Le pays dans lequel cette entité fiscale est utilisée pour regrouper la "
-"déclaration fiscale de vos sociétés."
+"déclaration de TVA de vos sociétés."
 
 #. module: account_reports
 #. odoo-python
@@ -3576,9 +3578,9 @@ msgid ""
 "need to modify you tax return lock date."
 msgstr ""
 "Vous ne pouvez pas remettre cette écriture de clôture à l'état de brouillon,"
-" car cela supprimerait les valeurs de report ayant un impact sur le rapport "
-"de taxes d'une période verrouillée. Pour ce faire, vous devez d'abord "
-"modifier la date de verrouillage de votre déclaration fiscale."
+" car cela supprimerait les valeurs de report ayant un impact sur la "
+"déclaration de TVA d'une période verrouillée. Pour ce faire, vous devez "
+"d'abord modifier la date de verrouillage de votre déclaration fiscale."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

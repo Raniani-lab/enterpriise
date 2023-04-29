@@ -197,7 +197,7 @@ msgstr "Ignoré"
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__display_name
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__field_id

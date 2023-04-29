@@ -292,7 +292,7 @@ msgstr "Außendienst"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price_currency_id
 msgid "Fsm Partner Price Currency"
-msgstr ""
+msgstr "Währung des Partnerpreises für Dienstleistungen im Außendienst"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__invoiced
@@ -361,7 +361,7 @@ msgstr "Rechnungen"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__is_task_phone_update
 msgid "Is Task Phone Update"
-msgstr ""
+msgstr "Ist die Telefonnummer auf der Aufgabe aktuell?"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
@@ -381,7 +381,7 @@ msgstr "Erstellen Sie ein neues <b>Produkt</b>."
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_product_count
 msgid "Material Line Product Count"
-msgstr ""
+msgstr "Produktanzahl der Materiallinie"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_total_price

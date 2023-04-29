@@ -194,7 +194,7 @@ msgstr "Dimensions"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__display_name
 msgid "Display Name"
-msgstr "Afficher le nom"
+msgstr "Nom d'affichage"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

@@ -66,6 +66,7 @@ msgid ""
 "Create templates for each type of intervention you have and customize their "
 "content with your own custom fields."
 msgstr ""
+"أنشئ قوالباً لكل نوع تدخل لديك، وقم بتخصيص المحتوى باستخدام حقولك المخصصة. "
 
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.fsm_worksheets_action_settings

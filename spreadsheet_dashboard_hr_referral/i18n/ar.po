@@ -38,7 +38,7 @@ msgstr "التطبيقات "
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Applications by Creation Date"
-msgstr ""
+msgstr "طلبات التقديم حسب تاريخ الإنشاء "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -86,21 +86,21 @@ msgstr "تم التعيين "
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired Ratio"
-msgstr ""
+msgstr "نسبة التعيينات "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired by referral"
-msgstr ""
+msgstr "تم تعيينه عن طريق الإحالة "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired ratio"
-msgstr ""
+msgstr "تسبة التعيينات "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -123,7 +123,7 @@ msgstr "متوسط "
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Most Hired Job Positions"
-msgstr ""
+msgstr "المناصب الوظيفية الأكثر تعييناً "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -145,14 +145,14 @@ msgstr "طلبات التقديم الجديدة "
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New Hires"
-msgstr ""
+msgstr "التعيينات الجديدة "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New applicants"
-msgstr ""
+msgstr "المتقدمون الجدد للوظائف "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -187,7 +187,7 @@ msgstr "مدة العملية "
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process duration"
-msgstr ""
+msgstr "مدة العملية "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -205,7 +205,7 @@ msgstr "المعدل "
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recent Applications"
-msgstr ""
+msgstr "طلبات التقديم الحديثة "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -222,35 +222,35 @@ msgstr "موظِّف "
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Company"
-msgstr ""
+msgstr "تحليل التوظيف حسب الشركة "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Job"
-msgstr ""
+msgstr "تحليل التوظيف حسب الوظيفة "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Medium"
-msgstr ""
+msgstr "تحليل التوظيف حسب الوسط "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Recruiter"
-msgstr ""
+msgstr "تحليل التوظيف حسب الموظِّف "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Source"
-msgstr ""
+msgstr "تحليل التوظيف حسب المصدر "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -264,7 +264,7 @@ msgstr "معدل الإحالة "
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral rate"
-msgstr ""
+msgstr "نسبة الإحالات "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -286,14 +286,14 @@ msgstr "المرحلة"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Companies"
-msgstr ""
+msgstr "أهم الشركات "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Job Positions"
-msgstr ""
+msgstr "أعلى المناصب الوظيفية "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -307,14 +307,14 @@ msgstr "أفضل الوسطاء"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Recruiters"
-msgstr ""
+msgstr "أعلى الموظِّفين "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr ""
+msgstr "أفضل المصادر "
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript

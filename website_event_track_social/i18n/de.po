@@ -70,7 +70,7 @@ msgstr "Verfolgung verknüpfter Veranstaltungen"
 #. module: website_event_track_social
 #: model:ir.model.fields,field_description:website_event_track_social.field_website_visitor__event_track_push_enabled_ids
 msgid "Push Enabled Tracks"
-msgstr ""
+msgstr "Aktivierte Sitzungen pushen"
 
 #. module: website_event_track_social
 #: model:ir.model.fields,field_description:website_event_track_social.field_event_track__push_reminder

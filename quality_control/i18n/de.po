@@ -133,7 +133,7 @@ msgstr "<strong>Chargen-/Seriennummer: </strong>"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
 msgid "<strong>Measure : </strong>"
-msgstr ""
+msgstr "<strong>Messung: </strong>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
@@ -1216,4 +1216,4 @@ msgstr "Sie müssen noch die Qualitätskontrolle durchführen!"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "e.g. The QA Masters"
-msgstr ""
+msgstr "z. B. Die QA-Masters"

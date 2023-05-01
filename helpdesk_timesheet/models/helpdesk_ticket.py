@@ -132,5 +132,6 @@ class HelpdeskTicket(models.Model):
                 'active_id': self.id,
                 'active_model': self._name,
                 'default_time_spent': time_spent,
+                'dialog_size': 'medium',
             },
         }

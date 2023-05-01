@@ -31,6 +31,7 @@
             <field name="name">Generate a Coupon</field>
             <field name="res_model">helpdesk.sale.coupon.generate</field>
             <field name="view_mode">form</field>
+            <field name="context">{'dialog_size': 'medium'}</field>
             <field name="target">new</field>
             <field name="view_id" ref="helpdesk_sale_coupon_generate_view_form"/>
         </record>

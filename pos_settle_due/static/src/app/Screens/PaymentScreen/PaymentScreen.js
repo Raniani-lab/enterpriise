@@ -41,7 +41,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
                     title: this.env._t("The order is empty"),
                     body: sprintf(
                         this.env._t("Do you want to deposit %s to %s?"),
-                        this.env.pos.format_currency(change),
+                        this.env.utils.formatCurrency(change),
                         order.get_partner().name
                     ),
                     confirmText: this.env._t("Yes"),
@@ -58,7 +58,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
                         this.env._t(
                             "Do you want to deposit %s to a specific customer? If so, first select him/her."
                         ),
-                        this.env.pos.format_currency(change)
+                        this.env.utils.formatCurrency(change)
                     ),
                     confirmText: this.env._t("Yes"),
                 });

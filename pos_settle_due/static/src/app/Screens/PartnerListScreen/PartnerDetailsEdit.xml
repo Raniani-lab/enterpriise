@@ -4,12 +4,12 @@
         <xpath expr="//div[hasclass('partner-details-right')]" position="inside">
                 <div class="partner-detail">
                     <span class="label credit-gestion">Due balance</span>
-                    <span t-esc="env.pos.format_currency(this.partnerInfos.totalDue)" />
+                    <span t-esc="env.utils.formatCurrency(this.partnerInfos.totalDue)" />
                 </div>
             <t t-if="this.partnerInfos.useLimit"></t>
                 <div class="partner-detail">
                     <span class="label credit-gestion">Credit limit</span>
-                    <span t-esc="env.pos.format_currency(this.partnerInfos.creditLimit)" />
+                    <span t-esc="env.utils.formatCurrency(this.partnerInfos.creditLimit)" />
                 </div>
             </t>
         </xpath>

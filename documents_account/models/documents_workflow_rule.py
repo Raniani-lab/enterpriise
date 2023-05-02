@@ -10,7 +10,8 @@ class WorkflowActionRuleAccount(models.Model):
                                                    ('account.move.in_refund', 'Vendor Credit Note'),
                                                    ('account.move.out_refund', "Credit note"),
                                                    ('account.move.entry', "Miscellaneous Operations"),
-                                                   ('account.bank.statement', "Bank Statement")])
+                                                   ('account.bank.statement', "Bank Statement"),
+                                                   ('account.move.in_receipt', "Purchase Receipt")])
     journal_id = fields.Many2one(
         comodel_name='account.journal',
         company_dependent=True,

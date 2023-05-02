@@ -228,6 +228,17 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         self.assertEqual(move.move_type, 'in_invoice')
         self.assertTrue(move.journal_id in vendor_bill_entry_rule.suitable_journal_ids)
 
+    def test_workflow_create_vendor_receipt(self):
+        # Activate the group for the vendor receipt
+        self.env['res.config.settings'].create({'group_show_purchase_receipts': True}).execute()
+        self.assertTrue(self.env.user.has_group('account.group_purchase_receipts'), 'The "purchase Receipt" feature should be enabled.')
+        vendor_receipt_rule = self.env.ref('documents_account.documents_vendor_receipt_rule')
+        vendor_receipt_action = vendor_receipt_rule.apply_actions([self.document_txt.id])
+        move = self.env['account.move'].browse(self.document_txt.res_id)
+        self.assertEqual(vendor_receipt_action.get('res_model'), 'account.move')
+        self.assertEqual(move.move_type, 'in_receipt')
+        self.assertTrue(move.journal_id in vendor_receipt_rule.suitable_journal_ids)
+
     def test_workflow_rule_form_journal(self):
         with Form(self.env.ref('documents_account.vendor_bill_rule_financial')) as rule:
             # our accounting action has a journal_id

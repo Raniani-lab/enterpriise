@@ -147,5 +147,13 @@
             <field name="facet_id" ref="documents.documents_finance_status"/>
             <field name="tag_id" ref="documents.documents_finance_status_validated"/>
         </record>
+
+        <!-- create a vendor receipt -->
+        <record id="documents_vendor_receipt_rule" model="documents.workflow.rule" forcecreate="0">
+            <field name="sequence">11</field>
+            <field name="name">Create Vendor Receipt</field>
+            <field name="create_model">account.move.in_receipt</field>
+            <field name="domain_folder_id" ref="documents.documents_finance_folder"/>
+        </record>
     </data>
 </odoo>

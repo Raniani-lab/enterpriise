@@ -626,7 +626,8 @@ class SaleOrder(models.Model):
         if not self.is_subscription:
             return res
         updated_fields, dummy = res
-        values = {'order_id': self.id,
+        values = {'event_date': fields.Date.context_today(self),
+                  'order_id': self.id,
                   'currency_id': self.currency_id.id,
                   'subscription_state': self.subscription_state,
                   'user_id': self.user_id.id,

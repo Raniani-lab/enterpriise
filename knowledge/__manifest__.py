@@ -90,9 +90,7 @@
             'knowledge/static/tests/tours/**/*',
         ],
         'web.qunit_suite_tests': [
-            'knowledge/static/tests/**/*',
-            ('remove', 'knowledge/static/tests/tours/**/*'),
-            ('remove', 'knowledge/static/tests/mock_services.js'),
+            'knowledge/static/tests/knowledge_form_view_tests.js',
         ],
         'web.tests_assets': [
             'knowledge/static/tests/mock_services.js',

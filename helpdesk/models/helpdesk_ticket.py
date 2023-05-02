@@ -656,10 +656,6 @@ class HelpdeskTicket(models.Model):
         sla_not_reached.write({'reached_datetime': fields.Datetime.now()})
         (sla_status - sla_not_reached).filtered(lambda x: x.sla_stage_id not in stages).write({'reached_datetime': False})
 
-    def assign_ticket_to_self(self):
-        self.ensure_one()
-        self.user_id = self.env.user
-
     def action_open_helpdesk_ticket(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("helpdesk.helpdesk_ticket_action_main_tree")

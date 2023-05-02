@@ -41,7 +41,7 @@ class HelpdeskTicketReport(models.Model):
     assign_date = fields.Datetime("First assignment date", readonly=True)
     rating_last_value = fields.Float("Rating (/5)", group_operator="avg", readonly=True)
     active = fields.Boolean("Active", readonly=True)
-    team_id = fields.Many2one('helpdesk.team', string='Team', readonly=True)
+    team_id = fields.Many2one('helpdesk.team', string='Helpdesk Team', readonly=True)
     company_id = fields.Many2one('res.company', string='Company', readonly=True)
     message_is_follower = fields.Boolean(related='ticket_id.message_is_follower')
     kanban_state = fields.Selection([

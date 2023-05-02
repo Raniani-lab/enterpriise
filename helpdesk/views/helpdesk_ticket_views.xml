@@ -106,7 +106,7 @@
                 <filter string="Archived" domain="[('active', '=', False)]" name="archive"/>
                 <group expand="0" string="Group By">
                     <filter string="Assigned to" name="assignee" context="{'group_by':'user_id'}"/>
-                    <filter string="Team" name="team" context="{'group_by':'team_id'}" invisible="context.get('default_team_id', False)"/>
+                    <filter string="Helpdesk Team" name="team" context="{'group_by':'team_id'}" invisible="context.get('default_team_id', False)"/>
                     <filter string="Stage" name="stage" context="{'group_by':'stage_id'}"/>
                     <filter string="Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
                     <filter string="Priority" name="priority" context="{'group_by': 'priority'}"/>
@@ -164,7 +164,7 @@
                 <filter string="SLA Failed" name="sla_failed" domain="[('sla_fail','!=',False)]" groups="helpdesk.group_use_sla"/>
                 <group expand="0" string="Group By">
                   <filter string="Assignee" name="assignee" context="{'group_by':'user_id'}"/>
-                  <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
+                  <filter string="Helpdesk Team" name="team" context="{'group_by':'team_id'}"/>
                 </group>
             </search>
         </field>
@@ -807,7 +807,7 @@
                 <filter string="Archived" domain="[('active','=',False)]" name="archive"/>
                 <group expand="0" string="Group By">
                   <filter string="Assignee" name="assignee" context="{'group_by':'user_id'}"/>
-                  <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
+                  <filter string="Helpdesk Team" name="team" context="{'group_by':'team_id'}"/>
                   <filter string="Ticket Type" name="ticket_type_id" context="{'group_by':'ticket_type_id'}"/>
                   <filter string="Creation Date" context="{'group_by':'create_date:week'}" name="group_by_create_date"/>
                   <filter string="First Assignment Date" context="{'group_by': 'assign_date:month'}" name="group_by_assign_date"/>

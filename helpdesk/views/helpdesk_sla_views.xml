@@ -63,7 +63,7 @@
                 <separator/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Group By">
-                    <filter string="Team" name="team" context="{'group_by':'team_id'}"/>
+                    <filter string="Helpdesk Team" name="team" context="{'group_by':'team_id'}"/>
                     <filter string="Priority" name="priority" context="{'group_by': 'priority'}"/>
                     <filter string="Company" name="company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
                     <filter string="Reach Stage" name="stage" context="{'group_by': 'stage_id'}"/>

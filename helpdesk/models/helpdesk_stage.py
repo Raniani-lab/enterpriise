@@ -22,7 +22,7 @@ class HelpdeskStage(models.Model):
         'Folded in Kanban',
         help='Tickets in a folded stage are considered as closed.')
     team_ids = fields.Many2many(
-        'helpdesk.team', relation='team_stage_rel', string='Teams',
+        'helpdesk.team', relation='team_stage_rel', string='Helpdesk Teams',
         default=_default_team_ids, required=True)
     template_id = fields.Many2one(
         'mail.template', 'Email Template',

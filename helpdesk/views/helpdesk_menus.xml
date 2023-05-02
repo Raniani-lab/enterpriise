@@ -68,7 +68,7 @@
 
             <menuitem
                 id="helpdesk_team_menu"
-                name="Teams"
+                name="Helpdesk Teams"
                 action="helpdesk_team_action"
                 sequence="0"
                 groups="helpdesk.group_helpdesk_manager"/>

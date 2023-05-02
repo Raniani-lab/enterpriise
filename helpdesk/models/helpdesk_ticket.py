@@ -53,7 +53,7 @@ class HelpdeskTicket(models.Model):
         return stages.search(search_domain, order=order)
 
     name = fields.Char(string='Subject', required=True, index=True, tracking=True)
-    team_id = fields.Many2one('helpdesk.team', string='Team', default=_default_team_id, index=True, tracking=True)
+    team_id = fields.Many2one('helpdesk.team', string='Helpdesk Team', default=_default_team_id, index=True, tracking=True)
     use_sla = fields.Boolean(related='team_id.use_sla')
     team_privacy_visibility = fields.Selection(related='team_id.privacy_visibility', string="Team Visibility")
     description = fields.Html()

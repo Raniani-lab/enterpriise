@@ -252,7 +252,7 @@
         <field name="name">helpdesk.team.search</field>
         <field name="model">helpdesk.team</field>
         <field name="arch" type="xml">
-            <search string="Team Search">
+            <search string="Helpdesk Team Search">
                 <field name="name"/>
                 <field name="member_ids"/>
                 <field name="company_id" groups="base.group_multi_company"/>
@@ -423,7 +423,7 @@
     </record>
 
     <record id="helpdesk_team_action" model="ir.actions.act_window">
-        <field name="name">Teams</field>
+        <field name="name">Helpdesk Teams</field>
         <field name="res_model">helpdesk.team</field>
         <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'default_use_sla': True}</field>

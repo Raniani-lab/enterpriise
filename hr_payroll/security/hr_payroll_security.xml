@@ -125,5 +125,11 @@
         <field name="model_id" ref="model_hr_salary_rule"/>
         <field name="domain_force">['|', ('struct_id.country_id', '=', False), ('struct_id.country_id', 'in', user.env.companies.mapped('country_id').ids)]</field>
     </record>
+
+    <record id="ir_rule_hr_payroll_note_multi_company" model="ir.rule">
+        <field name="name">HR Payroll Note: Multi Company</field>
+        <field name="model_id" ref="model_hr_payroll_note"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
 </data>
 </odoo>

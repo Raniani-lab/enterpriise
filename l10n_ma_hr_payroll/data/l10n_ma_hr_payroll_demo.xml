@@ -9,15 +9,6 @@
         <field name="country_id" ref="base.ma"/>
     </record>
 
-    <record id="" model="note.note">
-        <field name="name">To Do List</field>
-        <field name="tag_ids" eval="[(6, 0, [ref('hr_payroll.payroll_note_tag')])]"/>
-        <field name="company_id" ref="res_company_ma"/>
-        <field name="memo"><![CDATA[<p><b>To fix contracts:</b></p>
-            <p>- ...]]>
-        </field>
-    </record>
-
     <record id="base.user_admin" model="res.users">
         <field name="company_ids" eval="[(4, ref('l10n_ma_hr_payroll.res_company_ma'))]"/>
     </record>

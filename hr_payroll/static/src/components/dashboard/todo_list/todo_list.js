@@ -24,10 +24,10 @@ export class PayrollDashboardTodo extends Component {
             records: [],
         });
         this.recordInfo = {
-            model: "note.note",
-            fieldNames: ["id", "name", "color", "user_id", "tag_ids"],
+            model: "hr.payroll.note",
+            fieldNames: ["id", "name"],
         };
-        this.autofocusInput = useAutofocus();
+        this.autofocusInput = useAutofocus({selectAll: true});
         useSetupAction({
             beforeLeave: () => this.saveNote(),
             beforeUnload: () => {
@@ -41,7 +41,7 @@ export class PayrollDashboardTodo extends Component {
             this.state.records = (
                 await this.orm.webSearchRead(
                     this.recordInfo.model,
-                    this.props.domain,
+                    [],
                     this.recordInfo.fieldNames,
                     {
                         order: orderByToString(this.props.orderBy),
@@ -57,11 +57,11 @@ export class PayrollDashboardTodo extends Component {
      * Creates a note.
      */
     async createNoteForm() {
-        const result = await this.orm.create("note.note", [
+        const result = await this.orm.create("hr.payroll.note", [
             {
                 name: "Untitled",
-                tag_ids: [[4, this.props.tagId]],
                 company_id: this.company.currentCompany.id,
+                note: '',
             },
         ]);
         const noteId = result[0];
@@ -149,7 +149,7 @@ export class PayrollDashboardTodo extends Component {
      * Handler when delete button is clicked
      */
     async onNoteDelete() {
-        const message = this.env._t("Are you sure you want to delete this note?");
+        const message = this.env._t("Are you sure you want to delete this note? All content will be definitely lost.");
         this.dialog.add(ConfirmationDialog, {
             body: message,
             confirm: () => this._deleteNote(this.state.activeNoteId),
@@ -163,7 +163,7 @@ export class PayrollDashboardTodo extends Component {
     async _deleteNote(noteId) {
         await this.orm.unlink(this.recordInfo.model, [noteId]);
         this.state.records = this.state.records.filter((record) => record.id !== noteId);
-        this.state.activeNoteId = this.state.records[0].id;
+        this.state.activeNoteId = this.state.records.length && this.state.records[0].id;
     }
 
     /**

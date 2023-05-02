@@ -106,13 +106,6 @@ class TestDashboard(TransactionCase):
             self.assertEqual(len(dashboard['batches']), len(batches_to_return))
             self.assertEqual(set(read['id'] for read in dashboard['batches']), set(batches_to_return.ids))
 
-    def test_dashboard_notes(self):
-        #Test that we get the payroll note tag
-        dashboard_note_tag = self.env.ref('hr_payroll.payroll_note_tag')
-        dashboard = self.env['hr.payslip'].with_user(self.user).get_payroll_dashboard_data(sections=['notes'])
-        self.assertTrue('notes' in dashboard)
-        self.assertEqual(dashboard['notes']['tag_id'], dashboard_note_tag.id)
-
     def test_dashboard_empty_stats(self):
         # Tests that when stats are empty they are tagged as sample
         dashboard = self.env['hr.payslip'].with_user(self.user).get_payroll_dashboard_data(sections=['stats'])

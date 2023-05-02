@@ -1668,7 +1668,7 @@ class HrPayslip(models.Model):
 
     @api.model
     def _get_dashboard_default_sections(self):
-        return ['actions', 'batches', 'notes', 'stats']
+        return ['actions', 'batches', 'stats']
 
     @api.model
     def _get_dashboard_batch_fields(self):
@@ -1718,15 +1718,6 @@ class HrPayslip(models.Model):
                     'state': translated_states.get(batch_read['state'], _('Unknown State')),
                 })
             result['batches'] = batches_read_result
-        if 'notes' in sections:
-            result['notes'] = {}
-            # Fetch all the notes and their associated data
-            dashboard_note_tag = self.env.ref('hr_payroll.payroll_note_tag', raise_if_not_found=False)
-            if dashboard_note_tag:
-                # For note creation
-                result['notes'].update({
-                    'tag_id': dashboard_note_tag.id,
-                })
         if 'stats' in sections:
             result['stats'] = self._get_dashboard_stats()
         return result

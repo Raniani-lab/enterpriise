@@ -8,7 +8,7 @@
                     <t t-foreach="state.records" t-as="rec" t-key="rec.id">
                         <t t-set="isActiveNote" t-value="rec.id === state.activeNoteId"/>
                         <li class="o_hr_payroll_todo_tab nav-item flex-shrink-0 border-end  cursor-pointer"
-                            t-att-class="' oe_kanban_color_' + rec.color + ((isActiveNote) ? '' : ' border-bottom ')"
+                            t-att-class="((isActiveNote) ? '' : ' border-bottom ')"
                             t-on-click="() => this.onClickNoteTab(rec)"
                             t-on-dblclick="() => this.startNameEdition(rec)">
                             <a t-attf-class="mb-0 nav-link text-dark {{ (isActiveNote) ? 'd-flex align-items-center justify-content-between gap-2 active border-0 border-odoo border-top ' : '' }}">
@@ -17,7 +17,7 @@
                                 </t>
                                 <t t-else="">
                                     <t t-esc="(rec.name || 'untitled').substring(0, 30)"/>
-                                    <button type="button" class="btn p-0" aria-label="Close" t-if="rec.user_id[0] == user.userId &amp;&amp; isActiveNote" t-on-click="onNoteDelete">
+                                    <button type="button" class="btn p-0" aria-label="Close" t-if="isActiveNote" t-on-click="onNoteDelete">
                                         <i class="oi oi-close"/>
                                     </button>
                                 </t>
@@ -33,8 +33,8 @@
 
             <div class="card-body content overflow-hidden">
                 <div class="o_hr_payroll_todo_value overflow-auto h-100">
-                    <Record resModel="recordInfo.model" fieldNames="['memo']" resId="state.activeNoteId" t-slot-scope="data" mode="'edit'" onRecordChanged.bind="onRecordChanged">
-                        <Field name="'memo'" record="data.record" class="'h-100'" wysiwygOptions="{}" isCollaborative="true"/>
+                    <Record t-if="state.activeNoteId" resModel="recordInfo.model" fieldNames="['note']" resId="state.activeNoteId" t-slot-scope="data" mode="'edit'" onRecordChanged.bind="onRecordChanged">
+                        <Field name="'note'" record="data.record" class="'h-100'" wysiwygOptions="{}" isCollaborative="true"/>
                     </Record>
                 </div>
             </div>

@@ -22,7 +22,7 @@ class PayrollDashboardComponent extends Component {
      * Updates the note in database and reload notes data right after.
      */
     async updateNoteMemo(id, memo) {
-        await this.orm.write('note.note', [id], { memo });
+        await this.orm.write('hr.payroll.note', [id], { memo });
         this.reloadNotes();
     }
 

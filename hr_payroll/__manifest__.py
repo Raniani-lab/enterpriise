@@ -9,7 +9,6 @@
     'installable': True,
     'application': True,
     'depends': [
-        'note',
         'hr_work_entry_contract_enterprise',
         'mail',
         'web_editor',

@@ -265,8 +265,6 @@
       <field name="model">sale.order</field>
       <field name="arch" type="xml">
         <tree sample="1" multi_edit="1" default_order="next_invoice_date asc, end_date asc"
-              decoration-info="subscription_state in ['1_draft', '2_renewal'] and state =='draft'"
-              decoration-primary="subscription_state in ['1_draft', '2_renewal'] and state =='sent'"
               decoration-warning="subscription_state == '4_paused'"
               decoration-muted="state == 'cancel'">
             <field name="name" string="Number" readonly="1" decoration-bf="1"/>
@@ -290,7 +288,8 @@
             <field name="recurrence_id" optional="show" readonly="1"/>
             <field name="non_recurring_total" string="Non Recurring" optional="hide" readonly="1"/>
             <field name="sale_order_template_id" string="Plan" optional="hide"/>
-            <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" readonly="1"/>
+            <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" readonly="1"
+                decoration-info="invoice_status == 'to invoice'"/>
             <field name="subscription_state" string="Status" widget="badge"
                    decoration-success="subscription_state == '3_progress'"
                    decoration-warning="subscription_state == '4_paused'"
@@ -304,6 +303,7 @@
                     decoration-primary="state == 'sent'"
                     widget="badge" optional="hide"/>            <field name="pricelist_id" invisible="1" readonly="1"/>
             <field name="currency_id" invisible="1" readonly="1"/>
+            <field name="invoice_status" invisible="1"/>
         </tree>
       </field>
     </record>

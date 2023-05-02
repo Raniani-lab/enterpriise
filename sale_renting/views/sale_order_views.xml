@@ -145,18 +145,21 @@
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
             <tree sample="1"
-                decoration-info="rental_status == 'draft'"
-                decoration-primary="rental_status == 'sent'"
                 decoration-muted="rental_status == 'cancel'">
                 <field name="has_rented_products" invisible="1"/>
                 <field name="has_late_lines" invisible="1"/>
+                <field name="invoice_status" invisible="1"/>
                 <field name="name" readonly="1" decoration-bf="1"/>
                 <field name="date_order" widget='date'/>
                 <field name="next_action_date" widget='remaining_days'/>
                 <field name="partner_id" readonly="1"/>
                 <field name="user_id" optional="show" widget='many2one_avatar_user'/>
                 <field name="team_id" optional="hide"/>
-                <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1"/>
+                <field name="amount_total"
+                    sum="Total Tax Included"
+                    widget="monetary"
+                    decoration-bf="1"
+                    decoration-info="invoice_status == 'to invoice'"/>
                 <field name="rental_status" widget='badge'
                     decoration-info="rental_status == 'draft'"
                     decoration-primary="rental_status == 'sent'"

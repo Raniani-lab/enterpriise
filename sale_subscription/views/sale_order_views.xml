@@ -215,7 +215,6 @@
         <field name="inherit_id" ref="sale.view_order_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="attributes">
-                <attribute name="decoration-info">subscription_state in ['1_draft', '2_quotation']</attribute>
                 <attribute name="decoration-warning">subscription_state == '4_paused'</attribute>
             </xpath>
             <field name="state" position="after">

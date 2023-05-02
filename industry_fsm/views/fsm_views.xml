@@ -126,7 +126,7 @@
                 </span>
             </xpath>
             <div name="date_deadline" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('is_closed', '=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('state', 'in', ['1_done','1_canceled'])]}</attribute>
             </div>
         </field>
     </record>

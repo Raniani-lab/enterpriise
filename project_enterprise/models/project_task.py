@@ -14,6 +14,8 @@ from odoo.addons.resource.models.utils import filter_domain_leaf
 
 from odoo.addons.resource.models.utils import Intervals, sum_intervals, string_to_datetime
 
+from odoo.addons.project.models.project_task import CLOSED_STATES
+
 PROJECT_TASK_WRITABLE_FIELDS = {
     'planned_date_begin',
     'planned_date_end',
@@ -66,10 +68,10 @@ class Task(models.Model):
             'planned_date_end': False
         })
 
-    @api.depends('is_closed')
+    @api.depends('state')
     def _compute_display_warning_dependency_in_gantt(self):
         for task in self:
-            task.display_warning_dependency_in_gantt = not task.is_closed
+            task.display_warning_dependency_in_gantt = task.state not in CLOSED_STATES
 
     @api.onchange('planned_date_begin', 'planned_date_end')
     def _onchange_planned_date(self):
@@ -81,7 +83,7 @@ class Task(models.Model):
     def _get_planning_overlap_per_task(self, group_by_user=False):
         if not self.ids:
             return {}
-        self.flush_model(['active', 'planned_date_begin', 'planned_date_end', 'user_ids', 'project_id', 'is_closed'])
+        self.flush_model(['active', 'planned_date_begin', 'planned_date_end', 'user_ids', 'project_id', 'state'])
 
         additional_select_fields = additional_join_fields = additional_join_str = ""
 
@@ -100,7 +102,7 @@ class Task(models.Model):
         INNER JOIN project_task_user_rel U1 ON T.id = U1.task_id
         INNER JOIN project_task T2 ON T.id != T2.id
                AND T2.active = 't'
-               And T2.is_closed IS FALSE
+               AND T2.state NOT IN ('1_done', '1_canceled')
                AND T2.planned_date_begin IS NOT NULL
                AND T2.planned_date_end IS NOT NULL
                AND T2.planned_date_end > NOW()
@@ -112,7 +114,7 @@ class Task(models.Model):
         %s
              WHERE T.id IN %s
                AND T.active = 't'
-               And T.is_closed IS FALSE
+               AND T.state NOT IN ('1_done', '1_canceled')
                AND T.planned_date_begin IS NOT NULL
                AND T.planned_date_end IS NOT NULL
                AND T.planned_date_end > NOW()
@@ -166,14 +168,14 @@ class Task(models.Model):
                 AND T1.planned_date_end IS NOT NULL
                 AND T1.planned_date_end > NOW()
                 AND T1.active = 't'
-                AND T1.is_closed IS FALSE
+                AND T1.state NOT IN ('1_done', '1_canceled')
                 AND T1.project_id IS NOT NULL
                 AND T2.planned_date_begin IS NOT NULL
                 AND T2.planned_date_end IS NOT NULL
                 AND T2.planned_date_end > NOW()
                 AND T2.project_id IS NOT NULL
                 AND T2.active = 't'
-                AND T2.is_closed IS FALSE
+                AND T2.state NOT IN ('1_done', '1_canceled')
         """
         operator_new = "inselect" if ((operator == "=" and value) or (operator == "!=" and not value)) else "not inselect"
         return [('id', operator_new, (query, ()))]
@@ -349,7 +351,7 @@ class Task(models.Model):
         if project_id:
             domain_expand = expression.OR([[
                 ('project_id', '=', project_id),
-                ('is_closed', '=', False),
+                ('state', 'not in', list(CLOSED_STATES)),
                 ('planned_date_begin', '=', False),
                 ('planned_date_end', '=', False),
             ], domain_expand])
@@ -902,7 +904,7 @@ class Task(models.Model):
             :rtype: bool
         """
         is_record_candidate = super()._web_gantt_reschedule_is_record_candidate(start_date_field_name, stop_date_field_name)
-        return is_record_candidate and self.project_id.allow_task_dependencies and not self.is_closed
+        return is_record_candidate and self.project_id.allow_task_dependencies and self.state not in CLOSED_STATES
 
     @api.model
     def _web_gantt_reschedule_is_relation_candidate(self, master, slave, start_date_field_name, stop_date_field_name):

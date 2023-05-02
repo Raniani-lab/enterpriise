@@ -7,6 +7,7 @@ import pytz
 from odoo import Command, fields, models, api, _
 from odoo.osv import expression
 from odoo.tools import get_lang
+from odoo.addons.project.models.project_task import CLOSED_STATES
 
 class Task(models.Model):
     _inherit = "project.task"
@@ -265,7 +266,7 @@ class Task(models.Model):
         return res
 
     def _compute_fsm_done(self):
-        closed_tasks = self.filtered('is_closed')
+        closed_tasks = self.filtered(lambda t: t.state in CLOSED_STATES)
         closed_tasks.fsm_done = True
 
     def action_fsm_worksheet(self):

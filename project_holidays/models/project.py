@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-
+from odoo.addons.project.models.project_task import CLOSED_STATES
 
 class Task(models.Model):
     _inherit = 'project.task'
@@ -20,7 +20,7 @@ class Task(models.Model):
             and t.project_id
             and t.planned_date_begin
             and t.planned_date_end
-            and not t.is_closed
+            and not t.state in CLOSED_STATES
         )
         (self - assigned_tasks).leave_warning = False
         (self - assigned_tasks).is_absent = False
@@ -62,7 +62,7 @@ class Task(models.Model):
             ('project_id', '!=', False),
             ('planned_date_begin', '!=', False),
             ('planned_date_end', '!=', False),
-            ('is_closed', '!=', True),
+            ('state', 'not in', list(CLOSED_STATES)),
         ])
         if not tasks:
             return []

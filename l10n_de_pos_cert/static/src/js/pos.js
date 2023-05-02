@@ -2,7 +2,6 @@
 
 import { PosGlobalState, Order } from "@point_of_sale/js/models";
 import { uuidv4 } from "@point_of_sale/js/utils";
-import { roundDecimals as round_di } from "@web/core/utils/numbers";
 import { convertFromEpoch } from "@l10n_de_pos_cert/js/utils";
 import { TaxError } from "@l10n_de_pos_cert/js/errors";
 import { patch } from "@web/core/utils/patch";
@@ -72,10 +71,6 @@ patch(PosGlobalState.prototype, "l10n_de_pos_cert.PosGlobalState", {
     },
     isCountryGermanyAndFiskaly() {
         return this.isCountryGermany() && !!this.getTssId();
-    },
-    format_round_decimals_currency(value) {
-        const decimals = this.currency.decimal_places;
-        return round_di(value, decimals).toFixed(decimals);
     },
     initVatRates(url) {
         const data = {
@@ -393,7 +388,7 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
             .filter((rate) => !!amountPerVatRate[rate])
             .map((rate) => ({
                 vat_rate: rate,
-                amount: this.pos.format_round_decimals_currency(amountPerVatRate[rate]),
+                amount: this.env.utils.formatCurrency(amountPerVatRate[rate], false),
             }));
     },
     /*
@@ -405,14 +400,14 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
             amountPerPaymentTypeArray.push({
                 payment_type:
                     line.payment_method.name.toLowerCase() === "cash" ? "CASH" : "NON_CASH",
-                amount: this.pos.format_round_decimals_currency(line.amount),
+                amount: this.env.utils.formatCurrency(line.amount, false),
             });
         });
         const change = this.get_change();
         if (change) {
             amountPerPaymentTypeArray.push({
                 payment_type: "CASH",
-                amount: this.pos.format_round_decimals_currency(-change),
+                amount: this.env.utils.formatCurrency(-change, false),
             });
         }
         return amountPerPaymentTypeArray;

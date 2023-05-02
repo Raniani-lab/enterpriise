@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-
+import { createFile } from "web.test_utils_file";
 
 registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         test: true,
@@ -633,6 +633,87 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
                 $('select[name="select_company_car_total_depreciated_cost"]').trigger('change');
             },
         },
+        // set personal info
+        {
+            content: "Upload ID card copy (Both Sides)",
+            trigger: 'input[name="id_card"]',
+            async run () {
+                const file = await createFile({
+                    content: 'hello, world',
+                    contentType: 'application/pdf',
+                    name: 'employee_id_card.pdf',
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = $('input[name="id_card"]')[0]
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            },
+        },
+        {
+            content: "Upload Mobile Subscription Invoice",
+            trigger: 'input[name="mobile_invoice"]',
+            async run () {
+                const file = await createFile({
+                    content: 'hello, world',
+                    contentType: 'application/pdf',
+                    name: 'employee_mobile_invoice.pdf',
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = $('input[name="mobile_invoice"]')[0]
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            },
+        },
+        {
+            content: "Upload Sim Card Copy",
+            trigger: 'input[name="sim_card"]',
+            async run () {
+                const file = await createFile({
+                    content: 'hello, world',
+                    contentType: 'application/pdf',
+                    name: 'employee_sim_card.pdf',
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = $('input[name="sim_card"]')[0]
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            },
+        },
+        {
+            content: "Upload Internet Subscription invoice",
+            trigger: 'input[name="internet_invoice"]',
+            async run () {
+                const file = await createFile({
+                    content: 'hello, world',
+                    contentType: 'application/pdf',
+                    name: 'employee_internet_invoice.pdf',
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = $('input[name="internet_invoice"]')[0]
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            },
+        },
+        {
+            content: "Upload Driving License",
+            trigger: 'input[name="driving_license"]',
+            async run () {
+                const file = await createFile({
+                    content: 'hello, world',
+                    contentType: 'application/pdf',
+                    name: 'employee_driving_license.pdf',
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = $('input[name="driving_license"]')[0]
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            },
+        },
         {
             content: "submit",
             trigger: 'button#hr_cs_submit',
@@ -1191,6 +1272,71 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
             content: 'Set 0 Children',
             trigger: 'input[name=children]',
             run: 'text 0'
+        },
+        // set personal info
+        {
+            content: "Upload ID card copy (Both Sides)",
+            trigger: 'input[name="id_card"]',
+            async run () {
+                const file = await createFile({
+                    content: 'hello, world',
+                    contentType: 'application/pdf',
+                    name: 'employee_id_card.pdf',
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = $('input[name="id_card"]')[0]
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            },
+        },
+        {
+            content: "Upload Mobile Subscription Invoice",
+            trigger: 'input[name="mobile_invoice"]',
+            async run () {
+                const file = await createFile({
+                    content: 'hello, world',
+                    contentType: 'application/pdf',
+                    name: 'employee_mobile_invoice.pdf',
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = $('input[name="mobile_invoice"]')[0]
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            },
+        },
+        {
+            content: "Upload Sim Card Copy",
+            trigger: 'input[name="sim_card"]',
+            async run () {
+                const file = await createFile({
+                    content: 'hello, world',
+                    contentType: 'application/pdf',
+                    name: 'employee_sim_card.pdf',
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = $('input[name="sim_card"]')[0]
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            },
+        },
+        {
+            content: "Upload Internet Subscription invoice",
+            trigger: 'input[name="internet_invoice"]',
+            async run () {
+                const file = await createFile({
+                    content: 'hello, world',
+                    contentType: 'application/pdf',
+                    name: 'employee_internet_invoice.pdf',
+                });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                const fileInput = $('input[name="internet_invoice"]')[0]
+                fileInput.files = dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+            },
         },
         {
             content: "submit",

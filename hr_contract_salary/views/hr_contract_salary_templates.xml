@@ -391,6 +391,7 @@
                 t-att-name="personal_info.field"
                 t-att-applies-on="personal_info.applies_on"
                 t-att-class="'form-control document personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"
+                t-att-required="personal_info.is_required and not hidden_children"
                 t-att-accept="document_accept"/>
         </t>
         <t t-if="personal_info.display_type == 'checkbox'">

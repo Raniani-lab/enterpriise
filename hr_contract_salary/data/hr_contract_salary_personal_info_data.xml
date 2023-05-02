@@ -252,6 +252,7 @@
 
     <record id="hr_contract_salary_personal_info_image_1920" model="hr.contract.salary.personal.info">
         <field name="name">Employee Photo</field>
+        <field name="is_required">False</field>
         <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.employee'), ('name', '=', 'image_1920')])"/>
         <field name="applies_on">employee</field>
         <field name="display_type">document</field>

@@ -514,7 +514,10 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     checkFormValidity() {
-        const requiredEmptyInput = $("input:required").toArray().find(input => input.value === '' && input.name !== '' && input.type !== 'checkbox');
+        // Don't make the input required, if the element is not displayed.
+        // For example, we don't want to require driving license
+        // when it is not displayed. As it will be conditionally hidden if car advantage is not set.
+        const requiredEmptyInput = $("input:required").toArray().find(input => input.value === '' && input.name !== '' && input.type !== 'checkbox' && input.offsetParent !== null);
         const requiredEmptySelect = $("select:required").toArray().find(select => $(select).val() === '');
         const email = $("input[name='private_email']").val();
         const atpos = email.indexOf("@");
@@ -551,7 +554,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             $("input:required").toArray().forEach(input => {
                 $(input).toggleClass('bg-danger', input.value === '');
                 let inputPosition = $(input).offset().top;
-                if ((!elementToScroll || inputPosition < elementToScrollPosition) && input.value === '') {
+                if ((!elementToScroll || inputPosition < elementToScrollPosition) && input.value === '' && input.type !== 'checkbox') {
                     elementToScroll = $(input)[0];
                     elementToScrollPosition = $(input).offset().top;
                 }

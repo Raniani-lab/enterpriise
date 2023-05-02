@@ -156,8 +156,16 @@ class HrContractSalaryAdvantage(models.Model):
 
     @api.depends('requested_documents_field_ids')
     def _compute_requested_documents(self):
+        names = []
         for advantage in self:
             advantage.requested_documents = ','.join(advantage.requested_documents_field_ids.mapped('name'))
+            names.extend(advantage.requested_documents_field_ids.mapped('name'))
+        self._set_requested_documents_as_required(names)
+
+    def _set_requested_documents_as_required(self, names):
+        personal_infos = self.env['hr.contract.salary.personal.info'].search([('field', 'in', names)])
+        if personal_infos:
+            personal_infos.is_required = True
 
     @api.depends_context('uid')
     def _compute_has_admin_access(self):

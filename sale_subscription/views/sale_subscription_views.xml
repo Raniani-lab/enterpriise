@@ -41,8 +41,8 @@
                 <filter name="paused" string="Paused" domain="[('subscription_state','=', '4_paused')]"/>
                 <filter name="churned" string="Churned" domain="[('subscription_state','=', '6_churn')]"/>
                 <separator/>
+                <filter name="to_renew" string="To Invoice" domain="[('next_invoice_date', '&lt;=', context_today().strftime('%Y-%m-%d')), ('subscription_state', 'in', ('3_progress', '4_paused'))]"/>
                 <separator/>
-                <filter string="To Renew" name="to_renew" domain="[('next_invoice_date', '&lt;', context_today().strftime('%Y-%m-%d')), ('subscription_state', '=', '3_progress')]"/>
                 <filter name="payment_exception" string="Failed Payments" domain="[('payment_exception','=', True)]" help="Contracts whose payment has failed"/>
                 <separator/>
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>

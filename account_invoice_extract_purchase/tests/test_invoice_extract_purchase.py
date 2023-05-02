@@ -96,7 +96,7 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, TestExtractMixin):
         extract_response = self.get_result_success_response()
         extract_response['results'][0]['purchase_order']['selected_values'][0]['content'] = self.purchase_order.name
 
-        with self._mock_iap_extract(extract_response, {}):
+        with self._mock_iap_extract(extract_response=extract_response):
             invoice._check_ocr_status()
 
         self.assertTrue(invoice.id in self.purchase_order.invoice_ids.ids)
@@ -106,7 +106,7 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, TestExtractMixin):
         extract_response = self.get_result_success_response()
         extract_response['results'][0]['supplier']['selected_value']['content'] = self.purchase_order.partner_id.name
 
-        with self._mock_iap_extract(extract_response, {}):
+        with self._mock_iap_extract(extract_response=extract_response):
             invoice._check_ocr_status()
 
         self.assertTrue(invoice.id in self.purchase_order.invoice_ids.ids)
@@ -120,7 +120,7 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, TestExtractMixin):
         extract_response['results'][0]['subtotal']['selected_value']['content'] = 200
         extract_response['results'][0]['invoice_lines'] = extract_response['results'][0]['invoice_lines'][:2]
 
-        with self._mock_iap_extract(extract_response, {}):
+        with self._mock_iap_extract(extract_response=extract_response):
             invoice._check_ocr_status()
 
         self.assertTrue(invoice.id in self.purchase_order.invoice_ids.ids)
@@ -135,7 +135,7 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, TestExtractMixin):
         extract_response['results'][0]['subtotal']['selected_value']['content'] = 150
         extract_response['results'][0]['invoice_lines'] = [extract_response['results'][0]['invoice_lines'][1]]
 
-        with self._mock_iap_extract(extract_response, {}):
+        with self._mock_iap_extract(extract_response=extract_response):
             invoice._check_ocr_status()
 
         self.assertTrue(invoice.id in self.purchase_order.invoice_ids.ids)
@@ -146,7 +146,7 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, TestExtractMixin):
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_result_success_response()
 
-        with self._mock_iap_extract(extract_response, {}):
+        with self._mock_iap_extract(extract_response=extract_response):
             invoice._check_ocr_status()
 
         self.assertTrue(invoice.id not in self.purchase_order.invoice_ids.ids)

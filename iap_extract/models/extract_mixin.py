@@ -114,8 +114,8 @@ class ExtractMixin(models.AbstractModel):
         records_to_validate = self.search(self._get_validation_domain())
         documents = {
             record.extract_document_uuid: {
-                field: record.get_validation(field),
-            } for record in records_to_validate for field in self._get_validation_fields()
+                field: record.get_validation(field) for field in self._get_validation_fields()
+            } for record in records_to_validate
         }
 
         if documents:

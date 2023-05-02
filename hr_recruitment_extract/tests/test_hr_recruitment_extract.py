@@ -4,6 +4,8 @@
 from odoo.addons.hr.tests.common import TestHrCommon
 from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 
+from ..models.hr_applicant import OCR_VERSION
+
 
 class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
 
@@ -32,11 +34,26 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
     def test_auto_send_for_digitization(self):
         # test the `auto_send` mode for digitization does send the attachment upon upload
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
+        expected_parse_params = {
+            'version': OCR_VERSION,
+            'account_token': 'test_token',
+            'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
+            'documents': [self.attachment.datas.decode('utf-8')],
+            'user_infos': {
+                'user_email': self.env.ref('base.user_root').email,
+                'user_lang': self.env.ref('base.user_root').lang,
+            },
+            'webhook_url': f'{self.applicant.get_base_url()}/hr_recruitment_extract/request_done',
+        }
 
-        with self._mock_iap_extract(self.parse_success_response()):
+        with self._mock_iap_extract(
+            extract_response=self.parse_success_response(),
+            assert_params=expected_parse_params,
+        ):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.applicant.extract_state, 'waiting_extraction')
+        self.assertEqual(self.applicant.extract_document_uuid, 'some_uuid')
         self.assertTrue(self.applicant.extract_state_processed)
         self.assertFalse(self.applicant.partner_name)
         self.assertFalse(self.applicant.email_from)
@@ -44,7 +61,14 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         self.assertFalse(self.applicant.partner_mobile)
 
         extract_response = self.get_result_success_response()
-        with self._mock_iap_extract(extract_response):
+        expected_get_results_params = {
+            'version': OCR_VERSION,
+            'document_uuid': 'some_uuid',
+        }
+        with self._mock_iap_extract(
+            extract_response=extract_response,
+            assert_params=expected_get_results_params,
+        ):
             self.applicant.check_all_status()
 
         self.assertEqual(self.applicant.partner_name, extract_response['results'][0]['name']['selected_value']['content'])
@@ -59,20 +83,20 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         self.assertEqual(self.applicant.extract_state, 'no_extract_requested')
         self.assertFalse(self.applicant.extract_can_show_send_button)
 
-        with self._mock_iap_extract(self.parse_success_response()):
+        with self._mock_iap_extract(extract_response=self.parse_success_response()):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.applicant.extract_state, 'no_extract_requested')
         self.assertTrue(self.applicant.extract_can_show_send_button)
 
-        with self._mock_iap_extract(self.parse_success_response()):
+        with self._mock_iap_extract(extract_response=self.parse_success_response()):
             self.applicant.action_send_for_digitization()
 
         # upon success, no button shall be provided
         self.assertFalse(self.applicant.extract_can_show_send_button)
 
         extract_response = self.get_result_success_response()
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(extract_response=extract_response):
             self.applicant.check_all_status()
 
         self.assertEqual(self.applicant.partner_name, extract_response['results'][0]['name']['selected_value']['content'])
@@ -84,7 +108,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         # test that the `no_send` mode for digitization prevents the users from sending
         self.env.company.recruitment_extract_show_ocr_option_selection = 'no_send'
 
-        with self._mock_iap_extract(self.parse_success_response()):
+        with self._mock_iap_extract(extract_response=self.parse_success_response()):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.applicant.extract_state, 'no_extract_requested')
@@ -94,7 +118,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         # test that upon not enough credit error, the retry button is provided
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
 
-        with self._mock_iap_extract(self.parse_credit_error_response()):
+        with self._mock_iap_extract(extract_response=self.parse_credit_error_response()):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertFalse(self.applicant.extract_can_show_send_button)
@@ -103,7 +127,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         # test the 'processing' ocr status effects
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
 
-        with self._mock_iap_extract(self.parse_processing_response()):
+        with self._mock_iap_extract(extract_response=self.parse_processing_response()):
             self.applicant._check_ocr_status()
 
         self.assertEqual(self.applicant.extract_state, 'extract_not_ready')
@@ -112,19 +136,32 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
     def test_applicant_validation(self):
         # test that when the applicant is hired, the validation is sent to the server
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
-        extract_response = self.get_result_success_response()
 
-        with self._mock_iap_extract(extract_response):
+        with self._mock_iap_extract(extract_response=self.parse_success_response()):
+            self.applicant.message_post(attachment_ids=[self.attachment.id])
+
+        with self._mock_iap_extract(extract_response=self.get_result_success_response()):
             self.applicant._check_ocr_status()
 
         self.assertEqual(self.applicant.extract_state, 'waiting_validation')
 
+        expected_validation_params = {
+            'version': OCR_VERSION,
+            'documents': {
+                'some_uuid': {
+                    'email': {'content': self.applicant.email_from},
+                    'phone': {'content': self.applicant.partner_phone},
+                    'mobile': {'content': self.applicant.partner_mobile},
+                    'name': {'content': self.applicant.name},
+                }
+            }
+        }
+
         hired_stages = self.env['hr.recruitment.stage'].search([('hired_stage', '=', True)])
-        with self._mock_iap_extract(self.validate_success_response()):
+        with self._mock_iap_extract(
+            extract_response=self.validate_success_response(),
+            assert_params=expected_validation_params,
+        ):
             self.applicant.write({'stage_id': hired_stages[0].id})
 
         self.assertEqual(self.applicant.extract_state, 'done')
-        self.assertEqual(self.applicant.get_validation('email')['content'], self.applicant.email_from)
-        self.assertEqual(self.applicant.get_validation('phone')['content'], self.applicant.partner_phone)
-        self.assertEqual(self.applicant.get_validation('mobile')['content'], self.applicant.partner_mobile)
-        self.assertEqual(self.applicant.get_validation('name')['content'], self.applicant.name)

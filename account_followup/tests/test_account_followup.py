@@ -267,7 +267,8 @@ class TestAccountFollowupReports(AccountTestInvoicingCommon):
 
     def test_followup_contacts(self):
         followup_contacts = self.partner_a._get_all_followup_contacts()
-        self.assertEqual(self.env['res.partner'], followup_contacts)
+        billing_contact = self.env['res.partner'].browse(self.partner_a.address_get(['invoice'])['invoice'])
+        self.assertEqual(billing_contact, followup_contacts)
 
         followup_partner_1 = self.env['res.partner'].create({
             'name': 'followup partner 1',

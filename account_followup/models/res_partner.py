@@ -209,9 +209,14 @@ class ResPartner(models.Model):
 
     def _get_all_followup_contacts(self):
         """ Returns every contact of type 'followup' in the children of self.
+        If no followup contacts are found, use the billing address
+        and default to contact if there isn't any for invoice
         """
         self.ensure_one()
-        return self.child_ids.filtered(lambda partner: partner.type == 'followup')
+        followup_contacts = self.child_ids.filtered(lambda partner: partner.type == 'followup')
+        if not followup_contacts:
+            followup_contacts = self.env['res.partner'].browse(self.address_get(['invoice'])['invoice'])
+        return followup_contacts
 
     def _included_unreconciled_aml_max_followup(self):
         """ Computes the maximum delay in days and the highest level of followup (followup line with highest delay) of all the unreconciled amls included.

@@ -30,3 +30,8 @@ export class CommonOdooChartConfigPanel extends Component {
 
 CommonOdooChartConfigPanel.template = "spreadsheet_edition.CommonOdooChartConfigPanel";
 CommonOdooChartConfigPanel.components = { IrMenuSelector };
+CommonOdooChartConfigPanel.props = {
+    figureId: String,
+    definition: Object,
+    updateChart: Function,
+};

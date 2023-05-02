@@ -10,6 +10,7 @@ const { autofillModifiersRegistry, autofillRulesRegistry } = spreadsheet.registr
 //--------------------------------------------------------------------------
 export class AutofillTooltip extends Component {}
 AutofillTooltip.template = "spreadsheet_edition.AutofillTooltip";
+AutofillTooltip.props = { content: Array };
 
 //--------------------------------------------------------------------------
 // Autofill Rules

@@ -375,3 +375,10 @@ export class PivotDialog extends Component {
 
 PivotDialog.template = "spreadsheet_edition.PivotDialog";
 PivotDialog.components = { Dialog, PivotDialogTable };
+PivotDialog.props = {
+    title: String,
+    pivotId: String,
+    insertPivotValueCallback: Function,
+    getters: Object,
+    close: Function, // prop added by Dialog service
+};

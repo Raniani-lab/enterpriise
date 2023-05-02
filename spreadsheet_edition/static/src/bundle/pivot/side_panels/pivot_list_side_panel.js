@@ -23,3 +23,4 @@ export default class PivotSidePanel extends Component {
 }
 PivotSidePanel.template = "spreadsheet_edition.PivotSidePanel";
 PivotSidePanel.components = { PivotDetailsSidePanel };
+PivotSidePanel.props = { onCloseSidePanel: Function, pivot: { type: String, optional: true } };

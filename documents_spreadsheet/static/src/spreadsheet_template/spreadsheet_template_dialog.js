@@ -191,3 +191,8 @@ export class TemplateDialog extends Component {
 }
 TemplateDialog.components = { Dialog, SearchBar, Pager };
 TemplateDialog.template = "documents_spreadsheet.TemplateDialog";
+TemplateDialog.props = {
+    context: Object,
+    folderId: Number,
+    close: Function, // prop added by the Dialog service
+};

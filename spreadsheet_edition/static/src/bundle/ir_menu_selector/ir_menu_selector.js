@@ -118,3 +118,7 @@ export class IrMenuSelectorDialog extends Component {
 IrMenuSelectorDialog.components = { Dialog, IrMenuSelector };
 IrMenuSelectorDialog.title = _lt("Select an Odoo menu to link in your spreadsheet");
 IrMenuSelectorDialog.template = "spreadsheet_edition.IrMenuSelectorDialog";
+IrMenuSelectorDialog.props = {
+    onMenuSelected: Function,
+    close: Function, // prop added by Dialog service
+};

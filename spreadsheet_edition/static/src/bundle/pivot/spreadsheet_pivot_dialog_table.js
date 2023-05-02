@@ -7,3 +7,9 @@ export class PivotDialogTable extends Component {
     }
 }
 PivotDialogTable.template = "spreadsheet_edition.PivotDialogTable";
+PivotDialogTable.props = {
+    colHeaders: Array,
+    rowHeaders: Array,
+    values: Array,
+    onCellSelected: Function,
+};

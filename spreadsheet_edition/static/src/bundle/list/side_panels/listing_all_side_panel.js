@@ -28,3 +28,7 @@ export default class ListingAllSidePanel extends Component {
 }
 ListingAllSidePanel.template = "spreadsheet_edition.ListingAllSidePanel";
 ListingAllSidePanel.components = { ListingDetailsSidePanel };
+ListingAllSidePanel.props = {
+    onCloseSidePanel: Function,
+    listId: { type: String, optional: true },
+};

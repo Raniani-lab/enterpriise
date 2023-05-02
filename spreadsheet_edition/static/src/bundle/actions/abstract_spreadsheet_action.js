@@ -4,6 +4,7 @@ import { useService } from "@web/core/utils/hooks";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { _t } from "@web/core/l10n/translation";
 import { downloadFile } from "@web/core/network/download";
+import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import * as spreadsheet from "@odoo/o-spreadsheet";
@@ -334,3 +335,4 @@ export class AbstractSpreadsheetAction extends Component {
         return canvasResizer.toDataURL().replace("data:image/png;base64,", "");
     }
 }
+AbstractSpreadsheetAction.props = { ...standardActionServiceProps };

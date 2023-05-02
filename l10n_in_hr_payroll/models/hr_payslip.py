@@ -116,3 +116,6 @@ class HrPayslip(models.Model):
                     'action': self._dashboard_default_action(prob_end_str, 'hr.employee', employee_ids)
                 })
         return res
+
+    def _get_base_local_dict(self):
+        return {**super()._get_base_local_dict(), '_': _}

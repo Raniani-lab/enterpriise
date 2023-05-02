@@ -29,6 +29,7 @@ Indian Payroll Salary Rules.
         'data/hr_salary_rule_category_data.xml',
         'data/hr_payroll_structure_type_data.xml',
         'data/hr_payroll_structure_data.xml',
+        'data/salary_rules/hr_salary_rule_stipend_data.xml',
         'data/salary_rules/hr_salary_rule_ind_emp_data.xml',
         'data/salary_rules/hr_salary_rule_with_pf_data.xml',
         'data/salary_rules/hr_salary_rule_without_pf_data.xml',

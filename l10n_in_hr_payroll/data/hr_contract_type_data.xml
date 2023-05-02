@@ -4,4 +4,8 @@
         <field name="name">Probation</field>
         <field name="sequence">4</field>
     </record>
+    <record id="l10n_in_contract_type_intern" model="hr.contract.type">
+        <field name="name">Intern</field>
+        <field name="sequence">5</field>
+    </record>
 </odoo>

@@ -8,4 +8,8 @@
         <field name="name">Non-Executives</field>
         <field name="country_id" ref="base.in"/>
     </record>
+    <record id="hr_payroll_salary_structure_type_ind_intern" model="hr.payroll.structure.type">
+        <field name="name">Intern</field>
+        <field name="country_id" ref="base.in"/>
+    </record>
 </odoo>

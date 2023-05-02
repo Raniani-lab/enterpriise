@@ -492,7 +492,7 @@ class SaleOrder(models.Model):
                 # elsewhere. It should only be called for free renewal ans therefore no transfer log should be created.
                 parent_progress_logs = self.subscription_id.order_log_ids.filtered(
                     lambda l: l.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
-                parent_log = parent_progress_logs.sorted('event_date')[-1]
+                parent_log = parent_progress_logs.sorted('event_date', reverse=True)[:1]
                 parent_mrr = parent_progress_logs and parent_log.recurring_monthly or 0
                 transfer_mrr = min([self.recurring_monthly, parent_mrr])
                 transfer_date = parent_progress_logs and parent_log.event_date or transfer_date

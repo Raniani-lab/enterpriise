@@ -134,11 +134,11 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
         invoice, picking = self.simulate_period(sub, "2022-03-02", move_qty=2)
         self.assertEqual(len(invoice), 1, 'We should generate a new invoices')
         self.assertEqual(len(picking), 1, 'We should generate a new delivery order')
-        self.assertEqual(picking.move_ids.product_uom_qty, 2, 'Check that we over_delivered')
+        self.assertEqual(picking.move_ids.quantity_done, 2, 'Check that we over_delivered')
         self.assertEqual(invoice.invoice_line_ids.quantity, 1, 'We should invoice the quantity ordered')
 
         invoice, picking = self.simulate_period(sub, "2022-04-02")
-        self.assertEqual(picking.move_ids.product_uom_qty, 1, 'Check that we did not over_delivered again')
+        self.assertEqual(picking.move_ids.quantity_done, 1, 'Check that we did not over_delivered again')
         self.assertEqual(invoice.invoice_line_ids.quantity, 1, 'We should still invoice the quantity ordered')
 
     def test_subscription_stock_order_under_deliver(self):
@@ -147,7 +147,7 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
         self.assertEqual(len(sub.picking_ids), 0, 'Updating the quantity should not create a new delivery')
 
         invoice, picking = self.simulate_period(sub, "2022-03-02", move_qty=1)
-        self.assertEqual(picking.move_ids.product_uom_qty, 1, 'Check that we under_delivered')
+        self.assertEqual(picking.move_ids.quantity_done, 1, 'Check that we under_delivered')
         self.assertEqual(invoice.invoice_line_ids.quantity, 2, 'We should invoice the quantity ordered')
         self.assertEqual(invoice.amount_total, 45 * 2, 'We should invoice the quantity ordered')
 

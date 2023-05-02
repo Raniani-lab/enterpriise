@@ -132,8 +132,8 @@ class TestMRPBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(mo.state, 'done')
         self.assertEqual(mo.qty_produced, 3)
         self.assertRecordValues(mo.move_raw_ids, [
-            {'product_id': self.component01.id, 'product_uom_qty': 6, 'quantity_done': 6},
-            {'product_id': component02.id, 'product_uom_qty': 9, 'quantity_done': 9},
+            {'product_id': self.component01.id, 'product_uom_qty': 2, 'quantity_done': 6},
+            {'product_id': component02.id, 'product_uom_qty': 3, 'quantity_done': 9},
         ])
 
     def test_barcode_production_create_tracked_bom(self):

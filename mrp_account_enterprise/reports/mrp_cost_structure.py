@@ -92,11 +92,7 @@ class MrpCostStructure(models.AbstractModel):
                 total_cost_by_product[product] += total_cost_by_mo[m.id] * cost_share
                 component_cost_by_product[product] += component_cost_by_mo[m.id] * cost_share
                 operation_cost_by_product[product] += operation_cost_by_mo[m.id] * cost_share
-                qty = sum(m.move_finished_ids.filtered(lambda mo: mo.state == 'done' and mo.product_id == product).mapped('product_uom_qty'))
-                if m.product_uom_id.id == uom.id:
-                    mo_qty += qty
-                else:
-                    mo_qty += m.product_uom_id._compute_quantity(qty, uom)
+                mo_qty += sum(m.move_finished_ids.filtered(lambda mo: mo.state == 'done' and mo.product_id == product).mapped('product_qty'))
             res.append({
                 'product': product,
                 'mo_qty': mo_qty,

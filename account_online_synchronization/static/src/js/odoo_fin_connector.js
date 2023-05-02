@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 import { loadJS } from "@web/core/assets";
 import { getCookie } from "web.utils.cookies";
 const actionRegistry = registry.category('actions');
-/* global OdooFin */
+/* global OdooFin, debugMode */
 
 function OdooFinConnector(parent, action) {
     const orm = parent.services.orm;
@@ -64,6 +64,9 @@ function OdooFinConnector(parent, action) {
                     return actionService.doAction(actionResult);
                 }
             };
+            // propagate parent debug mode to iframe
+            if(typeof debugMode !== 'undefined' && debugMode)
+                params.data['debug'] = debugMode;
             OdooFin.create(params);
             OdooFin.open();
         });

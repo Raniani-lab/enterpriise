@@ -154,6 +154,81 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         mail = self.env['mail.mail'].search([('recipient_ids', '=', self.partner_a.id)] + attachaments_domain)
         self.assertTrue(mail, "A payment reminder email should have been sent.")
 
+    def test_followup_report_address_1(self):
+        ''' Test child contact priorities: the company will be used when there is no followup or billing contacts
+        '''
+
+        Partner = self.env['res.partner']
+        self.partner_a.is_company = True
+        options = {
+            'partner_id': self.partner_a.id,
+        }
+
+        child_partner = Partner.create({
+            'name': "Child contact",
+            'type': "contact",
+            'parent_id': self.partner_a.id,
+        })
+
+        mail = self.env['mail.mail'].search([('recipient_ids', '=', self.partner_a.id)])
+        self.init_invoice('out_invoice', partner=child_partner, invoice_date='2016-01-01', amounts=[500], post=True)
+        self.partner_a._compute_unpaid_invoices()
+        with patch.object(type(self.env['mail.mail']), 'unlink', lambda self: None):
+            self.env['account.followup.report']._send_email(options)
+
+        mail = self.env['mail.mail'].search([('recipient_ids', '=', self.partner_a.id)])
+        self.assertTrue(mail, "The payment reminder email should have been sent to the company.")
+
+    def test_followup_report_address_2(self):
+        ''' Test child contact priorities: the follow up contact will be preferred over the billing contact
+        '''
+
+        Partner = self.env['res.partner']
+        self.partner_a.is_company = True
+        options = {
+            'partner_id': self.partner_a.id,
+        }
+
+        # Testing followup sent to billing address if used in invoice
+
+        child_partner = Partner.create({
+            'name': "Child contact",
+            'type': "contact",
+            'parent_id': self.partner_a.id,
+        })
+        invoice_partner = Partner.create({
+            'name' : "Child contact invoice",
+            'type' : "invoice",
+            'email' : "test-invoice@example.com",
+            'parent_id': child_partner.id,
+        })
+
+        self.init_invoice('out_invoice', partner=invoice_partner, invoice_date='2016-01-01', amounts=[500], post=True)
+
+        self.partner_a._compute_unpaid_invoices()
+        with patch.object(type(self.env['mail.mail']), 'unlink', lambda self: None):
+            self.env['account.followup.report']._send_email(options)
+
+        mail = self.env['mail.mail'].search([('recipient_ids', '=', invoice_partner.id)])
+        self.assertTrue(mail, "The payment reminder email should have been sent to the invoice partner.")
+        mail.unlink()
+
+        # Testing followup partner priority
+
+        followup_partner = Partner.create({
+            'name' : "Child contact followup",
+            'type' : "followup",
+            'email' : "test-followup@example.com",
+            'parent_id': self.partner_a.id,
+        })
+
+        self.partner_a._compute_unpaid_invoices()
+        with patch.object(type(self.env['mail.mail']), 'unlink', lambda self: None):
+            self.env['account.followup.report']._send_email(options)
+
+        mail = self.env['mail.mail'].search([('recipient_ids', '=', followup_partner.id)])
+        self.assertTrue(mail, "The payment reminder email should have been sent to the followup partner.")
+
     def test_followup_invoice_no_amount(self):
         # Init options.
         report = self.env['account.followup.report']

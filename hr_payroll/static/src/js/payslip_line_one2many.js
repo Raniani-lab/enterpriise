@@ -1,33 +1,40 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
+import { Field } from "@web/views/fields/field";
 import { X2ManyField, x2ManyField } from "@web/views/fields/x2many/x2many_field";
 import { ListRenderer } from "@web/views/list/list_renderer";
-import { Field } from "@web/views/fields/field";
 
 export class WorkedDaysField extends Field {
+    setup() {
+        super.setup(...arguments);
+        this.actionService = useService("action");
+        this.orm = useService("orm");
+    }
+
     get fieldComponentProps() {
         const props = super.fieldComponentProps;
         const record = this.props.record;
         if (!record.isWorkedDaysField) {
             record.isWorkedDaysField = true;
             const oldUpdate = record.update.bind(record);
-            record.update = async (value) => {
-                if (this.props.name === 'amount' && record.data.amount !== value) {
-                    await record.update(value);
+            record.update = async (changes) => {
+                if ('amount' in changes || 'quantity' in changes) {
+                    await oldUpdate(changes);
                     await record.save( { stayInEdition: true, noReload: true });
                     // getting the wizard id. when js team gets rid of the basic relational model, we'll clean this
                     const wizardId = record.model.__bm_load_params__.res_id;
                     if (wizardId) {
-                        const action = await this.env.services.orm.call(
+                        const action = await this.orm.call(
                             "hr.payroll.edit.payslip.lines.wizard",
                             "recompute_worked_days_lines",
                             [wizardId]
                         );
-                        await this.env.services.action.doAction(action);
+                        await this.actionService.doAction(action);
                     }
                 } else {
-                    await oldUpdate(value);
+                    await oldUpdate(changes);
                 }
             }
         }
@@ -64,28 +71,34 @@ export const workedDaysLineOne2Many = {
 };
 
 export class PayslipLineField extends Field {
+    setup() {
+        super.setup(...arguments);
+        this.actionService = useService("action");
+        this.orm = useService("orm");
+    }
+
     get fieldComponentProps() {
         const props = super.fieldComponentProps;
         const record = this.props.record;
         if (!record.isPayslipLineField) {
             record.isPayslipLineField = true;
             const oldUpdate = record.update.bind(record);
-            record.update = async (value) => {
-                if (this.props.name === 'amount' || this.props.name === 'quantity') {
-                    await record.update(value);
+            record.update = async (changes) => {
+                if ('amount' in changes || 'quantity' in changes) {
+                    await oldUpdate(changes);
                     await record.save( { stayInEdition: true, noReload: true });
                     const wizardId = record.model.__bm_load_params__.res_id;
                     if (wizardId) {
                         const line_id = record.data.id;
-                        const action = await this.env.services.orm.call(
+                        const action = await this.orm.call(
                             "hr.payroll.edit.payslip.lines.wizard",
                             "recompute_following_lines",
                             [wizardId, line_id]
                         );
-                        await this.env.services.action.doAction(action);
+                        await this.actionService.doAction(action);
                     }
                 } else {
-                    await oldUpdate(value);
+                    await oldUpdate(changes);
                 }
             }
         }

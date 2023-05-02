@@ -8,7 +8,7 @@
             <div class="ms-auto">
                 <t t-if="supportedEditionFields.includes(section.fieldName)">
                     <div class="o_documents_search_panel_section_edit h-100" t-on-click.stop.prevent="(ev) => this.openEditPopover(ev, section, null, group.id)">
-                        <span class="fa fa-cog pe-2 ps-3 py-1"/>
+                        <span class="fa fa-cog pe-2 ps-3"/>
                     </div>
                 </t>
             </div>
@@ -30,7 +30,7 @@
         <xpath expr="//*[contains(@class, 'o_search_panel_label')]" position="inside">
             <div class="ms-auto">
                 <div t-if="valueId and supportedEditionFields.includes(section.fieldName)" class="o_documents_search_panel_section_edit h-100" t-on-click.stop.prevent="(ev) => this.openEditPopover(ev, section, value.id, null)">
-                    <span class="fa fa-cog pe-2 ps-3 py-1"/>
+                    <span class="fa fa-cog pe-2 ps-3"/>
                 </div>
                 <span t-if="isUploadingInFolder(valueId)" class="fa fa-circle-o-notch fa-spin"/>
             </div>
@@ -48,7 +48,7 @@
         <xpath expr="//div//label//span[contains(@class, 'o_search_panel_counter')]" position="after">
             <t t-if="supportedEditionFields.includes(section.fieldName)">
                 <div class="o_documents_search_panel_section_edit h-100" t-on-click.stop.prevent="(ev) => this.openEditPopover(ev, section, value.id, null)">
-                    <span class="fa fa-cog pe-2 ps-3 py-1"/>
+                    <span class="fa fa-cog pe-2 ps-3"/>
                 </div>
             </t>
         </xpath>

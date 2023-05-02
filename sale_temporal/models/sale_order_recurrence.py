@@ -37,7 +37,9 @@ class SaleOrderRecurrence(models.Model):
     @api.depends('duration', 'unit')
     def _compute_duration_display(self):
         for record in self:
-            record.duration_display = "%s %s" % (record.duration, self._get_unit_label(record.duration))
+            record.duration_display = "%s %s" % (
+                record.duration, record._get_unit_label(record.duration)
+            )
 
     def _get_unit_label(self, duration):
         """ Get the translated product pricing unit label. """

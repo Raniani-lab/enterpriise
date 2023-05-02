@@ -72,7 +72,7 @@ function OdooFinConnector(parent, action) {
                 }
             }
             // propagate parent debug mode to iframe
-            if(typeof debugMode !== undefined && debugMode)
+            if(typeof debugMode !== 'undefined' && debugMode)
                 params.data['debug'] = debugMode;
             OdooFin.create(params);
             OdooFin.open();

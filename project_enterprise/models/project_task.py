@@ -978,10 +978,10 @@ class Task(models.Model):
                         tag_user_rows(row.get('rows'))
 
         tag_user_rows(rows)
-        resources = self.env['res.users'].browse(user_ids).mapped('resource_ids').filtered(lambda r: r.company_id.id == self.env.company.id)
+        resources = self.env['resource.resource'].search([('user_id', 'in', list(user_ids)), ('company_id', '=', self.env.company.id)], order='create_date')
         # we reverse sort the resources by date to keep the first one created in the dictionary
         # to anticipate the case of a resource added later for the same employee and company
-        user_resource_mapping = {resource.user_id.id: resource.id for resource in resources.sorted('create_date', True)}
+        user_resource_mapping = {resource.user_id.id: resource.id for resource in resources}
         leaves_mapping = resources._get_unavailable_intervals(start_datetime, end_datetime)
         company_leaves = self.env.company.resource_calendar_id._unavailable_intervals(start_datetime.replace(tzinfo=utc), end_datetime.replace(tzinfo=utc))
 

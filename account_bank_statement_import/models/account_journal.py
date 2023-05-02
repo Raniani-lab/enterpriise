@@ -37,37 +37,41 @@ class AccountJournal(models.Model):
 
         statement_ids_all = []
         notifications_all = {}
+        errors = {}
         # Let the appropriate implementation module parse the file and return the required data
         # The active_id is passed in context in case an implementation module requires information about the wizard state (see QIF)
         for attachment in attachments:
-            currency_code, account_number, stmts_vals = self._parse_bank_statement_file(attachment)
-            # Check raw data
-            self._check_parsed_data(stmts_vals, account_number)
-            # Try to find the currency and journal in odoo
-            journal = self._find_additional_data(currency_code, account_number)
-            # If no journal found, ask the user about creating one
-            if not journal.default_account_id:
-                raise UserError(_('You have to set a Default Account for the journal: %s') % (journal.name,))
-            # Prepare statement data to be used for bank statements creation
-            stmts_vals = self._complete_bank_statement_vals(stmts_vals, journal, account_number, attachment)
-            # Create the bank statements
-            statement_ids, statement_line_ids, notifications = self._create_bank_statements(stmts_vals)
-            statement_ids_all.extend(statement_ids)
+            try:
+                currency_code, account_number, stmts_vals = self._parse_bank_statement_file(attachment)
+                # Check raw data
+                self._check_parsed_data(stmts_vals, account_number)
+                # Try to find the currency and journal in odoo
+                journal = self._find_additional_data(currency_code, account_number)
+                # If no journal found, ask the user about creating one
+                if not journal.default_account_id:
+                    raise UserError(_('You have to set a Default Account for the journal: %s') % (journal.name,))
+                # Prepare statement data to be used for bank statements creation
+                stmts_vals = self._complete_bank_statement_vals(stmts_vals, journal, account_number, attachment)
+                # Create the bank statements
+                statement_ids, dummy, notifications = self._create_bank_statements(stmts_vals)
+                statement_ids_all.extend(statement_ids)
 
-            # Now that the import worked out, set it as the bank_statements_source of the journal
-            if journal.bank_statements_source != 'file_import':
-                # Use sudo() because only 'account.group_account_manager'
-                # has write access on 'account.journal', but 'account.group_account_user'
-                # must be able to import bank statement files
-                journal.sudo().bank_statements_source = 'file_import'
+                # Now that the import worked out, set it as the bank_statements_source of the journal
+                if journal.bank_statements_source != 'file_import':
+                    # Use sudo() because only 'account.group_account_manager'
+                    # has write access on 'account.journal', but 'account.group_account_user'
+                    # must be able to import bank statement files
+                    journal.sudo().bank_statements_source = 'file_import'
 
-            msg = ""
-            for notif in notifications:
-                msg += (
-                    f"{notif['message']}"
-                )
-            if notifications:
-                notifications_all[attachment.name] = msg
+                msg = ""
+                for notif in notifications:
+                    msg += (
+                        f"{notif['message']}"
+                    )
+                if notifications:
+                    notifications_all[attachment.name] = msg
+            except (UserError, RedirectWarning) as e:
+                errors[attachment.name] = e.args[0]
 
         statements = self.env['account.bank.statement'].browse(statement_ids_all)
         line_to_reconcile = statements.line_ids
@@ -76,7 +80,7 @@ class AccountJournal(models.Model):
             limit_time = cron_limit_time if 0 < cron_limit_time < 180 else 180
             line_to_reconcile._cron_try_auto_reconcile_statement_lines(limit_time=limit_time)
 
-        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+        result = self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
             extra_domain=[('statement_id', 'in', statements.ids)],
             default_context={
                 'search_default_not_matched': True,
@@ -84,7 +88,15 @@ class AccountJournal(models.Model):
                 'notifications': notifications_all,
             },
         )
-
+        if errors:
+            error_msg = _("The following files could not be imported:\n")
+            error_msg += "\n".join([f"- {attachment_name}: {msg}" for attachment_name, msg in errors.items()])
+            if statements:
+                self.env.cr.commit()  # save the correctly uploaded statements to the db before raising the errors
+                raise RedirectWarning(error_msg, result, _('View successfully imported statements'))
+            else:
+                raise UserError(error_msg)
+        return result
 
     def _parse_bank_statement_file(self, attachment) -> tuple:
         """ Each module adding a file support must extends this method. It processes the file if it can, returns super otherwise, resulting in a chain of responsability.

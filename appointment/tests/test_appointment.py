@@ -17,6 +17,103 @@ from odoo.tools import mute_logger
 @tagged('appointment_slots')
 class AppointmentTest(AppointmentCommon, HttpCase):
 
+    @freeze_time('2023-01-6')
+    @users('apt_manager')
+    def test_appointment_availability_with_show_as(self):
+        """ Checks that if a normal event and custom event both set at the same time but
+        the normal event is set as free then the custom meeting should be available and
+        available_unique_slots will contains only available slots """
+
+        employee = self.staff_users[0]
+        self.env["calendar.event"].create([
+            {
+                "name": "event-1",
+                "start": datetime(2023, 6, 5, 8, 0),
+                "stop": datetime(2023, 6, 5, 9, 0),
+                "show_as": 'free',
+                "partner_ids": employee.partner_id,
+                "attendee_ids": [(0, 0, {
+                    "state": "accepted",
+                    "availability": "free",
+                    "partner_id": employee.partner_id.id,
+                })],
+            }, {
+                "name": "event-2",
+                "start": datetime(2023, 6, 5, 12, 0),
+                "stop": datetime(2023, 6, 5, 13, 0),
+                "show_as": 'busy',
+                "partner_ids": employee.partner_id,
+                "attendee_ids": [(0, 0, {
+                    "state": "accepted",
+                    "availability": "busy",
+                    "partner_id": employee.partner_id.id,
+                })],
+            },
+        ])
+
+        unique_slots = [{
+            'allday': False,
+            'start_datetime': datetime(2023, 6, 5, 8, 0),
+            'end_datetime': datetime(2023, 6, 5, 9, 0),
+        }, {
+            'allday': False,
+            'start_datetime': datetime(2023, 6, 5, 12, 0),
+            'end_datetime': datetime(2023, 6, 5, 13, 0),
+        }]
+
+        apt_types = self.env['appointment.type'].create([
+            {
+                'category': 'custom',
+                'name': 'Custom Meeting 1',
+                'staff_user_ids': [(4, employee.id)],
+                'slot_ids': [(0, 0, {
+                    'allday': slot['allday'],
+                    'end_datetime': slot['end_datetime'],
+                    'slot_type': 'unique',
+                    'start_datetime': slot['start_datetime'],
+                    }) for slot in unique_slots
+                ],
+            }, {
+                'category': 'custom',
+                'name': 'Custom Meeting 2',
+                'staff_user_ids': [(4, employee.id)],
+                'slot_ids': [(0, 0, {
+                    'allday': unique_slots[1]['allday'],
+                    'end_datetime': unique_slots[1]['end_datetime'],
+                    'slot_type': 'unique',
+                    'start_datetime': unique_slots[1]['start_datetime'],
+                    })
+                ],
+            },
+        ])
+
+        slots = apt_types[0]._get_appointment_slots('UTC')
+        available_unique_slots = self._filter_appointment_slots(
+            slots,
+            filter_months=[(6, 2023)],
+            filter_users=employee)
+
+        self.assertEqual(len(available_unique_slots), 1)
+
+        for unique_slot, apt_type, is_available in zip(unique_slots, apt_types, [True, False]):
+            self.assertEqual(
+                apt_type._check_appointment_is_valid_slot(
+                    employee,
+                    'UTC',
+                    unique_slot['start_datetime'],
+                    1.0
+                ),
+                is_available
+            )
+
+            self.assertEqual(
+                employee.partner_id.calendar_verify_availability(
+                    unique_slot['start_datetime'],
+                    unique_slot['end_datetime'],
+                ),
+                is_available
+            )
+
     @users('apt_manager')
     def test_appointment_type_create(self):
         # Custom: current user set as default, otherwise accepts only 1 user

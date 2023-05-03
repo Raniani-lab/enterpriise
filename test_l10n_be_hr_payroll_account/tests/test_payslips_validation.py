@@ -9786,3 +9786,23 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CO2FEE': 31.34,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_aa_thirteen_month(self):
+        payslip = self._generate_payslip(datetime.date(2023, 6, 1), datetime.date(2023, 6, 30), struct_id=self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month').id)
+        payslip_results = {
+            'BASIC': 1325.0,
+            'SALARY': 1325.0,
+            'ONSS': -173.18,
+            'GROSS': 1151.82,
+            'P.P': -534.91,
+            'PPTOTAL': 534.91,
+            'NET': 616.92,
+            'ONSSEMPLOYERBASIC': 331.65,
+            'ONSSEMPLOYERFFE': 0.93,
+            'ONSSEMPLOYERMFFE': 1.33,
+            'ONSSEMPLOYERCPAE': 3.05,
+            'ONSSEMPLOYERRESTREINT': 22.39,
+            'ONSSEMPLOYERUNEMP': 1.33,
+            'ONSSEMPLOYER': 360.67,
+        }
+        self._validate_payslip(payslip, payslip_results)

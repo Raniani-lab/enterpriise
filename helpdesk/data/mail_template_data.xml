@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo><data noupdate="1">
     <record id="new_ticket_request_email_template" model="mail.template">
-        <field name="name">Helpdesk: Request Acknowledgment</field>
+        <field name="name">Helpdesk: Ticket Received</field>
         <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
         <field name="subject">{{ object.display_name }}</field>
         <field name="email_from">{{ (object.team_id.alias_email_from or object.company_id.email_formatted or object.user_id.email_formatted or user.email_formatted) }}</field>
         <field name="email_to">{{ (object.partner_email if not object.sudo().partner_id.email or object.sudo().partner_id.email != object.partner_email else '') }}</field>
         <field name="partner_to">{{ object.partner_id.id if object.sudo().partner_id.email and object.sudo().partner_id.email == object.partner_email else '' }}</field>
-        <field name="description">Set this template on a project's stage to automate email when tasks reach stages</field>
+        <field name="description">Send customers a confirmation email to notify them that their helpdesk ticket has been received and is currently being reviewed by the helpdesk team. Automatically send an email to customers when a ticket reaches a specific stage in a helpdesk team by setting this template on that stage.</field>
         <field name="body_html" type="html">
 <div>
     Dear <t t-out="object.sudo().partner_id.name or object.sudo().partner_name or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
@@ -42,30 +42,31 @@
 </div>
         </field>
         <field name="lang">{{ object.partner_id.lang or object.user_id.lang or user.lang }}</field>
-        <field name="auto_delete" eval="False"/>
+        <field name="auto_delete" eval="True"/>
     </record>
 
     <record id="solved_ticket_request_email_template" model="mail.template">
         <field name="name">Helpdesk: Ticket Closed</field>
         <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
-        <field name="subject">{{ object.display_name }}</field>
+        <field name="subject">Ticket Closed - Reference {{ object.id if object.id else 15 }}</field>
         <field name="email_from">{{ (object.team_id.alias_email_from or object.company_id.email_formatted or object.user_id.email_formatted or user.email_formatted) }}</field>
         <field name="email_to">{{ (object.partner_email if not object.sudo().partner_id.email or object.sudo().partner_id.email != object.partner_email else '') }}</field>
         <field name="partner_to">{{ object.partner_id.id if object.sudo().partner_id.email and object.sudo().partner_id.email == object.partner_email else '' }}</field>
         <field name="description">Set this template on a project's stage to automate email when tasks reach stages</field>
         <field name="body_html" type="html">
-<div>
-    Dear <t t-out="object.sudo().partner_id.name or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
-    This automatic message informs you that we have closed your ticket (reference <t t-out="object.id or ''">15</t>).
-    We hope that the services provided have met your expectations.
-    If you have any more questions or comments, don't hesitate to reply to this e-mail to re-open your ticket.<br /><br />
-    Thank you for your cooperation.<br />
-    Kind regards,<br /><br />
-    <t t-out="object.team_id.name or 'Helpdesk'">Helpdesk</t> Team.
-</div>
+    <div>
+        Dear <t t-out="object.sudo().partner_id.name or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+        We would like to inform you that we have closed your ticket (reference <t t-out="object.id or ''">15</t>). 
+        We trust that the services provided have met your expectations and that you have found a satisfactory resolution to your issue.<br /><br />
+        However, if you have any further questions or comments, please do not hesitate to reply to this email to re-open your ticket. 
+        Our team is always here to help you and we will be happy to assist you with any further concerns you may have.<br /><br />
+        Thank you for choosing our services and for your cooperation throughout this process. We truly value your business and appreciate the opportunity to serve you.<br /><br />
+        Kind regards,<br /><br />
+        <t t-out="object.team_id.name or 'Helpdesk'">Helpdesk</t> Team.
+    </div>
         </field>
         <field name="lang">{{ object.partner_id.lang or object.user_id.lang or user.lang }}</field>
-        <field name="auto_delete" eval="False"/>
+        <field name="auto_delete" eval="True"/>
     </record>
 
     <record id="rating_ticket_request_email_template" model="mail.template">

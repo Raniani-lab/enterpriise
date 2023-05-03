@@ -59,11 +59,16 @@ class TestPoSRental(TestPointOfSaleHttpCommon):
             'return_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 250,
         })
-        self.main_pos_config.open_ui()
+        self.pos_user.write({
+            'groups_id': [
+                (4, self.env.ref('stock.group_stock_user').id),
+            ]
+        })
+        self.main_pos_config.with_user(self.pos_user).open_ui()
         self.start_tour(
             "/pos/ui?config_id=%d" % self.main_pos_config.id,
             "OrderLotsRentalTour",
-            login="accountman",
+            login="pos_user",
         )
         self.main_pos_config.current_session_id.action_pos_session_closing_control()
         self.assertEqual(self.sale_order_id.order_line.pickedup_lot_ids.name, '123456789')

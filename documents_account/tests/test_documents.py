@@ -4,7 +4,7 @@ import base64
 
 from odoo.tests import Form
 
-from odoo.exceptions import RedirectWarning
+from odoo.exceptions import UserError
 from odoo.tests.common import tagged, TransactionCase
 
 GIF = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
@@ -217,7 +217,7 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         self.assertTrue(move.journal_id in misc_entry_rule.suitable_journal_ids)
 
     def test_workflow_create_bank_statement_raise(self):
-        with self.assertRaises(RedirectWarning): # Could not make sense of the given file.
+        with self.assertRaises(UserError): # Could not make sense of the given file.
             self.env.ref('documents_account.bank_statement_rule').apply_actions([self.document_txt.id, self.document_gif.id])
 
     def test_workflow_create_vendor_bill(self):

@@ -327,7 +327,8 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         )
 
         self.assertEqual(error_catcher.exception.args[0], (
-            "Please set the IBAN account on your bank journal.\n\n"
+            "The following files could not be imported:\n"
+            "- test_camt.xml: Please set the IBAN account on your bank journal.\n\n"
             "This CAMT file is targeting several IBAN accounts but none match the current journal."
         ))
 

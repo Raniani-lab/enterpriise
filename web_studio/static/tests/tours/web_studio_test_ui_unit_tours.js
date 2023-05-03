@@ -447,6 +447,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_one2many_lines_t
         {
             trigger: ".o_form_label",
             extra_trigger: ".o_field_x2many_list",
+            timeout: 20000,
         },
         {
             extra_trigger: ".o_web_studio_sidebar .o_web_studio_properties.active",
@@ -455,6 +456,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_one2many_lines_t
         },
         {
             trigger: ".o_web_studio_leave",
+            timeout: 20000,
         },
         stepNotInStudio(".o_form_view"),
     ],

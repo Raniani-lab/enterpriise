@@ -28,7 +28,7 @@
                 <Property
                     name="'default_group_by'"
                     type="'selection'"
-                    value="defaultGroupBy.value or null"
+                    value="archInfo.defaultGroupBy or null"
                     childProps="defaultGroupBy"
                     onChange.bind="editDefaultGroupBy"
                 >

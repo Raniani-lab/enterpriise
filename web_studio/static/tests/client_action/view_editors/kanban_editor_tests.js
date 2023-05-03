@@ -31,8 +31,13 @@ QUnit.module(
                     coucou: {
                         fields: {
                             id: { string: "Id", type: "integer" },
-                            display_name: { string: "Name", type: "char" },
-                            m2o: { string: "Product", type: "many2one", relation: "product" },
+                            display_name: { string: "Name", type: "char", store: true },
+                            m2o: {
+                                string: "Product",
+                                type: "many2one",
+                                relation: "product",
+                                store: true,
+                            },
                             char_field: { type: "char", string: "A char" },
                             priority: {
                                 string: "Priority",
@@ -1680,5 +1685,83 @@ QUnit.module(
                 ["", "priority"]
             );
         });
+
+        QUnit.test(
+            "Default group by shows the right field choices and the value updates properly",
+            async function (assert) {
+                assert.expect(5);
+                const startArch = `
+                    <kanban>
+                        <templates>
+                            <t t-name='kanban-box'>
+                                <div class='oe_kanban_card'>
+                                    <field name='display_name'/>
+                                </div>
+                            </t>
+                        </templates>
+                    </kanban>
+                `;
+                const modifiedArch = `
+                    <kanban default_group_by="display_name">
+                        <templates>
+                            <t t-name='kanban-box'>
+                                <div class='oe_kanban_card'>
+                                    <field name='display_name'/>
+                                </div>
+                            </t>
+                        </templates>
+                    </kanban>
+                `;
+
+                const changeArch = makeArchChanger();
+                await createViewEditor({
+                    serverData,
+                    type: "kanban",
+                    resModel: "coucou",
+                    arch: startArch,
+                    mockRPC: function (route, args) {
+                        if (route === "/web_studio/edit_view") {
+                            assert.deepEqual(args.operations[0], {
+                                new_attrs: {
+                                    default_group_by: "display_name",
+                                },
+                                position: "attributes",
+                                type: "attributes",
+                                target: {
+                                    attrs: {},
+                                    isSubviewAttr: true,
+                                    tag: "kanban",
+                                    xpath_info: [
+                                        {
+                                            indice: 1,
+                                            tag: "kanban",
+                                        },
+                                    ],
+                                },
+                            });
+                            assert.step("edit_view");
+                            changeArch(args.view_id, modifiedArch);
+                        }
+                    },
+                });
+
+                await click(target, ".o_notebook_headers .nav-item:nth-child(2)");
+                await click(
+                    target,
+                    ".o_web_studio_property_default_group_by .o_select_menu_toggler"
+                );
+                assert.containsN(target, ".o_select_menu_item", 2);
+
+                await click(target, ".o_select_menu_item:nth-child(1)");
+                assert.verifySteps(["edit_view"]);
+                assert.equal(
+                    target.querySelector(
+                        ".o_web_studio_property_default_group_by .o_select_menu_toggler_slot"
+                    ).innerText,
+                    "Name",
+                    "The field is properly selected as default group by"
+                );
+            }
+        );
     }
 );

@@ -8,6 +8,7 @@ import { Properties } from "@web_studio/client_action/view_editor/interactive_ed
 import { FieldProperties } from "@web_studio/client_action/view_editor/interactive_editor/properties/field_properties/field_properties";
 import { KanbanCoverProperties } from "@web_studio/client_action/view_editor/editors/kanban/kanban_editor_sidebar/properties/kanban_cover_properties/kanban_cover_properties";
 import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";
+import { fieldsToChoices } from "@web_studio/client_action/view_editor/editors/utils";
 
 class KanbanFieldProperties extends FieldProperties {
     onChangeAttribute(value, name) {
@@ -53,16 +54,10 @@ export class KanbanEditorSidebar extends Component {
     }
 
     get defaultGroupBy() {
-        const filteredFields = Object.values(this.archInfo.activeFields).filter((field) => {
-            return field.store && this.viewEditorModel.GROUPABLE_TYPES.includes(field.type);
-        });
-
         return {
-            value: this.archInfo.defaultGroupBy,
-            choices: filteredFields.map((field) => ({
-                value: field.name,
-                label: field.string,
-            })),
+            choices: fieldsToChoices(this.viewEditorModel.fields, (field) => {
+                return field.store && this.viewEditorModel.GROUPABLE_TYPES.includes(field.type);
+            }),
             required: false,
         };
     }

@@ -191,7 +191,7 @@ class SaleOrder(models.Model):
             elif order.subscription_state in ['2_renewal', '7_upsell']:
                 continue
             elif order.is_subscription:
-                order.subscription_state = '1_draft'
+                order.subscription_state = '2_renewal' if order.subscription_id else '1_draft'
             else:
                 order.subscription_state = False
 

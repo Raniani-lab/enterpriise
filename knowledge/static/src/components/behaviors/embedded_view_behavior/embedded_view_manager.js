@@ -85,6 +85,19 @@ export class EmbeddedViewManager extends Component {
      */
     onWillStart () {
         const { action, context, viewType } = this.props;
+        const contextKeyOptionalFields = context.keyOptionalFields;
+        if (contextKeyOptionalFields && !contextKeyOptionalFields.includes(context.knowledgeEmbeddedViewId)) {
+            // If the key from the context does not contain the embeddedViewId this means that we are inserting
+            // a brand new embed. Thus we are adding the optionalFields stored with contextKeyOptionalFields
+            // inside the localStorage with a key that contains the embeddedViewId.
+            // This way when we are rendering the embedded view and its fullscreen version we are using the correct
+            // key and rendering the correct fields.
+            const optionalFields = localStorage.getItem(contextKeyOptionalFields);
+            if (optionalFields !== null && !localStorage.getItem(contextKeyOptionalFields+`,${context.knowledgeEmbeddedViewId}`)) {
+                localStorage.setItem(contextKeyOptionalFields+`,${context.knowledgeEmbeddedViewId}`, optionalFields);
+                context.keyOptionalFields = contextKeyOptionalFields+`,${context.knowledgeEmbeddedViewId}`;
+            }
+        }
         this.env.config.setDisplayName(action.display_name);
         this.env.config.views = action.views;
         const ViewProps = {
@@ -167,7 +180,8 @@ export class EmbeddedViewManager extends Component {
         this.action.globalState = this.getEmbeddedViewGlobalState();
         this.actionService.doAction(this.action, {
             viewType: this.props.viewType,
-            props
+            props,
+            additionalContext: { knowledgeEmbeddedViewId: this.props.context.knowledgeEmbeddedViewId }
         });
     }
 }

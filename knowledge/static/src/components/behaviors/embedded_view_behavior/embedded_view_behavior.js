@@ -41,8 +41,8 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
             ));
         }
 
+        this.knowledgeEmbeddedViewId = embeddedViewId;            
         useSubEnv({
-            knowledgeEmbeddedViewId: embeddedViewId,
             knowledgeArticleUserCanWrite: this.props.record.data.user_can_write,
         });
 
@@ -80,6 +80,9 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
             anchor.addEventListener('beforeinput', stopEventPropagation);
             anchor.addEventListener('paste', stopEventPropagation);
             anchor.addEventListener('drop', stopEventPropagation);
+            // This is needed to ensure that any modification done to the anchor's data-behavior-props
+            // is saved in DB.
+            this.props.record.askChanges();
         });
 
         onWillDestroy(() => {
@@ -105,7 +108,9 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
     }
 
     async loadData () {
-        const context = makeContext([this.props.context || {}]);
+        const context = makeContext([this.props.context || {}, {
+            knowledgeEmbeddedViewId: this.knowledgeEmbeddedViewId
+        }]);
         try {
             const action = await this.actionService.loadAction(
                 this.props.act_window || this.props.action_xml_id,

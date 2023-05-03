@@ -73,6 +73,7 @@ const EmbeddedViewRendererPatch = {
         }
         this._openArticleSelector(async id => {
             const context = this._getViewContext();
+            context['keyOptionalFields'] = this.keyOptionalFields;
             const parser = new DOMParser();
             const behaviorBlueprint = await this.orm.call('knowledge.article', renderFunctionName,
                 [[id],
@@ -153,7 +154,14 @@ const EmbeddedViewListRendererPatch = {
      * @returns {string}
      */
     createKeyOptionalFields () {
-        return this._super(...arguments) + (this.env.knowledgeEmbeddedViewId ? "," + this.env.knowledgeEmbeddedViewId : "");
+        const embeddedViewId = this.env.searchModel ? this.env.searchModel.context.knowledgeEmbeddedViewId : null;
+        if (this.env.searchModel && this.env.searchModel.context.keyOptionalFields) {
+            const searchModelKeyOptionalFields = this.env.searchModel.context.keyOptionalFields;
+            return searchModelKeyOptionalFields.includes(embeddedViewId)
+                ? searchModelKeyOptionalFields
+                : searchModelKeyOptionalFields + (embeddedViewId ? `,${embeddedViewId}` : "");
+        }
+        return this._super(...arguments) + (embeddedViewId ? "," + embeddedViewId : "");
     },
 };
 

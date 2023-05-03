@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.osv import expression
+from odoo.tools.float_utils import float_compare
 
 
 class Payslip(models.Model):
@@ -51,6 +52,15 @@ class Payslip(models.Model):
             payslip.l10n_hk_mpf_gross = line_values['MPF_GROSS'][payslip._origin.id]['total']
             payslip.l10n_hk_autopay_gross = line_values['MEA'][payslip._origin.id]['total']
             payslip.l10n_hk_second_batch_autopay_gross = line_values['SBA'][payslip._origin.id]['total']
+
+    def _get_paid_amount(self):
+        self.ensure_one()
+        res = super()._get_paid_amount()
+        if self.struct_id.country_id.code != 'HK':
+            return res
+        if float_compare(res, self._get_contract_wage(), precision_rounding=0.1) == 0:
+            return self._get_contract_wage()
+        return res
 
     def _get_daily_wage(self):
         self.ensure_one()
@@ -293,3 +303,23 @@ class Payslip(models.Model):
                 'l10n_hk_autopay_export_second_batch': apc_binary,
                 'l10n_hk_autopay_export_second_batch_filename': (file_name or 'HSBC_Autopay_export_second_batch') + '.apc',
             })
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'input_line_ids' in vals:
+            self.filtered(lambda p: p.struct_id.country_id.code == 'HK' and p.state in ['draft', 'verify']).action_refresh_from_work_entries()
+        return res
+
+    def action_payslip_done(self):
+        res = super().action_payslip_done()
+        if self.struct_id.country_id.code != 'HK':
+            return res
+        future_payslips = self.sudo().search([
+            ('id', 'not in', self.ids),
+            ('state', 'in', ['draft', 'verify']),
+            ('employee_id', 'in', self.mapped('employee_id').ids),
+            ('date_from', '>=', min(self.mapped('date_to'))),
+        ])
+        if future_payslips:
+            future_payslips.action_refresh_from_work_entries()
+        return res

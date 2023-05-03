@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo noupdate="1">
 
     <!-- COMPANY -->
     <record id="partner_demo_company_hk" model="res.partner">
@@ -283,10 +283,9 @@
         <field name="date_from" eval="time.strftime('%Y-01-01')" />
         <field name="date_to" eval="time.strftime('%Y-01-31')" />
         <field name="name" eval="'Salary Slip - Employee HK - ' + time.strftime('January %Y')" />
-        <field name="input_line_ids" eval="[(0, 0, {
-            'input_type_id': ref('l10n_hk_hr_payroll.input_commission'),
-            'amount': 10489.81,
-        })]"/>
+        <field name="input_line_ids" eval="[(5, 0, 0),
+            (0, 0, {'input_type_id': ref('l10n_hk_hr_payroll.input_commission'),'amount': 10489.81,}),
+        ]"/>
     </record>
 
     <record id="demo_payslip_2" model="hr.payslip">

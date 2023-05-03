@@ -19,6 +19,7 @@
                 <field name="is_locked" invisible="1" readonly="1"/>
                 <field name="is_user_favorite" invisible="1"/>
                 <field name="user_can_write" invisible="1"/>
+                <field name="internal_permission" invisible="1"/>
                 <field name="name" invisible="1"/>
                 <field name="parent_id" invisible="1"/>
                 <field name="user_permission" invisible="1"/>
@@ -72,7 +73,7 @@
                             <widget name="knowledge_topbar"/>
                             <!-- Invisible Article Warning Banner-->
                             <div class="alert alert-info text-center mb-0" role="alert"
-                                 attrs="{'invisible': ['|', '|', ('id', '=', False), ('is_article_visible_by_everyone', '=', True), ('is_article_visible', '=', True)]}">
+                                 attrs="{'invisible': ['|', '|', '|', ('id', '=', False), ('internal_permission', '=', 'none'), ('is_article_visible_by_everyone', '=', True), ('is_article_visible', '=', True)]}">
                                 <field name="user_has_access_parent_path" invisible="1"/>
                                 This article is only displayed to its members.
                                 <a attrs="{'invisible': [('user_has_access_parent_path', '!=', True)]}" role="button" type="object" name="action_join" class="text-decoration-underline oe_link alert-link">

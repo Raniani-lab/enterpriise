@@ -53,6 +53,8 @@ class PlanningSlot(models.Model):
                     0.0
                 )
         super(PlanningSlot, planned_slots)._compute_allocated_hours()
+        SaleOrderLine = self.env['sale.order.line']
+        self.env.add_to_compute(SaleOrderLine._fields['planning_hours_planned'], self.sale_line_id)
 
     @api.depends('start_datetime')
     def _compute_allocated_percentage(self):

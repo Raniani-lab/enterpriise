@@ -46,7 +46,11 @@ class SaleOrderLine(models.Model):
                     planning_domain = [('sale_line_id', 'in', sol_without_validated_aal), ('start_datetime', '!=', False)]
             # Search for the allocated hours on the slots in the domain
             group_allocated_hours = PlanningSlot.with_context(sale_planning_prevent_recompute=True)._read_group(
-                expression.AND([[('start_datetime', '!=', False)], planning_domain]),
+                expression.AND([[('start_datetime', '!=', False),
+                    '|',
+                    ('resource_id', '=', False),
+                    ('resource_type', '!=', 'material')], planning_domain]
+                ),
                 ['sale_line_id'],
                 ['allocated_hours:sum'])
             mapped_allocated_hours = {sale_line.id: allocated_hours for sale_line, allocated_hours in group_allocated_hours}

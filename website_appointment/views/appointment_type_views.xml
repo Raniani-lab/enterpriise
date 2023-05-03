@@ -12,12 +12,12 @@
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_card_header')]" position="before">
                 <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
-                    <span>Published</span>
+                    <span class="text-bg-success">Published</span>
                 </div>
             </xpath>
             <xpath expr="//div[hasclass('o_appointment_kanban_card_ungrouped')]/div" position="before">
                 <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
-                    <span>Published</span>
+                    <span class="text-bg-success">Published</span>
                 </div>
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]" position="attributes">

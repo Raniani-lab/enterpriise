@@ -10,6 +10,7 @@ export class KnowledgeArticleFormController extends FormController {
         useChildSubEnv({
             ensureArticleName: this.ensureArticleName.bind(this),
             renameArticle: this.renameArticle.bind(this),
+            toggleAside: this.toggleAside.bind(this),
         });
     }
 
@@ -64,6 +65,14 @@ export class KnowledgeArticleFormController extends FormController {
         this.root.el.querySelectorAll(selector).forEach(articleName => {
             articleName.textContent = name || this.env._t("Untitled");
         });
+    }
+
+    /**
+     * @param {boolean} force
+     */
+    toggleAside(force) {
+        const container = this.root.el.querySelector('.o_knowledge_form_view');
+        container.classList.toggle('o_toggle_aside', force);
     }
 }
 

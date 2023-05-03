@@ -2,6 +2,12 @@
 
     --editor-gutter-size: 2rem;
 
+    .o_scroll_view {
+        @include o-position-absolute(0, 0, 0, 0);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
     // = Navbar
     // --------------------------------------------------------------------------
     .o_breadcrumb_article_name_container {
@@ -75,11 +81,6 @@
     }
 
     .o_knowledge_aside {
-
-        .o_scroll_view {
-            max-height: 100%;
-        }
-
         .o_article_emoji_dropdown {
             > a {
                 width: 1.5em;
@@ -165,10 +166,6 @@
         .o_knowledge_management_tools {
             bottom: 0px;
         }
-    }
-
-    .o_knowledge_body {
-        min-height: 100%;
     }
 
     .o_knowledge_chatter {
@@ -337,11 +334,6 @@
 
 @include media-breakpoint-up(sm) {
     .o_knowledge_form_view {
-        .o_scroll_view {
-            @include o-position-absolute(0, 0, 0, 0);
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
         .o_overlap_cover {
             margin-bottom: -90px !important;
             .o_article_emoji {
@@ -368,8 +360,29 @@
 
 @include media-breakpoint-down(sm) {
     .o_knowledge_form_view {
+        &:not(.o_toggle_aside) {
+            .o_knowledge_backdrop {
+                display: none;
+            }
+            .o_knowledge_aside {
+                transform: translateX(-100%);
+            }
+        }
+        .o_knowledge_aside,
+        .o_knowledge_main {
+            transition: transform .2s ease;
+        }
         .o_knowledge_aside {
-            width: 100%;
+            @include o-position-absolute(0, 50px, 0, 0);
+            width: auto;
+            z-index: 1;
+        }
+        .o_knowledge_main {
+            z-index: 0;
+        }
+        .o_knowledge_backdrop {
+            @include o-position-absolute(0, 0, 0, 0);
+            background: rgba(0, 0, 0, .3);
         }
     }
 }

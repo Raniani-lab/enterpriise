@@ -74,6 +74,30 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             };
         }, () => []);
 
+        /**
+         * Adds an event listener on the elements matching the given css selector.
+         * @param {string} name - name of the event (e.g: 'click', 'drag', etc).
+         * @param {string} selector - css selector
+         * @param {function} handler - callback function
+         */
+        const useListener = (name, selector, handler) => {
+            useEffect(() => {
+                const elements = this.root.el.querySelectorAll(selector);
+                for (const element of elements) {
+                    element.addEventListener(name, handler);
+                }
+                return () => {
+                    for (const element of elements) {
+                        element.removeEventListener(name, handler);
+                    }
+                };
+            }, () => []);
+        }
+
+        useListener('click', '.o_knowledge_backdrop, #knowledge_search_bar > a', () => {
+            this.env.toggleAside();
+        });
+
         onMounted(() => {
             this._renderTree(this.resId, '/knowledge/tree_panel');
 
@@ -233,6 +257,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             if (scrollView) {
                 // Show loaded document
                 scrollView.style.visibility = 'visible';
+            }
+            if (this.device.isMobile) {
+                this.env.toggleAside(false);
             }
         }
     }

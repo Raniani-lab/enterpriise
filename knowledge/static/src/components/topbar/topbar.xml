@@ -2,9 +2,12 @@
 <templates>
     <t t-name="knowledge.KnowledgeTopbar" owl="1">
         <div class="o_knowledge_header d-flex gap-2 flex-column justify-content-end flex-sm-row align-items-sm-center border-bottom d-print-none bg-view px-0 py-2 ps-sm-3 pe-sm-2">
-            <div class="flex-grow-1 min-w-0 px-3 px-sm-0" t-if="this.env.config.breadcrumbs.length > 1 or this.props.record.data.id">
+            <div class="d-flex flex-grow-1 min-w-0 gap-1 px-2 px-sm-0 pt-2 pt-sm-0">
+                <a role="button" class="d-sm-none btn btn-light align-self-start px-2 py-1" t-on-click="() => this.env.toggleAside()">
+                    <i class="fa fa-lg fa-bars" title="Toggle aside menu"/>
+                </a>
                 <!-- Breadcrumbs -->
-                <ol class="breadcrumb align-items-center min-w-0" role="navigation">
+                <ol class="breadcrumb align-items-center min-w-0" t-if="this.env.config.breadcrumbs.length > 1 or this.props.record.data.id" role="navigation">
                     <t t-foreach="this.env.config.breadcrumbs.slice(0, -1)" t-as="breadcrumb" t-key="breadcrumb.jsId">
                         <!-- Add back hotkey on penultimate breadcrumb item -->
                         <t t-set="isPenultimate" t-value="breadcrumb_index === env.config.breadcrumbs.length - 2"/>

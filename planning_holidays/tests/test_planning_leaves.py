@@ -12,8 +12,8 @@ class TestPlanningLeaves(TestCommon):
         leave = self.env['hr.leave'].sudo().create({
             'holiday_status_id': self.leave_type.id,
             'employee_id': self.patrick.id,
-            'date_from': datetime.datetime(2020, 1, 1, 8, 0),
-            'date_to': datetime.datetime(2020, 1, 1, 17, 0),
+            'request_date_from': '2020-1-1',
+            'request_date_to': '2020-1-1',
         })
 
         slot_1 = self.env['planning.slot'].create({
@@ -45,15 +45,15 @@ class TestPlanningLeaves(TestCommon):
         self.env['hr.leave'].sudo().create({
             'holiday_status_id': self.leave_type.id,
             'employee_id': self.patrick.id,
-            'date_from': datetime.datetime(2020, 1, 6, 8, 0),
-            'date_to': datetime.datetime(2020, 1, 7, 17, 0),
+            'request_date_from': '2020-1-6',
+            'request_date_to': '2020-1-7',
         }).action_validate()
 
         self.env['hr.leave'].sudo().create({
             'holiday_status_id': self.leave_type.id,
             'employee_id': self.patrick.id,
-            'date_from': datetime.datetime(2020, 1, 8, 8, 0),
-            'date_to': datetime.datetime(2020, 1, 10, 17, 0),
+            'request_date_from': '2020-1-8',
+            'request_date_to': '2020-1-10',
         }).action_validate()
 
         slot_1 = self.env['planning.slot'].create({

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from freezegun import freeze_time
 
 from odoo import Command
@@ -52,8 +52,8 @@ class TestHelpdeskHolidays(HelpdeskCommon, TestHrHolidaysCommon):
         leave = self.env['hr.leave'].create({
             'employee_id': self.employee_hruser.id,
             'holiday_status_id': self.leave_type.id,
-            'date_from': datetime.now().strftime('%Y-%m-%d 00:00:00'),
-            'date_to': (datetime.now() + timedelta(days=6)).strftime('%Y-%m-%d 23:59:59'),
+            'request_date_from': date.today(),
+            'request_date_to': date.today() + timedelta(days=6),
         })
         leave.action_approve()
 
@@ -79,8 +79,8 @@ class TestHelpdeskHolidays(HelpdeskCommon, TestHrHolidaysCommon):
         leave = self.env['hr.leave'].create({
             'employee_id': self.employee_hrmanager.id,
             'holiday_status_id': self.leave_type.id,
-            'date_from': datetime.now().strftime('%Y-%m-%d 00:00:00'),
-            'date_to': (datetime.now() + timedelta(days=6)).strftime('%Y-%m-%d 23:59:59'),
+            'request_date_from': date.today(),
+            'request_date_to': date.today() + timedelta(days=6),
         })
         leave.action_approve()
 

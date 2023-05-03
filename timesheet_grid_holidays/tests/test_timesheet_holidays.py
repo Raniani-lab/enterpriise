@@ -3,8 +3,7 @@
 
 from odoo import fields, SUPERUSER_ID
 from odoo.exceptions import UserError
-from datetime import date, datetime, timedelta
-from dateutil.relativedelta import relativedelta
+from datetime import date
 
 from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
 
@@ -23,8 +22,6 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         self.assertEqual(result[self.empl_employee.id]['units_to_work'], 40, "Employee weekly working hours should be 40.")
         self.assertEqual(result[self.empl_employee.id]['worked_hours'], 0.0, "Employee's working hours should be None.")
 
-        leave_start_datetime = datetime(2021, 10, 5, 7, 0, 0, 0)  # this is Tuesday
-        leave_end_datetime = leave_start_datetime + relativedelta(days=1)
         # all company have those internal project/task (created by default)
         internal_project = self.env.company.internal_project_id
         internal_task_leaves = self.env.company.leave_timesheet_task_id
@@ -37,14 +34,12 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
         })
         HrLeave = self.env['hr.leave'].with_context(mail_create_nolog=True, mail_notrack=True)
         # employee creates a leave request
-        number_of_days = (leave_end_datetime - leave_start_datetime).days
         holiday = HrLeave.with_user(self.user_employee).create({
             'name': 'Leave 1',
             'employee_id': self.empl_employee.id,
             'holiday_status_id': hr_leave_type.id,
-            'date_from': leave_start_datetime,
-            'date_to': leave_end_datetime,
-            'number_of_days': number_of_days,
+            'request_date_from': '2021-10-05',
+            'request_date_to': '2021-10-05',
         })
         holiday.with_user(SUPERUSER_ID).action_validate()
         result = self.empl_employee.get_timesheet_and_working_hours_for_employees(start_date, end_date)
@@ -79,9 +74,11 @@ class TestTimesheetGridHolidays(TestCommonTimesheet):
             'name': 'Leave 1',
             'employee_id': self.empl_employee.id,
             'holiday_status_id': hr_leave_type_with_ts.id,
-            'date_from': datetime(2018, 2, 5, 7, 0, 0, 0),
-            'date_to': datetime(2018, 2, 5, 8, 0, 0, 0),
-            'number_of_days': 1,
+            'request_date_from': '2018-02-05',
+            'request_date_to': '2018-02-05',
+            'request_hour_from': '8',
+            'request_hour_to': '9',
+            'request_unit_hours': True,
         })
         # validate leave request and create timesheet
         holiday.with_user(SUPERUSER_ID).action_validate()

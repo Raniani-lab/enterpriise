@@ -82,6 +82,7 @@ class TestLuMonthlyDeclaration(TestLuPayrollCommon):
             'wage': 4000.0,
             'state': 'close',
         })
+
         madison_contract2 = madison_contract1.copy({
             'date_start': '2022-3-21',
             'date_end': False,
@@ -109,9 +110,8 @@ class TestLuMonthlyDeclaration(TestLuPayrollCommon):
             'name': 'such bad weather no work',
             'employee_id': madison_employee.id,
             'holiday_status_id': self.env.ref('l10n_lu_hr_payroll.holiday_status_situational_unemployment').id,
-            'date_from': '2022-03-09 00:00:00',
-            'date_to': '2022-03-09 23:59:59',
-            'number_of_days': 1,
+            'request_date_from': '2022-03-09',
+            'request_date_to': '2022-03-09',
         })
         contracts.generate_work_entries(date(2022, 3, 1), date(2022, 3, 31))
 

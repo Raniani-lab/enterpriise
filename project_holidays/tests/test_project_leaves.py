@@ -34,8 +34,8 @@ class TestProjectLeaves(common.TransactionCase):
         leave = self.env['hr.leave'].sudo().create({
             'holiday_status_id': self.leave_type.id,
             'employee_id': self.employee_hruser.id,
-            'date_from': datetime.datetime(2020, 1, 1, 8, 0),
-            'date_to': datetime.datetime(2020, 1, 1, 17, 0),
+            'request_date_from': '2020-1-1',
+            'request_date_to': '2020-1-1',
         })
 
         task_1 = self.env['project.task'].create({
@@ -70,15 +70,15 @@ class TestProjectLeaves(common.TransactionCase):
         self.env['hr.leave'].sudo().create({
             'holiday_status_id': self.leave_type.id,
             'employee_id': self.employee_hruser.id,
-            'date_from': datetime.datetime(2020, 1, 6, 8, 0),
-            'date_to': datetime.datetime(2020, 1, 7, 17, 0),
+            'request_date_from': '2020-1-6',
+            'request_date_to': '2020-1-7',
         }).action_validate()
 
         self.env['hr.leave'].sudo().create({
             'holiday_status_id': self.leave_type.id,
             'employee_id': self.employee_hruser.id,
-            'date_from': datetime.datetime(2020, 1, 8, 8, 0),
-            'date_to': datetime.datetime(2020, 1, 10, 17, 0),
+            'request_date_from': '2020-1-8',
+            'request_date_to': '2020-1-10',
         }).action_validate()
 
         task_1 = self.env['project.task'].create({

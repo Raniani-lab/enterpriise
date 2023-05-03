@@ -30,9 +30,6 @@ class TestCaseDocumentsBridgeHR(TransactionCase):
         leave = self.env['hr.leave'].create({
             'employee_id': employee.id,
             'holiday_status_id': leave_type.id,
-            'number_of_days': 1,
-            'date_from': date(2021, 11, 24),
-            'date_to': date(2021, 11, 24),
             'request_date_from': date(2021, 11, 24),
             'request_date_to': date(2021, 11, 24),
         })

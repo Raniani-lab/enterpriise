@@ -3,8 +3,10 @@
 
 from datetime import date
 from freezegun import freeze_time
+from dateutil.relativedelta import relativedelta
 
 from odoo.tests import tagged
+from odoo.tools import date_utils
 from odoo.exceptions import ValidationError
 
 from .common import TestPayrollCommon
@@ -148,18 +150,18 @@ class TestPayrollCreditTime(TestPayrollCommon):
         a_current_contract = self.a_contracts[-1]
         a_allocation = self.allocations.filtered(lambda alloc: alloc.employee_id.id == self.employee_a.id)
 
+        taken_leaves = 0
         # leaves don't count if theyre planned in the future, they have to actually be taken
         with freeze_time(date(today.year, 2, 1)):
+            leave_start = date_utils.start_of(date(today.year, 2, 1), 'week') # Ensure the leave is always 6 days
             leave = self.env['hr.leave'].create({
                 'holiday_status_id': self.paid_time_off_type.id,
                 'employee_id': self.employee_a.id,
-                'request_date_from': date(today.year, 2, 1),
-                'date_from': date(today.year, 2, 1),
-                'date_to': date(today.year, 2, 6),
-                'request_date_to': date(today.year, 2, 6),
-                'number_of_days': 6
+                'request_date_from': leave_start,
+                'request_date_to': leave_start + relativedelta(days=7),
             })
             leave.action_validate()
+            taken_leaves += leave.number_of_days
 
             # Credit time
             wizard = self.env['l10n_be.hr.payroll.schedule.change.wizard'].with_context(allowed_company_ids=self.belgian_company.ids, active_id=a_current_contract.id).new({
@@ -178,16 +180,15 @@ class TestPayrollCreditTime(TestPayrollCommon):
             self.env['l10n_be.schedule.change.allocation']._cron_update_allocation_from_new_schedule(date(today.year, 6, 1))
 
         with freeze_time(date(today.year, 7, 1)):
+            leave_start = date_utils.start_of(date(today.year, 7, 1), 'week') # Ensure the leave is always 6 days
             leave = self.env['hr.leave'].create({
                 'holiday_status_id': self.paid_time_off_type.id,
                 'employee_id': self.employee_a.id,
-                'request_date_from': date(today.year, 7, 1),
-                'date_from': date(today.year, 7, 1),
-                'date_to': date(today.year, 7, 6),
-                'request_date_to': date(today.year, 7, 6),
-                'number_of_days': 6
+                'request_date_from': leave_start,
+                'request_date_to': leave_start + relativedelta(days=7),
             })
             leave.action_validate()
+            taken_leaves += leave.number_of_days
 
             # Apply allocation changes directly
             full_time_contract = self.env['hr.contract'].search(view['domain']).filtered(lambda contract: not contract.time_credit and contract.id != a_current_contract.id)
@@ -204,7 +205,10 @@ class TestPayrollCreditTime(TestPayrollCommon):
                 'part_time': True,
                 'previous_contract_creation': True,
             })
-            self.assertEqual(wizard.time_off_allocation, 12) # Should be 10 but since the employee has already taken 12 days, it's 12
+            # The exact number of taken leaves can vary due to interaction with demo data but for this test, we need
+            # them to be at least greater than 10.
+            self.assertGreater(taken_leaves, 10)
+            self.assertEqual(wizard.time_off_allocation, taken_leaves) # Should be 10 but since the employee has already taken more, the allocation keeps those taken days.
             self.assertAlmostEqual(wizard.work_time_rate, 50, 2)
             view = wizard.with_context(force_schedule=True).action_validate()
             # Apply allocation changes directly
@@ -216,9 +220,6 @@ class TestPayrollCreditTime(TestPayrollCommon):
                     'holiday_status_id': self.paid_time_off_type.id,
                     'employee_id': self.employee_a.id,
                     'request_date_from': date(today.year, 10, 4),
-                    'date_from': date(today.year, 10, 4),
-                    'date_to': date(today.year, 10, 8),
                     'request_date_to': date(today.year, 10, 8),
-                    'number_of_days': 5
                 })
                 leave.action_validate()

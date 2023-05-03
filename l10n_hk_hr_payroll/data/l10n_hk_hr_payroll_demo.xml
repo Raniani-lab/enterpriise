@@ -185,8 +185,8 @@
     <record id="demo_leave_1" model="hr.leave">
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
-        <field name="date_from" eval="time.strftime('%Y-01-14 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-01-18 00:00:00')"/>
+        <field name="request_date_from" eval="time.strftime('%Y-01-14')" />
+        <field name="request_date_to" eval="time.strftime('%Y-01-17')"/>
         <field name="holiday_status_id" ref="holiday_type_hk_unpaid_leave" />
     </record>
 
@@ -196,9 +196,8 @@
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
         <field name="holiday_status_id" ref="holiday_type_hk_annual_leave" />
-        <field name="date_from" eval="time.strftime('%Y-01-20 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-01-20 04:00:00')" />
         <field name="request_date_from" eval="time.strftime('%Y-01-20')" />
+        <field name="request_date_to" eval="time.strftime('%Y-01-20')" />
         <field name="request_unit_half" eval="1" />
         <field name="request_date_from_period">am</field>
     </record>
@@ -206,16 +205,16 @@
     <record id="demo_leave_3" model="hr.leave">
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
-        <field name="date_from" eval="time.strftime('%Y-02-11 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-02-16 00:00:00')"/>
+        <field name="request_date_from" eval="time.strftime('%Y-02-11')" />
+        <field name="request_date_to" eval="time.strftime('%Y-02-15')"/>
         <field name="holiday_status_id" ref="holiday_type_hk_annual_leave" />
     </record>
 
     <record id="demo_leave_4" model="hr.leave">
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
-        <field name="date_from" eval="time.strftime('%Y-04-03 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-04-05 00:00:00')"/>
+        <field name="request_date_from" eval="time.strftime('%Y-04-03')" />
+        <field name="request_date_to" eval="time.strftime('%Y-04-04')"/>
         <field name="holiday_status_id" ref="holiday_type_hk_annual_leave" />
     </record>
 
@@ -223,9 +222,8 @@
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
         <field name="holiday_status_id" ref="holiday_type_hk_annual_leave" />
-        <field name="date_from" eval="time.strftime('%Y-04-05 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-04-05 04:00:00')" />
-        <field name="request_date_from" eval="time.strftime('%Y-04-03 00:00:00')" />
+        <field name="request_date_from" eval="time.strftime('%Y-04-05')" />
+        <field name="request_date_to" eval="time.strftime('%Y-04-05')" />
         <field name="request_unit_half" eval="True" />
         <field name="request_date_from_period">am</field>
     </record>
@@ -233,26 +231,24 @@
     <record id="demo_leave_6" model="hr.leave">
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
-        <field name="date_from" eval="time.strftime('%Y-07-02 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-07-04 09:00:00')" />
+        <field name="request_date_from" eval="time.strftime('%Y-07-02')" />
+        <field name="request_date_to" eval="time.strftime('%Y-07-04')" />
         <field name="holiday_status_id" ref="l10n_hk_hr_payroll.holiday_type_hk_annual_leave" />
     </record>
 
     <record id="demo_leave_7" model="hr.leave">
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
-        <field name="date_from" eval="time.strftime('%Y-09-04 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-09-04 09:00:00')" />
+        <field name="request_date_from" eval="time.strftime('%Y-09-04')" />
+        <field name="request_date_to" eval="time.strftime('%Y-09-04')" />
         <field name="holiday_status_id" ref="l10n_hk_hr_payroll.holiday_type_hk_annual_leave" />
     </record>
 
     <record id="demo_leave_8" model="hr.leave">
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
-        <field name="date_from" eval="time.strftime('%Y-09-05 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-09-05 04:00:00')" />
-        <field name="request_date_from" eval="time.strftime('%Y-09-05 00:00:00')" />
-        <field name="request_date_to" eval="time.strftime('%Y-09-06 00:00:00')" />
+        <field name="request_date_from" eval="time.strftime('%Y-09-05')" />
+        <field name="request_date_to" eval="time.strftime('%Y-09-05')" />
         <field name="holiday_status_id" ref="l10n_hk_hr_payroll.holiday_type_hk_annual_leave" />
         <field name="request_unit_half" eval="True" />
         <field name="request_date_from_period">am</field>
@@ -261,16 +257,16 @@
     <record id="demo_leave_9" model="hr.leave">
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
-        <field name="date_from" eval="time.strftime('%Y-10-02 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-10-04 09:00:00')" />
+        <field name="request_date_from" eval="time.strftime('%Y-10-02')" />
+        <field name="request_date_to" eval="time.strftime('%Y-10-04')" />
         <field name="holiday_status_id" ref="l10n_hk_hr_payroll.holiday_type_hk_annual_leave" />
     </record>
 
     <record id="demo_leave_10" model="hr.leave">
         <field name="holiday_type">employee</field>
         <field name="employee_id" ref="demo_employee_hk" />
-        <field name="date_from" eval="time.strftime('%Y-12-04 00:00:00')" />
-        <field name="date_to" eval="time.strftime('%Y-12-05 09:00:00')" />
+        <field name="request_date_from" eval="time.strftime('%Y-12-04')" />
+        <field name="request_date_to" eval="time.strftime('%Y-12-05')" />
         <field name="holiday_status_id" ref="l10n_hk_hr_payroll.holiday_type_hk_annual_leave" />
     </record>
 

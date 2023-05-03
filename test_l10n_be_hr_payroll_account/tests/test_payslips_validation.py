@@ -6145,11 +6145,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         european_time_off = self.env['hr.leave'].create({
             'name': 'European Time Off',
             'holiday_status_id': self.european_time_off_type.id,
-            'date_from': datetime.datetime(2020, 5, 4, 1, 0, 0),
-            'date_to': datetime.datetime(2020, 5, 4, 23, 0, 0),
-            'request_date_from': datetime.datetime(2020, 5, 4, 1, 0, 0),
-            'request_date_to': datetime.datetime(2020, 5, 4, 23, 0, 0),
-            'number_of_days': 1,
+            'request_date_from': datetime.date(2020, 5, 4),
+            'request_date_to': datetime.date(2020, 5, 4),
             'employee_id': self.employee.id,
         })
         european_time_off.action_validate()
@@ -6208,11 +6205,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         european_time_off = self.env['hr.leave'].create({
             'name': 'European Time Off',
             'holiday_status_id': self.european_time_off_type.id,
-            'date_from': datetime.datetime(2019, 2, 1, 1, 0, 0),
-            'date_to': datetime.datetime(2019, 2, 28, 23, 0, 0),
-            'request_date_from': datetime.datetime(2019, 2, 1, 1, 0, 0),
-            'request_date_to': datetime.datetime(2019, 2, 28, 23, 0, 0),
-            'number_of_days': 20,
+            'request_date_from': datetime.date(2019, 2, 1),
+            'request_date_to': datetime.date(2019, 2, 28),
             'employee_id': self.employee.id,
         })
         european_time_off.action_validate()
@@ -6729,11 +6723,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         economic_unemployment = self.env['hr.leave'].create({
             'name': 'Legal Time Off 2020',
             'holiday_status_id': self.economic_unemployment_time_off_type.id,
-            'date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
-            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
-            'request_date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
-            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
-            'number_of_days': 21,
+            'request_date_from': datetime.date(2021, 5, 1),
+            'request_date_to': datetime.date(2021, 5, 31),
             'employee_id': self.employee.id,
         })
         economic_unemployment.action_validate()
@@ -6824,11 +6815,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         maternity = self.env['hr.leave'].create({
             'name': 'Legal Time Off 2020',
             'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_maternity').id,
-            'date_from': datetime.datetime(2021, 4, 17, 6, 0, 0),
-            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
-            'request_date_from': datetime.datetime(2021, 4, 17, 6, 0, 0),
-            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
-            'number_of_days': 29,
+            'request_date_from': datetime.date(2021, 4, 17),
+            'request_date_to': datetime.date(2021, 5, 31),
             'employee_id': self.employee.id,
         })
         maternity.action_validate()
@@ -6919,11 +6907,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         maternity = self.env['hr.leave'].create({
             'name': 'Legal Time Off 2020',
             'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_maternity').id,
-            'date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
-            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
-            'request_date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
-            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
-            'number_of_days': 19,
+            'request_date_from': '2021-5-1',
+            'request_date_to': '2021-5-31',
             'employee_id': self.employee.id,
         })
         maternity.action_validate()
@@ -6980,11 +6965,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         maternity = self.env['hr.leave'].create({
             'name': 'Legal Time Off 2020',
             'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_maternity').id,
-            'date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
-            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
-            'request_date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
-            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
-            'number_of_days': 19,
+            'request_date_from': datetime.date(2021, 5, 1),
+            'request_date_to': datetime.date(2021, 5, 31),
             'employee_id': self.employee.id,
         })
         maternity.action_validate()
@@ -7062,11 +7044,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         maternity = self.env['hr.leave'].create({
             'name': 'Legal Time Off 2020',
             'holiday_status_id': self.env.ref('l10n_be_hr_payroll.holiday_type_maternity').id,
-            'date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
-            'date_to': datetime.datetime(2021, 5, 31, 20, 0, 0),
-            'request_date_from': datetime.datetime(2021, 5, 1, 6, 0, 0),
-            'request_date_to': datetime.datetime(2021, 5, 31, 20, 36, 0),
-            'number_of_days': 19,
+            'request_date_from': datetime.date(2021, 5, 1),
+            'request_date_to': datetime.date(2021, 5, 31),
             'employee_id': self.employee.id,
         })
         maternity.action_validate()
@@ -8565,11 +8544,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         european_time_off = self.env['hr.leave'].create({
             'name': 'European Time Off',
             'holiday_status_id': self.european_time_off_type.id,
-            'date_from': datetime.datetime(2022, 5, 9, 1, 0, 0),
-            'date_to': datetime.datetime(2022, 5, 12, 23, 0, 0),
-            'request_date_from': datetime.datetime(2020, 5, 9, 1, 0, 0),
-            'request_date_to': datetime.datetime(2020, 5, 12, 23, 0, 0),
-            'number_of_days': 4,
+            'request_date_from': '2022-5-9',
+            'request_date_to': '2022-5-12',
             'employee_id': self.employee.id,
         })
         european_time_off.action_validate()
@@ -9314,11 +9290,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         unpaid_time_off = self.env['hr.leave'].create({
             'name': 'Unpaid Leave 4 hours',
             'holiday_status_id': self.unpaid_time_off_type.id,
-            'date_from': datetime.datetime(2018, 11, 6, 7),
-            'date_to': datetime.datetime(2018, 11, 6, 12),
-            'request_date_from': datetime.datetime(2018, 11, 6, 7),
-            'request_date_to': datetime.datetime(2018, 11, 6, 12),
-            'number_of_days': 1,
+            'request_date_from': '2018-11-06',
+            'request_date_to': '2018-11-06',
+            'request_unit_half': True,
+            'request_date_from_period': 'am',
             'employee_id': self.employee.id,
         })
         unpaid_time_off.action_validate()

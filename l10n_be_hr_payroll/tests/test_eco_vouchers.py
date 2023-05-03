@@ -130,11 +130,8 @@ class TestEcoVouchers(TransactionCase):
         unpaid_leave_2019 = self.env['hr.leave'].create({
             'name': 'Unpaid Time Off 2021',
             'holiday_status_id': unpaid_time_off_type.id,
-            'date_from': datetime(2021, 4, 1, 1, 0, 0),
-            'date_to': datetime(2021, 4, 21, 23, 0, 0),
-            'request_date_from': datetime(2021, 4, 1, 1, 0, 0),
-            'request_date_to': datetime(2021, 4, 21, 23, 0, 0),
-            'number_of_days': 9,
+            'request_date_from': date(2021, 4, 1),
+            'request_date_to': date(2021, 4, 21),
             'employee_id': employee.id,
         })
         unpaid_leave_2019.action_approve()

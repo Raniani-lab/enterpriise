@@ -81,7 +81,7 @@
                 <div t-attf-class="d-flex align-items-center px-3 py-1 {{ this.isLoggedUser(member) ? 'active' : '' }}">
                     <div class="flex-shrink-0">
                         <t t-if="isInternalUser">
-                            <img class="o_knowledge_share_panel_image rounded-circle" t-if="member.partner_id"
+                            <img class="o_knowledge_share_panel_image rounded" t-if="member.partner_id"
                                 t-attf-src="/web/image?model=res.partner&amp;field=avatar_128&amp;id={{ member.partner_id }}"
                                 t-on-click="event => this._onMemberAvatarClick(event, member)"/>
                         </t>

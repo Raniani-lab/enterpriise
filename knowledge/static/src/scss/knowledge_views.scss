@@ -165,7 +165,7 @@
     }
 
     .dropdown-menu.o_knowledge_more_options_panel {
-        width: 250px;
+        min-width: 250px;
         transform: translate3d(0px, 30px, 0px) !important;
         .o_knowledge_more_options_panel_image,
         .o_knowledge_more_options_panel_icon {

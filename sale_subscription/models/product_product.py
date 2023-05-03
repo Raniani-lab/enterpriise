@@ -25,7 +25,7 @@ class ProductProduct(models.Model):
         # For subscription products, we select either the list_price if no pricing correspond to the
         # SO recurrence_id or the best suited but we don't calculate the lowest price.
         pricelist = kwargs.get('pricelist', self.env['product.pricelist'])
-        available_pricings = self.product_pricing_ids.filtered(lambda p: p.recurrence_id.duration == duration and p.recurrence_id.unit == unit)
+        available_pricings = self.product_pricing_ids.filtered(lambda p: p.recurrence_id.duration == duration and p.recurrence_id.unit == unit and p._applies_to(self))
         best_pricing_with_pricelist = self.env['product.pricing']
         best_pricing_without_pricelist = self.env['product.pricing']
         for pricing in available_pricings:

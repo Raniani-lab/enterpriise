@@ -516,6 +516,8 @@ class AccountAsset(models.Model):
     # BOARD COMPUTATION
     # -------------------------------------------------------------------------
     def _compute_board_amount(self, residual_amount, period_start_date, period_end_date, days_already_depreciated, days_left_to_depreciated, residual_declining):
+        if self.asset_lifetime_days == 0:
+            return 0, 0
         number_days = self._get_delta_days(period_start_date, period_end_date)
         total_days = number_days + days_already_depreciated
 

@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { PosGlobalState } from "@point_of_sale/js/models";
+import { PosGlobalState, Order } from "@point_of_sale/js/models";
 import { patch } from "@web/core/utils/patch";
 
 patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
@@ -36,30 +36,32 @@ patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
         await this._super(...arguments);
         this._initializePreparationDisplay();
     },
+});
 
-    async sendPreparationDisplayOrder() {
-        const currentOrder = this.get_order();
-
+patch(Order.prototype, "pos_preparation_display.Order", {
+    // This function send order change to preparation display.
+    // For sending changes to printer see printChanges function.
+    async sendChanges(cancelled) {
         // In the point_of_sale, we try to find the server_id in order to keep the
         // orders traceable in the preparation tools.
         // For the pos_restaurant, this is mandatory, without the server_id,
         // we cannot find the order table.
-        if (!currentOrder.server_id) {
-            await this.sendDraftToServer();
+        if (!this.server_id) {
+            await this.pos.sendDraftToServer();
         }
 
-        const orderChange = currentOrder.changesToOrder;
+        const orderChange = this.changesToOrder(cancelled);
         const preparationDisplayOrderLineIds = Object.entries(orderChange).flatMap(
             ([type, changes]) =>
                 changes
                     .filter((change) => {
-                        const product = this.db.get_product_by_id(change.product_id);
+                        const product = this.pos.db.get_product_by_id(change.product_id);
                         return product.pos_categ_id[0];
                     })
                     .map((change) => {
-                        const product = this.db.get_product_by_id(change.product_id);
+                        const product = this.pos.db.get_product_by_id(change.product_id);
                         let quantity = change.quantity;
-                        if (type === "cancelled") {
+                        if (type === "cancelled" && change.quantity > 0) {
                             quantity = -change.quantity;
                         }
 
@@ -78,13 +80,12 @@ patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
         }
 
         try {
-            const posPreparationDisplayOrder = {
-                preparation_display_order_line_ids: preparationDisplayOrderLineIds,
-                displayed: true,
-                pos_order_id: currentOrder.server_id || false,
-            };
+            const posPreparationDisplayOrder = this.preparePreparationOrder(
+                this,
+                preparationDisplayOrderLineIds
+            );
 
-            await this.env.services.orm.call("pos_preparation_display.order", "process_order", [
+            await this.pos.env.services.orm.call("pos_preparation_display.order", "process_order", [
                 posPreparationDisplayOrder,
             ]);
         } catch (e) {
@@ -93,5 +94,13 @@ patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
         }
 
         return true;
+    },
+    // Overrided in pos_restaurant_preparation_display
+    preparePreparationOrder(order, orderline) {
+        return {
+            preparation_display_order_line_ids: orderline,
+            displayed: true,
+            pos_order_id: order.server_id || false,
+        };
     },
 });

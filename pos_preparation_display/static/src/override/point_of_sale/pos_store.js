@@ -6,9 +6,9 @@ import { AlertPopup } from "@point_of_sale/js/Popups/AlertPopup";
 import { _t } from "@web/core/l10n/translation";
 
 patch(PosStore.prototype, "pos_preparation_display.PosStore", {
-    async sendOrderInPreparation(order) {
+    async sendOrderInPreparation(order, cancelled = false) {
         const _super = this._super;
-        const result = await this.globalState.sendPreparationDisplayOrder(order);
+        const result = await order.sendChanges(cancelled);
 
         // We display this error popup only if the PoS is connected,
         // otherwise the user has already received a popup telling him

@@ -16,6 +16,12 @@
         'pos_preparation_display.assets': [
             'pos_restaurant_preparation_display/static/src/app/**/*',
         ],
+        'point_of_sale._assets_pos': [
+            'pos_restaurant_preparation_display/static/src/override/**/*.js',
+        ],
+        'web.assets_tests': [
+            'pos_restaurant_preparation_display/static/tests/tours/**/*',
+        ],
     },
     'license': 'LGPL-3',
 }

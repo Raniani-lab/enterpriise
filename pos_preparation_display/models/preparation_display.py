@@ -61,7 +61,7 @@ class PosPreparationDisplay(models.Model):
     def reset(self):
         for preparation_display in self:
             last_stage = preparation_display.stage_ids[-1]
-            orders = self.env['pos_preparation_display.order'].search([('pos_config_id', 'in', preparation_display.get_pos_config_ids().ids)], limit=1000, order='id desc')
+            orders = self.env['pos_preparation_display.order'].search([('|'), ('pos_order_id', '=', False), ('pos_config_id', 'in', preparation_display.get_pos_config_ids().ids)], limit=1000, order='id desc')
 
             for order in orders:
                 current_order_stage = None
@@ -71,7 +71,7 @@ class PosPreparationDisplay(models.Model):
                     if len(filtered_stages) > 0:
                         current_order_stage = filtered_stages[-1]
 
-                if not current_order_stage or current_order_stage.id != last_stage.id:
+                if not current_order_stage:
                     order.order_stage_ids.create({
                         'preparation_display_id': preparation_display.id,
                         'stage_id': last_stage.id,

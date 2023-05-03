@@ -53,11 +53,9 @@ class PosPreparationDisplayOrder(models.Model):
                         break
 
         if positive_orderlines:
-            self.create({
-                'preparation_display_order_line_ids': positive_orderlines,
-                'displayed': True,
-                'pos_order_id':  order['pos_order_id'],
-            })
+            order_to_create = self._get_preparation_order_values(order)
+            order_to_create['preparation_display_order_line_ids'] = positive_orderlines
+            self.create(order_to_create)
 
         if positive_orderlines or negative_orderlines:
             preparation_displays = self.env['pos_preparation_display.display'].search([])
@@ -69,6 +67,12 @@ class PosPreparationDisplayOrder(models.Model):
                     self.env['bus.bus']._sendone(f'preparation_display-{p_dis.id}', 'load_orders', {
                         'preparation_display_id': p_dis.id,
                     })
+
+    def _get_preparation_order_values(self, order):
+        return {
+            'displayed': True,
+            'pos_order_id':  order['pos_order_id'],
+        }
 
     def change_order_stage(self, stage_id, preparation_display_id):
         self.ensure_one()
@@ -133,7 +137,7 @@ class PosPreparationDisplayOrder(models.Model):
                 if filtered_stages:
                     current_order_stage = filtered_stages[-1]
 
-            if current_order_stage and current_order_stage.stage_id == last_stage and current_order_stage.done:
+            if current_order_stage and current_order_stage.done:
                 continue
             elif not current_order_stage:
                 order.order_stage_ids.create({

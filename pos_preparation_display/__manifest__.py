@@ -53,6 +53,9 @@
         'point_of_sale.assets_qunit_tests': [
             'pos_preparation_display/static/tests/*.js',
         ],
+        'web.assets_tests': [
+            'pos_preparation_display/static/tests/tours/**/*',
+        ],
     },
     'license': 'LGPL-3',
 }

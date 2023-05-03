@@ -144,26 +144,11 @@ QUnit.module("Studio Navbar > AppMenuEditor", (hooks) => {
                 if (route === "/web_studio/create_new_menu") {
                     assert.strictEqual(args.menu_name, "AA");
                     assert.strictEqual(args.model_choice, "new");
-                    assert.deepEqual(
-                        Object.entries(args.model_options).map(
-                            ([name, v]) => `${name}: ${v.value}`
-                        ),
-                        [
-                            "use_partner: false",
-                            "use_responsible: false",
-                            "use_date: false",
-                            "use_double_dates: false",
-                            "use_stages: false",
-                            "use_ltags: false",
-                            "use_image: false",
-                            "lines: false",
-                            "use_notes: false",
-                            "use_value: false",
-                            "use_sequence: true",
-                            "use_mail: true",
-                            "use_active: true",
-                        ]
-                    );
+                    assert.deepEqual(args.model_options, [
+                        "use_sequence",
+                        "use_mail",
+                        "use_active",
+                    ]);
                     assert.strictEqual(args.parent_menu_id, 2);
                     return {};
                 }

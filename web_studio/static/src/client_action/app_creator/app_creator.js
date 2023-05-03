@@ -205,11 +205,7 @@ export class AppCreator extends Component {
      * @param {Object} options
      */
     onConfirmOptions(options) {
-        const mappedOptions = Object.entries(options)
-            .filter((opt) => opt[1].value)
-            .map((opt) => opt[0]);
-
-        this.state.data.modelOptions = mappedOptions;
+        this.state.data.modelOptions = options;
         return this.state.next();
     }
 }

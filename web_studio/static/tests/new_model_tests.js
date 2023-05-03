@@ -49,7 +49,7 @@ QUnit.module("Studio Navbar > New Model", (hooks) => {
     });
 
     QUnit.test("Add New Model", async function (assert) {
-        assert.expect(9);
+        assert.expect(10);
 
         serverData.actions = {
             99999: {
@@ -73,6 +73,11 @@ QUnit.module("Studio Navbar > New Model", (hooks) => {
             mockRPC: (route, args) => {
                 if (route === "/web_studio/create_new_menu") {
                     assert.strictEqual(args.menu_name, "ABCD", "Model name should be ABCD.");
+                    assert.deepEqual(args.model_options, [
+                        "use_sequence",
+                        "use_mail",
+                        "use_active",
+                    ]);
                     return { action_id: 99999 };
                 }
                 if (route === "/web/action/load") {

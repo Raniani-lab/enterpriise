@@ -100,7 +100,12 @@ export class ModelConfigurator extends Component {
     async onConfirm() {
         try {
             this.state.saving = true;
-            await this.props.onConfirmOptions({ ...this.options });
+
+            const mappedOptions = Object.entries(this.options)
+                .filter((opt) => opt[1].value)
+                .map((opt) => opt[0]);
+
+            await this.props.onConfirmOptions(mappedOptions);
         } finally {
             this.state.saving = false;
         }

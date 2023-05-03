@@ -3,6 +3,7 @@
 import { _t } from "web.core";
 import { CalendarRenderer } from "@web/views/calendar/calendar_renderer";
 import { CohortRenderer } from "@web_cohort/cohort_renderer";
+import { GanttRenderer } from "@web_gantt/gantt_renderer";
 import { GraphRenderer } from "@web/views/graph/graph_renderer";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 import { ListRenderer } from "@web/views/list/list_renderer";
@@ -158,6 +159,7 @@ const EmbeddedViewListRendererPatch = {
 
 patch(CalendarRenderer.prototype, 'knowledge_calendar_embeddable', EmbeddedViewRendererPatch);
 patch(CohortRenderer.prototype, 'knowledge_cohort_embeddable', EmbeddedViewRendererPatch);
+patch(GanttRenderer.prototype, 'knowledge_gantt_embeddable', EmbeddedViewRendererPatch);
 patch(GraphRenderer.prototype, 'knowledge_graph_embeddable', EmbeddedViewRendererPatch);
 patch(KanbanRenderer.prototype, 'knowledge_kanban_embeddable', EmbeddedViewRendererPatch);
 patch(ListRenderer.prototype, 'knowledge_list_embeddable', EmbeddedViewListRendererPatch);
@@ -167,6 +169,7 @@ patch(PivotRenderer.prototype, 'knowledge_pivot_embeddable', EmbeddedViewRendere
 const supportedEmbeddedViews = new Set([
     'calendar',
     'cohort',
+    'gantt',
     'graph',
     'kanban',
     'list',

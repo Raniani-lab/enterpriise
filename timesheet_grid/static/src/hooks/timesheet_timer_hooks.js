@@ -55,11 +55,12 @@ export class TimesheetTimerRendererHook {
                 if (!fieldInfo.placeholder && fieldInfo.string) {
                     fieldInfo.placeholder = fieldInfo.string;
                 }
+                fieldInfo.context = `{'search_default_my_projects': True}`;
             } else if (fieldName === "task_id") {
                 if (!fieldInfo.placeholder && fieldInfo.string) {
                     fieldInfo.placeholder = fieldInfo.string;
                 }
-                fieldInfo.context = `{'default_project_id': project_id}`;
+                fieldInfo.context = `{'default_project_id': project_id, 'search_default_my_tasks': True, 'search_default_open_tasks': True}`;
             } else if (fieldName === "name") {
                 if (fieldInfo.modifiers?.required) {
                     fieldInfo.modifiers.required = false;

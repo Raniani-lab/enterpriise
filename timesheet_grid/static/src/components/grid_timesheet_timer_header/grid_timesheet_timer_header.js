@@ -70,9 +70,10 @@ export class GridTimesheetTimerHeader extends Component {
                     ["timesheet_encode_uom_id", "=", this.timesheetUOMService.timesheetUOMId],
                 ];
             }
+            fieldInfo.context = `{'search_default_my_projects': True}`;
             fieldInfo.modifiers = { required: true };
         } else if (fieldName === "task_id") {
-            fieldInfo.context = `{'default_project_id': project_id}`;
+            fieldInfo.context = `{'default_project_id': project_id, 'search_default_my_tasks': True, 'search_default_open_tasks': True}`;
         } else if (fieldName === "name") {
             fieldInfo.placeholder = this.env._t("Describe your activity...");
         }

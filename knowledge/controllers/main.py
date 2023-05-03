@@ -27,6 +27,8 @@ class KnowledgeController(http.Controller):
         elif request.env.user._is_portal():
             return self._redirect_to_portal_view(article)
 
+        if not article:
+            raise werkzeug.exceptions.NotFound()
         return request.redirect("/knowledge/article/%s" % article.id)
 
     @http.route('/knowledge/article/<int:article_id>', type='http', auth='user')

@@ -11,7 +11,7 @@
                     <div class="lead">Article Published</div>
                     <div>Anyone can view</div>
                 </div>
-                <div t-elif="this.props.record.data.user_can_write" class="flex-grow-1 px-3">
+                <div t-elif="this.isInternalUser and this.props.record.data.user_can_write" class="flex-grow-1 px-3">
                     <div class="lead">Share to web</div>
                     <div>Publish to share with anyone</div>
                 </div>

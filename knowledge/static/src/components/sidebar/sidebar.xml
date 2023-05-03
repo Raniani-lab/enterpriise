@@ -9,7 +9,7 @@
                     <a role="button" t-on-click="() => env.toggleAsideMobile()" class="o_knowledge_burger_icon d-sm-none btn btn-light px-2 py-1">
                         <i class="fa fa-lg fa-bars" title="Toggle aside menu"/>
                     </a>
-                    <a t-if="!isInternalUser" class="fa fa-2x fa-home d-inline-block me-2" href="/knowledge/home"
+                    <a t-if="!isInternalUser" class="fa fs-3 fa-home d-inline-block me-2" href="/my"
                         title="Home"/>
                     <div id="knowledge_search_bar" data-hotkey="f"
                          class="d-flex align-items-center border bg-light rounded cursor-pointer flex-grow-1" 

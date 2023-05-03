@@ -19,6 +19,14 @@ export class KnowledgeSidebarSection extends Component {
     static components = {
         KnowledgeSidebarRow,
     };
+
+    setup() {
+        super.setup();
+        this.userService = useService("user");
+        onWillStart(async () => {
+            this.isInternalUser = await this.userService.hasGroup('base.group_user');
+        });
+    }
 }
 
 export class KnowledgeSidebarFavoriteSection extends KnowledgeSidebarSection {
@@ -41,10 +49,6 @@ export class KnowledgeSidebarWorkspaceSection extends KnowledgeSidebarSection {
     setup() {
         super.setup();
         this.command = useService("command");
-        this.userService = useService("user");
-        onWillStart(async () => {
-            this.isInternalUser = await this.userService.hasGroup('base.group_user');
-        });
     }
 
     createRoot() {

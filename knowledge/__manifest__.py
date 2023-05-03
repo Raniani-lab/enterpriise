@@ -32,6 +32,7 @@
         'views/knowledge_templates_frontend.xml',
         'views/knowledge_templates_portal.xml',
         'views/knowledge_menus.xml',
+        'views/portal_templates.xml',
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
     ],

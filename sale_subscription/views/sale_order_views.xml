@@ -50,13 +50,13 @@
                 <button string="Upsell" name="prepare_upsell_order" type="object"
                         attrs="{'invisible': [
                         '|', ('is_subscription', '=', False),
-                        '|', ('subscription_state', '!=', '3_progress'),
+                        '|', ('subscription_state', 'not in', ['3_progress', '4_paused']),
                         ('state', '!=', 'sale'),
                         ]}" data-hotkey="z"/>
                 <button string="Renew" name="prepare_renewal_order" type="object" data-hotkey="w"
                         attrs="{'invisible': [
                         '|', ('is_subscription', '=', False),
-                        '|', ('subscription_state', 'not in', ['3_progress', '6_churn']),
+                        '|', ('subscription_state', 'not in', ['3_progress', '4_paused','6_churn']),
                         ('state', '!=', 'sale'),
                         ]}"/>
                 <button string="Reopen" name="reopen_order" type="object" data-hotkey="o"

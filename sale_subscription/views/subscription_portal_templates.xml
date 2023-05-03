@@ -90,14 +90,14 @@
                     <div class="card oe_website_contract">
                         <div class="card-header bg-white pb-2 pt-3">
                             <div class="row">
-                                <div class="alert alert-danger text-center" role="alert" t-if="subscription.subscription_state == '3_progress' and subscription.next_invoice_date &lt; datetime.date.today()">
+                                <div class="alert alert-danger text-center" role="alert" t-if="subscription.subscription_state in ['3_progress', '4_paused'] and subscription.next_invoice_date &lt; datetime.date.today()">
                                     Your subscription is expired, will be closed soon. <a t-if="(providers or tokens) and subscription.amount_total> 0" href="#payment_message">Pay now to renew</a> <t t-else="">Pay now to renew</t>
                                 </div>
                                 <div class="col-12 col-lg flex-grow-1 mb-1 mb-lg-0">
                                     <h4 class="mb-0"><small class="text-muted">Subscription -</small> <span t-field="subscription.display_name"/></h4>
                                 </div>
                                 <div class="col-12 col-lg flex-grow-0 text-lg-end mb-1 mb-lg-0">
-                                    <span t-if="subscription.subscription_state == '3_progress' and subscription.next_invoice_date &lt; datetime.date.today()" class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-repeat"/> To Renew</span>
+                                    <span t-if="subscription.subscription_state in ['3_progress', '4_paused'] and subscription.next_invoice_date &lt; datetime.date.today()" class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-repeat"/> To Renew</span>
                                     <span t-elif="subscription.subscription_state == '3_progress'" class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> In Progress</span>
                                     <span t-if="subscription.subscription_state in ['6_churn', '5_renewed']" class="badge rounded-pill text-bg-dark"><i class="fa fa-fw fa-remove"/> Closed</span>
                                 </div>

@@ -62,7 +62,7 @@
     </record>
 
     <record id="sale_order_log_growth_action" model="ir.actions.act_window">
-        <field name="name">MRR Growth</field>
+        <field name="name">MRR Breakdown</field>
         <field name="res_model">sale.order.log.report</field>
         <field name="view_mode">graph,tree,pivot</field>
         <field name="context">{
@@ -73,7 +73,7 @@
         </field>
     </record>
 
-    <!-- MRR ANALYSIS   -->
+    <!-- MRR TIMELINE   -->
 
     <record id="view_sale_order_log_analysis_graph" model="ir.ui.view">
         <field name="name">sale.order.log.report.graph</field>
@@ -93,7 +93,7 @@
 
 
     <record id="sale_order_log_analysis_action" model="ir.actions.act_window">
-        <field name="name">MRR Analysis</field>
+        <field name="name">MRR Timeline</field>
         <field name="res_model">sale.order.log.report</field>
         <field name="view_mode">graph,tree,pivot</field>
         <field name="context">{

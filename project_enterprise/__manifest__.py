@@ -59,6 +59,7 @@ Bridge module for project and enterprise
             'web_enterprise/static/src/legacy/scss/fields.scss',
 
             ('remove', 'project/static/src/project_sharing/main.js'),
+            ('remove', 'web_enterprise/static/src/views/list/list_controller.dark.scss'),
             'project_enterprise/static/src/project_sharing/**/*',
         ],
         'web.assets_tests': [

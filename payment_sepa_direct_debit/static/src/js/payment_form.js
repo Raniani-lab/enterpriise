@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { _t } from "@web/core/l10n/translation";
-import checkoutForm from "@payment/js/checkout_form";
-import manageForm from "@payment/js/manage_form";
+import { _t } from '@web/core/l10n/translation';
+import checkoutForm from '@payment/js/checkout_form';
+import manageForm from '@payment/js/manage_form';
 
 const sepaDirectDebitMixin = {
 
@@ -27,13 +27,13 @@ const sepaDirectDebitMixin = {
     },
 
     /**
-     * Verify the validity of the iban input before trying to process a payment.
+     * Verify the validity of the IBAN input before trying to process a payment.
      *
      * @override method from payment.payment_form_mixin
      * @private
-     * @param {string} code - The code of the payment option provider
-     * @param {number} paymentOptionId - The id of the payment option handling the transaction
-     * @param {string} flow - The online payment flow of the transaction
+     * @param {string} code - The code of the payment option provider.
+     * @param {number} paymentOptionId - The id of the payment option handling the transaction.
+     * @param {string} flow - The online payment flow of the transaction.
      * @return {Promise}
      */
     _processPayment: function (code, paymentOptionId, flow) {
@@ -52,13 +52,13 @@ const sepaDirectDebitMixin = {
     },
 
     /**
-     * Link the iban to the transaction as an inactive mandate.
+     * Link the IBAN to the transaction as an inactive mandate.
      *
      * @override method from payment.payment_form_mixin
      * @private
      * @param {string} code - The code of the provider.
      * @param {number} providerId - The id of the provider handling the transaction.
-     * @param {object} processingValues - The processing values of the transaction;
+     * @param {object} processingValues - The processing values of the transaction.
      * @return {Promise}
      */
     _processDirectPayment: function (code, providerId, processingValues) {

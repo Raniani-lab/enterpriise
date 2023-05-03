@@ -67,6 +67,17 @@ msgid ""
 msgstr ""
 
 #. module: account_inter_company_rules
+#. odoo-python
+#: code:addons/account_inter_company_rules/models/res_company.py:0
+#: code:addons/account_inter_company_rules/models/res_config_settings.py:0
+#, python-format
+msgid ""
+"Generate a bill/invoice when a company confirms an invoice/bill for %s. The "
+"new bill/invoice will be created in the first Purchase/Sales Journal of the "
+"Journals list view."
+msgstr ""
+
+#. module: account_inter_company_rules
 #: model_terms:ir.ui.view,arch_db:account_inter_company_rules.view_company_inter_change_inherit_form
 msgid "Inter-Company Transactions"
 msgstr ""

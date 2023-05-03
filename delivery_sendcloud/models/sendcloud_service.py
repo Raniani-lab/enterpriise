@@ -237,6 +237,7 @@ class SendCloud:
             },
             'is_return': is_return,
             'shipping_method_checkout_name': shipment_name,
+            'order_number': picking.sale_id.name or picking.name,
             'customs_shipment_type': 4 if is_return else 2,
             'customs_invoice_nr': picking.origin or '',
             'total_order_value': picking.sale_id.amount_total,

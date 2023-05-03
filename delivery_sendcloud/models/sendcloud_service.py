@@ -172,7 +172,7 @@ class SendCloud:
         return ' '
 
     def _validate_partner_details(self, partner):
-        if not partner.phone:
+        if not partner.phone and not partner.mobile:
             raise UserError(_('%(partner_name)s phone required', partner_name=partner.name))
         if not partner.email:
             raise UserError(_('%(partner_name)s email required', partner_name=partner.name))
@@ -219,7 +219,7 @@ class SendCloud:
             'country_state': to_partner_id.state_id.code or '',
             'postal_code': to_partner_id.zip,
             'country': to_partner_id.country_id.code,
-            'telephone': to_partner_id.phone or '',
+            'telephone': to_partner_id.phone or to_partner_id.mobile or '',
             'email': to_partner_id.email or '',
             'request_label': True,
             'apply_shipping_rules': apply_rules,
@@ -248,7 +248,7 @@ class SendCloud:
                 'from_state': from_partner_id.state_id.code or '',
                 'from_postal_code': from_partner_id.zip or '',
                 'from_country': from_partner_id.country_id.code,
-                'from_telephone': from_partner_id.phone or '',
+                'from_telephone': from_partner_id.phone or from_partner_id.mobile or '',
                 'from_email': from_partner_id.email or '',
             })
         for pkg in delivery_packages:

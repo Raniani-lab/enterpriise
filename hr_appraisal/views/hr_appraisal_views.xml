@@ -43,7 +43,7 @@
                         </div>
                     </button>
                 </div>
-                <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                 <div class="row justify-content-between position-relative w-100 m-0 mb-2">
                     <div class="oe_title mw-75 ps-0 pe-2">
                         <h1>
@@ -246,13 +246,13 @@
                             <field name="avatar_128" class="o_kanban_image_fill_left" widget="background_image"/>
 
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('state', '!=', 'done')]}">
-                                <span class="bg-success">Done</span>
+                                <span class="text-bg-success">Done</span>
                             </div>
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('state', '!=', 'pending'), ('waiting_feedback', '=', True)]}">
-                                <span class="bg-info">Ready</span>
+                                <span class="text-bg-info">Ready</span>
                             </div>
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('state', '!=', 'cancel')]}">
-                                <span class="bg-secondary">Canceled</span>
+                                <span class="text-bg-secondary">Canceled</span>
                             </div>
                             <div class="oe_kanban_details d-flex justify-content-between flex-column">
                                 <div>

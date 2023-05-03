@@ -35,7 +35,7 @@
                     GSTR-2B:<field name="gstr2b_error" readonly="1"/>
                 </div>
                 <sheet>
-                    <widget name="web_ribbon" title="Done" bg_color="bg-success" attrs="{'invisible': [('gstr3b_status', '!=', 'filed')]}"/>
+                    <widget name="web_ribbon" title="Done" bg_color="text-bg-success" attrs="{'invisible': [('gstr3b_status', '!=', 'filed')]}"/>
                     <label for="month" string="GST Filing" class="text-muted"/>
                     <h2>
                         <field name="month" style="width: 150px" attrs="{'invisible': [('periodicity', '!=', 'monthly')]}"/>

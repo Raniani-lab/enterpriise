@@ -78,7 +78,7 @@
         <field name="arch" type="xml">
             <form string="SLA Policy">
                 <sheet>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': [('ticket_count', '=', 0)]}">
                             <field name="ticket_count" widget="statinfo" string="Tickets"/>

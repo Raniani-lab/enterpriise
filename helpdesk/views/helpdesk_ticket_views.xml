@@ -359,7 +359,7 @@
                             </div>
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="kanban_state" widget="state_selection"/>
                     <field name="use_sla" invisible="1"/>
                     <field name="fold" invisible="1"/>

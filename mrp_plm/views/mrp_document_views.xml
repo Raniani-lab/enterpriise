@@ -14,10 +14,10 @@
             </field>
             <xpath expr="//div[hasclass('o_kanban_image')]" position="before">
                 <div class="ribbon ribbon-top-right" attrs="{'invisible': [('active', '=', True)]}">
-                    <span class="bg-danger">Archived</span>
+                    <span class="text-bg-danger">Archived</span>
                 </div>
                 <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('origin_attachment_id', '!=', False), ('active', '=', False)]}">
-                    <span class="bg-primary">New</span>
+                    <span class="text-bg-primary">New</span>
                 </div>
             </xpath>
             <xpath expr="//a[@type='delete']" position="replace">

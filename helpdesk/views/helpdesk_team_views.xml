@@ -70,7 +70,7 @@
                             <field name="sla_policy_count" string="SLA Policies" widget="statinfo"/>
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title" id='title'>
                         <label for="name" string="Name"/>
                         <h1 id="name"><field name="name" options="{'line_breaks': False}" widget="text" placeholder="e.g. Customer Care"/></h1>

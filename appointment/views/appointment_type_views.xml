@@ -34,7 +34,7 @@
                     <div t-name="kanban-box" class="oe_kanban_global_click oe_kanban_card o_appointment_kanban_card">
                         <div class="o_appointment_kanban_card_ungrouped row mx-0">
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('active', '=', True)]}">
-                                <span class="bg-danger">Archived</span>
+                                <span class="text-bg-danger">Archived</span>
                             </div>
                             <div class="col-lg-3 col-sm-6 col-11 py-0 my-auto">
                                 <div class="d-flex text-large">
@@ -111,7 +111,7 @@
                         <div class="o_appointment_kanban_card_grouped oe_kanban_global_click">
                             <div class="o_kanban_card_header">
                                 <div class="ribbon ribbon-top-right" attrs="{'invisible': [('active', '=', True)]}">
-                                    <span class="bg-danger">Archived</span>
+                                    <span class="text-bg-danger">Archived</span>
                                 </div>
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary col-12 p-0 w-75 text-truncate" t-att-title="record.name.value">
@@ -202,7 +202,7 @@
                         attrs="{'invisible': [('active', '=', False)]}"/>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger"
                         attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_button_box" name="button_box" groups="base.group_user">
                         <button class="oe_stat_button" type="object"

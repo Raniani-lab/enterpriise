@@ -67,23 +67,16 @@
     // Ungrouped specific
     .o_appointment_kanban_card_ungrouped {
         .ribbon {
-            height: 71px;
-            width: 80px;
+            pointer-events: none;
+            height: 100%;
 
             &-top-right {
                 margin-top: -$o-kanban-inside-vgutter;
-                right: 0;
-
-                & span {
-                    top: 13px;
-                }
             }
 
             & span {
-                font-size: 0.8rem;
-                width: 120px;
-                height: 20px;
-                left: -13px;
+                font-size: $font-size-sm;
+                height: $font-size-sm * 1.5;
             }
         }
         .o_appointment_text_button, .o_appointment_text_button:focus, .o_appointment_text_button:hover {

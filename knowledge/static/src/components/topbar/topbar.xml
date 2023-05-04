@@ -96,7 +96,7 @@
                                 record="props.record" article_id="props.record.data.id" user_permission="props.record.data.user_permission" renderTree="this.env._renderTree" />
                         </div>
                     </div>
-                    <a role="button" class="btn btn-light o_toggle_favorite" t-on-click="env.toggleFavorite" t-if="props.record.data.id" data-hotkey="t">
+                    <a role="button" class="btn btn-light o_knowledge_toggle_favorite" t-on-click="env.toggleFavorite" t-if="props.record.data.id" data-hotkey="t">
                         <i class="fa fa-fw fs-6 fa-star" title="Remove from favorites" t-if="props.record.data.is_user_favorite"/>
                         <i class="fa fa-fw fs-6 fa-star-o" title="Add to favorites" t-if="!props.record.data.is_user_favorite"/>
                     </a>

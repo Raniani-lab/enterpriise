@@ -162,7 +162,7 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     extra_trigger: '.o_field_tags span.o_badge_text',
 }, {
     // add to favorite
-    trigger: '.o_toggle_favorite',
+    trigger: '.o_knowledge_toggle_favorite',
 }, {
     // check article was correctly added into favorites
     trigger: 'section.o_favorite_container .o_article .o_article_name:contains("My Workspace Article")',
@@ -183,10 +183,10 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     run: () => {},  // wait for article to be correctly loaded
 }, {
     // add to favorite
-    trigger: '.o_toggle_favorite',
+    trigger: '.o_knowledge_toggle_favorite',
 }, {
     // wait for the article to be registered as favorited
-    trigger: '.o_toggle_favorite .fa-star',
+    trigger: '.o_knowledge_toggle_favorite .fa-star',
     run: () => {},
 }, {
     // move private article above workspace article in the favorite section

@@ -10,12 +10,12 @@ registry.category("web_tour.tours").add('knowledge_readonly_favorite_tour', {
     steps: [{
     // Make sure we are on the readonly article 1, that is not favorited, and
     // click on the toggle favorite button.
-    trigger: 'a.o_toggle_favorite:has(.fa-star-o)',
+    trigger: 'a.o_knowledge_toggle_favorite:has(.fa-star-o)',
     extra_trigger: '.o_article_active:contains("Readonly Article 1")',
 }, {
     // Check that the article has been added to the favorites
     trigger: 'section.o_favorite_container:contains("Readonly Article 1")',
-    extra_trigger: 'a.o_toggle_favorite:has(.fa-star)',
+    extra_trigger: 'a.o_knowledge_toggle_favorite:has(.fa-star)',
     run: () => {},
 }, {
     // Open the other readonly article
@@ -23,7 +23,7 @@ registry.category("web_tour.tours").add('knowledge_readonly_favorite_tour', {
 }, {
     // Make sure we are on the readonly article 1, that is not favorited, and
     // click on the toggle favorite button.
-    trigger: 'a.o_toggle_favorite:has(.fa-star-o)',
+    trigger: 'a.o_knowledge_toggle_favorite:has(.fa-star-o)',
     extra_trigger: '.o_article_active:contains("Readonly Article 2")',
 }, {
     // Check that the article has been added to the favorites under the other

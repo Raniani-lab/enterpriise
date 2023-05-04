@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 import re
 import logging
 from pytz import timezone
+from urllib.parse import urlencode, quote
 
 import requests
 
@@ -146,6 +147,7 @@ CURRENCY_PROVIDER_SELECTION = [
     (['RO'], 'bnr', 'National Bank Of Romania'),
     (['TR'], 'tcmb', 'Turkey Republic Central Bank'),
     (['PL'], 'nbp', 'National Bank of Poland'),
+    (['BR'], 'bbr', 'Central Bank of Brazil'),
 ]
 
 class ResCompany(models.Model):
@@ -377,6 +379,69 @@ class ResCompany(models.Model):
 
         if 'EGP' in available_currency_names:
             rslt['EGP'] = (1.0, date_rate)
+        return rslt
+
+    def _parse_bbr_data(self, available_currencies):
+        ''' This method is used to update the currencies by using the Central Bank of Brazil service provider.
+            Exchange rates are expressed as 1 unit of the foreign currency converted into BRL.
+        '''
+        def _get_currency_exchange_rate(session, cur, date):
+            '''Returns the rate for the given day and currency if found, None if there were no currency changes that day.
+            '''
+            query_params = {
+                "@moeda": ("'%s'" % cur),
+                "@dataCotacao": ("'%s'" % date),
+                "$top": "1",
+                "$orderby": "dataHoraCotacao desc",
+                "$format": "json",
+                "$select": "cotacaoCompra",
+            }
+            encoded_params = urlencode(query_params, safe="@$'", quote_via=quote)
+            request_url = "https://olinda.bcb.gov.br/olinda/service/PTAX/version/v1/odata/ExchangeRateDate(moeda=@moeda,dataCotacao=@dataCotacao)"
+            response = session.get(request_url, params=encoded_params, timeout=10)
+            response.raise_for_status()
+            if 'application/json' not in response.headers.get('Content-Type', ''):
+                raise ValueError('Should be json')
+            data = response.json()
+
+            # If there were no currency changes that day, return None.
+            if not data['value']:
+                return None
+            bid_rate = data['value'][0]['cotacaoCompra']
+            return bid_rate
+
+        # Using a session since we're doing multiple requests.
+        session = requests.Session()
+        # Get the currencies from the bank.
+        request_url = "https://olinda.bcb.gov.br/olinda/service/PTAX/version/v1/odata/Currencies?$top=100&$format=json"
+        response = session.get(request_url, timeout=10)
+        response.raise_for_status()
+        if 'application/json' not in response.headers.get('Content-Type', ''):
+            raise ValueError('Should be json')
+        data = response.json()
+        available_currency_names = available_currencies.mapped('name')
+        currencies = [val['simbolo'] for val in data['value'] if val['simbolo'] in available_currency_names]
+
+        date_rate = datetime.datetime.now(timezone('America/Sao_Paulo'))
+
+        # For every available currency in the returned currencies, if it's in the
+        # available currencies, get its exchange rate.
+        rslt = {}
+        for currency in currencies:
+            # As there are days where there are no currency changes, we start by calling
+            # the api with the current day, and keep decrementing the date by one day until
+            # we reach a day with currency changes.
+            rate = None
+            while not rate:
+                rate = _get_currency_exchange_rate(session, currency, date_rate.strftime("%m-%d-%Y"))
+                if not rate:
+                    date_rate = date_rate - datetime.timedelta(days=1)
+
+            rslt[currency] = (1.0/rate, date_rate)
+
+        if 'BRL' in available_currency_names:
+            rslt['BRL'] = (1.0, date_rate)
+
         return rslt
 
     def _parse_boc_data(self, available_currencies):

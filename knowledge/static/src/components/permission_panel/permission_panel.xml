@@ -88,8 +88,8 @@
                         <div t-out="member.partner_name" class="text-truncate"/>
                         <div class="text-truncate text-muted">
                             <span t-if="member.partner_share"><i class="fa fa-user pe-1" title="External Guest"/>Guest</span>
-                            <span t-if="state.user_is_admin &amp;&amp; this.isLoggedUser(member)"><i class="fa fa-cog pe-1" title="Administrator"/>Admin</span>
-                            <span t-if="(member.partner_share || (state.user_is_admin &amp;&amp; this.isLoggedUser(member))) &amp;&amp; member.partner_email" class="px-1">•</span>
+                            <span t-if="state.user_is_admin and this.isLoggedUser(member)"><i class="fa fa-cog pe-1" title="Administrator"/>Admin</span>
+                            <span t-if="(member.partner_share || (state.user_is_admin and this.isLoggedUser(member))) and member.partner_email" class="px-1">•</span>
                             <span class="o_member_email" t-if="member.partner_email" t-out="member.partner_email"/>
                         </div>
                         <div t-if="member.based_on" class="text-truncate text-muted">
@@ -100,19 +100,19 @@
                     </div>
                     <div class="flex-shrink-0">
                         <div class="input-group">
-                            <div t-if="!(member.based_on &amp;&amp; member.permission === 'none')
-                                        &amp;&amp; (state.user_is_admin || props.user_permission === 'write' || this.isLoggedUser(member))"
+                            <div t-if="!(member.based_on and member.permission === 'none')
+                                        and (state.user_is_admin || props.user_permission === 'write' || this.isLoggedUser(member))"
                                  class="d-flex align-items-center me-2 fs-4">
                                 <!-- Special cases if self member -->
-                                <i t-if="this.isLoggedUser(member) &amp;&amp; ((state.category === 'shared' &amp;&amp; !member.is_unique_writer) || state.category !== 'shared')"
+                                <i t-if="this.isLoggedUser(member) and ((state.category === 'shared' and !member.is_unique_writer) || state.category !== 'shared')"
                                    class="fa fa-w fa-sign-out o_delete text-danger" title="Leave Article"
                                    t-on-click="event => this._onRemoveMember(event, member)" type="button">
                                 </i>
-                                <i t-elif="this.isLoggedUser(member) &amp;&amp; props.user_permission === 'read' &amp;&amp; state.category === 'workspace' &amp;&amp; !state.user_is_admin"
+                                <i t-elif="this.isLoggedUser(member) and props.user_permission === 'read' and state.category === 'workspace' and !state.user_is_admin"
                                    class="fa fa-w fa-sign-out o_delete" disabled="True" type="button"
                                    title="As a reader, you can't leave a Workspace article" >
                                 </i>
-                                <i t-elif="this.isLoggedUser(member) &amp;&amp; member.is_unique_writer"
+                                <i t-elif="this.isLoggedUser(member) and member.is_unique_writer"
                                    class="fa fa-w fa-sign-out o_delete" disabled="True" type="button"
                                    title="You can't leave an article for which you are the last writer">
                                 </i>
@@ -130,7 +130,7 @@
                                 t-att-value="member.permission"
                                 t-on-change="event => this._onChangeMemberPermission(event, member)"
                                 t-att-disabled="member.is_unique_writer || member.partner_share
-                                    || (props.user_permission !== 'write' &amp;&amp; !state.user_is_admin) ? 'disabled' : undefined"
+                                    || (props.user_permission !== 'write' and !state.user_is_admin) ? 'disabled' : undefined"
                                 aria-label="User Permission">
                                 <t t-foreach="this.state.members_options" t-as="option" t-key="option_index">
                                     <option t-att-value="option[0]" t-out="option[1]" t-att-selected="option[0] === member.permission ? 'selected' : undefined"/>

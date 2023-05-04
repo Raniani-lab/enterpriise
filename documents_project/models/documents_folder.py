@@ -110,5 +110,5 @@ class DocumentFolder(models.Model):
 
         # dict {folder_id: position}, where position is a value used to sort projects by their folder_id
         folder_id_order = {int(folder_id): i for i, folder_id in enumerate(reversed(self.parent_path[:-1].split('/')))}
-        eligible_projects.sort(key=lambda project_group: folder_id_order[project_group[0]])
-        return self.env['project.project'].sudo().search([('documents_folder_id', '=', eligible_projects[0][0])], limit=1)
+        eligible_projects.sort(key=lambda project_group: folder_id_order[project_group[0].id])
+        return self.env['project.project'].sudo().search([('documents_folder_id', '=', eligible_projects[0][0].id)], limit=1)

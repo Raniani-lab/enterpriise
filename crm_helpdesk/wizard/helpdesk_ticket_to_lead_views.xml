@@ -7,14 +7,12 @@
         <field name="arch" type="xml">
             <form string="Convert Ticket to Lead">
                 <group>
-                    <group name="action" string="Customer" col="1">
-                        <field name="action" nolabel="1" widget="radio" required="1"/>
-                        <group col="2">
-                            <field name="partner_id" widget="res_partner_many2one"
-                                context="{'res_partner_search_mode': 'customer', 'show_vat': True}"
-                                invisible="action != 'exist'"
-                                required="action == 'exist'"/>
-                        </group>
+                   <group name="action" string="Customer" col="2">
+                        <field name="action" nolabel="1" widget="radio" required="1" colspan="2"/>
+                        <field name="partner_id" widget="res_partner_many2one"
+                            context="{'res_partner_search_mode': 'customer', 'show_vat': True}"
+                            invisible="action != 'exist'"
+                            required="action == 'exist'"/>
                     </group>
                     <group string="Sales Team">
                         <field name="ticket_id" invisible="1"/>

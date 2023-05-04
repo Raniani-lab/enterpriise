@@ -6,7 +6,7 @@
             <t t-else="">
                 <div class="d-flex">
                     <span class="o_m2o_avatar">
-                        <span t-if="props.record.data[props.name] !== false" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource cursor-default me-1" t-att-title="props.record.data[props.name][1]">
+                        <span t-if="props.record.data[props.name] !== false" class="d-inline-flex align-items-center justify-content-center rounded o_material_resource cursor-default me-1" t-att-title="props.record.data[props.name][1]">
                             <i class="fa fa-wrench"/>
                         </span>
                         <span t-elif="!props.readonly" class="o_m2o_avatar_empty"></span>

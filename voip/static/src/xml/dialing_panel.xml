@@ -13,9 +13,9 @@
         </div>
     </div>
     <div class="o_dial_panel o_form_view flex-column border-start border-end overflow-hidden flex-grow-1">
-        <div class="o_dial_searchbar input-group justify-content-between px-3">
-            <input class="o_dial_search_input o_input form-control-lg flex-grow-1 border-0" placeholder="Search"/>
-            <button aria-label="Refresh the Panel" class="oi_searchview_icon input-group-text p-0 border-0 bg-transparent oi oi-search" role="img" title="Refresh the Panel"/>
+        <div class="o_dial_searchbar input-group justify-content-between border-top">
+            <input class="o_dial_search_input o_input form-control-lg flex-grow-1 ps-3 border-0 rounded-0" placeholder="Search"/>
+            <button aria-label="Refresh the Panel" class="oi_searchview_icon input-group-text px-3 border-0 rounded-0 bg-view oi oi-search" role="img" title="Refresh the Panel"/>
         </div>
         <div class="o_notebook m-0">
             <div class="o_notebook_headers mx-0">
@@ -41,9 +41,9 @@
         </div>
     </div>
     <div class="o_dial_keypad border-start border-end flex-grow-1">
-        <div class="o_dial_keypad_input_div input-group justify-content-between">
-            <input class="o_dial_keypad_input o_input form-control-lg flex-grow-1 ps-3" type="tel" placeholder="Enter the number..."/>
-            <button aria-label="Backspace" class="o_dial_keypad_backspace input-group-text position-absolute mt-1 pe-3 border-0 end-0 bg-transparent fa fa-long-arrow-left" role="img" title="Backspace"/>
+        <div class="o_dial_keypad_input_div input-group justify-content-between flex-nowrap border-top border-bottom">
+            <input class="o_dial_keypad_input o_input form-control-lg flex-grow-1 ps-3 border-0 rounded-0" type="tel" placeholder="Enter the number..."/>
+            <button aria-label="Backspace" class="o_dial_keypad_backspace input-group-text px-3 border-0 bg-view fa fa-long-arrow-left" role="img" title="Backspace"/>
         </div>
         <div class="container">
             <div t-attrf-class="{{ widget._isMobileDevice ? 'o_hidden' : '' }} o_dial_keypad_buttons row row-cols-3 clearfix">

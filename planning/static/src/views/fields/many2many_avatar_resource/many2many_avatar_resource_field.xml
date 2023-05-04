@@ -6,7 +6,7 @@
             <attribute name="t-elif">option.value</attribute>
         </xpath>
         <xpath expr="//span[hasclass('o_avatar_many2x_autocomplete')]/img" position="before">
-            <i t-if="option.resourceType === 'material'" class="o_material_resource fa fa-wrench rounded-circle text-center me-1"/>
+            <i t-if="option.resourceType === 'material'" class="o_material_resource fa fa-wrench rounded text-center me-1"/>
         </xpath>
     </t>
 </templates>

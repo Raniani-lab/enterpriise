@@ -295,10 +295,7 @@ class KnowledgeController(http.Controller):
             articles_domain = [('parent_id', '=', parent_id)]
         elif category:
             # need to know in which category we are and filter accordingly
-            articles_domain = [
-                ('parent_id', '=', False),
-                ('category', '=', category),
-            ]
+            articles_domain = self._get_load_more_roots_domain(category)
         else:
             raise werkzeug.exceptions.BadRequest()
 
@@ -359,6 +356,15 @@ class KnowledgeController(http.Controller):
                 for article in articles
             },
         })
+
+    def _get_load_more_roots_domain(self, category):
+        """Given the section (category), returns the domain used to load more
+        root articles of this section. In portal, we have both workspace and
+        shared articles in the same section.
+        """
+        if category == "portal_shared":
+            return [('parent_id', '=', False)]
+        return [('parent_id', '=', False), ('category', '=', category)]
 
     @staticmethod
     def _article_ids_exists(articles_ids):

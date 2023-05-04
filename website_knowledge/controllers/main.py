@@ -76,6 +76,29 @@ class KnowledgeWebsiteController(KnowledgeController):
         })
         return values
 
+    def _get_load_more_roots_domain(self, category):
+        """ Given the section (category), returns the domain used to load more
+        root articles of this section.
+
+        The returned domain should match the filtering done in "_prepare_articles_tree_html_values".
+        In the website_knowledge module, we show 2 specific sections:
+        - "portal_public"
+           Which contains all published articles in the workspace category
+        - "portal_shared"
+           Which contains articles that are not published OR that are not part of
+           the workspace category, but which you have direct access to. """
+        if category == "portal_public":
+            return [('parent_id', '=', False), ('category', '=', 'workspace'), ('website_published', '=', True)]
+        elif category == "portal_shared":
+            return [
+            '&',
+                '&',
+                    ('parent_id', '=', False), ('user_has_access', '=', True),
+                '|',
+                    ('category', '!=', 'workspace'), ('website_published', '=', False)
+            ]
+        return super()._get_load_more_roots_domain(category)
+
     @http.route('/knowledge/home', type='http', auth='public', website=True, sitemap=False)
     def access_knowledge_home(self):
         return super().access_knowledge_home()

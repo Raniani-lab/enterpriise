@@ -6,7 +6,7 @@
                 <!-- Fake Data for Demo-->
                 <t t-if="showDemo">
                     <div class="ribbon ribbon-top-right mt-n4">
-                        <span class="o_recruitment_purple h-auto ms-3 p-2 bg-odoo">Sample</span>
+                        <span class="o_recruitment_purple h-auto ms-3 p-2 bg-primary">Sample</span>
                     </div>
                 </t>
 

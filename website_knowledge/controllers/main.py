@@ -76,6 +76,10 @@ class KnowledgeWebsiteController(KnowledgeController):
         })
         return values
 
+    @http.route('/knowledge/tree_panel/load_more', type='json', auth='public', sitemap=False)
+    def tree_panel_load_more(self, category, limit, offset, active_article_id=False, parent_id=False):
+        return super().tree_panel_load_more(category, limit, offset, active_article_id, parent_id)
+
     def _get_load_more_roots_domain(self, category):
         """ Given the section (category), returns the domain used to load more
         root articles of this section.

@@ -38,7 +38,7 @@ class TestHelpdeskClient(TestMailPluginControllerCommon, MailCase):
 
         messages_info = [{
             'content': 'The reference for your ticket is',
-            'message_type': 'notification',
+            'message_type': 'auto_comment',
             'subtype': 'mail.mt_note',
             'email_values': {
                 'email_from': self.env.company.email_formatted,

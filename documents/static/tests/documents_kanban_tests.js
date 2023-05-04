@@ -1283,7 +1283,7 @@ QUnit.module("documents", {}, function () {
                 assert.containsOnce(target, ".o-mail-AttachmentViewer div[title='Split PDF']");
                 assert.containsOnce(
                     target,
-                    'iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2"]',
+                    'iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2#pagemode=none"]',
                     "should have an iframe with the correct pdfviewer src"
                 );
 

@@ -131,7 +131,7 @@ class MarketingCampaign(models.Model):
         mapped_data = defaultdict(dict)
         for campaign, state, is_test, count in participants_data:
             if is_test:
-                mapped_data[campaign.id]['is_test'] += count
+                mapped_data[campaign.id]['is_test'] = mapped_data[campaign.id].get('is_test', 0) + count
             else:
                 mapped_data[campaign.id][state] = count
         for campaign in self:

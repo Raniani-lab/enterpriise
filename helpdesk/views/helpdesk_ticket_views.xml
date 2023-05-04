@@ -650,6 +650,90 @@
         <field name="act_window_id" ref="helpdesk_ticket_action_close_analysis"/>
     </record>
 
+    <record id="helpdesk_ticket_view_graph_7days_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.graph.7days.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_ticket_view_graph_main"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_id']" position="replace">
+                <field name="close_date" interval="day"/>
+            </xpath>
+            <field name="close_hours" position="replace"/>
+            <field name="rating_last_value" position="replace"/>
+            <field name="assign_hours" position="replace"/>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_pivot_view_7days_inherit_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.pivot.7days.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_pivot_main"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_id']" position="replace">
+                <field name="close_date" interval="day" type="row"/>
+            </xpath>
+            <field name="close_hours" position="replace"/>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_action_7days_tickets" model="ir.actions.act_window">
+        <field name="name">Closed Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,kanban,form,activity,pivot,graph,cohort</field>
+        <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'search_default_closed_last_7days': True,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p><p>
+                Create tickets to get statistics.
+            </p>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_action_7days_tickets_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">tree</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_tickets"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7days_tickets_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="18"/>
+        <field name="view_mode">kanban</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_tickets"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7days_tickets_activity" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">activity</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_tickets"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7days_tickets_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_pivot_view_7days_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_tickets"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7days_tickets_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_7days_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_tickets"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7days_tickets_cohort" model="ir.actions.act_window.view">
+        <field name="sequence" eval="40"/>
+        <field name="view_mode">cohort</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_tickets"/>
+    </record>
+
     <!-- action for helpdesk team -->
     <record id="helpdesk_ticket_action_team" model="ir.actions.act_window">
         <field name="name">Tickets</field>
@@ -824,6 +908,63 @@
         <field name="binding_view_types">form</field>
         <field name="state">code</field>
         <field name="code">action = records.action_customer_preview()</field>
+    </record>
+
+    <record id="helpdesk_ticket_action_7days_success" model="ir.actions.act_window">
+        <field name="name">Success Rate</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,kanban,form,activity,pivot,graph,cohort</field>
+        <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+        <field name="context">{
+            'search_default_my_ticket': True,
+            'search_default_sla_success': True,
+            'search_default_closed_last_7days': True,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p><p>
+                Create tickets to get statistics.
+            </p>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_action_7dayssuccess_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">tree</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_success"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7dayssuccess_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="18"/>
+        <field name="view_mode">kanban</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_success"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7dayssuccess_activity" model="ir.actions.act_window.view">
+        <field name="sequence" eval="25"/>
+        <field name="view_mode">activity</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_success"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7dayssuccess_pivot" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_pivot_view_7days_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_success"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7dayssuccess_graph" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_7days_inherit_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_success"/>
+    </record>
+
+    <record id="helpdesk_ticket_action_7dayssuccess_cohort" model="ir.actions.act_window.view">
+        <field name="sequence" eval="40"/>
+        <field name="view_mode">cohort</field>
+        <field name="act_window_id" ref="helpdesk_ticket_action_7days_success"/>
     </record>
 
 </odoo>

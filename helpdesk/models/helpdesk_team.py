@@ -755,7 +755,7 @@ class HelpdeskTeam(models.Model):
             'search_default_is_open': not is_ticket_closed,
             'default_team_id': self.id,
         }
-        view_mode = 'tree,form,kanban,activity'
+        view_mode = 'tree,kanban,form,activity,pivot,graph,cohort'
         if is_ticket_closed:
             domain = expression.AND([domain, [
                 ('close_date', '>=', datetime.date.today() - datetime.timedelta(days=6)),
@@ -769,7 +769,11 @@ class HelpdeskTeam(models.Model):
 
     def action_view_closed_ticket(self):
         action = self.action_view_ticket()
-        action.update(self._get_action_view_ticket_params(True))
+        action_params = self._get_action_view_ticket_params(True)
+        action.update(
+            action_params,
+            views=[(False, view) for view in action_params['view_mode'].split(",")],
+        )
         return action
 
     def action_view_success_rate(self):

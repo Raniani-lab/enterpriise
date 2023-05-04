@@ -1,15 +1,15 @@
 /** @odoo-module **/
 
-import { registry } from "@web/core/registry";
-import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { click, getFixture, patchDate, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
+import { click, getFixture, patchDate, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { browser } from "@web/core/browser/browser";
 import { ormService } from "@web/core/orm_service";
-import testUtils from "web.test_utils";
+import { registry } from "@web/core/registry";
+import { session } from "@web/session";
 import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
-import { session } from "@web/session";
+import testUtils from "web.test_utils";
 
 const serviceRegistry = registry.category("services");
 
@@ -44,6 +44,10 @@ async function createExpirationPanel(params = {}) {
     const webclient = await createWebClient({
         mockRPC: params.mockRPC,
     });
+    if (params.mockLuxonSettings) {
+        // Already set in the fake localization service, so it's done here
+        patchWithCleanup(luxon.Settings, params.mockLuxonSettings);
+    }
     await doAction(webclient, "menu");
     return webclient;
 }
@@ -762,10 +766,6 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
         assert.expect(1);
 
         patchDate(2019, 9, 25, 12, 0, 0);
-        patchWithCleanup(luxon.Settings, {
-            defaultLocale: "ar-001",
-            defaultNumberingSystem: "arab",
-        });
 
         await createExpirationPanel({
             session: {
@@ -773,6 +773,10 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
                 expiration_reason: "renewal",
                 notification_type: true, // used by subscription service to know whether mail is installed
                 warning: "admin",
+            },
+            mockLuxonSettings: {
+                defaultLocale: "ar-001",
+                defaultNumberingSystem: "arab",
             },
             async mockRPC(route, { method }) {
                 if (route === "/web/webclient/load_menus") {

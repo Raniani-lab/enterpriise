@@ -1,24 +1,27 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { DateTimeField, dateTimeField } from '@web/views/fields/datetime/datetime_field';
+import { DateTimeField, dateTimeField } from "@web/views/fields/datetime/datetime_field";
 
 const { Component } = owl;
 
 export class WarningTooltip extends Component {
+    static template = "industry_fsm.warning_tooltip";
+
     get tooltipInfo() {
-        return JSON.stringify({text: this.props.value});
+        return JSON.stringify({ text: this.props.value });
     }
 }
-WarningTooltip.template = 'industry_fsm.warning_tooltip';
 
 export class DateTimeWithWarning extends DateTimeField {
+    static components = { ...DateTimeField.components, WarningTooltip };
+
+    static template = "industry_fsm.DateTimeWithWarning";
+
     get warning() {
-        return this.props.record.data.warning || '';
+        return this.props.record.data.warning || "";
     }
 }
-DateTimeWithWarning.components.WarningTooltip = WarningTooltip;
-DateTimeWithWarning.template = 'industry_fsm.DateTimeWithWarning';
 
 export const dateTimeWithWarning = {
     ...dateTimeField,

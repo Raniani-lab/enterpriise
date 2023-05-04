@@ -286,12 +286,10 @@ class View(models.Model):
         if 'x_studio_date' in model._fields:
             left_group_content.append(E.field(name='x_studio_date'))
         if 'x_studio_date_start' in model._fields and 'x_studio_date_stop' in model._fields:
-            left_group_content.append(E.label({'for': "x_studio_date_start"}, string='Dates'))
-            daterangeDiv = E.div({'class': 'o_row'})
-            daterangeDiv.append(E.field(name='x_studio_date_start', widget='daterange', options='{"related_end_date": "x_studio_date_stop"}'))
-            daterangeDiv.append(E.span(_(' to ')))
-            daterangeDiv.append(E.field(name='x_studio_date_stop', widget='daterange', options='{"related_start_date": "x_studio_date_start"}'))
-            left_group_content.append(daterangeDiv)
+            left_group_content.append(
+                E.field(name='x_studio_date_start', string='Dates', widget='daterange', options="{'end_date_field': 'x_studio_date_stop'}"))
+            left_group_content.append(
+                E.field(name='x_studio_date_stop', invisible='1'))
         if not left_group_content:
             # there is nothing in our left group; switch the groups' content
             # to avoid a weird looking form view

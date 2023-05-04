@@ -9,7 +9,7 @@
     </t>
 
     <t t-name="industry_fsm.DateTimeWithWarning" t-inherit="web.DateTimeField" t-inherit-mode="primary" owl="1">
-        <xpath expr="//span" position="after">
+        <xpath expr="//*[@t-if='props.readonly']" position="inside">
             <WarningTooltip t-if="warning" value="warning"/>
         </xpath>
     </t>

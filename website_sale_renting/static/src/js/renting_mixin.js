@@ -1,8 +1,22 @@
 /** @odoo-module **/
 
-import { _t, _lt } from 'web.core';
+import { serializeDate, serializeDateTime } from "@web/core/l10n/dates";
 import { sprintf } from "@web/core/utils/strings";
-import {serializeDate, serializeDateTime, momentToLuxon} from '@web/core/l10n/dates';
+import { _lt, _t } from "web.core";
+
+function momentToLuxon(dt) {
+    const o = dt.toObject();
+    // Note: the month is 0-based in moment.js, but 1-based in luxon.js
+    return luxon.DateTime.fromObject({
+        year: o.years,
+        month: o.months + 1,
+        day: o.date,
+        hour: o.hours,
+        minute: o.minutes,
+        second: o.seconds,
+        millisecond: o.milliseconds,
+    });
+}
 
 export const msecPerUnit = {
     hour: 3600 * 1000,
@@ -18,7 +32,6 @@ export const unitMessages = {
 };
 
 export const RentingMixin = {
-
     /**
      * Get the message to display if the renting has invalid dates.
      *
@@ -26,7 +39,7 @@ export const RentingMixin = {
      * @param {moment} endDate
      * @private
      */
-    _getInvalidMessage(startDate, endDate, productId=false) {
+    _getInvalidMessage(startDate, endDate, productId = false) {
         let message;
         if (!this.rentingUnavailabilityDays || !this.rentingMinimalTime) {
             return message;
@@ -40,9 +53,11 @@ export const RentingMixin = {
                 const rentingDuration = endDate - startDate;
                 if (rentingDuration < 0) {
                     message = _t("The return date should be after the pickup date.");
-                } else if (startDate.isBefore(moment(), 'day')) {
+                } else if (startDate.isBefore(moment(), "day")) {
                     message = _t("The pickup date cannot be in the past.");
-                } else if (['hour', 'day', 'week', 'month'].includes(this.rentingMinimalTime.unit)) {
+                } else if (
+                    ["hour", "day", "week", "month"].includes(this.rentingMinimalTime.unit)
+                ) {
                     const unit = this.rentingMinimalTime.unit;
                     if (rentingDuration / msecPerUnit[unit] < this.rentingMinimalTime.duration) {
                         message = sprintf(
@@ -59,12 +74,15 @@ export const RentingMixin = {
     },
 
     _isDurationWithHours() {
-        if (this.rentingMinimalTime &&
-            this.rentingMinimalTime.duration > 0 && this.rentingMinimalTime.unit !== "hour") {
+        if (
+            this.rentingMinimalTime &&
+            this.rentingMinimalTime.duration > 0 &&
+            this.rentingMinimalTime.unit !== "hour"
+        ) {
             return false;
         }
-        const unitInput = this.el.querySelector('input[name=rental_duration_unit]');
-        return unitInput && unitInput.value === 'hour';
+        const unitInput = this.el.querySelector("input[name=rental_duration_unit]");
+        return unitInput && unitInput.value === "hour";
     },
 
     /**
@@ -81,7 +99,9 @@ export const RentingMixin = {
             // serializeDate(Time) requires a luxon object.
             const luxonDate = momentToLuxon(date);
             // if the duration unit is not in hours, the server will receive a Date, not a DateTime.
-            date = this._isDurationWithHours() ? serializeDateTime(luxonDate) : serializeDate(luxonDate);
+            date = this._isDurationWithHours()
+                ? serializeDateTime(luxonDate)
+                : serializeDate(luxonDate);
         }
         return date;
     },
@@ -92,15 +112,14 @@ export const RentingMixin = {
      * @param {$.Element} $product
      */
     _getRentingDates($product) {
-        const rentingDates = ($product || this.$el).find('input[name=renting_dates]');
+        const rentingDates = ($product || this.$el).find("input[name=renting_dates]");
         if (rentingDates.length) {
-            const picker = rentingDates.data('daterangepicker');
+            const picker = rentingDates.data("daterangepicker");
             return {
-                start_date: this._getDateFromInputOrDefault(picker, 'startDate', 'start_date'),
-                end_date: this._getDateFromInputOrDefault(picker, 'endDate', 'end_date'),
+                start_date: this._getDateFromInputOrDefault(picker, "startDate", "start_date"),
+                end_date: this._getDateFromInputOrDefault(picker, "endDate", "end_date"),
             };
         }
         return {};
     },
-
 };

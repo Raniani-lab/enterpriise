@@ -41,7 +41,7 @@ registry.category("web_tour.tours").add('planning_test_tour', {
         input.dispatchEvent(new Event("change", { bubbles: true, cancelable: false }));
     }
 }, {
-    trigger: ".o_field_widget[name='end_datetime'] input",
+    trigger: "input[data-field=end_datetime]",
     content: "Set end datetime",
     run: function (actions) {
         const input = this.$anchor[0];

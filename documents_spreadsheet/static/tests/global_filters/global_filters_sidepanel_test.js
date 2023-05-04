@@ -73,7 +73,7 @@ async function editGlobalFilterDefaultValue(defaultValue) {
 }
 
 async function selectYear(yearString) {
-    const input = target.querySelector("input.o_datepicker_input.o_input.datetimepicker-input");
+    const input = target.querySelector("input.o_datetime_input");
     // open the YearPicker
     await click(input);
     // Change input value
@@ -1001,8 +1001,8 @@ QUnit.module(
                 THIS_YEAR_FILTER.filter.label
             );
 
-            assert.containsOnce(pivots[0], ".pivot_filter_input input.o_datepicker_input");
-            const year = pivots[0].querySelector(".pivot_filter_input input.o_datepicker_input");
+            assert.containsOnce(pivots[0], ".pivot_filter_input input.o_datetime_input");
+            const year = pivots[0].querySelector(".pivot_filter_input input.o_datetime_input");
 
             const this_year = luxon.DateTime.utc().year;
             assert.equal(year.value, String(this_year));
@@ -1085,8 +1085,8 @@ QUnit.module(
             const quarter = pivots[0].querySelector(
                 ".pivot_filter_input div.date_filter_values select"
             );
-            assert.containsOnce(pivots[0], ".pivot_filter_input input.o_datepicker_input");
-            const year = pivots[0].querySelector(".pivot_filter_input input.o_datepicker_input");
+            assert.containsOnce(pivots[0], ".pivot_filter_input input.o_datetime_input");
+            const year = pivots[0].querySelector(".pivot_filter_input input.o_datetime_input");
 
             const this_year = luxon.DateTime.utc().year;
             assert.equal(quarter.value, "fourth_quarter");
@@ -1191,10 +1191,10 @@ QUnit.module(
             const quarter = pivots[0].querySelector(
                 ".pivot_filter_input div.date_filter_values select"
             );
-            const year = pivots[0].querySelector(".pivot_filter_input input.o_datepicker_input");
+            const year = pivots[0].querySelector(".pivot_filter_input input.o_datetime_input");
             const this_year = luxon.DateTime.local().year;
             assert.equal(quarter.value, "empty");
-            assert.equal(year.value, "Select year...");
+            assert.equal(year.placeholder, "Select year...");
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-cog");
             // no default value
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
@@ -1210,7 +1210,7 @@ QUnit.module(
             await click(target.querySelector("i.o_side_panel_filter_icon.fa-times"));
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
             assert.equal(quarter.value, "empty");
-            assert.equal(year.value, "Select year...");
+            assert.equal(year.placeholder, "Select year...");
         });
 
         QUnit.test("Can clear a relation filter values", async function (assert) {

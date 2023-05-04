@@ -73,6 +73,10 @@ class KnowledgeWebsiteController(KnowledgeController):
         })
         return values
 
+    @http.route('/knowledge/tree_panel/load_more', type='json', auth='public', sitemap=False)
+    def tree_panel_load_more(self, category, limit, offset, active_article_id=False, parent_id=False):
+        return super().tree_panel_load_more(category, limit, offset, active_article_id, parent_id)
+
     @http.route('/knowledge/home', type='http', auth='public', website=True, sitemap=False)
     def access_knowledge_home(self):
         return super().access_knowledge_home()

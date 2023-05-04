@@ -195,7 +195,7 @@
                     <!--Visible fields-->
                     <field name="sequence" widget="handle" invisible="1"/> <!--Until we add the JS class-->
                     <field name="date" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"
-                           options="{'datepicker': {'warn_future': true}}"/>
+                           options="{'warn_future': true}"/>
                     <field name="move_id" optional="hidden" required="0"/>
                     <field name="payment_ref" required="1" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"/>
                     <field name="partner_id" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"/>

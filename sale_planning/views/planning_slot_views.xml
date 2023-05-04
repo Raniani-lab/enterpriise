@@ -119,14 +119,9 @@
             <field name="start_datetime" position="attributes">
                 <attribute name="invisible">context.get('planning_slots_to_schedule', False)</attribute>
                 <attribute name="attrs">{
-                    'required': ['|', ('sale_line_plannable', '=', False), ('end_datetime', '!=', False)],
-                    'readonly': [('sale_line_plannable', '!=', False), ('start_datetime', '=', False)]}</attribute>
-            </field>
-            <field name="end_datetime" position="attributes">
-                <attribute name="invisible">context.get('planning_slots_to_schedule', False)</attribute>
-                <attribute name="attrs">{
-                    'required': ['|', ('sale_line_plannable', '=', False), ('start_datetime', '!=', False)],
-                    'readonly': [('sale_line_plannable', '!=', False), ('end_datetime', '=', False)]}</attribute>
+                    'required': [('sale_line_plannable', '=', False), ('start_datetime', '!=', False), ('end_datetime', '!=', False)],
+                    'readonly': [('sale_line_plannable', '!=', False), ('start_datetime', '=', False), ('end_datetime', '=', False)],
+                }</attribute>
             </field>
             <field name="resource_id" position="attributes">
                 <attribute name="invisible">context.get('planning_slots_to_schedule', False)</attribute>

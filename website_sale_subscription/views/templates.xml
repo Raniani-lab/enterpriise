@@ -39,27 +39,19 @@
     </template>
 
     <template id="cart_summary_inherit_website_sale_subscription" inherit_id="website_sale.cart_summary">
-        <xpath expr="//td[hasclass('td-product_name')]/div/strong" position="after">
-            <div t-if="line.temporal_type == 'subscription'" class="text-muted d-none d-md-block small"
-                 t-esc="line.pricing_id.name"/>
-        </xpath>
         <xpath expr="//td[hasclass('td-price')]" position="inside">
             <div t-if="line.temporal_type == 'subscription'">
                 <span>per</span>
-                <span t-if="line.pricing_id.recurrence_id.duration > 1" t-esc="line.pricing_id.recurrence_id.duration"/>
-                <span t-esc="line.pricing_id.recurrence_id.unit" style="text-transform:lowercase;"/>
+                <span t-if="line.order_id.recurrence_id.duration > 1" t-esc="line.order_id.recurrence_id.duration"/>
+                <span t-esc="line.order_id.recurrence_id.unit" style="text-transform:lowercase;"/>
             </div>
         </xpath>
     </template>
 
     <template id="cart_lines_subscription" inherit_id="website_sale.cart_lines">
-        <xpath expr="//td[hasclass('td-product_name')]/div/t/strong" position="after">
-            <div t-if="line.temporal_type == 'subscription'" class="text-muted d-none d-md-block small"
-                 t-esc="line.pricing_id.name"/>
-        </xpath>
         <xpath expr="//td[hasclass('td-price')]/small" position="before">
             <div t-if="line.temporal_type == 'subscription'">
-                <span t-esc="line.pricing_id.recurrence_id.temporal_unit_display" style="text-transform:lowercase;"/>
+                <span t-esc="line.order_id.recurrence_id.temporal_unit_display" style="text-transform:lowercase;"/>
             </div>
         </xpath>
     </template>

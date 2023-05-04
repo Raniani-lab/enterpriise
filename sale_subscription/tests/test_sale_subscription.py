@@ -26,7 +26,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.flush_tracking()
 
     def _get_quantities(self, order_line):
-        order_line = order_line.sorted('pricing_id')
+        order_line = order_line.sorted('id')
         values = {
                   'delivered_qty': order_line.mapped('qty_delivered'),
                   'qty_delivered_method': order_line.mapped('qty_delivered_method'),
@@ -184,14 +184,12 @@ class TestSubscription(TestSubscriptionCommon):
                     'name': "Subscription #A",
                     'price_unit': 42,
                     'product_uom_qty': 2,
-                    'pricing_id': self.pricing_month.id,
                 }),
                 Command.create({
                     'product_id': sub_product2.id,
                     'name': "Subscription #B",
                     'price_unit': 42,
                     'product_uom_qty': 2,
-                    'pricing_id': self.pricing_month.id,
                 }),
                 Command.create({
                     'product_id': sub_product_onetime_discount.id,
@@ -276,7 +274,6 @@ class TestSubscription(TestSubscriptionCommon):
                                               'name': "coucou",
                                               'price_unit': 42,
                                               'product_uom_qty': 2,
-                                              'pricing_id': self.pricing_month.id,
                                               })]
             sub.write({'start_date': False, 'next_invoice_date': False})
             sub.action_confirm()
@@ -408,7 +405,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.env['sale.order']._cron_recurring_create_invoice()
             self.subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
 
-            self.assertEqual(self.subscription.order_line.sorted('pricing_id').mapped('product_uom_qty'), [2, 3], "Quantities should be equal to 2 and 3")
+            self.assertEqual(self.subscription.order_line.sorted('id').mapped('product_uom_qty'), [2, 3], "Quantities should be equal to 2 and 3")
         with freeze_time("2021-01-15"):
             action = self.subscription.prepare_upsell_order()
             upsell_so = self.env['sale.order'].browse(action['res_id'])
@@ -439,8 +436,8 @@ class TestSubscription(TestSubscriptionCommon):
             self.subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
             discounts = [round(v, 2) for v in upsell_so.order_line.sorted('discount').mapped('discount')]
             self.assertEqual(discounts, [0.0, 45.16, 45.16, 45.16, 45.16], 'Prorated prices should be applied')
-            prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
-            self.assertEqual(prices, [0.0, 23.03, 23.03, 230.33, 21.94], 'Prorated prices should be applied')
+            prices = [round(v, 2) for v in upsell_so.order_line.sorted('id').mapped('price_subtotal')]
+            self.assertEqual(prices, [23.03, 230.33, 0, 21.94, 23.03], 'Prorated prices should be applied')
 
         with freeze_time("2021-02-01"):
             self.env['sale.order']._cron_recurring_create_invoice()
@@ -450,8 +447,8 @@ class TestSubscription(TestSubscriptionCommon):
             self.env['sale.order']._cron_recurring_create_invoice()
             upsell_so._create_invoices()
             self.subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
-            sorted_lines = self.subscription.order_line.sorted('pricing_id')
-            self.assertEqual(sorted_lines.mapped('product_uom_qty'), [1.0, 3.0, 4.0, 2.0], "Quantities should be equal to 1.0, 3.0, 4.0, 2.0")
+            sorted_lines = self.subscription.order_line.sorted('id')
+            self.assertEqual(sorted_lines.mapped('product_uom_qty'), [3.0, 4.0, 2.0, 1.0], "Quantities should be equal to 3.0, 4.0, 2.0, 1.0")
 
         with freeze_time("2021-04-01"):
             self.env['sale.order']._cron_recurring_create_invoice()
@@ -538,7 +535,7 @@ class TestSubscription(TestSubscriptionCommon):
                              "The parent line id should correspond to the first two lines")
             # discounts for: 12d/31d; 40d/59d; 21d/31d (shifted); 31d/41d; 59d/78d;
             self.assertEqual(discounts, [0, 32, 32, 32, 32], 'Prorated prices should be applied')
-            prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
+            prices = [round(v, 2) for v in upsell_so.order_line.sorted('price_subtotal').mapped('price_subtotal')]
             self.assertEqual(prices, [0.0, 28.48, 28.48, 28.48, 28.48], 'Prorated prices should be applied')
 
     def test_recurring_revenue(self):
@@ -808,13 +805,13 @@ class TestSubscription(TestSubscriptionCommon):
                 'next_invoice_date': False,
                 'recurrence_id': self.recurrence_month.id,
                 'partner_id': self.partner.id,
-                'order_line': [Command.create({'product_id': self.product.id,
-                                               'price_unit': 42,
-                                               'product_uom_qty': 1,
-                                               }),
-                               Command.create({'product_id': self.product2.id,
+                'order_line': [Command.create({'product_id': self.product2.id,
                                                'price_unit': 420,
                                                'product_uom_qty': 3,
+                                               }),
+                                Command.create({'product_id': self.product.id,
+                                               'price_unit': 42,
+                                               'product_uom_qty': 1,
                                                }),
                                ]
             })
@@ -824,9 +821,9 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(val_confirm['invoiced'], [0, 0], "To invoice should be equal to quantity")
             self.assertEqual(val_confirm['delivered_qty'], [0, 0], "Delivered qty not should be set")
             self.env['sale.order']._cron_recurring_create_invoice()
-            self.subscription.order_line[0].write({'qty_delivered': 1})
-            self.subscription.order_line[1].write({'qty_delivered': 3})
-            val_invoice = self._get_quantities(self.subscription.order_line.sorted('id'))
+            self.subscription.order_line[0].write({'qty_delivered': 3})
+            self.subscription.order_line[1].write({'qty_delivered': 1})
+            val_invoice = self._get_quantities(self.subscription.order_line)
             self.assertEqual(val_invoice['to_invoice'], [0, 0], "To invoice should be 0")
             self.assertEqual(val_invoice['invoiced'], [3, 1], "To invoice should be equal to quantity")
             self.assertEqual(val_invoice['delivered_qty'], [3, 1], "Delivered qty should be set")
@@ -839,7 +836,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(val_invoice['delivered_qty'], [3, 1], "Delivered qty should be equal to quantity")
 
         with freeze_time("2021-02-15"):
-            self.subscription.order_line[0].write({'qty_delivered': 3, 'product_uom_qty': 3})
+            self.subscription.order_line[1].write({'qty_delivered': 3, 'product_uom_qty': 3})
             val_invoice = self._get_quantities(
                 self.subscription.order_line
             )
@@ -1293,7 +1290,6 @@ class TestSubscription(TestSubscriptionCommon):
         subscription.pricelist_id = other_pricelist.id
         subscription._onchange_sale_order_template_id()
         self.assertEqual(subscription.pricelist_id.id, other_pricelist.id, "The second pricelist should be applied")
-        self.assertEqual(subscription.pricelist_id, subscription.order_line.pricing_id.pricelist_id, "The second pricing should be applied")
         self.assertEqual(subscription.order_line.price_unit, 15, "The second pricing should be applied")
         self.assertEqual(subscription.sale_order_option_ids.price_unit, 15, "The second pricing should be applied")
         # Note: the pricing_id on the line is not saved on the line, but it is used to calculate the price.
@@ -1365,7 +1361,7 @@ class TestSubscription(TestSubscriptionCommon):
 
     def test_onchange_product_quantity_with_different_currencies(self):
         # onchange_product_quantity compute price unit into the currency of the sale_order pricelist
-        # when currency of the product (Gold Coin) is different than subscription pricelist (USD)
+        # when currency of the product (Gold Coin) is different from subscription pricelist (USD)
         self.subscription.order_line = False
         self.subscription.recurrence_id = self.recurrence_month.id,
         self.pricing_month.pricelist_id = self.subscription.pricelist_id
@@ -1384,7 +1380,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(line.price_unit, 50, 'Price unit should not have changed')
         currency = self.currency_data['currency']
         self.product.currency_id = currency
-        line.pricing_id.currency_id = currency
+        self.pricing_month.currency_id = currency
         line._compute_price_unit()
         conversion_rate = self.env['res.currency']._get_conversion_rate(
             self.product.currency_id,
@@ -1438,7 +1434,6 @@ class TestSubscription(TestSubscriptionCommon):
                     'product_uom_qty': 2.0,
                     'product_uom': self.product.uom_id.id,
                     'price_unit': 12,
-                    'pricing_id': self.pricing_month.id,
                 })],
         })
         subscription.action_confirm()
@@ -1689,7 +1684,7 @@ class TestSubscription(TestSubscriptionCommon):
             })]
         })
         # check that correct pricing is being used
-        self.assertEqual(sale_order.order_line[0].pricing_id.id, pricing2.id)
+        self.assertEqual(sale_order.order_line[0].price_unit, pricing2.price)
 
     def test_upsell_parent_line_id(self):
         with freeze_time("2022-01-01"):
@@ -1727,7 +1722,6 @@ class TestSubscription(TestSubscriptionCommon):
             first_line_id.product_id = self.product
             upsell_so.order_line[0].price_unit = parent_line_id.price_unit + 0.004 # making sure that rounding issue will not affect computed result
             self.assertEqual(upsell_so.order_line[0].parent_line_id, parent_line_id, "The parent line is the one from the subscription")
-            first_line_id.pricing_id = parent_line_id.pricing_id
             self.assertEqual(upsell_so.order_line.parent_line_id, parent_line_id,
                              "The parent line is still the one from the subscription")
             # reset the product to another one to lose the link

@@ -130,8 +130,6 @@ class TestPurchaseOrder(TestCommissionsSetup):
                 line.name = product.name
                 line.product_id = product
                 line.product_uom_qty = 1
-                if product.recurring_invoice:
-                    line.pricing_id = product.product_tmpl_id.product_pricing_ids[-1]
 
             so = form.save()
             so.action_confirm()

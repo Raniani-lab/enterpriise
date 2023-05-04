@@ -20,8 +20,6 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
     temporal_type = fields.Selection(selection_add=[('subscription', 'Subscription')])
-    pricing_id = fields.Many2one('product.pricing',
-                                 compute='_compute_pricing', store=True, precompute=True)
     recurring_monthly = fields.Monetary(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue")
     parent_line_id = fields.Many2one('sale.order.line', compute='_compute_parent_line_id', store=True, precompute=True)
 
@@ -203,7 +201,7 @@ class SaleOrderLine(models.Model):
             line.qty_invoiced = subscription_qty_invoiced.get(line.id, 0.0)
         super(SaleOrderLine, other_lines)._compute_qty_invoiced()
 
-    @api.depends('temporal_type', 'price_subtotal', 'pricing_id')
+    @api.depends('temporal_type', 'price_subtotal')
     def _compute_recurring_monthly(self):
         subscription_lines = self.filtered(lambda l: l.temporal_type == 'subscription')
         for line in subscription_lines:
@@ -382,7 +380,6 @@ class SaleOrderLine(models.Model):
                     'product_uom': line.product_uom.id,
                     'price_unit': line.price_unit,
                     'discount': 0,
-                    'pricing_id': line.pricing_id.id,
                     'order_id': subscription.id
                 }))
         update_values += [(1, sub_id, {'product_uom_qty': dict_changes[sub_id]}) for sub_id in dict_changes]

@@ -180,7 +180,6 @@
             </field>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position='after'>
                 <field name="temporal_type" invisible="1"/>
-                <field name="pricing_id" optional="hide" groups="base.group_no_one"/>
             </xpath>
             <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position='attributes'>
                 <attribute name="decoration-info">temporal_type == 'subscription'</attribute>

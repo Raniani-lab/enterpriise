@@ -1754,11 +1754,8 @@ class SaleOrder(models.Model):
         if invoice.is_move_sent or not invoice._is_ready_to_be_sent() or invoice.state != 'posted':
             return
         current_date = fields.Date.today()
-        next_date = self.next_invoice_date or current_date
-        # if no recurring next date, have next invoice be today + interval
-        if not self.next_invoice_date:
-            invoicing_periods = [next_date + pricing_id.recurrence_id.get_recurrence_timedelta() for pricing_id in self.order_line.pricing_id]
-            next_date = invoicing_periods and min(invoicing_periods) or current_date
+        # if no recurring next date, have next invoice date be today + interval
+        next_date = self.next_invoice_date or current_date + self.recurrence_id.get_recurrence_timedelta()
         email_context = {**self.env.context.copy(),
                          **{'payment_token': self.payment_token_id.payment_details,
                             '5_renewed': True,

@@ -25,7 +25,7 @@ class ProductTemplate(models.Model):
             return True
         website = self.env['website'].get_current_website()
         so = so or website and request and website.sale_get_order()
-        if not so or not so.recurrence_id or not so.order_line.pricing_id.recurrence_id:
+        if not so or not so.recurrence_id:
             return True
         if not pricing:
             pricelist = pricelist or website.get_current_pricelist()

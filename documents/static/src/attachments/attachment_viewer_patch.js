@@ -44,27 +44,42 @@ patch(FileViewer.prototype, "documents", {
     next() {
         this._super();
         if (this.onSelectDocument) {
-            const index = this.documentService.documentList?.documents.findIndex(
-                (document) => document === this.documentService.documentList.selectedDocument
+            const documentList = this.documentService.documentList;
+            if (
+                !documentList ||
+                !documentList.selectedDocument ||
+                !documentList.documents ||
+                !documentList.documents.length
+            ) {
+                return;
+            }
+            const index = documentList.documents.findIndex(
+                (document) => document === documentList.selectedDocument
             );
-            const nextIndex =
-                index === this.documentService.documentList?.documents.length - 1 ? 0 : index + 1;
-            this.documentService.documentList.selectedDocument =
-                this.documentService.documentList?.documents[nextIndex];
-            this.onSelectDocument(this.documentService.documentList.selectedDocument.record);
+            const nextIndex = index === documentList.documents.length - 1 ? 0 : index + 1;
+            documentList.selectedDocument = documentList.documents[nextIndex];
+            this.onSelectDocument(documentList.selectedDocument.record);
         }
     },
     previous() {
         this._super();
         if (this.onSelectDocument) {
-            const index = this.documentService.documentList?.documents.findIndex(
-                (document) => document === this.documentService.documentList?.selectedDocument
+            const documentList = this.documentService.documentList;
+            if (
+                !documentList ||
+                !documentList.selectedDocument ||
+                !documentList.documents ||
+                !documentList.documents.length
+            ) {
+                return;
+            }
+            const index = documentList.documents.findIndex(
+                (doc) => doc === documentList.selectedDocument
             );
-            const nextIndex =
-                index === this.documentService.documentList?.documents.length - 1 ? 0 : index - 1;
-            this.documentService.documentList.selectedDocument =
-                this.documentService.documentList?.documents[nextIndex];
-            this.onSelectDocument(this.documentService.documentList.selectedDocument.record);
+            // if we're on the first document, go "back" to the last one
+            const previousIndex = index === 0 ? documentList.documents.length - 1 : index - 1;
+            documentList.selectedDocument = documentList.documents[previousIndex];
+            this.onSelectDocument(documentList.selectedDocument.record);
         }
     },
 });

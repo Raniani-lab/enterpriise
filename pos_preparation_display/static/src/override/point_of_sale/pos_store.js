@@ -8,7 +8,11 @@ import { _t } from "@web/core/l10n/translation";
 patch(PosStore.prototype, "pos_preparation_display.PosStore", {
     async sendOrderInPreparation(order, cancelled = false) {
         const _super = this._super;
-        const result = await order.sendChanges(cancelled);
+        let result = true;
+
+        if (this.globalState.preparationDisplayCategoryIds.size) {
+            result = await order.sendChanges(cancelled);
+        }
 
         // We display this error popup only if the PoS is connected,
         // otherwise the user has already received a popup telling him

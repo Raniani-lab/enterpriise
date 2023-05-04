@@ -99,7 +99,7 @@ registry.category("web_tour.tours").add("payment_terminals_tour", {
         },
         {
             content: "Go to payment screen",
-            trigger: ".button.pay",
+            trigger: ".button.pay-order-button",
         },
         {
             content: "Pay with payment terminal",
@@ -151,7 +151,7 @@ registry.category("web_tour.tours").add("payment_terminals_tour", {
         },
         {
             content: "Go to payment screen",
-            trigger: ".button.pay",
+            trigger: ".button.pay-order-button",
         },
         {
             content: "Pay with payment terminal",

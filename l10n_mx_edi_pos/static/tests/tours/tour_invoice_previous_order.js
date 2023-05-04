@@ -21,7 +21,7 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_previous_o
     },
     {
         content: "go to Payment",
-        trigger: ".pay-circle",
+        trigger: ".pay-order-button",
     },
     {
         content: "Select payment method",

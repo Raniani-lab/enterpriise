@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <!-- /template template -->
+    <!-- /clipboard template -->
     <t t-name="knowledge.TemplateBehavior" owl="1">
         <div>
-            <div class="o_knowledge_template_label pe-3">Template</div>
+            <div class="o_knowledge_template_label pe-3">Clipboard</div>
             <div class="o_knowledge_template_toolbar o_knowledge_toolbar" data-oe-transient-content="true">
                 <div class="btn-group">
                     <button t-if="targetRecordInfo and targetRecordInfo.withChatter" t-on-click="onClickSendAsMessage" title="Send as Message" class="btn btn-primary btn-link btn-sm border-0">
@@ -13,7 +13,7 @@
                         <i class="fa fa-pencil-square" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Use as <t t-out="targetRecordInfo.fieldInfo.string"/></span>
                     </button>
                     <button t-ref="copyToClipboardButton" t-on-click="onClickCopyToClipboard" title="Copy to Clipboard" class="btn btn-primary btn-link btn-sm border-0">
-                        <i class="fa fa-clipboard" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Copy to Clipboard</span>
+                        <i class="fa fa-clipboard" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Copy</span>
                     </button>
                 </div>
             </div>

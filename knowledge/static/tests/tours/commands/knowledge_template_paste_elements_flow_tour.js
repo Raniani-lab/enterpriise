@@ -31,8 +31,8 @@ registry.category("web_tour.tours").add('knowledge_template_paste_elements_tour'
     run: function () {
         openCommandBar(this.$anchor[0]);
     },
-}, { // click on the /template command
-    trigger: '.oe-powerbox-commandName:contains("Template")',
+}, { // click on the /clipboard command
+    trigger: '.oe-powerbox-commandName:contains("Clipboard")',
     run: 'click',
 }, { // wait for the block to appear in the editor
     trigger: '.o_knowledge_behavior_type_template',

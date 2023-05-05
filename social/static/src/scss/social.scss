@@ -226,20 +226,6 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
     color: lighten($o-main-text-color, 10%);
 }
 
-.o_social_author_image {
-    &:after {
-        @include o-position-absolute(0, 0, 0, 0);
-        border: 1px solid rgba(black, .1);
-        border-radius: 100%;
-        content: '';
-    }
-
-    img {
-        width: 2em;
-        height: 2em;
-    }
-}
-
 .o_social_bubble_radius {
     border-radius: $o-social-border-radius-bubble;
 }

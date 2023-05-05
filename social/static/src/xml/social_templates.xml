@@ -31,7 +31,7 @@
     <t t-name="social.StreamPostCommentsOriginalPost" owl="1">
         <div class="o_social_comments_modal_original_post d-flex bg-white pt-3 px-3">
             <div class="me-3">
-                <span class="o_social_original_post_author_image o_social_author_image d-block position-relative rounded-circle overflow-hidden"/>
+                <span class="o_social_original_post_author_image o_social_author_image d-block position-relative rounded overflow-hidden"/>
             </div>
             <div class="o_social_comments_modal_original_post_content flex-grow-1">
                 <div class="d-flex align-items-center h3 mb-1">

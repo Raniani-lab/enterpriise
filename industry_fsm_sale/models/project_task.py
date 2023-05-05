@@ -293,7 +293,7 @@ class Task(models.Model):
             domain = expression.AND([domain, [('id', '!=', self.timesheet_product_id.id)]])
         deposit_product = self.company_id.sale_down_payment_product_id
         if deposit_product:
-            domain = expression.AND([domain, [('id', '!=', deposit_product)]])
+            domain = expression.AND([domain, [('id', '!=', deposit_product.id)]])
 
         kanban_view = self.env.ref('industry_fsm_sale.view_product_product_kanban_material')
         search_view = self.env.ref('industry_fsm_sale.product_search_form_view_inherit_fsm_sale')

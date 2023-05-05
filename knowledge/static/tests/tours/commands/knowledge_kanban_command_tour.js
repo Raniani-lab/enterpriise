@@ -61,7 +61,7 @@ registry.category("web_tour.tours").add('knowledge_kanban_command_tour', {
     trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_group .o_kanban_header_title:contains("Ongoing") .o_kanban_quick_add',
     run: 'click'
 }, { // Type a Title for new article in the quick create form
-    trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_quick_create .o_input',
+    trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_group:has(.o_kanban_header_title:contains("Ongoing")) .o_kanban_quick_create .o_input',
     run: 'text Quick Create Ongoing Item',
 }, { // Click on Edit to open the article in edition in his own form view
     trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_quick_create .o_kanban_edit',

@@ -2,7 +2,7 @@
 <templates>
 
     <t t-name="web_studio.ResizablePanel" owl="1">
-        <div class="o_resizable_panel position-relative" t-att-class="props.class" t-ref="containerRef">
+        <div class="o_resizable_panel position-relative d-flex flex-column" t-att-class="props.class" t-ref="containerRef">
             <t t-slot="default" />
             <div
                 class="o_resizable_panel_handle position-absolute top-0 bottom-0 end-0"

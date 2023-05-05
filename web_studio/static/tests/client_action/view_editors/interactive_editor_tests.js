@@ -498,11 +498,11 @@ QUnit.module("View Editors", () => {
                 mockRPC: function (route, args) {
                     if (args.method === "name_search") {
                         assert.deepEqual(args.kwargs.args, [
-                            ['relation', '=', "coucou"],
-                            ['ttype', '=', 'many2one'],
-                            ['model_id.abstract', '=', false],
-                            ['store', '=', true]
-                        ])
+                            ["relation", "=", "coucou"],
+                            ["ttype", "=", "many2one"],
+                            ["model_id.abstract", "=", false],
+                            ["store", "=", true],
+                        ]);
                         return Promise.resolve([
                             [1, "Field 1"],
                             [2, "Field 2"],
@@ -516,7 +516,7 @@ QUnit.module("View Editors", () => {
                                 [
                                     ["relation", "=", "coucou"],
                                     ["ttype", "=", "many2one"],
-                                    ['store', '=', true],
+                                    ["store", "=", true],
                                 ],
                             ],
                             "the domain should be correctly set when checking if the m2o for o2m exists or not"
@@ -566,7 +566,7 @@ QUnit.module("View Editors", () => {
                                 [
                                     ["relation", "=", "partner"],
                                     ["ttype", "=", "many2one"],
-                                    ["store", "=", true]
+                                    ["store", "=", true],
                                 ],
                             ],
                             "the domain should be correctly set when checking if the m2o for o2m exists or not"
@@ -792,7 +792,7 @@ QUnit.module("View Editors", () => {
                 resModel: "coucou",
                 arch: arch,
                 mockRPC: function (route, args) {
-                    if (route === "/web_editor/get_assets_editor_resources") {
+                    if (route === "/web_studio/get_xml_editor_resources") {
                         assert.step("editor_resources");
                         assert.strictEqual(
                             args.key,
@@ -876,7 +876,7 @@ QUnit.module("View Editors", () => {
                         assert.strictEqual(args.operations.length, 1);
                     } else if (route === "/web_studio/edit_view_arch") {
                         assert.step("edit_view_arch");
-                    } else if (route === "/web_editor/get_assets_editor_resources") {
+                    } else if (route === "/web_studio/get_xml_editor_resources") {
                         assert.strictEqual(
                             args.key,
                             99999999,
@@ -890,12 +890,13 @@ QUnit.module("View Editors", () => {
                                     id: 1,
                                     inherit_id: false,
                                     name: "base view",
+                                    key: 99999999,
                                 },
                                 {
                                     active: true,
                                     arch: "<data/>",
                                     id: "__test_studio_view_arch__",
-                                    inherit_id: 1,
+                                    inherit_id: [1],
                                     name: "studio view",
                                 },
                             ],

@@ -13,9 +13,11 @@
       >
         <t t-call="web_studio.ViewEditor.View" />
       </InteractiveEditor>
-      <XmlEditor t-else="" studioViewArch="viewEditorModel.studioViewArch">
+
+      <t t-else="">
+        <ViewXmlEditor studioViewArch="viewEditorModel.studioViewArch" mainResourceId="viewEditorModel.view.id" defaultResourceId="viewEditorModel.studioViewId || viewEditorModel.view.id" onClose.bind="onXmlEditorClose" onSave.bind="onSaveXml"/>
         <t t-call="web_studio.ViewEditor.View" />
-      </XmlEditor>
+      </t>
   </div>
 </t>
 

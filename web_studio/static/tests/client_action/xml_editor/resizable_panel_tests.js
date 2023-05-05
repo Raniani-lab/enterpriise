@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { ResizablePanel } from "@web_studio/client_action/view_editor/xml_editor/resizable_panel/resizable_panel";
+import { ResizablePanel } from "@web_studio/client_action/xml_resource_editor/resizable_panel/resizable_panel";
 import { Component, xml } from "@odoo/owl";
 import { browser } from "@web/core/browser/browser";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";

@@ -224,7 +224,7 @@ QUnit.module(
                 type: "graph",
                 resModel: "coucou",
                 mockRPC(route) {
-                    if (route === "/web_editor/get_assets_editor_resources") {
+                    if (route === "/web_studio/get_xml_editor_resources") {
                         return Promise.resolve({
                             views: [
                                 {

@@ -4,6 +4,7 @@ import { Domain } from "@web/core/domain";
 import { useService } from "@web/core/utils/hooks";
 import { useDebounced } from "@web/core/utils/timing";
 import { getRawValue } from "@web/views/kanban/kanban_record";
+import { DynamicRecordList } from "@web/views/relational_model";
 import {
     useState,
     useComponent,
@@ -172,12 +173,15 @@ export class TimesheetTimerRendererHook {
         ) {
             return;
         }
-        const timesheet =
-            propsList.records.find((record) => record.resId === this.timerState.timesheetId) ||
-            (await propsList.addExistingRecord(this.timerState.timesheetId, true));
-        timesheet.mode = "edit";
-        this.timesheet = timesheet;
-        propsList.removeRecord(timesheet);
+
+        if (propsList instanceof DynamicRecordList) {
+            const timesheet =
+                propsList.records.find((record) => record.resId === this.timerState.timesheetId) ||
+                (await propsList.addExistingRecord(this.timerState.timersheetId, true));
+            timesheet.mode = "edit";
+            this.timesheet = timesheet;
+            propsList.removeRecord(timesheet);
+        }
     }
 
     async _fetchRunningTimer() {

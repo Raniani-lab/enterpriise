@@ -186,7 +186,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
                         <EmailAddress>jsmith@mail.com</EmailAddress>
                         <Phone>+32475123456</Phone>
                     </ns2:Declarant>
-                    <ns2:Period>2019</ns2:Period>
+                    <ns2:Period>2018</ns2:Period>
                     <ns2:Comment></ns2:Comment>
                 </ns2:ClientListing>
             </ns2:ClientListingConsignment>
@@ -260,7 +260,7 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
                         <EmailAddress>jsmith@mail.com</EmailAddress>
                         <Phone>+32475123456</Phone>
                     </ns2:Declarant>
-                    <ns2:Period>2019</ns2:Period>
+                    <ns2:Period>2018</ns2:Period>
                     <ns2:Comment></ns2:Comment>
                 </ns2:ClientListing>
             </ns2:ClientListingConsignment>

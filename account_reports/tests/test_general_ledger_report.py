@@ -3,7 +3,7 @@
 from .common import TestAccountReportsCommon
 import odoo.tests
 
-from odoo import fields
+from odoo import fields, Command
 from odoo.tests import tagged
 from freezegun import freeze_time
 
@@ -534,6 +534,46 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
                 (invoice_2.name,                        'test2'),
                 ('Total',                               ''),
             ],
+        )
+
+    def test_general_ledger_income_expense_initial_balance(self):
+        ''' Test that when the report period does not start at the beginning of the FY,
+            any AMLs prior to the report period but after the beginning of the FY are
+            displayed in the initial balance for Income and Expense accounts. '''
+
+        self.env.companies = self.env.company
+
+        move_2017 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': fields.Date.from_string('2017-02-01'),
+            'journal_id': self.company_data['default_journal_sale'].id,
+            'line_ids': [
+                Command.create({'debit': 1000.0, 'credit':    0.0, 'name': '2017_3_1', 'account_id': self.company_data['default_account_receivable'].id}),
+                Command.create({'debit':    0.0, 'credit': 1000.0, 'name': '2017_3_2', 'account_id': self.company_data['default_account_revenue'].id}),
+            ],
+        })
+        move_2017.action_post()
+
+        # Init options.
+        options = self._generate_options(self.report, '2017-02-01', '2017-03-01')
+        options['unfolded_lines'] = [self.report._get_generic_line_id('account.account', self.company_data['default_account_revenue'].id)]
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                            4,             5,                6],
+            [
+                ('121000 Account Receivable',            2000.0,            '',           2000.0),
+                ('211000 Account Payable',                100.0,            '',            100.0),
+                ('400000 Product Sales',                20000.0,        1000.0,          19000.0),
+                ('Initial Balance',                     20000.0,            '',          20000.0),
+                ('INV/2017/00002',                           '',        1000.0,          19000.0),
+                ('Total 400000 Product Sales',          20000.0,        1000.0,          19000.0),
+                ('600000 Expenses',                          '',       21000.0,         -21000.0),
+                ('999999 Undistributed Profits/Losses',   200.0,         300.0,           -100.0),
+                ('Total',                               22300.0,       22300.0,              0.0),
+            ],
+            options,
         )
 
     @freeze_time('2017-07-11')

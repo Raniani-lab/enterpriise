@@ -76,7 +76,7 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
     get gridTemplateColumns() {
         let gridTemplateColumns = super.gridTemplateColumns;
         if (this.showTimerButton) {
-            gridTemplateColumns = `40px ${gridTemplateColumns}`;
+            gridTemplateColumns = `auto ${gridTemplateColumns}`;
         }
         return gridTemplateColumns;
     }

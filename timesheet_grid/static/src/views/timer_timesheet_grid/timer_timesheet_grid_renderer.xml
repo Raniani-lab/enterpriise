@@ -58,7 +58,7 @@
     <t t-name="timesheet_grid.TimerGridRow" t-inherit="web_grid.Row" owl="1">
         <xpath expr="//div[@name='row']" position="before">
             <div t-if="showTimerButton"
-                class="o_grid_row_timer o_grid_highlightable ps-2 ps-md-3 py-2 transition-base"
+                class="o_grid_row_timer o_grid_highlightable d-flex align-items-center px-3 py-1 transition-base"
                 t-att-data-row="row.id"
                 t-att-data-grid-row="rowPosition"
                 t-att-data-grid-column="1"

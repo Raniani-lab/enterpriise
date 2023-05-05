@@ -30,27 +30,35 @@
     <!-- TODO move it to the renderer template stay here for now to facilitate rebase -->
     <t t-name="web_grid.NavigationButtons" owl="1">
         <div class="o_grid_navigation_buttons d-contents" t-if="props.model.columnFieldIsDate">
-            <button class="btn btn-outline-primary me-2"
+            <button class="btn btn-secondary"
                     data-hotkey="t"
                     type="button"
                     t-on-click="onTodayButtonClick"
             >
                 Today
             </button>
-            <button class="btn btn-primary me-2"
-                    type="button"
-                    t-on-click="onPreviousButtonClick"
-                    data-hotkey="p"
-            >
-                <span aria-label="Previous" class="fa fa-arrow-left" role="img" title="Previous"/>
-            </button>
-            <button type="button"
-                    class="btn btn-primary"
-                    t-on-click="onNextButtonClick"
-                    data-hotkey="n"
-            >
-                <span aria-label="Next" class="fa fa-arrow-right" role="img" title="Next"/>
-            </button>
+            <div class="btn-group">
+                <button class="btn btn-secondary"
+                        type="button"
+                        t-on-click="onPreviousButtonClick"
+                        data-hotkey="p"
+                >
+                    <span aria-label="Previous" class="fa fa-arrow-left" role="img" title="Previous"/>
+                </button>
+                <ViewScaleSelector
+                    t-if="rangesArray.length"
+                    scales="props.ranges"
+                    currentScale="props.state.activeRangeName"
+                    setScale.bind="onRangeClick"
+                />
+                <button type="button"
+                        class="btn btn-secondary"
+                        t-on-click="onNextButtonClick"
+                        data-hotkey="n"
+                >
+                    <span aria-label="Next" class="fa fa-arrow-right" role="img" title="Next"/>
+                </button>
+            </div>
         </div>
     </t>
     <t t-name="web_grid.RangeButtons" owl="1">
@@ -88,7 +96,7 @@
     </t>
     <t t-name="web_grid.GridView" owl="1">
         <div t-attf-class="o_grid_view {{ isMobile ? 'o_action_delegate_scroll' : '' }} {{props.className}}" t-ref="root">
-            <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''" display="props.display">
+            <Layout className="(model.useSampleModel ? 'o_view_sample_data' : '') + ' d-flex'" display="props.display">
                 <t t-set-slot="control-panel-additional-actions">
                     <CogMenu/>
                 </t>

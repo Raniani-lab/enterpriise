@@ -180,7 +180,7 @@ export class GridRenderer extends Component {
                 totalRows += 1;
             }
         }
-        return `auto repeat(${this.rowsCount + totalRows}, ${this.rowHeight}px)`;
+        return `auto repeat(${this.rowsCount + totalRows}, auto)`;
     }
 
     get gridTemplateColumns() {

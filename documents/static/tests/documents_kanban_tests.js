@@ -2102,6 +2102,7 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the activity Edit button");
         assert.containsOnce(target, '.o_Activity_cancelButton',
             "should display the activity Cancel button");
+        await click(find(target, '.o_Activity_cancelButton'));
         
         await click(find(target, '.o_kanban_record', 'blip'));
 

@@ -171,11 +171,11 @@ export class TaskGanttModel extends GanttModel {
      * @override
      */
     _getRowName(_, groupedByField, value) {
-        if (groupedByField === "user_ids") {
-            const resId = Array.isArray(value) ? value[0] : value;
-
-            if (!resId) {
-                return this.env._t("Unassigned Tasks");
+        if (!value) {
+            if (groupedByField === "user_ids") {
+                return this.env._t("👤 Unassigned");
+            } else if (groupedByField === "project_id") {
+                return this.env._t("🔒 Private");
             }
         }
         return super._getRowName(...arguments);

@@ -143,8 +143,8 @@ QUnit.test("user_ids grouped: specific empty group added, even if no records", a
         [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map(
             (el) => el.innerText
         ),
-        ["Unassigned Tasks", "Jane Doe", "John Doe"],
-        "'Unassigned Tasks' should be the first group, even if no record exist without user_ids"
+        ["👤 Unassigned", "Jane Doe", "John Doe"],
+        "'👤 Unassigned' should be the first group, even if no record exist without user_ids"
     );
     assert.containsN(target, ".o_gantt_row_headers .o-mail-Avatar", 2);
 });
@@ -164,7 +164,7 @@ QUnit.test("[user_ids, ...] grouped", async (assert) => {
             el.innerText.trim()
         ),
         [
-            "Unassigned Tasks",
+            "👤 Unassigned",
             "Undefined Stuff",
             "Bruce Willis",
             "Jane Doe",
@@ -183,10 +183,10 @@ QUnit.test("[..., user_ids(, ...)] grouped", async (assert) => {
         ),
         [
             "Undefined Stuff",
-            "Unassigned Tasks",
+            "👤 Unassigned",
             "Jane Doe",
             "Bruce Willis",
-            "Unassigned Tasks",
+            "👤 Unassigned",
             "John Doe",
         ]
     );
@@ -202,7 +202,7 @@ QUnit.test('Empty groupby "Assigned To" and "Project" can be rendered', async fu
         [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map((el) =>
             el.innerText.trim()
         ),
-        ["Unassigned Tasks", "Undefined Project"]
+        ["👤 Unassigned", "🔒 Private"]
     );
 });
 

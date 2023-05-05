@@ -326,6 +326,10 @@ export class MapModel extends Model {
         return ERROR_MESSAGES[message];
     }
 
+    _getEmptyGroupLabel(fieldName) {
+        return this.env._t("None");
+    }
+
     /**
      * @protected
      * @returns {Object} the fetched records grouped by the groupBy field.
@@ -348,8 +352,8 @@ export class MapModel extends Model {
                 name = Array.isArray(value) ? value[1] : value;
             }
 
-            if (id === false && name === false) {
-                id = name = this.env._t("None");
+            if (!id && !name) {
+                id = name = this._getEmptyGroupLabel(fieldName);
             }
 
             if (["many2many", "one2many"].includes(fieldType) && value.length) {

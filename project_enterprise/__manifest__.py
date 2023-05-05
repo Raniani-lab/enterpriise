@@ -27,6 +27,7 @@ Bridge module for project and enterprise
             'project_enterprise/static/src/*',
             'project_enterprise/static/src/scss/**/*',
             'project_enterprise/static/src/components/**/*',
+            'project_enterprise/static/src/views/**/*',
             'project_enterprise/static/src/**/*.xml',
 
             # Don't include dark mode files in light mode

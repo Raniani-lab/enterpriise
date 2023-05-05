@@ -26,7 +26,7 @@
                     </t>
                     <li class="flex-grow-1 border-bottom border-end order-2"/>
                 </ul>
-                <button class="o_hr_payroll_todo_tab o_hr_payroll_todo_create btn d-flex align-items-center border-bottom" t-on-click="onClickCreateNote">
+                <button class="o_hr_payroll_todo_tab o_hr_payroll_todo_create btn d-flex align-items-center border-bottom rounded-0" t-on-click="onClickCreateNote">
                     <i title="Create new todo note" class="fa fa-plus"/>
                 </button>
             </div>

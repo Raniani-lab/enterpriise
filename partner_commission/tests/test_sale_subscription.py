@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from dateutil.relativedelta import relativedelta
+
 from odoo.tests.common import Form, tagged
 from odoo.addons.partner_commission.tests.setup import TestCommissionsSetup
 from odoo import fields
@@ -92,7 +94,7 @@ class TestSaleSubscription(TestCommissionsSetup):
         form.end_date = fields.Date.today()
         so = form.save()
         so.action_confirm()
-
+        so.next_invoice_date += relativedelta(months=1) # prevent validation error
         res = so.prepare_renewal_order()
         res_id = res['res_id']
         renewal_so = self.env['sale.order'].browse(res_id)

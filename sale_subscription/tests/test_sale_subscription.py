@@ -1885,13 +1885,12 @@ class TestSubscription(TestSubscriptionCommon):
             # We don't invoice renewal_so_2 yet to see what happens.
             self.assertEqual(renewal_so_2.start_date, datetime.date(2023, 1, 1))
             self.assertEqual(renewal_so_2.next_invoice_date, datetime.date(2023, 1, 1))
-
         with freeze_time("2022-10-2"):
             self.env['sale.order']._cron_recurring_create_invoice()
             action = renewal_so.prepare_upsell_order()
             upsell_so = self.env['sale.order'].browse(action['res_id'])
             upsell_so.order_line.filtered(lambda l: not l.display_type).product_uom_qty = 1
-
+            renewal_so_2.next_invoice_date += relativedelta(days=1) # prevent validation error
             action = renewal_so_2.prepare_upsell_order()
             upsell_so_2 = self.env['sale.order'].browse(action['res_id'])
             upsell_so_2.order_line.filtered(lambda l: not l.display_type).product_uom_qty = 1
@@ -1910,7 +1909,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(upsell_so.order_line.mapped('discount'), [-24.93, -24.93, 0])
             self.assertEqual(upsell_so.start_date, datetime.date(2022, 10, 2))
             self.assertEqual(upsell_so.next_invoice_date, datetime.date(2024, 1, 1))
-            self.assertEqual(upsell_so_2.amount_untaxed, 29.92)
+            self.assertEqual(upsell_so_2.amount_untaxed, 30.25)
             # upsell_so_2.order_line.flush()
             line = upsell_so_2.order_line.filtered('display_type')
             self.assertEqual(line.display_type, 'line_note')
@@ -1920,9 +1919,9 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertFalse(line.product_id)
 
             self.assertEqual(upsell_so_2.order_line.mapped('product_uom_qty'), [1.0, 1.0, 0])
-            for discount, value in zip(upsell_so_2.order_line.mapped('discount'), [75.07, 75.07, 0.0]):
+            for discount, value in zip(upsell_so_2.order_line.mapped('discount'), [74.79, 74.79, 0.0]):
                 self.assertAlmostEqual(discount, value)
-            self.assertEqual(upsell_so_2.next_invoice_date, datetime.date(2023, 1, 1),
+            self.assertEqual(upsell_so_2.next_invoice_date, datetime.date(2023, 1, 2),
                              'We only invoice until the start of the renewal')
 
     def test_free_product_do_not_invoice(self):
@@ -1964,6 +1963,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(self.subscription.invoice_count, 1)
 
     def test_create_alternative(self):
+        self.subscription.next_invoice_date = fields.Date.today() + relativedelta(months=1)
         action = self.subscription.prepare_renewal_order()
         renewal_so = self.env['sale.order'].browse(action['res_id'])
         copy_so = renewal_so.copy()

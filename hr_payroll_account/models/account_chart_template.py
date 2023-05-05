@@ -79,6 +79,9 @@ class AccountChartTemplate(models.AbstractModel):
             'hr_payroll.structure_worker_001': {
                 'journal_id': 'hr_payroll_account_journal',
             },
+            'hr_payroll.default_structure': {
+                'journal_id': 'hr_payroll_account_journal',
+            },
         }
 
     def _get_demo_data(self, company):

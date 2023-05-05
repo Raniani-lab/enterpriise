@@ -218,10 +218,12 @@ class HrContract(models.Model):
 class HrPayrollStructure(models.Model):
     _inherit = 'hr.payroll.structure'
 
+    def _get_default_journal_id(self):
+        default_structure = self.env.ref('hr_payroll.default_structure', False)
+        return default_structure.journal_id if default_structure else False
+
     journal_id = fields.Many2one('account.journal', 'Salary Journal', readonly=False, required=True,
-        company_dependent=True,
-        default=lambda self: self.env['account.journal'].sudo().search([
-            ('type', '=', 'general'), ('company_id', '=', self.env.company.id)], limit=1))
+        company_dependent=True, default=lambda self: self._get_default_journal_id())
 
     @api.constrains('journal_id')
     def _check_journal_id(self):

@@ -13,6 +13,31 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, get_lang
 
 _logger = logging.getLogger(__name__)
 
+def diot_country_adapt(values):
+    # In SAT classification some countries have a different country code
+    # and others do not exists at all
+    # https://blueprints.launchpad.net/openerp-mexico-localization/+spec/diot-mexico
+    cc = values.get('country_code')
+    non_diot_countries = {
+        'CD', 'SS', 'PS', 'XK', 'SX', 'ER', 'RS', 'ME', 'TL', 'MD', 'MF',
+        'BL', 'BQ', 'YT', 'AZ', 'MM', 'SK', 'CW', 'GS'
+    }
+    diot_country_dict = {
+        'AM': 'SU', 'BZ': 'BL', 'CZ': 'CS', 'DO': 'DM', 'EE': 'SU',
+        'GE': 'SU', 'DE': 'DD', 'GL': 'GJ', 'GG': 'GZ', 'IM': 'IH',
+        'JE': 'GZ', 'KZ': 'SU', 'KG': 'SU', 'LV': 'SU', 'LT': 'SU',
+        'RU': 'SU', 'WS': 'EO', 'TJ': 'SU', 'TM': 'SU', 'UZ': 'SU',
+        'SI': 'YU', 'BA': 'YU', 'HR': 'YU', 'MK': 'YU'
+    }
+
+    if cc in non_diot_countries:
+        # Country not in DIOT catalog, so we use the special code 'XX'
+        # for 'Other' countries
+        values['country_code'] = 'XX'
+    else:
+        # Map the standard country_code to the SAT standard
+        values['country_code'] = diot_country_dict.get(cc, cc)
+    return values
 
 class MexicanAccountReportCustomHandler(models.AbstractModel):
     _name = 'l10n_mx.report.handler'
@@ -95,7 +120,8 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
                 *tail_params,
             ],
         )
-        return self.env.cr.dictfetchall()
+
+        return [diot_country_adapt(vals) for vals in self.env.cr.dictfetchall()]
 
     def action_get_diot_txt(self, options):
         report = self.env['account.report'].browse(options['report_id'])

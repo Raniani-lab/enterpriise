@@ -54,7 +54,7 @@ class TestUi(odoo.tests.HttpCase):
                 'height': 0.015,
             }, {
                 'type_id': self.env.ref('sign.sign_item_type_text').id,
-                'name': 'employee_id.address_home_id.city',
+                'name': 'employee_id.private_city',
                 'required': True,
                 'responsible_id': self.env.ref('sign.sign_item_role_employee').id,
                 'page': 1,
@@ -65,7 +65,7 @@ class TestUi(odoo.tests.HttpCase):
                 'height': 0.015,
             }, {
                 'type_id': self.env.ref('sign.sign_item_type_text').id,
-                'name': 'employee_id.address_home_id.country_id.name',
+                'name': 'employee_id.private_country_id.name',
                 'required': True,
                 'responsible_id': self.env.ref('sign.sign_item_role_employee').id,
                 'page': 1,
@@ -76,7 +76,7 @@ class TestUi(odoo.tests.HttpCase):
                 'height': 0.015,
             }, {
                 'type_id': self.env.ref('sign.sign_item_type_text').id,
-                'name': 'employee_id.address_home_id.street2',
+                'name': 'employee_id.private_street2',
                 'required': True,
                 'responsible_id': self.env.ref('sign.sign_item_role_employee').id,
                 'page': 1,
@@ -259,7 +259,7 @@ class TestUi(odoo.tests.HttpCase):
         # Contract is signed by new employee and HR, the new car must be created
         vehicle = self.env['fleet.vehicle'].search([('company_id', '=', company_id.id), ('model_id', '=', model_corsa.id)])
         self.assertTrue(vehicle, 'A vehicle has been created')
-        self.assertEqual(vehicle.future_driver_id, new_employee_id.address_home_id, 'Futur driver is set')
+        self.assertEqual(vehicle.future_driver_id, new_employee_id.work_contact_id, 'Futur driver is set')
         self.assertEqual(vehicle.state_id, self.env.ref('fleet.fleet_vehicle_state_new_request'), 'Car created in right state')
         self.assertEqual(vehicle.company_id, new_contract_id.company_id, 'Vehicle is in the right company')
         self.assertTrue(new_employee_id.active, 'Employee is now active')
@@ -274,7 +274,7 @@ class TestUi(odoo.tests.HttpCase):
         self.assertTrue(new_employee_id, 'An employee has been created')
         self.assertTrue(new_employee_id.active, 'Employee is active')
 
-        vehicle = self.env['fleet.vehicle'].search([('future_driver_id', '=', new_employee_id.address_home_id.id)])
+        vehicle = self.env['fleet.vehicle'].search([('future_driver_id', '=', new_employee_id.work_contact_id.id)])
         self.assertTrue(vehicle, 'A vehicle has been created')
         self.assertEqual(vehicle.model_id, model_a3, 'Car is right model')
         self.assertEqual(vehicle.state_id, self.env.ref('fleet.fleet_vehicle_state_waiting_list'), 'Car created in right state')

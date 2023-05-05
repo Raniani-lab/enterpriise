@@ -21,12 +21,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.env.user.tz = 'Europe/Brussels'
 
-        cls.address_home = cls.env['res.partner'].create([{
-            'name': "Test Employee",
-            'company_id': cls.env.company.id,
-            'type': "private"
-        }])
-
         cls.resource_calendar_38_hours_per_week = cls.env['resource.calendar'].create([{
             'name': "Test Calendar : 38 Hours/Week",
             'company_id': cls.env.company.id,
@@ -462,7 +456,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.employee = cls.env['hr.employee'].create([{
             'name': "Test Employee",
-            'address_home_id': cls.address_home.id,
             'resource_calendar_id': cls.resource_calendar_38_hours_per_week.id,
             'company_id': cls.env.company.id,
             'km_home_work': 75,
@@ -480,7 +473,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         cls.car = cls.env['fleet.vehicle'].create([{
             'name': "Test Car",
             'license_plate': "TEST",
-            'driver_id': cls.employee.address_home_id.id,
+            'driver_id': cls.employee.work_contact_id.id,
             'company_id': cls.env.company.id,
             'model_id': cls.model.id,
             'first_contract_date': datetime.date(2020, 10, 8),
@@ -4568,7 +4561,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         # Second contract
         second_employee = self.env['hr.employee'].create([{
             'name': "Test Employee",
-            'address_home_id': self.address_home.id,
             'resource_calendar_id': self.resource_calendar_38_hours_per_week.id,
             'company_id': self.env.company.id,
             'marital': "single",

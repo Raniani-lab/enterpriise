@@ -25,7 +25,7 @@ class GenerateSimulationLink(models.TransientModel):
             car = self.env['fleet.vehicle']
             if model == 'hr.contract':
                 if wizard.employee_id:
-                    partner |= wizard.employee_id.address_home_id
+                    partner |= wizard.employee_id.work_contact_id
                     # In case the car was reserved for an applicant, while
                     # the simulation link is sent for the corresponding employee
                     if wizard.employee_id.applicant_id:

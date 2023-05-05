@@ -702,18 +702,6 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
 
-    <record id="res_partner_admin_private_address_be" model="res.partner">
-        <field name="name">Mitchell Admin</field>
-        <field name="street">215 Vine St</field>
-        <field name="city">Scranton</field>
-        <field name="zip">18503</field>
-        <field name="country_id" ref="base.us"/>
-        <field name='state_id' ref="base.state_us_39"/>
-        <field name="phone">+1 555-555-5555</field>
-        <field name="email">admin@yourcompany.example.com</field>
-        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-    </record>
-
     <record id="employee_admin" model="hr.employee">
         <field name="name" eval="obj(ref('base.partner_admin')).name" model="res.partner"/>
         <field name="user_id" ref="base.user_admin"/>
@@ -728,7 +716,13 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="res_partner_admin_private_address_be"/>
+        <field name="private_street">215 Vine St</field>
+        <field name="private_city">Scranton</field>
+        <field name="private_zip">18503</field>
+        <field name="private_country_id" ref="base.us"/>
+        <field name="private_state_id" ref="base.state_us_39"/>
+        <field name="private_phone">+1 555-555-5555</field>
+        <field name="private_email">admin@yourcompany.example.com</field>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_admin"/>
         <field name="gender">male</field>
         <field name="certificate">civil_engineer</field>
@@ -737,12 +731,7 @@
 
     <record id="res_partner_employee_al" model="res.partner">
         <field name="name">Marian Weaver</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_al" model="res.partner.bank">
@@ -756,6 +745,7 @@
     <record id="employee_al" model="hr.employee">
         <field name="name">Marian Weaver</field>
         <field name="department_id" ref="hr_department_2"/>
+        <field name="work_contact_id" ref="res_partner_employee_al"/>
         <field name="job_id" ref="hr_job_2"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Chief Technical Officer</field>
@@ -767,7 +757,10 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_al"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_al"/>
         <field name="gender">female</field>
         <field name="certificate">master</field>
@@ -776,12 +769,7 @@
 
     <record id="res_partner_employee_mit" model="res.partner">
         <field name="name">Bernice Jensen</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_mit" model="res.partner.bank">
@@ -808,7 +796,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_mit"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_mit"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_mit"/>
         <field name="gender">female</field>
         <field name="certificate">master</field>
@@ -817,12 +809,7 @@
 
     <record id="res_partner_employee_niv" model="res.partner">
         <field name="name">Ramona Franklin</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_niv" model="res.partner.bank">
@@ -848,7 +835,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_niv"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_niv"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_niv"/>
         <field name="gender">female</field>
         <field name="certificate">master</field>
@@ -857,12 +848,7 @@
 
     <record id="res_partner_employee_stw" model="res.partner">
         <field name="name">Jack Mccoy</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_stw" model="res.partner.bank">
@@ -888,7 +874,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_stw"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_stw"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_stw"/>
         <field name="gender">male</field>
         <field name="certificate">doctor</field>
@@ -897,12 +887,7 @@
 
     <record id="res_partner_employee_chs" model="res.partner">
         <field name="name">Mario Lambert</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_chs" model="res.partner.bank">
@@ -928,7 +913,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_chs"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_chs"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_chs"/>
         <field name="gender">male</field>
         <field name="certificate">doctor</field>
@@ -937,12 +926,7 @@
 
     <record id="res_partner_employee_qdp" model="res.partner">
         <field name="name">Marc Demo</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_qdp" model="res.partner.bank">
@@ -959,6 +943,7 @@
         <field name="department_id" ref="hr_department_2"/>
         <field name="parent_id" ref="employee_admin"/>
         <field name="job_id" ref="hr_job_4"/>
+        <field name="work_contact_id" ref="res_partner_employee_qdp"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Experienced Developer</field>
         <field name="category_ids" eval="[(6, 0, [ref('hr.employee_category_4')])]"/>
@@ -969,7 +954,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_qdp"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_qdp"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_qdp"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
@@ -978,12 +967,7 @@
 
     <record id="res_partner_employee_fme" model="res.partner">
         <field name="name">Michael Crawford</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_fme" model="res.partner.bank">
@@ -1009,7 +993,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fme"/>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fme"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fme"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
@@ -1018,12 +1006,7 @@
 
     <record id="res_partner_employee_fpi" model="res.partner">
         <field name="name">Rene Chapman</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_fpi" model="res.partner.bank">
@@ -1049,7 +1032,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fpi"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_fpi"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_fpi"/>
         <field name="gender">female</field>
         <field name="certificate">bachelor</field>
@@ -1058,12 +1045,7 @@
 
     <record id="res_partner_employee_jth" model="res.partner">
         <field name="name">Manuel Shelton</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jth" model="res.partner.bank">
@@ -1089,7 +1071,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jth"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jth"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jth"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
@@ -1098,12 +1084,7 @@
 
     <record id="res_partner_employee_ngh" model="res.partner">
         <field name="name">Rebecca Morrison</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_ngh" model="res.partner.bank">
@@ -1129,7 +1110,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_ngh"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_ngh"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_ngh"/>
         <field name="gender">female</field>
         <field name="certificate">bachelor</field>
@@ -1138,12 +1123,7 @@
 
     <record id="res_partner_employee_vad" model="res.partner">
         <field name="name">Sarah Meyer</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_vad" model="res.partner.bank">
@@ -1169,7 +1149,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_vad"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_vad"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_vad"/>
         <field name="gender">female</field>
         <field name="certificate">bachelor</field>
@@ -1178,12 +1162,7 @@
 
     <record id="res_partner_employee_han" model="res.partner">
         <field name="name">Eduardo Kelley</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_han" model="res.partner.bank">
@@ -1207,7 +1186,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_han"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_han"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_han"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
@@ -1216,12 +1199,7 @@
 
     <record id="res_partner_employee_jve" model="res.partner">
         <field name="name">Michael Lambert</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jve" model="res.partner.bank">
@@ -1245,7 +1223,11 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jve"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
+        <field name="work_contact_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jve"/>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jve"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
@@ -1254,12 +1236,7 @@
 
     <record id="res_partner_employee_jep" model="res.partner">
         <field name="name">Dwight Snyder</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jep" model="res.partner.bank">
@@ -1277,13 +1254,17 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Consultant</field>
         <field name="work_location_id" ref="hr.work_location_1"/>
+        <field name="work_contact_id" ref="res_partner_employee_jep"/>
         <field name="work_phone">(883)-331-5378</field>
         <field name="work_email">dwight.snyder59@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jep-image.jpg"/>
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jep"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jep"/>
         <field name="gender">male</field>
         <field name="certificate">bachelor</field>
@@ -1292,12 +1273,7 @@
 
     <record id="res_partner_employee_jod" model="res.partner">
         <field name="name">Minnie Burns</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jod" model="res.partner.bank">
@@ -1311,6 +1287,7 @@
     <record id="employee_jod" model="hr.employee">
         <field name="name">Minnie Burns</field>
         <field name="department_id" ref="hr_department_4"/>
+        <field name="work_contact_id" ref="res_partner_employee_jod"/>
         <field name="job_id" ref="hr_job_6"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Marketing and Community Manager</field>
@@ -1321,7 +1298,10 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jod"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jod"/>
         <field name="gender">female</field>
         <field name="certificate">bachelor</field>
@@ -1330,12 +1310,7 @@
 
     <record id="res_partner_employee_jog" model="res.partner">
         <field name="name">Andrew Hunt</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jog" model="res.partner.bank">
@@ -1353,13 +1328,17 @@
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Experienced Developer</field>
         <field name="work_location_id" ref="hr.work_location_1"/>
+        <field name="work_contact_id" ref="res_partner_employee_jog"/>
         <field name="work_phone">(754)-532-3841</field>
         <field name="work_email">andrew.hunt19@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jog-image.jpg"/>
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jog"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jog"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
@@ -1368,12 +1347,7 @@
 
     <record id="res_partner_employee_jgo" model="res.partner">
         <field name="name">Fred Bilson</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_jgo" model="res.partner.bank">
@@ -1391,13 +1365,17 @@
         <field name="job_title">Consultant</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_location_id" ref="hr.work_location_1"/>
+        <field name="work_contact_id" ref="res_partner_employee_jgo"/>
         <field name="work_phone">(944)-518-8232</field>
         <field name="work_email">arnold.horton28@example.com</field>
         <field name="image_1920" type="base64" file="test_l10n_be_hr_payroll_account/static/img/employee_jgo-image.jpg"/>
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_jgo"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_jgo"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
@@ -1406,12 +1384,7 @@
 
     <record id="res_partner_employee_lur" model="res.partner">
         <field name="name">Jerry Barnes</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_lur" model="res.partner.bank">
@@ -1428,6 +1401,7 @@
         <field name="job_id" ref="hr_job_6"/>
         <field name="job_title">Marketing and Community Manager</field>
         <field name="work_location_id" ref="hr.work_location_1"/>
+        <field name="work_contact_id" ref="res_partner_employee_lur"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_phone">(644)-169-1352</field>
         <field name="work_email">jerry.barnes69@example.com</field>
@@ -1435,7 +1409,10 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_lur"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_lur"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
@@ -1444,12 +1421,7 @@
 
     <record id="res_partner_employee_hne" model="res.partner">
         <field name="name">Travis Moreno</field>
-        <field name="country_id" ref="base.be"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
-        <field name="street">Brussels Street</field>
-        <field name="city">Brussels</field>
-        <field name="zip">2928</field>
     </record>
 
     <record id="res_partner_bank_employee_hne" model="res.partner.bank">
@@ -1463,6 +1435,7 @@
     <record id="employee_hne" model="hr.employee">
         <field name="name">Travis Moreno</field>
         <field name="department_id" ref="hr_department_3"/>
+        <field name="work_contact_id" ref="res_partner_employee_hne"/>
         <field name="job_id" ref="hr_job_3"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="job_title">Consultant</field>
@@ -1473,7 +1446,10 @@
         <field name="identification_id">93051822361</field>
         <field name="niss">93051822361</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
-        <field name="address_home_id" ref="test_l10n_be_hr_payroll_account.res_partner_employee_hne"/>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_street">Brussels Street</field>
+        <field name="private_city">Brussels</field>
+        <field name="private_zip">2928</field>
         <field name="bank_account_id" ref="test_l10n_be_hr_payroll_account.res_partner_bank_employee_hne"/>
         <field name="gender">male</field>
         <field name="certificate">master</field>
@@ -2217,31 +2193,14 @@
     <!-- Data for employee departure -->
     <record id="res_partner_joseph_noluck" model="res.partner">
         <field name="name">Joseph Noluck</field>
-        <field name="street">47 Chemin de la malchance</field>
-        <field name="city">Libramont-Chevigny</field>
-        <field name="zip">6800</field>
-        <field name="country_id" ref="base.be"/>
-        <field name="phone">+003249459832</field>
         <field name="email">joseph.noluck@example.com</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-    </record>
-
-    <record id="res_partner_joseph_noluck_private_address" model="res.partner">
-        <field name="name">Joseph Noluck</field>
-        <field name="street">47 Chemin de la malchance</field>
-        <field name="city">Libramont-Chevigny</field>
-        <field name="zip">6800</field>
-        <field name="country_id" ref="base.be"/>
-        <field name="phone">+003249459832</field>
-        <field name="email">joseph.noluck@example.com</field>
-        <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_account_joseph_noluck" model="res.partner.bank">
         <field name="acc_number">BE44666834865266</field>
         <field name="bank_id" ref="base.bank_ing"/>
-        <field name="partner_id" ref="res_partner_joseph_noluck_private_address"/>
+        <field name="partner_id" ref="res_partner_joseph_noluck"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
     </record>
 
@@ -2250,7 +2209,13 @@
         <field name="gender">male</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>
-        <field name="address_home_id" ref="res_partner_joseph_noluck_private_address"/>
+        <field name="private_street">47 Chemin de la malchance</field>
+        <field name="work_contact_id" ref="res_partner_joseph_noluck"/>
+        <field name="private_city">Libramont-Chevigny</field>
+        <field name="private_zip">6800</field>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_phone">+003249459832</field>
+        <field name="private_email">joseph.noluck@example.com</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="emergency_contact">Jacqueline Noluck</field>
         <field name="emergency_phone">+0032498765474</field>
@@ -2852,14 +2817,7 @@
 
     <record id="res_partner_clemence_student_private_address" model="res.partner">
         <field name="name">Clemence Student</field>
-        <field name="street">20 rue de la Crochette</field>
-        <field name="city">Darville</field>
-        <field name="zip">6987</field>
-        <field name="country_id" ref="base.be"/>
-        <field name="phone">+0032483039453</field>
-        <field name="email">clemence.student@example.com</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_account_clemence_student" model="res.partner.bank">
@@ -2874,7 +2832,12 @@
         <field name="gender">female</field>
         <field name="marital">single</field>
         <field name="job_title">Student</field>
-        <field name="address_home_id" ref="res_partner_clemence_student_private_address"/>
+        <field name="private_street">20 rue de la Crochette</field>
+        <field name="private_city">Darville</field>
+        <field name="private_zip">6987</field>
+        <field name="private_country_id" ref="base.be"/>
+        <field name="private_phone">+0032483039453</field>
+        <field name="private_email">clemence.student@example.com</field>
         <field name="address_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret_work_address"/>
         <field name="emergency_contact">Lucien Student</field>
         <field name="emergency_phone">+0032467845368</field>

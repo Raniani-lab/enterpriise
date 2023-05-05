@@ -138,11 +138,11 @@ class HrContract(models.Model):
         remaining_contracts = self - contracts_to_reset
         if not remaining_contracts:
             return
-        employees_partners = remaining_contracts.employee_id.address_home_id
+        employees_partners = remaining_contracts.employee_id.work_contact_id
         cars = self.env['fleet.vehicle'].search([('driver_id', 'in', employees_partners.ids)])
         dict_car = {car.driver_id.id: car.id for car in cars}
         for contract in remaining_contracts:
-            partner_id = contract.employee_id.address_home_id.id
+            partner_id = contract.employee_id.work_contact_id.id
             if partner_id in dict_car:
                 contract.car_id = dict_car[partner_id]
                 contract.transport_mode_car = True
@@ -204,7 +204,7 @@ class HrContract(models.Model):
     @api.depends('name')
     def _compute_available_cars_amount(self):
         for contract in self:
-            contract.available_cars_amount = self.env['fleet.vehicle'].sudo().search_count(contract._get_available_vehicles_domain(contract.employee_id.address_home_id))
+            contract.available_cars_amount = self.env['fleet.vehicle'].sudo().search_count(contract._get_available_vehicles_domain(contract.employee_id.work_contact_id))
 
     @api.depends('name')
     def _compute_max_unused_cars(self):

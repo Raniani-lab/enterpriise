@@ -581,8 +581,7 @@ class Payslip(models.Model):
         invalid = super()._is_invalid()
         if not invalid and self._is_active_belgian_languages():
             country = self.struct_id.country_id
-            lang_employee = self.employee_id.sudo().address_home_id.lang
-            if country.code == 'BE' and lang_employee not in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"]:
+            if country.code == 'BE' and self.employee_id.lang not in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"]:
                 return _('This document is a translation. This is not a legal document.')
         return invalid
 
@@ -595,7 +594,7 @@ class Payslip(models.Model):
     def action_payslip_done(self):
         if self._is_active_belgian_languages():
             bad_language_slips = self.filtered(
-                lambda p: p.struct_id.country_id.code == "BE" and p.employee_id.sudo().address_home_id.lang not in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
+                lambda p: p.struct_id.country_id.code == "BE" and p.employee_id.lang not in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
             if bad_language_slips:
                 action = self.env['ir.actions.act_window'].\
                     _for_xml_id('l10n_be_hr_payroll.l10n_be_hr_payroll_employee_lang_wizard_action')
@@ -691,7 +690,7 @@ class Payslip(models.Model):
             if active_languages:
                 invalid_language_employees = self.env['hr.employee'].search([
                     ('company_id', 'in', belgian_companies.ids)
-                ]).filtered(lambda e: e.sudo().address_home_id.lang not in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
+                ]).filtered(lambda e: e.lang not in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
             else:
                 invalid_language_employees = self.env['hr.employee']
             if invalid_language_employees:

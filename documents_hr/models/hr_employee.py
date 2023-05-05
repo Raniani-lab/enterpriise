@@ -20,14 +20,14 @@ class HrEmployee(models.Model):
         return self.user_id
 
     def _get_document_partner(self):
-        return self.address_home_id
+        return self.work_contact_id
 
     def _check_create_documents(self):
         return self.company_id.documents_hr_settings and super()._check_create_documents()
 
     def _get_employee_document_domain(self):
         self.ensure_one()
-        user_domain = [('partner_id', '=', self.address_home_id.id)]
+        user_domain = [('partner_id', '=', self.work_contact_id.id)]
         if self.user_id:
             user_domain = expression.OR([user_domain,
                                         [('owner_id', '=', self.user_id.id)]])
@@ -36,7 +36,7 @@ class HrEmployee(models.Model):
     def _compute_document_count(self):
         # Method not optimized for batches since it is only used in the form view.
         for employee in self:
-            if employee.address_home_id:
+            if employee.work_contact_id:
                 employee.document_count = self.env['documents.document'].search_count(
                     employee._get_employee_document_domain())
             else:
@@ -44,22 +44,22 @@ class HrEmployee(models.Model):
 
     def action_open_documents(self):
         self.ensure_one()
-        if not self.address_home_id:
+        if not self.work_contact_id:
             # Prevent opening documents if the employee's address is not set or no user is linked.
-            raise ValidationError(_('You must set a private address on the Employee in order to use Document\'s features.'))
+            raise ValidationError(_('You must set a work contact address on the Employee in order to use Document\'s features.'))
         hr_folder = self._get_document_folder()
         action = self.env['ir.actions.act_window']._for_xml_id('documents.document_action')
         # Documents created within that action will be 'assigned' to the employee
         # Also makes sure that the views starts on the hr_holder
         action['context'] = {
-            'default_partner_id': self.address_home_id.id,
+            'default_partner_id': self.work_contact_id.id,
             'searchpanel_default_folder_id': hr_folder and hr_folder.id,
         }
         action['domain'] = self._get_employee_document_domain()
         return action
 
     def action_send_documents_share_link(self):
-        invalid_employees = self.filtered(lambda e: not e.address_home_id.email)
+        invalid_employees = self.filtered(lambda e: not e.private_email)
         if invalid_employees:
             raise UserError(_('Employee\'s private email must be set to use \"Send Access Link\" function:\n%s', '\n'.join(invalid_employees.mapped('name'))))
         template = self.env.ref('documents_hr.mail_template_document_folder_link', raise_if_not_found=False)

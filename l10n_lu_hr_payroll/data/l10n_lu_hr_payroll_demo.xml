@@ -73,14 +73,7 @@
 
     <record id="res_partner_frida_poirish_private_address" model="res.partner">
         <field name="name">Frida Poirish</field>
-        <field name="street">71, Montée d'Ernzen</field>
-        <field name="city">Ernzen</field>
-        <field name="zip">7636</field>
-        <field name="country_id" ref="base.lu"/>
-        <field name="phone">+0032476543210</field>
-        <field name="email">frida.poirish@example.com</field>
         <field name="company_id" ref="l10n_lu_hr_payroll.res_company_lu"/>
-        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_account_frida_poirish" model="res.partner.bank">
@@ -95,7 +88,12 @@
         <field name="gender">female</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>
-        <field name="address_home_id" ref="l10n_lu_hr_payroll.res_partner_frida_poirish_private_address"/>
+        <field name="private_street">71, Montée d'Ernzen</field>
+        <field name="private_city">Ernzen</field>
+        <field name="private_zip">7636</field>
+        <field name="private_country_id" ref="base.lu"/>
+        <field name="private_phone">+0032476543210</field>
+        <field name="private_email">frida.poirish@example.com</field>
         <field name="address_id" ref="l10n_lu_hr_payroll.res_partner_frida_poirish_work_address"/>
         <field name="emergency_contact">Knutt Poirish</field>
         <field name="emergency_phone">+0032498765432</field>

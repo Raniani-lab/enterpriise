@@ -71,14 +71,7 @@
 
     <record id="res_partner_camelia_foster_private_address" model="res.partner">
         <field name="name">Camelia Foster</field>
-        <field name="street">14000 Avenue Mokhtar Gazoulit</field>
-        <field name="city">Rabat</field>
-        <field name="zip">10000</field>
-        <field name="country_id" ref="base.ma"/>
-        <field name="phone">+0032476543210</field>
-        <field name="email">camelia.foster@example.com</field>
         <field name="company_id" ref="l10n_ma_hr_payroll.res_company_ma"/>
-        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_account_camelia_foster" model="res.partner.bank">
@@ -93,7 +86,12 @@
         <field name="gender">female</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>
-        <field name="address_home_id" ref="l10n_ma_hr_payroll.res_partner_camelia_foster_private_address"/>
+        <field name="private_street">14000 Avenue Mokhtar Gazoulit</field>
+        <field name="private_city">Rabat</field>
+        <field name="private_zip">10000</field>
+        <field name="private_country_id" ref="base.ma"/>
+        <field name="private_phone">+0032476543210</field>
+        <field name="private_email">camelia.foster@example.com</field>
         <field name="address_id" ref="l10n_ma_hr_payroll.res_partner_camelia_foster_work_address"/>
         <field name="emergency_contact">Knutt Foster</field>
         <field name="emergency_phone">+212-520-123123</field>

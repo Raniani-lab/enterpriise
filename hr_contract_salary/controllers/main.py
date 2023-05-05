@@ -54,8 +54,8 @@ class SignContract(Sign):
                 contract.employee_id.active = True
                 if contract.applicant_id:
                     contract.applicant_id._move_to_hired_stage()
-            if contract.employee_id.address_home_id:
-                contract.employee_id.address_home_id.active = True
+            if contract.employee_id.work_contact_id:
+                contract.employee_id.work_contact_id.active = True
             self._create_activity_advantage(contract, 'countersigned')
             self._send_advantage_sign_request(contract)
 
@@ -98,7 +98,7 @@ class SignContract(Sign):
                     'template_id': sign_template.id,
                     'request_item_ids': [
                         Command.create({'role_id': request.env.ref('sign.sign_item_role_employee').id,
-                                        'partner_id': contract.employee_id.address_home_id.id}),
+                                        'partner_id': contract.employee_id.work_contact_id.id}),
                         Command.create({'role_id': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id,
                                         'partner_id': contract.hr_responsible_id.partner_id.id}),
                     ],
@@ -227,36 +227,29 @@ class HrContractSalary(http.Controller):
 
         if not contract.employee_id or not employee_contract:
             contract_country = contract.company_id.country_id
-            address_home_id = request.env['res.partner'].with_context(
-                tracking_disable=True
-            ).with_user(SUPERUSER_ID).sudo().create({
-                'name': 'Simulation',
-                'type': 'private',
-                'country_id': contract_country.id,
-                'active': False,
-                'company_id': contract.company_id.id,
-            })
             # Pre-filling
-            temporary_name = ""
-            temporary_mobile = ""
+            temporary_name = False
+            temporary_mobile = False
+            private_email = False
             # Pre-filling name / phone / mail if coming from an applicant
             if kw.get('applicant_id'):
                 applicant = request.env['hr.applicant'].sudo().browse(int(kw.get('applicant_id')))
                 temporary_name = applicant.partner_name
                 temporary_mobile = applicant.partner_phone
-                address_home_id.email = applicant.email_from
+                private_email = applicant.email_from
             contract.employee_id = request.env['hr.employee'].with_context(
                 tracking_disable=True,
                 salary_simulation=True,
             ).with_user(SUPERUSER_ID).sudo().create({
                 'name': temporary_name,
                 'phone': temporary_mobile,
+                'private_email': private_email,
                 'active': False,
                 'country_id': contract_country.id,
+                'private_country_id': contract_country.id,
                 'certificate': False,  # To force encoding it
                 'company_id': contract.company_id.id,
                 'resource_calendar_id': contract.resource_calendar_id.id,
-                'address_home_id': address_home_id.id,
             })
 
         if 'applicant_id' in kw:
@@ -309,7 +302,6 @@ class HrContractSalary(http.Controller):
         dropdown_options = {}
         targets = {
             'employee': contract.employee_id,
-            'address': contract.employee_id.address_home_id,
             'bank_account': contract.employee_id.bank_account_id,
         }
 
@@ -498,7 +490,6 @@ class HrContractSalary(http.Controller):
         def resolve_value(field_name, values):
             targets = {
                 'employee': request.env['hr.employee'],
-                'address': request.env['res.partner'],
                 'bank_account': request.env['res.partner.bank'],
             }
             field_value = values[field_name]
@@ -512,7 +503,6 @@ class HrContractSalary(http.Controller):
             '|', ('structure_type_id', '=', False), ('structure_type_id', '=', contract.structure_type_id.id)])
 
         employee_infos = personal_infos_values['employee']
-        address_infos = personal_infos_values['address']
         bank_account_infos = personal_infos_values['bank_account']
 
         for key in ['employee_job_id', 'department_id']:
@@ -528,7 +518,7 @@ class HrContractSalary(http.Controller):
         employee_vals = {'job_title': employee_infos['job_title'],
                          'job_id': employee_infos['employee_job_id'],
                          'department_id': employee_infos['department_id']}
-        address_home_vals = {}
+        work_contact_vals = {}
         bank_account_vals = {}
         attachment_create_vals = []
         for personal_info in personal_infos:
@@ -549,24 +539,23 @@ class HrContractSalary(http.Controller):
                     })
                 else:
                     employee_vals[field_name] = resolve_value(field_name, employee_infos)
-            elif field_name in address_infos and personal_info.applies_on == 'address':
-                address_home_vals[field_name] = resolve_value(field_name, address_infos)
             elif field_name in bank_account_infos and personal_info.applies_on == 'bank_account':
                 bank_account_vals[field_name] = resolve_value(field_name, bank_account_infos)
 
-        address_home_vals['name'] = employee_vals['name']
+        work_contact_vals['name'] = employee_vals['name']
+        work_contact_vals['email'] = employee_vals['private_email']
 
         # Update personal info on the private address
-        if employee.address_home_id:
+        if employee.work_contact_id:
             if no_name_write:
-                del address_home_vals['name']
-            partner = employee.address_home_id
+                del work_contact_vals['name']
+            partner = employee.work_contact_id
             # We shouldn't modify the partner email like this
-            address_home_vals.pop('email', None)
-            partner.write(address_home_vals)
+            work_contact_vals.pop('email', None)
+            partner.write(work_contact_vals)
         else:
-            address_home_vals['active'] = False
-            partner = request.env['res.partner'].sudo().with_context(lang=None, tracking_disable=True).create(address_home_vals)
+            work_contact_vals['active'] = False
+            partner = request.env['res.partner'].sudo().with_context(lang=None, tracking_disable=True).create(work_contact_vals)
 
         # Update personal info on the employee
         if bank_account_vals:
@@ -580,13 +569,10 @@ class HrContractSalary(http.Controller):
 
             employee_vals['bank_account_id'] = bank_account.id
 
-        employee_vals['address_home_id'] = partner.id
+        employee_vals['work_contact_id'] = partner.id
 
         if job.address_id:
             employee_vals['address_id'] = job.address_id.id
-
-        if partner.type != 'private':
-            partner.type = 'private'
 
         if not no_name_write:
             employee_vals['name'] = employee_infos['name']
@@ -617,6 +603,7 @@ class HrContractSalary(http.Controller):
                 'name': 'Simulation Employee',
                 'active': False,
                 'company_id': contract.company_id.id,
+                'lang': contract.company_id.partner_id.lang,
                 'resource_calendar_id': contract.resource_calendar_id.id,
             })
 
@@ -829,9 +816,6 @@ class HrContractSalary(http.Controller):
             if info.applies_on == 'employee':
                 field_label = field_names['hr.employee'][info.field]
                 field_value = contract.employee_id[info.field]
-            if info.applies_on == 'address':
-                field_label = field_names['res.partner'][info.field]
-                field_value = contract.employee_id.address_home_id[info.field]
             if info.applies_on == 'bank_account':
                 field_label = field_names['res.partner.bank'][info.field]
                 field_value = contract.employee_id.bank_account_id[info.field]
@@ -935,7 +919,7 @@ class HrContractSalary(http.Controller):
             'request_item_ids': [
                 Command.create({
                     'role_id': request.env.ref('sign.sign_item_role_employee').id,
-                    'partner_id': new_contract.employee_id.address_home_id.id,
+                    'partner_id': new_contract.employee_id.work_contact_id.id,
                     'mail_sent_order': 1
                 }),
                 Command.create({

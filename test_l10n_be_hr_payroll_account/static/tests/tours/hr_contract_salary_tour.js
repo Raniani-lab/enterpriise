@@ -356,27 +356,27 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         },
         {
             content: "Street",
-            trigger: 'input[name="street"]',
+            trigger: 'input[name="private_street"]',
             run: 'text Rue des Wallons',
         },
         {
             content: "City",
-            trigger: 'input[name="city"]',
+            trigger: 'input[name="private_city"]',
             run: 'text Louvain-la-Neuve',
         },
         {
             content: "Zip Code",
-            trigger: 'input[name="zip"]',
+            trigger: 'input[name="private_zip"]',
             run: 'text 1348',
         },
         {
             content: "Email",
-            trigger: 'input[name="email"]',
+            trigger: 'input[name="private_email"]',
             run: 'text nathalie.stephen@example.com',
         },
         {
             content: "Phone Number",
-            trigger: 'input[name="phone"]',
+            trigger: 'input[name="private_phone"]',
             run: 'text 1234567890',
         },
         {
@@ -1076,27 +1076,27 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "Street",
-            trigger: 'input[name="street"]',
+            trigger: 'input[name="private_street"]',
             run: 'text Rue des Wallons',
         },
         {
             content: "City",
-            trigger: 'input[name="city"]',
+            trigger: 'input[name="private_city"]',
             run: 'text Louvain-la-Neuve',
         },
         {
             content: "Zip Code",
-            trigger: 'input[name="zip"]',
+            trigger: 'input[name="private_zip"]',
             run: 'text 1348',
         },
         {
             content: "Email",
-            trigger: 'input[name="email"]',
+            trigger: 'input[name="private_email"]',
             run: 'text mitchell2.stephen@example.com',
         },
         {
             content: "Phone Number",
-            trigger: 'input[name="phone"]',
+            trigger: 'input[name="private_phone"]',
             run: 'text 1234567890',
         },
         {
@@ -1133,6 +1133,14 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
             run: 'text 1',
         },
         {
+            content: "Lang",
+            trigger: 'label[for=lang]:eq(0)',
+            run: function () {
+                $('select[name=lang] option:contains(English)').prop('selected', true);
+                $('select[name=lang]').trigger('change');
+            },
+        },
+        {
             content: "Bank Account",
             trigger: 'input[name="acc_number"]',
             run: 'text BE10 3631 0709 4104',
@@ -1165,10 +1173,10 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "Country",
-            trigger: 'label[for=country_id]:eq(0)',
+            trigger: 'label[for=private_country_id]:eq(0)',
             run: function () {
-                $('select[name=country] option:contains(Belgium)').prop('selected', true);
-                $('select[name=country]').trigger('change');
+                $('select[name=private_country_id] option:contains(Belgium)').prop('selected', true);
+                $('select[name=private_country_id]').trigger('change');
             },
         },
         {

@@ -232,8 +232,7 @@ class HrContract(models.Model):
 
     def _get_redundant_salary_data(self):
         employees = self.mapped('employee_id').filtered(lambda employee: not employee.active)
-        partners = employees.mapped('address_home_id').filtered(
-            lambda partner: not partner.active and partner.type == 'private')
+        partners = employees.work_contact_id.filtered(lambda partner: not partner.active)
         return [employees, partners]
 
     def _clean_redundant_salary_data(self):
@@ -273,30 +272,27 @@ class HrContract(models.Model):
 
     def send_offer(self):
         self.ensure_one()
-        if self.employee_id.address_home_id:
-            try:
-                template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id
-            except ValueError:
-                template_id = False
-            path = '/salary_package/contract/' + str(self.id)
-            ctx = {
-                'default_email_layout_xmlid': 'mail.mail_notification_light',
-                'default_model': 'hr.contract',
-                'default_res_ids': self.ids,
-                'default_template_id': template_id,
-                'default_composition_mode': 'comment',
-                'salary_package_url': self.get_base_url() + path,
-            }
-            return {
-                'type': 'ir.actions.act_window',
-                'view_mode': 'form',
-                'res_model': 'mail.compose.message',
-                'views': [[False, 'form']],
-                'target': 'new',
-                'context': ctx,
-            }
-        else:
-            raise ValidationError(_("No private address defined on the employee!"))
+        try:
+            template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id
+        except ValueError:
+            template_id = False
+        path = '/salary_package/contract/' + str(self.id)
+        ctx = {
+            'default_email_layout_xmlid': 'mail.mail_notification_light',
+            'default_model': 'hr.contract',
+            'default_res_ids': self.ids,
+            'default_template_id': template_id,
+            'default_composition_mode': 'comment',
+            'salary_package_url': self.get_base_url() + path,
+        }
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [[False, 'form']],
+            'target': 'new',
+            'context': ctx,
+        }
 
     def action_archive(self):
         res = super().action_archive()

@@ -71,14 +71,7 @@
 
     <record id="res_partner_antonina_private_address" model="res.partner">
         <field name="name">Antonina Kaczmarczyk</field>
-        <field name="street">Księżycowa 14/69</field>
-        <field name="city">Kamienica Królewska</field>
-        <field name="zip">55616</field>
-        <field name="country_id" ref="base.pl"/>
-        <field name="phone">0048 391 443 088</field>
-        <field name="email">antonina.kaczmarczyk@example.com</field>
         <field name="company_id" ref="l10n_pl_hr_payroll.res_company_pl"/>
-        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_account_norberta" model="res.partner.bank">
@@ -93,7 +86,12 @@
         <field name="gender">female</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>
-        <field name="address_home_id" ref="l10n_pl_hr_payroll.res_partner_antonina_private_address"/>
+        <field name="private_street">Księżycowa 14/69</field>
+        <field name="private_city">Kamienica Królewska</field>
+        <field name="private_zip">55616</field>
+        <field name="private_country_id" ref="base.pl"/>
+        <field name="private_phone">0048 391 443 088</field>
+        <field name="private_email">antonina.kaczmarczyk@example.com</field>
         <field name="address_id" ref="l10n_pl_hr_payroll.res_partner_antonina_work_address"/>
         <field name="emergency_contact">Mariusz Kaczmarczyk</field>
         <field name="emergency_phone">0048(07)4975784</field>

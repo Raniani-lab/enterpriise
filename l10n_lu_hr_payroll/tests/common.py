@@ -20,15 +20,9 @@ class TestLuPayrollCommon(TransactionCase):
         cls.env.user.company_ids |= cls.lux_company
         cls.env = cls.env(context=dict(cls.env.context, allowed_company_ids=cls.lux_company.ids))
 
-        cls.partner_david = cls.env['res.partner'].create({
-            'name': 'david',
-            'company_id': cls.lux_company.id,
-            'type': 'private',
-            'country_id': cls.env.ref('base.lu').id,
-        })
         cls.employee_david = cls.env['hr.employee'].create({
             'name': 'david',
-            'address_home_id': cls.partner_david.id,
+            'private_country_id': cls.env.ref('base.lu').id,
             'company_id': cls.lux_company.id,
             'identification_id': 111111111,
         })

@@ -64,14 +64,7 @@
 
     <record id="res_partner_barack_private_address" model="res.partner">
         <field name="name">Barack Akintola</field>
-        <field name="street">Box 6-70100</field>
-        <field name="city">Garissa</field>
-        <field name="zip">00247</field>
-        <field name="country_id" ref="base.ke"/>
-        <field name="phone">+25420318879</field>
-        <field name="email">barack.akintola@example.com</field>
         <field name="company_id" ref="l10n_ke.demo_company_ke"/>
-        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_account_barack" model="res.partner.bank">
@@ -86,7 +79,12 @@
         <field name="gender">male</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>
-        <field name="address_home_id" ref="l10n_ke_hr_payroll_account.res_partner_barack_private_address"/>
+        <field name="private_street">Box 6-70100</field>
+        <field name="private_city">Garissa</field>
+        <field name="private_zip">00247</field>
+        <field name="private_country_id" ref="base.ke"/>
+        <field name="private_phone">+25420318879</field>
+        <field name="private_email">barack.akintola@example.com</field>
         <field name="address_id" ref="l10n_ke_hr_payroll_account.res_partner_barack_work_address"/>
         <field name="emergency_contact">Mohamed Akintola</field>
         <field name="emergency_phone">+25420318879</field>

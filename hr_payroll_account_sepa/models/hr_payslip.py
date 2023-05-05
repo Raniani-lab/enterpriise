@@ -27,12 +27,12 @@ class HrPayslip(models.Model):
         }
 
     def _create_xml_file(self, journal_id, file_name=None):
-        employees = self.mapped('employee_id').filtered(lambda e: not e.address_home_id)
+        employees = self.mapped('employee_id').filtered(lambda e: not e.work_contact_id)
         if employees:
-            raise UserError(_("Some employees (%s) don't have a private address.") % (','.join(employees.mapped('name'))))
-        employees = self.mapped('employee_id').filtered(lambda e: e.address_home_id and not e.address_home_id.name)
+            raise UserError(_("Some employees (%s) don't have a work contact.") % (','.join(employees.mapped('name'))))
+        employees = self.mapped('employee_id').filtered(lambda e: e.work_contact_id and not e.work_contact_id.name)
         if employees:
-            raise UserError(_("Some employees (%s) don't have a valid name on the private address.") % (','.join(employees.mapped('name'))))
+            raise UserError(_("Some employees (%s) don't have a valid name on the work contact.") % (','.join(employees.mapped('name'))))
         employees = self.mapped('employee_id').filtered(lambda e: not e.bank_account_id)
         if employees:
             raise UserError(_("Some employees (%s) don't have a bank account.") % (','.join(employees.mapped('name'))))
@@ -52,7 +52,7 @@ class HrPayslip(models.Model):
                 'currency_id' : journal_id.currency_id.id,
                 'payment_type' : 'outbound',
                 'ref' : slip.number,
-                'partner_id' : slip.employee_id.address_home_id.id,
+                'partner_id' : slip.employee_id.work_contact_id.id,
                 'partner_bank_id': slip.employee_id.bank_account_id.id,
             })
             if not sct_generic and (not slip.employee_id.bank_account_id.bank_bic or not slip.employee_id.bank_account_id.acc_type == 'iban'):

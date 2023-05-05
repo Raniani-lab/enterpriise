@@ -71,14 +71,7 @@
 
     <record id="res_partner_frantiska_private_address" model="res.partner">
         <field name="name">Františka Kubáňová</field>
-        <field name="street">Klaudia Rest 28528</field>
-        <field name="city">Veľké Kosihy</field>
-        <field name="zip">62481</field>
-        <field name="country_id" ref="base.sk"/>
-        <field name="phone">7558 354 877</field>
-        <field name="email">frantiska.kubanova@example.com</field>
         <field name="company_id" ref="l10n_sk_hr_payroll.res_company_sk"/>
-        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_account_norberta" model="res.partner.bank">
@@ -93,7 +86,12 @@
         <field name="gender">female</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>
-        <field name="address_home_id" ref="l10n_sk_hr_payroll.res_partner_frantiska_private_address"/>
+        <field name="private_street">Klaudia Rest 28528</field>
+        <field name="private_city">Veľké Kosihy</field>
+        <field name="private_zip">62481</field>
+        <field name="private_country_id" ref="base.sk"/>
+        <field name="private_phone">7558 354 877</field>
+        <field name="private_email">frantiska.kubanova@example.com</field>
         <field name="address_id" ref="l10n_sk_hr_payroll.res_partner_frantiska_work_address"/>
         <field name="emergency_contact">Kamila Kubáňová</field>
         <field name="emergency_phone">7558 354 877</field>

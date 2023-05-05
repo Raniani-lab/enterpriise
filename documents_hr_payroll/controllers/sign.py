@@ -29,7 +29,7 @@ class SignContract(Sign):
 
             user = request.env['res.users'].search([('partner_id', '=', employee_partner.id)], limit=1)
             if not user:
-                employee = request.env['hr.employee'].search([('address_home_id', '=', employee_partner.id)])
+                employee = request.env['hr.employee'].search([('work_contact_id', '=', employee_partner.id)])
                 user = employee.user_id
 
             request.env['documents.document'].create({

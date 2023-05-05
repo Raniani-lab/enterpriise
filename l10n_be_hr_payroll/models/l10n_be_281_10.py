@@ -130,7 +130,7 @@ class L10nBe28110(models.Model):
             raise UserError(_("The company is not correctly configured on your employees. Please be sure that the following pieces of information are set: street, zip, city, phone and vat") + '\n' + '\n'.join(invalid_employees.mapped('name')))
 
         invalid_employees = employees.filtered(
-            lambda e: not e.address_home_id or not e.address_home_id.street or not e.address_home_id.zip or not e.address_home_id.city or not e.address_home_id.country_id)
+            lambda e: not e.private_street or not e.private_zip or not e.private_city or not e.private_country_id)
         if invalid_employees:
             raise UserError(_("The following employees don't have a valid private address (with a street, a zip, a city and a country):\n%s", '\n'.join(invalid_employees.mapped('name'))))
 
@@ -147,7 +147,7 @@ class L10nBe28110(models.Model):
         if invalid_employees:
             raise UserError(_('Invalid NISS number for those employees:\n %s', '\n'.join(invalid_employees.mapped('name'))))
 
-        invalid_country_codes = employees.address_home_id.country_id.filtered(lambda c: c.code not in COUNTRY_CODES)
+        invalid_country_codes = employees.private_country_id.filtered(lambda c: c.code not in COUNTRY_CODES)
         if invalid_country_codes:
             raise UserError(_('Unsupported country code %s. Please contact an administrator.', ', '.join(invalid_country_codes.mapped('code'))))
 
@@ -221,7 +221,7 @@ class L10nBe28110(models.Model):
             'v0017_gemeente': self.company_id.city,
             'v0018_telefoonnummer': phone,
             'v0021_contactpersoon': self.env.user.name,
-            'v0022_taalcode': self._get_lang_code(self.env.user.employee_id.address_home_id.lang),
+            'v0022_taalcode': self._get_lang_code(self.env.user.employee_id.lang),
             'v0023_emailadres': self.env.user.email,
             'v0024_nationaalnr': bce_number,
             'v0025_typeenvoi': self.type_sending,
@@ -266,7 +266,7 @@ class L10nBe28110(models.Model):
         termination_fees_structure = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees')
 
         for employee in employee_payslips:
-            is_belgium = employee.address_home_id.country_id == belgium
+            is_belgium = employee.private_country_id == belgium
             payslips = employee_payslips[employee]
             sequence += 1
 
@@ -280,7 +280,7 @@ class L10nBe28110(models.Model):
             termination_gross = sum(all_line_values['GROSS'][p.id]['total'] for p in payslips if p.struct_id == termination_fees_structure)
             common_gross = total_gross - warrant_gross - holiday_gross - termination_gross
 
-            postcode = employee.address_home_id.zip.strip() if is_belgium else '0'
+            postcode = employee.private_zip.strip() if is_belgium else '0'
             if len(postcode) > 4 or not postcode.isdecimal():
                 raise UserError(_("The belgian postcode length shouldn't exceed 4 characters and should contain only numbers for employee %s", employee.name))
 
@@ -324,14 +324,14 @@ class L10nBe28110(models.Model):
                 'f2009_volgnummer': sequence,
                 'f2011_nationaalnr': employee.niss,
                 'f2013_naam': last_name,
-                'f2015_adres': employee.address_home_id.street,
+                'f2015_adres': employee.private_street,
                 'f2016_postcodebelgisch': postcode,
-                'employee_city': employee.address_home_id.city,
-                'f2018_landwoonplaats': '150' if is_belgium else self._get_country_code(employee.address_home_id.country_id),
-                'f2027_taalcode': self._get_lang_code(employee.address_home_id.lang),
+                'employee_city': employee.private_city,
+                'f2018_landwoonplaats': '150' if is_belgium else self._get_country_code(employee.private_country_id),
+                'f2027_taalcode': self._get_lang_code(employee.lang),
                 'f2028_typetraitement': self.type_treatment,
                 'f2029_enkelopgave325': 0,
-                'f2112_buitenlandspostnummer': employee.address_home_id.zip if not is_belgium else '0',
+                'f2112_buitenlandspostnummer': employee.private_zip if not is_belgium else '0',
                 'f2114_voornamen': first_name,
                 'f10_2031_associationactivity': 0,
                 'f10_2034_ex': 0,
@@ -602,7 +602,7 @@ class L10nBe28110Line(models.Model):
                 _logger.info('Printing 281.10 sheet (%s/%s)', counter, sheet_count)
                 counter += 1
                 sheet_filename = '%s-%s-281_10' % (sheet_data['f2002_inkomstenjaar'], sheet_data['f2013_naam'])
-                employee_lang = sheet_data['employee'].sudo().address_home_id.lang
+                employee_lang = sheet_data['employee'].lang
                 sheet_file, dummy = report_sudo.with_context(lang=employee_lang, allowed_company_ids=sheet_data['employee'].company_id.ids)._render_qweb_pdf(
                     report_id, [sheet_data['employee_id']], data={**sheet_data, **rendering_data['data']})
                 pdf_files.append((sheet_data['employee'], sheet_filename, sheet_file))

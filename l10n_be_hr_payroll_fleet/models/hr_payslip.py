@@ -19,7 +19,7 @@ class HrPayslip(models.Model):
             contract_sudo = slip.contract_id.sudo()
             if contract_sudo.car_id:
                 future_driver = contract_sudo.car_id.future_driver_id
-                if future_driver and future_driver == slip.employee_id.address_home_id:
+                if future_driver and future_driver == slip.employee_id.work_contact_id:
                     tmp_vehicle = self.env['fleet.vehicle'].search(
                         [('driver_id', '=', contract_sudo.car_id.future_driver_id.id)], limit=1)
                     slip.vehicle_id = tmp_vehicle

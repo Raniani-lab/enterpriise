@@ -129,11 +129,7 @@ class HrContractSignDocumentWizard(models.TransientModel):
         # Partner by employee
         partner_by_employee = dict()
         for employee in self.employee_ids:
-            if self.mail_to == "private":
-                email_choice = employee.address_home_id.email
-            else:
-                email_choice = employee.work_email
-
+            email_choice = employee.private_email if self.mail_to == "private" else employee.work_email
             if email_choice:
                 email_used = email_choice
             else:

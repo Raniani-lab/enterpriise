@@ -15,7 +15,7 @@ class HrContract(models.Model):
         return self.employee_id.user_id
 
     def _get_document_partner(self):
-        return self.employee_id.address_home_id
+        return self.employee_id.work_contact_id
 
     def _get_document_folder(self):
         return self.company_id.documents_hr_folder

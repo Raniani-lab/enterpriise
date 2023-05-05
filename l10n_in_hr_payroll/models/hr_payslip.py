@@ -26,7 +26,7 @@ class HrPayslip(models.Model):
     def _compute_name(self):
         super()._compute_name()
         for slip in self.filtered(lambda s: s.country_code == 'IN'):
-            lang = slip.employee_id.sudo().address_home_id.lang or self.env.user.lang
+            lang = slip.employee_id.lang or self.env.user.lang
             payslip_name = slip.struct_id.payslip_name or _('Salary Slip')
             date = format_date(self.env, slip.date_from, date_format="MMMM y", lang_code=lang)
             if slip.number:

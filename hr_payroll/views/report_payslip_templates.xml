@@ -36,13 +36,13 @@
                     </td>
                 </tr>
                 <tr id="employee_info_line_3">
-                    <td><span t-field="o.employee_id.address_home_id.street"/></td>
+                    <td><span t-field="o.employee_id.private_street"/></td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr id="employee_info_line_4">
-                    <td><span t-field="o.employee_id.address_home_id.city"/> <span t-field="o.employee_id.address_home_id.zip"/></td>
+                    <td><span t-field="o.employee_id.private_city"/> <span t-field="o.employee_id.private_zip"/></td>
                     <td><strong>Person in charge</strong></td>
                     <td><strong>Identification</strong></td>
                     <td><strong>Computed on </strong></td>
@@ -139,7 +139,7 @@
 <template id="report_payslip_lang">
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="o">
-            <t t-set="o" t-value="o.with_context(lang=o.employee_id.sudo().address_home_id.lang or o.env.lang)"/>
+            <t t-set="o" t-value="o.with_context(lang=o.employee_id.lang or o.env.lang)"/>
             <t t-call="hr_payroll.report_payslip" t-lang="o.env.lang"/>
         </t>
     </t>

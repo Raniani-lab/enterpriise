@@ -515,7 +515,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     checkFormValidity() {
         const requiredEmptyInput = $("input:required").toArray().find(input => input.value === '' && input.name !== '' && input.type !== 'checkbox');
         const requiredEmptySelect = $("select:required").toArray().find(select => $(select).val() === '');
-        const email = $("input[name='email']").val();
+        const email = $("input[name='private_email']").val();
         const atpos = email.indexOf("@");
         const dotpos = email.lastIndexOf(".");
         const invalid_email = atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length;
@@ -577,15 +577,15 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             });
         }
         if (invalid_email) {
-            $("input[name='email']").addClass('bg-danger');
+            $("input[name='private_email']").addClass('bg-danger');
             if (!isEmailEmpty) {
                 $("<div class='alert alert-danger alert-dismissable fade show'>")
                     .text(_t('Not a valid e-mail address'))
                     .appendTo($("button#hr_cs_submit").parent());
             }
-            let emailPosition = $("input[name='email']").offset().top;
+            let emailPosition = $("input[name='private_email']").offset().top;
             if (!elementToScroll || emailPosition <= elementToScrollPosition) {
-                elementToScroll = $("input[name='email']")[0];
+                elementToScroll = $("input[name='private_email']")[0];
             }
         }
         $(".alert").delay(4000).slideUp(200, function () {

@@ -28,7 +28,7 @@ class TestPayrollSEPACreditTransfer(TestHrPayrollAccountCommon):
 
         cls.res_partner_bank = cls.env['res.partner.bank'].create({
             'acc_number': 'BE32707171912447',
-            'partner_id': cls.private_address.id,
+            'partner_id': cls.work_contact.id,
             'acc_type': 'bank',
             'bank_id': cls.bank.id,
         })

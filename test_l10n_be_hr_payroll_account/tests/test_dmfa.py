@@ -17,21 +17,15 @@ class TestDMFA(common.TransactionCase):
             'country_id': self.env.ref('base.be').id,
         })
 
-        lap_address = self.env['res.partner'].create({
-            'name': 'Laurie Poiret',
-            'street': '58 rue des Wallons',
-            'city': 'Louvain-la-Neuve',
-            'zip': '1348',
-            'country_id': self.env.ref("base.be").id,
-            'phone': '+0032476543210',
-            'email': 'laurie.poiret@example.com',
-            'company_id': belgian_company.id,
-        })
-
         lap = self.env['hr.employee'].create({
             'name': 'Laurie Poiret',
             'marital': 'single',
-            'address_home_id': lap_address.id,
+            'private_street': '58 rue des Wallons',
+            'private_city': 'Louvain-la-Neuve',
+            'private_zip': '1348',
+            'private_country_id': self.env.ref("base.be").id,
+            'private_phone': '+0032476543210',
+            'private_email': 'laurie.poiret@example.com',
             'resource_calendar_id': self.env.ref("resource.resource_calendar_std_38h").id,
             'company_id': belgian_company.id,
         })

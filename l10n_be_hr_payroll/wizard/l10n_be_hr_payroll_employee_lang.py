@@ -23,16 +23,9 @@ class L10nBeHrPayrollEmployeeLangWizard(models.TransientModel):
         for wizard in self:
             code_to_employee = defaultdict(lambda: self.env['hr.employee'])
             for line in wizard.line_ids:
-                #This is an edge case, an employee should never not have an address
-                if not line.employee_id.address_home_id:
-                    line.employee_id.sudo().address_home_id = self.env['res.partner'].sudo().create({
-                        'name': line.employee_id.display_name,
-                        'lang': line.lang,
-                    })
-                else:
-                    code_to_employee[line.lang] |= line.employee_id
+                code_to_employee[line.lang] |= line.employee_id
             for code, employees in code_to_employee.items():
-                employees.address_home_id.sudo().write({'lang': code})
+                employees.write({'lang': code})
         return self.slip_ids.action_payslip_done()
 
 class L10nBeHrPayrollEmployeeLangWizardLine(models.TransientModel):

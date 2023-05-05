@@ -39,13 +39,19 @@
                         <tr>
                             <td><strong>Address</strong></td>
                             <td colspan="3">
-                                <div t-field="o.employee_id.address_home_id"
-                                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True, "phone_icons": True}'/>
+                                <span class="w-100 d-block">
+                                    <t t-esc="o.employee_id.private_street"/><br/>
+                                    <t t-if="o.employee_id.private_street2">
+                                        <t t-esc="o.employee_id.private_street"/><br/>
+                                    </t>
+                                    <t t-esc="o.employee_id.private_zip"/> <t t-esc="o.employee_id.private_city"/><br/>
+                                    <t t-esc="o.employee_id.private_country_id.name"/><br/>
+                                </span>
                             </td>
                         </tr>
                         <tr>
                             <td><strong>Email</strong></td>
-                            <td><span t-field="o.employee_id.address_home_id.email"/></td>
+                            <td><span t-field="o.employee_id.private_email"/></td>
                             <td><strong>Identification No</strong></td>
                             <td><span t-field="o.employee_id.identification_id"/></td>
                         </tr>
@@ -197,13 +203,19 @@
                         <tr>
                             <td><strong>Address</strong></td>
                             <td colspan="3">
-                                <div t-field="o.employee_id.address_home_id"
-                                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True, "phone_icons": True}'/>
+                                <span class="w-100 d-block">
+                                    <t t-esc="o.employee_id.private_street"/><br/>
+                                    <t t-if="o.employee_id.private_street2">
+                                        <t t-esc="o.employee_id.private_street"/><br/>
+                                    </t>
+                                    <t t-esc="o.employee_id.private_zip"/> <t t-esc="o.employee_id.private_city"/><br/>
+                                    <t t-esc="o.employee_id.private_country_id.name"/><br/>
+                                </span>
                             </td>
                         </tr>
                         <tr>
                             <td><strong>Email</strong></td>
-                            <td><span t-field="o.employee_id.address_home_id.email"/></td>
+                            <td><span t-field="o.employee_id.private_email"/></td>
                             <td><strong>Identification No</strong></td>
                             <td><span t-field="o.employee_id.identification_id"/></td>
                         </tr>

@@ -441,7 +441,7 @@ class HrPayslip(models.Model):
         template = self._get_email_template()
         for report, payslips in mapped_reports.items():
             for payslip in payslips:
-                pdf_content, dummy = self.env['ir.actions.report'].sudo().with_context(lang=payslip.employee_id.address_home_id.lang)._render_qweb_pdf(report, payslip.id)
+                pdf_content, dummy = self.env['ir.actions.report'].sudo().with_context(lang=payslip.employee_id.lang)._render_qweb_pdf(report, payslip.id)
                 if report.print_report_name:
                     pdf_name = safe_eval(report.print_report_name, {'object': payslip})
                 else:
@@ -762,7 +762,7 @@ class HrPayslip(models.Model):
                 })
                 if rule._satisfy_condition(localdict):
                     # Retrieve the line name in the employee's lang
-                    employee_lang = payslip.employee_id.sudo().address_home_id.lang
+                    employee_lang = payslip.employee_id.lang
                     # This actually has an impact, don't remove this line
                     context = {'lang': employee_lang}
                     if rule.code in localdict['same_type_input_lines']:
@@ -887,7 +887,7 @@ class HrPayslip(models.Model):
     def _compute_name(self):
         formated_date_cache = {}
         for slip in self.filtered(lambda p: p.employee_id and p.date_from):
-            lang = slip.employee_id.sudo().address_home_id.lang or self.env.user.lang
+            lang = slip.employee_id.lang or self.env.user.lang
             context = {'lang': lang}
             payslip_name = slip.struct_id.payslip_name or _('Salary Slip')
             del context

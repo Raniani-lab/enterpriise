@@ -24,13 +24,13 @@
                             <td><span t-field="o.date_from"/> - <span t-field="o.date_to"/></td>
                         </tr>
                         <tr>
-                            <td><span t-field="o.employee_id.address_home_id.street"/></td>
+                            <td><span t-field="o.employee_id.private_street"/></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td><span t-field="o.employee_id.address_home_id.city"/> <span t-field="o.employee_id.address_home_id.zip"/></td>
+                            <td><span t-field="o.employee_id.private_city"/> <span t-field="o.employee_id.private_zip"/></td>
                             <td><strong>Person in charge</strong></td>
                             <td><strong>Identification</strong></td>
                             <td><strong>Computed on </strong></td>

@@ -100,7 +100,7 @@
 
                     <page name="Attestation (N)">
                         <strong class="o_horizontal_separator o_row" colspan="2" id="previous_employer_title" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
-                            Holiday Attest <span style="width: 30px !important;"><field name="first_contract_year_n"/></span> - Simple Holiday Pay from previous employer to recover in <span style="width: 30px !important;"><field name="first_contract_year_n"/></span>
+                            Holiday Attest <span style="width: 30px !important;"><field name="first_contract_year_n"/></span> - Simple Holiday Pay from previous employer to recover in <span style="width: 30px !important;"><field name="first_contract_year_n_plus_1"/></span>
                         </strong>
                         <group attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
                             <label for="l10n_be_holiday_pay_to_recover_n" string="Amount to recover"/>
@@ -121,7 +121,7 @@
                         </group>
                         <group id="recovery_pay_lines_n" class="mt-3" colspan="2" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
                             <strong class="o_horizontal_separator o_row" colspan="2">
-                                Holiday Attest <span style="width: 30px !important;"><field name="first_contract_year_n"/></span> - Previous occupation for Double Holiday Pay Recovery in <span style="width: 30px !important;"><field name="first_contract_year_n"/></span>
+                                Holiday Attest <span style="width: 30px !important;"><field name="first_contract_year_n"/></span> - Previous occupation for Double Holiday Pay Recovery in <span style="width: 30px !important;"><field name="first_contract_year_n_plus_1"/></span>
                             </strong>
                             <field name="double_pay_line_n_ids"
                                    widget="double_pay"

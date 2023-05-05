@@ -53,6 +53,7 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
 
     # The attestation for the year of the first contract date
     first_contract_year_n = fields.Char(compute='_compute_first_contract_year')
+    first_contract_year_n_plus_1 = fields.Char(compute='_compute_first_contract_year')
     l10n_be_holiday_pay_to_recover_n = fields.Float(
         string="Simple Holiday Pay to Recover (N)", tracking=True, groups="hr_payroll.group_hr_payroll_user",
         help="Amount of the holiday pay paid by the previous employer to recover.")
@@ -119,6 +120,7 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
             employee.first_contract_year = year
             employee.first_contract_year_n = year
             employee.first_contract_year_n1 = year - 1
+            employee.first_contract_year_n_plus_1 = year + 1
 
     def _compute_from_double_pay_line_ids(self):
         for employee in self:

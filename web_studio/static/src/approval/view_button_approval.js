@@ -37,7 +37,10 @@ patch(ViewButton.prototype, {
             const onClickViewButton = this.env.onClickViewButton;
             owl.useSubEnv({
                 onClickViewButton: (params) => {
-                    params.beforeExecute = this.checkBeforeExecute.bind(this);
+                    if (params.clickParams.type === "action") {
+                        // if the button is an action then we check the approval client side
+                        params.beforeExecute = this.checkBeforeExecute.bind(this);
+                    }
                     onClickViewButton(params);
                 },
             });

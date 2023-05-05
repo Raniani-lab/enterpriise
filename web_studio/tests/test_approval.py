@@ -4,7 +4,9 @@ from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tests.common import TransactionCase
 from odoo.tools import mute_logger
+from odoo.tests import tagged
 
+@tagged('post_install', '-at_install')
 class TestStudioApproval(TransactionCase):
 
     @classmethod
@@ -277,14 +279,14 @@ class TestStudioApproval(TransactionCase):
     def test_07_forbidden_record(self):
         """Getting/setting approval on records to which you don't have access."""
         MODEL = 'res.company'
-        METHOD = 'create'
+        METHOD = 'write_company_and_print_report'
+        main_company = self.manager.company_id
+        alternate_company = self.env['res.company'].create({'name': 'SomeCompany'})
         self.rule.write({
             'active': True,
             'method': METHOD,
             'model_id': self.env.ref('base.model_res_company').id,
         })
-        main_company = self.manager.company_id
-        alternate_company = self.env['res.company'].create({'name': 'SomeCompany'})
         # I don't need to assert anything: raise = failure
         self.env['studio.approval.rule'].with_user(self.manager).get_approval_spec(
             model=MODEL,
@@ -351,7 +353,7 @@ class TestStudioApproval(TransactionCase):
         other_exclusive_rule = self.env['studio.approval.rule'].create({
             'active': True,
             'model_id': self.rule_exclusive.model_id.id,
-            'method': 'unlink',
+            'method': 'main_partner',
             'message': "You didn't say the magic word!",
             'group_id': self.group_user.id,
             'exclusive_user': True,
@@ -365,7 +367,7 @@ class TestStudioApproval(TransactionCase):
         approval_result = self.env['studio.approval.rule'].with_user(self.user).check_approval(
             model=self.MODEL,
             res_id=self.record.id,
-            method='unlink',
+            method='main_partner',
             action_id=False)
         # check that the rule on 'unlink' is not prevented by another entry
         # for a rule that is not related to the same action/method
@@ -464,3 +466,160 @@ class TestStudioApproval(TransactionCase):
                          "The activity should have been deleted if approval was refused through another channel")
         self.assertFalse(approval_request.exists(),
                          "The approval request should have been deleted when the approval was refused")
+
+@tagged('post_install', '-at_install')
+class TestStudioApprovalPost(TransactionCase):
+    # patching is done when the registry is ready, so post-install is needed
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        creation_context = {
+            "studio": True,
+            'no_reset_password': True,
+            'mail_create_nosubscribe': True,
+            'mail_create_nolog': True
+        }
+        # setup 2 users with custom groups
+        cls.group_user = cls.env['res.groups'].with_context(**creation_context).create({
+            'name': 'Approval User',
+            'implied_ids': [(4, cls.env.ref('base.group_user').id)],
+        })
+        cls.group_manager = cls.env['res.groups'].with_context(**creation_context).create({
+            'name': 'Approval Manager',
+            'implied_ids': [(4, cls.group_user.id)],
+        })
+        cls.user = mail_new_test_user(
+            cls.env, login='Employee',
+            groups="base.group_user,base.group_partner_manager", context=creation_context)
+        cls.manager = mail_new_test_user(
+            cls.env, login='Manager',
+            groups="base.group_user,base.group_partner_manager", context=creation_context)
+        cls.user.write({
+            'groups_id': [(4, cls.group_user.id)]
+        })
+        cls.manager.write({
+            'groups_id': [(4, cls.group_manager.id)]
+        })
+        cls.record = cls.user.partner_id
+        # setup validation rules; inactive by default, they'll get
+        # activated in the tests when they're needed
+        # i'll use the 'open_parent' method on partners because why not
+        cls.MODEL = 'res.partner'
+        cls.METHOD = 'open_parent'
+
+    def test_approval_method_patch(self):
+        """Test that creating an approval rule causes a patch of the model method."""
+        # Test the approval patching with "open_commercial_entity" method from res.partner
+        # but it could have been done on another method or another model."
+
+        partner = self.env['res.partner'].with_user(self.user).search([])[0]
+
+        # the method is not patched
+        self.assertFalse(hasattr(partner.with_user(self.user).open_commercial_entity, 'studio_approval_rule_origin'), 'The\
+                         method should not be patched')
+
+        origin_result = partner.with_user(self.user).open_commercial_entity()
+
+        rule = self.env['studio.approval.rule'].create({
+            'active': True,
+            'model_id': self.env.ref('base.model_res_partner').id,
+            'method': 'open_commercial_entity',
+            'message': "You didn't say the magic word!",
+            'group_id': self.group_manager.id,
+        })
+
+        # the method is patched
+        self.assertTrue(hasattr(partner.with_user(self.user).open_commercial_entity, 'studio_approval_rule_origin'), 'The\
+                         method should be patched')
+
+        # the method is well patched and the user don't have the approval authorization. The return
+        # should be a notification action
+        partner = self.env['res.partner'].with_user(self.user).search([])[0]
+        user_result = partner.with_user(self.user).open_commercial_entity()
+        self.assertTrue(user_result.get('type') == 'ir.actions.client' and user_result.get('tag') == 'display_notification', 'The patched method should return a notification action')
+        self.assertEqual(user_result.get('params', {}).get('title'), 'The following approvals are missing:', 'The notification should have the correct title')
+        self.assertEqual(user_result.get('params', {}).get('message'), 'Approval Manager', 'The notification should have the correct message')
+        self.assertEqual(user_result.get('params', {}).get('type'), 'warning', 'The notification should be a warning')
+
+        # the manager can indeed execute this method
+        manager_result = partner.with_user(self.manager).open_commercial_entity()
+        self.assertDictEqual(manager_result, origin_result, 'The patch should execute the original method')
+
+        # with the write, the method should not be patched anymore
+        rule.write({'active': False})
+        self.assertFalse(hasattr(partner.with_user(self.user).open_commercial_entity, 'studio_approval_rule_origin'), 'The\
+                         method should not be patched anymore')
+
+        # sanity check, the user has access to the method
+        user_result = partner.with_user(self.user).open_commercial_entity()
+        self.assertEqual(user_result.get('type'), 'ir.actions.act_window', 'Should execute the original method')
+
+    def test_approval_method_patch_sudo(self):
+        """Test that a patched method will bypass approval checks in a sudoed env."""
+        # Test the approval patching with "open_commercial_entity" method from res.partner
+        # but it could have been done on another method or another model."
+
+        partner = self.env['res.partner'].with_user(self.user).search([])[0]
+        origin_result = partner.with_user(self.user).open_commercial_entity()
+
+        self.env['studio.approval.rule'].create({
+            'active': True,
+            'model_id': self.env.ref('base.model_res_partner').id,
+            'method': 'open_commercial_entity',
+            'message': "You didn't say the magic word!",
+            'group_id': self.group_manager.id,
+        })
+        # the method is well patched and the user don't have the approval authorization
+        # however if we sudo the user, the method should be executed nonetheless
+        partner = self.env['res.partner'].with_user(self.user).search([])[0]
+        user_result = partner.with_user(self.user).sudo().open_commercial_entity()
+        self.assertDictEqual(user_result, origin_result, 'The patch should execute the original method')
+
+    def test_approval_methods_protection(self):
+        """Test that some methods we do not want to patch are well protected"""
+
+        with self.assertRaises(ValidationError):
+            self.env['studio.approval.rule'].create({
+                'active': True,
+                'model_id': self.env.ref('base.model_res_partner').id,
+                'method': '_get_gravatar_image',
+                'message': "You didn't say the magic word!",
+                'group_id': self.group_manager.id,
+            })
+
+        with self.assertRaises(ValidationError):
+            self.env['studio.approval.rule'].create({
+                'active': True,
+                'model_id': self.env.ref('base.model_res_partner').id,
+                'method': '__setattr__',
+                'message': "You didn't say the magic word!",
+                'group_id': self.group_manager.id,
+            })
+
+        with self.assertRaises(ValidationError):
+            self.env['studio.approval.rule'].create({
+                'active': True,
+                'model_id': self.env.ref('base.model_res_partner').id,
+                'method': 'create',
+                'message': "You didn't say the magic word!",
+                'group_id': self.group_manager.id,
+            })
+
+        with self.assertRaises(ValidationError):
+            self.env['studio.approval.rule'].create({
+                'active': True,
+                'model_id': self.env.ref('base.model_res_partner').id,
+                'method': 'write',
+                'message': "You didn't say the magic word!",
+                'group_id': self.group_manager.id,
+            })
+
+        with self.assertRaises(ValidationError):
+            self.env['studio.approval.rule'].create({
+                'active': True,
+                'model_id': self.env.ref('base.model_res_partner').id,
+                'method': 'unlink',
+                'message': "You didn't say the magic word!",
+                'group_id': self.group_manager.id,
+            })

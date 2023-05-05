@@ -2,10 +2,15 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from ast import literal_eval
+import logging
 
 from odoo import api, models, fields, _
 from odoo.osv import expression
-from odoo.exceptions import ValidationError, AccessError, UserError
+from odoo.exceptions import ValidationError, UserError
+from collections import defaultdict
+
+
+_logger = logging.getLogger(__name__)
 
 
 class StudioApprovalRule(models.Model):
@@ -61,7 +66,7 @@ class StudioApprovalRule(models.Model):
             if rule.model_id and rule.method:
                 if rule.model_id.model == self._name:
                     raise ValidationError(_("You just like to break things, don't you?"))
-                if rule.method.startswith("_"):
+                if rule.method.startswith("_") or '__' in rule.method:
                     raise ValidationError(_("Private methods cannot be restricted (since they "
                                             "cannot be called remotely, this would be useless)."))
                 model = rule.model_id and self.env[rule.model_id.model]
@@ -70,6 +75,14 @@ class StudioApprovalRule(models.Model):
                         _("There is no method %s on the model %s (%s)")
                         % (rule.method, rule.model_id.name, rule.model_id.model)
                     )
+                if rule.method in ["create", "write", "unlink"]:
+                    # base_automation and studio_approval executes delattr command in their
+                    # unregister_hook before re-patching in their register_hook.
+                    # However base_automation will not re-patch approvals and vice versa.
+
+                    raise ValidationError(_("For compatibility purpose with base_automation,"
+                                            "approvals on 'create', 'write' and 'unlink' methods "
+                                            "are forbidden."))
 
     def write(self, vals):
         write_readonly_fields = bool(set(vals.keys()) & {'group_id', 'model_id', 'method', 'action_id'})
@@ -77,7 +90,137 @@ class StudioApprovalRule(models.Model):
             raise UserError(_(
                 "Rules with existing entries cannot be modified since it would break existing "
                 "approval entries. You should archive the rule and create a new one instead."))
-        return super().write(vals)
+        res = super().write(vals)
+        self._update_registry()
+        return res
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        entries = super().create(vals_list)
+        self._update_registry()
+        return entries
+
+    def _update_registry(self):
+        """ Update the registry after a modification on approval rules. """
+        if self.env.registry.ready:
+            # re-install the model patches, and notify other workers
+            self._unregister_hook()
+            self._register_hook()
+            self.env.registry.registry_invalidated = True
+
+    def _register_hook(self):
+        """ Patch methods that should verify the approval rules """
+
+        def _patch(model, method_name, function):
+            """ Patch method `name` on `model`, unless it has been patched already. """
+            if method_name.startswith("_") or '__' in method_name:
+                raise ValidationError(_("Can't patch private methods."))
+            if method_name in ["create", "write", "unlink"]:
+                raise ValidationError(_("Can't patch 'create', 'write' and 'unlink'."))
+            if model not in patched_models[method_name]:
+                patched_models[method_name].add(model)
+                ModelClass = type(model)
+                method = getattr(ModelClass, method_name, None)
+                if method:
+                    function.studio_approval_rule_origin = method
+                    setattr(ModelClass, method_name, function)
+
+        def _make_approval_method(method_name, model_name):
+            """ Instanciate a method that verify the approval rule """
+            def method(self, *args, **kwargs):
+                if self.env.su:
+                    # in a sudoed environment, approvals are skipped
+                    # otherwise we risk breaking some important flows
+                    # (e.g. ecommerce order confirmations, invoice posting because
+                    # online payment succeeeded, etc.)
+                    _logger.info("Skipping approval checks in a sudoed environment: method call %s ALLOWED on records %s", method_name, self)
+                    return method.studio_approval_rule_origin(self, *args, **kwargs)
+                approved, rules, entries = [], [], []
+                approved_records = self.env[self._name]
+                for record in self:
+                    result = self.env['studio.approval.rule'].check_approval(model_name, record.id, method_name, None)
+                    approved.append(result['approved'])
+                    rules.append(result['rules'])
+                    entries.append(result['entries'])
+                    if result['approved']:
+                        approved_records |= record
+
+                if all(approved):
+                    return method.studio_approval_rule_origin(self, *args, **kwargs)
+                else:
+                    unapproved_records = self - approved_records
+                    msg, log_args = "Approval checks failed: method call %s REJECTED on records %s", (method_name, unapproved_records)
+                    if approved_records:
+                        msg += " (some records were ALLOWED for the same call: %s)"
+                        log_args = (*log_args, approved_records)
+                    _logger.info(msg, *log_args)
+                    if len(approved_records) > 0:
+                        method.studio_approval_rule_origin(approved_records, *args, **kwargs)
+                    message = ''
+                    title = ''
+                    if len(self) > 1:
+                        title = _('Approvals missing')
+                        message = _('Some records were skipped because approvals were missing to\
+                                    proceed with your request: ')
+                        message += ', '.join(unapproved_records.mapped('display_name'))
+                    else:
+                        title = _('The following approvals are missing:')
+                        missing_approvals = self.env['studio.approval.rule'].get_missing_approvals(rules[0], entries[0])
+                        message += ', '.join([approval['group_id'][1] for approval in missing_approvals])
+
+                    return  {
+                        'type': 'ir.actions.client',
+                        'tag': "display_notification",
+                        'params' : {
+                            'title': title,
+                            'message': message,
+                            'sticky': False,
+                            'type': 'warning',
+                            'next': {
+                                'type': 'ir.actions.act_window_close',
+                            }
+                        }
+                    }
+
+            return method
+
+        patched_models = defaultdict(set)
+        # retrieve all approvals, and patch their corresponding model
+        for approval in self.search([]):
+            Model = self.env.get(approval.model_name)
+            if approval.method:
+                approval_method = _make_approval_method(approval.method, approval.model_name)
+                _patch(Model, approval.method, approval_method)
+
+    def _unregister_hook(self):
+        """ Remove the patches installed by _register_hook() """
+
+        # prepare a dictionary with the model name as a key and methods list as value
+        model_methods_dict = {}
+        # Also take inactive rule into account in case of a write
+        for rule in self.with_context(active_test=False).search([('method', '!=', False)]):
+            if rule.model_name in model_methods_dict:
+                model_methods_dict[rule.model_name].append(rule.method)
+            else:
+                model_methods_dict[rule.model_name] = [rule.method]
+
+        # for each model, remove studio_approval patches
+        for Model in self.env.registry.values():
+            if Model._name in model_methods_dict:
+                for method_name in model_methods_dict[Model._name]:
+                    method = getattr(Model, method_name, None)
+                    if method and callable(method) and hasattr(method, 'studio_approval_rule_origin'):
+                        delattr(Model, method_name)
+
+    def get_missing_approvals(self, rules, entries):
+        missing_approvals = []
+        done_approvals = [entry['rule_id'][0] for entry in \
+                          filter(lambda entry: bool(entry['approved']), entries)]
+        for rule in rules:
+            if (rule['id'] not in done_approvals):
+                missing_approvals.append(rule)
+
+        return missing_approvals
 
     @api.constrains('responsible_id', 'group_id')
     def _constraint_user_has_group(self):

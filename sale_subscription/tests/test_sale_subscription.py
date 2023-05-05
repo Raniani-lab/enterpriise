@@ -2308,3 +2308,53 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(sub.order_line.mapped('discount'), [20, 20])
         sub.action_confirm()
         self.assertEqual(sub.order_line.mapped('discount'), [20, 20], "The discount should not be reset on confirmation")
+
+
+    def test_churn_log_renew(self):
+        self.flush_tracking()
+        today = datetime.date.today()
+        context_mail = {'tracking_disable': False}
+        sub = self.env['sale.order'].with_context(context_mail).create({
+            'name': 'TestSubscription',
+            'is_subscription': True,
+            'note': "original subscription description",
+            'partner_id': self.user_portal.partner_id.id,
+            'pricelist_id': self.company_data['default_pricelist'].id,
+            'sale_order_template_id': self.subscription_tmpl.id,
+        })
+        sub._onchange_sale_order_template_id()
+        # Same product for both lines
+        sub.order_line.product_uom_qty = 1
+        sub.end_date = datetime.date(2022, 1, 1)
+        self.flush_tracking()
+        sub.action_confirm()
+        self.flush_tracking()
+        sub.order_line.product_uom_qty = 2
+        self.flush_tracking()
+        self.env['sale.order'].with_context(tracking_disable=False)._cron_recurring_create_invoice()
+        self.flush_tracking()
+        action = sub.with_context(tracking_disable=False).prepare_renewal_order()
+        renewal_so = self.env['sale.order'].browse(action['res_id'])
+        renewal_so = renewal_so.with_context(tracking_disable=False)
+        renewal_so.order_line.product_uom_qty = 3
+        renewal_so.name = "Renewal"
+        sub.set_close()
+        self.flush_tracking()
+        renewal_so.action_confirm()
+        self.flush_tracking()
+        # Most of the time, the renewal invoice is created by the salesman
+        # before the renewal start date
+        renewal_invoices = renewal_so._create_invoices()
+        renewal_invoices._post()
+        self.flush_tracking()
+        order_log_ids = sub.order_log_ids.sorted('id')
+        sub_data = [(log.event_type, log.event_date, log.category, log.amount_signed, log.recurring_monthly) for log in
+                    order_log_ids]
+        self.assertEqual(sub_data, [('0_creation', today, 'progress', 21, 21),
+                                    ('1_change', today, 'progress', 21.0, 42.0),
+                                    ('2_churn', today, 'closed', -42, 0)])
+        renew_logs = renewal_so.order_log_ids.sorted('id')
+        renew_data = [(log.event_type, log.event_date, log.category, log.amount_signed, log.recurring_monthly) for log
+                      in renew_logs]
+
+        self.assertEqual(renew_data, [('0_creation', today, 'progress', 63, 63)])

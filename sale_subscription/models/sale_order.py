@@ -378,10 +378,13 @@ class SaleOrder(models.Model):
         mrr_difference = self.recurring_monthly - old_mrr
         if confirmed_renewal:
             existing_transfer_log = self.order_log_ids.filtered(lambda ev: ev.event_type == '3_transfer')
-            if not existing_transfer_log:
+            parent_logs = self.subscription_id.order_log_ids
+            # Churn parent if last parent log is churned
+            churned_parent = parent_logs[:1].event_type == '2_churn'
+            if not existing_transfer_log and not churned_parent:
                 # We transfer from the current MRR to the latest known MRR.
                 # The parent contrat is now done and its MRR is 0
-                parent_mrr = self.subscription_id.order_log_ids and self.subscription_id.order_log_ids[-1].recurring_monthly or 0
+                parent_mrr = parent_logs[:1].recurring_monthly or 0
                 transfer_mrr = min([self.recurring_monthly, parent_mrr])
         if not float_is_zero(transfer_mrr, precision_rounding=cur_round):
             transfer_values = template_value.copy()
@@ -414,7 +417,7 @@ class SaleOrder(models.Model):
         if new_stage_id.category in ['progress', 'paused', 'closed'] and old_stage_id.category != new_stage_id.category:
             # subscription started, churned or transferred to renew
             if new_stage_id.category in ['progress', 'paused']:
-                if confirmed_renewal:
+                if confirmed_renewal and self.subscription_id.stage_category in ['progress', 'paused']:
                     # Transfer for the renewed value and MRR change for the rest
                     new_currency = self.currency_id
                     parent_curency = self.subscription_id.currency_id

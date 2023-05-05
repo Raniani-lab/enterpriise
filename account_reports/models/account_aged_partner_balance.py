@@ -162,7 +162,11 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
             SELECT
                 {select_from_groupby}
-                %s * SUM(account_move_line.amount_residual_currency) AS amount_currency,
+                %s * (
+                    SUM(account_move_line.amount_currency)
+                    - COALESCE(SUM(part_debit.debit_amount_currency), 0)
+                    + COALESCE(SUM(part_credit.credit_amount_currency), 0)
+                ) AS amount_currency,
                 ARRAY_AGG(DISTINCT account_move_line.partner_id) AS partner_id,
                 ARRAY_AGG(account_move_line.payment_id) AS payment_id,
                 ARRAY_AGG(DISTINCT COALESCE(account_move_line.date_maturity, account_move_line.date)) AS report_date,
@@ -181,14 +185,20 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
             JOIN {currency_table} ON currency_table.company_id = account_move_line.company_id
 
             LEFT JOIN LATERAL (
-                SELECT SUM(part.amount) AS amount, part.debit_move_id
+                SELECT
+                    SUM(part.amount) AS amount,
+                    SUM(part.debit_amount_currency) AS debit_amount_currency,
+                    part.debit_move_id
                 FROM account_partial_reconcile part
                 WHERE part.max_date <= %s
                 GROUP BY part.debit_move_id
             ) part_debit ON part_debit.debit_move_id = account_move_line.id
 
             LEFT JOIN LATERAL (
-                SELECT SUM(part.amount) AS amount, part.credit_move_id
+                SELECT
+                    SUM(part.amount) AS amount,
+                    SUM(part.credit_amount_currency) AS credit_amount_currency,
+                    part.credit_move_id
                 FROM account_partial_reconcile part
                 WHERE part.max_date <= %s
                 GROUP BY part.credit_move_id

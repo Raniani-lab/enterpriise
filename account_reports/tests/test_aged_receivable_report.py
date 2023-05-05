@@ -664,3 +664,64 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total Aged Receivable',            378.0,       '',         '',         '',         '',         '',       378.0),
             ],
         )
+
+    def test_aged_receivable_partial_reconcile_currency(self):
+        """ Check that 'Amount Currency' column values are displayed and computed correctly. """
+        foreign_partner = self.env['res.partner'].create({'name': 'foreign_partner'})
+        currency = self.currency_data['currency']
+        currency.active = True
+        self.env.company.totals_below_sections = False
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'invoice_date': '2023-05-01',
+            'invoice_date_due': '2023-05-01',
+            'partner_id': foreign_partner.id,
+            'currency_id': currency.id,
+            'invoice_line_ids': [Command.create({
+                'name': 'test',
+                'quantity': 1,
+                'price_unit': 100.0,
+                'tax_ids': [],
+            })],
+        })
+        invoice.action_post()
+
+        self.env['account.payment.register'].with_context(
+            active_model='account.move',
+            active_ids=invoice.ids,
+        ).create({
+            'amount': 10.0,
+            'currency_id': currency.id,
+            'payment_date': '2023-05-05',
+            'partner_id': foreign_partner.id,
+        })._create_payments()
+
+        line_id = self.report._get_generic_line_id('res.partner', foreign_partner.id, markup=f'{self.prefix_line_id}groupby:partner_id')
+        options = self._generate_options(self.report, '2023-01-01', '2023-05-01')
+        options['unfolded_lines'] = [line_id]
+
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            self.report._get_unfolded_lines(self.report._get_lines(options), line_id),
+            #   Name                                      Due Date     Amount Currency     Currency     As Of     Total
+            [   0,                                               1,                  2,           3,        6,       12],
+            [
+                ('foreign_partner',                             '',                 '',          '',     50.0,     50.0),
+                ('INV/2023/00001 INV/2023/00001',     '05/01/2023',            '100.0',       'Gol',     50.0,       ''),
+            ],
+        )
+
+        new_options = self._generate_options(self.report, '2023-01-01', '2023-05-05')
+        new_options['unfolded_lines'] = [line_id]
+
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            self.report._get_unfolded_lines(self.report._get_lines(new_options), line_id),
+            #   Name                                      Due Date     Amount Currency     Currency     As Of     1-30     Total
+            [   0,                                               1,                  2,           3,        6,       7,       12],
+            [
+                ('foreign_partner',                             '',                 '',          '',       '',    45.0,     45.0),
+                ('INV/2023/00001 INV/2023/00001',     '05/01/2023',             '90.0',       'Gol',       '',    45.0,       ''),
+            ],
+        )

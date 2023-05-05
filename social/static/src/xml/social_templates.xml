@@ -394,7 +394,7 @@
 
     <t t-name="social.KanbanHeader" t-inherit="web.KanbanHeader" owl="1">
         <xpath expr="//span[hasclass('o_column_title')]" position="before">
-            <img t-if="group.groupByField.name === 'stream_id'" width="16" t-attf-src="/web/image/social.stream/{{ group.value }}/media_image/16x16" class="mr8" />
+            <img t-if="group.groupByField.name === 'stream_id'" width="16" t-attf-src="/web/image/social.stream/{{ group.value }}/media_image/16x16" class="o_kanbanheader_media_image mr8"/>
         </xpath>
     </t>
 

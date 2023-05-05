@@ -43,12 +43,14 @@
             </xpath>
             <xpath expr="//button[@name='action_recurring_tasks']" position="before">
                 <button
-                    string="Worksheet"
                     class="oe_stat_button oe_worksheet"
                     name="action_fsm_worksheet"
                     icon="fa-pencil" type="object"
                     groups="project.group_project_user"
                     attrs="{'invisible': ['|', '&amp;', ('partner_id', '=', False), ('is_fsm', '=', False), '|', ('allow_worksheets', '=', False), ('comment', '!=', False)]}">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Worksheet</span>
+                    </div>
                 </button>
                 <button
                     class="oe_stat_button oe_worksheet_completed text-success"
@@ -78,9 +80,9 @@
                 <attribute name="groups">base.group_no_one</attribute>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
-                <button class="d-sm-inline d-md-none oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': ['|', '|', ('is_fsm', '=', False), ('allow_timesheets', '=', False), ('display_timesheet_timer', '=', False)]}">
+                <button class="d-sm-flex d-md-none oe_stat_button" name="action_view_timesheets" type="object" icon="fa-clock-o" help="Time recorded on this task" attrs="{'invisible': ['|', '|', ('is_fsm', '=', False), ('allow_timesheets', '=', False), ('display_timesheet_timer', '=', False)]}">
                     <div class="o_stat_info">
-                        <div>Time</div>
+                        <div class="o_stat_text">Time</div>
                         <span class="o_stat_value">
                             <field name="total_hours_spent" widget="float_time" nolabel="1" class="me-1" />
                         </span>

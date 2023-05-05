@@ -46,15 +46,19 @@
                         class="oe_stat_button"
                         icon="fa-bars"
                         type="object"
-                        attrs="{'invisible': ['|', ('statement_id', '=', False), ('state', '=', 'cancel')]}"
-                        string="Bank Statement">
+                        attrs="{'invisible': ['|', ('statement_id', '=', False), ('state', '=', 'cancel')]}">
+                        <div class="o_stat_info">
+                            <span class="o_stat_text">Bank Statement</span>
+                        </div>
                 </button>
                 <button name="action_open_bank_reconciliation_widget"
                         class="oe_stat_button"
                         icon="fa-bars"
                         type="object"
-                        attrs="{'invisible': ['|', '|', '|', ('move_type', '!=', 'entry'), ('id', '=', False), ('statement_line_id', '=', False), ('state', '=', 'cancel')]}"
-                        string="1 Bank Transaction">
+                        attrs="{'invisible': ['|', '|', '|', ('move_type', '!=', 'entry'), ('id', '=', False), ('statement_line_id', '=', False), ('state', '=', 'cancel')]}">
+                        <div class="o_stat_info">
+                            <span class="o_stat_text">1 Bank Transaction</span>
+                        </div>
                 </button>
             </xpath>
         </field>

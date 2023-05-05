@@ -13,12 +13,12 @@
                 <button name="action_view_planning" type="object" icon="fa-tasks"
                     attrs="{'invisible': ['|', ('planning_hours_to_plan', '=', 0), ('state', 'in', ['draft', 'sent', 'cancel', 'done'])]}">
                     <div class="o_field_widget o_stat_info">
-                        <span class="o_stat_value">
-                            <field name="planning_hours_to_plan" class="mr4" widget="statinfo" nolabel="1" options="{'digits': [false, 0]}"/>
-                            <span>Hours</span>
+                       <span class="o_stat_value">
+                            <field name="planning_hours_to_plan" options="{'digits': [false, 0]}"/>
+                            Hours
                         </span>
-                        <span class="o_stat_text">To plan</span>
-                    </div>
+                        <span class="o_stat_text">To Plan</span>
+                   </div>
                 </button>
                 <button name="%(planning.planning_action_schedule_by_resource)d"
                     type="action"
@@ -33,8 +33,8 @@
                     attrs="{'invisible': ['|', ('planning_hours_planned', '=', 0), ('state', 'in', ['draft', 'sent'])]}">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value">
-                            <field name="planning_hours_planned" class="mr4" widget="statinfo" nolabel="1" options="{'digits': [false, 0]}"/>
-                            <span>Hours</span>
+                            <field name="planning_hours_planned" options="{'digits': [false, 0]}"/>
+                           Hours
                         </span>
                         <span class="o_stat_text">Planned</span>
                     </div>

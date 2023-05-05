@@ -86,7 +86,12 @@
             <sheet>
                 <div class="oe_button_box" name="button_box">
                     <button type="object" class="oe_stat_button" id="open_work_entries"
-                        icon="fa-calendar" name="action_open_work_entries" string="Work Entries">
+                        icon="fa-calendar" name="action_open_work_entries">
+                        <div class="o_stat_info">
+                            <span class="o_stat_text">
+                            Work Entries
+                            </span>
+                        </div>
                     </button>
                     <button type="object" class="oe_stat_button" name="action_open_salary_attachments" id="open_salary_attachments"
                         icon="fa-files-o" attrs="{'invisible': [('salary_attachment_count', '=', 0)]}">

@@ -32,7 +32,9 @@
                         <div class="oe_button_box" name="button_box">
                             <button class="oe_stat_button" type="object" name="get_formview_action"
                                     icon="fa-user">
-                                Customer
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Customer</span>
+                                </div>
                             </button>
                             <button class="oe_stat_button" type="object" name="action_view_unpaid_invoices"
                                     icon="fa-pencil-square-o">

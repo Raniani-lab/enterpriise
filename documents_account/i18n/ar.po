@@ -181,12 +181,12 @@ msgstr "إعدادات حساب المستندات "
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard_format
 msgid "Export format for accounting's reports"
-msgstr "تصدير الصيغة للتقارير المحاسبية "
+msgstr "صيغة التصدير للتقارير المحاسبية "
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr "تصدير المُعالِج للتقارير المحاسبية "
+msgstr "مُعالِج التصدير للتقارير المحاسبية "
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs

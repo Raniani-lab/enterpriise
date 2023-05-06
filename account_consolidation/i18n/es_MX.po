@@ -1228,6 +1228,7 @@ msgstr "Número de mensajes con error de envío"
 msgid ""
 "Only one entry by account should be created for a generated journal entry !"
 msgstr ""
+"¡Solo se debe crear un asiento por cuenta para un asiento contable generado!"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search

@@ -717,7 +717,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_payment_method
 msgid "Payment Methods"
-msgstr "Apmakses Metodes"
+msgstr "Maksājumu metodes"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_account_payment

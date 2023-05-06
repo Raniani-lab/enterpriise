@@ -1534,7 +1534,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage__fold
 msgid "Folded in Kanban"
-msgstr "Sembunyikan di Kanban"
+msgstr "Dilipat di Kanban"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2589,6 +2589,15 @@ msgid ""
 "- Invited portal users and all internal users: all internal users can access the team and all of its tickets without distinction.\n"
 "Portal users can only access the tickets they are following. This access can be modified on each ticket individually by adding or removing the portal user as follower."
 msgstr ""
+"Orang-orang ini akan dapat melihat tim meja bantuan dan tiket mereka.\n"
+"\n"
+"- User internal yang diundang: user internal dapat mengakses tim dan tiket yang mereka ikuti. Akses ini dapat dimodifikasi untuk setiap tiket secara individu dengan menambahkan atau menghapus user sebagai pengikut.\n"
+"User dengan meja bantuan > tingkat hak akses administrator masih dapat mengakses tim ini dan tiketnya, bahkan bila mereka bukan merupakan bagian pengikut.\n"
+"\n"
+"- Semua user internal: semua user internal dapat mengakses tim dan semua tiketnya tanpa pembedaan khusus.\n"
+"\n"
+"- User portal dan internal yang diundang: semua user internal dapat mengakses tim dan semua tiketnya tanpa pembedaan.\n"
+"User portal hanya dapat mengakses tiket yang mereka ikuti. Akses ini dapat dimodifikasi pada setiap tiket secara individu dengan menambahkan atau menghapus user portal sebagai pengikut."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__rating_percentage_satisfaction

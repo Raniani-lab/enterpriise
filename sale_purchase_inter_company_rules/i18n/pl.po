@@ -201,6 +201,10 @@ msgid ""
 "\n"
 "(SO currency: %(so_currency)s, Pricelist: %(pricelist)s, Partner: %(partner)s (ID: %(id)s))"
 msgstr ""
+"Nie można utworzyć SO z PO, ponieważ waluta cennika sprzedaży jest inna niż waluta cennika zakupu.\n"
+"Waluta SO jest uzyskiwana z cennika partnera firmy.\n"
+"\n"
+"(Waluta SO: %(so_currency)s, Cennik: %(pricelist)s, Partner: %(partner)s(ID: %(id)s))"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0

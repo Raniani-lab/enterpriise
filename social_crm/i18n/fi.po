@@ -176,7 +176,7 @@ msgstr ""
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_link
 msgid "Post Link"
-msgstr ""
+msgstr "Artikkelin linkki"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__action
@@ -193,7 +193,7 @@ msgstr ""
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__social_account_id
 msgid "Social Account"
-msgstr ""
+msgstr "Sosiaalisen median tili"
 
 #. module: social_crm
 #: model:ir.model,name:social_crm.model_social_post
@@ -203,7 +203,7 @@ msgstr "Sosiaalisen median julkaisu"
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__social_stream_post_id
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Sosiaalisen median suoratoiston julkaisu"
 
 #. module: social_crm
 #. odoo-python

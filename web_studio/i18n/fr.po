@@ -336,7 +336,7 @@ msgstr "Ajouter une description…"
 #: code:addons/web_studio/static/src/client_action/view_editors/form/form_editor_renderer/form_editor_renderer_components.xml:0
 #, python-format
 msgid "Add a pipeline status bar"
-msgstr "Ajoutez une barre d'état du pipeline"
+msgstr "Ajoutez une barre de statut du pipeline"
 
 #. module: web_studio
 #. odoo-javascript

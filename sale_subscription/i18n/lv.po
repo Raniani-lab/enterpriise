@@ -294,6 +294,8 @@ msgid ""
 "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</span>\n"
 "                                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
 msgstr ""
+"<span groups=\"account.group_show_line_subtotals_tax_excluded\">Daudzums</span>\n"
+"                                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Summa</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1221,7 +1223,7 @@ msgstr "Datums"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__next_invoice_date
 msgid "Date of Next Invoice"
-msgstr ""
+msgstr "Nākošā rēķina datums"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -1588,7 +1590,7 @@ msgstr "Tiek izpildīts"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__industry_id
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 msgid "Industry"
-msgstr "Industry"
+msgstr "Industrija"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -1721,7 +1723,7 @@ msgstr "Pēdējoreiz atjaunots"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__last_invoice_date
 msgid "Last invoice date"
-msgstr ""
+msgstr "Jaunākā rēķina datums"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1977,7 +1979,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Next Invoice Date"
-msgstr ""
+msgstr "Nākošā rēķina datums"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest

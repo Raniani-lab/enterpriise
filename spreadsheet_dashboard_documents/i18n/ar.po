@@ -28,7 +28,7 @@ msgstr "مجموعات الوصول"
 #. module: spreadsheet_dashboard_documents
 #: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard_documents.spreadsheet_dashboard_view_list
 msgid "Add a spreadsheet"
-msgstr ""
+msgstr "إضافة جدول بيانات "
 
 #. module: spreadsheet_dashboard_documents
 #. odoo-javascript
@@ -75,12 +75,12 @@ msgstr "أنشئ في"
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__name
 msgid "Dashboard Name"
-msgstr ""
+msgstr "اسم لوحة البيانات "
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__dashboard_group_id
 msgid "Dashboard Section"
-msgstr ""
+msgstr "قسم لوحة البيانات "
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__display_name
@@ -117,7 +117,7 @@ msgstr "آخر تحديث في"
 #: code:addons/spreadsheet_dashboard_documents/static/src/bundle/documents_spreadsheet_action.js:0
 #, python-format
 msgid "Name your dashboard and select its section"
-msgstr ""
+msgstr "قم بتسمية لوحة بياناتك وتحديد قسمها "
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model,name:spreadsheet_dashboard_documents.model_spreadsheet_dashboard

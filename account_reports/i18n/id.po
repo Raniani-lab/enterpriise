@@ -475,7 +475,7 @@ msgstr "Laporan Akuntansi"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_line
 msgid "Accounting Report Line"
-msgstr ""
+msgstr "Accounting Report Line"
 
 #. module: account_reports
 #: model:ir.actions.act_window,name:account_reports.action_account_report_tree
@@ -1162,7 +1162,7 @@ msgstr "Kode Negara"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_multicurrency_revaluation_wizard
 msgid "Create Entry"
-msgstr ""
+msgstr "Buat Entri"
 
 #. module: account_reports
 #: model:ir.actions.server,name:account_reports.action_create_report_menu
@@ -1616,7 +1616,7 @@ msgstr "Penyaring"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template
 msgid "Folded"
-msgstr "Terlipat"
+msgstr "Dilipat"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__footnotes_ids
@@ -2305,7 +2305,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Non Trade Payable"
-msgstr ""
+msgstr "Non Trade Payable"
 
 #. module: account_reports
 #. odoo-python

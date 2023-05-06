@@ -7,6 +7,7 @@
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2023
 # Martin Trigaux, 2023
 # Jolien De Paepe, 2023
+# Dylan Kiss, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 17:09+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Dylan Kiss, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -125,7 +126,7 @@ msgstr "%s is in %s. Vul hier de juiste eDRS in: %s"
 #: code:addons/l10n_be_hr_payroll/models/l10n_be_individual_account.py:0
 #, python-format
 msgid "%s-individual-account-%s"
-msgstr "%s-individueel-account-%s"
+msgstr "%s-individuele-rekening-%s"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.actions.report,print_report_name:l10n_be_hr_payroll.action_report_termination_holidays_n
@@ -390,7 +391,7 @@ msgstr "1) Bezoldiging"
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_res_company__onss_company_id
 #: model:ir.model.fields,help:l10n_be_hr_payroll.field_res_config_settings__onss_company_id
 msgid "10-digit code given by ONSS"
-msgstr "10-cijferige code gegeven door ONSS"
+msgstr "10-cijferige code uitgegeven door de RSZ"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
@@ -535,7 +536,7 @@ msgstr "134"
 #. module: l10n_be_hr_payroll
 #: model:hr.payroll.structure,payslip_name:l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month
 msgid "13th Month Slip"
-msgstr "13e maand Slip"
+msgstr "Loonbrief eindejaarspremie"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields.selection,name:l10n_be_hr_payroll.selection__l10n_be_dmfa__quarter__1
@@ -837,7 +838,7 @@ msgstr "2° Acties"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "2° Arrears"
-msgstr "2° Achterstallige bedrage"
+msgstr "2° Achterstallige bedragen"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10

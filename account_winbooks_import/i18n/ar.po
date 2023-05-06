@@ -69,7 +69,7 @@ msgstr "إعدادات الشركة "
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "Counterpart (generated at import from Winbooks)"
-msgstr "نظير (مُنشأ في الإستيراد من Winbooks) "
+msgstr "حساب قيد مقابل (مُنشأ في الإستيراد من Winbooks) "
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__create_uid

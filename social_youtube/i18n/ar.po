@@ -44,7 +44,7 @@ msgstr "<i class=\"fa fa-comments me-1\" title=\"التعليقات \"/>"
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"الإعجابات \"/>"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.youtube_preview

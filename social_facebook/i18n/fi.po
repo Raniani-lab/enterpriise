@@ -191,7 +191,7 @@ msgstr "Tykkäykset"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "Median tyyppi"
 
 #. module: social_facebook
 #: model:social.stream.type,name:social_facebook.stream_type_page_mentions
@@ -206,7 +206,7 @@ msgstr ""
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
 msgid "Post Image"
-msgstr ""
+msgstr "Artikkelin kuva"
 
 #. module: social_facebook
 #. odoo-python
@@ -239,12 +239,12 @@ msgstr ""
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "Sosiaalisen median tili"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_live_post
 msgid "Social Live Post"
-msgstr ""
+msgstr "Sosiaalisen median live-julkaisu"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_media
@@ -259,7 +259,7 @@ msgstr "Sosiaalisen median julkaisu"
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Sosiaalisen median julkaisun malli"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_stream
@@ -269,7 +269,7 @@ msgstr "Sosiaalinen media"
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_stream_post
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Sosiaalisen median suoratoiston julkaisu"
 
 #. module: social_facebook
 #. odoo-python
@@ -304,6 +304,8 @@ msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
 msgstr ""
+"Käytetään vertailujen tekemiseen, kun joitakin ominaisuuksia on rajoitettava"
+" tiettyyn mediaan ('facebook', 'twitter', ...)."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_user_likes

@@ -313,7 +313,7 @@ msgstr "Insérer cellule de tableau croisé dynamique"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
 #, python-format
 msgid "Insert the first"
-msgstr "Insérer les premiers"
+msgstr "Insérer les"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -863,7 +863,7 @@ msgstr "tableau croisé dynamique"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
 #, python-format
 msgid "records of the list."
-msgstr "enregistrements de la liste."
+msgstr "premiers enregistrements de la liste."
 
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_ir_websocket

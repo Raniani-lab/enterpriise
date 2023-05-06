@@ -125,12 +125,12 @@ msgstr "Data ostatniej modyfikacji"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__start_date_months
 msgid "Months of first date of this month since 01/01/1970"
-msgstr ""
+msgstr "Miesiące pierwszego dnia tego miesiąca od 01/01/1970"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__end_date_months
 msgid "Months of last date of this month since 01/01/1970"
-msgstr ""
+msgstr "Miesiące ostatniej daty tego miesiąca od 01/01/1970"
 
 #. module: hr_contract_reports
 #: model_terms:ir.actions.act_window,help:hr_contract_reports.contract_employee_report_action

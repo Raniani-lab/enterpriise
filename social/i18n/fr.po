@@ -823,7 +823,7 @@ msgstr "Lier un nouveau compte"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_media_view_kanban
 msgid "Link account"
-msgstr "Lier compte"
+msgstr "Lier un compte"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_account

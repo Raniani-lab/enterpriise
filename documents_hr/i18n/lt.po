@@ -147,7 +147,7 @@ msgstr ""
 #. module: documents_hr
 #: model:documents.folder,name:documents_hr.documents_hr_folder
 msgid "HR"
-msgstr ""
+msgstr "Žmogiškieji ištekliai"
 
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0

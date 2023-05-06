@@ -2203,7 +2203,7 @@ msgstr "Dernière évaluation : Insatisfait"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Latest Rating: Okay"
-msgstr "Dernière évaluation: Okay"
+msgstr "Dernière évaluation: Bien"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban

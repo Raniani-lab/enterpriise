@@ -40,7 +40,7 @@ msgstr "Hakemukset"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Applications by Creation Date"
-msgstr ""
+msgstr "Hakemukset luontipäivämäärän mukaan"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -81,28 +81,28 @@ msgstr "Osasto"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired"
-msgstr ""
+msgstr "Palkattu"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired Ratio"
-msgstr ""
+msgstr "Palkkaussuhde"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired by referral"
-msgstr ""
+msgstr "Palkattu suosittelemalla"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired ratio"
-msgstr ""
+msgstr "Palkkaussuhde"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -125,7 +125,7 @@ msgstr "Media"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Most Hired Job Positions"
-msgstr ""
+msgstr "Eniten palkatut työpaikat"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -147,14 +147,14 @@ msgstr "Uudet hakemukset"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New Hires"
-msgstr ""
+msgstr "Uudet työntekijät"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New applicants"
-msgstr ""
+msgstr "Uudet hakijat"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -182,14 +182,14 @@ msgstr "Edellinen"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process Duration"
-msgstr ""
+msgstr "Prosessin kesto"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process duration"
-msgstr ""
+msgstr "Prosessin kesto"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -207,7 +207,7 @@ msgstr "Määrä"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recent Applications"
-msgstr ""
+msgstr "Viimeaikaiset hakijat"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -216,7 +216,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruiter"
-msgstr ""
+msgstr "Rekrytoija"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -224,49 +224,49 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Company"
-msgstr ""
+msgstr "Rekrytointianalyysi yrityksittäin"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Job"
-msgstr ""
+msgstr "Rekrytointianalyysi työtehtävittäin"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Medium"
-msgstr ""
+msgstr "Rekrytointianalyysi medioittain"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Recruiter"
-msgstr ""
+msgstr "Rekrytointianalyysi rekrytoijan mukaan"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Source"
-msgstr ""
+msgstr "Rekrytointianalyysi lähteittäin"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral Rate"
-msgstr ""
+msgstr "Suosittelujen määrä"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral rate"
-msgstr ""
+msgstr "Suosittelujen määrä"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -288,14 +288,14 @@ msgstr "Vaihe"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Companies"
-msgstr ""
+msgstr "Parhaat yritykset"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Job Positions"
-msgstr ""
+msgstr "Parhaat työtehtävät"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -309,7 +309,7 @@ msgstr "Parhaat mediat"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Recruiters"
-msgstr ""
+msgstr "Parhaat rekrytoijat"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript

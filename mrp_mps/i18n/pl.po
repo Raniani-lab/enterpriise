@@ -327,7 +327,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
 msgid "Forecasted Stock"
-msgstr ""
+msgstr "Prognozowane zapasy"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__forecast_ids

@@ -676,12 +676,12 @@ msgstr "اسم العرض "
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_amount_currency
 msgid "Display Stroked Amount Currency"
-msgstr "عرض ممسوط عملة المبلغ"
+msgstr "عرض عملة المبلغ المشطوب "
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_balance
 msgid "Display Stroked Balance"
-msgstr "عرض ممسوط الرصيد"
+msgstr "عرض الرصيد المشطوب "
 
 #. module: account_accountant
 #. odoo-python
@@ -784,17 +784,17 @@ msgstr "فرض الأسعار شاملة الضريبة "
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
 msgid "Form Account"
-msgstr "شكل حساب"
+msgstr "تشكيل الحساب "
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_amount_currency
 msgid "Form Amount Currency"
-msgstr " شكل عملة المبلغ"
+msgstr " تشكيل عملة المبلغ "
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_balance
 msgid "Form Balance"
-msgstr " شكل الرصيد"
+msgstr " تشكيل الرصيد "
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_currency_id
@@ -1469,7 +1469,7 @@ msgstr "الدائن"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Payable:"
-msgstr "مستحق الدفع:"
+msgstr "الدائن: "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_payment_form_inherit_account_accountant
@@ -1571,7 +1571,7 @@ msgstr "المدين"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
-msgstr "مستحق:"
+msgstr "المدين: "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget

@@ -248,7 +248,7 @@ msgstr ""
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "Unauthorized connection"
-msgstr ""
+msgstr "Neautorizēts savienojums"
 
 #. module: web_map
 #. odoo-javascript

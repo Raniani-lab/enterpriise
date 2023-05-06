@@ -872,7 +872,7 @@ msgstr "Priorité basse"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Okay"
-msgstr "Ok"
+msgstr "Bien"
 
 #. module: industry_fsm
 #. odoo-javascript

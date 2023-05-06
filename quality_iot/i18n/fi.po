@@ -26,14 +26,14 @@ msgstr ""
 #: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
 #, python-format
 msgid "Capture image..."
-msgstr ""
+msgstr "Ota kuva..."
 
 #. module: quality_iot
 #. odoo-javascript
 #: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
 #, python-format
 msgid "Connection to device failed"
-msgstr ""
+msgstr "Yhteys laitteeseen epäonnistui"
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_quality_point__device_id
@@ -43,7 +43,7 @@ msgstr "Laite"
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_quality_check__device_name
 msgid "Device Name: "
-msgstr ""
+msgstr "Laitteen nimi: "
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_quality_check__ip
@@ -65,12 +65,12 @@ msgstr "Tunniste"
 #: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
 #, python-format
 msgid "Please check if the device is still connected."
-msgstr ""
+msgstr "Tarkista, onko laite edelleen kytketty."
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_iot_device__qcp_test_type
 msgid "Qcp Test Type"
-msgstr ""
+msgstr "QCP Testityyppi"
 
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_check

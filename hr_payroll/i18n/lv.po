@@ -8,8 +8,8 @@
 # ievaputnina <ievai.putninai@gmail.com>, 2022
 # Konstantins Zabogonskis <inculin4ik@gmail.com>, 2022
 # Anzelika Adejanova, 2022
+# Martin Trigaux, 2022
 # Arnis Putniņš <arnis@allegro.lv>, 2022
-# Martin Trigaux, 2023
 # Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023
 # 
 msgid ""
@@ -955,7 +955,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Create SEPA payment"
-msgstr ""
+msgstr "Izveidot SEPA maksājumu"
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_new_salary_attachment
@@ -1941,7 +1941,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__paid
 msgid "Made Payment Order ? "
-msgstr "Veikts Maksājuma Uzdevums? "
+msgstr "Veikts maksājuma uzdevums?"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip

@@ -298,7 +298,7 @@ msgstr "تطبيق تأجير السيارات "
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line__product_uom_category_id
 #: model:ir.model.fields,field_description:approvals.field_approval_request__category_id
 msgid "Category"
-msgstr "فئة"
+msgstr "الفئة "
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__category_approver
@@ -584,7 +584,7 @@ msgstr "الأيقونة"
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr "الأيقونة للإشارة إلى استثناء النشاط"
+msgstr "الأيقونة للإشارة إلى النشاط المستثنى. "
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction
@@ -841,7 +841,7 @@ msgstr "عدد المرفقات"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_error_counter
 msgid "Number of errors"
-msgstr "عدد الاخطاء"
+msgstr "عدد الأخطاء "
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction_counter
@@ -885,7 +885,7 @@ msgstr "الخيارات "
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Payment"
-msgstr "دفعة"
+msgstr "الدفع "
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_payment_application
@@ -912,7 +912,7 @@ msgstr "المنتج"
 #: model:ir.model,name:approvals.model_approval_product_line
 #: model:ir.model.fields,field_description:approvals.field_approval_request__product_line_ids
 msgid "Product Line"
-msgstr "سلسلة المنتج "
+msgstr "خط إنتاج المنتج "
 
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_product_variant
@@ -1114,7 +1114,7 @@ msgstr "للإرسال"
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "نوع النشاط الاستثنائي المسجل."
+msgstr "نوع النشاط المستثنى في السجل. "
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line__product_uom_id

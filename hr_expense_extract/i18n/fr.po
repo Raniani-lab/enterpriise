@@ -372,7 +372,7 @@ msgstr "Date de paiement"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__partial_mode
 msgid "Payment Difference"
-msgstr "Différence de paiement"
+msgstr "Écart de règlement"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__payment_method_line_id

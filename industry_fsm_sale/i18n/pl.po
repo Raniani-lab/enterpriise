@@ -582,7 +582,7 @@ msgstr "Zadanie"
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_task_recurrence
 msgid "Task Recurrence"
-msgstr ""
+msgstr "Powtarzalność zadań"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id

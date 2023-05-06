@@ -272,7 +272,7 @@ msgstr "تعطيل الدمج "
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_list
 msgid "Discard"
-msgstr "تجاهل"
+msgstr "إهمال "
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_record_view_search_merge_action
@@ -515,19 +515,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_record_view_search_merge_action
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_search
 msgid "Model"
-msgstr "الكائن"
+msgstr "النموذج "
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__res_model_name
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__res_model_name
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__res_model_name
 msgid "Model Name"
-msgstr "اسم الكائن"
+msgstr "اسم النموذج "
 
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_ir_model
 msgid "Models"
-msgstr "كائنات"
+msgstr "النماذج "
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__notify_frequency_period__months
@@ -620,7 +620,7 @@ msgstr "سوف يتم دمج السجلات التي لها نسبة تطابق 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_search
 msgid "Rule"
-msgstr "قاعدة"
+msgstr "القاعدة "
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form

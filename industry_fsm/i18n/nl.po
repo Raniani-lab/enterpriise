@@ -3,7 +3,7 @@
 # 	* industry_fsm
 # 
 # Translators:
-# Martin Trigaux, 2023
+# Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # Jolien De Paepe, 2023
 # 
@@ -108,8 +108,8 @@ msgid ""
 "        "
 msgstr ""
 "<p>\n"
-"                Beste <t t-out=\"object.partner_id.name or 'Klant'\">Klant</t>,<br/><br/>\n"
-"                Bijgaand vind je het werkbon voor het werk op locatie. <br/><br/>\n"
+"                Beste <t t-out=\"object.partner_id.name or 'Customer'\">Klant</t>,<br/><br/>\n"
+"                Bijgaand vind je de werkbon voor het werk op locatie. <br/><br/>\n"
 "                Neem gerust contact met ons op als je vragen hebt.<br/><br/>\n"
 "                Met vriendelijke groet,<br/><br/>\n"
 "            </p>\n"

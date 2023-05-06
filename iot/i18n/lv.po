@@ -7,6 +7,7 @@
 # ievaputnina <ievai.putninai@gmail.com>, 2022
 # Arnis Putniņš <arnis@allegro.lv>, 2022
 # Anzelika Adejanova, 2022
+# Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Anzelika Adejanova, 2022\n"
+"Last-Translator: Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023\n"
 "Language-Team: Latvian (https://app.transifex.com/odoo/teams/41243/lv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,12 +36,12 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "<span class=\"badge text-bg-secondary\">Disconnected</span>"
-msgstr ""
+msgstr "<span class=\"badge text-bg-secondary\">Atvienojies</span>"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "<span class=\"badge text-bg-success\">Connected</span>"
-msgstr ""
+msgstr "<span class=\"badge text-bg-success\">Pievienojās</span>"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
@@ -98,7 +99,7 @@ msgstr ""
 #: code:addons/iot/static/src/views/box_list_view.xml:0
 #, python-format
 msgid "CONNECT"
-msgstr ""
+msgstr "SAVIENOT"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__camera
@@ -110,14 +111,14 @@ msgstr ""
 #: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Check if the device is still connected"
-msgstr ""
+msgstr "Pārbaudiet, vai ierīce vēl ir savienota"
 
 #. module: iot
 #. odoo-javascript
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Check if the printer is still connected"
-msgstr ""
+msgstr "Pārbaudiet, vai printeris vēl ir savienots"
 
 #. module: iot
 #. odoo-javascript
@@ -174,7 +175,7 @@ msgstr "Uzņēmums"
 #: code:addons/iot/static/src/views/box_list_view.xml:0
 #, python-format
 msgid "Connect"
-msgstr ""
+msgstr "Savienot"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
@@ -186,28 +187,28 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__connection
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Connection"
-msgstr ""
+msgstr "Savienojums"
 
 #. module: iot
 #. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.js:0
 #, python-format
 msgid "Connection to IoT Box failed"
-msgstr ""
+msgstr "Savienojums ar IoT Box izgāzās"
 
 #. module: iot
 #. odoo-javascript
 #: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Connection to device failed"
-msgstr ""
+msgstr "Savienojums ar ierīci izgāzās"
 
 #. module: iot
 #. odoo-javascript
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Connection to printer failed"
-msgstr ""
+msgstr "Savienojums ar printeri izgāzās"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_uid
@@ -341,7 +342,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connected
 msgid "If device is connected to the IoT Box"
-msgstr ""
+msgstr "Ja ierīce ir savienota ar IoT Box"
 
 #. module: iot
 #. odoo-javascript
@@ -653,7 +654,7 @@ msgstr "Veids"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connection
 msgid "Type of connection."
-msgstr ""
+msgstr "Savienojuma tips"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__type

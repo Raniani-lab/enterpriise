@@ -164,7 +164,7 @@ msgstr "سنتيمترات"
 #. module: delivery_dhl
 #: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_dutiable
 msgid "Check this if your package is dutiable."
-msgstr "حدد هذا الاختيار إذا كان طردك خاضع للرسوم الجمركية."
+msgstr "حدد هذا الخيار إذا كان طردك خاضعاً للرسوم الجمركية. "
 
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
@@ -376,7 +376,7 @@ msgstr "L - إكسبريس 10:30 "
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "Label Format"
-msgstr "صيغة بطاقة العنوان "
+msgstr "تنسيق بطاقة العنوان "
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_label_image_format

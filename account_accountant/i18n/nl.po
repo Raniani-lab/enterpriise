@@ -1110,7 +1110,7 @@ msgstr "KPI Bankrekening saldo waarde"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Label"
-msgstr "Omschrijving"
+msgstr "Label"
 
 #. module: account_accountant
 #. odoo-javascript

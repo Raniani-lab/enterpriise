@@ -53,7 +53,7 @@ msgstr ""
 #. module: account_sepa
 #: model_terms:ir.ui.view,arch_db:account_sepa.view_batch_payment_form_inherit
 msgid "Batch Booking"
-msgstr "حجز الدفعة "
+msgstr "الحجز على دفعات "
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_batch_payment
@@ -185,7 +185,7 @@ msgstr "طلب حجز دفعة من البنك لكشوفات الحساب ال�
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_batch_payment__sct_batch_booking
 msgid "SCT Batch Booking"
-msgstr "حجز دفعة SCT "
+msgstr "الحجز على دفعات SCT "
 
 #. module: account_sepa
 #: model:account.payment.method,name:account_sepa.account_payment_method_sepa_ct

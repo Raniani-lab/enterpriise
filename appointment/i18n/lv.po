@@ -782,19 +782,19 @@ msgstr "Apstiprināts"
 #. module: appointment
 #: model:onboarding.onboarding.step,button_text:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "Connect"
-msgstr ""
+msgstr "Savienot"
 
 #. module: appointment
 #. odoo-python
 #: code:addons/appointment/models/onboarding_onboarding_step.py:0
 #, python-format
 msgid "Connect your Calendar"
-msgstr ""
+msgstr "Savienojiet Jūsu kalendāru"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "Connect your calendar"
-msgstr ""
+msgstr "Savienojiet Jūsu kalendāru"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_res_partner

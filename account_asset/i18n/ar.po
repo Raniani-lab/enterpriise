@@ -179,7 +179,7 @@ msgstr "تمت إضافة قيمة ضريبة غير قابلة للخصم %s إ
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_account
 msgid "Account"
-msgstr "حساب"
+msgstr "الحساب "
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_type
@@ -195,7 +195,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_id
 msgid "Account used in the depreciation entries, to decrease the asset value."
-msgstr "الحساب المستخدم لقيود إهلاكات الأصل، لتخفيض القيمة الدفترية للأصل."
+msgstr "الحساب المُستخدَم لقيود الإهلاك، لتخفيض قيمة الأصل. "
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_expense_id
@@ -417,7 +417,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_counterpart_id
 msgid "Asset Counterpart Account"
-msgstr "أصل النظير حساب"
+msgstr "حساب القيد المناظر للأصل "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_id_display_name
@@ -472,7 +472,7 @@ msgstr "أيام توقف الأصل مؤقتاً"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
 msgid "Asset Report Custom Handler"
-msgstr "أصل التقرير معالج مخصص"
+msgstr "المعالج المخصص لتقارير الأصل "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_type
@@ -837,12 +837,12 @@ msgstr "الانخفاض ثم الثبات في خط مستقيم "
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Def. Expenses"
-msgstr ""
+msgstr "النفقات المؤجلة "
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Def. Revenues"
-msgstr ""
+msgstr "الإيرادات المؤجلة "
 
 #. module: account_asset
 #. odoo-python
@@ -1465,7 +1465,7 @@ msgstr "الرسائل"
 #: model:account.report.column,name:account_asset.assets_report_first_method
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method
 msgid "Method"
-msgstr "طريقة"
+msgstr "الطريقة "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__model_id
@@ -1520,7 +1520,7 @@ msgid ""
 "Multiple asset items will be generated depending on the bill line quantity "
 "instead of 1 global asset."
 msgstr ""
-"سوف يتم إنشاء عدة عناصر أصول بناء على كمية بنود الفاتورة عوضاً عن أصل عالمي "
+"سوف يتم إنشاء عدة عناصر أصول بناء على كمية بنود الفاتورة عوضاً عن أصل شامل "
 "واحد. "
 
 #. module: account_asset
@@ -1725,7 +1725,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
-msgstr "شراء: الأصل"
+msgstr "المشتريات: الأصل "
 
 #. module: account_asset
 #. odoo-python
@@ -1743,7 +1743,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
 msgid "Related Assets"
-msgstr "المرتبطة أصول"
+msgstr "الأصول ذات الصلة "
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -2021,7 +2021,7 @@ msgstr "لقد تم عكس هذه الحركة "
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Today Activities"
-msgstr "نشاطات اليوم"
+msgstr "أنشطة اليوم "
 
 #. module: account_asset
 #. odoo-python
@@ -2187,7 +2187,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
-msgstr "لا يمكنك إعادة تعيين مسودة إدخال المرتبطة لنشرها أصل"
+msgstr "لا يمكنك إعادة تعيين قيد مرتبط بأصل مُرحّل إلى حالة المسودة "
 
 #. module: account_asset
 #. odoo-python
@@ -2199,7 +2199,7 @@ msgstr "لا يمكنك الاستئناف في تاريخ يساوي أو قب�
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance
 msgid "book_value"
-msgstr "قيمة الكتاب"
+msgstr "book_value"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_date_from
@@ -2211,7 +2211,7 @@ msgstr "التاريخ من"
 #: model:account.report.column,name:account_asset.assets_report_assets_date_to
 #: model:account.report.column,name:account_asset.assets_report_depre_date_to
 msgid "date to"
-msgstr "تاريخ ل"
+msgstr "التاريخ إلى"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form

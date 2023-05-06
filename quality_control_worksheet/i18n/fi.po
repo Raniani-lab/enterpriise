@@ -26,17 +26,17 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
 msgid "Check Worksheet"
-msgstr ""
+msgstr "Tarkista laskentataulukko"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_failure_worksheet
 msgid "Confirm Worksheet"
-msgstr ""
+msgstr "Vahvista laskentataulukko"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_failure_worksheet
 msgid "Correct Worksheet"
-msgstr ""
+msgstr "Oikea laskentataulukko"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -57,7 +57,7 @@ msgstr "Mallin nimi"
 #: code:addons/quality_control_worksheet/models/quality.py:0
 #, python-format
 msgid "Please fill in the worksheet."
-msgstr ""
+msgstr "Täytä laskentataulukko."
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -84,13 +84,13 @@ msgstr "Laadunvalvontapiste"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_x_custom_worksheet_x_quality_check_worksheet_template_1
 msgid "Quality Issues"
-msgstr ""
+msgstr "Laatupoikkeamat"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_template_id
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check_wizard__worksheet_template_id
 msgid "Quality Template"
-msgstr ""
+msgstr "Laadun malli"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_report_quality_control_quality_worksheet
@@ -101,7 +101,7 @@ msgstr "Laaduntarkastuksen laskentataulukon raportti"
 #: model:ir.actions.act_window,name:quality_control_worksheet.quality_control_worksheet_template_action_settings
 #: model:ir.ui.menu,name:quality_control_worksheet.settings_worksheet_template
 msgid "Quality Worksheet Templates"
-msgstr ""
+msgstr "Laadun laskentataulukkomallit"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -111,7 +111,7 @@ msgstr "Vastuuhenkilö"
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_success_conditions
 msgid "Success Conditions"
-msgstr ""
+msgstr "Onnistumisen edellytykset"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_template_id
@@ -126,7 +126,7 @@ msgstr "Ohjattu laatutarkistuksen ponnahdusikkuna"
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
 msgid "Wood Texture"
-msgstr ""
+msgstr "Puun tekstuuri"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
@@ -138,19 +138,19 @@ msgstr "Työkirja"
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
 msgid "Worksheet Completed"
-msgstr ""
+msgstr "Täytetty laskentataulukko"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_count
 msgid "Worksheet Count"
-msgstr ""
+msgstr "Työkirjojen määrä"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_worksheet_template
 msgid "Worksheet Template"
-msgstr "Työarkin malli"
+msgstr "Työkirjan malli"
 
 #. module: quality_control_worksheet
 #: model:ir.actions.act_window,name:quality_control_worksheet.template_action_Quality_Issues
 msgid "Worksheets"
-msgstr "Työarkit"
+msgstr "Työkirjat"

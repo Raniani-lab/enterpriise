@@ -23,7 +23,7 @@ msgstr ""
 #. module: mrp_workorder_plm
 #: model:mrp.eco.type,name:mrp_workorder_plm.ecotype_workorder
 msgid "BOM Updates"
-msgstr ""
+msgstr "Cập nhật ĐMNL"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_effective
@@ -31,7 +31,7 @@ msgstr ""
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_progress
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_validated
 msgid "Blocked"
-msgstr "Đã bị khóa"
+msgstr "Đã bị chặn"
 
 #. module: mrp_workorder_plm
 #. odoo-python
@@ -39,17 +39,17 @@ msgstr "Đã bị khóa"
 #: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
 #, python-format
 msgid "BoM feedback for not found step: %s (%s)"
-msgstr ""
+msgstr "Phản hồi ĐMNL cho bước không được tìm thấy: %s (%s)"
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,help:mrp_workorder_plm.field_mrp_eco_routing_change__test_type
 msgid "Defines the type of the quality control point."
-msgstr "Xác định loại của điểm kiểm tra chất lượng"
+msgstr "Xác định loại điểm kiểm tra chất lượng. "
 
 #. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_mrp_eco_routing_change
 msgid "Eco Routing changes"
-msgstr "Thay đổi quy trình sản xuất ECO"
+msgstr "Thay đổi tuyến LTĐKT"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,name:mrp_workorder_plm.ecostage_effective
@@ -59,7 +59,7 @@ msgstr "Có hiệu lực"
 #. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_mrp_eco
 msgid "Engineering Change Order (ECO)"
-msgstr "Lệnh thay đổi kỹ thuật (ECO)"
+msgstr "Lệnh thay đổi kỹ thuật (LTĐKT)"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,legend_normal:mrp_workorder_plm.ecostage_effective
@@ -80,7 +80,7 @@ msgstr "Mới"
 #: code:addons/mrp_workorder_plm/models/mrp_workorder.py:0
 #, python-format
 msgid "New Step Suggestion: %s"
-msgstr ""
+msgstr "Đề xuất bước mới: %s"
 
 #. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_propose_change
@@ -90,12 +90,12 @@ msgstr "Đề xuất thay đổi trong sản xuất"
 #. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_quality_check
 msgid "Quality Check"
-msgstr "Đánh giá chất lượng"
+msgstr "Kiểm tra chất lượng"
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,field_description:mrp_workorder_plm.field_mrp_eco_routing_change__quality_point_id
 msgid "Quality Point"
-msgstr "Điểm kiểm tra"
+msgstr "Điểm chất lượng"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,legend_done:mrp_workorder_plm.ecostage_effective
@@ -113,7 +113,7 @@ msgstr "Bước"
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,field_description:mrp_workorder_plm.field_mrp_eco_routing_change__test_type
 msgid "Step Type"
-msgstr "Kiểu bước"
+msgstr "Loại bước"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,name:mrp_workorder_plm.ecostage_validated

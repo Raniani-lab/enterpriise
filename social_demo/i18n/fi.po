@@ -75,7 +75,7 @@ msgstr ""
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "Sosiaalisen median tili"
 
 #. module: social_demo
 #: model:utm.campaign,title:social_demo.social_utm_campaign
@@ -85,7 +85,7 @@ msgstr ""
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_live_post
 msgid "Social Live Post"
-msgstr ""
+msgstr "Sosiaalisen median live-julkaisu"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_post
@@ -100,7 +100,7 @@ msgstr "Sosiaalinen media"
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_stream_post
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Sosiaalisen median suoratoiston julkaisu"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_twitter_account

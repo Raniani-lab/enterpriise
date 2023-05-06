@@ -903,7 +903,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "From now on, you may want to:"
-msgstr "From now on, you may want to:"
+msgstr "Sekarang, Anda mungkin bisa:"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2176,7 +2176,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "and follow-up customers"
-msgstr "and follow-up customers"
+msgstr "dan follow-up ke pelanggan"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__auto_balance
@@ -2270,7 +2270,7 @@ msgstr "transaksi di"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "unpaid invoices"
-msgstr "unpaid invoices"
+msgstr "faktur yang belum dibayar"
 
 #. module: account_accountant
 #. odoo-javascript

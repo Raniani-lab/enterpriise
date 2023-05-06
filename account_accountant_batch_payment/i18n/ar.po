@@ -53,7 +53,7 @@ msgstr "الدفعات المجمعة "
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_bank_rec_widget__batch_payments_widget
 msgid "Batch Payments Widget"
-msgstr "الدفعة أداة المدفوعات"
+msgstr "أداة المدفوعات المجمعة "
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_rejection_form
@@ -63,12 +63,12 @@ msgstr "إلغاء "
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__cancel_action_todo
 msgid "Cancel Action Todo"
-msgstr "ألغى العمل الواجب"
+msgstr "إلغاء الإجراء الذي يجب القيام به "
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_rejection_form
 msgid "Cancel Payments"
-msgstr "ألغى المدفوعات"
+msgstr "إلغاء المدفوعات "
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__create_uid
@@ -103,7 +103,7 @@ msgstr "المُعرف"
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__in_reconcile_payment_ids
 msgid "In Reconcile Payment"
-msgstr "في تسوية قسط"
+msgstr "في تسوية الدفع "
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection____last_update
@@ -174,17 +174,17 @@ msgstr "تم الاستلام "
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__rejected_payment_ids
 msgid "Rejected Payment"
-msgstr "دفع مرفوض"
+msgstr "عمليات الدفع المرفوضة "
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_bank_rec_widget__selected_batch_payment_ids
 msgid "Selected Batch Payment"
-msgstr "المحدد الدفعة قسط"
+msgstr "الدفعة المجمعة المحددة "
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_bank_rec_widget_line__source_batch_payment_id
 msgid "Source Batch Payment"
-msgstr "مصدر الدفعة قسط"
+msgstr "الدفعة المجمعة المصدرية  "
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget

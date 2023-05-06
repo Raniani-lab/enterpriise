@@ -42,6 +42,10 @@ msgid ""
 "                            Some products don't have the requested qty available for pickup\n"
 "                        </span>"
 msgstr ""
+"<i class=\"fa fa-warning\"/>\n"
+"                        <span>\n"
+"                            بعض المنتجات ليس لها الكمية المطلوبة متاحة لاستلامها\n"
+"                        </span>"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form

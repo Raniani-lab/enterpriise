@@ -33,14 +33,14 @@ msgstr "أودو"
 #. module: account_saft
 #: model_terms:ir.ui.view,arch_db:account_saft.saft_template
 msgid "Odoo SA"
-msgstr "أودو SA"
+msgstr "Odoo SA"
 
 #. module: account_saft
 #. odoo-python
 #: code:addons/account_saft/models/account_general_ledger.py:0
 #, python-format
 msgid "Please define `Company Registry` for your company."
-msgstr "الرجاء تحديد `شجل الشركة` لشركتك. "
+msgstr "الرجاء تحديد `سجل الشركة` لشركتك. "
 
 #. module: account_saft
 #. odoo-python

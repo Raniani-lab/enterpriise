@@ -1761,7 +1761,7 @@ msgstr "Tetap"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__fold
 msgid "Folded in Kanban"
-msgstr "Sembunyikan di Kanban"
+msgstr "Dilipat di Kanban"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_boundary__unlimited
@@ -1999,6 +1999,8 @@ msgid ""
 "Invoice_{{ (object.name or '').replace('/','_') }}{{ object.state == 'draft'"
 " and '_draft' or '' }}"
 msgstr ""
+"Faktur_{{ (object.name or '').replace('/','_') }}{{ object.state == 'draft' "
+"and '_draft' or '' }}"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.email_payment_success
@@ -3579,8 +3581,8 @@ msgid ""
 "This stage is folded in the kanban view when there are no records in that "
 "stage to display."
 msgstr ""
-"Tahap ini disembunyikan pada tampilan kanban ketika tidak ada catatan dalam "
-"tahap itu untuk ditampilkan."
+"Tahap ini dilipat pada tampilan kanban ketika tidak ada catatan dalam tahap "
+"ini untuk ditampilkan."
 
 #. module: sale_subscription
 #. odoo-python

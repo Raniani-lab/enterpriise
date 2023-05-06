@@ -358,7 +358,7 @@ msgstr "مسندة إلي "
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__join_invoices
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__join_invoices
 msgid "Attach Invoices"
-msgstr ""
+msgstr "إرفاق الفواتير "
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__attachment_ids

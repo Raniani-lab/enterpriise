@@ -900,7 +900,7 @@ msgstr "Évaluation moyenne : Insatisfait"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Okay"
-msgstr "Évaluation moyenne : Okay"
+msgstr "Évaluation moyenne : Bien"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -1296,7 +1296,7 @@ msgstr "URl du portail client"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_rating
 #: model:ir.ui.menu,name:helpdesk.helpdesk_ticket_report_menu_ratings
 msgid "Customer Ratings"
-msgstr "Évaluations de la clientèle"
+msgstr "Évaluations des clients"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__partner_ids
@@ -2547,7 +2547,7 @@ msgstr "Nombre de tickets clôturés au cours des 7 derniers jours."
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
 msgid "Okay"
-msgstr "Okay"
+msgstr "Bien"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__oldest_unanswered_customer_message_date
@@ -2791,7 +2791,7 @@ msgstr "Propriétés"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Publish this team's ratings on your website"
-msgstr "Publiez les évaluations de cette équipe sur votre site web"
+msgstr "Publier les évaluations de cette équipe sur votre site web"
 
 #. module: helpdesk
 #: model:helpdesk.ticket.type,name:helpdesk.type_question
@@ -3269,7 +3269,7 @@ msgstr "Service"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Set an Email Template on Stages"
-msgstr "Définir un modèle d'email par étape"
+msgstr "Définir un modèle d'email sur des étapes"
 
 #. module: helpdesk
 #: model:mail.template,description:helpdesk.new_ticket_request_email_template
@@ -3299,7 +3299,7 @@ msgstr "Partagez des présentations et des vidéos et organisez-les en cours"
 #. module: helpdesk
 #: model:res.groups,name:helpdesk.group_use_rating
 msgid "Show Customer Ratings"
-msgstr "Afficher les évaluations de la clientèle"
+msgstr "Afficher les évaluations des clients"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__show_knowledge_base
@@ -3466,7 +3466,7 @@ msgstr "Objectif"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_res_users__helpdesk_target_rating
 msgid "Target Customer Rating"
-msgstr "Évaluation de la clientèle cible"
+msgstr "Évaluation des clients cible"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__stage_id

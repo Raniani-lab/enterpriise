@@ -96,6 +96,8 @@ msgid ""
 "'View Bank Statement' caret option is only available for report lines "
 "targeting bank statements."
 msgstr ""
+"خيار علامة إقحام 'عرض كشف الحساب البنكي' متاح فقط من بنود التقرير التي "
+"تستهدف كشوف الحسابت البنكية. "
 
 #. module: account_reports
 #. odoo-python
@@ -326,12 +328,12 @@ msgstr "<span class=\"fa fa-filter\"/> الخيارات:"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic Filter"
-msgstr ""
+msgstr "<span class=\"fa fa-folder-open\"/>عامل التصفية التحليلي "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic Group By"
-msgstr ""
+msgstr "<span class=\"fa fa-folder-open\"/> التجميع التحليلي "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
@@ -684,7 +686,7 @@ msgstr "كافة اليوميات "
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All Payable"
-msgstr "جميع المدفوعات"
+msgstr "جميع الذمم مستحقة الدفع "
 
 #. module: account_reports
 #. odoo-python
@@ -1612,7 +1614,7 @@ msgstr "تصدير"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_reports_export_wizard_format
 msgid "Export format for accounting's reports"
-msgstr "تصدير الصيغة للتقارير المحاسبية "
+msgstr "صيغة التصدير للتقارير المحاسبية "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__export_format_ids
@@ -1622,7 +1624,7 @@ msgstr "التصدير إلى "
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr "تصدير المُعالِج للتقارير المحاسبية "
+msgstr "مُعالِج التصدير للتقارير المحاسبية "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_expression_form
@@ -3122,7 +3124,7 @@ msgstr "يجب أن تكون الشركة الرئيسية لوحدة ضريبي
 #, python-format
 msgid ""
 "The selected report line does not target a Journal Entry or a Journal Item."
-msgstr ""
+msgstr "بند التقرير المحدد لا يستهدف قيد دفتر يومية أو عنصر دفتر يومية. "
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_tax_unit_ids

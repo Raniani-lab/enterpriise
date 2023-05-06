@@ -97,8 +97,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
-"A Python dictionary that will be evaluated to provide default values when "
-"creating new records for this alias."
+"Python vārdnīca, kas tiks novērtēta, lai nodrošinātu noklusējuma vērtības, "
+"izveidojot jaunus ierakstus šiem aizstājvārdiem."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction
@@ -832,7 +832,7 @@ msgstr "Fonts awesome icon piem. fa-tasks"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__effectivity_date
 msgid "For reference only."
-msgstr ""
+msgstr "Tikai atsaucei."
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search

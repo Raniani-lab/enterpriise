@@ -32,7 +32,7 @@ msgstr "Projekteittain"
 #. module: project_forecast
 #: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_from_project
 msgid "Let's start your planning by adding a new shift."
-msgstr ""
+msgstr "Aloitetaan suunnittelu lisäämällä uusi työvuoro."
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.planning_analysis_report_view_search
@@ -51,7 +51,7 @@ msgstr "Vuoroja ei löytynyt. Luodaan sellainen!"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Plan your resources for this project"
-msgstr ""
+msgstr "Suunnittele resurssit tätä projektia varten"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_project_view_form_simplified_inherit_forecast
@@ -98,12 +98,12 @@ msgstr "Projektit"
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.planning_action_schedule_by_project
 msgid "Schedule by Project"
-msgstr ""
+msgstr "Aikataulu projekteittain"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_schedule_by_employee
 msgid "Schedule by Resource"
-msgstr ""
+msgstr "Aikataulu resurssien mukaan"
 
 #. module: project_forecast
 #: model_terms:ir.actions.act_window,help:project_forecast.planning_action_schedule_by_project
@@ -125,19 +125,20 @@ msgstr "Vuoro"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_slot_template
 msgid "Shift Template"
-msgstr ""
+msgstr "Vuoron malli"
 
 #. module: project_forecast
 #: model:planning.role,name:project_forecast.planning_role_tester
 msgid "Tester"
-msgstr ""
+msgstr "Testaaja"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__total_forecast_time
 msgid "Total Forecast Time"
-msgstr ""
+msgstr "Kokonaisennusteaika"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_project__total_forecast_time
 msgid "Total number of forecast hours in the project rounded to the unit."
 msgstr ""
+"Projektin ennustettujen tuntien kokonaismäärä pyöristettynä yksikköön."

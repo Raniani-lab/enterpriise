@@ -374,6 +374,8 @@ msgstr ""
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
 msgstr ""
+"Xác định \"chi phí theo giờ\" cho nhân viên để theo dõi chi phí theo thời "
+"gian họ làm việc"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form

@@ -5,10 +5,10 @@
 # Translators:
 # JanisJanis <jbojars@gmail.com>, 2022
 # InfernalLV <karlisdreizis@gmail.com>, 2022
+# Konstantins Zabogonskis <inculin4ik@gmail.com>, 2022
 # ievaputnina <ievai.putninai@gmail.com>, 2022
 # Arnis Putniņš <arnis@allegro.lv>, 2022
 # Martin Trigaux, 2022
-# Konstantins Zabogonskis <inculin4ik@gmail.com>, 2022
 # Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023
 # 
 msgid ""
@@ -94,7 +94,7 @@ msgstr "<strong>Summa</strong>"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<strong>Untaxed amount</strong>"
-msgstr ""
+msgstr "<strong>Neapliekamā summa</strong>"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -490,7 +490,7 @@ msgstr ""
 #: code:addons/industry_fsm_sale/models/sale_order.py:0
 #, python-format
 msgid "Quotation created: %s"
-msgstr ""
+msgstr "Kvota izveidota: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -519,7 +519,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_advance_payment_inv
 msgid "Sales Advance Payment Invoice"
-msgstr "Priekšapmaksas Rēķins"
+msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_order
@@ -619,7 +619,7 @@ msgstr "Piestādīt Rēķinu"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Total Price"
-msgstr "Kopējā Cena"
+msgstr "Summa"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.product_action_fsm

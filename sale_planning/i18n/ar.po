@@ -102,6 +102,9 @@ msgid ""
 "when confirming the Sales Order. Only employees with this role will "
 "automatically be assigned shifts for Sales Orders containing this service."
 msgstr ""
+"إذا كان مفعلاً، سيتم إنشاء نوبة عمل تلقائياً للدور المحدد عند تأكيد أمر "
+"البيع. وحدهم الموظفون الذين يشغلون هذا المنصب سيتم تعيينهم في نوبات العمل "
+"تلقائياً لأوامر البيع التي تحتوي على هذه الخدمة. "
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search

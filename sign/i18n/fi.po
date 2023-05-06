@@ -2304,7 +2304,7 @@ msgstr "Syy"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
 msgid "Redirect Link"
-msgstr ""
+msgstr "Ohjauslinkki"
 
 #. module: sign
 #. odoo-javascript

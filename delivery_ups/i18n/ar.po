@@ -3,8 +3,8 @@
 # 	* delivery_ups
 # 
 # Translators:
-# Malaz Abuidris <msea@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -158,8 +158,8 @@ msgid ""
 "If checked, ecommerce users will be prompted their UPS account number\n"
 "and delivery fees will be charged on it."
 msgstr ""
-"إذا حُدد هذا الاختيار، سيُطلب من مستخدمي ecommerce تسجيل أرقام حساباتهم على UPS\n"
-"ليتم تحصيل رسوم التسليم منها."
+"إذا تم تحديده، سيُطلب من مستخدمي المتجر الإلكتروني تسجيل أرقام حساباتهم على UPS\n"
+"ليتم تحصيل رسوم التسليم منها. "
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__in
@@ -174,7 +174,7 @@ msgstr "كيلوجرامات"
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Label Format"
-msgstr "صيغة بطاقة العنوان "
+msgstr "تنسيق بطاقة العنوان "
 
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
@@ -194,7 +194,7 @@ msgstr "وحدة حجم الحزمة "
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Package Weight Unit"
-msgstr "وحدة وزن الحزمة "
+msgstr "وحدة وزن الطرد "
 
 #. module: delivery_ups
 #. odoo-python
@@ -497,7 +497,7 @@ msgid ""
 "Shipment created into UPS<br/><b>Tracking Numbers:</b> "
 "%s<br/><b>Packages:</b> %s"
 msgstr ""
-"تم إنشاء الشحنة في UPS<br/> <b>رقم التتبع:</b> %s<br/><b>الحزم:</b> %s"
+"تم إنشاء الشحنة في UPS<br/> <b>رقم التتبع:</b> %s<br/><b>الحِزَم:</b> %s"
 
 #. module: delivery_ups
 #. odoo-python
@@ -803,7 +803,7 @@ msgstr "دفع جمارك UPS "
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_weight_unit
 msgid "Ups Package Weight Unit"
-msgstr "وحدة وزن حزم Ups"
+msgstr "وحدة وزن طرد Ups "
 
 #. module: delivery_ups
 #. odoo-python

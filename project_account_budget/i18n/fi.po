@@ -37,7 +37,7 @@ msgstr "Todellinen"
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Add Budget"
-msgstr ""
+msgstr "Lisää budjetti"
 
 #. module: project_account_budget
 #: model:ir.model.fields,field_description:project_account_budget.field_crossovered_budget_lines__analytic_account_id
@@ -99,14 +99,14 @@ msgstr "Ennuste"
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.js:0
 #, python-format
 msgid "New Budget"
-msgstr ""
+msgstr "Uusi talousarvio"
 
 #. module: project_account_budget
 #. odoo-javascript
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "No Budgetary Position"
-msgstr ""
+msgstr "Ei talousarvion kiinteää varausta"
 
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_project_project

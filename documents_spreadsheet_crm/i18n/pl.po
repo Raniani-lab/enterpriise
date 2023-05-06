@@ -51,7 +51,7 @@ msgstr "Stracone szanse według etapów"
 #. module: documents_spreadsheet_crm
 #: model:spreadsheet.template,name:documents_spreadsheet_crm.spreadsheet_template_mrr_nrr_pipeline_revenue
 msgid "MRR/NRR Pipeline Revenue Report (Monthly)"
-msgstr ""
+msgstr "Raport przychodów pipeline'u MRR/NRR (miesięczny)"
 
 #. module: documents_spreadsheet_crm
 #. odoo-javascript
@@ -63,12 +63,12 @@ msgstr "Szanse według etapów"
 #. module: documents_spreadsheet_crm
 #: model:spreadsheet.template,name:documents_spreadsheet_crm.spreadsheet_template_pipeline_revenue
 msgid "Pipeline Revenue Report (Monthly)"
-msgstr ""
+msgstr "Raport przychodów pipeline'u (miesięczny)"
 
 #. module: documents_spreadsheet_crm
 #: model:spreadsheet.template,name:documents_spreadsheet_crm.spreadsheet_template_pipeline_dashboard
 msgid "Pipeline dashboard"
-msgstr ""
+msgstr "Konsola pipeline'u"
 
 #. module: documents_spreadsheet_crm
 #. odoo-javascript

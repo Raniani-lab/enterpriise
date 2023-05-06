@@ -308,7 +308,7 @@ msgstr "Uzstādījumi"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Connecting Problem"
-msgstr ""
+msgstr "Savienojuma problēma"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__social_account_handle

@@ -949,6 +949,9 @@ msgid ""
 "email reminder will be sent to timesheet managers that still have timesheets"
 " to validate."
 msgstr ""
+"عدد الأيام بعد نهاية الأسبوع/الشهر الذي سيتم بعدها إرسال تذكير عن طريق "
+"البريد الإلكتروني إلى مدراء الجداول الزمنية الذين لا يزال لديهم جداول زمنية "
+"لتصديقها. "
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_delay
@@ -957,6 +960,9 @@ msgid ""
 "email reminder will be sent to timesheet users that still have timesheets to"
 " encode (according to their working hours)."
 msgstr ""
+"عدد الأيام بعد نهاية الأسبوع/الشهر الذي سيتم بعدها إرسال تذكير عن طريق "
+"البريد الإلكتروني إلى مستخدمي الجداول الزمنية الذين لا يزال لديهم جداول "
+"زمنية لتشفيرها (وفقاً لساعات عملهم). "
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1217,6 +1223,10 @@ msgid ""
 "00:30 (assuming you have a round up of 15 min). We recommend having the same"
 " value for the minimal duration and for the round up."
 msgstr ""
+"مدة الجداول الزمنية المشفرة من خلال المؤقت سيتم تقريبها تلقائياً إلى هذا "
+"العدد. على سبيل المثال، إذا قمت بإيقاف المؤقت على 00:16:56، سيتم تقريب مدة "
+"مدخلات الجداول الزمنية تلقائياً إلى 00:30 (مع افتراض أنه لديك عامل تقريب "
+"لـ15 دقيقة). نوصي بأن يكون للمدة الدنيا والتقريب نفس القيمة. "
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1397,6 +1407,10 @@ msgid ""
 "of 15 min). We recommend having the same value for the minimal duration and "
 "for the round up."
 msgstr ""
+"الجداول الزمنية المشفرة من خلال المؤقت سيتم تقريبها تلقائياً إلى القيمة "
+"المحددة. على سبيل المثال، إذا قمت بإيقاف المؤقت على 00:04:36، سيتم تقريب مدة"
+" مدخلات الجداول الزمنية تلقائياً إلى 00:15 (مع افتراض أنه لديك عامل تقريب "
+"لـ15 دقيقة). نوصي بأن يكون للمدة الدنيا والتقريب نفس القيمة. "
 
 #. module: timesheet_grid
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month

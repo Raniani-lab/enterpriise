@@ -111,21 +111,21 @@ msgstr ""
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Connection to IoT Box failed"
-msgstr ""
+msgstr "Savienojums ar IoT Box izgāzās"
 
 #. module: pos_iot
 #. odoo-javascript
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Connection to terminal failed"
-msgstr ""
+msgstr "Savienojums ar termināli izgāzās"
 
 #. module: pos_iot
 #. odoo-javascript
 #: code:addons/pos_iot/static/src/js/ScaleScreen.js:0
 #, python-format
 msgid "Could not connect to IoT scale"
-msgstr ""
+msgstr "Nevarēja savienoties ar IoT svariem"
 
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
@@ -365,7 +365,7 @@ msgstr ""
 #: code:addons/pos_iot/static/src/js/payment.js:0
 #, python-format
 msgid "Terminal Disconnected"
-msgstr ""
+msgstr "Terminālis atvienots"
 
 #. module: pos_iot
 #. odoo-javascript
@@ -435,6 +435,7 @@ msgid ""
 "You cannot check the status of the last transaction when a payment in in "
 "progress."
 msgstr ""
+"Jūs nevarat pārbaudīt pēdējā darījuma stāvokli, kamēr maksājums ir procesā."
 
 #. module: pos_iot
 #. odoo-javascript

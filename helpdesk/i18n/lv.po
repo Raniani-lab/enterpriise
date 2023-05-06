@@ -431,8 +431,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
-"A Python dictionary that will be evaluated to provide default values when "
-"creating new records for this alias."
+"Python vārdnīca, kas tiks novērtēta, lai nodrošinātu noklusējuma vērtības, "
+"izveidojot jaunus ierakstus šiem aizstājvārdiem."
 
 #. module: helpdesk
 #: model:ir.model.constraint,message:helpdesk.constraint_helpdesk_tag_name_uniq
@@ -2251,7 +2251,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_report_analysis_action
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_analysis_action
 msgid "No data yet !"
-msgstr ""
+msgstr "Vēl nav datu !"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_7days_analysis

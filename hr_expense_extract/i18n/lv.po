@@ -6,9 +6,8 @@
 # Arnis Putniņš <arnis@allegro.lv>, 2022
 # InfernalLV <karlisdreizis@gmail.com>, 2022
 # ievaputnina <ievai.putninai@gmail.com>, 2022
-# Anzelika Adejanova, 2022
 # Martin Trigaux, 2022
-# Konstantins Zabogonskis <inculin4ik@gmail.com>, 2022
+# Anzelika Adejanova, 2022
 # Armīns Jeltajevs <armins.jeltajevs@gmail.com>, 2023
 # 
 msgid ""
@@ -133,7 +132,7 @@ msgstr "Konfigurācijas uzstādījumi"
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_register_view_form
 msgid "Create Payment"
-msgstr ""
+msgstr "Izveidot maksājumu"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__create_uid
@@ -353,32 +352,32 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__date
 msgid "Payment Date"
-msgstr "Apmaksas Datums"
+msgstr "Maksājuma datums"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__partial_mode
 msgid "Payment Difference"
-msgstr ""
+msgstr "Maksājuma starpība"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__payment_method_line_id
 msgid "Payment Method"
-msgstr "Apmakses Metode"
+msgstr "Maksājuma metode"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_register_view_form
 msgid "Register Payment"
-msgstr "Reģistrēt Maksājumu"
+msgstr "Reģistrēt maksājumu"
 
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_register
 msgid "Register Sample Payment"
-msgstr ""
+msgstr "Reģistrēt piemēra maksājumu"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_expense_sample_register
 msgid "Register Sample Payments"
-msgstr ""
+msgstr "Reģistrēt piemēra maksājumus"
 
 #. module: hr_expense_extract
 #. odoo-javascript

@@ -874,7 +874,7 @@ msgstr "Iespējas"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Payment"
-msgstr "Payment"
+msgstr "Maksājums"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_payment_application

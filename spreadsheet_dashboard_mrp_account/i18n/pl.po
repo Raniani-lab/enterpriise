@@ -31,21 +31,21 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Available time (min)t"
-msgstr ""
+msgstr "Dostępny czas (min) t"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average Cost / Unit"
-msgstr ""
+msgstr "Średni koszt/jednostka"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average cost / unitt"
-msgstr ""
+msgstr "Średni koszt / jednostka"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -74,35 +74,35 @@ msgstr "Zamówienia produkcji"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Operation Type"
-msgstr ""
+msgstr "Zlecenia produkcyjne według typu operacji"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Product"
-msgstr ""
+msgstr "Zlecenia produkcyjne według produktów"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Responsible"
-msgstr ""
+msgstr "Zlecenia produkcyjne w podziale na odpowiedzialnych"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing orders"
-msgstr ""
+msgstr "Zlecenia produkcyjne"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Most Produced Products"
-msgstr ""
+msgstr "Najczęściej produkowane produkty"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -110,7 +110,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "OEE"
-msgstr ""
+msgstr "OEE"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -157,7 +157,7 @@ msgstr "Produkt"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Productive time (min)t"
-msgstr ""
+msgstr "Czas produktywny (min)t"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -166,7 +166,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Qty Produced"
-msgstr ""
+msgstr "Ilość wyprodukowana"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -188,7 +188,7 @@ msgstr "Odpowiedzialny"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Operation Types"
-msgstr ""
+msgstr "Główne typy operacji"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -202,56 +202,56 @@ msgstr "Główne produkty"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Responsibles"
-msgstr ""
+msgstr "Główni odpowiedzialni"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total quantity"
-msgstr ""
+msgstr "Całkowita ilość"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total time (min)t"
-msgstr ""
+msgstr "Czas całkowity (min)t"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Weekly Production"
-msgstr ""
+msgstr "Produkcja tygodniowa"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "avg cost - current"
-msgstr ""
+msgstr "koszt średni - bieżący"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "avg cost - previous"
-msgstr ""
+msgstr "koszt średni - poprzedni"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - current"
-msgstr ""
+msgstr "oee - bieżący"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - previous"
-msgstr ""
+msgstr "oee - poprzedni"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -268,11 +268,11 @@ msgstr "od ostatniego okresu"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - current"
-msgstr ""
+msgstr "statystyki mo - aktualne"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - previous"
-msgstr ""
+msgstr "statystyki mo - poprzednie"

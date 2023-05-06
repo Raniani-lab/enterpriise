@@ -5,7 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Muftiara Syuhada <muftiara.syuhada@gmail.com>, 2022
-# Abe Manyo, 2022
+# Abe Manyo, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Abe Manyo, 2022\n"
+"Last-Translator: Abe Manyo, 2023\n"
 "Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,6 +40,21 @@ msgid ""
 "        </div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"            <p>Sinkronisasi pesanan Amazong dengan referensi <t t-out=\"ctx.get('amazon_order_ref') or ''\">REF</t> mengalami error dan tidak dapat diselesaikan.</p>\n"
+"            <p>Kecuali pesanan dibatalkan pada SellerCentral, tidak ada sinkronisasi lainnya yang akan dicoba.</p>\n"
+"            <p>Untuk menjadwalkan percobaan sinkronisasi baru, lakukan hal berikut:\n"
+"                <ol>\n"
+"                    <li>Masuk dalam Developer Tools.</li>\n"
+"                    <li>Buka formulir Akun Amazon di mana order dilakukan.</li>\n"
+"                    <li>Navigasi ke tab Order Follow-up.</li>\n"
+"                    <li>Tetapkan tanggal untuk <em>Last Orders Sync</em> yang berada di depan update status terakhir pesanan.</li>\n"
+"                    <li>Simpan perubahan dan klik pada tombol <em>SYNC ORDERS</em>.</li>\n"
+"                </ol>\n"
+"            </p>\n"
+"            <p>Bila masalah berlanjut, hubungi <a href=\"https://www.odoo.com/help/\">Bantuan Odoo</a>.</p>\n"
+"        </div>\n"
+"        "
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__api_ref

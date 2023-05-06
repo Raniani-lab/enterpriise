@@ -25,21 +25,21 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Available time (min)t"
-msgstr ""
+msgstr "Thời gian có sẵn (phút)"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average Cost / Unit"
-msgstr ""
+msgstr "Đơn vị/chi phí trung bình"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average cost / unitt"
-msgstr ""
+msgstr "Đơn vị/chi phí trung bình"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -61,42 +61,42 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders"
-msgstr "Lệnh Sản xuất"
+msgstr "Lệnh sản xuất"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Operation Type"
-msgstr ""
+msgstr "Lệnh sản xuất theo loại hoạt động"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Product"
-msgstr ""
+msgstr "Lệnh sản xuất theo sản phẩm"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Responsible"
-msgstr ""
+msgstr "Lệnh sản xuất theo người phụ trách"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing orders"
-msgstr ""
+msgstr "Lệnh sản xuất"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Most Produced Products"
-msgstr ""
+msgstr "Sản phẩm được sản xuất nhiều nhất"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -104,7 +104,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "OEE"
-msgstr "Hiệu suất"
+msgstr "OEE"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -112,7 +112,7 @@ msgstr "Hiệu suất"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Operation Type"
-msgstr "Kiểu hoạt động"
+msgstr "Loại hoạt động"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -121,14 +121,14 @@ msgstr "Kiểu hoạt động"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Orders"
-msgstr "Đơn hàng"
+msgstr "Lệnh"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Period"
-msgstr "Chu kỳ"
+msgstr "Kỳ"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -151,7 +151,7 @@ msgstr "Sản phẩm"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Productive time (min)t"
-msgstr ""
+msgstr "Thời gian sản xuất hiệu quả (phút)"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -160,14 +160,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Qty Produced"
-msgstr ""
+msgstr "Sản lượng đã sản xuất"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Quantity Produced"
-msgstr "SL đã Sản xuất"
+msgstr "Số lượng đã sản xuất"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -175,77 +175,77 @@ msgstr "SL đã Sản xuất"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Responsible"
-msgstr "Phụ trách"
+msgstr "Người phụ trách"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Operation Types"
-msgstr ""
+msgstr "Loại hoạt động tiêu biểu"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Products"
-msgstr "Sản phẩm hàng đầu"
+msgstr "Sản phẩm tiêu biểu"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Responsibles"
-msgstr "Người phụ trách hàng đầu"
+msgstr "Người phụ trách tiêu biểu"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total quantity"
-msgstr ""
+msgstr "Tổng số lượng"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total time (min)t"
-msgstr ""
+msgstr "Tổng thời gian (phút)"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Weekly Production"
-msgstr ""
+msgstr "Sản xuất hàng tuần"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "avg cost - current"
-msgstr ""
+msgstr "chi phí trung bình - hiện tại"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "avg cost - previous"
-msgstr ""
+msgstr "chi phí trung bình - trước đó"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - current"
-msgstr ""
+msgstr "OEE - hiện tại"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - previous"
-msgstr ""
+msgstr "OEE - trước đó"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -255,18 +255,18 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr "kể từ giai đoạn trước"
+msgstr "kể từ kỳ trước"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - current"
-msgstr ""
+msgstr "thống kê LSX - hiện tại"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - previous"
-msgstr ""
+msgstr "thống kê LSX - trước đó"

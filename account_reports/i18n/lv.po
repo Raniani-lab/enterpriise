@@ -2540,12 +2540,12 @@ msgstr "Grāmatot"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Posted Entries Only"
-msgstr ""
+msgstr "Tikai grāmatotie ieraksti"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid "Posted Entries only"
-msgstr ""
+msgstr "Tikai grāmatotie ieraksti"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
@@ -3346,7 +3346,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "View Payment"
-msgstr ""
+msgstr "Skatīt maksājumu"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form

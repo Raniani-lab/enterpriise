@@ -30,6 +30,8 @@ msgstr "Tài khoản phân tích"
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
 msgstr ""
+"Xác định \"chi phí theo giờ\" cho nhân viên để theo dõi chi phí theo thời "
+"gian họ làm việc"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model.fields,field_description:mrp_workorder_hr_account.field_account_analytic_line__employee_id
@@ -39,12 +41,12 @@ msgstr "Nhân viên"
 #. module: mrp_workorder_hr_account
 #: model:ir.model.fields,field_description:mrp_workorder_hr_account.field_mrp_workorder__employee_analytic_account_line_ids
 msgid "Employee Analytic Account Line"
-msgstr ""
+msgstr "Mục tài khoản phân tích nhân viên"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_report_mrp_account_enterprise_mrp_cost_structure
 msgid "MRP Cost Structure Report"
-msgstr "Báo cáo chi phí sản xuất"
+msgstr "Báo cáo cấu trúc chi phí SX"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_mrp_routing_workcenter
@@ -66,4 +68,4 @@ msgstr "Nhật ký năng xuất của khu vực sản xuất"
 #: code:addons/mrp_workorder_hr_account/models/mrp_workorder.py:0
 #, python-format
 msgid "[EMPL] %s - %s"
-msgstr ""
+msgstr "[EMPL] %s - %s"

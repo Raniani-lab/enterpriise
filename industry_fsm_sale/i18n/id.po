@@ -309,7 +309,7 @@ msgstr "Faktur"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_invoice_count
 msgid "Invoice Count"
-msgstr ""
+msgstr "Jumlah Faktur"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__invoice_status

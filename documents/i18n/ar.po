@@ -158,12 +158,12 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
-msgstr "<i class=\"fa fa-download fa-fw\"/>  تحميل الكل"
+msgstr "<i class=\"fa fa-download fa-fw\"/>  تنزيل الكل "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-download fa-fw\"/> Download"
-msgstr "<i class=\"fa fa-download fa-fw\"/> تحميل"
+msgstr "<i class=\"fa fa-download fa-fw\"/> تنزيل "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
@@ -1141,7 +1141,7 @@ msgstr "تحميل كافة الملفات "
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__action__downloadupload
 msgid "Download and Upload"
-msgstr "تحميل ورفع"
+msgstr "تنزيل ورفع "
 
 #. module: documents
 #. odoo-javascript
@@ -1379,7 +1379,7 @@ msgstr "الأيقونة"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr "الأيقونة للإشارة إلى استثناء النشاط"
+msgstr "الأيقونة للإشارة إلى النشاط المستثنى "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction
@@ -1665,12 +1665,12 @@ msgstr "الرسائل"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__mimetype
 msgid "Mime Type"
-msgstr "نوع التنسيق الملف"
+msgstr "نوع تنسيق الملف"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Miscellaneous"
-msgstr "متنوعة"
+msgstr "متفرقات "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__model_id
@@ -1846,7 +1846,7 @@ msgstr "عدد الإجراءات"
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 msgid "Number of errors"
-msgstr "عدد الاخطاء"
+msgstr "عدد الأخطاء "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
@@ -2116,13 +2116,13 @@ msgstr "علامات التصنيف المطلوبة "
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model_name
 msgid "Res Model Name"
-msgstr "اسم كائن Res"
+msgstr "اسم نموذج Res "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__res_id
 msgid "Resource ID"
-msgstr "معرف المصدر"
+msgstr "معرف المَورِد "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model
@@ -2133,7 +2133,7 @@ msgstr "نموذج الموارد"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_name
 msgid "Resource Name"
-msgstr "اسم المصدر"
+msgstr "اسم المَورِد "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
@@ -2588,7 +2588,7 @@ msgstr "النوع"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "نوع النشاط الاستثنائي المسجل."
+msgstr "نوع النشاط المستثنى في السجل. "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__url
@@ -2847,7 +2847,7 @@ msgstr "المستندات المحددة "
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "documents shared by"
-msgstr "المستندات المُتشارَكة بواسطة"
+msgstr "المستندات التي تمت مشاركتها من قِبَل "
 
 #. module: documents
 #. odoo-javascript

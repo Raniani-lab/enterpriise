@@ -37,7 +37,7 @@ msgstr "%s (kopija)"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "%s Payment Reminder - %s"
-msgstr ""
+msgstr "%s Maksājuma atgādinājums - %s"
 
 #. module: account_followup
 #: model:ir.actions.report,print_report_name:account_followup.action_report_followup
@@ -603,7 +603,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__invoice_date
 msgid "Invoice/Bill Date"
-msgstr ""
+msgstr "Rēķina datums"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
@@ -766,7 +766,7 @@ msgstr "Partneris"
 #: model:mail.template,name:account_followup.email_template_followup_1
 #, python-format
 msgid "Payment Reminder"
-msgstr ""
+msgstr "Maksājuma atgādinājums"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__print

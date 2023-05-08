@@ -743,12 +743,12 @@ class SpanishMod303TaxReportCustomHandler(models.AbstractModel):
         rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['71'], length=17, decimal_places=2, signed=True, in_currency=True)
 
         # Information about declaration
-        rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
-
         if options['date']['date_from'] >= '2023-01-01':
             rslt += self._l10n_es_boe_format_string(casilla_lines_map['71'] == 0 and 'X' or ' ')
+            rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
             rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and boe_wizard.previous_report_number or '', length=13)
         else:
+            rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
             rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and boe_wizard.previous_report_number or '', length=13)
             rslt += self._l10n_es_boe_format_string(casilla_lines_map['71'] == 0 and 'X' or ' ')
 

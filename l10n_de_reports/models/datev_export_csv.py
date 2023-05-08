@@ -91,11 +91,13 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                         # rename files by move name + sequence number (if more than 1 file)
                         # '\' is not allowed in file name, replace by '-'
                         base_name = slash_re.sub('-', move.name)
-                        if len(move.attachment_ids) > 1:
-                            name_pattern = f'%(base)s-%(index)0.{len(str(len(move.attachment_ids)))}d%(extension)s'
+                        # retrieve all chatter attachments
+                        attachments = move._get_mail_thread_data_attachments()
+                        if len(attachments) > 1:
+                            name_pattern = f'%(base)s-%(index)0.{len(str(len(attachments)))}d%(extension)s'
                         else:
                             name_pattern = '%(base)s%(extension)s'
-                        for i, attachment in enumerate(move.attachment_ids.sorted('id'), 1):
+                        for i, attachment in enumerate(attachments.sorted('id'), 1):
                             extension = os.path.splitext(attachment.name)[1]
                             name = name_pattern % {'base': base_name, 'index': i, 'extension': extension}
                             zf.writestr(name, attachment.raw)

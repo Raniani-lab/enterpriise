@@ -45,7 +45,7 @@ class FetchmailServer(models.Model):
     @api.constrains('l10n_cl_is_dte', 'server_type')
     def _check_server_type(self):
         for record in self:
-            if record.l10n_cl_is_dte and record.server_type != 'imap':
+            if record.l10n_cl_is_dte and record.server_type not in ('imap', 'outlook', 'gmail'):
                 raise ValidationError(_('The server must be of type IMAP.'))
 
     def fetch_mail(self):

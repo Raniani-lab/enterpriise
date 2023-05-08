@@ -122,8 +122,8 @@
                 <t t-if="records[0].data.type == 'url'">
                     <t t-set="url" t-value="records[0].data.url"/>
                     <a t-if="url and (url.startsWith('https://') || url.startsWith('http://') || url.startsWith('ftp://'))"
-                        t-att-href="url" target="new">
-                        <button class="btn fa fa-link o_inspector_button" title="Link"/>
+                        t-att-href="url" target="new" t-att-class="nbPreviews > 1 ? 'pe-none' : ''">
+                        <button class="btn fa fa-link o_inspector_button" t-att-disabled="nbPreviews > 1" title="Link"/>
                     </a>
                 </t>
                 <t t-else="">

@@ -509,17 +509,9 @@
                 <field name="color"/>
                 <templates>
                     <t t-name="kanban-menu">
-                        <div class="o_kanban_card_manage_section" t-if="widget.editable or widget.deletable">
-                            <div role="menuitem">
-                                <a t-if="widget.editable" role="menuitem" type="edit">Edit</a>
-                            </div>
-                            <div role="menuitem">
-                                <a t-if="widget.deletable" role="menuitem" type="delete">Delete</a>
-                            </div>
-                        </div>
-                        <div role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
-                            <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
-                        </div>
+                        <a t-if="widget.editable" role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                        <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                        <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
                     </t>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">

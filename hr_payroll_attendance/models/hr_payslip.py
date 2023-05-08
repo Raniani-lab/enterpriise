@@ -33,7 +33,8 @@ class HrPayslip(models.Model):
                 ]
             ])
         read_group = self.env['hr.attendance']._read_group(domain, groupby=['employee_id', 'check_in:day'], aggregates=['__count'])
-        for employee, check_in_day, count in read_group:
+        for employee, check_in, count in read_group:
+            check_in_day = check_in.date()
             slips = slip_by_employee[employee.id]
             for slip in slips:
                 if slip.date_from <= check_in_day <= slip.date_to:

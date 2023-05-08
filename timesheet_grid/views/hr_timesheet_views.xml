@@ -40,6 +40,9 @@
                 <xpath expr="//tree" position="attributes">
                     <attribute name="js_class"></attribute>
                 </xpath>
+                <xpath expr="//field[@name='unit_amount']" position="attributes">
+                     <attribute name="widget">timesheet_uom</attribute>
+                </xpath>
             </field>
         </record>
 

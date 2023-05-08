@@ -11,7 +11,8 @@
             </setting>
 
             <setting id="default_taxes" position="after">
-                <setting id="account_tax_periodicity" string="Tax Return Periodicity" company_dependent="1" help="How often tax returns have to be made">
+                <setting id="account_tax_periodicity" string="Tax Return Periodicity" company_dependent="1" help="How often tax returns have to be made"
+                    documentation="/applications/finance/accounting/reporting/declarations/tax_returns.html">
                     <div class="content-group">
                         <div class="row mt16">
                             <label string="Periodicity" for="account_tax_periodicity" class="col-lg-3 o_light_label"/>

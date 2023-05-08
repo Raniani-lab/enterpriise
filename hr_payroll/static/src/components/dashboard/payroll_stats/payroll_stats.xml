@@ -8,8 +8,8 @@
                     data-tooltip-template="hr_payroll.Tooltip" t-att-data-tooltip-info="tooltipInfo"/>
                 <div class="d-flex" id="period_selection_toggle">
                     Annually
-                    <div class="o_boolean_toggle cursor-pointer form-check form-switch ms-2" t-on-click.stop.prevent="toggle">
-                        <input type="checkbox" class="form-check-input bg-primary" role="switch" t-att-checked="state.monthly"/>
+                    <div class="o_boolean_toggle cursor-pointer form-check form-switch o_switch_toggle ms-2" t-on-click.stop.prevent="toggle">
+                        <input type="checkbox" class="form-check-input" role="switch" t-att-checked="state.monthly"/>
                     </div>
                     Monthly
                 </div>

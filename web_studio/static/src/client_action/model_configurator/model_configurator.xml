@@ -19,7 +19,7 @@
         </div>
         <div class="o_web_studio_model_configurator_buttons">
             <button type="button"
-                class="btn fa fa-chevron-left o_web_studio_model_configurator_previous"
+                class="btn oi oi-chevron-left o_web_studio_model_configurator_previous"
                 t-att-class="{ disabled: state.saving }"
                 aria-label="Previous"
                 title="Previous"
@@ -35,8 +35,8 @@
             >
                 <span t-esc="props.label"/>
                 <i
-                    class="fa"
-                    t-att-class="{'fa-chevron-right': !state.saving, 'fa-circle-o-notch': state.saving, 'fa-spin': state.saving}"
+                    class="fa oi"
+                    t-att-class="{'oi-chevron-right': !state.saving, 'fa-circle-o-notch': state.saving, 'fa-spin': state.saving}"
                 />
             </button>
         </div>

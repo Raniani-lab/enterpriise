@@ -92,7 +92,7 @@
                             <field name="onss_pem_passphrase" filename="'KEY File'"/>
                             <field name="onss_key"/>
                         </group>
-                        <button name="%(l10n_be_hr_payroll.l10n_be_hr_payroll_action_work_address_codes)d" icon="fa-arrow-right" type="action" string="Work address DMFA codes" class="btn-link"/>
+                        <button name="%(l10n_be_hr_payroll.l10n_be_hr_payroll_action_work_address_codes)d" icon="oi-arrow-right" type="action" string="Work address DMFA codes" class="btn-link"/>
                     </setting>
                     <setting id="company_information" string="Company Information" help="Offical Company Information" company_dependent="1">
                         <div class="mt16 content-group">

@@ -35,7 +35,7 @@ export function useSalePlanningActions({ getDomain, getResModel, getViewContext,
                         type: "success",
                         buttons: [{
                             name: env._t("View Shifts"),
-                            icon: "fa-arrow-right",
+                            icon: "oi oi-arrow-right",
                             onClick: () => {
                                 actionService.doAction("sale_planning.planning_action_orders_planned", {
                                     viewType,

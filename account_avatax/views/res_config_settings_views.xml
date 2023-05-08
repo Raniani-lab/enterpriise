@@ -60,7 +60,7 @@
                         </div>
                         <div class="mt16" attrs="{'invisible': [('avalara_api_id', 'not in', (False, '')), ('avalara_api_key', 'not in', (False, ''))]}">
                             <a href="https://www.avalara.com/us/en/get-started.html" target="_new">
-                                <i class="fa fa-fw fa-arrow-right"/>
+                                <i class="oi oi-fw oi-arrow-right"/>
                                 How to Get Credentials
                             </a>
                         </div>

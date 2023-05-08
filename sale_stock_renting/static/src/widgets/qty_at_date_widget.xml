@@ -23,7 +23,7 @@
                 </tbody>
             </table>
             <button class="text-start btn btn-link" type="button" t-on-click="openRentalGanttView">
-                <i class="fa fa-fw o_button_icon fa-arrow-right"/>
+                <i class="oi oi-fw o_button_icon oi-arrow-right"/>
                 View Rentals
             </button>
             </div>

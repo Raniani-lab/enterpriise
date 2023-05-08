@@ -118,7 +118,7 @@
                 <div attrs="{'invisible': [('is_fsm', '=', False)]}">
                     <button
                         name="action_fsm_navigate" type="object" class="btn btn-link ps-0 pt-0 pb-2"
-                        icon="fa-arrow-right" string="Navigate To" colspan="2"
+                        icon="oi-arrow-right" string="Navigate To" colspan="2"
                         attrs="{'invisible': [('is_fsm', '=', False)]}"/>
                 </div>
                 <field name="is_task_phone_update" invisible="1"/>

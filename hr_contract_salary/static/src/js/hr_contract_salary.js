@@ -30,7 +30,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $("#hr_contract_salary select").select2();
 
         $('b[role="presentation"]').hide();
-        $('.select2-arrow').append('<i class="fa fa-chevron-down"></i>');
+        $('.select2-arrow').append('<i class="oi oi-chevron-down"></i>');
         this.updateGross = _.debounce(this.updateGross, 1000);
         this.initializeUnsetSliders();
         var whitelist = $("input[name='whitelist']").val();

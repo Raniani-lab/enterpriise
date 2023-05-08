@@ -33,7 +33,7 @@ if (config.device.isMobile) {
                 const $modalHeader = this.$modal.find(".modal-header");
                 $modalHeader.find("button.btn-close").remove();
                 const $navigationBtn = $("<button>", {
-                    class: "btn fa fa-arrow-left",
+                    class: "btn oi oi-arrow-left",
                     "data-bs-dismiss": "modal",
                     "aria-label": "close",
                 });

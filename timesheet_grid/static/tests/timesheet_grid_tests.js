@@ -671,7 +671,7 @@ QUnit.module("Views", (hooks) => {
             context: { group_by: [] },
         });
 
-        await click(target, ".o_grid_navigation_buttons > div > button > span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons > div > button > span.oi-arrow-right");
         await click(target, ".o_control_panel_main_buttons .d-none.d-xl-inline-flex .o_grid_button_add");
         assert.containsOnce(target, ".modal");
         assert.strictEqual(
@@ -692,7 +692,7 @@ QUnit.module("Views", (hooks) => {
             context: { group_by: [] },
         });
 
-        await click(target, ".o_grid_navigation_buttons > div > button > span.fa-arrow-left");
+        await click(target, ".o_grid_navigation_buttons > div > button > span.oi-arrow-left");
         await click(target, ".o_control_panel_main_buttons .d-none.d-xl-inline-flex .o_grid_button_add");
         assert.containsOnce(target, ".modal");
         assert.strictEqual(

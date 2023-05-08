@@ -10,7 +10,7 @@
                     <button type="button" class="o_mobile_search_button btn"
                         t-on-click="() => state.showMobileSearch = false"
                         >
-                        <i class="fa fa-arrow-left"/>
+                        <i class="oi oi-arrow-left"/>
                         <strong class="ml8">FILTER</strong>
                     </button>
                     <button type="button" class="o_mobile_search_button btn"
@@ -58,7 +58,7 @@
                         <t t-if="!state.showMobileSearch">
                             <button type="button" class="o_enable_searchview btn btn-link"
                                 t-if="props.withBreadcrumbs"
-                                t-att-class="state.showSearchBar ? 'fa fa-arrow-left' : 'oi oi-search'"
+                                t-att-class="state.showSearchBar ? 'oi oi-arrow-left' : 'oi oi-search'"
                                 t-on-click="() => state.showSearchBar = !state.showSearchBar"
                             />
                             <t t-if="state.showSearchBar or !props.withBreadcrumbs">

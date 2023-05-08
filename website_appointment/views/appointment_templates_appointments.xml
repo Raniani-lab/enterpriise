@@ -272,7 +272,7 @@
                             <span t-else="" class="o_not_editable">Online</span>
                         </div>
                         <div class="navbar-brand fw-bold text-primary text-uppercase h5 me-auto position-absolute w-100">
-                            View availability <i class="fa fa-arrow-right"/>
+                            View availability <i class="oi oi-arrow-right"/>
                         </div>
                     </main>
                 </a>

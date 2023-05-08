@@ -43,7 +43,7 @@
                         t-on-click="onPreviousButtonClick"
                         data-hotkey="p"
                 >
-                    <span aria-label="Previous" class="fa fa-arrow-left" role="img" title="Previous"/>
+                    <span aria-label="Previous" class="oi oi-arrow-left" role="img" title="Previous"/>
                 </button>
                 <ViewScaleSelector
                     t-if="rangesArray.length"
@@ -56,7 +56,7 @@
                         t-on-click="onNextButtonClick"
                         data-hotkey="n"
                 >
-                    <span aria-label="Next" class="fa fa-arrow-right" role="img" title="Next"/>
+                    <span aria-label="Next" class="oi oi-arrow-right" role="img" title="Next"/>
                 </button>
             </div>
         </div>

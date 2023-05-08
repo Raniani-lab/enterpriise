@@ -50,7 +50,7 @@
                                 <strong>to</strong>
                                 <field name="subscription_state" placeholder="Destination"/>
                             </div>
-                            <button name="action_view_subscriptions" type="object" icon="fa-arrow-right" class="btn-link o_row">
+                            <button name="action_view_subscriptions" type="object" icon="oi-arrow-right" class="btn-link o_row">
                                 <span>
                                     <field name="subscription_count" class="w-auto"/>
                                 </span>

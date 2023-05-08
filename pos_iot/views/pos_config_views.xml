@@ -31,7 +31,7 @@
                         <field name="iface_scale_id"/>
                     </div>
                     <div>
-                        <button name="%(iot.iot_device_action)d" icon="fa-arrow-right" type="action" string="IoT Devices" class="btn-link mt8"/>
+                        <button name="%(iot.iot_device_action)d" icon="oi-arrow-right" type="action" string="IoT Devices" class="btn-link mt8"/>
                     </div>
                 </div>
             </xpath>

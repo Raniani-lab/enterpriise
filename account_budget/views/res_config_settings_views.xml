@@ -9,7 +9,7 @@
             <setting id="account_budget" position="inside">
                 <div class="content-group" attrs="{'invisible': [('module_account_budget', '=', False)]}">
                     <div class="mt8">
-                        <button name="%(account_budget.open_budget_post_form)d" icon="fa-arrow-right" type="action" string="Budgetary Positions" class="btn-link"/>
+                        <button name="%(account_budget.open_budget_post_form)d" icon="oi-arrow-right" type="action" string="Budgetary Positions" class="btn-link"/>
                     </div>
                 </div>
             </setting>

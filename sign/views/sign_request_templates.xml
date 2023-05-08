@@ -261,7 +261,7 @@
                         <i class="fa fa-question-circle"></i>
                     </button>
                     <a class="btn btn-link buy_credits px-0 text-end" t-att-href="warning['iap_url']">
-                        <i class="fa fa-arrow-right"></i> Buy credits
+                        <i class="oi oi-arrow-right"></i> Buy credits
                     </a>
                 </p>
             </t>

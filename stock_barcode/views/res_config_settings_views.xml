@@ -13,7 +13,7 @@
                 </div>
                 <div class="content-group">
                     <div class="mt8" attrs="{'invisible': [('module_stock_barcode', '=', False)]}">
-                        <button class="btn-link" type="action" string="Configure Product Barcodes" name="%(stock_barcode.product_action_barcodes)d" icon="fa-arrow-right"/>
+                        <button class="btn-link" type="action" string="Configure Product Barcodes" name="%(stock_barcode.product_action_barcodes)d" icon="oi-arrow-right"/>
                     </div>
                 </div>
                 <div>

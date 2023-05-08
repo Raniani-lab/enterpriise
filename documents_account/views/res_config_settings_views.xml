@@ -19,7 +19,7 @@
                                     <field name="account_folder" attrs="{'required' : [('documents_account_settings', '=', True)]}"/>
                                 </div>
                                 <div class="row col-lg-4">
-                                    <button type="action" name="%(documents_account.action_folder_settings_installer)d" string="Journals" icon="fa-arrow-right" class="btn-link"/>
+                                    <button type="action" name="%(documents_account.action_folder_settings_installer)d" string="Journals" icon="oi-arrow-right" class="btn-link"/>
                                 </div>
                             </div>
                         </setting>

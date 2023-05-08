@@ -24,7 +24,7 @@
                             <div t-out="appointment_types[0].message_intro" class="o_appointment_intro my-2"/>
                             <div class="row">
                                 <div class="mx-auto">
-                                    <button type="submit" class="btn btn-primary">Preview <span class="fa fa-arrow-right"/></button>
+                                    <button type="submit" class="btn btn-primary">Preview <span class="oi oi-arrow-right"/></button>
                                 </div>
                             </div>
                         </form>
@@ -127,7 +127,7 @@
                                     </t>
                                 </t>
                                 <a t-attf-href="/web#model=#{main_object._name}&amp;id=#{main_object.id}&amp;menu_id=#{backend_menu_id}" class="d-block">
-                                    <i class="fa fa-arrow-right me-2"/><em>Configure <t t-out="appointment_type.name"/></em>
+                                    <i class="oi oi-arrow-right me-2"/><em>Configure <t t-out="appointment_type.name"/></em>
                                 </a>
                             </div>
                         </div>
@@ -229,13 +229,13 @@
                 <t t-set="displayed_month_id" t-value="month_kept_from_update if month_kept_from_update is not False else month_first_available"/>
                 <div t-foreach="slots" t-as="month" t-attf-id="month-#{month['id']}" t-attf-class="o_appointment_month #{'d-none' if month['id'] != displayed_month_id else ''}">
                     <div id="calendarHeader" class="d-inline-flex align-items-baseline container-fluid">
-                        <button t-if="month['id'] > 0" type="button" id="prevCal" t-attf-class="btn btn-primary o_js_calendar_navigate"><i class="fa fa-arrow-left"/></button>
+                        <button t-if="month['id'] > 0" type="button" id="prevCal" t-attf-class="btn btn-primary o_js_calendar_navigate"><i class="oi oi-arrow-left"/></button>
                         <span t-if="month['nb_slots_previous_months'] and appointment_type.category == 'custom'"
                             class="badge bg-o-color-2 rounded-circle align-self-start mt-n1 ml-n2"
                             t-out="month['nb_slots_previous_months']"/>
                         <h4 t-out="month['month']" class="o_appointment_month_name col text-center"/>
                         <button t-if="len(slots) > month['id'] + 1" type="button" id="nextCal" t-attf-class="btn btn-primary o_js_calendar_navigate ms-1">
-                            <i class="fa fa-arrow-right"/>
+                            <i class="oi oi-arrow-right"/>
                         </button>
                         <span t-if="month['nb_slots_next_months'] and appointment_type.category == 'custom'"
                             class="badge bg-o-color-2 rounded-circle align-self-start mt-n1 ml-n2"

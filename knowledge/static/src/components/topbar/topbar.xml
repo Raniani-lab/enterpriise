@@ -159,7 +159,7 @@
                                 <div class="ps-0 dropdown-item user-select-none d-inline-flex align-items-start" t-if="props.record.data.user_can_write and props.record.data.active"
                                     t-on-click.stop="() => this.props.record.update({full_width: !props.record.data.full_width})">
                                     <div class="pe-3">
-                                        <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-arrows-h"/> Full Width
+                                        <i class="ms-2 ps-3 me-4 oi oi-fw oi-large oi-arrows-h"/> Full Width
                                     </div>
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" id="full_width_input" type="checkbox" role="switch" t-att-checked="props.record.data.full_width"/>

@@ -205,12 +205,12 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(
             target,
-            ".o_grid_navigation_buttons button > span.fa-arrow-left",
+            ".o_grid_navigation_buttons button > span.oi-arrow-left",
             "The previous button should be there"
         );
         assert.containsOnce(
             target,
-            ".o_grid_navigation_buttons button > span.fa-arrow-right",
+            ".o_grid_navigation_buttons button > span.oi-arrow-right",
             "The next button should be there"
         );
         assert.containsOnce(target, ".o_view_scale_selector");
@@ -409,7 +409,7 @@ QUnit.module("Views", (hooks) => {
             ),
             ["P1 | BS task", "Webocalypse Now | Another BS task"]
         );
-        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.oi-arrow-right");
         assert.containsNone(
             target,
             ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_column_total,.o_grid_row_total)",
@@ -421,7 +421,7 @@ QUnit.module("Views", (hooks) => {
             "div.bg-info",
             "No column should be the current date since we move in the following week."
         );
-        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.oi-arrow-right");
         assert.containsNone(target, "div.o_grid_row_title", "should not have any cell");
     });
 
@@ -527,7 +527,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         // Click on next period to have no data
-        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-left");
+        await click(target, ".o_grid_navigation_buttons button span.oi-arrow-left");
         assert.containsNone(target, ".o_grid_section");
         assert.containsNone(
             target,
@@ -588,7 +588,7 @@ QUnit.module("Views", (hooks) => {
             "None | P1",
             "BS task | P1",
         ]);
-        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.oi-arrow-right");
         assert.containsNone(target, ".o_grid_section");
         assert.containsN(target, ".o_grid_row_title", 2);
         assert.deepEqual(getNodesTextContent(target.querySelectorAll(".o_grid_row_title")), [
@@ -655,7 +655,7 @@ QUnit.module("Views", (hooks) => {
             "None",
             "BS task",
         ]);
-        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.oi-arrow-right");
         assert.containsNone(target, ".o_grid_section");
         assert.containsN(target, ".o_grid_row_title", 2);
         assert.deepEqual(getNodesTextContent(target.querySelectorAll(".o_grid_row_title")), [
@@ -755,7 +755,7 @@ QUnit.module("Views", (hooks) => {
             "Rer",
             "Sassy",
         ]);
-        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-left");
+        await click(target, ".o_grid_navigation_buttons button span.oi-arrow-left");
         assert.deepEqual(getNodesTextContent(target.querySelectorAll(".o_grid_row_title")), [
             "Sas",
             "Rem",
@@ -790,7 +790,7 @@ QUnit.module("Views", (hooks) => {
             "DEF",
             "GHI",
         ]);
-        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-left");
+        await click(target, ".o_grid_navigation_buttons button span.oi-arrow-left");
         assert.deepEqual(getNodesTextContent(target.querySelectorAll(".o_grid_row_title")), [
             "ABC",
             "DEF",
@@ -1298,7 +1298,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         // move to previous week, and check first column header
-        await click(target, ".fa-arrow-left");
+        await click(target, ".oi-arrow-left");
         assert.notOk(
             getNodesTextContent(target.querySelectorAll(".o_grid_column_title")).includes(
                 "Tue,\nJan\u00A031"
@@ -1500,7 +1500,7 @@ QUnit.module("Views", (hooks) => {
         await click(target, ".o_grid_renderer .o_grid_add_line a");
         assert.containsOnce(target, ".modal");
         await click(target, ".modal .modal-footer button.o_form_button_cancel");
-        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.oi-arrow-right");
         assert.containsNone(
             target,
             ".o_grid_add_line a",
@@ -1772,7 +1772,7 @@ QUnit.module("Views", (hooks) => {
                 "The `Add a Line` button should be displayed when no content data is displayed to be able to create a record."
             );
 
-            await click(target, ".o_grid_navigation_buttons span.fa-arrow-right");
+            await click(target, ".o_grid_navigation_buttons span.oi-arrow-right");
             assert.containsNone(
                 target,
                 ".o_view_sample_data",

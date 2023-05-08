@@ -12,7 +12,7 @@
               <field name="easypost_test_api_key" attrs="{'required': [('easypost_production_api_key', '=', False), ('delivery_type', '=', 'easypost')]}"/>
               <field name="easypost_production_api_key" attrs="{'required': [('delivery_type', '=', 'easypost')]}"/>
               <div colspan='2'>
-                <button name="action_get_carrier_type" string="Load your Easypost carrier accounts" type="object" class="oe_inline fa fa-arrow-right oe_link"/>
+                <button name="action_get_carrier_type" string="Load your Easypost carrier accounts" type="object" class="oe_inline oi oi-arrow-right oe_link"/>
               </div>
               <div colspan="2" class="alert alert-warning" attrs="{'invisible': ['|', ('easypost_delivery_type', '!=', False), ('delivery_type', '!=', 'easypost')]}" role="status">
                 <p>Do not forget to load your Easypost carrier accounts for a valid configuration.</p>

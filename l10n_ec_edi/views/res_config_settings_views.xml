@@ -34,7 +34,7 @@
                             <div>
                                 <label for="l10n_ec_edi_certificate_id" class="col-lg-4 o_light_label"/>
                                 <field name="l10n_ec_edi_certificate_id" options="{'no_create': True, 'no_create_edit':True}"/>
-                                <button type="action" name="%(sri_key_type_action)d" string="SRI Certificates" class="btn-link" icon="fa-arrow-right"/>
+                                <button type="action" name="%(sri_key_type_action)d" string="SRI Certificates" class="btn-link" icon="oi-arrow-right"/>
                             </div>
                             <div>
                                 <field name="l10n_ec_production_env"/>

@@ -76,7 +76,7 @@
                         title="Previous"
                         t-on-click="onPreviousPeriodClicked"
                     >
-                        <span class="fa fa-arrow-left"/>
+                        <span class="oi oi-arrow-left"/>
                     </button>
                     <ViewScaleSelector
                         scales="model.metaData.scales"
@@ -89,7 +89,7 @@
                         title="Next"
                         t-on-click="onNextPeriodClicked"
                     >
-                        <span class="fa fa-arrow-right"/>
+                        <span class="oi oi-arrow-right"/>
                     </button>
                 </div>
                 <b t-esc="getFormattedFocusDate()" class="px-2"/>

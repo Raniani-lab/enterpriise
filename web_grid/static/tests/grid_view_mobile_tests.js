@@ -193,12 +193,12 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(
             target,
-            ".o_grid_navigation_buttons > div > button > span.fa-arrow-left",
+            ".o_grid_navigation_buttons > div > button > span.oi-arrow-left",
             "The previous button should be there"
         );
         assert.containsOnce(
             target,
-            ".o_grid_navigation_buttons > div > button > span.fa-arrow-right",
+            ".o_grid_navigation_buttons > div > button > span.oi-arrow-right",
             "The previous button should be there"
         );
         assert.containsOnce(target, ".o_view_scale_selector");

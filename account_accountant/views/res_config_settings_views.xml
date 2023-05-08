@@ -28,7 +28,7 @@
                 <setting help="Define fiscal years of more or less than one year">
                     <field name="group_fiscal_year"/>
                     <div class="mt16">
-                        <button name="%(account_accountant.actions_account_fiscal_year)d" icon="fa-arrow-right"
+                        <button name="%(account_accountant.actions_account_fiscal_year)d" icon="oi-arrow-right"
                                 type="action" string="Fiscal Years" class="btn-link"
                                 attrs="{'invisible': [('group_fiscal_year', '=', False)]}"/>
                     </div>

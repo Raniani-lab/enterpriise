@@ -13,7 +13,7 @@ from odoo.addons.payment.controllers import portal as payment_portal
 from odoo.addons.payment import utils as payment_utils
 from odoo.addons.portal.controllers.portal import pager as portal_pager
 from odoo.addons.sale.controllers import portal as sale_portal
-
+from odoo.addons.sale_subscription.models.sale_order import SUBSCRIPTION_PROGRESS_STATE
 
 class CustomerPortal(payment_portal.PaymentPortal):
 
@@ -143,6 +143,9 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'pricelist': order_sudo.pricelist_id.sudo(),
             'enable_manage_payment_form': enable_manage_payment_form
         }
+        progress_child = order_sudo.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
+        # prevent churned SO with a confirmed renewal to be reactivated. The child should be updated.
+        display_payment_message = order_sudo.subscription_state in ['3_progress', '4_paused', '6_churn'] and not progress_child
         payment_values = {
             **SalePortal._get_payment_values(
                 self, order_sudo, is_subscription=True
@@ -151,6 +154,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'amount': None,  # Determined by the generated invoice
             'partner_id': order_sudo.partner_id.id,
             'transaction_route': f'/my/subscription/transaction/{order_sudo.id}',
+            'display_payment_message': display_payment_message,
             # Operation-dependent values are defined in the view
         }
         values.update(payment_values)

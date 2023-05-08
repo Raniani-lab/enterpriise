@@ -279,7 +279,7 @@
                             </div> <!-- / Plan details ====== -->
 
                             <!-- ======  Subscription closed ====== -->
-                            <div t-if="subscription.subscription_state in ['3_progress', '4_paused', '6_churn']" id="payment_message">
+                            <div t-if="display_payment_message" id="payment_message">
                                 <div>
                                     <p id="wc_warning_closed" t-if="subscription.subscription_state == '6_churn'">Your subscription is closed.
                                         <t t-if="missing_periods == 1">If you wish to reopen it, you can pay your invoice for the current invoicing period.</t>

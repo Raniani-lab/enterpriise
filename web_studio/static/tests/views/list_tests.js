@@ -99,7 +99,7 @@ QUnit.module("Studio", (hooks) => {
         await doAction(webClient, 3);
         await click(target.querySelector(".o_web_studio_navbar_item button"));
         await legacyExtraNextTick();
-        const automationsLink = [...target.querySelectorAll(".o_web_studio_menu_item a")].find(
+        const automationsLink = [...target.querySelectorAll(".o_menu_sections a")].find(
             (link) => link.textContent === "Automations"
         );
         await click(automationsLink);

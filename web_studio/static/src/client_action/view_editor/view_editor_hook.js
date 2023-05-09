@@ -12,9 +12,10 @@ import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { viewTypeToString } from "@web_studio/studio_service";
 import {
     useEditorBreadcrumbs,
-    useEditorFlowFeatures,
+    useEditorMenuItem,
 } from "@web_studio/client_action/editor/edition_flow";
 import { ViewEditorModel } from "./view_editor_model";
+import { ViewEditorSnackbar } from "./view_editor_snackbar";
 
 export function useViewEditorModel(viewRef) {
     const env = useEnv();
@@ -44,7 +45,10 @@ export function useViewEditorModel(viewRef) {
     useSubEnv({ viewEditorModel });
 
     const { _snackBar, _operations } = viewEditorModel;
-    useEditorFlowFeatures({ snackBarIndicator: _snackBar, editorOperations: _operations });
+    useEditorMenuItem({
+        component: ViewEditorSnackbar,
+        props: { operations: _operations, saveIndicator: _snackBar },
+    });
 
     const component = useComponent();
     onWillStart(async () => {

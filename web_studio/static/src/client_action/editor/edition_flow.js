@@ -43,7 +43,7 @@ export class EditionFlow extends Reactive {
             // In case another action has been done
             this.studio.setParams({}, false);
         };
-        this.breadcrumbs.push({ ...crumb, handler });
+        this.breadcrumbs.push({ data: crumb, handler });
     }
 
     async loadViews({ forceSearch = false } = {}) {
@@ -99,24 +99,14 @@ export function useEditorBreadcrumbs(initialCrumb) {
     return { crumbs, push };
 }
 
-export function useEditorFlowFeatures({ snackBarIndicator, editorOperations }) {
+export function useEditorMenuItem(MenuItem) {
     const editionFlow = useEnv().editionFlow;
     onMounted(() => {
-        if (snackBarIndicator) {
-            editionFlow.snackBarIndicator = snackBarIndicator;
-        }
-        if (editorOperations) {
-            editionFlow.editorOperations = editorOperations;
-        }
+        editionFlow.MenuItem = MenuItem;
     });
-
     onWillUnmount(() => {
-        const rawEditionFlow = toRaw(editionFlow);
-        if (rawEditionFlow.snackBarIndicator === snackBarIndicator) {
-            editionFlow.snackBarIndicator = null;
-        }
-        if (rawEditionFlow.editorOperations === editorOperations) {
-            editionFlow.editorOperations = null;
+        if (toRaw(editionFlow).MenuItem === MenuItem) {
+            editionFlow.MenuItem = null;
         }
     });
 }

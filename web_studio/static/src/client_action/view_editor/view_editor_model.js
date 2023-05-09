@@ -529,8 +529,8 @@ export class ViewEditorModel extends Reactive {
             return null;
         }
         const temp = [`/${this.mainViewType === "list" ? "tree" : this.mainViewType}[1]`];
-        this.breadcrumbs.slice(1).forEach((bc) => {
-            const withoutView = bc.xpath.split("/").slice(2);
+        this.breadcrumbs.slice(1).forEach(({ data }) => {
+            const withoutView = data.xpath.split("/").slice(2);
             temp.push(...withoutView);
         });
         return temp.join("/");
@@ -806,7 +806,7 @@ export class ViewEditorModel extends Reactive {
             return null;
         }
         const length = this.breadcrumbs.length;
-        return this.breadcrumbs[length - 1];
+        return this.breadcrumbs[length - 1].data;
     }
 
     get _fieldsAllowedRename() {

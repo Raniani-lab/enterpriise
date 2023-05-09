@@ -165,7 +165,7 @@ QUnit.module("ActionEditor", (hooks) => {
         await doAction(webClient, 1);
         await openStudio(target);
 
-        await click(target.querySelector(".o_web_studio_menu_item a"));
+        await click(target.querySelector(".o_menu_sections a"));
 
         // make list view disable and form view only will be there in studio view
         await click(target.querySelector('div[data-type="list"] .o_web_studio_more'));

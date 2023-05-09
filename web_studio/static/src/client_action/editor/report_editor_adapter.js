@@ -8,7 +8,8 @@ import { standardActionServiceProps } from "@web/webclient/actions/action_servic
 import studioBus from "web_studio.bus";
 
 import { Component, onMounted, onWillUnmount, reactive, xml } from "@odoo/owl";
-import { useEditorFlowFeatures } from "@web_studio/client_action/editor/edition_flow";
+import { useEditorMenuItem, useEditorBreadcrumbs } from "./edition_flow";
+import { ViewEditorSnackbar } from "@web_studio/client_action/view_editor/view_editor_snackbar";
 
 function useLegacyBus(bus, evName, callback) {
     const obj = {};
@@ -30,6 +31,8 @@ class ReportEditorAdapter extends ComponentAdapter {
         this.orm = useService("orm");
         this.studio = useService("studio");
         this.reportEnv = {};
+
+        useEditorBreadcrumbs({ name: this.studio.editedReport.data.name });
 
         const snackBarIndicator = reactive({
             state: "",
@@ -63,7 +66,11 @@ class ReportEditorAdapter extends ComponentAdapter {
         useLegacyBus(studioBus, "redo_not_available", () => {
             editorOperations.canRedo = false;
         });
-        useEditorFlowFeatures({ snackBarIndicator, editorOperations });
+
+        useEditorMenuItem({
+            component: ViewEditorSnackbar,
+            props: { operations: editorOperations, saveIndicator: snackBarIndicator },
+        });
 
         this.env = Component.env;
     }

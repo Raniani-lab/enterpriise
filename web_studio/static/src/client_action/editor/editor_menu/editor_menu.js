@@ -7,39 +7,44 @@ import { registry } from "@web/core/registry";
 import { Component, useState } from "@odoo/owl";
 const editorTabRegistry = registry.category("web_studio.editor_tabs");
 
-export class EditorMenu extends Component {
+class Breadcrumbs extends Component {
+    static template = "web_studio.EditorMenu.Breadcrumbs";
+    static props = {
+        currentTab: { type: Object },
+        switchTab: Function,
+    };
     setup() {
-        this.l10n = localization;
         this.editionFlow = useState(this.env.editionFlow);
-        this.studio = useService("studio");
-        this.rpc = useService("rpc");
         this.nextCrumbId = 1;
     }
-
     get breadcrumbs() {
-        const { editorTab } = this.studio;
-        const currentTab = this.editorTabs.find((tab) => tab.id === editorTab);
+        const currentTab = this.props.currentTab;
         const crumbs = [
             {
-                name: currentTab.name,
-                handler: () => this.openTab(currentTab.id),
+                data: {
+                    name: currentTab.name,
+                },
+                handler: () => this.props.switchTab({ tab: currentTab.id }),
             },
         ];
-        if (currentTab.id === "reports" && this.studio.editedReport) {
-            crumbs.push({
-                name: this.studio.editedReport.data.name,
-                handler: () => this.studio.setParams({}),
-            });
-        }
-
         const breadcrumbs = this.editionFlow.breadcrumbs;
-        breadcrumbs.forEach((data) => {
-            crumbs.push({ ...data });
+        breadcrumbs.forEach((crumb) => {
+            crumbs.push(crumb);
         });
         for (const crumb of crumbs) {
             crumb.id = this.nextCrumbId++;
         }
         return crumbs;
+    }
+}
+
+export class EditorMenu extends Component {
+    static components = { Breadcrumbs };
+    setup() {
+        this.l10n = localization;
+        this.studio = useService("studio");
+        this.rpc = useService("rpc");
+        this.editionFlow = useState(this.env.editionFlow);
     }
 
     get activeViews() {
@@ -51,6 +56,10 @@ export class EditorMenu extends Component {
     get editorTabs() {
         const entries = editorTabRegistry.getEntries();
         return entries.map((entry) => Object.assign({}, entry[1], { id: entry[0] }));
+    }
+
+    get currentTab() {
+        return this.editorTabs.find((tab) => tab.id === this.studio.editorTab);
     }
 
     openTab(tab) {

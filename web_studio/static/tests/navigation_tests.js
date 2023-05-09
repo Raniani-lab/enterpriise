@@ -300,7 +300,7 @@ QUnit.module("Studio", (hooks) => {
         );
 
         // click on tab "Views"
-        await click(target.querySelector(".o_web_studio_menu .o_web_studio_menu_item a"));
+        await click(target.querySelector(".o_web_studio_menu .o_menu_sections a"));
         assert.containsOnce(target, ".o_web_studio_action_editor");
 
         // open list view

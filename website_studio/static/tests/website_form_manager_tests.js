@@ -48,7 +48,7 @@ QUnit.module("Form Manager", (hooks) => {
             await nextTick();
             await openStudio(target);
 
-            const websiteItem = [...target.querySelectorAll(".o_web_studio_menu_item")].filter(
+            const websiteItem = [...target.querySelectorAll(".o_menu_sections a")].filter(
                 (el) => el.textContent === "Website Forms"
             )[0];
             await click(websiteItem);

@@ -26,7 +26,7 @@ export async function openStudio(target, params = {}) {
     await click(target.querySelector(".o_main_navbar .o_web_studio_navbar_item button"));
     await legacyExtraNextTick();
     if (params.noEdit) {
-        const studioTabViews = target.querySelector(".o_web_studio_menu_item a");
+        const studioTabViews = target.querySelector(".o_menu_sections a");
         await click(studioTabViews);
         const controlElm = target.querySelector(
             ".o_action_manager .o_web_studio_editor .o_web_studio_views"
@@ -36,7 +36,7 @@ export async function openStudio(target, params = {}) {
         }
     }
     if (params.report) {
-        const studioTabReport = target.querySelectorAll(".o_web_studio_menu_item a")[1];
+        const studioTabReport = target.querySelectorAll(".o_menu_sections a")[1];
         await click(studioTabReport);
         await legacyExtraNextTick();
         let controlElm = target.querySelector(

@@ -69,7 +69,7 @@ registry.category("web_tour.tours").add("web_studio_test_edit_with_xml_editor", 
             trigger: ".o_web_studio_xml_editor .o_web_studio_xml_resource_selector .btn-primary",
         },
         {
-            trigger: ".o_web_studio_snackbar_icon:not('.fa-spin')",
+            trigger: ".o_web_studio_snackbar:not(:has(.fa-spin))",
         },
         {
             trigger: ".o_form_view",
@@ -748,16 +748,14 @@ registry.category("web_tour.tours").add("web_studio_x2many_two_levels_edition", 
             trigger: ".o_web_studio_editX2Many[data-type='form']",
         },
         {
-            extra_trigger:
-                ".o_view_controller.o_form_view.test-subview-form-1",
+            extra_trigger: ".o_view_controller.o_form_view.test-subview-form-1",
             trigger: ".o_web_studio_form_view_editor .o_field_widget[name='log_ids']",
         },
         {
             trigger: ".o_web_studio_editX2Many[data-type='form']",
         },
         {
-            trigger:
-                ".o_view_controller.o_form_view.test-subview-form-2",
+            trigger: ".o_view_controller.o_form_view.test-subview-form-2",
             run() {},
         },
         {

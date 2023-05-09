@@ -1480,7 +1480,7 @@ registry.category("web_tour.tours").add("web_studio_alter_field_existing_in_mult
             run: "click",
         },
         {
-            extra_trigger: ".o_web_studio_snackbar_icon.show.fa.fa-check",
+            extra_trigger: ".o_web_studio_snackbar .fa.fa-check",
             // check if the invisible option is checked
             trigger: "#invisible:checked",
             run() {},

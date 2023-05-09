@@ -19,7 +19,7 @@ Odoo Web Gantt chart view.
             'web_gantt/static/src/**/*',
 
             # Don't include dark mode files in light mode
-            ('remove', 'web_gantt/static/src/**/**/*.dark.scss'),
+            ('remove', 'web_gantt/static/src/**/*.dark.scss'),
         ],
         'web.qunit_suite_tests': [
             'web_gantt/static/tests/**/*',
@@ -31,10 +31,10 @@ Odoo Web Gantt chart view.
         ],
         # ========= Dark Mode =========
         "web.dark_mode_variables": [
-            ('before', 'web_enterprise/static/src/**/**/*.variables.scss', 'web_gantt/static/src/**/**/*.variables.dark.scss'),
+            ('before', 'web_enterprise/static/src/**/*.variables.scss', 'web_gantt/static/src/**/*.variables.dark.scss'),
         ],
         "web.dark_mode_assets_backend": [
-            'web_gantt/static/src/**/**/*.dark.scss',
+            'web_gantt/static/src/**/*.dark.scss',
         ],
     },
     'auto_install': True,

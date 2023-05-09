@@ -12,7 +12,7 @@ This module allows you to sell rental products in your eCommerce Wishlist.
     ],
     'assets': {
         'web.assets_frontend': [
-            'website_sale_renting_wishlist/static/src/js/**.js',
+            'website_sale_renting_wishlist/static/src/js/*.js',
         ],
         'web.assets_tests': [
             'website_sale_renting_wishlist/static/tests/tours/**/*',

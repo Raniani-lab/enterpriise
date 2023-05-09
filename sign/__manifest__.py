@@ -67,7 +67,7 @@ Let your customers follow the signature process easily.
             'sign/static/src/scss/iframe.scss',
         ],
         'sign.assets_green_report': [
-            'sign/report/green_saving_reports.scss'
+            'sign/static/src/css/green_saving_reports.scss',
         ],
         'web.assets_common': [
             'sign/static/src/js/common/*',

@@ -19,6 +19,7 @@ Generic Payroll system Integrated with Accounting.
     'demo': [
         'data/hr_payroll_account_demo.xml',
     ],
+    'pre_init_hook': '_salaries_account_journal_pre_init',
     'auto_install': True,
     'post_init_hook': '_hr_payroll_account_post_init',
     'license': 'OEEL-1',

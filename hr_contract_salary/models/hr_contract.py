@@ -164,6 +164,16 @@ class HrContract(models.Model):
         for contract in self:
             contract.final_yearly_costs = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.wage
 
+    @api.depends('company_id', 'job_id')
+    def _compute_structure_type_id(self):
+        contracts = self.env['hr.contract']
+        for contract in self:
+            if contract.job_id and contract.job_id.default_contract_id and contract.job_id.default_contract_id.structure_type_id:
+                contract.structure_type_id = contract.job_id.default_contract_id.structure_type_id
+            else:
+                contracts |= contract
+        super(HrContract, contracts)._compute_structure_type_id()
+
     @api.onchange("wage_with_holidays")
     def _onchange_wage_with_holidays(self):
         self._inverse_wage_with_holidays()

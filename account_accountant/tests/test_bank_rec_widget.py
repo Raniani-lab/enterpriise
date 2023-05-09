@@ -952,6 +952,67 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         ])
         self.assertRecordValues(wizard, [{'state': 'reconciled'}])
 
+    def test_validation_caba_tax_account(self):
+        """ Cash basis taxes usually put their tax lines on a transition account, and the cash basis entries then move those amounts
+        to the regular tax accounts. When using a cash basis tax in the bank reconciliation widget, their won't be any cash basis
+        entry and the lines will directly be exigible, so we want to use the final tax account directly.
+        """
+        tax_account = self.company_data['default_account_tax_sale']
+
+        caba_tax = self.env['account.tax'].create({
+            'name': "CABA",
+            'amount_type': 'percent',
+            'amount': 20.0,
+            'tax_exigibility': 'on_payment',
+            'cash_basis_transition_account_id': self.safe_copy(tax_account).id,
+            'invoice_repartition_line_ids': [
+                (0, 0, {
+                    'repartition_type': 'base',
+                }),
+                (0, 0, {
+                    'repartition_type': 'tax',
+                    'account_id': tax_account.id,
+                }),
+            ],
+            'refund_repartition_line_ids': [
+                (0, 0, {
+                    'repartition_type': 'base',
+                }),
+                (0, 0, {
+                    'repartition_type': 'tax',
+                    'account_id': tax_account.id,
+                }),
+            ],
+        })
+
+        st_line = self._create_st_line(120.0)
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
+        form = WizardForm(wizard)
+        form.todo_command = f'mount_line_in_edit,{line.index}'
+        form.form_account_id = self.account_revenue1
+        form.form_tax_ids.add(caba_tax)
+        wizard = form.save()
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',   'balance': 120.0,  'account_id': st_line.journal_id.default_account_id.id},
+            {'flag': 'manual',      'balance': -100.0, 'account_id': self.account_revenue1.id},
+            {'flag': 'tax_line',    'balance': -20.0,  'account_id': tax_account.id},
+        ])
+
+        self.assertRecordValues(wizard, [{'state': 'valid'}])
+
+        wizard.button_validate()
+        self.assertRecordValues(st_line.line_ids, [
+            # pylint: disable=C0326
+            {'balance': 120.0,  'tax_ids': [],           'tax_line_id': False,       'account_id': st_line.journal_id.default_account_id.id},
+            {'balance': -100.0, 'tax_ids': caba_tax.ids, 'tax_line_id': False,       'account_id': self.account_revenue1.id},
+            {'balance': -20.0,  'tax_ids': [],           'tax_line_id': caba_tax.id, 'account_id': tax_account.id},
+        ])
+        self.assertRecordValues(wizard, [{'state': 'reconciled'}])
+
     def test_apply_taxes_with_reco_model(self):
         st_line = self._create_st_line(1000.0)
 

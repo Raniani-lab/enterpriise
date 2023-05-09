@@ -194,7 +194,6 @@ class AccountAsset(models.Model):
             if not record.account_asset_id:
                 # Only set a default value, do not erase user inputs
                 record._onchange_account_depreciation_id()
-                record._onchange_account_depreciation_expense_id()
 
     @api.depends('original_move_line_ids')
     def _compute_analytic_distribution(self):
@@ -337,17 +336,12 @@ class AccountAsset(models.Model):
     @api.onchange('account_depreciation_id')
     def _onchange_account_depreciation_id(self):
         if not self.original_move_line_ids:
-            if self.asset_type == 'expense':
+            if self.asset_type in ('expense', 'sale'):
                 # Always change the account since it is not visible in the form
                 self.account_asset_id = self.account_depreciation_id
             if self.asset_type == 'purchase' and not self.account_asset_id and self.state != 'model':
                 # Only set a default value since it is visible in the form
                 self.account_asset_id = self.account_depreciation_id
-
-    @api.onchange('account_depreciation_expense_id')
-    def _onchange_account_depreciation_expense_id(self):
-        if not self.original_move_line_ids and self.asset_type not in ('purchase', 'expense'):
-            self.account_asset_id = self.account_depreciation_expense_id
 
     @api.onchange('original_value', 'original_move_line_ids')
     def _display_original_value_warning(self):
@@ -371,10 +365,7 @@ class AccountAsset(models.Model):
 
     @api.onchange('account_asset_id')
     def _onchange_account_asset_id(self):
-        if self.asset_type in ('purchase', 'expense'):
-            self.account_depreciation_id = self.account_depreciation_id or self.account_asset_id
-        else:
-            self.account_depreciation_expense_id = self.account_depreciation_expense_id or self.account_asset_id
+        self.account_depreciation_id = self.account_depreciation_id or self.account_asset_id
 
     @api.onchange('model_id')
     def _onchange_model_id(self):

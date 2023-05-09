@@ -66,7 +66,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     }
 
     async function getAllEmployees() {
-        const fieldsToRead = ["id", "name", "barcode"];
+        const fieldsToRead = ["id", "name"];
         employees.all = await orm.searchRead(
             "hr.employee",
             domain.workcenterEmployeeDomain,

@@ -4,13 +4,11 @@ import { PartnerListScreen } from "@point_of_sale/js/Screens/PartnerListScreen/P
 import { patch } from "@web/core/utils/patch";
 import { SelectionPopup } from "@point_of_sale/js/Popups/SelectionPopup";
 import { useService } from "@web/core/utils/hooks";
-import { usePos } from "@point_of_sale/app/pos_hook";
 
 patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {
     setup() {
         this._super(...arguments);
         this.popup = useService("popup");
-        this.pos = usePos();
     },
     get isBalanceDisplayed() {
         return true;
@@ -22,15 +20,16 @@ patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {
         return this.pos.getPartnerCredit(this.props.partner);
     },
     async settleCustomerDue() {
-        const updatedDue = await this.env.pos.refreshTotalDueOfPartner(
+        const { globalState } = this.pos;
+        const updatedDue = await globalState.refreshTotalDueOfPartner(
             this.state.editModeProps.partner
         );
         const totalDue = updatedDue
             ? updatedDue[0].total_due
             : this.state.editModeProps.partner.total_due;
-        const paymentMethods = this.env.pos.payment_methods.filter(
+        const paymentMethods = globalState.payment_methods.filter(
             (method) =>
-                this.env.pos.config.payment_method_ids.includes(method.id) &&
+                globalState.config.payment_method_ids.includes(method.id) &&
                 method.type != "pay_later"
         );
         const selectionList = paymentMethods.map((paymentMethod) => ({
@@ -50,7 +49,7 @@ patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {
 
         // Reuse an empty order that has no partner or has partner equal to the selected partner.
         let newOrder;
-        const emptyOrder = this.env.pos.orders.find(
+        const emptyOrder = globalState.orders.find(
             (order) =>
                 order.orderlines.length === 0 &&
                 order.paymentlines.length === 0 &&
@@ -59,9 +58,9 @@ patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {
         if (emptyOrder) {
             newOrder = emptyOrder;
             // Set the empty order as the current order.
-            this.env.pos.set_order(newOrder);
+            globalState.set_order(newOrder);
         } else {
-            newOrder = this.env.pos.add_new_order();
+            newOrder = globalState.add_new_order();
         }
         const payment = newOrder.add_paymentline(selectedPaymentMethod);
         payment.set_amount(totalDue);

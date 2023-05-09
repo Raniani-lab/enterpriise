@@ -6,7 +6,7 @@ import { patch } from "@web/core/utils/patch";
 
 patch(InvoiceButton.prototype, "l10n_mx_edi_pos.InvoiceButton", {
     async onWillInvoiceOrder(order){
-        if (this.env.pos.company.country.code !== 'MX') {
+        if (this.pos.globalState.company.country.code !== 'MX') {
             return true;
         }
         const { confirmed, payload } = await this.popup.add(AddInfoPopup);

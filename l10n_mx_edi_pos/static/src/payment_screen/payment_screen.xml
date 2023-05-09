@@ -6,7 +6,7 @@
             <div t-if="this.areMxFieldsVisible()"
                  style="border-bottom: solid 1px #C9CCD2; font-size: 16px; box-sizing: border-box">
                 <div style="padding: 16px;">
-                    Usage: <t t-out="this.env.pos.l10n_mx_edi_usage.find((item) => item.value === this.currentOrder.l10n_mx_edi_usage).name"/>
+                    Usage: <t t-out="pos.globalState.l10n_mx_edi_usage.find((item) => item.value === this.currentOrder.l10n_mx_edi_usage).name"/>
                 </div>
                 <div style="padding: 16px;">
                     Invoice to public: <t t-out="this.currentOrder.l10n_mx_edi_cfdi_to_public ? 'Yes': 'No'"/>

@@ -19,13 +19,14 @@ patch(PartnerLine.prototype, "pos_settle_due.PartnerLine", {
         return this.pos.getPartnerCredit(this.props.partner);
     },
     async settlePartnerDue(event) {
+        const { globalState } = this.pos;
         if (this.props.selectedPartner == this.props.partner) {
             event.stopPropagation();
         }
         const totalDue = this.props.partner.total_due;
-        const paymentMethods = this.env.pos.payment_methods.filter(
+        const paymentMethods = globalState.payment_methods.filter(
             (method) =>
-                this.env.pos.config.payment_method_ids.includes(method.id) &&
+                globalState.config.payment_method_ids.includes(method.id) &&
                 method.type != "pay_later"
         );
         const selectionList = paymentMethods.map((paymentMethod) => ({
@@ -41,7 +42,7 @@ patch(PartnerLine.prototype, "pos_settle_due.PartnerLine", {
             return;
         }
         this.trigger("discard"); // make sure the PartnerListScreen resolves and properly closed.
-        const newOrder = this.env.pos.add_new_order();
+        const newOrder = globalState.add_new_order();
         const payment = newOrder.add_paymentline(selectedPaymentMethod);
         payment.set_amount(totalDue);
         newOrder.set_partner(this.props.partner);

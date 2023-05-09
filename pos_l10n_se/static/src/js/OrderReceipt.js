@@ -5,11 +5,12 @@ import { patch } from "@web/core/utils/patch";
 
 patch(OrderReceipt.prototype, "pos_l10n_se.OrderReceipt", {
     get receiptEnv() {
-        if (this.env.pos.useBlackBoxSweden()) {
+        const { globalState } = this.pos;
+        if (globalState.useBlackBoxSweden()) {
             const receipt_render_env = this._super(...arguments);
             receipt_render_env.receipt.useBlackBoxSweden = true;
-            receipt_render_env.receipt.company.street = this.env.pos.company.street;
-            receipt_render_env.receipt.posID = this.env.pos.config.id;
+            receipt_render_env.receipt.company.street = globalState.company.street;
+            receipt_render_env.receipt.posID = globalState.config.id;
 
             receipt_render_env.receipt.orderSequence = receipt_render_env.order.sequence_number;
             receipt_render_env.receipt.unitID = receipt_render_env.order.blackbox_unit_id;

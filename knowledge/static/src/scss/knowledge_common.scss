@@ -1,3 +1,14 @@
+.o_knowledge_icon_search {
+    svg {
+        width: var(--oi-font-size, 1em);
+        aspect-ratio: 1;
+    }
+
+    &:not(:hover) {
+        --oi-color: currentColor;
+    }
+}
+
 .o_knowledge_article_view_form_view .o_form_renderer {
     height: 100% !important;
     padding: 0 !important;

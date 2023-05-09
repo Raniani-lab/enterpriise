@@ -48,7 +48,7 @@
                 <strong>Planned Date:</strong>
                 <span t-field="task.planned_date_begin" t-options='{"widget": "datetime"}'/>
                 <i class="fa fa-long-arrow-right"/>
-                <span t-field="task.planned_date_end" t-options='{"widget": "datetime"}'/>
+                <span t-field="task.date_deadline" t-options='{"widget": "datetime"}'/>
             </div>
         </xpath>
     </template>

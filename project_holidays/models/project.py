@@ -13,13 +13,13 @@ class Task(models.Model):
         compute_sudo=True, readonly=True)
 
     @api.depends_context('lang')
-    @api.depends('planned_date_begin', 'planned_date_end', 'user_ids')
+    @api.depends('planned_date_begin', 'date_deadline', 'user_ids')
     def _compute_leave_warning(self):
         assigned_tasks = self.filtered(
             lambda t: t.user_ids.employee_id
             and t.project_id
             and t.planned_date_begin
-            and t.planned_date_end
+            and t.date_deadline
             and not t.state in CLOSED_STATES
         )
         (self - assigned_tasks).leave_warning = False
@@ -32,7 +32,7 @@ class Task(models.Model):
         date_from = min_date if min_date > fields.Datetime.today() else fields.Datetime.today()
         leaves = self.env['hr.leave']._get_leave_interval(
             date_from=date_from,
-            date_to=max(assigned_tasks.mapped('planned_date_end')),
+            date_to=max(assigned_tasks.mapped('date_deadline')),
             employee_ids=assigned_tasks.mapped('user_ids.employee_id')
         )
 
@@ -47,7 +47,7 @@ class Task(models.Model):
                         leaves=task_leaves,
                         employee=employee,
                         date_from=task.planned_date_begin,
-                        date_to=task.planned_date_end
+                        date_to=task.date_deadline
                     )
             task.leave_warning = warning or False
             task.is_absent = bool(warning)
@@ -61,7 +61,7 @@ class Task(models.Model):
             ('user_ids.employee_id', '!=', False),
             ('project_id', '!=', False),
             ('planned_date_begin', '!=', False),
-            ('planned_date_end', '!=', False),
+            ('date_deadline', '!=', False),
             ('state', 'not in', list(CLOSED_STATES)),
         ])
         if not tasks:
@@ -71,7 +71,7 @@ class Task(models.Model):
         date_from = min_date if min_date > fields.Datetime.today() else fields.Datetime.today()
         mapped_leaves = self.env['hr.leave']._get_leave_interval(
             date_from=date_from,
-            date_to=max(tasks.mapped('planned_date_end')),
+            date_to=max(tasks.mapped('date_deadline')),
             employee_ids=tasks.mapped('user_ids.employee_id')
         )
         task_ids = []
@@ -80,7 +80,7 @@ class Task(models.Model):
             for employee in employees:
                 if employee.id in mapped_leaves:
                     leaves = mapped_leaves[employee.id]
-                    period = self.env['hr.leave']._group_leaves(leaves, employee, task.planned_date_begin, task.planned_date_end)
+                    period = self.env['hr.leave']._group_leaves(leaves, employee, task.planned_date_begin, task.date_deadline)
                     if period:
                         task_ids.append(task.id)
         if operator == '!=':

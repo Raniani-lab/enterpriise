@@ -38,7 +38,7 @@ export class TaskGanttModel extends GanttModel {
         }
 
         const allData = this._scheduleToData(schedule);
-        const endDateTime = deserializeDateTime(allData.planned_date_end).endOf(
+        const endDateTime = deserializeDateTime(allData.date_deadline).endOf(
             this.metaData.scale.id
         );
 

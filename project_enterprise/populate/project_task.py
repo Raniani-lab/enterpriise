@@ -17,13 +17,13 @@ class ProjectTask(models.Model):
                 + relativedelta(days=int(3 * int(counter)))
             return date_from
 
-        def get_planned_date_end(random, counter, **kwargs):
+        def get_date_deadline(random, counter, **kwargs):
             date_to = datetime.now().replace(hour=23, minute=59, second=59)\
                 + relativedelta(days=int(3 * int(counter))  + random.randint(0, 2))
             return date_to
 
         res += [
             ('planned_date_begin', populate.compute(get_planned_date_begin)),
-            ('planned_date_end', populate.compute(get_planned_date_end)),
+            ('date_deadline', populate.compute(get_date_deadline)),
         ]
         return res

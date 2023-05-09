@@ -41,7 +41,7 @@ class AutoShiftDatesHRCommon(ProjectEnterpriseGanttRescheduleCommon):
             ],
             'tz': 'UTC',
         })
-        cls.armande_departure_date = cls.task_1_planned_date_end.date() + relativedelta(day=29)  # 2021 06 25
+        cls.armande_departure_date = cls.task_1_date_deadline.date() + relativedelta(day=29)  # 2021 06 25
         cls.armande_employee.write({
             'departure_date': cls.armande_departure_date,
             'resource_calendar_id': cls.calendar_afternoon.id,

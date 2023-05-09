@@ -27,7 +27,7 @@ class TestFsmStockUI(HttpCase):
             'partner_id': cls.partner.id,
             'project_id': cls.fsm_project.id,
             'planned_date_begin': today,
-            'planned_date_end': today + relativedelta(days=1),
+            'date_deadline': today + relativedelta(days=1),
         })
         # We ensure that the products we are creating for the test are displayed first
         # so that the test is not affected by the paging and the presence of demo data.

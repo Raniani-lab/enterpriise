@@ -11,5 +11,4 @@ class ProjectTaskRecurrence(models.Model):
     def _get_recurring_fields_to_postpone(self):
         return super()._get_recurring_fields_to_postpone() + [
             'planned_date_begin',
-            'planned_date_end',
         ]

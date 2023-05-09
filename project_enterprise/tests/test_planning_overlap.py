@@ -15,14 +15,14 @@ class TestPlanningOverlap(TestProjectCommon):
         cls.tomorrow = datetime.now() + relativedelta(days=1)
         cls.task_1.write({
             'planned_date_begin': cls.tomorrow + relativedelta(hour=8),
-            'planned_date_end': cls.tomorrow + relativedelta(hour=10),
+            'date_deadline': cls.tomorrow + relativedelta(hour=10),
         })
 
     def test_same_user_no_overlap(self):
         self.task_2.write({
             'user_ids': self.user_projectuser,
             'planned_date_begin': self.tomorrow + relativedelta(days=+1, hour=8),
-            'planned_date_end': self.tomorrow + relativedelta(days=+1, hour=10),
+            'date_deadline': self.tomorrow + relativedelta(days=+1, hour=10),
         })
 
         self.assertFalse(self.task_1.planning_overlap)
@@ -35,7 +35,7 @@ class TestPlanningOverlap(TestProjectCommon):
     def test_different_users_overlap(self):
         self.task_2.write({
             'planned_date_begin': self.tomorrow + relativedelta(hour=9),
-            'planned_date_end': self.tomorrow + relativedelta(hour=11),
+            'date_deadline': self.tomorrow + relativedelta(hour=11),
         })
 
         self.assertFalse(self.task_1.planning_overlap)
@@ -59,7 +59,7 @@ class TestPlanningOverlap(TestProjectCommon):
         self.task_2.write({
             'user_ids': self.user_projectuser,
             'planned_date_begin': self.tomorrow + relativedelta(hour=9),
-            'planned_date_end': self.tomorrow + relativedelta(hour=11),
+            'date_deadline': self.tomorrow + relativedelta(hour=11),
         })
 
         self.assertEqual(self.task_1.planning_overlap, Markup('<p>Armande ProjectUser has 1 tasks at the same time.</p>'))
@@ -74,7 +74,7 @@ class TestPlanningOverlap(TestProjectCommon):
         tasks.write({
             'user_ids': self.user_projectuser,
             'planned_date_begin': self.tomorrow + relativedelta(days=-5, hour=9),
-            'planned_date_end': self.tomorrow + relativedelta(days=-5, hour=11),
+            'date_deadline': self.tomorrow + relativedelta(days=-5, hour=11),
         })
 
         self.assertFalse(self.task_1.planning_overlap)
@@ -88,7 +88,7 @@ class TestPlanningOverlap(TestProjectCommon):
         self.task_2.write({
             'user_ids': self.user_projectuser,
             'planned_date_begin': self.tomorrow + relativedelta(hour=9),
-            'planned_date_end': self.tomorrow + relativedelta(hour=11),
+            'date_deadline': self.tomorrow + relativedelta(hour=11),
             'state': '1_done',
         })
 

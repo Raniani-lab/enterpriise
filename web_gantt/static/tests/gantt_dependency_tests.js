@@ -99,7 +99,7 @@ const ganttViewParams = {
     arch: /* xml */ `
         <gantt
             date_start="planned_date_begin"
-            date_stop="planned_date_end"
+            date_stop="date_deadline"
             default_scale="month"
             dependency_field="depend_on_ids"
         />
@@ -131,7 +131,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                         id: { string: "ID", type: "integer" },
                         name: { string: "Name", type: "char" },
                         planned_date_begin: { string: "Start Date", type: "datetime" },
-                        planned_date_end: { string: "Stop Date", type: "datetime" },
+                        date_deadline: { string: "Stop Date", type: "datetime" },
                         user_ids: { string: "Assignees", type: "many2many", relation: "res.users" },
                         allow_task_dependencies: {
                             string: "Allow Task Dependencies",
@@ -154,7 +154,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 1,
                             name: "Task 1",
                             planned_date_begin: "2021-10-11 18:30:00",
-                            planned_date_end: "2021-10-11 19:29:59",
+                            date_deadline: "2021-10-11 19:29:59",
                             user_ids: [1],
                             depend_on_ids: [],
                         },
@@ -162,7 +162,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 2,
                             name: "Task 2",
                             planned_date_begin: "2021-10-12 11:30:00",
-                            planned_date_end: "2021-10-12 12:29:59",
+                            date_deadline: "2021-10-12 12:29:59",
                             user_ids: [1, 3],
                             depend_on_ids: [1],
                         },
@@ -170,7 +170,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 3,
                             name: "Task 3",
                             planned_date_begin: "2021-10-13 06:30:00",
-                            planned_date_end: "2021-10-13 07:29:59",
+                            date_deadline: "2021-10-13 07:29:59",
                             user_ids: [],
                             depend_on_ids: [2],
                         },
@@ -178,7 +178,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 4,
                             name: "Task 4",
                             planned_date_begin: "2021-10-14 22:30:00",
-                            planned_date_end: "2021-10-14 23:29:59",
+                            date_deadline: "2021-10-14 23:29:59",
                             user_ids: [2, 3],
                             depend_on_ids: [2],
                         },
@@ -186,7 +186,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 5,
                             name: "Task 5",
                             planned_date_begin: "2021-10-15 01:53:10",
-                            planned_date_end: "2021-10-15 02:34:34",
+                            date_deadline: "2021-10-15 02:34:34",
                             user_ids: [],
                             depend_on_ids: [],
                         },
@@ -194,7 +194,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 6,
                             name: "Task 6",
                             planned_date_begin: "2021-10-16 23:00:00",
-                            planned_date_end: "2021-10-16 23:21:01",
+                            date_deadline: "2021-10-16 23:21:01",
                             user_ids: [1, 3],
                             depend_on_ids: [4, 5],
                         },
@@ -202,7 +202,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 7,
                             name: "Task 7",
                             planned_date_begin: "2021-10-17 10:30:12",
-                            planned_date_end: "2021-10-17 11:29:59",
+                            date_deadline: "2021-10-17 11:29:59",
                             user_ids: [1, 2, 3],
                             depend_on_ids: [6],
                         },
@@ -210,7 +210,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 8,
                             name: "Task 8",
                             planned_date_begin: "2021-10-18 06:30:12",
-                            planned_date_end: "2021-10-18 07:29:59",
+                            date_deadline: "2021-10-18 07:29:59",
                             user_ids: [1, 3],
                             depend_on_ids: [7],
                         },
@@ -218,7 +218,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 9,
                             name: "Task 9",
                             planned_date_begin: "2021-10-19 06:30:12",
-                            planned_date_end: "2021-10-19 07:29:59",
+                            date_deadline: "2021-10-19 07:29:59",
                             user_ids: [2],
                             depend_on_ids: [8],
                         },
@@ -226,7 +226,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 10,
                             name: "Task 10",
                             planned_date_begin: "2021-10-19 06:30:12",
-                            planned_date_end: "2021-10-19 07:29:59",
+                            date_deadline: "2021-10-19 07:29:59",
                             user_ids: [2],
                             depend_on_ids: [],
                         },
@@ -234,7 +234,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 11,
                             name: "Task 11",
                             planned_date_begin: "2021-10-18 06:30:12",
-                            planned_date_end: "2021-10-18 07:29:59",
+                            date_deadline: "2021-10-18 07:29:59",
                             user_ids: [2],
                             depend_on_ids: [10],
                         },
@@ -242,7 +242,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 12,
                             name: "Task 12",
                             planned_date_begin: "2021-10-18 06:30:12",
-                            planned_date_end: "2021-10-19 07:29:59",
+                            date_deadline: "2021-10-19 07:29:59",
                             user_ids: [2],
                             depend_on_ids: [],
                         },
@@ -250,7 +250,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                             id: 13,
                             name: "Task 13",
                             planned_date_begin: "2021-10-18 07:29:59",
-                            planned_date_end: "2021-10-20 07:29:59",
+                            date_deadline: "2021-10-20 07:29:59",
                             user_ids: [2],
                             depend_on_ids: [12],
                         },
@@ -343,7 +343,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                 id: 1,
                 name: "Task 1",
                 planned_date_begin: "2021-10-11 18:30:00",
-                planned_date_end: "2021-10-11 19:29:59",
+                date_deadline: "2021-10-11 19:29:59",
                 user_ids: [1],
                 depend_on_ids: [],
             },
@@ -351,7 +351,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                 id: 2,
                 name: "Task 2",
                 planned_date_begin: "2021-10-12 11:30:00",
-                planned_date_end: "2021-10-12 12:29:59",
+                date_deadline: "2021-10-12 12:29:59",
                 user_ids: [1],
                 depend_on_ids: [1],
             },
@@ -359,7 +359,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                 id: 3,
                 name: "Task 3",
                 planned_date_begin: "2021-10-13 06:30:00",
-                planned_date_end: "2021-10-13 07:29:59",
+                date_deadline: "2021-10-13 07:29:59",
                 user_ids: [],
                 depend_on_ids: [1, 2],
             },
@@ -382,7 +382,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 1,
                     name: "Task 1",
                     planned_date_begin: "2021-10-11 18:30:00",
-                    planned_date_end: "2021-10-11 19:29:59",
+                    date_deadline: "2021-10-11 19:29:59",
                     user_ids: [1],
                     depend_on_ids: [],
                 },
@@ -390,7 +390,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 2,
                     name: "Task 2",
                     planned_date_begin: "2021-10-12 11:30:00",
-                    planned_date_end: "2021-10-12 12:29:59",
+                    date_deadline: "2021-10-12 12:29:59",
                     user_ids: [1, 3],
                     depend_on_ids: [1],
                 },
@@ -398,7 +398,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 3,
                     name: "Task 3",
                     planned_date_begin: "2021-10-13 06:30:00",
-                    planned_date_end: "2021-10-13 07:29:59",
+                    date_deadline: "2021-10-13 07:29:59",
                     user_ids: [],
                     depend_on_ids: [2],
                 },
@@ -406,7 +406,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 4,
                     name: "Task 4",
                     planned_date_begin: "2021-10-14 22:30:00",
-                    planned_date_end: "2021-10-14 23:29:59",
+                    date_deadline: "2021-10-14 23:29:59",
                     user_ids: [2, 3],
                     depend_on_ids: [2],
                 },
@@ -414,7 +414,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 5,
                     name: "Task 5",
                     planned_date_begin: "2021-10-15 01:53:10",
-                    planned_date_end: "2021-10-15 02:34:34",
+                    date_deadline: "2021-10-15 02:34:34",
                     user_ids: [],
                     depend_on_ids: [],
                 },
@@ -422,7 +422,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 6,
                     name: "Task 6",
                     planned_date_begin: "2021-10-16 23:00:00",
-                    planned_date_end: "2021-10-16 23:21:01",
+                    date_deadline: "2021-10-16 23:21:01",
                     user_ids: [1, 3],
                     depend_on_ids: [4, 5],
                 },
@@ -430,7 +430,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 7,
                     name: "Task 7",
                     planned_date_begin: "2021-10-17 10:30:12",
-                    planned_date_end: "2021-10-17 11:29:59",
+                    date_deadline: "2021-10-17 11:29:59",
                     user_ids: [1, 2, 3],
                     depend_on_ids: [6],
                 },
@@ -438,7 +438,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 8,
                     name: "Task 8",
                     planned_date_begin: "2021-10-18 06:30:12",
-                    planned_date_end: "2021-10-18 07:29:59",
+                    date_deadline: "2021-10-18 07:29:59",
                     user_ids: [1, 3],
                     depend_on_ids: [7],
                 },
@@ -446,7 +446,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 9,
                     name: "Task 9",
                     planned_date_begin: "2021-10-19 06:30:12",
-                    planned_date_end: "2021-10-19 07:29:59",
+                    date_deadline: "2021-10-19 07:29:59",
                     user_ids: [2],
                     depend_on_ids: [8],
                 },
@@ -454,7 +454,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 10,
                     name: "Task 10",
                     planned_date_begin: "2021-10-19 06:30:12",
-                    planned_date_end: "2021-10-19 07:29:59",
+                    date_deadline: "2021-10-19 07:29:59",
                     user_ids: [2],
                     depend_on_ids: [],
                 },
@@ -462,7 +462,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 11,
                     name: "Task 11",
                     planned_date_begin: "2021-10-18 06:30:12",
-                    planned_date_end: "2021-10-18 07:29:59",
+                    date_deadline: "2021-10-18 07:29:59",
                     user_ids: [2],
                     depend_on_ids: [10],
                 },
@@ -470,7 +470,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 12,
                     name: "Task 12",
                     planned_date_begin: "2021-10-18 06:30:12",
-                    planned_date_end: "2021-10-19 07:29:59",
+                    date_deadline: "2021-10-19 07:29:59",
                     user_ids: [2],
                     depend_on_ids: [],
                 },
@@ -478,7 +478,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 13,
                     name: "Task 13",
                     planned_date_begin: "2021-10-18 07:29:59",
-                    planned_date_end: "2021-10-20 07:29:59",
+                    date_deadline: "2021-10-20 07:29:59",
                     user_ids: [2],
                     depend_on_ids: [12],
                 },
@@ -489,7 +489,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                 arch: /* xml */ `
                     <gantt
                         date_start="planned_date_begin"
-                        date_stop="planned_date_end"
+                        date_stop="date_deadline"
                         default_scale="month"
                         dependency_field="depend_on_ids"
                         consolidation_max="{'user_ids': 100 }"
@@ -646,7 +646,7 @@ QUnit.module("Views > GanttView", (hooks) => {
         await clickConnectorButton(getConnector(1), "reschedule-backward");
 
         assert.verifySteps([
-            `["web_gantt_reschedule",["backward",1,2,"depend_on_ids",null,"planned_date_begin","planned_date_end"]]`,
+            `["web_gantt_reschedule",["backward",1,2,"depend_on_ids",null,"planned_date_begin","date_deadline"]]`,
         ]);
     });
 
@@ -667,7 +667,7 @@ QUnit.module("Views > GanttView", (hooks) => {
         await clickConnectorButton(getConnector(1), "reschedule-forward");
 
         assert.verifySteps([
-            `["web_gantt_reschedule",["forward",1,2,"depend_on_ids",null,"planned_date_begin","planned_date_end"]]`,
+            `["web_gantt_reschedule",["forward",1,2,"depend_on_ids",null,"planned_date_begin","date_deadline"]]`,
         ]);
     });
 
@@ -690,7 +690,7 @@ QUnit.module("Views > GanttView", (hooks) => {
             await clickConnectorButton(getConnector(1), "reschedule-backward");
 
             assert.verifySteps([
-                `["web_gantt_reschedule",["backward",1,2,"depend_on_ids",null,"planned_date_begin","planned_date_end"]]`,
+                `["web_gantt_reschedule",["backward",1,2,"depend_on_ids",null,"planned_date_begin","date_deadline"]]`,
             ]);
         }
     );
@@ -712,7 +712,7 @@ QUnit.module("Views > GanttView", (hooks) => {
         await clickConnectorButton(getConnector(1), "reschedule-forward");
 
         assert.verifySteps([
-            `["web_gantt_reschedule",["forward",1,2,"depend_on_ids",null,"planned_date_begin","planned_date_end"]]`,
+            `["web_gantt_reschedule",["forward",1,2,"depend_on_ids",null,"planned_date_begin","date_deadline"]]`,
         ]);
     });
 
@@ -737,7 +737,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 1,
                     name: "Task 1",
                     planned_date_begin: "2021-10-10 18:30:00",
-                    planned_date_end: "2021-10-11 19:29:59",
+                    date_deadline: "2021-10-11 19:29:59",
                     user_ids: [1],
                     depend_on_ids: [],
                 },
@@ -745,7 +745,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 2,
                     name: "Task 2",
                     planned_date_begin: "2021-10-12 11:30:00",
-                    planned_date_end: "2021-10-12 12:29:59",
+                    date_deadline: "2021-10-12 12:29:59",
                     user_ids: [1, 3],
                     depend_on_ids: [1],
                 },
@@ -753,7 +753,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 3,
                     name: "Task 3",
                     planned_date_begin: "2021-10-13 06:30:00",
-                    planned_date_end: "2021-10-13 07:29:59",
+                    date_deadline: "2021-10-13 07:29:59",
                     user_ids: [],
                     depend_on_ids: [2],
                 },
@@ -761,7 +761,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 4,
                     name: "Task 4",
                     planned_date_begin: "2021-10-14 22:30:00",
-                    planned_date_end: "2021-10-14 23:29:59",
+                    date_deadline: "2021-10-14 23:29:59",
                     user_ids: [2, 3],
                     depend_on_ids: [2],
                 },
@@ -769,7 +769,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 10,
                     name: "Task 10",
                     planned_date_begin: "2021-10-19 06:30:12",
-                    planned_date_end: "2021-10-19 07:29:59",
+                    date_deadline: "2021-10-19 07:29:59",
                     user_ids: [2],
                     depend_on_ids: [],
                     display_warning_dependency_in_gantt: false,
@@ -778,7 +778,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                     id: 11,
                     name: "Task 11",
                     planned_date_begin: "2021-10-18 06:30:12",
-                    planned_date_end: "2021-10-18 07:29:59",
+                    date_deadline: "2021-10-18 07:29:59",
                     user_ids: [2],
                     depend_on_ids: [10],
                 },
@@ -904,7 +904,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                 id,
                 name: `Task ${id}`,
                 planned_date_begin: "2021-10-11 18:30:00",
-                planned_date_end: "2021-10-11 19:29:59",
+                date_deadline: "2021-10-11 19:29:59",
                 user_ids: [id],
                 depend_on_ids: [],
             });

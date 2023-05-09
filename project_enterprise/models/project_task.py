@@ -20,7 +20,6 @@ from odoo.addons.project.models.project_task import CLOSED_STATES
 
 PROJECT_TASK_WRITABLE_FIELDS = {
     'planned_date_begin',
-    'planned_date_end',
 }
 
 
@@ -28,7 +27,8 @@ class Task(models.Model):
     _inherit = "project.task"
 
     planned_date_begin = fields.Datetime("Start date", tracking=True)
-    planned_date_end = fields.Datetime("End date", tracking=True)
+    # planned_date_start is added to be able to display tasks in calendar view because both start and end date are mandatory
+    planned_date_start = fields.Datetime(compute="_compute_planned_date_start", search="_search_planned_date_start")
     partner_mobile = fields.Char(related='partner_id.mobile', readonly=False)
     partner_zip = fields.Char(related='partner_id.zip', readonly=False)
     partner_street = fields.Char(related='partner_id.street', readonly=False)
@@ -45,7 +45,7 @@ class Task(models.Model):
     project_id = fields.Many2one(group_expand="_group_expand_project_ids")
 
     _sql_constraints = [
-        ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be before the planned end date."),
+        ('planned_dates_check', "CHECK ((planned_date_begin <= date_deadline))", "The planned start date must be before the planned end date."),
     ]
 
     # action_gantt_reschedule utils
@@ -59,17 +59,17 @@ class Task(models.Model):
     def default_get(self, fields_list):
         result = super().default_get(fields_list)
         planned_date_begin = result.get('planned_date_begin', self.env.context.get('planned_date_begin', False))
-        planned_date_end = result.get('planned_date_end', self.env.context.get('planned_date_end', False))
-        if planned_date_begin and planned_date_end and not self.env.context.get('fsm_mode', False):
+        date_deadline = result.get('date_deadline', self.env.context.get('date_deadline', False))
+        if planned_date_begin and date_deadline and not self.env.context.get('fsm_mode', False):
             user_id = result.get('user_id', None)
-            planned_date_begin, planned_date_end = self._calculate_planned_dates(planned_date_begin, planned_date_end, user_id)
-            result.update(planned_date_begin=planned_date_begin, planned_date_end=planned_date_end)
+            planned_date_begin, date_deadline = self._calculate_planned_dates(planned_date_begin, date_deadline, user_id)
+            result.update(planned_date_begin=planned_date_begin, date_deadline=date_deadline)
         return result
 
     def action_unschedule_task(self):
         self.write({
             'planned_date_begin': False,
-            'planned_date_end': False
+            'date_deadline': False
         })
 
     @api.depends('state')
@@ -77,17 +77,15 @@ class Task(models.Model):
         for task in self:
             task.display_warning_dependency_in_gantt = task.state not in CLOSED_STATES
 
-    @api.onchange('planned_date_begin', 'planned_date_end')
-    def _onchange_planned_date(self):
-        if not self.planned_date_end and self.planned_date_begin:
+    @api.onchange('date_deadline', 'planned_date_begin')
+    def _onchange_planned_dates(self):
+        if not self.date_deadline:
             self.planned_date_begin = False
-        elif not self.planned_date_begin and self.planned_date_end:
-            self.planned_date_end = False
 
     def _get_planning_overlap_per_task(self, group_by_user=False):
         if not self.ids:
             return {}
-        self.flush_model(['active', 'planned_date_begin', 'planned_date_end', 'user_ids', 'project_id', 'state'])
+        self.flush_model(['active', 'planned_date_begin', 'date_deadline', 'user_ids', 'project_id', 'state'])
 
         additional_select_fields = additional_join_fields = additional_join_str = ""
 
@@ -108,11 +106,11 @@ class Task(models.Model):
                AND T2.active = 't'
                AND T2.state NOT IN ('1_done', '1_canceled')
                AND T2.planned_date_begin IS NOT NULL
-               AND T2.planned_date_end IS NOT NULL
-               AND T2.planned_date_end > NOW() AT TIME ZONE 'UTC'
+               AND T2.date_deadline IS NOT NULL
+               AND T2.date_deadline > NOW() AT TIME ZONE 'UTC'
                AND T2.project_id IS NOT NULL
-               AND (T.planned_date_begin::TIMESTAMP, T.planned_date_end::TIMESTAMP)
-          OVERLAPS (T2.planned_date_begin::TIMESTAMP, T2.planned_date_end::TIMESTAMP)
+               AND (T.planned_date_begin::TIMESTAMP, T.date_deadline::TIMESTAMP)
+          OVERLAPS (T2.planned_date_begin::TIMESTAMP, T2.date_deadline::TIMESTAMP)
         INNER JOIN project_task_user_rel U2 ON T2.id = U2.task_id
                AND U2.user_id = U1.user_id
         %s
@@ -120,8 +118,8 @@ class Task(models.Model):
                AND T.active = 't'
                AND T.state NOT IN ('1_done', '1_canceled')
                AND T.planned_date_begin IS NOT NULL
-               AND T.planned_date_end IS NOT NULL
-               AND T.planned_date_end > NOW() AT TIME ZONE 'UTC'
+               AND T.date_deadline IS NOT NULL
+               AND T.date_deadline > NOW() AT TIME ZONE 'UTC'
                AND T.project_id IS NOT NULL
           GROUP BY T.id
           %s
@@ -138,7 +136,7 @@ class Task(models.Model):
 
         return dict(map(lambda d: d.values(), raw_data))
 
-    @api.depends('planned_date_begin', 'planned_date_end', 'user_ids')
+    @api.depends('planned_date_begin', 'date_deadline', 'user_ids')
     def _compute_planning_overlap(self):
         overlap_mapping = self._get_planning_overlap_per_task(group_by_user=True)
         if overlap_mapping:
@@ -166,17 +164,17 @@ class Task(models.Model):
             INNER JOIN project_task_user_rel U2 ON T2.id = U2.task_id
                 AND U1.user_id = U2.user_id
             WHERE
-                T1.planned_date_begin < T2.planned_date_end
-                AND T1.planned_date_end > T2.planned_date_begin
+                T1.planned_date_begin < T2.date_deadline
+                AND T1.date_deadline > T2.planned_date_begin
                 AND T1.planned_date_begin IS NOT NULL
-                AND T1.planned_date_end IS NOT NULL
-                AND T1.planned_date_end > NOW() AT TIME ZONE 'UTC'
+                AND T1.date_deadline IS NOT NULL
+                AND T1.date_deadline > NOW() AT TIME ZONE 'UTC'
                 AND T1.active = 't'
                 AND T1.state NOT IN ('1_done', '1_canceled')
                 AND T1.project_id IS NOT NULL
                 AND T2.planned_date_begin IS NOT NULL
-                AND T2.planned_date_end IS NOT NULL
-                AND T2.planned_date_end > NOW() AT TIME ZONE 'UTC'
+                AND T2.date_deadline IS NOT NULL
+                AND T2.date_deadline > NOW() AT TIME ZONE 'UTC'
                 AND T2.project_id IS NOT NULL
                 AND T2.active = 't'
                 AND T2.state NOT IN ('1_done', '1_canceled')
@@ -241,13 +239,13 @@ class Task(models.Model):
 
         return tasks_by_resource_calendar_dict
 
-    @api.depends('planned_date_begin', 'depend_on_ids.planned_date_end')
+    @api.depends('planned_date_begin', 'depend_on_ids.date_deadline')
     def _compute_dependency_warning(self):
         if not self._origin:
             self.dependency_warning = False
             return
 
-        self.flush_model(['planned_date_begin', 'planned_date_end'])
+        self.flush_model(['planned_date_begin', 'date_deadline'])
         query = """
             SELECT t1.id,
                    ARRAY_AGG(t2.name) as depends_on_names
@@ -258,8 +256,8 @@ class Task(models.Model):
                 ON d.depends_on_id = t2.id
              WHERE t1.id IN %s
                AND t1.planned_date_begin IS NOT NULL
-               AND t2.planned_date_end IS NOT NULL
-               AND t2.planned_date_end > t1.planned_date_begin
+               AND t2.date_deadline IS NOT NULL
+               AND t2.date_deadline > t1.planned_date_begin
           GROUP BY t1.id
 	    """
         self._cr.execute(query, (tuple(self.ids),))
@@ -287,50 +285,51 @@ class Task(models.Model):
               JOIN project_task t2
                 ON d.depends_on_id = t2.id
              WHERE t1.planned_date_begin IS NOT NULL
-               AND t2.planned_date_end IS NOT NULL
-               AND t2.planned_date_end > t1.planned_date_begin
+               AND t2.date_deadline IS NOT NULL
+               AND t2.date_deadline > t1.planned_date_begin
         """
         operator_new = "inselect" if ((operator == "=" and value) or (operator == "!=" and not value)) else "not inselect"
         return [('id', operator_new, (query, ()))]
 
+    @api.depends('planned_date_begin', 'date_deadline')
+    def _compute_planned_date_start(self):
+        for task in self:
+            task.planned_date_start = task.planned_date_begin or task.date_deadline
+
+    def _search_planned_date_start(self, operator, value):
+        return [
+            '|',
+            '&', ("planned_date_begin", "!=", False), ("planned_date_begin", operator, value),
+            '&', '&', ("planned_date_begin", "=", False), ("date_deadline", "!=", False), ("date_deadline", operator, value),
+        ]
+
     def write(self, vals):
         compute_default_planned_dates = None
         date_start_update = 'planned_date_begin' in vals and vals['planned_date_begin'] is not False
-        date_end_update = 'planned_date_end' in vals and vals['planned_date_end'] is not False
+        date_end_update = 'date_deadline' in vals and vals['date_deadline'] is not False
         if not self._context.get('fsm_mode', False) \
            and not self._context.get('smart_task_scheduling', False) \
            and date_start_update and date_end_update:  # if fsm_mode=True then the processing in industry_fsm module is done for these dates.
-            compute_default_planned_dates = self.filtered(lambda task: not task.planned_date_begin and not task.planned_date_end)
+            compute_default_planned_dates = self.filtered(lambda task: not task.date_deadline)
 
-        date_start = vals.get('planned_date_begin', True)
-        date_end = vals.get('planned_date_end', True)
-        no_current_date_end = any(not task.planned_date_end for task in self)
-        no_current_date_begin = any(not task.planned_date_begin for task in self)
-        # Either the date_end or the date_start was set to False, so we set both dates to False
-        if not date_start or not date_end:
+        # if date_end was set to False, so we set planned_date_begin to False
+        if not vals.get('date_deadline', True):
             vals['planned_date_begin'] = False
-            vals['planned_date_end'] = False
-        else:
-            # Either the date_end or the date_start was set to a new value, while the other date is False, so we discard the date from the values to write.
-            if (date_start_update and no_current_date_end and not date_end_update):
-                del vals['planned_date_begin']
-            elif (date_end_update and no_current_date_begin and not date_start_update):
-                del vals['planned_date_end']
 
         res = super().write(vals)
 
         if compute_default_planned_dates:
             # Take the default planned dates
             planned_date_begin = vals.get('planned_date_begin', False)
-            planned_date_end = vals.get('planned_date_end', False)
+            date_deadline = vals.get('date_deadline', False)
 
             # Then sort the tasks by resource_calendar and finally compute the planned dates
             tasks_by_resource_calendar_dict = compute_default_planned_dates._get_tasks_by_resource_calendar_dict()
             for (calendar, tasks) in tasks_by_resource_calendar_dict.items():
-                date_start, date_stop = self._calculate_planned_dates(planned_date_begin, planned_date_end, calendar=calendar)
+                date_start, date_stop = self._calculate_planned_dates(planned_date_begin, date_deadline, calendar=calendar)
                 tasks.write({
                     'planned_date_begin': date_start,
-                    'planned_date_end': date_stop,
+                    'date_deadline': date_stop,
                 })
 
         return res
@@ -347,10 +346,10 @@ class Task(models.Model):
             return self.env['res.users']
 
         last_start_date = fields.Datetime.from_string(start_date) - relativedelta(**{f"{scale}s": 1})
-        domain = filter_domain_leaf(domain, lambda field: field not in ['planned_date_begin', 'planned_date_end'])
+        domain = filter_domain_leaf(domain, lambda field: field not in ['planned_date_begin', 'date_deadline'])
         domain_expand = [
             ('planned_date_begin', '>=', last_start_date),
-            ('planned_date_end', '<=', start_date)
+            ('date_deadline', '<=', start_date),
         ]
         project_id = self._context.get('default_project_id')
         if project_id:
@@ -396,7 +395,7 @@ class Task(models.Model):
     def _expand_domain_dates(self, domain):
         filters = []
         for dom in domain:
-            if len(dom) == 3 and dom[0] == 'planned_date_end' and dom[1] == '>=':
+            if len(dom) == 3 and dom[0] == 'date_deadline' and dom[1] == '>=':
                 min_date = dom[2] if isinstance(dom[2], datetime) else datetime.strptime(dom[2], '%Y-%m-%d %H:%M:%S')
                 min_date = min_date - get_timedelta(1, self._context.get('gantt_scale'))
                 filters.append((dom[0], dom[1], min_date))
@@ -427,7 +426,7 @@ class Task(models.Model):
                 the action to launch if some planification need the user confirmation to be applied,
                 and warning_list the warning message to show if needed.
         """
-        required_written_fields = {'planned_date_begin', 'planned_date_end'}
+        required_written_fields = {'planned_date_begin', 'date_deadline'}
         if not self.env.context.get('last_date_view') or len(self.project_id) != 1 \
            or any(key not in vals for key in required_written_fields):
             self.write(vals)
@@ -553,7 +552,7 @@ class Task(models.Model):
         for task in tasks_to_write:
             task_vals = {
                 'planned_date_begin': tasks_to_write[task]['start'],
-                'planned_date_end': tasks_to_write[task]['end'],
+                'date_deadline': tasks_to_write[task]['end'],
                 'user_ids': user.ids,
             }
             if user:
@@ -618,14 +617,14 @@ class Task(models.Model):
         """
         query = """
                     SELECT task.id as id,
-                           MAX(depends_on.planned_date_end) as date
+                           MAX(depends_on.date_deadline) as date
                       FROM project_task task
                       JOIN task_dependencies_rel rel
                         ON rel.task_id = task.id
                       JOIN project_task depends_on
                         ON depends_on.id != task.id
                        AND depends_on.id = rel.depends_on_id
-                       AND depends_on.planned_date_end is not null
+                       AND depends_on.date_deadline is not null
                      WHERE task.id = any(%s)
                   GROUP BY task.id
                 """
@@ -638,14 +637,14 @@ class Task(models.Model):
         if user:
             concurrent_tasks = self.env['project.task'].search(
                 [('user_ids', '=', user.id),
-                 ('planned_date_end', '>=', date_begin),
+                 ('date_deadline', '>=', date_begin),
                  ('planned_date_begin', '<=', date_end)],
-                order='planned_date_end',
+                order='date_deadline',
             )
 
         return Intervals([
             (t.planned_date_begin.astimezone(timezone(tz_info)),
-             t.planned_date_end.astimezone(timezone(tz_info)),
+             t.date_deadline.astimezone(timezone(tz_info)),
              t)
             for t in concurrent_tasks
         ])
@@ -991,8 +990,8 @@ class Task(models.Model):
             'name': _('Overlapping Tasks'),
             'domain' : [
                 ('user_ids', 'in', self.user_ids.ids),
-                ('planned_date_begin', '<', self.planned_date_end),
-                ('planned_date_end', '>', self.planned_date_begin),
+                ('planned_date_begin', '<', self.date_deadline),
+                ('date_deadline', '>', self.planned_date_begin),
             ],
             'context': {
                 'fsm_mode': False,
@@ -1085,7 +1084,7 @@ class Task(models.Model):
         project_tasks = self.env['project.task'].sudo().search([
             ('user_ids', 'in', res_ids),
             ('planned_date_begin', '<=', stop_naive),
-            ('planned_date_end', '>=', start_naive),
+            ('date_deadline', '>=', start_naive),
         ])
 
         allocated_hours_mapped = defaultdict(float)
@@ -1094,12 +1093,12 @@ class Task(models.Model):
             # if the task goes over the gantt period, compute the duration only within
             # the gantt period
             max_start = max(start, utc.localize(task.planned_date_begin))
-            min_end = min(stop, utc.localize(task.planned_date_end))
+            min_end = min(stop, utc.localize(task.date_deadline))
             # for forecast tasks, use the conjunction between work intervals and task.
             interval = Intervals([(
                 max_start, min_end, self.env['resource.calendar.attendance']
             )])
-            duration = (task.planned_date_end - task.planned_date_begin).total_seconds() / 3600.0 if task.planned_date_begin and task.planned_date_end else 0.0
+            duration = (task.date_deadline - task.planned_date_begin).total_seconds() / 3600.0 if task.planned_date_begin and task.date_deadline else 0.0
             nb_hours_per_user = (sum_intervals(interval) / (len(task.user_ids) or 1)) if duration < 24 else 0.0
             for user in task.user_ids:
                 if duration < 24:

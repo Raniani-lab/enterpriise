@@ -32,7 +32,7 @@ export class TimesheetGridDataPoint extends GridDataPoint {
             ["user_ids", "in", this.searchParams.context.uid],
             ["allow_timesheets", "=", true],
             ["planned_date_begin", "<=", serializeDate(this.navigationInfo.periodEnd)],
-            ["planned_date_end", ">=", serializeDate(this.navigationInfo.periodStart)],
+            ["date_deadline", ">=", serializeDate(this.navigationInfo.periodStart)],
         ];
     }
 

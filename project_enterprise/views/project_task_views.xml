@@ -2,22 +2,18 @@
 <odoo>
 
     <record id="project_task_view_tree" model="ir.ui.view">
-        <field name="name">project.task.view.form.inherit.project.enterprise"</field>
+        <field name="name">project.task.view.tree.inherit.project.enterprise"</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.project_task_view_tree_base"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position="after">
-                <!-- XBO: required modifiers contains a falsy domain to be able to display the daterange without button -->
-                <field
-                    name="planned_date_begin"
-                    string="Planned Date"
-                    widget="daterange"
-                    options="{'end_date_field': 'planned_date_end'}"
-                    optional="hide"
-                    invisible="not project_id"
-                    required="False"
-                    decoration-danger="planned_date_end and planned_date_end &lt; current_date and state not in ['1_done', '1_canceled']"/>
-                <field name="planned_date_end" column_invisible="True" />
+            <xpath expr="//field[@name='date_deadline']" position="attributes">
+                <attribute name="widget">daterange</attribute>
+                <attribute name="options">{'start_date_field': 'planned_date_begin'}</attribute>
+                <attribute name="decoration-danger">date_deadline &lt; current_date and state not in ['1_done', '1_canceled']</attribute>
+                <attribute name="invisible">not project_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='date_deadline']" position="after">
+                <field name="planned_date_begin" column_invisible="True"/>
             </xpath>
         </field>
     </record>
@@ -45,42 +41,32 @@
                         <field name="dependency_warning" widget="html" class="m-0"/>
                 </div>
             </xpath>
-            <xpath expr="//div[@id='date_deadline_and_recurring_task']" position="before">
-                <xpath expr="//field[@name='date_deadline']" position="move"/>
-                <label for="planned_date_begin" string="Planned Date"/>
+            <xpath expr="//label[@for='date_deadline']" position="attributes">
+                <attribute name="invisible">planned_date_begin</attribute>
             </xpath>
-            <xpath expr="//div[@id='date_deadline_and_recurring_task']/field[@name='recurring_task']" position="before">
-                <field
-                    name="planned_date_begin"
-                    string="Planned Date"
-                    widget="daterange"
-                    options="{'end_date_field': 'planned_date_end'}"
-                    invisible="not project_id"
-                    required="planned_date_begin or planned_date_end"
-                    decoration-danger="planned_date_end and planned_date_end &lt; current_date and state not in ['1_done', '1_canceled']"/>
-                <field name="planned_date_end" invisible="1" />
+            <xpath expr="//label[@for='date_deadline']" position="after">
+                <label for="date_deadline" string="Planned Date" invisible="not planned_date_begin"/>
             </xpath>
-            <xpath expr="//field[@name='child_ids']/tree//field[@name='company_id']" position="after">
-                <field
-                    name="planned_date_begin"
-                    string="Planned Date"
-                    widget="daterange"
-                    options="{'end_date_field': 'planned_date_end'}"
-                    optional="hide"
-                    required="planned_date_begin and planned_date_end"
-                    decoration-danger="planned_date_end and planned_date_end &lt; current_date and state not in ['1_done', '1_canceled']"/>
-                <field name="planned_date_end" column_invisible="True" />
+            <xpath expr="//field[@name='date_deadline']" position="attributes">
+                <attribute name="widget">daterange</attribute>
+                <attribute name="options">{'start_date_field': 'planned_date_begin'}</attribute>
             </xpath>
-            <xpath expr="//field[@name='depend_on_ids']/tree//field[@name='company_id']" position="after">
-                <field
-                    name="planned_date_begin"
-                    string="Planned Date"
-                    widget="daterange"
-                    options="{'end_date_field': 'planned_date_end'}"
-                    optional="hide"
-                    required="planned_date_begin and planned_date_end"
-                    decoration-danger="planned_date_end and planned_date_end &lt; current_date and state not in ['1_done', '1_canceled']"/>
-                <field name="planned_date_end" column_invisible="True" />
+            <xpath expr="//field[@name='date_deadline']" position="after">
+                <field name="planned_date_begin" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/tree//field[@name='date_deadline']" position="attributes">
+                <attribute name="widget">daterange</attribute>
+                <attribute name="options">{'start_date_field': 'planned_date_begin'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/tree//field[@name='date_deadline']" position="after">
+                <field name="planned_date_begin" column_invisible="True"/>
+            </xpath>
+            <xpath expr="//field[@name='depend_on_ids']/tree//field[@name='date_deadline']" position="attributes">
+                <attribute name="widget">daterange</attribute>
+                <attribute name="options">{'start_date_field': 'planned_date_begin'}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='depend_on_ids']/tree//field[@name='date_deadline']" position="after">
+                <field name="planned_date_begin" column_invisible="True"/>
             </xpath>
         </field>
     </record>
@@ -109,7 +95,7 @@
         <field name="arch" type="xml">
             <gantt date_start="planned_date_begin"
                 form_view_id="%(project_task_view_form_in_gantt)d"
-                date_stop="planned_date_end"
+                date_stop="date_deadline"
                 default_scale="month"
                 scales="day,week,month,year"
                 color="project_id"
@@ -136,7 +122,7 @@
                         <div t-if="project_id">
                             <t t-esc="planned_date_begin.toFormat('f ')"/>
                             <i class="fa fa-long-arrow-right" title="Arrow"/>
-                            <t t-esc="planned_date_end.toFormat(' f')"/>
+                            <t t-esc="date_deadline.toFormat(' f')"/>
                         </div>
                         <div class="text-danger mt-2" t-if="planning_overlap">
                             <t t-out="planningOverlapHtml"/>
@@ -220,6 +206,19 @@
                 <field name="milestone_id" string="Milestone"/>
                 <field name="user_names" string="Assignees"/>
             </map>
+        </field>
+    </record>
+
+    <record id="view_task_calendar_inherited" model="ir.ui.view">
+        <field name="name">project.task.all.calendar</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_calendar"/>
+        <field name="arch" type="xml">
+            <xpath expr="//calendar" position="attributes">
+                <attribute name="js_class">project_enterprise_task_calendar</attribute>
+                <attribute name="date_start">planned_date_start</attribute>
+                <attribute name="date_stop">date_deadline</attribute>
+            </xpath>
         </field>
     </record>
 

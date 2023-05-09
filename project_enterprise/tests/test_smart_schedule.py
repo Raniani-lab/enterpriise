@@ -41,11 +41,11 @@ class TestSmartSchedule(TestProjectCommon):
         cls.begin_datetime_str = cls.begin_datetime.strftime('%Y-%m-%d %H:%M:%S')
         cls.end_datetime_str = cls.end_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
-    def _get_expected_planned_dates_per_task_id(self, tasks, planned_date_begin, planned_date_end):
+    def _get_expected_planned_dates_per_task_id(self, tasks, planned_date_begin, date_deadline):
         planned_dates_per_task_id = {}
         tasks_by_resource_calendar_dict = tasks._get_tasks_by_resource_calendar_dict()
         for (calendar, tasks) in tasks_by_resource_calendar_dict.items():
-            date_start, date_stop = self.env['project.task']._calculate_planned_dates(planned_date_begin, planned_date_end, calendar=calendar)
+            date_start, date_stop = self.env['project.task']._calculate_planned_dates(planned_date_begin, date_deadline, calendar=calendar)
             for task in tasks:
                 planned_dates_per_task_id[task.id] = date_start, date_stop
         return planned_dates_per_task_id
@@ -78,7 +78,7 @@ class TestSmartSchedule(TestProjectCommon):
             .with_context({'last_date_view': self.last_date_view.strftime('%Y-%m-%d %H:%M:%S')}) \
             .schedule_tasks({
                 'planned_date_begin': self.begin_datetime.strftime('%Y-%m-%d %H:%M:%S'),
-                'planned_date_end': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                'date_deadline': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_ids': self.user_projectmanager.ids,
             })
 
@@ -86,7 +86,7 @@ class TestSmartSchedule(TestProjectCommon):
         # task_allocated_hours_high_priority
         self.assertEqual(self.user_projectmanager, task_allocated_hours_high_priority.user_ids, 'wrong user id')
         self.assertEqual(
-            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours_high_priority.planned_date_begin, task_allocated_hours_high_priority.planned_date_end),
+            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours_high_priority.planned_date_begin, task_allocated_hours_high_priority.date_deadline),
             task_allocated_hours_high_priority.allocated_hours,
             f'The planned dates should be following the planned hours set (expected {task_allocated_hours_high_priority.allocated_hours}) on this task for the user set'
         )
@@ -94,19 +94,19 @@ class TestSmartSchedule(TestProjectCommon):
         expected_planned_dates_per_task_id = self._get_expected_planned_dates_per_task_id(task_no_allocated_hours_with_uid + task_no_allocated_hours_without_uid, self.begin_datetime, self.end_datetime)
 
         # task_no_allocated_hours_with_uid
-        expected_planned_date_begin, expected_planned_date_end = expected_planned_dates_per_task_id[task_no_allocated_hours_with_uid.id]
+        expected_planned_date_begin, expected_date_deadline = expected_planned_dates_per_task_id[task_no_allocated_hours_with_uid.id]
         self.assertEqual(expected_planned_date_begin, task_no_allocated_hours_with_uid.planned_date_begin, 'wrong date begin')
-        self.assertEqual(expected_planned_date_end, task_no_allocated_hours_with_uid.planned_date_end, 'wrong date end')
+        self.assertEqual(expected_date_deadline, task_no_allocated_hours_with_uid.date_deadline, 'wrong date end')
         self.assertEqual(self.user_projectmanager | self.user_projectuser, task_no_allocated_hours_with_uid.user_ids, 'wrong user id')
         # task_no_allocated_hours_without_uid
-        expected_planned_date_begin, expected_planned_date_end = expected_planned_dates_per_task_id[task_no_allocated_hours_without_uid.id]
+        expected_planned_date_begin, expected_date_deadline = expected_planned_dates_per_task_id[task_no_allocated_hours_without_uid.id]
         self.assertEqual(expected_planned_date_begin, task_no_allocated_hours_without_uid.planned_date_begin, 'wrong date begin')
-        self.assertEqual(expected_planned_date_end, task_no_allocated_hours_without_uid.planned_date_end, 'wrong date end')
+        self.assertEqual(expected_date_deadline, task_no_allocated_hours_without_uid.date_deadline, 'wrong date end')
         self.assertEqual(self.user_projectmanager, task_no_allocated_hours_without_uid.user_ids, 'wrong user id')
         # task_allocated_hours_low_priority
         self.assertEqual(self.user_projectmanager, task_allocated_hours_low_priority.user_ids, 'wrong user id')
         self.assertEqual(
-            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours_low_priority.planned_date_begin, task_allocated_hours_low_priority.planned_date_end),
+            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours_low_priority.planned_date_begin, task_allocated_hours_low_priority.date_deadline),
             task_allocated_hours_low_priority.allocated_hours,
             f'The planned dates should be following the planned hours set (expected {task_allocated_hours_low_priority.allocated_hours} hours) on this task for the user set'
         )
@@ -133,26 +133,26 @@ class TestSmartSchedule(TestProjectCommon):
             .with_context({'last_date_view': self.last_date_view.strftime('%Y-%m-%d %H:%M:%S')}) \
             .schedule_tasks({
                 'planned_date_begin': self.begin_datetime.strftime('%Y-%m-%d %H:%M:%S'),
-                'planned_date_end': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                'date_deadline': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_ids': None,
             })
         self.assertDictEqual(result, {}, 'No further action should be applied and warnings should be displayed. It means all tasks should be scheduled')
 
         self.assertFalse(task_no_allocated_hours_with_uid.user_ids, "task_no_allocated_hours_with_uid: no user should be assigned to that task.")
-        expected_planned_date_begin, expected_planned_date_end = self._get_expected_planned_dates_per_task_id(task_no_allocated_hours_with_uid, self.begin_datetime, self.end_datetime)[task_no_allocated_hours_with_uid.id]
+        expected_planned_date_begin, expected_date_deadline = self._get_expected_planned_dates_per_task_id(task_no_allocated_hours_with_uid, self.begin_datetime, self.end_datetime)[task_no_allocated_hours_with_uid.id]
         self.assertEqual(expected_planned_date_begin, task_no_allocated_hours_with_uid.planned_date_begin, "task_no_allocated_hours_with_uid: wrong date begin")
-        self.assertEqual(expected_planned_date_end, task_no_allocated_hours_with_uid.planned_date_end, "task_no_allocated_hours_with_uid: wrong date end")
+        self.assertEqual(expected_date_deadline, task_no_allocated_hours_with_uid.date_deadline, "task_no_allocated_hours_with_uid: wrong date end")
 
         self.assertFalse(task_allocated_hours_without_uid.user_ids, "task_allocated_hours_without_uid: wrong user_ids")
         self.assertEqual(
-            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours_without_uid.planned_date_begin, task_allocated_hours_without_uid.planned_date_end),
+            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours_without_uid.planned_date_begin, task_allocated_hours_without_uid.date_deadline),
             task_allocated_hours_without_uid.allocated_hours,
             f'The planned dates should be following the planned hours set (expected {task_allocated_hours_without_uid.allocated_hours}) on this task for the user set'
         )
 
         self.assertFalse(task_allocated_hours_6_days_work.user_ids, "task_allocated_hours_6_days_work: wrong user_ids")
         self.assertEqual(
-            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours_6_days_work.planned_date_begin, task_allocated_hours_6_days_work.planned_date_end),
+            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours_6_days_work.planned_date_begin, task_allocated_hours_6_days_work.date_deadline),
             task_allocated_hours_6_days_work.allocated_hours,
             f'The planned dates should be following the planned hours set (expected {task_allocated_hours_6_days_work.allocated_hours}) on this task for the user set'
         )
@@ -169,14 +169,14 @@ class TestSmartSchedule(TestProjectCommon):
                 'name': 'task_fill_month',
                 'project_id': self.project_goats.id,
                 'planned_date_begin': self.begin_datetime,
-                'planned_date_end': self.last_date_view,
+                'date_deadline': self.last_date_view,
                 'user_ids': self.user_projectmanager.ids,
             },
             {
                 'name': 'task_fill_month_2',
                 'project_id': self.project_goats.id,
                 'planned_date_begin': self.begin_datetime + relativedelta(months=1),
-                'planned_date_end': self.last_date_view + relativedelta(months=1),
+                'date_deadline': self.last_date_view + relativedelta(months=1),
                 'user_ids': self.user_projectmanager.ids,
             },
         ])
@@ -197,7 +197,7 @@ class TestSmartSchedule(TestProjectCommon):
             .with_context({'last_date_view': self.last_date_view.strftime('%Y-%m-%d %H:%M:%S')}) \
             .schedule_tasks({
                 'planned_date_begin': self.begin_datetime.strftime('%Y-%m-%d %H:%M:%S'),
-                'planned_date_end': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                'date_deadline': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_ids': self.user_projectmanager.ids,
             })
 
@@ -213,11 +213,11 @@ class TestSmartSchedule(TestProjectCommon):
         # discarded_with_uid
         self.assertEqual(task_discarded_with_uid.user_ids, self.user_projectuser, 'The users assigned to the task should stay the same set when the task is created.')
         self.assertFalse(task_discarded_with_uid.planned_date_begin, 'date_begin must be false in tasks')
-        self.assertFalse(task_discarded_with_uid.planned_date_end, 'date_end must be false in tasks')
+        self.assertFalse(task_discarded_with_uid.date_deadline, 'date_end must be false in tasks')
         # discarded_without_uid
         self.assertFalse(task_discarded_without_uid.user_ids, 'No user should be assigned to that task')
         self.assertFalse(task_discarded_without_uid.planned_date_begin, 'date_begin must be false in that task')
-        self.assertFalse(task_discarded_without_uid.planned_date_end, 'date_end must be false in that task')
+        self.assertFalse(task_discarded_without_uid.date_deadline, 'date_end must be false in that task')
         # wizard discarded_without_uid
         line_without_uid, line_with_uid = wizard.line_ids
         self.assertEqual(line_without_uid.task_id, task_discarded_without_uid, "wrong task id in wizard line without uid")
@@ -253,18 +253,18 @@ class TestSmartSchedule(TestProjectCommon):
             .with_context({'last_date_view': self.last_date_view.strftime('%Y-%m-%d %H:%M:%S')}) \
             .schedule_tasks({
                 'planned_date_begin': self.begin_datetime.strftime('%Y-%m-%d %H:%M:%S'),
-                'planned_date_end': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                'date_deadline': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_ids': self.user_projectmanager.ids,
             })
         self.assertFalse(result, "The dict should be empty since a simple write will be done instead of using the smart scheduling")
         expected_planned_dates_per_task_id = self._get_expected_planned_dates_per_task_id(tasks, self.begin_datetime, self.end_datetime)
-        expected_planned_date_begin, expected_planned_date_end = expected_planned_dates_per_task_id[task_pig.id]
+        expected_planned_date_begin, expected_date_deadline = expected_planned_dates_per_task_id[task_pig.id]
         self.assertEqual(expected_planned_date_begin, task_pig.planned_date_begin, "task pig : wrong planned_date_begin")
-        self.assertEqual(expected_planned_date_end, task_pig.planned_date_end, "task pig : wrong planned_date_end")
+        self.assertEqual(expected_date_deadline, task_pig.date_deadline, "task pig : wrong date_deadline")
         self.assertEqual(self.user_projectmanager, task_pig.user_ids, "task pig : wrong user_ids")
-        expected_planned_date_begin, expected_planned_date_end = expected_planned_dates_per_task_id[task_goat.id]
+        expected_planned_date_begin, expected_date_deadline = expected_planned_dates_per_task_id[task_goat.id]
         self.assertEqual(expected_planned_date_begin, task_goat.planned_date_begin, "task goat : wrong planned_date_begin")
-        self.assertEqual(expected_planned_date_end, task_goat.planned_date_end, "task goat : wrong planned_date_end")
+        self.assertEqual(expected_date_deadline, task_goat.date_deadline, "task goat : wrong date_deadline")
         self.assertEqual(self.user_projectmanager, task_goat.user_ids, "task goat : wrong user_ids")
 
     def test_small_tasks(self):
@@ -291,22 +291,22 @@ class TestSmartSchedule(TestProjectCommon):
             .with_context({'last_date_view': self.last_date_view.strftime('%Y-%m-%d %H:%M:%S')}) \
             .schedule_tasks({
                 'planned_date_begin': self.begin_datetime.strftime('%Y-%m-%d %H:%M:%S'),
-                'planned_date_end': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                'date_deadline': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_ids': self.user_projectmanager.ids,
             })
         self.assertDictEqual(result, {}, 'tasks should not be discarded')
         self.assertEqual(
-            self.project_pigs.resource_calendar_id.get_work_hours_count(task_1.planned_date_begin, task_1.planned_date_end),
+            self.project_pigs.resource_calendar_id.get_work_hours_count(task_1.planned_date_begin, task_1.date_deadline),
             task_1.allocated_hours,
             f'The planned dates should be following the planned hours set (expected {task_1.allocated_hours}) on this task for the user set'
         )
         self.assertEqual(
-            self.project_pigs.resource_calendar_id.get_work_hours_count(task_two_days.planned_date_begin, task_two_days.planned_date_end),
+            self.project_pigs.resource_calendar_id.get_work_hours_count(task_two_days.planned_date_begin, task_two_days.date_deadline),
             task_two_days.allocated_hours,
             f'The planned dates should be following the planned hours set (expected {task_two_days.allocated_hours}) on this task for the user set'
         )
         self.assertEqual(
-            self.project_pigs.resource_calendar_id.get_work_hours_count(task_1_and_half_day.planned_date_begin, task_1_and_half_day.planned_date_end),
+            self.project_pigs.resource_calendar_id.get_work_hours_count(task_1_and_half_day.planned_date_begin, task_1_and_half_day.date_deadline),
             task_1_and_half_day.allocated_hours,
             f'The planned dates should be following the planned hours set (expected {task_1_and_half_day.allocated_hours}) on this task for the user set'
         )
@@ -322,7 +322,7 @@ class TestSmartSchedule(TestProjectCommon):
         result = task_240_hours.with_context({'last_date_view': self.last_date_view.strftime('%Y-%m-%d %H:%M:%S')}) \
             .schedule_tasks({
                 'planned_date_begin': self.begin_datetime.strftime('%Y-%m-%d %H:%M:%S'),
-                'planned_date_end': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                'date_deadline': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_ids': self.user_projectmanager.ids,
             })
         self.assertDictEqual(result, {}, "the tasks have to be scheduled")
@@ -330,7 +330,7 @@ class TestSmartSchedule(TestProjectCommon):
         self.assertEqual(self.user_projectmanager, task_240_hours.user_ids, "wrong user id")
         work_intervals, dummy = self.user_projectmanager._get_valid_work_intervals(
             task_240_hours.planned_date_begin.replace(tzinfo=utc),
-            task_240_hours.planned_date_end.replace(tzinfo=utc)
+            task_240_hours.date_deadline.replace(tzinfo=utc)
         )
         allocated_hours_count = sum_intervals(work_intervals[self.user_projectmanager.id])
         self.assertEqual(
@@ -367,14 +367,14 @@ class TestSmartSchedule(TestProjectCommon):
         result = simple_task.with_context({'last_date_view': self.last_date_view.strftime('%Y-%m-%d %H:%M:%S')}) \
             .schedule_tasks({
                 'planned_date_begin': self.begin_datetime.strftime('%Y-%m-%d %H:%M:%S'),
-                'planned_date_end': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                'date_deadline': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_ids': self.user_projectmanager.ids,
             })
 
         self.assertDictEqual(result, {}, "task must not be discarded")
         work_intervals, dummy = self.user_projectmanager._get_valid_work_intervals(
             simple_task.planned_date_begin.replace(tzinfo=utc),
-            simple_task.planned_date_end.replace(tzinfo=utc)
+            simple_task.date_deadline.replace(tzinfo=utc)
         )
         allocated_hours_count = sum_intervals(work_intervals[self.user_projectmanager.id])
         self.assertEqual(
@@ -391,7 +391,7 @@ class TestSmartSchedule(TestProjectCommon):
                 {
                     'name': 'task_already_planned',
                     'planned_date_begin': self.begin_datetime,
-                    'planned_date_end': self.begin_datetime + relativedelta(days=5),
+                    'date_deadline': self.begin_datetime + relativedelta(days=5),
                     'user_ids': [self.user_projectuser.id],
                 },
                 {
@@ -405,13 +405,13 @@ class TestSmartSchedule(TestProjectCommon):
             .with_context({'last_date_view': self.last_date_view.strftime('%Y-%m-%d %H:%M:%S')}) \
             .schedule_tasks({
                 'planned_date_begin': self.begin_datetime.strftime('%Y-%m-%d %H:%M:%S'),
-                'planned_date_end': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
+                'date_deadline': self.end_datetime.strftime('%Y-%m-%d %H:%M:%S'),
                 'user_ids': self.user_projectmanager.ids,
             })
 
         self.assertDictEqual(result, {}, 'task should not be discarded')
         self.assertEqual(
-            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours.planned_date_begin, task_allocated_hours.planned_date_end),
+            self.project_pigs.resource_calendar_id.get_work_hours_count(task_allocated_hours.planned_date_begin, task_allocated_hours.date_deadline),
             task_allocated_hours.allocated_hours,
             f'The planned dates should be following the planned hours set (expected {task_allocated_hours.allocated_hours}) on this task for the user set'
         )
@@ -442,7 +442,7 @@ class TestSmartSchedule(TestProjectCommon):
             .with_context({'last_date_view': self.last_date_view_str}) \
             .schedule_tasks({
                 'planned_date_begin': self.begin_datetime_str,
-                'planned_date_end': self.end_datetime_str,
+                'date_deadline': self.end_datetime_str,
                 'user_ids': self.user_projectmanager.ids,
             })
         self.assertDictEqual(result, {}, 'No tasks should be planned outside the gantt view and all tasks should be scheduled.')
@@ -454,7 +454,7 @@ class TestSmartSchedule(TestProjectCommon):
         # check for the Task 1
         work_intervals, dummy = self.user_projectmanager._get_valid_work_intervals(
             task_1.planned_date_begin.replace(tzinfo=utc),
-            task_1.planned_date_end.replace(tzinfo=utc)
+            task_1.date_deadline.replace(tzinfo=utc)
         )
         allocated_hours_count = sum_intervals(work_intervals[self.user_projectmanager.id])
         self.assertEqual(
@@ -464,7 +464,7 @@ class TestSmartSchedule(TestProjectCommon):
         )
         work_intervals, dummy = self.user_projectmanager._get_valid_work_intervals(
             task_2.planned_date_begin.replace(tzinfo=utc),
-            task_2.planned_date_end.replace(tzinfo=utc)
+            task_2.date_deadline.replace(tzinfo=utc)
         )
         allocated_hours_count = sum_intervals(work_intervals[self.user_projectmanager.id])
         self.assertEqual(
@@ -474,7 +474,7 @@ class TestSmartSchedule(TestProjectCommon):
         )
         work_intervals, dummy = self.user_projectmanager._get_valid_work_intervals(
             task_3.planned_date_begin.replace(tzinfo=utc),
-            task_3.planned_date_end.replace(tzinfo=utc)
+            task_3.date_deadline.replace(tzinfo=utc)
         )
         allocated_hours_count = sum_intervals(work_intervals[self.user_projectmanager.id])
         self.assertEqual(

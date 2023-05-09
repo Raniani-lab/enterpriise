@@ -18,7 +18,7 @@ class TestTaskGroupExpand(TestProjectCommon):
         # Simulate Gantt view
         gantt_domain = [
             ('planned_date_begin', '>=', datetime.today()),
-            ('planned_date_end', '<=', datetime.today() + timedelta(days=7)),
+            ('date_deadline', '<=', datetime.today() + timedelta(days=7)),
         ]
         Task = self.env['project.task'].with_user(self.user_projectuser).with_context({
             'gantt_start_date': datetime.today(),
@@ -48,7 +48,7 @@ class TestTaskGroupExpand(TestProjectCommon):
         # 4. Corner case: same case as 3, but with the task visible in the gantt view
         test_task.write({
             'planned_date_begin': datetime.now(),
-            'planned_date_end': datetime.now() + timedelta(days=2),
+            'date_deadline': datetime.now() + timedelta(days=2),
         })
         groups = Task.read_group(
             gantt_domain + [('user_ids', 'in', self.user_projectmanager.id)], *args)

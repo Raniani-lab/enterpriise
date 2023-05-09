@@ -25,7 +25,7 @@ class Task(models.Model):
                 result['company_id'] = company_id
 
         date_begin = result.get('planned_date_begin')
-        date_end = result.get('planned_date_end')
+        date_end = result.get('date_deadline')
         if is_fsm_mode and (date_begin or date_end):
             if not date_begin:
                 date_begin = date_end.replace(hour=0, minute=0, second=1)
@@ -54,16 +54,16 @@ class Task(models.Model):
                     work_intervals = [(start, stop) for start, stop, meta in resources_work_intervals[False]]
                     if work_intervals:
                         planned_date_begin = work_intervals[0][0]
-                        planned_date_end = work_intervals[0][1]
+                        date_deadline = work_intervals[0][1]
                         for dummy, stop in work_intervals[1:]:
                             if stop.date() != planned_date_begin.date():  # when it is no longer the case we keep the previous stop date.
                                 break
-                            planned_date_end = stop
+                            date_deadline = stop
                         result['planned_date_begin'] = planned_date_begin.astimezone(pytz.utc).replace(tzinfo=None)
-                        result['planned_date_end'] = planned_date_end.astimezone(pytz.utc).replace(tzinfo=None)
+                        result['date_deadline'] = date_deadline.astimezone(pytz.utc).replace(tzinfo=None)
                 else:
                     result['planned_date_begin'] = date_begin.replace(hour=9, minute=0, second=1).astimezone(pytz.utc).replace(tzinfo=None)
-                    result['planned_date_end'] = date_end.astimezone(pytz.utc).replace(tzinfo=None)
+                    result['date_deadline'] = date_end.astimezone(pytz.utc).replace(tzinfo=None)
         return result
 
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
@@ -85,7 +85,6 @@ class Task(models.Model):
     def SELF_READABLE_FIELDS(self):
         return super().SELF_READABLE_FIELDS | {'is_fsm',
                                               'planned_date_begin',
-                                              'planned_date_end',
                                               'fsm_done',
                                               'partner_phone',
                                               'partner_city',}
@@ -155,6 +154,30 @@ class Task(models.Model):
         """
         operator_new = operator == "=" and "inselect" or "not inselect"
         return [('project_id', operator_new, (query, ()))]
+
+    @api.onchange('planned_date_begin', 'date_deadline')
+    def _onchange_planned_date(self):
+        if self.is_fsm and self.date_deadline and not self.planned_date_begin:
+            self.date_deadline = False
+
+    def write(self, vals):
+        self_fsm = self.filtered('is_fsm')
+        super(Task, self - self_fsm).write(vals.copy())
+
+        is_start_date_set = bool(vals.get('planned_date_begin', False))
+        is_end_date_set = bool(vals.get("date_deadline", False))
+        both_dates_changed = 'planned_date_begin' in vals and 'date_deadline' in vals
+        self_fsm = self_fsm.with_context(fsm_mode=True)
+
+        if self_fsm and (
+            (both_dates_changed and is_start_date_set != is_end_date_set) or (not both_dates_changed and (
+                ('planned_date_begin' in vals and not all(bool(t.date_deadline) == is_start_date_set for t in self)) or \
+                ('date_deadline' in vals and not all(bool(t.planned_date_begin) == is_end_date_set for t in self))
+            ))
+        ):
+            vals.update({"date_deadline": False, "planned_date_begin": False})
+
+        return super(Task, self_fsm).write(vals)
 
     @api.model
     def _group_expand_project_ids(self, projects, domain, order):

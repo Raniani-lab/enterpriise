@@ -19,14 +19,15 @@
             <field name="planned_date_begin" position="attributes">
                 <attribute name="optional">show</attribute>
             </field>
-            <field name="planned_date_end" position="attributes">
-                <attribute name="optional">show</attribute>
-            </field>
             <field name="partner_id" position="after">
                 <field name="is_fsm" column_invisible="True"/>
             </field>
             <field name="partner_id" position="attributes">
                 <attribute name="required">is_fsm</attribute>
+            </field>
+            <field name="date_deadline" position="attributes">
+                <attribute name="string">Planned Date</attribute>
+                <attribute name="required">False</attribute>
             </field>
         </field>
     </record>
@@ -63,12 +64,12 @@
                         ('user_ids', '=', False),
                         '&amp;',
                             ('planned_date_begin', '=', False),
-                            ('planned_date_end', '=', False)
+                            ('date_deadline', '=', False)
                 ]" invisible="1"/>
                 <separator invisible="1"/>
                 <filter name="planned_today" string="Today" domain="[
                     ('planned_date_begin','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),
-                    ('planned_date_end','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))
+                    ('date_deadline','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))
                 ]" invisible="1"/>
                 <filter name="planned_future" string="Future" domain="[('planned_date_begin', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]" invisible="1"/>
                 <separator invisible="1"/>
@@ -87,7 +88,7 @@
         <field name="name">project.task.calendar.fsm</field>
         <field name="model">project.task</field>
         <field name="arch" type="xml">
-            <calendar date_start="planned_date_begin" date_stop="planned_date_end" string="Tasks" mode="month" color="project_id" event_open_popup="1" form_view_id="%(project.view_task_form2)d" quick_add="0" show_unusual_days="True">
+            <calendar date_start="planned_date_start" date_stop="date_deadline" string="Tasks" mode="month" color="project_id" event_open_popup="1" form_view_id="%(project.view_task_form2)d" quick_add="0" show_unusual_days="True" js_class="fsm_task_calendar">
                 <field name="name"/>
                 <field name="project_id" filters="1"/>
                 <field name="user_ids" widget="many2many_avatar_user" invisible="not user_ids"/>
@@ -125,9 +126,6 @@
                     • <field name="partner_city"/>
                 </span>
             </xpath>
-            <div name="date_deadline" position="attributes">
-                <attribute name="invisible">is_fsm or state in ['1_done', '1_canceled']</attribute>
-            </div>
         </field>
     </record>
 

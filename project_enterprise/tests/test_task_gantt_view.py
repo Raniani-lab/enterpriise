@@ -32,7 +32,7 @@ class TestTaskGanttView(TestProjectCommon):
             'project_id': project.id,
             'state': state,
             'planned_date_begin': date,
-            'planned_date_end': date,
+            'date_deadline': date,
         } for user, project, state, date in [
             (self.user_gantt_test_1, self.project_gantt_test_1, '01_in_progress', Datetime.to_datetime('2023-01-01')),
             (self.user_gantt_test_2, self.project_gantt_test_1, '01_in_progress', Datetime.to_datetime('2023-01-25')),

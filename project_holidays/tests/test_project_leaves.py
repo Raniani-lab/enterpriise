@@ -43,14 +43,14 @@ class TestProjectLeaves(common.TransactionCase):
             'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 1, 8, 0),
-            'planned_date_end': datetime.datetime(2020, 1, 1, 17, 0),
+            'date_deadline': datetime.datetime(2020, 1, 1, 17, 0),
         })
         task_2 = self.env['project.task'].create({
             'name': "Task 2",
             'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 2, 8, 0),
-            'planned_date_end': datetime.datetime(2020, 1, 2, 17, 0),
+            'date_deadline': datetime.datetime(2020, 1, 2, 17, 0),
         })
 
         self.assertNotEqual(task_1.leave_warning, False,
@@ -86,7 +86,7 @@ class TestProjectLeaves(common.TransactionCase):
             'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 6, 8, 0),
-            'planned_date_end': datetime.datetime(2020, 1, 6, 17, 0),
+            'date_deadline': datetime.datetime(2020, 1, 6, 17, 0),
         })
 
         self.assertNotEqual(task_1.leave_warning, False,
@@ -99,7 +99,7 @@ class TestProjectLeaves(common.TransactionCase):
             'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 6, 8, 0),
-            'planned_date_end': datetime.datetime(2020, 1, 7, 17, 0),
+            'date_deadline': datetime.datetime(2020, 1, 7, 17, 0),
         })
         self.assertEqual(task_2.leave_warning,
                          "Test HrUser is on time off from the 01/06/2020 to the 01/07/2020. \n")
@@ -109,7 +109,7 @@ class TestProjectLeaves(common.TransactionCase):
             'project_id': self.project.id,
             'user_ids': self.user_hruser,
             'planned_date_begin': datetime.datetime(2020, 1, 6, 8, 0),
-            'planned_date_end': datetime.datetime(2020, 1, 10, 17, 0),
+            'date_deadline': datetime.datetime(2020, 1, 10, 17, 0),
         })
         self.assertEqual(task_3.leave_warning, "Test HrUser is on time off from the 01/06/2020 to the 01/10/2020. \n",
                          "should show the start of the 1st leave and end of the 2nd")

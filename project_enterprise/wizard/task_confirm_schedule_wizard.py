@@ -63,6 +63,6 @@ class TasksConfirmScheduleLine(models.TransientModel):
             if line.schedule_task:
                 line.task_id.with_context(smart_task_scheduling=True).write({
                     'planned_date_begin': line.date_begin,
-                    'planned_date_end': line.date_end,
+                    'date_deadline': line.date_end,
                     'user_ids': user,
                 })

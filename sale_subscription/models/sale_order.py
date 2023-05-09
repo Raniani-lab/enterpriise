@@ -340,13 +340,13 @@ class SaleOrder(models.Model):
 
         query = """
             SELECT so.origin_order_id, array_agg(DISTINCT am.id)
-            
+
             FROM sale_order so
             JOIN sale_order_line sol ON sol.order_id = so.id
             JOIN sale_order_line_invoice_rel solam ON sol.id = solam.order_line_id
             JOIN account_move_line aml ON aml.id = solam.invoice_line_id
             JOIN account_move am ON am.id = aml.move_id
-            
+
             WHERE so.origin_order_id IN %s
             AND am.company_id IN %s
             AND am.move_type IN ('out_invoice', 'out_refund')
@@ -674,10 +674,6 @@ class SaleOrder(models.Model):
         subscriptions = self.filtered('is_subscription')
         old_partners = {s.id: s.partner_id.id for s in subscriptions}
         res = super().write(vals)
-        if vals.get('company_id'):
-            # simple SO don't see their lines recomputed, especially when they are in a sent/confirmed state.
-            # Subscription should be updated
-            subscriptions.order_line._compute_tax_id()
         for subscription in subscriptions:
             if not subscription.subscription_state:
                 subscription.subscription_state = vals.get('subscription_state') or '1_draft'

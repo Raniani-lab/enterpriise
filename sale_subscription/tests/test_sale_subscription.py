@@ -1362,8 +1362,8 @@ class TestSubscription(TestSubscriptionCommon):
         })
         self.assertEqual(subscription.order_line.tax_id.id, sale_tax_percentage_incl_1.id)
         (simple_so | subscription).write({'company_id': other_company_data['company'].id})
-        self.assertEqual(simple_so.order_line.tax_id.id, sale_tax_percentage_incl_1.id, "Simple SO can't see their company changed")
-        self.assertEqual(subscription.order_line.tax_id.id, sale_tax_percentage_incl_2.id, "Subscription company can be updated")
+        self.assertEqual(simple_so.order_line.tax_id.id, sale_tax_percentage_incl_2.id, "Simple SO taxes must be recomputed on company change")
+        self.assertEqual(subscription.order_line.tax_id.id, sale_tax_percentage_incl_2.id, "Subscription taxes must be recomputed on company change")
 
     def test_onchange_product_quantity_with_different_currencies(self):
         # onchange_product_quantity compute price unit into the currency of the sale_order pricelist

@@ -11,30 +11,19 @@ class PlanningSlot(models.Model):
     employee_skill_ids = fields.One2many(related='employee_id.employee_skill_ids', string='Skills')
 
     @api.model
-    def _read_group_resource_id(self, resources, domain, order):
+    def _group_expand_resource_id(self, resources, domain, order):
         """
         overriding
-        _read_group_resource_id adds 'resource_ids' in the domain corresponding to 'employee_skill_ids' fields already in the domain
+        _group_expand_resource_id adds 'resource_ids' in the domain corresponding to 'employee_skill_ids' fields already in the domain
         """
-        # 1. Check if the domain contains employee_skill_ids and create a new domain to search hr.skill records
-        skill_search_domain = []
-        # fields to remove from the domain to only have employee_skill_ids
-        employee_id_in_domain = False
-
-        for leaf in domain:
-            if not isinstance(leaf, (tuple, list)) or len(leaf) != 3:
-                skill_search_domain.append(leaf)
-            elif leaf[0] == 'employee_skill_ids':
-                employee_id_in_domain = True
-                skill_search_domain.append(('name', leaf[1], leaf[2]))
-            elif leaf[0] == 'name':
-                skill_search_domain.append(('dummy', leaf[1], leaf[2]))
-            else:
-                skill_search_domain.append(leaf)
-
-        if not employee_id_in_domain:
-            return super()._read_group_resource_id(resources, domain, order)
-        skill_search_domain = filter_domain_leaf(skill_search_domain, lambda field: field == 'name')
+        # 1. Transform the current domain to search hr.skill records
+        skill_search_domain = filter_domain_leaf(
+            domain,
+            lambda field: field == 'name',
+            field_name_mapping={'employee_skill_ids': 'name', 'name': 'dummy'}
+        )
+        if not skill_search_domain:
+            return super()._group_expand_resource_id(resources, domain, order)
 
         # 2. Get matching employee_ids for every employee_skill_id found in the initial domain
         skill_ids = self.env['hr.skill']._search(skill_search_domain)
@@ -52,4 +41,4 @@ class PlanningSlot(models.Model):
             [('resource_id', 'in', matching_resource_ids)],
             domain,
         ])
-        return super()._read_group_resource_id(resources, filtered_domain, order)
+        return super()._group_expand_resource_id(resources, filtered_domain, order)

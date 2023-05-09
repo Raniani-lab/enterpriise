@@ -45,7 +45,7 @@ class Planning(models.Model):
         return datetime.combine(fields.Date.context_today(self), time.max)
 
     name = fields.Text('Note')
-    resource_id = fields.Many2one('resource.resource', 'Resource', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", group_expand='_read_group_resource_id')
+    resource_id = fields.Many2one('resource.resource', 'Resource', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", group_expand='_group_expand_resource_id')
     resource_type = fields.Selection(related='resource_id.resource_type')
     employee_id = fields.Many2one('hr.employee', 'Employee', compute='_compute_employee_id', store=True)
     work_email = fields.Char("Work Email", related='employee_id.work_email')
@@ -1776,7 +1776,7 @@ class Planning(models.Model):
         if shift_ids_to_remove_resource:
             self.sudo().browse(shift_ids_to_remove_resource).write({'resource_id': False})
 
-    def _read_group_resource_id(self, resources, domain, order):
+    def _group_expand_resource_id(self, resources, domain, order):
         dom_tuples = [(dom[0], dom[1]) for dom in domain if isinstance(dom, (tuple, list)) and len(dom) == 3]
         resource_ids = self.env.context.get('filter_resource_ids', False)
         if resource_ids:

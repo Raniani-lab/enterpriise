@@ -50,12 +50,12 @@ class Applicant(models.Model):
                 'domain': [('id', 'in', request_ids.ids)]
             }
 
-    def create_employee_from_applicant(self):
-        res = super().create_employee_from_applicant()
+    def _get_employee_create_vals(self):
+        vals = super()._get_employee_create_vals()
         request_ids = self.env['sign.request.item'].search([
             ('partner_id', '=', self.partner_id.id)]).sign_request_id
-        res['context']['default_sign_request_ids'] = request_ids.ids
-        return res
+        vals['sign_request_ids'] = request_ids.ids
+        return vals
 
     def _update_employee_from_applicant(self):
         for applicant in self:

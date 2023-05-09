@@ -2393,6 +2393,25 @@ QUnit.module("View Editors", (hooks) => {
         ]);
         assert.containsOnce(target, ".rendered");
     });
+
+    QUnit.test("show an invisible x2many field", async (assert) => {
+        serverData.models.partner.fields.o2m = {
+            type: "one2many",
+            relation: "product",
+            string: "Products",
+        };
+        await createViewEditor({
+            serverData,
+            type: "form",
+            resModel: "partner",
+            arch: `<form><group><field name='o2m' invisible="1" /></group></form>`,
+        });
+
+        assert.containsNone(target, "div[name='o2m']");
+        await click(selectorContains(target, ".o_web_studio_sidebar .nav-link", "View"));
+        await click(target.querySelector(".o_web_studio_sidebar #show_invisible"));
+        assert.containsOnce(target, "div[name='o2m']");
+    });
 });
 
 QUnit.module("View Editors", (hooks) => {

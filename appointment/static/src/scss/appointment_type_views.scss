@@ -59,25 +59,10 @@
             margin-top: 8px;
         }
     }
-    .ribbon {
-        &::before, &::after {
-            display: none;
-        }
-    }
     // Ungrouped specific
     .o_appointment_kanban_card_ungrouped {
         .ribbon {
-            pointer-events: none;
-            height: 100%;
-
-            &-top-right {
-                margin-top: -$o-kanban-inside-vgutter;
-            }
-
-            & span {
-                font-size: $font-size-sm;
-                height: $font-size-sm * 1.5;
-            }
+            --Ribbon-wrapper-height: 100%;
         }
         .o_appointment_text_button, .o_appointment_text_button:focus, .o_appointment_text_button:hover {
             // remove button "box" aspect
@@ -110,28 +95,6 @@
         .o_kanban_record {
             min-height: 165px;
          }
-        .ribbon {
-            &::before, &::after {
-                display: none;
-            }
-
-            span {
-                background-color: $o-brand-odoo;
-                padding: 5px;
-                font-size: small;
-                z-index: unset;
-                height: auto;
-            }
-        }
-
-        .ribbon-top-right {
-            margin-top: -$o-kanban-dashboard-vpadding;
-
-            span {
-                left: 0;
-                right: 30px;
-            }
-        }
     }
 
     .o_appointment_kanban_boxes {

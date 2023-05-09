@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="helpdesk.HelpdeskTeamDashboard" owl="1">
+        <!-- Fake Data for Demo-->
+        <t t-if="showDemo and state.dashboardValues">
+            <div class="ribbon ribbon-top-right">
+                <span class="text-bg-primary">Sample</span>
+            </div>
+        </t>
         <div t-if="state.dashboardValues" class="o_helpdesk_banner align-items-start flex-column flex-lg-row flex-shrink-0 d-flex py-4 border-bottom bg-view">
             <div class="w-100">
-                <!-- Fake Data for Demo-->
-                <t t-if="showDemo">
-                    <div class="ribbon ribbon-top-right mt-n4">
-                        <span class="h-auto ms-3 p-2 text-bg-primary">Sample</span>
-                    </div>
-                </t>
-
                 <table class="o_helpdesk_banner_table table table-sm table-borderless h-100 px-3 mb-0 text-center">
                     <tbody>
                         <tr class="h-100">

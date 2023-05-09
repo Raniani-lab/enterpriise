@@ -34,27 +34,6 @@
             margin-right: 8px;
         }
     }
-    .ribbon {
-        &::before, &::after {
-            display: none;
-        }
-
-        span {
-            padding: 5px;
-            font-size: small;
-            z-index: unset;
-        }
-    }
-    .ribbon-top-right {
-        margin-top: -9px;
-
-        span {
-            left: 12px;
-            right: 30px;
-            height: 25px;
-            top: 18px;
-        }
-    }
 }
 
 .o_appraisal_form {

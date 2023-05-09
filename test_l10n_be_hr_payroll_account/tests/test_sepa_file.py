@@ -79,7 +79,7 @@ class TestSEPAFile(AccountTestInvoicingCommon):
         payslip_employee = self.env['hr.payslip.employees'].with_company(self.company).create({
             'employee_ids': [(4, self.employee.id)]
         })
-
+        self.employee._action_trust_bank_accounts()
         payslip_employee.with_context(active_id=payslip_run.id).compute_sheet()
         payslip_run.action_validate()
 

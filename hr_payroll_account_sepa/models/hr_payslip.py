@@ -90,7 +90,8 @@ class HrPayslip(models.Model):
     @api.model
     def _get_dashboard_warnings(self):
         res = super()._get_dashboard_warnings()
-        invalid_iban_emp_ids = self.env['hr.employee']._get_invalid_iban_employee_ids()
+        employee_bank_data = self.env['hr.employee']._get_account_holder_employees_data()
+        invalid_iban_emp_ids = self.env['hr.employee']._get_invalid_iban_employee_ids(employee_bank_data)
         if invalid_iban_emp_ids:
             invalid_iban_str = _('Employees With Invalid Bank Accounts')
             res.append({
@@ -98,6 +99,16 @@ class HrPayslip(models.Model):
                 'count': len(invalid_iban_emp_ids),
                 'action': self._dashboard_default_action(invalid_iban_str, 'hr.employee', invalid_iban_emp_ids)
             })
+
+        untrusted_banks_emp_ids = self.env['hr.employee']._get_untrusted_bank_employee_ids(employee_bank_data)
+        if untrusted_banks_emp_ids:
+            untrusted_banks_str = _('Employees with untrusted Bank Account numbers')
+            res.append({
+                'string': untrusted_banks_str,
+                'count': len(untrusted_banks_emp_ids),
+                'action': self._dashboard_default_action(untrusted_banks_str, 'hr.employee', untrusted_banks_emp_ids)
+            })
+
         return res
 
     @api.model

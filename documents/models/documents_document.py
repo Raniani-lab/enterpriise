@@ -7,7 +7,10 @@ from ast import literal_eval
 from collections import OrderedDict
 
 from PyPDF2 import PdfFileReader
-from PyPDF2.utils import PdfReadError
+try:
+    from PyPDF2.errors import PdfReadError
+except ImportError:
+    from PyPDF2.utils import PdfReadError
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models

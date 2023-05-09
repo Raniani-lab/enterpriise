@@ -46,6 +46,7 @@ class HrPayslip(models.Model):
         leaves_no_document = self.env['hr.leave'].search_read([
             ('state', 'not in', ['refuse', 'validate']),
             ('leave_type_support_document', '=', True),
+            ('employee_company_id', 'in', self.env.companies.ids),
             ('attachment_ids', '=', False)], fields=['id'])
         if leaves_no_document:
             no_document_str = _('Time Off Without Joined Document')

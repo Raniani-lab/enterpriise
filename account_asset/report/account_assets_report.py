@@ -364,6 +364,12 @@ class AssetReportCustomHandler(models.AbstractModel):
             account_query = "AND account.id = %(forced_account_id)s"
             query_params['forced_account_id'] = forced_account_id
 
+        analytical_query = ''
+        if options.get('analytic_accounts') and not any(x in options.get('analytic_accounts_list', []) for x in options['analytic_accounts']):
+            analytic_account_ids = [[str(account_id) for account_id in options['analytic_accounts']]]
+            analytical_query = 'AND asset.analytic_distribution ?| array[%(analytic_account_ids)s]'
+            query_params['analytic_account_ids'] = analytic_account_ids
+
         sql = f"""
             SELECT asset.id AS asset_id,
                    asset.parent_id AS parent_id,
@@ -397,6 +403,7 @@ class AssetReportCustomHandler(models.AbstractModel):
                AND reversal.id IS NULL
                {prefix_query}
                {account_query}
+               {analytical_query}
           GROUP BY asset.id, account.id
           ORDER BY account.code, asset.acquisition_date;
         """

@@ -439,11 +439,11 @@ export default class BarcodeModel extends EventBus {
 
     async save() {
         const { route, params } = this._getSaveCommand();
-        this.linesToSave = [];
         if (route) {
             const res = await this.rpc(route, params);
             await this.refreshCache(res.records);
         }
+        this.linesToSave = [];
     }
 
     selectLine(line) {

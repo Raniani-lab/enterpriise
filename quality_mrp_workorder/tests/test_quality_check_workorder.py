@@ -207,3 +207,29 @@ class TestPickingWorkorderClientActionQuality(test_tablet_client_action.TestWork
             {'qty_done': 1, 'lot_id': component_sn.id},
             {'qty_done': 1, 'lot_id': finished_sn2.id},
         ])
+
+    def test_measure_quality_check(self):
+        self.env['quality.point'].create({
+            'title': 'Measure Wand Step',
+            'product_ids': [(4, self.potion.id)],
+            'picking_type_ids': [(4, self.picking_type_manufacturing.id)],
+            'operation_id': self.wizard_op_1.id,
+            'test_type_id': self.env.ref('quality_control.test_type_measure').id,
+            'norm': 15,
+            'tolerance_min': 14,
+            'tolerance_max': 16,
+            'sequence': 0,
+            'note': '<p>Make sure your wand is the correct size for the "magic" to happen</p>',
+        })
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.bom_id = self.bom_potion
+        mo = mo_form.save()
+        mo.action_confirm()
+        mo.qty_producing = mo.product_qty
+
+        self.assertEqual(mo.workorder_ids.check_ids.filtered(lambda x: x.test_type == 'measure').quality_state, 'none')
+
+        res_action = mo.workorder_ids.check_ids.filtered(lambda x: x.test_type == 'measure').do_measure()
+
+        self.assertEqual(mo.workorder_ids.check_ids.filtered(lambda x: x.test_type == 'measure').quality_state, 'fail', 'The measure quality check should have failed')
+        self.assertEqual(res_action.get('res_model'), 'quality.check.wizard', 'The action should return a wizard when failing')

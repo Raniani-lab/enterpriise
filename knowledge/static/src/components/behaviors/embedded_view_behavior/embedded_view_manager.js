@@ -60,7 +60,6 @@ export class EmbeddedViewManager extends Component {
         useSubEnv({
             config,
             services: extendedServices,
-            __getGlobalState__: this.__getGlobalState__,
         });
         onWillStart(this.onWillStart.bind(this));
     }
@@ -132,6 +131,7 @@ export class EmbeddedViewManager extends Component {
             type: viewType,
             loadIrFilters: true,
             loadActionMenus: true,
+            __getGlobalState__: this.__getGlobalState__,
             globalState: { searchModel: context.knowledge_search_model_state },
             /**
              * @param {integer} recordId

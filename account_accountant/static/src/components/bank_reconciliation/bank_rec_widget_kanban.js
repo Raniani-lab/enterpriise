@@ -3,7 +3,6 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { scrollTo } from "@web/core/utils/scrolling";
-import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 
 import { View } from "@web/views/view";
 import { useSetupView } from "@web/views/view_hook";
@@ -15,7 +14,7 @@ import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { BankRecWidgetGlobalInfo } from "./bank_rec_widget_global_info";
 import { BankRecActionHelper } from "./bank_rec_widget_action_helper";
 
-import { useState, useRef, useChildSubEnv } from "@odoo/owl";
+import { useState, useRef } from "@odoo/owl";
 
 export class BankRecKanbanRecord extends KanbanRecord {
 
@@ -42,16 +41,6 @@ BankRecKanbanRecord.template = "account.BankRecKanbanRecord";
 export class BankRecKanbanController extends KanbanController {
     async setup() {
         super.setup();
-
-        // we don't care about subview states but we want to avoid them to record
-        // some callbacks in the BankRecKanbanController callback recorders passed
-        // by the action service
-        useChildSubEnv({
-            __beforeLeave__: new CallbackRecorder(),
-            __getLocalState__: new CallbackRecorder(),
-            __getGlobalState__: new CallbackRecorder(),
-            __getContext__: new CallbackRecorder(),
-        });
 
         this.action = useService("action");
 

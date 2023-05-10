@@ -96,8 +96,10 @@ class HrContractSalary(main.HrContractSalary):
                 ('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)  if advantages['contract']['fold_private_car_reimbursed_amount'] else 0),
             ]
         if advantage_field == 'public_transport_reimbursed_amount':
+            new_value = new_value if new_value else 0
             res['new_value'] = round(request.env['hr.contract']._get_public_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field == 'train_transport_reimbursed_amount':
+            new_value = new_value if new_value else 0
             res['new_value'] = round(request.env['hr.contract']._get_train_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field == 'private_car_reimbursed_amount':
             new_value = new_value if new_value else 0

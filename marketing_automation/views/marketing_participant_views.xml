@@ -31,7 +31,7 @@
                             <field name="res_id" readonly="1" groups="base.group_no_one" string="Resource ID"/>
                         </group>
                     </group>
-                    <div class="o_ma_hierarchy">
+                    <div class="o_ma_hierarchy border-top oveflow-auto">
                         <div class="o_ma_hierarchy_title" invisible="not trace_ids">Workflow</div>
                         <div class="o_ma_hierarchy_readonly" invisible="trace_ids">
                             <h3>No activity</h3>
@@ -80,7 +80,7 @@
                                                     </t>
                                                 </t>
                                             </div>
-                                            <div class="o_ma_card">
+                                            <div class="o_ma_card card">
                                                 <div class="row">
                                                     <div class="col-1">
                                                         <t t-set="icons" t-value="{'rejected': 'ban', 'processed': 'check', 'canceled': 'times', 'error': 'exclamation-triangle', 'scheduled': 'clock-o'}" />

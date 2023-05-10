@@ -116,7 +116,7 @@
                         <field name="domain" widget="domain" options="{'model': 'model_name'}"/>
                         <field name="utm_campaign_id" required="0" invisible="1"/>
                     </group>
-                    <div class="o_ma_hierarchy">
+                    <div class="o_ma_hierarchy border-top overflow-auto">
                         <div class="o_ma_hierarchy_title" invisible="not marketing_activity_ids">Workflow</div>
                         <div class="o_ma_hierarchy_readonly oe_read_only" invisible="marketing_activity_ids">
                             <h3>No activity for this campaign.</h3>
@@ -190,7 +190,7 @@
                                                     <field name="interval_type" />
                                                 </strong>
                                             </div>
-                                            <div class="o_ma_card">
+                                            <div class="o_ma_card card">
                                                 <div class="o_ma_title_bar">
                                                     <div class="o_ma_icon">
                                                         <span t-attf-class="fa fa-envelope" t-if="record.activity_type.raw_value == 'email'" title="Email" role="img" aria-label="Email"/>
@@ -264,7 +264,7 @@
                                                     <field name="domain" widget="domain" options="{'model': 'model_name'}" readonly="1"/>
                                                 </div>
                                                 <div t-if="!read_only_mode" class="o_ma_child_activity text-center">
-                                                    <div class="o_ma_child_activity_title text-muted">
+                                                    <div class="o_ma_child_activity_title card-footer">
                                                         <i class="fa fa-plus-circle" /> Add child activity
                                                     </div>
                                                     <div class="o_ma_child_activity_buttons">

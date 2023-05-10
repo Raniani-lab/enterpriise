@@ -11,6 +11,7 @@ import { LimitGroupVisibility } from "@web_studio/client_action/view_editor/inte
 import { RainbowEffect } from "./rainbow_effect";
 import { SidebarPropertiesToolbox } from "@web_studio/client_action/view_editor/interactive_editor/properties/sidebar_properties_toolbox/sidebar_properties_toolbox";
 import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";
+import { useSnackbarWrapper } from "@web_studio/client_action/view_editor/view_editor_hook";
 
 export class ButtonProperties extends Component {
     static template = "web_studio.ViewEditor.InteractiveEditorProperties.Button";
@@ -34,6 +35,9 @@ export class ButtonProperties extends Component {
         this.state = useState({});
         this.editNodeAttributes = useEditNodeAttributes();
 
+        this.decoratedOrmCall = useSnackbarWrapper(this.orm.call.bind(this.orm));
+        this.decoratedOrmWrite = useSnackbarWrapper(this.orm.write.bind(this.orm));
+
         onWillStart(() => {
             if (this.props.node.attrs.studio_approval) {
                 this.updateApprovalSpec();
@@ -53,15 +57,29 @@ export class ButtonProperties extends Component {
         return this.editNodeAttributes({ [name]: value });
     }
 
+    onEnableApproval(enable) {
+        this.env.viewEditorModel.doOperation({
+            enable,
+            type: "enable_approval",
+            btn_name: this.props.node.attrs.name,
+            btn_type: this.props.node.attrs.type,
+            model: this.env.viewEditorModel.controllerProps.resModel,
+            view_id: this.env.viewEditorModel.view.id,
+        });
+    }
+
     get showRainbowMan() {
         const attrs = this.props.node.attrs;
         return attrs.class !== "oe_stat_button" && attrs.type === "object";
     }
 
+    get isApprovalEnabled() {
+        return this.props.node.attrs.studio_approval === "True";
+    }
+
     async createApprovalRule() {
-        // TODO FIXME snackbar save status not handled
         const params = this.getApprovalParams();
-        await this.orm.call("studio.approval.rule", "create_rule", params);
+        await this.decoratedOrmCall("studio.approval.rule", "create_rule", params);
         this.updateApprovalSpec();
     }
 
@@ -81,7 +99,7 @@ export class ButtonProperties extends Component {
     }
 
     async onApprovalArchive(id) {
-        await this.orm.write("studio.approval.rule", [id], {
+        await this.decoratedOrmWrite("studio.approval.rule", [id], {
             active: false,
         });
         this.updateApprovalSpec();
@@ -105,7 +123,7 @@ export class ButtonProperties extends Component {
             domain: JSON.stringify(domain || []),
             isDebugMode: !!this.env.debug,
             onConfirm: async (domain) => {
-                await this.orm.write("studio.approval.rule", [id], {
+                await this.decoratedOrmWrite("studio.approval.rule", [id], {
                     domain,
                 });
                 this.updateApprovalSpec();
@@ -115,7 +133,7 @@ export class ButtonProperties extends Component {
 
     async onApprovalSelectRule(ruleProperty, selection, id) {
         if (selection && selection.length) {
-            await this.orm.write(
+            await this.decoratedOrmWrite(
                 "studio.approval.rule",
                 [id],
                 Object.fromEntries([[ruleProperty, selection[0].id]])
@@ -126,5 +144,6 @@ export class ButtonProperties extends Component {
 
     async updateApprovalSpec(params = this.getApprovalParams()) {
         this.state.approvalSpec = await this.getApprovalSpec(params);
+        this.env.viewEditorModel.env.bus.trigger("approval-update");
     }
 }

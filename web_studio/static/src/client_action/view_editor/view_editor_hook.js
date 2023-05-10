@@ -65,3 +65,8 @@ export function useViewEditorModel(viewRef) {
     });
     return useState(viewEditorModel);
 }
+
+export function useSnackbarWrapper(fn) {
+    const env = useEnv();
+    return env.viewEditorModel._decorateFunction(fn);
+}

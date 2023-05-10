@@ -2449,6 +2449,115 @@ QUnit.module("View Editors", (hooks) => {
             "setting instanciated. studioXpath: /form[1]/group[1]/group[1]/setting[1]",
         ]);
     });
+
+    QUnit.test("approval one rule by default", async function (assert) {
+        assert.expect(7);
+        const changeArch = makeArchChanger();
+
+        let rules = [1];
+        await createViewEditor({
+            serverData,
+            type: "form",
+            resModel: "coucou",
+            arch: `
+                    <form>
+                        <header>
+                            <button name="0" string="Test" type="action" class="o_test_action_button"/>
+                        </header>
+                        <sheet>
+                            <field name="m2o"/>
+                        </sheet>
+                    </form>
+                `,
+            resId: 1,
+            mockRPC: function (route, args) {
+                if (route === "/web_studio/get_studio_view_arch") {
+                    return { studio_view_arch: "" };
+                }
+                if (route === "/web_studio/edit_view") {
+                    changeArch(
+                        args.view_id,
+                        `
+                        <form>
+                            <header>
+                                <button name="0" string="Test" type="action" class="o_test_action_button" studio_approval="True"/>
+                            </header>
+                            <sheet>
+                                <field name="m2o"/>
+                            </sheet>
+                        </form>
+                    `);
+                }
+                if (route === "/web/dataset/call_kw/studio.approval.rule/create_rule") {
+                    return {};
+                }
+                if (route === "/web/dataset/call_kw/studio.approval.rule/write") {
+                    return {};
+                }
+                if (route === "/web/dataset/call_kw/studio.approval.rule/get_approval_spec") {
+                    return {
+                        entries: [],
+                        rules: rules.map((id) => ({
+                            can_validate: true,
+                            domain: false,
+                            exclusive_user: false,
+                            message: false,
+                            responsible_id: false,
+                            group_id: [1, "User types / Internal User"],
+                            id,
+                        })),
+                    };
+                }
+            },
+        });
+
+        assert.containsOnce(
+            target,
+            ".o_form_statusbar button[name='0']",
+            "there should be an action button"
+        );
+
+        await click(target, ".o_form_statusbar button[name='0']");
+        await click(target, ".o_web_studio_sidebar_approval input[name='studio_approval']");
+        assert.containsOnce(
+            target,
+            ".o_web_studio_sidebar_approval > .o_studio_sidebar_approval_rule",
+            "there should be one rule"
+        );
+        assert.containsOnce(
+            target,
+            ".o_statusbar_buttons button img",
+            "there should be one img in the button"
+        );
+
+        rules = [1, 2];
+        await click(target, "a[name='create_approval_rule']");
+        assert.containsN(
+            target,
+            ".o_web_studio_sidebar_approval > .o_studio_sidebar_approval_rule",
+            2,
+            "there should be two rule"
+        );
+        assert.containsN(
+            target,
+            ".o_statusbar_buttons button img",
+            2,
+            "there should be two img in the button"
+        );
+
+        rules = [1];
+        await click(target.querySelectorAll(".o_approval_archive")[0]);
+        assert.containsOnce(
+            target,
+            ".o_web_studio_sidebar_approval > .o_studio_sidebar_approval_rule",
+            "there should be one rule"
+        );
+        assert.containsOnce(
+            target,
+            ".o_statusbar_buttons button img",
+            "there should be one img in the button"
+        );
+    });
 });
 
 QUnit.module("View Editors", (hooks) => {

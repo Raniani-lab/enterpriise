@@ -26,9 +26,9 @@
         <t t-if="state.rules === null">
             <i class="fa fa-circle-o-notch fa-spin"/>
         </t>
-        <div t-else="" t-foreach="state.rules" t-as="rule" t-key="rule.id" class="o_web_studio_approval_rule">
+        <div t-else="" t-foreach="state.rules" t-as="rule" t-key="rule.id" class="o_web_studio_approval_rule m-2">
             <t t-set="entry" t-value="getEntry(rule.id)"/>
-            <div t-if="!getEntry(rule.id)" class="o_web_studio_approval_no_entry">
+            <div t-if="!getEntry(rule.id)" class="o_web_studio_approval_no_entry d-flex flex-row align-items-center justify-content-center gap-2">
                 <div class="o_web_studio_approval_avatar">
                     <img
                         src="/web/static/img/user_menu_avatar.png"
@@ -37,7 +37,7 @@
                 <div class="o_web_studio_approval_description">
                     <t t-if="rule.message" t-esc="rule.message"/>
                     <t t-else="">Awaiting approval</t>
-                    <p class="small" t-esc="rule.group_id[1]"/>
+                    <p class="small mb-0" t-esc="rule.group_id[1]"/>
                 </div>
                 <t t-if="rule.can_validate">
                     <div class="o_web_studio_approval_button">

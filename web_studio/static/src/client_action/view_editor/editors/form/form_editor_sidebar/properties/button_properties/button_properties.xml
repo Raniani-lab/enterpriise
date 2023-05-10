@@ -1,24 +1,26 @@
 <templates>
 
 <t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Button" owl="1">
-    <div class="o_web_studio_sidebar_approval">
-        <h3>Approvals</h3>
+    <div class="o_web_studio_sidebar_approval border-bottom border-secondary pb-4 mb-3">
+        <h3 class="mb-1">Approvals</h3>
         <Property
             name="'studio_approval'"
             type="'boolean'"
-            value="this.props.node.attrs.studio_approval"
-            onChange.bind="onChangeAttribute"
+            value="isApprovalEnabled"
+            onChange.bind="onEnableApproval"
+            class="'mb-2'"
         >
             Set approval rules
         </Property>
-        <t t-if="state.approvalSpec">
+        <t t-if="isApprovalEnabled and state.approvalSpec">
             <t t-foreach="state.approvalSpec.rules" t-as="rule" t-key="rule.id">
                 <t t-call="web_studio.ViewEditorSidebar.ApprovalRule"/>
             </t>
             <div>
-                <a href="#" role="button" class="o_web_studio_sidebar_btn_link" name="create_approval_rule" t-on-click="createApprovalRule">Add an approval rule</a>
+                <a href="#" role="button" class="o_web_studio_sidebar_btn_link" name="create_approval_rule" t-on-click="createApprovalRule">
+                    <i class="fa fa-plus me-2" aria-hidden="true"></i>Add an approval rule
+                </a>
             </div>
-            <hr/>
         </t>
     </div>
     <t t-if="showRainbowMan">
@@ -37,9 +39,9 @@
     <SidebarPropertiesToolbox />
 </t>
 
-<div t-name="web_studio.ViewEditorSidebar.ApprovalRule" class="o_studio_sidebar_approval_rule" owl="1">
+<div t-name="web_studio.ViewEditorSidebar.ApprovalRule" class="o_studio_sidebar_approval_rule mb-3" owl="1">
     <div class="o_studio_sidebar_approval_rule">
-        <label t-attf-for="rule_group_{{rule.id}}" data-tooltip="Only members of this group will be able to approve or reject the rule.">Approval Group</label>
+        <label class="mt-0" t-attf-for="rule_group_{{rule.id}}" data-tooltip="Only members of this group will be able to approve or reject the rule.">Approval Group</label>
         <div class="o_approval_group">
             <div class="o_field_widget o_field_many2many_tags" name="groups_id">
                  <Many2XAutocomplete

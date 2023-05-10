@@ -992,15 +992,13 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         })
         invoice.action_post()
 
-        action_vals = self.env['account.move.reversal']\
+        self.env['account.move.reversal']\
             .with_context(active_model="account.move", active_ids=invoice.ids)\
             .create({
                 'reason': "test_tax_invoice_completely_refund",
-                'refund_method': 'cancel',
                 'journal_id': invoice.journal_id.id,
             })\
-            .reverse_moves()
-        refund = self.env['account.move'].browse(action_vals['res_id'])
+            .modify_moves()
 
         date_from_str = '2019-01-01'
         date_to_str = '2019-01-31'
@@ -1049,7 +1047,7 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         )
 
         tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
-        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids) + refund.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
+        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids) + invoice.reversal_move_id.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
         expected_amls_based_on_tax_dict = {
             'tax (10.0%)': expected_amls,
         }

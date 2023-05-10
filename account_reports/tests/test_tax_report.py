@@ -759,10 +759,9 @@ class TestTaxReport(TestAccountReportsCommon):
         # We refund the invoice
         refund_wizard = self.env['account.move.reversal'].with_context(active_model="account.move", active_ids=invoice.ids).create({
             'reason': 'Test refund tax repartition',
-            'refund_method': 'cancel',
             'journal_id': invoice.journal_id.id,
         })
-        refund_wizard.reverse_moves()
+        refund_wizard.modify_moves()
 
         # We check the taxes on refund have impacted the report properly (everything should be 0)
         self.assertLinesValues(
@@ -2061,10 +2060,9 @@ class TestTaxReport(TestAccountReportsCommon):
             move.action_post()
             refund_wizard = self.env['account.move.reversal'].with_context(active_model="account.move", active_ids=move.ids).create({
                 'reason': 'reasons',
-                'refund_method': 'cancel',
                 'journal_id': self.company_data['default_journal_misc'].id,
             })
-            refund_wizard.reverse_moves()
+            refund_wizard.modify_moves()
 
         options = self._generate_options(tax_report, today, today)
 

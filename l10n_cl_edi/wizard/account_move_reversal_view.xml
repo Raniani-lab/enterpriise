@@ -10,8 +10,7 @@
                 <group>
                     <group>
                         <field name="country_code" invisible="1"/>
-                        <field name="l10n_cl_is_text_correction" attrs="{'invisible': ['|', ('refund_method', '!=', 'refund'),
-                                                                                            ('country_code', '!=', 'CL')]}"/>
+                        <field name="l10n_cl_is_text_correction" attrs="{'invisible': [('country_code', '!=', 'CL')]}"/>
                         <field name="l10n_cl_edi_reference_doc_code" readonly="1" force_save="1"
                                attrs="{'invisible': ['|', ('move_type', '=', 'entry'), ('country_code', '!=', 'CL')]}"/>
                     </group>

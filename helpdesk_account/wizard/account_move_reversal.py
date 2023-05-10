@@ -73,9 +73,9 @@ class AccountMoveReversal(models.TransientModel):
             domain = r._get_suitable_so_domain()
             r.suitable_sale_order_ids = self.env['sale.order'].search(domain)
 
-    def reverse_moves(self):
+    def reverse_moves(self, is_modify=False):
         # OVERRIDE
-        res = super(AccountMoveReversal, self).reverse_moves()
+        res = super(AccountMoveReversal, self).reverse_moves(is_modify)
 
         if self.helpdesk_ticket_id:
             self.helpdesk_ticket_id.invoice_ids |= self.new_move_ids

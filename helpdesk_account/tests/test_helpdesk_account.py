@@ -48,7 +48,7 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
             credit_note_form.move_ids.add(inv)
         credit_note_form.reason = 'test'
         credit_note = credit_note_form.save()
-        res = credit_note.reverse_moves()
+        res = credit_note.refund_moves()
         refund = self.env['account.move'].browse(res['res_id'])
 
         self.assertEqual(len(refund), 1, "No refund created")
@@ -105,11 +105,10 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
         credit_note = self.env['account.move.reversal'].create({
             'helpdesk_ticket_id': ticket.id,
             'reason': 'test',
-            'refund_method': 'refund',
             'journal_id': journal_id,
             'move_ids': self.so.invoice_ids,
         })
-        res = credit_note.reverse_moves()
+        res = credit_note.refund_moves()
         move = self.env['account.move'].browse(res['res_id'])
         move.invoice_line_ids.quantity = 2
         move.action_post()
@@ -118,13 +117,13 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
         credit_note = self.env['account.move.reversal'].create({
             'helpdesk_ticket_id': ticket.id,
             'reason': 'test',
-            'refund_method': 'cancel',
             'journal_id': journal_id,
             'move_ids': invoice,
         })
-        res = credit_note.reverse_moves()
-        invoice = self.env['account.move'].browse(res['res_id'])
-        self.assertEqual(invoice.state, 'posted', "credit note should be posted.")
+        res = credit_note.modify_moves()
+        new_invoice = self.env['account.move'].browse(res['res_id'])
+        self.assertEqual(invoice.state, 'posted', "reversed invoice remain in posted state")
+        self.assertEqual(new_invoice.state, 'draft', "newly created invoice should be in draft state.")
 
         # create a Refund
         credit_note_form = Form(self.env['account.move.reversal'].with_context({

@@ -530,10 +530,9 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
                 active_model="account.move",
                 active_ids=inv.ids).create({
                 'reason': 'Test refund tax repartition',
-                'refund_method': 'cancel',
                 'journal_id': inv.journal_id.id,
             })
-            res = refund_wizard.reverse_moves()
+            res = refund_wizard.refund_moves()
             refund_move = self.env['account.move'].browse(res['res_id'])
             self.assertEqual(inv.reversal_move_id, refund_move, "The initial move should be reversed")
             self.assertEqual(subscription.next_invoice_date, datetime.date(2023, 3, 18), "The next invoice date not incremented")

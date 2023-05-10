@@ -268,10 +268,9 @@ class TestEcEdiXmls(TestEcEdiCommon):
             'date': self.frozen_today,
             'journal_id': invoice.journal_id.id,
             'reason': 'no reason',
-            'refund_method': 'cancel',
         })
         with freeze_time(self.frozen_today):
-            credit_note_wizard.reverse_moves()
+            credit_note_wizard.modify_moves()
             credit_note = self.env['account.move'].search([('reversed_entry_id', '=', invoice.id)])
             credit_note.ensure_one()
         self.assert_xml_tree_equal(credit_note, L10N_EC_EDI_XML_CREDIT_NOTE, post_move=False)

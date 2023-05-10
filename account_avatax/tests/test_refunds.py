@@ -43,10 +43,9 @@ class TestAccountAvalaraRefunds(TestAccountAvataxCommon):
             ).create({
                 'date': '2020-02-01',
                 'reason': 'no reason',
-                'refund_method': 'refund',
                 'journal_id': cls.invoice.journal_id.id,
             })
-            reversal = move_reversal.reverse_moves()
+            reversal = move_reversal.refund_moves()
             reverse_move = cls.env['account.move'].browse(reversal['res_id'])
             reverse_move.button_update_avatax()
         cls.refund_captured_arguments = capture.val['json']['createTransactionModel']

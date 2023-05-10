@@ -92,8 +92,8 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
 
         move_reversal = self.env['account.move.reversal'] \
             .with_context(active_model='account.move', active_ids=invoice.ids) \
-            .create({'refund_method': 'refund', 'journal_id': invoice.journal_id.id})
-        refund = self.env['account.move'].browse(move_reversal.reverse_moves()['res_id'])
+            .create({'journal_id': invoice.journal_id.id})
+        refund = self.env['account.move'].browse(move_reversal.refund_moves()['res_id'])
 
         # Amounts should be sent as negative for refunds:
         # https://developer.avalara.com/erp-integration-guide/sales-tax-badge/transactions/test-refunds/

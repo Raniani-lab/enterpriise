@@ -69,8 +69,6 @@ class Task(models.Model):
     allow_worksheets = fields.Boolean(related='project_id.allow_worksheets')
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True, copy=False)
-    partner_id = fields.Many2one(group_expand='_read_group_partner_id')
-    project_id = fields.Many2one(group_expand='_read_group_project_id')
     # Use to count conditions between : time, worksheet and materials
     # If 2 over 3 are enabled for the project, the required count = 2
     # If 1 over 3 is met (enabled + encoded), the satisfied count = 2
@@ -218,40 +216,12 @@ class Task(models.Model):
         return [('project_id', operator_new, (query, ()))]
 
     @api.model
-    def _read_group_partner_id(self, partners, domain, order):
+    def _group_expand_project_ids(self, projects, domain, order):
+        res = super()._group_expand_project_ids(projects, domain, order)
         if self._context.get('fsm_mode'):
-            dom_tuples = [dom for dom in domain if isinstance(dom, (list, tuple)) and len(dom) == 3]
-            if any(d[0] == 'partner_id' and d[1] in ('=', 'ilike', 'child_of') for d in dom_tuples):
-                filter_domain = self._expand_domain_m2o_groupby(dom_tuples, 'partner_id')
-                return self.env['res.partner'].search(filter_domain, order=order)
-        return partners
-
-    @api.model
-    def _read_group_project_id(self, projects, domain, order):
-        if self._context.get('fsm_mode'):
-            dom_tuples = [dom for dom in domain if isinstance(dom, (list, tuple)) and len(dom) == 3]
-            if any(d[0] == 'project_id' and d[1] in ('=', 'ilike') for d in dom_tuples):
-                filter_domain = self._expand_domain_m2o_groupby(dom_tuples, 'project_id')
-                domain = expression.AND([filter_domain, [('is_fsm', '=', True)]])
-                return self.env['project.project'].search(domain, order=order)
-        return projects
-
-    @api.model
-    def _expand_domain_m2o_groupby(self, domain, filter_field):
-        filter_domain = []
-        for dom in domain:
-            if dom[0] == filter_field:
-                field = self._fields[dom[0]]
-                if field.type == 'many2one' and len(dom) == 3:
-                    if dom[1] == '=':
-                        filter_domain = expression.OR([filter_domain, [('id', dom[1], dom[2])]])
-                    elif dom[1] == 'ilike':
-                        rec_name = self.env[field.comodel_name]._rec_name
-                        filter_domain = expression.OR([filter_domain, [(rec_name, dom[1], dom[2])]])
-                    elif dom[1] == 'child_of':
-                        rec_name = self.env[field.comodel_name]._rec_name
-                        filter_domain = expression.OR([filter_domain, [(rec_name, 'ilike', dom[2])]])
-        return filter_domain
+            search_on_comodel = self._search_on_comodel(domain, "project_id", "project.project", order, [('is_fsm', '=', True)])
+            res |= search_on_comodel
+        return res
 
     @api.model
     def _group_expand_user_ids(self, users, domain, order):

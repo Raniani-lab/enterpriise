@@ -5,6 +5,7 @@ from pytz import utc, timezone
 from collections import defaultdict
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
+from odoo.tools.date_utils import get_timedelta
 
 from odoo import Command, fields, models, api, _, _lt
 from odoo.osv import expression
@@ -40,6 +41,8 @@ class Task(models.Model):
     # User names in popovers
     user_names = fields.Char(compute='_compute_user_names')
     user_ids = fields.Many2many(group_expand="_group_expand_user_ids")
+    partner_id = fields.Many2one(group_expand="_group_expand_partner_ids")
+    project_id = fields.Many2one(group_expand="_group_expand_project_ids")
 
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be before the planned end date."),
@@ -355,7 +358,51 @@ class Task(models.Model):
                 ('project_id', '=', project_id),
                 ('state', 'not in', list(CLOSED_STATES)),
             ], domain_expand])
+        search_on_comodel = self._search_on_comodel(domain, "user_ids", "res.users", order)
+        if search_on_comodel:
+            return search_on_comodel | self.env.user
         return self.search(expression.AND([domain_expand, domain])).user_ids | self.env.user
+
+    @api.model
+    def _group_expand_project_ids(self, projects, domain, order):
+        start_date = self._context.get('gantt_start_date')
+        scale = self._context.get('gantt_scale')
+        default_project_id = self._context.get('default_project_id')
+        is_my_task = not self._context.get('all_task')
+        if not (start_date and scale) or default_project_id:
+            return projects
+        domain = self._expand_domain_dates(domain)
+        # Check on filtered domain is necessary in case we are in the 'All tasks' menu
+        # Indeed, the project_id != False default search would lead in a wrong result when
+        # no other search have been made
+        filtered_domain = filter_domain_leaf(domain, lambda field: field == "project_id")
+        search_on_comodel = self._search_on_comodel(domain, "project_id", "project.project", order)
+        if search_on_comodel and (default_project_id or is_my_task or len(filtered_domain) > 1):
+            return search_on_comodel
+        return self.search(domain).project_id
+
+    @api.model
+    def _group_expand_partner_ids(self, partners, domain, order):
+        start_date = self._context.get('gantt_start_date')
+        scale = self._context.get('gantt_scale')
+        if not (start_date and scale):
+            return partners
+        domain = self._expand_domain_dates(domain)
+        search_on_comodel = self._search_on_comodel(domain, "partner_id", "res.partner", order)
+        if search_on_comodel:
+            return search_on_comodel
+        return self.search(domain).partner_id
+
+    def _expand_domain_dates(self, domain):
+        filters = []
+        for dom in domain:
+            if len(dom) == 3 and dom[0] == 'planned_date_end' and dom[1] == '>=':
+                min_date = dom[2] if isinstance(dom[2], datetime) else datetime.strptime(dom[2], '%Y-%m-%d %H:%M:%S')
+                min_date = min_date - get_timedelta(1, self._context.get('gantt_scale'))
+                filters.append((dom[0], dom[1], min_date))
+            else:
+                filters.append(dom)
+        return filters
 
     # -------------------------------------
     # Business Methods : Smart Scheduling

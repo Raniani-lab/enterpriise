@@ -15,7 +15,8 @@
                     options="{'end_date_field': 'planned_date_end'}"
                     optional="hide"
                     invisible="not project_id"
-                    required="False"/>
+                    required="False"
+                    decoration-danger="planned_date_end and planned_date_end &lt; current_date and state not in ['1_done', '1_canceled']"/>
                 <field name="planned_date_end" column_invisible="True" />
             </xpath>
         </field>
@@ -55,7 +56,8 @@
                     widget="daterange"
                     options="{'end_date_field': 'planned_date_end'}"
                     invisible="not project_id"
-                    required="planned_date_begin or planned_date_end"/>
+                    required="planned_date_begin or planned_date_end"
+                    decoration-danger="planned_date_end and planned_date_end &lt; current_date and state not in ['1_done', '1_canceled']"/>
                 <field name="planned_date_end" invisible="1" />
             </xpath>
             <xpath expr="//field[@name='child_ids']/tree//field[@name='company_id']" position="after">
@@ -65,7 +67,8 @@
                     widget="daterange"
                     options="{'end_date_field': 'planned_date_end'}"
                     optional="hide"
-                    required="planned_date_begin and planned_date_end"/>
+                    required="planned_date_begin and planned_date_end"
+                    decoration-danger="planned_date_end and planned_date_end &lt; current_date and state not in ['1_done', '1_canceled']"/>
                 <field name="planned_date_end" column_invisible="True" />
             </xpath>
             <xpath expr="//field[@name='depend_on_ids']/tree//field[@name='company_id']" position="after">
@@ -75,7 +78,8 @@
                     widget="daterange"
                     options="{'end_date_field': 'planned_date_end'}"
                     optional="hide"
-                    required="planned_date_begin and planned_date_end"/>
+                    required="planned_date_begin and planned_date_end"
+                    decoration-danger="planned_date_end and planned_date_end &lt; current_date and state not in ['1_done', '1_canceled']"/>
                 <field name="planned_date_end" column_invisible="True" />
             </xpath>
         </field>

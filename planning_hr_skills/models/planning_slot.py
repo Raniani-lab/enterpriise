@@ -19,8 +19,8 @@ class PlanningSlot(models.Model):
         # 1. Transform the current domain to search hr.skill records
         skill_search_domain = filter_domain_leaf(
             domain,
-            lambda field: field == 'name',
-            field_name_mapping={'employee_skill_ids': 'name', 'name': 'dummy'}
+            lambda field: field == 'employee_skill_ids',
+            field_name_mapping={'employee_skill_ids': 'name'}
         )
         if not skill_search_domain:
             return super()._group_expand_resource_id(resources, domain, order)

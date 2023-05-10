@@ -32,7 +32,7 @@ class Task(models.Model):
         'worksheet.template', string="Worksheet Template",
         compute='_compute_worksheet_template_id', store=True, readonly=False, tracking=True,
         domain="[('res_model', '=', 'project.task'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]",
-        group_expand='_read_group_worksheet_template_id',
+        group_expand='_group_expand_worksheet_template_id',
         help="Create templates for each type of intervention you have and customize their content with your own custom fields.")
     worksheet_count = fields.Integer(compute='_compute_worksheet_count')
     worksheet_color = fields.Integer(related='worksheet_template_id.color')
@@ -88,13 +88,17 @@ class Task(models.Model):
             record.worksheet_count = worksheet_count
 
     @api.model
-    def _read_group_worksheet_template_id(self, worksheets, domain, order):
-        if self._context.get('fsm_mode'):
-            dom_tuples = [dom for dom in domain if isinstance(dom, (list, tuple)) and len(dom) == 3]
-            if any(d[0] == 'worksheet_template_id' and d[1] in ('=', 'ilike') for d in dom_tuples):
-                filter_domain = self._expand_domain_m2o_groupby(dom_tuples, 'worksheet_template_id')
-                return self.env['worksheet.template'].search(filter_domain, order=order)
-        return worksheets
+    def _group_expand_worksheet_template_id(self, worksheets, domain, order):
+        start_date = self._context.get('gantt_start_date')
+        scale = self._context.get('gantt_scale')
+        if not (start_date and scale):
+            return worksheets
+        domain = self._expand_domain_dates(domain)
+        search_on_comodel = self._search_on_comodel(domain, "worksheet_template_id", "worksheet.template", order)
+        if search_on_comodel:
+            return search_on_comodel
+        else:
+            return self.search(domain).worksheet_template_id
 
     def action_fsm_worksheet(self):
         # We check that comment is not empty, otherwise it means that a `worksheet` has been generated

@@ -4,7 +4,8 @@ from dateutil.relativedelta import relativedelta
 from math import ceil
 from pytz import timezone, utc, UTC
 
-from odoo import fields, models
+from odoo import fields, models, _
+from odoo.exceptions import UserError
 from odoo.http import request
 from odoo.addons.sale_temporal.models.product_pricing import PERIOD_RATIO
 from odoo.tools import format_amount
@@ -168,6 +169,9 @@ class ProductTemplate(models.Model):
         :param int duration: the duration expressed in int, in the unit given
         :param string unit: The duration unit, which can be 'hour', 'day', 'week' or 'month'
         """
+        if start_date and end_date and start_date >= end_date:
+            raise UserError(_("Please choose a return date that is after the pickup date."))
+
         if start_date or end_date or only_template:
             return start_date, end_date
 

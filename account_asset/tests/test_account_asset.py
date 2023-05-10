@@ -55,6 +55,15 @@ class TestAccountAsset(TestAccountReportsCommon):
         cls.env.company.gain_account_id = cls.company_data['default_account_revenue'].copy()
         cls.assert_counterpart_account_id = cls.company_data['default_account_expense'].copy().id
 
+        cls.env.user.groups_id += cls.env.ref('analytic.group_analytic_accounting')
+        analytic_plan = cls.env['account.analytic.plan'].create({
+            'name': "Default Plan",
+        })
+        cls.analytic_account = cls.env['account.analytic.account'].create({
+            'name': "Test Account",
+            'plan_id': analytic_plan.id,
+        })
+
     def update_form_values(self, asset_form):
         for i in range(len(asset_form.depreciation_move_ids)):
             with asset_form.depreciation_move_ids.edit(i) as line_edit:
@@ -2015,14 +2024,6 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(lines, expected_values)
 
     def test_asset_analytic_on_lines(self):
-        self.env.user.groups_id += self.env.ref('analytic.group_analytic_accounting')
-        analytic_plan = self.env['account.analytic.plan'].create({
-            'name': "Default Plan",
-        })
-        analytic_account = self.env['account.analytic.account'].create({
-            'name': "Test Account",
-            'plan_id': analytic_plan.id,
-        })
         CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({
             'salvage_value': 2000.0,
             'state': 'open',
@@ -2034,7 +2035,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         })
         CEO_car._onchange_model_id()
         CEO_car.method_number = 5
-        CEO_car.analytic_distribution = {analytic_account.id: 100}
+        CEO_car.analytic_distribution = {self.analytic_account.id: 100}
 
         # In order to test the process of Account Asset, I perform a action to confirm Account Asset.
         CEO_car.validate()
@@ -2042,12 +2043,54 @@ class TestAccountAsset(TestAccountReportsCommon):
         for move in CEO_car.depreciation_move_ids:
             self.assertRecordValues(move.line_ids, [
                 {
-                    'analytic_distribution': {str(analytic_account.id): 100},
+                    'analytic_distribution': {str(self.analytic_account.id): 100},
                 },
                 {
-                    'analytic_distribution': {str(analytic_account.id): 100},
+                    'analytic_distribution': {str(self.analytic_account.id): 100},
                 },
             ])
+
+    def test_asset_analytic_filter(self):
+        """
+        Test that the analytic filter works correctly.
+        """
+        truck_b = self.truck.copy()
+        truck_b.validate()
+        self.truck.analytic_distribution = {self.analytic_account.id: 100}
+        self.env['account.move']._autopost_draft_entries()
+
+        self.env.company.totals_below_sections = False
+        report = self.env.ref('account_asset.assets_report')
+
+        # No prefix group, no group by account
+        options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': False, 'unfold_all': False})
+
+        # without Analytic Filter
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            report._get_lines(options),
+            #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
+            [    0,                             5,        6,        7,           8,          9,              10,             11,               12,               13],
+            [
+                ('truck',                   10000,        0,        0,       10000,       4500,               0,              0,             4500,             5500,),
+                ('truck (copy)',                0,        0,        0,           0,      -1500,               0,              0,            -1500,             1500,),
+                ('Total',                   10000,        0,        0,       10000,       3000,               0,              0,             3000,             7000,),
+            ],
+            options
+        )
+        # with Analytic Filter
+        options['analytic_accounts'] = [self.analytic_account.id]
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            report._get_lines(options),
+            #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
+            [    0,                             5,        6,        7,           8,          9,              10,             11,               12,               13],
+            [
+                ('truck',                   10000,        0,        0,       10000,       4500,               0,              0,             4500,             5500,),
+                ('Total',                   10000,        0,        0,       10000,       4500,               0,              0,             4500,             5500,),
+            ],
+            options
+        )
 
     def test_depreciation_schedule_report_first_depreciation(self):
         """Test that the depreciation schedule report displays the correct first depreciation date."""

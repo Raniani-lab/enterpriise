@@ -12,6 +12,7 @@ var RelationalFields = require('web.relational_fields');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
 var { WarningDialog } = require("@web/legacy/js/_deprecated/crash_manager_warning_dialog");
 var Widget = require('web.Widget');
+var AccountReportControlPanel = require('account_reports.AccountReportControlPanel');
 
 var QWeb = core.qweb;
 var _t = core._t;
@@ -116,6 +117,9 @@ var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
 
 var accountReportsWidget = AbstractAction.extend({
     hasControlPanel: true,
+    config: {
+        ControlPanel: AccountReportControlPanel,
+    },
 
     events: {
         'input .o_searchview_input': 'filter_search_bar',
@@ -243,11 +247,6 @@ var accountReportsWidget = AbstractAction.extend({
                 })
             }
         });
-
-        // A default value has been set for the filter accounts.
-        // Apply the filter to take this value into account.
-        if("default_filter_accounts" in (this.odoo_context || {}))
-            this.$('.o_account_reports_filter_input').val(this.odoo_context.default_filter_accounts).trigger("input");
     },
     parse_report_informations: function(values) {
         this.report_options = values.options;

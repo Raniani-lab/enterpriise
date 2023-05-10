@@ -36,12 +36,12 @@ class SaleOrderLogReport(models.Model):
     contract_number = fields.Integer("# Contracts", readonly=True)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True)
     pricelist_id = fields.Many2one('product.pricelist', 'Pricelist', readonly=True)
-    amount_signed = fields.Float("MRR Change", readonly=True)
-    amount_signed_graph = fields.Float("MRR Change (graph)", readonly=True)
-    recurring_monthly = fields.Float('Monthly Recurring Revenue', readonly=True)
-    recurring_monthly_graph = fields.Float('Monthly Recurring Revenue (graph)', readonly=True)
-    recurring_yearly = fields.Float('Annual Recurring Revenue', readonly=True)
-    recurring_yearly_graph = fields.Float('Annual Recurring Revenue (graph)', readonly=True)
+    amount_signed = fields.Monetary("MRR Change", readonly=True)
+    amount_signed_graph = fields.Monetary("MRR Change (graph)", readonly=True)
+    recurring_monthly = fields.Monetary('Monthly Recurring Revenue', readonly=True)
+    recurring_monthly_graph = fields.Monetary('Monthly Recurring Revenue (graph)', readonly=True)
+    recurring_yearly = fields.Monetary('Annual Recurring Revenue', readonly=True)
+    recurring_yearly_graph = fields.Monetary('Annual Recurring Revenue (graph)', readonly=True)
     template_id = fields.Many2one('sale.order.template', 'Subscription Template', readonly=True)
     recurrence_id = fields.Many2one('sale.temporal.recurrence', 'Recurrence', readonly=True)
     country_id = fields.Many2one('res.country', 'Customer Country', readonly=True)
@@ -65,6 +65,11 @@ class SaleOrderLogReport(models.Model):
     first_contract_date = fields.Date('First Contract Date', readonly=True)
     end_date = fields.Date(readonly=True)
     close_reason_id = fields.Many2one("sale.order.close.reason", string="Close Reason", readonly=True)
+    currency_id = fields.Many2one('res.currency', compute='_compute_currency_id')
+
+    @api.depends_context('allowed_company_ids')
+    def _compute_currency_id(self):
+        self.currency_id = self.env.company.currency_id
 
     def _with(self):
         companies = self.env['res.company'].search([], order='id asc')

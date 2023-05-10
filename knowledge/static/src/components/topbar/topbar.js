@@ -7,7 +7,7 @@ import { useService } from '@web/core/utils/hooks';
 import { useOpenChat } from "@mail/web/open_chat_hook";
 
 
-import { Component, useEffect, useRef, useState } from '@odoo/owl';
+import { Component, onWillStart, useEffect, useRef, useState } from '@odoo/owl';
 
 import MoveArticleDialog from "@knowledge/components/move_article_dialog/move_article_dialog";
 import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
@@ -21,6 +21,7 @@ class KnowledgeTopbar extends Component {
         this.orm = useService('orm');
         this.rpc = useService('rpc');
         this.uiService = useService('ui');
+        this.userService = useService('user');
 
         this.buttonSharePanel = useRef('sharePanel_button');
         this.optionsBtn = useRef('optionsBtn');
@@ -35,6 +36,10 @@ class KnowledgeTopbar extends Component {
         });
 
         this.openChat = useOpenChat('res.users');
+
+        onWillStart(async () => {
+            this.isInternalUser = await this.userService.hasGroup('base.group_user');
+        });
 
         useEffect((optionsBtn) => {
             // Refresh "last edited" and "create date" when opening the options

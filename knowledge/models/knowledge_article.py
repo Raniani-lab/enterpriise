@@ -118,13 +118,9 @@ class Article(models.Model):
         # Stored to improve performance when loading the article tree. (avoid looping through members if 'workspace')
     # Same as write_uid/_date but limited to the body
     last_edition_uid = fields.Many2one(
-        "res.users", string="Last Edited by",
-        compute='_compute_last_edition_data', store=True,
-        readonly=False, copy=False)
+        "res.users", string="Last Edited by", readonly=True, copy=False)
     last_edition_date = fields.Datetime(
-        string="Last Edited on",
-        compute='_compute_last_edition_data', store=True,
-        readonly=False, copy=False)
+        string="Last Edited on", readonly=True, copy=False)
     # Favorite
     is_user_favorite = fields.Boolean(
         string="Is Favorited",
@@ -420,13 +416,8 @@ class Article(models.Model):
         """ Compute if the current user has write access to the article based on
         permissions and memberships.
 
-        Note that share user can never write and we therefore shorten the computation.
-
         Note that admins have all access through ACLs by default but fields are
         still using the permission-based computation. """
-        if self.env.user.share:
-            self.user_has_write_access = False
-            return
         for article in self:
             article.user_has_write_access = article.user_permission == 'write'
 
@@ -515,12 +506,6 @@ class Article(models.Model):
         favorites_count_by_article = {article.id: count for article, count in favorites}
         for article in self:
             article.favorite_count = favorites_count_by_article.get(article.id, 0)
-
-    @api.depends('body')
-    def _compute_last_edition_data(self):
-        """ Each change of body is considered as a content edition update. """
-        self.last_edition_uid = self.env.uid
-        self.last_edition_date = self.env.cr.now()
 
     @api.depends_context('uid')
     @api.depends('favorite_ids.user_id')
@@ -722,11 +707,24 @@ class Article(models.Model):
                 vals["body"] = Markup('<h1>%s</h1>') % vals["name"] if vals.get("name") \
                                else Markup('<h1 class="oe-hint"><br></h1>')
 
+            vals.update({
+                'last_edition_date': fields.Datetime.now(),
+                'last_edition_uid': self.env.user.id,
+            })
+
             can_sudo = False
             # get values from vals or defaults
             member_ids = vals.get('article_member_ids') or defaults.get('article_member_ids') or False
             internal_permission = vals.get('internal_permission') or defaults.get('internal_permission') or False
             parent_id = vals.get('parent_id') or defaults.get('parent_id') or False
+
+            if not self.env.user._is_internal() and not self.env.su:
+                if not parent_id and internal_permission != 'none':
+                    raise AccessError(_('Only internal users are allowed to create workspace root articles.'))
+
+                if internal_permission != 'none' and 'is_article_visible_by_everyone' in vals:
+                    # do not let portal specify the visibility, it will inherit from the root article
+                    del vals['is_article_visible_by_everyone']
 
             # force write permission for workspace articles
             if not parent_id and not internal_permission:
@@ -808,6 +806,25 @@ class Article(models.Model):
     def write(self, vals):
         # Move under a parent is considered as a write on it (permissions, ...)
         _resequence = False
+        if not self.env.user._is_internal() and not self.env.su:
+            writable_fields = self._get_portal_write_fields_allowlist()
+            if all(article.category == 'private' for article in self):
+                # let non internal users re-organize their private articles
+                # and send them to trash if they wish
+                writable_fields |= {'active', 'to_delete', 'parent_id'}
+
+            if vals.keys() - writable_fields:
+                raise AccessError(_('Only internal users are allowed to modify this information.'))
+
+        if 'body' in vals:
+            vals.update({
+                'last_edition_date': fields.Datetime.now(),
+                'last_edition_uid': self.env.user.id,
+            })
+        else:
+            vals.pop('last_edition_date', False)
+            vals.pop('last_edition_uid', False)
+
         if 'parent_id' in vals:
             parent = self.env['knowledge.article']
             if vals.get('parent_id'):
@@ -886,6 +903,13 @@ class Article(models.Model):
         """ Independently from admin bypass, give the domain allowing to read
         articles. """
         return [('user_has_access', '=', True)]
+
+    @api.model
+    def _get_portal_write_fields_allowlist(self):
+        """" Fields that can be written on by a portal user. """
+        return {'article_properties', 'article_properties_definition', 'body',
+                'full_width', 'icon', 'is_article_item', 'is_locked', 'name',
+                'sequence', 'stage_id'}
 
     # ------------------------------------------------------------
     # BASE MODEL METHODS
@@ -1376,6 +1400,7 @@ class Article(models.Model):
 
         Security note: this method checks for write access on current article,
         considering it as sufficient to restore access and members.
+        (side-note: portal users cannot alter article access)
         """
         self.ensure_one()
         if not self.parent_id:
@@ -1384,6 +1409,8 @@ class Article(models.Model):
             raise AccessError(
                 _('You have to be editor on %(article_name)s to restore it.',
                   article_name=self.display_name))
+        if not self.env.su and not self.env.user._is_internal():
+            raise _('Only internal users are allowed to restore the original article access information.')
 
         member_permission = (self | self.parent_id)._get_article_member_permissions()
         article_members_permission = member_permission[self.id]
@@ -1421,12 +1448,9 @@ class Article(models.Model):
             for child in unreachable_children:
                 child._add_members(partners, 'none', force_update=False)
 
-            share_partner_ids = partners.filtered(lambda partner: partner.partner_share)
-            members_command = self._add_members_command(share_partner_ids, 'read')
-            members_command += self._add_members_command(partners - share_partner_ids, permission)
+            members_command = self._add_members_command(partners, permission)
             self.sudo().write({'article_member_ids': members_command})
-            self._send_invite_mail(share_partner_ids, 'read', message)
-            self._send_invite_mail(partners - share_partner_ids, permission, message)
+            self._send_invite_mail(partners, permission, message)
 
         return True
 
@@ -1481,8 +1505,10 @@ class Article(models.Model):
             the article is desynchronized form its parent;
           Else we add a new member with the higher permission;
 
-        Security note: this method checks for write access on current article,
-        considering it as sufficient to modify members permissions.
+        Security notes:
+        - this method checks for write access on current article,
+          considering it as sufficient to modify members permissions.
+        - portal users cannot alter memberships in any way.
 
         :param <knowledge.article.member> member: member whose permission
           is to be updated. Can be a member of 'self' or one of its ancestors;
@@ -1494,6 +1520,8 @@ class Article(models.Model):
             raise AccessError(
                 _('You have to be editor on %(article_name)s to modify members permissions.',
                   article_name=self.display_name))
+        elif not self.env.su and not self.env.user._is_internal():
+            raise AccessError(_("Only internal users are allowed to alter memberships."))
 
         if is_based_on:
             downgrade = ARTICLE_PERMISSION_LEVEL[member.permission] > ARTICLE_PERMISSION_LEVEL[permission]
@@ -1533,6 +1561,7 @@ class Article(models.Model):
         archived instead.
 
         Security note
+          * portal users cannot alter article membership
           * when removing themselves: users need only read access on the article
             (automatically checked by access on self);
           * when removing someone else: write access is required on the article
@@ -1543,6 +1572,9 @@ class Article(models.Model):
         self.ensure_one()
         if not member:
             raise ValueError(_('Trying to remove wrong member.'))
+
+        if not self.env.su and not self.env.user._is_internal():
+            raise AccessError(_("Only internal users are allowed to remove memberships."))
 
         # belongs to current article members
         current_membership = self.article_member_ids.filtered(lambda m: m == member)
@@ -1581,6 +1613,7 @@ class Article(models.Model):
 
         Security note: this method checks for write access on current article,
         considering it as sufficient to add new members.
+        (side-note: portal users can't alter memberships, see '_add_members_command')
 
         :param <res.partner> partners: recordset of res.partner for which
           new members are added;
@@ -1599,12 +1632,16 @@ class Article(models.Model):
         the article. Used when caller prefers commands compared to updating
         directly the article.
 
+        Note that portal users cannot alter memberships in any way.
+
         See main method for more details. """
         self.ensure_one()
         if not self.env.su and not self.user_can_write:
             raise AccessError(
                 _("You have to be editor on %(article_name)s to add members.",
                   article_name=self.display_name))
+        if not self.env.su and not self.env.user._is_internal():
+            raise AccessError(_("Only internal users are allowed to alter memberships."))
 
         members_to_update = self.article_member_ids.filtered_domain([('partner_id', 'in', partners.ids)])
         partners_to_create = partners - members_to_update.mapped('partner_id')

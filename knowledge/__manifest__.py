@@ -29,6 +29,7 @@
         'views/knowledge_templates.xml',
         'views/knowledge_templates_common.xml',
         'views/knowledge_templates_frontend.xml',
+        'views/knowledge_templates_portal.xml',
         'views/knowledge_menus.xml',
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
@@ -89,6 +90,13 @@
         ],
         'web.tests_assets': [
             'knowledge/static/tests/mock_services.js',
+        ],
+        'knowledge.webclient': [
+            ('include', 'web.assets_backend'),
+            # knowledge webclient overrides
+            'knowledge/static/src/portal_webclient/**/*',
+            'web/static/src/start.js',
+            'web/static/src/legacy/legacy_setup.js',
         ],
     },
 }

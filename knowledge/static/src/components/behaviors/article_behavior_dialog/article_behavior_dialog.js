@@ -4,7 +4,7 @@ import { useService } from '@web/core/utils/hooks';
 import { Dialog } from '@web/core/dialog/dialog';
 import { Component, onMounted, useRef } from '@odoo/owl';
 
-export class ArticleLinkBehaviorDialog extends Component {
+export class ArticleSelectionBehaviorDialog extends Component {
     /**
      * @override
      */
@@ -29,7 +29,7 @@ export class ArticleLinkBehaviorDialog extends Component {
         return $(this.input.el);
     }
 
-    _save() {
+    onArticleSelected() {
         const $input = $(this.input.el);
         if (!$input.select2('data')){
             return;
@@ -37,7 +37,7 @@ export class ArticleLinkBehaviorDialog extends Component {
         const articleId = $input.select2('data').id;
         const displayName = $input.select2('data').display_name;
 
-        this.props.save({articleId: articleId, displayName: displayName});
+        this.props.articleSelected({articleId: articleId, displayName: displayName});
         this.props.close();
     }
 
@@ -120,9 +120,11 @@ export class ArticleLinkBehaviorDialog extends Component {
 
 }
 
-ArticleLinkBehaviorDialog.template = 'knowledge.wysiwyg_article_link_modal';
-ArticleLinkBehaviorDialog.components = { Dialog };
-ArticleLinkBehaviorDialog.props = {
+ArticleSelectionBehaviorDialog.template = 'knowledge.wysiwyg_article_selection_modal';
+ArticleSelectionBehaviorDialog.components = { Dialog };
+ArticleSelectionBehaviorDialog.props = {
+    articleSelected: Function,
     close: Function,
-    save: Function
+    confirmLabel: String,
+    title: String,
 };

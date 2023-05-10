@@ -5,12 +5,13 @@ import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { throttleForAnimation } from "@web/core/utils/timing";
 import { useService } from "@web/core/utils/hooks";
 
-const { Component, onWillUpdateProps, useRef, useState } = owl;
+const { Component, onWillUpdateProps, onWillStart, useRef, useState } = owl;
 
 class KnowledgeCover extends Component {
     setup() {
         super.setup();
         this.rpc = useService("rpc");
+        this.userService = useService("user");
         this.root = useRef("root");
         this.image = useRef("image");
         this.state = useState({
@@ -18,6 +19,10 @@ class KnowledgeCover extends Component {
             grabbing: false,
             // cover_image_position is false if the cover has never been repositioned before
             verticalPosition: this.props.record.data.cover_image_position || 50,
+        });
+
+        onWillStart(async () => {
+            this.isInternalUser = await this.userService.hasGroup('base.group_user');
         });
 
         // Update the state when we open an article (because since we open an
@@ -37,7 +42,10 @@ class KnowledgeCover extends Component {
      */
     get isEditable() {
         const recordData = this.props.record.data;
-        return !recordData.is_locked && recordData.user_can_write && recordData.active;
+        return !recordData.is_locked
+            && recordData.user_can_write
+            && recordData.active
+            && this.isInternalUser;
     }
 
     changeCover() {

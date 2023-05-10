@@ -24,6 +24,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this.dialog = useService("dialog");
         this.orm = useService("orm");
         this.rpc = useService("rpc");
+        this.userService = useService("user");
 
         this.root = useRef('root');
         this.tree = useRef('tree');
@@ -108,6 +109,22 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             }
         });
 
+        useEffect(() => {
+            const knowledgeSearchbar = this.root.el.querySelector('#knowledge_search_bar');
+            if (!knowledgeSearchbar) {
+                return () => {};
+            }
+
+            const onSearchBarClick = this.onSearchBarClick.bind(this);
+            knowledgeSearchbar.addEventListener('click',
+                onSearchBarClick);
+
+            return () => {
+                knowledgeSearchbar.removeEventListener('click',
+                    onSearchBarClick);
+            }
+        }, () => [this.root.el.querySelector('#knowledge_search_bar')]);
+
         this.emojiPicker = useEmojiPicker(undefined, { hasRemoveFeature: true });
 
         useChildSubEnv({
@@ -174,6 +191,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             }
         );
         this.openArticle(articleId, true);
+    }
+
+    onSearchBarClick(ev) {
+        this.env.services.command.openMainPalette({searchValue: '?'});
     }
 
     /**
@@ -516,10 +537,20 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * the drag-and-drop behavior will ensure that the tree structure can be restored
      * if something went wrong.
      * 
+     * Security note: non-internal users are only able to re-organize their private articles.
+     * 
      * ADSC TODO: Move to tree component
      */
-    _setTreeListener() {
-        const $sortable = $('.o_tree');
+    async _setTreeListener() {
+        const isInternalUser = await this.userService.hasGroup('base.group_user');
+
+        let $sortable;
+        if (isInternalUser) {
+            $sortable = $('.o_tree');
+        } else {
+            $sortable = $('section[data-section="private"] .o_tree');
+        }
+
         $sortable.nestedSortable({
             axis: 'y',
             handle: '.o_article_handle',
@@ -706,23 +737,26 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 }
             },
         });
-        // Allow drag and drop between sections:
-        $('section[data-section="workspace"] .o_tree').nestedSortable(
-            'option',
-            'connectWith',
-            'section[data-section="private"] .o_tree, section[data-section="shared"] .o_tree'
-        );
-        $('section[data-section="private"] .o_tree').nestedSortable(
-            'option',
-            'connectWith',
-            'section[data-section="workspace"] .o_tree, section[data-section="shared"] .o_tree'
-        );
-        // connectWith both workspace and private sections:
-        $('section[data-section="shared"] .o_tree').nestedSortable(
-            'option',
-            'connectWith',
-            'section[data-section="workspace"] .o_tree, section[data-section="private"] .o_tree'
-        );
+
+        if (isInternalUser) {
+            // Allow drag and drop between sections:
+            $('section[data-section="workspace"] .o_tree').nestedSortable(
+                'option',
+                'connectWith',
+                'section[data-section="private"] .o_tree, section[data-section="shared"] .o_tree'
+            );
+            $('section[data-section="private"] .o_tree').nestedSortable(
+                'option',
+                'connectWith',
+                'section[data-section="workspace"] .o_tree, section[data-section="shared"] .o_tree'
+            );
+            // connectWith both workspace and private sections:
+            $('section[data-section="shared"] .o_tree').nestedSortable(
+                'option',
+                'connectWith',
+                'section[data-section="workspace"] .o_tree, section[data-section="private"] .o_tree'
+            );
+        }
     }
 
     /**

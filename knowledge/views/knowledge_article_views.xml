@@ -38,14 +38,15 @@
                     <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0 bg-view">
                         <div class="d-flex flex-column h-100">
                             <!-- Search bar -->
-                            <div id="knowledge_search_bar" class="d-flex align-items-center gap-2 px-sm-3 px-3 ps-2 py-3">
+                            <div class="d-flex align-items-center gap-2 px-sm-3 px-3 ps-2 py-3">
                                 <a role="button" class="d-sm-none btn btn-light px-2 py-1">
                                     <i class="fa fa-lg fa-bars" title="Toggle aside menu"/>
                                 </a>
-                                <div class="d-flex align-items-center flex-grow-1 min-w-0 border bg-light rounded cursor-pointer"
-                                     t-on-click="() => this.env.services.command.openMainPalette({searchValue: '?'})"
-                                     data-hotkey="f">
-                                    <div class="flex-grow-1 text-truncate px-2 py-1">Search an article...</div>
+                                <a class="fa fa-2x fa-home d-inline-block me-2" href="/knowledge/home" groups="base.group_portal"
+                                    title="Home"/>
+                                <div id="knowledge_search_bar" data-hotkey="f"
+                                    class="d-flex align-items-center flex-grow-1 border bg-light rounded cursor-pointer">
+                                    <div class="flex-grow-1 px-2 py-1">Search an article...</div>
                                     <i class="oi oi-search pe-2" title="search"/>
                                 </div>
                             </div>
@@ -57,7 +58,7 @@
                                             <i class="fa fa-circle-o-notch fa-2x fa-spin" title="loader" role="img"/>
                                         </div>
                                     </div>
-                                    <div class="o_section o_knowledge_management_tools mt-auto">
+                                    <div class="o_section o_knowledge_management_tools mt-auto" groups="base.group_user">
                                         <button class="btn btn-light w-100 fw-normal text-black text-start text-truncate" type="action" name="%(knowledge_article_action_trashed)d">
                                             <i class="fa fa-fw fs-6 fa-trash me-1"/>
                                             <span>Open the Trash</span>
@@ -72,7 +73,7 @@
                             <!-- Article header -->
                             <widget name="knowledge_topbar"/>
                             <!-- Invisible Article Warning Banner-->
-                            <div class="alert alert-info text-center mb-0" role="alert"
+                            <div class="alert alert-info text-center mb-0" role="alert" groups="base.group_user"
                                  attrs="{'invisible': ['|', '|', '|', ('id', '=', False), ('internal_permission', '=', 'none'), ('is_article_visible_by_everyone', '=', True), ('is_article_visible', '=', True)]}">
                                 <field name="user_has_access_parent_path" invisible="1"/>
                                 This article is only displayed to its members.
@@ -117,8 +118,12 @@
                                                     <field name="category" invisible="1"/>
                                                     <!-- Article body -->
                                                     <div class="o_knowledge_editor mt-3">
-                                                        <field name="body" widget="html" no_label="1"
+                                                        <field name="body" widget="html" no_label="1" groups="base.group_user"
                                                             options="{'collaborative': false, 'collaborative_trigger': 'start', 'resizable': False, 'knowledge_commands': true}"
+                                                            attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
+                                                        <!-- Portal users get some commands disabled, notably /image and /file, as they don't have access to ir.attachment -->
+                                                        <field name="body" widget="html" no_label="1" groups="base.group_portal"
+                                                            options="{'resizable': False, 'knowledge_commands': true, 'allowCommandImage': false, 'allowCommandVideo': false, 'allowCommandFile': false}"
                                                             attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
                                                     </div>
                                                 </div>
@@ -142,7 +147,7 @@
                                         <!-- Properties -->
                                         <widget name="knowledge_properties_panel"/>
                                         <!-- Chatter -->
-                                        <widget name="knowledge_chatter_panel"/>
+                                        <widget name="knowledge_chatter_panel" groups="base.group_user"/>
                                     </div>
                                 </div>
                             </div>

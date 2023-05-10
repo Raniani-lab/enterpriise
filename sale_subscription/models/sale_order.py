@@ -723,7 +723,6 @@ class SaleOrder(models.Model):
         return super(SaleOrder, self).action_draft()
 
     def _action_cancel(self):
-        res = super()._action_cancel()
         for order in self:
             if order.subscription_state == '7_upsell':
                 cancel_message_body = escape(_("The upsell %s has been canceled.")) % order._get_html_link()
@@ -731,10 +730,13 @@ class SaleOrder(models.Model):
             elif order.subscription_state == '2_renewal':
                 cancel_message_body = escape(_("The renewal %s has been canceled.")) % order._get_html_link()
                 order.subscription_id.message_post(body=cancel_message_body)
+            elif order.subscription_state in SUBSCRIPTION_PROGRESS_STATE and not self.invoice_ids:
+                order.order_log_ids.sudo().unlink()
+                order.subscription_state = False
             elif order.subscription_state in SUBSCRIPTION_PROGRESS_STATE:
-                # should not happen with the constraint but this is a safety for some custos.
-                order.subscription_state = '6_churn'
-        return res
+                raise ValidationError(_('You cannot cancel a subscription that has been invoiced.'))
+        return super()._action_cancel()
+
 
     def _prepare_confirmation_values(self):
         """

@@ -2430,13 +2430,17 @@ class TestSubscription(TestSubscriptionCommon):
                 })],
         })
         sub_paused = sub_progress.copy()
-        (sub_progress | sub_paused).action_confirm()
+        sub_progress_no_invoice = sub_progress.copy()
+        with freeze_time('2022-02-02'):
+            (sub_progress | sub_paused | sub_progress_no_invoice).action_confirm()
+            (sub_progress | sub_paused)._create_recurring_invoice()
         sub_paused.subscription_state = '4_paused'
+        sub_progress_no_invoice._action_cancel()
+        self.assertEqual(sub_progress_no_invoice.state, 'cancel')
         with self.assertRaises(ValidationError):
             sub_paused._action_cancel()
         sub_paused.subscription_state = '6_churn'
         sub_paused._action_cancel()
-        sub_progress._create_recurring_invoice()
         with self.assertRaises(ValidationError):
             sub_paused.subscription_state = '4_paused'
         with self.assertRaises(ValidationError):

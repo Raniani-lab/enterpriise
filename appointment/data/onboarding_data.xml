@@ -18,7 +18,8 @@
             <field name="button_text">Configure</field>
             <field name="done_text">Looks great! - Click to review</field>
             <field name="panel_step_open_action_name">action_open_appointment_onboarding_create_appointment_type</field>
-            <field name="step_image" type="base64" file="base/static/img/onboarding_availabilities.png"></field>
+            <field name="step_image" type="base64" file="base/static/img/onboarding_cog.png"></field>
+            <field name="step_image_filename">onboarding_cog.png</field>
             <field name="step_image_alt">Onboarding Set Your Availabilities</field>
             <field name="sequence">7</field>
         </record>
@@ -29,7 +30,8 @@
             <field name="description">to schedule appointments</field>
             <field name="button_text">Preview</field>
             <field name="panel_step_open_action_name">action_open_appointment_onboarding_preview_invite</field>
-            <field name="step_image" type="base64" file="base/static/img/onboarding_getlink.png"></field>
+            <field name="step_image" type="base64" file="base/static/img/onboarding_looking_glass.png"></field>
+            <field name="step_image_filename">onboarding_looking_glass.png</field>
             <field name="step_image_alt">Onboarding Get your link</field>
             <field name="sequence">8</field>
         </record>
@@ -41,7 +43,8 @@
             <field name="done_icon">fa-star</field>
             <field name="button_text">Connect</field>
             <field name="panel_step_open_action_name">action_open_appointment_onboarding_configure_calendar_provider</field>
-            <field name="step_image" type="base64" file="base/static/img/onboarding_connect_calendar.png"></field>
+            <field name="step_image" type="base64" file="base/static/img/onboarding_calendar.png"></field>
+            <field name="step_image_filename">onboarding_calendar.png</field>
             <field name="step_image_alt">Onboarding Connect your calendar</field>
             <field name="sequence">9</field>
         </record>

@@ -118,13 +118,9 @@ class Article(models.Model):
         # Stored to improve performance when loading the article tree. (avoid looping through members if 'workspace')
     # Same as write_uid/_date but limited to the body
     last_edition_uid = fields.Many2one(
-        "res.users", string="Last Edited by",
-        compute='_compute_last_edition_data', store=True,
-        readonly=False, copy=False)
+        "res.users", string="Last Edited by", readonly=True, copy=False)
     last_edition_date = fields.Datetime(
-        string="Last Edited on",
-        compute='_compute_last_edition_data', store=True,
-        readonly=False, copy=False)
+        string="Last Edited on", readonly=True, copy=False)
     # Favorite
     is_user_favorite = fields.Boolean(
         string="Is Favorited",
@@ -516,12 +512,6 @@ class Article(models.Model):
         for article in self:
             article.favorite_count = favorites_count_by_article.get(article.id, 0)
 
-    @api.depends('body')
-    def _compute_last_edition_data(self):
-        """ Each change of body is considered as a content edition update. """
-        self.last_edition_uid = self.env.uid
-        self.last_edition_date = self.env.cr.now()
-
     @api.depends_context('uid')
     @api.depends('favorite_ids.user_id')
     def _compute_is_user_favorite(self):
@@ -722,6 +712,11 @@ class Article(models.Model):
                 vals["body"] = Markup('<h1>%s</h1>') % vals["name"] if vals.get("name") \
                                else Markup('<h1 class="oe-hint"><br></h1>')
 
+            vals.update({
+                'last_edition_date': fields.Datetime.now(),
+                'last_edition_uid': self.env.user.id,
+            })
+
             can_sudo = False
             # get values from vals or defaults
             member_ids = vals.get('article_member_ids') or defaults.get('article_member_ids') or False
@@ -808,6 +803,16 @@ class Article(models.Model):
     def write(self, vals):
         # Move under a parent is considered as a write on it (permissions, ...)
         _resequence = False
+
+        if 'body' in vals:
+            vals.update({
+                'last_edition_date': fields.Datetime.now(),
+                'last_edition_uid': self.env.user.id,
+            })
+        else:
+            vals.pop('last_edition_date', False)
+            vals.pop('last_edition_uid', False)
+
         if 'parent_id' in vals:
             parent = self.env['knowledge.article']
             if vals.get('parent_id'):

@@ -116,6 +116,7 @@ function getFormEditorServerData() {
                     id: { string: "Id", type: "integer" },
                     display_name: { string: "Name", type: "char" },
                     image: { string: "Image", type: "binary" },
+                    empty_image: { string: "Image", type: "binary" },
                 },
                 records: [
                     {
@@ -281,6 +282,40 @@ QUnit.module("View Editors", (hooks) => {
             ),
             "o-web-studio-editor--element-clicked",
             "the column should have the clicked style"
+        );
+    });
+
+    QUnit.test("image field is the placeholder when record is empty", async function (assert) {
+        assert.expect(2);
+
+        const arch = `
+                <form>
+                    <sheet>
+                        <field name='empty_image' widget='image'/>
+                    </sheet>
+                </form>
+            `;
+
+        await createViewEditor({
+            serverData,
+            resModel: "partner",
+            arch: arch,
+            resId: 1,
+            type: "form",
+        });
+
+        assert.containsOnce(
+            target,
+            ".o_web_studio_form_view_editor .o_field_image",
+            "there should be one image"
+        );
+
+        assert.strictEqual(
+            target
+                .querySelector(".o_web_studio_form_view_editor .o_field_image img")
+                .getAttribute("data-src"),
+            "/web/static/img/placeholder.png",
+            "default image in empty record should be the placeholder"
         );
     });
 
@@ -1938,8 +1973,8 @@ QUnit.module("View Editors", (hooks) => {
         assert.containsN(
             target,
             ".modal .modal-body select > option",
-            2,
-            "there should be two option Field selection drop-down "
+            3,
+            "there should be three option Field selection drop-down "
         );
 
         assert.containsOnce(

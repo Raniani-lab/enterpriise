@@ -244,15 +244,7 @@
         &.o_xxl_form_view {
             height: auto;
         }
-
-        // Button box
         .o-form-buttonbox {
-            &, & + .oe_avatar {
-                + .oe_title {
-                    width: 400px;
-                }
-            }
-
             .oe_stat_button {
                 &:hover {
                     background-color: #e6e6e6;

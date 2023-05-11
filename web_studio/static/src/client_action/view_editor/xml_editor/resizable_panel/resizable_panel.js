@@ -1,7 +1,8 @@
 /** @odoo-module */
-import { Component, onMounted, onWillUnmount, useExternalListener, useRef } from "@odoo/owl";
+import { Component, onMounted, useExternalListener, useRef } from "@odoo/owl";
+import { useRefListener } from "@web/core/utils/hooks";
 
-export function useResizable({ containerRef, handleRef, minWidth = 400, onResize = () => {} }) {
+function useResizableWidth({ containerRef, handleRef, minWidth = 400, onResize = () => {} }) {
     containerRef = typeof containerRef == "string" ? useRef(containerRef) : containerRef;
     handleRef = typeof handleRef == "string" ? useRef(handleRef) : handleRef;
 
@@ -9,17 +10,12 @@ export function useResizable({ containerRef, handleRef, minWidth = 400, onResize
 
     useExternalListener(document, "mouseup", () => onMouseUp());
     useExternalListener(document, "mousemove", (ev) => onMouseMove(ev));
+    useRefListener(handleRef, "mousedown", () => onMouseDown());
 
     onMounted(() => {
-        if (handleRef.el) {
+        if (containerRef.el) {
+            containerRef.el.classList.add("o_resizable_panel");
             resize(minWidth);
-            handleRef.el.addEventListener("mousedown", onMouseDown);
-        }
-    });
-
-    onWillUnmount(() => {
-        if (handleRef.el) {
-            handleRef.el.removeEventListener("mousedown", onMouseDown);
         }
     });
 
@@ -36,6 +32,9 @@ export function useResizable({ containerRef, handleRef, minWidth = 400, onResize
             return;
         }
 
+        ev.stopPropagation();
+        ev.preventDefault();
+
         const containerOffset = containerRef.el.offsetLeft;
         const pointerRelativePos = ev.clientX - containerOffset;
         const handlerSpacing = handleRef.el ? handleRef.el.offsetWidth / 2 : 10;
@@ -46,8 +45,6 @@ export function useResizable({ containerRef, handleRef, minWidth = 400, onResize
 
     function resize(width) {
         containerRef.el.style.width = `${width}px`;
-        containerRef.el.style.flexGrow = 0;
-        containerRef.el.style.flexShrink = 0;
         onResize(width);
     }
 }
@@ -69,7 +66,7 @@ export class ResizablePanel extends Component {
     };
 
     setup() {
-        useResizable({
+        useResizableWidth({
             containerRef: "containerRef",
             handleRef: "handleRef",
             onResize: this.props.onResize,

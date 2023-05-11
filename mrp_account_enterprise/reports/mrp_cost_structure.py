@@ -43,7 +43,7 @@ class MrpCostStructure(models.AbstractModel):
                                 LEFT JOIN mrp_routing_workcenter op ON (wo.operation_id = op.id)
                                 LEFT JOIN {currency_table} ON currency_table.company_id = t.company_id
                                 WHERE t.workorder_id IS NOT NULL AND t.workorder_id IN %s
-                                GROUP BY wo.production_id, wo.id, op.id, wo.name, wc.costs_hour, wc.name, t.user_id, currency_table.rate
+                                GROUP BY wo.production_id, wo.id, op.id, wo.name, wc.costs_hour, wc.name, currency_table.rate
                                 ORDER BY wo.name, wc.name
                             """.format(currency_table=currency_table,)
                 self.env.cr.execute(query_str, (tuple(Workorders.ids), ))

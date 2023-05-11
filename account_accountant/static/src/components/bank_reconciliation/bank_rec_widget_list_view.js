@@ -30,12 +30,7 @@ class FormEmbeddedListView extends Component {
 
         return {
             type: "list",
-            display: { 
-                controlPanel: { 
-                    "top-left": false,
-                    "bottom-left": false,
-                }
-            },
+            noBreadcrumbs: true,
             resModel: this.props.resModel,
             searchMenuTypes: ["filter"],
             domain: this.props.record.data[this.props.dataField].domain,

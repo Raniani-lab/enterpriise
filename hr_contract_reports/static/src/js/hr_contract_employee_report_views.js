@@ -36,7 +36,7 @@ function useOpenView() {
     };
 }
 
-export class HrContractEmployeeReportGraphController extends graphView.Controller {
+export class HrContractEmployeeReportGraphRenderer extends graphView.Renderer {
     /**
      * @override
      */
@@ -48,10 +48,10 @@ export class HrContractEmployeeReportGraphController extends graphView.Controlle
 
 viewRegistry.add("contract_employee_report_graph", {
     ...graphView,
-    Controller: HrContractEmployeeReportGraphController,
+    Renderer: HrContractEmployeeReportGraphRenderer,
 });
 
-export class HrContractEmployeeReportPivotController extends pivotView.Controller {
+export class HrContractEmployeeReportPivotRenderer extends pivotView.Renderer {
     /**
      * @override
      */
@@ -63,5 +63,5 @@ export class HrContractEmployeeReportPivotController extends pivotView.Controlle
 
 viewRegistry.add("contract_employee_report_pivot", {
     ...pivotView,
-    Controller: HrContractEmployeeReportPivotController,
+    Renderer: HrContractEmployeeReportPivotRenderer,
 });

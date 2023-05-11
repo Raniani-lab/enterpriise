@@ -398,8 +398,8 @@
         </xpath>
     </t>
 
-    <div t-name="StreamPostKanbanView.buttons" owl="1">
-        <div class="o_cp_buttons d-flex align-items-baseline" role="toolbar" aria-label="Main actions">
+    <div t-name="StreamPostKanbanView.buttons" t-inherit="web.KanbanView.Buttons" owl="1">
+        <xpath expr="//div[hasclass('o_cp_buttons')]" position="inside">
             <button type="button" class="btn btn-primary o_stream_post_kanban_new_stream me-1" t-on-click.prevent="_onNewStream">
                 Add a Stream
             </button>
@@ -409,7 +409,7 @@
             <button t-if="hasAccounts" type="button" class="btn btn-secondary o_stream_post_kanban_refresh_now" t-on-click.prevent="_onRefreshStats">
                 <span>Synchronize</span><i class="fa fa-circle-o-notch fa-spin d-none"/>
             </button>
-        </div>
+        </xpath>
     </div>
 
     <t t-name="social.SocialKanbanView" t-inherit="web.KanbanView" t-inherit-mode="primary" owl="1">

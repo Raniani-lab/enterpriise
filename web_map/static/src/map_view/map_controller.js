@@ -7,6 +7,8 @@ import { standardViewProps } from "@web/views/standard_view_props";
 import { useSetupView } from "@web/views/view_hook";
 import { Layout } from "@web/search/layout";
 import { usePager } from "@web/search/pager_hook";
+import { SearchBar } from "@web/search/search_bar/search_bar";
+import { CogMenu } from "@web/search/cog_menu/cog_menu";
 
 import { Component, onWillUnmount, onWillStart } from "@odoo/owl";
 
@@ -55,32 +57,6 @@ export class MapController extends Component {
             onMarkerClick: this.openRecords.bind(this),
         };
     }
-    /**
-     * @returns {string}
-     */
-    get googleMapUrl() {
-        let url = "https://www.google.com/maps/dir/?api=1";
-        if (this.model.data.records.length) {
-            const allCoordinates = this.model.data.records.filter(
-                ({ partner }) => partner && partner.partner_latitude && partner.partner_longitude
-            );
-            const uniqueCoordinates = allCoordinates.reduce((coords, { partner }) => {
-                const coord = partner.partner_latitude + "," + partner.partner_longitude;
-                if (!coords.includes(coord)) {
-                    coords.push(coord);
-                }
-                return coords;
-            }, []);
-            if (uniqueCoordinates.length && this.model.metaData.routing) {
-                // When routing is enabled, make last record the destination
-                url += `&destination=${uniqueCoordinates.pop()}`;
-            }
-            if (uniqueCoordinates.length) {
-                url += `&waypoints=${uniqueCoordinates.join("|")}`;
-            }
-        }
-        return url;
-    }
 
     /**
      * Redirects to views when clicked on open button in marker popup.
@@ -109,6 +85,8 @@ MapController.template = "web_map.MapView";
 
 MapController.components = {
     Layout,
+    SearchBar,
+    CogMenu,
 };
 
 MapController.props = {

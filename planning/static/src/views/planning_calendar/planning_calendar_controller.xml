@@ -12,7 +12,7 @@
 
     <!-- TODO: when gantt view is converted it should be reused somehow there as well. -->
     <t t-name="planning.PlanningCalendarController.controlButtons" t-inherit="web.CalendarController.controlButtons" t-inherit-mode="primary" owl="1">
-        <xpath expr="//div[hasclass('o_calendar_buttons')]" position="inside">
+        <xpath expr="." position="inside">
             <button t-if="model.canCreate &amp;&amp; model.scale === 'week'" class="btn btn-primary me-1 o_button_copy_previous_week" title="Copy previous week"
                 t-on-click="onClickCopyPrevious">
                 Copy previous

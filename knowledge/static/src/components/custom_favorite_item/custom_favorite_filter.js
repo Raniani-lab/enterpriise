@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { CustomFavoriteItem } from "@web/search/favorite_menu/custom_favorite_item";
+import { CustomFavoriteItem } from "@web/search/custom_favorite_item/custom_favorite_item";
 import { patch } from "@web/core/utils/patch";
 
 patch(CustomFavoriteItem.prototype, "knowledge_custom_favorite_item", {

@@ -7,6 +7,5 @@ import { SignListController } from "@sign/views/sign_list/sign_list_controller";
 export const signListView = {
     ...listView,
     Controller: SignListController,
-    buttonTemplate: "sign.SignListController.Buttons",
 };
 registry.category("views").add("sign_list", signListView);

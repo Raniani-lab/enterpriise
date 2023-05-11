@@ -4,8 +4,19 @@
     <t t-name="web_gantt.GanttController" owl="1">
         <div t-att-class="className" t-ref="root">
             <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''" display="props.display">
+                <t t-set-slot="control-panel-create-button">
+                    <button t-if="model.metaData.canCreate" class="o_gantt_button_add btn btn-primary" data-hotkey="r" t-on-click="onAddClicked">
+                        New
+                    </button>
+                </t>
+                <t t-set-slot="control-panel-additional-actions">
+                    <CogMenu/>
+                </t>
                 <t t-set-slot="layout-buttons">
                     <t t-call="{{ props.buttonTemplate }}"/>
+                </t>
+                <t t-set-slot="layout-actions">
+                    <SearchBar/>
                 </t>
                 <t t-set-slot="default" t-slot-scope="layout">
                     <t t-if="showNoContentHelp">
@@ -30,53 +41,6 @@
 
     <t t-name="web_gantt.GanttView.Buttons" owl="1">
         <div class="d-flex flex-wrap o_gantt_buttons_container">
-            <button t-if="model.metaData.canCreate" class="o_gantt_button_add btn btn-primary" data-hotkey="r" t-on-click="onAddClicked">
-                New
-            </button>
-            <div class="btn-group gap-1">
-                <button
-                    class="o_gantt_button_prev btn btn-primary"
-                    t-att-class="{ 'btn-sm btn-link p-1': env.isSmall }"
-                    title="Previous"
-                    t-on-click="onPreviousPeriodClicked"
-                >
-                    <span class="fa fa-arrow-left" />
-                </button>
-                <button
-                    class="o_gantt_button_today btn btn-primary"
-                    t-att-class="{ 'btn-sm btn-link p-1': env.isSmall }"
-                    title="Today"
-                    data-hotkey="t"
-                    t-on-click="onTodayClicked"
-                >
-                    <t t-if="!env.isSmall">Today</t>
-                    <span t-else="" class="fa-stack o_calendar_button_today">
-                        <i class="fa fa-calendar-o fa-stack-2x" role="img" aria-label="Today" title="Today" />
-                        <strong class="o_calendar_text fa-stack-1x" t-esc="getTodayDay()" />
-                    </span>
-                </button>
-                <button
-                    class="o_gantt_button_next btn btn-primary"
-                    t-att-class="{ 'btn-sm btn-link p-1': env.isSmall }"
-                    title="Next"
-                    t-on-click="onNextPeriodClicked"
-                >
-                    <span class="fa fa-arrow-right" />
-                </button>
-            </div>
-            <ViewScaleSelector
-                scales="model.metaData.scales"
-                currentScale="model.metaData.scale.id"
-                setScale="model.setScale.bind(model)"
-            />
-            <div t-if="displayExpandCollapseButtons" class="btn-group">
-                <button class="o_gantt_button_expand_rows btn btn-secondary" title="Expand rows" t-on-click="onExpandClicked">
-                    <i class="fa fa-expand"/>
-                </button>
-                <button class="o_gantt_button_collapse_rows btn btn-secondary" title="Collapse rows" t-on-click="onCollapseClicked">
-                    <i class="fa fa-compress"/>
-                </button>
-            </div>
         </div>
     </t>
 

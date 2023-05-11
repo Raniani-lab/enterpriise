@@ -2,14 +2,12 @@
 
 <templates>
 
-    <t t-name="hr_work_entry_contract_enterprise.WorkEntriesGanttView.Buttons" t-inherit="web_gantt.GanttView.Buttons" owl="1">
-        <xpath expr="//ViewScaleSelector" position="after">
-            <span class="btn-regenerate-work-entries">
-                <button class="btn btn-secondary" t-on-click="onRegenerateWorkEntries">
-                    Regenerate Work Entries
-                </button>
-            </span>
-        </xpath>
+    <t t-name="hr_work_entry_contract_enterprise.WorkEntriesGanttView.Buttons" owl="1">
+        <div class="d-flex gap-1">
+            <button class="btn btn-secondary" t-on-click="onRegenerateWorkEntries">
+                Regenerate Work Entries
+            </button>
+        </div>
     </t>
 
 </templates>

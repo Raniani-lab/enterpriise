@@ -10,13 +10,6 @@
                 </button>
             </div>
             <t t-call="web_grid.CustomButtons" t-if="props.archInfo.buttons.length"/>
-            <t t-call="web_grid.NavigationButtons"/>
-            <ViewScaleSelector
-                t-if="rangesArray.length"
-                scales="props.archInfo.ranges"
-                currentScale="state.activeRangeName"
-                setScale.bind="onRangeClick"
-            />
         </div>
     </t>
     <t t-name="web_grid.CustomButtons" owl="1">
@@ -34,8 +27,9 @@
             </t>
         </div>
     </t>
+    <!-- TODO move it to the renderer template stay here for now to facilitate rebase -->
     <t t-name="web_grid.NavigationButtons" owl="1">
-        <div class="o_grid_navigation_buttons" t-if="model.columnFieldIsDate">
+        <div class="o_grid_navigation_buttons d-contents" t-if="props.model.columnFieldIsDate">
             <button class="btn btn-outline-primary me-2"
                     data-hotkey="t"
                     type="button"
@@ -95,8 +89,14 @@
     <t t-name="web_grid.GridView" owl="1">
         <div t-attf-class="o_grid_view {{ isMobile ? 'o_action_delegate_scroll' : '' }} {{props.className}}" t-ref="root">
             <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''" display="props.display">
+                <t t-set-slot="control-panel-additional-actions">
+                    <CogMenu/>
+                </t>
                 <t t-set-slot="layout-buttons">
                     <t t-call="{{ props.buttonTemplate }}"/>
+                </t>
+                <t t-set-slot="layout-actions">
+                    <SearchBar/>
                 </t>
                 <t t-set-slot="default" t-slot-scope="layout">
                     <t t-if="displayNoContent">
@@ -120,6 +120,8 @@
                            widgetPerFieldName="props.archInfo.widgetPerFieldName"
                            openAction="props.archInfo.openAction"
                            contentRef="layout.contentRef"
+                           ranges="model.ranges"
+                           state="state"
                         />
                     </t>
                 </t>

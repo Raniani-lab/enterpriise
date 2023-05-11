@@ -4,7 +4,7 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
 
 import { Component } from "@odoo/owl";
-const favoriteMenuRegistry = registry.category("favoriteMenu");
+const cogMenuRegistry = registry.category("cogMenu");
 
 export class InsertListSpreadsheetMenu extends Component {
     /**
@@ -19,7 +19,7 @@ InsertListSpreadsheetMenu.props = {};
 InsertListSpreadsheetMenu.template = "spreadsheet_edition.InsertListSpreadsheetMenu";
 InsertListSpreadsheetMenu.components = { DropdownItem };
 
-favoriteMenuRegistry.add(
+cogMenuRegistry.add(
     "insert-list-spreadsheet-menu",
     {
         Component: InsertListSpreadsheetMenu,

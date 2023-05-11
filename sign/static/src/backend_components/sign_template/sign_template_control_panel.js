@@ -8,10 +8,7 @@ import { multiFileUpload } from "@sign/js/backend/multi_file_upload";
 
 export class SignTemplateControlPanel extends Component {
     setup() {
-        this.controlPanelDisplay = {
-            "top-right": false,
-            "bottom-right": false,
-        };
+        this.controlPanelDisplay = {};
         this.nextTemplate = multiFileUpload.getNext() ?? false;
         this.action = useService("action");
         this.orm = useService("orm");

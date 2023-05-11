@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="KnowledgeControlPanel" t-inherit="web.ControlPanel" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_cp_pager')]" position="before">
+            <t t-slot="control-panel-knowledge-button"/>
+        </xpath>
+    </t>
+    <t t-name="Knowledge.FormView" t-inherit="web.FormView" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Layout" position="inside">
+            <t t-set-slot="control-panel-knowledge-button">
+                <button class="btn btn-light" type="button" t-on-click="onClickSearchKnowledgeArticle" title="Search Knowledge Articles">
+                    <i class="fa fa-book"/>
+                </button>
+            </t>
+        </xpath>
+    </t>
+</templates>

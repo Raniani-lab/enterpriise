@@ -26,7 +26,7 @@ export class AbstractMacro {
         this.targetXmlDoc = targetXmlDoc;
         this.breadcrumbsIndex = breadcrumbs.length - 1;
         this.breadcrumbsName = breadcrumbs[this.breadcrumbsIndex].name;
-        this.breadcrumbsSelector = ['.breadcrumb > .breadcrumb-item.active', (el) => el.textContent.includes(this.breadcrumbsName)];
+        this.breadcrumbsSelector = ['.o_breadcrumb .o_last_breadcrumb_item', (el) => el.textContent.includes(this.breadcrumbsName)];
         this.interval = interval;
         this.data = data;
         this.engine = new MacroEngine();

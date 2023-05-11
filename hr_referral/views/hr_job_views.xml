@@ -44,7 +44,7 @@
                                     <t t-out="record.description.value" class="text-muted"/>
                                 </div>
                                 <div>
-                                    <div class="o_button_referral">
+                                    <div class="o_button_referral d-flex gap-1">
                                         <a role="button" name="%(hr_referral_send_mail_action)d" type="action" class="btn btn-secondary border ">
                                             <span title='Send by Mail'>Refer Friend</span>
                                         </a>
@@ -52,7 +52,7 @@
                                             <span title='More info'>More info</span>
                                         </a>
                                     </div>
-                                    <div class="o_to_share">
+                                    <div class="o_to_share d-flex gap-1 flex-wrap">
                                         <a role="button" name="%(hr_referral_link_to_share_action)d" type="action" class="btn btn-sm p-2 btn-secondary">
                                             <span title='My Link to Share'><i class='fa fa-lg fa-link text-secondary' role="img" aria-label="My Link to Share"/></span>
                                             <span class="d-block mt-2 text-primary">

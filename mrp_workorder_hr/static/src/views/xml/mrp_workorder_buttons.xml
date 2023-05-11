@@ -37,7 +37,7 @@
     </t>
 
     <t t-inherit="mrp_workorder.overviewButtonsList" t-inherit-mode="extension" owl="1">
-        <xpath expr="//div/*" position="after">
+        <xpath expr="//div[hasclass('o_list_buttons')]" position="inside">
             <button t-on-click="useEmployee.openEmployeeSelection" class="btn btn-secondary o_lock_employee">
                 <span t-if="useEmployee.employees.connected.length>1 or (!useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0)" class="o_workorder_icon_btn fa fa-bars" style="padding:5px" ></span>
                 <t t-if="!(useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0)">

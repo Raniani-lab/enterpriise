@@ -68,21 +68,6 @@ export class FormEditorCompiler extends formView.Compiler {
             parent.removeAttribute("t-if");
         }
 
-        let buttonBox = compiled.querySelector("ButtonBox");
-
-        const buttonHook = createElement(
-            "t",
-            [createElement("ButtonHook", { add_buttonbox: !buttonBox })],
-            { "t-set-slot": `slot_button_hook` }
-        );
-
-        if (!buttonBox) {
-            buttonBox = createElement("ButtonBox");
-            const el = compiled.querySelector(".o_form_sheet") || compiled;
-            el.prepend(buttonBox);
-        }
-        buttonBox.insertAdjacentElement("afterbegin", buttonHook);
-
         const fieldStatus = compiled.querySelector(`Field[type="'statusbar'"]`); // change selector at some point
         if (!fieldStatus) {
             const addStatusBar = !compiled.querySelector(".o_form_statusbar");
@@ -90,6 +75,31 @@ export class FormEditorCompiler extends formView.Compiler {
             const el = compiled.querySelector(".o_form_sheet_bg") || compiled;
             el.prepend(statusBarFieldHook);
         }
+
+        // the button box is included in the control panel, which is not visible in Studio
+        // re-add it to the form view
+        const buttonBoxXml = xml.querySelector("div[name='button_box']");
+        console.log(buttonBoxXml);
+        let buttonBox;
+        const buttonBoxContainer = createElement("div", {
+            class: "d-flex justify-content-end my-2",
+        });
+        if (buttonBoxXml) {
+            buttonBox = this.compileNode(buttonBoxXml, params);
+        } else {
+            buttonBox = createElement("ButtonBox");
+        }
+        buttonBoxContainer.append(buttonBox);
+        const el = compiled.querySelector(".o_form_sheet_bg") || compiled;
+        el.prepend(buttonBoxContainer);
+
+        const buttonHook = createElement(
+            "t",
+            [createElement("ButtonHook", { add_buttonbox: !buttonBoxXml })],
+            { "t-set-slot": `slot_button_hook` }
+        );
+
+        buttonBox.insertAdjacentElement("afterbegin", buttonHook);
 
         // Note: the ribon does not allow to remove an existing avatar!
         const title = compiled.querySelector(".oe_title");
@@ -101,14 +111,11 @@ export class FormEditorCompiler extends formView.Compiler {
                 const avatarHook = createElement("AvatarHook", {
                     fields: `__comp__.props.record.fields`,
                 });
-                const h1 = title.querySelector(":scope > h1");
-                if (h1 && h1.classList.contains("d-flex") && h1.classList.contains("flex-row")) {
-                    avatarHook.setAttribute("class", `'oe_avatar ms-3 p-3 o_web_studio_avatar h4'`);
-                    h1.append(avatarHook);
-                } else {
-                    avatarHook.setAttribute("class", `'oe_avatar ms-3 me-3 o_web_studio_avatar'`);
-                    title.before(avatarHook);
-                }
+                avatarHook.setAttribute(
+                    "class",
+                    `'oe_avatar d-flex align-items-center justify-content-center ms-3 o_web_studio_avatar h4'`
+                );
+                title.before(avatarHook);
             }
         }
         for (const el of this.avatars) {
@@ -203,7 +210,9 @@ export class FormEditorCompiler extends formView.Compiler {
 
             if (node.classList.contains("oe_chatter")) {
                 this.addChatter = false;
-                const chatterNode = compiled.querySelector("Chatter");
+                const chatterNode = compiled.querySelector(
+                    "t[t-component='__comp__.mailComponents.Chatter']"
+                );
                 const xpath = node.getAttribute("studioXpath");
                 chatterNode.setAttribute("studioXpath", `"${xpath}"`);
                 compiled.setAttribute("data-studio-xpath", xpath);

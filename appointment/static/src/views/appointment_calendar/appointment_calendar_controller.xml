@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="appointment.AppointmentCalendarController" t-inherit="calendar.AttendeeCalendarController" t-inherit-mode="extension" owl="1">
-        <DatePicker position="before">
+        <xpath expr="//div[@t-if='showSideBar']/*[1]" position="before">
             <div id="scheduling_box" class="mb-3">
                 <div t-if="env.calendarState.mode === 'slots-creation' || appointmentState.lastAppointmentUrl" class="o_appointment_scheduling_message_box">
                     <div class="pt-2">
@@ -49,6 +49,6 @@
                     </div>
                 </div>
             </div>
-        </DatePicker>
+        </xpath>
     </t>
 </templates>

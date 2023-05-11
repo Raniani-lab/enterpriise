@@ -34,8 +34,16 @@
         </div>
     </t>
     <t t-name="web_grid.Header" owl="1">
-        <div class="o_grid_column_title z-index-1 position-sticky start-0 border-bottom bg-view"
-             t-attf-style="grid-row: {{rowsGap}}; grid-column: {{columnsGap}};"/>
+        <div class="o_grid_column_title d-flex align-items-center overflow-visible position-sticky start-0 border-bottom bg-view"
+             t-attf-style="grid-row: {{rowsGap}}; grid-column: {{columnsGap}}; z-index:99999;">
+            <t t-call="web_grid.NavigationButtons"/>
+            <ViewScaleSelector
+                t-if="rangesArray.length"
+                scales="props.ranges"
+                currentScale="props.state.activeRangeName"
+                setScale.bind="onRangeClick"
+            />
+        </div>
         <div t-foreach="props.columns"
              t-as="column"
              t-key="column.id"

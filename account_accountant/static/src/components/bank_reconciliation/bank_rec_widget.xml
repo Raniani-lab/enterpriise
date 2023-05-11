@@ -33,7 +33,7 @@
     </t>
 
     <t t-name="account.BankRecKanbanRenderer.Buttons" t-inherit="web.KanbanView.Buttons" t-inherit-mode="primary" owl="1">
-        <xpath expr="//div" position="inside">
+        <xpath expr="//div[hasclass('o_cp_buttons')]" position="inside">
             <t t-if="state.currentJournalId">
                 <BankRecWidgetGlobalInfo t-key="state.currentJournalId"/>
             </t>

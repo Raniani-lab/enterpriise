@@ -24,6 +24,7 @@ import { url } from "@web/core/utils/urls";
 import { useVirtual } from "@web/core/virtual_hook";
 import { formatFloatTime } from "@web/views/fields/formatters";
 import { useViewCompiler } from "@web/views/view_compiler";
+import { ViewScaleSelector } from "@web/views/view_components/view_scale_selector";
 import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
 import { GanttCellButtons } from "./gantt_cell_buttons";
 import { GanttCompiler } from "./gantt_compiler";
@@ -159,6 +160,7 @@ export class GanttRenderer extends Component {
         GanttResizeBadge,
         GanttRowProgressBar,
         Popover: GanttPopover,
+        ViewScaleSelector,
     };
     static props = [
         "model",
@@ -1372,6 +1374,10 @@ export class GanttRenderer extends Component {
         return totalRow;
     }
 
+    getTodayDay() {
+        return DateTime.local().day;
+    }
+
     highlightPill(pillId, highlighted) {
         const pill = this.pills[pillId];
         if (!pill) {
@@ -1951,5 +1957,29 @@ export class GanttRenderer extends Component {
         if (ev.key === "Control") {
             this.interaction.dragAction = this.prevDragAction || "reschedule";
         }
+    }
+
+    onCollapseClicked() {
+        this.model.collapseRows();
+    }
+
+    onExpandClicked() {
+        this.model.expandRows();
+    }
+
+    onNextPeriodClicked() {
+        this.model.setFocusDate("next");
+    }
+
+    onPreviousPeriodClicked() {
+        this.model.setFocusDate("previous");
+    }
+
+    onTodayClicked() {
+        this.model.setFocusDate();
+    }
+
+    get displayExpandCollapseButtons() {
+        return this.model.data.rows[0]?.isGroup; // all rows on same level have same type
     }
 }

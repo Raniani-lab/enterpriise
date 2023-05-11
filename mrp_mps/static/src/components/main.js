@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { MrpMpsControlPanel } from '../search/mrp_mps_control_panel';
+import { MrpMpsControlPanel, MrpMpsSearchBar } from "../search/mrp_mps_control_panel";
 import { MrpMpsSearchModel } from '../search/mrp_mps_search_model';
 import MpsLineComponent from '@mrp_mps/components/line';
 import { MasterProductionScheduleModel } from '@mrp_mps/models/master_production_schedule_model';
@@ -11,6 +11,9 @@ import { getDefaultConfig } from "@web/views/view";
 import { usePager } from "@web/search/pager_hook";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { WithSearch } from "@web/search/with_search/with_search";
+import { ActionMenus } from "@web/search/action_menus/action_menus";
+import { download } from "@web/core/network/download";
+import { ExportDataDialog } from "@web/views/view_dialogs/export_data_dialog";
 
 const { Component, onWillStart, useSubEnv } = owl;
 
@@ -23,6 +26,7 @@ class MainComponent extends Component {
         this.dialog = useService("dialog");
         this.orm = useService("orm");
         this.viewService = useService("view");
+        this.rpc = useService("rpc");
 
         const { orm, action, dialog } = this;
         this.model = new MasterProductionScheduleModel(this.props, { orm, action, dialog });
@@ -69,7 +73,6 @@ class MainComponent extends Component {
     }
 
     async _prepareWithSearchProps() {
-        this.MrpMpsControlPanel = MrpMpsControlPanel;
         const views = await this.viewService.loadViews(
             {
                 resModel: "mrp.production.schedule",
@@ -110,13 +113,125 @@ class MainComponent extends Component {
         this.model.toggleSelection();
     }
 
+    /**
+     * Handles the click on replenish button. It will call action_replenish with
+     * all the Ids present in the view.
+     *
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onClickReplenish(ev) {
+        this.model.replenishAll();
+    }
+
+    _onMouseOverReplenish(ev) {
+        this.model.mouseOverReplenish();
+    }
+
+    _onMouseOutReplenish(ev) {
+        this.model.mouseOutReplenish();
+    }
+
+    _onClickCreate(ev) {
+        this.model._createProduct();
+    }
+
+    get actionMenuItems() {
+        return {
+            action: [
+                {
+                    key: "export",
+                    description: this.env._t("Export"),
+                    callback: () => this.onExportData(),
+                },
+                {
+                    key: "delete",
+                    description: this.env._t("Delete"),
+                    callback: () => this.unlinkSelectedRecord(),
+                },
+                {
+                    key: "replenish",
+                    description: this.env._t("Replenish"),
+                    callback: () => this.replenishSelectedRecords(),
+                },
+            ],
+        };
+    }
+
+    get isRecordSelected() {
+        return this.model.selectedRecords.size > 0;
+    }
+
+    replenishSelectedRecords() {
+        this.model.replenishSelectedRecords();
+    }
+
+    unlinkSelectedRecord() {
+        this.model.unlinkSelectedRecord();
+    }
+
+    async getExportedFields(model, import_compat, parentParams) {
+        return await this.rpc("/web/export/get_fields", {
+            ...parentParams,
+            model,
+            import_compat,
+        });
+    }
+
+    async downloadExport(fields, import_compat, format) {
+        const resIds = Array.from(this.model.selectedRecords);
+        const exportedFields = fields.map((field) => ({
+            name: field.name || field.id,
+            label: field.label || field.string,
+            store: field.store,
+            type: field.field_type,
+        }));
+        if (import_compat) {
+            exportedFields.unshift({ name: "id", label: this.env._t("External ID") });
+        }
+        await download({
+            data: {
+                data: JSON.stringify({
+                    import_compat,
+                    context: this.props.context,
+                    domain: this.model.domain,
+                    fields: exportedFields,
+                    ids: resIds.length > 0 && resIds,
+                    model: "mrp.production.schedule",
+                }),
+            },
+            url: `/web/export/${format}`,
+        });
+    }
+
+    /**
+     * Opens the Export Dialog
+     *
+     * @private
+     */
+    onExportData() {
+        const dialogProps = {
+            context: this.props.context,
+            defaultExportList: [],
+            download: this.downloadExport.bind(this),
+            getExportedFields: this.getExportedFields.bind(this),
+            root: {
+                resModel: "mrp.production.schedule",
+                activeFields: [],
+            },
+        };
+        this.dialog.add(ExportDataDialog, dialogProps);
+    }
 }
 
 MainComponent.template = 'mrp_mps.mrp_mps';
 MainComponent.components = {
+    MrpMpsControlPanel,
     WithSearch,
     MpsLineComponent,
     CheckBox,
+    MrpMpsSearchBar,
+    ActionMenus,
 };
 
 registry.category("actions").add("mrp_mps_client_action", MainComponent);

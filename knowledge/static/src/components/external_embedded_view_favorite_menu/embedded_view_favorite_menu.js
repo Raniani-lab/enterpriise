@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 import { supportedEmbeddedViews } from "@knowledge/components/external_embedded_view_insertion/views_renderers_patches";
 import { Component } from "@odoo/owl";
 
-const favoriteMenuRegistry = registry.category("favoriteMenu");
+const cogMenuRegistry = registry.category("cogMenu");
 
 export class InsertEmbeddedViewMenu extends Component {
     _onInsertEmbeddedViewInArticle () {
@@ -20,7 +20,7 @@ InsertEmbeddedViewMenu.props = {};
 InsertEmbeddedViewMenu.template = 'knowledge.InsertEmbeddedViewMenu';
 InsertEmbeddedViewMenu.components = { DropdownItem };
 
-favoriteMenuRegistry.add(
+cogMenuRegistry.add(
     'insert-embedded-view-menu',
     {
         Component: InsertEmbeddedViewMenu,

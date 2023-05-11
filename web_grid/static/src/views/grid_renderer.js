@@ -9,6 +9,7 @@ import { useVirtual } from "@web/core/virtual_hook";
 import { Field } from "@web/views/fields/field";
 import { Record } from "@web/views/record";
 import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
+import { ViewScaleSelector } from "@web/views/view_components/view_scale_selector";
 
 import { GridComponent } from "@web_grid/components/grid_cell";
 
@@ -27,6 +28,7 @@ export class GridRenderer extends Component {
         Field,
         GridComponent,
         Record,
+        ViewScaleSelector,
     };
 
     static template = "web_grid.Renderer";
@@ -46,6 +48,8 @@ export class GridRenderer extends Component {
         contentRef: Object,
         createInline: Boolean,
         createRecord: Function,
+        ranges: { type: Object, optional: true },
+        state: Object,
     };
 
     static defaultProps = {
@@ -53,6 +57,7 @@ export class GridRenderer extends Component {
         columns: [],
         rows: [],
         model: {},
+        ranges: {},
     };
 
     setup() {
@@ -476,5 +481,26 @@ export class GridRenderer extends Component {
         const title = `${section.title} (${column.title})`;
         const domain = Domain.and([section.domain, column.domain]).toList();
         this.openRecords(title, domain, section.context);
+    }
+
+    get rangesArray() {
+        return Object.values(this.props.ranges);
+    }
+
+    async onRangeClick(name) {
+        await this.props.model.setRange(name);
+        this.props.state.activeRangeName = name;
+    }
+
+    async onTodayButtonClick() {
+        await this.props.model.setTodayAnchor();
+    }
+
+    async onPreviousButtonClick() {
+        await this.props.model.moveAnchor("backward");
+    }
+
+    async onNextButtonClick() {
+        await this.props.model.moveAnchor("forward");
     }
 }

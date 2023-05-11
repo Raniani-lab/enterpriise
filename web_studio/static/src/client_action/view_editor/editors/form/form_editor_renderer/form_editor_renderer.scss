@@ -6,7 +6,6 @@
         .o_form_sheet_bg {
             flex: 1 0 auto;
             border-bottom: 1px solid map-get($grays, '300');
-            width: auto;
             padding: 0px;
             overflow: unset;
         }
@@ -170,15 +169,16 @@
             cursor: pointer;
             text-align: center;
             padding: 0;
-            border-left: none;
+            justify-content: center;
+
+            &:before {
+                content: "\f0fe";
+                font-family: FontAwesome;
+                font-size: 16px;
+                color: $o-brand-primary;
+            }
         }
 
-        .oe_button_box:hover .o_web_studio_button_hook:before {
-            content: "\f0fe";
-            font-family: FontAwesome;
-            font-size: 16px;
-            color: $o-brand-primary;
-        }
         .o_notebook li {
             margin-right: 3px;
         }
@@ -231,8 +231,10 @@
             color: $o-brand-primary;
             background-color: lightgray;
             font-weight: bold;
+            width: 90px;
+            height: 90px;
             cursor: pointer;
-            padding: 38px;
+            font-size: 1em;
             opacity: 0.5;
             &:hover {
                 opacity: 1;
@@ -244,7 +246,7 @@
         }
 
         // Button box
-        .oe_button_box {
+        .o-form-buttonbox {
             &, & + .oe_avatar {
                 + .oe_title {
                     width: 400px;

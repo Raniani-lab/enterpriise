@@ -3,7 +3,32 @@
 
     <div t-name="mrp_mps.mrp_mps" class="main o_action" owl="1">
         <WithSearch t-props="withSearchProps">
-            <t t-component="MrpMpsControlPanel"/>
+            <MrpMpsControlPanel>
+                <t t-set-slot="layout-buttons">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        t-on-click.stop="_onClickReplenish"
+                        t-on-mouseover.stop="_onMouseOverReplenish"
+                        t-on-mouseout.stop="_onMouseOutReplenish">Replenish</button>
+                    <button
+                        type="button"
+                        class='btn btn-secondary'
+                        t-on-click.stop="_onClickCreate">Add a Product</button>
+                </t>
+                <t t-set-slot="layout-actions">
+                    <MrpMpsSearchBar/>
+                </t>
+                <t t-set-slot="control-panel-additional-actions">
+                    <ActionMenus t-if="isRecordSelected"
+                        getActiveIds="() => Array.from(model.selectedRecords)"
+                        context="{}"
+                        domain="model.domain"
+                        items="actionMenuItems"
+                        isDomainSelected="model.isDomainSelected"
+                        resModel="'mrp.production.schedule'"/>
+                </t>
+            </MrpMpsControlPanel>
         </WithSearch>
         <div class="o_mrp_mps o_content bg-view">
             <t t-if="lines.length">

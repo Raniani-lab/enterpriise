@@ -7,7 +7,7 @@ import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/component
 
 
 import { Component } from "@odoo/owl";
-const favoriteMenuRegistry = registry.category("favoriteMenu");
+const cogMenuRegistry = registry.category("cogMenu");
 
 /**
  * Insert a link to a view in spreadsheet
@@ -60,13 +60,13 @@ InsertViewSpreadsheet.props = {};
 InsertViewSpreadsheet.template = "spreadsheet_edition.InsertActionSpreadsheet";
 InsertViewSpreadsheet.components = { DropdownItem };
 
-favoriteMenuRegistry.add(
+cogMenuRegistry.add(
     "insert-action-link-in-spreadsheet",
     {
         Component: InsertViewSpreadsheet,
         groupNumber: 4,
         isDisplayed: ({ config, isSmall }) =>
-            !isSmall && config.actionType === "ir.actions.act_window",
+            !isSmall && config.actionType === "ir.actions.act_window" && config.viewType !== "form",
     },
     { sequence: 1 }
 );

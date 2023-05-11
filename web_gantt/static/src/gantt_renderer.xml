@@ -54,27 +54,75 @@
     </t>
 
     <t t-name="web_gantt.GanttRenderer.Header" owl="1">
-        <t t-if="model.metaData.groupedBy.length">
-            <b
-                class="o_gantt_header o_gantt_row_sidebar position-sticky top-0 bg-view d-flex align-items-center justify-content-center"
-                t-esc="model.metaData.string"
-            />
-        </t>
-        <div class="o_gantt_header o_gantt_header_slots o_gantt_grid_columns position-sticky top-0 border-start bg-view">
-            <b class="o_gantt_header_scale d-flex align-items-center justify-content-center" t-esc="getFormattedFocusDate()" />
-            <t t-set="formats" t-value="{'week': 'cccc, d', 'month': 'dd', 'year': env.isSmall ? 'MMM' : 'MMMM'}"/>
-            <t t-foreach="columns" t-as="column" t-key="column.id">
-                <div class="o_gantt_header_cell d-flex align-items-center justify-content-center p-2"
-                    t-att-class="{ o_gantt_today: column.isToday }"
-                    t-att-style="getGridPosition({ column: column.grid.column })"
+        <div class="o_gantt_header o_gantt_header_scale position-sticky top-0 d-flex flex-wrap">
+            <div class="d-flex gap-2 align-items-center w-100 px-3 py-2 bg-100">
+                <button
+                    class="o_gantt_button_today btn btn-secondary"
+                    t-att-class="{'btn-sm btn-link p-1': env.isSmall}"
+                    title="Today"
+                    data-hotkey="t"
+                    t-on-click="onTodayClicked"
                 >
-                    <t t-if="model.metaData.scale.id in formats" t-esc="column.start.toFormat(formats[model.metaData.scale.id])" />
-                    <small t-else="" class="text-center">
-                        <b t-esc="column.start.toFormat('h')" />
-                        <div class="d-xl-inline-block" t-esc="column.start.toFormat('a').toLowerCase()" />
-                    </small>
+                    <t t-if="!env.isSmall">Today</t>
+                    <span t-else="" class="fa-stack o_calendar_button_today">
+                        <i class="fa fa-calendar-o fa-stack-2x" role="img" aria-label="Today" title="Today"/>
+                        <strong class="o_calendar_text fa-stack-1x" t-esc="getTodayDay()"/>
+                    </span>
+                </button>
+                <div class="btn-group">
+                    <button
+                        class="o_gantt_button_prev btn btn-secondary"
+                        t-att-class="{'btn-sm btn-link p-1': env.isSmall}"
+                        title="Previous"
+                        t-on-click="onPreviousPeriodClicked"
+                    >
+                        <span class="fa fa-arrow-left"/>
+                    </button>
+                    <ViewScaleSelector
+                        scales="model.metaData.scales"
+                        currentScale="model.metaData.scale.id"
+                        setScale="model.setScale.bind(model)"
+                   />
+                    <button
+                        class="o_gantt_button_next btn btn-secondary"
+                        t-att-class="{'btn-sm btn-link p-1': env.isSmall}"
+                        title="Next"
+                        t-on-click="onNextPeriodClicked"
+                    >
+                        <span class="fa fa-arrow-right"/>
+                    </button>
                 </div>
-            </t>
+                <b t-esc="getFormattedFocusDate()" class="px-2"/>
+                <div class="d-flex gap-2 ms-auto">
+                    <div t-if="displayExpandCollapseButtons" class="btn-group">
+                        <button class="o_gantt_button_expand_rows btn btn-secondary" title="Expand rows" t-on-click="onExpandClicked">
+                            <i class="fa fa-expand"/>
+                        </button>
+                        <button class="o_gantt_button_collapse_rows btn btn-secondary" title="Collapse rows" t-on-click="onCollapseClicked">
+                            <i class="fa fa-compress"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <b t-if="model.metaData.groupedBy.length"
+                class="o_gantt_header o_gantt_row_sidebar d-flex align-items-center justify-content-center p-2 bg-100"
+                t-esc="model.metaData.string"
+           />
+            <div class="o_gantt_header o_gantt_header_slots o_gantt_grid_columns flex-grow-1 bg-view fw-bold">
+                <t t-set="formats" t-value="{'week': 'cccc, d', 'month': 'dd', 'year': env.isSmall ? 'MMM' : 'MMMM'}"/>
+                <t t-foreach="columns" t-as="column" t-key="column.id">
+                    <div class="o_gantt_header_cell d-flex align-items-center justify-content-center py-2"
+                        t-att-class="{o_gantt_today: column.isToday, 'bg-100': !column.isToday}"
+                        t-att-style="getGridPosition({column: column.grid.column})"
+                    >
+                        <t t-if="model.metaData.scale.id in formats" t-esc="column.start.toFormat(formats[model.metaData.scale.id])"/>
+                        <small t-else="" class="text-center">
+                            <b t-esc="column.start.toFormat('h')"/>
+                            <div class="d-xl-inline-block" t-esc="column.start.toFormat('a').toLowerCase()"/>
+                        </small>
+                    </div>
+                </t>
+            </div>
         </div>
     </t>
 

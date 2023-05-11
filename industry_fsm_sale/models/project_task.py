@@ -167,6 +167,21 @@ class Task(models.Model):
         for task in self:
             task.portal_invoice_count = len(invoices_by_so.get(task.sale_order_id.id, set()).intersection(available_invoices)) if is_portal_user else task.invoice_count
 
+    def _compute_sale_order_id(self):
+        fsm_tasks = self.filtered('is_fsm')
+        fsm_task_to_sale_order = {task.id: task.sale_order_id for task in fsm_tasks}
+        super(Task, self)._compute_sale_order_id()
+        for task in fsm_tasks:
+            sale_order_id = fsm_task_to_sale_order.get(task.id, False)
+            # the super call will remove the sale order from the task,
+            # if the partner on the task is not the same as the partner on the sale order.
+            # But for fsm tasks, the partner on the task could be the delivery address,
+            # so we redo the integrity check but with the shipping partner in mind
+            if sale_order_id and task.commercial_partner_id in (
+                    sale_order_id.partner_id.commercial_partner_id +
+                    sale_order_id.partner_shipping_id.commercial_partner_id):
+                task.sale_order_id = sale_order_id
+
     def action_create_invoice(self):
         # ensure the SO exists before invoicing, then confirm it
         so_to_confirm = self.filtered(

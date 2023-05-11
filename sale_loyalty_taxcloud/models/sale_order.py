@@ -46,9 +46,3 @@ class SaleOrder(models.Model):
                               'The following orders must be completely invoiced:\n%s') % bad_orders)
 
         return super()._create_invoices(grouped=grouped, final=final, date=date)
-
-    def action_confirm(self):
-        res = super().action_confirm()
-        for order in self:
-            order.validate_taxes_on_sales_order()
-        return res

@@ -247,28 +247,16 @@ $font-family-sans-serif;
             height: 60%;
             color: var(--hrReferral__user-color);
             border-radius: 2px;
-            padding: 0 2rem;
+            padding: 0 1rem;
         }
     .user_total, .user_points {
         width: 25%;
         text-align: center;
-        line-height: 2.5rem;
-        font-size: 1.2rem;
         font-weight: bold;
-        &:after {
-            content: 'Points';
-            font-size: 0;
-            display: inline-block;
+        & img {
             width: 20px;
             height: 20px;
-            margin: 0 auto;
         }
-    }
-    .user_points:after{
-        background: url('/hr_referral/static/src/img/points.svg') center/cover no-repeat;
-    }
-    .user_total:after {
-        background: url('/hr_referral/static/src/img/total.svg') center/cover no-repeat;
     }
 
     .user_level:before {

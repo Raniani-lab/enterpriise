@@ -854,7 +854,7 @@ class SaleOrder(models.Model):
 
     def _save_token_from_payment(self):
         self.ensure_one()
-        last_token = self.transaction_ids._get_last().token_id.id
+        last_token = self.transaction_ids.sudo()._get_last().token_id.id
         if last_token:
             self.payment_token_id = last_token
 
@@ -1532,7 +1532,7 @@ class SaleOrder(models.Model):
                             self._subscription_commit_cursor(auto_commit)
                             continue
                         transaction = order._do_payment(payment_token, invoice)
-                        payment_callback_done = transaction and transaction.sudo().callback_is_done
+                        payment_callback_done = transaction and transaction.callback_is_done
                         # commit change as soon as we try the payment, so we have a trace in the payment_transaction table
                         self._subscription_commit_cursor(auto_commit)
                     # if transaction is a success, post a message
@@ -1546,10 +1546,12 @@ class SaleOrder(models.Model):
                         order._handle_subscription_payment_failure(invoice, transaction, email_context)
                         existing_invoices -= invoice  # It will be unlinked in the call above
                 except Exception:
-                    last_transaction = order.transaction_ids - existing_transactions
-                    error_message = "Error during renewal of contract [%s] %s (%s)" \
-                                    % (order.id, order.client_order_ref or order.name, 'Payment recorded: %s' % last_transaction.reference
-                                       if last_transaction and last_transaction.state == 'done' else 'Payment not recorded')
+                    last_tx_sudo = (order.transaction_ids - existing_transactions).sudo()
+                    error_message = "Error during renewal of contract [%s] %s (%s)" % (
+                        order.id, order.client_order_ref or order.name,
+                        'Payment recorded: %s' % last_tx_sudo.reference if last_tx_sudo and last_tx_sudo.state == 'done'
+                        else 'Payment not recorded'
+                    )
                     _logger.exception(error_message)
                     self._subscription_rollback_cursor(auto_commit)
                     mail = Mail.sudo().create({'body_html': error_message, 'subject': error_message,
@@ -1704,7 +1706,7 @@ class SaleOrder(models.Model):
         return error_message
 
     def _do_payment(self, payment_token, invoice):
-        tx_obj = self.env['payment.transaction']
+        PaymentTransactionSudo = self.env['payment.transaction'].sudo()
         values = []
         for subscription in self:
             values.append({
@@ -1719,10 +1721,10 @@ class SaleOrder(models.Model):
                 'callback_model_id': self.env['ir.model']._get_id(subscription._name),
                 'callback_res_id': subscription.id,
                 'callback_method': 'reconcile_pending_transaction'})
-        transactions = tx_obj.create(values)
-        for tx in transactions:
-            tx._send_payment_request()
-        return transactions
+        transactions_sudo = PaymentTransactionSudo.create(values)
+        for tx_sudo in transactions_sudo:
+            tx_sudo._send_payment_request()
+        return transactions_sudo
 
     def send_success_mail(self, tx, invoice):
         self.ensure_one()

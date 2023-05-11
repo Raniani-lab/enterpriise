@@ -1436,7 +1436,12 @@ class L10nInGSTReturnPeriod(models.Model):
                         if matched_bills.ref == gstr2b_bill.get('bill_number'):
                             if 'bill_taxable_value' in gstr2b_bill and gstr2b_bill['bill_taxable_value'] != matched_bills.amount_untaxed:
                                 exception.append(_("Total Taxable amount as per GSTR-2B is %s", gstr2b_bill['bill_taxable_value']))
-                            if 'bill_total' in gstr2b_bill and gstr2b_bill['bill_total'] != matched_bills.amount_total:
+                            amount_total = matched_bills.amount_total
+                            sign = 1 if matched_bills.is_inbound(include_receipts=True) else -1
+                            for line in matched_bills.line_ids:
+                                if line.tax_line_id.amount < 0:
+                                    amount_total += line.balance * sign
+                            if 'bill_total' in gstr2b_bill and gstr2b_bill['bill_total'] != amount_total:
                                 exception.append(_("Total amount as per GSTR-2B is %s", gstr2b_bill['bill_total']))
                             if 'vat' in gstr2b_bill and gstr2b_bill['vat'] != matched_bills.partner_id.vat:
                                 exception.append(_("Vat number as per GSTR-2B is %s", gstr2b_bill['vat']))

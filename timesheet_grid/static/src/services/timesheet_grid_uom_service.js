@@ -15,6 +15,10 @@ export const timesheetGridUOMService = {
             component: GridTimesheetUOM,
             formatter,
         });
+
+        if (!registry.category("formatters").contains("timesheet_uom_timer")) {
+            registry.category("formatters").add("timesheet_uom_timer", formatter);
+        }
     },
 };
 

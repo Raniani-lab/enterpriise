@@ -293,7 +293,7 @@ class HelpdeskTicket(models.Model):
             ticket.partner_ticket_ids = partner_ticket
             partner_ticket = partner_ticket - ticket._origin
             ticket.partner_ticket_count = len(partner_ticket) if partner_ticket else 0
-            open_ticket = partner_ticket.filtered(lambda ticket: not ticket.stage_id.fold)
+            open_ticket = partner_ticket.with_context(prefetch_fields=False).filtered(lambda ticket: not ticket.stage_id.fold)
             ticket.partner_open_ticket_count = len(open_ticket)
 
     @api.depends('assign_date')

@@ -502,6 +502,18 @@ class AccountEdiFormat(models.Model):
                     invoice_vals = reconciliation_vals[exchange_move_x_invoice[counterpart_move]]
                     invoice_vals['exchange_balance'] += partial.amount
 
+        # === Create remaining values to create the CFDI ===
+        if currency == move.company_currency_id:
+            # Same currency
+            payment_exchange_rate = None
+        else:
+            # Multi-currency
+            payment_exchange_rate = float_round(
+                total_amount / total_amount_currency,
+                precision_digits=6,
+                rounding_method='UP',
+            )
+
         # === Create the list of invoice data ===
         invoice_vals_list = []
         for invoice, invoice_vals in reconciliation_vals.items():
@@ -530,6 +542,9 @@ class AccountEdiFormat(models.Model):
                     precision_digits=EQUIVALENCIADR_PRECISION_DIGITS,
                     rounding_method='UP',
                 )
+            elif invoice.currency_id == move.company_currency_id:
+                # Invoice expressed in MXN but Payment expressed in other currency
+                invoice_exchange_rate = payment_exchange_rate
             else:
                 # Multi-currency
                 invoice_exchange_rate = float_round(
@@ -557,18 +572,6 @@ class AccountEdiFormat(models.Model):
                 'equivalenciadr_precision_digits': EQUIVALENCIADR_PRECISION_DIGITS,
                 **self._l10n_mx_edi_get_serie_and_folio(invoice),
             })
-
-        # === Create remaining values to create the CFDI ===
-        if currency == move.company_currency_id:
-            # Same currency
-            payment_exchange_rate = None
-        else:
-            # Multi-currency
-            payment_exchange_rate = float_round(
-                total_amount / total_amount_currency,
-                precision_digits=6,
-                rounding_method='UP',
-            )
 
         payment_method_code = move.l10n_mx_edi_payment_method_id.code
         is_payment_code_emitter_ok = payment_method_code in ('02', '03', '04', '05', '06', '28', '29', '99')

@@ -8,6 +8,7 @@ import { useSetupView } from "@web/views/view_hook";
 import { Layout } from "@web/search/layout";
 import { usePager } from "@web/search/pager_hook";
 import { SearchBar } from "@web/search/search_bar/search_bar";
+import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
 import { CogMenu } from "@web/search/cog_menu/cog_menu";
 
 import { Component, onWillUnmount, onWillStart } from "@odoo/owl";
@@ -46,6 +47,7 @@ export class MapController extends Component {
                 onUpdate: ({ offset, limit }) => this.model.load({ offset, limit }),
             };
         });
+        this.searchBarToggler = useSearchBarToggler();
     }
 
     /**

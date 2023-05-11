@@ -10,6 +10,7 @@ import { standardViewProps } from "@web/views/standard_view_props";
 import { useModel } from "@web/views/model";
 import { useService } from "@web/core/utils/hooks";
 import { SearchBar } from "@web/search/search_bar/search_bar";
+import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
 import { CogMenu } from "@web/search/cog_menu/cog_menu";
 
 import { useSetupView } from "@web/views/view_hook";
@@ -71,6 +72,7 @@ export class GanttController extends Component {
             },
             () => [this.showNoContentHelp]
         );
+        this.searchBarToggler = useSearchBarToggler();
     }
 
     get className() {

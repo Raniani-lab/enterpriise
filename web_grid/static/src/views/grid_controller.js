@@ -12,6 +12,7 @@ import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { ViewButton } from "@web/views/view_button/view_button";
 import { CogMenu } from "@web/search/cog_menu/cog_menu";
 import { SearchBar } from "@web/search/search_bar/search_bar";
+import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
 
 import { Component, useState, onWillUpdateProps, onWillUnmount, useRef } from "@odoo/owl";
 
@@ -70,6 +71,7 @@ export class GridController extends Component {
         });
         onWillUpdateProps(this.onWillUpdateProps);
         onWillUnmount(() => this.closeDialog?.());
+        this.searchBarToggler = useSearchBarToggler();
     }
 
     onWillUpdateProps(nextProps) {

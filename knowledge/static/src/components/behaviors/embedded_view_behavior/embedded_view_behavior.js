@@ -85,18 +85,34 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
         const context = makeContext([this.props.context, {
             knowledgeEmbeddedViewId: this.knowledgeEmbeddedViewId
         }]);
-        const action = await this.actionService.loadAction(this.props.act_window, context);
-        if (action.type !== "ir.actions.act_window") {
+        try {
+            const action = await this.actionService.loadAction(
+                this.props.act_window,
+                context
+            );
+            if (action.type !== "ir.actions.act_window") {
+                this.state.error = true;
+                return;
+            }
+            if (this.props.display_name) {
+                action.name = this.props.display_name;
+            }
+            if (this.props.action_help) {
+                action.help = this.props.action_help;
+            }
+            this.embeddedViewManagerProps = {
+                el: this.props.anchor,
+                action,
+                context,
+                viewType: this.props.view_type,
+                setTitle: this.setTitle.bind(this),
+                getTitle: this.getTitle.bind(this),
+                readonly: this.props.readonly,
+                record: this.props.record,
+            };
+        } catch {
             this.state.error = true;
-            return;
         }
-        if (this.props.action_help) {
-            action.help = this.props.action_help;
-        }
-        Object.assign(this.props, {
-            act_window: action,
-            context: context
-        });
     }
 
     /**
@@ -104,14 +120,12 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
      * @param {String} name
      */
     setTitle (name) {
-        const data = decodeDataBehaviorProps(this.props.anchor.getAttribute('data-behavior-props'));
-        data.act_window.name = name;
-        data.act_window.display_name = name;
-        this.props.anchor.setAttribute('data-behavior-props', encodeDataBehaviorProps(data));
-        Object.assign(this.props.act_window, {
-            name: name,
-            display_name: name
-        });
+        const behaviorProps = decodeDataBehaviorProps(this.props.anchor.getAttribute('data-behavior-props'));
+        if (behaviorProps.act_window) {
+            behaviorProps.act_window.name = name;
+        }
+        this.props.anchor.dataset.behaviorProps = encodeDataBehaviorProps(behaviorProps);
+        this.embeddedViewManagerProps.action.name = name;
         const title = this.props.anchor.querySelector('.o_control_panel .breadcrumb-item.active');
         if (title) {
             title.textContent = name;
@@ -123,10 +137,7 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
      * @returns {String}
      */
     getTitle () {
-        if (this.props.act_window) {
-            return this.props.act_window.display_name || this.props.act_window.name;
-        }
-        return '';
+        return this.embeddedViewManagerProps.action.name || '';
     }
 }
 

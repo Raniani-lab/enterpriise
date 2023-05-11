@@ -253,6 +253,45 @@ class TestCfdiPaymentMultiCurrencies(TestMxEdiCommon):
                 </Complemento>
             ''')
 
+    def test_payment_cfdi_pay_usd_inv_mxn(self):
+        with freeze_time(self.frozen_today), \
+             mute_logger('py.warnings'), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
+                   new=mocked_l10n_mx_edi_pac), \
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
+                   new=mocked_l10n_mx_edi_pac):
+
+            invoice = self.create_invoice('2017-01-01', self.comp_curr, 1200.0)
+            payment = self.create_payment('2017-01-01', self.foreign_curr_2, 7200.0, invoice)
+            self.assertCfdiValues(payment, invoice, '''
+                <Complemento>
+                    <Pagos
+                        Version="2.0">
+                        <Totales
+                            MontoTotalPagos="1800.00"/>
+                        <Pago
+                            FechaPago="___ignore___"
+                            MonedaP="USD"
+                            Monto="7200.00"
+                            NumOperacion="___ignore___"
+                            FormaDePagoP="___ignore___"
+                            TipoCambioP="0.250000">
+                            <DoctoRelacionado
+                                Folio="___ignore___"
+                                IdDocumento="___ignore___"
+                                ImpPagado="1200.00"
+                                ImpSaldoAnt="1200.00"
+                                ImpSaldoInsoluto="0.00"
+                                ObjetoImpDR="01"
+                                MonedaDR="MXN"
+                                EquivalenciaDR="0.2500000000"
+                                NumParcialidad="1"
+                                Serie="___ignore___"/>
+                        </Pago>
+                    </Pagos>
+                </Complemento>
+            ''')
+
     def test_payment_cfdi_pay_mxn_inv_usd_keep_open(self):
         with freeze_time(self.frozen_today), \
              mute_logger('py.warnings'), \

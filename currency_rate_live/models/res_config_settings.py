@@ -13,6 +13,7 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.addons.account.tools import LegacyHTTPAdapter
 
 BANXICO_DATE_FORMAT = '%d/%m/%Y'
 CBUAE_URL = "https://centralbank.ae/umbraco/Surface/Exchange/GetExchangeRateAllCurrency"
@@ -621,7 +622,12 @@ class ResCompany(models.Model):
         server_url = 'https://www.tcmb.gov.tr/kurlar/today.xml'
         available_currency_names = set(available_currencies.mapped('name'))
 
-        res = requests.get(server_url, timeout=30)
+        # LegacyHTTPAdapter is used as connecting to the url raises an SSL error "unsafe legacy renegotiation disabled".
+        # This happens with OpenSSL 3.0 when trying to connect to legacy websites that disable renegotiation without signaling it correctly.
+        session = requests.Session()
+        session.mount('https://', LegacyHTTPAdapter())
+
+        res = session.get(server_url, timeout=30)
         res.raise_for_status()
 
         root = etree.fromstring(res.text.encode())

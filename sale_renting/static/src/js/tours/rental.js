@@ -21,7 +21,7 @@ registry.category("web_tour.tours").add('rental_tour', {
     position: 'bottom',
 }, {
     trigger: '.o-kanban-button-new',
-    extra_trigger: '.breadcrumb-item:contains(Products)',
+    extra_trigger: '.o_breadcrumb .active:contains(Products)',
     content: _t("Click here to set up your first rental product."),
     position: 'bottom',
 }, {

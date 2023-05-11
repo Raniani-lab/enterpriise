@@ -14,7 +14,7 @@ import {
     patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
-import { toggleMenuItem, toggleGroupByMenu } from "@web/../tests/search/helpers";
+import { toggleMenuItem, toggleSearchBarMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { hoverGridCell } from "./helpers";
 
@@ -195,7 +195,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsOnce(target, ".o_grid_view");
         assert.containsOnce(target, ".o_grid_renderer");
-        assert.containsOnce(target, ".o_grid_buttons");
+        assert.containsOnce(target, ".o_grid_buttons:visible");
         assert.containsNone(target, ".o_grid_custom_buttons");
         assert.containsOnce(target, ".o_grid_navigation_buttons");
         assert.strictEqual(
@@ -205,12 +205,12 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(
             target,
-            ".o_grid_navigation_buttons > button > span.fa-arrow-left",
+            ".o_grid_navigation_buttons button > span.fa-arrow-left",
             "The previous button should be there"
         );
         assert.containsOnce(
             target,
-            ".o_grid_navigation_buttons > button > span.fa-arrow-right",
+            ".o_grid_navigation_buttons button > span.fa-arrow-right",
             "The next button should be there"
         );
         assert.containsOnce(target, ".o_view_scale_selector");
@@ -409,7 +409,7 @@ QUnit.module("Views", (hooks) => {
             ),
             ["P1 | BS task", "Webocalypse Now | Another BS task"]
         );
-        await click(target, ".o_grid_navigation_buttons > button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
         assert.containsNone(
             target,
             ".o_grid_row.o_grid_highlightable:not(.o_grid_row_title,.o_grid_column_total,.o_grid_row_total)",
@@ -421,7 +421,7 @@ QUnit.module("Views", (hooks) => {
             "div.bg-info",
             "No column should be the current date since we move in the following week."
         );
-        await click(target, ".o_grid_navigation_buttons > button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
         assert.containsNone(target, "div.o_grid_row_title", "should not have any cell");
     });
 
@@ -527,7 +527,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         // Click on next period to have no data
-        await click(target, ".o_grid_navigation_buttons > button span.fa-arrow-left");
+        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-left");
         assert.containsNone(target, ".o_grid_section");
         assert.containsNone(
             target,
@@ -570,7 +570,7 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await toggleGroupByMenu(target);
+        await toggleSearchBarMenu(target);
         let groupBys = target.querySelectorAll("span.o_menu_item");
         let groupByProject, groupByTask;
         for (const gb of groupBys) {
@@ -588,7 +588,7 @@ QUnit.module("Views", (hooks) => {
             "None | P1",
             "BS task | P1",
         ]);
-        await click(target, ".o_grid_navigation_buttons > button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
         assert.containsNone(target, ".o_grid_section");
         assert.containsN(target, ".o_grid_row_title", 2);
         assert.deepEqual(getNodesTextContent(target.querySelectorAll(".o_grid_row_title")), [
@@ -597,7 +597,7 @@ QUnit.module("Views", (hooks) => {
         ]);
 
         // Remove the group and check the default groupbys defined in the view are correctly used.
-        await toggleGroupByMenu(target);
+        await toggleSearchBarMenu(target);
         groupBys = target.querySelectorAll("span.o_menu_item");
         for (const gb of groupBys) {
             if (gb.textContent === "Task") {
@@ -647,7 +647,7 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await toggleGroupByMenu(target);
+        await toggleSearchBarMenu(target);
         await click(target, "span.o_menu_item");
         assert.containsNone(target, ".o_grid_section");
         assert.containsN(target, ".o_grid_row_title", 2);
@@ -655,7 +655,7 @@ QUnit.module("Views", (hooks) => {
             "None",
             "BS task",
         ]);
-        await click(target, ".o_grid_navigation_buttons > button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
         assert.containsNone(target, ".o_grid_section");
         assert.containsN(target, ".o_grid_row_title", 2);
         assert.deepEqual(getNodesTextContent(target.querySelectorAll(".o_grid_row_title")), [
@@ -701,7 +701,7 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await toggleGroupByMenu(target);
+        await toggleSearchBarMenu(target);
         const groupByDropdown = target.querySelector(".o_menu_item").parentNode;
         await toggleMenuItem(target, "Date");
         const dateOptionNodes = groupByDropdown.querySelectorAll(".o_item_option");
@@ -755,7 +755,7 @@ QUnit.module("Views", (hooks) => {
             "Rer",
             "Sassy",
         ]);
-        await click(target, ".o_grid_navigation_buttons > button span.fa-arrow-left");
+        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-left");
         assert.deepEqual(getNodesTextContent(target.querySelectorAll(".o_grid_row_title")), [
             "Sas",
             "Rem",
@@ -790,7 +790,7 @@ QUnit.module("Views", (hooks) => {
             "DEF",
             "GHI",
         ]);
-        await click(target, ".o_grid_navigation_buttons > button span.fa-arrow-left");
+        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-left");
         assert.deepEqual(getNodesTextContent(target.querySelectorAll(".o_grid_row_title")), [
             "ABC",
             "DEF",
@@ -830,7 +830,7 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, ".o_grid_row_title");
         assert.containsNone(target, ".modal");
         assert.containsNone(target, ".o_view_nocontent");
-        await click(target, ".o_grid_button_add");
+        await click($(target).find('.o_control_panel_main_buttons > :visible').get(0), ".o_grid_button_add");
         assert.containsOnce(target, ".modal");
         await selectDropdownItem(target, "project_id", "P1");
         await selectDropdownItem(target, "task_id", "BS task");
@@ -882,7 +882,7 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, ".o_grid_row_title");
         assert.containsNone(target, ".modal");
         assert.containsNone(target, ".o_view_nocontent");
-        await click(target, ".o_grid_button_add");
+        await click($(target).find('.o_control_panel_main_buttons > :visible').get(0), ".o_grid_button_add");
         assert.containsOnce(target, ".modal");
         await selectDropdownItem(target, "project_id", "P1");
         await selectDropdownItem(target, "task_id", "BS task");
@@ -1343,7 +1343,7 @@ QUnit.module("Views", (hooks) => {
                 views: [[false, "grid"]],
             });
 
-            await click(target, ".o_grid_button_add");
+            await click($(target).find('.o_control_panel_main_buttons > :visible').get(0), ".o_grid_button_add");
             await nextTick();
             assert.containsOnce(target, ".modal[role='dialog']");
 
@@ -1489,7 +1489,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsNone(
             target,
-            ".o_grid_button_add",
+            ".o_grid_button_add:visible",
             "'Add a line' control panel button should not be visible"
         );
         assert.deepEqual(
@@ -1500,7 +1500,7 @@ QUnit.module("Views", (hooks) => {
         await click(target, ".o_grid_renderer .o_grid_add_line a");
         assert.containsOnce(target, ".modal");
         await click(target, ".modal .modal-footer button.o_form_button_cancel");
-        await click(target, ".o_grid_navigation_buttons > button span.fa-arrow-right");
+        await click(target, ".o_grid_navigation_buttons button span.fa-arrow-right");
         assert.containsNone(
             target,
             ".o_grid_add_line a",
@@ -1508,7 +1508,7 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(
             target,
-            ".o_grid_button_add",
+            ".o_grid_button_add:visible",
             "'Add a line' control panel button should be visible"
         );
     });
@@ -1543,7 +1543,7 @@ QUnit.module("Views", (hooks) => {
             );
             assert.containsNone(
                 target,
-                ".o_grid_button_add",
+                ".o_grid_button_add:visible",
                 "The 'Add a line' button in the control panel should not be visible."
             );
             assert.deepEqual(
@@ -1561,7 +1561,7 @@ QUnit.module("Views", (hooks) => {
             );
             assert.containsNone(
                 target,
-                ".o_grid_button_add",
+                ".o_grid_button_add:visible",
                 "'Add a line' control panel button should be visible"
             );
         }
@@ -1768,11 +1768,11 @@ QUnit.module("Views", (hooks) => {
 
             assert.containsOnce(
                 target,
-                ".o_grid_buttons .o_grid_button_add",
+                ".o_grid_buttons .o_grid_button_add:visible",
                 "The `Add a Line` button should be displayed when no content data is displayed to be able to create a record."
             );
 
-            await click(target, ".o_grid_buttons span.fa-arrow-right");
+            await click(target, ".o_grid_navigation_buttons span.fa-arrow-right");
             assert.containsNone(
                 target,
                 ".o_view_sample_data",
@@ -1785,12 +1785,12 @@ QUnit.module("Views", (hooks) => {
             );
             assert.containsNone(
                 target,
-                ".o_grid_buttons .o_grid_button_add",
+                ".o_grid_buttons .o_grid_button_add:visible",
                 "The `Add a Line` button should no longer be displayed near the `Today` one since the no content helper is not displayed."
             );
             assert.containsOnce(
                 target,
-                ".o_grid_grid .o_grid_row.o_grid_add_line.position-sticky",
+                ".o_grid_grid .o_grid_row.o_grid_add_line.position-md-sticky",
                 "The `Add a Line` button should be displayed in the grid view since create_inline='1'"
             );
         }

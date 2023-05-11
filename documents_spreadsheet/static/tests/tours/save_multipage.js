@@ -12,6 +12,10 @@ registry.category("web_tour.tours").add("spreadsheet_save_multipage", {
             content: "Open document app",
         },
         {
+            trigger: ".o_cp_buttons:contains('Upload') .dropdown-toggle.dropdown-toggle-split",
+            content: "Open dropdown",
+        },
+        {
             trigger: ".o_documents_kanban_spreadsheet",
             content: "Open template dialog",
         },
@@ -24,8 +28,8 @@ registry.category("web_tour.tours").add("spreadsheet_save_multipage", {
             content: "Add a sheet",
         },
         {
-            trigger: ".o_menu_brand",
-            content: "Go back to the menu",
+            trigger: '[data-menu-xmlid="documents.dashboard"]',
+            content: "Go back to Document App",
         },
         {
             trigger: ".o_kanban_renderer .o_kanban_record:first .o_kanban_stack ",
@@ -49,8 +53,8 @@ registry.category("web_tour.tours").add("spreadsheet_save_multipage", {
             content: "Confirm delete sheet",
         },
         {
-            trigger: ".o_menu_brand",
-            content: "Go back to the menu",
+            trigger: '[data-menu-xmlid="documents.dashboard"]',
+            content: "Go back to Document App",
         },
         {
             trigger: ".o_kanban_renderer .o_kanban_record:first",

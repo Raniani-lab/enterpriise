@@ -11,17 +11,17 @@ registry.category("web_tour.tours").add('helpdesk_insert_kanban_view_link_in_kno
     run: 'click',
 }, { // wait for the kanban view to load
     trigger: '.o_kanban_renderer',
-}, { // open the filter menu
-    trigger: '.o_filter_menu .dropdown-toggle',
+}, { // open the search bar menu
+    trigger: '.o_control_panel .o_searchview_dropdown_toggler',
 }, { // pick a filter
     trigger: '.o_filter_menu .dropdown-item:contains("My Tickets")',
 }, { // check that the facet is now active
     trigger: '.o_searchview .o_facet_value:contains("My Tickets")',
     run: () => {},
-}, { // open the "favorite" menu
-    trigger: '.o_favorite_menu .dropdown-toggle',
-}, { // insert a view link in an article
-    trigger: '.o_favorite_menu .dropdown-item:contains("Insert link in article")',
+}, { // open the cog menu
+    trigger: '.o_control_panel .o_cp_action_menus .dropdown-toggle',
+}, { // insert the view link in an article
+    trigger: '.o_cp_action_menus .dropdown-item:contains("Insert link in article")',
 }, { // create a new article
     trigger: '.modal-footer button:contains("New")',
     run: 'click',
@@ -35,10 +35,5 @@ registry.category("web_tour.tours").add('helpdesk_insert_kanban_view_link_in_kno
 }, { // check that the view has the selected facet
     trigger: '.o_searchview .o_facet_value:contains("My Tickets")',
 }, { // check the title of the view
-    trigger: '.o_control_panel .breadcrumb-item.active:contains("Tickets")',
-}, {
-    trigger: '.o_back_button'
-}, {
-    trigger: '.o_knowledge_behavior_type_view_link',
-    run: () => {}
+    trigger: '.o_control_panel .o_last_breadcrumb_item:contains("Tickets")',
 }]});

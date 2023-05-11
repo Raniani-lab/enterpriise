@@ -14,7 +14,7 @@ import {
 } from "./documents_test_utils";
 import { registry } from "@web/core/registry";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
-import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
+import { fakeCookieService, makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
 import { DocumentsInspector } from "@documents/views/inspector/documents_inspector";
 
@@ -26,8 +26,8 @@ import {
 } from "@mail/../tests/helpers/test_utils";
 
 import {
-    toggleFilterMenu,
     toggleMenuItem,
+    toggleSearchBarMenu,
     pagerNext,
     pagerPrevious,
 } from "@web/../tests/search/helpers";
@@ -81,6 +81,7 @@ QUnit.module("documents", {}, function () {
                     bus_service: busService,
                     "bus.parameters": busParametersService,
                     file_upload: fileUploadService,
+                    cookie: fakeCookieService,
                 };
                 for (const [serviceName, service] of Object.entries(REQUIRED_SERVICES)) {
                     if (!serviceRegistry.contains(serviceName)) {
@@ -385,9 +386,9 @@ QUnit.module("documents", {}, function () {
                 );
 
                 // check control panel buttons
-                assert.containsOnce(target, ".o_cp_buttons .btn-primary");
+                assert.containsOnce(target, ".o_cp_buttons .btn-primary:not(.dropdown-toggle):visible");
                 assert.strictEqual(
-                    target.querySelector(".o_cp_buttons .btn-primary").textContent.trim(),
+                    $(".o_cp_buttons .btn-primary:not(.dropdown-toggle):visible").get(0).textContent.trim(),
                     "Upload",
                     "should have a primary 'Upload' button"
                 );
@@ -395,10 +396,11 @@ QUnit.module("documents", {}, function () {
                     target.querySelector(".o_documents_kanban_upload").disabled === false,
                     "the upload button should be enabled when a folder is selected"
                 );
-                assert.containsOnce(
+                assert.containsN(
                     target,
                     ".o_cp_buttons button.o_documents_kanban_url",
-                    "should allow to save a URL"
+                    2,
+                    "should allow to save a URL on small / xl screen"
                 );
                 assert.ok(
                     target.querySelector(".o_documents_kanban_url").disabled === false,
@@ -418,11 +420,11 @@ QUnit.module("documents", {}, function () {
                 assert.strictEqual(
                     target
                         .querySelector(
-                            ".o_cp_buttons button.btn-secondary.o_documents_kanban_share_domain"
+                            ".o_cp_buttons .dropdown-item.o_documents_kanban_share_domain"
                         )
                         .textContent.trim(),
                     "Share",
-                    "should have a secondary 'Share' button"
+                    "should have a 'Share' button on dropdown"
                 );
                 assert.ok(
                     target.querySelector(".o_documents_kanban_share_domain").disabled === false,
@@ -740,7 +742,7 @@ QUnit.module("documents", {}, function () {
                         "should show 3 document previews in the DocumentsInspector"
                     );
 
-                    await toggleFilterMenu(target);
+                    await toggleSearchBarMenu(target);
                     await toggleMenuItem(target, "OwO");
 
                     assert.containsOnce(
@@ -900,7 +902,8 @@ QUnit.module("documents", {}, function () {
                     "should have 2 records in the renderer"
                 );
 
-                await click(target, ".o_documents_kanban_share_domain");
+                await click($(".o_cp_buttons .dropdown-toggle-split:visible").get(0));
+                await click($(".o_documents_kanban_share_domain:visible").get(0));
             });
 
             QUnit.test("can upload from URL", async function (assert) {
@@ -929,7 +932,8 @@ QUnit.module("documents", {}, function () {
                 await click(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
-                await click(target.querySelector("button.o_documents_kanban_url"));
+                await click($(".o_cp_buttons .dropdown-toggle-split:visible").get(0));
+                await click($(".o_documents_kanban_url:visible").get(0));
             });
 
             QUnit.test("can Request a file", async function (assert) {
@@ -958,7 +962,8 @@ QUnit.module("documents", {}, function () {
                 await click(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
-                await click(target.querySelector("button.o_documents_kanban_request"));
+                await click($(".o_cp_buttons .dropdown-toggle-split:visible").get(0));
+                await click($(".o_documents_kanban_request:visible").get(0));
             });
 
             QUnit.test("can navigate with arrows", async function (assert) {
@@ -3161,7 +3166,7 @@ QUnit.module("documents", {}, function () {
                     assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
 
                     // reload with a domain
-                    await toggleFilterMenu(target);
+                    await toggleSearchBarMenu(target);
                     await toggleMenuItem(target, "OwO");
 
                     assert.containsOnce(target, ".o_record_selected");
@@ -3244,7 +3249,7 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // reload with a domain
-                    await toggleFilterMenu(target);
+                    await toggleSearchBarMenu(target);
                     await toggleMenuItem(target, "OwO");
 
                     assert.containsNone(target, ".o_record_selected");
@@ -3702,7 +3707,7 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // reload with a domain
-                    await toggleFilterMenu(target);
+                    await toggleSearchBarMenu(target);
                     await toggleMenuItem(target, "OwO");
 
                     assert.containsOnce(
@@ -3731,7 +3736,7 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // reload without the domain
-                    await toggleFilterMenu(target);
+                    await toggleSearchBarMenu(target);
                     await toggleMenuItem(target, "OwO");
 
                     assert.strictEqual(
@@ -3866,7 +3871,7 @@ QUnit.module("documents", {}, function () {
             );
 
             QUnit.test("documents Kanban color widget", async function (assert) {
-                assert.expect(4);
+                assert.expect(3);
 
                 await createDocumentsView({
                     type: "kanban",
@@ -3892,12 +3897,6 @@ QUnit.module("documents", {}, function () {
                     "This record should have 3 tags"
                 );
 
-                assert.containsOnce(
-                    target,
-                    ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1) > span",
-                    "should have a span for color ball"
-                );
-
                 assert.strictEqual(
                     target.querySelector(
                         ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1)"
@@ -3908,7 +3907,7 @@ QUnit.module("documents", {}, function () {
             });
 
             QUnit.test("kanban color widget without SearchPanel", async function (assert) {
-                assert.expect(5);
+                assert.expect(3);
 
                 await createDocumentsView({
                     type: "kanban",
@@ -3935,28 +3934,18 @@ QUnit.module("documents", {}, function () {
                     "Third record should have 3 tags"
                 );
 
-                assert.containsOnce(
-                    target.querySelector(
-                        ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1)"
-                    ),
-                    "> span",
-                    "should have a span for color ball"
-                );
-                assert.containsN(
-                    target.querySelector(
-                        ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags"
-                    ),
-                    ".text-bg-0",
-                    3,
-                    "should have 3 spans for color ball with grey color by default"
-                );
-
-                assert.strictEqual(
-                    target.querySelector(
-                        ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1)"
-                    ).style.backgroundColor,
-                    "rgb(74, 79, 89)",
-                    "should have the right color"
+                assert.deepEqual(
+                    [
+                        ...target.querySelectorAll(
+                            ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag"
+                        )
+                    ].map(n => n.style.backgroundColor),
+                    [
+                        "rgb(74, 79, 89)",
+                        "rgb(74, 79, 89)",
+                        "rgb(74, 79, 89)"
+                    ],
+                    "should have 3 tags with grey color by default"
                 );
             });
 

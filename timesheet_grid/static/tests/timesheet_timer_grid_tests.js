@@ -12,7 +12,7 @@ import {
     nextTick,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
-import { toggleGroupByMenu } from "@web/../tests/search/helpers";
+import { toggleSearchBarMenu } from "@web/../tests/search/helpers";
 
 import { getPyEnv } from "@bus/../tests/helpers/mock_python_environment";
 import { start } from "@mail/../tests/helpers/test_utils";
@@ -503,7 +503,7 @@ QUnit.module("Views", (hooks) => {
             views: [[false, "grid"]],
         });
 
-        await toggleGroupByMenu(target);
+        await toggleSearchBarMenu(target);
         let groupBys = target.querySelectorAll("span.o_menu_item");
         let groupByProject, groupByTask;
         for (const gb of groupBys) {

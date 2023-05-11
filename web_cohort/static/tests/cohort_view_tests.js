@@ -13,9 +13,8 @@ import {
 } from "@web/../tests/helpers/utils";
 import { makeView } from "@web/../tests/views/helpers";
 import {
-    toggleFilterMenu,
+    toggleSearchBarMenu,
     toggleMenuItem,
-    toggleComparisonMenu,
     toggleMenuItemOption,
     toggleMenu,
     removeFacet,
@@ -149,7 +148,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         await toggleMenu(target, "Measures");
-        assert.containsOnce(target, ".dropdown-menu", "should have list of measures");
+        assert.containsOnce(target, ".dropdown-menu:not(.d-none)", "should have list of measures");
 
         await click(target, ".o_view_scale_selector .scale_button_selection");
         assert.containsN(
@@ -193,7 +192,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsNone(target, "div.o_view_nocontent");
 
-        await toggleFilterMenu(target);
+        await toggleSearchBarMenu(target);
         await toggleMenuItem(target, "Recurring bigger than 25");
 
         assert.containsOnce(target, "div.o_view_nocontent");
@@ -658,7 +657,7 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, "div.o_view_nocontent");
 
         // with no comparison with no data (filter on 'last_year')
-        await toggleFilterMenu(target);
+        await toggleSearchBarMenu(target);
         await toggleMenuItem(target, "Date");
         await toggleMenuItemOption(target, "Date", "2016");
 
@@ -669,7 +668,6 @@ QUnit.module("Views", (hooks) => {
         // with comparison active, data and comparisonData (filter on 'this_month' + 'previous_period')
         await toggleMenuItemOption(target, "Date", "2016");
         await toggleMenuItemOption(target, "Date", "August");
-        await toggleComparisonMenu(target);
         await toggleMenuItem(target, "Date: Previous period");
 
         verifyContents(
@@ -680,7 +678,6 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, "div.o_view_nocontent");
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
-        await toggleFilterMenu(target);
         await toggleMenuItem(target, "Date");
         await toggleMenuItemOption(target, "Date", "August");
 
@@ -818,7 +815,7 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, ".o_view_nocontent .abc");
         assert.containsOnce(target, "table");
 
-        await toggleFilterMenu(target);
+        await toggleSearchBarMenu(target);
         await toggleMenuItem(target, "Small Than 0");
 
         assert.doesNotHaveClass(target, "o_view_sample_data");
@@ -855,7 +852,7 @@ QUnit.module("Views", (hooks) => {
 
             // Set a domain (this reload is delayed)
             def = makeDeferred();
-            await toggleFilterMenu(target);
+            await toggleSearchBarMenu(target);
             await toggleMenuItem(target, "My Filter");
 
             assert.containsN(target, ".o_cohort_row_clickable", 5);

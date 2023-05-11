@@ -204,7 +204,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
             },
         });
         const target = getFixture();
-        const input = $(target).find(".breadcrumb-item input");
+        const input = target.querySelector(".o_spreadsheet_name input");
         await fields.editInput(input, "My spreadsheet");
         await dom.triggerEvent(input, "change");
         await doMenuAction(topbarMenuRegistry, ["file", "save_as_template"], env);

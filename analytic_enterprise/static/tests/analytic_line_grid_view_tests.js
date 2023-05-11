@@ -104,7 +104,7 @@ QUnit.module("Views", (hooks) => {
         });
 
         const columns = target.querySelectorAll(
-            ".o_grid_column_title:not(.o_grid_row_total,.position-sticky)"
+            ".o_grid_column_title:not(.o_grid_row_total,.o_grid_navigation_wrap)"
         );
         assert.strictEqual(
             columns.length,

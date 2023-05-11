@@ -1191,7 +1191,7 @@ registry.category("web_tour.tours").add("web_studio_approval_tour", {
         },
         {
             // go back to kanban
-            trigger: ".o_menu_brand",
+            trigger: ".o_breadcrumb .o_back_button",
             extra_trigger: ".o_web_client:not(.o_in_studio)",
         },
         {

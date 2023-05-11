@@ -20,7 +20,7 @@ QUnit.module(
         QUnit.test("spreadsheet with generic untitled name is styled", async function (assert) {
             assert.expect(4);
             await createSpreadsheet();
-            const input = target.querySelector(".breadcrumb-item input");
+            const input = target.querySelector(".o_spreadsheet_name input");
             assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
             await fields.editInput(input, "My");
             assert.doesNotHaveClass(
@@ -37,7 +37,7 @@ QUnit.module(
         QUnit.test("untitled spreadsheet", async function (assert) {
             assert.expect(3);
             await createSpreadsheet({ spreadsheetId: 2 });
-            const input = target.querySelector(".breadcrumb-item input");
+            const input = target.querySelector(".o_spreadsheet_name input");
             assert.hasClass(input, "o-spreadsheet-untitled", "It should be styled as untitled");
             assert.equal(input.value, "", "It should be empty");
             assert.equal(
@@ -51,7 +51,7 @@ QUnit.module(
         QUnit.test("input width changes when content changes", async function (assert) {
             assert.expect(2);
             await createSpreadsheet();
-            const input = target.querySelector(".breadcrumb-item input");
+            const input = target.querySelector(".o_spreadsheet_name input");
             await fields.editInput(input, "My");
             let width = input.offsetWidth;
             await fields.editInput(input, "My title");
@@ -65,7 +65,7 @@ QUnit.module(
             assert.expect(1);
             const serverData = getBasicServerData();
             await createSpreadsheet({ spreadsheetId: 2, serverData });
-            const input = target.querySelector(".breadcrumb-item input");
+            const input = target.querySelector(".o_spreadsheet_name input");
             await fields.editAndTrigger(input, "My spreadsheet", ["change"]);
             assert.equal(
                 serverData.models["documents.document"].records[1].name,
@@ -77,7 +77,7 @@ QUnit.module(
         QUnit.test("trailing white spaces are trimmed", async function (assert) {
             assert.expect(2);
             await createSpreadsheet();
-            const input = target.querySelector(".breadcrumb-item input");
+            const input = target.querySelector(".o_spreadsheet_name input");
             await fields.editInput(input, "My spreadsheet  ");
             const width = input.offsetWidth;
             await dom.triggerEvent(input, "change");
@@ -88,7 +88,7 @@ QUnit.module(
         QUnit.test("focus sets the placeholder as value and select it", async function (assert) {
             assert.expect(4);
             await createSpreadsheet({ spreadsheetId: 2 });
-            const input = target.querySelector(".breadcrumb-item input");
+            const input = target.querySelector(".o_spreadsheet_name input");
             assert.equal(input.value, "", "It should be empty");
             await dom.triggerEvent(input, "focus");
             assert.equal(
@@ -106,7 +106,7 @@ QUnit.module(
         QUnit.test("only white spaces show the placeholder", async function (assert) {
             assert.expect(2);
             await createSpreadsheet();
-            const input = target.querySelector(".breadcrumb-item input");
+            const input = target.querySelector(".o_spreadsheet_name input");
             await fields.editInput(input, "  ");
             const width = input.offsetWidth;
             await dom.triggerEvent(input, "change");
@@ -157,12 +157,10 @@ QUnit.module(
             });
             await nextTick();
             const items = target.querySelectorAll(".breadcrumb-item");
-            const [breadcrumb1, breadcrumb2, breadcrumb3] = Array.from(items).map(
-                (item) => item.innerText
-            );
+            const [breadcrumb1, breadcrumb2] = Array.from(items).map((item) => item.innerText);
             assert.equal(breadcrumb1, "pivot view");
             assert.equal(breadcrumb2, "Untitled spreadsheet");
-            assert.equal(breadcrumb3, "Partner");
+            assert.equal(target.querySelector(".o_breadcrumb .active").innerText, "Partner");
         });
 
         QUnit.test(
@@ -183,7 +181,7 @@ QUnit.module(
                         },
                     },
                 });
-                const input = target.querySelector(".breadcrumb-item input");
+                const input = target.querySelector(".o_spreadsheet_name input");
                 await fields.editAndTrigger(input, "My awesome spreadsheet", ["change"]);
                 await doAction(webClient, {
                     name: "Partner",
@@ -193,12 +191,13 @@ QUnit.module(
                 });
                 await nextTick();
                 const items = target.querySelectorAll(".breadcrumb-item");
-                const [breadcrumb1, breadcrumb2, breadcrumb3] = Array.from(items).map(
-                    (item) => item.innerText
-                );
+                const [breadcrumb1, breadcrumb2] = Array.from(items).map((item) => item.innerText);
                 assert.equal(breadcrumb1, "pivot view");
                 assert.equal(breadcrumb2, "My awesome spreadsheet");
-                assert.equal(breadcrumb3, "Partner");
+                assert.equal(
+                    target.querySelector(".o_breadcrumb .active span").innerText,
+                    "Partner"
+                );
             }
         );
     }

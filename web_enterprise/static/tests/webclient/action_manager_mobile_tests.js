@@ -102,7 +102,7 @@ QUnit.test("lazy load mobile-friendly view", async function (assert) {
     assert.containsOnce(target, ".o_form_view");
 
     // go back to lazy loaded view
-    await click(target, ".o_control_panel .breadcrumb .o_back_button");
+    await click(target, ".o_control_panel .o_breadcrumb .o_back_button");
     await legacyExtraNextTick();
     assert.containsNone(target, ".o_form_view");
     assert.containsNone(target, ".o_list_view");
@@ -128,42 +128,32 @@ QUnit.test(
 
         assert.containsOnce(
             target.querySelector(".o_control_panel"),
-            ".o_cp_switch_buttons > .o-dropdown > button"
+            ".o_cp_switch_buttons.d-xl-none > button"
         );
         assert.containsNone(
             target.querySelector(".o_control_panel"),
-            ".o_cp_switch_buttons .o-dropdown--menu .o_switch_view.o_kanban"
+            ".o_cp_switch_buttons.d-xl-none .o_switch_view.o_kanban"
         );
         assert.containsNone(
             target.querySelector(".o_control_panel"),
-            ".o_cp_switch_buttons .o-dropdown--menu button.o_switch_view"
+            ".o_cp_switch_buttons.d-xl-none button.o_switch_view"
         );
 
         assert.hasClass(
-            target.querySelector(
-                ".o_control_panel .o_cp_switch_buttons > .o-dropdown > button > i"
-            ),
+            target.querySelector(".o_control_panel .o_cp_switch_buttons.d-xl-none > button > i"),
             "oi-view-kanban"
         );
-        await click(target, ".o_control_panel .o_cp_switch_buttons > .o-dropdown > button");
+        await click(target, ".o_control_panel .o_cp_switch_buttons.d-xl-none > button");
 
         assert.hasClass(
-            target.querySelector(
-                ".o_cp_switch_buttons .o-dropdown--menu button.o_switch_view.o_kanban"
-            ),
-            "active"
+            target.querySelector(".o_cp_switch_buttons.d-xl-none .dropdown-item .oi-view-kanban")
+                .parentElement,
+            "selected"
         );
         assert.doesNotHaveClass(
-            target.querySelector(
-                ".o_cp_switch_buttons .o-dropdown--menu button.o_switch_view.o_list"
-            ),
-            "active"
-        );
-        assert.hasClass(
-            target.querySelector(
-                ".o_cp_switch_buttons .o-dropdown--menu button.o_switch_view.o_kanban"
-            ),
-            "oi-view-kanban"
+            target.querySelector(".o_cp_switch_buttons.d-xl-none .dropdown-item .oi-view-list")
+                .parentElement,
+            "selected"
         );
     }
 );

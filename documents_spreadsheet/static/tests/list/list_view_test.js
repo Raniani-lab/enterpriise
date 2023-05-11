@@ -7,7 +7,7 @@ import { selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { getCellFormula, getEvaluatedCell } from "@spreadsheet/../tests/utils/getters";
 import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
-import { toggleFavoriteMenu } from "@web/../tests/search/helpers";
+import { toggleActionMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { ListRenderer } from "@web/views/list/list_renderer";
@@ -191,7 +191,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             },
         });
         const target = getFixture();
-        await toggleFavoriteMenu(target);
+        await toggleActionMenu(target);
         await click(target, ".o_insert_list_spreadsheet_menu");
         await click(target, ".modal button.btn-primary");
     });

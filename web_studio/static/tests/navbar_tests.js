@@ -313,7 +313,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
     QUnit.test("adapt navbar when refreshing studio (loadState)", async (assert) => {
         assert.expect(7);
 
-        target.style.width = "1280px";
+        target.style.width = "800px";
 
         const adapted = [];
         patchWithCleanup(StudioNavbar.prototype, {
@@ -384,7 +384,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         assert.containsNone(target, ".o_studio");
         assert.strictEqual(
             target.querySelectorAll("header .o_menu_sections > *:not(.d-none)").length,
-            4
+            3
         );
         assert.containsOnce(target, ".o_menu_sections .o_menu_sections_more");
 
@@ -395,7 +395,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         await Promise.all(adapted);
         assert.strictEqual(
             target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
-            3
+            2
         );
         assert.containsOnce(target, ".o_studio .o_menu_sections .o_menu_sections_more");
 
@@ -407,7 +407,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         await Promise.all(adapted);
         assert.strictEqual(
             target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
-            3
+            2
         );
         assert.containsOnce(target, ".o_studio .o_menu_sections .o_menu_sections_more");
     });

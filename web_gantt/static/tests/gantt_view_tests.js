@@ -13,8 +13,7 @@ import {
 } from "@web/../tests/helpers/utils";
 import {
     switchView,
-    toggleFilterMenu,
-    toggleGroupByMenu,
+    toggleSearchBarMenu,
     toggleMenuItem,
     validateSearch,
 } from "@web/../tests/search/helpers";
@@ -313,7 +312,7 @@ QUnit.test("ungrouped gantt rendering", async (assert) => {
     assert.strictEqual(viewTitle, null);
     assert.strictEqual(range, "December 2018");
     assert.strictEqual(columnHeaders.length, 31);
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
     assert.deepEqual(rows, [
         {
@@ -409,7 +408,7 @@ QUnit.test("single-level grouped gantt rendering", async (assert) => {
         arch: `<gantt string="Tasks" date_start="start" date_stop="stop"/>`,
         groupBy: ["project_id"],
     });
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
 
     const { range, viewTitle, columnHeaders, rows } = getGridContent();
@@ -481,7 +480,7 @@ QUnit.test("single-level grouped gantt rendering with group_expand", async (asse
             }
         },
     });
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
 
     const { range, viewTitle, columnHeaders, rows } = getGridContent();
@@ -543,7 +542,7 @@ QUnit.test("multi-level grouped gantt rendering", async (assert) => {
         arch: `<gantt string="Tasks" date_start="start" date_stop="stop"/>`,
         groupBy: ["user_id", "project_id", "stage"],
     });
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.containsN(target, SELECTORS.expandCollapseButtons, 2);
 
     const { range, viewTitle, columnHeaders, rows } = getGridContent();
@@ -648,7 +647,7 @@ QUnit.test("many2many grouped gantt rendering", async (assert) => {
         arch: `<gantt string="Tasks" date_start="start" date_stop="stop"/>`,
         groupBy: ["user_ids"],
     });
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
 
     const { range, viewTitle, columnHeaders, rows } = getGridContent();
@@ -692,7 +691,7 @@ QUnit.test("multi-level grouped with many2many field in gantt view", async (asse
         arch: `<gantt string="Tasks" date_start="start" date_stop="stop"/>`,
         groupBy: ["user_ids", "project_id"],
     });
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.containsN(target, SELECTORS.expandCollapseButtons, 2);
 
     const { range, viewTitle, columnHeaders, rows } = getGridContent();
@@ -759,7 +758,7 @@ QUnit.test("full precision gantt rendering", async (assert) => {
         `,
         groupBy: ["user_id", "project_id"],
     });
-    assert.strictEqual(getActiveScale(), "WEEK");
+    assert.strictEqual(getActiveScale(), "Week");
     assert.containsN(target, SELECTORS.expandCollapseButtons, 2);
 
     const { range, viewTitle, columnHeaders, rows } = getGridContent();
@@ -875,7 +874,7 @@ QUnit.test("scale switching", async (assert) => {
     });
 
     // default (month)
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
     let gridContent = getGridContent();
     assert.strictEqual(gridContent.range, "December 2018");
@@ -896,7 +895,7 @@ QUnit.test("scale switching", async (assert) => {
     // switch to day view
     await setScale("day");
 
-    assert.strictEqual(getActiveScale(), "DAY");
+    assert.strictEqual(getActiveScale(), "Day");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
     gridContent = getGridContent();
     assert.strictEqual(gridContent.range, "Thursday, December 20, 2018");
@@ -915,7 +914,7 @@ QUnit.test("scale switching", async (assert) => {
     // switch to week view
     await setScale("week");
 
-    assert.strictEqual(getActiveScale(), "WEEK");
+    assert.strictEqual(getActiveScale(), "Week");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
     gridContent = getGridContent();
     assert.strictEqual(gridContent.range, "16 December 2018 - 22 December 2018");
@@ -938,7 +937,7 @@ QUnit.test("scale switching", async (assert) => {
     // switch to month view
     await setScale("month");
 
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
     gridContent = getGridContent();
     assert.strictEqual(gridContent.range, "December 2018");
@@ -959,7 +958,7 @@ QUnit.test("scale switching", async (assert) => {
     // switch to year view
     await setScale("year");
 
-    assert.strictEqual(getActiveScale(), "YEAR");
+    assert.strictEqual(getActiveScale(), "Year");
     assert.containsNone(target, SELECTORS.expandCollapseButtons);
     gridContent = getGridContent();
     assert.strictEqual(gridContent.range, "2018");
@@ -1142,7 +1141,7 @@ QUnit.test('non empty gantt with sample="1"', async (assert) => {
     assert.containsN(target, SELECTORS.pill, 7);
     assert.containsNone(target, SELECTORS.noContentHelper);
 
-    await toggleFilterMenu(target);
+    await toggleSearchBarMenu(target);
     await toggleMenuItem(target, "False Domain");
 
     assert.doesNotHaveClass(target.querySelector(SELECTORS.viewContent), "o_view_sample_data");
@@ -1169,7 +1168,7 @@ QUnit.test('non empty grouped gantt with sample="1"', async (assert) => {
     assert.containsN(target, SELECTORS.cell, 24);
     assert.containsN(target, SELECTORS.pill, 7);
 
-    await toggleFilterMenu(target);
+    await toggleSearchBarMenu(target);
     await toggleMenuItem(target, "False Domain");
 
     assert.doesNotHaveClass(target.querySelector(SELECTORS.viewContent), "o_view_sample_data");
@@ -1300,7 +1299,7 @@ QUnit.test(
         });
 
         assert.verifySteps(["web_search_read"]);
-        await click(target, SELECTORS.addButton);
+        await click($(SELECTORS.addButton + ":visible").get(0));
         assert.verifySteps(["[action] this_is_create_action", "web_search_read"]);
     }
 );
@@ -1360,7 +1359,12 @@ QUnit.test("if a cell_create is specified to false then do not show + icon", asy
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" cell_create="false"/>',
     });
-    assert.containsOnce(target, SELECTORS.addButton);
+    assert.containsN(
+        target,
+        SELECTORS.addButton,
+        2,
+        "Should have 2 add button (small and xl screens)"
+    );
     await hoverGridCell(1, 1);
     assert.containsOnce(target, SELECTORS.cellButtons);
     assert.containsNone(target, SELECTORS.cellAddButton);
@@ -1384,7 +1388,7 @@ QUnit.test("open a dialog to add a new task", async (assert) => {
         arch: '<gantt date_start="start" date_stop="stop" />',
     });
     assert.containsNone(target, ".modal");
-    await click(target, SELECTORS.addButton);
+    await click($(SELECTORS.addButton + ":visible").get(0));
 
     // check that the dialog is opened with prefilled fields
     assert.containsOnce(target, ".modal");
@@ -3013,7 +3017,7 @@ QUnit.test("default_scale attribute", async (assert) => {
         serverData,
         arch: '<gantt date_start="start" date_stop="stop" default_scale="day" />',
     });
-    assert.strictEqual(getActiveScale(), "DAY");
+    assert.strictEqual(getActiveScale(), "Day");
     const content = getGridContent(target);
     assert.strictEqual(content.range, "Thursday, December 20, 2018");
     assert.strictEqual(content.columnHeaders.length, 24);
@@ -3028,8 +3032,8 @@ QUnit.test("scales attribute", async (assert) => {
     });
     await click(target, ".scale_button_selection");
     const availableScales = getTexts(".dropdown-item");
-    assert.deepEqual(availableScales, ["MONTH", "DAY"]);
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.deepEqual(availableScales, ["Month", "Day"]);
+    assert.strictEqual(getActiveScale(), "Month");
 });
 
 QUnit.test("precision attribute", async (assert) => {
@@ -3112,7 +3116,7 @@ QUnit.test("form_view_id attribute", async (assert) => {
             }
         },
     });
-    await click(target, SELECTORS.addButton);
+    await click($(SELECTORS.addButton + ":visible").get(0));
     assert.containsOnce(target, ".modal .o_form_view");
     assert.verifySteps([
         `get_views: [[100000001,"gantt"],[100000002,"search"]]`, // initial get_views
@@ -3997,7 +4001,7 @@ QUnit.test("concurrent scale switches return in inverse order", async (assert) =
 
     let content = getGridContent();
 
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.strictEqual(content.range, "December 2018");
     assert.strictEqual(model.data.records.length, 6);
 
@@ -4008,7 +4012,7 @@ QUnit.test("concurrent scale switches return in inverse order", async (assert) =
 
     content = getGridContent();
 
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.strictEqual(content.range, "December 2018");
     assert.strictEqual(model.data.records.length, 6);
 
@@ -4018,7 +4022,7 @@ QUnit.test("concurrent scale switches return in inverse order", async (assert) =
 
     content = getGridContent();
 
-    assert.strictEqual(getActiveScale(), "YEAR");
+    assert.strictEqual(getActiveScale(), "Year");
     assert.strictEqual(content.range, "2018");
     assert.strictEqual(model.data.records.length, 7);
 
@@ -4027,7 +4031,7 @@ QUnit.test("concurrent scale switches return in inverse order", async (assert) =
 
     content = getGridContent();
 
-    assert.strictEqual(getActiveScale(), "YEAR");
+    assert.strictEqual(getActiveScale(), "Year");
     assert.strictEqual(content.range, "2018");
     assert.strictEqual(model.data.records.length, 7);
 
@@ -4073,7 +4077,7 @@ QUnit.test("concurrent scale switches return with gantt_unavailability", async (
 
     let content = getGridContent();
 
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.strictEqual(content.range, "December 2018");
     assert.strictEqual(model.data.records.length, 6);
     assert.deepEqual(getCellColorProperties(1, 8), []);
@@ -4086,7 +4090,7 @@ QUnit.test("concurrent scale switches return with gantt_unavailability", async (
 
     content = getGridContent();
 
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.strictEqual(content.range, "December 2018");
     assert.strictEqual(model.data.records.length, 6);
     assert.deepEqual(getCellColorProperties(1, 8), []);
@@ -4098,7 +4102,7 @@ QUnit.test("concurrent scale switches return with gantt_unavailability", async (
 
     content = getGridContent();
 
-    assert.strictEqual(getActiveScale(), "YEAR");
+    assert.strictEqual(getActiveScale(), "Year");
     assert.strictEqual(content.range, "2018");
     assert.strictEqual(model.data.records.length, 7);
     assert.deepEqual(getCellColorProperties(1, 8), ["--Gantt__DayOff-background-color"]);
@@ -4109,7 +4113,7 @@ QUnit.test("concurrent scale switches return with gantt_unavailability", async (
 
     content = getGridContent();
 
-    assert.strictEqual(getActiveScale(), "YEAR");
+    assert.strictEqual(getActiveScale(), "Year");
     assert.strictEqual(content.range, "2018");
     assert.strictEqual(model.data.records.length, 7);
     assert.deepEqual(getCellColorProperties(1, 8), ["--Gantt__DayOff-background-color"]);
@@ -4135,7 +4139,7 @@ QUnit.test("concurrent focusDate selections", async (assert) => {
 
     let content = getGridContent();
 
-    assert.strictEqual(getActiveScale(), "MONTH");
+    assert.strictEqual(getActiveScale(), "Month");
     assert.strictEqual(content.range, "December 2018");
 
     reloadProm = makeDeferred();
@@ -4201,7 +4205,7 @@ QUnit.test("concurrent pill resize and groupBy change", async (assert) => {
 
     assert.verifySteps([JSON.stringify(["write", [[2], { stop: "2018-12-21 06:29:59" }]])]);
 
-    await toggleGroupByMenu(target);
+    await toggleSearchBarMenu(target);
     await toggleMenuItem(target, "Project");
 
     assert.verifySteps([
@@ -4626,7 +4630,7 @@ QUnit.test("plan dialog initial domain has the action domain as its only base", 
     await doAction(webClient, ganttAction);
     assert.verifySteps(["&,start,<=,2018-12-31 22:59:59,stop,>=,2018-11-30 23:00:00"]);
 
-    await toggleFilterMenu(target);
+    await toggleSearchBarMenu(target);
     await toggleMenuItem(target, "Project 1");
     assert.verifySteps([
         "&,project_id,=,1,&,start,<=,2018-12-31 22:59:59,stop,>=,2018-11-30 23:00:00",

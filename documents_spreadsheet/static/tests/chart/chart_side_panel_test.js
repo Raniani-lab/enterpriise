@@ -5,18 +5,18 @@ import { createBasicChart } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromGraphView, openChartSidePanel } from "../utils/chart_helpers";
 import { patch, unpatch } from "@web/core/utils/patch";
-import { GraphController } from "@web/views/graph/graph_controller";
+import { GraphRenderer } from "@web/views/graph/graph_renderer";
 import { patchGraphSpreadsheet } from "@spreadsheet_edition/assets/graph_view/graph_view";
 import { fakeCookieService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
 
 function beforeEach() {
-    patch(GraphController.prototype, "graph_spreadsheet", patchGraphSpreadsheet);
+    patch(GraphRenderer.prototype, "graph_spreadsheet", patchGraphSpreadsheet);
     registry.category("services").add("cookie", fakeCookieService);
 }
 
 function afterEach() {
-    unpatch(GraphController.prototype, "graph_spreadsheet");
+    unpatch(GraphRenderer.prototype, "graph_spreadsheet");
 }
 
 QUnit.module("documents_spreadsheet > chart side panel", { beforeEach, afterEach }, () => {

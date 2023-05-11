@@ -13,13 +13,7 @@ import {
     patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
-import {
-    toggleFavoriteMenu,
-    toggleFilterMenu,
-    toggleGroupByMenu,
-    toggleMenu,
-    toggleMenuItem,
-} from "@web/../tests/search/helpers";
+import { toggleSearchBarMenu, toggleMenu, toggleMenuItem } from "@web/../tests/search/helpers";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { registry } from "@web/core/registry";
@@ -68,7 +62,10 @@ async function insertInSpreadsheetAndClickLink(target) {
             this.hoveredCell = { col: 0, row: 0 };
         },
     });
-    await click(target, ".o_favorite_menu button");
+    // Open search bar menu if it is not already
+    if (!target.querySelector(".o_search_bar_menu")) {
+        await toggleSearchBarMenu(target);
+    }
     await click(target, ".o_insert_action_spreadsheet_menu");
     await click(document, ".modal-footer button.btn-primary");
     await nextTick();
@@ -158,12 +155,11 @@ QUnit.module(
             });
 
             // add a domain
-            await toggleFilterMenu(target);
-            await toggleMenuItem(target, 0);
+            await toggleSearchBarMenu(target);
+            await toggleMenuItem(target.querySelector(".o_filter_menu"), 0);
 
             // group by name
-            await toggleGroupByMenu(target);
-            await toggleMenuItem(target, 0);
+            await toggleMenuItem(target.querySelector(".o_group_by_menu"), 0);
 
             await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "list");
@@ -189,7 +185,7 @@ QUnit.module(
                 },
             });
             await loadJS("/web/static/lib/Chart/Chart.js");
-            await toggleFavoriteMenu(target);
+            await toggleSearchBarMenu(target);
             await click(target, ".o_insert_action_spreadsheet_menu");
             await triggerEvent(target, ".o-sp-dialog-item div[data-id='1']", "focus");
             await click(target, ".modal-footer button.btn-primary");
@@ -207,14 +203,14 @@ QUnit.module(
             });
             await loadJS("/web/static/lib/Chart/Chart.js");
             assert.containsNone(target, ".o_spreadsheet_action");
-            await toggleFavoriteMenu(target);
+            await toggleSearchBarMenu(target);
             await click(target, ".o_insert_action_spreadsheet_menu");
             await click(target, ".modal-footer button.btn-primary");
             await nextTick();
             assert.verifySteps(["spreadsheet-created"]);
             assert.containsOnce(target, ".o_spreadsheet_action");
             assert.strictEqual(
-                target.querySelector(".breadcrumb .o_spreadsheet_name input").value,
+                target.querySelector(".o_breadcrumb .o_spreadsheet_name input").value,
                 "Untitled spreadsheet"
             );
         });
@@ -270,7 +266,7 @@ QUnit.module(
             const webClient = await openView("pivot");
 
             // group by name
-            await toggleGroupByMenu(target);
+            await toggleSearchBarMenu(target);
             await toggleMenuItem(target, "name");
 
             // add count measure

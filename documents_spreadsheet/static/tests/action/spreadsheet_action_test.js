@@ -49,7 +49,7 @@ QUnit.module(
         });
 
         QUnit.test("breadcrumb is rendered in control panel", async function (assert) {
-            assert.expect(4);
+            assert.expect(3);
 
             const actions = {
                 1: {
@@ -78,25 +78,20 @@ QUnit.module(
                     spreadsheet_id: 1,
                 },
             });
-            const breadcrumbItems = $(target).find(".breadcrumb-item");
-            assert.equal(
-                breadcrumbItems[0].querySelector("a").innerText,
+            assert.strictEqual(
+                target.querySelector("ol.breadcrumb").textContent,
                 "Documents",
                 "It should display the breadcrumb"
             );
-            assert.equal(
-                breadcrumbItems[1].querySelector("input").value,
+            assert.strictEqual(
+                target.querySelector(".o_breadcrumb input").value,
                 "My spreadsheet",
                 "It should display the spreadsheet title"
             );
-            assert.ok(
-                breadcrumbItems[1].querySelector(".o_spreadsheet_favorite"),
+            assert.containsOnce(
+                target,
+                ".o_breadcrumb .o_spreadsheet_favorite",
                 "It should display the favorite toggle button"
-            );
-            assert.equal(
-                breadcrumbItems.length,
-                2,
-                "The breadcrumb should only contain two list items"
             );
         });
 

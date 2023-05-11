@@ -13,7 +13,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         // Open the widget. The first line should be selected by default.
         {
             content: "Open the bank reconciliation widget",
-            extra_trigger: ".breadcrumb",
+            extra_trigger: ".o_breadcrumb",
             trigger: "button.btn-primary[name='action_open_reconcile']",
         },
         {
@@ -40,7 +40,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         {
             content: "Breadcrumb back to Bank Reconciliation from INV/2019/00002",
             trigger: ".breadcrumb-item:contains('Bank Reconciliation')",
-            extra_trigger: ".breadcrumb-item:contains('INV/2019/00002')",
+            extra_trigger: ".o_breadcrumb .active:contains('INV/2019/00002')",
             run: "click"
         },
         {
@@ -103,7 +103,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         {
             content: "Breadcrumb back to Bank Reconciliation from INV/2019/00001",
             trigger: ".breadcrumb-item:contains('Bank Reconciliation')",
-            extra_trigger: ".breadcrumb-item:contains('INV/2019/00001')",
+            extra_trigger: ".o_breadcrumb .active:contains('INV/2019/00001')",
         },
         {
             content: "Check INV/2019/00001 is selected and still contains the search facet",
@@ -173,7 +173,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "AML Search Filter has been reset",
-            trigger: ".o_list_view .o_facet_value:last-child:contains('Customer/Vendor')",
+            trigger: ".o_list_view .o_facet_value:contains('Customer/Vendor')",
             run: () => {},
         },
         // Test statement line selection when using the pager
@@ -244,7 +244,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         {
             content: "Breadcrumb back to Bank Reconciliation from INV/2019/00003",
             trigger: ".breadcrumb-item:contains('Bank Reconciliation')",
-            extra_trigger: ".breadcrumb-item:contains('INV/2019/00003')",
+            extra_trigger: ".o_breadcrumb .active:contains('INV/2019/00003')",
         },
         {
             content: "Select the mounted invoice line INV/2019/00003",
@@ -394,10 +394,15 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
             extra_trigger: ".o_data_row:contains('line2'):has(.btn-secondary:contains('View'))",
             trigger: ".btn-secondary:contains('Match')",
         },
+        {
+            content: "Open search bar menu",
+            extra_trigger: ".o_bank_rec_stats_buttons",
+            trigger: ".o_searchview_dropdown_toggler:nth(0)",
+        },
         // Test Reco Model
         {
             content: "Choose a filter",
-            extra_trigger: ".o_bank_rec_st_line:contains('line3')",
+            extra_trigger: ".o_cp_searchview .o-dropdown--menu.o_search_bar_menu",
             trigger: ".o_filter_menu:first() i",
         },
         {
@@ -437,7 +442,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "Breadcrumb back to Bank Reconciliation from the model",
-            extra_trigger: ".breadcrumb-item:contains('New')",
+            extra_trigger: ".o_breadcrumb .active > span:contains('New')",
             trigger: ".breadcrumb-item:contains('Bank Reconciliation')",
         },
         {
@@ -496,6 +501,11 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
             trigger: "button[name='button_reset']"
         },
         {
+            content: "Open search bar menu",
+            extra_trigger: ".o_bank_rec_stats_buttons",
+            trigger: ".o_searchview_dropdown_toggler:nth(0)",
+        },
+        {
             content: "Filter Menu",
             extra_trigger: "button[name='button_validate']",
             trigger: ".o_filter_menu:first() i",
@@ -534,7 +544,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         ),
         {
             content: "Open the bank reconciliation widget for Bank2",
-            extra_trigger: ".breadcrumb",
+            extra_trigger: ".o_breadcrumb",
             trigger: "button.btn-primary[name='action_open_reconcile']:last()",
         },
         {

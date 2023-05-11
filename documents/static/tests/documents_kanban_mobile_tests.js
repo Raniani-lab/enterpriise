@@ -72,7 +72,7 @@ QUnit.module("documents", {}, function () {
         function () {
             QUnit.module("DocumentsKanbanViewMobile", function () {
                 QUnit.test("basic rendering on mobile", async function (assert) {
-                    assert.expect(12);
+                    assert.expect(11);
 
                     const pyEnv = await startServer();
                     pyEnv["documents.folder"].create({
@@ -110,11 +110,6 @@ QUnit.module("documents", {}, function () {
 
                     const controlPanelButtons = target.querySelector(
                         ".o_control_panel .o_cp_buttons"
-                    );
-                    assert.containsOnce(
-                        controlPanelButtons,
-                        "> .dropdown",
-                        "should group ControlPanel's buttons into a dropdown"
                     );
                     assert.containsNone(
                         controlPanelButtons,
@@ -306,7 +301,7 @@ QUnit.module("documents", {}, function () {
 
             QUnit.module("DocumentsListViewMobile", function () {
                 QUnit.test("basic rendering on mobile", async function (assert) {
-                    assert.expect(12);
+                    assert.expect(11);
 
                     const pyEnv = await startServer();
                     pyEnv["documents.folder"].create({
@@ -338,11 +333,6 @@ QUnit.module("documents", {}, function () {
 
                     const controlPanelButtons = target.querySelector(
                         ".o_control_panel .o_cp_buttons"
-                    );
-                    assert.containsOnce(
-                        controlPanelButtons,
-                        "> .dropdown",
-                        "should group ControlPanel's buttons into a dropdown"
                     );
                     assert.containsNone(
                         controlPanelButtons,

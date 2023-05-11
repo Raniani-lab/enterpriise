@@ -127,7 +127,7 @@ QUnit.module("Views", (hooks) => {
             groupBy: ["resource_id"],
         });
 
-        await click(target.querySelector(".o_gantt_button_send_all"));
+        await click(target.querySelector(".o_gantt_button_send_all.btn-primary"));
     });
 
     QUnit.test("empty gantt view with sample data: send schedule", async function (assert) {
@@ -161,7 +161,7 @@ QUnit.module("Views", (hooks) => {
         assert.hasClass(target.querySelector(".o_gantt_view .o_content"), "o_view_sample_data");
         assert.ok(target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_header").length >= 2);
 
-        await click(target.querySelector(".o_gantt_button_send_all"));
+        await click(target.querySelector(".o_gantt_button_send_all.btn-primary"));
     });
 
     QUnit.test('add record in empty gantt with sample="1"', async function (assert) {
@@ -238,7 +238,7 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await click(target, ".o_gantt_button_add");
+        await click(target, ".d-xl-inline-flex .o_gantt_button_add.btn-primary");
         // check that the dialog is opened with prefilled fields
         assert.containsOnce(target, ".modal");
         assert.strictEqual(

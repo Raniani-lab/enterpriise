@@ -92,7 +92,7 @@ QUnit.test("Attachment on side", async (assert) => {
     assert.containsOnce($, ".o-mail-Attachment-imgContainer > img");
     assert.containsOnce($, ".o_form_sheet_bg > .o-mail-Form-chatter");
     assert.doesNotHaveClass($(".o-mail-Form-chatter"), "o-aside");
-    assert.containsOnce($, ".o_form_view_container + .o_attachment_preview");
+    assert.containsOnce($, ".o_form_sheet_bg + .o_attachment_preview");
 
     // Don't display arrow if there is no previous/next element
     assert.containsNone($, ".arrow");
@@ -207,7 +207,7 @@ QUnit.test("Attachment on side on new record", async (assert) => {
         waitUntilMessagesLoaded: false,
     });
     assert.containsNone($, ".o_attachment_preview");
-    assert.containsOnce($, ".o_form_view_container + .o-mail-Form-chatter");
+    assert.containsOnce($, ".o_form_sheet_bg + .o-mail-Form-chatter");
 });
 
 QUnit.test("Attachment on side not displayed on smaller screens", async (assert) => {

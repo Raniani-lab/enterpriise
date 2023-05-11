@@ -119,13 +119,13 @@ QUnit.module("Planning.planning_calendar_tests", ({ beforeEach }) => {
             },
         });
 
-        await click(target.querySelector(".o_button_copy_previous_week"));
+        await click(target.querySelector(".o_control_panel_main_buttons .d-none.d-xl-inline-flex .o_button_copy_previous_week"));
         assert.verifySteps(["copy_previous_week()"], "verify action_copy_previous_week() invoked.");
 
         // deselect "Maganlal" from Assigned to
         await click(target.querySelector(".o_calendar_filter_item[data-value='2'] > input"));
         assert.containsN(target, ".fc-event", 1, "should display 1 events on the week");
 
-        await click(target.querySelector(".o_button_send_all"));
+        await click(target.querySelector(".o_control_panel_main_buttons .d-none.d-xl-inline-flex .o_button_send_all"));
     });
 });

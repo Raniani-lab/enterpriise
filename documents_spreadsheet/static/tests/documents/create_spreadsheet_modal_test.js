@@ -155,13 +155,17 @@ QUnit.module(
     () => {
         QUnit.test("Create spreadsheet from kanban view opens a modal", async function (assert) {
             await initTestEnvWithKanban();
-            await click(target, ".o_documents_kanban_spreadsheet");
-            assert.ok(
-                $(".o-spreadsheet-templates-dialog").length,
+            const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
+            assert.containsOnce(
+                target,
+                ".o-spreadsheet-templates-dialog",
                 "should have opened the template modal"
             );
-            assert.ok(
-                $(".o-spreadsheet-templates-dialog .modal-body .o_searchview").length,
+            assert.containsOnce(
+                target,
+                ".o-spreadsheet-templates-dialog .modal-body .o_searchview",
                 "The Modal should have a search view"
             );
         });
@@ -176,20 +180,26 @@ QUnit.module(
                 res_model: "documents.document",
                 views: [[false, "list"]],
             });
-            await click(target, ".o_documents_kanban_spreadsheet");
-            assert.ok(
-                $(".o-spreadsheet-templates-dialog").length,
+            const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
+            assert.containsOnce(
+                target,
+                ".o-spreadsheet-templates-dialog",
                 "should have opened the template modal"
             );
-            assert.ok(
-                $(".o-spreadsheet-templates-dialog .modal-body .o_searchview").length,
+            assert.containsOnce(
+                target,
+                ".o-spreadsheet-templates-dialog .modal-body .o_searchview",
                 "The Modal should have a search view"
             );
         });
 
         QUnit.test("Can search template in modal with searchbar", async function (assert) {
             await initTestEnvWithKanban();
-            await click(target, ".o_documents_kanban_spreadsheet");
+            const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
             const dialog = target.querySelector(".o-spreadsheet-templates-dialog");
             assert.equal(
                 dialog.querySelectorAll(".o-template:not(.o-template-ghost-item)").length,
@@ -226,7 +236,9 @@ QUnit.module(
             };
             await initTestEnvWithKanban({ additionalTemplates: TEST_TEMPLATES, mockRPC });
 
-            await click(target, ".o_documents_kanban_spreadsheet");
+            const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
             const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
 
             assert.equal(
@@ -241,7 +253,9 @@ QUnit.module(
             assert.expect(2);
             await initTestEnvWithKanban({ additionalTemplates: TEST_TEMPLATES });
             // open template dialog
-            await click(target, ".o_documents_kanban_spreadsheet");
+            const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
             const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
 
             // select template
@@ -274,7 +288,9 @@ QUnit.module(
             mockActionService(env, mockDoAction);
 
             // ### With confirm button
-            await click(target, ".o_documents_kanban_spreadsheet");
+            const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
             let dialog = document.querySelector(".o-spreadsheet-templates-dialog");
             // select blank spreadsheet
             await triggerEvent(dialog.querySelectorAll(".o-template-image")[0], null, "focus");
@@ -282,7 +298,8 @@ QUnit.module(
             assert.verifySteps(["action_open_new_spreadsheet", "redirect"]);
 
             // ### With double click on image
-            await click(target, ".o_documents_kanban_spreadsheet");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
             dialog = document.querySelector(".o-spreadsheet-templates-dialog");
             await triggerEvent(dialog.querySelectorAll(".o-template-image")[0], null, "focus");
             await triggerEvent(dialog.querySelectorAll(".o-template-image")[0], null, "dblclick");
@@ -317,7 +334,9 @@ QUnit.module(
                 views: [[false, "kanban"]],
             });
 
-            await click(target, ".o_documents_kanban_spreadsheet");
+            const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
             const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
             // select blank spreadsheet
             await triggerEvent(dialog.querySelectorAll(".o-template-image")[0], null, "focus");
@@ -350,7 +369,9 @@ QUnit.module(
             mockActionService(env, mockDoAction);
 
             // ### With confirm button
-            await click(target, ".o_documents_kanban_spreadsheet");
+            const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
             let dialog = document.querySelector(".o-spreadsheet-templates-dialog");
             // select blank spreadsheet
             await triggerEvent(dialog.querySelectorAll(".o-template-image")[1], null, "focus");
@@ -358,7 +379,8 @@ QUnit.module(
             assert.verifySteps(["action_create_spreadsheet", "redirect"]);
 
             // ### With double click on image
-            await click(target, ".o_documents_kanban_spreadsheet");
+            await click(menu, ".dropdown-toggle");
+            await click(menu, ".o_documents_kanban_spreadsheet");
             dialog = document.querySelector(".o-spreadsheet-templates-dialog");
             await triggerEvent(dialog.querySelectorAll(".o-template-image")[1], null, "focus");
             await triggerEvent(dialog.querySelectorAll(".o-template-image")[1], null, "dblclick");

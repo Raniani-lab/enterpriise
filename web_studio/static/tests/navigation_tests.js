@@ -10,7 +10,7 @@ import {
 } from "@web/../tests/helpers/utils";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 
-import { toggleFilterMenu, toggleMenuItem } from "@web/../tests/search/helpers";
+import { toggleSearchBarMenu, toggleMenuItem } from "@web/../tests/search/helpers";
 import { companyService } from "@web/webclient/company_service";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
@@ -797,8 +797,7 @@ QUnit.module("Studio", (hooks) => {
         assert.verifySteps([
             `web_search_read: {"limit":40,"offset":0,"order":"","context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"count_limit":10001,"domain":[],"fields":["display_name"]}`,
         ]);
-
-        await toggleFilterMenu(target);
+        await toggleSearchBarMenu(target);
         await toggleMenuItem(target, "Apple");
         assert.verifySteps([
             `web_search_read: {"limit":40,"offset":0,"order":"","context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"count_limit":10001,"domain":[["name","ilike","Apple"]],"fields":["display_name"]}`,

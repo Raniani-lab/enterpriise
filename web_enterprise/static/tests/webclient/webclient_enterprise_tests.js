@@ -102,7 +102,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.isVisible(fixture.querySelector(".o_menu_toggle"));
             assert.containsOnce(fixture, ".o_form_view");
             assert.strictEqual(
-                fixture.querySelector(".breadcrumb-item.active").textContent,
+                fixture.querySelector(".o_breadcrumb .active").textContent,
                 "First record"
             );
         });
@@ -126,10 +126,11 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             ]);
             assert.containsOnce(fixture, ".o_form_view");
             assert.strictEqual(
-                fixture.querySelector(".breadcrumb-item.active").textContent,
+                fixture.querySelector(".o_breadcrumb .active").textContent,
                 "Second record"
             );
-            assert.containsN(fixture, ".breadcrumb-item", 3);
+            // The third one is the active one
+            assert.containsN(fixture, ".breadcrumb-item", 2);
         });
 
         QUnit.test(
@@ -194,10 +195,11 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.containsOnce(fixture, ".o_form_view");
             assert.notOk(menuToggle.classList.contains("o_menu_toggle_back"));
             assert.strictEqual(
-                fixture.querySelector(".breadcrumb-item.active").textContent,
+                fixture.querySelector(".o_breadcrumb .active").textContent,
                 "Second record"
             );
-            assert.containsN(fixture, ".breadcrumb-item", 3);
+            // Third breadcrumb is the active one
+            assert.containsN(fixture, ".breadcrumb-item", 2);
         });
 
         QUnit.test("restore the newly created record in form view", async (assert) => {
@@ -212,7 +214,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await editInput(fixture, ".o_field_widget[name=display_name] input", "red right hand");
             await click(fixture.querySelector(".o_form_button_save"));
             assert.strictEqual(
-                fixture.querySelector(".breadcrumb-item.active").textContent,
+                fixture.querySelector(".o_breadcrumb .active").textContent,
                 "red right hand"
             );
             await click(fixture.querySelector(".o_menu_toggle"));
@@ -226,7 +228,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.containsOnce(fixture, ".o_form_view");
             assert.containsOnce(fixture, ".o_form_view .o_form_saved");
             assert.strictEqual(
-                fixture.querySelector(".breadcrumb-item.active").textContent,
+                fixture.querySelector(".o_breadcrumb .active").textContent,
                 "red right hand"
             );
         });

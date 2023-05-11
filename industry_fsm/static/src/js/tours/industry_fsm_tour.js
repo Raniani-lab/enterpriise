@@ -45,7 +45,7 @@ registry.category("web_tour.tours").add('industry_fsm_tour', {
     position: 'bottom',
 }, {
     trigger: '.o_form_sheet div[name]',
-    extra_trigger: '.o_content:not(:has(button[name="action_fsm_worksheet"]))',
+    extra_trigger: '.o_control_panel:not(:has(button[name="action_fsm_worksheet"]))',
     content: markup(_t('Fill in your <b>worksheet</b> with the details of your intervention.')),
     run: function (actions) {
         //Manage the text on both htmlElement and others fields as this step is dependent on

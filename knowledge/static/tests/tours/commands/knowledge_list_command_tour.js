@@ -36,7 +36,7 @@ registry.category("web_tour.tours").add('knowledge_list_command_tour', {
     trigger: '.o_knowledge_behavior_type_embedded_view .o_list_renderer',
     run: () => {},
 }, { // verify that the view has the correct name and store data-behavior-props
-    trigger: '.o_knowledge_embedded_view .o_control_panel .breadcrumb-item.active:contains("*()!\'<>~")',
+    trigger: '.o_knowledge_embedded_view .o_control_panel .o_breadcrumb .active:contains("*()!\'<>~")',
     run: () => {
         const embeddedViewElement = document.querySelector('.o_knowledge_behavior_type_embedded_view');
         behaviorProps = decodeDataBehaviorProps(embeddedViewElement.dataset.behaviorProps);
@@ -48,7 +48,7 @@ registry.category("web_tour.tours").add('knowledge_list_command_tour', {
     trigger: '.modal-footer button.btn-primary',
     run: 'click'
 }, { // check that the name is the correct one and compare previous data-behavior-props and the new one (should be equivalent)
-    trigger: '.o_knowledge_embedded_view .o_control_panel .breadcrumb-item.active:contains("*()!\'<>~")',
+    trigger: '.o_knowledge_embedded_view .o_control_panel .o_breadcrumb .active:contains("*()!\'<>~")',
     run: () => {
         const embeddedViewElement = document.querySelector('.o_knowledge_behavior_type_embedded_view');
         const newBehaviorProps = decodeDataBehaviorProps(embeddedViewElement.dataset.behaviorProps);

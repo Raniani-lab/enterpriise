@@ -189,68 +189,58 @@ QUnit.test("Progressbar: grouped row", async (assert) => {
     assert.strictEqual(window.getComputedStyle(progressBar1).height, "36px");
 });
 
-QUnit.test(
-    "horizontal scroll applies only to the content, not to the whole controller [SMALL SCREEN]",
-    async (assert) => {
-        // for this test, we need the elements to be visible in the viewport
-        target = document.body;
-        target.classList.add("debug");
-        registerCleanup(() => target.classList.remove("debug"));
+QUnit.test("horizontal scroll applies to the content [SMALL SCREEN]", async (assert) => {
+    // for this test, we need the elements to be visible in the viewport
+    target = document.body;
+    target.classList.add("debug");
+    registerCleanup(() => target.classList.remove("debug"));
 
-        serverData.views = {
-            "tasks,false,search": `<search/>`,
-            "tasks,false,gantt": `
+    serverData.views = {
+        "tasks,false,search": `<search/>`,
+        "tasks,false,gantt": `
                 <gantt date_start="start" date_stop="stop"><field name="user_id"/></gantt>
             `,
-        };
-        const webclient = await createWebClient({ serverData, target });
-        await doAction(webclient, {
-            res_model: "tasks",
-            type: "ir.actions.act_window",
-            views: [[false, "gantt"]],
-        });
+    };
+    const webclient = await createWebClient({ serverData, target });
+    await doAction(webclient, {
+        res_model: "tasks",
+        type: "ir.actions.act_window",
+        views: [[false, "gantt"]],
+    });
 
-        const o_view_controller = target.querySelector(".o_view_controller");
-        const o_content = target.querySelector(".o_content");
-        const firstHeaderCell = target.querySelector(SELECTORS.headerCell);
-        const todayButton = target.querySelector(SELECTORS.todayButton);
-        const initialXCpBtn = todayButton.getBoundingClientRect().x;
-        const initialXHeaderCell = firstHeaderCell.getBoundingClientRect().x;
+    const o_view_controller = target.querySelector(".o_view_controller");
+    const o_content = target.querySelector(".o_content");
+    const firstHeaderCell = target.querySelector(SELECTORS.headerCell);
+    const initialXHeaderCell = firstHeaderCell.getBoundingClientRect().x;
 
-        assert.hasClass(
-            o_view_controller,
-            "o_action_delegate_scroll",
-            "the 'o_view_controller' should be have the 'o_action_delegate_scroll'."
-        );
-        assert.strictEqual(
-            window.getComputedStyle(o_view_controller).overflow,
-            "hidden",
-            "The view controller should have overflow hidden"
-        );
-        assert.strictEqual(
-            window.getComputedStyle(o_content).overflow,
-            "auto",
-            "The view content should have the overflow auto"
-        );
-        assert.strictEqual(o_content.scrollLeft, 0, "Te o_content should not have scroll value");
+    assert.hasClass(
+        o_view_controller,
+        "o_action_delegate_scroll",
+        "the 'o_view_controller' should be have the 'o_action_delegate_scroll'."
+    );
+    assert.strictEqual(
+        window.getComputedStyle(o_view_controller).overflow,
+        "hidden",
+        "The view controller should have overflow hidden"
+    );
+    assert.strictEqual(
+        window.getComputedStyle(o_content).overflow,
+        "auto",
+        "The view content should have the overflow auto"
+    );
+    assert.strictEqual(o_content.scrollLeft, 0, "Te o_content should not have scroll value");
 
-        // Horizontal scroll
-        o_content.scrollLeft = 100;
-        await nextTick();
+    // Horizontal scroll
+    o_content.scrollLeft = 100;
+    await nextTick();
 
-        assert.strictEqual(
-            o_content.scrollLeft,
-            100,
-            "the o_content should be 100 due to the overflow auto"
-        );
-        assert.ok(
-            firstHeaderCell.getBoundingClientRect().x === initialXHeaderCell - 100,
-            "the gantt header cell x position value should be lower after the scroll"
-        );
-        const diff = Math.abs(initialXCpBtn - todayButton.getBoundingClientRect().x);
-        assert.ok(
-            diff < 1,
-            "the btn x position of the control panel button should be the same after the scroll"
-        );
-    }
-);
+    assert.strictEqual(
+        o_content.scrollLeft,
+        100,
+        "the o_content should be 100 due to the overflow auto"
+    );
+    assert.ok(
+        firstHeaderCell.getBoundingClientRect().x === initialXHeaderCell - 100,
+        "the gantt header cell x position value should be lower after the scroll"
+    );
+});

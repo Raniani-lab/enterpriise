@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
 import { supportedEmbeddedViews } from "@knowledge/components/external_embedded_view_insertion/views_renderers_patches";
@@ -18,13 +19,13 @@ export class InsertEmbeddedViewMenu extends Component {
 
 InsertEmbeddedViewMenu.props = {};
 InsertEmbeddedViewMenu.template = 'knowledge.InsertEmbeddedViewMenu';
-InsertEmbeddedViewMenu.components = { DropdownItem };
+InsertEmbeddedViewMenu.components = { Dropdown, DropdownItem };
 
 cogMenuRegistry.add(
     'insert-embedded-view-menu',
     {
         Component: InsertEmbeddedViewMenu,
-        groupNumber: 1, // arbitrary, to rethink later.
+        groupNumber: 10,
         isDisplayed: (env) => {
             // only support act_window with an id for now, but act_window
             // object could potentially be used too (rework backend API to insert
@@ -33,5 +34,4 @@ cogMenuRegistry.add(
                 supportedEmbeddedViews.has(env.config.viewType);
         },
     },
-    { sequence: 1 } // arbitrary, to rethink later.
 );

@@ -20,6 +20,11 @@ registry.category("web_tour.tours").add('helpdesk_insert_graph_view_in_knowledge
     trigger: '.o_searchview .o_facet_value:contains("Team")',
 }, { // open the cog menu
     trigger: '.o_control_panel .o_cp_action_menus .dropdown-toggle',
+}, { // open the knowledge submenu
+    trigger: ".o_control_panel .o_cp_action_menus .dropdown-toggle:contains(Knowledge)",
+    run: function () {
+        this.$anchor[0].dispatchEvent(new MouseEvent("mouseenter"));
+    },
 }, { // insert the view in an article
     trigger: '.o_cp_action_menus .dropdown-item:contains("Insert view in article")',
 }, { // create a new article

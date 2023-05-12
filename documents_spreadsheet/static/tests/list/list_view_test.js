@@ -11,7 +11,7 @@ import { toggleActionMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { ListRenderer } from "@web/views/list/list_renderer";
-import { createSpreadsheetFromListView } from "../utils/list_helpers";
+import { createSpreadsheetFromListView, toggleCogMenuSpreadsheet } from "../utils/list_helpers";
 import { dom } from "web.test_utils";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { session } from "@web/session";
@@ -192,6 +192,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         });
         const target = getFixture();
         await toggleActionMenu(target);
+        await toggleCogMenuSpreadsheet(target);
         await click(target, ".o_insert_list_spreadsheet_menu");
         await click(target, ".modal button.btn-primary");
     });

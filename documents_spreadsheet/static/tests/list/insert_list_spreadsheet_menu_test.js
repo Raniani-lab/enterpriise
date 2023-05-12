@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { spawnListViewForSpreadsheet } from "../utils/list_helpers";
+import { spawnListViewForSpreadsheet, toggleCogMenuSpreadsheet } from "../utils/list_helpers";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 import {
@@ -37,6 +37,7 @@ QUnit.module(
             });
 
             await toggleActionMenu(target);
+            await toggleCogMenuSpreadsheet(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             await click(target, ".modal button.btn-primary");
             await nextTick();
@@ -62,6 +63,7 @@ QUnit.module(
             });
 
             await toggleActionMenu(target);
+            await toggleCogMenuSpreadsheet(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             await triggerEvent(target, ".o-sp-dialog-item div[data-id='1']", "focus");
             await click(target, ".modal button.btn-primary");
@@ -86,6 +88,7 @@ QUnit.module(
                 },
             });
             await toggleActionMenu(target);
+            await toggleCogMenuSpreadsheet(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             /** @type {HTMLInputElement} */
             const name = target.querySelector(".o_spreadsheet_name");
@@ -103,6 +106,7 @@ QUnit.module(
             await spawnListViewForSpreadsheet();
 
             await toggleActionMenu(target);
+            await toggleCogMenuSpreadsheet(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             assert.strictEqual(target.querySelector(".o_spreadsheet_name").value, "Partners");
         });
@@ -114,6 +118,7 @@ QUnit.module(
             });
 
             await toggleActionMenu(target);
+            await toggleCogMenuSpreadsheet(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             assert.strictEqual(
                 target.querySelector(".o_spreadsheet_name").value,
@@ -132,6 +137,7 @@ QUnit.module(
                 },
             });
             await toggleActionMenu(target);
+            await toggleCogMenuSpreadsheet(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             target.querySelector(".o_spreadsheet_name").value = "";
             await click(target, ".modal button.btn-primary");

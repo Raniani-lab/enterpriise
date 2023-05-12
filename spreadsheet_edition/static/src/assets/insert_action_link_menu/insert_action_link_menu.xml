@@ -3,7 +3,7 @@
 
     <t t-name="spreadsheet_edition.InsertActionSpreadsheet" owl="1">
         <DropdownItem class="'o_insert_action_spreadsheet_menu'" onSelected.bind="linkInSpreadsheet" parentClosingMode="'none'">
-            Link menu in spreadsheet
+            <i class="fa fa-fw fa-link me-1"/>Link menu in spreadsheet
         </DropdownItem>
     </t>
 

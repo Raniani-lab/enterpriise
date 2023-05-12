@@ -7,8 +7,9 @@ import {
     getFixture,
     makeDeferred,
     triggerEvent,
+    mouseEnter,
 } from "@web/../tests/helpers/utils";
-import { toggleActionMenu } from "@web/../tests/search/helpers";
+import { toggleActionMenu, findItem } from "@web/../tests/search/helpers";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import {
     getSpreadsheetActionEnv,
@@ -19,6 +20,7 @@ import { SpreadsheetAction } from "../../src/bundle/actions/spreadsheet_action";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 import { registry } from "@web/core/registry";
 import { fieldService } from "@web/core/field_service";
+import { browser } from "@web/core/browser/browser";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
@@ -94,6 +96,7 @@ export async function createSpreadsheetFromListView(params = {}) {
     const target = getFixture();
     /** Put the current list in a new spreadsheet */
     await toggleActionMenu(target);
+    await toggleCogMenuSpreadsheet(target);
     await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
     /** @type {HTMLInputElement} */
     const input = target.querySelector(`.o-sp-dialog-meta-threshold-input`);
@@ -108,4 +111,17 @@ export async function createSpreadsheetFromListView(params = {}) {
         model,
         env: getSpreadsheetActionEnv(spreadsheetAction),
     };
+}
+
+/**
+ * Toggle the CogMenu's Spreadsheet sub-dropdown
+ *
+ * @param {EventTarget} el
+ * @returns Promise
+ */
+export async function toggleCogMenuSpreadsheet(el) {
+    patchWithCleanup(browser, {
+        setTimeout: (fn) => fn(),
+    });
+    return mouseEnter(findItem(el, ".o_cp_action_menus .dropdown-toggle", "Spreadsheet"));
 }

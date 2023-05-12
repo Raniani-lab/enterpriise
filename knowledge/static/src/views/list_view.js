@@ -21,8 +21,9 @@ export class KnowledgeArticleController extends ListController {
     getStaticActionMenuItems() {
         const menuItems = super.getStaticActionMenuItems();
         menuItems.duplicate = {
-            isAvailable: () => this.userService.isAdmin,
+            isAvailable: () => this.nbSelected && this.userService.isAdmin,
             sequence: 15,
+            icon: "fa fa-clone",
             description: this.env._t("Duplicate"),
             callback: async () => {
                 const selectedResIds = await this.getSelectedResIds();

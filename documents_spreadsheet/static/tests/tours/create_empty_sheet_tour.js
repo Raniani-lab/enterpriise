@@ -68,6 +68,12 @@ registry.category("web_tour.tours").add("spreadsheet_create_list_view", {
             run: "click",
         },
         {
+            trigger: ".o_control_panel .o_cp_action_menus .dropdown-toggle:contains(Spreadsheet)",
+            run: function () {
+                this.$anchor[0].dispatchEvent(new MouseEvent("mouseenter"));
+            },
+        },
+        {
             trigger: ".o_insert_list_spreadsheet_menu",
             content: "Insert in spreadsheet",
             run: "click",

@@ -1,13 +1,10 @@
 /** @odoo-module **/
 
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
-import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 
-
 import { Component } from "@odoo/owl";
-const cogMenuRegistry = registry.category("cogMenu");
 
 /**
  * Insert a link to a view in spreadsheet
@@ -59,14 +56,3 @@ export class InsertViewSpreadsheet extends Component {
 InsertViewSpreadsheet.props = {};
 InsertViewSpreadsheet.template = "spreadsheet_edition.InsertActionSpreadsheet";
 InsertViewSpreadsheet.components = { DropdownItem };
-
-cogMenuRegistry.add(
-    "insert-action-link-in-spreadsheet",
-    {
-        Component: InsertViewSpreadsheet,
-        groupNumber: 4,
-        isDisplayed: ({ config, isSmall }) =>
-            !isSmall && config.actionType === "ir.actions.act_window" && config.viewType !== "form",
-    },
-    { sequence: 1 }
-);

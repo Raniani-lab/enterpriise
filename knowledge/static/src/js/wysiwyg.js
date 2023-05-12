@@ -3,6 +3,7 @@
 import { Component } from '@odoo/owl';
 import { qweb as QWeb, _t } from 'web.core';
 import Wysiwyg from 'web_editor.wysiwyg';
+import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
 import { PromptEmbeddedViewNameDialog } from '@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog';
 import {
     preserveCursor,
@@ -198,6 +199,14 @@ Wysiwyg.include({
                     }, restoreSelection);
                 }
             }, {
+                category: _t('Knowledge Databases'),
+                name: _t('Item Calendar'),
+                priority: 29,
+                description: _t('Insert a Calendar view of article items'),
+                fontawesome: 'fa-calendar-plus-o',
+                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                callback: this._insertItemCalendar.bind(this),
+            }, {
                 category: _t('Knowledge'),
                 name: _t('Index'),
                 priority: 60,
@@ -292,13 +301,15 @@ Wysiwyg.include({
      *                   to insert the embedded view where the user typed the
      *                   command.
      * @param {Object} context - Context
+     * @param {Object} additionalProps - props to pass to the view when loading
+     *                 it.
      */
-    _insertEmbeddedView: async function (actWindowId, viewType, name, restoreSelection, context={}) {
+    _insertEmbeddedView: async function (actWindowId, viewType, name, restoreSelection, context={}, additionalViewProps={}) {
         context.knowledge_embedded_view_framework = 'owl';
         const embeddedViewBlock = $(await this._rpc({
             model: 'knowledge.article',
             method: 'render_embedded_view',
-            args: [[this.options.recordInfo.res_id], actWindowId, viewType, name, context],
+            args: [[this.options.recordInfo.res_id], actWindowId, viewType, name, context, additionalViewProps],
         }))[0];
         this._notifyNewBehavior(embeddedViewBlock, restoreSelection);
     },
@@ -379,4 +390,27 @@ Wysiwyg.include({
             onClose: onClose || (() => {}),
         });
     },
+
+    /**
+     * Inserts an item calendar view
+     */
+    _insertItemCalendar: function () {
+        const restoreSelection = preserveCursor(this.odooEditor.document);
+        // Shows a dialog allowing the user to set the itemCalendarProps
+        // (properties used by the itemCalendar view)
+        Component.env.services.dialog.add(ItemCalendarPropsDialog, {
+            isNew: true,
+            knowledgeArticleId: this.options.recordInfo.res_id,
+            saveItemCalendarProps: (name, itemCalendarProps) => {
+                this._insertEmbeddedView('knowledge.knowledge_article_action_item_calendar', 'calendar', name, restoreSelection, {
+                    active_id: this.options.recordInfo.res_id,
+                    default_parent_id: this.options.recordInfo.res_id,
+                    default_icon: '📄',
+                    default_is_article_item: true,
+                }, {
+                    itemCalendarProps,
+                });
+            }
+        });
+    }
 });

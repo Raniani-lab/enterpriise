@@ -5,4 +5,4 @@
             <div class="d-none o_knowledge_behavior_handler" t-ref="behaviorHandler"/>
         </xpath>
     </t>
-</template>
+</templates>

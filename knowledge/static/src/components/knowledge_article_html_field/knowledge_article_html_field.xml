@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="knowledge.KnowledgeArticleHtmlField" t-inherit="web_editor.HtmlField" t-inherit-mode="primary" owl="1">
@@ -17,6 +16,9 @@
                     </a>
                     <a href="#" class="o_knowledge_add_item_list p-2" data-hotkey="L" t-on-click="onBuildItemListBtnClick">
                         <i class="fa fa-lg fa-th-list me-1"/> Build an Item List
+                    </a>
+                    <a href="#" class="o_knowledge_add_item_calendar p-2" data-hotkey="C" t-on-click="onBuildItemCalendarBtnClick">
+                        <i class="fa fa-lg fa-calendar me-1"/> Build an Item Calendar
                     </a>
                 </div>
             </div>

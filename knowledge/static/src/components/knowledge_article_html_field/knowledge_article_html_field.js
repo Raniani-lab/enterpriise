@@ -5,6 +5,7 @@ import { ArticleTemplatePickerDialog } from "@knowledge/components/article_templ
 import { encodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 import { getWysiwygClass } from "web_editor.loader";
 import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
+import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
 import { onWillUpdateProps } from "@odoo/owl";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { registry } from "@web/core/registry";
@@ -18,6 +19,7 @@ import { useService } from "@web/core/utils/hooks";
  * - Load a Template
  * - Build an Item Kanban
  * - Build an Item List
+ * - Build an Item Calendar
  */
 export class KnowledgeArticleHtmlField extends HtmlField {
     static template = "knowledge.KnowledgeArticleHtmlField";
@@ -82,6 +84,34 @@ export class KnowledgeArticleHtmlField extends HtmlField {
                     additionalContext: {
                         res_id: this.props.record.resId
                     }
+                });
+            }
+        });
+    }
+
+    onBuildItemCalendarBtnClick() {
+        this.dialogService.add(ItemCalendarPropsDialog, {
+            isNew: true,
+            knowledgeArticleId: this.props.record.resId,
+            saveItemCalendarProps: async (name, itemCalendarProps) => {
+                const title = name ? sprintf(_t("Calendar of %s"), name) : _t("Calendar of Article Items");
+                const behaviorProps = {
+                    action_xml_id: "knowledge.knowledge_article_action_item_calendar",
+                    display_name: title,
+                    view_type: "calendar",
+                    context: {
+                        active_id: this.props.record.resId,
+                        default_parent_id: this.props.record.resId,
+                        default_is_article_item: true,
+                    },
+                    additionalViewProps: { itemCalendarProps },
+                };
+                const body = QWeb.render("knowledge.article_item_template", {
+                    behaviorProps: encodeDataBehaviorProps(behaviorProps),
+                    title: name
+                });
+                this.updateArticle(name, body, {
+                    full_width: true
                 });
             }
         });

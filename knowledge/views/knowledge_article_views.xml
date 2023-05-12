@@ -311,6 +311,21 @@
         </field>
     </record>
 
+    <!-- To be used only for embedded article items, do not use it in standard
+    actions (see knowledge_article_action_item_calendar) --> 
+    <record id="knowledge_article_view_calendar_items" model="ir.ui.view">
+        <field name="name">knowledge.article.view.calendar.embedded</field>
+        <field name="model">knowledge.article</field>
+        <field name="arch" type="xml">
+            <!-- date_start has a dummy value because the attribute is required
+            but it will not be used: the itemCalendarController will overwrite
+            it in onWillStartModel using the property selected by the user -->
+            <calendar js_class="knowledge_article_view_calendar_embedded" string="Items" date_start="article_properties">
+                <field name="article_properties" widget="kanban.properties"/>
+            </calendar>
+        </field>
+    </record>
+
     <record id="knowledge_article_view_search" model="ir.ui.view">
         <field name="name">knowledge.article.view.search</field>
         <field name="model">knowledge.article</field>
@@ -422,6 +437,29 @@
         <field name="view_mode">tree</field>
         <field name="view_id" ref="knowledge_article_view_tree_items"/>
         <field name="act_window_id" ref="knowledge_article_item_action"/>
+    </record>
+
+    <!-- Action window for article items calendar (different from other item
+    views as we do not want to be able to switch from other views to calendar,
+    and vice versa, as the calendar absolutely needs some props from the
+    behaviorProps to work) -->
+    <record id="knowledge_article_action_item_calendar" model="ir.actions.act_window">
+        <field name="name">Article Items</field>
+        <field name="res_model">knowledge.article</field>
+        <field name="view_mode">calendar</field>
+        <field name="domain">[('parent_id', '=', active_id), ('is_article_item', '=', True)]</field>
+        <field name="search_view_id" ref="knowledge_article_view_search_items"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new article item
+            </p>
+        </field>
+    </record>
+
+    <record id="knowledge_article_view_item_calendar" model="ir.actions.act_window.view">
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="knowledge_article_view_calendar_items"/>
+        <field name="act_window_id" ref="knowledge_article_action_item_calendar"/>
     </record>
 
     <record id="knowledge_article_item_action_stages" model="ir.actions.act_window">

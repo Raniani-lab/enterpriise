@@ -29,6 +29,11 @@
             border: 0;
         }
         .o_field_one2many.o_sign_flat_o2m {
+            thead {
+                &::after {
+                    display: none;
+                }
+            }
             table {
                 border-collapse: initial;
                 border: none;
@@ -42,7 +47,6 @@
             }
             th {
                 border-bottom: none !important;
-                width: auto !important;
             }
             tbody > tr {
                 border: none;

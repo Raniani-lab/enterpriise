@@ -12,15 +12,23 @@ from odoo.tools import mute_logger
 class TestDocumentsRoutes(HttpCase):
     def setUp(self):
         super().setUp()
-        self.folder_a = self.env['documents.folder'].create({
-            'name': 'folder A',
-        })
+        self.folder_a, self.folder_b = self.env['documents.folder'].create([
+            {'name': 'folder A'},
+            {'name': 'folder B'},
+        ])
         self.document_txt = self.env['documents.document'].create({
             'raw': b'TEST',
             'name': 'file.txt',
             'mimetype': 'text/plain',
             'folder_id': self.folder_a.id,
         })
+        self.share_folder_b = self.env['documents.share'].create(
+            {
+                'folder_id': self.folder_b.id,
+                'type': 'domain',
+                'action': 'downloadupload',
+            }
+        )
 
     def test_documents_content(self):
         self.authenticate('admin', 'admin')
@@ -161,3 +169,33 @@ class TestDocumentsRoutes(HttpCase):
         share = self.env['documents.share'].create(vals)
         response = self.url_open(f"/document/download/all/{share.id}/{share.access_token}")
         self.assertEqual(response.status_code, 200)
+
+    def test_upload_attachment_public(self):
+        """Check the upload and notifications for public users."""
+        files = [('files', ('test.txt', b'test', 'plain/text'))]
+        response = self.url_open(
+            f'/document/upload/{self.share_folder_b.id}/{self.share_folder_b.access_token}', files=files
+        )
+        document = self.env['documents.document'].search([('folder_id', '=', self.folder_b.id)])
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(document), 1)
+        self.assertEqual(document.name, 'test.txt')
+        self.assertEqual(document.raw, b'test')
+        self.assertEqual(document.mimetype, 'plain/text')
+
+        file_uploaded_note = document.message_ids[0]
+        self.assertEqual(file_uploaded_note.author_id, self.share_folder_b.create_uid.partner_id)
+        self.assertIn('<b>File uploaded by:</b> Public user <br>', file_uploaded_note.body)
+        self.assertIn(f'<b>Link created by:</b> {self.share_folder_b.create_uid.name}', file_uploaded_note.body)
+
+    def test_upload_attachment_user(self):
+        """Check that logged user's name is used in notification."""
+        files = [('files', ('test.txt', b'test', 'plain/text'))]
+        self.authenticate('demo', 'demo')
+        self.url_open(f'/document/upload/{self.share_folder_b.id}/{self.share_folder_b.access_token}', files=files)
+        document = self.env['documents.document'].search([('folder_id', '=', self.folder_b.id)])
+
+        file_uploaded_note = document.message_ids[0]
+        self.assertEqual(file_uploaded_note.author_id, self.share_folder_b.create_uid.partner_id)
+        self.assertIn('<b>File uploaded by:</b> Marc Demo <br>', file_uploaded_note.body)
+        self.assertIn(f'<b>Link created by:</b> {self.share_folder_b.create_uid.name}', file_uploaded_note.body)

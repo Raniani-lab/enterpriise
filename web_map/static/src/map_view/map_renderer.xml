@@ -47,7 +47,7 @@
     <t t-name="web_map.MapRenderer.PinListContainer" owl="1">
         <div class="o-map-renderer--pin-list-container col-12 col-md-2 bg-view border-start cursor-default h-100">
             <div class="o-map-view--buttons">
-                <a class="btn btn-primary text-white" t-att-href="googleMapUrl" target="_blank" data-hotkey="m">View in Google Maps</a>
+                <a class="btn btn-primary" t-att-href="googleMapUrl" target="_blank" data-hotkey="m">View in Google Maps</a>
             </div>
             <t t-if="!props.model.metaData.hideTitle">
                 <header class="o-map-renderer--pin-list-header o_pin_list_header text-uppercase px-0 py-md-2 d-flex align-items-baseline"
@@ -177,7 +177,7 @@
                     </button>
                 </t>
                 <div class="o-map-renderer--popup-buttons-divider d-inline-block h-auto"/>
-                <a class="btn btn-primary text-white" t-att-href="url" target="_blank">
+                <a class="btn btn-primary" t-att-href="url" target="_blank">
                     Navigate to
                 </a>
             </div>

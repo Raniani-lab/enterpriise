@@ -346,12 +346,12 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         });
         assert.strictEqual(Object.values(getCells(model)).length, 16);
         assert.strictEqual(getCellContent(model, "A3"), '=ODOO.PIVOT.HEADER(1,"bar","false")');
-        assert.deepEqual(getCell(model, "A3").style, { fillColor: "#f2f2f2", bold: true });
+        assert.deepEqual(getCell(model, "A3").style, { fillColor: "#E6F2F3", bold: true });
         assert.strictEqual(
             getCellContent(model, "A4"),
             '=ODOO.PIVOT.HEADER(1,"bar","false","product_id",41)'
         );
-        assert.deepEqual(getCell(model, "A4").style, { fillColor: "#f2f2f2" });
+        assert.deepEqual(getCell(model, "A4").style, { fillColor: "#E6F2F3" });
         assert.strictEqual(getCellContent(model, "A5"), '=ODOO.PIVOT.HEADER(1,"bar","true")');
         assert.strictEqual(
             getCellContent(model, "A6"),
@@ -448,7 +448,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         });
         assert.strictEqual(Object.values(getCells(model)).length, 20);
         assert.strictEqual(getCellContent(model, "A1"), "");
-        assert.deepEqual(getCell(model, "A4").style, { fillColor: "#f2f2f2", bold: true });
+        assert.deepEqual(getCell(model, "A4").style, { fillColor: "#E6F2F3", bold: true });
         assert.strictEqual(getCellContent(model, "B1"), '=ODOO.PIVOT.HEADER(1,"bar","false")');
         assert.strictEqual(
             getCellContent(model, "B2"),
@@ -458,7 +458,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
             getCellContent(model, "B3"),
             '=ODOO.PIVOT.HEADER(1,"bar","false","product_id",41,"measure","probability")'
         );
-        assert.deepEqual(getCell(model, "C2").style, { fillColor: "#f2f2f2", bold: true });
+        assert.deepEqual(getCell(model, "C2").style, { fillColor: "#E6F2F3", bold: true });
         assert.strictEqual(getCellContent(model, "C1"), '=ODOO.PIVOT.HEADER(1,"bar","true")');
         assert.strictEqual(
             getCellContent(model, "C2"),
@@ -1155,11 +1155,11 @@ QUnit.module("spreadsheet pivot view", {}, () => {
             },
         });
         const styleMainheader = {
-            fillColor: "#f2f2f2",
+            fillColor: "#E6F2F3",
             bold: true,
         };
         const styleSubHeader = {
-            fillColor: "#f2f2f2",
+            fillColor: "#E6F2F3",
         };
         const styleSubSubHeader = undefined;
         assert.deepEqual(getCell(model, "A3").style, styleMainheader);

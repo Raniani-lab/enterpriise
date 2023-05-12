@@ -19,6 +19,8 @@
         'data/ir_config_parameter_data.xml',
         'data/behaviors_templates.xml',
         'data/knowledge_data.xml',
+        'data/knowledge_article_template_category_data.xml',
+        'data/knowledge_article_template_data.xml',
         'data/ir_actions_data.xml',
         'data/mail_templates.xml',
         'wizard/knowledge_invite_views.xml',
@@ -26,6 +28,8 @@
         'views/knowledge_article_favorite_views.xml',
         'views/knowledge_article_member_views.xml',
         'views/knowledge_article_stage_views.xml',
+        'views/knowledge_article_template_views.xml',
+        'views/knowledge_article_template_category_views.xml',
         'views/knowledge_templates.xml',
         'views/knowledge_templates_common.xml',
         'views/knowledge_templates_frontend.xml',
@@ -77,7 +81,9 @@
         'web_editor.assets_wysiwyg': [
             'knowledge/static/src/js/wysiwyg/*.js',
             'knowledge/static/src/js/wysiwyg.js',
+            'knowledge/static/src/js/knowledge_wysiwyg.js',
             'knowledge/static/src/xml/knowledge_editor.xml',
+            'knowledge/static/src/xml/knowledge_article_templates.xml',
             'knowledge/static/src/js/knowledge_clipboard_whitelist.js',
         ],
         'web.assets_tests': [

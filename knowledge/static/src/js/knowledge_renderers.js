@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import config from "web.config";
+import { ArticleTemplatePickerDialog } from "@knowledge/components/article_template_picker_dialog/article_template_picker_dialog";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { FormRenderer } from '@web/views/form/form_renderer';
 import { KnowledgeCoverDialog } from '@knowledge/components/knowledge_cover/knowledge_cover_dialog';
@@ -97,6 +98,21 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
         useListener('click', '.o_knowledge_backdrop, #knowledge_search_bar > a', () => {
             this.env.toggleAside();
+        });
+
+        useListener('click', '.o_knowledge_load_template_btn', () => {
+            this.dialog.add(ArticleTemplatePickerDialog, {
+                onLoadTemplate: async articleTemplateId => {
+                    await this.actionService.doAction("knowledge.ir_actions_server_knowledge_home_page", {
+                        stackPosition: "replaceCurrentAction",
+                        additionalContext: {
+                            res_id: await this.orm.call("knowledge.article.template", "create_article", [
+                                articleTemplateId
+                            ])
+                        }
+                    });
+                }
+            });
         });
 
         onMounted(() => {

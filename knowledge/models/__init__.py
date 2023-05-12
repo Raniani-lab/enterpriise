@@ -3,6 +3,8 @@
 
 from . import knowledge_article_favorite
 from . import knowledge_article_member
+from . import knowledge_article_template
+from . import knowledge_article_template_category
 from . import knowledge_article
 from . import knowledge_article_stage
 from . import knowledge_cover

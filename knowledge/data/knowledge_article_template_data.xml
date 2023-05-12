@@ -1,0 +1,19 @@
+<odoo noupdate="1">
+    <!-- Templates -->
+    <record model="knowledge.article.template" id="knowledge_template_my_todo_list">
+        <field name="name">My todo list</field>
+        <field name="icon">✅</field>
+        <field name="sequence">0</field>
+        <field name="category_id" ref="knowledge_article_template_category_recommended"/>
+        <field name="description">Simple task management - create, organize, and track your tasks.</field>
+        <field name="body" type="html">
+            <h1>My todo list</h1>
+            <hr/>
+            <ul class="o_checklist">
+                <li>Buy milk<br/></li>
+                <li>Buy eggs<br/></li>
+            </ul>
+            <p><br/></p>
+        </field>
+    </record>
+</odoo>

@@ -319,12 +319,17 @@ registry.category("web_tour.tours").add("web_studio_main_and_rename", {
             in_modal: true,
             // we are sure "Activity" exists since studio depends on mail.
             //Also, it is determinisic and field names should not conflict too much.
-            run: "text Activity",
+            run: "text mail.activity",
         },
         {
-            // select the first model
-            trigger: '[name="relation_id"] .o-autocomplete--dropdown-menu li a:not(:has(.fa-spin))',
+            // select Activity as model
+            trigger:
+                '[name="relation_id"] .o-autocomplete--dropdown-menu li a:not(:has(.fa-spin)):contains(Activity)',
             in_modal: true,
+            run(helpers) {
+                const el = Array.from(this.$anchor).find((el) => el.textContent === "Activity");
+                return helpers.click($(el));
+            },
         },
         {
             in_modal: true,

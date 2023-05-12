@@ -6,6 +6,7 @@ import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
 import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 import { Deferred, Mutex } from "@web/core/utils/concurrency";
+import { useService } from "@web/core/utils/hooks";
 
 // Behaviors:
 
@@ -53,6 +54,7 @@ const behaviorTypes = {
 const HtmlFieldPatch = {
     setup() {
         this._super(...arguments);
+        this.uiService = useService('ui');
         this.behaviorState = {
             // Owl does not support destroying an App when its container node is
             // not in the DOM. This reference is a `d-none` element used to
@@ -142,6 +144,8 @@ const HtmlFieldPatch = {
      * @param {HTMLElement} anchor in which the Behavior is mounted
      */
     destroyBehaviorApp(anchor) {
+        // Deactivate the Element in UI service to prevent unwanted behaviors
+        this.uiService.deactivateElement(anchor);
         // Preserve the anchor children since they will be removed by the
         // App destruction.
         const clonedAnchor = anchor.cloneNode(true);

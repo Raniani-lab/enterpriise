@@ -15,6 +15,7 @@ const {
     onError,
     onMounted,
     onWillUnmount,
+    useExternalListener,
     useState,
     useSubEnv } = owl;
 
@@ -27,6 +28,7 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
     setup () {
         super.setup();
         this.actionService = useService('action');
+        this.uiService = useService('ui');
         this.state = useState({
             waiting: true,
             error: false
@@ -56,14 +58,23 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
             /**
              * Capturing the events occuring in the embedded view to prevent the
              * default behavior of the editor.
+             * The event is cloned and dispatched again above the editable.
+             * This essentially "skips" the editor listener and propagates the event above it.
              */
-            const stopEventPropagation = event => event.stopPropagation();
-            anchor.addEventListener('keydown', stopEventPropagation);
-            anchor.addEventListener('keyup', stopEventPropagation); // power box
-            anchor.addEventListener('input', stopEventPropagation);
-            anchor.addEventListener('beforeinput', stopEventPropagation);
-            anchor.addEventListener('paste', stopEventPropagation);
-            anchor.addEventListener('drop', stopEventPropagation);
+            const bypassEditorEventListeners = event => {
+                const parent = this.props.root && this.props.root.parentElement;
+                event.stopPropagation();
+                if (parent) {
+                    const clonedEvent = new event.constructor(event.type, event);
+                    parent.dispatchEvent(clonedEvent);
+                }
+            };
+            anchor.addEventListener('keydown', bypassEditorEventListeners);
+            anchor.addEventListener('keyup', bypassEditorEventListeners); // power box
+            anchor.addEventListener('input', bypassEditorEventListeners);
+            anchor.addEventListener('beforeinput', bypassEditorEventListeners);
+            anchor.addEventListener('paste', bypassEditorEventListeners);
+            anchor.addEventListener('drop', bypassEditorEventListeners);
             // This is needed to ensure that any modification done to the anchor's data-behavior-props
             // is saved in DB.
             this.props.record.askChanges();
@@ -78,6 +89,35 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
         onError(error => {
             console.error(error);
             this.state.error = true;
+        });
+    }
+    /**
+     * This function enables us to adds the desired attributes to the anchor of the embedded view
+     * before it is rendered.
+     * We are adding tabindex="-1" to the anchor because this attribute is needed to capture the
+     * 'focusin' and 'focusout' events.
+     * In these events we are using activateElement/deactivateElement:
+     *
+     * `activateElement` is used to set the anchor as an active element in the ui service, this enables
+     * us to contain the events inside the embedded view when it has the focus.
+     *
+     * `deactivateElement` removes the anchor as an active element, leaving only the document as active
+     * and we come back to the default behavior of the document handling all the events.
+     *
+     * @override
+     */
+    setupAnchor() {
+        super.setupAnchor();
+        this.props.anchor.setAttribute('tabindex', '-1');
+        useExternalListener(this.props.anchor, 'focusin', () => {
+            if (!this.props.anchor.contains(this.uiService.activeElement)) {
+                this.uiService.activateElement(this.props.anchor);
+            }
+        });
+        useExternalListener(this.props.anchor, 'focusout', (event) => {
+            if (!this.props.anchor.contains(event.relatedTarget)) {
+                this.uiService.deactivateElement(this.props.anchor);
+            }
         });
     }
 

@@ -88,6 +88,7 @@
         'web.qunit_suite_tests': [
             'knowledge/static/tests/knowledge_command_toc.js',
             'knowledge/static/tests/knowledge_command_structure.js',
+            'knowledge/static/tests/knowledge_external_embeds_hotkeys.js',
         ],
         'web.tests_assets': [
             'knowledge/static/tests/mock_services.js',

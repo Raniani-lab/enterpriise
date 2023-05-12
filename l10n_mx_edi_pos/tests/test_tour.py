@@ -10,7 +10,10 @@ class TestUi(AccountTestInvoicingHttpCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref="mx"):
         super().setUpClass(chart_template_ref=chart_template_ref)
+        cls.env['pos.config'].search([]).unlink()
         cls.env.company.country_id = cls.env.ref('base.mx')
+
+        cls.company_data['default_journal_cash'].pos_payment_method_ids.unlink()
 
         payment_method = cls.env['pos.payment.method'].create({
             'name': "Cash",

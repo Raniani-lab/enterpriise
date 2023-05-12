@@ -95,6 +95,7 @@ class POSTestTaxReport(TestAccountReportsCommon):
             'type': 'consu',
         })
 
+        cls.company_data['default_journal_cash'].pos_payment_method_ids.unlink()
         cls.pos_payment_method = cls.env['pos.payment.method'].create({
             'name': 'POS test payment method',
             'receivable_account_id': cls.company_data['default_account_receivable'].id,

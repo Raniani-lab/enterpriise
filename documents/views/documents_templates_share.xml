@@ -135,7 +135,7 @@
                                 <header>
                                     <h6 class="o_card_title mt0 mb4">
                                         <span t-if="document_request" t-esc="document.name"/>
-                                        <a t-else="" t-att-href="document_is_url and redirect_URL or download_URL" target="new" t-attf-title="#{document_is_url and 'Link to ' or 'Download '}#{document.name}" t-esc="document.name"/>
+                                        <a t-else="" t-att-href="document_is_url and redirect_URL or download_URL" target="_blank" t-attf-title="#{document_is_url and 'Link to ' or 'Download '}#{document.name}" t-esc="document.name"/>
                                     </h6>
                                 </header>
                                 <div class="o_card_footer">

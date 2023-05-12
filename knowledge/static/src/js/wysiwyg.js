@@ -311,7 +311,10 @@ Wysiwyg.include({
      */
     appendBehaviorBlueprint(behaviorBlueprint) {
         const restoreSelection = () => {
-            setCursorEnd(this.odooEditor.editable);
+            // Set the cursor to the end of the article by not normalizing the position.
+            // By not normalizing we ensure that we will use the articleś body as the container
+            // and not an invisible character.
+            setCursorEnd(this.odooEditor.editable, false);
         }
         const insert = (anchor) => {
             const fragment = this.odooEditor.document.createDocumentFragment();
@@ -320,10 +323,6 @@ Wysiwyg.include({
             const p = this.odooEditor.document.createElement('p');
             p.append(this.odooEditor.document.createElement('br'));
             fragment.append(anchor, p);
-            // Set the cursor to the end of the article by not normalizing the position.
-            // By not normalizing we ensure that we will use the articleś body as the container
-            // and not an invisible character.
-            setCursorEnd(this.odooEditor.editable, false);
             const [behavior] = this.odooEditor.execCommand('insert', fragment);
             behavior.scrollIntoView();
         };

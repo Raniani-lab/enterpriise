@@ -5,7 +5,7 @@ import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
 import { _lt } from "@web/core/l10n/translation";
 import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
-import { Mutex } from "@web/core/utils/concurrency";
+import { Deferred, Mutex } from "@web/core/utils/concurrency";
 import { useService } from "@web/core/utils/hooks";
 
 // Behaviors:
@@ -157,6 +157,7 @@ const HtmlFieldPatch = {
             this.behaviorState.handlerRef.el.append(anchor);
             shouldBeRemoved = true;
         }
+        anchor.oKnowledgeBehavior.updatePromise.resolve(false);
         anchor.oKnowledgeBehavior.destroy();
         delete anchor.oKnowledgeBehavior;
         if (shouldBeRemoved) {
@@ -302,6 +303,7 @@ const HtmlFieldPatch = {
         if (!behaviorsData.length) {
             behaviorsData = this._scanFieldForBehaviors(target);
         }
+        const promises = [];
         for (const behaviorData of behaviorsData) {
             const {Behavior} = this.behaviorTypes[behaviorData.behaviorType] || {};
             if (!Behavior || (
@@ -317,12 +319,6 @@ const HtmlFieldPatch = {
                 // during the execution of this function.
                 continue;
             } else if (behaviorData.anchor.oKnowledgeBehavior) {
-                if (!this.props.readonly && this.wysiwyg?.odooEditor) {
-                    if (behaviorData.setCursor && behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor) {
-                        behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor();
-                        this.wysiwyg.odooEditor.historyStep();
-                    }
-                }
                 // If a Behavior is already instantiated, no need to redo-it.
                 continue;
             }
@@ -419,6 +415,10 @@ const HtmlFieldPatch = {
                     } else {
                         this.wysiwyg.odooEditor.execCommand('insert', anchor);
                     }
+                    if (this.wysiwyg?.odooEditor && behaviorData.setCursor &&
+                        behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor) {
+                        behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor();
+                    }
                     this.props.record.askChanges();
                 };
                 if (behaviorData.behaviorStatus !== 'new') {
@@ -441,21 +441,24 @@ const HtmlFieldPatch = {
                 props,
             });
             this.behaviorState.appAnchors.add(anchor);
-            await anchor.oKnowledgeBehavior.mount(anchor);
-            await this._updateBehaviors([], anchor);
-            if (!this.props.readonly && this.wysiwyg?.odooEditor) {
-                if (behaviorData.setCursor && anchor.oKnowledgeBehavior.root.component.setCursor) {
-                    // Since the component is pre-rendered, the cursor can't be
-                    // set yet, so a new promise to set the cursor has to be
-                    // added to the mutex.
-                    this.updateBehaviors([{
-                        anchor: anchor,
-                        setCursor: true,
-                        behaviorType: behaviorData.behaviorType,
-                    }]);
+            // App.mount is not resolved if the App is destroyed before it
+            // is mounted, so instead, await a Deferred that is resolved
+            // when the App is mounted (true) or destroyed (false).
+            anchor.oKnowledgeBehavior.updatePromise = new Deferred();
+            anchor.oKnowledgeBehavior.mount(anchor).then(
+                () => anchor.oKnowledgeBehavior.updatePromise.resolve(true)
+            );
+            const promise = anchor.oKnowledgeBehavior.updatePromise.then(async (isMounted) => {
+                // isMounted is true if the App was mounted and false if it
+                // was destroyed before being mounted. If it was mounted,
+                // update child behaviors inside anchor
+                if (isMounted) {
+                    await this._updateBehaviors([], anchor);
                 }
-            }
+            });
+            promises.push(promise);
         }
+        await Promise.all(promises);
     },
     _addRefreshBehaviorsListeners() {
         if (this.wysiwyg?.odooEditor?.editable) {

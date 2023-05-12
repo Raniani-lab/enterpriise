@@ -273,15 +273,26 @@ class SignRequest(models.Model):
         }
 
     def get_completed_document(self):
-        self.ensure_one()
-        if not self.completed_document:
-            self._generate_completed_document()
+        if not self:
+            raise UserError(_('You should select at least one document to download.'))
 
-        return {
-            'name': 'Signed Document',
-            'type': 'ir.actions.act_url',
-            'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': self.id, 'access_token': self.access_token},
-        }
+        for request in self:
+            if not request.completed_document_attachment_ids:
+                request._generate_completed_document()
+
+        if len(self) < 2:
+            return {
+                'name': 'Signed Document',
+                'type': 'ir.actions.act_url',
+                'url': '/sign/download/%(request_id)s/%(access_token)s/completed' % {'request_id': self.id, 'access_token': self.access_token},
+            }
+        else:
+            return {
+                'name': 'Signed Documents',
+                'type': 'ir.actions.act_url',
+                'url': f'/sign/download/zip/{",".join(map(str, self.ids))}',
+            }
+
 
     def open_logs(self):
         self.ensure_one()

@@ -2,6 +2,7 @@
 
 import base64
 import io
+import zipfile
 import logging
 import mimetypes
 import re
@@ -183,6 +184,32 @@ class Sign(http.Controller):
                 ('Content-Disposition', content_disposition(filename))
             ]
         )
+
+    @http.route(['/sign/download/zip/<ids>'], type='http', auth='user')
+    def download_multiple_documents(self, ids, **post):
+        """ If the user has access to all the requests, create a zip archive of all the documents requested and
+        return it.
+        The document each are in a folder named by their request ID to ensure unicity of files.
+        """
+        if not request.env.user.has_group('sign.group_sign_user'):
+            return request.render(
+                'http_routing.http_error',
+                {'status_code': _('Oops'),
+                 'status_message': _('You do not have access to these documents, please contact a Sign Administrator.')})
+
+        sign_requests = http.request.env['sign.request'].browse(int(i) for i in ids.split(',')).exists()
+
+        with io.BytesIO() as buffer:
+            with zipfile.ZipFile(buffer, 'w', compression=zipfile.ZIP_DEFLATED) as zipfile_obj:
+                for sign_request in sign_requests:
+                    zipfile_obj.writestr(f'{sign_request.id}/{sign_request.reference}', base64.b64decode(sign_request.completed_document))
+            content = buffer.getvalue()
+
+        return request.make_response(content, headers=[
+            ('Content-Disposition', http.content_disposition('documents.zip')),
+            ('Content-Type', 'application/zip'),
+            ('Content-Length', len(content)),
+        ])
 
     @http.route(['/sign/password/<int:sign_request_id>/<token>'], type='http', auth='public')
     def check_password_page(self, sign_request_id, token, **post):

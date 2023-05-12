@@ -442,11 +442,12 @@ class AmazonAccount(models.Model):
                                 # itself later, depending on which of the two called this method.
                                 raise
                             else:
-                                _logger.exception(
+                                _logger.warning(
                                     "A business error occurred while processing the order data "
                                     "with amazon_order_ref %s for Amazon account with id %s. "
                                     "Skipping the order data and moving to the next order.",
-                                    amazon_order_ref, account.id
+                                    amazon_order_ref, account.id,
+                                    exc_info=True
                                 )
                                 # Dismiss business errors to allow the synchronization to skip the
                                 # problematic orders and require synchronizing them manually.

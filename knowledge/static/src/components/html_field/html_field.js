@@ -5,7 +5,7 @@ import { KnowledgePlugin } from "@knowledge/js/knowledge_plugin";
 import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
 import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
-import { Mutex } from "@web/core/utils/concurrency";
+import { Deferred, Mutex } from "@web/core/utils/concurrency";
 
 // Behaviors:
 
@@ -154,6 +154,7 @@ const HtmlFieldPatch = {
             this.behaviorState.handlerRef.el.append(anchor);
             shouldBeRemoved = true;
         }
+        anchor.oKnowledgeBehavior.updatePromise.resolve(false);
         anchor.oKnowledgeBehavior.destroy();
         delete anchor.oKnowledgeBehavior;
         if (shouldBeRemoved) {
@@ -240,6 +241,7 @@ const HtmlFieldPatch = {
         if (!behaviorsData.length) {
             this._scanFieldForBehaviors(behaviorsData, injectorEl);
         }
+        const promises = [];
         for (const behaviorData of behaviorsData) {
             const anchor = behaviorData.anchor;
             if (!document.body.contains(anchor)) {
@@ -299,14 +301,34 @@ const HtmlFieldPatch = {
                     props,
                 });
                 this.behaviorState.appAnchors.add(anchor);
-                await anchor.oKnowledgeBehavior.mount(anchor);
-                await this._updateBehaviors([], anchor);
+                // App.mount is not resolved if the App is destroyed before it
+                // is mounted, so instead, await a Deferred that is resolved
+                // when the App is mounted (true) or destroyed (false).
+                anchor.oKnowledgeBehavior.updatePromise = new Deferred();
+                anchor.oKnowledgeBehavior.mount(anchor).then(
+                    () => anchor.oKnowledgeBehavior.updatePromise.resolve(true)
+                );
+                const promise = anchor.oKnowledgeBehavior.updatePromise.then(async (isMounted) => {
+                    // isMounted is true if the App was mounted and false if it
+                    // was destroyed before being mounted. If it was mounted,
+                    // update child behaviors inside anchor
+                    if (isMounted) {
+                        await this._updateBehaviors([], anchor);
+                    }
+                });
+                promises.push(promise);
             }
-            if (!this.props.readonly && this.wysiwyg && this.wysiwyg.odooEditor && anchor.oKnowledgeBehavior) {
-                if (behaviorData.setCursor && anchor.oKnowledgeBehavior.root.component.setCursor) {
-                    anchor.oKnowledgeBehavior.root.component.setCursor();
+        }
+        await Promise.all(promises);
+        if (!this.props.readonly && this.wysiwyg && this.wysiwyg.odooEditor) {
+            for (const behaviorData of behaviorsData.reverse()) {
+                if (
+                    behaviorData.setCursor && behaviorData.anchor.oKnowledgeBehavior &&
+                    behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor
+                ) {
+                    behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor();
+                    break;
                 }
-                this.wysiwyg.odooEditor.historyStep();
             }
         }
     },

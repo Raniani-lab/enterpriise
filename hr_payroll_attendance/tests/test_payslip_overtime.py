@@ -50,7 +50,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_out': datetime(2022, 1, 3, 12, 0, 0),
         })
         self.payslip._compute_worked_days_line_ids()
-        self.assertEqual(self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME').number_of_hours, 3)
+        self.assertFalse(self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME'))
 
     def test_with_overtime_calendar_contract(self):
         self.contract.work_entry_source = 'calendar'

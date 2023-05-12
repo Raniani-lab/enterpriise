@@ -122,6 +122,8 @@ class HrContract(models.Model):
 
     def _get_interval_work_entry_type(self, interval):
         self.ensure_one()
+        if self.work_entry_source != 'calendar': # The overtimes are only in the case of a contract based on the calendar
+            return super()._get_interval_work_entry_type(interval)
         if 'overtime_work_entry_type_id' in interval[2] and interval[2].overtime_work_entry_type_id[:1]:
             return interval[2].overtime_work_entry_type_id[:1]
         if isinstance(interval[2], self.env['hr.attendance'].__class__):

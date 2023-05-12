@@ -32,7 +32,7 @@
                         <field name="aggregation_formula">IT_ATT_B_I.balance + IT_ATT_B_II.balance + IT_ATT_B_III.balance</field>
                         <field name="children_ids">
                             <record id="account_financial_report_line_it_sp_ATT_B_I" model="account.report.line">
-                                <field name="name">I. Intangible Assets</field>
+                                <field name="name">I. Immobilizzazioni immateriali</field>
                                 <field name="code">IT_ATT_B_I</field>
                                 <field name="aggregation_formula">IT_ATT_B_I_1.balance + IT_ATT_B_I_2.balance + IT_ATT_B_I_3.balance + IT_ATT_B_I_4.balance + IT_ATT_B_I_5.balance + IT_ATT_B_I_6.balance + IT_ATT_B_I_7.balance</field>
                                 <field name="children_ids">
@@ -718,7 +718,7 @@
                                         </field>
                                     </record>
                                     <record id="account_financial_report_line_it_sp_ATT_C_II_5_bis" model="account.report.line">
-                                        <field name="name">5-bis. Toward customers</field>
+                                        <field name="name">5-bis. Tax credits</field>
                                         <field name="code">IT_ATT_C_II_5_bis</field>
                                         <field name="hide_if_zero" eval="True"/>
                                         <field name="aggregation_formula">IT_ATT_C_II_5_bis_entro.balance + IT_ATT_C_II_5_bis_oltro.balance</field>

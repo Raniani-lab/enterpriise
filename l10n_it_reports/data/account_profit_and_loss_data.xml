@@ -3,7 +3,7 @@
     <record id="account_financial_report_it_ce" model="account.report">
         <field name="name">Profit and Loss</field>
         <field name="root_report_id" ref="account_reports.profit_and_loss"/>
-        <field name="filter_date_range" eval="False"/>
+        <field name="filter_date_range" eval="True"/>
         <field name="filter_analytic_groupby" eval="True"/>
         <field name="filter_unfold_all" eval="True"/>
         <field name="country_id" ref="base.it"/>
@@ -534,63 +534,33 @@
                 <field name="code">RISULTATO_PRIMA_IMPOSTE</field>
                 <field name="aggregation_formula">IT_CEA.balance - IT_CEB.balance + IT_CEC.balance + IT_CED.balance</field>
             </record>
-            <record id="account_financial_report_line_it_ce_E" model="account.report.line">
-                <field name="name">EXTRAORDINARY INCOME AND EXPENSES</field>
-                <field name="code">IT_CEE_TOT</field>
-                <field name="expression_ids">
-                    <record id="account_financial_report_line_it_ce_E_TOT" model="account.report.expression">
-                        <field name="label">balance</field>
-                        <field name="engine">aggregation</field>
-                        <field name="formula">IT_CEE_20.balance + IT_CEE_21.balance + IT_CEE_22.balance</field>
-                        <field name="date_scope">normal</field>
-                    </record>
-                </field>
+            <record id="account_financial_report_line_it_ce_E_22" model="account.report.line">
+                <field name="name">20. Income taxes for the year</field>
+                <field name="code">IT_CEE_22</field>
+                <field name="aggregation_formula">IT_CEE_22_a.balance + IT_CEE_22_b.balance</field>
                 <field name="children_ids">
-                    <record id="account_financial_report_line_it_ce_E_20" model="account.report.line">
-                        <field name="name">20. Extraordinary income</field>
-                        <field name="code">IT_CEE_20</field>
+                    <record id="account_financial_report_line_it_ce_E_22_a" model="account.report.line">
+                        <field name="name">a. Current taxes</field>
+                        <field name="code">IT_CEE_22_a</field>
                         <field name="groupby">account_id</field>
                         <field name="hide_if_zero" eval="True"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">71</field>
+                        <field name="account_codes_formula">8101</field>
                     </record>
-                    <record id="account_financial_report_line_it_ce_E_21" model="account.report.line">
-                        <field name="name">21. Extraordinary charges</field>
-                        <field name="code">IT_CEE_21</field>
+                    <record id="account_financial_report_line_it_ce_E_22_b" model="account.report.line">
+                        <field name="name">b. Deferred and prepaid taxes</field>
+                        <field name="code">IT_CEE_22_b</field>
                         <field name="groupby">account_id</field>
                         <field name="hide_if_zero" eval="True"/>
                         <field name="foldable" eval="True"/>
-                        <field name="account_codes_formula">72</field>
-                    </record>
-                    <record id="account_financial_report_line_it_ce_E_22" model="account.report.line">
-                        <field name="name">22. Income taxes for the year</field>
-                        <field name="code">IT_CEE_22</field>
-                        <field name="aggregation_formula">IT_CEE_22_a.balance + IT_CEE_22_b.balance</field>
-                        <field name="children_ids">
-                            <record id="account_financial_report_line_it_ce_E_22_a" model="account.report.line">
-                                <field name="name">a. Current taxes</field>
-                                <field name="code">IT_CEE_22_a</field>
-                                <field name="groupby">account_id</field>
-                                <field name="hide_if_zero" eval="True"/>
-                                <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">8101</field>
-                            </record>
-                            <record id="account_financial_report_line_it_ce_E_22_b" model="account.report.line">
-                                <field name="name">b. Deferred and prepaid taxes</field>
-                                <field name="code">IT_CEE_22_b</field>
-                                <field name="groupby">account_id</field>
-                                <field name="hide_if_zero" eval="True"/>
-                                <field name="foldable" eval="True"/>
-                                <field name="account_codes_formula">8102</field>
-                            </record>
-                        </field>
+                        <field name="account_codes_formula">8102</field>
                     </record>
                 </field>
             </record>
             <record id="account_financial_report_line_it_ce_UTILE_PERDITA" model="account.report.line">
                 <field name="name">21. PROFIT (LOSS) FOR THE YEAR</field>
                 <field name="code">UTILE_PERDITA</field>
-                <field name="aggregation_formula">RISULTATO_PRIMA_IMPOSTE.balance + IT_CEE_20.balance + IT_CEE_21.balance - IT_CEE_22.balance</field>
+                <field name="aggregation_formula">RISULTATO_PRIMA_IMPOSTE.balance - IT_CEE_22.balance</field>
             </record>
         </field>
     </record>

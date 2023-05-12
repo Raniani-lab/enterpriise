@@ -244,7 +244,7 @@ msgstr ""
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_E_22
-msgid "22. Income taxes for the year"
+msgid "20. Income taxes for the year"
 msgstr ""
 
 #. module: l10n_it_reports
@@ -364,7 +364,7 @@ msgstr ""
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_sp_ATT_C_II_5_bis
-msgid "5-bis. Toward customers"
+msgid "5-bis. Tax credits"
 msgstr ""
 
 #. module: l10n_it_reports

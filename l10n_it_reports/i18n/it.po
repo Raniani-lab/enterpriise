@@ -241,8 +241,8 @@ msgstr "21. UTILE (PERDITA) DELL'ESERCIZIO"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_E_22
-msgid "22. Income taxes for the year"
-msgstr "22. Imposte sul reddito dell'esercizio"
+msgid "20. Income taxes for the year"
+msgstr "20. Imposte sul reddito dell'esercizio"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_sp_ATT_C_III_3_bis
@@ -361,8 +361,8 @@ msgstr "4. strumenti finanziari derivati attivi"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_sp_ATT_C_II_5_bis
-msgid "5-bis. Toward customers"
-msgstr "5-bis. Verso i clienti"
+msgid "5-bis. Tax credits"
+msgstr "5-bis. Crediti tributari"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_sp_ATT_C_II_5_quater
@@ -722,7 +722,7 @@ msgstr "Conto economico"
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_RISULTATO_PRIMA_IMPOSTE
 msgid "RESULT BEFORE INTEREST AND TAXES (A - B ± C ± D)"
-msgstr ""
+msgstr "RISULTATO PRIMA DELLE IMPOSTE (A - B ± C ± D)"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_sp_CONTI_ORDINE_RISCHI

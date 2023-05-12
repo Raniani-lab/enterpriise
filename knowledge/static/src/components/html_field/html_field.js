@@ -152,16 +152,29 @@ const HtmlFieldPatch = {
             node.remove();
         }
         let shouldBeRemoved = false;
+        let shouldBeRestored = false;
+        const parentNode = anchor.parentNode;
         if (!document.body.contains(anchor)) {
+            // If anchor has a parent outside the DOM, it has to be given back
+            // to its parent after being destroyed, so it is replaced by its
+            // clone (to keep track of its position).
+            if (parentNode) {
+                parentNode.replaceChild(clonedAnchor, anchor);
+                shouldBeRestored = true;
+            } else {
+                shouldBeRemoved = true;
+            }
             // A Component should always be destroyed in the DOM.
             this.behaviorState.handlerRef.el.append(anchor);
-            shouldBeRemoved = true;
         }
         anchor.oKnowledgeBehavior.updatePromise.resolve(false);
         anchor.oKnowledgeBehavior.destroy();
         delete anchor.oKnowledgeBehavior;
         if (shouldBeRemoved) {
             anchor.remove();
+        } else if (shouldBeRestored) {
+            // Give back the anchor to its original parent (before destroying).
+            parentNode.replaceChild(anchor, clonedAnchor);
         }
         // Recover the child nodes from the clone because OWL removed all of
         // them, but they are necessary to re-render the Component later.

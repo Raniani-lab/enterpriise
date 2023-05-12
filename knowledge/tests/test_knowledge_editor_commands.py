@@ -19,12 +19,22 @@ class TestKnowledgeEditorCommands(HttpCase):
         cls.env['knowledge.article'].search([]).unlink()
         cls.article = cls.env['knowledge.article'].create({
             'name': 'EditorCommandsArticle',
-            'body': Markup('<p><br></p>')
+            'body': Markup('<p><br></p>'),
+            'sequence': 1,
         })
 
     def test_knowledge_article_command_tour(self):
         """Test the /article command in the editor"""
         self.start_tour('/web', 'knowledge_article_command_tour', login='admin', step_delay=100)
+
+    def test_knowledge_article_command_dialog_tour(self):
+        """Test the /article command in a dialog"""
+        self.env['knowledge.article'].create({
+            'name': 'LinkedArticle',
+            'body': Markup('<p><br></p>'),
+            'sequence': 2,
+        })
+        self.start_tour('/web', 'knowledge_article_command_dialog_tour', login='admin')
 
     def test_knowledge_file_command_tour(self):
         """Test the /file command in the editor"""

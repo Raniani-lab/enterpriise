@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class='mt8'>
-                            <button name="l10n_in_gstr_gst_send_otp" icon="fa-arrow-right" type="object" string=" Send OTP" class="btn-link"/>
+                            <button name="l10n_in_gstr_gst_send_otp" icon="oi-arrow-right" type="object" string=" Send OTP" class="btn-link"/>
                         </div>
                     </div>
                 </setting>

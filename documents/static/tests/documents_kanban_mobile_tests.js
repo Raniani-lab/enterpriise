@@ -72,7 +72,7 @@ QUnit.module("documents", {}, function () {
         function () {
             QUnit.module("DocumentsKanbanViewMobile", function () {
                 QUnit.test("basic rendering on mobile", async function (assert) {
-                    assert.expect(12);
+                    assert.expect(11);
 
                     const pyEnv = await startServer();
                     pyEnv["documents.folder"].create({
@@ -110,11 +110,6 @@ QUnit.module("documents", {}, function () {
 
                     const controlPanelButtons = target.querySelector(
                         ".o_control_panel .o_cp_buttons"
-                    );
-                    assert.containsOnce(
-                        controlPanelButtons,
-                        "> .dropdown",
-                        "should group ControlPanel's buttons into a dropdown"
                     );
                     assert.containsNone(
                         controlPanelButtons,
@@ -241,7 +236,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "1 DOCUMENT SELECTED"
+                        "1 document selected"
                     );
 
                     assert.isVisible(
@@ -271,7 +266,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "2 DOCUMENTS SELECTED"
+                        "2 documents selected"
                     );
 
                     // click on the record
@@ -287,7 +282,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "1 DOCUMENT SELECTED"
+                        "1 document selected"
                     );
                     assert.isVisible(
                         document.querySelector(".o_documents_mobile_inspector"),
@@ -306,7 +301,7 @@ QUnit.module("documents", {}, function () {
 
             QUnit.module("DocumentsListViewMobile", function () {
                 QUnit.test("basic rendering on mobile", async function (assert) {
-                    assert.expect(12);
+                    assert.expect(11);
 
                     const pyEnv = await startServer();
                     pyEnv["documents.folder"].create({
@@ -338,11 +333,6 @@ QUnit.module("documents", {}, function () {
 
                     const controlPanelButtons = target.querySelector(
                         ".o_control_panel .o_cp_buttons"
-                    );
-                    assert.containsOnce(
-                        controlPanelButtons,
-                        "> .dropdown",
-                        "should group ControlPanel's buttons into a dropdown"
                     );
                     assert.containsNone(
                         controlPanelButtons,
@@ -476,7 +466,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "1 DOCUMENT SELECTED"
+                        "1 document selected"
                     );
                     assert.containsOnce(
                         document.body,
@@ -497,7 +487,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "2 DOCUMENTS SELECTED"
+                        "2 documents selected"
                     );
                     assert.isNotVisible(
                         document.querySelector(
@@ -526,7 +516,7 @@ QUnit.module("documents", {}, function () {
                             .querySelector(toggleInspectorSelector)
                             .innerText.replace(/\s+/g, " ")
                             .trim(),
-                        "1 DOCUMENT SELECTED"
+                        "1 document selected"
                     );
                     assert.isVisible(
                         document.querySelector(

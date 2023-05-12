@@ -20,8 +20,8 @@ registry.category("web_tour.tours").add('industry_fsm_sale_products_tour', {
     trigger: '.o_kanban_record span:contains("Fsm task")',
     content: 'Open task',
 }, {
-    trigger: 'button[name="action_fsm_view_material"] div[name="material_line_total_price"] span:contains("~M~")',
-    content: 'The currency that is display in the stat button is the one from the price list of the task partner',
+    trigger: 'button[name="action_fsm_view_material"]',
+    content: 'Click on the Products stat button',
 }, {
     trigger: '.o_fsm_product_kanban_view .o_kanban_record:contains("Consommable product ordered") button[name="fsm_add_quantity"]',
     content: 'Add 1 quantity',

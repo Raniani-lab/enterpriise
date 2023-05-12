@@ -16,7 +16,7 @@
                         </a>
                     </t>
                     <hr/>
-                    <a href="/web#action=social.action_social_stream_post"><i class="fa fa-arrow-left"/> Go back to Odoo</a>
+                    <a href="/web#action=social.action_social_stream_post"><i class="oi oi-arrow-left"/> Go back to Odoo</a>
                 </div>
             </div>
         </t>

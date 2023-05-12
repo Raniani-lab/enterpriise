@@ -8,9 +8,11 @@ import { Layout } from "@web/search/layout";
 import { useModel } from "@web/views/model";
 import { standardViewProps } from "@web/views/standard_view_props";
 import { useViewButtons } from "@web/views/view_button/view_button_hook";
-import { ViewScaleSelector } from "@web/views/view_components/view_scale_selector";
 import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { ViewButton } from "@web/views/view_button/view_button";
+import { CogMenu } from "@web/search/cog_menu/cog_menu";
+import { SearchBar } from "@web/search/search_bar/search_bar";
+import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
 
 import { Component, useState, onWillUpdateProps, onWillUnmount, useRef } from "@odoo/owl";
 
@@ -20,7 +22,8 @@ export class GridController extends Component {
         Dropdown,
         DropdownItem,
         ViewButton,
-        ViewScaleSelector,
+        CogMenu,
+        SearchBar,
     };
 
     static props = {
@@ -68,6 +71,7 @@ export class GridController extends Component {
         });
         onWillUpdateProps(this.onWillUpdateProps);
         onWillUnmount(() => this.closeDialog?.());
+        this.searchBarToggler = useSearchBarToggler();
     }
 
     onWillUpdateProps(nextProps) {
@@ -88,10 +92,6 @@ export class GridController extends Component {
             this.props.archInfo.activeActions.edit &&
             this.props.archInfo.editable
         );
-    }
-
-    get rangesArray() {
-        return Object.values(this.props.archInfo.ranges);
     }
 
     get displayNoContent() {
@@ -155,22 +155,5 @@ export class GridController extends Component {
 
     async onRecordSaved(record) {
         await this.reload();
-    }
-
-    async onRangeClick(name) {
-        await this.model.setRange(name);
-        this.state.activeRangeName = name;
-    }
-
-    async onTodayButtonClick() {
-        await this.model.setTodayAnchor();
-    }
-
-    async onPreviousButtonClick() {
-        await this.model.moveAnchor("backward");
-    }
-
-    async onNextButtonClick() {
-        await this.model.moveAnchor("forward");
     }
 }

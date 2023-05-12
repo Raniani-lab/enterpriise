@@ -26,43 +26,43 @@
 
     .o_grid_column_title {
         &.o_grid_highlighted:not(.bg-info) {
-            @extend .bg-opacity-0;
+            --bg-opacity: 0;
         }
 
         &.fw-bold:not(.o_grid_highlighted) {
-            @extend .bg-view;
+            background: $o-gray-100;
         }
     }
 
     .o_grid_section.o_grid_highlighted:not(.o_grid_section_title) > .position-absolute:not(.bg-info-light) {
-        @extend .bg-300;
+        background: $o-gray-400;
     }
 
     .o_grid_row:not(.o_grid_row_total):not(.o_grid_column_total) {
         &.o_grid_unavailable {
-            @extend .text-opacity-50;
+            --text-opacity: .5;
         }
 
         &.o_grid_highlighted:not(.o_grid_add_line) {
             &.o_grid_row_highlighted {
-                @extend .bg-200;
+                background: $o-gray-300;
             }
 
             &.o_grid_row_highlighted,.o_grid_cell_highlighted {
                 > .position-absolute {
-                    @extend .bg-opacity-50;
+                    --bg-opacity: .5;
                 }
             }
 
             &.o_grid_cell_highlighted {
                 &:not(.o_grid_cell_today) {
-                    @extend .bg-200;
+                    background: $o-gray-300;
                 }
             }
 
             &.o_grid_cell_today:not(.o_grid_cell_highlighted):not(.o_grid_row_highlighted) {
                 > .position-absolute {
-                    @extend .bg-opacity-25;
+                    --bg-opacity: .25;
                 }
             }
         }
@@ -70,32 +70,40 @@
 
         &:not(.o_grid_highlighted) {
             &.o_grid_row_even {
-                @extend .bg-view;
-
-                &:not(.o_grid_row_title) {
-                    @extend .bg-opacity-50;
-                }
+                //Change bg-view with white to keep zebra in dark mode
+                background: $o-white;
             }
 
             .o_grid_column_title {
                 &:not(.o_grid_row_even) {
-                    @extend .bg-light;
+                    background: $light;
                 }
             }
 
             > .position-absolute {
-                @extend .bg-opacity-25;
+                --bg-opacity: .25;
             }
         }
     }
 
     .o_grid_row_total:not(.bg-danger) {
         &.o_grid_highlighted {
-            @extend .bg-dark, .text-bg-dark;
+            background: $dark;
+            color: $o-white;
         }
 
         &:not(.o_grid_highlighted) {
-            @extend .text-bg-secondary;
+            background: $o-gray-700;
+            color: $o-white;
         }
+    }
+
+    .o_grid_navigation_wrap {
+        @include o-gantt-zindex(top);
+    }
+
+    .o_grid_row_title:not(.o_grid_row_even),
+    .o_grid_add_line_first_cell {
+        background: $o-gray-200;
     }
 }

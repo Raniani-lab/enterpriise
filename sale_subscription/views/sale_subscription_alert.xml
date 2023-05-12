@@ -14,7 +14,7 @@
                        attrs="{'invisible': [('trigger_condition', '!=', 'on_time')]}"/>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <label for="name" string="Action Name"/>
                         <h1><field name="name" placeholder="e.g. Closed Subscription"/></h1>
@@ -50,7 +50,7 @@
                                 <strong>to</strong>
                                 <field name="subscription_state" placeholder="Destination"/>
                             </div>
-                            <button name="action_view_subscriptions" type="object" icon="fa-arrow-right" class="btn-link o_row">
+                            <button name="action_view_subscriptions" type="object" icon="oi-arrow-right" class="btn-link o_row">
                                 <span>
                                     <field name="subscription_count" class="w-auto"/>
                                 </span>

@@ -5,8 +5,8 @@
 
     <template id="documents.not_available">
         <t t-call="documents.public_page_layout">
-            <h2 class="o_documents_portal_central_message text-center mt160 text-white">Sorry, this link is no longer valid.</h2>
-            <h4 class="o_documents_portal_central_message text-center mt40 text-white">Please contact the person that shared this link for more information.</h4>
+            <h1 class="o_documents_portal_central_message text-center mt160 mb-3">Sorry, this link is no longer valid.</h1>
+            <h4 class="o_documents_portal_central_message text-center">Please contact the person that shared this link for more information.</h4>
         </t>
     </template>
 
@@ -49,21 +49,21 @@
             <t t-set="shareType" t-value="shareType or ''"/>
             <t t-set="share_redirect_URL" t-attf-value="#{base_url}/document/share/#{share_id}/#{token}"/>
             <div id="wrap" t-attf-class="h-100 flex-column flex-nowrap d-flex position-relative container #{shareType}">
-                <header class="mt8">
+                <header class="d-flex justify-content-between align-items-center mt-3">
                     <span class="o_company_logo" t-field="res_company.logo" t-options="{'widget': 'image'}" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name"/>
 
-                    <ul class="list-inline mt8 float-end">
+                    <ul class="list-inline mb-0">
                         <li class="dropdown hidden-sm hidden-xs" t-ignore="true" t-if="not user_id._is_public()">
-                            <a href="#" class="dropdown-toggle o_docs_btn" data-bs-toggle="dropdown">
-                                <img class="o_object_fit_cover rounded-circle" width="13" height="13" t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id=#{json.dumps(request.env.user.id)}" alt=""/>
+                            <a href="#" class="dropdown-toggle o_docs_btn btn btn-secondary" data-bs-toggle="dropdown">
+                                <img class="o_object_fit_cover rounded" width="13" height="13" t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id=#{json.dumps(request.env.user.id)}" alt=""/>
                                 <span t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"/><span class="caret"/>
                             </a>
                             <ul class="dropdown-menu js_usermenu" role="menu">
-                                <li id="o_logout"><a t-attf-href="/web/session/logout?redirect=#{share_redirect_URL}" role="menuitem">Logout</a></li>
+                                <li id="o_logout"><a class="dropdown-item" t-attf-href="/web/session/logout?redirect=#{share_redirect_URL}" role="menuitem">Logout</a></li>
                             </ul>
                         </li>
                         <li t-ignore="true" t-if="user_id._is_public()">
-                            <a t-attf-href="/web/login?redirect=#{share_redirect_URL}" class="col-sm-6 o_docs_btn">Login</a>
+                            <a t-attf-href="/web/login?redirect=#{share_redirect_URL}" class="o_docs_btn btn btn-secondary">Login</a>
                         </li>
                     </ul>
                 </header>
@@ -73,7 +73,7 @@
                 <footer class="flex-grow-0 flex-shrink-0 mb16 mt32 ">
                     <div class="text-center col-sm-12">
                         <p t-if="expiration_date">shared by <t t-esc="author"/>, expired on <t t-esc="expiration_date"/></p>
-                        <br/>Powered by <a target="_blank" title="Odoo Website" href="http://www.odoo.com/app/documents"><img class="o_object_fit_cover align-text-top" height="15" src="/web/static/img/logo_inverse_white_206px.png" alt="Odoo Logo"/><span style="color:white;">&amp;nbsp;Documents.</span></a>
+                        <br/>Powered by <a target="_blank" title="Odoo Website" href="http://www.odoo.com/app/documents" class="text-reset"><span class="bg-primary p-1 rounded"><img class="o_object_fit_cover align-text-top" height="15" src="/web/static/img/logo_inverse_white_206px.png" alt="Odoo Logo"/></span><span>&amp;nbsp;Documents.</span></a>
                     </div>
                 </footer>
             </div>
@@ -86,15 +86,16 @@
             <t t-set="shareType" t-value="'o_share_multiple'"/>
             <t t-set="zip_URL" t-value="base_url + '/document/download/all/' + share_id + '/' + token"/>
 
-            <section class="o_docs_share_multible_bar row mt64 mb24">
-                <div class="col-sm-6 mb16">
-                    <b class="text-white h2"><t t-esc="len(document_ids)"></t></b> documents shared by
-                    <span class="o_author text-white mt8">
-                        <img class="rounded-circle mt8" t-attf-src="/document/avatar/#{share_id}/#{token}" t-att-alt="author" t-att-title="author"/>
-                        <t t-esc="author"/>
+            <section class="o_docs_share_multible_bar d-flex mt-5 mb-4">
+                <div class="flex-grow-1 mb16">
+                    <h2><t t-esc="len(document_ids)"/> documents</h2>
+                    <span class="align-middle">
+                        shared by
+                        <img class="o_author rounded align-middle o_object_fit_cover" t-attf-src="/document/avatar/#{share_id}/#{token}" t-att-alt="author" t-att-title="author"/>
+                        <b t-esc="author"/>
                     </span>
                 </div>
-                <div class="col-sm-6 text-end">
+                <div class="flex-grow-1 text-end">
                     <div class="row g-0 justify-content-end">
                         <div class="col me-3">
                             <form class="o_docs_upload_wrapper position-relative d-inline-block" t-if="upload" enctype="multipart/form-data" t-attf-action="/document/upload/#{share_id}/#{token}" method="POST">
@@ -119,7 +120,7 @@
                         <t t-set="redirect_URL" t-value="document.url if document.url.startswith(('http://', 'https://', 'ftp://')) else 'http://' + document.url"/>
                     </t>
                     <div class="col-sm-6 col-lg-3">
-                        <article t-attf-class="o_card d-flex mb16 #{document_request and 'o_request_card' or ''}">
+                        <article t-attf-class="o_card d-flex mb16 border #{document_request and 'o_request_card' or ''}">
                             <figure class="o_card_left d-flex position-relative flex-column flex-nowrap justify-content-between m-0">
                                 <form t-if="request_upload and document_request" class="o_hidden" enctype="multipart/form-data" t-attf-action="/document/upload/#{share_id}/#{token}/#{document.id}" method="POST">
                                     <input name="requestFile" class="o_request_upload" type="file" onchange="form.submit()"/>
@@ -149,7 +150,7 @@
                                 </div>
                             </div>
                             <div class="o_card_right d-flex flex-column flex-nowrap justify-content-between text-end">
-                                <img t-attf-title="Owner: #{document.owner_id.name}" t-att-alt="document.owner_id.name" class="o_object_fit_cover rounded-circle" width="15" height="15" t-attf-src="/document/avatar/#{share_id}/#{token}/#{document.id}"/>
+                                <img t-attf-title="Owner: #{document.owner_id.name}" t-att-alt="document.owner_id.name" class="o_object_fit_cover rounded" width="15" height="15" t-attf-src="/document/avatar/#{share_id}/#{token}/#{document.id}"/>
                                 <a t-if="not document_request" t-att-href="document_is_url and redirect_URL or download_URL" target="new" t-attf-title="#{document_is_url and 'Link to ' or 'Download '}#{document.name}"><i t-attf-class="fa #{'url' not in document.type and 'fa-download' or 'fa-link'}"/></a>
                             </div>
                         </article>
@@ -181,7 +182,7 @@
             <t t-set="normal_preview_URL" t-value="base_url + '/documents/image/' + str(document.id) + '?'"/>
             <t t-set="document_request" t-value="document.type == 'empty'"/>
 
-            <h3 t-if="request_upload and document_request" class="text-white text-center mb16">
+            <h3 t-if="request_upload and document_request" class="text-center mb16">
                 This document has been requested.
                 <b onclick="document.querySelector('.o_request_upload').click()" style="cursor:pointer;">Upload it</b>.
             </h3>

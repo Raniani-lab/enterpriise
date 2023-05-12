@@ -3,7 +3,7 @@
 
     <t t-name="timesheet_grid.GridTimerButtonCell" owl="1">
         <button type="button"
-                class="btn_timer_line btn position-relative mb-1 fa-stack"
+                class="btn_timer_line btn position-relative border-0 fa-stack"
                 t-att-class="{
                     'btn-primary': !state.timerRunning and props.hovered or !state.timerRunning and env.isSmall or !state.timerRunning and props.hotKey,
                     'btn-danger': state.timerRunning,

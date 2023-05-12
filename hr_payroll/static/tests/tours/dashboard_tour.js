@@ -58,7 +58,7 @@ registry.category("web_tour.tours").add('payroll_dashboard_ui_tour', {
     },
     {
         content: "Go back to dashboard",
-        trigger: 'a[data-menu-xmlid="hr_work_entry_contract_enterprise.menu_hr_payroll_root"]',
+        trigger: 'a[data-menu-xmlid="hr_payroll.menu_hr_payroll_dashboard_root"]',
     },
     {
         content: "Check that the no contract error is gone",

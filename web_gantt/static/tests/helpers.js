@@ -242,7 +242,7 @@ export function getGridContent() {
     const fixture = getFixture();
 
     const columnHeaders = getTexts(".o_gantt_header_cell");
-    const range = getText(".o_gantt_header_scale");
+    const range = getTexts(".o_gantt_header_scale > div > *:not(.o_gantt_header_cell)")[2];
     const viewTitle = getText(".o_gantt_header.o_gantt_row_sidebar");
 
     const renderer = fixture.querySelector(SELECTORS.renderer);

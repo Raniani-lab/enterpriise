@@ -244,6 +244,6 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
 }, {
     // verify that the trash list has been opened correctly and that items are correctly ordered
     trigger: '.o_data_row:first .o_data_cell[name="display_name"]:contains("Article 2")',
-    extra_trigger: '.breadcrumb-item.active:contains("Trash")',
+    extra_trigger: '.o_breadcrumb .active:contains("Trash")',
     run: () => {},
 }]});

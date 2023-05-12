@@ -52,7 +52,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
 '		<div class="o_social_stream_post_message py-2">' +
 '			<div class="d-flex justify-content-between mb-2 px-2">' +
 '				<t t-set="author_info">' +
-'					<span class="o_social_stream_post_author_image o_social_author_image position-relative rounded-circle overflow-hidden"/>' +
+'					<span class="o_social_stream_post_author_image o_social_author_image o_avatar position-relative rounded overflow-hidden"/>' +
 '					<span class="o_social_stream_post_author_name text-truncate ms-2" t-esc="record.author_name.value or \'Unknown\'" t-att-title="record.author_name.value or \'Unknown\'"/>' +
 '				</t>' +
 '' +

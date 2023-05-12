@@ -21,6 +21,7 @@
                     onTimerStarted="() => this.timesheetTimerRendererHook._onTimerStarted()"
                     onTimerStopped="() => this.timesheetTimerRendererHook._onTimerStopped()"
                     onTimerUnlinked="() => this.timesheetTimerRendererHook._onTimerUnlinked()"
+                    className="'h-100'"
                 />
             </div>
         </xpath>

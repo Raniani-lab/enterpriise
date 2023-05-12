@@ -8,10 +8,10 @@
             <xpath expr="//field[@name='use_website_helpdesk_livechat']" position="after">
                 <div id='im_livechat' attrs="{'invisible': [('use_website_helpdesk_livechat', '=', False)]}">
                     <div class="mt16">
-                        <button name="action_view_channel" type="object" string="Configure Live Chat Channel" icon="fa-arrow-right" class="btn-link"/>
+                        <button name="action_view_channel" type="object" string="Configure Live Chat Channel" icon="oi-arrow-right" class="btn-link"/>
                     </div>
                     <div>
-                        <button name="%(im_livechat.im_livechat_canned_response_action)d" type="action" string="Configure Canned Responses" icon="fa-arrow-right" class="btn-link"/>
+                        <button name="%(im_livechat.im_livechat_canned_response_action)d" type="action" string="Configure Canned Responses" icon="oi-arrow-right" class="btn-link"/>
                     </div>
                 </div>
             </xpath>

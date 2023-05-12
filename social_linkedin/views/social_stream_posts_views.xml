@@ -14,7 +14,7 @@
                 <field name="linkedin_author_image_url"/>
             </xpath>
             <xpath expr="//span[hasclass('o_social_stream_post_author_image')]" position="inside">
-                <img t-if="record.linkedin_author_image_url.raw_value" t-att-src="record.linkedin_author_image_url.raw_value" alt="Author Image"/>
+                <img t-if="record.linkedin_author_image_url.raw_value" t-att-src="record.linkedin_author_image_url.raw_value" alt="Author Image" class="rounded"/>
             </xpath>
             <xpath expr="//div[hasclass('o_social_stream_post_message')]" position="inside">
                 <div class="o_social_stream_post_linkedin_stats px-2 d-flex justify-content-around"

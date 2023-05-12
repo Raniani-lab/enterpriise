@@ -6,22 +6,22 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add('helpdesk_insert_graph_view_in_knowledge', {
     url: '/web#action=helpdesk.helpdesk_ticket_analysis_action',
     test: true,
-    steps: [{ // open the filter menu
-    trigger: '.o_filter_menu .dropdown-toggle',
+    steps: [{ // open the search menu
+    trigger: '.o_control_panel .o_searchview_dropdown_toggler',
 }, { // pick a filter
     trigger: '.o_filter_menu .dropdown-item:contains("Urgent")',
 }, { // check that the facet is now active
     trigger: '.o_searchview .o_facet_value:contains("Urgent")',
-}, { // open the "group by" menu
-    trigger: '.o_group_by_menu .dropdown-toggle',
-}, { // pick a filter
+},{ // reopen the search menu
+    trigger: '.o_control_panel .o_searchview_dropdown_toggler',
+}, { // pick a group by
     trigger: '.o_group_by_menu .dropdown-item:contains("Team")',
 }, { // check that the facet is now active
     trigger: '.o_searchview .o_facet_value:contains("Team")',
-}, { // open the "favorite" menu
-    trigger: '.o_favorite_menu .dropdown-toggle',
+}, { // open the cog menu
+    trigger: '.o_control_panel .o_cp_action_menus .dropdown-toggle',
 }, { // insert the view in an article
-    trigger: '.o_favorite_menu .dropdown-item:contains("Insert view in article")',
+    trigger: '.o_cp_action_menus .dropdown-item:contains("Insert view in article")',
 }, { // create a new article
     trigger: '.modal-footer button:contains("New")',
 }, { // wait for Knowledge to open

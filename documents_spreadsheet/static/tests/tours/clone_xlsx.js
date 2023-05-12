@@ -28,8 +28,8 @@ registry.category("web_tour.tours").add("spreadsheet_clone_xlsx", {
             content: "Open with Odoo Spreadsheet",
         },
         {
-            trigger: ".o_menu_brand",
-            content: "Go back to the menu",
+            trigger: '[data-menu-xmlid="documents.dashboard"]',
+            content: "Go back to Document App",
         },
         {
             trigger: ".o_kanban_renderer .o_kanban_record:first:contains('test')",
@@ -52,8 +52,8 @@ registry.category("web_tour.tours").add("spreadsheet_clone_xlsx", {
             content: "Open with Odoo Spreadsheet without unchecking the box",
         },
         {
-            trigger: ".o_menu_brand",
-            content: "Go once more back to the menu",
+            trigger: '[data-menu-xmlid="documents.dashboard"]',
+            content: "Go back to Document App",
         },
         {
             trigger: ".o_kanban_renderer .o_kanban_record",
@@ -68,7 +68,7 @@ registry.category("web_tour.tours").add("spreadsheet_clone_xlsx", {
             },
         },
         {
-            trigger: '.o_control_panel .o-dropdown .dropdown-toggle:contains("Filters")',
+            trigger: ".o_control_panel .o_searchview_dropdown_toggler",
             content: "Open Filters",
         },
         {

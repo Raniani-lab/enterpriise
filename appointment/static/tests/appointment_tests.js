@@ -306,7 +306,9 @@ QUnit.test('discard slot in calendar', async function (assert) {
     assert.containsN(target, '.fc-event', 2);
     assert.containsNone(target, '.o_calendar_slot');
     
-    await click(target.querySelector('.o_calendar_button_next'));
+    // Same behavior as previous next button
+    await click(target.querySelector('.ui-datepicker-calendar > tbody > tr:nth-child(2) > td:nth-child(6) > a'));
+    await nextTick();
     assert.containsOnce(target, '.fc-event', 'There is one calendar event');
     assert.containsNone(target, '.o_calendar_slot', 'There is no slot yet');
 
@@ -320,7 +322,8 @@ QUnit.test('discard slot in calendar', async function (assert) {
     assert.containsOnce(target, '.fc-event', 'The calendar event is still here');
     assert.containsNone(target, '.o_calendar_slot', 'The slot has been discarded');
 
-    await click(target.querySelector('.o_calendar_button_prev'));
+    await click(target.querySelector('.o_calendar_button_today'));
+    await nextTick();
     assert.containsN(target, '.fc-event', 2);
     assert.containsNone(target, '.o_calendar_slot');
 });
@@ -413,7 +416,8 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
     assert.containsN(target, '.fc-event', 2);
     assert.containsNone(target, '.o_calendar_slot');
     
-    await click(target.querySelector('.o_calendar_button_next'));
+    // Same behavior as previous next button
+    await click(target.querySelector('.ui-datepicker-calendar > tbody > tr:nth-child(2) > td:nth-child(6) > a'));
     assert.containsOnce(target, '.fc-event', 'There is one calendar event');
     assert.containsNone(target, '.o_calendar_slot', 'There is no slot yet');
 
@@ -467,7 +471,8 @@ QUnit.test('filter works in slots-creation mode', async function (assert) {
     assert.strictEqual(calendar.env.calendarState.mode, 'slots-creation',
         "The calendar is now in a mode to create custom appointment time slots");
 
-    await click(target.querySelector('.o_calendar_button_next'));
+    // Same behavior as previous next button
+    await click(target.querySelector('.ui-datepicker-calendar > tbody > tr:nth-child(2) > td:nth-child(6) > a'));
     assert.containsOnce(target, '.fc-event');
     assert.containsNone(target, '.o_calendar_slot');
 

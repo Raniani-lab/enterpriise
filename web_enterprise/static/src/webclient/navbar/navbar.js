@@ -38,6 +38,11 @@ export class EnterpriseNavBar extends NavBar {
             menuBrand.classList.toggle("o_hidden", !this.isInApp);
         }
 
+        const menuBrandIcon = this.navRef.el.querySelector(".o_menu_brand_icon");
+        if (menuBrandIcon) {
+            menuBrandIcon.classList.toggle("o_hidden", !this.isInApp);
+        }
+
         const appSubMenus = this.appSubMenus.el;
         if (appSubMenus) {
             appSubMenus.classList.toggle("o_hidden", !this.isInApp);

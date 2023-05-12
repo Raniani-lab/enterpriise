@@ -9,18 +9,19 @@ import { Layout } from "@web/search/layout";
 import { standardViewProps } from "@web/views/standard_view_props";
 import { useModel } from "@web/views/model";
 import { useService } from "@web/core/utils/hooks";
-import { ViewScaleSelector } from "@web/views/view_components/view_scale_selector";
+import { SearchBar } from "@web/search/search_bar/search_bar";
+import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
+import { CogMenu } from "@web/search/cog_menu/cog_menu";
 
 import { useSetupView } from "@web/views/view_hook";
 
-const { DateTime } = luxon;
-
 export class GanttController extends Component {
     static components = {
+        CogMenu,
         Dropdown,
         DropdownItem,
         Layout,
-        ViewScaleSelector,
+        SearchBar,
     };
     static props = {
         ...standardViewProps,
@@ -71,6 +72,7 @@ export class GanttController extends Component {
             },
             () => [this.showNoContentHelp]
         );
+        this.searchBarToggler = useSearchBarToggler();
     }
 
     get className() {
@@ -80,10 +82,6 @@ export class GanttController extends Component {
             return classList.join(" ");
         }
         return this.props.className;
-    }
-
-    get displayExpandCollapseButtons() {
-        return this.model.data.rows[0]?.isGroup; // all rows on same level have same type
     }
 
     get showNoContentHelp() {
@@ -105,10 +103,6 @@ export class GanttController extends Component {
         } else {
             this.openDialog({ context });
         }
-    }
-
-    getTodayDay() {
-        return DateTime.local().day;
     }
 
     /**
@@ -169,25 +163,5 @@ export class GanttController extends Component {
         const stop = focusDate.endOf(scale.id);
         const context = this.model.getDialogContext({ start, stop, withDefault: true });
         this.create(context);
-    }
-
-    onCollapseClicked() {
-        this.model.collapseRows();
-    }
-
-    onExpandClicked() {
-        this.model.expandRows();
-    }
-
-    onNextPeriodClicked() {
-        this.model.setFocusDate("next");
-    }
-
-    onPreviousPeriodClicked() {
-        this.model.setFocusDate("previous");
-    }
-
-    onTodayClicked() {
-        this.model.setFocusDate();
     }
 }

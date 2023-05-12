@@ -308,7 +308,7 @@
     <t t-name="documents.DocumentsInspectorMobile" owl="1">
         <details t-attf-class="{{props.selection.length ? '' : 'd-none'}} o_documents_mobile_inspector" t-ref="inspectorMobile">
             <summary class="o_documents_toggle_inspector btn btn-primary d-flex align-items-center">
-                <i class="o_documents_close_inspector fa fa-fw fa-arrow-left"/>
+                <i class="o_documents_close_inspector oi oi-fw oi-arrow-left"/>
                 <span class="m-auto">
                     <t t-esc="props.selection.length"/>
                     <t t-if="props.selection.length > 1"> documents</t>

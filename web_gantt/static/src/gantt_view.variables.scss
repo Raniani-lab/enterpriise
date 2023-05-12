@@ -59,6 +59,7 @@
     &.o_gantt_today {
         background-color: $gantt-highlight-today-bg;
         border-left-color: $gantt-highlight-today-border;
+        border-top-color: $gantt-highlight-today-border;
 
         + .o_gantt_header_cell,
         + .o_gantt_cell {

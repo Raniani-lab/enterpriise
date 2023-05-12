@@ -8,6 +8,7 @@ import {
     makeDeferred,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
+import { toggleActionMenu } from "@web/../tests/search/helpers";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import {
     getSpreadsheetActionEnv,
@@ -92,7 +93,7 @@ export async function createSpreadsheetFromListView(params = {}) {
     });
     const target = getFixture();
     /** Put the current list in a new spreadsheet */
-    await click(target.querySelector(".o_favorite_menu button"));
+    await toggleActionMenu(target);
     await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
     /** @type {HTMLInputElement} */
     const input = target.querySelector(`.o-sp-dialog-meta-threshold-input`);

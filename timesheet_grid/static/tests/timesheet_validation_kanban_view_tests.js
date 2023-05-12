@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { click, getFixture } from "@web/../tests/helpers/utils";
 import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
-
+import { getVisibleButtons } from "@web/../tests/search/helpers";
 
 QUnit.module("timesheet_grid", (hooks) => {
     let target;
@@ -16,7 +16,7 @@ QUnit.module("timesheet_grid", (hooks) => {
 
     QUnit.module("timesheet_validation_kanban_view");
 
-    QUnit.test("", async function(assert) {
+    QUnit.test("Should trigger notification on validation", async function(assert) {
         const notificationMock = (message, options) => {
             assert.step("notification_triggered");
             return () => {};
@@ -62,15 +62,7 @@ QUnit.module("timesheet_grid", (hooks) => {
                 }
             },
         });
-        assert.containsOnce(target, 'div.o_cp_bottom_left div.o_cp_buttons[role="toolbar"]:contains("Validate")', "Validate button is added to the control panel of the kanban view");
-        const cp_buttons = target.querySelectorAll('div.o_cp_bottom_left div.o_cp_buttons[role="toolbar"] button');
-        let validateButton;
-        for (const button of cp_buttons) {
-            if (button.innerText.toLowerCase().includes("validate")) {
-                validateButton = button;
-                break;
-            }
-        }
+        const validateButton = getVisibleButtons(target).find(btn => btn.innerText === "Validate");
         await click(validateButton);
         assert.verifySteps(["action_validate_timesheet", "notification_triggered"]);
     });

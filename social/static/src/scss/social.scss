@@ -140,7 +140,7 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
         .o_social_stream_post_published_date {
             color: lighten($o-main-text-color, 10%);
             &:hover {
-                color: $o-enterprise-primary-color;
+                color: $o-enterprise-action-color;
             }
         }
     }
@@ -165,6 +165,10 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
         &:last-child {
             padding: 1rem 16px 0 8px;
         }
+    }
+
+    .o_kanbanheader_media_image {
+        object-fit: contain;
     }
 }
 
@@ -220,20 +224,6 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
 
 .o_social_subtle_btn_disabled {
     color: lighten($o-main-text-color, 10%);
-}
-
-.o_social_author_image {
-    &:after {
-        @include o-position-absolute(0, 0, 0, 0);
-        border: 1px solid rgba(black, .1);
-        border-radius: 100%;
-        content: '';
-    }
-
-    img {
-        width: 2em;
-        height: 2em;
-    }
 }
 
 .o_social_bubble_radius {
@@ -407,7 +397,7 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
     .o_social_comment_published_date, .o_social_post_published_date {
         color: lighten($o-main-text-color, 10%);
         &:hover {
-            color: $o-enterprise-primary-color;
+            color: $o-enterprise-action-color;
         }
     }
 

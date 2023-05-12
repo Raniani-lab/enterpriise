@@ -2,20 +2,6 @@
 <templates xml:space="preserve">
 
     <t t-name="web_cohort.CohortView.Buttons" owl="1">
-        <div class="btn-group" role="toolbar" aria-label="Main actions">
-            <t t-call="web.ReportViewMeasures">
-                <t t-set="measures" t-value="model.metaData.measures"/>
-                <t t-set="activeMeasures" t-value="[model.metaData.measure]"/>
-            </t>
-        </div>
-        <div class="btn-group">
-            <ViewScaleSelector scales="scales" currentScale="model.metaData.interval" setScale.bind="setScale" />
-        </div>
-        <div class="btn-group">
-            <button class="btn btn-secondary fa fa-download o_cohort_download_button"
-                    title="Download as Excel file"
-                    t-on-click="downloadExcel"></button>
-        </div>
     </t>
 
     <t t-name="web_cohort.CohortView" owl="1">
@@ -23,6 +9,12 @@
             <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''" display="props.display">
                 <t t-set-slot="layout-buttons">
                     <t t-call="{{ props.buttonTemplate }}"/>
+                </t>
+                <t t-set-slot="control-panel-additional-actions">
+                    <CogMenu/>
+                </t>
+                <t t-set-slot="layout-actions">
+                    <SearchBar/>
                 </t>
                 <t t-set="displayNoContent" t-value="
                     props.info.noContentHelp !== false and (

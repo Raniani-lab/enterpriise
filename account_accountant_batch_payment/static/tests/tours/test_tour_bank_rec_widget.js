@@ -15,7 +15,7 @@ registry.category("web_tour.tours").add('account_accountant_batch_payment_bank_r
         // Open the widget. The first line should be selected by default.
         {
             content: "Open the bank reconciliation widget",
-            extra_trigger: ".breadcrumb",
+            extra_trigger: ".o_breadcrumb",
             trigger: "button.btn-primary[name='action_open_reconcile']",
         },
         {

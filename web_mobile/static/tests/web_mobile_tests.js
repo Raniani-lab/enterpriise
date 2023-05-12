@@ -14,7 +14,6 @@ import { BackButtonEventMixin } from "web_mobile.mixins";
 import mobile from "web_mobile.core";
 /*import UserPreferencesFormView from "web_mobile.UserPreferencesFormView";*/
 
-import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { mount, getFixture, destroy, patchWithCleanup, clickSave} from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
@@ -562,72 +561,6 @@ QUnit.module("web_mobile", {
         assert.verifySteps(["overrideBackButton: false"]);
         assert.containsNone(document.body, ".o_popover", "should have been closed");
 
-    });
-
-    QUnit.module("ControlPanel");
-
-    QUnit.test("mobile search: close with backbutton event", async function (assert) {
-        assert.expect(7);
-
-        patchWithCleanup(mobile.methods, {
-            overrideBackButton({ enabled }) {
-                assert.step(`overrideBackButton: ${enabled}`);
-            },
-        });
-
-        const actions = {
-            1: {
-                id: 1,
-                name: "Yes",
-                res_model: "partner",
-                type: "ir.actions.act_window",
-                views: [[false, "list"]],
-            },
-        };
-
-        const views = {
-            "partner,false,list": '<tree><field name="foo"/></tree>',
-            "partner,false,search": `
-        <search>
-            <filter string="Active" name="my_projects" domain="[('boolean_field', '=', True)]"/>
-            <field name="foo" string="Foo"/>
-        </search>`,
-        };
-
-        const models = {
-            partner: {
-                fields: {
-                    foo: { string: "Foo", type: "char" },
-                    boolean_field: { string: "I am a boolean", type: "boolean" },
-                },
-                records: [{ id: 1, display_name: "First record", foo: "yop" }],
-            },
-        };
-        const serverData = {actions, models, views};
-
-        const webClient = await createWebClient({ serverData });
-
-        await doAction(webClient, 1);
-
-        // the mobile search is portaled in body, not in the fixture
-        assert.containsNone(document.body, ".o_mobile_search");
-
-        // open the search view
-        await testUtils.dom.click(
-            target.querySelector("button.o_enable_searchview")
-        );
-        // open it in full screen
-        await testUtils.dom.click(
-            target.querySelector(".o_toggle_searchview_full")
-        );
-
-        assert.containsOnce(document.body, ".o_mobile_search");
-        assert.verifySteps(["overrideBackButton: true"]);
-
-        // simulate 'backbutton' event triggered by the app
-        await testUtils.dom.triggerEvent(target, "backbutton");
-        assert.containsNone(target, ".o_mobile_search");
-        assert.verifySteps(["overrideBackButton: false"]);
     });
 
     QUnit.module("UpdateDeviceAccountControllerMixin");

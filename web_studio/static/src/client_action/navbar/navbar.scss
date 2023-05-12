@@ -1,4 +1,12 @@
 .o_studio_navbar {
+  --NavBar-brand-color: #{$o-white};
+  --NavBar-entry-color: #{rgba($o-white, .9)};
+  --NavBar-entry-color--hover: #{$o-white};
+  --NavBar-entry-color--active: #{$o-white};
+  --NavBar-entry-backgroundColor--hover: #{rgba($o-white, .1)};
+  --NavBar-entry-backgroundColor--active: #{rgba($o-white, .1)};
+  --NavBar-menuToggle-color: #{rgba($o-white, .9)};
+
   background: $o-web-studio-bg-dark;
   border-color: $o-web-studio-bg-dark;
 
@@ -33,23 +41,11 @@
   .o_studio_buttons {
     grid-area: systray;
     display: flex;
-    .o_web_studio_leave {
-      height: 100%;
-      display: table;
-      margin: 0 20px;
+    margin: -$o-navbar-padding-v 0;
 
-      > a {
-        color: $o-web-studio-bg-light;
-        display: table-cell;
-        vertical-align: middle;
-      }
-    }
-    .o_web_studio_leave {
-      margin: 0;
-
-      > a {
-        font-weight: bold;
-      }
+    .o_web_studio_leave > a {
+      // Allows to keep the same alignment as the navbar entries
+      line-height: calc(var(--o-navbar-height) - #{$o-navbar-padding-v * 2});
     }
   }
 }

@@ -11,6 +11,6 @@
 }
 
 .o_gantt_row_title .o_material_resource {
-    width: 19px;
-    height: 19px;
+    height: var(--Avatar-size, #{$o-avatar-size});
+    width: var(--Avatar-size, #{$o-avatar-size});
 }

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { PivotController } from "@web/views/pivot/pivot_controller";
+import { PivotRenderer } from "@web/views/pivot/pivot_renderer";
 import { unique } from "@web/core/utils/arrays";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
@@ -14,7 +14,7 @@ import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/component
 
 import { onWillStart } from "@odoo/owl";
 
-patch(PivotController.prototype, "pivot_spreadsheet", {
+patch(PivotRenderer.prototype, "pivot_spreadsheet", {
     setup() {
         this._super.apply(this, arguments);
         this.userService = useService("user");

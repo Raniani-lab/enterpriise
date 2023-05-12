@@ -181,9 +181,9 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
         const link = document.querySelector("a.o-link");
         await click(link);
         await legacyExtraNextTick();
-        const items = document.querySelectorAll(".breadcrumb-item");
-        const [breadcrumb1, breadcrumb2] = Array.from(items).map((item) => item.innerText);
-        assert.equal(breadcrumb1, "Untitled spreadsheet");
-        assert.equal(breadcrumb2, "action1");
+        assert.strictEqual(
+            target.querySelector(".o_breadcrumb").textContent,
+            "Untitled spreadsheetaction1"
+        );
     });
 });

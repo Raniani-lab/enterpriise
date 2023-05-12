@@ -27,7 +27,7 @@ export const BG_COLORS = [
     "#606060",
     "#6B6C70",
     "#838383",
-    "#F5F5F5",
+    "#FFFFFF",
 ];
 
 export const ICONS = [

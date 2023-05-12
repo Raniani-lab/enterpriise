@@ -28,7 +28,7 @@
                                     <field name="sign_preview_ready" invisible="1"/>
                                     <div attrs="{'invisible': [('sign_preview_ready', '=', False)]}">
                                         <a href="/sign/terms">
-                                            <i class="fa fa-arrow-right"></i>
+                                            <i class="oi oi-arrow-right"></i>
                                             Preview
                                         </a>
                                     </div>
@@ -49,7 +49,7 @@
                             <widget name="iap_buy_more_credits" service_name="sms" hide_service="1"/>
                         </setting>
                         <setting id="field_types" string="Field Types" help="Configure the field types that can be used to sign documents (placeholder, auto-completion, ...)">
-                            <button name="%(sign.sign_item_type_action)d" icon="fa-arrow-right" type="action" string="Edit field types" class="btn-link"/>
+                            <button name="%(sign.sign_item_type_action)d" icon="oi-arrow-right" type="action" string="Edit field types" class="btn-link"/>
                         </setting>
                     </block>
                 </app>

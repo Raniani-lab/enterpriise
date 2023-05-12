@@ -80,7 +80,7 @@
                             <field name="total_participant_count" widget="statinfo" string="Participants" />
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <h1><field class="text-break" name="title" required="1" placeholder="e.g. eCommerce Offers Plan" /></h1>
                     </div>
@@ -149,37 +149,37 @@
                                         <div class="o_ma_body position-relative" t-att-data-record-id="record.id.raw_value">
                                             <div class="o_ma_timeline text-center">
                                                 <t t-if="record.trigger_type.raw_value == 'mail_open'">
-                                                    <div class="o_ma_text_processed">
+                                                    <div class="o_ma_text_processed text-success">
                                                         <i class="fa fa-envelope-open-o" /> Opened after
                                                     </div>
                                                 </t>
                                                 <t t-if="record.trigger_type.raw_value == 'mail_reply'">
-                                                    <div class="o_ma_text_processed">
+                                                    <div class="o_ma_text_processed text-success">
                                                         <i class="fa fa-reply" /> Replied after
                                                     </div>
                                                 </t>
                                                 <t t-if="record.trigger_type.raw_value == 'mail_click'">
-                                                    <div class="o_ma_text_processed">
+                                                    <div class="o_ma_text_processed text-success">
                                                         <i class="fa fa-hand-pointer-o" /> Clicked after
                                                     </div>
                                                 </t>
                                                 <t t-if="record.trigger_type.raw_value == 'mail_not_open'">
-                                                    <div class="o_ma_text_rejected">
+                                                    <div class="o_ma_text_rejected text-danger">
                                                         <i class="fa fa-envelope-open-o" /> Not opened within
                                                     </div>
                                                 </t>
                                                 <t t-if="record.trigger_type.raw_value == 'mail_not_reply'">
-                                                    <div class="o_ma_text_rejected">
+                                                    <div class="o_ma_text_rejected text-danger">
                                                         <i class="fa fa-reply" /> Not replied within
                                                     </div>
                                                 </t>
                                                 <t t-if="record.trigger_type.raw_value == 'mail_not_click'">
-                                                    <div class="o_ma_text_rejected">
+                                                    <div class="o_ma_text_rejected text-danger">
                                                         <i class="fa fa-hand-pointer-o" /> Not clicked within
                                                     </div>
                                                 </t>
                                                 <t t-if="record.trigger_type.raw_value == 'mail_bounce'">
-                                                    <div class="o_ma_text_rejected">
+                                                    <div class="o_ma_text_rejected text-danger">
                                                         <i class="fa fa-exclamation-circle" /> Bounced after
                                                     </div>
                                                 </t>
@@ -222,11 +222,11 @@
                                                             </t>
                                                         </div>
                                                         <div class="col-lg-3 col-3 text-center">
-                                                            <div class="o_ma_text_processed mb16">
+                                                            <div class="o_ma_text_processed mb16 text-success">
                                                                 <h2 class="mt4 mb0"><t t-esc="record.processed.value or 0"></t></h2>
                                                                 <div>SUCCESS</div>
                                                             </div>
-                                                            <div class="o_ma_text_rejected">
+                                                            <div class="o_ma_text_rejected text-danger">
                                                                 <h2 class="mt4 mb0"><t t-esc="record.rejected.value or 0"></t></h2>
                                                                 <div>REJECTED</div>
                                                             </div>
@@ -268,35 +268,35 @@
                                                     </div>
                                                     <div class="o_ma_child_activity_buttons">
                                                         <i data-trigger-type="activity"
-                                                            class="fa fa-code-fork fa-rotate-180 fa-flip-vertical o_ma_text_processed o_add_child_activity"
+                                                            class="fa fa-code-fork fa-rotate-180 fa-flip-vertical o_ma_text_processed o_add_child_activity text-success"
                                                             title="Add Another Activity" role="img" aria-label="Add Another Activity" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
                                                             data-trigger-type="mail_open"
-                                                            class="fa fa-envelope-open-o o_ma_text_processed o_add_child_activity"
+                                                            class="fa fa-envelope-open-o o_ma_text_processed o_add_child_activity text-success"
                                                             title="Opened" role="img" aria-label="Opened" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
                                                             data-trigger-type="mail_not_open"
-                                                            class="fa fa-envelope-open-o o_ma_text_rejected o_add_child_activity"
+                                                            class="fa fa-envelope-open-o o_ma_text_rejected o_add_child_activity text-danger"
                                                             title="Not Opened" role="img" aria-label="Not Opened" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
                                                             data-trigger-type="mail_reply"
-                                                            class="fa fa-reply o_ma_text_processed o_add_child_activity"
+                                                            class="fa fa-reply o_ma_text_processed o_add_child_activity text-success"
                                                             title="Replied" role="img" aria-label="Replied" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
                                                             data-trigger-type="mail_not_reply"
-                                                            class="fa fa-reply o_ma_text_rejected o_add_child_activity"
+                                                            class="fa fa-reply o_ma_text_rejected o_add_child_activity text-danger"
                                                             title="Not Replied" role="img" aria-label="Not Replied" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
                                                             data-trigger-type="mail_click"
-                                                            class="fa fa-hand-pointer-o o_ma_text_processed o_add_child_activity"
+                                                            class="fa fa-hand-pointer-o o_ma_text_processed o_add_child_activity text-success"
                                                             title="Clicked" role="img" aria-label="Clicked" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
                                                             data-trigger-type="mail_not_click"
-                                                            class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child_activity"
+                                                            class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child_activity text-danger"
                                                             title="Not Clicked" role="img" aria-label="Not Clicked" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
                                                             data-trigger-type="mail_bounce"
-                                                            class="fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity"
+                                                            class="fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity text-danger"
                                                             title="Bounced" role="img" aria-label="Bounced" />
                                                     </div>
                                                 </div>

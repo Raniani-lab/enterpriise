@@ -62,7 +62,7 @@
                                         </div>
                                     </div>
                                     <div class="content-group" attrs="{'invisible': [('alias_domain', '!=', False)]}">
-                                        <button name="%(settings_action)d" icon="fa-arrow-right" type="action" string="Configure Email Servers" class="btn btn-sm btn-link"/>
+                                        <button name="%(settings_action)d" icon="oi-arrow-right" type="action" string="Configure Email Servers" class="btn btn-sm btn-link"/>
                                     </div>
                                 </div>
                                 </div>
@@ -146,7 +146,7 @@
                     </group>
                     <group string="Upload by email" attrs="{'invisible': [('action', '!=', 'downloadupload')]}">
                         <div class="content-group" attrs="{'invisible': [('alias_domain', '!=', False)]}" colspan="2">
-                            <button name="%(settings_action)d" icon="fa-arrow-right" type="action" string="Configure Email Servers" class="btn btn-sm btn-link"/>
+                            <button name="%(settings_action)d" icon="oi-arrow-right" type="action" string="Configure Email Servers" class="btn btn-sm btn-link"/>
                         </div>
                         <label for="alias_name" string="Email Alias"/>
                         <span class="oe_edit_only">

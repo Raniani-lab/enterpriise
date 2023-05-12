@@ -63,7 +63,8 @@ registry.category("web_tour.tours").add("knowledge_search_favorites_tour", {
             run: "text 1",
         },
         {
-            trigger: ".o_dropdown_title:contains('Favorites')",
+            content: 'Open the search panel menu',
+            trigger: '.o_control_panel .o_searchview_dropdown_toggler',
         },
         {
             trigger: ".o_favorite_menu .o_add_favorite button",
@@ -93,19 +94,19 @@ registry.category("web_tour.tours").add("knowledge_search_favorites_tour", {
         // Open the favorite of the second kanban and check it has no favorite
         // (favorite are defined per view)
         {
-            trigger: ".breadcrumb:contains('Items 2')",
+            trigger: ".o_breadcrumb:contains('Items 2')",
             run: function () {
                 const view = this.$anchor[0].closest(
                     ".o_knowledge_article_view_kanban_embedded_view"
                 );
-                const favoriteButton = view.querySelector(".o_favorite_menu button");
-                favoriteButton.click();
+                const searchMenuButton = view.querySelector(".o_searchview_dropdown_toggler");
+                searchMenuButton.click();
             },
         },
         {
-            trigger: ".o_search_options .dropdown-item",
+            trigger: ".o_favorite_menu",
             run: function () {
-                const items = document.querySelectorAll(".o_search_options .dropdown-item");
+                const items = document.querySelectorAll(".o_favorite_menu .dropdown-item");
                 if (items.length !== 1 || items[0].innerText !== "Save current search") {
                     console.error("The favorite should not be available for the second view");
                 }

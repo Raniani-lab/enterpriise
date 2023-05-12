@@ -30,7 +30,7 @@
                 </div>
                 <div class="o_web_studio_app_creator_buttons">
                     <button t-if="state.hasPrevious" type="button"
-                        class="btn fa fa-chevron-left o_web_studio_app_creator_previous"
+                        class="btn oi oi-chevron-left o_web_studio_app_creator_previous"
                         aria-label="Previous"
                         title="Previous"
                         t-on-click="() => this.state.previous()"
@@ -47,7 +47,7 @@
                             <t t-if="nextStep">Next</t>
                             <t t-else="">Create your app</t>
                         </span>
-                        <i class="fa fa-chevron-right"/>
+                        <i class="oi oi-chevron-right"/>
                     </button>
                 </div>
             </div>

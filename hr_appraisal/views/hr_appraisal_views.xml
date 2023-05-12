@@ -25,8 +25,9 @@
                     <button class="oe_stat_button" name="action_open_goals" icon="fa-bullseye" type="object">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_value">
-                                <field name="uncomplete_goals_count"/> <span class="o_stat_text">Goals</span>
+                                <field name="uncomplete_goals_count"/>
                             </span>
+                            <span class="o_stat_text">Goals</span>
                         </div>
                     </button>
                     <button class="oe_stat_button" name="action_open_employee_appraisals" icon="fa-star-half-o" type="object" attrs="{'invisible': ['|', ('employee_appraisal_count', '&lt;', 2), ('employee_id', '=', False)]}">
@@ -37,12 +38,12 @@
                     </button>
                     <button class="oe_stat_button" name="action_calendar_event" icon="fa-calendar" type="object">
                         <div class="o_field_widget o_stat_info">
-                            <span class="o_stat_value"><field name="meeting_count_display"/></span>
-                            <span class="o_stat_text"><field name="date_final_interview" readonly="1"/></span>
+                            <span class="o_stat_value"><field name="date_final_interview" readonly="1"/></span>
+                            <span class="o_stat_text"><field name="meeting_count_display"/></span>
                         </div>
                     </button>
                 </div>
-                <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                 <div class="row justify-content-between position-relative w-100 m-0 mb-2">
                     <div class="oe_title mw-75 ps-0 pe-2">
                         <h1>
@@ -245,13 +246,13 @@
                             <field name="avatar_128" class="o_kanban_image_fill_left" widget="background_image"/>
 
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('state', '!=', 'done')]}">
-                                <span class="bg-success">Done</span>
+                                <span class="text-bg-success">Done</span>
                             </div>
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('state', '!=', 'pending'), ('waiting_feedback', '=', True)]}">
-                                <span class="bg-info">Ready</span>
+                                <span class="text-bg-info">Ready</span>
                             </div>
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('state', '!=', 'cancel')]}">
-                                <span class="bg-secondary">Canceled</span>
+                                <span class="text-bg-secondary">Canceled</span>
                             </div>
                             <div class="oe_kanban_details d-flex justify-content-between flex-column">
                                 <div>

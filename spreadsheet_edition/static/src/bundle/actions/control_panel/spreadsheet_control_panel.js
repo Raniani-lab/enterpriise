@@ -13,10 +13,7 @@ import { Component, onWillUnmount, useState } from "@odoo/owl";
 
 export class SpreadsheetControlPanel extends Component {
     setup() {
-        this.controlPanelDisplay = {
-            "bottom-left": false,
-            "bottom-right": false,
-        };
+        this.controlPanelDisplay = {};
         this.actionService = useService("action");
         this.breadcrumbs = useState(this.env.config.breadcrumbs);
         this.collaborative = useState({

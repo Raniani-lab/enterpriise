@@ -153,13 +153,13 @@
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                         <div class="d-flex justify-content-between mt-3">
                                             <a role="button" href="/shop/checkout" class="btn btn-secondary mb32">
-                                                <i class="fa fa-chevron-left"/>
+                                                <i class="oi oi-chevron-left"/>
                                                 <span>Back</span>
                                             </a>
                                             <a role="button" href="#"
                                                class="btn btn-primary mb32 a-submit a-submit-disable a-submit-loading">
                                                 <span>Next</span>
-                                                <i class="fa fa-chevron-right"/>
+                                                <i class="oi oi-chevron-right"/>
                                             </a>
                                         </div>
                                     </form>

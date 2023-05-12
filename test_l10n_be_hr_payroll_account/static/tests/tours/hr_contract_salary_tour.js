@@ -75,8 +75,8 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         },
         {
             content: "Create Applicant",
-            trigger: '.o_cp_buttons .o-kanban-button-new',
-            extra_trigger: 'li.active:contains("Applications")',
+            trigger: '.o-kanban-button-new',
+            extra_trigger: '.o_breadcrumb .active:contains("Applications")',
             run: 'click',
         },
         // Test Applicant
@@ -816,8 +816,8 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "Create Applicant",
-            trigger: '.o_cp_buttons .o-kanban-button-new',
-            extra_trigger: 'li.active:contains("Applications")',
+            trigger: '.o-kanban-button-new',
+            extra_trigger: '.o_breadcrumb .active:contains("Applications")',
             run: 'click',
         },
         {
@@ -875,7 +875,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "Create Contract",
-            trigger: '.oe_button_box .oe_stat_button:contains("Contracts")',
+            trigger: '.o-form-buttonbox .oe_stat_button:contains("Contracts")',
             extra_trigger: '.o_form_saved',
             run: 'click',
         },
@@ -981,7 +981,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "Go on Contract",
-            trigger: '.oe_button_box .oe_stat_button:contains("In Contract Since")',
+            trigger: '.o-form-buttonbox .oe_stat_button:contains("In Contract Since")',
             run: 'click',
         },
         {

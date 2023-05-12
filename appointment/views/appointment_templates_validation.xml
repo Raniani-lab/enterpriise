@@ -29,7 +29,7 @@
                                     <strong t-else="">Your appointment has been reserved! We will come back to you to confirm it.</strong>
                                     <a groups="appointment.group_appointment_manager"
                                        t-attf-href="/web#id=#{event.appointment_type_id.id}&amp;view_type=form&amp;model=appointment.type&amp;action=appointment.appointment_type_action">
-                                        <span class="text-nowrap"><i class="fa fa-arrow-right mx-2"/>Back to edit mode</span>
+                                        <span class="text-nowrap"><i class="oi oi-arrow-right mx-2"/>Back to edit mode</span>
                                     </a>
                                     <br/>
                                 </p>

@@ -35,7 +35,7 @@
                             <field string="Gross Increase" name="gross_increase_count" widget="statinfo" />
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <label for="name" name="name_label" attrs="{'invisible': [('state', '=', 'model')]}"/>
                         <label for="name" name="model_name_label" string="Asset Model name" attrs="{'invisible': [('state', '!=', 'model')]}"/>

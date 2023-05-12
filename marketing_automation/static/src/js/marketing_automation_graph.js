@@ -3,6 +3,7 @@
 
 import { loadJS } from "@web/core/assets";
 import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
 const fieldRegistry = registry.category("fields");
 const { Component, onWillStart, onWillUnmount, useEffect, useRef } = owl;
 
@@ -13,6 +14,7 @@ export class MarketingActivityGraph extends Component {
     setup() {
         this.chart = null;
         this.canvasRef = useRef("canvas");
+        this.isDarkMode = useService("cookie").current.color_scheme;
 
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         useEffect(() => this.renderChart());
@@ -43,6 +45,10 @@ export class MarketingActivityGraph extends Component {
 
     getChartConfig() {
         const chartData = JSON.parse(this.props.record.data[this.props.name]);
+        if(this.isDarkMode == 'dark'){
+            chartData[0].color = '#6afb81'; // Success
+            chartData[1].color = '#fb6a6a'; // Danger
+        }
 
         const datasets = chartData.map((group) => {
             const borderColor = this.hexToRGBA(group.color, 1);

@@ -9,7 +9,7 @@ registry.category("web_tour.tours").add('account_reports_widgets', {
         {
             content: "wait web client",
             trigger: ".o_account_reports_body",
-            extra_trigger: ".breadcrumb",
+            extra_trigger: ".breadcrumb-item",
             run: function () {}
         },
         {

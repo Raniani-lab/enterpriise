@@ -299,7 +299,7 @@ export class BankRecKanbanController extends KanbanController {
                 default_st_line_id: this.state.selectedStLineId,
                 ...extraContext,
             },
-            display: { controlPanel: false, noBreadcrumbs: true},
+            display: { controlPanel: false},
             mode: "edit",
             resModel: "bank.rec.widget",
         }
@@ -340,7 +340,6 @@ export const BankRecKanbanView = {
     ...kanbanView,
     Controller: BankRecKanbanController,
     Renderer: BankRecKanbanRenderer,
-    buttonTemplate: "account.BankRecKanbanRenderer.Buttons",
     searchMenuTypes: ["filter"],
 };
 

@@ -360,12 +360,6 @@
 // ------------------------------------------------------------------
 // Colors
 // ------------------------------------------------------------------
-.o_ma_text_processed {
-    @extend .text-primary;
-}
-.o_ma_text_rejected {
-    @extend .text-danger;
-}
 .o_ma_text_canceled {
     @extend .text-warning;
 }

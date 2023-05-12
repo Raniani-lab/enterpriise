@@ -37,7 +37,7 @@
         <div class="alert alert-info alert-dismissible col col-md-10 px-5 mb-0 text-center position-absolute o-map-renderer--alert" role="status">
             To get routing on your map, you first need to set up your MapBox token. It's free.
             <a href="/web#action=base_setup.action_general_configuration" class="ml8">
-                <i class="fa fa-arrow-right"/>
+                <i class="oi oi-arrow-right"/>
                 Set up token
             </a>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -46,6 +46,9 @@
 
     <t t-name="web_map.MapRenderer.PinListContainer" owl="1">
         <div class="o-map-renderer--pin-list-container col-12 col-md-2 bg-view border-start cursor-default h-100">
+            <div class="o-map-view--buttons">
+                <a class="btn btn-primary text-white" t-att-href="googleMapUrl" target="_blank" data-hotkey="m">View in Google Maps</a>
+            </div>
             <t t-if="!props.model.metaData.hideTitle">
                 <header class="o-map-renderer--pin-list-header o_pin_list_header text-uppercase px-0 py-md-2 d-flex align-items-baseline"
                         t-on-click="togglePinList">
@@ -170,12 +173,12 @@
             <div class="o-map-renderer--popup-buttons d-flex align-item-end justify-content-start mt8">
                 <t t-if="hasFormView">
                     <button class="btn btn-primary o-map-renderer--popup-buttons-open">
-                        open
+                        Open
                     </button>
                 </t>
                 <div class="o-map-renderer--popup-buttons-divider d-inline-block h-auto"/>
                 <a class="btn btn-primary text-white" t-att-href="url" target="_blank">
-                    navigate to
+                    Navigate to
                 </a>
             </div>
         </div>

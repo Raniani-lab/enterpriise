@@ -31,7 +31,7 @@
     <t t-name="social.StreamPostCommentsOriginalPost" owl="1">
         <div class="o_social_comments_modal_original_post d-flex bg-white pt-3 px-3">
             <div class="me-3">
-                <span class="o_social_original_post_author_image o_social_author_image d-block position-relative rounded-circle overflow-hidden"/>
+                <span class="o_social_original_post_author_image o_social_author_image d-block position-relative rounded overflow-hidden"/>
             </div>
             <div class="o_social_comments_modal_original_post_content flex-grow-1">
                 <div class="d-flex align-items-center h3 mb-1">
@@ -394,12 +394,12 @@
 
     <t t-name="social.KanbanHeader" t-inherit="web.KanbanHeader" owl="1">
         <xpath expr="//span[hasclass('o_column_title')]" position="before">
-            <img t-if="group.groupByField.name === 'stream_id'" width="16" t-attf-src="/web/image/social.stream/{{ group.value }}/media_image/16x16" class="mr8" />
+            <img t-if="group.groupByField.name === 'stream_id'" width="16" t-attf-src="/web/image/social.stream/{{ group.value }}/media_image/16x16" class="o_kanbanheader_media_image mr8"/>
         </xpath>
     </t>
 
-    <div t-name="StreamPostKanbanView.buttons" owl="1">
-        <div class="o_cp_buttons d-flex align-items-baseline" role="toolbar" aria-label="Main actions">
+    <div t-name="StreamPostKanbanView.buttons" t-inherit="web.KanbanView.Buttons" owl="1">
+        <xpath expr="//div[hasclass('o_cp_buttons')]" position="inside">
             <button type="button" class="btn btn-primary o_stream_post_kanban_new_stream me-1" t-on-click.prevent="_onNewStream">
                 Add a Stream
             </button>
@@ -409,7 +409,7 @@
             <button t-if="hasAccounts" type="button" class="btn btn-secondary o_stream_post_kanban_refresh_now" t-on-click.prevent="_onRefreshStats">
                 <span>Synchronize</span><i class="fa fa-circle-o-notch fa-spin d-none"/>
             </button>
-        </div>
+        </xpath>
     </div>
 
     <t t-name="social.SocialKanbanView" t-inherit="web.KanbanView" t-inherit-mode="primary" owl="1">

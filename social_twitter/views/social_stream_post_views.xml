@@ -23,22 +23,22 @@
                 <field name="twitter_can_retweet"/>
             </xpath>
             <xpath expr="//span[hasclass('o_social_stream_post_author_image')]" position="inside">
-                <img t-if="record.twitter_profile_image_url.raw_value" t-att-src="record.twitter_profile_image_url.raw_value" alt="Author Image"/>
+                <img t-if="record.twitter_profile_image_url.raw_value" t-att-src="record.twitter_profile_image_url.raw_value" alt="Author Image" class="rounded"/>
             </xpath>
             <xpath expr="//div[@name='o_social_stream_post_message_body']" position="inside">
                 <div class="border rounded p-2" t-if="record.twitter_quoted_tweet_id_str.raw_value">
                     <t t-set="author_info">
                         <t t-if="record.twitter_profile_image_url.raw_value">
-                            <span class="o_social_stream_post_author_image o_social_author_image position-relative rounded-circle overflow-hidden">
+                            <span class="o_social_stream_post_author_image o_social_author_image o_avatar position-relative rounded overflow-hidden">
                                 <t t-if="record.twitter_quoted_tweet_profile_image_url.raw_value">
-                                    <img t-att-src="record.twitter_quoted_tweet_profile_image_url.raw_value" alt="Author Image"/>
+                                    <img t-att-src="record.twitter_quoted_tweet_profile_image_url.raw_value" alt="Author Image" class="rounded"/>
                                 </t>
                                 <t t-else="">
-                                    <img src="/base/static/img/avatar_grey.png" alt="Author Image"/>
+                                    <img src="/base/static/img/avatar_grey.png" alt="Author Image" class="rounded"/>
                                 </t>
                             </span>
                         </t>
-                        <span class="o_social_stream_post_author_image o_social_author_image position-relative rounded-circle overflow-hidden"/>
+                        <span class="o_social_stream_post_author_image o_social_author_image o_avatar position-relative rounded overflow-hidden"/>
                         <span class="o_social_stream_post_author_name text-truncate ms-2"
                             t-esc="record.twitter_quoted_tweet_author_name.value or 'Unknown'"
                             t-att-title="record.twitter_quoted_tweet_author_name.value or 'Unknown'"/>

@@ -233,8 +233,8 @@
                     </div>
 
                     <div class="col-md-4 mt48">
-                        <button t-att-class="'d-none' if need_personal_information else 'btn'" type="button" name="toggle_personal_information">Show <i class="fa fa-chevron-down"></i></button>
-                        <button class="d-none btn" type="button" name="toggle_personal_information">Hide <i class="fa fa-chevron-up"></i></button>
+                        <button t-att-class="'d-none' if need_personal_information else 'btn'" type="button" name="toggle_personal_information">Show <i class="oi oi-chevron-down"></i></button>
+                        <button class="d-none btn" type="button" name="toggle_personal_information">Hide <i class="oi oi-chevron-up"></i></button>
                     </div>
                 </div>
                 <div class="row">

@@ -20,6 +20,7 @@ export class FormEditorRenderer extends formView.Renderer {
         this.rootRef = rootRef;
         const viewEditorModel = this.env.viewEditorModel;
         this.viewEditorModel = useState(viewEditorModel);
+        this.mailComponents.Chatter = ChatterContainer;
 
         // Deals with invisible modifier by reacting to config.studioShowVisible.
         useEffect(
@@ -68,7 +69,6 @@ FormEditorRenderer.components = {
     Field: FieldStudio,
     Widget: WidgetStudio,
     ViewButton: ViewButtonStudio,
-    Chatter: ChatterContainer,
     ChatterContainerHook,
     InnerGroup,
     OuterGroup,

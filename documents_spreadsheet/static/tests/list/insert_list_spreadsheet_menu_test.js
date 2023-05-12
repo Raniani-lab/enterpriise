@@ -10,7 +10,7 @@ import {
     patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
-import { toggleFavoriteMenu } from "@web/../tests/search/helpers";
+import { toggleActionMenu } from "@web/../tests/search/helpers";
 import { getSpreadsheetActionModel } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 
 let target;
@@ -36,7 +36,7 @@ QUnit.module(
                 },
             });
 
-            await toggleFavoriteMenu(target);
+            await toggleActionMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             await click(target, ".modal button.btn-primary");
             await nextTick();
@@ -61,7 +61,7 @@ QUnit.module(
                 },
             });
 
-            await toggleFavoriteMenu(target);
+            await toggleActionMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             await triggerEvent(target, ".o-sp-dialog-item div[data-id='1']", "focus");
             await click(target, ".modal button.btn-primary");
@@ -85,7 +85,7 @@ QUnit.module(
                     spreadsheetAction = this;
                 },
             });
-            await toggleFavoriteMenu(target);
+            await toggleActionMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             /** @type {HTMLInputElement} */
             const name = target.querySelector(".o_spreadsheet_name");
@@ -102,7 +102,7 @@ QUnit.module(
             assert.expect(1);
             await spawnListViewForSpreadsheet();
 
-            await toggleFavoriteMenu(target);
+            await toggleActionMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             assert.strictEqual(target.querySelector(".o_spreadsheet_name").value, "Partners");
         });
@@ -113,7 +113,7 @@ QUnit.module(
                 orderBy: [{ name: "bar", asc: true }],
             });
 
-            await toggleFavoriteMenu(target);
+            await toggleActionMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             assert.strictEqual(
                 target.querySelector(".o_spreadsheet_name").value,
@@ -131,7 +131,7 @@ QUnit.module(
                     spreadsheetAction = this;
                 },
             });
-            await toggleFavoriteMenu(target);
+            await toggleActionMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             target.querySelector(".o_spreadsheet_name").value = "";
             await click(target, ".modal button.btn-primary");

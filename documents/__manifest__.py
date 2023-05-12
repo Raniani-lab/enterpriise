@@ -77,7 +77,7 @@
             ('include', 'web._assets_backend_helpers'),
             'web/static/src/scss/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
-            ('include', 'web._assets_bootstrap'),
+            ('include', 'web._assets_bootstrap_backend'),
             'documents/static/src/scss/documents_public_pages.scss',
         ],
         'documents.pdf_js_assets': [

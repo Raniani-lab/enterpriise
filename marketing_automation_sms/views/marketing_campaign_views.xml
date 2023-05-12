@@ -29,27 +29,27 @@
 			</xpath>
 			<xpath expr="//div[hasclass('o_ma_child_activity_buttons')]" position="inside">
                 <t t-if="record.activity_type.raw_value == 'sms'">
-                    <i data-trigger-type="sms_click" class="fa fa-hand-pointer-o o_ma_text_processed o_add_child_activity"
+                    <i data-trigger-type="sms_click" class="fa fa-hand-pointer-o o_ma_text_processed o_add_child_activity text-success"
                         title="Clicked" role="img" aria-label="Clicked" />
-                    <i data-trigger-type="sms_not_click" class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child_activity"
+                    <i data-trigger-type="sms_not_click" class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child_activity text-danger"
                         title="Not Clicked" role="img" aria-label="Not Clicked" />
-                    <i data-trigger-type="sms_bounce" class="fa fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity"
+                    <i data-trigger-type="sms_bounce" class="fa fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity text-danger"
                         title="Bounced" role="img" aria-label="Bounced" />
                 </t>
         	</xpath>
             <xpath expr="//strong[hasclass('o_ma_interval')]" position="before">
                 <t t-if="record.trigger_type.raw_value == 'sms_click'">
-                    <div class="o_ma_text_processed">
+                    <div class="o_ma_text_processed text-success">
                         <i class="fa fa-hand-pointer-o" /> Clicked after
                     </div>
                 </t>
                 <t t-if="record.trigger_type.raw_value == 'sms_not_click'">
-                    <div class="o_ma_text_rejected">
+                    <div class="o_ma_text_rejected text-danger">
                         <i class="fa fa-hand-pointer-o" /> Not clicked within
                     </div>
                 </t>
                 <t t-if="record.trigger_type.raw_value == 'sms_bounce'">
-                    <div class="o_ma_text_rejected">
+                    <div class="o_ma_text_rejected text-danger">
                         <i class="fa fa-exclamation-circle" /> Bounced after
                     </div>
                 </t>

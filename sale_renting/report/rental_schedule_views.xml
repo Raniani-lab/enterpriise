@@ -129,9 +129,9 @@
                 <button class="oe_stat_button" name="action_view_rentals"
                     type="object" icon="fa-calendar" groups="sales_team.group_sale_salesman" attrs="{'invisible': [('rent_ok', '=', False)]}">
                     <div class="o_field_widget o_stat_info">
-                        <span class="o_stat_value">
-                            <field name="qty_in_rent" widget="statinfo" nolabel="1" class="mr4"/>
-                            <field name="uom_name"/>
+                        <span class="o_stat_value d-flex gap-1">
+                            <field name="qty_in_rent" widget="statinfo" nolabel="1" class="oe_inline"/>
+                            <field name="uom_name"  class="oe_inline"/>
                         </span>
                         <span class="o_stat_text">in Rental</span>
                     </div>
@@ -150,9 +150,9 @@
                 <button class="oe_stat_button" name="action_view_rentals"
                     type="object" icon="fa-calendar" groups="sales_team.group_sale_salesman" attrs="{'invisible': [('rent_ok', '=', False)]}">
                     <div class="o_field_widget o_stat_info">
-                        <span class="o_stat_value">
-                            <field name="qty_in_rent" widget="statinfo" nolabel="1" class="mr4"/>
-                            <field name="uom_name"/>
+                        <span class="o_stat_value d-flex gap-1">
+                            <field name="qty_in_rent" widget="statinfo" nolabel="1" class="oe_inline"/>
+                            <field name="uom_name"  class="oe_inline"/>
                         </span>
                         <span class="o_stat_text">in Rental</span>
                     </div>

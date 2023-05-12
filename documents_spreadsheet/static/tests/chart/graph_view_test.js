@@ -4,7 +4,7 @@ import { patchGraphSpreadsheet } from "@spreadsheet_edition/assets/graph_view/gr
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { click, patchWithCleanup, triggerEvent } from "@web/../tests/helpers/utils";
 import { patch, unpatch } from "@web/core/utils/patch";
-import { GraphController } from "@web/views/graph/graph_controller";
+import { GraphRenderer } from "@web/views/graph/graph_renderer";
 import { fakeCookieService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
 import {
@@ -14,12 +14,12 @@ import {
 import { getSpreadsheetActionModel } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 
 function beforeEach() {
-    patch(GraphController.prototype, "graph_spreadsheet", patchGraphSpreadsheet);
+    patch(GraphRenderer.prototype, "graph_spreadsheet", patchGraphSpreadsheet);
     registry.category("services").add("cookie", fakeCookieService);
 }
 
 function afterEach() {
-    unpatch(GraphController.prototype, "graph_spreadsheet");
+    unpatch(GraphRenderer.prototype, "graph_spreadsheet");
 }
 
 QUnit.module("documents_spreadsheet > graph view", { beforeEach, afterEach }, () => {

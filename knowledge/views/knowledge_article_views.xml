@@ -34,7 +34,7 @@
                 <field name="create_uid" invisible="1"/>
                 <field name="is_article_visible_by_everyone" invisible="1"/>
                 <field name="is_article_visible" invisible="1"/>
-                <div class="o_knowledge_form_view d-flex h-100" t-ref="root" t-att-style="sidebarSize ? `--knowledge-article-sidebar-size: ${sidebarSize}px` : ''">
+                <div class="o_knowledge_form_view d-sm-flex h-100 border-top" t-ref="root" t-att-style="sidebarSize ? `--knowledge-article-sidebar-size: ${sidebarSize}px` : ''">
                     <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0 bg-view">
                         <div class="d-flex flex-column h-100">
                             <!-- Search bar -->

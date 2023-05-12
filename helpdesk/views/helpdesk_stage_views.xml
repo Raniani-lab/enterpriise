@@ -62,7 +62,7 @@
                             <field name="ticket_count" widget="statinfo" string="Tickets"/>
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}" />
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}" />
                     <group>
                         <group>
                             <field name="name"/>

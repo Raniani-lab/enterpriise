@@ -2,6 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { TagsList } from "@web/core/tags_list/tags_list";
+import { useService } from '@web/core/utils/hooks';
 import {
     KanbanMany2ManyTagsField,
     kanbanMany2ManyTagsField,
@@ -12,7 +13,32 @@ import {
 } from "@web/views/fields/many2many_tags/many2many_tags_field";
 
 // Add support for hexadecimal colors
-export class DocumentsTagsList extends TagsList {}
+export class DocumentsTagsList extends TagsList {
+
+    setup() {
+        super.setup();
+        this.cookies = useService("cookie");
+    }
+
+    getStyleForTag(tag) {
+        const styles = [];
+        if (tag.group_hex_color) {
+            styles.push(`background-color: ${tag.group_hex_color} !important;`);
+        } else if (this.cookies.current.color_scheme === "dark") {
+            styles.push(
+                "background-color: #F2E8E8 !important;",
+                "color: #000000 !important;"
+            );
+        } else {
+            styles.push(
+                "background-color: #4A4F59 !important;",
+                "color: #ffffff !important;"
+            );
+        }
+        return styles.join("");
+    }
+
+}
 DocumentsTagsList.template = "documents.DocumentsTagsList";
 
 const getDocumentTags = (component, superTags) => {

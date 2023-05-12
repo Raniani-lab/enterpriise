@@ -2,9 +2,12 @@
 // ============================================================================
 .o_main_navbar {
     .o_menu_toggle {
+        --NavBar-entry-padding-left: #{$o-horizontal-padding};
+        --NavBar-entry-padding-right: #{$o-horizontal-padding * .5};
+
         @extend %-main-navbar-entry-base;
         @extend %-main-navbar-entry-spacing;
-        color: $o-navbar-entry-color;
+        color: var(--NavBar-menuToggle-color, #{$o-brand-odoo});
 
         rect, g {
             transform-origin: 0 50%;
@@ -39,7 +42,7 @@
 
         &.o_menu_toggle_back {
             @include o_main_navbar_toggler_toggled();
-            transform: scaleX(-1);
+            transform: translateX(25%) rotateY(-180deg);
         }
 
         // Animate on large screen without 'reduced-motion' only.
@@ -56,6 +59,40 @@
 
                 rect {
                     transition: all .1s;
+                }
+
+                &.hasImage:not(.o_menu_toggle_back) {
+                    transform: none;
+                    transition: none;
+
+                    .o_menu_toggle_icon, .o_menu_brand_icon, .o_menu_brand {
+                        will-change: transform;
+                        transition: all 0.1s;
+                    }
+
+                    .o_menu_toggle_icon {
+                        transform: translateX(75%);
+                        opacity: 0;
+                    }
+
+                    &:hover {
+                        .o_menu_toggle_icon {
+                            transform: translateX(25%);
+                            transition: all .4s;
+                            opacity: 1;
+                        }
+
+                        .o_menu_brand_icon {
+                            transform: rotateY(-90deg);
+                            transition: all .2s;
+                            opacity: 0;
+                        }
+
+                        .o_menu_brand {
+                            transform: translateX(-#{map-get($spacers, 2)});
+                            transition: all .4s;
+                        }
+                    }
                 }
             }
         }

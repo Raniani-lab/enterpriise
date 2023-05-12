@@ -5,7 +5,14 @@
 import { renderToString } from "@web/core/utils/render";
 import { delay } from "web.concurrency";
 
-import { Component, onWillUnmount, onWillUpdateProps, useEffect, useRef, useState } from "@odoo/owl";
+import {
+    Component,
+    onWillUnmount,
+    onWillUpdateProps,
+    useEffect,
+    useRef,
+    useState,
+} from "@odoo/owl";
 
 const apiTilesRouteWithToken =
     "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}";
@@ -146,11 +153,10 @@ export class MapRenderer extends Component {
             if (this.props.model.data.isGrouped) {
                 const groupId = markerInfo.record.groupId;
                 params.color = this.getGroupColor(groupId);
-                params.number = this.props.model.data.recordGroups[groupId].records.findIndex(
-                    (record) => {
+                params.number =
+                    this.props.model.data.recordGroups[groupId].records.findIndex((record) => {
                         return record.id === markerInfo.record.id;
-                    }
-                ) + 1;
+                    }) + 1;
             }
 
             // Icon creation
@@ -319,6 +325,32 @@ export class MapRenderer extends Component {
             }
         }
         return fieldsView;
+    }
+    /**
+     * @returns {string}
+     */
+    get googleMapUrl() {
+        let url = "https://www.google.com/maps/dir/?api=1";
+        if (this.props.model.data.records.length) {
+            const allCoordinates = this.props.model.data.records.filter(
+                ({ partner }) => partner && partner.partner_latitude && partner.partner_longitude
+            );
+            const uniqueCoordinates = allCoordinates.reduce((coords, { partner }) => {
+                const coord = partner.partner_latitude + "," + partner.partner_longitude;
+                if (!coords.includes(coord)) {
+                    coords.push(coord);
+                }
+                return coords;
+            }, []);
+            if (uniqueCoordinates.length && this.props.model.metaData.routing) {
+                // When routing is enabled, make last record the destination
+                url += `&destination=${uniqueCoordinates.pop()}`;
+            }
+            if (uniqueCoordinates.length) {
+                url += `&waypoints=${uniqueCoordinates.join("|")}`;
+            }
+        }
+        return url;
     }
     /**
      * Remove the markers from the map and empty the markers array.

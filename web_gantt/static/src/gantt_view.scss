@@ -33,15 +33,6 @@
         }
     }
 
-    // Header grid
-    .o_gantt_header_slots {
-        grid-template-rows: var(--Gantt__Pill-height) auto;
-
-        .o_gantt_header_scale {
-            grid-column: 1 / -1;
-        }
-    }
-
     // Utilities to use the grid-template-rows or grid-template-columns
     .o_gantt_grid_rows {
         display: grid;
@@ -105,7 +96,6 @@
     // ===============  Cursors while dragging  ==============
     // =======================================================
     .o_gantt_renderer {
-        box-shadow: 0 5px 20px -15px rgba(black, 0.3);
 
         &.o_grabbing,
         &.o_grabbing .o_gantt_pill {
@@ -140,8 +130,11 @@
     }
 
     .o_gantt_header_scale {
-        border: solid $gantt-border-color;
-        border-width: 0 0 1px 1px;
+        grid-column: 1 / -1;
+
+        .o_gantt_row_sidebar {
+            width: var(--Gantt__RowHeader-width);
+        }
     }
 
     .o_gantt_header_cell {
@@ -152,10 +145,6 @@
         @include o-gantt-cell;
         @include media-breakpoint-down(md) {
             min-width: 0;
-        }
-
-        &:first-of-type {
-            border-left-color: $gantt-border-color;
         }
     }
 

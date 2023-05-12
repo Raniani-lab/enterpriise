@@ -22,7 +22,7 @@ class ApprovalCategory(models.Model):
     _check_company_auto = True
 
     def _get_default_image(self):
-        default_image_path = get_module_resource('approvals', 'static/src/img', 'clipboard-check-solid.svg')
+        default_image_path = get_module_resource('approvals', 'static/src/img', 'Folder.png')
         return base64.b64encode(open(default_image_path, 'rb').read())
 
     name = fields.Char(string="Name", translate=True, required=True)

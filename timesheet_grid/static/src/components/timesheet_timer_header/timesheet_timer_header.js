@@ -22,6 +22,7 @@ export class TimesheetTimerHeader extends Component {
         onTimerStarted: Function,
         onTimerStopped: Function,
         onTimerUnlinked: Function,
+        className: { type: String, optional: true },
     };
 
     setup() {

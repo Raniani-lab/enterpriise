@@ -215,14 +215,14 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
             setTimeout: (handler, delay, ...args) => handler(...args),
             clearTimeout: () => {},
         });
-        target.style.width = "1080px";
+        target.style.width = "1120px";
 
         serverData.menus[1].actionID = 1;
         serverData.actions[1].xml_id = "action_xml_id";
 
         const webClient = await createEnterpriseWebClient({ serverData });
         const width = document.body.style.width;
-        document.body.style.width = "1080px";
+        document.body.style.width = "1120px";
         registerCleanup(() => {
             document.body.style.width = width;
         });
@@ -313,7 +313,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
     QUnit.test("adapt navbar when refreshing studio (loadState)", async (assert) => {
         assert.expect(7);
 
-        target.style.width = "1080px";
+        target.style.width = "800px";
 
         const adapted = [];
         patchWithCleanup(StudioNavbar.prototype, {
@@ -384,7 +384,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         assert.containsNone(target, ".o_studio");
         assert.strictEqual(
             target.querySelectorAll("header .o_menu_sections > *:not(.d-none)").length,
-            4
+            3
         );
         assert.containsOnce(target, ".o_menu_sections .o_menu_sections_more");
 
@@ -395,7 +395,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         await Promise.all(adapted);
         assert.strictEqual(
             target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
-            3
+            2
         );
         assert.containsOnce(target, ".o_studio .o_menu_sections .o_menu_sections_more");
 
@@ -407,7 +407,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         await Promise.all(adapted);
         assert.strictEqual(
             target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
-            3
+            2
         );
         assert.containsOnce(target, ".o_studio .o_menu_sections .o_menu_sections_more");
     });

@@ -337,7 +337,7 @@
                     <field name="next_action_todo" invisible="1"/>
 
                     <div class="o_bank_rec_stats_buttons">
-                        <div class="o_statusbar_buttons o_bank_rec_stats_buttons_aside_left">
+                        <div class="o_statusbar_buttons o_bank_rec_stats_buttons_aside_left p-1">
 
                             <button name="button_validate"
                                     string="Validate"

@@ -25,7 +25,7 @@
                     </div>
                     <div class="mt16" attrs="{'invisible': [('taxcloud_api_id', '!=', ''), ('taxcloud_api_key', '!=', '')]}">
                         <a href="https://www.odoo.com/documentation/master/applications/finance/accounting/taxation/taxes/taxcloud.html" target="_new">
-                            <i class="fa fa-fw fa-arrow-right"/>How to Get Credentials</a>
+                            <i class="oi oi-fw oi-arrow-right"/>How to Get Credentials</a>
                     </div>
                 </div>
             </setting>

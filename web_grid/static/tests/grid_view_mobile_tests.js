@@ -183,7 +183,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsOnce(target, ".o_grid_view");
         assert.containsOnce(target, ".o_grid_renderer");
-        assert.containsOnce(target, ".o_grid_buttons");
+        assert.containsOnce(target, ".o_control_panel_main_buttons .d-xl-none .o_grid_buttons");
         assert.containsNone(target, ".o_grid_custom_buttons");
         assert.containsOnce(target, ".o_grid_navigation_buttons");
         assert.strictEqual(
@@ -193,12 +193,12 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(
             target,
-            ".o_grid_navigation_buttons > button > span.fa-arrow-left",
+            ".o_grid_navigation_buttons > div > button > span.oi-arrow-left",
             "The previous button should be there"
         );
         assert.containsOnce(
             target,
-            ".o_grid_navigation_buttons > button > span.fa-arrow-right",
+            ".o_grid_navigation_buttons > div > button > span.oi-arrow-right",
             "The previous button should be there"
         );
         assert.containsOnce(target, ".o_view_scale_selector");

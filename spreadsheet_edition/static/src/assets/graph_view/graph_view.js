@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { GraphController } from "@web/views/graph/graph_controller";
+import { GraphRenderer } from "@web/views/graph/graph_renderer";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
@@ -68,4 +68,4 @@ export const patchGraphSpreadsheet = {
  * defined in another module, we disable this patch in a file that is only
  * loaded in test assets (disable_patch.js), and re-active it in our tests.
  */
-patch(GraphController.prototype, "graph_spreadsheet", patchGraphSpreadsheet);
+patch(GraphRenderer.prototype, "graph_spreadsheet", patchGraphSpreadsheet);

@@ -113,7 +113,7 @@
   }
 }
 
-@mixin o-web-studio-sidebar-btn-link($color: $o-enterprise-primary-color) {
+@mixin o-web-studio-sidebar-btn-link($color: $o-enterprise-action-color) {
   color: $color;
   &:hover {
     color: darken($color, 5%);
@@ -171,5 +171,6 @@
 }
 
 @mixin o-web-studio-app-creator-background {
-  background-image: linear-gradient(90deg, #565d78, #65545c);
+  background-image: radial-gradient(circle, rgba(darken($o-web-studio-bg-dark, 10%), 0) 0%, darken($o-web-studio-bg-dark, 10%) 100%),
+                    repeating-linear-gradient(45deg, darken($o-web-studio-bg-medium, 10%), darken($o-web-studio-bg-medium, 10%) 30px, darken($o-web-studio-bg-dark, 10%) 30px, darken($o-web-studio-bg-dark, 10%) 60px);
 }

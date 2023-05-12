@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { markup, onMounted } from "@odoo/owl";
+import { markup, onMounted, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { escape } from "@web/core/utils/strings";
@@ -16,7 +16,9 @@ export class PlanningFormController extends FormController {
         this.action = useService("action");
         this.notification = useService("notification");
         this.orm = useService("orm");
-        this.state.recurrenceUpdate = "this";
+        this.state = useState({
+            recurrenceUpdate: "this",
+        });
         onMounted(() => {
             this.initialTemplateCreation = this.model.root.data.template_creation;
         });

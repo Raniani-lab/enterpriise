@@ -4,9 +4,8 @@ import { MapModel } from "@web_map/map_view/map_model";
 import { makeView } from "@web/../tests/views/helpers";
 import {
     setupControlPanelServiceRegistry,
-    toggleFilterMenu,
+    toggleSearchBarMenu,
     toggleMenuItem,
-    toggleGroupByMenu,
     toggleMenuItemOption,
 } from "@web/../tests/search/helpers";
 import { registry } from "@web/core/registry";
@@ -1991,7 +1990,7 @@ QUnit.module("Views", (hooks) => {
             "There should be a marker for two records"
         );
 
-        await toggleFilterMenu(target);
+        await toggleSearchBarMenu(target);
         await toggleMenuItem(target, "Filter 1");
 
         assert.strictEqual(map.model.data.records.length, 1, "There should be 1 record");
@@ -2208,7 +2207,7 @@ QUnit.module("Views", (hooks) => {
             "Should not have any groups"
         );
 
-        await toggleGroupByMenu(target);
+        await toggleSearchBarMenu(target);
 
         // don't throw an error when grouping a field with a false value
         await toggleMenuItem(target, "scheduled_date");
@@ -2252,7 +2251,7 @@ QUnit.module("Views", (hooks) => {
             "Should not have any groups"
         );
 
-        await toggleGroupByMenu(target);
+        await toggleSearchBarMenu(target);
         await toggleMenuItem(target, "Partner");
 
         assert.containsN(
@@ -2483,7 +2482,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         //apply domain and check that the Google Maps URL on the button reflects the changes
-        await toggleFilterMenu(target);
+        await toggleSearchBarMenu(target);
         await toggleMenuItem(target, "FooProject only");
         assert.strictEqual(
             target.querySelector("a.btn.btn-primary").href,

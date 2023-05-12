@@ -17,7 +17,7 @@
               <field name="sendcloud_public_key" attrs="{'required': [('delivery_type', '=', 'sendcloud')]}"/>
               <field name="sendcloud_secret_key" attrs="{'required': [('delivery_type', '=', 'sendcloud')]}"/>
               <div colspan='2'>
-                <button name="action_load_sendcloud_shipping_products" string="Load your SendCloud shipping products" type="object" class="oe_inline fa fa-arrow-right oe_link"/>
+                <button name="action_load_sendcloud_shipping_products" string="Load your SendCloud shipping products" type="object" class="oe_inline oi oi-arrow-right oe_link"/>
               </div>
               <div colspan="2" class="alert alert-warning" attrs="{'invisible': [('sendcloud_shipping_id', '!=', False)]}" role="status">
                 <p><i class="fa fa-exclamation-triangle"/> Do not forget to load your SendCloud shipping products for a valid configuration.</p>

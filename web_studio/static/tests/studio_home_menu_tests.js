@@ -280,10 +280,10 @@ QUnit.module("Studio", (hooks) => {
         const firstButton = buttons[0];
         const secondButton = buttons[1];
 
-        assert.strictEqual(firstButton.innerText, "CONFIRM");
+        assert.strictEqual(firstButton.innerText, "Confirm");
         assert.hasClass(firstButton, "btn-primary");
 
-        assert.strictEqual(secondButton.innerText, "CANCEL");
+        assert.strictEqual(secondButton.innerText, "Cancel");
         assert.hasClass(secondButton, "btn-secondary");
 
         await click(secondButton);

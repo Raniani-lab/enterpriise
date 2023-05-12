@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
-import { Dropdown } from "@web/core/dropdown/dropdown";
-import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import { SearchDropdownItem } from "@web/search/search_dropdown_item/search_dropdown_item";
 
 const { Component } = owl;
 
@@ -19,4 +18,4 @@ export class GroupMenu extends Component {
 }
 
 GroupMenu.template = "mrp_mps.GroupMenu";
-GroupMenu.components = { Dropdown, DropdownItem };
+GroupMenu.components = { SearchDropdownItem };

@@ -233,11 +233,11 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             assert.containsOnce(
                 target,
                 ".oe_instance_register_form button",
-                "and a button 'REGISTER'"
+                "and a button 'Register'"
             );
             assert.strictEqual(
                 target.querySelector(".oe_instance_register_form button").innerText,
-                "REGISTER"
+                "Register"
             );
 
             await click(target.querySelector(".oe_instance_register_form button"));
@@ -255,7 +255,7 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             assert.containsOnce(
                 target,
                 ".oe_instance_register_form button",
-                "and a button 'REGISTER'"
+                "and a button 'Register'"
             );
 
             await testUtils.fields.editInput(
@@ -287,11 +287,11 @@ QUnit.module("web_enterprise", function ({ beforeEach }) {
             assert.containsOnce(
                 target,
                 ".oe_instance_register_form button",
-                "and a button 'REGISTER'"
+                "and a button 'Register'"
             );
             assert.strictEqual(
                 target.querySelector(".oe_instance_register_form button").innerText,
-                "RETRY"
+                "Retry"
             );
 
             await testUtils.fields.editInput(

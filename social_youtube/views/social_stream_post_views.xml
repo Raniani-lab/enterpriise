@@ -16,7 +16,7 @@
                 <field name="youtube_thumbnail_url"/>
             </xpath>
             <xpath expr="//span[hasclass('o_social_stream_post_author_image')]" position="inside">
-                <img t-if="record.youtube_video_id.raw_value" t-attf-src="/web/image/social.account/#{record.account_id.raw_value}/image" alt="Author Image"/>
+                <img t-if="record.youtube_video_id.raw_value" t-attf-src="/web/image/social.account/#{record.account_id.raw_value}/image" alt="Author Image" class="rounded"/>
             </xpath>
             <xpath expr="//div[@name='o_social_stream_post_message_body']" position="attributes">
                 <attribute name="attrs">{'invisible': [('media_type', '==', 'youtube')]}</attribute>

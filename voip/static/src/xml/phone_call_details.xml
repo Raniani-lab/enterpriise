@@ -110,7 +110,7 @@
                 <div class="d-flex justify-content-around my-3">
                     <div class="o_dial_keypad_button_small text-center">
                         <button aria-label="Transfer" class="o_dial_keypad_button o_dial_transfer_button btn btn-light p-3 border rounded-circle">
-                            <i class="fa fa-fw fa-lg fa-arrows-h"/>
+                            <i class="oi oi-fw oi-large oi-arrows-h"/>
                         </button>
                     </div>
                     <div class="o_dial_keypad_button_small text-center">

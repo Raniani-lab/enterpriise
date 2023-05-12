@@ -871,17 +871,17 @@ QUnit.module("View Editors", (hooks) => {
             });
 
         assert.hasClass(
-            target.querySelector(".o_web_studio_form_view_editor .o_form_sheet > div:nth-child(2)"),
+            target.querySelector(".o_web_studio_form_view_editor .o_form_sheet > div:nth-child(1)"),
             "o_web_studio_hook",
-            "second div should be a hook"
+            "first div should be a hook"
         );
         assert.hasClass(
-            target.querySelector(".o_web_studio_form_view_editor .o_form_sheet > div:nth-child(4)"),
+            target.querySelector(".o_web_studio_form_view_editor .o_form_sheet > div:nth-child(3)"),
             "o_web_studio_hook",
-            "fourth div should be a hook"
+            "third div should be a hook"
         );
         assert.hasClass(
-            target.querySelector(".o_web_studio_form_view_editor .o_form_sheet > div:nth-child(6)"),
+            target.querySelector(".o_web_studio_form_view_editor .o_form_sheet > div:nth-child(5)"),
             "o_web_studio_hook",
             "last div should be a hook"
         );
@@ -913,7 +913,7 @@ QUnit.module("View Editors", (hooks) => {
 
         // first group (without title, without content)
         const firstGroup = target.querySelector(
-            ".o_web_studio_form_view_editor .o_inner_group:nth-child(3)"
+            ".o_web_studio_form_view_editor .o_inner_group:nth-child(2)"
         );
         assert.containsOnce(
             firstGroup,
@@ -928,7 +928,7 @@ QUnit.module("View Editors", (hooks) => {
 
         // second group (with title, without content)
         const secondGroup = target.querySelector(
-            ".o_web_studio_form_view_editor .o_inner_group:nth-child(4)"
+            ".o_web_studio_form_view_editor .o_inner_group:nth-child(3)"
         );
         assert.containsOnce(
             secondGroup,
@@ -948,7 +948,7 @@ QUnit.module("View Editors", (hooks) => {
 
         // third group (without title, with content)
         const thirdGroup = target.querySelector(
-            ".o_web_studio_form_view_editor .o_inner_group:nth-child(5)"
+            ".o_web_studio_form_view_editor .o_inner_group:nth-child(4)"
         );
         assert.containsN(
             thirdGroup,
@@ -974,7 +974,7 @@ QUnit.module("View Editors", (hooks) => {
 
         // last group (with title, with content)
         const lastGroup = target.querySelector(
-            ".o_web_studio_form_view_editor .o_inner_group:nth-child(6)"
+            ".o_web_studio_form_view_editor .o_inner_group:nth-child(5)"
         );
         assert.containsN(lastGroup, ".o_web_studio_hook", 2, "Last group, there should be 2 hooks");
         assert.strictEqual(
@@ -1946,7 +1946,9 @@ QUnit.module("View Editors", (hooks) => {
             resId: 1,
         });
 
-        const buttonBoxFieldEl = target.querySelector(".oe_button_box button .o_field_widget span");
+        const buttonBoxFieldEl = target.querySelector(
+            ".o-form-buttonbox button .o_field_widget span"
+        );
         assert.strictEqual(buttonBoxFieldEl.textContent, "jean", "there should be a button_box");
     });
 
@@ -2035,7 +2037,7 @@ QUnit.module("View Editors", (hooks) => {
             arch: arch,
             resId: 99,
         });
-        assert.containsOnce(target, ".oe_button_box .o_web_studio_button_hook");
+        assert.containsOnce(target, ".o-form-buttonbox .o_web_studio_button_hook");
         assert.containsNone(target, "button.someClass");
     });
 
@@ -3171,8 +3173,8 @@ QUnit.module("View Editors", (hooks) => {
             await click(target.querySelector(".o_web_studio_sidebar input#domain"));
             assert.containsOnce(target, ".modal");
             assert.strictEqual(
-                target.querySelector(".modal .o_ds_expr_value").textContent,
-                "parent.display_name"
+                target.querySelector(".modal .modal-body").textContent,
+                " Match records with the following rule: Display Name=!=containsdoes not containinnot inis setis not setparent.display_name"
             );
         }
     );

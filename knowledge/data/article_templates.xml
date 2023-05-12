@@ -87,10 +87,10 @@
     <li>
         <span style="font-size: 14px;">
             Use
-            /<span style="font-weight: bolder;"><font class="text-o-color-2">template</font></span>
+            /<span style="font-weight: bolder;"><font class="text-o-color-2">clipboard</font></span>
             to insert a
             <span style="font-weight: bolder;">
-                <font class="text-o-color-2">template</font>
+                <font class="text-o-color-2">clipboard</font>
             </span>
             box. Need to re-use its content?
         </span>
@@ -101,7 +101,7 @@
                 <span style="font-size: 14px;">From any Odoo document, find this article by clicking on the 📗 icon in the chatter.</span>
             </li>
             <li>
-                <span style="font-size: 14px;">You can use the template as a description, a message or simply copy it to your clipboard! 👌</span>
+                <span style="font-size: 14px;">You can use the clipboard as a description, a message or simply copy it to your clipboard! 👌</span>
             </li>
             <li>
                 <span style="font-size: 14px;">Not sure how to do it? <a href="https://www.youtube.com/watch?v=r_r8rl73asE">See how it works <i class="fa fa-youtube-play"/></a>.</span>
@@ -111,7 +111,7 @@
 </ul>
 <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template" data-oe-protected="true">
     <div class="d-flex">
-        <div class="o_knowledge_template_label align-middle">Template</div>
+        <div class="o_knowledge_template_label align-middle">Clipboard</div>
     </div>
     <div class="o_knowledge_content" data-prop-name="content" data-oe-protected="false">
         <p>

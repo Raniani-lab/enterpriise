@@ -5,6 +5,7 @@ from datetime import timedelta
 import base64
 import io
 import os
+from markupsafe import Markup
 from PIL import Image
 from unittest import skipIf
 from odoo import fields
@@ -19,6 +20,8 @@ class TestKnowledgeUICommon(HttpCase, MailCommon):
         super(TestKnowledgeUICommon, cls).setUpClass()
         # remove existing articles to ease tour management
         cls.env['knowledge.article'].with_context(active_test=False).search([]).unlink()
+        cls.env['knowledge.article.template'].search([]).unlink()
+        cls.env['knowledge.article.template.category'].search([]).unlink()
 
 @tagged('post_install', '-at_install', 'knowledge', 'knowledge_tour')
 class TestKnowledgeUI(TestKnowledgeUICommon):
@@ -48,6 +51,32 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         } for index in range(344)])
 
         self.start_tour('/web', 'knowledge_load_more_tour', login='admin', step_delay=100)
+
+    def test_knowledge_load_template(self):
+        """This tour will check that the user can create a new article by using
+           the template gallery."""
+        category = self.env['knowledge.article.template.category'].create({
+            'name': 'Personal'
+        })
+        template = self.env['knowledge.article.template'].create({
+            'name': 'My Template',
+            'body': Markup('<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>'),
+            'category_id': category.id,
+            'icon': '📚',
+            'template_properties_definition': [{
+                'name': '28db68689e91de10',
+                'type': 'char',
+                'string': 'My Text Field',
+                'default': ''
+            }],
+        })
+
+        self.start_tour('/web', 'knowledge_load_template', login='admin')
+        article = self.env['knowledge.article'].search([], limit=1)
+        self.assertTrue(bool(article))
+        self.assertEqual(template.body, article.body)
+        self.assertEqual(template.icon, article.icon)
+        self.assertEqual(template.template_properties_definition, article.article_properties_definition)
 
     def test_knowledge_main_flow(self):
 

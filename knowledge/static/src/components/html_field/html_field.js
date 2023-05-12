@@ -26,33 +26,35 @@ import {
     useRef,
 } from "@odoo/owl";
 
-const behaviorTypes = {
-    o_knowledge_behavior_type_article: {
-        Behavior: ArticleBehavior,
-    },
-    o_knowledge_behavior_type_file: {
-        Behavior: FileBehavior,
-    },
-    o_knowledge_behavior_type_template: {
-        Behavior: TemplateBehavior,
-    },
-    o_knowledge_behavior_type_toc: {
-        Behavior: TableOfContentBehavior,
-    },
-    o_knowledge_behavior_type_articles_structure: {
-        Behavior: ArticlesStructureBehavior
-    },
-    o_knowledge_behavior_type_embedded_view: {
-        Behavior: EmbeddedViewBehavior
-    },
-    o_knowledge_behavior_type_view_link: {
-        Behavior: ViewLinkBehavior
-    },
-};
-
 const HtmlFieldPatch = {
+    /**
+     * @override
+     */
     setup() {
         this._super(...arguments);
+        this.behaviorTypes = {
+            o_knowledge_behavior_type_article: {
+                Behavior: ArticleBehavior,
+            },
+            o_knowledge_behavior_type_file: {
+                Behavior: FileBehavior,
+            },
+            o_knowledge_behavior_type_template: {
+                Behavior: TemplateBehavior,
+            },
+            o_knowledge_behavior_type_toc: {
+                Behavior: TableOfContentBehavior,
+            },
+            o_knowledge_behavior_type_articles_structure: {
+                Behavior: ArticlesStructureBehavior
+            },
+            o_knowledge_behavior_type_embedded_view: {
+                Behavior: EmbeddedViewBehavior
+            },
+            o_knowledge_behavior_type_view_link: {
+                Behavior: ViewLinkBehavior
+            },
+        };
         this.behaviorState = {
             // Owl does not support destroying an App when its container node is
             // not in the DOM. This reference is a `d-none` element used to
@@ -212,12 +214,6 @@ const HtmlFieldPatch = {
         };
         options.postProcessExternalSteps = renderExternalBehaviors;
         return options;
-    },
-    /**
-     * @returns {Object}
-     */
-    get behaviorTypes() {
-        return behaviorTypes;
     },
     /**
      * Returns the container which holds the current value of the html_field

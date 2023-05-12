@@ -1,0 +1,7 @@
+<odoo noupdate="1">
+    <!-- Categories -->
+    <record model="knowledge.article.template.category" id="knowledge_article_template_category_recommended">
+        <field name="name">Recommended</field>
+        <field name="sequence">0</field>
+    </record>
+</odoo>

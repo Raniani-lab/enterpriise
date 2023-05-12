@@ -54,7 +54,7 @@ export class TemplateBehavior extends AbstractBehavior {
     }
     showTooltip() {
         this.popover.open(this.copyToClipboardButton.el, {
-            tooltip: _t("Template copied to clipboard."),
+            tooltip: _t("Content copied to clipboard."),
         });
         browser.setTimeout(this.popover.close, 800);
     }

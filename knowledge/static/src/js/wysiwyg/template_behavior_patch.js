@@ -7,7 +7,7 @@ import { TemplateBehavior } from "@knowledge/components/behaviors/template_behav
 const TemplateBehaviorPatch = {
     /**
      * Set the cursor of the user inside the template block when the user types
-     * the `/template` command.
+     * the `/clipboard` command.
      */
     setCursor() {
         setCursorStart(this.props.anchor.querySelector('[data-prop-name="content"] > p'));

@@ -119,9 +119,9 @@ Wysiwyg.include({
                 }
             }, {
                 category: _t('Knowledge'),
-                name: _t('Template'),
+                name: _t('Clipboard'),
                 priority: 10,
-                description: _t('Add a template section'),
+                description: _t('Add a clipboard section'),
                 fontawesome: 'fa-pencil-square',
                 isDisabled: () => this._filterCommandInBehavior(),
                 callback: () => {
@@ -251,7 +251,7 @@ Wysiwyg.include({
         this._notifyNewBehavior(articlesStructureBlock, restoreSelection);
     },
     /**
-     * Insert a /template block
+     * Insert a /clipboard block
      */
     _insertTemplate() {
         const restoreSelection = preserveCursor(this.odooEditor.document);

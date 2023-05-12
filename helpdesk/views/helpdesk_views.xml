@@ -723,7 +723,7 @@
                     <group class="mb-0 mt-4">
                         <group>
                             <field name="active" invisible="1"/>
-                            <field name="team_id" required="1" context="{'default_use_sla': True}"/>
+                            <field name="team_id" required="1" context="{'kanban_view_ref': 'helpdesk.helpdesk_team_view_kanban_mobile', 'default_use_sla': True}"/>
                             <field name="user_id" class="field_user_id" domain="['&amp;', ('id', 'in', domain_user_ids), ('share', '=', False)]" widget="many2one_avatar_user"/>
                             <field name="domain_user_ids" invisible="1"/>
                             <field name="priority" widget="priority"/>

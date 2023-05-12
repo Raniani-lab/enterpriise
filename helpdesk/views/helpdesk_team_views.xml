@@ -670,6 +670,26 @@
         </field>
     </record>
 
+    <record id="helpdesk_team_view_kanban_mobile" model="ir.ui.view">
+        <field name="name">helpdesk.team.view.kanban.mobile</field>
+        <field name="model">helpdesk.team</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong><field name="name"/></strong>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <menuitem id="helpdesk_menu_team_dashboard" action="helpdesk.helpdesk_team_dashboard_action_main"
         sequence="5" parent="helpdesk.menu_helpdesk_root" name="Overview"
         groups="helpdesk.group_helpdesk_user"/>

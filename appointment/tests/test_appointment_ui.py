@@ -292,9 +292,49 @@ class AppointmentUITest(AppointmentUICommon):
                     self.assertFalse(event.videocall_location,
                         "Should not have a videocall_location as the appointment type doesn't have any videocall source")
 
-
 @tagged('appointment_ui', '-at_install', 'post_install')
 class CalendarTest(AppointmentUICommon):
+
+    @users('apt_manager')
+    def test_cancel_meeting(self):
+        """ Test that If the person who scheduled the meeting with guests cancels it, then the meeting should be archived"""
+        CalendarEvent = self.env['calendar.event']
+        test_emails_1 = ['new_zealand@test.example.com', 'rrr@gmail.com', '"Raoul" <hello@gmail.com>',
+         'new_zealand@test.example.com, new_zeadland2@test.example.com', 'abc@gmail.com def@gmail.example.com', 'wrong input', ' ']
+        self.authenticate(self.env.user.login, self.env.user.login)
+
+        test_apt_type = self.env['appointment.type'].create({
+            'name': 'Meeting with demo',
+            'staff_user_ids': self.staff_user_bxls,
+            'allow_guests': True
+        })
+
+        meeting_data = {
+            'datetime_str': '2023-11-23 04:30:00',
+            'duration_str': '1.0',
+            'staff_user_id': self.staff_user_bxls.id,
+            'name': 'Manager',
+            'phone': '1234567890',
+            'email': 'apt_manager@test.example.com',
+            'csrf_token': http.Request.csrf_token(self),
+            'guest_emails_str': "\r\n".join(test_emails_1)
+        }
+        res = self.url_open(f"/appointment/{test_apt_type.id}/submit", data=meeting_data)
+        self.assertEqual(res.status_code, 200, "Response should = OK")
+        access_token = res.url.split('?')[0].split('/calendar/view/')[-1]
+        event = CalendarEvent.search([('access_token', '=', access_token)])
+        self.assertEqual(len(event.attendee_ids), 7)
+        self.assertTrue(event.active)
+        cancel_meeting_data = {
+            'access_token': access_token,
+            'partner_id': self.apt_manager.partner_id.id,
+            'csrf_token': http.Request.csrf_token(self),
+        }
+        cancel_meeting_url = f"/calendar/{access_token}/cancel"
+        res = self.url_open(cancel_meeting_url, data=cancel_meeting_data)
+        self.assertEqual(res.status_code, 200, "Response should = OK")
+        event = CalendarEvent.search([('access_token', '=', access_token)])
+        self.assertFalse(event.active)
 
     def test_meeting_accept_authenticated(self):
         event = self.env["calendar.event"].create(

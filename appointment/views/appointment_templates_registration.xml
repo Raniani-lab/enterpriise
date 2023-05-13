@@ -54,6 +54,20 @@
                                             placeholder="+3212345678"/>
                                     </div>
                                 </div>
+                                <t t-if="appointment_type.allow_guests">
+                                    <div class="mb-3 mt-1 d-flex justify-content-between o_appointment_add_guests">
+                                        <button type="button" class="btn btn-link p-0">+ Add Guests</button>
+                                        <label class="fw-bold d-none">Add Guests</label>
+                                        <button type="button" class="btn-close d-none" aria-label="Close"></button>
+                                    </div>
+                                    <div class="mb-3 mt-1">
+                                        <textarea type="email" id="o_appointment_input_guest_emails" class="form-control s_website_form_input d-none" name="guest_emails_str" placeholder="john.doe@email.com &#13;&#10;jane.doe@example.com&#13;&#10;..." rows="5"/>
+                                    </div>
+                                    <div class="ms-3 d-none text-danger o_appointment_validation_error">
+                                        <i class="fa fa-close me-1"/>
+                                         <span class="o_appointment_error_text"></span>
+                                    </div>
+                                </t>
                                 <t t-foreach="appointment_type.question_ids" t-as="question">
                                     <div class="mb-3 mt-1" t-if="question.question_type!='text'">
                                         <label class="pb-2" t-attf-for="question_#{question.id}" t-out="' '.join([question.name, '*' if question.question_required else ''])"/>
@@ -109,7 +123,7 @@
                                 </div>
                                 <div class="mb-3 pt-4">
                                     <div class="o_not_editable">
-                                        <button type="submit" class="btn btn-primary">Confirm Appointment</button>
+                                        <button type="button" class="btn btn-primary o_appointment_form_confirm_btn">Confirm Appointment</button>
                                     </div>
                                 </div>
                             </form>
@@ -154,7 +168,7 @@
                                         <i class="fa fa-clock-o o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
                                         <span t-out="duration" t-options="{'widget': 'duration', 'unit': 'hour', 'round': 'minute'}"/>
                                     </div>
-                                    <div class="d-flex fs-6 lh-lg pt-1">
+                                    <div class="d-flex fs-6 lh-lg pt-1" t-if="appointment_type.resource_manage_capacity">
                                         <i class="fa fa-group o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
                                         <t t-out="asked_capacity"/> people
                                     </div>

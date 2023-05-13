@@ -160,6 +160,13 @@
             padding-top: 2px;
         }
     }
+    .o_appointment_guest_discard {
+        background-color: white;
+        color: green;
+        &:hover {
+            border-color: green;
+        }
+    }
     .o_appointment_validation_bottom_btns {
         border-top: 1px solid #DEE2E6;
         .o_outlook_calendar {

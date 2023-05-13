@@ -316,6 +316,7 @@
                                     <field name="reminder_ids" widget="many2many_tags"/>
                                     <field name="message_partner_ids" widget="many2many_tags_email"/>
                                     <field name="country_ids" widget="many2many_tags" groups="base.group_no_one"/>
+                                    <field name="allow_guests"/>
                                 </group>
                             </group>
                         </page>

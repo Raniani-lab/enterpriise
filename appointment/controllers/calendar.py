@@ -5,7 +5,7 @@ import pytz
 
 from babel.dates import format_datetime, format_date
 from datetime import datetime, timedelta
-from werkzeug.exceptions import Forbidden
+from werkzeug.exceptions import Forbidden, BadRequest
 from werkzeug.urls import url_encode
 
 from odoo import fields, _
@@ -103,6 +103,35 @@ class AppointmentCalendarController(CalendarController):
             'attendee_status': event.attendee_ids.filtered(lambda a: a.partner_id.id == partner_id).state,
             'is_html_empty': is_html_empty,
         })
+
+    @route(['/calendar/<string:access_token>/add_attendees_from_emails'], type="json", auth="public", website=True)
+    def appointment_add_attendee(self, access_token, emails_str):
+        """
+        Add the attendee at the time of the validation of an appointment page
+
+        :param access_token: access_token of the event linked to the appointment
+        :param emails_str: guest emails in the block of text
+        """
+        event_sudo = request.env['calendar.event']
+        event_sudo = event_sudo.sudo().search([('access_token', '=', access_token)], limit=1)
+        if not event_sudo:
+            return request.not_found()
+        if not event_sudo.appointment_type_id.allow_guests:
+            raise BadRequest()
+        if not emails_str:
+            return []
+        guests, unavailable_guests = event_sudo.sudo()._find_or_create_partners_with_availability(
+            emails_str, (event_sudo.start, event_sudo.stop)
+        )
+        if not unavailable_guests and guests:
+            event_sudo.write({
+                'partner_ids': [(4, pid.id, False) for pid in guests]
+            })
+        else:
+            guest_names = [guest.name for guest in unavailable_guests]
+            # returning the names of all the unavailable guests
+            return guest_names
+        return []
 
     @route(['/calendar/cancel/<string:access_token>',
             '/calendar/<string:access_token>/cancel',

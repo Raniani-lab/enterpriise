@@ -91,7 +91,7 @@
                                     <t t-elif="based_on_users" ><span>Online</span></t>
                                 </div>
                             </div>
-                            <div t-if="based_on_users" class="row">
+                            <div t-if="based_on_users or appointment_type.allow_guests" class="row">
                                 <div class="col-4 col-sm-3 col-xl-2 pe-0">
                                     <label>Attendees:</label>
                                 </div>
@@ -100,10 +100,28 @@
                                         <t t-out="attendee.common_name"/>
                                         <span t-if="attendee.state == 'accepted'" class="fa fa-check text-success" title="Confirmed" role="img" aria-label="Confirmed"/>
                                         <span t-if="attendee.state == 'declined'" class="fa fa-times text-danger" title="Declined" role="img" aria-label="Declined"/>
+                                        <span t-if="attendee.state == 'needsAction'" class="fa fa-fw fa-asterisk text-info" title="Uncertain" role="img" aria-label="Uncertain"/>
                                     </div>
+                                    <form t-if="appointment_type.allow_guests">
+                                        <input type="hidden" id="access_token" t-att-value="event.access_token"/>
+                                        <div class="o_pt_2_px col-8 col-sm-9 col-xl-10">
+                                                <button type="button" class="btn btn-link o_appointment_guest_addition_open p-0">Add Guests</button>
+                                        </div>
+                                        <div class="o_pt_2_px col-8 col-sm-9 col-xl-10 mb-3 mt-1">
+                                            <textarea type="email" class="form-control s_website_form_input d-none" id="o_appointment_input_guest_emails" name="attendee_email" placeholder="john.doe@email.com&#13;&#10;jane.doe@example.com&#13;&#10;..." rows="5"/>
+                                            <div class="d-md-flex">
+                                                <button type="button" class="btn btn-success o_appointment_guest_add mb-3 mt-2 me-2 d-none">Add Guests</button>
+                                                <button type="button" class="btn o_appointment_guest_discard mb-3 mt-2 d-none">Discard</button>
+                                                <div class="mb-3 mt-3 ms-3 d-none text-danger o_appointment_validation_error align-items-center">
+                                                    <i class="fa fa-close me-1"/>
+                                                    <span class="o_appointment_error_text"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <div t-elif="appointment_type.assign_method != 'time_auto_assign'" class="row">
+                            <div t-if="not based_on_users and appointment_type.assign_method != 'time_auto_assign'" class="row">
                                 <div class="col-4 col-sm-3 col-xl-2 pe-0">
                                     <label>Resources:</label>
                                 </div>
@@ -173,7 +191,7 @@
                             </a>
                         </div>
                         <div class="col-12 pt-3 pt-md-0 offset-md-0 col-md-4 offset-lg-3 col-lg-3 text-md-end">
-                            <a t-if="appointment_type" role="button" class="btn btn-danger btn-block"
+                            <a t-if="appointment_type" role="button" t-att-class="'d-none' if event.appointment_booker_id.id != partner_id and appointment_type.allow_guests else 'btn btn-danger btn-block'"
                                 t-attf-href="/calendar/#{event.access_token}/cancel?partner_id=#{partner_id}&amp;#{keep_query('*')}">
                                 Cancel/Reschedule
                             </a>

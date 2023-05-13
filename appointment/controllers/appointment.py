@@ -545,7 +545,8 @@ class AppointmentController(http.Controller):
 
     @http.route(['/appointment/<int:appointment_type_id>/submit'],
                 type='http', auth="public", website=True, methods=["POST"])
-    def appointment_form_submit(self, appointment_type_id, datetime_str, duration_str, name, phone, email, staff_user_id=None, available_resource_ids=None, asked_capacity=1, **kwargs):
+    def appointment_form_submit(self, appointment_type_id, datetime_str, duration_str, name, phone, email, staff_user_id=None, available_resource_ids=None, asked_capacity=1,
+                                guest_emails_str=None, **kwargs):
         """
         Create the event for the appointment and redirect on the validation page with a summary of the appointment.
 
@@ -558,6 +559,8 @@ class AppointmentController(http.Controller):
         :param staff_user_id: the user selected for the appointment
         :param available_resource_ids: the resources ids available for the appointment
         :param asked_capacity: asked capacity for the appointment
+        :param str guest_emails: optional line-separated guest emails. It will
+          fetch or create partners to add them as event attendees;
         """
         domain = self._appointments_base_domain(
             filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
@@ -605,7 +608,12 @@ class AppointmentController(http.Controller):
                 raise NotFound()
             if staff_user and not staff_user.partner_id.calendar_verify_availability(date_start, date_end):
                 return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state='failed-staff-user')))
-
+        guests = None
+        if appointment_type.allow_guests:
+            if guest_emails_str:
+                guests, unavailable = request.env['calendar.event'].sudo()._find_or_create_partners_with_availability(guest_emails_str, (date_start, date_end))
+                if unavailable:
+                    return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state='failed-partner')))
         Partner = self._get_customer_partner() or request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
         if Partner:
             if not Partner.calendar_verify_availability(date_start, date_end):
@@ -688,7 +696,7 @@ class AppointmentController(http.Controller):
             mail_create_nosubscribe=True,
             allowed_company_ids=staff_user.company_ids.ids,
         ).sudo().create(
-            self._prepare_calendar_values(appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, Partner, invite_token, staff_user, resources, asked_capacity, resources_remaining_capacity)
+            self._prepare_calendar_values(appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, Partner, invite_token, staff_user, resources, asked_capacity, resources_remaining_capacity, guests)
         )
         return request.redirect('/calendar/view/%s?partner_id=%s&%s' % (event.access_token, Partner.id, keep_query('*', state='new')))
 
@@ -721,12 +729,12 @@ class AppointmentController(http.Controller):
             return appointment_type.appointment_tz
         return request.httprequest.cookies.get('tz', appointment_type.appointment_tz)
 
-    def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, partner, invite_token, staff_user=None, resources=None, asked_capacity=1, resources_remaining_capacity=None):
+    def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, partner, invite_token, staff_user=None, resources=None, asked_capacity=1, resources_remaining_capacity=None, guest_ids=None):
         """
         prepares all values needed to create a new calendar.event
         """
         alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
-        partner_ids = list(set([staff_user.partner_id.id] + [partner.id])) if staff_user else [partner.id]
+        attendee_partners = (staff_user.partner_id if staff_user else request.env['res.partner']) | partner
         if invite_token:
             appointment_invite = request.env['appointment.invite'].sudo().search([('access_token', '=', invite_token)])
         else:
@@ -759,12 +767,19 @@ class AppointmentController(http.Controller):
             'description': description,
             'alarm_ids': alarm_ids,
             'location': appointment_type.location,
-            'partner_ids': [(4, pid, False) for pid in partner_ids],
-            'attendee_ids': [(0, 0, {'partner_id': pid, 'state': attendee_status}) for pid in partner_ids],
+            'partner_ids': [
+                (4, partner.id, False) for partner in attendee_partners
+            ] + [(4, pid.id) for pid in (guest_ids or []) if pid],
+            'attendee_ids': [
+                (0, 0, {'partner_id': pid.id, 'state': attendee_status}) for pid in attendee_partners
+            ] + [
+                (0, 0, {'partner_id': pid.id}) for pid in (guest_ids or []) if pid
+            ],
             'categ_ids': [(6, 0, categ_ids.ids)],
             'appointment_type_id': appointment_type.id,
             'appointment_answer_input_ids': [(0, 0, answer_input_values) for answer_input_values in question_answer_inputs],
             'user_id': staff_user.id if appointment_type.schedule_based_on == 'users' else appointment_type.create_uid.id,
+            'appointment_booker_id': partner.id,
             'appointment_invite_id': appointment_invite.id,
             'booking_line_ids': booking_lines,
         }

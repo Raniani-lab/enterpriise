@@ -5,7 +5,7 @@ import uuid
 import logging
 
 from odoo import _, api, fields, models, SUPERUSER_ID
-from odoo.tools import html2plaintext
+from odoo.tools import html2plaintext, email_normalize, email_split_tuples
 
 _logger = logging.getLogger(__name__)
 
@@ -49,6 +49,7 @@ class CalendarEvent(models.Model):
     resource_total_capacity_used = fields.Integer('Total Capacity Used', compute="_compute_resource_total_capacity")
     user_id = fields.Many2one('res.users', group_expand="_read_group_user_id")
     videocall_redirection = fields.Char('Meeting redirection URL', compute='_compute_videocall_redirection')
+    appointment_booker_id = fields.Many2one('res.partner', string="Person who is booking the appointment")
     _sql_constraints = [
         ('check_resource_and_appointment_type',
          "CHECK(appointment_resource_id IS NULL OR (appointment_resource_id IS NOT NULL AND appointment_type_id IS NOT NULL))",
@@ -183,12 +184,54 @@ class CalendarEvent(models.Model):
             cancelling_attendees = ", ".join([attendee.display_name for attendee in attendees])
             message_body = _("Appointment canceled by: %(partners)s", partners=cancelling_attendees)
             self.partner_ids -= attendees.partner_id
-            if len(self.attendee_ids - attendees) >= 2:
-                self.message_post(body=message_body, message_type='notification', author_id=attendees[0].partner_id.id)
-            else:
+            if self.appointment_booker_id.id == partner_ids[0]:
                 self._track_set_log_message("<p>%s</p>" % message_body)
-                # Don't post as "Public User" or current user as trigger is cancelling attendee(s).
                 self.with_user(SUPERUSER_ID).action_archive()
+            else:
+                self.message_post(body=message_body, message_type='notification', author_id=partner_ids[0])
+
+    def _find_or_create_partners_with_availability(self, guest_emails_str, slot_datetimes):
+        """Use to find the partners based on emails from in input string and creates
+        partners if not found. Availability of existing partners is checked based on given
+        slot boundaries.
+        :param str guest_emails: optional line-separated guest emails. It will
+          fetch or create partners to add them as event attendees;
+        :param tuple slot_datetimes: (begin_datetime, end_datetime) of the
+            appointment slot; The timezone of slot_datetimes is UTC
+        :return tuple: available partners, unavailable partners (recordsets)"""
+        # Split and normalize guest emails
+        name_emails = email_split_tuples(guest_emails_str)
+        emails_normalized = [email_normalize(email, strict=False) for _, email in name_emails]
+        valid_normalized = set(filter(None, emails_normalized))  # uniquify, valid only
+        available = self.env['res.partner']
+        unavailable = self.env['res.partner']
+        if not valid_normalized:
+            return (available, unavailable)
+        # Find existing partners
+        existing = self.env['mail.thread']._mail_find_partner_from_emails(list(valid_normalized))
+        existing = self.env['res.partner'].concat(*existing)
+        remaining_emails = valid_normalized - set(existing.mapped('email_normalized'))
+        # Verify availability for existing partners and categorize them
+        begin_datetime, end_datetime = slot_datetimes
+        for partner in existing:
+            if partner.calendar_verify_availability(begin_datetime, end_datetime):
+                available += partner
+            else:
+                unavailable += partner
+        # limit public usage of guests
+        if self.env.su and len(remaining_emails) > 10:
+            raise ValueError(
+                _('Guest usage is limited to 10 customers for performance reason.')
+            )
+        # if partners are available then we create the new partners from the emails
+        if not unavailable and remaining_emails:
+            partner_values = [
+                {'email': email, 'name': name if name else email}
+                for name, email in name_emails
+                if email in remaining_emails
+            ]
+            available += self.env['res.partner'].create(partner_values)
+        return (available, unavailable)
 
     def _get_mail_tz(self):
         self.ensure_one()

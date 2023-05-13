@@ -53,6 +53,7 @@ class AppointmentType(models.Model):
         help='Location formatted for one line uses')
     event_videocall_source = fields.Selection([('discuss', 'Odoo Discuss')], string="Videoconference Link", default="discuss",
         help="Defines the type of video call link that will be used for the generated events. Keep it empty to prevent generating meeting url.")
+    allow_guests = fields.Boolean(string='Allow Guests', help="Let attendees invite guests when registering a meeting.")
     # 'punctual' types are time-bound
     start_datetime = fields.Datetime('Start Datetime')
     end_datetime = fields.Datetime('End Datetime')

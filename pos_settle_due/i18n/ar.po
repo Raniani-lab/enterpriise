@@ -62,7 +62,7 @@ msgstr "قم باختيار طريقة الدفع لتسوية المستحقا�
 #: code:addons/pos_settle_due/static/src/xml/templates.xml:0
 #, python-format
 msgid "Settle due accounts"
-msgstr ""
+msgstr "تسوية الحسابات المستحقة "
 
 #. module: pos_settle_due
 #. odoo-javascript

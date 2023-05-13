@@ -153,6 +153,9 @@ msgid ""
 " selected employee(s) based on the dates and credit note specified on "
 "Payslips Run.</span>"
 msgstr ""
+"<span nolabel=\"1\" colspan=\"2\">سوف ينشئ هذا المعالج إيصالات دفع لكافة "
+"الموظف(ين) المحددين حسب التواريخ والإشعارات الدائنة المحددة بفترة إيصال "
+"الدفع.</span> "
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
@@ -488,6 +491,7 @@ msgstr "تعيين الراتب "
 msgid ""
 "At least one previous negative net could be reported on this payslip for %s"
 msgstr ""
+"هناك صافي سالب واحد على الأقل يمكن التقرير عنه في إيصال الدفع هذا لـ %s "
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_attachment_count
@@ -1011,7 +1015,7 @@ msgstr "إنشاء عقد جديد"
 #: code:addons/hr_payroll/static/src/components/dashboard/todo_list/todo_list.xml:0
 #, python-format
 msgid "Create new todo note"
-msgstr ""
+msgstr "إنشاء ملاحظة مهام جديدة "
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__create_uid
@@ -3224,6 +3228,8 @@ msgid ""
 "Set a specific department if you wish to select all the employees from this "
 "department (and subdepartments) at once."
 msgstr ""
+"قم بتعيين قسم محدد إذا أردت تحديد كافة الموظفين من هذا القسم (والأقسام "
+"الفرعية) دفعة واحدة. "
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees
@@ -3233,6 +3239,9 @@ msgid ""
 "generated for all the selected employees, based on their contracts "
 "configuration."
 msgstr ""
+"قم بتعيين هيكل محدد إذا أردت إنشاء إيصال دفع إضافي (مثال: مكافأة نهاية "
+"العام). إذا ترتكت هذا الحقل فارغاً، سوف يتم إنشاء إيصال دفع عادي لكافة "
+"الموظفين المحددين، بناءً على تهيئة عقودهم. "
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -3794,7 +3803,7 @@ msgstr "الإصدارات"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__appears_on_employee_cost_dashboard
 msgid "View on Employer Cost Dashboard"
-msgstr ""
+msgstr "عرض على لوحة بيانات الموظِّف "
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__appears_on_payroll_report

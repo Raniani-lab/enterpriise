@@ -304,6 +304,12 @@ msgid ""
 "- 2 letters or digits: location code\n"
 "- 3 letters or digits: branch code, optional\n"
 msgstr ""
+"Il codice BIC  \"%s\" associato alla banca \"%s\", con conto bancario \"%s\" del partner \"%s\", non rispetta la convenzione richiesta.\n"
+"Deve contenere 8 o 11 caratteri e corrispondere alla seguente struttura:\n"
+"- 4 lettere: codice istituto o codice banca\n"
+"- 2 lettere: codice nazione\n"
+"- 2 lettere o cifre: codice località\n"
+"- 3 lettere o cifre: codice filiale, opzionale\n"
 
 #. module: account_sepa
 #. odoo-python

@@ -664,6 +664,10 @@ msgid ""
 " all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
+"Klikając przycisk Adoptuj i podpisz, zgadzam się, że wybrany podpis/inicjały"
+" będzie ważną elektroniczną reprezentacją mojego odręcznego "
+"podpisu/inicjałów dla wszystkich celów, kiedy będzie używany na dokumentach,"
+" w tym na prawnie wiążących umowach."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message_cc
@@ -1617,7 +1621,7 @@ msgstr "W ulubionych, usuń"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__log_hash
 msgid "Inalterability Hash"
-msgstr ""
+msgstr "Hash niezmienności"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form

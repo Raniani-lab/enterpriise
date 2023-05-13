@@ -194,7 +194,7 @@ msgstr "إلغاء "
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__product_uom_category_id
 msgid "Category"
-msgstr "فئة"
+msgstr "الفئة "
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_change_production_qty
@@ -205,12 +205,12 @@ msgstr "تغيير كمية الإنتاج"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
 #: model:ir.model.fields,field_description:mrp_workorder.field_stock_move_line__quality_check_ids
 msgid "Check"
-msgstr "الشيك"
+msgstr "فحص "
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_production__check_ids
 msgid "Checks"
-msgstr "الشيكات "
+msgstr "الفحوصات "
 
 #. module: mrp_workorder
 #: model:product.attribute,name:mrp_workorder.product_attribute_color_radio
@@ -319,7 +319,7 @@ msgstr "حذفت في الإنتاج"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_workorder_additional_product_wizard
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_propose_change_wizard
 msgid "Discard"
-msgstr "تجاهل"
+msgstr "إهمال "
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__display_name
@@ -405,7 +405,7 @@ msgstr "الأيقونة"
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_bom__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr "الأيقونة للإشارة إلى استثناء النشاط"
+msgstr "الأيقونة للإشارة إلى النشاط المستثنى. "
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__worksheet_document
@@ -473,7 +473,7 @@ msgstr "مرحلة أمر العمل "
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__is_user_working
 msgid "Is the Current User Working"
-msgstr "هل المستخدم الحالي يعمل"
+msgstr "المستخدم الحالي يعمل "
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product____last_update
@@ -497,7 +497,7 @@ msgstr "آخر تحديث في"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
 msgid "Lot"
-msgstr "الدفعة "
+msgstr "المجموعة "
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__lot_id
@@ -1051,7 +1051,7 @@ msgstr "نوع التغيير "
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_bom__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "نوع النشاط الاستثنائي المسجل."
+msgstr "نوع النشاط المستثنى في السجل. "
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet

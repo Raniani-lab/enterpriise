@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # Camille Dantinne <cmd@odoo.com>, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # Jolien De Paepe, 2023
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,7 +62,7 @@ msgstr "%s de handtekening is bevestigd per sms met het telefoonnummer %s."
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "%s: missing credits for extra-authentication"
-msgstr "%s: ontbrekende kredieten voor extra authenticatie"
+msgstr "%s: ontbrekende credits voor extra authenticatie"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -187,7 +187,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "<i class=\"fa fa-arrow-right\"/> Buy credits"
-msgstr "<i class=\"fa fa-arrow-right\"/> Kredieten aanschaffen"
+msgstr "<i class=\"fa fa-arrow-right\"/> Credits aanschaffen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -1637,8 +1637,8 @@ msgid ""
 "If you wish, you can request the document again after buying more credits "
 "for the operation."
 msgstr ""
-"Als je wilt, kun je het document opnieuw opvragen nadat je meer kredieten "
-"hebt gekocht voor de operatie."
+"Als je wilt, kun je het document opnieuw opvragen nadat je meer credits hebt"
+" gekocht voor de operatie."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__in_progress_count
@@ -3983,7 +3983,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "You have less than 20 credits remaining for"
-msgstr "Je hebt minder dan 20 kredieten over voor"
+msgstr "Je hebt minder dan 20 credits over voor"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
@@ -3996,8 +3996,8 @@ msgid ""
 "You have templates or requests using a role with an extra-authentication step with few credits remaining.<br/>\n"
 "                To remove this warning, disable the extra-authentication step in the <code>Configuration &gt; Roles</code> menu, or buy credits."
 msgstr ""
-"Je hebt sjablonen of verzoeken die een rol met een extra authenticatiestap gebruiken met weinig kredieten over.<br/>\n"
-"                Om deze waarschuwing te verwijderen kan je de extra authenticatiestap desactiveren in het <code>Configuratie &gt; Rollen</code> menu, of meer kredieten aanschaffen."
+"Je hebt sjablonen of verzoeken die een rol met een extra authenticatiestap gebruiken met weinig credits over.<br/>\n"
+"                Om deze waarschuwing te verwijderen kan je de extra authenticatiestap desactiveren in het <code>Configuratie &gt; Rollen</code> menu, of meer credits aanschaffen."
 
 #. module: sign
 #. odoo-python
@@ -4117,8 +4117,7 @@ msgstr "en:"
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "authentication step will be skipped if you are out of credits."
 msgstr ""
-"authenticatiestap zal worden overgeslagen indien je geen kredieten meer "
-"hebt."
+"authenticatiestap zal worden overgeslagen indien je geen credits meer hebt."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
@@ -4131,7 +4130,7 @@ msgid ""
 "because you don't have enough credits for this operation. \n"
 "                    The signatory was able to finish signing, but was not asked to authenticate fully."
 msgstr ""
-"want je hebt niet genoeg kredieten voor deze operatie. \n"
+"want je hebt niet genoeg credits voor deze operatie. \n"
 "                    De ondertekenaar kon het document ondertekenen, maar werd niet gevraagd om volledig te authenticeren."
 
 #. module: sign

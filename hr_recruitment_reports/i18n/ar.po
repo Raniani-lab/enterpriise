@@ -34,7 +34,7 @@ msgstr "# تم توظيفه "
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__hiring_ratio
 msgid "# Hired Ratio"
-msgstr ""
+msgstr "نسبة التعيينات "
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__meetings_amount
@@ -54,7 +54,7 @@ msgstr "التحليل"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_stage_report__applicant_id
 msgid "Applicant"
-msgstr "المتقدم"
+msgstr "المتقدم للوظيفة "
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__name

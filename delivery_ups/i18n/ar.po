@@ -536,7 +536,7 @@ msgstr "طُرُق الشَّحن"
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_package_type
 msgid "Stock package type"
-msgstr "نوع تعبئة البضاعة في المخزون "
+msgstr "نوع طرود المخزون "
 
 #. module: delivery_ups
 #. odoo-python
@@ -602,7 +602,7 @@ msgstr ""
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The name of the customer should be no more than 35 characters."
-msgstr ""
+msgstr "يجب ألا يتجاوز اسم العميل 35 خانة. "
 
 #. module: delivery_ups
 #. odoo-python

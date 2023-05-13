@@ -5,7 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
-# Lucia Pacheco <lpo@odoo.com>, 2022
+# Lucia Pacheco, 2022
+# Aimée Mendoza Sánchez, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Lucia Pacheco <lpo@odoo.com>, 2022\n"
+"Last-Translator: Aimée Mendoza Sánchez, 2023\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3247,7 +3248,7 @@ msgstr "Propiedades de la plantilla"
 #. module: sign
 #: model:ir.actions.server,name:sign.sign_template_tour_trigger_action
 msgid "Template Sample Contract.pdf trigger"
-msgstr ""
+msgstr "Activador de la plantilla de muestra de contacto.pdf "
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__template_tags
@@ -3490,6 +3491,8 @@ msgstr "La plantilla ya no existe."
 msgid ""
 "The template has more pages than the current file, it can't be applied."
 msgstr ""
+"La plantila tiene más páginas que el documento actual y no puede ser "
+"aplicada."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report

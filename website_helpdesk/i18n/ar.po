@@ -296,7 +296,7 @@ msgstr "يجب أن تتطابق كل من شركة الفريق وشركة ال
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Type Filter"
-msgstr ""
+msgstr "كتابة عامل التصفية "
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__feature_form_url

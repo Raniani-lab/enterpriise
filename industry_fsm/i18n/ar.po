@@ -122,6 +122,8 @@ msgid ""
 "<span class=\"o_stat_text\">Worksheet</span>\n"
 "                            <span class=\"o_stat_text\">Complete</span>"
 msgstr ""
+"<span class=\"o_stat_text\">تم إكمال</span>\n"
+"                            <span class=\"o_stat_text\">ورقة العمل</span> "
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
@@ -415,7 +417,7 @@ msgstr "الوصف"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_project_view_form_simplified_footer_fsm
 msgid "Discard"
-msgstr "تجاهل"
+msgstr "إهمال "
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__display_enabled_conditions_count
@@ -724,7 +726,7 @@ msgstr "فلنقم بإنشاء <b>مهمتك</b> الأولى. "
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__line_ids
 msgid "Line"
-msgstr "بند"
+msgstr "البند "
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
@@ -1175,12 +1177,12 @@ msgstr "التقرير المخصص لورقة العمل "
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task_stop_timers_wizard
 msgid "Task stop running timers confirmation wizard"
-msgstr ""
+msgstr "معالج تأكيد إيقاف مؤقتات المهام "
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task_stop_timers_wizard_line
 msgid "Task stop running timers confirmation wizard line"
-msgstr ""
+msgstr "بند معالج تأكيد إيقاف مؤقتات المهام "
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_tasks_action_fsm

@@ -69,7 +69,7 @@ msgstr "الوصف"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_account_analytic_line__display_sol
 msgid "Display Sol"
-msgstr ""
+msgstr "عرض Sol "
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet

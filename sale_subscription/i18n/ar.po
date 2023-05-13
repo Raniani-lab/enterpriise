@@ -2210,12 +2210,12 @@ msgstr ""
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's go to the catalog to create our first subscription product"
-msgstr "فلنذهب إلى الكتالوج لإنشاء أولى منتجات الاشتراك"
+msgstr "فلنذهب إلى الكتالوج لإنشاء أول منتجات الاشتراك"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__link_field_id
 msgid "Link Field"
-msgstr "Link Field"
+msgstr "حقل الرابط "
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form

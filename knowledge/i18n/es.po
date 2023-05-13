@@ -9,6 +9,7 @@
 # Guspy12, 2022
 # Braulio D. López Vázquez <bdl@odoo.com>, 2023
 # Martin Trigaux, 2023
+# Daniel Blanco <daniel@blancomartin.cl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Daniel Blanco <daniel@blancomartin.cl>, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,12 +41,12 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "\" under:"
-msgstr ""
+msgstr "\" debajo:"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_count
 msgid "#Is Favorite"
-msgstr ""
+msgstr "#Es Favorito"
 
 #. module: knowledge
 #. odoo-python
@@ -87,62 +88,62 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-archive\"/> Unarchive"
-msgstr ""
+msgstr "Recuperar"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-arrows-h\"/> Full Width"
-msgstr ""
+msgstr "Ancho Completo"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-cog\" title=\"Add properties\"/> Add Properties"
-msgstr ""
+msgstr "Agregar Propiedades"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-copy\"/> Create a Copy"
-msgstr ""
+msgstr "Crear una copia"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-lock\"/> Lock"
-msgstr ""
+msgstr "Bloquear"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-picture-o\" title=\"Add cover\"/> Add cover"
-msgstr ""
+msgstr "Agregar carátula"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-picture-o\" title=\"Change cover\"/> Change cover"
-msgstr ""
+msgstr "Cambiar carátula"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-smile-o\" title=\"Add icon\"/> Add icon"
-msgstr ""
+msgstr "Agregar icono"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-trash\"/> Delete"
-msgstr ""
+msgstr "Suprimir"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\" title=\"Remove cover\"/> Remove cover"
-msgstr ""
+msgstr "Remover carátula "
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Restore from Trash"
-msgstr ""
+msgstr "Recuperar del basurero"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-unlock\"/> Unlock"
-msgstr ""
+msgstr "Desbloquear "
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -177,12 +178,12 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-plus-circle me-1\"/>New"
-msgstr ""
+msgstr "Nuevo"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-share-alt me-1\"/>Share"
-msgstr ""
+msgstr "Compartir"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
@@ -202,6 +203,10 @@ msgid ""
 "                                                Open the Trash\n"
 "                                            </span>"
 msgstr ""
+"<i class=\"fa fa-trash\"/>\n"
+"                                            <span class=\"ps-2 flex-grow-1 text-truncate\">\n"
+"                                                Abrir el Basurero\n"
+"                                            </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -214,6 +219,8 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> All external users you selected won't "
 "be added to the members."
 msgstr ""
+"<i class=\"fa fa-w fa-info-circle\"/>Todos los usuarios externos que ud "
+"seleccionó no serán agregados como miembros"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -221,6 +228,8 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> External users cannot write on "
 "Articles and will be granted read access instead."
 msgstr ""
+"Los usuarios externos no pueden escribir en Artículos y en su lugar se les "
+"dará acceso de solo lectura."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -686,7 +695,7 @@ msgstr "Ícono de tipo de actvidad"
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a table of content."
-msgstr ""
+msgstr "Agregar Indice"
 
 #. module: knowledge
 #. odoo-javascript
@@ -707,7 +716,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/table_of_content_behavior/table_of_content_behavior.xml:0
 #, python-format
 msgid "Add headings in this Article to create a Table of Content"
-msgstr ""
+msgstr "Agregar encabezados a este Artículo o crear un Indice"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -2209,7 +2218,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Table Of Content"
-msgstr ""
+msgstr "Indice"
 
 #. module: knowledge
 #. odoo-javascript

@@ -104,7 +104,7 @@ msgstr "وصف التذكرة..."
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_create_timesheet_view_form
 msgid "Discard"
-msgstr "تجاهل"
+msgstr "إهمال "
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__display_name

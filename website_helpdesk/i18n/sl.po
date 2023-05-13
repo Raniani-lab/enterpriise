@@ -9,6 +9,7 @@
 # Grega Vavtar <grega@hbs.si>, 2022
 # Martin Trigaux, 2022
 # Jasmina Macur <jasmina@hbs.si>, 2022
+# Tomaž Jug <tomaz@editor.si>, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Jasmina Macur <jasmina@hbs.si>, 2022\n"
+"Last-Translator: Tomaž Jug <tomaz@editor.si>, 2023\n"
 "Language-Team: Slovenian (https://app.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -116,7 +117,7 @@ msgstr ""
 #: code:addons/website_helpdesk/static/src/xml/website_helpdesk.xml:0
 #, python-format
 msgid "All results"
-msgstr ""
+msgstr "Vsi rezultati"
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -143,7 +144,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__can_publish
 msgid "Can Publish"
-msgstr ""
+msgstr "Lahko objavite"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
@@ -206,7 +207,7 @@ msgstr "Skupina za pomoč uporabnikom"
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
 msgid "Is Published"
-msgstr ""
+msgstr "Je objavljen"
 
 #. module: website_helpdesk
 #. odoo-python
@@ -235,7 +236,7 @@ msgstr "Prejšnje leto"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.search_results
 #, python-format
 msgid "No results found. Please try another search."
-msgstr ""
+msgstr "Ni bilo najdenih rezultatov. Poskusite z drugim iskanjem."
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base

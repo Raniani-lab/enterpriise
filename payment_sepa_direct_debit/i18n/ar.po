@@ -380,7 +380,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "A copy of the mandate will be sent by email to"
-msgstr ""
+msgstr "سيتم إرسال نسخة من التفويض عن طريق البريد الإلكتروني إلى "
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -450,7 +450,7 @@ msgstr "التوقيع الإلكتروني"
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_account_payment_method
 msgid "Payment Methods"
-msgstr "طرق السداد"
+msgstr "طرق الدفع "
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_payment_provider
@@ -465,7 +465,7 @@ msgstr "رمز الدفع "
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_payment_transaction
 msgid "Payment Transaction"
-msgstr "معاملة السداد"
+msgstr "معاملة الدفع "
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__phone_number
@@ -505,7 +505,7 @@ msgstr "خصم SEPA المباشر"
 #. module: payment_sepa_direct_debit
 #: model:account.payment.method,name:payment_sepa_direct_debit.payment_method_sepa_direct_debit
 msgid "SEPA Direct Debit (provider)"
-msgstr ""
+msgstr "خصم SEPA المباشر (المزود) "
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_token__sdd_mandate_id
@@ -782,7 +782,7 @@ msgstr "رمز التأكيد هو %s"
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "upon validation."
-msgstr ""
+msgstr "عند التصديق. "
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,report_name:payment_sepa_direct_debit.mail_template_sepa_notify_validation

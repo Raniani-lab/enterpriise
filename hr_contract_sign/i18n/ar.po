@@ -32,7 +32,7 @@ msgstr "%s و %s هي الأطراف الموقعة. "
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "%s does not have a work or private email set."
-msgstr ""
+msgstr "ليس لـ%s بريد إلكتروني للعمل أو بريد إلكتروني خاص. "
 
 #. module: hr_contract_sign
 #. odoo-python
@@ -87,7 +87,7 @@ msgstr "أنشئ في"
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Discard"
-msgstr "تجاهل"
+msgstr "إهمال "
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__display_name

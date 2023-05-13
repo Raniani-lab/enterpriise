@@ -772,7 +772,7 @@ msgstr "Afspraaksoorten"
 #: code:addons/appointment/models/calendar_event.py:0
 #, python-format
 msgid "Appointment canceled by: %(partners)s"
-msgstr "Afspraak geannuleerd door: %(relaties)s"
+msgstr "Afspraak geannuleerd door: %(partners)s"
 
 #. module: appointment
 #: model:mail.template,name:appointment.appointment_booked_mail_template
@@ -1019,7 +1019,7 @@ msgstr "Gemaakt op"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__custom
 msgid "Custom"
-msgstr "Op maat"
+msgstr "Speciaal"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__partner_id

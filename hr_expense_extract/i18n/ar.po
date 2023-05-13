@@ -137,7 +137,7 @@ msgstr "تهيئة الإعدادات "
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_register_view_form
 msgid "Create Payment"
-msgstr "إنشاء دفعة "
+msgstr "إنشاء عملية الدفع "
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__create_uid
@@ -190,7 +190,7 @@ msgstr "رسالة خطأ"
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__sheet_id
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__expense_id
 msgid "Expense"
-msgstr "نفقة "
+msgstr "النفقة "
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
@@ -365,22 +365,22 @@ msgstr "لا يوجد رصيد كاف"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__date
 msgid "Payment Date"
-msgstr "تاريخ السداد"
+msgstr "تاريخ الدفع "
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__partial_mode
 msgid "Payment Difference"
-msgstr "الفرق فى السداد"
+msgstr "الفرق فى الدفع "
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__payment_method_line_id
 msgid "Payment Method"
-msgstr "طريقة السداد"
+msgstr "طريقة الدفع "
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_register_view_form
 msgid "Register Payment"
-msgstr "تسجيل دفعة"
+msgstr "تسجيل الدفع "
 
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_register

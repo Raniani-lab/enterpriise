@@ -326,7 +326,7 @@ msgstr "رابط URL المستهدف المنبثق "
 #. module: social_push_notifications
 #: model:ir.model.constraint,message:social_push_notifications.constraint_website_visitor_push_subscription_push_token_uniq
 msgid "Push token can't be duplicated!"
-msgstr ""
+msgstr "لا يمكن صنع نسخة مطابقة من الرمز المنبثق! "
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_live_post__reached_visitor_ids

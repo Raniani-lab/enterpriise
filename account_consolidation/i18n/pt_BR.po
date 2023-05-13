@@ -249,7 +249,7 @@ msgstr "Conta com Entradas"
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_account_report
 msgid "Accounting Report"
-msgstr "Relatório Contábil"
+msgstr "Relatório financeiro"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__account_ids

@@ -40,7 +40,7 @@ msgstr "<span class=\"o_stat_text\">طلبات التوقيع</span>"
 #: model:ir.model,name:hr_recruitment_sign.model_hr_applicant
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__applicant_id
 msgid "Applicant"
-msgstr "المتقدم"
+msgstr "المتقدم للوظيفة "
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__applicant_role_id
@@ -94,7 +94,7 @@ msgstr "أنشئ في"
 #. module: hr_recruitment_sign
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_sign.hr_recruitment_sign_view
 msgid "Discard"
-msgstr "تجاهل"
+msgstr "إهمال "
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__display_name

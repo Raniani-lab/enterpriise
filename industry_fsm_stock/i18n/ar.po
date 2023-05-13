@@ -52,7 +52,7 @@ msgstr "أنشئ في"
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_view_form
 msgid "Discard"
-msgstr "تجاهل"
+msgstr "إهمال "
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__display_name

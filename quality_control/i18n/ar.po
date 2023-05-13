@@ -231,7 +231,7 @@ msgstr "إلغاء "
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__check_ids
 msgid "Check"
-msgstr "الشيك"
+msgstr "فحص "
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_stock_move_line__check_state
@@ -253,7 +253,7 @@ msgstr "تاريخ الفحص"
 #: model:ir.model.fields,field_description:quality_control.field_stock_move_line__check_ids
 #: model:ir.model.fields,field_description:quality_control.field_stock_picking__check_ids
 msgid "Checks"
-msgstr "الشيكات "
+msgstr "الفحوصات "
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -565,7 +565,7 @@ msgstr "الحد الأدنى المسموح به "
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Miscellaneous"
-msgstr "متنوعة"
+msgstr "متفرقات "
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__month
@@ -667,6 +667,9 @@ msgid ""
 "                  Product = A quality check is requested per product.\n"
 "                 Quantity = A quality check is requested for each new product quantity registered, with partial quantity checks also possible."
 msgstr ""
+"العملية = يتم طلب فحص جودة واحد على مستوى العملية.\n"
+"                  المنتج = يتم طلب فحص جودة لكل منتج.\n"
+"                 الكمية = يتم طلب فحص جودة لكل كمية منتج جديدة مسجلة، مع فحص الجودة الجزئي. "
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_dashboard

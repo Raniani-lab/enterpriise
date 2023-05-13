@@ -1471,6 +1471,8 @@ msgid ""
 "Please check the currency on your bank journal.\n"
 "No statements in currency %s were found in this CAMT file."
 msgstr ""
+"Controllare la valuta nel registro banca.\n"
+"Nel file CAMT non è stato trovato alcun estratto conto con valuta %s."
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0

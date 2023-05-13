@@ -24,7 +24,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "'rate': {}, 'ship': {}, 'return': {}"
-msgstr ""
+msgstr "'rate': {}, 'ship': {}, 'return': {}"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__0
@@ -502,7 +502,7 @@ msgstr "طُرُق الشَّحن"
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_stock_package_type
 msgid "Stock package type"
-msgstr "نوع تعبئة البضاعة في المخزون "
+msgstr "نوع طرود المخزون "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__t

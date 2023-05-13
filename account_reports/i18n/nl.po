@@ -3333,7 +3333,8 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trying to expand a line without an expansion function."
-msgstr "Proberen een regel uit te breiden zonder een uitbreidingsfunctie."
+msgstr ""
+"Systeem probeert een regel uit te breiden zonder een uitbreidingsfunctie."
 
 #. module: account_reports
 #. odoo-python

@@ -26,8 +26,8 @@
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2023
 # Martin Trigaux, 2023
 # Paweł Wodyński <pw@myodoo.pl>, 2023
-# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # danielkowalczyk007, 2023
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -35,7 +35,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: danielkowalczyk007, 2023\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -286,7 +286,7 @@ msgstr "Dodaj nowy znacznik"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 msgid "All Users Lock Date"
-msgstr ""
+msgstr "Wszyscy użytkownicy data blokady"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -959,6 +959,9 @@ msgid ""
 "related information at the time of the creation of the move and that the "
 "move needs to be checked again."
 msgstr ""
+"Jeśli to pole wyboru jest zaznaczone, oznacza to, że użytkownik nie był "
+"pewien wszystkich powiązanych informacji w momencie tworzenia ruchu i że "
+"ruch musi być sprawdzony ponownie."
 
 #. module: account_accountant
 #. odoo-python
@@ -968,6 +971,8 @@ msgid ""
 "Incorrect fiscal year date: day is out of range for month. Month: %s; Day: "
 "%s"
 msgstr ""
+"Nieprawidłowa data roku podatkowego: dzień jest poza zakresem dla miesiąca. "
+"Miesiąc: %s; Dzień: %s"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__index
@@ -1263,7 +1268,7 @@ msgstr ""
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr ""
+msgstr "Dopasowane transakcje"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
@@ -1333,6 +1338,8 @@ msgid ""
 "No users can edit journal entries related to a tax prior and inclusive of "
 "this date."
 msgstr ""
+"Żaden użytkownik nie może edytować wpisów w dzienniku dotyczących podatku "
+"sprzed i włącznie z tą datą."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__fiscalyear_lock_date
@@ -1663,7 +1670,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Set as Checked"
-msgstr ""
+msgstr "Ustawione jako sprawdzone"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1783,12 +1790,12 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_repartition_line_id
 msgid "Tax Repartition Line"
-msgstr ""
+msgstr "Linia podziału podatku"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
 msgid "Tax Return Lock Date"
-msgstr ""
+msgstr "Data zamknięcia rozliczenia podatkowego"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
@@ -1905,7 +1912,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "To Check"
-msgstr ""
+msgstr "Do sprawdzenia"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget

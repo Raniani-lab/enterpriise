@@ -831,7 +831,7 @@ msgstr "تغيير الصورة"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Change the <b>background</b>, make it yours."
-msgstr "قم بتغيير <b>الخلفية</b>، اجعلها حسب شخصيتك."
+msgstr "قم بتغيير <b>الخلفية</b>، اجعلها تناسب شخصيتك. "
 
 #. module: web_studio
 #. odoo-javascript
@@ -1066,7 +1066,7 @@ msgstr "تأكيد"
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.js:0
 #, python-format
 msgid "Confirmation"
-msgstr "تأكيد"
+msgstr "التأكيد "
 
 #. module: web_studio
 #. odoo-python
@@ -2006,7 +2006,7 @@ msgstr "أداة عرض الرسم البياني"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Great !"
-msgstr "عظيم!"
+msgstr "رائع! "
 
 #. module: web_studio
 #. odoo-javascript
@@ -2588,12 +2588,12 @@ msgstr "الوضع"
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Model"
-msgstr "الكائن"
+msgstr "النموذج "
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_access
 msgid "Model Access"
-msgstr "الوصول للكائن"
+msgstr "الوصول للنموذج "
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_data
@@ -2604,12 +2604,12 @@ msgstr "بيانات النموذج "
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__model
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__model_name
 msgid "Model Name"
-msgstr "اسم الكائن"
+msgstr "اسم النموذج "
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model
 msgid "Models"
-msgstr "كائنات"
+msgstr "النماذج"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_module_module
@@ -2985,7 +2985,7 @@ msgstr "تهيئة تنسيق الورقة "
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Paper format"
-msgstr "تنسيق ورقة"
+msgstr "تنسيق الورقة "
 
 #. module: web_studio
 #. odoo-javascript
@@ -4021,7 +4021,7 @@ msgstr "اسم حقل السجل مفقود"
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The related field of a button has to be a many2one to %s."
-msgstr "يجب أن تكون علاقة الحقل المرتبط بزر بـ%s علاقة متعدد لواحد."
+msgstr "يجب أن تكون علاقة الحقل المرتبط بزر بـ%s علاقة متعدد لواحد. "
 
 #. module: web_studio
 #. odoo-javascript
@@ -4607,7 +4607,7 @@ msgstr "أو"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "px"
-msgstr "بيكسل"
+msgstr "بيكسل "
 
 #. module: web_studio
 #. odoo-javascript

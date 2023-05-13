@@ -460,7 +460,7 @@ msgstr "<span class=\"text-muted\">Dringend</span>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "<span class=\"text-secondary fw-normal\"> Open</span>"
-msgstr "<span class=\"text-secondary fw-normal\"> Openen</span>"
+msgstr "<span class=\"text-secondary fw-normal\"> Open</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form

@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Sergio Zanchetta <primes2h@gmail.com>, 2022
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2022\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,6 +51,8 @@ msgid ""
 "<span style=\"font-size: 18px;\">Ask questions and discuss tips with fellow "
 "members in a forum</span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">Poni domande e discuti con altri membri nel"
+" forum</span>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.knowledge_base_forum_card
@@ -65,7 +68,7 @@ msgstr "Risposte"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.footer
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.knowledge_base_forum_card
 msgid "Ask the Community"
-msgstr ""
+msgstr "Chiedi alla community"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__can_share_forum

@@ -11,6 +11,7 @@
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # Pedro M. Baeza <pedro.baeza@tecnativa.com>, 2023
 # mahdi cheikhrouhou, 2023
+# Daniel Blanco <daniel@blancomartin.cl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: mahdi cheikhrouhou, 2023\n"
+"Last-Translator: Daniel Blanco <daniel@blancomartin.cl>, 2023\n"
 "Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4242,7 +4243,7 @@ msgstr "de"
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_rule__amount_percentage_base
 msgid "result will be affected to a variable"
-msgstr "el resultado afectará a una variable"
+msgstr "el resultado estará afecto a una variable"
 
 #. module: hr_payroll
 #: model:mail.template,subject:hr_payroll.mail_template_new_payslip

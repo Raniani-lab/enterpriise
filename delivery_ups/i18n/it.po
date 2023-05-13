@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Sergio Zanchetta <primes2h@gmail.com>, 2022
+# Sergio Zanchetta <primes2h@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2022\n"
+"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -130,7 +130,7 @@ msgstr "Contatto"
 #. module: delivery_ups
 #: model_terms:ir.ui.view,arch_db:delivery_ups.view_delivery_carrier_form_with_provider_ups
 msgid "Duties paid by"
-msgstr "Dazio pagato da"
+msgstr "Dazi pagati da"
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_label_file_type__epl
@@ -167,8 +167,8 @@ msgid ""
 "If checked, ecommerce users will be prompted their UPS account number\n"
 "and delivery fees will be charged on it."
 msgstr ""
-"Se questa opzione è selezionata, gli utenti dell'ecommerce dovranno fornire il loro numero conto UPS\n"
-"su cui verranno addebitate le spese di spedizione."
+"Se selezionata, agli utenti e-commerce verrà chiesto il numero di conto UPS\n"
+"sul quale verranno addebitate le spese di consegna."
 
 #. module: delivery_ups
 #: model:ir.model.fields.selection,name:delivery_ups.selection__delivery_carrier__ups_package_dimension_unit__in
@@ -292,7 +292,7 @@ msgstr "Fornire un numero di telefono valido per il destinatario."
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper Number/Carrier Account."
-msgstr "Fornire un conto con numero/vettore valido per il mittente."
+msgstr "Fornire un numero mittente/conto vettore valido."
 
 #. module: delivery_ups
 #. odoo-python
@@ -301,7 +301,7 @@ msgstr "Fornire un conto con numero/vettore valido per il mittente."
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid shipper number/Carrier Account."
-msgstr "Fornire un conto con numero/vettore valido per il mittente."
+msgstr "Fornire un numero mittente/conto vettore valido."
 
 #. module: delivery_ups
 #. odoo-python
@@ -727,7 +727,7 @@ msgstr "UPS"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_access_number
 msgid "UPS Access Key"
-msgstr ""
+msgstr "Chiave di accesso UPS"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_res_partner__property_ups_carrier_account
@@ -803,7 +803,7 @@ msgstr "Username UPS"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_sale_order__partner_ups_carrier_account
 msgid "UPS account number"
-msgstr ""
+msgstr "Numero conto UPS"
 
 #. module: delivery_ups
 #. odoo-python
@@ -820,7 +820,7 @@ msgstr ""
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment
 msgid "Ups Duty Payment"
-msgstr "UPS Pagamento dazio"
+msgstr "Pagamento dazi UPS"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_package_weight_unit

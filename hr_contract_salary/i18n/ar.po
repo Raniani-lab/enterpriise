@@ -212,7 +212,7 @@ msgstr " تكلفة الموظفين السنوية "
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__applicant_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__applicant_id
 msgid "Applicant"
-msgstr "المتقدم"
+msgstr "المتقدم للوظيفة "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__applies_on
@@ -229,7 +229,7 @@ msgstr "قم بالتقديم الآن "
 #: model:ir.actions.server,name:hr_contract_salary.ir_cron_clean_redundant_salary_data_ir_actions_server
 #: model:ir.cron,cron_name:hr_contract_salary.ir_cron_clean_redundant_salary_data
 msgid "Archive/Delete redundant generated salary data"
-msgstr "أرشفة/حذف بيانات الراتب المنشأة الزائدة"
+msgstr "أرشفة/حذف بيانات الراتب المنشأة المكررة "
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_search
@@ -269,7 +269,7 @@ msgstr "إلغاء "
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__category_id
 msgid "Category"
-msgstr "فئة"
+msgstr "الفئة "
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_certificate
@@ -1209,7 +1209,7 @@ msgstr "العنصر النائب "
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__position
 msgid "Position"
-msgstr "منصب"
+msgstr "المنصب الوظيفي "
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
@@ -1308,7 +1308,7 @@ msgstr "فائدة باقة الراتب "
 #. module: hr_contract_salary
 #: model:ir.ui.menu,name:hr_contract_salary.salary_package_menu
 msgid "Salary Package Configurator"
-msgstr "مُعد حزم الرواتب"
+msgstr "أداة تهيئة باقة الراتب "
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_personal_info

@@ -14,6 +14,7 @@
 # Matjaz Mozetic <m.mozetic@matmoz.si>, 2022
 # Jasmina Macur <jasmina@hbs.si>, 2022
 # Martin Trigaux, 2022
+# Tomaž Jug <tomaz@editor.si>, 2023
 # 
 msgid ""
 msgstr ""
@@ -21,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Tomaž Jug <tomaz@editor.si>, 2023\n"
 "Language-Team: Slovenian (https://app.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -652,6 +653,11 @@ msgid ""
 "field as True to allow users to run this action. If it is set to False the "
 "action cannot be run through the website."
 msgstr ""
+"Dejanje kodnega strežnika je mogoče izvesti s spletnega mesta z uporabo "
+"namenskega krmilnika. Naslov je <base> / spletno mesto / akcija "
+"/<website_path> . To polje nastavite kot True, da uporabnikom omogočite "
+"izvajanje tega dejanja. Če je nastavljeno na False, dejanja ni mogoče "
+"zagnati prek spletnega mesta."
 
 #. module: sale_subscription
 #. odoo-python
@@ -834,7 +840,7 @@ msgstr "Razpoložljivo na spletni strani"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg
 msgid "Average Rating"
-msgstr ""
+msgstr "Povprečna ocena"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__bad
@@ -2102,7 +2108,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_provider
 msgid "Payment Provider"
-msgstr ""
+msgstr "Ponudnik plačil"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_token
@@ -2259,7 +2265,7 @@ msgstr "Ocena"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg_text
 msgid "Rating Avg Text"
-msgstr ""
+msgstr "Ocena Povprečno besedilo"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__rating_template_id
@@ -2269,12 +2275,12 @@ msgstr "Predloga e-pošte z oceno"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_feedback
 msgid "Rating Last Feedback"
-msgstr ""
+msgstr "Zadnje povratne informacije"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_image
 msgid "Rating Last Image"
-msgstr ""
+msgstr "Ocena zadnje slike"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_value
@@ -2307,12 +2313,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_text
 msgid "Rating Text"
-msgstr ""
+msgstr "Besedilo ocene"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_count
 msgid "Rating count"
-msgstr ""
+msgstr "Število ocen"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__name

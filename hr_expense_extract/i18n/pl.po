@@ -348,7 +348,7 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__expense_sample_register__partial_mode__paid
 msgid "Mark as fully paid"
-msgstr ""
+msgstr "Oznaczone jako w pełni opłacone"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__memo

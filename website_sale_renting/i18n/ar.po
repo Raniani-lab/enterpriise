@@ -256,7 +256,7 @@ msgstr "ساعة"
 #. module: website_sale_renting
 #: model:ir.model.fields.selection,name:website_sale_renting.selection__res_company__renting_minimal_time_unit__hour
 msgid "Hours"
-msgstr "الساعات"
+msgstr "ساعات "
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_minimal_time_duration

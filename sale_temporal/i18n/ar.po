@@ -180,6 +180,8 @@ msgid ""
 "Minimum duration before this rule is applied. If set to 0, it represents a "
 "fixed temporal price."
 msgstr ""
+"المدة الدنيا قبل أن يتم تطبيق هذه القاعدة. إذا تم تحديدها كـ 0، تمثل سعراً "
+"مؤقتاً ثابتاً. "
 
 #. module: sale_temporal
 #. odoo-python

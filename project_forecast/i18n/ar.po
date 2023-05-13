@@ -48,7 +48,7 @@ msgstr "لم يتم العثور على أي نوبات عمل. فلنقم بإ�
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Plan your resources for this project"
-msgstr ""
+msgstr "قم بتخطيط مواردك لهذا المشروع "
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_project_view_form_simplified_inherit_forecast

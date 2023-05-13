@@ -577,17 +577,17 @@ msgstr "Numero allegati"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Asset"
-msgstr ""
+msgstr "Cespite automatico"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Deferred Expense"
-msgstr ""
+msgstr "Risconto attivo automatico"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Deferred Revenue"
-msgstr ""
+msgstr "Risconto passivo automatico"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -815,7 +815,7 @@ msgstr ""
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Dec. then Straight"
-msgstr ""
+msgstr "Dec. poi linea retta"
 
 #. module: account_asset
 #. odoo-python
@@ -828,7 +828,7 @@ msgstr "Decrescente"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method_progress_factor
 msgid "Declining Factor"
-msgstr ""
+msgstr "Fattore decrescente"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__degressive_then_linear
@@ -1080,7 +1080,7 @@ msgstr "Registrazione di ammortamento %s stornata (%s)"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_account_asset_id
 msgid "Display Account Asset"
-msgstr ""
+msgstr "Visualizza cespite conto"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_name
@@ -1220,7 +1220,7 @@ msgstr "Icona Font Awesome es. fa-tasks"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__form_view_ref
 msgid "Form View Ref"
-msgstr ""
+msgstr "Rif. vista scheda"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -1608,7 +1608,7 @@ msgstr "Nota"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__number_asset_ids
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__number_asset_ids
 msgid "Number Asset"
-msgstr ""
+msgstr "Numero cespiti"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction_counter
@@ -1716,7 +1716,7 @@ msgstr "Registrazioni confermate"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__prorata_date
 msgid "Prorata Date"
-msgstr ""
+msgstr "Data pro rata"
 
 #. module: account_asset
 #. odoo-python
@@ -1843,6 +1843,8 @@ msgid ""
 "Reverse the depreciation entries posted in the future in order to modify the"
 " depreciation"
 msgstr ""
+"Per modificare l'ammortamento stornare le relative registrazioni confermate "
+"nel futuro"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__open
@@ -1876,12 +1878,12 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Save model"
-msgstr ""
+msgstr "Salva modello"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__select_invoice_line_id
 msgid "Select Invoice Line"
-msgstr ""
+msgstr "Seleziona riga fattura"
 
 #. module: account_asset
 #. odoo-python

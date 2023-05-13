@@ -1417,7 +1417,7 @@ msgstr "السحب الزائد "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Overdraft Charge"
-msgstr ""
+msgstr "رسوم السحب الزائد "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1554,7 +1554,7 @@ msgstr "مشكلة في الأولوية "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Put Redemption"
-msgstr ""
+msgstr "الاستبدال "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

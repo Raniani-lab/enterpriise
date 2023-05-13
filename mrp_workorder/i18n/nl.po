@@ -290,7 +290,7 @@ msgstr "Huidige kwaliteitscontrole"
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__source_document__step
 msgid "Custom"
-msgstr "Op maat"
+msgstr "Speciaal"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder

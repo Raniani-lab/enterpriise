@@ -3487,7 +3487,7 @@ msgstr "المعرّف غير صحيح لبند دفتر الأستاذ الخا
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Wrong format for if_other_expr_above/if_other_expr_below formula: %s"
-msgstr ""
+msgstr "الصيغة غير صحيحة لمعادلة if_other_expr_above/if_other_expr_below: %s "
 
 #. module: account_reports
 #. odoo-python
@@ -3511,16 +3511,19 @@ msgid ""
 "values impacting the tax report of a locked period. To do this, you first "
 "need to modify you tax return lock date."
 msgstr ""
+"لا يمكنك إعادة تعيين قيد الإقفال هذا إلى حالة المسودة، حيث إنه سيقوم بحذف "
+"قيم الترحيل التي تؤثر على التقرير الضريبي للفترة المقفلة. للقيام بذلك، عليك "
+"أولاً تعديل تاريخ إقفال الإقرار الضريبي الخاص بك. "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "[Draft]"
-msgstr ""
+msgstr "[Draft]"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "addressed to"
-msgstr ""
+msgstr "موجهة إلى "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -3598,7 +3601,7 @@ msgstr "اسم نموذج التقرير "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "partners"
-msgstr ""
+msgstr "الشركاء "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -3623,7 +3626,7 @@ msgstr "كشوفات الحسابات "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "that are not established abroad."
-msgstr ""
+msgstr "التي لم يتم إنشاؤها في الخارج. "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter

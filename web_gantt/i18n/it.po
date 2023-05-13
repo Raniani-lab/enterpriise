@@ -46,7 +46,7 @@ msgstr "Imponibile"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Collapse rows"
-msgstr ""
+msgstr "Contrai righe"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -119,7 +119,7 @@ msgstr ""
 #: code:addons/web_gantt/models/ir_ui_view.py:0
 #, python-format
 msgid "Gantt view can contain only one templates tag"
-msgstr ""
+msgstr "La vista Gantt può contenere un solo tag templates"
 
 #. module: web_gantt
 #. odoo-javascript

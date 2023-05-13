@@ -3950,7 +3950,7 @@ msgid ""
 "                the alerts for the renewal of the subscriptions to the right salesperson."
 msgstr ""
 "Gebruik abonnementen om taken, problemen, urenstaten te volgen of te factureren gebaseerd op\n"
-"gedaan werk, onkosten en/of verkooporders. Odoo zal automatisch de meldingen\n"
+"gedaan werk, declaratie en/of verkooporders. Odoo zal automatisch de meldingen\n"
 "beheren voor de correcte verkoper voor het verlengen van de contracten."
 
 #. module: sale_subscription

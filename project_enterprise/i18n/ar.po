@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "%s other task(s) for the same employee at the same time."
-msgstr ""
+msgstr "%s مهمة (مهام) أخرى لنفس الموظف في نفس الوقت. "
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
@@ -157,7 +157,7 @@ msgstr "التاريخ"
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form_in_gantt
 msgid "Discard"
-msgstr "تجاهل"
+msgstr "إهمال "
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__display_name
@@ -239,7 +239,7 @@ msgstr "الهاتف المحمول"
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "No task has been scheduled in the future."
-msgstr ""
+msgstr "لم تتم جدولة أي مهمة في المستقبل. "
 
 #. module: project_enterprise
 #. odoo-python
@@ -333,7 +333,7 @@ msgstr "برنامج المهام"
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__selected_line_count
 msgid "Selected Line Count"
-msgstr ""
+msgstr "عدد البنود المحددة "
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__show_warnings
@@ -348,6 +348,7 @@ msgid ""
 "Some tasks weren't planned because the closest available starting date was "
 "too far ahead in the future"
 msgstr ""
+"بعض المهام لم يتم التخطيط لها لأن أقرب تاريخ بدء متاح بعيد جداً في المستقبل "
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__date_begin
@@ -374,12 +375,12 @@ msgstr "المهمة"
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_line_wizard
 msgid "Task confirm schedule line wizard"
-msgstr ""
+msgstr "معالج بند جدول تأكيد المهمة "
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_wizard
 msgid "Task confirm schedule wizard"
-msgstr ""
+msgstr "معالج جدول تأكيد المهمة "
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_report_project_task_user
@@ -398,25 +399,27 @@ msgid ""
 "The following tasks have not been scheduled because the corresponding\n"
 "                        employees are unavailable. The next possible dates for these tasks are:"
 msgstr ""
+"لم تتم جدولة المهام التالية لأن الموظفين المعنيين\n"
+"                        غير متاحين. التواريخ التالية المتاحة لتلك المهام هي: "
 
 #. module: project_enterprise
 #: model:ir.model.constraint,message:project_enterprise.constraint_project_task_planned_dates_check
 msgid "The planned start date must be before the planned end date."
-msgstr ""
+msgstr "يجب ألا يقع تاريخ الانتهاء قبل تاريخ البداية. "
 
 #. module: project_enterprise
 #. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The task has been successfully scheduled."
-msgstr ""
+msgstr "لقد تمت جدولة المهمة بنجاح. "
 
 #. module: project_enterprise
 #. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The tasks have been successfully scheduled."
-msgstr ""
+msgstr "لقد تمت جدولة المهام بنجاح. "
 
 #. module: project_enterprise
 #. odoo-python
@@ -433,6 +436,8 @@ msgid ""
 "This employee does not have a running contract during the selected period.\n"
 "The working hours of the company were used as a reference instead."
 msgstr ""
+"لا يملك هذا الموظف عقداً جارياً خلال الفترة المحددة. \n"
+"تم استخدام ساعات عمل الشركة كمرجع عوضاً عن ذلك. "
 
 #. module: project_enterprise
 #. odoo-python
@@ -441,6 +446,8 @@ msgstr ""
 msgid ""
 "This user isn't expected to have task during this period. Planned hours :"
 msgstr ""
+"ليس من المتوقع أن يكون لهذا المستخدم أي مهام أثناء هذه الفترة. الساعات "
+"المخطط لها: "
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form

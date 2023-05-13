@@ -50,8 +50,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
-"specific.\" groups=\"base.group_multi_company\"/>"
+"<span class=\"fa fa-lg fa-building-o\" title=\"القيم المحددة هنا خاصة "
+"بالشركة فقط. \" groups=\"base.group_multi_company\"/>"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -1496,7 +1496,7 @@ msgstr "حالة تم التصديق "
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheets_analysis_report__validated
 msgid "Validated line"
-msgstr "البند المعتمد"
+msgstr "البند المصدَّق "
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_all_timesheets_action_server

@@ -1994,7 +1994,7 @@ msgstr "Zapis dziennika"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Journal Groups"
-msgstr ""
+msgstr "Grupy dzienników"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_move_line
@@ -2328,14 +2328,14 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Non Trade Payable"
-msgstr ""
+msgstr "Zobowiązania niehandlowe"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Non Trade Receivable"
-msgstr ""
+msgstr "Należności niehandlowe"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2395,7 +2395,7 @@ msgstr "Otwarta"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_financial_year_op
 msgid "Opening Balance of Financial Year"
-msgstr ""
+msgstr "Bilans otwarcia roku budżetowego"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_income0
@@ -2587,7 +2587,7 @@ msgstr "Przedpłaty"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__preview_data
 msgid "Preview Data"
-msgstr ""
+msgstr "Podgląd danych"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -2728,12 +2728,12 @@ msgstr "Data odwrócenia"
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Reversal of: %s"
-msgstr ""
+msgstr "Odwrócenie: %s"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Root Report"
-msgstr ""
+msgstr "Raport Root"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group__rule_ids
@@ -2908,7 +2908,7 @@ msgstr "Deklaracja podatkowa"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Tax Grids"
-msgstr ""
+msgstr "Siatki podatkowe"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__vat
@@ -3470,7 +3470,7 @@ msgstr ""
 #: code:addons/account_reports/models/res_partner.py:0
 #, python-format
 msgid "any"
-msgstr ""
+msgstr "dowolny"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form

@@ -601,7 +601,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Ascending"
-msgstr ""
+msgstr "Rosnąco"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1431,7 +1431,7 @@ msgstr "Usuń pozycję menu"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Descending"
-msgstr ""
+msgstr "Malejąco"
 
 #. module: web_studio
 #. odoo-javascript

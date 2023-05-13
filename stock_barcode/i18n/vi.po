@@ -254,7 +254,7 @@ msgstr "Ứng dụng mã vạch"
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
 msgid "Barcode Inventory Client Action"
-msgstr "Hành động máy khách Kho Mã vạch"
+msgstr "Hành động máy khách Tồn kho Mã vạch"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
@@ -1536,7 +1536,7 @@ msgstr "Bạn phải quét một sản phẩm"
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "commands for Inventory"
-msgstr "lệnh cho Kho"
+msgstr "lệnh cho Tồn kho"
 
 #. module: stock_barcode
 #. odoo-javascript

@@ -54,7 +54,7 @@ msgstr ""
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "A production key is required in order to load your easypost carriers."
-msgstr ""
+msgstr "بحاجة إلى مفتاح الإنتاج حتى تتمكن من تحميل شركة شحن easypost. "
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
@@ -369,7 +369,7 @@ msgstr "تسجيل"
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_stock_package_type
 msgid "Stock package type"
-msgstr "نوع تعبئة البضاعة في المخزون "
+msgstr "نوع طرود المخزون "
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_test_api_key

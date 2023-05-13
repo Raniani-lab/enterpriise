@@ -51,4 +51,4 @@ msgstr "Tổng định giá tồn kho"
 #. module: stock_account_enterprise
 #: model:ir.model.fields,field_description:stock_account_enterprise.field_stock_report__valuation
 msgid "Valuation of Inventory using a Domain"
-msgstr "Định giá tồn kho dùng một miền"
+msgstr "Định giá tồn kho dùng một miền"

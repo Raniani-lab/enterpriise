@@ -7,6 +7,7 @@
 # Matjaz Mozetic <m.mozetic@matmoz.si>, 2022
 # matjaz k <matjaz@mentis.si>, 2022
 # Martin Trigaux, 2022
+# Tomaž Jug <tomaz@editor.si>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Tomaž Jug <tomaz@editor.si>, 2023\n"
 "Language-Team: Slovenian (https://app.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -101,7 +102,7 @@ msgstr ""
 #: code:addons/web_cohort/static/src/cohort_controller.xml:0
 #, python-format
 msgid "Main actions"
-msgstr ""
+msgstr "Glavne akcije"
 
 #. module: web_cohort
 #. odoo-javascript

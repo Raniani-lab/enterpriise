@@ -75,7 +75,7 @@ msgstr "حدث خطأ ما "
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_hr_applicant
 msgid "Applicant"
-msgstr "المتقدم"
+msgstr "المتقدم للوظيفة "
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_ir_attachment
@@ -127,17 +127,17 @@ msgstr "رسالة خطأ"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_resend_button
 msgid "Extract Can Show Resend Button"
-msgstr ""
+msgstr "يمكن للاستخلاص إظهار زر إعادة الإرسال "
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_send_button
 msgid "Extract Can Show Send Button"
-msgstr ""
+msgstr "يمكن للاستخلاص إظهار زر الإرسال "
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_state
 msgid "Extract State"
-msgstr ""
+msgstr "حالة الاستخلاص "
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -224,7 +224,7 @@ msgstr "الخاتم غير متاح. الرجاء إعادة المحاولة �
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__state_processed
 msgid "State Processed"
-msgstr ""
+msgstr "تمت معالجة الحالة "
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_status_code

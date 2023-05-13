@@ -1706,7 +1706,7 @@ msgstr "Geselecteerde Aml"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Set as Checked"
-msgstr "Instellen als aangevinkt"
+msgstr "Gecontroleerd"
 
 #. module: account_accountant
 #. odoo-javascript

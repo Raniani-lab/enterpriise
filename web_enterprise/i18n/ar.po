@@ -142,7 +142,7 @@ msgstr "الوضع الداكن"
 #: code:addons/web_enterprise/static/src/webclient/settings_form_view/res_config_edition.xml:0
 #, python-format
 msgid "Database expiration:"
-msgstr "انتهاء قاعدة البيانات:"
+msgstr "انتهاء صلاحية قاعدة البيانات: "
 
 #. module: web_enterprise
 #. odoo-javascript

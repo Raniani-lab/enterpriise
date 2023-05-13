@@ -406,12 +406,12 @@ msgstr "Wenn gewählt, ist das Senden einiger Nachrichten fehlgeschlagen."
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_balance_sign
 msgid "If checked, the balance sign will be inverted"
-msgstr "Wenn angekreutzt, wird das Saldovorzeichen umgekehrt"
+msgstr "Wenn angekreuzt, wird das Saldovorzeichen umgekehrt"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_transaction_sign
 msgid "If checked, the transaction sign will be inverted"
-msgstr "Wenn angekreutzt, wird das Transaktionsvorzeichen umgekehrt"
+msgstr "Wenn angekreuzt, wird das Transaktionsvorzeichen umgekehrt"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__auto_sync

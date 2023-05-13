@@ -4,7 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Lucia Pacheco <lpo@odoo.com>, 2022
+# Lucia Pacheco, 2022
+# Aimée Mendoza Sánchez, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 10:53+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Lucia Pacheco <lpo@odoo.com>, 2022\n"
+"Last-Translator: Aimée Mendoza Sánchez, 2023\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,7 +63,7 @@ msgstr "Regresar"
 #: code:addons/sign_itsme/static/src/js/document_signable.js:0
 #, python-format
 msgid "Identification refused"
-msgstr ""
+msgstr "Identificación rechazada"
 
 #. module: sign_itsme
 #. odoo-javascript
@@ -108,6 +109,8 @@ msgid ""
 "The itsme® identification data could not be forwarded to Odoo, the signature"
 " could not be saved."
 msgstr ""
+"Los datos de identificación de itsme®  no pudieron ser enviados a Odoo, la "
+"firma no pudo guardarse."
 
 #. module: sign_itsme
 #: model:ir.model.fields.selection,name:sign_itsme.selection__sign_item_role__auth_method__itsme
@@ -122,6 +125,8 @@ msgid ""
 "You have rejected the identification request or took too long to process it."
 " You can try again to finalize your signature."
 msgstr ""
+"Ha rechazado la solicitud de identificación o ha tardado mucho en "
+"procesarla. Puede intentar de nuevo firmar para finalizar. "
 
 #. module: sign_itsme
 #. odoo-python

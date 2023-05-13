@@ -15,6 +15,7 @@
 # Martin Trigaux, 2023
 # Nuno Silva <nuno.silva@arxi.pt>, 2023
 # Manuela Silva <mmsrs@sky.com>, 2023
+# Emanuel Teixeira da Cunha <emanuel@teixeiradacunha.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Manuela Silva <mmsrs@sky.com>, 2023\n"
+"Last-Translator: Emanuel Teixeira da Cunha <emanuel@teixeiradacunha.com>, 2023\n"
 "Language-Team: Portuguese (https://app.transifex.com/odoo/teams/41243/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -453,7 +454,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid "Choose a line to preview its attachments."
-msgstr ""
+msgstr "Escolha uma linha para visualizar os anexos"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -632,7 +633,7 @@ msgstr "Débito"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Define fiscal years of more or less than one year"
-msgstr ""
+msgstr "Definir anos fiscais de mais ou menos que um ano"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -702,6 +703,11 @@ msgid ""
 "after installing Accounting if you were using only Invoicing before, before "
 "importing all your actual accounting data in to Odoo."
 msgstr ""
+"Cada pagamento e fatura antes desta data receberá o status \"Da faturação\","
+" ocultando todos os lançamentos contabilísticos relacionados a ela. Use esta"
+" opção após a instalação da Contabilidade, e se estava usando somente a "
+"Faturação, antes de importar todos os seus dados contabilísticos reais para "
+"a Odoo."
 
 #. module: account_accountant
 #. odoo-python

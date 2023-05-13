@@ -12,6 +12,7 @@
 # Martin Trigaux, 2022
 # Matjaz Mozetic <m.mozetic@matmoz.si>, 2022
 # Jasmina Macur <jasmina@hbs.si>, 2022
+# Tomaž Jug <tomaz@editor.si>, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Jasmina Macur <jasmina@hbs.si>, 2022\n"
+"Last-Translator: Tomaž Jug <tomaz@editor.si>, 2023\n"
 "Language-Team: Slovenian (https://app.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -186,7 +187,7 @@ msgstr "Datum dodelitve"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_avg
 msgid "Average Rating"
-msgstr ""
+msgstr "Povprečna ocena"
 
 #. module: industry_fsm
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_1
@@ -703,7 +704,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_fsm_map
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_tasks_map
 msgid "Map"
-msgstr ""
+msgstr "Zemljevid"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit

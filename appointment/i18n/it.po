@@ -380,7 +380,7 @@ msgstr "Attivo"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Add a function here..."
-msgstr ""
+msgstr "Aggiungi una funzione qui..."
 
 #. module: appointment
 #. odoo-javascript
@@ -647,7 +647,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_home_appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_home_menu_appointment
 msgid "Appointments"
-msgstr "appuntamenti"
+msgstr "Appuntamenti"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
@@ -815,7 +815,7 @@ msgstr "Collega il tuo calendario"
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "Connect your calendar"
-msgstr ""
+msgstr "Collega il tuo calendario"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_res_partner
@@ -841,7 +841,7 @@ msgstr "Copiato !"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 msgid "Copy Link &amp; Close"
-msgstr ""
+msgstr "Copia link e chiudi"
 
 #. module: appointment
 #. odoo-python
@@ -1047,7 +1047,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 #, python-format
 msgid "Get Your Link"
-msgstr ""
+msgstr "Ottieni il tuo link"
 
 #. module: appointment
 #: model_terms:appointment.type,message_intro:appointment.appointment_type_1
@@ -1073,7 +1073,7 @@ msgstr ""
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_preview_invite_step
 msgid "Get your link"
-msgstr ""
+msgstr "Ottieni il tuo link"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -1290,7 +1290,7 @@ msgstr "Luogo:"
 #. module: appointment
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_create_appointment_type_step
 msgid "Looks great! - Click to review"
-msgstr ""
+msgstr "Sembra perfetto! Fai clic per controllare"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_main_attachment_id
@@ -1762,7 +1762,7 @@ msgstr "Sequenza"
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_create_appointment_type_step
 msgid "Set your availabilities"
-msgstr ""
+msgstr "Imposta le tue disponibilità"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -1803,6 +1803,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 msgid "Share this link to let people book meetings with you or your team."
 msgstr ""
+"Condividi questo link per permettere alle persone di fissare appuntamenti "
+"con te o con il tuo team."
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__short_code
@@ -1881,7 +1883,7 @@ msgstr "Ora di inizio"
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_configure_calendar_provider_step
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_preview_invite_step
 msgid "Step Completed! - Click to review"
-msgstr ""
+msgstr "Passaggio completato! Fai clic per controllare"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__answer_input_ids
@@ -2138,7 +2140,7 @@ msgstr "Con"
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "With Outlook or Google"
-msgstr ""
+msgstr "con Outlook o Google"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -2193,7 +2195,7 @@ msgstr "Ad esempio: \"Non mi sento bene...\""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"Technical Demo\""
-msgstr ""
+msgstr "ad es. \"Dimostrazione tecnica\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -2237,12 +2239,12 @@ msgstr ""
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_create_appointment_type_step
 msgid "to automate appointments"
-msgstr ""
+msgstr "per automatizzare gli appuntamenti"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_preview_invite_step
 msgid "to schedule appointments"
-msgstr ""
+msgstr "per fissare appuntamenti"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form

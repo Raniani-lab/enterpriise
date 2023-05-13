@@ -1547,7 +1547,7 @@ msgstr "لم يتم إنشاء رابط دعوة إلى موعد! "
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.appointment_type_action_custom_and_anytime
 msgid "No custom appointment type has been created !"
-msgstr "لم يتم إنشاء نوع حساب مخصص! "
+msgstr "لم يتم إنشاء نوع موعد مخصص! "
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.calendar_event_action_report

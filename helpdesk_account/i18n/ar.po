@@ -77,7 +77,7 @@ msgstr "حركة"
 #: model:ir.actions.act_window,name:helpdesk_account.helpdesk_ticket_action_refund
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.helpdesk_ticket_view_form_inherit_helpdesk_invoicing
 msgid "Refund"
-msgstr "الاسترداد "
+msgstr "استرداد الأموال "
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0

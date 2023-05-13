@@ -13,6 +13,7 @@ import {
     createDocumentsViewWithMessaging,
 } from "./documents_test_utils";
 import { registry } from "@web/core/registry";
+import { getOrigin } from "@web/core/utils/urls";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { fakeCookieService, makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
@@ -1288,7 +1289,7 @@ QUnit.module("documents", {}, function () {
                 assert.containsOnce(target, ".o-mail-AttachmentViewer div[title='Split PDF']");
                 assert.containsOnce(
                     target,
-                    'iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2#pagemode=none"]',
+                    `iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=${getOrigin()}/web/content/2#pagemode=none"]`,
                     "should have an iframe with the correct pdfviewer src"
                 );
 

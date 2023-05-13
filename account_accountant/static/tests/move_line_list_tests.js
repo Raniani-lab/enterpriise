@@ -1,5 +1,6 @@
 /** @odoo-module **/
     
+import { getOrigin } from "@web/core/utils/urls";
     import testUtils from "web.test_utils";
 
     import { start, startServer } from "@mail/../tests/helpers/test_utils";
@@ -140,26 +141,26 @@
             assert.containsNone(document.body, '.o_attachment_preview p', "The explanation message should have disappeared");
             assert.containsOnce(document.body, '.o_attachment_preview iframe', "The previewer should be visible");
             assert.hasAttrValue(document.querySelector('.o_attachment_preview iframe'), 'data-src',
-                '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/1?filename%3Dundefined',
+                `/web/static/lib/pdfjs/web/viewer.html?file=${getOrigin()}/web/content/1#pagemode=none`,
                 "the src attribute should be correctly set on the iframe");
 
             await testUtils.dom.click(document.querySelectorAll('.o_data_row')[3].querySelectorAll('.o_data_cell')[1]);
             assert.verifySteps([], "no extra rpc should be done");
             assert.hasAttrValue(document.querySelector('.o_attachment_preview iframe'), 'data-src',
-                '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/1?filename%3Dundefined',
+                `/web/static/lib/pdfjs/web/viewer.html?file=${getOrigin()}/web/content/1#pagemode=none`,
                 "the src attribute shouldn't change on the iframe");
 
             await testUtils.dom.click(groupLineMoveId[2]);
             assert.verifySteps(["web_search_read/account.move.line", "read/ir.attachment"]);
             assert.containsOnce(document.body, '.o_attachment_preview iframe', "The previewer should be visible");
             assert.hasAttrValue(document.querySelector('.o_attachment_preview iframe'), 'data-src',
-                '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/1?filename%3Dundefined',
+                `/web/static/lib/pdfjs/web/viewer.html?file=${getOrigin()}/web/content/1#pagemode=none`,
                 "The previewer content shouldn't change without clicking on another line from another account.move");
 
             await testUtils.dom.click(document.querySelectorAll('.o_data_row')[4].querySelectorAll('.o_data_cell')[1]);
             assert.verifySteps([], "no extra rpc should be done");
             assert.hasAttrValue(document.querySelector('.o_attachment_preview iframe'), 'data-src',
-                '/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?filename%3Dundefined',
+                `/web/static/lib/pdfjs/web/viewer.html?file=${getOrigin()}/web/content/2#pagemode=none`,
                 "The previewer content shouldn't change without clicking on another line from another account.move");
 
             await testUtils.dom.click(document.querySelectorAll('.o_data_row')[0].querySelectorAll('.o_data_cell')[1]);

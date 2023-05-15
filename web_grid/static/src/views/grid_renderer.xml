@@ -336,4 +336,37 @@
             </div>
         </t>
     </t>
+    <t t-name="web_grid.NavigationButtons" owl="1">
+        <div class="o_grid_navigation_buttons d-contents" t-if="props.model.columnFieldIsDate">
+            <button class="btn btn-secondary"
+                    data-hotkey="t"
+                    type="button"
+                    t-on-click="onTodayButtonClick"
+            >
+                Today
+            </button>
+            <div class="btn-group">
+                <button class="btn btn-secondary"
+                        type="button"
+                        t-on-click="onPreviousButtonClick"
+                        data-hotkey="p"
+                >
+                    <span aria-label="Previous" class="oi oi-arrow-left" role="img" title="Previous"/>
+                </button>
+                <ViewScaleSelector
+                        t-if="rangesArray.length"
+                        scales="props.ranges"
+                        currentScale="props.state.activeRangeName"
+                        setScale.bind="onRangeClick"
+                />
+                <button type="button"
+                        class="btn btn-secondary"
+                        t-on-click="onNextButtonClick"
+                        data-hotkey="n"
+                >
+                    <span aria-label="Next" class="oi oi-arrow-right" role="img" title="Next"/>
+                </button>
+            </div>
+        </div>
+    </t>
 </templates>

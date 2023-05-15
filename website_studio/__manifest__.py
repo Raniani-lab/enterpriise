@@ -25,9 +25,7 @@ model. Furthermore, you can create a new website form or edit an existing one.
     'license': 'OEEL-1',
     'assets': {
         'web_studio.studio_assets': [
-            'website_studio/static/src/js/**/*.js',
-            'website_studio/static/src/scss/**/*.scss',
-            'website_studio/static/src/xml/*.xml',
+            'website_studio/static/src/**/*',
         ],
         'web.qunit_suite_tests': [
             'website_studio/static/tests/**/*',

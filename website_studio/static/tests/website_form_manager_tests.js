@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { click, getFixture, legacyExtraNextTick } from "@web/../tests/helpers/utils";
+import { click, getFixture } from "@web/../tests/helpers/utils";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { openStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
@@ -10,7 +10,7 @@ import { openStudio, registerStudioDependencies } from "@web_studio/../tests/hel
 
 let serverData;
 let target;
-QUnit.module("Website Studio", (hooks) => {
+QUnit.module("Form Manager", (hooks) => {
     hooks.beforeEach(() => {
         target = getFixture();
         serverData = getActionManagerServerData();
@@ -45,11 +45,10 @@ QUnit.module("Website Studio", (hooks) => {
             });
             // open app Ponies (act window action)
             await click(target, ".o_app[data-menu-xmlid=app_1]");
-            await legacyExtraNextTick();
             await openStudio(target);
 
             const websiteItem = [...target.querySelectorAll(".o_web_studio_menu_item")].filter(
-                (el) => el.textContent === "Website"
+                (el) => el.textContent === "Website Forms"
             )[0];
             await click(websiteItem);
             assert.containsN(target, ".o_website_studio_form .o_web_studio_thumbnail", 2);

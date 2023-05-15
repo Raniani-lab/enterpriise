@@ -350,16 +350,6 @@ textarea.o_sign_sign_item {
     transform: translateX(1px) translateY(-1px) scale(1.05) rotate(1deg);
 }
 
-.toolbarButton.rotateCw::before {
-    content: url(../../img/secondaryToolbarButton-rotateCw.png);
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 1.1), screen and (min-resolution: 1.1dppx) {
-    .toolbarButton.rotateCw::before {
-        content: url(../../img/secondaryToolbarButton-rotateCw@2x.png);
-    }
-}
-
 .o_sign_field_type_toolbar_items {
     overflow: auto;
 }

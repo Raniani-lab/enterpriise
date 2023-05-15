@@ -3209,7 +3209,7 @@ QUnit.module("View Editors", (hooks) => {
             assert.containsOnce(target, ".modal");
             assert.strictEqual(
                 target.querySelector(".modal .modal-body").textContent,
-                " Match records with the following rule: Display Name=!=containsdoes not containinnot inis setis not setparent.display_name"
+                "Match records with all of the following rules:Display Name=!=containsdoes not containinnot inis setis not setparent.display_name"
             );
         }
     );

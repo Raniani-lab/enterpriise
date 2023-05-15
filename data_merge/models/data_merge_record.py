@@ -128,10 +128,10 @@ class DataMergeRecord(models.Model):
         SELECT dmr.id
           FROM data_merge_record dmr
      LEFT JOIN "{model_table}"
-            ON dmr.res_model_id = %s
+            ON dmr.res_id = "{model_table}".id
             {extra_joins}
-           AND dmr.res_id = "{model_table}".id
-         WHERE {where_clause}
+         WHERE ({where_clause})
+           AND dmr.res_model_id = %s
         """
         for model_name, model_id in models_with_company:
             Model = self.env[model_name]
@@ -147,7 +147,7 @@ class DataMergeRecord(models.Model):
                         where_clause=where_clause,
                         extra_joins=from_clause[len(f'"{Model._table}"'):],
                     ),
-                    [model_id] + where_params,
+                    where_params + [model_id],
                 ).decode(),
             )
         if subqueries:

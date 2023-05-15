@@ -30,6 +30,7 @@
 
             'web/static/src/legacy/js/promise_extension.js',  # Legacy FIXME
             'web/static/src/libs/fontawesome/css/font-awesome.css',
+            'web/static/lib/odoo_ui_icons/*',
             'web/static/src/boot.js',
             'web/static/src/env.js',
             'web/static/src/session.js',

@@ -2,6 +2,7 @@
 
 <t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Button" owl="1">
     <div class="o_web_studio_sidebar_approval border-bottom border-secondary pb-4 mb-3">
+        <ModifiersProperties node="props.node" availableOptions="props.availableOptions"/>
         <h3 class="mb-1">Approvals</h3>
         <Property
             name="'studio_approval'"

@@ -199,6 +199,59 @@ QUnit.module("View Editors", (hooks) => {
         );
     });
 
+    QUnit.test("Form editor view buttons can be set to invisible", async function (assert) {
+        await createViewEditor({
+            serverData,
+            mockRPC: function (route, args) {
+                if (route === "/web_studio/edit_view") {
+                    assert.deepEqual(args.operations[0].target.xpath_info, [
+                        {
+                            tag: "form",
+                            indice: 1,
+                        },
+                        {
+                            tag: "header",
+                            indice: 1,
+                        },
+                        {
+                            tag: "button",
+                            indice: 1,
+                        },
+                    ]);
+                    assert.deepEqual(args.operations[0].new_attrs, { invisible: "1" });
+                    assert.step("edit view");
+                }
+            },
+            type: "form",
+            resModel: "coucou",
+            arch: /*xml*/ `
+                        <form>
+                            <header>
+                                <button string="Test" type="object" class="oe_highlight"/>
+                            </header>
+                            <sheet>
+                                <field name="name"/>
+                            </sheet>
+                        </form>
+                    `,
+        });
+
+        assert.containsOnce(
+            target,
+            ".o_web_studio_editor_manager .o_web_studio_view_renderer",
+            "There should be one view renderer"
+        );
+        assert.containsOnce(
+            target,
+            ".o_web_studio_editor_manager .o_web_studio_sidebar",
+            "There should be one sidebar"
+        );
+
+        await click(target, ".o_form_renderer .o_statusbar_buttons > button");
+        await click(target, ".o_notebook #invisible");
+        assert.verifySteps(["edit view"]);
+    });
+
     QUnit.test("optional field not in form editor", async function (assert) {
         assert.expect(1);
 

@@ -61,6 +61,9 @@ export class FormEditorSidebar extends Component {
         this.propertiesComponents = {
             button: {
                 component: ButtonProperties,
+                props: {
+                    availableOptions: ["invisible"],
+                },
             },
             field: {
                 component: FieldProperties,

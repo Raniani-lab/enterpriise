@@ -12,11 +12,13 @@ import { RainbowEffect } from "./rainbow_effect";
 import { SidebarPropertiesToolbox } from "@web_studio/client_action/view_editor/interactive_editor/properties/sidebar_properties_toolbox/sidebar_properties_toolbox";
 import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";
 import { useSnackbarWrapper } from "@web_studio/client_action/view_editor/view_editor_hook";
+import { ModifiersProperties } from "@web_studio/client_action/view_editor/interactive_editor/properties/modifiers/modifiers_properties";
 
 export class ButtonProperties extends Component {
     static template = "web_studio.ViewEditor.InteractiveEditorProperties.Button";
     static props = {
         node: { type: Object },
+        availableOptions: { type: Array, optional: true },
     };
     static components = {
         CheckBox,
@@ -26,6 +28,7 @@ export class ButtonProperties extends Component {
         SelectMenu,
         Property,
         SidebarPropertiesToolbox,
+        ModifiersProperties,
     };
 
     setup() {

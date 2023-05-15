@@ -30,7 +30,7 @@ Wysiwyg.include({
         // have to be reset anyway)
         if (this.odooEditor._observerUnactiveLabels.size) {
             [...this.odooEditor._observerUnactiveLabels].forEach(lock => {
-                if (lock.startsWith('knowledge_behavior_id_')) {
+                if (lock && lock.startsWith('knowledge_behavior_id_')) {
                     this.odooEditor.observerActive(lock);
                 }
             });

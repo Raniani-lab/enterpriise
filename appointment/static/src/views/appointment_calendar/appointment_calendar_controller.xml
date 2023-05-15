@@ -31,18 +31,18 @@
                         <span class="fa fa-2x fa-angle-down"/>
                     </button>
                     <div id="dropdownMenuAppointmentLink" class="dropdown-menu dropdown-menu-end col w-100" data-labelledby="dropdownAppointmentLink">
-                        <button t-on-click="onClickSelectAvailabilities" id="select_availabilities" class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold ps-3 o_appointment_select_slots">
+                        <button t-on-click="onClickSelectAvailabilities" id="select_availabilities" class="o_appointment_select_slots dropdown-item">
                             <span class="align-bottom">Select Dates</span>
                         </button>
                         <button t-on-click="onClickSearchCreateAnytimeAppointment"
-                            class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold ps-3 o_appointment_button_link o_appointment_search_create_anytime_appointment">
+                            class="o_appointment_button_link o_appointment_search_create_anytime_appointment dropdown-item">
                             <span class="align-bottom">Any Time</span>
                         </button>
                         <t t-set="appointments" t-value="appointmentState.data.appointment_types_info"/>
                         <div t-if="appointments.length > 0" role="separator" class="dropdown-divider"/>
                         <t t-foreach="appointments" t-as="appointment" t-key="appointment.id">
                             <button t-att-title="appointment.name" t-on-click.stop.prevent="() => this.onClickGetAppointmentUrl(appointment.id)"
-                                class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold ps-3 o_appointment_button_link o_appointment_appointment_link_clipboard text-truncate">
+                                class="o_appointment_button_link o_appointment_appointment_link_clipboard dropdown-item text-truncate">
                                 <span class="align-bottom" t-out="appointment.name"/>
                             </button>
                         </t>

@@ -10,7 +10,7 @@
                 <button class="oe_stat_button" icon="fa-clock-o icon" type="object" name="action_view_timesheets" attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value">
-                            <field name="total_timesheet_time" widget="statinfo" nolabel="1"/>
+                            <field name="total_timesheet_time" nolabel="1"/>
                         </span>
                         <span class="o_stat_text">
                             <field name="timesheet_encode_uom_id" class="oe_inline" options="{'no_open' : True}"/> Recorded

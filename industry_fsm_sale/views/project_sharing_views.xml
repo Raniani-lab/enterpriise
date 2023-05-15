@@ -20,7 +20,7 @@
                         attrs="{'invisible': ['|', '|', ('partner_id', '=', False), ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
-                            <field name="material_line_product_count" widget="statinfo" nolabel="1" class="me-1"/>
+                            <field name="material_line_product_count" nolabel="1" class="me-1"/>
                             <span>Products</span>
                         </span>
                         <field name="material_line_total_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>

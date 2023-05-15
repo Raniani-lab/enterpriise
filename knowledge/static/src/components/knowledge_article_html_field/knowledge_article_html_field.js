@@ -162,7 +162,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
     }
 }
 
-export const knowledgeArticleHtmlField = Object.assign(htmlField, {
+export const knowledgeArticleHtmlField = Object.assign(Object.create(htmlField), {
     component: KnowledgeArticleHtmlField,
 });
 

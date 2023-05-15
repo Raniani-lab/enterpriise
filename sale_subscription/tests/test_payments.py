@@ -255,8 +255,8 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         })
         self.subscription.action_confirm()
 
-        def _mock_subscription_do_payment_and_commit(payment_method, invoice):
-            tx = self._mock_subscription_do_payment(payment_method, invoice)
+        def _mock_subscription_do_payment_and_commit(payment_method, invoice, auto_commit=False):
+            tx = self._mock_subscription_do_payment(payment_method, invoice, auto_commit=auto_commit)
             # once the payment request succeed, we're going to call the transaction
             # callback method, so do it manually here
             order = tx.env["sale.order"].browse(self.subscription.id)

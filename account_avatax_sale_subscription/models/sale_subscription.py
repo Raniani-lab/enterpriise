@@ -10,6 +10,6 @@ class SaleSubscription(models.Model):
         invoices.filtered(lambda m: m.state == 'draft').button_update_avatax()
         return invoices
 
-    def _do_payment(self, payment_token, invoice):
+    def _do_payment(self, payment_token, invoice, auto_commit=False):
         invoice.button_update_avatax()
-        return super()._do_payment(payment_token, invoice)
+        return super()._do_payment(payment_token, invoice, auto_commit=False)

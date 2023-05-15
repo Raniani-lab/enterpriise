@@ -1531,8 +1531,8 @@ class SaleOrder(models.Model):
                             existing_invoices -= invoice
                             self._subscription_commit_cursor(auto_commit)
                             continue
-                        transaction = order._do_payment(payment_token, invoice)
-                        payment_callback_done = transaction and transaction.callback_is_done
+                        transaction = order._do_payment(payment_token, invoice, auto_commit=auto_commit)
+                        payment_callback_done = transaction and transaction.sudo().callback_is_done
                         # commit change as soon as we try the payment, so we have a trace in the payment_transaction table
                         self._subscription_commit_cursor(auto_commit)
                     # if transaction is a success, post a message
@@ -1705,7 +1705,7 @@ class SaleOrder(models.Model):
             )
         return error_message
 
-    def _do_payment(self, payment_token, invoice):
+    def _do_payment(self, payment_token, invoice, auto_commit=False):
         PaymentTransactionSudo = self.env['payment.transaction'].sudo()
         values = []
         for subscription in self:
@@ -1722,6 +1722,7 @@ class SaleOrder(models.Model):
                 'callback_res_id': subscription.id,
                 'callback_method': 'reconcile_pending_transaction'})
         transactions_sudo = PaymentTransactionSudo.create(values)
+        self._subscription_commit_cursor(auto_commit)
         for tx_sudo in transactions_sudo:
             tx_sudo._send_payment_request()
         return transactions_sudo
@@ -1816,7 +1817,9 @@ class SaleOrder(models.Model):
         """
         self.ensure_one()
         if self.reconcile_pending_transaction(tx):
-            invoice = tx.invoice_ids[0]
+            invoice = tx.invoice_ids[:1]
+            if not invoice:
+                return False
             self.send_success_mail(tx, invoice)
             msg_body = escape(_("Manual payment succeeded. Payment reference: %(ref)s; Amount: %(amount)s. Invoice %(invoice)s")) % {
                 'ref': tx._get_html_link(),

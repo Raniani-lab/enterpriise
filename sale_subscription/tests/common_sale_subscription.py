@@ -289,7 +289,7 @@ class TestSubscriptionCommon(TestSaleCommon):
 
     # Mocking for 'test_auto_payment_with_token'
     # Necessary to have a valid and done transaction when the cron on subscription passes through
-    def _mock_subscription_do_payment(self, payment_method, invoice):
+    def _mock_subscription_do_payment(self, payment_method, invoice, auto_commit=False):
         tx_obj = self.env['payment.transaction']
         reference = "CONTRACT-%s-%s" % (invoice.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S%f'))
         values = {
@@ -307,7 +307,7 @@ class TestSubscriptionCommon(TestSaleCommon):
         tx = tx_obj.create(values)
         return tx
 
-    def _mock_subscription_do_payment_rejected(self, payment_method, invoice):
+    def _mock_subscription_do_payment_rejected(self, payment_method, invoice, auto_commit=False):
         tx = self._mock_subscription_do_payment(payment_method, invoice)
         tx.state = "pending"
         tx._set_error("Payment declined")

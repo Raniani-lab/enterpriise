@@ -24,7 +24,7 @@
                         t-att-class="{'bg-view': backgroundImageUrl}"
                         t-attf-src="{{app.webIconData}}"
                         />
-                    <div t-else="" class="o_app_icon position-relative d-flex justify-content-center align-items-center w-75 p-2 ratio ratio-1x1"
+                    <div t-else="" class="o_app_icon position-relative d-flex justify-content-center align-items-center w-75 p-2 rounded-3 ratio ratio-1x1"
                         t-attf-style="background-color: {{app.webIcon.backgroundColor}};"
                         >
                         <i t-attf-class="{{app.webIcon.iconClass}} position-relative w-auto h-auto" t-attf-style="color: {{app.webIcon.color}};"/>

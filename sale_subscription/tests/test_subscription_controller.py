@@ -228,7 +228,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         self.assertEqual(last_transaction_id.reference, "test_automatic_invoice_token",
                          "The reference should come from the prefix")
         last_transaction_id._set_done()
-        self.assertEqual(subscription.invoice_ids.mapped('state'), ['posted', 'draft'])
+        self.assertEqual(subscription.invoice_ids.sorted('id').mapped('state'), ['posted', 'draft'])
         subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
         subscription.transaction_ids._reconcile_after_done()  # Create the payment
         # subscription has a payment_token_id, the invoice is created by the flow.

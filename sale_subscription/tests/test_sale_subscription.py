@@ -1220,25 +1220,25 @@ class TestSubscription(TestSubscriptionCommon):
         sub_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log in order_log_ids]
         self.assertEqual(sub_data, [('0_creation', datetime.date(2021, 1, 1), '3_progress', 21, 21),
                                     ('3_transfer', datetime.date(2021, 4, 1), '5_renewed', -21, 0)])
-        renew_logs = renewal_so.order_log_ids.sorted('event_date')
+        renew_logs = renewal_so.order_log_ids.sorted(key=lambda log: (log.event_date, log.id))
         renew_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log in renew_logs]
         self.assertEqual(renew_data, [('3_transfer', datetime.date(2021, 4, 1), '3_progress', 21.0, 21.0),
                                       ('1_expansion', datetime.date(2021, 4, 1), '3_progress', 42.0, 63.0),
                                       ('1_expansion', datetime.date(2021, 4, 20), '3_progress', 20.0, 83.0),
                                       ('1_expansion', datetime.date(2021, 9, 1), '3_progress', 22, 105.0)])
         self.assertEqual(renewal_so.start_date, datetime.date(2021, 5, 1), "the renewal starts on the firsts of May even if transfer occurs on first of April")
-        free_log_ids = free_sub.order_log_ids.sorted('event_date')
+        free_log_ids = free_sub.order_log_ids.sorted(key=lambda log: (log.event_date, log.id))
         sub_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log in
                     free_log_ids]
         self.assertEqual(sub_data, [('0_creation', datetime.date(2021, 1, 1), '3_progress', 0, 0),
                                     ('3_transfer', datetime.date(2021, 4, 1), '5_renewed', 0, 0)])
-        renew_logs = free_renewal_so.order_log_ids.sorted('event_date')
+        renew_logs = free_renewal_so.order_log_ids.sorted(key=lambda log: (log.event_date, log.id))
         renew_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log
                       in renew_logs]
         self.assertEqual(renew_data, [('3_transfer', datetime.date(2021, 4, 1), '3_progress', 0, 0),
                                       ('1_expansion', datetime.date(2021, 9, 1), '3_progress', 20.0, 20.0)])
 
-        future_data = future_sub.order_log_ids.sorted('event_date') # several events aggregated on the same date
+        future_data = future_sub.order_log_ids.sorted(key=lambda log: (log.event_date, log.id)) # several events aggregated on the same date
         simple_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log
                        in future_data]
         self.assertEqual(simple_data, [('0_creation', datetime.date(2021, 1, 1), '3_progress', 1.0, 1.0),
@@ -2541,7 +2541,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.flush_tracking()
             renewal_so.action_confirm()
             self.flush_tracking()
-            order_log_ids = sub.order_log_ids.sorted('event_date')
+            order_log_ids = sub.order_log_ids.sorted(key=lambda log: (log.event_date, log.id))
             sub_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
                         for log in order_log_ids]
             self.assertEqual(sub_data,
@@ -2549,7 +2549,7 @@ class TestSubscription(TestSubscriptionCommon):
                               ('3_transfer', datetime.date(2023, 4, 29), -10, 0, default_pricelist.currency_id)
                               ])
 
-            renew_logs = renewal_so.order_log_ids.sorted('event_date')
+            renew_logs = renewal_so.order_log_ids.sorted(key=lambda log: (log.event_date, log.id))
             renew_data = [(log.event_type, log.event_date, log.amount_signed, log.recurring_monthly, log.currency_id)
                           for log in renew_logs]
             self.assertEqual(renew_data,

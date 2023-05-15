@@ -1,3 +1,7 @@
+.o_sign_template_header_wrapper .o_input {
+    --o-input-background-color: #{$o-webclient-background-color};
+}
+
 .o_sign_document_body {
     display: flex;
     flex-flow: column nowrap;
@@ -97,10 +101,6 @@
     font-size: 1.25em;
     text-align: center;
 
-    .o_validate_button {
-        color: white !important;
-        background-color: $o-enterprise-action-color !important;
-    }
 }
 
 .modal:is(.o_sign_thank_you_dialog, .o_sign_next_dialog) {
@@ -241,34 +241,19 @@
 
     .o_sign_item_bottom_sheet {
         display: none;
-        width: 100%;
-        padding: 10px;
-        position: absolute;
-        bottom: 0;
-        background-color: $o-enterprise-color;
         opacity: 0;
-        transition: opacity 500ms;
 
         &.show {
             opacity: 1;
-            box-shadow: 0 0 5px 0 rgba(0,0,0,0.75);
+            box-shadow: 0 0 5px 0 rgba(0,0,0,0.25);
         }
 
         .o_sign_next_button {
-            margin-top: 5px;
             text-transform: uppercase;
-            color: white !important;
-            background-color: $o-enterprise-action-color !important;
-        }
-
-        .o_sign_item_bottom_sheet_field {
-            display: block;
-            width: 100%;
         }
 
         .o_sign_label {
             width: 100%;
-            color: white;
             text-transform: uppercase;
         }
     }

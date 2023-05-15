@@ -151,7 +151,6 @@ class StockPicking(models.Model):
             'picking_type_id': picking_type.id,
             'location_id': location_id.id,
             'location_dest_id': location_dest_id.id,
-            'immediate_transfer': True,
         })
 
     def _get_client_action(self):

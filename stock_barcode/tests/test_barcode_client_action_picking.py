@@ -26,7 +26,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.stock_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_internal.id,
-            'immediate_transfer': True,
         })
         url = self._get_client_action_url(internal_picking.id)
 
@@ -186,7 +185,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_in.id,
-            'immediate_transfer': True,
         })
         url = self._get_client_action_url(receipt_picking.id)
         self.start_tour(url, 'test_receipt_from_scratch_with_lots_1', login='admin', timeout=180)
@@ -208,7 +206,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_in.id,
-            'immediate_transfer': True,
         })
         url = self._get_client_action_url(receipt_picking.id)
         self.start_tour(url, 'test_receipt_from_scratch_with_lots_2', login='admin', timeout=180)
@@ -229,7 +226,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_in.id,
-            'immediate_transfer': True,
         })
         url = self._get_client_action_url(receipt_picking.id)
         self.start_tour(url, 'test_receipt_from_scratch_with_lots_3', login='admin', timeout=180)
@@ -258,7 +254,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_in.id,
-            'immediate_transfer': True,
         })
         url = self._get_client_action_url(receipt_picking.id)
         self.start_tour(url, 'test_receipt_from_scratch_with_lots_4', login='admin', timeout=180)
@@ -285,6 +280,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_in.id,
+            'state': 'draft',
+            'immediate_transfer': False,
         })
 
         self.env['stock.move'].create({
@@ -370,6 +367,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_in.id,
+            'state': 'draft',
+            'immediate_transfer': False,
         })
 
         url = self._get_client_action_url(receipt_picking.id)
@@ -661,7 +660,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
             'picking_type_id': self.picking_type_out.id,
-            'immediate_transfer': True,
         })
         url = self._get_client_action_url(delivery_picking.id)
 
@@ -699,6 +697,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
                 'location_id': self.stock_location.id,
                 'location_dest_id': self.customer_location.id,
                 'picking_type_id': self.picking_type_out.id,
+                'state': 'draft',
+                'immediate_transfer': False,
             })
             url = self._get_client_action_url(delivery_picking.id)
             self.start_tour(url, 'test_delivery_from_scratch_with_incompatible_lot', login='admin', timeout=180)
@@ -735,7 +735,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 3, lot_id=lot02)
         self.env['stock.quant']._update_available_quantity(self.productserial1, self.stock_location, 1, lot_id=sn)
 
-        picking_form = Form(self.env['stock.picking'].with_context(default_immediate_transfer=True))
+        picking_form = Form(self.env['stock.picking'])
         picking_form.picking_type_id = self.picking_type_out
         delivery = picking_form.save()
 
@@ -1465,7 +1465,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_in.id,
-            'immediate_transfer': True,
         })
         url = self._get_client_action_url(receipt01.id)
         self.start_tour(url, 'test_put_in_pack_new_lines', login='admin', timeout=180)
@@ -1479,7 +1478,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_in.id,
-            'immediate_transfer': True,
         })
         url = self._get_client_action_url(receipt02.id)
         self.start_tour(url, 'test_put_in_pack_new_lines', login='admin', timeout=180)
@@ -1510,6 +1508,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
             'picking_type_id': self.picking_type_out.id,
+            'state': 'draft',
+            'immediate_transfer': False,
         })
 
         self.picking_type_out.show_entire_packs = True
@@ -1793,6 +1793,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
             'picking_type_id': self.picking_type_out.id,
+            'state': 'draft',
+            'immediate_transfer': False,
         })
         self.env['stock.package_level'].create({
             'location_id': self.stock_location.id,
@@ -1810,6 +1812,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
             'picking_type_id': self.picking_type_out.id,
+            'state': 'draft',
+            'immediate_transfer': False,
         })
         self.env['stock.move'].create({
             'name': 'test_show_entire_package',
@@ -1882,7 +1886,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         self.env['stock.quant']._update_available_quantity(self.productlot1, self.stock_location, 1, lot_id=lot01)
 
-        picking_form = Form(self.env['stock.picking'].with_context(default_immediate_transfer=True))
+        picking_form = Form(self.env['stock.picking'])
         picking_form.picking_type_id = self.picking_type_out
         delivery = picking_form.save()
 
@@ -2168,7 +2172,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'uom_po_id': uom_kg.id,
         })
         # Creates a new receipt.
-        picking_form = Form(self.env['stock.picking'].with_context(default_immediate_transfer=True))
+        picking_form = Form(self.env['stock.picking'])
         picking_form.picking_type_id = self.picking_type_in
         receipt = picking_form.save()
         # Runs the tour.
@@ -2268,7 +2272,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             })],
         })
 
-        picking_form = Form(self.env['stock.picking'].with_context(default_immediate_transfer=True))
+        picking_form = Form(self.env['stock.picking'])
         picking_form.picking_type_id = self.picking_type_in
         receipt = picking_form.save()
 

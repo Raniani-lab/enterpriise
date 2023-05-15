@@ -55,6 +55,7 @@ class TestSubcontractingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom_qty': 2,
             'picking_id': receipt_picking.id,
         })
+        receipt_picking.action_reset_draft()
         receipt_picking.action_confirm()
 
         url = self._get_client_action_url(receipt_picking.id)
@@ -94,6 +95,7 @@ class TestSubcontractingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom_qty': 5,
             'picking_id': receipt_picking.id,
         })
+        receipt_picking.action_reset_draft()
         receipt_picking.action_confirm()
 
         url = self._get_client_action_url(receipt_picking.id)
@@ -121,6 +123,7 @@ class TestSubcontractingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom_qty': 1,
             'picking_id': receipt_picking.id,
         })
+        receipt_picking.action_reset_draft()
         receipt_picking.action_confirm()
 
         url = self._get_client_action_url(receipt_picking.id)

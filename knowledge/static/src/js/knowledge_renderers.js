@@ -96,7 +96,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             }, () => []);
         }
 
-        useListener('click', '.o_knowledge_backdrop, #knowledge_search_bar > a', () => {
+        useListener('click', '.o_knowledge_backdrop, .o_knowledge_burger_icon', () => {
             this.env.toggleAside();
         });
 

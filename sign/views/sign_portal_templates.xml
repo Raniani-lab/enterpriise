@@ -30,7 +30,7 @@
                 <t t-set="title">Signatures</t>
             </t>
                 <div t-if="not grouped_signatures" class="alert alert-warning mt8" role="alert">
-                    There are no signatures request.
+                    There are no signature requests.
                 </div>
             <t t-if="grouped_signatures" t-call="portal.portal_table">
                 <thead>

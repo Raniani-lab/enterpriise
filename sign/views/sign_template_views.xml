@@ -395,7 +395,7 @@
     </record>
 
     <record id="sign_report_green_savings_action" model="ir.actions.report">
-        <field name="name">Ecological Savings by using Electronical Signatures</field>
+        <field name="name">Ecological Savings by using Electronic Signatures</field>
         <field name="model">sign.template</field>
         <field name="report_type">qweb-html</field>
         <field name="report_name">sign.green_savings_report</field>

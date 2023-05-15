@@ -46,7 +46,7 @@
                                 <li>A shower uses approximately 65 L of water</li>
                                 <li>To produce 1000 kg of wood, we have to cut 12 trees</li>
                                 <li>One liter of gas fuel will produce 8.9 kg of CO²</li>
-                                <li>One can weights 15 g</li>
+                                <li>One can weighs 15 g</li>
                                 <li>An average computer will consume 750 Wh</li>
                             </ul>
                         </section>
@@ -82,7 +82,7 @@
                     <t t-set="green_report_el_text" t-value="'L of water saved'"/>
                     <t t-set="green_report_el_waste" t-value="showers"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'showers'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'showers'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'shower'"/>
                 </t>
 
                 <!-- Wood -->
@@ -96,7 +96,7 @@
                     <t t-set="green_report_el_text" t-value="'kg of wood saved'"/>
                     <t t-set="green_report_el_waste" t-value="trees"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'trees'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'tree'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'tree'"/>
                 </t>
 
                 <!-- Carbon -->
@@ -107,10 +107,10 @@
                     <t t-set="green_report_el_fa" t-value="'car'"/>
                     <t t-set="green_report_el_title" t-value="'Carbon'"/>
                     <t t-set="green_report_el_type" t-value="carbon"/>
-                    <t t-set="green_report_el_text" t-value="'kg of carbon sparred'"/>
+                    <t t-set="green_report_el_text" t-value="'kg of carbon spared'"/>
                     <t t-set="green_report_el_waste" t-value="gas_fuel"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'liters of car fuel'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'liter of car fuel'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'liter of car fuel'"/>
                 </t>
 
                 <!-- Waste -->
@@ -121,10 +121,10 @@
                     <t t-set="green_report_el_fa" t-value="'trash'"/>
                     <t t-set="green_report_el_title" t-value="'Waste'"/>
                     <t t-set="green_report_el_type" t-value="waste"/>
-                    <t t-set="green_report_el_text" t-value="'kg of waste sparred'"/>
+                    <t t-set="green_report_el_text" t-value="'kg of waste spared'"/>
                     <t t-set="green_report_el_waste" t-value="cans"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'cans'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'can'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'can'"/>
                 </t>
 
                 <!-- Energy -->
@@ -135,10 +135,10 @@
                     <t t-set="green_report_el_fa" t-value="'bolt'"/>
                     <t t-set="green_report_el_title" t-value="'Energy'"/>
                     <t t-set="green_report_el_type" t-value="energy"/>
-                    <t t-set="green_report_el_text" t-value="'kWh of energy sparred'"/>
+                    <t t-set="green_report_el_text" t-value="'kWh of energy spared'"/>
                     <t t-set="green_report_el_waste" t-value="computer_hours"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'hours using the computer'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'hour using the computer'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'hour using the computer'"/>
                 </t>
 
                 <!-- Modal Trigger -->
@@ -178,7 +178,7 @@
                     <t t-set="green_report_el_text" t-value="'L of water saved'"/>
                     <t t-set="green_report_el_waste" t-value="showers"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'showers'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'showers'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'shower'"/>
                 </t>
             </div>
             <div class="row align-items-stretch pt-4">
@@ -193,7 +193,7 @@
                     <t t-set="green_report_el_text" t-value="'kg of wood saved'"/>
                     <t t-set="green_report_el_waste" t-value="trees"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'trees'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'tree'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'tree'"/>
                 </t>
 
                 <!-- Carbon -->
@@ -204,10 +204,10 @@
                     <t t-set="green_report_el_fa" t-value="'car'"/>
                     <t t-set="green_report_el_title" t-value="'Carbon'"/>
                     <t t-set="green_report_el_type" t-value="carbon"/>
-                    <t t-set="green_report_el_text" t-value="'kg of carbon sparred'"/>
+                    <t t-set="green_report_el_text" t-value="'kg of carbon spared'"/>
                     <t t-set="green_report_el_waste" t-value="gas_fuel"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'liters of car fuel'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'liter of car fuel'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'liter of car fuel'"/>
                 </t>
             </div>
             <div class="row align-items-stretch pt-4">
@@ -219,10 +219,10 @@
                     <t t-set="green_report_el_fa" t-value="'trash'"/>
                     <t t-set="green_report_el_title" t-value="'Waste'"/>
                     <t t-set="green_report_el_type" t-value="waste"/>
-                    <t t-set="green_report_el_text" t-value="'kg of waste sparred'"/>
+                    <t t-set="green_report_el_text" t-value="'kg of waste spared'"/>
                     <t t-set="green_report_el_waste" t-value="cans"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'cans'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'can'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'can'"/>
                 </t>
 
                 <!-- Energy -->
@@ -233,10 +233,10 @@
                     <t t-set="green_report_el_fa" t-value="'bolt'"/>
                     <t t-set="green_report_el_title" t-value="'Energy'"/>
                     <t t-set="green_report_el_type" t-value="energy"/>
-                    <t t-set="green_report_el_text" t-value="'kWh of energy sparred'"/>
+                    <t t-set="green_report_el_text" t-value="'kWh of energy spared'"/>
                     <t t-set="green_report_el_waste" t-value="computer_hours"/>
                     <t t-set="green_report_el_waste_text_1" t-value="'hours using the computer'"/>
-                    <t t-set="green_report_el_waste_2" t-value="'hour using the computer'"/>
+                    <t t-set="green_report_el_waste_text_2" t-value="'hour using the computer'"/>
                 </t>
             </div>
         </section>

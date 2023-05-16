@@ -10,7 +10,7 @@ import { FileUploadProgressKanbanRecord } from "@web/core/file_upload/file_uploa
 import { DocumentsKanbanRecord } from "./documents_kanban_record";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
 import { DocumentsFileViewer } from "../helper/documents_file_viewer";
-import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
+import { useCommand } from "@web/core/commands/command_hook";
 
 const { useRef } = owl;
 
@@ -33,13 +33,34 @@ export class DocumentsKanbanRenderer extends KanbanRenderer {
         const { uploads } = useService("file_upload");
         this.documentUploads = uploads;
 
-        const handler = () => {
-            const allSelected = this.props.list.selection.length === this.props.list.records.length;
-            this.props.list.records.forEach((record) => {
-                record.toggleSelection(!allSelected);
-            })
-        };
-        useHotkey("control+a", handler);
+        useCommand(
+            this.env._t("Select all"),
+            () => {
+                const allSelected =
+                    this.props.list.selection.length === this.props.list.records.length;
+                this.props.list.records.forEach((record) => {
+                    record.toggleSelection(!allSelected);
+                });
+            },
+            {
+                category: "smart_action",
+                hotkey: "control+a",
+            }
+        );
+        useCommand(
+            this.env._t("Toggle favorite"),
+            () => {
+                if (this.props.list.selection.length) {
+                    this.props.list.selection[0].update({
+                        is_favorited: !this.props.list.selection[0].data.is_favorited,
+                    });
+                }
+            },
+            {
+                category: "smart_action",
+                hotkey: "alt+t",
+            }
+        );
     }
 
     /**

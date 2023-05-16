@@ -10,6 +10,7 @@ import { DocumentsDropZone } from "../helper/documents_drop_zone";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
 import { DocumentsFileViewer } from "../helper/documents_file_viewer";
 import { DocumentsListRendererCheckBox } from "./documents_list_renderer_checkbox";
+import { useCommand } from "@web/core/commands/command_hook";
 
 const { useRef } = owl;
 
@@ -32,6 +33,20 @@ export class DocumentsListRenderer extends ListRenderer {
         this.root = useRef("root");
         const { uploads } = useService("file_upload");
         this.documentUploads = uploads;
+        useCommand(
+            this.env._t("Select all"),
+            () => {
+                const allSelected =
+                    this.props.list.selection.length === this.props.list.records.length;
+                this.props.list.records.forEach((record) => {
+                    record.toggleSelection(!allSelected);
+                });
+            },
+            {
+                category: "smart_action",
+                hotkey: "control+a",
+            }
+        );
     }
 
     getDocumentsAttachmentViewerProps() {

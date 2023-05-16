@@ -136,13 +136,13 @@
                     </a>
                 </t>
                 <t t-else="">
-                    <button class="o_inspector_button o_inspector_download btn" title="Download" t-on-click.stop.prevent="onDownload">
+                    <button class="o_inspector_button o_inspector_download btn" title="Download" t-on-click.stop.prevent="onDownload" data-hotkey="y">
                         <i class="fa fa-fw fa-download"/>
                     </button>
                 </t>
                 <t t-if="records[0].data.active">
                     <!-- groups does not work here -->
-                    <button t-if="currentFolder.id" class="o_inspector_button o_inspector_share btn" title="Share this selection" groups="documents.group_documents_user" t-on-click.stop.prevent="onShare">
+                    <button t-if="currentFolder.id" class="o_inspector_button o_inspector_share btn" title="Share this selection" groups="documents.group_documents_user" t-on-click.stop.prevent="onShare" data-hotkey="m">
                         <i class="fa fa-fw fa-share-alt"/>
                     </button>
                     <t t-if="nbPreviews === 1">
@@ -150,7 +150,7 @@
                             <i class="fa fa-fw fa-retweet"/>
                         </button>
                         <input type="file" t-ref="replaceFileInput" class="o_inspector_replace_input o_input_file o_hidden" t-on-change.stop="onReplace"/>
-                        <button t-att-class="'o_inspector_button o_inspector_lock btn' + (records[0].data.lock_uid ? ' o_locked' : '')" title="Lock" t-on-click.stop.prevent="onLock" t-att-disabled="editDisabled || locked">
+                        <button t-att-class="'o_inspector_button o_inspector_lock btn' + (records[0].data.lock_uid ? ' o_locked' : '')" title="Lock" t-on-click.stop.prevent="onLock" t-att-disabled="editDisabled || locked" data-hotkey="b">
                             <i t-att-class="'fa fa-fw ' + (records[0].data.lock_uid ? 'fa-lock o_locked' : 'fa-unlock-alt')"/>
                         </button>
                     </t>
@@ -162,7 +162,7 @@
                 </t>
             </div>
             <button t-if="records[0].data.active" class="o_inspector_button o_inspector_archive o_active btn float-end" title="Archive"
-            t-on-click.stop.prevent="onArchive" t-att-disabled="editDisabled || locked">
+            t-on-click.stop.prevent="onArchive" t-att-disabled="editDisabled || locked" data-hotkey="delete">
                 <i class="fa fa-fw fa-archive"/>
             </button>
             <t t-else="">
@@ -175,7 +175,7 @@
                 </button>
             </t>
             <button t-if="!props.withFilePreview and nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_button o_inspector_open_chatter btn float-end rounded-circle me-1 px-2" title="Open chatter"
-                t-on-click.stop.prevent="() => state.showChatter = true">
+                t-on-click.stop.prevent="() => state.showChatter = true" data-hotkey="d">
                 <i class="fa fa-comments"/>
             </button>
         </div>

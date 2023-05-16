@@ -15,7 +15,7 @@ class AppointmentCalendarView(http.Controller):
     # ------------------------------------------------------------
 
     @route('/appointment/appointment_type/create_custom', type='json', auth='user')
-    def appointment_type_create_custom(self, slots):
+    def appointment_type_create_custom(self, slots, context=None):
         """
         Return the info (id and url) of the custom appointment type
         that is created with the time slots in the calendar.
@@ -47,6 +47,8 @@ class AppointmentCalendarView(http.Controller):
         if not request.env.user.user_has_groups('base.group_user'):
             raise Forbidden()
         # Ignore the default_name in the context when creating a custom appointment type from the calendar view
+        if context:
+            request.update_context(**context)
         context = request.env.context.copy()
         if context.get('default_name'):
             del context['default_name']
@@ -63,11 +65,13 @@ class AppointmentCalendarView(http.Controller):
         return self._get_staff_user_appointment_invite_info(appointment_type)
 
     @route('/appointment/appointment_type/get_book_url', type='json', auth='user')
-    def appointment_get_book_url(self, appointment_type_id):
+    def appointment_get_book_url(self, appointment_type_id, context=None):
         """
         Get the information of the appointment invitation used to share the link
         of the appointment type selected.
         """
+        if context:
+            request.update_context(**context)
         appointment_type = request.env['appointment.type'].browse(int(appointment_type_id)).exists()
         if not appointment_type:
             raise ValidationError(_("An appointment type is needed to get the link."))
@@ -83,7 +87,7 @@ class AppointmentCalendarView(http.Controller):
         }
 
     @route('/appointment/appointment_type/search_create_anytime', type='json', auth='user')
-    def appointment_type_search_create_anytime(self):
+    def appointment_type_search_create_anytime(self, context=None):
         """
         Return the info (id and url) of the anytime appointment type of the actual user.
 
@@ -98,6 +102,8 @@ class AppointmentCalendarView(http.Controller):
             ('staff_user_ids', 'in', request.env.user.ids)])
         if not appointment_type:
             # Ignore the default_name in the context when creating an anytime appointment type from the calendar view
+            if context:
+                request.update_context(**context)
             context = request.env.context.copy()
             context.pop('default_name', None)
             appt_type_vals = self._prepare_appointment_type_anytime_values()

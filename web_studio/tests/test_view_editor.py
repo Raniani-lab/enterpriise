@@ -34,10 +34,13 @@ class TestStudioController(TransactionCase):
             expected = self._transform_arch_for_assert(expected)
         self.assertEqual(original, expected)
 
+    def update_context(self, **overrides):
+        self.env = self.env(context=dict(self.env.context, **overrides))
+
 
 class TestEditView(TestStudioController):
 
-    def edit_view(self, base_view, studio_arch="", operations=None, model=None):
+    def edit_view(self, base_view, studio_arch="", operations=None, model=None, context=None):
         _ops = None
         if isinstance(operations, list):
             _ops = []
@@ -45,7 +48,7 @@ class TestEditView(TestStudioController):
                 _ops.append(deepcopy(op))  # the edit view controller may alter objects in place
         if studio_arch == "":
             studio_arch = "<data/>"
-        return self.studio_controller.edit_view(base_view.id, studio_arch, _ops, model)
+        return self.studio_controller.edit_view(base_view.id, studio_arch, _ops, model, context)
 
     def test_edit_view_binary_and_attribute(self):
         base_view = self.env['ir.ui.view'].create({

@@ -13,7 +13,9 @@ from odoo.exceptions import ValidationError, UserError
 class WebStudioReportController(main.WebStudioController):
 
     @http.route('/web_studio/create_new_report', type='json', auth='user')
-    def create_new_report(self, model_name, layout):
+    def create_new_report(self, model_name, layout, context=None):
+        if context:
+            request.update_context(**context)
 
         if layout == 'web.basic_layout':
             arch_document = etree.fromstring("""
@@ -94,7 +96,9 @@ class WebStudioReportController(main.WebStudioController):
         return report.report_action(record_id)
 
     @http.route('/web_studio/edit_report', type='json', auth='user')
-    def edit_report(self, report_id, values):
+    def edit_report(self, report_id, values, context=None):
+        if context:
+            request.update_context(**context)
         report = request.env['ir.actions.report'].browse(report_id)
         if report:
             if 'attachment_use' in values:
@@ -116,12 +120,16 @@ class WebStudioReportController(main.WebStudioController):
         return report.read()
 
     @http.route('/web_studio/read_paperformat', type='json', auth='user')
-    def read_paperformat(self, report_id):
+    def read_paperformat(self, report_id, context=None):
+        if context:
+            request.update_context(**context)
         report = request.env['ir.actions.report'].browse(report_id)
         return report.get_paperformat().read()
 
     @http.route('/web_studio/get_widgets_available_options', type='json', auth='user')
-    def get_widgets_available_options(self):
+    def get_widgets_available_options(self, context=None):
+        if context:
+            request.update_context(**context)
         fields = dict()
         records = request.env['ir.model'].search([('model', 'like', 'ir.qweb.field.%')])
         for record in records:
@@ -197,7 +205,9 @@ class WebStudioReportController(main.WebStudioController):
         }
 
     @http.route('/web_studio/edit_report_view', type='json', auth='user')
-    def edit_report_view(self, report_name, report_views, record_id, operations=None):
+    def edit_report_view(self, report_name, report_views, record_id, operations=None, context=None):
+        if context:
+            request.update_context(**context)
         # a report can be composed of multiple views (with t-call) ; we might
         # thus need to apply operations on multiple views
 

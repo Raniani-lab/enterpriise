@@ -418,7 +418,9 @@ class Sign(http.Controller):
         return warnings
 
     @http.route("/sign/check_iap_credits", type="json", auth="user")
-    def check_iap_credits(self):
+    def check_iap_credits(self, context=None):
+        if context:
+            request.update_context(**context)
         warnings = self.get_iap_credit_warnings()
         if warnings:
             return {

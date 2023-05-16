@@ -149,7 +149,7 @@ class WebStudioController(http.Controller):
         }
 
     @http.route('/web_studio/create_new_app', type='json', auth='user')
-    def create_new_app(self, app_name=False, menu_name=False, model_choice=False, model_id=False, model_options=False, icon=None):
+    def create_new_app(self, app_name=False, menu_name=False, model_choice=False, model_id=False, model_options=False, icon=None, context=None):
         """Create a new app @app_name, linked to a new action associated to the model_id or the newlyy created model.
             @param menu_name: name of the first menu (and model if model_choice is 'new') of the app
             @param model_choice: 'new' for a new model, 'existing' for an existing model selected in the wizard
@@ -161,6 +161,8 @@ class WebStudioController(http.Controller):
                  - the ir.attachment id of the uploaded image
                  - if the icon has been created, an array containing: [icon_class, color, background_color]
         """
+        if context:
+            request.update_context(**context)
         _logger.info('creating new app "%s" with main menu "%s"', app_name, menu_name)
         if model_choice == 'existing' and model_id:
             model = request.env['ir.model'].browse(model_id)
@@ -202,7 +204,7 @@ class WebStudioController(http.Controller):
         }
 
     @http.route('/web_studio/create_new_menu', type='json', auth='user')
-    def create_new_menu(self, menu_name=False, model_choice=False, model_id=False, model_options=False, parent_menu_id=None):
+    def create_new_menu(self, menu_name=False, model_choice=False, model_id=False, model_options=False, parent_menu_id=None, context=None):
         """ Create a new menu @menu_name, linked to a new action associated to the model_id
             @param model_choice: 'new' for a new model, 'existing' for an existing model selected in the wizard
             @param model_id: the model which will be associated to the action if menu_choice is 'existing'
@@ -210,7 +212,8 @@ class WebStudioController(http.Controller):
                 (e.g. archiving, messaging, etc.)
             @param parent_menu_id: the parent of the new menu.
         """
-
+        if context:
+            request.update_context(**context)
         sequence = 10
         if parent_menu_id:
             menu = request.env['ir.ui.menu'].search_read([('parent_id', '=', parent_menu_id)], fields=['sequence'], order='sequence desc', limit=1)
@@ -263,7 +266,9 @@ class WebStudioController(http.Controller):
         }
 
     @http.route('/web_studio/edit_menu_icon', type='json', auth='user')
-    def edit_menu_icon(self, menu_id, icon):
+    def edit_menu_icon(self, menu_id, icon, context=None):
+        if context:
+            request.update_context(**context)
         values = self._get_icon_fields(icon)
         request.env['ir.ui.menu'].browse(menu_id).write(values)
 
@@ -286,7 +291,9 @@ class WebStudioController(http.Controller):
             request.env.company.background_image = attachment.datas
 
     @http.route('/web_studio/reset_background_image', type='json', auth='user')
-    def reset_background_image(self):
+    def reset_background_image(self, context=None):
+        if context:
+            request.update_context(**context)
         if request.env.company in request.env.user.with_user(request.uid).company_ids:
             request.env.company.background_image = None
 
@@ -363,7 +370,9 @@ class WebStudioController(http.Controller):
         return new_field
 
     @http.route('/web_studio/add_view_type', type='json', auth='user')
-    def add_view_type(self, action_type, action_id, res_model, view_type, args):
+    def add_view_type(self, action_type, action_id, res_model, view_type, args, context=None):
+        if context:
+            request.update_context(**context)
         view_type = 'tree' if view_type == 'list' else view_type  # list is stored as tree in db
 
         if view_type == 'activity':
@@ -433,7 +442,9 @@ class WebStudioController(http.Controller):
         return "Odoo Studio: %s customization" % (view.name)
 
     @http.route('/web_studio/get_studio_view_arch', type='json', auth='user')
-    def get_studio_view_arch(self, model, view_type, view_id=False):
+    def get_studio_view_arch(self, model, view_type, view_id=False, context=None):
+        if context:
+            request.update_context(**context)
         view_type = 'tree' if view_type == 'list' else view_type  # list is stored as tree in db
 
         if not view_id:
@@ -484,7 +495,9 @@ class WebStudioController(http.Controller):
         return True
 
     @http.route('/web_studio/edit_view', type='json', auth='user')
-    def edit_view(self, view_id, studio_view_arch, operations=None, model=None):
+    def edit_view(self, view_id, studio_view_arch, operations=None, model=None, context=None):
+        if context:
+            request.update_context(**context)
         IrModelFields = request.env['ir.model.fields']
         view = request.env['ir.ui.view'].browse(view_id)
         operations = operations or []
@@ -673,7 +686,9 @@ Are you sure you want to remove the selection values of those records?""") % len
                     request.env['ir.default'].discard_values(model_name, field_name, [current_default])
 
     @http.route('/web_studio/edit_view_arch', type='json', auth='user')
-    def edit_view_arch(self, view_id, view_arch):
+    def edit_view_arch(self, view_id, view_arch, context=None):
+        if context:
+            request.update_context(**context)
         # view is really the view on which we are writing the new arch verbatim (in most cases, the studio view)
         # the _return_view API calls get_views, that will eventually return the whole arch
         # meaning that even if we pass the studio view, we'll get the full arch with
@@ -1511,7 +1526,11 @@ Are you sure you want to remove the selection values of those records?""") % len
         request.env['ir.default'].with_context(studio=True).set(model_name, field_name, value, company_id=True)
 
     @http.route('/web_studio/create_inline_view', type='json', auth='user')
-    def create_inline_view(self, model, view_id, field_name, subview_type, subview_xpath):
+    def create_inline_view(self, model, view_id, field_name, subview_type, subview_xpath, context=None):
+        # Forward context to forward `_view_ref` keys
+        # e.g. `test_enter_x2many_edition_and_add_field`
+        if context:
+            request.update_context(**context)
         view = request.env['ir.ui.view'].browse(view_id)
         studio_view = self._get_studio_view(view)
         if not studio_view:

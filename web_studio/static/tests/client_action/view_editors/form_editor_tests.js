@@ -32,6 +32,7 @@ import { RPCError } from "@web/core/network/rpc_service";
 import { setupMessagingServiceRegistries } from "@mail/../tests/helpers/webclient_setup";
 import { EventBus } from "@odoo/owl";
 import { fieldService } from "@web/core/field_service";
+import { Setting } from "@web/views/form/setting/setting";
 
 /** @type {Node} */
 let target;
@@ -2413,6 +2414,34 @@ QUnit.module("View Editors", (hooks) => {
         await click(selectorContains(target, ".o_web_studio_sidebar .nav-link", "View"));
         await click(target.querySelector(".o_web_studio_sidebar #show_invisible"));
         assert.containsOnce(target, "div[name='o2m']");
+    });
+
+    QUnit.test("supports displaying <setting> tag in innergroup", async (assert) => {
+        patchWithCleanup(Setting.prototype, {
+            setup() {
+                this._super();
+                assert.step(`setting instanciated. studioXpath: ${this.props.studioXpath}`);
+            },
+        });
+
+        await createViewEditor({
+            resModel: "partner",
+            type: "form",
+            serverData,
+            arch: `<form>
+            <group>
+                <group class="o_settings_container">
+                    <setting title="my setting">
+                        <field name="display_name"/>
+                    </setting>
+                </group>
+            </group>
+            </form>`,
+        });
+        assert.containsOnce(target, ".o_setting_box .o_field_widget[name='display_name']");
+        assert.verifySteps([
+            "setting instanciated. studioXpath: /form[1]/group[1]/group[1]/setting[1]",
+        ]);
     });
 });
 

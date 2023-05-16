@@ -63,6 +63,13 @@ export class FormEditorRenderer extends formView.Renderer {
     }
 }
 
+class Setting extends formView.Renderer.components.Setting {
+    static props = {
+        ...formView.Renderer.components.Setting.props,
+        studioXpath: { type: String, optional: true },
+    };
+}
+
 FormEditorRenderer.components = {
     ...components,
     ...formEditorRendererComponents,
@@ -73,4 +80,5 @@ FormEditorRenderer.components = {
     InnerGroup,
     OuterGroup,
     StudioHook,
+    Setting,
 };

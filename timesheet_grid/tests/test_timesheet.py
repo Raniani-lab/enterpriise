@@ -448,3 +448,48 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
             grid_anchor = datetime(2023, 1, d)
             dummy, last_week = AnalyticLine.with_context(grid_anchor=grid_anchor)._get_last_week()
             self.assertEqual(last_week, date(2023, 1, ((d - 1) // 7 - 1) * 7 + 1))
+
+    def test_validation_timesheet_at_current_date(self):
+        Timesheet = self.env['account.analytic.line']
+        timesheet1, timesheet2 = Timesheet.create([
+            {
+                'name': '/',
+                'project_id': self.project_customer.id,
+                'employee_id': self.empl_employee.id,
+                'unit_amount': 1.0,
+            } for i in range(2)
+        ])
+        timesheet1.with_user(self.user_manager).action_validate_timesheet()
+        self.assertTrue(timesheet1.validated)
+
+        # Try to validate another timesheet at the current date when Lock Date feature is enabled
+        self.env['res.config.settings'].create({'prevent_old_timesheets_encoding': True}) \
+                                       .execute()
+        self.assertEqual(
+            self.empl_employee.last_validated_timesheet_date,
+            date.today(),
+            'The last validated timesheet date set on the employee should be the current one.'
+        )
+
+        # Try to launch a timer with that employee
+        self.assertFalse(timesheet2.with_user(self.user_employee).is_timer_running)
+        timesheet2.with_user(self.user_employee).action_timer_start()
+        self.assertTrue(timesheet2.with_user(self.user_employee).is_timer_running)
+        timesheet = Timesheet.with_user(self.user_employee).create({
+            'name': '/',
+            'project_id': self.project_customer.id,
+            'unit_amount': 2.0,
+        })
+        self.assertEqual(timesheet.employee_id, self.empl_employee)
+
+        timesheet2.with_user(self.user_manager).action_validate_timesheet()
+        self.assertTrue(timesheet2.validated)
+        self.assertFalse(timesheet2.with_user(self.user_employee).is_timer_running)
+
+        with self.assertRaises(AccessError):
+            Timesheet.with_user(self.user_employee).create({
+                'name': '/',
+                'project_id': self.project_customer.id,
+                'unit_amount': 1.0,
+                'date': date.today() - relativedelta(days=1),
+            })

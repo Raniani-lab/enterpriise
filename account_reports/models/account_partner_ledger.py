@@ -668,7 +668,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             'class': 'text-muted' if aml_query_result['key'] == 'indirectly_linked_aml' else 'text',  # do not format as date to prevent text centering
             'columns': columns,
             'caret_options': caret_type,
-            'level': 2 + level_shift,
+            'level': 4 + level_shift,
         }
 
     def _get_report_line_total(self, options, totals_by_column_group):

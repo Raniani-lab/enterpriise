@@ -25,6 +25,14 @@ class SaleOrder(models.Model):
             return False
         return super().message_post(**kwargs)
 
+    def action_confirm(self):
+        res = super().action_confirm()
+        for sale_order in self:
+            if sale_order.task_id:
+                message = escape(_("This Sales Order has been created from Task: %s")) % sale_order.task_id._get_html_link()
+                sale_order.message_post(body=message)
+        return res
+
 
 class SaleOrderLine(models.Model):
     _inherit = ['sale.order.line']

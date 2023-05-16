@@ -40,7 +40,6 @@ class RentalOrderLine(models.Model):
             'forecast_expected_date': False,
             'free_qty_today': 0.0,
             'qty_available_today': False,
-            'warehouse_id': False
         }
         for (from_date, to_date, warehouse_id), line_ids in rented_product_lines._partition_so_lines_by_rental_period():
             lines = self.env['sale.order.line'].browse(line_ids)

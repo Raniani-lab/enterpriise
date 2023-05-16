@@ -141,6 +141,16 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
                 'extract_state': 'waiting_extraction',
                 'extract_document_uuid': 'some_uuid',
             })
+
+            # This is necessary to avoid nondeterminism in this test.
+            # The value of the due date and the creation date are checked to know whether
+            # we should fill the due date or not.
+            # When the test runs at around midnight, it can happen that the creation date and the default due date don't
+            # match, e.g. when one is set at 23:59:59 and the other one at 00:00:00.
+            # This issue can of course also occur under normal utilization, but it should be very rare and with a very
+            # low impact.
+            invoice.invoice_date_due = invoice.create_date.date()
+
             extract_response = self.get_result_success_response()
 
             expected_get_results_params = {

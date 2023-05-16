@@ -199,6 +199,19 @@ class CalendarEvent(models.Model):
             return appointment_types.staff_user_ids
         return self.env['appointment.type'].search([('schedule_based_on', '=', 'users')]).staff_user_ids
 
+    def _track_filter_for_display(self, tracking_values):
+        if self.appointment_type_id:
+            return tracking_values.filtered(lambda t: t.field.name != 'active')
+        return super()._track_filter_for_display(tracking_values)
+
+    def _track_get_default_log_message(self, tracked_fields):
+        if self.appointment_type_id and 'active' in tracked_fields:
+            if self.active:
+                return _('Appointment re-booked')
+            else:
+                return _("Appointment canceled")
+        return super()._track_get_default_log_message(tracked_fields)
+
     def _generate_access_token(self):
         for event in self:
             event.access_token = self._default_access_token()
@@ -215,7 +228,7 @@ class CalendarEvent(models.Model):
             message_body = _("Appointment canceled by: %(partners)s", partners=cancelling_attendees)
             self.partner_ids -= attendees.partner_id
             if self.appointment_booker_id.id == partner_ids[0]:
-                self._track_set_log_message("<p>%s</p>" % message_body)
+                self._track_set_log_message(message_body)
                 self.with_user(SUPERUSER_ID).action_archive()
             else:
                 self.message_post(body=message_body, message_type='notification', author_id=partner_ids[0])
@@ -297,13 +310,6 @@ class CalendarEvent(models.Model):
                 'email_layout_xmlid': 'mail.mail_notification_light'
             })
         return res
-
-    def _track_subtype(self, init_values):
-        self.ensure_one()
-        # when tracking 'active' changes: consider this is a discussion to be sent to all followers
-        if self.appointment_type_id and 'active' in init_values and not self.active:
-            return self.env.ref('mail.mt_comment')
-        return super()._track_subtype(init_values)
 
     def _get_customer_description(self):
         # Description should make sense for the person who booked the meeting

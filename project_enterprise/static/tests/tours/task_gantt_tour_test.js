@@ -78,15 +78,19 @@ registry.category("web_tour.tours").add('project_enterprise_tour', {
         trigger: '.o_gantt_button_add',
         content: 'Add a task in gantt',
     }, {
-        trigger: '.o_field_char[name="name"] input',
+        trigger: '.o_field_text[name="name"] textarea',
         content: 'Set task name',
         run: 'text New task',
     }, {
-        trigger: 'button[name="action_assign_to_me"]',
+        trigger: 'div[name="user_ids"].o_field_many2many_tags_avatar input',
+        content: 'Assign the task to you',
+        run: 'click',
+    }, {
+        trigger: 'ul.ui-autocomplete a .o_avatar_many2x_autocomplete',
         content: 'Assign the task to you',
     }, {
-        trigger: 'button span:contains("Save")',
-        extra_trigger: '.o_field_many2many_tags_avatar .rounded-pill',
+        trigger: 'button[special="save"]',
+        extra_trigger: '.o_field_many2many_tags_avatar .o_m2m_avatar',
         content: 'Save task',
     }, {
         trigger: ".o_gantt_progress_bar",

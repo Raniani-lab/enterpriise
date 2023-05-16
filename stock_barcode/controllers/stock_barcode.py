@@ -100,9 +100,12 @@ class StockBarcodeController(http.Controller):
             target_record = request.env[model].browse(res_id).with_context(allowed_company_ids=self._get_allowed_company_ids())
         data = target_record._get_stock_barcode_data()
         data['records'].update(self._get_barcode_nomenclature())
+        mute_sound = request.env['ir.config_parameter'].sudo().get_param('stock_barcode.mute_sound_notifications')
+        config = {'play_sound': bool(not mute_sound or mute_sound == "False")}
         return {
             'data': data,
             'groups': self._get_groups_data(),
+            'config': config,
         }
 
     @http.route('/stock_barcode/get_specific_barcode_data', type='json', auth='user')

@@ -6,7 +6,6 @@ import { Mutex } from "@web/core/utils/concurrency";
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 import { _t } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
-import { url } from '@web/core/utils/urls';
 import { useService } from "@web/core/utils/hooks";
 import { FNC1_CHAR } from "@barcodes_gs1_nomenclature/js/barcode_parser";
 
@@ -26,11 +25,6 @@ export default class BarcodeModel extends EventBus {
         // Keeps track of list scanned record(s) by type.
         this.lastScanned = { packageId: false, product: false, sourceLocation: false };
         this._currentLocation = false; // Reminds the current source when the scanned one is forgotten.
-        this.errorSound = new Audio();
-        this.errorSound.src = this.errorSound.canPlayType('audio/ogg') ?
-            url('/stock_barcode/static/src/audio/error.ogg') :
-            url('/stock_barcode/static/src/audio/error.mp3');
-        this.errorSound.load();
     }
 
     setData(data) {
@@ -362,14 +356,9 @@ export default class BarcodeModel extends EventBus {
      */
     notification(message, options={}) {
         if (options.type === "danger") {
-            this.playErrorSound();
+            this.trigger('error');
         }
         return this.notificationService.add(message, options);
-    }
-
-    playErrorSound() {
-        this.errorSound.currentTime = 0;
-        this.errorSound.play();
     }
 
     async refreshCache(records) {
@@ -606,7 +595,7 @@ export default class BarcodeModel extends EventBus {
                 if (this.canBeValidate) {
                     this.validate();
                 } else {
-                    this.playErrorSound();
+                    this.trigger('error');
                 }
             },
         };

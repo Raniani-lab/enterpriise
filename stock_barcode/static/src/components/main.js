@@ -15,6 +15,7 @@ import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { View } from "@web/views/view";
 import { ManualBarcodeScanner } from './manual_barcode';
+import { url } from '@web/core/utils/urls';
 
 const { Component, onMounted, onPatched, onWillStart, onWillUnmount, useState, useSubEnv } = owl;
 
@@ -51,10 +52,19 @@ class MainComponent extends Component {
                 { model: this.resModel, res_id: this.resId }
             );
             barcodeData.actionId = this.props.actionId;
+            this.config = { play_sound: true, ...barcodeData.config };
+            if (this.config.play_sound) {
+                this.errorSound = new Audio();
+                this.errorSound.src = this.errorSound.canPlayType('audio/ogg') ?
+                    url('/stock_barcode/static/src/audio/error.ogg') :
+                    url('/stock_barcode/static/src/audio/error.mp3');
+                this.errorSound.load();
+            }
             this.groups = barcodeData.groups;
             this.env.model.setData(barcodeData);
             this.state.displayNote = Boolean(this.env.model.record.note);
             this.env.model.on('flash', this, this.flashScreen);
+            this.env.model.on('error', this, this.playErrorSound);
             this.env.model.on('process-action', this, this._onDoAction);
             this.env.model.on('refresh', this, this._onRefreshState);
             this.env.model.on('update', this, () => this.render(true));
@@ -70,6 +80,7 @@ class MainComponent extends Component {
 
         onWillUnmount(() => {
             this.env.model.off('flash', this, this.flashScreen)
+            this.env.model.off('error', this, this.playErrorSound)
             bus.off('barcode_scanned', this, this._onBarcodeScanned);
             bus.off('refresh', this, this._onRefreshState);
             bus.off('warning', this, this._onWarning);
@@ -78,6 +89,13 @@ class MainComponent extends Component {
         onPatched(() => {
             this._scrollToSelectedLine();
         });
+    }
+
+    playErrorSound() {
+        if (this.config.play_sound) {
+            this.errorSound.currentTime = 0;
+            this.errorSound.play();
+        }
     }
 
     //--------------------------------------------------------------------------

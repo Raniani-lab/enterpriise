@@ -4,7 +4,7 @@
     <menuitem
         id="rental_menu_root"
         name="Rental"
-        web_icon="sale_renting,static/description/icon.svg"
+        web_icon="sale_renting,static/description/icon.png"
         groups="sales_team.group_sale_salesman"
         sequence="45">
 

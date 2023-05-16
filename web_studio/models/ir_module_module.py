@@ -25,7 +25,7 @@ It contains the apps created with Studio and the customizations of existing apps
                 'state': 'installed',
                 'imported': True,
                 'author': self.env.company.name,
-                'icon': '/base/static/description/icon.svg',
+                'icon': '/base/static/description/icon.png',
                 'license': 'OPL-1',
                 'dependencies_id': [(0, 0, {'name': 'web_studio'})],
             })

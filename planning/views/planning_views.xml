@@ -855,7 +855,7 @@
         name="Planning"
         sequence="85"
         groups="base.group_user"
-        web_icon="planning,static/description/icon.svg"/>
+        web_icon="planning,static/description/icon.png"/>
 
     <menuitem
         id="planning_menu_my_planning"

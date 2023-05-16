@@ -284,7 +284,7 @@
     <menuitem
         id="approvals_menu_root"
         name="Approvals"
-        web_icon="approvals,static/description/icon.svg"
+        web_icon="approvals,static/description/icon.png"
         action="approval_category_action_new_request"
         sequence="255"/>
 

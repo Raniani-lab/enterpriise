@@ -4,7 +4,7 @@
     <menuitem
         id="iot_menu_root"
         name="IoT"
-        web_icon="iot,static/description/icon.svg"
+        web_icon="iot,static/description/icon.png"
         groups="base.group_system"
         sequence="265"
     />

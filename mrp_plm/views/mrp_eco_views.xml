@@ -803,7 +803,7 @@
     <menuitem
         id="menu_mrp_plm_root"
         name="PLM"
-        web_icon="mrp_plm,static/description/icon.svg"
+        web_icon="mrp_plm,static/description/icon.png"
         sequence="170"
         groups="mrp_plm.group_plm_user"/>
 

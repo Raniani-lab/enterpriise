@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <odoo>
 
-    <menuitem name="Appraisals" id="menu_hr_appraisal_root" web_icon="hr_appraisal,static/description/icon.svg" sequence="200"/>
+    <menuitem name="Appraisals" id="menu_hr_appraisal_root" web_icon="hr_appraisal,static/description/icon.png" sequence="200"/>
     <menuitem name="Configuration"
         id="menu_hr_appraisal_configuration"
         parent="menu_hr_appraisal_root"

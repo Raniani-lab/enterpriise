@@ -25,8 +25,7 @@ class IrUiMenu(models.Model):
                         backgroundColor = webIconlist[2]
 
                 if menu.get('webIconData'):
-                    imgtype = menu['webIconData'][0] == 80 and 'svg+xml' or 'png'
-                    menu['webIconData'] = re.sub(r'\s/g', "", ('data:image/%s;base64,%s' % (imgtype, menu['webIconData'].decode('utf-8'))))
+                    menu['webIconData'] = re.sub(r'\s/g', "", ('data:image/png;base64,%s' % menu['webIconData'].decode('utf-8')))
                 elif backgroundColor is not None:  # Could split in three parts?
                     menu['webIcon'] = ",".join([iconClass or "", color or "", backgroundColor])
                 else:

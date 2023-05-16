@@ -12,7 +12,7 @@
     <menuitem
         id="stock_barcode_menu"
         action="stock_barcode_action_main_menu"
-        web_icon="stock_barcode,static/description/icon.svg"
+        web_icon="stock_barcode,static/description/icon.png"
         sequence="155"
         groups="stock.group_stock_user" />
 

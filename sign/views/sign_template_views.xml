@@ -407,7 +407,7 @@
     </record>
 
     <!-- Menus -->
-    <menuitem id="menu_document" name="Sign" web_icon="sign,static/description/icon.svg" sequence="180"/>
+    <menuitem id="menu_document" name="Sign" web_icon="sign,static/description/icon.png" sequence="180"/>
     <menuitem id="sign.sign_template_menu" name="Dashboard" parent="sign.menu_document" action="sign_template_action" sequence="10"/>
     <menuitem id="sign_request_menu" name="Documents" parent="menu_document" sequence="20"/>
     <menuitem id="sign_reports" name="Reports" parent="menu_document" sequence="99"/>

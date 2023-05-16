@@ -873,7 +873,7 @@
     <menuitem id="fsm_menu_root"
         name="Field Service"
         sequence="80"
-        web_icon="industry_fsm,static/description/icon.svg"
+        web_icon="industry_fsm,static/description/icon.png"
         groups="industry_fsm.group_fsm_user"/>
 
     <menuitem id="fsm_tasks_menu"

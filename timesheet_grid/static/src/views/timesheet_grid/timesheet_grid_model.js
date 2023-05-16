@@ -295,19 +295,21 @@ export class TimesheetGridDataPoint extends GridDataPoint {
                     [["allow_timesheets", "=", true]],
                 ]);
             }
-            additionalGroups.push(
-                this.orm
-                    .webSearchRead("project.project", projectDomain.toList({}), [
-                        "id",
-                        "display_name",
-                    ])
-                    .then((data) => {
-                        const timesheet_data = data.records.map((r) => {
-                            return { project_id: [r.id, r.display_name] };
-                        });
-                        return prepareAdditionalData(timesheet_data);
-                    })
-            );
+            if (!this.sectionField || this.sectionField.name === "project_id") {
+                additionalGroups.push(
+                    this.orm
+                        .webSearchRead("project.project", projectDomain.toList({}), [
+                            "id",
+                            "display_name",
+                        ])
+                        .then((data) => {
+                            const timesheet_data = data.records.map((r) => {
+                                return { project_id: [r.id, r.display_name] };
+                            });
+                            return prepareAdditionalData(timesheet_data);
+                        })
+                );
+            }
         }
         if (isProjectIdInDomainFields || isTaskIdInDomainFields) {
             if (this.sectionField && this.sectionField.name === "task_id") {
@@ -317,20 +319,25 @@ export class TimesheetGridDataPoint extends GridDataPoint {
                     [["allow_timesheets", "=", true]],
                 ]);
             }
-            additionalGroups.push(
-                this.orm
-                    .webSearchRead("project.task", taskDomain.toList({}), [
-                        "id",
-                        "display_name",
-                        "project_id",
-                    ])
-                    .then((data) => {
-                        const timesheet_data = data.records.map((r) => {
-                            return { task_id: [r.id, r.display_name], project_id: r.project_id };
-                        });
-                        return prepareAdditionalData(timesheet_data);
-                    })
-            );
+            if (!this.sectionField || isProjectOrTaskAsSectionField) {
+                additionalGroups.push(
+                    this.orm
+                        .webSearchRead("project.task", taskDomain.toList({}), [
+                            "id",
+                            "display_name",
+                            "project_id",
+                        ])
+                        .then((data) => {
+                            const timesheet_data = data.records.map((r) => {
+                                return {
+                                    task_id: [r.id, r.display_name],
+                                    project_id: r.project_id,
+                                };
+                            });
+                            return prepareAdditionalData(timesheet_data);
+                        })
+                );
+            }
         }
 
         return additionalGroups;

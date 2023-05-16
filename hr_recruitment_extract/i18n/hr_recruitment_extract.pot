@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.1+e\n"
+"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:16+0000\n"
-"PO-Revision-Date: 2023-01-17 10:16+0000\n"
+"POT-Creation-Date: 2023-05-16 16:02+0000\n"
+"PO-Revision-Date: 2023-05-16 16:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -25,21 +25,21 @@ msgstr ""
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid ""
-"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"<i class=\"oi oi-fw o_button_icon oi-arrow-right\"/>\n"
 "                        Buy credits"
 msgstr ""
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid ""
-"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"<i class=\"oi oi-fw o_button_icon oi-arrow-right\"/>\n"
 "                        Refresh"
 msgstr ""
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid ""
-"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"<i class=\"oi oi-fw o_button_icon oi-arrow-right\"/>\n"
 "                        Resend For Digitization"
 msgstr ""
 
@@ -123,6 +123,11 @@ msgid "Extract state"
 msgstr ""
 
 #. module: hr_recruitment_extract
+#: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_status
+msgid "Extract status"
+msgstr ""
+
+#. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__message_follower_ids
 msgid "Followers"
 msgstr ""
@@ -152,8 +157,8 @@ msgid "Has Message"
 msgstr ""
 
 #. module: hr_recruitment_extract
-#: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
-msgid "Id of the request to IAP-OCR"
+#: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_document_uuid
+msgid "ID of the request to IAP-OCR"
 msgstr ""
 
 #. module: hr_recruitment_extract
@@ -213,6 +218,11 @@ msgid "Number of messages with delivery error"
 msgstr ""
 
 #. module: hr_recruitment_extract
+#: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__rating_ids
+msgid "Ratings"
+msgstr ""
+
+#. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_parse_ir_actions_server
 msgid "Recruitment OCR: Parse CV"
 msgstr ""
@@ -246,11 +256,6 @@ msgstr ""
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
 msgid "Send mode on applicant attachments"
-msgstr ""
-
-#. module: hr_recruitment_extract
-#: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_status_code
-msgid "Status code"
 msgstr ""
 
 #. module: hr_recruitment_extract

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2023-05-16 16:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,22 +16,46 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_settle_due
-#. openerp-web
-#: code:addons/pos_settle_due/static/src/xml/templates.xml:0
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PartnerListScreen/PartnerLine.xml:0
 #, python-format
-msgid "Credit"
+msgid "(with cart:"
 msgstr ""
 
 #. module: pos_settle_due
-#. openerp-web
-#: code:addons/pos_settle_due/static/src/js/PaymentScreen.js:0
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PartnerListScreen/PartnerListScreen.xml:0
+#, python-format
+msgid "Credit limit reached!"
+msgstr ""
+
+#. module: pos_settle_due
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PartnerListScreen/PartnerLine.xml:0
+#, python-format
+msgid "Credit limit:"
+msgstr ""
+
+#. module: pos_settle_due
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PaymentScreen/PaymentScreen.xml:0
+#: code:addons/pos_settle_due/static/src/app/Screens/PaymentScreen/PaymentScreen.xml:0
+#: code:addons/pos_settle_due/static/src/app/Screens/ProductScreen/ControlButtons/CustomerButton.xml:0
+#: code:addons/pos_settle_due/static/src/app/Screens/ProductScreen/ControlButtons/CustomerButton.xml:0
+#, python-format
+msgid "Customer"
+msgstr ""
+
+#. module: pos_settle_due
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PaymentScreen/PaymentScreen.js:0
 #, python-format
 msgid "Do you want to deposit %s to %s?"
 msgstr ""
 
 #. module: pos_settle_due
-#. openerp-web
-#: code:addons/pos_settle_due/static/src/js/PaymentScreen.js:0
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PaymentScreen/PaymentScreen.js:0
 #, python-format
 msgid ""
 "Do you want to deposit %s to a specific customer? If so, first select "
@@ -44,32 +68,39 @@ msgid "Point of Sale Session"
 msgstr ""
 
 #. module: pos_settle_due
-#. openerp-web
-#: code:addons/pos_settle_due/static/src/js/PartnerLine.js:0
-#: code:addons/pos_settle_due/static/src/js/PartnerListScreen.js:0
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PartnerListScreen/PartnerLine.js:0
+#: code:addons/pos_settle_due/static/src/app/Screens/PartnerListScreen/PartnerListScreen.js:0
 #, python-format
 msgid "Select the payment method to settle the due"
 msgstr ""
 
 #. module: pos_settle_due
-#. openerp-web
-#: code:addons/pos_settle_due/static/src/xml/templates.xml:0
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PartnerListScreen/PartnerListScreen.xml:0
 #, python-format
 msgid "Settle due accounts"
 msgstr ""
 
 #. module: pos_settle_due
-#. openerp-web
-#: code:addons/pos_settle_due/static/src/js/PaymentScreen.js:0
-#: code:addons/pos_settle_due/static/src/js/PaymentScreen.js:0
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PaymentScreen/PaymentScreen.js:0
+#: code:addons/pos_settle_due/static/src/app/Screens/PaymentScreen/PaymentScreen.js:0
 #, python-format
 msgid "The order is empty"
 msgstr ""
 
 #. module: pos_settle_due
-#. openerp-web
-#: code:addons/pos_settle_due/static/src/js/PaymentScreen.js:0
-#: code:addons/pos_settle_due/static/src/js/PaymentScreen.js:0
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PartnerListScreen/PartnerLine.xml:0
+#, python-format
+msgid "Total due:"
+msgstr ""
+
+#. module: pos_settle_due
+#. odoo-javascript
+#: code:addons/pos_settle_due/static/src/app/Screens/PaymentScreen/PaymentScreen.js:0
+#: code:addons/pos_settle_due/static/src/app/Screens/PaymentScreen/PaymentScreen.js:0
 #, python-format
 msgid "Yes"
 msgstr ""

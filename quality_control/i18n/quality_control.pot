@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
-"PO-Revision-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2023-05-16 16:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -29,11 +29,6 @@ msgstr ""
 #: model:ir.actions.report,print_report_name:quality_control.quality_check_report
 #: model:ir.actions.report,print_report_name:quality_control.quality_check_report_internal
 msgid "'Worksheet_%s' % object.name"
-msgstr ""
-
-#. module: quality_control
-#: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
-msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
 msgstr ""
 
 #. module: quality_control
@@ -109,57 +104,57 @@ msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
-msgid "<strong>Lot/Serial Number : </strong>"
+msgid "<strong>Lot/Serial Number: </strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
-msgid "<strong>Measure : </strong>"
+msgid "<strong>Measure: </strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
-msgid "<strong>Notes : </strong>"
+msgid "<strong>Notes: </strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
-msgid "<strong>Operations :</strong>"
+msgid "<strong>Operations:</strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
-msgid "<strong>Product : </strong>"
+msgid "<strong>Product: </strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
-msgid "<strong>Products :</strong>"
+msgid "<strong>Products:</strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
-msgid "<strong>Test Type : </strong>"
+msgid "<strong>Test Type: </strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
-msgid "<strong>Tested by : </strong>"
+msgid "<strong>Tested by: </strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
-msgid "<strong>Tested on : </strong>"
+msgid "<strong>Tested on: </strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
-msgid "<strong>Transfer : </strong>"
+msgid "<strong>Transfer: </strong>"
 msgstr ""
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
-msgid "<strong>Warning : </strong>"
+msgid "<strong>Warning: </strong>"
 msgstr ""
 
 #. module: quality_control
@@ -462,11 +457,6 @@ msgid "Is Last Check"
 msgstr ""
 
 #. module: quality_control
-#: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard____last_update
-msgid "Last Modified on"
-msgstr ""
-
-#. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__write_uid
 msgid "Last Updated by"
 msgstr ""
@@ -560,6 +550,7 @@ msgid "Nb Checks"
 msgstr ""
 
 #. module: quality_control
+#. odoo-python
 #: code:addons/quality_control/models/quality.py:0
 #, python-format
 msgid "New"
@@ -698,6 +689,7 @@ msgid "Picture"
 msgstr ""
 
 #. module: quality_control
+#. odoo-python
 #: code:addons/quality_control/models/quality.py:0
 #, python-format
 msgid "Picture Uploaded"
@@ -760,6 +752,7 @@ msgid "Quality"
 msgstr ""
 
 #. module: quality_control
+#. odoo-python
 #: code:addons/quality_control/models/quality.py:0
 #: code:addons/quality_control/models/quality.py:0
 #: model:ir.model,name:quality_control.model_quality_alert
@@ -805,6 +798,7 @@ msgid "Quality Alerts"
 msgstr ""
 
 #. module: quality_control
+#. odoo-python
 #: code:addons/quality_control/models/quality.py:0
 #: model:ir.actions.act_window,name:quality_control.action_quality_check_wizard
 #: model:ir.model,name:quality_control.model_quality_check
@@ -825,6 +819,7 @@ msgid "Quality Check Fail"
 msgstr ""
 
 #. module: quality_control
+#. odoo-python
 #: code:addons/quality_control/wizard/quality_check_wizard.py:0
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 #, python-format
@@ -847,7 +842,6 @@ msgid "Quality Check:"
 msgstr ""
 
 #. module: quality_control
-#: code:addons/quality_control/models/quality.py:0
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_main
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_picking
 #: model:ir.actions.act_window,name:quality_control.quality_check_action_production_lot
@@ -859,7 +853,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_production_lot_form_quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
-#, python-format
 msgid "Quality Checks"
 msgstr ""
 
@@ -1152,15 +1145,10 @@ msgid "Worksheet Report - Internal (PDF)"
 msgstr ""
 
 #. module: quality_control
+#. odoo-python
 #: code:addons/quality_control/models/quality.py:0
 #, python-format
 msgid "You measured %.2f %s and it should be between %.2f and %.2f %s."
-msgstr ""
-
-#. module: quality_control
-#: code:addons/quality_control/models/stock_picking.py:0
-#, python-format
-msgid "You still need to do the quality checks!"
 msgstr ""
 
 #. module: quality_control
@@ -1168,6 +1156,13 @@ msgstr ""
 #: code:addons/quality_control/wizard/quality_check_wizard.py:0
 #, python-format
 msgid "You must provide a picture before validating"
+msgstr ""
+
+#. module: quality_control
+#. odoo-python
+#: code:addons/quality_control/models/stock_picking.py:0
+#, python-format
+msgid "You still need to do the quality checks!"
 msgstr ""
 
 #. module: quality_control

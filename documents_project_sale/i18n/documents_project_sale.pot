@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:42+0000\n"
-"PO-Revision-Date: 2022-10-04 09:42+0000\n"
+"POT-Creation-Date: 2023-05-16 16:02+0000\n"
+"PO-Revision-Date: 2023-05-16 16:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,24 +16,19 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: documents_project_sale
-#: model:project.task,legend_blocked:documents_project_sale.sale_order_1_task_1
-msgid "Blocked"
-msgstr ""
-
-#. module: documents_project_sale
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_product__documents_allowed_company_id
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_template__documents_allowed_company_id
 msgid "Documents Allowed Company"
 msgstr ""
 
 #. module: documents_project_sale
-#: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_3
-msgid "Done/Archived"
+#: model:ir.model,name:documents_project_sale.model_documents_folder
+msgid "Documents Workspace"
 msgstr ""
 
 #. module: documents_project_sale
-#: model:project.task,legend_normal:documents_project_sale.sale_order_1_task_1
-msgid "In Progress"
+#: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_3
+msgid "Done/Archived"
 msgstr ""
 
 #. module: documents_project_sale
@@ -75,8 +70,8 @@ msgid "Product"
 msgstr ""
 
 #. module: documents_project_sale
-#: model:project.task,legend_done:documents_project_sale.sale_order_1_task_1
-msgid "Ready"
+#: model:ir.model.fields,field_description:documents_project_sale.field_documents_folder__product_template_ids
+msgid "Product Template"
 msgstr ""
 
 #. module: documents_project_sale
@@ -105,8 +100,33 @@ msgid "Template"
 msgstr ""
 
 #. module: documents_project_sale
-#: model:product.template,uom_name:documents_project_sale.product_1
-msgid "Units"
+#. odoo-python
+#: code:addons/documents_project_sale/models/product_template.py:0
+#, python-format
+msgid ""
+"The \"%s\" workspace template should either be in the \"%s\" company like "
+"this product or be open to all companies."
+msgstr ""
+
+#. module: documents_project_sale
+#. odoo-python
+#: code:addons/documents_project_sale/models/documents_folder.py:0
+#, python-format
+msgid ""
+"This workspace should remain in the same company as the \"%s\" product for "
+"which it is a template. Please update the company of the \"%s\" product, or "
+"leave the company of this workspace empty."
+msgstr ""
+
+#. module: documents_project_sale
+#. odoo-python
+#: code:addons/documents_project_sale/models/documents_folder.py:0
+#, python-format
+msgid ""
+"This workspace should remain in the same company as the following products for which it is a template:\n"
+"%s\n"
+"\n"
+"Please update the company of those products, or leave the company of this workspace empty."
 msgstr ""
 
 #. module: documents_project_sale

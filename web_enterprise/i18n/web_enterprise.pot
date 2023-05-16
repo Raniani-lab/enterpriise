@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.1+e\n"
+"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:16+0000\n"
-"PO-Revision-Date: 2023-01-17 10:16+0000\n"
+"POT-Creation-Date: 2023-05-16 16:03+0000\n"
+"PO-Revision-Date: 2023-05-16 16:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -45,13 +45,6 @@ msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/base_mobile.xml:0
-#, python-format
-msgid "Action"
-msgstr ""
-
-#. module: web_enterprise
-#. odoo-javascript
 #: code:addons/web_enterprise/static/src/legacy/xml/promote_studio.xml:0
 #: code:addons/web_enterprise/static/src/views/list/list_renderer_desktop.xml:0
 #, python-format
@@ -68,23 +61,9 @@ msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/search_panel.xml:0
-#, python-format
-msgid "All"
-msgstr ""
-
-#. module: web_enterprise
-#. odoo-javascript
 #: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
 #, python-format
 msgid "CLEAR"
-msgstr ""
-
-#. module: web_enterprise
-#. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/js/views/view_dialogs.js:0
-#, python-format
-msgid "Clear"
 msgstr ""
 
 #. module: web_enterprise
@@ -164,7 +143,6 @@ msgstr ""
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
-#: code:addons/web_enterprise/static/src/legacy/xml/search_panel.xml:0
 #, python-format
 msgid "FILTER"
 msgstr ""
@@ -206,13 +184,6 @@ msgstr ""
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
 msgid "Menu"
-msgstr ""
-
-#. module: web_enterprise
-#. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/xml/web_calendar.xml:0
-#, python-format
-msgid "No filter available"
 msgstr ""
 
 #. module: web_enterprise
@@ -274,13 +245,6 @@ msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/js/views/barcode_fields.js:0
-#, python-format
-msgid "Quick search: %s"
-msgstr ""
-
-#. module: web_enterprise
-#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
@@ -298,13 +262,6 @@ msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
-#: code:addons/web_enterprise/static/src/legacy/js/views/view_dialogs.js:0
-#, python-format
-msgid "Remove"
-msgstr ""
-
-#. module: web_enterprise
-#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Renew your subscription"
@@ -313,7 +270,6 @@ msgstr ""
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
-#: code:addons/web_enterprise/static/src/legacy/xml/search_panel.xml:0
 #, python-format
 msgid "SEE RESULT"
 msgstr ""

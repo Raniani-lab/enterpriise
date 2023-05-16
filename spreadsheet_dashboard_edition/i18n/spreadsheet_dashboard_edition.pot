@@ -4,16 +4,21 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.1+e\n"
+"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:16+0000\n"
-"PO-Revision-Date: 2023-01-17 10:16+0000\n"
+"POT-Creation-Date: 2023-05-16 16:03+0000\n"
+"PO-Revision-Date: 2023-05-16 16:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: spreadsheet_dashboard_edition
+#: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard_edition.spreadsheet_dashboard_view_list
+msgid "Data"
+msgstr ""
 
 #. module: spreadsheet_dashboard_edition
 #: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard_edition.spreadsheet_dashboard_view_list
@@ -26,13 +31,13 @@ msgid "File Name"
 msgstr ""
 
 #. module: spreadsheet_dashboard_edition
-#: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__raw
-msgid "Raw"
+#: model:ir.model,name:spreadsheet_dashboard_edition.model_spreadsheet_dashboard
+msgid "Spreadsheet Dashboard"
 msgstr ""
 
 #. module: spreadsheet_dashboard_edition
-#: model:ir.model,name:spreadsheet_dashboard_edition.model_spreadsheet_dashboard
-msgid "Spreadsheet Dashboard"
+#: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__spreadsheet_data
+msgid "Spreadsheet Data"
 msgstr ""
 
 #. module: spreadsheet_dashboard_edition
@@ -43,6 +48,16 @@ msgstr ""
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__spreadsheet_snapshot
 msgid "Spreadsheet Snapshot"
+msgstr ""
+
+#. module: spreadsheet_dashboard_edition
+#: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__spreadsheet_binary_data
+msgid "Spreadsheet file"
+msgstr ""
+
+#. module: spreadsheet_dashboard_edition
+#: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__thumbnail
+msgid "Thumbnail"
 msgstr ""
 
 #. module: spreadsheet_dashboard_edition

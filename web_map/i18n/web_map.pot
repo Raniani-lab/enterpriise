@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.1+e\n"
+"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:16+0000\n"
-"PO-Revision-Date: 2023-01-17 10:16+0000\n"
+"POT-Creation-Date: 2023-05-16 16:03+0000\n"
+"PO-Revision-Date: 2023-05-16 16:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,8 +28,8 @@ msgstr ""
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid ""
-"<i class=\"fa fa-arrow-right\"/>\n"
-"                                Get token"
+"<i class=\"oi oi-arrow-right\"/>\n"
+"                                Sign up to MapBox to get a free token"
 msgstr ""
 
 #. module: web_map
@@ -122,6 +122,13 @@ msgid "Name"
 msgstr ""
 
 #. module: web_map
+#. odoo-javascript
+#: code:addons/web_map/static/src/map_view/map_renderer.xml:0
+#, python-format
+msgid "Navigate to"
+msgstr ""
+
+#. module: web_map
 #: model:ir.model.fields,help:web_map.field_res_config_settings__map_box_token
 msgid "Necessary for some functionalities in the map view"
 msgstr ""
@@ -138,6 +145,13 @@ msgstr ""
 #: code:addons/web_map/static/src/map_view/map_model.js:0
 #, python-format
 msgid "None"
+msgstr ""
+
+#. module: web_map
+#. odoo-javascript
+#: code:addons/web_map/static/src/map_view/map_renderer.xml:0
+#, python-format
+msgid "Open"
 msgstr ""
 
 #. module: web_map
@@ -202,7 +216,9 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
-msgid "To get routing on your map, you first need to setup your Mapbox token."
+msgid ""
+"To get routing on your map, you first need to set up your MapBox token. It's"
+" free."
 msgstr ""
 
 #. module: web_map
@@ -277,7 +293,7 @@ msgstr ""
 
 #. module: web_map
 #. odoo-javascript
-#: code:addons/web_map/static/src/map_view/map_controller.xml:0
+#: code:addons/web_map/static/src/map_view/map_renderer.xml:0
 #, python-format
 msgid "View in Google Maps"
 msgstr ""
@@ -294,18 +310,4 @@ msgstr ""
 #: code:addons/web_map/models/models.py:0
 #, python-format
 msgid "You need to set a Contact field on this model to use the Map View"
-msgstr ""
-
-#. module: web_map
-#. odoo-javascript
-#: code:addons/web_map/static/src/map_view/map_renderer.xml:0
-#, python-format
-msgid "navigate to"
-msgstr ""
-
-#. module: web_map
-#. odoo-javascript
-#: code:addons/web_map/static/src/map_view/map_renderer.xml:0
-#, python-format
-msgid "open"
 msgstr ""

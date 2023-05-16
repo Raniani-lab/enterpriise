@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.1+e\n"
+"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:16+0000\n"
-"PO-Revision-Date: 2023-01-17 10:16+0000\n"
+"POT-Creation-Date: 2023-05-16 16:02+0000\n"
+"PO-Revision-Date: 2023-05-16 16:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -56,6 +56,7 @@ msgstr ""
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule
+#: model:documents.workflow.rule,name:documents_project.documents_project_rule_task
 msgid "Create a Task"
 msgstr ""
 
@@ -84,9 +85,11 @@ msgstr ""
 #. odoo-python
 #: code:addons/documents_project/models/project_project.py:0
 #: model:ir.actions.act_window,name:documents_project.action_view_documents_project_task
+#: model:ir.model.fields,field_description:documents_project.field_project_project__use_documents
 #: model:ir.model.fields,field_description:documents_project.field_project_task__document_ids
 #: model_terms:ir.ui.view,arch_db:documents_project.portal_my_task
 #: model_terms:ir.ui.view,arch_db:documents_project.portal_tasks_list
+#: model_terms:ir.ui.view,arch_db:documents_project.project_sharing_project_task_view_form_inherit
 #: model_terms:ir.ui.view,arch_db:documents_project.project_view_kanban_inherit_documents
 #: model_terms:ir.ui.view,arch_db:documents_project.view_task_form2_document_inherit
 #, python-format
@@ -109,6 +112,20 @@ msgid "Draft"
 msgstr ""
 
 #. module: documents_project
+#. odoo-python
+#: code:addons/documents_project/models/documents_document.py:0
+#, python-format
+msgid "Invalid project search"
+msgstr ""
+
+#. module: documents_project
+#. odoo-python
+#: code:addons/documents_project/models/documents_document.py:0
+#, python-format
+msgid "Invalid task search"
+msgstr ""
+
+#. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_document__is_shared
 msgid "Is Shared"
 msgstr ""
@@ -120,14 +137,14 @@ msgstr ""
 
 #. module: documents_project
 #. odoo-python
-#: code:addons/documents_project/models/folder.py:0
+#: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
 msgid "Merged Workspace"
 msgstr ""
 
 #. module: documents_project
 #. odoo-python
-#: code:addons/documents_project/models/workflow.py:0
+#: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
 msgid "New task from Documents"
 msgstr ""
@@ -144,7 +161,9 @@ msgstr ""
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_project_project
+#: model:ir.model.fields,field_description:documents_project.field_documents_document__project_id
 #: model:ir.model.fields,field_description:documents_project.field_documents_folder__project_ids
+#: model_terms:ir.ui.view,arch_db:documents_project.document_view_search_inherit
 msgid "Project"
 msgstr ""
 
@@ -161,6 +180,7 @@ msgstr ""
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__shared_document_count
+#: model:ir.model.fields,field_description:documents_project.field_project_task__shared_document_count
 msgid "Shared Documents Count"
 msgstr ""
 
@@ -171,20 +191,36 @@ msgstr ""
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_project_task
+#: model:ir.model.fields,field_description:documents_project.field_documents_document__task_id
 #: model:ir.model.fields.selection,name:documents_project.selection__documents_workflow_rule__create_model__project_task
+#: model_terms:ir.ui.view,arch_db:documents_project.document_view_search_inherit
 msgid "Task"
 msgstr ""
 
 #. module: documents_project
 #. odoo-python
-#: code:addons/documents_project/models/workflow.py:0
+#: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
-msgid "Task created from document"
+msgid "Task created from document %s"
 msgstr ""
 
 #. module: documents_project
 #. odoo-python
-#: code:addons/documents_project/models/folder.py:0
+#: code:addons/documents_project/models/documents_workflow_rule.py:0
+#, python-format
+msgid "Task created from documents %s"
+msgstr ""
+
+#. module: documents_project
+#. odoo-python
+#: code:addons/documents_project/models/project_task.py:0
+#, python-format
+msgid "Task's Documents"
+msgstr ""
+
+#. module: documents_project
+#. odoo-python
+#: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
 msgid ""
 "The \"%s\" workspace is required by the Project application and cannot be "
@@ -202,7 +238,7 @@ msgstr ""
 
 #. module: documents_project
 #. odoo-python
-#: code:addons/documents_project/models/folder.py:0
+#: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
 msgid ""
 "This workspace should remain in the same company as the \"%s\" project to "
@@ -212,7 +248,7 @@ msgstr ""
 
 #. module: documents_project
 #. odoo-python
-#: code:addons/documents_project/models/folder.py:0
+#: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
 msgid ""
 "This workspace should remain in the same company as the following projects to which it is linked:\n"
@@ -234,7 +270,6 @@ msgid ""
 msgstr ""
 
 #. module: documents_project
-#: model:ir.model.fields,field_description:documents_project.field_project_project__use_documents
 #: model:ir.model.fields,field_description:documents_project.field_project_task__project_use_documents
 msgid "Use Documents"
 msgstr ""
@@ -277,9 +312,9 @@ msgstr ""
 
 #. module: documents_project
 #. odoo-python
-#: code:addons/documents_project/models/folder.py:0
+#: code:addons/documents_project/models/documents_folder.py:0
 #, python-format
-msgid "You cannot set a company on the Projects workspace."
+msgid "You cannot set a company on the %s workspace."
 msgstr ""
 
 #. module: documents_project
@@ -289,7 +324,7 @@ msgstr ""
 
 #. module: documents_project
 #. odoo-python
-#: code:addons/documents_project/models/workflow.py:0
+#: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
 msgid "new %s from %s"
 msgstr ""

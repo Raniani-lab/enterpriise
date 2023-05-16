@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~16.1+e\n"
+"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-17 10:15+0000\n"
-"PO-Revision-Date: 2023-01-17 10:15+0000\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2023-05-16 16:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -280,7 +280,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
-msgid "Firefox only : Click on Confirm Security Exception"
+msgid "Firefox only: Click on Confirm Security Exception"
 msgstr ""
 
 #. module: iot
@@ -451,7 +451,7 @@ msgstr ""
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
-msgid "No IoT Box found !"
+msgid "No IoT Box found!"
 msgstr ""
 
 #. module: iot
@@ -482,7 +482,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Please accept the certificate of your IoT Box (procedure depends on your "
-"browser) :"
+"browser):"
 msgstr ""
 
 #. module: iot

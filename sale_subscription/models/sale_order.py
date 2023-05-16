@@ -1022,7 +1022,7 @@ class SaleOrder(models.Model):
         return action
 
     def reopen_order(self):
-        if set(self.mapped('subscription_state')) != {'6_churn'}:
+        if self and set(self.mapped('subscription_state')) != {'6_churn'}:
             raise UserError(_("You cannot reopen a subscription that isn't closed."))
         self.close_reason_id = False
         self.subscription_state = '3_progress'

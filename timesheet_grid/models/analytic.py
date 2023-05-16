@@ -193,7 +193,7 @@ class AnalyticLine(models.Model):
         analytic_lines = self.filtered_domain(self._get_domain_for_validation_timesheets())
         if not analytic_lines:
             notification['params'].update({
-                'title': _("You cannot validate the timesheets from employees that are not part of your team or there are no timesheets to validate."),
+                'title': _("You cannot validate the selected timesheets as they either belong to employees who are not part of your team or are not in a state that can be validated. This may be due to the fact that they are dated in the future."),
                 'type': 'danger',
             })
             return notification
@@ -269,12 +269,15 @@ class AnalyticLine(models.Model):
                 employee = line.employee_id
                 company = line.company_id
                 last_validated_timesheet_date = employee.sudo().last_validated_timesheet_date
+                def is_wrong_date(date):
+                    return date != fields.Date.today() and date <= last_validated_timesheet_date
+
                 # When an user having this group tries to modify the timesheets of another user in his own team, we shouldn't raise any validation error
                 if not is_timesheet_approver or employee not in employees:
                     if line.is_timesheet and last_validated_timesheet_date:
-                        if action == "modify" and fields.Date.to_date(str(vals['date'])) <= last_validated_timesheet_date:
+                        if action == "modify" and is_wrong_date(fields.Date.to_date(str(vals['date']))):
                             show_access_error = True
-                        elif line.date <= last_validated_timesheet_date:
+                        elif is_wrong_date(line.date):
                             show_access_error = True
 
                 if show_access_error:
@@ -696,7 +699,7 @@ class AnalyticLine(models.Model):
         if not validated:
             domain = expression.AND([
                 domain,
-                [("date", "<", fields.Date.today())],
+                [("date", "<=", fields.Date.today())],
             ])
 
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):

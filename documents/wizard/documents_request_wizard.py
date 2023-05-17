@@ -10,7 +10,7 @@ class RequestWizard(models.TransientModel):
     _description = "Document Request"
 
     name = fields.Char(required=True)
-    owner_id = fields.Many2one('res.users', required=True, string="Owner")
+    requestee_id = fields.Many2one('res.partner', required=True, string="Owner")
     partner_id = fields.Many2one('res.partner', string="Contact")
 
     activity_type_id = fields.Many2one('mail.activity.type',
@@ -26,7 +26,7 @@ class RequestWizard(models.TransientModel):
     res_model = fields.Char('Resource Model')
     res_id = fields.Integer('Resource ID')
 
-    activity_note = fields.Html(string="Note")
+    activity_note = fields.Html(string="Message")
     activity_date_deadline_range = fields.Integer(string='Due Date In', default=30)
     activity_date_deadline_range_type = fields.Selection([
         ('days', 'Days'),
@@ -41,8 +41,8 @@ class RequestWizard(models.TransientModel):
                 self.tag_ids = self.activity_type_id.tag_ids
             if not self.folder_id:
                 self.folder_id = self.activity_type_id.folder_id
-            if not self.owner_id:
-                self.owner_id = self.activity_type_id.default_user_id
+            if not self.requestee_id:
+                self.requestee_id = self.activity_type_id.default_user_id.partner_id
 
 
     def request_document(self):
@@ -59,7 +59,7 @@ class RequestWizard(models.TransientModel):
         })
 
         activity_vals = {
-            'user_id': self.owner_id.id if self.owner_id else self.env.user.id,
+            'user_id': self.requestee_id.user_ids[0].id if self.requestee_id.user_ids else self.env.user.id,
             'note': self.activity_note,
             'activity_type_id': self.activity_type_id.id if self.activity_type_id else False,
             'summary': self.name
@@ -70,14 +70,14 @@ class RequestWizard(models.TransientModel):
             activity_vals['date_deadline'] = deadline = fields.Date.context_today(self) + relativedelta(
                 **{self.activity_date_deadline_range_type: self.activity_date_deadline_range})
 
-        request_by_mail = self.owner_id and self.owner_id.id != self.create_uid.id
+        request_by_mail = self.requestee_id and self.create_uid not in self.requestee_id.user_ids
         if request_by_mail:
             share_vals = {
                 'name': self.name,
                 'type': 'ids',
                 'folder_id': self.folder_id.id,
                 'partner_id': self.partner_id.id if self.partner_id else False,
-                'owner_id': self.owner_id.id,
+                'owner_id': self.requestee_id.id,
                 'document_ids': [(4, document.id)],
                 'activity_note': self.activity_note,
             }

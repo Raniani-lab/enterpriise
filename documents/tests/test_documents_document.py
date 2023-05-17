@@ -345,7 +345,7 @@ class TestCaseDocuments(TransactionCase):
         })
         action_context = action['context']
         self.assertTrue(action_context)
-        self.assertEqual(action_context['default_owner_id'], self.env.uid, "the action should open a view with the current user as default owner")
+        self.assertEqual(action_context['default_owner_id'], self.env.user.partner_id.id, "the action should open a view with the current user as default owner")
         self.assertEqual(action_context['default_folder_id'], share_folder.id, "the action should open a view with the right default folder")
         self.assertEqual(action_context['default_tag_ids'], [[6, 0, [share_tag.id]]], "the action should open a view with the right default tags")
         self.assertEqual(action_context['default_type'], 'domain', "the action should open a view with the right default type")
@@ -442,7 +442,7 @@ class TestCaseDocuments(TransactionCase):
             'name': 'Luke Skywalker'
         })
         share = self.env['documents.share'].create({
-            'owner_id': self.doc_user.id,
+            'owner_id': self.doc_user.partner_id.id,
             'partner_id': partner.id,
             'tag_ids': [(6, 0, [self.tag_b.id])],
             'folder_id': self.folder_a.id,

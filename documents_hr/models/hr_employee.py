@@ -72,7 +72,7 @@ class HrEmployee(models.Model):
                     'type': 'domain',
                     'domain': "[('owner_id', '=', %s)]" % (employee.user_id.id),
                     'action': 'download',
-                    'owner_id': employee.user_id.id,
+                    'owner_id': employee.user_partner_id.id,
                 })
             if template:
                 template.send_mail(

@@ -343,7 +343,7 @@ class ShareRoute(http.Controller):
         documents_values = {
             'tag_ids': [Command.set(share.tag_ids.ids)],
             'partner_id': share.partner_id.id,
-            'owner_id': share.owner_id.id,
+            'owner_id': share.owner_id.user_ids[0].id if share.owner_id.user_ids else share.create_uid.id,
             'folder_id': folder.id,
             **(documents_values or {}),
         }

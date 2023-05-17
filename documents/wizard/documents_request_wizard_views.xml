@@ -14,7 +14,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="owner_id" string="Request To" required="1" widget="many2one_avatar_user"/>
+                            <field name="requestee_id" string="Request To" required="1" widget="many2one_avatar"/>
                             <field name="partner_id" groups="base.group_no_one"/>
                             <label for="activity_date_deadline_range"/>
                             <div class="o_row">

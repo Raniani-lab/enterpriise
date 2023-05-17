@@ -45,7 +45,7 @@ class DocumentShare(models.Model):
     ], default='download', string="Allows to", inverse="_inverse_action")
     tag_ids = fields.Many2many('documents.tag', string="Shared Tags")
     partner_id = fields.Many2one('res.partner', string="Contact")
-    owner_id = fields.Many2one('res.users', string="Document Owner", default=lambda self: self.env.uid)
+    owner_id = fields.Many2one('res.partner', string="Document Owner", default=lambda self: self.env.user.partner_id.id)
     email_drop = fields.Boolean(compute='_compute_email_drop', string='Upload by Email', store=True, readonly=False)
 
     # Activity
@@ -246,7 +246,7 @@ class DocumentShare(models.Model):
         new_context = dict(self.env.context)
         # TOOD: since the share is created directly do we really need to set the context?
         new_context.update({
-            'default_owner_id': self.env.uid,
+            'default_owner_id': self.env.user.partner_id.id,
             'default_folder_id': vals.get('folder_id'),
             'default_tag_ids': vals.get('tag_ids'),
             'default_type': vals.get('type', 'domain'),

@@ -16,6 +16,9 @@ class TestCaseDocuments(TransactionCase):
             'name': 'Test user documents',
             'login': 'documents@example.com',
         })
+        self.doc_partner = self.env['res.partner'].create({
+             'name': 'Luke Skywalker',
+        })
         self.folder_a = self.env['documents.folder'].create({
             'name': 'folder A',
         })
@@ -111,7 +114,7 @@ class TestCaseDocuments(TransactionCase):
         })
         document = self.env['documents.request_wizard'].create({
             'name': 'Wizard Request',
-            'owner_id': self.doc_user.id,
+            'requestee_id': self.doc_partner.id,
             'activity_type_id': activity_type.id,
             'folder_id': self.folder_a.id,
         }).request_document()

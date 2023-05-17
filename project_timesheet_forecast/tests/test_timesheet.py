@@ -93,6 +93,47 @@ class TestPlanningTimesheet(TestCommonForecast):
         nb_timesheet = self.env["account.analytic.line"].search_count([('slot_id', 'in', slots.ids)])
         self.assertEqual(nb_timesheet, 1)
 
+    def test_generate_timesheet_for_flexible_employees(self):
+        """
+        Generate timesheets for slot with a resource that has flexible hours.
+        It should be coherent with the way we calculate allocated hours for the slot for a flexible resource.
+        All datetime used in this test are working days.
+        """
+        self.project_opera.write({'allow_timesheets': True})
+        self.resource_joseph.flexible_hours = True
+
+        one_day_slot, multi_day_slot = self.env["planning.slot"].create([
+            {
+                'project_id': self.project_opera.id,
+                'resource_id': self.resource_joseph.id,
+                'start_datetime': datetime(2023, 5, 15, 6, 0, 0),
+                'end_datetime': datetime(2023, 5, 15, 18, 0, 0),
+                'allocated_hours': 12,
+                'allocated_percentage': 150,
+                'state': 'published',
+                'allow_timesheets': True,
+            },
+            {
+                'project_id': self.project_opera.id,
+                'resource_id': self.resource_joseph.id,
+                'start_datetime': datetime(2023, 5, 15, 8, 0, 0),
+                'end_datetime': datetime(2023, 5, 16, 10, 0, 0),
+                # as of writing this, allocated hours for a slot with a flexible resource
+                # over the span of multiple days is just the average company hours per day
+                # (so for 2 days = 16h for a 40h/w company calendar)
+                'allocated_hours': 24,
+                'allocated_percentage': 150,
+                'state': 'published',
+                'allow_timesheets': True,
+            }
+        ])
+        (one_day_slot + multi_day_slot)._action_generate_timesheet()
+        self.assertEqual(len(one_day_slot.timesheet_ids), 1, "One timesheet should be generated for a 1 day span slot.")
+        self.assertEqual(one_day_slot.timesheet_ids.duration_unit_amount, 12, "The timesheet duration should be 12h.")
+        self.assertEqual(len(multi_day_slot.timesheet_ids), 2, "Two timesheets should be generated for a 2 day span slot.")
+        self.assertEqual(multi_day_slot.timesheet_ids.mapped('duration_unit_amount'), [12, 12], "The timesheets duration should be 12h per day.")
+
+
 class TestPlanningTimesheetView(TestCommonTimesheet):
     def test_get_view_timesheet_encode_uom(self):
         """ Test the label of timesheet time spent fields according to the company encoding timesheet uom """

@@ -6,7 +6,7 @@ from unittest.mock import patch
 from .sign_request_common import SignRequestCommon
 from odoo.tests.common import HttpCase
 from odoo.addons.sign.controllers.main import Sign
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, ValidationError
 from odoo.addons.website.tools import MockRequest
 from odoo.tests import tagged
 
@@ -50,6 +50,11 @@ class TestSignController(TestSignControllerCommon):
         # we set a dummy field that raises an error
         with self.assertRaises(ValidationError):
             text_type.auto_field = 'this_is_not_a_partner_field'
+
+        # we set a field the demo user does not have access and must not be able to set as auto_field
+        self.patch(type(self.env['res.partner']).function, 'groups', 'base.group_system')
+        with self.assertRaises(AccessError):
+            text_type.with_user(self.env.ref('base.user_demo')).auto_field = 'function'
 
     # test auto_field with multiple sub steps
     def test_sign_controller_multi_step_auto_field(self):

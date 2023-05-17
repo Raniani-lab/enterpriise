@@ -322,17 +322,33 @@ class TestEcEdiXmls(TestEcEdiCommon):
     def test_xml_tree_in_withhold_foreign_partner_dm(self):
         """Checks the XML of a purchase withhold whose invoice originates from a foreign partner."""
         self.partner_b.country_id = self.env.ref('base.dm').id
+        self.partner_b.l10n_latam_identification_type_id = self.env.ref('l10n_latam_base.it_vat')
 
         def create_wth_lines(wizard, invoice):
             self.env['l10n_ec.wizard.account.withhold.line'].create({
                 'invoice_id': invoice.id,
                 'wizard_id': wizard.id,
                 'tax_id': self._get_tax_by_xml_id('tax_withhold_profit_502_422').ids[0],
-                'taxsupport_code': '01',
-                'amount': 88,  # VAT, 22.00% of 400
+                'taxsupport_code': '02',
+                'base': 400.00,
+                'amount':88, # VAT, 22.00% of 400
             })
             wizard.foreign_regime = '01'
-        xpath = """
+        xpath = self.get_withhold_xpath_for_taxes(tax_percent='22.00', withhold_amount='88.00', tax_code=502)
+        xpath += """
+            <xpath expr="//tipoIdentificacionSujetoRetenido" position="replace">
+                <tipoIdentificacionSujetoRetenido>08</tipoIdentificacionSujetoRetenido>
+                <tipoSujetoRetenido>01</tipoSujetoRetenido>
+            </xpath>
+            <xpath expr="//identificacionSujetoRetenido" position="replace">
+                <identificacionSujetoRetenido>0453661050</identificacionSujetoRetenido>
+            </xpath>
+            <xpath expr="//codSustento" position="replace">
+                <codSustento>02</codSustento>
+            </xpath>
+            <xpath expr="//codDocSustento" position="replace">
+                <codDocSustento>09</codDocSustento>
+            </xpath>
             <xpath expr="//pagoLocExt" position="replace">
                 <pagoLocExt>02</pagoLocExt>
                 <tipoRegi>01</tipoRegi>
@@ -341,9 +357,34 @@ class TestEcEdiXmls(TestEcEdiCommon):
                 <pagExtSujRetNorLeg>SI</pagExtSujRetNorLeg>
                 <pagoRegFis>SI</pagoRegFis>
             </xpath>
+            <xpath expr="//importeTotal" position="replace">
+                <importeTotal>400.00</importeTotal>
+            </xpath>
+            <xpath expr="//impuestosDocSustento/impuestoDocSustento" position="replace">
+                <impuestoDocSustento>
+                    <codImpuestoDocSustento>2</codImpuestoDocSustento>
+                    <codigoPorcentaje>0</codigoPorcentaje>
+                    <baseImponible>400.00</baseImponible>
+                    <tarifa>0.00</tarifa>
+                    <valorImpuesto>0.00</valorImpuesto>
+                </impuestoDocSustento>
+            </xpath>
+            <xpath expr="//pagos/pago" position="replace">
+                <pago>
+                    <formaPago>01</formaPago>
+                    <total>400.00</total>
+                </pago>
+            </xpath>
         """
-        xpath += self.get_withhold_xpath_for_taxes(tax_percent='22.00', withhold_amount='88.00', tax_code=502)
-        self.get_and_test_xml_tree_in_withhold(line_creation_method=create_wth_lines, xpath=xpath)
+        invoice_args = {'partner_id': self.partner_b.id}
+        invoice_line_args = [Command.create({
+                'product_id': self.product_a.id,
+                'price_unit': 100.0,
+                'quantity': 5,
+                'discount': 20,
+                'tax_ids': [Command.set(self._get_tax_by_xml_id('tax_vat_518_sup_02').ids)],
+            })]
+        self.get_and_test_xml_tree_in_withhold(line_creation_method=create_wth_lines, xpath=xpath, invoice_args=invoice_args, invoice_line_args=invoice_line_args)
 
     def test_xml_tree_in_withhold_suggested_tax_credit_card(self):
         """Checks the XML of a purchase withhold whose invoice's payment method is a credit card.
@@ -371,7 +412,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
     def test_xml_tree_in_withhold_suggested_tax_taxpayer_type(self):
         """Checks the XML of a purchase withhold for RIMPE partner.
         Tax for partner with taxpayer type: partner.l10n_ec_taxpayer_type_id.profit_withhold_tax_id."""
-        self.partner_b.l10n_ec_taxpayer_type_id = self.env.ref('l10n_ec_edi.l10n_ec_taxpayer_type_13')
+        self.partner_a.l10n_ec_taxpayer_type_id = self.env.ref('l10n_ec_edi.l10n_ec_taxpayer_type_13')
         self.get_and_test_xml_tree_in_withhold(
             xpath=self.get_withhold_xpath_for_taxes(tax_percent='1.00', withhold_amount='4.00', tax_code=343))
 
@@ -413,7 +454,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                 <docsSustento>
                     <docSustento>
                     <codSustento>01</codSustento>
-                    <codDocSustento>09</codDocSustento>
+                    <codDocSustento>01</codDocSustento>
                     <numDocSustento>001001000000001</numDocSustento>
                     <fechaEmisionDocSustento>25/01/2022</fechaEmisionDocSustento>
                     <pagoLocExt>01</pagoLocExt>
@@ -446,7 +487,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     </docSustento>
                     <docSustento>
                     <codSustento>07</codSustento>
-                    <codDocSustento>09</codDocSustento>
+                    <codDocSustento>01</codDocSustento>
                     <numDocSustento>001001000000001</numDocSustento>
                     <fechaEmisionDocSustento>25/01/2022</fechaEmisionDocSustento>
                     <pagoLocExt>01</pagoLocExt>
@@ -575,7 +616,7 @@ class TestEcEdiXmls(TestEcEdiCommon):
         # Create the invoice and withhold
         invoice_vals = {
             'move_type': 'in_invoice',
-            'partner_id': self.partner_b.id,
+            'partner_id': self.partner_a.id,
             'l10n_ec_sri_payment_id': self.env['l10n_ec.sri.payment'].search([('code', '=', '01')], limit=1).id
         }
         if invoice_args:

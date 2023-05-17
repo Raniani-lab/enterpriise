@@ -187,7 +187,8 @@ class DocumentShare(models.Model):
     @api.depends('access_token')
     def _compute_full_url(self):
         for record in self:
-            record.full_url = "%s/document/share/%s/%s" % (record.get_base_url(), record.id, record.access_token)
+            record.full_url = (f'{record.get_base_url()}/document/share/'
+                               f'{record._origin.id or record.id}/{record.access_token}')
 
     @api.depends('type', 'document_ids', 'domain')
     def _compute_links_count(self):

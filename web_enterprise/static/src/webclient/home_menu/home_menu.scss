@@ -81,9 +81,6 @@
         }
 
         .o_caption {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
             color: var(--homeMenuCaption-color, #{$o-home-menu-caption-color});
             text-shadow: $o-home-menu-caption-shadow;
         }
@@ -93,10 +90,6 @@
             outline: 1px solid $o-action;
             border-radius: $border-radius;
         }
-    }
-
-    &:not(.o_ios_app) .o_caption {
-        height: ($font-size-base * $line-height-sm) * 2;
     }
 
     // iOS iPhone list layout due to Apple AppStore review
